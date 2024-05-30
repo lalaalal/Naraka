@@ -14,10 +14,9 @@ import net.neoforged.api.distmarker.OnlyIn;
 /**
  * Draw player's stigma
  *
+ * @author lalaalal
  * @see NarakaAttachments#STIGMA
  * @see StigmaHelper
- *
- * @author lalaalal
  */
 @OnlyIn(Dist.CLIENT)
 public class StigmaLayer implements LayeredDraw.Layer {

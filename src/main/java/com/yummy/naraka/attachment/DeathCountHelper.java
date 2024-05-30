@@ -6,7 +6,6 @@ import com.yummy.naraka.event.NarakaGameEventBus;
 import com.yummy.naraka.networking.payload.IntAttachmentSyncHandler;
 import com.yummy.naraka.tags.NarakaDamageTypeTags;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
-
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,9 +17,8 @@ import java.util.function.Supplier;
 /**
  * Help control death count
  *
- * @see NarakaAttachments#DEATH_COUNT
- *
  * @author lalaalal
+ * @see NarakaAttachments#DEATH_COUNT
  */
 public class DeathCountHelper {
     private static int maxDeathCount = NarakaMod.config().MAX_DEATH_COUNT.get();
@@ -58,7 +56,6 @@ public class DeathCountHelper {
      * Sync death count
      *
      * @param livingEntity Entity to sync death count
-     *
      * @see AttachmentSyncHelper#sync(Entity, Supplier, IntAttachmentSyncHandler)
      */
     public static void syncDeathCount(LivingEntity livingEntity) {
@@ -70,9 +67,8 @@ public class DeathCountHelper {
      * if current death count is 1 kill entity<br>
      * Processed when entity die, stigma consumed
      *
-     * @param livingEntity Entity to reduce death count
+     * @param livingEntity  Entity to reduce death count
      * @param causingEntity Entity causing death
-     *
      * @see NarakaGameEventBus#handleDeathCountOn(LivingDamageEvent)
      * @see StigmaHelper#consumeStigma(LivingEntity, Entity)
      */

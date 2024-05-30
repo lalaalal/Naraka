@@ -1,7 +1,5 @@
 package com.yummy.naraka;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.yummy.naraka.attachment.DeathCountHelper;
 import com.yummy.naraka.attachment.StigmaHelper;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -9,6 +7,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Mod configuration<br>
@@ -20,7 +19,7 @@ public class NarakaConfig {
     
     public static final ModConfigSpec SPEC = PAIR.getRight();
 
-    public static NarakaConfig getInstance() {
+    static NarakaConfig getInstance() {
         return PAIR.getLeft();
     }
 

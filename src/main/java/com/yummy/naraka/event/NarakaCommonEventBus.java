@@ -1,20 +1,16 @@
 package com.yummy.naraka.event;
 
+import com.yummy.naraka.NarakaContext;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.attachment.AttachmentSyncHelper;
 import com.yummy.naraka.entity.Herobrine;
 import com.yummy.naraka.entity.NarakaEntities;
-import com.yummy.naraka.gui.layer.DeathCountLayer;
-import com.yummy.naraka.gui.layer.NarakaGuiLayers;
-import com.yummy.naraka.gui.layer.StigmaLayer;
+import com.yummy.naraka.networking.payload.ChangeDeathCountVisibilityPayload;
 import com.yummy.naraka.networking.payload.IntAttachmentSyncHandler;
 import com.yummy.naraka.networking.payload.SyncEntityIntAttachmentPayload;
-
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
-import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -26,16 +22,22 @@ public class NarakaCommonEventBus {
         event.enqueueWork(() -> {
             AttachmentSyncHelper.initialize();
             IntAttachmentSyncHandler.initialize();
+            NarakaContext.initialize();
         });
     }
 
     @SubscribeEvent
     public static void registerPayloadHandlers(RegisterPayloadHandlersEvent event) {
-        PayloadRegistrar registrar = event.registrar("1");
+        PayloadRegistrar registrar = event.registrar("2");
         registrar.playBidirectional(
                 SyncEntityIntAttachmentPayload.TYPE,
                 SyncEntityIntAttachmentPayload.CODEC,
                 SyncEntityIntAttachmentPayload::handle
+        );
+        registrar.playToClient(
+                ChangeDeathCountVisibilityPayload.TYPE,
+                ChangeDeathCountVisibilityPayload.CODEC,
+                ChangeDeathCountVisibilityPayload::handle
         );
     }
 

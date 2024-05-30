@@ -20,9 +20,8 @@ import java.util.function.Supplier;
 /**
  * Help control Stigma
  *
- * @see NarakaAttachments#STIGMA
- *
  * @author lalaalal
+ * @see NarakaAttachments#STIGMA
  */
 public class StigmaHelper {
     private static int maxStigma;
@@ -77,7 +76,6 @@ public class StigmaHelper {
      * Sync stigma
      *
      * @param livingEntity Entity to sync
-     *
      * @see AttachmentSyncHelper#sync(Entity, Supplier, IntAttachmentSyncHandler)
      */
     public static void syncStigma(LivingEntity livingEntity) {
@@ -89,7 +87,7 @@ public class StigmaHelper {
      * If value == {@link StigmaHelper#maxStigma} <br>
      * call {@link StigmaHelper#consumeStigma(LivingEntity, Entity)}
      *
-     * @param livingEntity Entity to increase value
+     * @param livingEntity  Entity to increase value
      * @param causingEntity Entity caused stigma
      */
     public static void increaseStigma(LivingEntity livingEntity, @Nullable Entity causingEntity) {
@@ -129,7 +127,6 @@ public class StigmaHelper {
      * Pause if entity just sullied or resume
      *
      * @param livingEntity Entity to handle
-     *
      * @see StigmaHelper#shouldPauseEntity(LivingEntity)
      * @see StigmaHelper#pauseEntity(LivingEntity)
      * @see StigmaHelper#resumeEntity(LivingEntity)
@@ -153,7 +150,6 @@ public class StigmaHelper {
      * Block moving and jumping entity
      *
      * @param livingEntity Entity to pause
-     *
      * @see StigmaHelper#handleSulliedEntity(LivingEntity)
      */
     public static void pauseEntity(LivingEntity livingEntity) {
@@ -191,9 +187,8 @@ public class StigmaHelper {
      * Make stigma to 0 and reduce death count
      * Calling {@link StigmaHelper#syncStigma(LivingEntity)} is required after use
      *
-     * @param livingEntity Entity to consume value
+     * @param livingEntity  Entity to consume value
      * @param causingEntity Entity caused stigma
-     *
      * @see DeathCountHelper#reduceDeathCount(LivingEntity, Entity)
      */
     public static void consumeStigma(LivingEntity livingEntity, @Nullable Entity causingEntity) {

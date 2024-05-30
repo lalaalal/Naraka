@@ -1,5 +1,6 @@
 package com.yummy.naraka.gui.layer;
 
+import com.yummy.naraka.NarakaContext;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.attachment.DeathCountHelper;
 import com.yummy.naraka.attachment.NarakaAttachments;
@@ -17,10 +18,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Draw player's death count
  *
+ * @author lalaalal
  * @see NarakaAttachments#DEATH_COUNT
  * @see DeathCountHelper
- *
- * @author lalaalal
  */
 @OnlyIn(Dist.CLIENT)
 public class DeathCountLayer implements LayeredDraw.Layer {
@@ -48,6 +48,8 @@ public class DeathCountLayer implements LayeredDraw.Layer {
 
     @Override
     public void render(GuiGraphics guiGraphics, float partialTick) {
+        if (!NarakaMod.context().get(NarakaContext.KEY_CLIENT_DEATH_COUNT_VISIBILITY))
+            return;
         Player player = Minecraft.getInstance().player;
         if (player == null || player.isCreative() || player.isSpectator())
             return;

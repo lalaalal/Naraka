@@ -48,4 +48,8 @@ public class NarakaMod
     public static NarakaConfig config() {
         return NarakaConfig.getInstance();
     }
+
+    public static NarakaContext context() {
+        return NarakaContext.INSTANCE;
+    }
 }

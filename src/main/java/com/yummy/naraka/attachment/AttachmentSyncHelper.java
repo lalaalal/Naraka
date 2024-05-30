@@ -21,9 +21,8 @@ import java.util.function.Supplier;
  * Helper for syncing attachment<br>
  * Attachments need to sync on player logged in
  *
- * @see NarakaGameEventBus#syncAttachmentsOn(PlayerEvent.PlayerLoggedInEvent)
- *
  * @author lalaalal
+ * @see NarakaGameEventBus#syncAttachmentsOn(PlayerEvent.PlayerLoggedInEvent)
  */
 public class AttachmentSyncHelper {
     private static final List<Consumer<LivingEntity>> attachmentSyncers = new ArrayList<>();
@@ -42,10 +41,9 @@ public class AttachmentSyncHelper {
      *     <li>In Client : request server to notice</li>
      * </ul>
      *
-     * @param entity Entity having attachment
+     * @param entity   Entity having attachment
      * @param supplier Supplier of {@link AttachmentType}
-     * @param handler Handler {@link SyncEntityIntAttachmentPayload} using
-     *
+     * @param handler  Handler {@link SyncEntityIntAttachmentPayload} using
      * @see SyncEntityIntAttachmentPayload
      */
     public static void sync(Entity entity, Supplier<AttachmentType<Integer>> supplier, IntAttachmentSyncHandler handler) {
@@ -68,7 +66,6 @@ public class AttachmentSyncHelper {
      * Sync all attachments using syncer
      *
      * @param livingEntity Entity to sync
-     *
      * @see AttachmentSyncHelper#initialize()
      */
     public static void syncAttachments(LivingEntity livingEntity) {

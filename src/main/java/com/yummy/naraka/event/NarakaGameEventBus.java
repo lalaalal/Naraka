@@ -43,7 +43,6 @@ public class NarakaGameEventBus {
      * If damage is going to kill entity, make health full and reduce death count<br>
      *
      * @param event LivingDamageEvent
-     *
      * @see DeathCountHelper#reduceDeathCount(LivingEntity, Entity)
      */
     @SubscribeEvent
