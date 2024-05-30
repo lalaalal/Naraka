@@ -1,5 +1,7 @@
 package com.yummy.naraka.attachment;
 
+import com.yummy.naraka.NarakaConfig;
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.event.NarakaGameEventBus;
 import com.yummy.naraka.networking.payload.IntAttachmentSyncHandler;
@@ -23,24 +25,30 @@ import java.util.function.Supplier;
  * @author lalaalal
  */
 public class StigmaHelper {
-    // TODO: make configurable..?
-    public static final int MAX_STIGMA = 3;
+    private static int maxStigma;
     /**
      * Ticks to pause entity
      *
      * @see StigmaHelper#shouldPauseEntity(LivingEntity)
      */
-    public static final int PAUSE_DURATION = 20 * 5;
+    private static int pauseDuration;
     /**
      * Ticks to keep stigma<br>
      * Reduce after given ticks
      *
      * @see StigmaHelper#handleSulliedEntity(LivingEntity)
      */
-    public static final int KEEP_STIGMA_DURATION = 20 * 10;
+    private static int keepStigmaDuration;
 
     // TODO: Save to level!!
     private static final Map<LivingEntity, Long> stigmaTimestamps = new HashMap<>();
+
+    public static void loadConfig() {
+        NarakaConfig config = NarakaMod.config();
+        maxStigma = config.MAX_STIGMA.get();
+        pauseDuration = config.PAUSE_DURATION_BY_STIGMA.get();
+        keepStigmaDuration = config.KEEP_STIGMA_DURATION.get();
+    }
 
     /**
      * Get value of a LivingEntity
@@ -78,7 +86,7 @@ public class StigmaHelper {
 
     /**
      * Increase value of LivingEntity
-     * If value == {@link StigmaHelper#MAX_STIGMA} <br>
+     * If value == {@link StigmaHelper#maxStigma} <br>
      * call {@link StigmaHelper#consumeStigma(LivingEntity, Entity)}
      *
      * @param livingEntity Entity to increase value
@@ -88,17 +96,24 @@ public class StigmaHelper {
         int stigma = livingEntity.getData(NarakaAttachments.STIGMA);
         livingEntity.setData(NarakaAttachments.STIGMA, stigma + 1);
         stigmaTimestamps.put(livingEntity, livingEntity.level().getGameTime());
-        if (stigma + 1 == MAX_STIGMA)
+        if (stigma + 1 == maxStigma)
             consumeStigma(livingEntity, causingEntity);
         syncStigma(livingEntity);
     }
 
+    /**
+     * @see StigmaHelper#increaseStigma(LivingEntity, Entity)
+     */
+    public static void increaseStigma(LivingEntity livingEntity) {
+        increaseStigma(livingEntity, null);
+    }
+
     public static boolean shouldPauseEntity(LivingEntity livingEntity) {
-        return !isTickPassed(livingEntity, PAUSE_DURATION);
+        return !isTickPassed(livingEntity, pauseDuration);
     }
 
     public static boolean canDecreaseStigma(LivingEntity livingEntity) {
-        return isTickPassed(livingEntity, KEEP_STIGMA_DURATION);
+        return isTickPassed(livingEntity, keepStigmaDuration);
     }
 
     private static boolean isTickPassed(LivingEntity livingEntity, int tickDuration) {
@@ -170,13 +185,6 @@ public class StigmaHelper {
                 Attributes.JUMP_STRENGTH,
                 NarakaAttributeModifiers.BLOCK_JUMPING
         );
-    }
-
-    /**
-     * @see StigmaHelper#increaseStigma(LivingEntity, Entity)
-     */
-    public static void increaseStigma(LivingEntity livingEntity) {
-        increaseStigma(livingEntity, null);
     }
 
     /**

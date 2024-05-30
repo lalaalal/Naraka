@@ -24,7 +24,7 @@ public class NarakaMod
         NarakaEntities.register(modEventBus);
         NarakaAttachments.register(modEventBus);
 
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, NarakaConfig.SPEC);
     }
 
     public static ResourceLocation neoLocation(String path) {
@@ -45,5 +45,7 @@ public class NarakaMod
         return location("%s/%s".formatted(prefix, path));
     }
 
-
+    public static NarakaConfig config() {
+        return NarakaConfig.getInstance();
+    }
 }

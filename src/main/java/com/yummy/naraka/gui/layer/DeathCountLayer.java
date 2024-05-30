@@ -1,6 +1,5 @@
 package com.yummy.naraka.gui.layer;
 
-import com.mojang.logging.LogUtils;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.attachment.DeathCountHelper;
 import com.yummy.naraka.attachment.NarakaAttachments;
@@ -55,16 +54,16 @@ public class DeathCountLayer implements LayeredDraw.Layer {
 
         int deathCount = DeathCountHelper.getDeathCount(player);
 
-        int baseX = guiGraphics.guiWidth() / 2 - HEART_SIZE * (DeathCountHelper.DEFAULT_DEATH_COUNT + 1);
+        int baseX = guiGraphics.guiWidth() / 2 - HEART_SIZE * (DeathCountHelper.maxDeathCount() + 1);
         int baseY = HEART_SIZE * 2;
 
         int boxMinX = baseX - HEART_SIZE;
         int boxMinY = baseY - HEART_SIZE;
-        int boxMaxX = baseX + HEART_SIZE * (DeathCountHelper.DEFAULT_DEATH_COUNT + 1);
+        int boxMaxX = baseX + HEART_SIZE * (DeathCountHelper.maxDeathCount() + 1);
         int boxMaxY = baseY + HEART_SIZE * 2;
         guiGraphics.fill(RenderType.guiOverlay(), boxMinX, boxMinY, boxMaxX, boxMaxY, -0xAAFF0000);
 
-        for (int i = 0; i < DeathCountHelper.DEFAULT_DEATH_COUNT; i++) {
+        for (int i = 0; i < DeathCountHelper.maxDeathCount(); i++) {
             int x = baseX + i * HEART_SIZE;
             boolean fill = i < deathCount;
             drawFilledHeart(guiGraphics, x, baseY, fill);

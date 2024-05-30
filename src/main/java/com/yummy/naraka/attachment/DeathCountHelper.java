@@ -1,8 +1,13 @@
 package com.yummy.naraka.attachment;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.damagesource.NarakaDamageSources;
 import com.yummy.naraka.event.NarakaGameEventBus;
 import com.yummy.naraka.networking.payload.IntAttachmentSyncHandler;
+import com.yummy.naraka.tags.NarakaDamageTypeTags;
+import com.yummy.naraka.tags.NarakaEntityTypeTags;
+
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
@@ -18,19 +23,35 @@ import java.util.function.Supplier;
  * @author lalaalal
  */
 public class DeathCountHelper {
-    public static final int DEFAULT_DEATH_COUNT = 5;
+    private static int maxDeathCount = NarakaMod.config().MAX_DEATH_COUNT.get();
+
+    public static void loadConfig() {
+        maxDeathCount = NarakaMod.config().MAX_DEATH_COUNT.get();
+    }
+
+    public static int maxDeathCount() {
+        return maxDeathCount;
+    }
+
+    public static boolean isDeathCountingAttack(DamageSource source) {
+        Entity cause = source.getEntity();
+        if (cause != null && cause.getType().is(NarakaEntityTypeTags.DEATH_COUNTING_ENTITY))
+            return true;
+
+        return source.is(NarakaDamageTypeTags.DEATH_COUNTING_ATTACK);
+    }
 
     public static int getDeathCount(LivingEntity livingEntity) {
         return livingEntity.getData(NarakaAttachments.DEATH_COUNT);
     }
 
     /**
-     * Restore death count to {@linkplain DeathCountHelper#DEFAULT_DEATH_COUNT}
+     * Restore death count to {@linkplain DeathCountHelper#maxDeathCount()}
      *
      * @param livingEntity Entity to restore death count
      */
     public static void restoreDeathCount(LivingEntity livingEntity) {
-        livingEntity.setData(NarakaAttachments.DEATH_COUNT, DEFAULT_DEATH_COUNT);
+        livingEntity.setData(NarakaAttachments.DEATH_COUNT, maxDeathCount);
     }
 
     /**

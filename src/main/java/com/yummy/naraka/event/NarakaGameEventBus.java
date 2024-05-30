@@ -5,7 +5,6 @@ import com.yummy.naraka.attachment.AttachmentSyncHelper;
 import com.yummy.naraka.attachment.DeathCountHelper;
 import com.yummy.naraka.attachment.StigmaHelper;
 import com.yummy.naraka.damagesource.NarakaDamageSources;
-import com.yummy.naraka.tags.NarakaDamageTypeTags;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.damagesource.DamageSource;
@@ -33,14 +32,6 @@ public class NarakaGameEventBus {
         AttachmentSyncHelper.syncAttachments(player);
     }
 
-    private static boolean isDeathCountingAttack(DamageSource source) {
-        Entity cause = source.getEntity();
-        if (cause != null && cause.getType().is(NarakaEntityTypeTags.DEATH_COUNTING_ENTITY))
-            return true;
-
-        return source.is(NarakaDamageTypeTags.DEATH_COUNTING_ATTACK);
-    }
-
     @SubscribeEvent
     public static void handleSulliedEntityOn(EntityTickEvent.Pre event) {
         Entity entity = event.getEntity();
@@ -58,7 +49,7 @@ public class NarakaGameEventBus {
     @SubscribeEvent
     public static void handleDeathCountOn(LivingDamageEvent event) {
         DamageSource source = event.getSource();
-        if (!isDeathCountingAttack(source))
+        if (!DeathCountHelper.isDeathCountingAttack(source))
             return;
 
         LivingEntity livingEntity = event.getEntity();

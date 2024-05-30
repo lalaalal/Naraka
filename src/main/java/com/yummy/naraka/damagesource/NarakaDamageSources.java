@@ -14,7 +14,7 @@ import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import javax.annotation.Nullable;
 
 /**
- * Provides static methods for creating {@linkplain DamageSource} without level
+ * Provides static methods for creating {@linkplain DamageSource} without level<br>
  * Don't use in client
  *
  * @author lalaalal

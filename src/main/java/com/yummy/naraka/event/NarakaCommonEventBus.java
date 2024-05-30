@@ -4,12 +4,17 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.attachment.AttachmentSyncHelper;
 import com.yummy.naraka.entity.Herobrine;
 import com.yummy.naraka.entity.NarakaEntities;
+import com.yummy.naraka.gui.layer.DeathCountLayer;
+import com.yummy.naraka.gui.layer.NarakaGuiLayers;
+import com.yummy.naraka.gui.layer.StigmaLayer;
 import com.yummy.naraka.networking.payload.IntAttachmentSyncHandler;
 import com.yummy.naraka.networking.payload.SyncEntityIntAttachmentPayload;
+
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -32,13 +37,6 @@ public class NarakaCommonEventBus {
                 SyncEntityIntAttachmentPayload.CODEC,
                 SyncEntityIntAttachmentPayload::handle
         );
-    }
-
-    @SubscribeEvent
-    public static void addCreative(BuildCreativeModeTabContentsEvent event)
-    {
-//        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS)
-//            event.accept(EXAMPLE_BLOCK_ITEM);
     }
 
     @SubscribeEvent
