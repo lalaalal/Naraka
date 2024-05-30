@@ -24,6 +24,8 @@ import java.util.function.Supplier;
  * @see NarakaAttachments#STIGMA
  */
 public class StigmaHelper {
+    // TODO: Save to level!!
+    private static final Map<LivingEntity, Long> stigmaTimestamps = new HashMap<>();
     private static int maxStigma;
     /**
      * Ticks to pause entity
@@ -38,9 +40,6 @@ public class StigmaHelper {
      * @see StigmaHelper#handleSulliedEntity(LivingEntity)
      */
     private static int keepStigmaDuration;
-
-    // TODO: Save to level!!
-    private static final Map<LivingEntity, Long> stigmaTimestamps = new HashMap<>();
 
     public static void loadConfig() {
         NarakaConfig config = NarakaMod.config();

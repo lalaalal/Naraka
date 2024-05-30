@@ -19,7 +19,6 @@ import java.util.function.Supplier;
  * @param entityId
  * @param value
  * @param handlerId
- *
  * @author lalaalal
  */
 public record SyncEntityIntAttachmentPayload(int entityId, int value, int handlerId) implements CustomPacketPayload {
@@ -34,6 +33,18 @@ public record SyncEntityIntAttachmentPayload(int entityId, int value, int handle
             SyncEntityIntAttachmentPayload::new
     );
 
+    /**
+     * Construct {@linkplain SyncEntityIntAttachmentPayload}
+     *
+     * @param entity    Entity having attachment
+     * @param supplier  Supplier of {@link AttachmentType}
+     * @param handlerId Handler id (use {@link IntAttachmentSyncHandler#getId(IntAttachmentSyncHandler)} to gei id of existing handler)
+     * @see IntAttachmentSyncHandler
+     */
+    public SyncEntityIntAttachmentPayload(Entity entity, Supplier<AttachmentType<Integer>> supplier, int handlerId) {
+        this(entity.getId(), entity.getData(supplier), handlerId);
+    }
+
     public static void handle(SyncEntityIntAttachmentPayload payload, IPayloadContext context) {
         context.enqueueWork(() -> {
             IntAttachmentSyncHandler handler = IntAttachmentSyncHandler.get(payload.handlerId);
@@ -44,19 +55,6 @@ public record SyncEntityIntAttachmentPayload(int entityId, int value, int handle
             if (entity != null)
                 handler.handle(player, entity, payload.value);
         });
-    }
-
-    /**
-     * Construct {@linkplain SyncEntityIntAttachmentPayload}
-     *
-     * @param entity Entity having attachment
-     * @param supplier Supplier of {@link AttachmentType}
-     * @param handlerId Handler id (use {@link IntAttachmentSyncHandler#getId(IntAttachmentSyncHandler)} to gei id of existing handler)
-     *
-     * @see IntAttachmentSyncHandler
-     */
-    public SyncEntityIntAttachmentPayload(Entity entity, Supplier<AttachmentType<Integer>> supplier, int handlerId) {
-        this(entity.getId(), entity.getData(supplier), handlerId);
     }
 
     @Override

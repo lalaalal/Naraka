@@ -10,11 +10,12 @@ public class NarakaContext {
 
     private final Map<String, Boolean> contexts = new HashMap<>();
 
+    private NarakaContext() {
+    }
+
     public static void initialize() {
         INSTANCE.set(KEY_CLIENT_DEATH_COUNT_VISIBILITY, false);
     }
-
-    private NarakaContext() { }
 
     public void set(String key, boolean value) {
         contexts.put(key, value);

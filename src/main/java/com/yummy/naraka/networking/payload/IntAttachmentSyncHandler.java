@@ -16,11 +16,19 @@ import java.util.function.Supplier;
 /**
  * Handling server, client action when received {@link SyncEntityIntAttachmentPayload}
  *
- * @see SyncEntityIntAttachmentPayload
  * @author lalaalal
+ * @see SyncEntityIntAttachmentPayload
  */
 public class IntAttachmentSyncHandler {
+    public static final IntAttachmentSyncHandler STIGMA_HANDLER = new IntAttachmentSyncHandler(NarakaAttachments.STIGMA);
+    public static final IntAttachmentSyncHandler DEATH_COUNT_HANDLER = new IntAttachmentSyncHandler(NarakaAttachments.DEATH_COUNT);
     private static final ArrayList<IntAttachmentSyncHandler> HANDLERS = new ArrayList<>();
+    private final AttachmentType<Integer> attachmentType;
+
+    public IntAttachmentSyncHandler(Supplier<AttachmentType<Integer>> supplier) {
+        this.attachmentType = supplier.get();
+    }
+
     public static @Nullable IntAttachmentSyncHandler get(int id) {
         return HANDLERS.get(id);
     }
@@ -42,15 +50,6 @@ public class IntAttachmentSyncHandler {
     public static void initialize() {
         add(STIGMA_HANDLER);
         add(DEATH_COUNT_HANDLER);
-    }
-
-    public static final IntAttachmentSyncHandler STIGMA_HANDLER = new IntAttachmentSyncHandler(NarakaAttachments.STIGMA);
-    public static final IntAttachmentSyncHandler DEATH_COUNT_HANDLER = new IntAttachmentSyncHandler(NarakaAttachments.DEATH_COUNT);
-
-    private final AttachmentType<Integer> attachmentType;
-
-    public IntAttachmentSyncHandler(Supplier<AttachmentType<Integer>> supplier) {
-        this.attachmentType = supplier.get();
     }
 
     public void handle(Player player, Entity entity, int attachmentValue) {

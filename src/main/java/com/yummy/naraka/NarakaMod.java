@@ -12,12 +12,10 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 
 @Mod(NarakaMod.MOD_ID)
-public class NarakaMod
-{
+public class NarakaMod {
     public static final String MOD_ID = "naraka";
 
-    public NarakaMod(IEventBus modEventBus, ModContainer modContainer)
-    {
+    public NarakaMod(IEventBus modEventBus, ModContainer modContainer) {
         NarakaItems.register(modEventBus);
         NarakaBlocks.register(modEventBus);
         NarakaCreativeModTabs.register(modEventBus);

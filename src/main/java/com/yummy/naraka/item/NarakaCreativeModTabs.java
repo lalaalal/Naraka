@@ -29,8 +29,7 @@ public class NarakaCreativeModTabs {
     }
 
     @SubscribeEvent
-    public static void addCreative(BuildCreativeModeTabContentsEvent event)
-    {
+    public static void addCreative(BuildCreativeModeTabContentsEvent event) {
 //        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS)
 //            event.accept(EXAMPLE_BLOCK_ITEM);
     }

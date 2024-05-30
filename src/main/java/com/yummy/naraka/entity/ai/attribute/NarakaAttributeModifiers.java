@@ -25,9 +25,8 @@ public class NarakaAttributeModifiers {
      * Add {@linkplain AttributeModifier} to given entity
      *
      * @param livingEntity Entity to add {@linkplain AttributeModifier}
-     * @param attribute Attribute to add modifier
-     * @param modifier Attribute modifier
-     *
+     * @param attribute    Attribute to add modifier
+     * @param modifier     Attribute modifier
      * @see net.minecraft.world.entity.ai.attributes.Attributes
      */
     public static void addAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, AttributeModifier modifier) {
@@ -41,9 +40,8 @@ public class NarakaAttributeModifiers {
      * Remove {@linkplain AttributeModifier} of given entity
      *
      * @param livingEntity Entity to remove modifier
-     * @param attribute Attribute to remove modifier
-     * @param modifier Attribute modifier
-     *
+     * @param attribute    Attribute to remove modifier
+     * @param modifier     Attribute modifier
      * @see net.minecraft.world.entity.ai.attributes.Attributes
      */
     public static void removeAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, AttributeModifier modifier) {

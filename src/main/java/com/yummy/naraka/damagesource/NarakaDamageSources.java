@@ -27,7 +27,6 @@ public class NarakaDamageSources {
      * Initialized in {@linkplain NarakaGameEventBus#onServerStarted(ServerStartedEvent)}
      *
      * @param registryAccess Registry access
-     *
      * @see DamageSources
      * @see NarakaGameEventBus#onServerStarted(ServerStartedEvent)
      */
