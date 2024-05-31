@@ -2,16 +2,21 @@ package com.yummy.naraka.attachment;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.damagesource.NarakaDamageSources;
+import com.yummy.naraka.entity.DeathCountingEntity;
 import com.yummy.naraka.event.NarakaGameEventBus;
+import com.yummy.naraka.networking.payload.ChangeDeathCountVisibilityPayload;
 import com.yummy.naraka.networking.payload.IntAttachmentSyncHandler;
 import com.yummy.naraka.tags.NarakaDamageTypeTags;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Supplier;
 
 /**
@@ -21,14 +26,64 @@ import java.util.function.Supplier;
  * @see NarakaAttachments#DEATH_COUNT
  */
 public class DeathCountHelper {
-    private static int maxDeathCount = NarakaMod.config().MAX_DEATH_COUNT.get();
+    private static int maxDeathCount;
+    private static final Set<DeathCountingEntity> deathCountingEntities = new HashSet<>();
 
     public static void loadConfig() {
-        maxDeathCount = NarakaMod.config().MAX_DEATH_COUNT.get();
+        maxDeathCount = NarakaMod.config().maxDeathCount.get();
     }
 
     public static int maxDeathCount() {
         return maxDeathCount;
+    }
+
+    /**
+     * Add to death counting entities<br>
+     * Called in entity constructing event
+     *
+     * @param deathCountingEntity Entity death counting to add
+     */
+    public static void addDeathCountingEntity(DeathCountingEntity deathCountingEntity) {
+        deathCountingEntities.add(deathCountingEntity);
+    }
+
+    /**
+     * Remove from death counting entities<br>
+     * Also call {@link DeathCountHelper#hideDeathCount(ServerPlayer)} for counted player<br>
+     * Called in entity death event
+     *
+     * @param deathCountingEntity Entity counting death count to be removed
+     * @see DeathCountHelper#hideDeathCount(ServerPlayer)
+     */
+    public static void removeDeathCountingEntity(DeathCountingEntity deathCountingEntity) {
+        deathCountingEntities.remove(deathCountingEntity);
+        for (LivingEntity deathCountedEntity : deathCountingEntity.getDeathCountedEntities()) {
+            if (deathCountedEntity instanceof ServerPlayer serverPlayer)
+                hideDeathCount(serverPlayer);
+        }
+    }
+
+    public static void showDeathCount(ServerPlayer player) {
+        player.connection.send(
+                new ChangeDeathCountVisibilityPayload(true)
+        );
+    }
+
+    /**
+     * Send {@linkplain ChangeDeathCountVisibilityPayload} to hide player death count<br>
+     * Skip if other counting entity exists
+     *
+     * @param player Player to hide death count
+     * @see DeathCountHelper#removeDeathCountingEntity(DeathCountingEntity)
+     */
+    public static void hideDeathCount(ServerPlayer player) {
+        for (DeathCountingEntity deathCountingEntity : deathCountingEntities) {
+            if (deathCountingEntity.getDeathCountedEntities().contains(player))
+                return;
+        }
+        player.connection.send(
+                new ChangeDeathCountVisibilityPayload(false)
+        );
     }
 
     public static boolean isDeathCountingAttack(DamageSource source) {

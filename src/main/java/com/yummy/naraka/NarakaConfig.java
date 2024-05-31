@@ -18,18 +18,18 @@ public class NarakaConfig {
             .configure(NarakaConfig::new);
 
     public static final ModConfigSpec SPEC = PAIR.getRight();
-    public final ConfigValue<Integer> MAX_DEATH_COUNT;
-    public final ConfigValue<Integer> MAX_STIGMA;
-    public final ConfigValue<Integer> PAUSE_DURATION_BY_STIGMA;
-    public final ConfigValue<Integer> KEEP_STIGMA_DURATION;
+    public final ConfigValue<Integer> maxDeathCount;
+    public final ConfigValue<Integer> maxStigma;
+    public final ConfigValue<Integer> pauseDurationByStigma;
+    public final ConfigValue<Integer> keepStigmaDuration;
     private NarakaConfig(ModConfigSpec.Builder builder) {
-        MAX_DEATH_COUNT = builder.defineInRange("death_count.max", 5, 1, Integer.MAX_VALUE);
+        maxDeathCount = builder.defineInRange("death_count.max", 5, 1, Integer.MAX_VALUE);
 
-        MAX_STIGMA = builder.defineInRange("stigma.max", 3, 1, Integer.MAX_VALUE);
-        PAUSE_DURATION_BY_STIGMA = builder
+        maxStigma = builder.defineInRange("stigma.max", 3, 1, Integer.MAX_VALUE);
+        pauseDurationByStigma = builder
                 .comment("Ticks to pause entity")
                 .defineInRange("stigma.pause_duration", 20 * 5, 1, Integer.MAX_VALUE);
-        KEEP_STIGMA_DURATION = builder
+        keepStigmaDuration = builder
                 .comment("Ticks to keep stigma. Stigma will be decreased after configured tick")
                 .defineInRange("stigma.keep_duration", 20 * 60, 1, Integer.MAX_VALUE);
     }

@@ -5,6 +5,7 @@ import com.yummy.naraka.attachment.AttachmentSyncHelper;
 import com.yummy.naraka.attachment.DeathCountHelper;
 import com.yummy.naraka.attachment.StigmaHelper;
 import com.yummy.naraka.damagesource.NarakaDamageSources;
+import com.yummy.naraka.entity.DeathCountingEntity;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.damagesource.DamageSource;
@@ -56,11 +57,21 @@ public class NarakaGameEventBus {
             return;
         if (livingEntity.getType().is(NarakaEntityTypeTags.APPLY_DEATH_COUNT)) {
             DeathCountHelper.reduceDeathCount(livingEntity, source.getEntity());
-            if (DeathCountHelper.getDeathCount(livingEntity) < 1)
-                return;
-            event.setCanceled(true);
-            livingEntity.setHealth(livingEntity.getMaxHealth());
+            postDeathCountReduced(event);
         }
+    }
+
+    private static void postDeathCountReduced(LivingDamageEvent event) {
+        LivingEntity livingEntity = event.getEntity();
+        Entity entity = event.getSource().getEntity();
+
+        if (DeathCountHelper.getDeathCount(livingEntity) < 1) {
+            if (entity instanceof DeathCountingEntity deathCountingEntity)
+                deathCountingEntity.onDeathCountZero(livingEntity);
+            return;
+        }
+        event.setCanceled(true);
+        livingEntity.setHealth(livingEntity.getMaxHealth());
     }
 
     @SubscribeEvent

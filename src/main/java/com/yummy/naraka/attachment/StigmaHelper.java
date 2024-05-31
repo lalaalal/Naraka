@@ -43,9 +43,9 @@ public class StigmaHelper {
 
     public static void loadConfig() {
         NarakaConfig config = NarakaMod.config();
-        maxStigma = config.MAX_STIGMA.get();
-        pauseDuration = config.PAUSE_DURATION_BY_STIGMA.get();
-        keepStigmaDuration = config.KEEP_STIGMA_DURATION.get();
+        maxStigma = config.maxStigma.get();
+        pauseDuration = config.pauseDurationByStigma.get();
+        keepStigmaDuration = config.keepStigmaDuration.get();
     }
 
     /**
