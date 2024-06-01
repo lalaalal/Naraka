@@ -1,71 +1,107 @@
 package com.yummy.naraka;
 
+import com.yummy.naraka.event.NarakaGameEventBus;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-import java.util.function.Function;
+import java.util.*;
 
+/**
+ * Utils
+ *
+ * @author lalaalal
+ */
 public class NarakaUtil {
-    private static String listSizeKey(String baseName) {
-        return baseName + "_size";
+    private static MinecraftServer server;
+    private static final Map<UUID, Entity> cache = new HashMap<>();
+
+    /**
+     * Store {@linkplain MinecraftServer}
+     *
+     * @param server Minecraft server
+     * @see NarakaGameEventBus#onServerStarted(ServerStartedEvent)
+     */
+    public static void initialize(MinecraftServer server) {
+        NarakaUtil.server = server;
     }
 
-    private static String elementKey(String baseName, int index) {
-        return baseName + "_" + index;
-    }
+    public static void writeUUIDs(CompoundTag compoundTag, String name, Collection<UUID> uuids) {
+        CompoundTag listTag = new CompoundTag();
+        listTag.putInt("size", uuids.size());
+        int index = 0;
+        for (UUID uuid : uuids) {
+            listTag.putUUID(String.valueOf(index), uuid);
 
-    public static void writeUUIDList(CompoundTag tag, String name, List<UUID> list) {
-        tag.putInt(listSizeKey(name), list.size());
-        for (int index = 0; index < list.size(); index++) {
-            String elementName = elementKey(name, index);
-            tag.putUUID(elementName, list.get(index));
+            index += 1;
         }
+        compoundTag.put(name, listTag);
     }
 
-    public static @Nullable List<UUID> readUUIDList(CompoundTag tag, String name) {
-        if (!tag.contains(listSizeKey(name)))
+    public static @Nullable List<UUID> readUUIDs(CompoundTag compoundTag, String name) {
+        if (!compoundTag.contains(name))
             return null;
-        int size = tag.getInt(name + "_size");
-        List<UUID> list = new ArrayList<>(size);
+        CompoundTag listTag = compoundTag.getCompound(name);
+        int size = listTag.getInt("size");
+        List<UUID> list = new ArrayList<>();
         for (int index = 0; index < size; index++) {
-            String elementName = elementKey(name, index);
-            UUID uuid = tag.getUUID(elementName);
+            UUID uuid = listTag.getUUID(String.valueOf(index));
             list.add(uuid);
         }
 
         return list;
     }
 
-    public static void writeEntityReferences(CompoundTag tag, String name, Collection<? extends Entity> list) {
-        List<UUID> uuidList = list.stream().map(Entity::getUUID).toList();
-        writeUUIDList(tag, name, uuidList);
-    }
-
-    public static <T extends Entity> @Nullable List<T> readEntityReferences(CompoundTag tag, String name, ServerLevel serverLevel, Function<Entity, T> typeCaster) {
-        List<UUID> uuidList = readUUIDList(tag, name);
-        if (uuidList == null)
-            return null;
-        List<T> entities = new ArrayList<>();
-
-        for (UUID uuid : uuidList) {
-            Entity entity = findEntityByUUID(serverLevel, uuid);
-            T casted = typeCaster.apply(entity);
-            if (casted != null)
-                entities.add(casted);
+    public static @Nullable Entity findEntityByUUID(ServerLevel serverLevel, UUID uuid) {
+        if (cache.containsKey(uuid))
+            return cache.get(uuid);
+        for (Entity entity : serverLevel.getAllEntities()) {
+            if (entity.getUUID().equals(uuid)) {
+                cache.put(uuid, entity);
+                return entity;
+            }
         }
-
-        return entities;
+        return null;
     }
 
-    public static @Nullable Entity findEntityByUUID(ServerLevel level, UUID uuid) {
-        for (Entity entity : level.getAllEntities()) {
-            if (entity.getUUID().equals(uuid))
+    public static <T> @Nullable T findEntityByUUID(ServerLevel serverLevel, UUID uuid, Class<T> type) {
+        Entity entity = findEntityByUUID(serverLevel, uuid);
+        if (type.isInstance(entity))
+            return type.cast(entity);
+        return null;
+    }
+
+    /**
+     * Search entity using UUID from all levels
+     *
+     * @param uuid Entity UUID
+     * @return Entity matching UUID null if absent
+     */
+    public static @Nullable Entity findEntityByUUID(UUID uuid) {
+        for (ServerLevel serverLevel : server.getAllLevels()) {
+            Entity entity = findEntityByUUID(serverLevel, uuid);
+            if (entity != null)
+                return entity;
+        }
+        return null;
+    }
+
+    /**
+     * Search entity using UUID from all levels
+     *
+     * @param uuid Entity UUID
+     * @param type Type to check
+     * @param <T>  Type wanted
+     * @return Cast to type if type is correct
+     * @see NarakaUtil#findEntityByUUID(ServerLevel, UUID, Class)
+     */
+    public static <T> @Nullable T findEntityByUUID(UUID uuid, Class<T> type) {
+        for (ServerLevel serverLevel : server.getAllLevels()) {
+            T entity = findEntityByUUID(serverLevel, uuid, type);
+            if (entity != null)
                 return entity;
         }
         return null;

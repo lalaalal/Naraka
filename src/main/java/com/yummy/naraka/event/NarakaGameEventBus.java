@@ -1,6 +1,7 @@
 package com.yummy.naraka.event;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.NarakaUtil;
 import com.yummy.naraka.attachment.AttachmentSyncHelper;
 import com.yummy.naraka.attachment.DeathCountHelper;
 import com.yummy.naraka.attachment.StigmaHelper;
@@ -28,6 +29,7 @@ public class NarakaGameEventBus {
         MinecraftServer server = event.getServer();
         RegistryAccess registryAccess = server.registryAccess();
         NarakaDamageSources.initialize(registryAccess);
+        NarakaUtil.initialize(server);
     }
 
     @SubscribeEvent

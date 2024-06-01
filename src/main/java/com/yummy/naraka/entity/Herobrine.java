@@ -1,6 +1,8 @@
 package com.yummy.naraka.entity;
 
+import com.yummy.naraka.NarakaUtil;
 import com.yummy.naraka.attachment.DeathCountHelper;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -12,10 +14,18 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class Herobrine extends Monster implements DeathCountingEntity {
-    private final Set<LivingEntity> deathCountedEntities = new HashSet<>();
+    private final Set<UUID> deathCountedEntities = new HashSet<>();
+
+    public static AttributeSupplier getAttributeSupplier() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, 20)
+                .build();
+    }
 
     public Herobrine(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -24,14 +34,35 @@ public class Herobrine extends Monster implements DeathCountingEntity {
         DeathCountHelper.addDeathCountingEntity(this);
     }
 
-    public static AttributeSupplier getAttributeSupplier() {
-        return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 20)
-                .build();
+    public void addDeathCountedEntity(LivingEntity entity) {
+        UUID uuid = entity.getUUID();
+        deathCountedEntities.add(uuid);
+    }
+
+    public void removeDeathCountedEntity(LivingEntity entity) {
+        UUID uuid = entity.getUUID();
+        deathCountedEntities.remove(uuid);
     }
 
     @Override
-    public Set<LivingEntity> getDeathCountedEntities() {
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        NarakaUtil.writeUUIDs(compoundTag, "DeathCountingEntities", deathCountedEntities);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        List<UUID> list = NarakaUtil.readUUIDs(compoundTag, "DeathCountingEntities");
+        if (list != null) {
+            deathCountedEntities.clear();
+            deathCountedEntities.addAll(list);
+            DeathCountHelper.updateDeathCountingEntity(this);
+        }
+    }
+
+    @Override
+    public Set<UUID> getDeathCountedEntities() {
         return deathCountedEntities;
     }
 
@@ -42,7 +73,7 @@ public class Herobrine extends Monster implements DeathCountingEntity {
 
     @Override
     public void onDeathCountZero(LivingEntity livingEntity) {
-        deathCountedEntities.remove(livingEntity);
+        removeDeathCountedEntity(livingEntity);
         if (livingEntity instanceof ServerPlayer player)
             DeathCountHelper.hideDeathCount(player);
         kill();
@@ -51,7 +82,7 @@ public class Herobrine extends Monster implements DeathCountingEntity {
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (source.getEntity() instanceof LivingEntity livingEntity) {
-            deathCountedEntities.add(livingEntity);
+            addDeathCountedEntity(livingEntity);
             if (livingEntity instanceof ServerPlayer serverPlayer)
                 DeathCountHelper.showDeathCount(serverPlayer);
         }

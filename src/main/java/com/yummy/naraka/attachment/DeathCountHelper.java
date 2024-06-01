@@ -1,6 +1,7 @@
 package com.yummy.naraka.attachment;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.NarakaUtil;
 import com.yummy.naraka.damagesource.NarakaDamageSources;
 import com.yummy.naraka.entity.DeathCountingEntity;
 import com.yummy.naraka.event.NarakaGameEventBus;
@@ -17,6 +18,7 @@ import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 /**
@@ -27,7 +29,8 @@ import java.util.function.Supplier;
  */
 public class DeathCountHelper {
     private static int maxDeathCount;
-    private static final Set<DeathCountingEntity> deathCountingEntities = new HashSet<>();
+    private static final Set<UUID> uuids = new HashSet<>();
+    private static final Set<DeathCountingEntity> cache = new HashSet<>();
 
     public static void loadConfig() {
         maxDeathCount = NarakaMod.config().maxDeathCount.get();
@@ -37,6 +40,18 @@ public class DeathCountHelper {
         return maxDeathCount;
     }
 
+    private static Set<DeathCountingEntity> getDeathCountingEntities() {
+        if (uuids.size() != cache.size()) {
+            cache.clear();
+            for (UUID uuid : uuids) {
+                DeathCountingEntity deathCountingEntity = NarakaUtil.findEntityByUUID(uuid, DeathCountingEntity.class);
+                if (deathCountingEntity != null)
+                    cache.add(deathCountingEntity);
+            }
+        }
+        return cache;
+    }
+
     /**
      * Add to death counting entities<br>
      * Called in entity constructing event
@@ -44,8 +59,14 @@ public class DeathCountHelper {
      * @param deathCountingEntity Entity death counting to add
      */
     public static <T extends LivingEntity & DeathCountingEntity> void addDeathCountingEntity(T deathCountingEntity) {
-        if (!deathCountingEntity.level().isClientSide)
-            deathCountingEntities.add(deathCountingEntity);
+        if (deathCountingEntity.level().isClientSide)
+            return;
+        uuids.add(deathCountingEntity.getUUID());
+        for (UUID uuid : deathCountingEntity.getDeathCountedEntities()) {
+            Entity deathCountedEntity = NarakaUtil.findEntityByUUID(uuid);
+            if (deathCountedEntity instanceof ServerPlayer serverPlayer)
+                showDeathCount(serverPlayer);
+        }
     }
 
     /**
@@ -59,8 +80,9 @@ public class DeathCountHelper {
     public static <T extends LivingEntity & DeathCountingEntity> void removeDeathCountingEntity(T deathCountingEntity) {
         if (deathCountingEntity.level().isClientSide)
             return;
-        deathCountingEntities.remove(deathCountingEntity);
-        for (LivingEntity deathCountedEntity : deathCountingEntity.getDeathCountedEntities()) {
+        uuids.remove(deathCountingEntity.getUUID());
+        for (UUID uuid : deathCountingEntity.getDeathCountedEntities()) {
+            Entity deathCountedEntity = NarakaUtil.findEntityByUUID(uuid);
             if (deathCountedEntity instanceof ServerPlayer serverPlayer)
                 hideDeathCount(serverPlayer);
         }
@@ -80,13 +102,30 @@ public class DeathCountHelper {
      * @see DeathCountHelper#removeDeathCountingEntity(LivingEntity)
      */
     public static void hideDeathCount(ServerPlayer player) {
-        for (DeathCountingEntity deathCountingEntity : deathCountingEntities) {
-            if (deathCountingEntity.getDeathCountedEntities().contains(player))
+        for (DeathCountingEntity deathCountingEntity : getDeathCountingEntities()) {
+            if (deathCountingEntity.isDeathCounting(player))
                 return;
         }
         player.connection.send(
                 new ChangeDeathCountVisibilityPayload(false)
         );
+    }
+
+    /**
+     * Sync all death counted entities by counting entity
+     *
+     * @param deathCountingEntity Death counting entity
+     * @param <T> DeathCountingEntity
+     */
+    public static <T extends Entity & DeathCountingEntity> void updateDeathCountingEntity(T deathCountingEntity) {
+        if (deathCountingEntity.level().isClientSide)
+            return;
+        uuids.add(deathCountingEntity.getUUID());
+        for (UUID uuid : deathCountingEntity.getDeathCountedEntities()) {
+            LivingEntity deathCountedEntity = NarakaUtil.findEntityByUUID(uuid, LivingEntity.class);
+            if (deathCountedEntity != null)
+                syncDeathCount(deathCountedEntity);
+        }
     }
 
     public static void updateDeathCountVisibility(ServerPlayer player) {
@@ -97,8 +136,10 @@ public class DeathCountHelper {
     }
 
     public static boolean isDeathCounted(LivingEntity livingEntity) {
-        for (DeathCountingEntity deathCountingEntity : deathCountingEntities) {
-            if (deathCountingEntity.getDeathCountedEntities().contains(livingEntity))
+        if (livingEntity.level().isClientSide)
+            return false;
+        for (DeathCountingEntity deathCountingEntity : getDeathCountingEntities()) {
+            if (deathCountingEntity.isDeathCounting(livingEntity))
                 return true;
         }
         return false;
@@ -123,6 +164,7 @@ public class DeathCountHelper {
      */
     public static void restoreDeathCount(LivingEntity livingEntity) {
         livingEntity.setData(NarakaAttachments.DEATH_COUNT, maxDeathCount);
+        syncDeathCount(livingEntity);
     }
 
     /**
