@@ -3,6 +3,7 @@ package com.yummy.naraka.entity;
 import com.yummy.naraka.attachment.DeathCountHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -35,6 +36,11 @@ public class Herobrine extends Monster implements DeathCountingEntity {
     }
 
     @Override
+    public Entity asEntity() {
+        return this;
+    }
+
+    @Override
     public void onDeathCountZero(LivingEntity livingEntity) {
         deathCountedEntities.remove(livingEntity);
         if (livingEntity instanceof ServerPlayer player)
@@ -56,6 +62,7 @@ public class Herobrine extends Monster implements DeathCountingEntity {
     @Override
     public void die(DamageSource damageSource) {
         DeathCountHelper.removeDeathCountingEntity(this);
+        deathCountedEntities.clear();
         super.die(damageSource);
     }
 }

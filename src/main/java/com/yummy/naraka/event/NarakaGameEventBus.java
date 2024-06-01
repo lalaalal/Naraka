@@ -8,6 +8,7 @@ import com.yummy.naraka.damagesource.NarakaDamageSources;
 import com.yummy.naraka.entity.DeathCountingEntity;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,7 +25,8 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 public class NarakaGameEventBus {
     @SubscribeEvent
     public static void onServerStarted(ServerStartedEvent event) {
-        RegistryAccess registryAccess = event.getServer().registryAccess();
+        MinecraftServer server = event.getServer();
+        RegistryAccess registryAccess = server.registryAccess();
         NarakaDamageSources.initialize(registryAccess);
     }
 
@@ -50,10 +52,10 @@ public class NarakaGameEventBus {
     @SubscribeEvent
     public static void handleDeathCountOn(LivingDamageEvent event) {
         DamageSource source = event.getSource();
-        if (!DeathCountHelper.isDeathCountingAttack(source))
+        LivingEntity livingEntity = event.getEntity();
+        if (!DeathCountHelper.isDeathCounted(livingEntity))
             return;
 
-        LivingEntity livingEntity = event.getEntity();
         if (livingEntity.getHealth() - event.getAmount() > 0)
             return;
         if (livingEntity.getType().is(NarakaEntityTypeTags.APPLY_DEATH_COUNT)) {

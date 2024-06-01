@@ -43,8 +43,9 @@ public class DeathCountHelper {
      *
      * @param deathCountingEntity Entity death counting to add
      */
-    public static void addDeathCountingEntity(DeathCountingEntity deathCountingEntity) {
-        deathCountingEntities.add(deathCountingEntity);
+    public static <T extends LivingEntity & DeathCountingEntity> void addDeathCountingEntity(T deathCountingEntity) {
+        if (!deathCountingEntity.level().isClientSide)
+            deathCountingEntities.add(deathCountingEntity);
     }
 
     /**
@@ -55,7 +56,9 @@ public class DeathCountHelper {
      * @param deathCountingEntity Entity counting death count to be removed
      * @see DeathCountHelper#hideDeathCount(ServerPlayer)
      */
-    public static void removeDeathCountingEntity(DeathCountingEntity deathCountingEntity) {
+    public static <T extends LivingEntity & DeathCountingEntity> void removeDeathCountingEntity(T deathCountingEntity) {
+        if (deathCountingEntity.level().isClientSide)
+            return;
         deathCountingEntities.remove(deathCountingEntity);
         for (LivingEntity deathCountedEntity : deathCountingEntity.getDeathCountedEntities()) {
             if (deathCountedEntity instanceof ServerPlayer serverPlayer)
@@ -74,7 +77,7 @@ public class DeathCountHelper {
      * Skip if other counting entity exists
      *
      * @param player Player to hide death count
-     * @see DeathCountHelper#removeDeathCountingEntity(DeathCountingEntity)
+     * @see DeathCountHelper#removeDeathCountingEntity(LivingEntity)
      */
     public static void hideDeathCount(ServerPlayer player) {
         for (DeathCountingEntity deathCountingEntity : deathCountingEntities) {
@@ -84,6 +87,13 @@ public class DeathCountHelper {
         player.connection.send(
                 new ChangeDeathCountVisibilityPayload(false)
         );
+    }
+
+    public static void updateDeathCountVisibility(ServerPlayer player) {
+        if (isDeathCounted(player))
+            showDeathCount(player);
+        else
+            hideDeathCount(player);
     }
 
     public static boolean isDeathCounted(LivingEntity livingEntity) {
@@ -123,6 +133,8 @@ public class DeathCountHelper {
      */
     public static void syncDeathCount(LivingEntity livingEntity) {
         AttachmentSyncHelper.sync(livingEntity, NarakaAttachments.DEATH_COUNT, IntAttachmentSyncHandler.DEATH_COUNT_HANDLER);
+        if (livingEntity instanceof ServerPlayer serverPlayer)
+            updateDeathCountVisibility(serverPlayer);
     }
 
     /**
