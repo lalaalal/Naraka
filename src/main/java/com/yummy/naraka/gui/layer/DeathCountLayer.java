@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 @OnlyIn(Dist.CLIENT)
 public class DeathCountLayer implements LayeredDraw.Layer {
     private static final ResourceLocation DEATH_COUNT = NarakaMod.location("hud/death_count");
-    private static final int HEART_SIZE = 9;
+    private static final int HEART_SIZE = 8;
     private static final int SPRITE_WIDTH = HEART_SIZE * 6;
     private static final int SPRITE_HEIGHT = HEART_SIZE;
 
@@ -48,7 +48,7 @@ public class DeathCountLayer implements LayeredDraw.Layer {
 
     @Override
     public void render(GuiGraphics guiGraphics, float partialTick) {
-        if (!NarakaMod.context().get(NarakaContext.KEY_CLIENT_DEATH_COUNT_VISIBILITY))
+        if (!NarakaMod.context().get(NarakaContext.KEY_CLIENT_DEATH_COUNT_VISIBILITY, Boolean.class))
             return;
         Player player = Minecraft.getInstance().player;
         if (player == null || player.isCreative() || player.isSpectator())
