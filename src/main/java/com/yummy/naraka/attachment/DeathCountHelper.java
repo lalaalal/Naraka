@@ -86,6 +86,14 @@ public class DeathCountHelper {
         );
     }
 
+    public static boolean isDeathCounted(LivingEntity livingEntity) {
+        for (DeathCountingEntity deathCountingEntity : deathCountingEntities) {
+            if (deathCountingEntity.getDeathCountedEntities().contains(livingEntity))
+                return true;
+        }
+        return false;
+    }
+
     public static boolean isDeathCountingAttack(DamageSource source) {
         Entity cause = source.getEntity();
         if (cause != null && cause.getType().is(NarakaEntityTypeTags.DEATH_COUNTING_ENTITY))
