@@ -20,10 +20,13 @@ public class NarakaDataGenerators {
         CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
-        generator.addProvider(event.includeClient(), new NarakaItemModelProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeServer(), new NarakaWorldGenProvider(packOutput, provider));
         generator.addProvider(event.includeServer(), new NarakaEntityTypeTagsProvider(packOutput, provider, existingFileHelper));
         generator.addProvider(event.includeServer(), new NarakaDamageTypeTagsProvider(packOutput, provider, existingFileHelper));
-        generator.addProvider(event.includeClient(), new NarakaBlockStateProvider(packOutput, existingFileHelper));
+
+        generator.addProvider(event.includeClient(), new NarakaItemModelProvider(packOutput, existingFileHelper));
+        generator.addProvider(event.includeClient(), new NarakaBlockStateProvider(packOutput, existingFileHelper));        
+        generator.addProvider(event.includeClient(), new NarakaLanguageProvider.EN(packOutput));
+        generator.addProvider(event.includeClient(), new NarakaLanguageProvider.KR(packOutput));
     }
 }

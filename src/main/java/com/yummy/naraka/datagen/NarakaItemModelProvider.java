@@ -2,7 +2,10 @@ package com.yummy.naraka.datagen;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.item.NarakaItems;
+import com.yummy.naraka.item.SpearItem;
+
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
@@ -20,15 +23,30 @@ public class NarakaItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         withExistingParent(NarakaItems.TEST_ITEM, "item/stick");
-        ItemModelBuilder spearInventory = withExistingParent("spear_inventory", "item/generated")
+        spearItem(NarakaItems.SPEAR_ITEM);
+        spearItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
+    }
+
+    public ItemModelBuilder spearItem(DeferredItem<? extends SpearItem> spearItem) {
+        ResourceLocation empty = NarakaMod.location("item/empty");
+        String inventory = spearItem.getId().getPath() + "_inventory";
+        String inHand = spearItem.getId().getPath() + "_in_hand";
+
+        withExistingParent(inventory, "item/generated")
                 .texture("layer0", NarakaMod.location("item/spear"));
-        ItemModelBuilder spearInHand = getBuilder("spear_in_hand")
+        getBuilder(inHand)
                 .parent(new ModelFile.UncheckedModelFile("builtin/entity"))
                 .texture("particle", NarakaMod.location("item/spear"));
-        withExistingParent(NarakaItems.SPEAR_ITEM, "item/generated")
+        ItemModelBuilder inHandReference = new ItemModelBuilder(empty, existingFileHelper)
+                .parent(new ModelFile.ExistingModelFile(NarakaMod.location("item", inHand), existingFileHelper));
+        ItemModelBuilder inventoryReference = new ItemModelBuilder(empty, existingFileHelper)
+                .parent(new ModelFile.ExistingModelFile(NarakaMod.location("item", inventory), existingFileHelper));
+        return withExistingParent(spearItem, "item/generated")
                 .customLoader(SeparateTransformsModelBuilder::begin)
-                .base(spearInHand)
-                .perspective(ItemDisplayContext.GUI, spearInventory);
+                .base(inHandReference)
+                .perspective(ItemDisplayContext.GUI, inventoryReference)
+                .perspective(ItemDisplayContext.FIXED, inventoryReference)
+                .end();
     }
 
     public ItemModelBuilder simpleItem(DeferredItem<? extends Item> item) {

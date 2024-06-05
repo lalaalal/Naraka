@@ -5,6 +5,7 @@ import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.client.model.SpearModel;
 import com.yummy.naraka.client.renderer.HerobrineRenderer;
+import com.yummy.naraka.client.renderer.NarakaCustomRenderer;
 import com.yummy.naraka.client.renderer.SpearRenderer;
 import com.yummy.naraka.entity.NarakaEntities;
 import com.yummy.naraka.gui.layer.DeathCountLayer;
@@ -15,6 +16,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 
@@ -26,6 +28,11 @@ public class NarakaClientEventBus {
         event.enqueueWork(() -> {
 
         });
+    }
+
+    @SubscribeEvent
+    public static void registerClientReloadListener(RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener(NarakaCustomRenderer.getInstance());
     }
 
     @SubscribeEvent

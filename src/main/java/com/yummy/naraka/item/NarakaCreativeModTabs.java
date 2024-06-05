@@ -22,6 +22,8 @@ public class NarakaCreativeModTabs {
             .icon(() -> NarakaItems.TEST_ITEM.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
                 output.accept(NarakaItems.TEST_ITEM);
+                output.accept(NarakaItems.SPEAR_ITEM);
+                output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
                 output.accept(NarakaBlocks.TRANSPARENT_BLOCK);
             }).build());
 

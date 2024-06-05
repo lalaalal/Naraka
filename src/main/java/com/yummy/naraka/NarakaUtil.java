@@ -67,7 +67,7 @@ public class NarakaUtil {
         return null;
     }
 
-    public static <T> @Nullable T findEntityByUUID(ServerLevel serverLevel, UUID uuid, Class<T> type) {
+    public static @Nullable <T> T findEntityByUUID(ServerLevel serverLevel, UUID uuid, Class<T> type) {
         Entity entity = findEntityByUUID(serverLevel, uuid);
         if (type.isInstance(entity))
             return type.cast(entity);
@@ -98,7 +98,7 @@ public class NarakaUtil {
      * @return Cast to type if type is correct
      * @see NarakaUtil#findEntityByUUID(ServerLevel, UUID, Class)
      */
-    public static <T> @Nullable T findEntityByUUID(UUID uuid, Class<T> type) {
+    public static @Nullable <T> T findEntityByUUID(UUID uuid, Class<T> type) {
         for (ServerLevel serverLevel : server.getAllLevels()) {
             T entity = findEntityByUUID(serverLevel, uuid, type);
             if (entity != null)
