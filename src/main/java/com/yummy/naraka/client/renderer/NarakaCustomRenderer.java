@@ -23,7 +23,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class NarakaCustomRenderer extends BlockEntityWithoutLevelRenderer {
     private static final Map<Item, ResourceLocation> TEXTURE_LOCATIONS = Map.of(
         NarakaItems.SPEAR_ITEM.get(), NarakaTextures.SPEAR,

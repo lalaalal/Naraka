@@ -14,11 +14,12 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.HolderSet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityType;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class SpearRenderer extends EntityRenderer<Spear> {
     private final SpearModel model;
 
@@ -29,8 +30,7 @@ public class SpearRenderer extends EntityRenderer<Spear> {
 
     @Override
     public ResourceLocation getTextureLocation(Spear spear) {
-        HolderSet<EntityType<?>> mightyHolySpearType = HolderSet.direct(NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR);
-        if (spear.getType().is(mightyHolySpearType))
+        if (spear.getType() == NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR.get())
             return NarakaTextures.MIGHTY_HOLY_SPEAR;
         return NarakaTextures.SPEAR;
     }

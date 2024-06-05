@@ -4,6 +4,7 @@ import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -30,6 +31,15 @@ public class NarakaEntities {
             () -> EntityType.Builder.<Spear>of(Spear::new, MobCategory.MISC)
                     .sized(0.5f, 0.5f)
                     .build("mighty_holy_spear")
+    );
+
+    public static final DeferredHolder<EntityType<?>, EntityType<SpearOfLonginus>> THROWN_SPEAR_OF_LONGINUS = ENTITY_TYPES.register(
+        "spear_of_longinus",
+        () -> EntityType.Builder.<SpearOfLonginus>of(SpearOfLonginus::new, MobCategory.MISC)
+                .sized(0.5f, 0.5f)
+                .fireImmune()
+                .immuneTo(Blocks.CACTUS)
+                .build("spear_of_longinus")
     );
 
     public static void register(IEventBus bus) {

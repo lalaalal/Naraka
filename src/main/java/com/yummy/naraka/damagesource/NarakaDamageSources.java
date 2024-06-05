@@ -1,5 +1,7 @@
 package com.yummy.naraka.damagesource;
 
+import com.yummy.naraka.entity.Spear;
+import com.yummy.naraka.entity.SpearOfLonginus;
 import com.yummy.naraka.event.NarakaGameEventBus;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -34,10 +36,6 @@ public class NarakaDamageSources {
         registry = registryAccess.registryOrThrow(Registries.DAMAGE_TYPE);
     }
 
-    public static void end() {
-        registry = null;
-    }
-
     private static void ensureRegistry() {
         if (registry == null)
             throw new IllegalStateException("Registry not set");
@@ -64,5 +62,19 @@ public class NarakaDamageSources {
 
     public static DamageSource deathCountZero(@Nullable Entity causingEntity) {
         return source(NarakaDamageTypes.DEATH_COUNT_ZERO, causingEntity);
+    }
+
+    public static DamageSource spear(Spear spear) {
+        Entity owner = spear.getOwner();
+        if (owner == null)
+            return source(NarakaDamageTypes.SPEAR, spear);
+        return source(NarakaDamageTypes.SPEAR, spear, spear.getOwner());
+    }
+
+    public static DamageSource longinus(SpearOfLonginus spearOfLonginus) {
+        Entity owner = spearOfLonginus.getOwner();
+        if (owner == null)
+            return source(NarakaDamageTypes.SPEAR_OF_LONGINUS, spearOfLonginus);
+        return source(NarakaDamageTypes.SPEAR_OF_LONGINUS, spearOfLonginus, spearOfLonginus.getOwner());
     }
 }

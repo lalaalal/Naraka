@@ -38,6 +38,14 @@ public class NarakaDamageTypeTagsProvider extends DamageTypeTagsProvider {
                 DamageTypeTags.BYPASSES_SHIELD,
                 DamageTypeTags.BYPASSES_COOLDOWN
         );
+        addTags(NarakaDamageTypes.SPEAR_OF_LONGINUS,
+                DamageTypeTags.BYPASSES_INVULNERABILITY,
+                DamageTypeTags.BYPASSES_EFFECTS,
+                DamageTypeTags.BYPASSES_ENCHANTMENTS,
+                DamageTypeTags.BYPASSES_RESISTANCE,
+                DamageTypeTags.BYPASSES_SHIELD,
+                DamageTypeTags.BYPASSES_COOLDOWN
+        );
         tag(NarakaDamageTypeTags.DEATH_COUNTING_ATTACK)
                 .addOptionalTag(NarakaDamageTypeTags.HEROBRINE_ATTACK)
                 .addOptional(NarakaDamageTypes.STIGMA.location());

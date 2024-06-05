@@ -17,6 +17,7 @@ public class NarakaItems {
     public static final DeferredItem<SpearItem> MIGHTY_HOLY_SPEAR_ITEM = ITEMS.registerItem(
             "mighty_holy_spear", properties -> new SpearItem(Tiers.NETHERITE, properties, NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR)
     );
+    
 
     public static void register(IEventBus bus) {
         ITEMS.register(bus);
