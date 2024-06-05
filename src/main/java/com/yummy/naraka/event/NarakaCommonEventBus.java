@@ -3,6 +3,8 @@ package com.yummy.naraka.event;
 import com.yummy.naraka.NarakaContext;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.attachment.AttachmentSyncHelper;
+import com.yummy.naraka.attachment.DeathCountHelper;
+import com.yummy.naraka.attachment.StigmaHelper;
 import com.yummy.naraka.entity.Herobrine;
 import com.yummy.naraka.entity.NarakaEntities;
 import com.yummy.naraka.networking.payload.ChangeDeathCountVisibilityPayload;
@@ -10,6 +12,7 @@ import com.yummy.naraka.networking.payload.IntAttachmentSyncHandler;
 import com.yummy.naraka.networking.payload.SyncEntityIntAttachmentPayload;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -25,6 +28,18 @@ public class NarakaCommonEventBus {
             IntAttachmentSyncHandler.initialize();
             NarakaContext.initialize();
         });
+    }
+
+    @SubscribeEvent
+    public static void loadConfig(ModConfigEvent.Loading event) {
+        DeathCountHelper.loadConfig();
+        StigmaHelper.loadConfig();
+    }
+
+    @SubscribeEvent
+    public static void reloadConfig(ModConfigEvent.Reloading event) {
+        DeathCountHelper.loadConfig();
+        StigmaHelper.loadConfig();
     }
 
     @SubscribeEvent

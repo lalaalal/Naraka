@@ -1,18 +1,12 @@
 package com.yummy.naraka;
 
-import com.yummy.naraka.attachment.DeathCountHelper;
-import com.yummy.naraka.attachment.StigmaHelper;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
- * Mod configuration<br>
+ * Mod configuration
  */
-@EventBusSubscriber(modid = NarakaMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class NarakaConfig {
     private static final Pair<NarakaConfig, ModConfigSpec> PAIR = new ModConfigSpec.Builder()
             .configure(NarakaConfig::new);
@@ -36,17 +30,5 @@ public class NarakaConfig {
 
     static NarakaConfig getInstance() {
         return PAIR.getLeft();
-    }
-
-    @SubscribeEvent
-    public static void loadConfig(ModConfigEvent.Loading event) {
-        DeathCountHelper.loadConfig();
-        StigmaHelper.loadConfig();
-    }
-
-    @SubscribeEvent
-    public static void reloadConfig(ModConfigEvent.Reloading event) {
-        DeathCountHelper.loadConfig();
-        StigmaHelper.loadConfig();
     }
 }

@@ -27,7 +27,7 @@ public class Herobrine extends Monster implements DeathCountingEntity {
                 .build();
     }
 
-    public Herobrine(EntityType<? extends Monster> entityType, Level level) {
+    public Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
         super(entityType, level);
         registerGoals();
 

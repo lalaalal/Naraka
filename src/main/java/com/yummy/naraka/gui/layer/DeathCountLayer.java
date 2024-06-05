@@ -12,8 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Draw player's death count
@@ -34,7 +32,6 @@ public class DeathCountLayer implements LayeredDraw.Layer {
     private static final int FILLED_OUTLINE = HEART_SIZE * 2;
     private static final int OUTLINE_WHITE = HEART_SIZE;
     private static final int OUTLINE_BLACK = 0;
-    private static final Logger log = LoggerFactory.getLogger(DeathCountLayer.class);
 
     private static void drawFilledHeart(GuiGraphics guiGraphics, int x, int y, boolean fill) {
         guiGraphics.blitSprite(DEATH_COUNT, SPRITE_WIDTH, SPRITE_HEIGHT,
