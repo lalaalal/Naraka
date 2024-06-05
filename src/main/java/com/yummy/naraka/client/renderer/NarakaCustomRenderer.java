@@ -16,7 +16,7 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.player.Player;
@@ -33,7 +33,6 @@ public class NarakaCustomRenderer extends BlockEntityWithoutLevelRenderer {
     private static NarakaCustomRenderer INSTANCE = null;
 
     private Map<Item, EntityModel<?>> models = Map.of();
-    private final EntityRenderDispatcher dispatcher;
     private final EntityModelSet entityModels;
 
     public static NarakaCustomRenderer getInstance() {
@@ -44,9 +43,7 @@ public class NarakaCustomRenderer extends BlockEntityWithoutLevelRenderer {
 
     private NarakaCustomRenderer(Minecraft minecraft) {
         super(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels());
-        this.dispatcher = minecraft.getEntityRenderDispatcher();
         this.entityModels = minecraft.getEntityModels();
-
     }
 
     @Override
@@ -72,7 +69,8 @@ public class NarakaCustomRenderer extends BlockEntityWithoutLevelRenderer {
                 poseStack.mulPose(Axis.ZP.rotationDegrees(180));
                 poseStack.translate(0, 1, 0);
             }
-            VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(textureLocation));
+            RenderType renderType = model.renderType(textureLocation);
+            VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, renderType, false, stack.hasFoil());
             model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, packedOverlay, packedOverlay, packedLight, packedOverlay);
             poseStack.popPose();
         }

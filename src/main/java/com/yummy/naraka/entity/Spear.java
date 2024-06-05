@@ -33,4 +33,8 @@ public class Spear extends AbstractArrow {
     protected ItemStack getDefaultPickupItem() {
         return new ItemStack(Items.AIR);
     }
+
+    public boolean hasFoil() {
+        return getPickupItem().hasFoil();
+    }
 }
