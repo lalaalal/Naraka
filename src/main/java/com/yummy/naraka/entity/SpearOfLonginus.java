@@ -1,7 +1,9 @@
 package com.yummy.naraka.entity;
 
 import com.yummy.naraka.damagesource.NarakaDamageSources;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Position;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -42,11 +44,16 @@ public class SpearOfLonginus extends Spear {
         return entity;
     }
 
-
     private void killEntity(Entity entity) {
         DamageSource source = NarakaDamageSources.longinus(this);
         entity.hurt(source, Float.MAX_VALUE);
         if (entity.isAlive())
             entity.kill();
+    }
+
+    @Override
+    public Component getName() {
+        return super.getName().copy()
+                .withStyle(ChatFormatting.ITALIC, ChatFormatting.RED);
     }
 }

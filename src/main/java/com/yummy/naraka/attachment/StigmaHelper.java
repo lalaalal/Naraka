@@ -131,8 +131,10 @@ public class StigmaHelper {
      * @see NarakaGameEventBus#handleSulliedEntityOn(EntityTickEvent.Pre)
      */
     public static void handleSulliedEntity(LivingEntity livingEntity) {
-        if (!stigmaTimestamps.containsKey(livingEntity))
+        if (getStigma(livingEntity) <= 0)
             return;
+        if (!stigmaTimestamps.containsKey(livingEntity))
+            stigmaTimestamps.put(livingEntity, livingEntity.level().getGameTime());
         if (shouldPauseEntity(livingEntity))
             pauseEntity(livingEntity);
         else {
@@ -191,7 +193,8 @@ public class StigmaHelper {
      */
     public static void consumeStigma(LivingEntity livingEntity, @Nullable Entity causingEntity) {
         livingEntity.setData(NarakaAttachments.STIGMA, 0);
-        DeathCountHelper.reduceDeathCount(livingEntity, causingEntity);
+        if (DeathCountHelper.isDeathCounted(livingEntity))
+            DeathCountHelper.reduceDeathCount(livingEntity, causingEntity);
     }
 
     public static void decreaseStigma(LivingEntity livingEntity) {

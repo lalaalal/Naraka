@@ -4,8 +4,10 @@ import com.yummy.naraka.damagesource.NarakaDamageSources;
 import com.yummy.naraka.entity.NarakaEntities;
 import com.yummy.naraka.entity.Spear;
 import com.yummy.naraka.entity.SpearOfLonginus;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -33,5 +35,11 @@ public class SpearOfLonginusItem extends SpearItem {
         target.hurt(source, Float.MAX_VALUE);
 
         return true;
+    }
+
+    @Override
+    public Component getName(ItemStack stack) {
+        return super.getName(stack).copy()
+                .withStyle(ChatFormatting.ITALIC, ChatFormatting.RED);
     }
 }

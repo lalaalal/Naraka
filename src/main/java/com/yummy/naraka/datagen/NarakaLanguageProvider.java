@@ -21,15 +21,18 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
 
         @Override
         protected void addTranslations() {
+            add("itemGroup.naraka", "Naraka");
             addItem(NarakaItems.TEST_ITEM, "Test Item");
             addItem(NarakaItems.SPEAR_ITEM, "Spear");
             addItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "Mighty Holy Spear");
+            addItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM, "Spear of Longinus");
 
             addBlock(NarakaBlocks.TRANSPARENT_BLOCK, "Transparent Block");
 
             addEntityType(NarakaEntities.HEROBRINE, "Naraka: Herobrine");
             addEntityType(NarakaEntities.THROWN_SPEAR, "Spear");
             addEntityType(NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR, "Mighty Holy Spear");
+            addEntityType(NarakaEntities.THROWN_SPEAR_OF_LONGINUS, "Spear of Longinus");
         }
     }
 
@@ -40,16 +43,18 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
 
         @Override
         protected void addTranslations() {
+            add("itemGroup.naraka", "Naraka");
             addItem(NarakaItems.TEST_ITEM, "테스트 아이템");
             addItem(NarakaItems.SPEAR_ITEM, "창");
             addItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "강력한 성스러운 창");
+            addItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM, "롱기누스의 창");
 
             addBlock(NarakaBlocks.TRANSPARENT_BLOCK, "투명 블록");
 
             addEntityType(NarakaEntities.HEROBRINE, "히로빈");
             addEntityType(NarakaEntities.THROWN_SPEAR, "창");
             addEntityType(NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR, "강력한 성스러운 창");
+            addEntityType(NarakaEntities.THROWN_SPEAR_OF_LONGINUS, "롱기누스의 창");
         }
-
     }
 }
