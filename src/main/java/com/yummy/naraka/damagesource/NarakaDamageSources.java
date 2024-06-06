@@ -11,6 +11,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 
 import javax.annotation.Nullable;
@@ -71,10 +72,18 @@ public class NarakaDamageSources {
         return source(NarakaDamageTypes.SPEAR, spear, spear.getOwner());
     }
 
+    public static DamageSource spear(LivingEntity livingEntity) {
+        return source(NarakaDamageTypes.SPEAR, livingEntity);
+    }
+
     public static DamageSource longinus(SpearOfLonginus spearOfLonginus) {
         Entity owner = spearOfLonginus.getOwner();
         if (owner == null)
             return source(NarakaDamageTypes.SPEAR_OF_LONGINUS, spearOfLonginus);
         return source(NarakaDamageTypes.SPEAR_OF_LONGINUS, spearOfLonginus, spearOfLonginus.getOwner());
+    }
+
+    public static DamageSource longinus(LivingEntity livingEntity) {
+        return source(NarakaDamageTypes.SPEAR_OF_LONGINUS, livingEntity);
     }
 }

@@ -115,7 +115,7 @@ public class DeathCountHelper {
      * Sync all death counted entities by counting entity
      *
      * @param deathCountingEntity Death counting entity
-     * @param <T> DeathCountingEntity
+     * @param <T>                 DeathCountingEntity
      */
     public static <T extends Entity & DeathCountingEntity> void updateDeathCountingEntity(T deathCountingEntity) {
         if (deathCountingEntity.level().isClientSide)

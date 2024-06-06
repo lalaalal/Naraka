@@ -6,8 +6,10 @@ import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.SpearModel;
+import com.yummy.naraka.client.model.SpearOfLonginusModel;
 import com.yummy.naraka.entity.NarakaEntities;
 import com.yummy.naraka.entity.Spear;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -21,11 +23,21 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class SpearRenderer extends EntityRenderer<Spear> {
-    private final SpearModel model;
+    protected final EntityModel<? extends Spear> model;
+
+    public static SpearRenderer longinus(EntityRendererProvider.Context context) {
+        SpearOfLonginusModel model = new SpearOfLonginusModel(context.bakeLayer(NarakaModelLayers.SPEAR_OF_LONGINUS));
+        return new SpearRenderer(context, model);
+    }
 
     public SpearRenderer(EntityRendererProvider.Context context) {
         super(context);
         model = new SpearModel(context.bakeLayer(NarakaModelLayers.SPEAR));
+    }
+
+    public SpearRenderer(EntityRendererProvider.Context context, EntityModel<? extends Spear> model) {
+        super(context);
+        this.model = model;
     }
 
     @Override

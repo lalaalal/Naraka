@@ -34,12 +34,12 @@ public class NarakaEntities {
     );
 
     public static final DeferredHolder<EntityType<?>, EntityType<SpearOfLonginus>> THROWN_SPEAR_OF_LONGINUS = ENTITY_TYPES.register(
-        "spear_of_longinus",
-        () -> EntityType.Builder.<SpearOfLonginus>of(SpearOfLonginus::new, MobCategory.MISC)
-                .sized(0.5f, 0.5f)
-                .fireImmune()
-                .immuneTo(Blocks.CACTUS)
-                .build("spear_of_longinus")
+            "spear_of_longinus",
+            () -> EntityType.Builder.<SpearOfLonginus>of(SpearOfLonginus::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .fireImmune()
+                    .immuneTo(Blocks.CACTUS)
+                    .build("spear_of_longinus")
     );
 
     public static void register(IEventBus bus) {

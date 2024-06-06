@@ -24,6 +24,7 @@ public class NarakaCreativeModTabs {
                 output.accept(NarakaItems.TEST_ITEM);
                 output.accept(NarakaItems.SPEAR_ITEM);
                 output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
+                output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM);
                 output.accept(NarakaBlocks.TRANSPARENT_BLOCK);
             }).build());
 

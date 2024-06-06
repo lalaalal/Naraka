@@ -25,7 +25,7 @@ public class NarakaDataGenerators {
         generator.addProvider(event.includeServer(), new NarakaDamageTypeTagsProvider(packOutput, provider, existingFileHelper));
 
         generator.addProvider(event.includeClient(), new NarakaItemModelProvider(packOutput, existingFileHelper));
-        generator.addProvider(event.includeClient(), new NarakaBlockStateProvider(packOutput, existingFileHelper));        
+        generator.addProvider(event.includeClient(), new NarakaBlockStateProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new NarakaLanguageProvider.EN(packOutput));
         generator.addProvider(event.includeClient(), new NarakaLanguageProvider.KR(packOutput));
     }

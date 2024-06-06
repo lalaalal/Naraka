@@ -1,5 +1,6 @@
 package com.yummy.naraka.entity;
 
+import com.yummy.naraka.damagesource.NarakaDamageSources;
 import net.minecraft.core.Position;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -27,8 +28,6 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Collection;
 import java.util.function.Supplier;
 
-import com.yummy.naraka.damagesource.NarakaDamageSources;
-
 public class Spear extends AbstractArrow {
     private static final EntityDataAccessor<Integer> ID_LOYALTY = SynchedEntityData.defineId(Spear.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(Spear.class, EntityDataSerializers.BOOLEAN);
@@ -39,17 +38,14 @@ public class Spear extends AbstractArrow {
         super(entityType, level);
     }
 
-    public Spear(Supplier<EntityType<Spear>> type, Level level, Position position) {
-        super(type.get(), level);
-        setPos(position.x(), position.y(), position.z());
-    }
-
-    public Spear(Supplier<EntityType<Spear>> type,  Level level, Position position, ItemStack stack) {
+    public Spear(Supplier<? extends EntityType<? extends Spear>> type, Level level, Position position, ItemStack stack) {
         super(type.get(), level, stack);
         setPos(position.x(), position.y(), position.z());
+        entityData.set(ID_LOYALTY, EnchantmentHelper.getLoyalty(stack));
+        entityData.set(ID_FOIL, stack.hasFoil());
     }
 
-    public Spear(Supplier<EntityType<Spear>> type, Level level, LivingEntity owner, ItemStack stack) {
+    public Spear(Supplier<? extends EntityType<? extends Spear>> type, Level level, LivingEntity owner, ItemStack stack) {
         super(type.get(), owner, level, stack);
         entityData.set(ID_LOYALTY, EnchantmentHelper.getLoyalty(stack));
         entityData.set(ID_FOIL, stack.hasFoil());
@@ -57,6 +53,7 @@ public class Spear extends AbstractArrow {
 
     @Override
     protected void defineSynchedData(Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(ID_LOYALTY, 0);
         builder.define(ID_FOIL, false);
     }
@@ -146,7 +143,7 @@ public class Spear extends AbstractArrow {
                 .get(Attributes.ATTACK_DAMAGE);
         float damage = 1;
         for (AttributeModifier modifier : modifiers)
-            damage += modifier.amount();
+            damage += (float) modifier.amount();
 
         DamageSource damageSource = NarakaDamageSources.spear(this);
         entity.hurt(damageSource, damage);

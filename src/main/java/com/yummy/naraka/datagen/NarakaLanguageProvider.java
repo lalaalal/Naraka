@@ -4,7 +4,6 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.block.NarakaBlocks;
 import com.yummy.naraka.entity.NarakaEntities;
 import com.yummy.naraka.item.NarakaItems;
-
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
@@ -51,6 +50,6 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addEntityType(NarakaEntities.THROWN_SPEAR, "창");
             addEntityType(NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR, "강력한 성스러운 창");
         }
-        
+
     }
 }

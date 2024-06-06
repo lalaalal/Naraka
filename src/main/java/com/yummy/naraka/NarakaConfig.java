@@ -16,6 +16,7 @@ public class NarakaConfig {
     public final ConfigValue<Integer> maxStigma;
     public final ConfigValue<Integer> pauseDurationByStigma;
     public final ConfigValue<Integer> keepStigmaDuration;
+
     private NarakaConfig(ModConfigSpec.Builder builder) {
         maxDeathCount = builder.defineInRange("death_count.max", 5, 1, Integer.MAX_VALUE);
 

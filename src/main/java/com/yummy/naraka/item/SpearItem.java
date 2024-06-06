@@ -2,7 +2,6 @@ package com.yummy.naraka.item;
 
 import com.yummy.naraka.client.renderer.NarakaCustomRenderer;
 import com.yummy.naraka.entity.Spear;
-
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -37,16 +36,16 @@ import java.util.function.Supplier;
 
 public class SpearItem extends TieredItem implements ProjectileItem {
     protected static final Set<Enchantment> ENCHANTABLE = Set.of(
-        Enchantments.MENDING, Enchantments.LOYALTY, Enchantments.UNBREAKING, Enchantments.IMPALING
+            Enchantments.MENDING, Enchantments.LOYALTY, Enchantments.UNBREAKING, Enchantments.IMPALING
     );
 
     protected static final UUID IMPALING_DAMAGE_BONUS_UUID = UUID.fromString("4e27a79e-1c1d-454f-9f33-df8362e356ca");
 
-    protected final Supplier<EntityType<Spear>> spearType;
+    protected final Supplier<? extends EntityType<? extends Spear>> spearType;
     private final ItemAttributeModifiers attributeModifiers;
     private final Map<Integer, ItemAttributeModifiers> cache = new HashMap<>();
 
-    public SpearItem(Tier tier, Properties properties, Supplier<EntityType<Spear>> spearType) {
+    public SpearItem(Tier tier, Properties properties, Supplier<? extends EntityType<? extends Spear>> spearType) {
         super(tier, properties);
         this.spearType = spearType;
         attributeModifiers = ItemAttributeModifiers.builder()
@@ -77,9 +76,11 @@ public class SpearItem extends TieredItem implements ProjectileItem {
     }
 
     protected void throwSpear(Level level, LivingEntity livingEntity, ItemStack stack) {
+        if (level.isClientSide)
+            return;
         if (livingEntity instanceof Player player) {
             stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(livingEntity.getUsedItemHand()));
-            Spear spear = new Spear(spearType, level, player, stack);
+            Spear spear = createSpear(level, player, stack);
             spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0, 2.5f, 1);
             if (player.hasInfiniteMaterials())
                 spear.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
@@ -90,6 +91,10 @@ public class SpearItem extends TieredItem implements ProjectileItem {
                 player.getInventory().removeItem(stack);
             }
         }
+    }
+
+    protected Spear createSpear(Level level, LivingEntity owner, ItemStack stack) {
+        return new Spear(spearType, level, owner, stack);
     }
 
     @Override
@@ -143,9 +148,9 @@ public class SpearItem extends TieredItem implements ProjectileItem {
         if (cache.containsKey(impalingLevel))
             return cache.get(impalingLevel);
         ItemAttributeModifiers modifiersWithImpaling = attributeModifiers.withModifierAdded(
-            Attributes.ATTACK_DAMAGE,
-            new AttributeModifier(IMPALING_DAMAGE_BONUS_UUID, "Impaling Damage", impalingLevel, AttributeModifier.Operation.ADD_VALUE), 
-            EquipmentSlotGroup.MAINHAND
+                Attributes.ATTACK_DAMAGE,
+                new AttributeModifier(IMPALING_DAMAGE_BONUS_UUID, "Impaling Damage", impalingLevel, AttributeModifier.Operation.ADD_VALUE),
+                EquipmentSlotGroup.MAINHAND
         );
         cache.put(impalingLevel, modifiersWithImpaling);
         return modifiersWithImpaling;
