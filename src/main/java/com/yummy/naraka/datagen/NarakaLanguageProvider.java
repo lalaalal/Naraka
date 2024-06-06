@@ -2,15 +2,26 @@ package com.yummy.naraka.datagen;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.block.NarakaBlocks;
+import com.yummy.naraka.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.entity.NarakaEntities;
 import com.yummy.naraka.item.NarakaItems;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageType;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
 public abstract class NarakaLanguageProvider extends LanguageProvider {
 
     public NarakaLanguageProvider(PackOutput output, String locale) {
         super(output, NarakaMod.MOD_ID, locale);
+    }
+
+    public void addDamageType(ResourceKey<DamageType> damageType, String directMessage, String indirectMessage) {
+        String directKey = "death.attack." + damageType.location().getPath();
+        String indirectKey = directKey + ".player";
+
+        add(directKey, directMessage);
+        add(indirectKey, indirectMessage);
     }
 
     public static class EN extends NarakaLanguageProvider {
@@ -33,6 +44,10 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addEntityType(NarakaEntities.THROWN_SPEAR, "Spear");
             addEntityType(NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR, "Mighty Holy Spear");
             addEntityType(NarakaEntities.THROWN_SPEAR_OF_LONGINUS, "Spear of Longinus");
+
+            addDamageType(NarakaDamageTypes.SPEAR_OF_LONGINUS,
+                    "%1$s's AT Field was torn by %2$s",
+                    "%1$s's AT Field was torn by %2$s thrown %3$s");
         }
     }
 
@@ -55,6 +70,10 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addEntityType(NarakaEntities.THROWN_SPEAR, "창");
             addEntityType(NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR, "강력한 성스러운 창");
             addEntityType(NarakaEntities.THROWN_SPEAR_OF_LONGINUS, "롱기누스의 창");
+
+            addDamageType(NarakaDamageTypes.SPEAR_OF_LONGINUS,
+                    "%1$s의 AT 필드가 %2$s에 찢어졌습니다.",
+                    "%1$s의 AT 필드가 %3$s가 던진 %2$s에 찢어졌습니다.");
         }
     }
 }
