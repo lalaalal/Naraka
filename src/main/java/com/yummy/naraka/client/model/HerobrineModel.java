@@ -3,15 +3,16 @@ package com.yummy.naraka.client.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.entity.Herobrine;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
+import java.util.Map;
+
 @OnlyIn(Dist.CLIENT)
-public class HerobrineModel<T extends Herobrine> extends EntityModel<T> {
+public class HerobrineModel<T extends Herobrine> extends AnimatedEntityModel<T> {
     private final ModelPart root;
     private final ModelPart head;
     private final ModelPart body;
@@ -46,6 +47,16 @@ public class HerobrineModel<T extends Herobrine> extends EntityModel<T> {
         this.right_leg_lower = right_leg.getChild("right_leg_lower");
     }
 
+    @Override
+    protected Map<String, ModelPart> getAnimatingModelParts() {
+        return Map.of(
+                "head", head,
+                "body", body,
+                "left_arm", left_arm,
+                "right_arm", right_arm
+        );
+    }
+
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition root = meshdefinition.getRoot();
@@ -76,10 +87,5 @@ public class HerobrineModel<T extends Herobrine> extends EntityModel<T> {
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-    }
-
-    @Override
-    public void setupAnim(T herobrine, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
     }
 }

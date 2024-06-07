@@ -2,10 +2,11 @@ package com.yummy.naraka.entity;
 
 import com.yummy.naraka.NarakaUtil;
 import com.yummy.naraka.attachment.DeathCountHelper;
+import com.yummy.naraka.client.animation.AnimationInstance;
+import com.yummy.naraka.client.animation.NarakaAnimations;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -18,8 +19,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class Herobrine extends Monster implements DeathCountingEntity {
+public class Herobrine extends Monster implements DeathCountingEntity, Animatable {
     private final Set<UUID> deathCountedEntities = new HashSet<>();
+    private AnimationInstance animationInstance = null;
 
     public static AttributeSupplier getAttributeSupplier() {
         return Monster.createMonsterAttributes()
@@ -32,6 +34,8 @@ public class Herobrine extends Monster implements DeathCountingEntity {
         registerGoals();
 
         DeathCountHelper.addDeathCountingEntity(this);
+        if (level.isClientSide)
+            animationInstance = NarakaAnimations.instance("herobrine.idle", true);
     }
 
     public void addDeathCountedEntity(LivingEntity entity) {
@@ -67,11 +71,6 @@ public class Herobrine extends Monster implements DeathCountingEntity {
     }
 
     @Override
-    public Entity asEntity() {
-        return this;
-    }
-
-    @Override
     public void onDeathCountZero(LivingEntity livingEntity) {
         removeDeathCountedEntity(livingEntity);
         if (livingEntity instanceof ServerPlayer player)
@@ -95,5 +94,10 @@ public class Herobrine extends Monster implements DeathCountingEntity {
         DeathCountHelper.removeDeathCountingEntity(this);
         deathCountedEntities.clear();
         super.die(damageSource);
+    }
+
+    @Override
+    public AnimationInstance getAnimation() {
+        return animationInstance;
     }
 }

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaShaders;
+import com.yummy.naraka.client.animation.NarakaAnimations;
 import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.client.model.SpearModel;
 import com.yummy.naraka.client.model.SpearOfLonginusModel;
@@ -41,6 +42,7 @@ public class NarakaClientEventBus {
     @SubscribeEvent
     public static void registerClientReloadListener(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(NarakaCustomRenderer.getInstance());
+        event.registerReloadListener(NarakaAnimations.classInstance());
     }
 
     @SubscribeEvent

@@ -4,6 +4,7 @@ import com.yummy.naraka.event.NarakaGameEventBus;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 
@@ -105,5 +106,11 @@ public class NarakaUtil {
                 return entity;
         }
         return null;
+    }
+
+    public static float ease(float delta, float from, float to) {
+        float range = to - from;
+        float normal = (-Mth.cos(delta * Mth.PI) + 1) * 0.5f;
+        return normal * range + from;
     }
 }

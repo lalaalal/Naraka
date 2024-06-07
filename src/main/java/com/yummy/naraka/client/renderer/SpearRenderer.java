@@ -52,7 +52,7 @@ public class SpearRenderer extends EntityRenderer<Spear> {
     }
 
     @Override
-    public boolean shouldRender(Spear pLivingEntity, Frustum pCamera, double pCamX, double pCamY, double pCamZ) {
+    public boolean shouldRender(Spear spear, Frustum camera, double camX, double camY, double camZ) {
         return true;
     }
 
