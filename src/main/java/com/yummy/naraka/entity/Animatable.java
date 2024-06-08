@@ -6,5 +6,11 @@ import com.yummy.naraka.client.animation.AnimationInstance;
  * @author lalaalal
  */
 public interface Animatable {
-    AnimationInstance getAnimation();
+    boolean isAnimationRepeating();
+
+    boolean isAnimationFinished();
+
+    AnimationInstance getAnimationInstance();
+
+    void setAnimation(String animationName);
 }

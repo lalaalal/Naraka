@@ -10,6 +10,14 @@ import java.util.*;
  */
 public record Animation(String name, int animationLength, Set<String> partNames,
                         Map<String, PartAnimation> partAnimations, boolean holdHeadControl, boolean smoothStart) {
+    public static final Animation EMPTY = Animation.builder("empty")
+            .smoothStart()
+            .build();
+
+    public AnimationInstance instance(boolean repeat) {
+        return new AnimationInstance(this, repeat);
+    }
+
     public static Builder builder(String name) {
         return new Builder(name);
     }
@@ -72,6 +80,7 @@ public record Animation(String name, int animationLength, Set<String> partNames,
         }
 
         public Animation build() {
+            // TODO : check all parts have pose on tick 0
             for (String partName : keyframeBuilderMap.keySet()) {
                 Collection<Keyframe.Builder> builders = keyframeBuilderMap.get(partName);
                 ArrayList<Keyframe> keyframes = new ArrayList<>(builders.size());

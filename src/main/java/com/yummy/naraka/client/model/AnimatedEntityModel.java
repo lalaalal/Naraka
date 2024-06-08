@@ -31,7 +31,7 @@ public abstract class AnimatedEntityModel<T extends Entity & Animatable> extends
 
     @Override
     public void setupAnim(T entity, float pLimbSwing, float pLimbSwingAmount, float ageInTicks, float pNetHeadYaw, float pHeadPitch) {
-        AnimationInstance animationInstance = entity.getAnimation();
+        AnimationInstance animationInstance = entity.getAnimationInstance();
         animationInstance.setupAnimation(getAnimatingModelParts(), ageInTicks);
     }
 }

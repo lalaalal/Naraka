@@ -2,8 +2,6 @@ package com.yummy.naraka.entity;
 
 import com.yummy.naraka.NarakaUtil;
 import com.yummy.naraka.attachment.DeathCountHelper;
-import com.yummy.naraka.client.animation.AnimationInstance;
-import com.yummy.naraka.client.animation.NarakaAnimations;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,9 +17,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class Herobrine extends Monster implements DeathCountingEntity, Animatable {
+public class Herobrine extends AnimatableMonster implements DeathCountingEntity {
     private final Set<UUID> deathCountedEntities = new HashSet<>();
-    private AnimationInstance animationInstance = null;
 
     public static AttributeSupplier getAttributeSupplier() {
         return Monster.createMonsterAttributes()
@@ -30,12 +27,10 @@ public class Herobrine extends Monster implements DeathCountingEntity, Animatabl
     }
 
     public Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
-        super(entityType, level);
+        super(entityType, level, "herobrine.idle.repeat");
         registerGoals();
 
         DeathCountHelper.addDeathCountingEntity(this);
-        if (level.isClientSide)
-            animationInstance = NarakaAnimations.instance("herobrine.idle", true);
     }
 
     public void addDeathCountedEntity(LivingEntity entity) {
@@ -94,10 +89,5 @@ public class Herobrine extends Monster implements DeathCountingEntity, Animatabl
         DeathCountHelper.removeDeathCountingEntity(this);
         deathCountedEntities.clear();
         super.die(damageSource);
-    }
-
-    @Override
-    public AnimationInstance getAnimation() {
-        return animationInstance;
     }
 }

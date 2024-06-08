@@ -29,7 +29,7 @@ public class PartAnimationInstance {
             return;
         Keyframe nextKeyframe = partAnimation.getNextKeyframe(currentKeyframe);
         float delta = calculateDelta(ageInTicks, nextKeyframe);
-        if (delta >= 0)
+        if (0 <= delta && delta <= 1)
             applyAnimation(part, nextKeyframe, delta);
         else {
             currentKeyframe = nextKeyframe;
@@ -50,7 +50,7 @@ public class PartAnimationInstance {
 
     private void applyAnimation(ModelPart part, Keyframe nextKeyframe, float delta) {
         ModelPartPose from = getPoseFrom();
-        ModelPartPose to = nextKeyframe.pose();
+        ModelPartPose to = getPoseTo(nextKeyframe);
 
         ModelPartPose currentPose = nextKeyframe.transform(delta, from, to);
         currentPose.applyTo(part);
@@ -72,8 +72,14 @@ public class PartAnimationInstance {
     }
 
     private ModelPartPose getPoseFrom() {
-        if (partAnimation.isFirstKeyframe(currentKeyframe))
+        if (partAnimation.isFirstKeyframe(currentKeyframe) && currentKeyframe.tick() != 0)
             return originalPose;
         return currentKeyframe.pose();
+    }
+
+    private ModelPartPose getPoseTo(Keyframe nextKeyframe) {
+        if (partAnimation.isFirstKeyframe(currentKeyframe) && currentKeyframe.tick() != 0)
+            return currentKeyframe.pose();
+        return nextKeyframe.pose();
     }
 }
