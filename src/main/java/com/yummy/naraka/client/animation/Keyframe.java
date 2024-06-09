@@ -67,7 +67,7 @@ public record Keyframe(String partName, int tick, PartPose pose, AnimationTiming
             return this;
         }
 
-        public Builder transformMethod(AnimationTimingFunction animationTimingFunction) {
+        public Builder animationTiming(AnimationTimingFunction animationTimingFunction) {
             this.animationTimingFunction = animationTimingFunction;
             return this;
         }

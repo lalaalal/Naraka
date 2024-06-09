@@ -39,9 +39,9 @@ public record Animation(String name, int animationLength, Set<String> partNames,
             return this;
         }
 
-        public Builder startWithZeroPose() {
+        public Builder setAllPartsZeroPose(int tick, AnimationTimingFunction timingFunction) {
             for (String partName : partNames)
-                keyframe(partName, 0).zero();
+                keyframe(partName, tick).zero().animationTiming(timingFunction);
             return this;
         }
 

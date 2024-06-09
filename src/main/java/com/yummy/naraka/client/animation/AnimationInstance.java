@@ -56,11 +56,17 @@ public class AnimationInstance {
         if (firstTick < 0)
             firstTick = ageInTicks;
         if (!repeat && isAnimationFinished(ageInTicks)) {
+            if (!finished)
+                setupPartAnimations(partMap, firstTick + animation.animationLength());
             if (chain != null)
                 chain.setupAnimation(partMap, ageInTicks);
             finished = true;
             return;
         }
+        setupPartAnimations(partMap, ageInTicks);
+    }
+
+    private void setupPartAnimations(Map<String, ModelPart> partMap, float ageInTicks) {
         for (String partName : animation.partNames()) {
             PartAnimationInstance partAnimationInstance = partAnimationInstances.get(partName);
             ModelPart part = partMap.get(partName);
@@ -70,6 +76,6 @@ public class AnimationInstance {
 
     private boolean isAnimationFinished(float ageInTicks) {
         float relativeTick = ageInTicks - firstTick;
-        return relativeTick >= animation.animationLength();
+        return relativeTick > animation.animationLength();
     }
 }

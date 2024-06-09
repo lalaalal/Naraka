@@ -69,6 +69,10 @@ public class NarakaItemModelProvider extends ItemModelProvider {
                 .rotation(0, 60, 180)
                 .translation(11, 5, -1)
                 .end()
+                .transform(ItemDisplayContext.GROUND)
+                .rotation(180, 0, 0)
+                .translation(8.25f, 0, -8.25f)
+                .end()
                 .end();
     }
 

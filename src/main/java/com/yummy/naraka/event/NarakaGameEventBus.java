@@ -93,7 +93,9 @@ public class NarakaGameEventBus {
     @SubscribeEvent
     public static void onEntityJoin(EntityJoinLevelEvent event) {
         Entity entity = event.getEntity();
-        if (entity instanceof ItemEntity itemEntity && itemEntity.getItem().is(NarakaItemTags.INVULNERABLE_ITEM))
-            itemEntity.setInvulnerable(true);
+        if (entity instanceof ItemEntity itemEntity) {
+            if (itemEntity.getItem().is(NarakaItemTags.INVULNERABLE_ITEM))
+                itemEntity.setInvulnerable(true);
+        }
     }
 }
