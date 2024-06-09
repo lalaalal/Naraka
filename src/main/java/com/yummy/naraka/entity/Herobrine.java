@@ -27,7 +27,7 @@ public class Herobrine extends AnimatableMonster implements DeathCountingEntity 
     }
 
     public Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
-        super(entityType, level, "herobrine.idle.repeat");
+        super(entityType, level, "herobrine.idle");
         registerGoals();
 
         DeathCountHelper.addDeathCountingEntity(this);
@@ -80,8 +80,7 @@ public class Herobrine extends AnimatableMonster implements DeathCountingEntity 
             if (livingEntity instanceof ServerPlayer serverPlayer)
                 DeathCountHelper.showDeathCount(serverPlayer);
         }
-        if (!level().isClientSide)
-            setAnimation("herobrine.hurt.chain.herobrine.idle.repeat");
+        setAnimation("herobrine.hurt.chain.herobrine.idle.repeat");
 
         return super.hurt(source, amount);
     }

@@ -1,6 +1,8 @@
 package com.yummy.naraka.client.animation;
 
+import com.yummy.naraka.NarakaUtil;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 /**
  * @author lalaalal
@@ -10,7 +12,7 @@ public class PartAnimationInstance {
     private final PartAnimation partAnimation;
     private final boolean repeat;
     private Keyframe currentKeyframe;
-    private ModelPartPose originalPose;
+    private PartPose originalPose;
     private float firstTick = -1;
     private float prevTick = -1;
 
@@ -31,7 +33,7 @@ public class PartAnimationInstance {
         Keyframe nextKeyframe = partAnimation.getNextKeyframe(currentKeyframe);
         float delta = calculateDelta(ageInTicks, nextKeyframe);
         if (0 <= delta && delta <= 1) {
-            applyAnimation(part, nextKeyframe, delta, ageInTicks);
+            applyAnimation(part, nextKeyframe, delta);
             prevTick = ageInTicks;
         } else {
             if (!isCurrentTickEmptyStart())
@@ -43,7 +45,7 @@ public class PartAnimationInstance {
 
     private void ready(ModelPart part, float ageInTicks) {
         firstTick = ageInTicks;
-        originalPose = ModelPartPose.from(part);
+        originalPose = NarakaUtil.rotationOnly(part.storePose());
         currentKeyframe = partAnimation.getFirstKeyframe();
     }
 
@@ -52,12 +54,11 @@ public class PartAnimationInstance {
         return relativeTick >= animation.animationLength();
     }
 
-    private void applyAnimation(ModelPart part, Keyframe nextKeyframe, float delta, float ageInTicks) {
-        ModelPartPose from = getPoseFrom();
-        ModelPartPose to = getPoseTo(nextKeyframe);
-
-        ModelPartPose currentPose = nextKeyframe.transform(delta, from, to);
-        currentPose.applyTo(part);
+    private void applyAnimation(ModelPart part, Keyframe nextKeyframe, float delta) {
+        PartPose from = getPoseFrom();
+        PartPose to = getPoseTo(nextKeyframe);
+        PartPose currentPose = nextKeyframe.transform(delta, from, to);
+        part.loadPose(NarakaUtil.addOffsetOnly(currentPose, part.getInitialPose()));
     }
 
     private float calculateDelta(float ageInTicks, Keyframe nextKeyframe) {
@@ -77,13 +78,13 @@ public class PartAnimationInstance {
         return nextKeyframe.tick() - currentKeyframe.tick();
     }
 
-    private ModelPartPose getPoseFrom() {
+    private PartPose getPoseFrom() {
         if (isCurrentTickEmptyStart())
             return originalPose;
         return currentKeyframe.pose();
     }
 
-    private ModelPartPose getPoseTo(Keyframe nextKeyframe) {
+    private PartPose getPoseTo(Keyframe nextKeyframe) {
         if (isCurrentTickEmptyStart())
             return currentKeyframe.pose();
         return nextKeyframe.pose();

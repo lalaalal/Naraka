@@ -23,6 +23,11 @@ public class HerobrineRenderer extends AnimatedLivingEntityRenderer<Herobrine, H
     }
 
     @Override
+    protected boolean shouldShowName(Herobrine pEntity) {
+        return false;
+    }
+
+    @Override
     public ResourceLocation getTextureLocation(Herobrine entity) {
         return NarakaTextures.HEROBRINE;
     }

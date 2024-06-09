@@ -15,11 +15,13 @@ public abstract class AnimatableMonster extends Monster implements Animatable {
 
     private final Animation defaultAnimation;
     protected AnimationInstance animationInstance;
+    private final boolean repeatDefault = true;
+    private int syncId = 0;
 
     protected AnimatableMonster(EntityType<? extends Monster> entityType, Level level, String defaultAnimationName) {
         super(entityType, level);
         this.defaultAnimation = NarakaAnimations.get(defaultAnimationName);
-        animationInstance = NarakaAnimations.instance(defaultAnimationName);
+        this.animationInstance = defaultAnimation.instance(repeatDefault);
     }
 
     @Override
@@ -31,7 +33,7 @@ public abstract class AnimatableMonster extends Monster implements Animatable {
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
-        if (key.equals(ID_CURRENT_ANIMATION))
+        if (level().isClientSide && ID_CURRENT_ANIMATION.equals(key))
             animationInstance = NarakaAnimations.instance(getAnimationName());
     }
 
@@ -45,9 +47,23 @@ public abstract class AnimatableMonster extends Monster implements Animatable {
         return animationInstance.isRepeat();
     }
 
+    private String syncId() {
+        return "#" + syncId++;
+    }
+
+    public void playDefaultAnimation() {
+        setAnimation(defaultAnimation.name(), repeatDefault);
+    }
+
     @Override
     public void setAnimation(String animationName) {
-        entityData.set(ID_CURRENT_ANIMATION, animationName);
+        entityData.set(ID_CURRENT_ANIMATION, animationName + syncId());
+    }
+
+    public void setAnimation(String animationName, boolean repeat) {
+        if (repeat)
+            animationName += ".repeat";
+        this.setAnimation(animationName);
     }
 
     @Override
@@ -56,6 +72,6 @@ public abstract class AnimatableMonster extends Monster implements Animatable {
     }
 
     public String getAnimationName() {
-        return entityData.get(ID_CURRENT_ANIMATION);
+        return entityData.get(ID_CURRENT_ANIMATION).split("#")[0];
     }
 }

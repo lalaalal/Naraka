@@ -29,15 +29,26 @@ public class AnimationInstance {
         this.chain = chain;
     }
 
+    public String getId() {
+        String id = animation.name();
+        if (chain != null)
+            id += ".chain." + chain.getId();
+        if (isRepeat())
+            id += ".repeat";
+        return id;
+    }
+
     public Animation getAnimation() {
         return animation;
     }
 
     public boolean isRepeat() {
-        return repeat;
+        return chain != null && repeat;
     }
 
     public boolean isFinished() {
+        if (chain != null)
+            return chain.isFinished();
         return !repeat && finished;
     }
 
@@ -45,9 +56,9 @@ public class AnimationInstance {
         if (firstTick < 0)
             firstTick = ageInTicks;
         if (!repeat && isAnimationFinished(ageInTicks)) {
-            finished = true;
             if (chain != null)
                 chain.setupAnimation(partMap, ageInTicks);
+            finished = true;
             return;
         }
         for (String partName : animation.partNames()) {

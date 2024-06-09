@@ -23,7 +23,9 @@ public class NarakaAnimations implements ResourceManagerReloadListener {
     }
 
     public static Animation get(String id) {
-        return animations.get(id);
+        if (animations.containsKey(id))
+            return animations.get(id);
+        return Animation.EMPTY;
     }
 
     public static AnimationInstance instance(String exactId, boolean repeat) {
@@ -58,23 +60,24 @@ public class NarakaAnimations implements ResourceManagerReloadListener {
         return instance(id.replace(".repeat", ""), repeat);
     }
 
-    public static void load() {
+    @Override
+    public void onResourceManagerReload(ResourceManager manager) {
         animations.clear();
         animations.put("empty", Animation.EMPTY);
 
         Animation herobrineIdle = Animation.builder("herobrine.idle")
                 .define("left_arm", "right_arm")
                 .smoothStart()
-                .keyframe("left_arm", 40).pose(-0.1f, 0, -Mth.PI / 72).easeInOut().end()
+                .keyframe("left_arm", 40).rotation(-0.1f, 0, -Mth.PI / 72).easeInOut().end()
                 .keyframe("left_arm", 80).zero().easeInOut().end()
-                .keyframe("right_arm", 40).pose(-0.1f, 0, Mth.PI / 72).easeInOut().end()
+                .keyframe("right_arm", 40).rotation(-0.1f, 0, Mth.PI / 72).easeInOut().end()
                 .keyframe("right_arm", 80).zero().easeInOut().end()
                 .build();
         Animation herobrineHurt = Animation.builder("herobrine.hurt")
                 .define("left_arm", "left_arm_lower")
                 .smoothStart()
-                .keyframe("left_arm", 10).pose(-80, 0, 0).end()
-                .keyframe("left_arm_lower", 10).pose(-80, 0, 0).end()
+                .keyframe("left_arm", 10).rotation(-80, 0, 0).end()
+                .keyframe("left_arm_lower", 10).rotation(-80, 0, 0).end()
                 .keyframe("left_arm", 30).copyPrevious().end()
                 .keyframe("left_arm_lower", 30).copyPrevious().end()
                 .keyframe("left_arm", 40).zero().end()
@@ -82,10 +85,5 @@ public class NarakaAnimations implements ResourceManagerReloadListener {
                 .build();
         animations.put("herobrine.idle", herobrineIdle);
         animations.put("herobrine.hurt", herobrineHurt);
-    }
-
-    @Override
-    public void onResourceManagerReload(ResourceManager manager) {
-        load();
     }
 }

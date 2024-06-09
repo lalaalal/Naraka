@@ -1,25 +1,26 @@
 package com.yummy.naraka.client.animation;
 
 import com.yummy.naraka.NarakaUtil;
+import net.minecraft.client.model.geom.PartPose;
 
 /**
  * @param partName
  * @param tick
  * @param pose
- * @param transformMethod
+ * @param animationTimingFunction
  * @author lalaalal
  */
-public record Keyframe(String partName, int tick, ModelPartPose pose, TransformMethod transformMethod) {
-    public ModelPartPose transform(float delta, ModelPartPose from, ModelPartPose to) {
-        return transformMethod.transform(delta, from, to);
+public record Keyframe(String partName, int tick, PartPose pose, AnimationTimingFunction animationTimingFunction) {
+    public PartPose transform(float delta, PartPose from, PartPose to) {
+        return animationTimingFunction.transform(delta, from, to);
     }
 
     public static class Builder {
         private final Animation.Builder animationBuilder;
         private final String partName;
         private final int tick;
-        private ModelPartPose pose = ModelPartPose.ZERO;
-        private TransformMethod transformMethod = TransformMethod.LINEAR;
+        private PartPose pose = PartPose.ZERO;
+        private AnimationTimingFunction animationTimingFunction = AnimationTimingFunction.LINEAR;
 
         public Builder(Animation.Builder animationBuilder, String partName, int tick) {
             this.animationBuilder = animationBuilder;
@@ -36,49 +37,53 @@ public record Keyframe(String partName, int tick, ModelPartPose pose, TransformM
         }
 
         public Builder zero() {
-            this.pose = ModelPartPose.ZERO;
+            this.pose = PartPose.ZERO;
             return this;
         }
 
         public Builder copyPrevious() {
             Builder previousBuilder = animationBuilder.previousKeyframe(this);
             this.pose = previousBuilder.pose;
-            this.transformMethod = previousBuilder.transformMethod;
+            this.animationTimingFunction = previousBuilder.animationTimingFunction;
             return this;
         }
 
-        public Builder pose(float xRot, float yRot, float zRot) {
-            this.pose = new ModelPartPose(xRot, yRot, zRot);
+        public Builder rotation(float xRot, float yRot, float zRot) {
+            this.pose = PartPose.rotation(xRot, yRot, zRot);
             return this;
         }
 
-        public Builder pose(int xRot, int yRot, int zRot) {
-            return pose(NarakaUtil.radian(xRot), NarakaUtil.radian(yRot), NarakaUtil.radian(zRot));
+        public Builder rotation(int xRot, int yRot, int zRot) {
+            return rotation(NarakaUtil.radian(xRot), NarakaUtil.radian(yRot), NarakaUtil.radian(zRot));
         }
 
-        public Builder pose(float xRot, float yRot, float zRot, boolean isDegree) {
-            if (isDegree)
-                return pose(NarakaUtil.radian(xRot), NarakaUtil.radian(yRot), NarakaUtil.radian(zRot));
-            return pose(xRot, yRot, zRot);
+        public Builder offset(float x, float y, float z) {
+            this.pose = PartPose.offset(x, y, z);
+            return this;
         }
 
-        public Builder transformMethod(TransformMethod transformMethod) {
-            this.transformMethod = transformMethod;
+        public Builder offsetAndRotation(float x, float y, float z, float xRot, float yRot, float zRot) {
+            this.pose = PartPose.offsetAndRotation(x, y, z, xRot, yRot, zRot);
+            return this;
+        }
+
+        public Builder transformMethod(AnimationTimingFunction animationTimingFunction) {
+            this.animationTimingFunction = animationTimingFunction;
             return this;
         }
 
         public Builder easeIn() {
-            this.transformMethod = TransformMethod.EASE_IN;
+            this.animationTimingFunction = AnimationTimingFunction.EASE_IN;
             return this;
         }
 
         public Builder easeOut() {
-            this.transformMethod = TransformMethod.EASE_OUT;
+            this.animationTimingFunction = AnimationTimingFunction.EASE_OUT;
             return this;
         }
 
         public Builder easeInOut() {
-            this.transformMethod = TransformMethod.EASE_IN_OUT;
+            this.animationTimingFunction = AnimationTimingFunction.EASE_IN_OUT;
             return this;
         }
 
@@ -87,7 +92,7 @@ public record Keyframe(String partName, int tick, ModelPartPose pose, TransformM
         }
 
         public Keyframe build() {
-            return new Keyframe(partName, tick, pose, transformMethod);
+            return new Keyframe(partName, tick, pose, animationTimingFunction);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.yummy.naraka;
 
 import com.yummy.naraka.event.NarakaGameEventBus;
+import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -17,6 +18,8 @@ import java.util.*;
  * @author lalaalal
  */
 public class NarakaUtil {
+    private static final float EASE_OUT_SLOPE = 1.13837021f;
+
     private static MinecraftServer server;
     private static final Map<UUID, Entity> cache = new HashMap<>();
 
@@ -108,10 +111,23 @@ public class NarakaUtil {
         return null;
     }
 
-    public static float ease(float delta, float from, float to) {
+    public static float easeInOut(float delta, float from, float to) {
         float range = to - from;
         float normal = (-Mth.cos(delta * Mth.PI) + 1) * 0.5f;
         return normal * range + from;
+    }
+
+    public static float easeIn(float delta, float from, float to) {
+        float range = to - from;
+        float normal = 1 - easeOut(1 - delta, 0, 1);
+        return normal * range + from;
+    }
+
+    public static float easeOut(float delta, float from, float to) {
+        float range = to - from;
+        if (delta < 0.7419f)
+            return EASE_OUT_SLOPE * delta * range + from;
+        return easeInOut(delta, from, to);
     }
 
     public static float degree(float radian) {
@@ -120,5 +136,31 @@ public class NarakaUtil {
 
     public static float radian(float degree) {
         return degree * 0.017453292519943295f;
+    }
+
+    public static float wrapRadian(float radian) {
+        float result = radian % Mth.TWO_PI;
+        if (result >= Mth.PI) {
+            result -= Mth.TWO_PI;
+        }
+
+        if (result < -Mth.PI) {
+            result += Mth.TWO_PI;
+        }
+
+        return result;
+    }
+
+    public static PartPose addOffsetOnly(PartPose base, PartPose pose) {
+        return PartPose.offsetAndRotation(
+                pose.x + base.x,
+                pose.y + base.y,
+                pose.z + base.z,
+                base.xRot, base.yRot, base.zRot
+        );
+    }
+
+    public static PartPose rotationOnly(PartPose pose) {
+        return PartPose.rotation(pose.xRot, pose.yRot, pose.zRot);
     }
 }
