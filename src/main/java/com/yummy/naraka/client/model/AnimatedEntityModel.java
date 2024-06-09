@@ -19,8 +19,8 @@ import java.util.function.Function;
  */
 @OnlyIn(Dist.CLIENT)
 public abstract class AnimatedEntityModel<T extends Entity & Animatable> extends EntityModel<T> {
-    public AnimatedEntityModel() {
 
+    public AnimatedEntityModel() {
     }
 
     public AnimatedEntityModel(Function<ResourceLocation, RenderType> renderType) {

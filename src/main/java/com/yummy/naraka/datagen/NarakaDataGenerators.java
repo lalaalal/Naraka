@@ -11,6 +11,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.concurrent.CompletableFuture;
 
+@SuppressWarnings("unused")
 @EventBusSubscriber(modid = NarakaMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class NarakaDataGenerators {
     @SubscribeEvent
@@ -20,9 +21,12 @@ public class NarakaDataGenerators {
         CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
-        generator.addProvider(event.includeServer(), new NarakaWorldGenProvider(packOutput, provider));
+        NarakaBlockTagsProvider blockTagsProvider = new NarakaBlockTagsProvider(packOutput, provider, existingFileHelper);
+        generator.addProvider(event.includeServer(), blockTagsProvider);
+        generator.addProvider(event.includeServer(), new NarakaItemTagsProvider(packOutput, provider, blockTagsProvider.contentsGetter(), existingFileHelper));
         generator.addProvider(event.includeServer(), new NarakaEntityTypeTagsProvider(packOutput, provider, existingFileHelper));
         generator.addProvider(event.includeServer(), new NarakaDamageTypeTagsProvider(packOutput, provider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new NarakaWorldGenProvider(packOutput, provider));
 
         generator.addProvider(event.includeClient(), new NarakaItemModelProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new NarakaBlockStateProvider(packOutput, existingFileHelper));

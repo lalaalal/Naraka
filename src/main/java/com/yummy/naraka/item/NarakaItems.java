@@ -2,7 +2,9 @@ package com.yummy.naraka.item;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.entity.NarakaEntities;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.component.Unbreakable;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -18,7 +20,10 @@ public class NarakaItems {
             "mighty_holy_spear", properties -> new SpearItem(Tiers.NETHERITE, properties, NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR)
     );
     public static final DeferredItem<SpearOfLonginusItem> SPEAR_OF_LONGINUS_ITEM = ITEMS.registerItem(
-            "spear_of_longinus", SpearOfLonginusItem::new
+            "spear_of_longinus", properties -> new SpearOfLonginusItem(properties
+                    .fireResistant()
+                    .component(DataComponents.UNBREAKABLE, new Unbreakable(false))
+            )
     );
 
 

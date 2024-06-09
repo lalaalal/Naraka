@@ -80,7 +80,14 @@ public record Animation(String name, int animationLength, Set<String> partNames,
         }
 
         public Animation build() {
-            // TODO : check all parts have pose on tick 0
+            if (!smoothStart) {
+                for (String partName : keyframeBuilderMap.keySet()) {
+                    boolean hasKeyframeOnStart = keyframeBuilderMap.get(partName).stream()
+                            .anyMatch(builder -> builder.getTick() == 0);
+                    if (!hasKeyframeOnStart)
+                        throw new IllegalStateException("Should set all part pose at tick 0. Or set smoothStart (%s) not set".formatted(partName));
+                }
+            }
             for (String partName : keyframeBuilderMap.keySet()) {
                 Collection<Keyframe.Builder> builders = keyframeBuilderMap.get(partName);
                 ArrayList<Keyframe> keyframes = new ArrayList<>(builders.size());

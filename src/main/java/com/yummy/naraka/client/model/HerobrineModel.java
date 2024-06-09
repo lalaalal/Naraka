@@ -53,6 +53,7 @@ public class HerobrineModel<T extends Herobrine> extends AnimatedEntityModel<T> 
                 "head", head,
                 "body", body,
                 "left_arm", left_arm,
+                "left_arm_lower", left_arm_lower,
                 "right_arm", right_arm
         );
     }

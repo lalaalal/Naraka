@@ -12,6 +12,7 @@ public class PartAnimationInstance {
     private Keyframe currentKeyframe;
     private ModelPartPose originalPose;
     private float firstTick = -1;
+    private float prevTick = -1;
 
     public PartAnimationInstance(Animation animation, PartAnimation partAnimation, boolean repeat) {
         this.animation = animation;
@@ -29,10 +30,13 @@ public class PartAnimationInstance {
             return;
         Keyframe nextKeyframe = partAnimation.getNextKeyframe(currentKeyframe);
         float delta = calculateDelta(ageInTicks, nextKeyframe);
-        if (0 <= delta && delta <= 1)
-            applyAnimation(part, nextKeyframe, delta);
-        else {
-            currentKeyframe = nextKeyframe;
+        if (0 <= delta && delta <= 1) {
+            applyAnimation(part, nextKeyframe, delta, ageInTicks);
+            prevTick = ageInTicks;
+        } else {
+            if (!isCurrentTickEmptyStart())
+                currentKeyframe = nextKeyframe;
+            prevTick = ageInTicks;
             setupPartAnimation(part, ageInTicks);
         }
     }
@@ -48,7 +52,7 @@ public class PartAnimationInstance {
         return relativeTick >= animation.animationLength();
     }
 
-    private void applyAnimation(ModelPart part, Keyframe nextKeyframe, float delta) {
+    private void applyAnimation(ModelPart part, Keyframe nextKeyframe, float delta, float ageInTicks) {
         ModelPartPose from = getPoseFrom();
         ModelPartPose to = getPoseTo(nextKeyframe);
 
@@ -60,26 +64,32 @@ public class PartAnimationInstance {
         float interval = calculateTickInterval(nextKeyframe);
         if (interval == 0)
             return -1;
-        float relativeTick = ageInTicks - firstTick - currentKeyframe.tick();
+        float relativeTick = ageInTicks - firstTick;
+        if (!isCurrentTickEmptyStart())
+            relativeTick -= currentKeyframe.tick();
 
         return relativeTick / interval;
     }
 
     private float calculateTickInterval(Keyframe nextKeyframe) {
-        if (partAnimation.isFirstKeyframe(currentKeyframe))
-            return nextKeyframe.tick();
+        if (isCurrentTickEmptyStart())
+            return currentKeyframe.tick();
         return nextKeyframe.tick() - currentKeyframe.tick();
     }
 
     private ModelPartPose getPoseFrom() {
-        if (partAnimation.isFirstKeyframe(currentKeyframe) && currentKeyframe.tick() != 0)
+        if (isCurrentTickEmptyStart())
             return originalPose;
         return currentKeyframe.pose();
     }
 
     private ModelPartPose getPoseTo(Keyframe nextKeyframe) {
-        if (partAnimation.isFirstKeyframe(currentKeyframe) && currentKeyframe.tick() != 0)
+        if (isCurrentTickEmptyStart())
             return currentKeyframe.pose();
         return nextKeyframe.pose();
+    }
+
+    private boolean isCurrentTickEmptyStart() {
+        return partAnimation.isEmptyStart(currentKeyframe) && (prevTick - firstTick) < currentKeyframe.tick();
     }
 }

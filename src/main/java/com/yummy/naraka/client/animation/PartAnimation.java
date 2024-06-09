@@ -54,4 +54,8 @@ public class PartAnimation {
     public boolean isFirstKeyframe(Keyframe keyframe) {
         return keyframes.indexOf(keyframe) == 0;
     }
+
+    public boolean isEmptyStart(Keyframe keyframe) {
+        return isFirstKeyframe(keyframe) && keyframe.tick() != 0;
+    }
 }

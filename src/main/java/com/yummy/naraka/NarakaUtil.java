@@ -113,4 +113,12 @@ public class NarakaUtil {
         float normal = (-Mth.cos(delta * Mth.PI) + 1) * 0.5f;
         return normal * range + from;
     }
+
+    public static float degree(float radian) {
+        return radian * 57.29577951308232f;
+    }
+
+    public static float radian(float degree) {
+        return degree * 0.017453292519943295f;
+    }
 }

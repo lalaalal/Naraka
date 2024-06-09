@@ -80,6 +80,8 @@ public class Herobrine extends AnimatableMonster implements DeathCountingEntity 
             if (livingEntity instanceof ServerPlayer serverPlayer)
                 DeathCountHelper.showDeathCount(serverPlayer);
         }
+        if (!level().isClientSide)
+            setAnimation("herobrine.hurt.chain.herobrine.idle.repeat");
 
         return super.hurt(source, amount);
     }

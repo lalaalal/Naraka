@@ -1,5 +1,7 @@
 package com.yummy.naraka.client.animation;
 
+import com.yummy.naraka.NarakaUtil;
+
 /**
  * @param partName
  * @param tick
@@ -48,6 +50,16 @@ public record Keyframe(String partName, int tick, ModelPartPose pose, TransformM
         public Builder pose(float xRot, float yRot, float zRot) {
             this.pose = new ModelPartPose(xRot, yRot, zRot);
             return this;
+        }
+
+        public Builder pose(int xRot, int yRot, int zRot) {
+            return pose(NarakaUtil.radian(xRot), NarakaUtil.radian(yRot), NarakaUtil.radian(zRot));
+        }
+
+        public Builder pose(float xRot, float yRot, float zRot, boolean isDegree) {
+            if (isDegree)
+                return pose(NarakaUtil.radian(xRot), NarakaUtil.radian(yRot), NarakaUtil.radian(zRot));
+            return pose(xRot, yRot, zRot);
         }
 
         public Builder transformMethod(TransformMethod transformMethod) {

@@ -6,7 +6,10 @@ import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.util.Mth;
 import org.slf4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class NarakaAnimations implements ResourceManagerReloadListener {
     private static final Logger log = LogUtils.getLogger();
@@ -55,26 +58,30 @@ public class NarakaAnimations implements ResourceManagerReloadListener {
         return instance(id.replace(".repeat", ""), repeat);
     }
 
-    private static Stack<AnimationInstance> instances(String[] ids) {
-        Stack<AnimationInstance> instances = new Stack<>();
-        for (String id : ids)
-            instances.add(singleInstance(id));
-        return instances;
-    }
-
     public static void load() {
         animations.clear();
         animations.put("empty", Animation.EMPTY);
 
-        Animation herobrineIdle = Animation.builder("herobrine_idle")
-                .define("head", "body", "left_arm", "right_arm")
-                .startWithZeroPose()
+        Animation herobrineIdle = Animation.builder("herobrine.idle")
+                .define("left_arm", "right_arm")
+                .smoothStart()
                 .keyframe("left_arm", 40).pose(-0.1f, 0, -Mth.PI / 72).easeInOut().end()
                 .keyframe("left_arm", 80).zero().easeInOut().end()
                 .keyframe("right_arm", 40).pose(-0.1f, 0, Mth.PI / 72).easeInOut().end()
                 .keyframe("right_arm", 80).zero().easeInOut().end()
                 .build();
+        Animation herobrineHurt = Animation.builder("herobrine.hurt")
+                .define("left_arm", "left_arm_lower")
+                .smoothStart()
+                .keyframe("left_arm", 10).pose(-80, 0, 0).end()
+                .keyframe("left_arm_lower", 10).pose(-80, 0, 0).end()
+                .keyframe("left_arm", 30).copyPrevious().end()
+                .keyframe("left_arm_lower", 30).copyPrevious().end()
+                .keyframe("left_arm", 40).zero().end()
+                .keyframe("left_arm_lower", 40).zero().end()
+                .build();
         animations.put("herobrine.idle", herobrineIdle);
+        animations.put("herobrine.hurt", herobrineHurt);
     }
 
     @Override

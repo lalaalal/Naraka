@@ -106,7 +106,7 @@ public class SpearItem extends TieredItem implements ProjectileItem {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.hurtAndBreak(ABSOLUTE_MAX_STACK_SIZE, attacker, EquipmentSlot.MAINHAND);
+        stack.hurtAndBreak(1, attacker, EquipmentSlot.MAINHAND);
         return true;
     }
 
