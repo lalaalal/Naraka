@@ -10,6 +10,7 @@ import com.yummy.naraka.client.model.SpearModel;
 import com.yummy.naraka.client.model.SpearOfLonginusModel;
 import com.yummy.naraka.client.renderer.HerobrineRenderer;
 import com.yummy.naraka.client.renderer.NarakaCustomRenderer;
+import com.yummy.naraka.client.renderer.NarakaItemEntityRenderer;
 import com.yummy.naraka.client.renderer.SpearRenderer;
 import com.yummy.naraka.entity.NarakaEntities;
 import com.yummy.naraka.gui.layer.DeathCountLayer;
@@ -17,6 +18,7 @@ import com.yummy.naraka.gui.layer.NarakaGuiLayers;
 import com.yummy.naraka.gui.layer.StigmaLayer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.server.packs.resources.ResourceProvider;
+import net.minecraft.world.entity.EntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -54,6 +56,8 @@ public class NarakaClientEventBus {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(EntityType.ITEM, NarakaItemEntityRenderer::new);
+
         event.registerEntityRenderer(NarakaEntities.HEROBRINE.get(), HerobrineRenderer::new);
         event.registerEntityRenderer(NarakaEntities.THROWN_SPEAR.get(), SpearRenderer::new);
         event.registerEntityRenderer(NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR.get(), SpearRenderer::new);

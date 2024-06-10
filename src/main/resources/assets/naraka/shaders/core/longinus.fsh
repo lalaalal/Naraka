@@ -1,32 +1,30 @@
 #version 150
 
-#moj_import <matrix.glsl>
-
-uniform sampler2D Sampler0;
-uniform sampler2D Sampler1;
+uniform sampler2D SamplerBackground;
+uniform sampler2D SamplerForeground;
 
 uniform float GameTime;
-uniform int EndPortalLayers;
+uniform int LonginusLayers;
 
-in vec4 texProj0;
+in vec4 textureProjection;
 
 const vec3[] COLORS = vec3[](
-    vec3(0.022087, 0.098399, 0.110818),
-    vec3(0.011892, 0.095924, 0.089485),
-    vec3(0.027636, 0.101689, 0.100326),
-    vec3(0.046564, 0.109883, 0.114838),
-    vec3(0.064901, 0.117696, 0.097189),
-    vec3(0.063761, 0.086895, 0.123646),
-    vec3(0.084817, 0.111994, 0.166380),
-    vec3(0.097489, 0.154120, 0.091064),
-    vec3(0.106152, 0.131144, 0.195191),
-    vec3(0.097721, 0.110188, 0.187229),
-    vec3(0.133516, 0.138278, 0.148582),
-    vec3(0.070006, 0.243332, 0.235792),
-    vec3(0.196766, 0.142899, 0.214696),
-    vec3(0.047281, 0.315338, 0.321970),
-    vec3(0.204675, 0.390010, 0.302066),
-    vec3(0.080955, 0.314821, 0.661491)
+    vec3(0.07),
+    vec3(0.06),
+    vec3(0.07),
+    vec3(0.08),
+    vec3(0.086),
+    vec3(0.089),
+    vec3(0.10),
+    vec3(0.11),
+    vec3(0.13),
+    vec3(0.138),
+    vec3(0.14),
+    vec3(0.17),
+    vec3(0.23),
+    vec3(0.32),
+    vec3(0.49),
+    vec3(0.81)
 );
 
 const mat4 SCALE_TRANSLATE = mat4(
@@ -35,6 +33,13 @@ const mat4 SCALE_TRANSLATE = mat4(
     0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 1.0
 );
+
+mat2 mat2_rotate_z(float radians) {
+    return mat2(
+        cos(radians), -sin(radians),
+        sin(radians), cos(radians)
+    );
+}
 
 mat4 end_portal_layer(float layer) {
     mat4 translate = mat4(
@@ -54,10 +59,8 @@ mat4 end_portal_layer(float layer) {
 out vec4 fragColor;
 
 void main() {
-    vec3 color = textureProj(Sampler0, texProj0).rgb * COLORS[0];
-    for (int i = 0; i < EndPortalLayers; i++) {
-        color += textureProj(Sampler1, texProj0 * end_portal_layer(float(i + 1))).rgb * COLORS[i];
-    }
-    float luminance = (color.r + color.g + color.b) / 3.0;
-    fragColor = vec4(luminance, luminance, luminance, 1.0);
+    vec3 color = textureProj(SamplerBackground, textureProjection).rgb * COLORS[0];
+    for (int i = 0; i < LonginusLayers; i++)
+    color += textureProj(SamplerForeground, textureProjection * end_portal_layer(float(i + 1))).rgb * COLORS[i];
+    fragColor = vec4(color, 1.0);
 }

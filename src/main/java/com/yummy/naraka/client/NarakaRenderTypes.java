@@ -19,7 +19,7 @@ public class NarakaRenderTypes {
                     .setTextureState(
                             RenderStateShard.MultiTextureStateShard.builder()
                                     .add(TheEndPortalRenderer.END_SKY_LOCATION, false, false)
-                                    .add(TheEndPortalRenderer.END_PORTAL_LOCATION, false, false)
+                                    .add(NarakaTextures.LONGINUS, false, false)
                                     .build()
                     )
                     .createCompositeState(false)

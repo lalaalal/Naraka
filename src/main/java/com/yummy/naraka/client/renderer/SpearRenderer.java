@@ -10,6 +10,7 @@ import com.yummy.naraka.client.model.SpearOfLonginusModel;
 import com.yummy.naraka.entity.NarakaEntities;
 import com.yummy.naraka.entity.Spear;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -19,11 +20,20 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
+import java.util.Map;
+
 @OnlyIn(Dist.CLIENT)
 public class SpearRenderer extends EntityRenderer<Spear> {
+    private static final Map<EntityType<? extends Spear>, ResourceLocation> TEXTURE_MAP = Map.of(
+            NarakaEntities.THROWN_SPEAR.get(), NarakaTextures.SPEAR,
+            NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR.get(), NarakaTextures.MIGHTY_HOLY_SPEAR,
+            NarakaEntities.THROWN_SPEAR_OF_LONGINUS.get(), NarakaTextures.LONGINUS
+    );
+
     protected final EntityModel<? extends Spear> model;
     private final int yOffset;
 
@@ -46,8 +56,8 @@ public class SpearRenderer extends EntityRenderer<Spear> {
 
     @Override
     public ResourceLocation getTextureLocation(Spear spear) {
-        if (spear.getType() == NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR.get())
-            return NarakaTextures.MIGHTY_HOLY_SPEAR;
+        if (TEXTURE_MAP.containsKey(spear.getType()))
+            return TEXTURE_MAP.get(spear.getType());
         return NarakaTextures.SPEAR;
     }
 
@@ -62,6 +72,8 @@ public class SpearRenderer extends EntityRenderer<Spear> {
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, spear.yRotO, spear.getYRot()) - 90.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, spear.xRotO, spear.getXRot()) + 90.0F));
         poseStack.translate(0, yOffset, 0);
+        if (spear.getType() == NarakaEntities.THROWN_SPEAR_OF_LONGINUS.get())
+            packedLight = LightTexture.FULL_BRIGHT;
         RenderType renderType = model.renderType(getTextureLocation(spear));
         VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, renderType, false, spear.hasFoil());
         model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
