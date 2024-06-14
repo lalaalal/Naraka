@@ -7,7 +7,7 @@ import net.minecraft.client.model.geom.PartPose;
 /**
  * @author lalaalal
  */
-public class PartAnimationInstance {
+class PartAnimationInstance {
     private final Animation animation;
     private final PartAnimation partAnimation;
     private final boolean repeat;
@@ -56,8 +56,7 @@ public class PartAnimationInstance {
 
     private void applyAnimation(ModelPart part, Keyframe nextKeyframe, float delta) {
         PartPose from = getPoseFrom();
-        PartPose to = getPoseTo(nextKeyframe);
-        PartPose currentPose = nextKeyframe.transform(delta, from, to);
+        PartPose currentPose = getCurrentPose(nextKeyframe, delta, from);
         part.loadPose(NarakaUtil.addOffsetOnly(currentPose, part.getInitialPose()));
     }
 
@@ -84,10 +83,10 @@ public class PartAnimationInstance {
         return currentKeyframe.pose();
     }
 
-    private PartPose getPoseTo(Keyframe nextKeyframe) {
+    private PartPose getCurrentPose(Keyframe nextKeyframe, float delta, PartPose from) {
         if (isCurrentTickEmptyStart())
-            return currentKeyframe.pose();
-        return nextKeyframe.pose();
+            return currentKeyframe.applyAnimation(delta, from);
+        return nextKeyframe.applyAnimation(delta, from);
     }
 
     private boolean isCurrentTickEmptyStart() {

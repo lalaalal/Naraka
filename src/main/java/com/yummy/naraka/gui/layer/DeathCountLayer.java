@@ -4,6 +4,7 @@ import com.yummy.naraka.NarakaContext;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.attachment.DeathCountHelper;
 import com.yummy.naraka.attachment.NarakaAttachments;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
@@ -44,7 +45,7 @@ public class DeathCountLayer implements LayeredDraw.Layer {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, float partialTick) {
+    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         if (!NarakaMod.context().get(NarakaContext.KEY_CLIENT_DEATH_COUNT_VISIBILITY, Boolean.class))
             return;
         Player player = Minecraft.getInstance().player;

@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @author lalaalal
  */
-public class PartAnimation {
+class PartAnimation {
     private final String name;
     private final List<Keyframe> keyframes;
 

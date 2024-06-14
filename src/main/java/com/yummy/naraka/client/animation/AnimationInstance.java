@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Instance of {@link Animation}
+ *
  * @author lalaalal
  */
 public class AnimationInstance {

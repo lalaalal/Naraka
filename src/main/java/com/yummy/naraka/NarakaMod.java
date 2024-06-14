@@ -26,7 +26,7 @@ public class NarakaMod {
     }
 
     public static ResourceLocation neoLocation(String path) {
-        return new ResourceLocation("neoforge", path);
+        return ResourceLocation.fromNamespaceAndPath("neoforge", path);
     }
 
     /**
@@ -36,7 +36,7 @@ public class NarakaMod {
      * @return {@linkplain ResourceLocation} with namespace {@linkplain NarakaMod#MOD_ID}
      */
     public static ResourceLocation location(String path) {
-        return new ResourceLocation(MOD_ID, path);
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 
     public static ResourceLocation location(String prefix, String path) {

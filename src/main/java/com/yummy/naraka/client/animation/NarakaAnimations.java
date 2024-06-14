@@ -70,7 +70,7 @@ public class NarakaAnimations implements ResourceManagerReloadListener {
                 .smoothStart()
                 .keyframe("left_arm", 40).rotation(-0.1f, 0, -Mth.PI / 72).easeInOut().end()
                 .keyframe("right_arm", 40).rotation(-0.1f, 0, Mth.PI / 72).easeInOut().end()
-                .setAllPartsZeroPose(80, AnimationTimingFunction.EASE_IN_OUT)
+                .setAllPartsZeroPose(80, AnimationTiming.EASE_IN_OUT)
                 .build();
         Animation herobrineHurt = Animation.builder("herobrine.hurt")
                 .define("left_arm", "left_arm_lower")

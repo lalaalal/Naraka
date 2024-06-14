@@ -76,7 +76,7 @@ public class NarakaCustomRenderer extends BlockEntityWithoutLevelRenderer {
             }
             RenderType renderType = model.renderType(textureLocation);
             VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
-            model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
+            model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 0xffffffff);
             poseStack.popPose();
         }
     }

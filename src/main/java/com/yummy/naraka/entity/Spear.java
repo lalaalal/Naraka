@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.network.syncher.SynchedEntityData.Builder;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -38,17 +39,16 @@ public class Spear extends AbstractArrow {
         super(entityType, level);
     }
 
-    public Spear(Supplier<? extends EntityType<? extends Spear>> type, Level level, Position position, ItemStack stack) {
-        super(type.get(), level, stack);
-        setPos(position.x(), position.y(), position.z());
-        entityData.set(ID_LOYALTY, EnchantmentHelper.getLoyalty(stack));
-        entityData.set(ID_FOIL, stack.hasFoil());
+    public Spear(Supplier<? extends EntityType<? extends Spear>> type, Level level, Position position, ItemStack pickupItem) {
+        super(type.get(), position.x(), position.y(), position.z(), level, pickupItem, null);
+        entityData.set(ID_LOYALTY, getLoyaltyFromItem(pickupItem));
+        entityData.set(ID_FOIL, pickupItem.hasFoil());
     }
 
-    public Spear(Supplier<? extends EntityType<? extends Spear>> type, Level level, LivingEntity owner, ItemStack stack) {
-        super(type.get(), owner, level, stack);
-        entityData.set(ID_LOYALTY, EnchantmentHelper.getLoyalty(stack));
-        entityData.set(ID_FOIL, stack.hasFoil());
+    public Spear(Supplier<? extends EntityType<? extends Spear>> type, Level level, LivingEntity owner, ItemStack pickupItem) {
+        super(type.get(), owner, level, pickupItem, null);
+        entityData.set(ID_LOYALTY, getLoyaltyFromItem(pickupItem));
+        entityData.set(ID_FOIL, pickupItem.hasFoil());
     }
 
     @Override
@@ -68,8 +68,14 @@ public class Spear extends AbstractArrow {
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         dealtDamage = compound.getBoolean("DealtDamage");
-        entityData.set(ID_LOYALTY, EnchantmentHelper.getLoyalty(getPickupItem()));
+        entityData.set(ID_LOYALTY, getLoyaltyFromItem(getPickupItem()));
         entityData.set(ID_FOIL, getPickupItem().hasFoil());
+    }
+
+    protected int getLoyaltyFromItem(ItemStack stack) {
+        if (level() instanceof ServerLevel serverLevel)
+            return EnchantmentHelper.getTridentReturnToOwnerAcceleration(serverLevel, stack, this);
+        return 0;
     }
 
     public int getLoyalty() {

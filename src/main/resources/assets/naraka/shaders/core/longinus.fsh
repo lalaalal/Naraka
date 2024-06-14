@@ -18,13 +18,13 @@ const vec3[] COLORS = vec3[](
     vec3(0.10),
     vec3(0.11),
     vec3(0.13),
-    vec3(0.138),
-    vec3(0.14),
-    vec3(0.17),
-    vec3(0.23),
+    vec3(0.15),
+    vec3(0.18),
+    vec3(0.22),
+    vec3(0.27),
     vec3(0.32),
     vec3(0.49),
-    vec3(0.81)
+    vec3(0.71)
 );
 
 const mat4 SCALE_TRANSLATE = mat4(

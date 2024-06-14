@@ -2,6 +2,7 @@ package com.yummy.naraka.gui.layer;
 
 import com.yummy.naraka.attachment.NarakaAttachments;
 import com.yummy.naraka.attachment.StigmaHelper;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -20,10 +21,10 @@ import net.neoforged.api.distmarker.OnlyIn;
  */
 @OnlyIn(Dist.CLIENT)
 public class StigmaLayer implements LayeredDraw.Layer {
-    public static final ResourceLocation STIGMA_SPRITE = new ResourceLocation("hud/food_empty");
+    public static final ResourceLocation STIGMA_SPRITE = ResourceLocation.withDefaultNamespace("hud/food_empty");
 
     @Override
-    public void render(GuiGraphics guiGraphics, float partialTick) {
+    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         Gui gui = Minecraft.getInstance().gui;
         Player player = Minecraft.getInstance().player;
         if (player == null || player.isCreative() || player.isSpectator())

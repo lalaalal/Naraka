@@ -76,7 +76,7 @@ public class SpearRenderer extends EntityRenderer<Spear> {
             packedLight = LightTexture.FULL_BRIGHT;
         RenderType renderType = model.renderType(getTextureLocation(spear));
         VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, renderType, false, spear.hasFoil());
-        model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+        model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 0xffffffff);
         poseStack.popPose();
     }
 }

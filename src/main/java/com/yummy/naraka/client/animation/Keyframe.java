@@ -4,15 +4,13 @@ import com.yummy.naraka.NarakaUtil;
 import net.minecraft.client.model.geom.PartPose;
 
 /**
- * @param partName
- * @param tick
- * @param pose
- * @param animationTimingFunction
+ * Keyframe applying each part model
+ *
  * @author lalaalal
  */
-public record Keyframe(String partName, int tick, PartPose pose, AnimationTimingFunction animationTimingFunction) {
-    public PartPose transform(float delta, PartPose from, PartPose to) {
-        return animationTimingFunction.transform(delta, from, to);
+public record Keyframe(String partName, int tick, PartPose pose, AnimationTiming animationTiming) {
+    public PartPose applyAnimation(float delta, PartPose from) {
+        return animationTiming.apply(delta, from, pose);
     }
 
     public static class Builder {
@@ -20,7 +18,7 @@ public record Keyframe(String partName, int tick, PartPose pose, AnimationTiming
         private final String partName;
         private final int tick;
         private PartPose pose = PartPose.ZERO;
-        private AnimationTimingFunction animationTimingFunction = AnimationTimingFunction.LINEAR;
+        private AnimationTiming animationTiming = AnimationTiming.LINEAR;
 
         public Builder(Animation.Builder animationBuilder, String partName, int tick) {
             this.animationBuilder = animationBuilder;
@@ -44,7 +42,7 @@ public record Keyframe(String partName, int tick, PartPose pose, AnimationTiming
         public Builder copyPrevious() {
             Builder previousBuilder = animationBuilder.previousKeyframe(this);
             this.pose = previousBuilder.pose;
-            this.animationTimingFunction = previousBuilder.animationTimingFunction;
+            this.animationTiming = previousBuilder.animationTiming;
             return this;
         }
 
@@ -67,24 +65,21 @@ public record Keyframe(String partName, int tick, PartPose pose, AnimationTiming
             return this;
         }
 
-        public Builder animationTiming(AnimationTimingFunction animationTimingFunction) {
-            this.animationTimingFunction = animationTimingFunction;
+        public Builder animationTiming(AnimationTiming animationTiming) {
+            this.animationTiming = animationTiming;
             return this;
         }
 
         public Builder easeIn() {
-            this.animationTimingFunction = AnimationTimingFunction.EASE_IN;
-            return this;
+            return animationTiming(AnimationTiming.EASE_IN);
         }
 
         public Builder easeOut() {
-            this.animationTimingFunction = AnimationTimingFunction.EASE_OUT;
-            return this;
+            return animationTiming(AnimationTiming.EASE_OUT);
         }
 
         public Builder easeInOut() {
-            this.animationTimingFunction = AnimationTimingFunction.EASE_IN_OUT;
-            return this;
+            return animationTiming(AnimationTiming.EASE_IN_OUT);
         }
 
         public Animation.Builder end() {
@@ -92,7 +87,7 @@ public record Keyframe(String partName, int tick, PartPose pose, AnimationTiming
         }
 
         public Keyframe build() {
-            return new Keyframe(partName, tick, pose, animationTimingFunction);
+            return new Keyframe(partName, tick, pose, animationTiming);
         }
     }
 }
