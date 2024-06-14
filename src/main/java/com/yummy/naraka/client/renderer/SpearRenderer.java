@@ -13,7 +13,6 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -59,11 +58,6 @@ public class SpearRenderer extends EntityRenderer<Spear> {
         if (TEXTURE_MAP.containsKey(spear.getType()))
             return TEXTURE_MAP.get(spear.getType());
         return NarakaTextures.SPEAR;
-    }
-
-    @Override
-    public boolean shouldRender(Spear spear, Frustum camera, double camX, double camY, double camZ) {
-        return true;
     }
 
     @Override

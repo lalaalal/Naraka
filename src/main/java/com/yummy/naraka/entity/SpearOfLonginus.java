@@ -30,6 +30,11 @@ public class SpearOfLonginus extends Spear {
     }
 
     @Override
+    public boolean hasFoil() {
+        return false;
+    }
+
+    @Override
     protected boolean canHurtEntity(Entity entity) {
         return true;
     }
@@ -70,5 +75,10 @@ public class SpearOfLonginus extends Spear {
         }
 
         super.remove(reason);
+    }
+
+    @Override
+    public boolean shouldRender(double pX, double pY, double pZ) {
+        return true;
     }
 }

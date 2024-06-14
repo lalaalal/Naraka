@@ -14,6 +14,7 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.player.Player;
@@ -75,9 +76,15 @@ public class NarakaCustomRenderer extends BlockEntityWithoutLevelRenderer {
                 poseStack.translate(0, -1.5, 0);
             }
             RenderType renderType = model.renderType(textureLocation);
-            VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
+            VertexConsumer vertexConsumer = getBuffer(buffer, renderType, stack);
             model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 0xffffffff);
             poseStack.popPose();
         }
+    }
+
+    private VertexConsumer getBuffer(MultiBufferSource buffer, RenderType renderType, ItemStack itemStack) {
+        if (itemStack.is(NarakaItems.SPEAR_OF_LONGINUS_ITEM))
+            return buffer.getBuffer(renderType);
+        return ItemRenderer.getFoilBufferDirect(buffer, renderType, false, itemStack.hasFoil());
     }
 }
