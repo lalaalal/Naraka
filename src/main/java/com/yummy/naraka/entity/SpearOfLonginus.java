@@ -17,16 +17,19 @@ public class SpearOfLonginus extends Spear {
     protected SpearOfLonginus(EntityType<? extends SpearOfLonginus> entityType, Level level) {
         super(entityType, level);
         setInvulnerable(true);
+        setNoGravity(true);
     }
 
     public SpearOfLonginus(Level level, Position position, ItemStack stack) {
         super(NarakaEntities.THROWN_SPEAR_OF_LONGINUS, level, position, stack);
         setInvulnerable(true);
+        setNoGravity(true);
     }
 
     public SpearOfLonginus(Level level, LivingEntity owner, ItemStack stack) {
         super(NarakaEntities.THROWN_SPEAR_OF_LONGINUS, level, owner, stack);
         setInvulnerable(true);
+        setNoGravity(true);
     }
 
     @Override
@@ -75,10 +78,5 @@ public class SpearOfLonginus extends Spear {
         }
 
         super.remove(reason);
-    }
-
-    @Override
-    public boolean shouldRender(double pX, double pY, double pZ) {
-        return true;
     }
 }

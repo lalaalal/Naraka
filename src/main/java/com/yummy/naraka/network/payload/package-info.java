@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package com.yummy.naraka.networking;
+package com.yummy.naraka.network.payload;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

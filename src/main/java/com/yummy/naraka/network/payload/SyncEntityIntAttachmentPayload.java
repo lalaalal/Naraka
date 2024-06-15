@@ -1,4 +1,4 @@
-package com.yummy.naraka.networking.payload;
+package com.yummy.naraka.network.payload;
 
 import com.yummy.naraka.NarakaMod;
 import io.netty.buffer.ByteBuf;

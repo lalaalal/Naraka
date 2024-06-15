@@ -1,4 +1,4 @@
-package com.yummy.naraka.networking.payload;
+package com.yummy.naraka.network.payload;
 
 import com.yummy.naraka.attachment.NarakaAttachments;
 import com.yummy.naraka.event.NarakaCommonEventBus;

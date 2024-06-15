@@ -13,21 +13,12 @@ import net.neoforged.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class SpearModel extends EntityModel<Spear> {
     private final ModelPart root;
-    private final ModelPart blade1;
-    private final ModelPart blade2;
-    private final ModelPart blade3;
-    private final ModelPart blade4;
-    private final ModelPart bb_main;
 
     public SpearModel(ModelPart root) {
         this.root = root;
-        this.blade1 = root.getChild("blade1");
-        this.blade2 = root.getChild("blade2");
-        this.blade3 = root.getChild("blade3");
-        this.blade4 = root.getChild("blade4");
-        this.bb_main = root.getChild("bb_main");
     }
 
+    @SuppressWarnings("unused")
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();

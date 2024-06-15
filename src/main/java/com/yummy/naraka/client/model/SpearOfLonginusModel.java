@@ -14,18 +14,13 @@ import net.neoforged.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class SpearOfLonginusModel extends EntityModel<SpearOfLonginus> {
     private final ModelPart root;
-    private final ModelPart tipleft;
-    private final ModelPart tipleft2;
-    private final ModelPart bb_main;
 
     public SpearOfLonginusModel(ModelPart root) {
         super((resourceLocation) -> NarakaRenderTypes.LONGINUS);
         this.root = root;
-        this.tipleft = root.getChild("tipleft");
-        this.tipleft2 = root.getChild("tipleft2");
-        this.bb_main = root.getChild("bb_main");
     }
 
+    @SuppressWarnings("unused")
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();

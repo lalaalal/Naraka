@@ -27,13 +27,13 @@ public class NarakaAttachments {
 
     /**
      * Use {@link DeathCountHelper#getDeathCount(LivingEntity)} to get value of LivingEntity.
-     * Default value is {@link DeathCountHelper#MAX_DEATH_COUNT}
+     * Default value is {@link DeathCountHelper#maxDeathCount()}
      *
      * @see DeathCountHelper
      */
     public static final Supplier<AttachmentType<Integer>> DEATH_COUNT = ATTACHMENT_TYPES.register(
             "death_count",
-            () -> AttachmentType.builder(() -> DeathCountHelper.maxDeathCount())
+            () -> AttachmentType.builder(DeathCountHelper::maxDeathCount)
                     .serialize(Codec.INT)
                     .copyOnDeath()
                     .build()

@@ -13,6 +13,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -51,6 +52,11 @@ public class SpearRenderer extends EntityRenderer<Spear> {
         super(context);
         this.model = model;
         this.yOffset = yOffset;
+    }
+
+    @Override
+    public boolean shouldRender(Spear pLivingEntity, Frustum pCamera, double pCamX, double pCamY, double pCamZ) {
+        return true;
     }
 
     @Override

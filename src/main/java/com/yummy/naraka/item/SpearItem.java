@@ -119,11 +119,6 @@ public class SpearItem extends TieredItem implements ProjectileItem {
     }
 
     @Override
-    public boolean isEnchantable(ItemStack pStack) {
-        return true;
-    }
-
-    @Override
     public ItemAttributeModifiers getAttributeModifiers(ItemStack stack) {
         return attributeModifiers;
     }

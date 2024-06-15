@@ -1,8 +1,8 @@
 package com.yummy.naraka.attachment;
 
 import com.yummy.naraka.event.NarakaGameEventBus;
-import com.yummy.naraka.networking.payload.IntAttachmentSyncHandler;
-import com.yummy.naraka.networking.payload.SyncEntityIntAttachmentPayload;
+import com.yummy.naraka.network.payload.IntAttachmentSyncHandler;
+import com.yummy.naraka.network.payload.SyncEntityIntAttachmentPayload;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.level.ServerLevel;
