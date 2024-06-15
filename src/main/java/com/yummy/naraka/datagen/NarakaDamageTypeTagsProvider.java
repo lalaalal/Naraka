@@ -47,13 +47,12 @@ public class NarakaDamageTypeTagsProvider extends DamageTypeTagsProvider {
                 DamageTypeTags.BYPASSES_COOLDOWN
         );
         tag(NarakaDamageTypeTags.DEATH_COUNTING_ATTACK)
-                .addOptionalTag(NarakaDamageTypeTags.HEROBRINE_ATTACK)
-                .addOptional(NarakaDamageTypes.STIGMA.location());
+                .add(NarakaDamageTypes.STIGMA);
     }
 
     @SafeVarargs
     private void addTags(ResourceKey<DamageType> type, TagKey<DamageType>... tags) {
         for (TagKey<DamageType> key : tags)
-            tag(key).addOptional(type.location());
+            tag(key).add(type);
     }
 }

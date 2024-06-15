@@ -10,7 +10,6 @@ public interface NarakaDamageTypeTags {
      * Stigma,
      */
     TagKey<DamageType> DEATH_COUNTING_ATTACK = create("death_counting_attack");
-    TagKey<DamageType> HEROBRINE_ATTACK = create("herobrine_attack");
 
     private static TagKey<DamageType> create(String name) {
         return TagKey.create(Registries.DAMAGE_TYPE, NarakaMod.location(name));

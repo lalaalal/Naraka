@@ -18,15 +18,16 @@ public class NarakaDataGenerators {
     public static void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
         PackOutput packOutput = generator.getPackOutput();
-        CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
-        NarakaBlockTagsProvider blockTagsProvider = new NarakaBlockTagsProvider(packOutput, provider, existingFileHelper);
+        NarakaDatapackProvider datapackProvider = new NarakaDatapackProvider(packOutput, event.getLookupProvider());
+        CompletableFuture<HolderLookup.Provider> lookupProvider = datapackProvider.getRegistryProvider();
+        generator.addProvider(event.includeServer(), datapackProvider);
+        NarakaBlockTagsProvider blockTagsProvider = new NarakaBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
         generator.addProvider(event.includeServer(), blockTagsProvider);
-        generator.addProvider(event.includeServer(), new NarakaItemTagsProvider(packOutput, provider, blockTagsProvider.contentsGetter(), existingFileHelper));
-        generator.addProvider(event.includeServer(), new NarakaEntityTypeTagsProvider(packOutput, provider, existingFileHelper));
-        generator.addProvider(event.includeServer(), new NarakaDamageTypeTagsProvider(packOutput, provider, existingFileHelper));
-        generator.addProvider(event.includeServer(), new NarakaWorldGenProvider(packOutput, provider));
+        generator.addProvider(event.includeServer(), new NarakaItemTagsProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
+        generator.addProvider(event.includeServer(), new NarakaEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new NarakaDamageTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
 
         generator.addProvider(event.includeClient(), new NarakaItemModelProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new NarakaBlockStateProvider(packOutput, existingFileHelper));

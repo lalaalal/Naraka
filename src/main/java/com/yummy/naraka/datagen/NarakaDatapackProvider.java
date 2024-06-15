@@ -12,12 +12,12 @@ import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-public class NarakaWorldGenProvider extends DatapackBuiltinEntriesProvider {
-    public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
+public class NarakaDatapackProvider extends DatapackBuiltinEntriesProvider {
+    private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(Registries.DAMAGE_TYPE, NarakaDamageTypes::bootstrap)
             .add(Registries.ENCHANTMENT, NarakaEnchantments::bootstrap);
 
-    public NarakaWorldGenProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        super(output, registries, BUILDER, Set.of(NarakaMod.MOD_ID));
+    public NarakaDatapackProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries, BUILDER, Set.of("minecraft", NarakaMod.MOD_ID));
     }
 }

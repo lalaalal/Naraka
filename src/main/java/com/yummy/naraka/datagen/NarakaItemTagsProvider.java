@@ -29,12 +29,9 @@ public class NarakaItemTagsProvider extends ItemTagsProvider {
                 .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
 
         tag(NarakaItemTags.SPEAR_ENCHANTABLE)
-                .addTag(NarakaItemTags.SPEAR);
+                .addTag(NarakaItemTags.SPEAR)
+                .addTag(ItemTags.TRIDENT_ENCHANTABLE);
 
-        tag(ItemTags.TRIDENT_ENCHANTABLE)
-                .addTag(NarakaItemTags.SPEAR_ENCHANTABLE);
-        tag(ItemTags.SHARP_WEAPON_ENCHANTABLE)
-                .addTag(NarakaItemTags.SPEAR_ENCHANTABLE);
         tag(ItemTags.DURABILITY_ENCHANTABLE)
                 .add(NarakaItems.SPEAR_ITEM.get())
                 .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get());
