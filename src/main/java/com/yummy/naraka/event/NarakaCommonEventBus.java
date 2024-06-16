@@ -5,6 +5,7 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.attachment.AttachmentSyncHelper;
 import com.yummy.naraka.attachment.DeathCountHelper;
 import com.yummy.naraka.attachment.StigmaHelper;
+import com.yummy.naraka.block.NectariumBlock;
 import com.yummy.naraka.entity.Herobrine;
 import com.yummy.naraka.entity.NarakaEntities;
 import com.yummy.naraka.network.payload.ChangeDeathCountVisibilityPayload;
@@ -34,12 +35,7 @@ public class NarakaCommonEventBus {
     public static void loadConfig(ModConfigEvent.Loading event) {
         DeathCountHelper.loadConfig();
         StigmaHelper.loadConfig();
-    }
-
-    @SubscribeEvent
-    public static void reloadConfig(ModConfigEvent.Reloading event) {
-        DeathCountHelper.loadConfig();
-        StigmaHelper.loadConfig();
+        NectariumBlock.loadConfig();
     }
 
     @SubscribeEvent

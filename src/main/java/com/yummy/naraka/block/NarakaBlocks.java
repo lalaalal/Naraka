@@ -1,7 +1,10 @@
 package com.yummy.naraka.block;
 
 import com.yummy.naraka.NarakaMod;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -19,8 +22,24 @@ public class NarakaBlocks {
                     .forceSolidOn()
     );
 
-    private static <B extends Block> DeferredBlock<Block> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties properties) {
-        DeferredBlock<Block> blockHolder = BLOCKS.registerBlock(name, function, properties);
+    public static final DeferredBlock<Block> NECTARIUM_BLOCK = registerBlockWithItem(
+            "nectarium_block", NectariumBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+    );
+
+    public static final DeferredBlock<DropExperienceBlock> NECTARIUM_ORE = registerBlockWithItem(
+            "nectarium_ore",
+            properties -> new DropExperienceBlock(UniformInt.of(3, 7), properties),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE)
+    );
+
+    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_NECTARIUM_ORE = registerBlockWithItem(
+            "deepslate_nectarium_ore",
+            properties -> new DropExperienceBlock(UniformInt.of(3, 7), properties),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE)
+    );
+
+    private static <B extends Block> DeferredBlock<B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties properties) {
+        DeferredBlock<B> blockHolder = BLOCKS.registerBlock(name, function, properties);
         ITEMS.registerSimpleBlockItem(blockHolder);
         return blockHolder;
     }

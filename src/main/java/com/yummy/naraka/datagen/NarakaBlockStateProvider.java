@@ -1,13 +1,12 @@
 package com.yummy.naraka.datagen;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.block.NarakaBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class NarakaBlockStateProvider extends BlockStateProvider {
@@ -17,10 +16,12 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-
+        simpleBlockWithItem(NarakaBlocks.NECTARIUM_BLOCK);
+        simpleBlockWithItem(NarakaBlocks.NECTARIUM_ORE);
+        simpleBlockWithItem(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
     }
 
-    public void simpleBlockWithItem(Supplier<? extends Block> blockSupplier, Function<Block, ModelFile> modelFileProvider) {
-        simpleBlockWithItem(blockSupplier.get(), modelFileProvider.apply(blockSupplier.get()));
+    public void simpleBlockWithItem(Supplier<? extends Block> blockSupplier) {
+        simpleBlockWithItem(blockSupplier.get(), cubeAll(blockSupplier.get()));
     }
 }

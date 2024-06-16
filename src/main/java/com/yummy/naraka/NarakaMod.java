@@ -2,6 +2,7 @@ package com.yummy.naraka;
 
 import com.yummy.naraka.attachment.NarakaAttachments;
 import com.yummy.naraka.block.NarakaBlocks;
+import com.yummy.naraka.block.entity.NarakaBlockEntities;
 import com.yummy.naraka.entity.NarakaEntities;
 import com.yummy.naraka.item.NarakaCreativeModTabs;
 import com.yummy.naraka.item.NarakaItems;
@@ -17,8 +18,9 @@ public class NarakaMod {
 
     public NarakaMod(IEventBus modEventBus, ModContainer modContainer) {
         NarakaItems.register(modEventBus);
-        NarakaBlocks.register(modEventBus);
         NarakaCreativeModTabs.register(modEventBus);
+        NarakaBlocks.register(modEventBus);
+        NarakaBlockEntities.register(modEventBus);
         NarakaEntities.register(modEventBus);
         NarakaAttachments.register(modEventBus);
 

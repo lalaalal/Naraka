@@ -22,6 +22,9 @@ public class NarakaItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         withExistingParent(NarakaItems.TEST_ITEM, "item/stick");
+
+        simpleItem(NarakaItems.NECTARIUM);
+
         spearItem(NarakaItems.SPEAR_ITEM);
         spearItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
         spearItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM);

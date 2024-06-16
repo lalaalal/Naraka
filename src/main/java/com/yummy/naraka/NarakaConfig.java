@@ -17,9 +17,10 @@ public class NarakaConfig {
     public final ConfigValue<Integer> pauseDurationByStigma;
     public final ConfigValue<Integer> keepStigmaDuration;
 
+    public final ConfigValue<Double> nectariumComposeChance;
+
     private NarakaConfig(ModConfigSpec.Builder builder) {
         maxDeathCount = builder.defineInRange("death_count.max", 5, 1, Integer.MAX_VALUE);
-
         maxStigma = builder.defineInRange("stigma.max", 3, 1, Integer.MAX_VALUE);
         pauseDurationByStigma = builder
                 .comment("Ticks to pause entity")
@@ -27,6 +28,10 @@ public class NarakaConfig {
         keepStigmaDuration = builder
                 .comment("Ticks to keep stigma. Stigma will be decreased after configured tick")
                 .defineInRange("stigma.keep_duration", 20 * 60, 1, Integer.MAX_VALUE);
+
+        nectariumComposeChance = builder
+                .comment("Nectarium composing chance for honey block")
+                .defineInRange("nectarium_compose_chance", 0.5, 0.01, 1);
     }
 
     static NarakaConfig getInstance() {

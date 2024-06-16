@@ -3,6 +3,10 @@ package com.yummy.naraka.item;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.entity.NarakaEntities;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.component.Unbreakable;
 import net.neoforged.bus.api.IEventBus;
@@ -12,6 +16,19 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class NarakaItems {
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(NarakaMod.MOD_ID);
 
+    public static final DeferredItem<Item> NECTARIUM = ITEMS.registerItem(
+            "nectarium", properties -> new Item(properties
+                    .food(new FoodProperties.Builder()
+                            .nutrition(20)
+                            .saturationModifier(1f)
+                            .alwaysEdible()
+                            .effect(() -> new MobEffectInstance(MobEffects.HEAL, 1, 10), 1f)
+                            .build()
+                    )
+            )
+    );
+
+    // Spears
     public static final DeferredItem<TestItem> TEST_ITEM = ITEMS.register("test_item", TestItem::new);
     public static final DeferredItem<SpearItem> SPEAR_ITEM = ITEMS.registerItem(
             "spear", properties -> new SpearItem(Tiers.IRON, properties, NarakaEntities.THROWN_SPEAR)

@@ -34,10 +34,14 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
         protected void addTranslations() {
             add("itemGroup.naraka", "Naraka");
             addItem(NarakaItems.TEST_ITEM, "Test Item");
+            addItem(NarakaItems.NECTARIUM, "Nectarium");
             addItem(NarakaItems.SPEAR_ITEM, "Spear");
             addItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "Mighty Holy Spear");
             addItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM, "Spear of Longinus");
 
+            addBlock(NarakaBlocks.NECTARIUM_ORE, "Nectarium Ore");
+            addBlock(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "Deepslate Nectarium Ore");
+            addBlock(NarakaBlocks.NECTARIUM_BLOCK, "Nectarium Block");
             addBlock(NarakaBlocks.TRANSPARENT_BLOCK, "Transparent Block");
 
             addEntityType(NarakaEntities.HEROBRINE, "Naraka: Herobrine");
@@ -60,10 +64,14 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
         protected void addTranslations() {
             add("itemGroup.naraka", "Naraka");
             addItem(NarakaItems.TEST_ITEM, "테스트 아이템");
+            addItem(NarakaItems.NECTARIUM, "넥타리움");
             addItem(NarakaItems.SPEAR_ITEM, "창");
             addItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "강력한 성스러운 창");
             addItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM, "롱기누스의 창");
 
+            addBlock(NarakaBlocks.NECTARIUM_ORE, "넥타리움 광석");
+            addBlock(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "심층암 넥타리움 광석");
+            addBlock(NarakaBlocks.NECTARIUM_BLOCK, "넥타리움 블록");
             addBlock(NarakaBlocks.TRANSPARENT_BLOCK, "투명 블록");
 
             addEntityType(NarakaEntities.HEROBRINE, "히로빈");
