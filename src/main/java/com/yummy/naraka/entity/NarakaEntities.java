@@ -1,6 +1,7 @@
 package com.yummy.naraka.entity;
 
 import com.yummy.naraka.NarakaMod;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -8,6 +9,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.stream.Stream;
 
 public class NarakaEntities {
     private static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, NarakaMod.MOD_ID);
@@ -44,5 +47,11 @@ public class NarakaEntities {
 
     public static void register(IEventBus bus) {
         ENTITY_TYPES.register(bus);
+    }
+
+    public static Stream<EntityType<?>> getKnownEntityTypes() {
+        return ENTITY_TYPES.getEntries()
+                .stream()
+                .map(Holder::value);
     }
 }

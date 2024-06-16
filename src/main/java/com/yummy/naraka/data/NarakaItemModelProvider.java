@@ -1,4 +1,4 @@
-package com.yummy.naraka.datagen;
+package com.yummy.naraka.data;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.item.NarakaItems;

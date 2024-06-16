@@ -32,7 +32,7 @@ import java.util.function.Supplier;
 public class Spear extends AbstractArrow {
     private static final EntityDataAccessor<Integer> ID_LOYALTY = SynchedEntityData.defineId(Spear.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(Spear.class, EntityDataSerializers.BOOLEAN);
-    private boolean dealtDamage = false;
+    protected boolean dealtDamage = false;
     private int clientSideReturnTickCount = 0;
 
     protected Spear(EntityType<? extends Spear> entityType, Level level) {

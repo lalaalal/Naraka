@@ -1,4 +1,4 @@
-package com.yummy.naraka.datagen;
+package com.yummy.naraka.data.tags;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.item.NarakaItems;
@@ -29,7 +29,8 @@ public class NarakaItemTagsProvider extends ItemTagsProvider {
                 .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
 
         tag(NarakaItemTags.SPEAR_ENCHANTABLE)
-                .addTag(NarakaItemTags.SPEAR)
+                .add(NarakaItems.SPEAR_ITEM.get())
+                .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get())
                 .addTag(ItemTags.TRIDENT_ENCHANTABLE);
 
         tag(ItemTags.DURABILITY_ENCHANTABLE)

@@ -70,13 +70,19 @@ public class SpearOfLonginus extends Spear {
     }
 
     @Override
+    public int getLoyalty() {
+        return 3;
+    }
+
+    @Override
     public void remove(RemovalReason reason) {
         if (getY() <= -60 && reason.shouldDestroy()) {
+            if (dealtDamage)
+                return;
+            dealtDamage = true;
             setDeltaMovement(Vec3.ZERO);
-            moveTo(new Vec3(0, 120, 0));
             return;
         }
-
         super.remove(reason);
     }
 }

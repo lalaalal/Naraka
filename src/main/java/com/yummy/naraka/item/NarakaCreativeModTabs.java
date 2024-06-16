@@ -30,6 +30,10 @@ public class NarakaCreativeModTabs {
                 output.accept(NarakaItems.SPEAR_ITEM);
                 output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
                 output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM);
+
+                output.accept(NarakaItems.GOD_BLOOD);
+                output.accept(NarakaItems.PURIFIED_SOUL_METAL);
+                output.accept(NarakaItems.PURIFIED_SOUL_UPGRADING_SMITHING_TEMPLATE);
             }).build());
 
     public static void register(IEventBus bus) {

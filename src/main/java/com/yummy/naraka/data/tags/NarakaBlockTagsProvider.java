@@ -1,4 +1,4 @@
-package com.yummy.naraka.datagen;
+package com.yummy.naraka.data.tags;
 
 import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.HolderLookup;

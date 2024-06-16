@@ -1,4 +1,4 @@
-package com.yummy.naraka.datagen;
+package com.yummy.naraka.data;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.block.NarakaBlocks;
@@ -16,6 +16,7 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
+        simpleBlockWithItem(NarakaBlocks.TRANSPARENT_BLOCK);
         simpleBlockWithItem(NarakaBlocks.NECTARIUM_BLOCK);
         simpleBlockWithItem(NarakaBlocks.NECTARIUM_ORE);
         simpleBlockWithItem(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);

@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package com.yummy.naraka.datagen;
+package com.yummy.naraka.data;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 
