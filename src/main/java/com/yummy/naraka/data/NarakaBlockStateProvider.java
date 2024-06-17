@@ -22,6 +22,7 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         simpleBlockWithItem(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
     }
 
+
     public void simpleBlockWithItem(Supplier<? extends Block> blockSupplier) {
         simpleBlockWithItem(blockSupplier.get(), cubeAll(blockSupplier.get()));
     }
