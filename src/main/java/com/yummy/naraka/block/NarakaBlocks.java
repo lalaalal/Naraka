@@ -7,6 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DropExperienceBlock;
+import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -50,6 +51,13 @@ public class NarakaBlocks {
             "purified_soul_block",
             BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
             new Item.Properties().fireResistant()
+    );
+
+    public static final DeferredBlock<FireBlock> PURIFIED_SOUL_FIRE_BLOCK = registerBlockWithItem(
+            "purified_soul_fire",
+            properties -> new FireBlock(properties.noLootTable()),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.FIRE),
+            new Item.Properties()
     );
 
     private static <B extends Block> DeferredBlock<B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties blockProperties, Item.Properties itemProperties) {

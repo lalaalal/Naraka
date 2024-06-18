@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TransparentBlock extends Block {
@@ -40,7 +41,7 @@ public class TransparentBlock extends Block {
         Player player = NarakaUtil.getClientPlayer();
         if (state.getValue(VISIBLE) || (player != null && player.isCreative()))
             return super.getShape(state, pLevel, pPos, pContext);
-        return Block.box(0, 0, 0, 0, 0, 0);
+        return Shapes.empty();
     }
 
     @Override

@@ -73,9 +73,9 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "강력한 성스러운 창");
             addItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM, "롱기누스의 창");
 
-            addBlock(NarakaBlocks.NECTARIUM_ORE, "넥타리움 광석");
-            addBlock(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "심층암 넥타리움 광석");
-            addBlock(NarakaBlocks.NECTARIUM_BLOCK, "넥타리움 블록");
+            addBlock(NarakaBlocks.NECTARIUM_ORE, "넥타륨 광석");
+            addBlock(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "심층암 넥타륨 광석");
+            addBlock(NarakaBlocks.NECTARIUM_BLOCK, "넥타륨 블록");
             addBlock(NarakaBlocks.TRANSPARENT_BLOCK, "투명 블록");
 
             addEntityType(NarakaEntities.HEROBRINE, "히로빈");

@@ -27,6 +27,10 @@ public class NarakaMod {
         modContainer.registerConfig(ModConfig.Type.COMMON, NarakaConfig.SPEC);
     }
 
+    public static ResourceLocation mcLocaion(String path) {
+        return ResourceLocation.withDefaultNamespace(path);
+    }
+
     public static ResourceLocation neoLocation(String path) {
         return ResourceLocation.fromNamespaceAndPath("neoforge", path);
     }

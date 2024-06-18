@@ -45,22 +45,22 @@ public class NarakaItems {
     );
 
     public static final DeferredItem<Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = ITEMS.registerSimpleItem("purified_soul_upgrade_smithing_template");
+    public static final DeferredItem<Item> PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE = ITEMS.registerSimpleItem("purified_gems_upgrade_smithing_template");
 
     public static final DeferredItem<TestItem> TEST_ITEM = ITEMS.register("test_item", TestItem::new);
     // Spears
     public static final DeferredItem<SpearItem> SPEAR_ITEM = ITEMS.registerItem(
-            "spear", properties -> new SpearItem(Tiers.IRON, properties, NarakaEntities.THROWN_SPEAR)
+            "spear", properties -> new SpearItem(Tiers.IRON, properties.fireResistant(), NarakaEntities.THROWN_SPEAR)
     );
     public static final DeferredItem<SpearItem> MIGHTY_HOLY_SPEAR_ITEM = ITEMS.registerItem(
-            "mighty_holy_spear", properties -> new SpearItem(Tiers.NETHERITE, properties, NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR)
+            "mighty_holy_spear", properties -> new SpearItem(Tiers.NETHERITE, properties.fireResistant(), NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR)
     );
     public static final DeferredItem<SpearOfLonginusItem> SPEAR_OF_LONGINUS_ITEM = ITEMS.registerItem(
             "spear_of_longinus", properties -> new SpearOfLonginusItem(properties
                     .fireResistant()
-                    .component(DataComponents.UNBREAKABLE, new Unbreakable(false))
+                    .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
             )
     );
-
 
     public static void register(IEventBus bus) {
         ITEMS.register(bus);

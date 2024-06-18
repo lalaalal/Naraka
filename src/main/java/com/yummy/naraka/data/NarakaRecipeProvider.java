@@ -12,9 +12,12 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class NarakaRecipeProvider extends RecipeProvider {
+    private static final List<ItemLike> NECTARIUM_SMELTING = List.of(NarakaBlocks.NECTARIUM_ORE, NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
+
     public NarakaRecipeProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> provider) {
         super(packOutput, provider);
     }
@@ -33,12 +36,13 @@ public class NarakaRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
         smithing(
                 recipeOutput,
-                NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE,
+                NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE,
                 NarakaItems.SPEAR_ITEM,
                 NarakaItems.GOD_BLOOD,
                 RecipeCategory.COMBAT,
                 NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()
         );
+        oreSmelting(recipeOutput, NECTARIUM_SMELTING, RecipeCategory.MISC, NarakaItems.NECTARIUM, 0.7f, 200, "nectarium");
     }
 
     protected static void smithing(RecipeOutput recipeOutput, ItemLike template, ItemLike base, ItemLike ingredient, RecipeCategory category, Item result) {
