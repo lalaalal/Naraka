@@ -18,7 +18,6 @@ public class NarakaBlockLootSubProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        noDrop(NarakaBlocks.TRANSPARENT_BLOCK);
         dropSelf(NarakaBlocks.PURIFIED_SOUL_BLOCK);
         dropSelf(NarakaBlocks.NECTARIUM_BLOCK);
         dropOre(NarakaBlocks.NECTARIUM_ORE, NarakaItems.NECTARIUM);

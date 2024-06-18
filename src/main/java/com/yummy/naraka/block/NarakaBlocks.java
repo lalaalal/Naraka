@@ -21,9 +21,11 @@ public class NarakaBlocks {
 
     public static final DeferredBlock<Block> TRANSPARENT_BLOCK = registerBlockWithItem(
             "transparent_block",
-            properties -> new TransparentBlock(properties
+            properties -> new TransparentBlock(
+                properties
                     .noCollission()
                     .forceSolidOn()
+                    .noLootTable()
             ),
             Blocks.BEDROCK
     );
