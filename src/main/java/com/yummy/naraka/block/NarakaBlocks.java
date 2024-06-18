@@ -20,9 +20,12 @@ public class NarakaBlocks {
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(NarakaMod.MOD_ID);
 
     public static final DeferredBlock<Block> TRANSPARENT_BLOCK = registerBlockWithItem(
-            "transparent_block", TransparentBlock::new, BlockBehaviour.Properties.of()
+            "transparent_block",
+            properties -> new TransparentBlock(properties
                     .noCollission()
                     .forceSolidOn()
+            ),
+            Blocks.BEDROCK
     );
 
     public static final DeferredBlock<Block> NECTARIUM_BLOCK = registerBlockWithItem(

@@ -26,7 +26,7 @@ public class TransparentBlock extends Block {
         registerDefaultState(
                 this.stateDefinition
                         .any()
-                        .setValue(VISIBLE, false)
+                        .setValue(VISIBLE, true)
         );
     }
 
@@ -46,8 +46,7 @@ public class TransparentBlock extends Block {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level pLevel, BlockPos pos, Player player, InteractionHand pHand, BlockHitResult pHitResult) {
         if (player.isCreative() && itemStack.is(NarakaBlocks.TRANSPARENT_BLOCK.asItem())) {
-            blockState.cycle(VISIBLE);
-            pLevel.setBlock(pos, blockState, 10);
+            pLevel.setBlock(pos, blockState.cycle(VISIBLE), 10);
             return ItemInteractionResult.sidedSuccess(pLevel.isClientSide);
         }
         return super.useItemOn(itemStack, blockState, pLevel, pos, player, pHand, pHitResult);
