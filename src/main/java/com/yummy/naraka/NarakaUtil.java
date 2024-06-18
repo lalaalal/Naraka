@@ -1,7 +1,9 @@
 package com.yummy.naraka;
 
 import com.yummy.naraka.event.NarakaGameEventBus;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -31,6 +33,15 @@ public class NarakaUtil {
      */
     public static void initialize(MinecraftServer server) {
         NarakaUtil.server = server;
+    }
+
+    public @Nullable
+    static LocalPlayer getClientPlayer() {
+        try {
+            return Minecraft.getInstance().player;
+        } catch (RuntimeException exception) {
+            return null;
+        }
     }
 
     public static void writeUUIDs(CompoundTag compoundTag, String name, Collection<UUID> uuids) {

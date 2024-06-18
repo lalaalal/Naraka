@@ -2,7 +2,6 @@ package com.yummy.naraka.data.loot;
 
 import com.yummy.naraka.block.NarakaBlocks;
 import com.yummy.naraka.item.NarakaItems;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
@@ -10,6 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Collections;
+import java.util.function.Supplier;
 
 public class NarakaBlockLootSubProvider extends BlockLootSubProvider {
     protected NarakaBlockLootSubProvider(HolderLookup.Provider provider) {
@@ -25,16 +25,16 @@ public class NarakaBlockLootSubProvider extends BlockLootSubProvider {
         dropOre(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, NarakaItems.NECTARIUM);
     }
 
-    protected void noDrop(Holder<? extends Block> block) {
-        add(block.value(), noDrop());
+    protected void noDrop(Supplier<? extends Block> block) {
+        add(block.get(), noDrop());
     }
 
-    protected void dropSelf(Holder<? extends Block> block) {
-        super.dropSelf(block.value());
+    protected void dropSelf(Supplier<? extends Block> block) {
+        super.dropSelf(block.get());
     }
 
-    protected void dropOre(Holder<? extends Block> blockHolder, Holder<? extends Item> itemHolder) {
-        add(blockHolder.value(), block -> createOreDrop(block, itemHolder.value()));
+    protected void dropOre(Supplier<? extends Block> blockSupplier, Supplier<? extends Item> itemSupplier) {
+        add(blockSupplier.get(), block -> createOreDrop(block, itemSupplier.get()));
     }
 
     @Override

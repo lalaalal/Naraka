@@ -9,10 +9,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.loaders.SeparateTransformsModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredItem;
+
+import java.util.Arrays;
 
 public class NarakaItemModelProvider extends ItemModelProvider {
     public NarakaItemModelProvider(PackOutput packOutput, ExistingFileHelper existingFileHelper) {
@@ -25,12 +28,12 @@ public class NarakaItemModelProvider extends ItemModelProvider {
 
         simpleItem(NarakaItems.NECTARIUM);
 
-        spearItem(NarakaItems.SPEAR_ITEM);
-        spearItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
-        spearItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM);
+        spearItem(NarakaItems.SPEAR_ITEM, ItemDisplayContext.GUI, ItemDisplayContext.FIXED, ItemDisplayContext.GROUND);
+        spearItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, ItemDisplayContext.GUI, ItemDisplayContext.FIXED, ItemDisplayContext.GROUND);
+        spearItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM, ItemDisplayContext.GUI, ItemDisplayContext.FIXED);
     }
 
-    public ItemModelBuilder spearItem(DeferredItem<? extends SpearItem> spearItem) {
+    public ItemModelBuilder spearItem(DeferredItem<? extends SpearItem> spearItem, ItemDisplayContext... displayAsItem) {
         ResourceLocation empty = NarakaMod.location("item/empty");
         String spearName = spearItem.getId().getPath();
         String inventory = spearName + "_inventory";
@@ -38,21 +41,22 @@ public class NarakaItemModelProvider extends ItemModelProvider {
 
         withExistingParent(inventory, "item/generated")
                 .texture("layer0", NarakaMod.location("item", spearName));
-        spearAsEntity(spearName, inHand);
+        boolean displayAsEntityOnGround = Arrays.stream(displayAsItem).noneMatch(itemDisplayContext -> itemDisplayContext == ItemDisplayContext.GROUND);
+        spearAsEntity(spearName, inHand, displayAsEntityOnGround);
         ItemModelBuilder inHandReference = new ItemModelBuilder(empty, existingFileHelper)
                 .parent(new ModelFile.ExistingModelFile(NarakaMod.location("item", inHand), existingFileHelper));
         ItemModelBuilder inventoryReference = new ItemModelBuilder(empty, existingFileHelper)
                 .parent(new ModelFile.ExistingModelFile(NarakaMod.location("item", inventory), existingFileHelper));
-        return withExistingParent(spearItem, "item/generated")
+        SeparateTransformsModelBuilder<ItemModelBuilder> builder = withExistingParent(spearItem, "item/generated")
                 .customLoader(SeparateTransformsModelBuilder::begin)
-                .base(inHandReference)
-                .perspective(ItemDisplayContext.GUI, inventoryReference)
-                .perspective(ItemDisplayContext.FIXED, inventoryReference)
-                .end();
+                .base(inHandReference);
+        for (ItemDisplayContext context : displayAsItem)
+            builder.perspective(context, inventoryReference);
+        return builder.end();
     }
 
-    private ItemModelBuilder spearAsEntity(String spearName, String modelName) {
-        return getBuilder(modelName)
+    private ItemModelBuilder spearAsEntity(String spearName, String modelName, boolean includeGround) {
+        ModelBuilder<ItemModelBuilder>.TransformsBuilder builder = getBuilder(modelName)
                 .parent(new ModelFile.UncheckedModelFile("builtin/entity"))
                 .texture("particle", NarakaMod.location("item", spearName))
                 .transforms()
@@ -71,12 +75,13 @@ public class NarakaItemModelProvider extends ItemModelProvider {
                 .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
                 .rotation(0, 60, 180)
                 .translation(11, 5, -1)
-                .end()
-                .transform(ItemDisplayContext.GROUND)
+                .end();
+        if (includeGround)
+            builder.transform(ItemDisplayContext.GROUND)
                 .rotation(180, 0, 0)
                 .translation(8.25f, 0, -8.25f)
-                .end()
                 .end();
+        return builder.end();
     }
 
     public ItemModelBuilder simpleItem(DeferredItem<? extends Item> item) {
