@@ -35,8 +35,12 @@ public class NarakaUtil {
         NarakaUtil.server = server;
     }
 
-    public @Nullable
-    static LocalPlayer getClientPlayer() {
+    /**
+     * Get LocalPlayer if Minecraft instance exists
+     * 
+     * @return Local player
+     */
+    public static @Nullable LocalPlayer getClientPlayer() {
         try {
             return Minecraft.getInstance().player;
         } catch (RuntimeException exception) {

@@ -33,7 +33,7 @@ public class NarakaRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
         smithing(
                 recipeOutput,
-                NarakaItems.PURIFIED_SOUL_UPGRADING_SMITHING_TEMPLATE,
+                NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE,
                 NarakaItems.SPEAR_ITEM,
                 NarakaItems.GOD_BLOOD,
                 RecipeCategory.COMBAT,

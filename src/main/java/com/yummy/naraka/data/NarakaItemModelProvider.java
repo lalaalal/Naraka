@@ -24,10 +24,13 @@ public class NarakaItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        withExistingParent(NarakaItems.TEST_ITEM, "item/stick");
-
+        simpleItem(NarakaItems.PURIFIED_SOUL_METAL);
+        simpleItem(NarakaItems.PURIFIED_SOUL_SHARD);
         simpleItem(NarakaItems.NECTARIUM);
+        simpleItem(NarakaItems.GOD_BLOOD);
+        simpleItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE);
 
+        withExistingParent(NarakaItems.TEST_ITEM, "item/stick");
         spearItem(NarakaItems.SPEAR_ITEM, ItemDisplayContext.GUI, ItemDisplayContext.FIXED, ItemDisplayContext.GROUND);
         spearItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, ItemDisplayContext.GUI, ItemDisplayContext.FIXED, ItemDisplayContext.GROUND);
         spearItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM, ItemDisplayContext.GUI, ItemDisplayContext.FIXED);

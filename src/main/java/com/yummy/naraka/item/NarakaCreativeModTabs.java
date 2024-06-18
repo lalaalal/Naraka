@@ -33,7 +33,7 @@ public class NarakaCreativeModTabs {
 
                 output.accept(NarakaItems.GOD_BLOOD);
                 output.accept(NarakaItems.PURIFIED_SOUL_METAL);
-                output.accept(NarakaItems.PURIFIED_SOUL_UPGRADING_SMITHING_TEMPLATE);
+                output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE);
             }).build());
 
     public static void register(IEventBus bus) {

@@ -44,10 +44,10 @@ public class NarakaItems {
                     .rarity(Rarity.EPIC)
     );
 
-    public static final DeferredItem<Item> PURIFIED_SOUL_UPGRADING_SMITHING_TEMPLATE = ITEMS.registerSimpleItem("purified_soul_upgrading_smithing_template");
+    public static final DeferredItem<Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = ITEMS.registerSimpleItem("purified_soul_upgrade_smithing_template");
 
-    // Spears
     public static final DeferredItem<TestItem> TEST_ITEM = ITEMS.register("test_item", TestItem::new);
+    // Spears
     public static final DeferredItem<SpearItem> SPEAR_ITEM = ITEMS.registerItem(
             "spear", properties -> new SpearItem(Tiers.IRON, properties, NarakaEntities.THROWN_SPEAR)
     );

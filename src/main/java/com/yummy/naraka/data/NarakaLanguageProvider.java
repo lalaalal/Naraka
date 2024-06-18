@@ -33,8 +33,12 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
         @Override
         protected void addTranslations() {
             add("itemGroup.naraka", "Naraka");
-            addItem(NarakaItems.TEST_ITEM, "Test Item");
+            addItem(NarakaItems.PURIFIED_SOUL_METAL, "Purified Soul Metal");
+            addItem(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard");
             addItem(NarakaItems.NECTARIUM, "Nectarium");
+            addItem(NarakaItems.GOD_BLOOD, "God Blood");
+            addItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "Smithing Template");
+            addItem(NarakaItems.TEST_ITEM, "Test Item");
             addItem(NarakaItems.SPEAR_ITEM, "Spear");
             addItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "Mighty Holy Spear");
             addItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM, "Spear of Longinus");
