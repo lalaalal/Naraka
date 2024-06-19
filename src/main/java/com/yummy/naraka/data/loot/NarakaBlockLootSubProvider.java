@@ -7,9 +7,10 @@ import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredItem;
 
 import java.util.Collections;
-import java.util.function.Supplier;
 
 public class NarakaBlockLootSubProvider extends BlockLootSubProvider {
     protected NarakaBlockLootSubProvider(HolderLookup.Provider provider) {
@@ -22,18 +23,15 @@ public class NarakaBlockLootSubProvider extends BlockLootSubProvider {
         dropSelf(NarakaBlocks.NECTARIUM_BLOCK);
         dropOre(NarakaBlocks.NECTARIUM_ORE, NarakaItems.NECTARIUM);
         dropOre(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, NarakaItems.NECTARIUM);
+        dropSelf(NarakaBlocks.SOUL_CRAFTING_BLOCK);
     }
 
-    protected void noDrop(Supplier<? extends Block> block) {
-        add(block.get(), noDrop());
-    }
-
-    protected void dropSelf(Supplier<? extends Block> block) {
+    protected void dropSelf(DeferredBlock<? extends Block> block) {
         super.dropSelf(block.get());
     }
 
-    protected void dropOre(Supplier<? extends Block> blockSupplier, Supplier<? extends Item> itemSupplier) {
-        add(blockSupplier.get(), block -> createOreDrop(block, itemSupplier.get()));
+    protected void dropOre(DeferredBlock<? extends Block> oreBlock, DeferredItem<? extends Item> itemSupplier) {
+        add(oreBlock.get(), block -> createOreDrop(block, itemSupplier.get()));
     }
 
     @Override

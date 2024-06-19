@@ -4,11 +4,12 @@ import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.Holder;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DropExperienceBlock;
-import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -23,10 +24,10 @@ public class NarakaBlocks {
     public static final DeferredBlock<Block> TRANSPARENT_BLOCK = registerBlockWithItem(
             "transparent_block",
             properties -> new TransparentBlock(
-                properties
-                    .noCollission()
-                    .forceSolidOn()
-                    .noLootTable()
+                    properties
+                            .noCollission()
+                            .forceSolidOn()
+                            .noLootTable()
             ),
             Blocks.BEDROCK
     );
@@ -53,11 +54,21 @@ public class NarakaBlocks {
             new Item.Properties().fireResistant()
     );
 
-    public static final DeferredBlock<FireBlock> PURIFIED_SOUL_FIRE_BLOCK = registerBlockWithItem(
+    public static final DeferredBlock<BaseFireBlock> PURIFIED_SOUL_FIRE_BLOCK = registerBlockWithItem(
             "purified_soul_fire",
-            properties -> new FireBlock(properties.noLootTable()),
-            BlockBehaviour.Properties.ofFullCopy(Blocks.FIRE),
+            properties -> new PurifiedSoulFireBlock(properties
+                    .noLootTable()
+                    .lightLevel(state -> 7)
+                    .mapColor(MapColor.COLOR_BLACK)
+            ),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.SOUL_FIRE),
             new Item.Properties()
+    );
+
+    public static final DeferredBlock<SoulCraftingBlock> SOUL_CRAFTING_BLOCK = registerBlockWithItem(
+            "soul_crafting_block",
+            SoulCraftingBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.BLAST_FURNACE)
     );
 
     private static <B extends Block> DeferredBlock<B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties blockProperties, Item.Properties itemProperties) {

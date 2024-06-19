@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class NarakaRecipeProvider extends RecipeProvider {
-    private static final List<ItemLike> NECTARIUM_SMELTING = List.of(NarakaBlocks.NECTARIUM_ORE, NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
+    private static final List<ItemLike> NECTARIUM_SMELTABLES = List.of(NarakaBlocks.NECTARIUM_ORE, NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
 
     public NarakaRecipeProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> provider) {
         super(packOutput, provider);
@@ -42,7 +42,8 @@ public class NarakaRecipeProvider extends RecipeProvider {
                 RecipeCategory.COMBAT,
                 NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()
         );
-        oreSmelting(recipeOutput, NECTARIUM_SMELTING, RecipeCategory.MISC, NarakaItems.NECTARIUM, 0.7f, 200, "nectarium");
+        oreSmelting(recipeOutput, NECTARIUM_SMELTABLES, RecipeCategory.MISC, NarakaItems.NECTARIUM, 0.7f, 200, "nectarium");
+        oreBlasting(recipeOutput, NECTARIUM_SMELTABLES, RecipeCategory.MISC, NarakaItems.NECTARIUM, 0.7f, 100, "nectarium");
     }
 
     protected static void smithing(RecipeOutput recipeOutput, ItemLike template, ItemLike base, ItemLike ingredient, RecipeCategory category, Item result) {

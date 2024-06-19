@@ -15,6 +15,8 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class NarakaItems {
+    public static final String SOUL_INFUSED_PREFIX = "soul_infused_";
+
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(NarakaMod.MOD_ID);
 
     // Ingredients
@@ -47,6 +49,15 @@ public class NarakaItems {
     public static final DeferredItem<Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = ITEMS.registerSimpleItem("purified_soul_upgrade_smithing_template");
     public static final DeferredItem<Item> PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE = ITEMS.registerSimpleItem("purified_gems_upgrade_smithing_template");
 
+    public static final DeferredItem<Item> SOUL_INFUSED_AMETHYST = registerSoulInfusedItem("amethyst");
+    public static final DeferredItem<Item> SOUL_INFUSED_COPPER = registerSoulInfusedItem("copper");
+    public static final DeferredItem<Item> SOUL_INFUSED_DIAMOND = registerSoulInfusedItem("diamond");
+    public static final DeferredItem<Item> SOUL_INFUSED_EMERALD = registerSoulInfusedItem("emerald");
+    public static final DeferredItem<Item> SOUL_INFUSED_GOLD = registerSoulInfusedItem("gold");
+    public static final DeferredItem<Item> SOUL_INFUSED_LAPIS = registerSoulInfusedItem("lapis");
+    public static final DeferredItem<Item> SOUL_INFUSED_NECTARIUM = registerSoulInfusedItem("nectarium");
+    public static final DeferredItem<Item> SOUL_INFUSED_REDSTONE = registerSoulInfusedItem("redstone");
+
     public static final DeferredItem<TestItem> TEST_ITEM = ITEMS.register("test_item", TestItem::new);
     // Spears
     public static final DeferredItem<SpearItem> SPEAR_ITEM = ITEMS.registerItem(
@@ -61,6 +72,10 @@ public class NarakaItems {
                     .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
             )
     );
+
+    private static DeferredItem<Item> registerSoulInfusedItem(String name) {
+        return ITEMS.registerSimpleItem(SOUL_INFUSED_PREFIX + name, new Item.Properties().fireResistant());
+    }
 
     public static void register(IEventBus bus) {
         ITEMS.register(bus);

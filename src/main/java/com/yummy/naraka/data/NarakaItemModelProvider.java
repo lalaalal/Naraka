@@ -35,6 +35,15 @@ public class NarakaItemModelProvider extends ItemModelProvider {
         spearItem(NarakaItems.SPEAR_ITEM, ItemDisplayContext.GUI, ItemDisplayContext.FIXED, ItemDisplayContext.GROUND);
         spearItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, ItemDisplayContext.GUI, ItemDisplayContext.FIXED, ItemDisplayContext.GROUND);
         spearItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM, ItemDisplayContext.GUI, ItemDisplayContext.FIXED);
+
+        simpleItem(NarakaItems.SOUL_INFUSED_AMETHYST);
+        simpleItem(NarakaItems.SOUL_INFUSED_COPPER);
+        simpleItem(NarakaItems.SOUL_INFUSED_DIAMOND);
+        simpleItem(NarakaItems.SOUL_INFUSED_EMERALD);
+        simpleItem(NarakaItems.SOUL_INFUSED_GOLD);
+        simpleItem(NarakaItems.SOUL_INFUSED_LAPIS);
+        simpleItem(NarakaItems.SOUL_INFUSED_NECTARIUM);
+        simpleItem(NarakaItems.SOUL_INFUSED_REDSTONE);
     }
 
     public ItemModelBuilder spearItem(DeferredItem<? extends SpearItem> spearItem, ItemDisplayContext... displayAsItem) {
@@ -82,9 +91,9 @@ public class NarakaItemModelProvider extends ItemModelProvider {
                 .end();
         if (includeGround)
             builder.transform(ItemDisplayContext.GROUND)
-                .rotation(180, 0, 0)
-                .translation(8.25f, 0, -8.25f)
-                .end();
+                    .rotation(180, 0, 0)
+                    .translation(8.25f, 0, -8.25f)
+                    .end();
         return builder.end();
     }
 

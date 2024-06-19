@@ -37,7 +37,7 @@ public class NarakaUtil {
 
     /**
      * Get LocalPlayer if Minecraft instance exists
-     * 
+     *
      * @return Local player
      */
     public static @Nullable LocalPlayer getClientPlayer() {
