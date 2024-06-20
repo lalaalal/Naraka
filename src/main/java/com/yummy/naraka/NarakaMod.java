@@ -6,6 +6,7 @@ import com.yummy.naraka.block.entity.NarakaBlockEntities;
 import com.yummy.naraka.entity.NarakaEntities;
 import com.yummy.naraka.item.NarakaCreativeModTabs;
 import com.yummy.naraka.item.NarakaItems;
+import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -23,6 +24,7 @@ public class NarakaMod {
         NarakaBlockEntities.register(modEventBus);
         NarakaEntities.register(modEventBus);
         NarakaAttachments.register(modEventBus);
+        NarakaMenuTypes.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, NarakaConfig.SPEC);
     }
