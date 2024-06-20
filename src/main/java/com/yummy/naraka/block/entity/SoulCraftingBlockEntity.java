@@ -27,6 +27,22 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity {
         super(NarakaBlockEntities.SOUL_CRAFTING_BLOCK_ENTITY.get(), pos, blockState);
     }
 
+    public int getFuel() {
+        return data.get(FUEL_DATA_ID);
+    }
+
+    public int getCraftingTime() {
+        return data.get(CRAFTING_TIME_DATA_ID);
+    }
+
+    public void setFuel(int fuel) {
+        data.set(FUEL_DATA_ID, fuel);
+    }
+
+    public void setCraftingTime(int craftingTime) {
+        data.set(CRAFTING_TIME_DATA_ID, craftingTime);
+    }
+
     @Override
     protected Component getDefaultName() {
         return Component.translatable("container.soul_crafting");
@@ -53,6 +69,7 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity {
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, SoulCraftingBlockEntity blockEntity) {
-
+        int fuel = blockEntity.getFuel();
+        int craftingTime = blockEntity.getCraftingTime();
     }
 }
