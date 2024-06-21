@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package com.yummy.naraka.gui;
+package com.yummy.naraka.client.gui.layer;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

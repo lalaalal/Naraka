@@ -1,4 +1,4 @@
-package com.yummy.naraka.gui.layer;
+package com.yummy.naraka.client.gui.layer;
 
 import com.yummy.naraka.NarakaContext;
 import com.yummy.naraka.NarakaMod;

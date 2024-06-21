@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 
@@ -19,6 +20,7 @@ public class SoulCraftingMenu extends RecipeBookMenu<SingleRecipeInput, SoulCraf
     private final Container container;
     private final ContainerData data;
     private final Level level;
+    private final RecipeManager recipeManager;
 
     protected SoulCraftingMenu(int containerId, Inventory inventory) {
         this(containerId, inventory, new SimpleContainer(3), new SimpleContainerData(2));
@@ -32,6 +34,7 @@ public class SoulCraftingMenu extends RecipeBookMenu<SingleRecipeInput, SoulCraf
         this.container = container;
         this.data = data;
         this.level = inventory.player.level();
+        this.recipeManager = level.getRecipeManager();
 
         Slot fuelSlot = PredicateSlot.builder(container)
                 .at(SoulCraftingBlockEntity.FUEL_SLOT)
@@ -100,7 +103,7 @@ public class SoulCraftingMenu extends RecipeBookMenu<SingleRecipeInput, SoulCraf
 
     @Override
     public RecipeBookType getRecipeBookType() {
-        return RecipeBookType.valueOf("soul_crafting");
+        return RecipeBookType.CRAFTING;
     }
 
     @Override

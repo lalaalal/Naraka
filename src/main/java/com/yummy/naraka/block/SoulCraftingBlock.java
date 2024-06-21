@@ -5,6 +5,8 @@ import com.yummy.naraka.block.entity.NarakaBlockEntities;
 import com.yummy.naraka.block.entity.SoulCraftingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -17,6 +19,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class SoulCraftingBlock extends BaseEntityBlock {
@@ -37,6 +40,15 @@ public class SoulCraftingBlock extends BaseEntityBlock {
         super.createBlockStateDefinition(builder);
         builder.add(FACING);
         builder.add(LIT);
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (level.isClientSide)
+            return InteractionResult.SUCCESS;
+        if (level.getBlockEntity(pos) instanceof SoulCraftingBlockEntity soulCraftingBlockEntity)
+            player.openMenu(soulCraftingBlockEntity);
+        return InteractionResult.CONSUME;
     }
 
     @Override
