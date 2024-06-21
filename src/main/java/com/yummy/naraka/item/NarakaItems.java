@@ -15,7 +15,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class NarakaItems {
-    public static final String SOUL_INFUSED_PREFIX = "soul_infused_";
+    private static final String SOUL_INFUSED_PREFIX = "soul_infused_";
 
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(NarakaMod.MOD_ID);
 

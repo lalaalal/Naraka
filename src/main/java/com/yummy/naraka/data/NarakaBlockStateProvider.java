@@ -18,9 +18,9 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
     public static final String FIRE_SIDE_SUFFIX = "_side";
     public static final String FIRE_SIDE__ALT_SUFFIX = "_side_alt";
 
-    public static final ResourceLocation TEMPLATE_FIRE_FLOOR = NarakaMod.mcLocaion("template_fire_floor");
-    public static final ResourceLocation TEMPLATE_FIRE_SIDE = NarakaMod.mcLocaion("template_fire_side");
-    public static final ResourceLocation TEMPLATE_FIRE_SIDE_ALT = NarakaMod.mcLocaion("template_fire_side_alt");
+    public static final ResourceLocation TEMPLATE_FIRE_FLOOR = NarakaMod.mcLocation("template_fire_floor");
+    public static final ResourceLocation TEMPLATE_FIRE_SIDE = NarakaMod.mcLocation("template_fire_side");
+    public static final ResourceLocation TEMPLATE_FIRE_SIDE_ALT = NarakaMod.mcLocation("template_fire_side_alt");
 
     public static ResourceLocation texture(String path) {
         return NarakaMod.location(ModelProvider.BLOCK_FOLDER, path);

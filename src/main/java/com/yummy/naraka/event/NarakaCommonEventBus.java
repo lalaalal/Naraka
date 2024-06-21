@@ -11,6 +11,7 @@ import com.yummy.naraka.entity.NarakaEntities;
 import com.yummy.naraka.network.payload.ChangeDeathCountVisibilityPayload;
 import com.yummy.naraka.network.payload.IntAttachmentSyncHandler;
 import com.yummy.naraka.network.payload.SyncEntityIntAttachmentPayload;
+import net.minecraft.world.inventory.RecipeBookType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
@@ -28,6 +29,8 @@ public class NarakaCommonEventBus {
             AttachmentSyncHelper.initialize();
             IntAttachmentSyncHandler.initialize();
             NarakaContext.initialize();
+
+            RecipeBookType.create("soul_crafting");
         });
     }
 

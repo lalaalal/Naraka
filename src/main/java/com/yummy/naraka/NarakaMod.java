@@ -6,6 +6,8 @@ import com.yummy.naraka.block.entity.NarakaBlockEntities;
 import com.yummy.naraka.entity.NarakaEntities;
 import com.yummy.naraka.item.NarakaCreativeModTabs;
 import com.yummy.naraka.item.NarakaItems;
+import com.yummy.naraka.item.crafting.NarakaRecipeSerializers;
+import com.yummy.naraka.item.crafting.NarakaRecipeTypes;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
@@ -25,11 +27,13 @@ public class NarakaMod {
         NarakaEntities.register(modEventBus);
         NarakaAttachments.register(modEventBus);
         NarakaMenuTypes.register(modEventBus);
+        NarakaRecipeTypes.register(modEventBus);
+        NarakaRecipeSerializers.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, NarakaConfig.SPEC);
     }
 
-    public static ResourceLocation mcLocaion(String path) {
+    public static ResourceLocation mcLocation(String path) {
         return ResourceLocation.withDefaultNamespace(path);
     }
 

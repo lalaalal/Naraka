@@ -5,17 +5,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.entity.player.StackedContents;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
-public class SoulCraftingBlockEntity extends BaseContainerBlockEntity {
+public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements RecipeCraftingHolder, StackedContentsCompatible {
     public static final int FUEL_SLOT = 0;
     public static final int INGREDIENT_SLOT = 1;
+    public static final int RESULT_SLOT = 3;
 
     public static final int FUEL_DATA_ID = 0;
     public static final int CRAFTING_TIME_DATA_ID = 1;
@@ -71,5 +73,22 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity {
     public static void serverTick(Level level, BlockPos pos, BlockState state, SoulCraftingBlockEntity blockEntity) {
         int fuel = blockEntity.getFuel();
         int craftingTime = blockEntity.getCraftingTime();
+    }
+
+    @Override
+    public void setRecipeUsed(@Nullable RecipeHolder<?> pRecipe) {
+
+    }
+
+    @Nullable
+    @Override
+    public RecipeHolder<?> getRecipeUsed() {
+        return null;
+    }
+
+    @Override
+    public void fillStackedContents(StackedContents helper) {
+        for (ItemStack item : items)
+            helper.accountStack(item);
     }
 }
