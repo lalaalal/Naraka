@@ -5,6 +5,7 @@ import com.yummy.naraka.block.entity.NarakaBlockEntities;
 import com.yummy.naraka.block.entity.SoulCraftingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -72,6 +73,18 @@ public class SoulCraftingBlock extends BaseEntityBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new SoulCraftingBlockEntity(pos, state);
+    }
+
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof SoulCraftingBlockEntity soulCraftingBlockEntity) {
+                if (!level.isClientSide)
+                    Containers.dropContents(level, pos, soulCraftingBlockEntity);
+            }
+            super.onRemove(state, level, pos, newState, movedByPiston);
+        }
     }
 
     @SuppressWarnings("deprecation")

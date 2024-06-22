@@ -6,8 +6,11 @@ import com.yummy.naraka.item.crafting.NarakaRecipeTypes;
 import com.yummy.naraka.item.crafting.SoulCraftingRecipe;
 import com.yummy.naraka.world.inventory.SoulCraftingMenu;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
@@ -98,6 +101,23 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
         return items.size();
     }
 
+    @Override
+    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider registries) {
+        super.saveAdditional(compoundTag, registries);
+        ContainerHelper.saveAllItems(compoundTag, this.items, registries);
+        compoundTag.putInt("CraftingTime", getCraftingTime());
+        compoundTag.putInt("Fuel", getFuel());
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider registries) {
+        super.loadAdditional(compoundTag, registries);
+        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(compoundTag, this.items, registries);
+        setCraftingTime(compoundTag.getInt("CraftingTime"));
+        setFuel(compoundTag.getInt("Fuel"));
+    }
+
     public static void serverTick(Level level, BlockPos pos, BlockState state, SoulCraftingBlockEntity blockEntity) {
         int fuel = blockEntity.getFuel();
         int craftingTime = blockEntity.getCraftingTime();
@@ -129,8 +149,12 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
                 existingResult.grow(1);
             level.setBlock(pos, state.setValue(SoulCraftingBlock.LIT, false), 10);
         }
-        if (craftingTime >= 0)
-            blockEntity.setCraftingTime(craftingTime - 1);
+        if (craftingTime >= 0) {
+            if (ingredientItem.isEmpty())
+                blockEntity.setCraftingTime(-1);
+            else
+                blockEntity.setCraftingTime(craftingTime - 1);
+        }
     }
 
     public static boolean canCraft(Level level, RecipeHolder<SoulCraftingRecipe> recipe, ItemStack existingResult) {
