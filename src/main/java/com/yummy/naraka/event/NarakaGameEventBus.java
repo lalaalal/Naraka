@@ -9,17 +9,14 @@ import com.yummy.naraka.damagesource.NarakaDamageSources;
 import com.yummy.naraka.entity.DeathCountingEntity;
 import com.yummy.naraka.item.enchantment.NarakaEnchantments;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
-import com.yummy.naraka.tags.NarakaItemTags;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
@@ -90,14 +87,5 @@ public class NarakaGameEventBus {
         if (DeathCountHelper.getDeathCount(player) < 1)
             DeathCountHelper.restoreDeathCount(player);
         AttachmentSyncHelper.syncAttachments(player);
-    }
-
-    @SubscribeEvent
-    public static void onEntityJoin(EntityJoinLevelEvent event) {
-        Entity entity = event.getEntity();
-        if (entity instanceof ItemEntity itemEntity) {
-            if (itemEntity.getItem().is(NarakaItemTags.INVULNERABLE_ITEM))
-                itemEntity.setInvulnerable(true);
-        }
     }
 }

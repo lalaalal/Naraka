@@ -33,12 +33,14 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         fireBlock(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK);
+        simpleBlockWithItem(NarakaBlocks.PURIFIED_SOUL_BLOCK);
         simpleBlockWithItem(NarakaBlocks.TRANSPARENT_BLOCK);
         simpleBlockWithItem(NarakaBlocks.NECTARIUM_BLOCK);
         simpleBlockWithItem(NarakaBlocks.NECTARIUM_ORE);
         simpleBlockWithItem(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
         horizontalBlockWithStateOnOff(NarakaBlocks.SOUL_CRAFTING_BLOCK);
-        simpleBlockItem(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(), existingModel("purified_soul_fire_side0"));
+
+        simpleBlockItem(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(), existingModel("purified_soul_fire_side1"));
         simpleBlockItem(NarakaBlocks.SOUL_CRAFTING_BLOCK);
     }
 

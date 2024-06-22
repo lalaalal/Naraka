@@ -10,10 +10,11 @@ import net.minecraft.core.Position;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class SpearOfLonginusItem extends SpearItem {
     public SpearOfLonginusItem(Properties properties) {
@@ -39,8 +40,22 @@ public class SpearOfLonginusItem extends SpearItem {
     }
 
     @Override
-    public boolean onDroppedByPlayer(ItemStack item, Player player) {
-        return super.onDroppedByPlayer(item, player);
+    public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
+        entity.setInvulnerable(true);
+        if (entity.getAge() > 20) {
+            entity.setNoGravity(true);
+            entity.setOnGround(true);
+        }
+        Vec3 delta = entity.getDeltaMovement();
+        entity.setDeltaMovement(delta.multiply(0.9, 0.8, 0.9));
+
+
+        return false;
+    }
+
+    @Override
+    public int getEntityLifespan(ItemStack itemStack, Level level) {
+        return Integer.MAX_VALUE;
     }
 
     @Override

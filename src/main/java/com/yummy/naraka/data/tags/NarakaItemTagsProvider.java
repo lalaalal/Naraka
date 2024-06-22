@@ -23,8 +23,7 @@ public class NarakaItemTagsProvider extends ItemTagsProvider {
                 .add(NarakaItems.SPEAR_ITEM.get())
                 .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get())
                 .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
-        tag(NarakaItemTags.INVULNERABLE_ITEM)
-                .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
+
         tag(NarakaItemTags.ALWAYS_RENDER_ITEM_ENTITY)
                 .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
 
