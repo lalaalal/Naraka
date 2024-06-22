@@ -80,7 +80,8 @@ public class SoulCraftingMenu extends AbstractContainerMenu {
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
         Slot slot = slots.get(index);
-        ItemStack item = slot.getItem().copy();
+        ItemStack item = slot.getItem();
+        ItemStack copy = item.copy();
 
         if (PLAYER_INVENTORY_START <= index) {
             if (isIngredient(item) && !moveItemStackTo(item, INGREDIENT_SLOT, INGREDIENT_SLOT + 1, false))
@@ -95,8 +96,8 @@ public class SoulCraftingMenu extends AbstractContainerMenu {
             if (!moveItemStackTo(item, PLAYER_INVENTORY_START, PLAYER_HOTBAR_END, false))
                 return ItemStack.EMPTY;
         }
-        
-        return item;
+        slot.onTake(player, item);
+        return copy;
     }
 
     @Override
