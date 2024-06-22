@@ -137,7 +137,6 @@ public class Spear extends AbstractArrow {
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
         this.playSound(soundevent, 1.0F, 1.0F);
-        this.dealtDamage = true;
     }
 
     protected boolean canHurtEntity(Entity entity) {
