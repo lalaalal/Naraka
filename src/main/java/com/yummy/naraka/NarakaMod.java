@@ -1,14 +1,14 @@
 package com.yummy.naraka;
 
 import com.yummy.naraka.attachment.NarakaAttachments;
-import com.yummy.naraka.block.NarakaBlocks;
-import com.yummy.naraka.block.entity.NarakaBlockEntities;
-import com.yummy.naraka.entity.NarakaEntities;
-import com.yummy.naraka.item.NarakaCreativeModTabs;
-import com.yummy.naraka.item.NarakaItems;
-import com.yummy.naraka.item.crafting.NarakaRecipeSerializers;
-import com.yummy.naraka.item.crafting.NarakaRecipeTypes;
+import com.yummy.naraka.world.block.NarakaBlocks;
+import com.yummy.naraka.world.block.entity.NarakaBlockEntities;
+import com.yummy.naraka.world.entity.NarakaEntities;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
+import com.yummy.naraka.world.item.NarakaCreativeModTabs;
+import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.crafting.NarakaRecipeSerializers;
+import com.yummy.naraka.world.item.crafting.NarakaRecipeTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;

@@ -15,7 +15,7 @@ import com.yummy.naraka.client.renderer.HerobrineRenderer;
 import com.yummy.naraka.client.renderer.NarakaCustomRenderer;
 import com.yummy.naraka.client.renderer.NarakaItemEntityRenderer;
 import com.yummy.naraka.client.renderer.SpearRenderer;
-import com.yummy.naraka.entity.NarakaEntities;
+import com.yummy.naraka.world.entity.NarakaEntities;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.server.packs.resources.ResourceProvider;

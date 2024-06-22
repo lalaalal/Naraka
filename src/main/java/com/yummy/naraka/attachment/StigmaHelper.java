@@ -2,9 +2,9 @@ package com.yummy.naraka.attachment;
 
 import com.yummy.naraka.NarakaConfig;
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.event.NarakaGameEventBus;
 import com.yummy.naraka.network.payload.IntAttachmentSyncHandler;
+import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;

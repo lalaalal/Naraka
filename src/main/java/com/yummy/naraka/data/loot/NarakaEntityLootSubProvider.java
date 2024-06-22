@@ -1,7 +1,7 @@
 package com.yummy.naraka.data.loot;
 
-import com.yummy.naraka.entity.NarakaEntities;
-import com.yummy.naraka.item.NarakaItems;
+import com.yummy.naraka.world.entity.NarakaEntities;
+import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.world.entity.EntityType;

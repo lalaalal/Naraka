@@ -3,7 +3,7 @@ package com.yummy.naraka.client.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaRenderTypes;
-import com.yummy.naraka.entity.SpearOfLonginus;
+import com.yummy.naraka.world.entity.SpearOfLonginus;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;

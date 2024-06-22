@@ -1,9 +1,9 @@
 package com.yummy.naraka.data;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.block.NarakaBlocks;
-import com.yummy.naraka.item.NarakaItems;
-import com.yummy.naraka.item.crafting.SoulCraftingRecipe;
+import com.yummy.naraka.world.block.NarakaBlocks;
+import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.crafting.SoulCraftingRecipe;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -54,6 +54,8 @@ public class NarakaRecipeProvider extends RecipeProvider {
         soulCraftingRecipe(recipeOutput, Items.LAPIS_LAZULI, NarakaItems.SOUL_INFUSED_LAPIS);
         soulCraftingRecipe(recipeOutput, NarakaItems.NECTARIUM, NarakaItems.SOUL_INFUSED_NECTARIUM);
         soulCraftingRecipe(recipeOutput, Items.REDSTONE, NarakaItems.SOUL_INFUSED_REDSTONE);
+
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_REDSTONE, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
     }
 
     protected static void smithing(RecipeOutput recipeOutput, ItemLike template, ItemLike base, ItemLike ingredient, RecipeCategory category, Item result) {

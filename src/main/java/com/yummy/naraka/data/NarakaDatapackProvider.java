@@ -1,8 +1,8 @@
 package com.yummy.naraka.data;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.damagesource.NarakaDamageTypes;
-import com.yummy.naraka.item.enchantment.NarakaEnchantments;
+import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
+import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;

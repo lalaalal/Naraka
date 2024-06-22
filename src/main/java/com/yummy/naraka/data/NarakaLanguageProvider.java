@@ -1,10 +1,10 @@
 package com.yummy.naraka.data;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.block.NarakaBlocks;
-import com.yummy.naraka.damagesource.NarakaDamageTypes;
-import com.yummy.naraka.entity.NarakaEntities;
-import com.yummy.naraka.item.NarakaItems;
+import com.yummy.naraka.world.block.NarakaBlocks;
+import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
+import com.yummy.naraka.world.entity.NarakaEntities;
+import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;

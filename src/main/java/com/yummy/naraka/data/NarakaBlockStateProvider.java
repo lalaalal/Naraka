@@ -1,7 +1,7 @@
 package com.yummy.naraka.data;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.block.NarakaBlocks;
+import com.yummy.naraka.world.block.NarakaBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.BaseFireBlock;
@@ -42,6 +42,15 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
 
         simpleBlockItem(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(), existingModel("purified_soul_fire_side1"));
         simpleBlockItem(NarakaBlocks.SOUL_CRAFTING_BLOCK);
+
+        simpleBlockItem(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
+        simpleBlockItem(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK);
+        simpleBlockItem(NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK);
+        simpleBlockItem(NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK);
+        simpleBlockItem(NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK);
+        simpleBlockItem(NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK);
+        simpleBlockItem(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK);
+        simpleBlockItem(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK);
     }
 
     public ModelFile existingModel(String path) {

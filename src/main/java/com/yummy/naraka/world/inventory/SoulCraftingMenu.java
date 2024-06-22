@@ -1,8 +1,8 @@
 package com.yummy.naraka.world.inventory;
 
-import com.yummy.naraka.block.entity.SoulCraftingBlockEntity;
-import com.yummy.naraka.item.NarakaItems;
-import com.yummy.naraka.item.crafting.NarakaRecipeTypes;
+import com.yummy.naraka.world.block.entity.SoulCraftingBlockEntity;
+import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.crafting.NarakaRecipeTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;

@@ -1,8 +1,8 @@
 package com.yummy.naraka.data;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.item.NarakaItems;
-import com.yummy.naraka.item.SpearItem;
+import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.SpearItem;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;

@@ -1,7 +1,7 @@
 package com.yummy.naraka.data.loot;
 
-import com.yummy.naraka.block.NarakaBlocks;
-import com.yummy.naraka.item.NarakaItems;
+import com.yummy.naraka.world.block.NarakaBlocks;
+import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;

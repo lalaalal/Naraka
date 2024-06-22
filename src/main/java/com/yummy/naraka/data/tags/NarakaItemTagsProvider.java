@@ -1,8 +1,8 @@
 package com.yummy.naraka.data.tags;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.item.NarakaItems;
 import com.yummy.naraka.tags.NarakaItemTags;
+import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
