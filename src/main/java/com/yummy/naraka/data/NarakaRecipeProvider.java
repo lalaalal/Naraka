@@ -10,7 +10,11 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.ItemLike;
 
 import java.util.List;
@@ -25,7 +29,6 @@ public class NarakaRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput) {
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_SHARD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.PURIFIED_SOUL_BLOCK);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.NECTARIUM, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.NECTARIUM_BLOCK);
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, NarakaItems.SPEAR_ITEM)
                 .define('/', Items.STICK)
@@ -56,6 +59,14 @@ public class NarakaRecipeProvider extends RecipeProvider {
         soulCraftingRecipe(recipeOutput, Items.REDSTONE, NarakaItems.SOUL_INFUSED_REDSTONE);
 
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_REDSTONE, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_COPPER, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK);
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_GOLD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK);
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_EMERALD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK);
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_DIAMOND, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK);
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_LAPIS, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK);
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_AMETHYST, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK);
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_NECTARIUM, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK);
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_SHARD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.PURIFIED_SOUL_BLOCK);
     }
 
     protected static void smithing(RecipeOutput recipeOutput, ItemLike template, ItemLike base, ItemLike ingredient, RecipeCategory category, Item result) {
@@ -82,19 +93,74 @@ public class NarakaRecipeProvider extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(unpackedCategory, unpacked, 9)
                 .requires(packed)
                 .unlockedBy(getHasName(packed), has(packed))
-                .save(recipeOutput);
+                .save(recipeOutput, location(packed));
         ShapedRecipeBuilder.shaped(packedCategory, packed)
                 .define('#', unpacked)
                 .pattern("###")
                 .pattern("###")
                 .pattern("###")
                 .unlockedBy(getHasName(unpacked), has(unpacked))
-                .save(recipeOutput);
+                .save(recipeOutput, location(unpacked, "_from_" + getItemName(packed)));
+    }
+
+        protected static void oreSmelting(
+        RecipeOutput pRecipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup
+    ) {
+        NarakaRecipeProvider.oreCooking(
+            pRecipeOutput,
+            RecipeSerializer.SMELTING_RECIPE,
+            SmeltingRecipe::new,
+            pIngredients,
+            pCategory,
+            pResult,
+            pExperience,
+            pCookingTime,
+            pGroup,
+            "_from_smelting"
+        );
+    }
+
+    protected static void oreBlasting(
+        RecipeOutput pRecipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup
+    ) {
+        NarakaRecipeProvider.oreCooking(
+            pRecipeOutput,
+            RecipeSerializer.BLASTING_RECIPE,
+            BlastingRecipe::new,
+            pIngredients,
+            pCategory,
+            pResult,
+            pExperience,
+            pCookingTime,
+            pGroup,
+            "_from_blasting"
+        );
+    }
+
+    protected static <T extends AbstractCookingRecipe> void oreCooking(
+        RecipeOutput pRecipeOutput,
+        RecipeSerializer<T> pSerializer,
+        AbstractCookingRecipe.Factory<T> pRecipeFactory,
+        List<ItemLike> pIngredients,
+        RecipeCategory pCategory,
+        ItemLike pResult,
+        float pExperience,
+        int pCookingTime,
+        String pGroup,
+        String pSuffix
+    ) {
+        for (ItemLike itemlike : pIngredients) {
+            String name = getItemName(pResult) + pSuffix + "_" + getItemName(itemlike);
+            SimpleCookingRecipeBuilder.generic(Ingredient.of(itemlike), pCategory, pResult, pExperience, pCookingTime, pSerializer, pRecipeFactory)
+                .group(pGroup)
+                .unlockedBy(getHasName(itemlike), has(itemlike))
+                .save(pRecipeOutput, NarakaMod.location(name));
+        }
     }
 
     protected static void soulCraftingRecipe(RecipeOutput recipeOutput, ItemLike ingredient, ItemLike result) {
         new SingleItemRecipeBuilder(RecipeCategory.MISC, SoulCraftingRecipe::new, Ingredient.of(ingredient), result, 1)
                 .unlockedBy(getHasName(NarakaItems.PURIFIED_SOUL_SHARD), has(NarakaItems.PURIFIED_SOUL_SHARD))
-                .save(recipeOutput);
+                .save(recipeOutput, location(result, "_soul_crafting"));
     }
 }

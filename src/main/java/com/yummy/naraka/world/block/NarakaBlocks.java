@@ -32,10 +32,6 @@ public class NarakaBlocks {
             Blocks.BEDROCK
     );
 
-    public static final DeferredBlock<Block> NECTARIUM_BLOCK = registerBlockWithItem(
-            "nectarium_block", NectariumBlock::new, Blocks.IRON_BLOCK
-    );
-
     public static final DeferredBlock<DropExperienceBlock> NECTARIUM_ORE = registerBlockWithItem(
             "nectarium_ore",
             properties -> new DropExperienceBlock(UniformInt.of(3, 7), properties),
@@ -47,6 +43,8 @@ public class NarakaBlocks {
             properties -> new DropExperienceBlock(UniformInt.of(3, 7), properties),
             Blocks.DEEPSLATE_IRON_ORE
     );
+
+    public static final DeferredBlock<Block> NECTARIUM_BLOCK = registerBlockWithItem("nectarium_block", NectariumBlock::new, Blocks.IRON_BLOCK);
 
     public static final DeferredBlock<Block> PURIFIED_SOUL_BLOCK = registerSimpleBlockWithItem(
             "purified_soul_block",
@@ -72,45 +70,14 @@ public class NarakaBlocks {
                     .lightLevel(SoulCraftingBlock::lightLevel)
     );
 
-    public static final DeferredBlock<Block> SOUL_INFUSED_REDSTONE_BLOCK = registerSimpleBlockWithItem(
-            "soul_infused_redstone_block",
-            Blocks.REDSTONE_BLOCK
-    );
-
-    public static final DeferredBlock<Block> SOUL_INFUSED_COPPER_BLOCK = registerSimpleBlockWithItem(
-            "soul_infused_copper_block",
-            Blocks.COPPER_BLOCK
-    );
-
-    public static final DeferredBlock<Block> SOUL_INFUSED_GOLD_BLOCK = registerSimpleBlockWithItem(
-            "soul_infused_gold_block",
-            Blocks.GOLD_BLOCK
-    );
-
-    public static final DeferredBlock<Block> SOUL_INFUSED_EMERALD_BLOCK = registerSimpleBlockWithItem(
-            "soul_infused_emerald_block",
-            Blocks.EMERALD_BLOCK
-    );
-
-    public static final DeferredBlock<Block> SOUL_INFUSED_DIAMOND_BLOCK = registerSimpleBlockWithItem(
-            "soul_infused_diamond_block",
-            Blocks.DIAMOND_BLOCK
-    );
-
-    public static final DeferredBlock<Block> SOUL_INFUSED_LAPIS_BLOCK = registerSimpleBlockWithItem(
-            "soul_infused_lapis_block",
-            Blocks.LAPIS_BLOCK
-    );
-
-    public static final DeferredBlock<Block> SOUL_INFUSED_AMETHYST_BLOCK = registerSimpleBlockWithItem(
-            "soul_infused_amethyst_block",
-            Blocks.AMETHYST_BLOCK
-    );
-
-    public static final DeferredBlock<Block> SOUL_INFUSED_NECTARIUM_BLOCK = registerSimpleBlockWithItem(
-            "soul_infused_nectarium_block",
-            NECTARIUM_BLOCK.get()
-    );
+    public static final DeferredBlock<Block> SOUL_INFUSED_REDSTONE_BLOCK = registerSimpleBlockWithItem("soul_infused_redstone_block", Blocks.REDSTONE_BLOCK);
+    public static final DeferredBlock<Block> SOUL_INFUSED_COPPER_BLOCK = registerSimpleBlockWithItem("soul_infused_copper_block", Blocks.COPPER_BLOCK);
+    public static final DeferredBlock<Block> SOUL_INFUSED_GOLD_BLOCK = registerSimpleBlockWithItem("soul_infused_gold_block", Blocks.GOLD_BLOCK);
+    public static final DeferredBlock<Block> SOUL_INFUSED_EMERALD_BLOCK = registerSimpleBlockWithItem("soul_infused_emerald_block", Blocks.EMERALD_BLOCK);
+    public static final DeferredBlock<Block> SOUL_INFUSED_DIAMOND_BLOCK = registerSimpleBlockWithItem("soul_infused_diamond_block", Blocks.DIAMOND_BLOCK);
+    public static final DeferredBlock<Block> SOUL_INFUSED_LAPIS_BLOCK = registerSimpleBlockWithItem("soul_infused_lapis_block", Blocks.LAPIS_BLOCK);
+    public static final DeferredBlock<Block> SOUL_INFUSED_AMETHYST_BLOCK = registerSimpleBlockWithItem("soul_infused_amethyst_block", Blocks.AMETHYST_BLOCK);
+    public static final DeferredBlock<Block> SOUL_INFUSED_NECTARIUM_BLOCK = registerSimpleBlockWithItem("soul_infused_nectarium_block", NECTARIUM_BLOCK);
 
     private static <B extends Block> DeferredBlock<B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties blockProperties, Item.Properties itemProperties) {
         DeferredBlock<B> blockHolder = BLOCKS.registerBlock(name, function, blockProperties);
@@ -120,6 +87,12 @@ public class NarakaBlocks {
 
     private static <B extends Block> DeferredBlock<B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties properties) {
         DeferredBlock<B> blockHolder = BLOCKS.registerBlock(name, function, properties);
+        ITEMS.registerSimpleBlockItem(blockHolder);
+        return blockHolder;
+    }
+
+    private static <B extends Block> DeferredBlock<B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, DeferredBlock<? extends Block> propertyBase) {
+        DeferredBlock<B> blockHolder = BLOCKS.register(name, properties -> function.apply(BlockBehaviour.Properties.ofFullCopy(propertyBase.get())));
         ITEMS.registerSimpleBlockItem(blockHolder);
         return blockHolder;
     }
@@ -134,6 +107,10 @@ public class NarakaBlocks {
 
     private static DeferredBlock<Block> registerSimpleBlockWithItem(String name, BlockBehaviour.Properties blockProperties, Item.Properties itemProperties) {
         return registerBlockWithItem(name, Block::new, blockProperties, itemProperties);
+    }
+
+    private static DeferredBlock<Block> registerSimpleBlockWithItem(String name, DeferredBlock<? extends Block> propertyBase) {
+        return registerBlockWithItem(name, Block::new, propertyBase);
     }
 
     private static DeferredBlock<Block> registerSimpleBlockWithItem(String name, BlockBehaviour.Properties properties) {

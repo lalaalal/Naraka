@@ -19,11 +19,20 @@ public class NarakaBlockLootSubProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        dropSelf(NarakaBlocks.PURIFIED_SOUL_BLOCK);
         dropSelf(NarakaBlocks.NECTARIUM_BLOCK);
         dropOre(NarakaBlocks.NECTARIUM_ORE, NarakaItems.NECTARIUM);
         dropOre(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, NarakaItems.NECTARIUM);
         dropSelf(NarakaBlocks.SOUL_CRAFTING_BLOCK);
+
+        dropSelf(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
+        dropSelf(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK);
+        dropSelf(NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK);
+        dropSelf(NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK);
+        dropSelf(NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK);
+        dropSelf(NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK);
+        dropSelf(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK);
+        dropSelf(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK);
+        dropSelf(NarakaBlocks.PURIFIED_SOUL_BLOCK);
     }
 
     protected void dropSelf(DeferredBlock<? extends Block> block) {
