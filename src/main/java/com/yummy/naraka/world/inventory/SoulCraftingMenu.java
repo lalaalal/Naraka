@@ -96,6 +96,12 @@ public class SoulCraftingMenu extends AbstractContainerMenu {
             if (!moveItemStackTo(item, PLAYER_INVENTORY_START, PLAYER_HOTBAR_END, false))
                 return ItemStack.EMPTY;
         }
+
+        if (item.isEmpty())
+            slot.setByPlayer(ItemStack.EMPTY);
+        else
+            slot.setChanged();
+
         slot.onTake(player, item);
         return copy;
     }

@@ -73,7 +73,7 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
     }
 
     public void setCraftingTime(int craftingTime) {
-        data.set(CRAFTING_TIME_DATA_ID, craftingTime);
+        data.set(CRAFTING_TIME_DATA_ID, Math.max(craftingTime, -1));
     }
 
     @Override
@@ -141,7 +141,7 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
             level.setBlock(pos, state.setValue(SoulCraftingBlock.LIT, true), 10);
         }
 
-        if (craftingTime == 0 && optional.isPresent()) {
+        if (craftingTime == 0 && optional.isPresent() && !ingredientItem.isEmpty()) {
             ItemStack crafted = assemble(level, optional.get(), ingredientItem);
             if (existingResult.isEmpty())
                 blockEntity.setItem(RESULT_SLOT, crafted);
@@ -150,10 +150,10 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
             level.setBlock(pos, state.setValue(SoulCraftingBlock.LIT, false), 10);
         }
         if (craftingTime >= 0) {
+            int decrease = 1;
             if (ingredientItem.isEmpty())
-                blockEntity.setCraftingTime(-1);
-            else
-                blockEntity.setCraftingTime(craftingTime - 1);
+                decrease += 9;
+            blockEntity.setCraftingTime(craftingTime - decrease);
         }
     }
 
