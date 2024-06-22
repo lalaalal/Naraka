@@ -8,7 +8,6 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.AbstractFurnaceMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
@@ -22,8 +21,13 @@ public class SoulCraftingMenu extends AbstractContainerMenu {
     public static final int INGREDIENT_SLOT = 1;
     public static final int RESULT_SLOT = 2;
 
+    public static final int SLOT_SIZE = 3;
+
     public static final int FUEL_DATA_ID = 0;
-    public static final int CRAFTING_TIME_DATA_ID = 1;
+    public static final int LIT_PROGRESS_DATA_ID = 1;
+    public static final int CRAFTING_PROGRESS_DATA_ID = 2;
+
+    public static final int DATA_SIZE = 3;
 
     public static final int PLAYER_INVENTORY_START = 3;
     public static final int PLAYER_INVENTORY_SIZE = 27;
@@ -31,21 +35,19 @@ public class SoulCraftingMenu extends AbstractContainerMenu {
     public static final int PLAYER_HOTBAR_START = PLAYER_INVENTORY_END;
     public static final int PLAYER_HOTBAR_END = PLAYER_HOTBAR_START + 9;
 
-    private final Inventory inventory;
     private final Container container;
     private final ContainerData data;
     private final Level level;
     private final RecipeManager recipeManager;
 
     protected SoulCraftingMenu(int containerId, Inventory inventory) {
-        this(containerId, inventory, new SimpleContainer(3), new SimpleContainerData(2));
+        this(containerId, inventory, new SimpleContainer(SLOT_SIZE), new SimpleContainerData(DATA_SIZE));
     }
 
     public SoulCraftingMenu(int containerId, Inventory inventory, Container container, ContainerData data) {
         super(NarakaMenuTypes.SOUL_CRAFTING.get(), containerId);
-        checkContainerSize(container, 3);
-        checkContainerDataCount(data, 2);
-        this.inventory = inventory;
+        checkContainerSize(container, SLOT_SIZE);
+        checkContainerDataCount(data, DATA_SIZE);
         this.container = container;
         this.data = data;
         this.level = inventory.player.level();
@@ -84,13 +86,15 @@ public class SoulCraftingMenu extends AbstractContainerMenu {
         ItemStack copy = item.copy();
 
         if (PLAYER_INVENTORY_START <= index) {
-            if (isIngredient(item) && !moveItemStackTo(item, INGREDIENT_SLOT, INGREDIENT_SLOT + 1, false))
+            if (isIngredient(item)) {
+                if (!moveItemStackTo(item, INGREDIENT_SLOT, INGREDIENT_SLOT + 1, false))
+                    return ItemStack.EMPTY;
+            } else if (isFuel(item)) {
+                if (!moveItemStackTo(item, FUEL_SLOT, FUEL_SLOT + 1, false))
+                    return ItemStack.EMPTY;
+            } else if (index < PLAYER_INVENTORY_END && !moveItemStackTo(item, PLAYER_HOTBAR_START, PLAYER_HOTBAR_END, false))
                 return ItemStack.EMPTY;
-            if (isFuel(item) && !moveItemStackTo(item, FUEL_SLOT, FUEL_SLOT + 1, false))
-                return ItemStack.EMPTY;
-            if (PLAYER_INVENTORY_START <= index && index < PLAYER_INVENTORY_END && !moveItemStackTo(item, PLAYER_HOTBAR_START, PLAYER_HOTBAR_END, false))
-                return ItemStack.EMPTY;
-            if (PLAYER_HOTBAR_START <= index && index < PLAYER_HOTBAR_END && !moveItemStackTo(item, PLAYER_INVENTORY_START, PLAYER_INVENTORY_END, false))
+            else if (PLAYER_HOTBAR_START <= index && index < PLAYER_HOTBAR_END && !moveItemStackTo(item, PLAYER_INVENTORY_START, PLAYER_INVENTORY_END, false))
                 return ItemStack.EMPTY;
         } else {
             if (!moveItemStackTo(item, PLAYER_INVENTORY_START, PLAYER_HOTBAR_END, false))
@@ -120,11 +124,19 @@ public class SoulCraftingMenu extends AbstractContainerMenu {
         return itemStack.is(NarakaItems.PURIFIED_SOUL_SHARD);
     }
 
+    public boolean isCrafting() {
+        ItemStack ingredient = slots.get(INGREDIENT_SLOT).getItem();
+        int fuel = data.get(FUEL_DATA_ID);
+        return fuel == SoulCraftingBlockEntity.requiredFuels() && isIngredient(ingredient);
+    }
+
     public double getCraftingProgress() {
-        double craftingTime = data.get(CRAFTING_TIME_DATA_ID);
-        if (craftingTime < 0)
-            return 0;
-        return 1 - craftingTime / (double) SoulCraftingBlockEntity.craftingTime();
+        double progress = Math.min(data.get(CRAFTING_PROGRESS_DATA_ID), SoulCraftingBlockEntity.craftingTime());
+        return progress / (double) SoulCraftingBlockEntity.craftingTime();
+    }
+
+    public double getLitProgress() {
+        return (double) data.get(LIT_PROGRESS_DATA_ID) / (double) SoulCraftingBlockEntity.craftingTime();
     }
 
     public double getFuelCharge() {

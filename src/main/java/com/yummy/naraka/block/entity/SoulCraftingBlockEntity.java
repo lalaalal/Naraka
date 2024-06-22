@@ -31,8 +31,13 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
     public static final int INGREDIENT_SLOT = 1;
     public static final int RESULT_SLOT = 2;
 
+    public static final int SLOT_SIZE = 3;
+
     public static final int FUEL_DATA_ID = 0;
-    public static final int CRAFTING_TIME_DATA_ID = 1;
+    public static final int LIT_PROGRESS_DATA_ID = 1;
+    public static final int CRAFTING_PROGRESS_DATA_ID = 2;
+
+    public static final int DATA_SIZE = 3;
 
     private static int requiredFuels;
     private static int craftingTime;
@@ -50,30 +55,39 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
         craftingTime = NarakaMod.config().soulCraftingTime.get();
     }
 
-    private NonNullList<ItemStack> items = NonNullList.withSize(3, ItemStack.EMPTY);
-    private final ContainerData data = new SimpleContainerData(2);
+    private NonNullList<ItemStack> items = NonNullList.withSize(SLOT_SIZE, ItemStack.EMPTY);
+    private final ContainerData data = new SimpleContainerData(DATA_SIZE);
     private RecipeHolder<?> recipeUsed;
 
     public SoulCraftingBlockEntity(BlockPos pos, BlockState blockState) {
         super(NarakaBlockEntities.SOUL_CRAFTING_BLOCK_ENTITY.get(), pos, blockState);
         setFuel(0);
-        setCraftingTime(-1);
+        setCraftingProgress(Integer.MAX_VALUE);
+        setLitProgress(0);
     }
 
     public int getFuel() {
         return data.get(FUEL_DATA_ID);
     }
 
-    public int getCraftingTime() {
-        return data.get(CRAFTING_TIME_DATA_ID);
+    public int getCraftingProgress() {
+        return data.get(CRAFTING_PROGRESS_DATA_ID);
+    }
+
+    public int getLitProgress() {
+        return data.get(LIT_PROGRESS_DATA_ID);
     }
 
     public void setFuel(int fuel) {
         data.set(FUEL_DATA_ID, fuel);
     }
 
-    public void setCraftingTime(int craftingTime) {
-        data.set(CRAFTING_TIME_DATA_ID, Math.max(craftingTime, -1));
+    public void setCraftingProgress(int craftingProgress) {
+        data.set(CRAFTING_PROGRESS_DATA_ID, Math.max(craftingProgress, 0));
+    }
+
+    public void setLitProgress(int remaining) {
+        data.set(LIT_PROGRESS_DATA_ID, Math.clamp(remaining, 0, craftingTime()));
     }
 
     @Override
@@ -105,7 +119,8 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
     protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider registries) {
         super.saveAdditional(compoundTag, registries);
         ContainerHelper.saveAllItems(compoundTag, this.items, registries);
-        compoundTag.putInt("CraftingTime", getCraftingTime());
+        compoundTag.putInt("LitProgress", getLitProgress());
+        compoundTag.putInt("CraftingProgress", getCraftingProgress());
         compoundTag.putInt("Fuel", getFuel());
     }
 
@@ -114,13 +129,15 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
         super.loadAdditional(compoundTag, registries);
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(compoundTag, this.items, registries);
-        setCraftingTime(compoundTag.getInt("CraftingTime"));
+        setLitProgress(compoundTag.getInt("LitProgress"));
+        setCraftingProgress(compoundTag.getInt("CraftingProgress"));
         setFuel(compoundTag.getInt("Fuel"));
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, SoulCraftingBlockEntity blockEntity) {
         int fuel = blockEntity.getFuel();
-        int craftingTime = blockEntity.getCraftingTime();
+        int craftingProgress = blockEntity.getCraftingProgress();
+        int litProgress = blockEntity.getLitProgress();
 
         ItemStack fuelItem = blockEntity.getItem(FUEL_SLOT);
         if (!fuelItem.isEmpty() && fuel < requiredFuels()) {
@@ -135,13 +152,14 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
         if (!ingredientItem.isEmpty()
                 && optional.isPresent() && canCraft(level, optional.get(), existingResult)
                 && fuel == requiredFuels()
-                && craftingTime == -1) {
-            blockEntity.setCraftingTime(craftingTime());
+                && craftingProgress > craftingTime()) {
+            blockEntity.setCraftingProgress(0);
+            blockEntity.setLitProgress(craftingTime());
             blockEntity.setFuel(0);
             level.setBlock(pos, state.setValue(SoulCraftingBlock.LIT, true), 10);
         }
 
-        if (craftingTime == 0 && optional.isPresent() && !ingredientItem.isEmpty()) {
+        if (craftingProgress == craftingTime() && optional.isPresent() && !ingredientItem.isEmpty()) {
             ItemStack crafted = assemble(level, optional.get(), ingredientItem);
             if (existingResult.isEmpty())
                 blockEntity.setItem(RESULT_SLOT, crafted);
@@ -149,11 +167,13 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
                 existingResult.grow(1);
             level.setBlock(pos, state.setValue(SoulCraftingBlock.LIT, false), 10);
         }
-        if (craftingTime >= 0) {
-            int decrease = 1;
+
+        if (craftingProgress <= craftingTime()) {
+            int increase = 1;
             if (ingredientItem.isEmpty())
-                decrease += 9;
-            blockEntity.setCraftingTime(craftingTime - decrease);
+                increase = -craftingTime() / 10;
+            blockEntity.setCraftingProgress(craftingProgress + increase);
+            blockEntity.setLitProgress(litProgress - increase);
         }
     }
 
