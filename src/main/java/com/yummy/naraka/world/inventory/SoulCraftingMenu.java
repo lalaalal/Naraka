@@ -8,6 +8,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.AbstractFurnaceMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
@@ -23,6 +24,12 @@ public class SoulCraftingMenu extends AbstractContainerMenu {
 
     public static final int FUEL_DATA_ID = 0;
     public static final int CRAFTING_TIME_DATA_ID = 1;
+
+    public static final int PLAYER_INVENTORY_START = 3;
+    public static final int PLAYER_INVENTORY_SIZE = 27;
+    public static final int PLAYER_INVENTORY_END = PLAYER_INVENTORY_START + PLAYER_INVENTORY_SIZE;
+    public static final int PLAYER_HOTBAR_START = PLAYER_INVENTORY_END;
+    public static final int PLAYER_HOTBAR_END = PLAYER_HOTBAR_START + 9;
 
     private final Inventory inventory;
     private final Container container;
@@ -71,8 +78,25 @@ public class SoulCraftingMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
-        return ItemStack.EMPTY;
+    public ItemStack quickMoveStack(Player player, int index) {
+        Slot slot = slots.get(index);
+        ItemStack item = slot.getItem().copy();
+
+        if (PLAYER_INVENTORY_START <= index) {
+            if (isIngredient(item) && !moveItemStackTo(item, INGREDIENT_SLOT, INGREDIENT_SLOT + 1, false))
+                return ItemStack.EMPTY;
+            if (isFuel(item) && !moveItemStackTo(item, FUEL_SLOT, FUEL_SLOT + 1, false))
+                return ItemStack.EMPTY;
+            if (PLAYER_INVENTORY_START <= index && index < PLAYER_INVENTORY_END && !moveItemStackTo(item, PLAYER_HOTBAR_START, PLAYER_HOTBAR_END, false))
+                return ItemStack.EMPTY;
+            if (PLAYER_HOTBAR_START <= index && index < PLAYER_HOTBAR_END && !moveItemStackTo(item, PLAYER_INVENTORY_START, PLAYER_INVENTORY_END, false))
+                return ItemStack.EMPTY;
+        } else {
+            if (!moveItemStackTo(item, PLAYER_INVENTORY_START, PLAYER_HOTBAR_END, false))
+                return ItemStack.EMPTY;
+        }
+        
+        return item;
     }
 
     @Override
