@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaShaders;
-import com.yummy.naraka.client.animation.NarakaAnimations;
 import com.yummy.naraka.client.gui.layer.DeathCountLayer;
 import com.yummy.naraka.client.gui.layer.NarakaGuiLayers;
 import com.yummy.naraka.client.gui.layer.StigmaLayer;
@@ -43,7 +42,6 @@ public class NarakaClientEventBus {
     @SubscribeEvent
     public static void registerClientReloadListener(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(NarakaCustomRenderer.getInstance());
-        event.registerReloadListener(NarakaAnimations.classInstance());
     }
 
     @SubscribeEvent

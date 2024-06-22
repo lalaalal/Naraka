@@ -3,16 +3,16 @@ package com.yummy.naraka.client.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.entity.Herobrine;
+
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-import java.util.Map;
-
 @OnlyIn(Dist.CLIENT)
-public class HerobrineModel<T extends Herobrine> extends AnimatedEntityModel<T> {
+public class HerobrineModel<T extends Herobrine> extends HierarchicalModel<T> {
     private final ModelPart root;
     private final ModelPart head;
     private final ModelPart body;
@@ -47,17 +47,6 @@ public class HerobrineModel<T extends Herobrine> extends AnimatedEntityModel<T> 
         this.right_leg_lower = right_leg.getChild("right_leg_lower");
     }
 
-    @Override
-    protected Map<String, ModelPart> getAnimatingModelParts() {
-        return Map.of(
-                "head", head,
-                "body", body,
-                "left_arm", left_arm,
-                "left_arm_lower", left_arm_lower,
-                "right_arm", right_arm
-        );
-    }
-
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition root = meshdefinition.getRoot();
@@ -88,5 +77,15 @@ public class HerobrineModel<T extends Herobrine> extends AnimatedEntityModel<T> 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
         root.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+    }
+
+    @Override
+    public ModelPart root() {
+        return root;
+    }
+
+    @Override
+    public void setupAnim(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
+        
     }
 }

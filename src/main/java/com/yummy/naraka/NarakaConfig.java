@@ -41,7 +41,7 @@ public class NarakaConfig {
                 .defineInRange("soul_crafting.required_fuel", 10, 1, Integer.MAX_VALUE);
         soulCraftingTime = builder
                 .comment("Soul crafting time")
-                .defineInRange("soul_crafting.crafting_time", 20, 1, Integer.MAX_VALUE);
+                .defineInRange("soul_crafting.crafting_time", 1200, 1, Integer.MAX_VALUE);
     }
 
     static NarakaConfig getInstance() {

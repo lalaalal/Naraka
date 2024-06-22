@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class Herobrine extends AnimatableMonster implements DeathCountingEntity {
+public class Herobrine extends Monster implements DeathCountingEntity {
     private final Set<UUID> deathCountedEntities = new HashSet<>();
 
     public static AttributeSupplier getAttributeSupplier() {
@@ -27,7 +27,7 @@ public class Herobrine extends AnimatableMonster implements DeathCountingEntity 
     }
 
     public Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
-        super(entityType, level, "herobrine.idle");
+        super(entityType, level);
         registerGoals();
 
         DeathCountHelper.addDeathCountingEntity(this);
@@ -80,7 +80,6 @@ public class Herobrine extends AnimatableMonster implements DeathCountingEntity 
             if (livingEntity instanceof ServerPlayer serverPlayer)
                 DeathCountHelper.showDeathCount(serverPlayer);
         }
-        setAnimation("herobrine.hurt.chain.herobrine.idle.repeat");
 
         return super.hurt(source, amount);
     }
