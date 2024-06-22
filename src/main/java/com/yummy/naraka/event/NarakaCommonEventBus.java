@@ -6,6 +6,7 @@ import com.yummy.naraka.attachment.AttachmentSyncHelper;
 import com.yummy.naraka.attachment.DeathCountHelper;
 import com.yummy.naraka.attachment.StigmaHelper;
 import com.yummy.naraka.block.NectariumBlock;
+import com.yummy.naraka.block.entity.SoulCraftingBlockEntity;
 import com.yummy.naraka.entity.Herobrine;
 import com.yummy.naraka.entity.NarakaEntities;
 import com.yummy.naraka.network.payload.ChangeDeathCountVisibilityPayload;
@@ -36,6 +37,7 @@ public class NarakaCommonEventBus {
         DeathCountHelper.loadConfig();
         StigmaHelper.loadConfig();
         NectariumBlock.loadConfig();
+        SoulCraftingBlockEntity.loadConfig();
     }
 
     @SubscribeEvent

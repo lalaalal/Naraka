@@ -69,6 +69,7 @@ public class NarakaBlocks {
             "soul_crafting_block",
             SoulCraftingBlock::new,
             BlockBehaviour.Properties.ofFullCopy(Blocks.BLAST_FURNACE)
+                    .lightLevel(SoulCraftingBlock::lightLevel)
     );
 
     private static <B extends Block> DeferredBlock<B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties blockProperties, Item.Properties itemProperties) {

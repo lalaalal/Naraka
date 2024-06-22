@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -28,11 +29,15 @@ public class SoulCraftingBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
+    public static int lightLevel(BlockState blockState) {
+        return blockState.getValue(SoulCraftingBlock.LIT) ? 5 : 0;
+    }
+
     protected SoulCraftingBlock(Properties properties) {
         super(properties);
         registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
-                .setValue(LIT, true)
+                .setValue(LIT, false)
         );
     }
 
@@ -41,6 +46,12 @@ public class SoulCraftingBlock extends BaseEntityBlock {
         super.createBlockStateDefinition(builder);
         builder.add(FACING);
         builder.add(LIT);
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override

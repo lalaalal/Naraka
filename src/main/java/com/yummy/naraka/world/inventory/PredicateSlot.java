@@ -18,6 +18,11 @@ public class PredicateSlot extends Slot {
         this.placePredicate = placePredicate;
     }
 
+    @Override
+    public boolean mayPlace(ItemStack itemStack) {
+        return placePredicate.test(itemStack);
+    }
+
     public static class Builder {
         private final Container container;
         private int slot, x, y;

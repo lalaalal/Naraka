@@ -19,6 +19,9 @@ public class NarakaConfig {
 
     public final ConfigValue<Double> nectariumComposeChance;
 
+    public final ConfigValue<Integer> soulCraftingRequiredFuel;
+    public final ConfigValue<Integer> soulCraftingTime;
+
     private NarakaConfig(ModConfigSpec.Builder builder) {
         maxDeathCount = builder.defineInRange("death_count.max", 5, 1, Integer.MAX_VALUE);
         maxStigma = builder.defineInRange("stigma.max", 3, 1, Integer.MAX_VALUE);
@@ -32,6 +35,13 @@ public class NarakaConfig {
         nectariumComposeChance = builder
                 .comment("Nectarium composing chance for honey block")
                 .defineInRange("nectarium_compose_chance", 0.5, 0.01, 1);
+
+        soulCraftingRequiredFuel = builder
+                .comment("Required fuel for soul crafting")
+                .defineInRange("soul_crafting.required_fuel", 10, 1, Integer.MAX_VALUE);
+        soulCraftingTime = builder
+                .comment("Soul crafting time")
+                .defineInRange("soul_crafting.crafting_time", 20, 1, Integer.MAX_VALUE);
     }
 
     static NarakaConfig getInstance() {

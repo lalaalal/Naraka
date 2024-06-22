@@ -12,5 +12,5 @@ public class NarakaTextures {
     public static final ResourceLocation SPEAR = NarakaMod.location("textures", "entity/spear.png");
     public static final ResourceLocation MIGHTY_HOLY_SPEAR = NarakaMod.location("textures", "entity/mighty_holy_spear.png");
 
-    public static final ResourceLocation SOUL_CRAFTING = NarakaMod.location("textures", "gui/screen/soul_crafting.png");
+    public static final ResourceLocation SOUL_CRAFTING = NarakaMod.location("textures", "gui/container/soul_crafting.png");
 }

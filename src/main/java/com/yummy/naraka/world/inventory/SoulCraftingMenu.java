@@ -1,21 +1,29 @@
 package com.yummy.naraka.world.inventory;
 
 import com.yummy.naraka.block.entity.SoulCraftingBlockEntity;
-import com.yummy.naraka.item.crafting.SoulCraftingRecipe;
-import com.yummy.naraka.item.soul.SoulCrafting;
+import com.yummy.naraka.item.NarakaItems;
+import com.yummy.naraka.item.crafting.NarakaRecipeTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 
-public class SoulCraftingMenu extends RecipeBookMenu<SingleRecipeInput, SoulCraftingRecipe> {
+public class SoulCraftingMenu extends AbstractContainerMenu {
+    public static final int FUEL_SLOT = 0;
+    public static final int INGREDIENT_SLOT = 1;
+    public static final int RESULT_SLOT = 2;
+
+    public static final int FUEL_DATA_ID = 0;
+    public static final int CRAFTING_TIME_DATA_ID = 1;
+
     private final Inventory inventory;
     private final Container container;
     private final ContainerData data;
@@ -37,17 +45,29 @@ public class SoulCraftingMenu extends RecipeBookMenu<SingleRecipeInput, SoulCraf
         this.recipeManager = level.getRecipeManager();
 
         Slot fuelSlot = PredicateSlot.builder(container)
-                .at(SoulCraftingBlockEntity.FUEL_SLOT)
-                .position(10, 10)
-                .with(SoulCrafting::isFuel)
+                .at(FUEL_SLOT)
+                .position(26, 47)
+                .with(this::isFuel)
                 .build();
         Slot ingredientSlot = PredicateSlot.builder(container)
-                .at(SoulCraftingBlockEntity.INGREDIENT_SLOT)
-                .position(5, 20)
-                .with(SoulCrafting::isCraftable)
+                .at(INGREDIENT_SLOT)
+                .position(56, 17)
+                .with(this::isIngredient)
                 .build();
         addSlot(fuelSlot);
         addSlot(ingredientSlot);
+        addSlot(new Slot(container, RESULT_SLOT, 116, 35));
+        addDataSlots(data);
+
+        for (int row = 0; row < 3; row++) {
+            for (int columm = 0; columm < 9; columm++) {
+                addSlot(new Slot(inventory, columm + row * 9 + 9, 8 + columm * 18, 84 + row * 18));
+            }
+        }
+
+        for (int row = 0; row < 9; row++) {
+            addSlot(new Slot(inventory, row, 8 + row * 18, 142));
+        }
     }
 
     @Override
@@ -60,54 +80,23 @@ public class SoulCraftingMenu extends RecipeBookMenu<SingleRecipeInput, SoulCraf
         return container.stillValid(player);
     }
 
-    @Override
-    public void fillCraftSlotsStackedContents(StackedContents helper) {
-        if (container instanceof StackedContentsCompatible stackedContentsCompatible)
-            stackedContentsCompatible.fillStackedContents(helper);
+    public boolean isIngredient(ItemStack itemStack) {
+        SingleRecipeInput input = new SingleRecipeInput(itemStack);
+        return recipeManager.getRecipeFor(NarakaRecipeTypes.SOUL_CRAFTING.get(), input, level).isPresent();
     }
 
-    @Override
-    public void clearCraftingContent() {
-        getSlot(SoulCraftingBlockEntity.INGREDIENT_SLOT).set(ItemStack.EMPTY);
-        getSlot(SoulCraftingBlockEntity.RESULT_SLOT).set(ItemStack.EMPTY);
+    public boolean isFuel(ItemStack itemStack) {
+        return itemStack.is(NarakaItems.PURIFIED_SOUL_SHARD);
     }
 
-    private SingleRecipeInput getRecipeInput() {
-        return new SingleRecipeInput(container.getItem(SoulCraftingBlockEntity.INGREDIENT_SLOT));
+    public double getCraftingProgress() {
+        double craftingTime = data.get(CRAFTING_TIME_DATA_ID);
+        if (craftingTime < 0)
+            return 0;
+        return 1 - craftingTime / (double) SoulCraftingBlockEntity.craftingTime();
     }
 
-    @Override
-    public boolean recipeMatches(RecipeHolder<SoulCraftingRecipe> recipe) {
-        return recipe.value().matches(getRecipeInput(), level);
-    }
-
-    @Override
-    public int getResultSlotIndex() {
-        return SoulCraftingBlockEntity.RESULT_SLOT;
-    }
-
-    @Override
-    public int getGridWidth() {
-        return 1;
-    }
-
-    @Override
-    public int getGridHeight() {
-        return 1;
-    }
-
-    @Override
-    public int getSize() {
-        return container.getContainerSize();
-    }
-
-    @Override
-    public RecipeBookType getRecipeBookType() {
-        return RecipeBookType.CRAFTING;
-    }
-
-    @Override
-    public boolean shouldMoveToInventory(int pSlotIndex) {
-        return false;
+    public double getFuelCharge() {
+        return (double) data.get(FUEL_DATA_ID) / (double) SoulCraftingBlockEntity.requiredFuels();
     }
 }
