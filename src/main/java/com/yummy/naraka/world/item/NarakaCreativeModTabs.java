@@ -53,6 +53,13 @@ public class NarakaCreativeModTabs {
 
                 output.accept(NarakaItems.GOD_BLOOD);
                 output.accept(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK);
+
+                output.accept(NarakaBlocks.EBONY_LOG);
+                output.accept(NarakaBlocks.STRIPPED_EBONY_LOG);
+                output.accept(NarakaBlocks.EBONY_WOOD);
+                output.accept(NarakaBlocks.STRIPPED_EBONY_WOOD);
+                output.accept(NarakaItems.EBONY_SIGN);
+                output.accept(NarakaItems.EBONY_HANGING_SIGN);
             }).build());
 
     public static void register(IEventBus bus) {

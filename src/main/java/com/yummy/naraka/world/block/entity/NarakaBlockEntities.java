@@ -16,6 +16,24 @@ public class NarakaBlockEntities {
             () -> BlockEntityType.Builder.of(SoulCraftingBlockEntity::new, NarakaBlocks.SOUL_CRAFTING_BLOCK.get()).build(null)
     );
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NarakaSignBlockEntity>> EBONY_SIGN = BLOCK_ENTITIES.register(
+            "ebony_sign",
+            () -> BlockEntityType.Builder.of(
+                    NarakaSignBlockEntity::new,
+                    NarakaBlocks.EBONY_SIGN.get(),
+                    NarakaBlocks.EBONY_WALL_SIGN.get()
+            ).build(null)
+    );
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NarakaHangingSignBlockEntity>> EBONY_HANGING_SIGN = BLOCK_ENTITIES.register(
+            "ebony_hanging_sign",
+            () -> BlockEntityType.Builder.of(
+                    NarakaHangingSignBlockEntity::new,
+                    NarakaBlocks.EBONY_HANGING_SIGN.get(),
+                    NarakaBlocks.EBONY_WALL_HANGING_SIGN.get()
+            ).build(null)
+    );
+
     public static void register(IEventBus bus) {
         BLOCK_ENTITIES.register(bus);
     }

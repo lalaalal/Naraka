@@ -8,6 +8,7 @@ import com.yummy.naraka.attachment.StigmaHelper;
 import com.yummy.naraka.network.payload.ChangeDeathCountVisibilityPayload;
 import com.yummy.naraka.network.payload.IntAttachmentSyncHandler;
 import com.yummy.naraka.network.payload.SyncEntityIntAttachmentPayload;
+import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.NectariumBlock;
 import com.yummy.naraka.world.block.entity.SoulCraftingBlockEntity;
 import com.yummy.naraka.world.entity.Herobrine;
@@ -23,12 +24,15 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 @SuppressWarnings("unused")
 @EventBusSubscriber(modid = NarakaMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class NarakaCommonEventBus {
+
+
     @SubscribeEvent
     public static void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             AttachmentSyncHelper.initialize();
             IntAttachmentSyncHandler.initialize();
             NarakaContext.initialize();
+            NarakaBlocks.setFlammableBlocks();
         });
     }
 

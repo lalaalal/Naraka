@@ -1,14 +1,13 @@
 package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.NarakaEntities;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Unbreakable;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -71,6 +70,13 @@ public class NarakaItems {
                     .fireResistant()
                     .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
             )
+    );
+
+    public static final DeferredItem<SignItem> EBONY_SIGN = ITEMS.registerItem(
+            "ebony_sign", properties -> new SignItem(properties, NarakaBlocks.EBONY_SIGN.get(), NarakaBlocks.EBONY_WALL_SIGN.get())
+    );
+    public static final DeferredItem<HangingSignItem> EBONY_HANGING_SIGN = ITEMS.registerItem(
+            "ebony_hanging_sign", properties -> new HangingSignItem(NarakaBlocks.EBONY_HANGING_SIGN.get(), NarakaBlocks.EBONY_WALL_HANGING_SIGN.get(), properties)
     );
 
     private static DeferredItem<Item> registerSoulInfusedItem(String name) {

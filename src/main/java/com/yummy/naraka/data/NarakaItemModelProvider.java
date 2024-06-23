@@ -44,6 +44,9 @@ public class NarakaItemModelProvider extends ItemModelProvider {
         simpleItem(NarakaItems.SOUL_INFUSED_LAPIS);
         simpleItem(NarakaItems.SOUL_INFUSED_NECTARIUM);
         simpleItem(NarakaItems.SOUL_INFUSED_REDSTONE);
+
+        simpleItem(NarakaItems.EBONY_SIGN);
+        simpleItem(NarakaItems.EBONY_HANGING_SIGN);
     }
 
     public ItemModelBuilder spearItem(DeferredItem<? extends SpearItem> spearItem, ItemDisplayContext... displayAsItem) {

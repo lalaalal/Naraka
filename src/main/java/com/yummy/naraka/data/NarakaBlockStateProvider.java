@@ -7,6 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.generators.*;
@@ -59,6 +61,32 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK);
         simpleBlockWithItem(NarakaBlocks.NECTARIUM_BLOCK);
         simpleBlockWithItem(NarakaBlocks.PURIFIED_SOUL_BLOCK);
+
+        logBlockWithItem(NarakaBlocks.EBONY_LOG);
+        logBlockWithItem(NarakaBlocks.STRIPPED_EBONY_LOG);
+        woodBlockWithItem(NarakaBlocks.EBONY_WOOD, NarakaBlocks.EBONY_LOG);
+        woodBlockWithItem(NarakaBlocks.STRIPPED_EBONY_WOOD, NarakaBlocks.STRIPPED_EBONY_LOG);
+        simpleBlockWithItem(NarakaBlocks.EBONY_LEAVES);
+
+        signBlock(NarakaBlocks.EBONY_SIGN, texture("ebony_planks"));
+        signBlock(NarakaBlocks.EBONY_WALL_SIGN, texture("ebony_planks"));
+        signBlock(NarakaBlocks.EBONY_HANGING_SIGN, texture("ebony_planks"));
+        signBlock(NarakaBlocks.EBONY_WALL_HANGING_SIGN, texture("ebony_planks"));
+    }
+
+    public void signBlock(DeferredBlock<? extends SignBlock> signBlock, ResourceLocation texture) {
+        ModelFile sign = models().sign(signBlock.getId().getPath(), texture);
+        simpleBlock(signBlock.get(), sign);
+    }
+
+    public void logBlockWithItem(DeferredBlock<? extends RotatedPillarBlock> log) {
+        logBlock(log.get());
+        simpleBlockItem(log);
+    }
+
+    public void woodBlockWithItem(DeferredBlock<? extends RotatedPillarBlock> wood, DeferredBlock<? extends RotatedPillarBlock> log) {
+        axisBlock(wood.get(), blockTexture(log.get()), blockTexture(log.get()));
+        simpleBlockItem(wood);
     }
 
     public ModelFile existingBlockModel(String path) {

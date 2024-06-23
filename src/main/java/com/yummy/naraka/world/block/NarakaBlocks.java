@@ -4,10 +4,8 @@ import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.Holder;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.BaseFireBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DropExperienceBlock;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
@@ -37,13 +35,11 @@ public class NarakaBlocks {
             properties -> new DropExperienceBlock(UniformInt.of(3, 7), properties),
             Blocks.IRON_ORE
     );
-
     public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_NECTARIUM_ORE = registerBlockWithItem(
             "deepslate_nectarium_ore",
             properties -> new DropExperienceBlock(UniformInt.of(3, 7), properties),
             Blocks.DEEPSLATE_IRON_ORE
     );
-
     public static final DeferredBlock<Block> NECTARIUM_BLOCK = registerBlockWithItem("nectarium_block", NectariumBlock::new, Blocks.IRON_BLOCK);
 
     public static final DeferredBlock<Block> PURIFIED_SOUL_BLOCK = registerSimpleBlockWithItem(
@@ -51,7 +47,6 @@ public class NarakaBlocks {
             BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK),
             new Item.Properties().fireResistant()
     );
-
     public static final DeferredBlock<BaseFireBlock> PURIFIED_SOUL_FIRE_BLOCK = registerBlockWithItem(
             "purified_soul_fire",
             properties -> new PurifiedSoulFireBlock(properties
@@ -62,7 +57,6 @@ public class NarakaBlocks {
             BlockBehaviour.Properties.ofFullCopy(Blocks.SOUL_FIRE),
             new Item.Properties()
     );
-
     public static final DeferredBlock<SoulCraftingBlock> SOUL_CRAFTING_BLOCK = registerBlockWithItem(
             "soul_crafting_block",
             SoulCraftingBlock::new,
@@ -78,6 +72,55 @@ public class NarakaBlocks {
     public static final DeferredBlock<Block> SOUL_INFUSED_LAPIS_BLOCK = registerSimpleBlockWithItem("soul_infused_lapis_block", Blocks.LAPIS_BLOCK);
     public static final DeferredBlock<Block> SOUL_INFUSED_AMETHYST_BLOCK = registerSimpleBlockWithItem("soul_infused_amethyst_block", Blocks.AMETHYST_BLOCK);
     public static final DeferredBlock<Block> SOUL_INFUSED_NECTARIUM_BLOCK = registerSimpleBlockWithItem("soul_infused_nectarium_block", NECTARIUM_BLOCK);
+
+    public static final DeferredBlock<RotatedPillarBlock> EBONY_LOG = registerBlockWithItem("ebony_log", RotatedPillarBlock::new, Blocks.DARK_OAK_LOG);
+    public static final DeferredBlock<RotatedPillarBlock> STRIPPED_EBONY_LOG = registerBlockWithItem("stripped_ebony_log", RotatedPillarBlock::new, Blocks.STRIPPED_DARK_OAK_LOG);
+    public static final DeferredBlock<RotatedPillarBlock> EBONY_WOOD = registerBlockWithItem("ebony_wood", RotatedPillarBlock::new, Blocks.DARK_OAK_WOOD);
+    public static final DeferredBlock<RotatedPillarBlock> STRIPPED_EBONY_WOOD = registerBlockWithItem("stripped_ebony_wood", RotatedPillarBlock::new, Blocks.STRIPPED_DARK_OAK_WOOD);
+    public static final DeferredBlock<LeavesBlock> EBONY_LEAVES = registerBlockWithItem("ebony_leaves", LeavesBlock::new, Blocks.DARK_OAK_LEAVES);
+
+    public static final DeferredBlock<NarakaStandingSignBlock> EBONY_SIGN = registerBlock(
+            "ebony_sign",
+            properties -> new NarakaStandingSignBlock(NarakaBlockTypes.Wood.EBONY, properties),
+            Blocks.DARK_OAK_SIGN
+    );
+    public static final DeferredBlock<NarakaWallSignBlock> EBONY_WALL_SIGN = registerBlock(
+            "ebony_wall_sign",
+            properties -> new NarakaWallSignBlock(NarakaBlockTypes.Wood.EBONY, properties),
+            Blocks.DARK_OAK_WALL_SIGN
+    );
+    public static final DeferredBlock<NarakaWallHangingSignBlock> EBONY_WALL_HANGING_SIGN = registerBlock(
+            "ebony_wall_hanging_sign",
+            properties -> new NarakaWallHangingSignBlock(NarakaBlockTypes.Wood.EBONY, properties),
+            Blocks.DARK_OAK_WALL_HANGING_SIGN
+    );
+    public static final DeferredBlock<NarakaCeilingHangingSignBlock> EBONY_HANGING_SIGN = registerBlock(
+            "ebony_hanging_sign",
+            properties -> new NarakaCeilingHangingSignBlock(NarakaBlockTypes.Wood.EBONY, properties),
+            Blocks.DARK_OAK_HANGING_SIGN
+    );
+    public static final DeferredBlock<SaplingBlock> EBONY_SAPLING = registerBlock(
+            "ebony_sapling",
+            properties -> new SaplingBlock(TreeGrower.DARK_OAK, properties),
+            Blocks.DARK_OAK_SAPLING
+    );
+
+    public static void setFlammableBlocks() {
+        FireBlock fire = (FireBlock) Blocks.FIRE;
+        fire.setFlammable(EBONY_LOG.get(), 5, 20);
+        fire.setFlammable(STRIPPED_EBONY_LOG.get(), 5, 20);
+        fire.setFlammable(EBONY_WOOD.get(), 5, 20);
+        fire.setFlammable(STRIPPED_EBONY_WOOD.get(), 5, 20);
+        fire.setFlammable(EBONY_SIGN.get(), 5, 20);
+        fire.setFlammable(EBONY_WALL_SIGN.get(), 5, 20);
+        fire.setFlammable(EBONY_HANGING_SIGN.get(), 5, 20);
+        fire.setFlammable(EBONY_WALL_HANGING_SIGN.get(), 5, 20);
+        fire.setFlammable(EBONY_SAPLING.get(), 5, 20);
+    }
+
+    private static <B extends Block> DeferredBlock<B> registerBlock(String name, Function<BlockBehaviour.Properties, ? extends B> function, Block propertyBase) {
+        return BLOCKS.registerBlock(name, function, BlockBehaviour.Properties.ofFullCopy(propertyBase));
+    }
 
     private static <B extends Block> DeferredBlock<B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties blockProperties, Item.Properties itemProperties) {
         DeferredBlock<B> blockHolder = BLOCKS.registerBlock(name, function, blockProperties);

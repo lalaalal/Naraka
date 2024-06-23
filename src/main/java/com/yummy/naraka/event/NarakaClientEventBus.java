@@ -15,11 +15,16 @@ import com.yummy.naraka.client.renderer.HerobrineRenderer;
 import com.yummy.naraka.client.renderer.NarakaCustomRenderer;
 import com.yummy.naraka.client.renderer.NarakaItemEntityRenderer;
 import com.yummy.naraka.client.renderer.SpearRenderer;
+import com.yummy.naraka.world.block.NarakaBlockTypes;
+import com.yummy.naraka.world.block.entity.NarakaBlockEntities;
 import com.yummy.naraka.world.entity.NarakaEntities;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeTypes;
 import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
+import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.api.distmarker.Dist;
@@ -37,7 +42,7 @@ public class NarakaClientEventBus {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-
+            Sheets.addWoodType(NarakaBlockTypes.Wood.EBONY);
         });
     }
 
@@ -55,6 +60,9 @@ public class NarakaClientEventBus {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(NarakaBlockEntities.EBONY_SIGN.get(), SignRenderer::new);
+        event.registerBlockEntityRenderer(NarakaBlockEntities.EBONY_HANGING_SIGN.get(), HangingSignRenderer::new);
+
         event.registerEntityRenderer(EntityType.ITEM, NarakaItemEntityRenderer::new);
 
         event.registerEntityRenderer(NarakaEntities.HEROBRINE.get(), HerobrineRenderer::new);
