@@ -48,18 +48,22 @@ public class NarakaCreativeModTabs {
                 output.accept(NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK);
                 output.accept(NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK);
                 output.accept(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK);
-                output.accept(NarakaBlocks.NECTARIUM_BLOCK);
-                output.accept(NarakaBlocks.PURIFIED_SOUL_BLOCK);
+                output.accept(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK);
+                output.accept(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
 
                 output.accept(NarakaItems.GOD_BLOOD);
                 output.accept(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK);
-
+                output.accept(NarakaBlocks.PURIFIED_SOUL_BLOCK);
+                output.accept(NarakaBlocks.NECTARIUM_BLOCK);
                 output.accept(NarakaBlocks.EBONY_LOG);
                 output.accept(NarakaBlocks.STRIPPED_EBONY_LOG);
                 output.accept(NarakaBlocks.EBONY_WOOD);
                 output.accept(NarakaBlocks.STRIPPED_EBONY_WOOD);
                 output.accept(NarakaItems.EBONY_SIGN);
                 output.accept(NarakaItems.EBONY_HANGING_SIGN);
+                output.accept(NarakaBlocks.EBONY_PLANKS);
+                output.accept(NarakaBlocks.EBONY_SLAB);
+                output.accept(NarakaBlocks.EBONY_STAIRS);
             }).build());
 
     public static void register(IEventBus bus) {

@@ -1,6 +1,7 @@
 package com.yummy.naraka.data;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.crafting.SoulCraftingRecipe;
@@ -10,11 +11,7 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
-import net.minecraft.world.item.crafting.BlastingRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 
 import java.util.List;
@@ -66,7 +63,14 @@ public class NarakaRecipeProvider extends RecipeProvider {
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_LAPIS, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_AMETHYST, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_NECTARIUM, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK);
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_METAL, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_SHARD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.PURIFIED_SOUL_BLOCK);
+
+        planksFromLog(recipeOutput, NarakaBlocks.EBONY_PLANKS, NarakaItemTags.EBONY_LOGS, 4);
+        slab(recipeOutput, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.EBONY_SLAB.get(), NarakaBlocks.EBONY_PLANKS);
+        stairBuilder(NarakaBlocks.EBONY_STAIRS.get(), Ingredient.of(NarakaBlocks.EBONY_PLANKS.get()))
+                .unlockedBy(getHasName(NarakaBlocks.EBONY_PLANKS), has(NarakaBlocks.EBONY_PLANKS))
+                .save(recipeOutput);
     }
 
     protected static void smithing(RecipeOutput recipeOutput, ItemLike template, ItemLike base, ItemLike ingredient, RecipeCategory category, Item result) {
