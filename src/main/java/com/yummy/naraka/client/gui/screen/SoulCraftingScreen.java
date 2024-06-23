@@ -8,7 +8,10 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class SoulCraftingScreen extends AbstractContainerScreen<SoulCraftingMenu> {
     public static final int CRAFTING_PROGRESS_WIDTH = 24;
     public static final int CRAFTING_PROGRESS_HEIGHT = 16;

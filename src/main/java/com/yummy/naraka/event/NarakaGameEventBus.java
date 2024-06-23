@@ -1,11 +1,12 @@
 package com.yummy.naraka.event;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.NarakaUtil;
 import com.yummy.naraka.attachment.AttachmentSyncHelper;
 import com.yummy.naraka.attachment.DeathCountHelper;
 import com.yummy.naraka.attachment.StigmaHelper;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
+import com.yummy.naraka.util.ComponentStyles;
+import com.yummy.naraka.util.NarakaUtil;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.DeathCountingEntity;
 import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
@@ -32,6 +34,11 @@ public class NarakaGameEventBus {
         NarakaDamageSources.initialize(registryAccess);
         NarakaEnchantments.initialize(registryAccess);
         NarakaUtil.initialize(server);
+    }
+
+    @SubscribeEvent
+    public static void clientTick(ClientTickEvent.Pre event) {
+        ComponentStyles.tick();
     }
 
     @SubscribeEvent

@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.entity;
 
-import com.yummy.naraka.NarakaUtil;
 import com.yummy.naraka.attachment.DeathCountHelper;
+import com.yummy.naraka.util.NarakaUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
