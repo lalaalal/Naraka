@@ -41,7 +41,6 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         simpleBlockWithItem(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
         horizontalBlockWithStateOnOff(NarakaBlocks.SOUL_CRAFTING_BLOCK);
 
-        simpleBlockItem(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(), existingBlockModel("purified_soul_fire_side1"));
         itemModels().getBuilder(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.getId().getPath())
                 .parent(existingBlockModel("purified_soul_fire_side0"))
                 .transforms()
@@ -51,6 +50,7 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
                 .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
                 .translation(0, 0, 8);
         simpleBlockItem(NarakaBlocks.SOUL_CRAFTING_BLOCK);
+        simpleBlockWithItem(NarakaBlocks.NECTARIUM_BLOCK);
 
         simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
         simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK);
@@ -59,7 +59,8 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK);
         simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK);
         simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK);
-        simpleBlockWithItem(NarakaBlocks.NECTARIUM_BLOCK);
+        simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK);
+        simpleBlockWithItem(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
         simpleBlockWithItem(NarakaBlocks.PURIFIED_SOUL_BLOCK);
 
         logBlockWithItem(NarakaBlocks.EBONY_LOG);
@@ -72,6 +73,12 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         signBlock(NarakaBlocks.EBONY_WALL_SIGN, texture("ebony_planks"));
         signBlock(NarakaBlocks.EBONY_HANGING_SIGN, texture("ebony_planks"));
         signBlock(NarakaBlocks.EBONY_WALL_HANGING_SIGN, texture("ebony_planks"));
+        simpleBlockWithItem(NarakaBlocks.EBONY_SAPLING);
+        simpleBlockWithItem(NarakaBlocks.EBONY_PLANKS);
+        slabBlock(NarakaBlocks.EBONY_SLAB.get(), texture("ebony_planks"), texture("ebony_planks"));
+        simpleBlockItem(NarakaBlocks.EBONY_SLAB);
+        stairsBlock(NarakaBlocks.EBONY_STAIRS.get(), texture("ebony_planks"));
+        simpleBlockItem(NarakaBlocks.EBONY_STAIRS);
     }
 
     public void signBlock(DeferredBlock<? extends SignBlock> signBlock, ResourceLocation texture) {

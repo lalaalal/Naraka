@@ -1,6 +1,6 @@
 package com.yummy.naraka.world.block;
 
-import com.yummy.naraka.NarakaUtil;
+import com.yummy.naraka.util.NarakaUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;

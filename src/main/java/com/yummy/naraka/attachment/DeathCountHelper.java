@@ -1,12 +1,12 @@
 package com.yummy.naraka.attachment;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.NarakaUtil;
 import com.yummy.naraka.event.NarakaGameEventBus;
 import com.yummy.naraka.network.payload.ChangeDeathCountVisibilityPayload;
 import com.yummy.naraka.network.payload.IntAttachmentSyncHandler;
 import com.yummy.naraka.tags.NarakaDamageTypeTags;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
+import com.yummy.naraka.util.NarakaUtil;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.DeathCountingEntity;
 import net.minecraft.server.level.ServerPlayer;

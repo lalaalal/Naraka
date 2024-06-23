@@ -55,6 +55,9 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addItem(NarakaItems.SOUL_INFUSED_NECTARIUM, "Soul Infused Nectarium");
             addItem(NarakaItems.PURIFIED_SOUL_METAL, "Purified Soul Metal");
 
+            addItem(NarakaItems.EBONY_SIGN, "Ebony Sign");
+            addItem(NarakaItems.EBONY_HANGING_SIGN, "Ebony Hanging Sign");
+
             addBlock(NarakaBlocks.NECTARIUM_ORE, "Nectarium Ore");
             addBlock(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "Deepslate Nectarium Ore");
             addBlock(NarakaBlocks.NECTARIUM_BLOCK, "Nectarium Block");
@@ -70,6 +73,16 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.PURIFIED_SOUL_BLOCK, "Purified Soul Block");
 
             addBlock(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK, "Purified Soul Fire");
+
+            addBlock(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK, "Purified Soul Metal Block");
+            addBlock(NarakaBlocks.EBONY_LOG, "Ebony Log");
+            addBlock(NarakaBlocks.STRIPPED_EBONY_LOG, "Stripped Ebony Log");
+            addBlock(NarakaBlocks.EBONY_WOOD, "Ebony Wood");
+            addBlock(NarakaBlocks.STRIPPED_EBONY_WOOD, "Stripped Ebony Wood");
+            addBlock(NarakaBlocks.EBONY_SAPLING, "Ebony Sapling");
+            addBlock(NarakaBlocks.EBONY_PLANKS, "Ebony Planks");
+            addBlock(NarakaBlocks.EBONY_SLAB, "Ebony Slab");
+            addBlock(NarakaBlocks.EBONY_STAIRS, "Ebony Stairs");
 
             addEntityType(NarakaEntities.HEROBRINE, "Naraka: Herobrine");
             addEntityType(NarakaEntities.THROWN_SPEAR, "Spear");

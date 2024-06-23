@@ -33,6 +33,7 @@ public class NarakaBlockLootSubProvider extends BlockLootSubProvider {
         dropSelf(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK);
         dropSelf(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK);
         dropSelf(NarakaBlocks.PURIFIED_SOUL_BLOCK);
+        dropSelf(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
 
         dropSelf(NarakaBlocks.EBONY_LOG);
         dropSelf(NarakaBlocks.STRIPPED_EBONY_LOG);
@@ -46,6 +47,10 @@ public class NarakaBlockLootSubProvider extends BlockLootSubProvider {
         dropOther(NarakaBlocks.EBONY_WALL_SIGN.get(), NarakaItems.EBONY_SIGN);
         dropOther(NarakaBlocks.EBONY_HANGING_SIGN.get(), NarakaItems.EBONY_HANGING_SIGN);
         dropOther(NarakaBlocks.EBONY_WALL_HANGING_SIGN.get(), NarakaItems.EBONY_HANGING_SIGN);
+
+        dropSelf(NarakaBlocks.EBONY_PLANKS);
+        add(NarakaBlocks.EBONY_SLAB.get(), createSlabItemTable(NarakaBlocks.EBONY_SLAB.get()));
+        dropSelf(NarakaBlocks.EBONY_STAIRS);
     }
 
     protected void dropSelf(DeferredBlock<? extends Block> block) {

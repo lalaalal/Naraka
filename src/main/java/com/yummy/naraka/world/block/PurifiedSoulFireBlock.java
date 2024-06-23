@@ -8,7 +8,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoulFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class PurifiedSoulFireBlock extends BaseFireBlock {
@@ -30,8 +29,7 @@ public class PurifiedSoulFireBlock extends BaseFireBlock {
 
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        BlockState belowBlock = level.getBlockState(pos.below());
-        return SoulFireBlock.canSurviveOnBlock(belowBlock);
+        return level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP);
     }
 
     @Override

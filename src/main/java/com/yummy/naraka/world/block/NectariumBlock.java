@@ -28,6 +28,7 @@ public class NectariumBlock extends Block {
             if (level.getBlockState(mutablePos.immutable()).is(Blocks.HONEY_BLOCK)
                     && random.nextFloat() < composeChance) {
                 level.setBlock(mutablePos.immutable(), defaultBlockState(), 2);
+                return;
             }
         }
     }

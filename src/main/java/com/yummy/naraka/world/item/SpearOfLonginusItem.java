@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.item;
 
+import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.NarakaEntities;
 import com.yummy.naraka.world.entity.Spear;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class SpearOfLonginusItem extends SpearItem {
+
     public SpearOfLonginusItem(Properties properties) {
         super(NarakaTiers.LONGINUS, properties, NarakaEntities.THROWN_SPEAR_OF_LONGINUS);
     }
@@ -61,6 +63,7 @@ public class SpearOfLonginusItem extends SpearItem {
     @Override
     public Component getName(ItemStack stack) {
         return super.getName(stack).copy()
-                .withStyle(ChatFormatting.ITALIC, ChatFormatting.RED);
+                .withStyle(ChatFormatting.ITALIC)
+                .withStyle(ComponentStyles.LONGINUS_COLOR);
     }
 }

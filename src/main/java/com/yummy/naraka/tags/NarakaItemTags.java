@@ -11,6 +11,8 @@ public interface NarakaItemTags {
 
     TagKey<Item> SPEAR_ENCHANTABLE = create("enchantable/spear");
 
+    TagKey<Item> EBONY_LOGS = create("ebony_logs");
+
     private static TagKey<Item> create(String name) {
         return TagKey.create(Registries.ITEM, NarakaMod.location(name));
     }
