@@ -34,6 +34,13 @@ public class SpearOfLonginus extends Spear {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        if (getY() > 255)
+            dealtDamage = true;
+    }
+
+    @Override
     public boolean hasFoil() {
         return false;
     }
