@@ -29,9 +29,8 @@ public class NarakaCreativeModTabs {
                 output.accept(NarakaBlocks.NECTARIUM_ORE);
                 output.accept(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
                 output.accept(NarakaItems.NECTARIUM);
-                output.accept(NarakaItems.GOD_BLOOD);
-
                 output.accept(NarakaItems.PURIFIED_SOUL_SHARD);
+
                 output.accept(NarakaItems.SOUL_INFUSED_REDSTONE);
                 output.accept(NarakaItems.SOUL_INFUSED_COPPER);
                 output.accept(NarakaItems.SOUL_INFUSED_GOLD);
@@ -51,6 +50,9 @@ public class NarakaCreativeModTabs {
                 output.accept(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK);
                 output.accept(NarakaBlocks.NECTARIUM_BLOCK);
                 output.accept(NarakaBlocks.PURIFIED_SOUL_BLOCK);
+
+                output.accept(NarakaItems.GOD_BLOOD);
+                output.accept(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK);
             }).build());
 
     public static void register(IEventBus bus) {

@@ -4,6 +4,7 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,7 +39,15 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         simpleBlockWithItem(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
         horizontalBlockWithStateOnOff(NarakaBlocks.SOUL_CRAFTING_BLOCK);
 
-        simpleBlockItem(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(), existingModel("purified_soul_fire_side1"));
+        simpleBlockItem(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(), existingBlockModel("purified_soul_fire_side1"));
+        itemModels().getBuilder(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.getId().getPath())
+                .parent(existingBlockModel("purified_soul_fire_side0"))
+                .transforms()
+                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
+                .translation(0, 0, 8)
+                .end()
+                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
+                .translation(0, 0, 8);
         simpleBlockItem(NarakaBlocks.SOUL_CRAFTING_BLOCK);
 
         simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
@@ -52,7 +61,7 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         simpleBlockWithItem(NarakaBlocks.PURIFIED_SOUL_BLOCK);
     }
 
-    public ModelFile existingModel(String path) {
+    public ModelFile existingBlockModel(String path) {
         return models().getExistingFile(NarakaMod.location(path));
     }
 

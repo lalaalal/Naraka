@@ -17,6 +17,8 @@ import com.yummy.naraka.client.renderer.NarakaItemEntityRenderer;
 import com.yummy.naraka.client.renderer.SpearRenderer;
 import com.yummy.naraka.world.entity.NarakaEntities;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
+import com.yummy.naraka.world.item.crafting.NarakaRecipeTypes;
+import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import net.minecraft.world.entity.EntityType;
@@ -59,6 +61,11 @@ public class NarakaClientEventBus {
         event.registerEntityRenderer(NarakaEntities.THROWN_SPEAR.get(), SpearRenderer::new);
         event.registerEntityRenderer(NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR.get(), SpearRenderer::new);
         event.registerEntityRenderer(NarakaEntities.THROWN_SPEAR_OF_LONGINUS.get(), SpearRenderer::longinus);
+    }
+
+    @SubscribeEvent
+    public static void registerRecipeBookCategories(RegisterRecipeBookCategoriesEvent event) {
+        event.registerRecipeCategoryFinder(NarakaRecipeTypes.SOUL_CRAFTING.get(), recipe -> RecipeBookCategories.UNKNOWN);
     }
 
     @SubscribeEvent

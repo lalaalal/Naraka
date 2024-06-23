@@ -53,19 +53,9 @@ public class SoulCraftingMenu extends AbstractContainerMenu {
         this.level = inventory.player.level();
         this.recipeManager = level.getRecipeManager();
 
-        Slot fuelSlot = PredicateSlot.builder(container)
-                .at(FUEL_SLOT)
-                .position(26, 47)
-                .with(this::isFuel)
-                .build();
-        Slot ingredientSlot = PredicateSlot.builder(container)
-                .at(INGREDIENT_SLOT)
-                .position(56, 17)
-                .with(this::isIngredient)
-                .build();
-        addSlot(fuelSlot);
-        addSlot(ingredientSlot);
-        addSlot(new Slot(container, RESULT_SLOT, 116, 35));
+        addSlot(new PredicateSlot(container, this::isFuel, FUEL_SLOT, 26, 47));
+        addSlot(new PredicateSlot(container, this::isIngredient, INGREDIENT_SLOT, 56, 17));
+        addSlot(new ResultSlot(container, RESULT_SLOT, 116, 35));
         addDataSlots(data);
 
         for (int row = 0; row < 3; row++) {
@@ -125,9 +115,7 @@ public class SoulCraftingMenu extends AbstractContainerMenu {
     }
 
     public boolean isCrafting() {
-        ItemStack ingredient = slots.get(INGREDIENT_SLOT).getItem();
-        int fuel = data.get(FUEL_DATA_ID);
-        return fuel == SoulCraftingBlockEntity.requiredFuels() && isIngredient(ingredient);
+        return getCraftingProgress() > 0;
     }
 
     public double getCraftingProgress() {

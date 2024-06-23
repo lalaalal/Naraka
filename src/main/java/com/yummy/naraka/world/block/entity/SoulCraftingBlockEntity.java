@@ -10,6 +10,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -39,6 +40,9 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
 
     public static final int DATA_SIZE = 3;
 
+    public static final int PROGRESS_WAITING = 0;
+    public static final int PROGRESS_START = 1;
+
     private static int requiredFuels;
     private static int craftingTime;
 
@@ -62,7 +66,7 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
     public SoulCraftingBlockEntity(BlockPos pos, BlockState blockState) {
         super(NarakaBlockEntities.SOUL_CRAFTING_BLOCK_ENTITY.get(), pos, blockState);
         setFuel(0);
-        setCraftingProgress(Integer.MAX_VALUE);
+        setCraftingProgress(PROGRESS_WAITING);
         setLitProgress(0);
     }
 
@@ -83,7 +87,7 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
     }
 
     public void setCraftingProgress(int craftingProgress) {
-        data.set(CRAFTING_PROGRESS_DATA_ID, Math.max(craftingProgress, 0));
+        data.set(CRAFTING_PROGRESS_DATA_ID, Math.max(craftingProgress, PROGRESS_WAITING));
     }
 
     public void setLitProgress(int remaining) {
@@ -152,11 +156,12 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
         if (!ingredientItem.isEmpty()
                 && optional.isPresent() && canCraft(level, optional.get(), existingResult)
                 && fuel == requiredFuels()
-                && craftingProgress > craftingTime()) {
-            blockEntity.setCraftingProgress(0);
+                && craftingProgress == PROGRESS_WAITING) {
+            blockEntity.setCraftingProgress(PROGRESS_START);
             blockEntity.setLitProgress(craftingTime());
             blockEntity.setFuel(0);
             level.setBlock(pos, state.setValue(SoulCraftingBlock.LIT, true), 10);
+            return;
         }
 
         if (craftingProgress == craftingTime() && optional.isPresent() && !ingredientItem.isEmpty()) {
@@ -166,15 +171,21 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
             else if (existingResult.is(crafted.getItem()))
                 existingResult.grow(1);
             level.setBlock(pos, state.setValue(SoulCraftingBlock.LIT, false), 10);
+            blockEntity.setCraftingProgress(PROGRESS_WAITING);
         }
 
-        if (craftingProgress <= craftingTime()) {
+        if (canProcess(craftingProgress)) {
             int increase = 1;
             if (ingredientItem.isEmpty())
-                increase = -craftingTime() / 10;
+                increase = Mth.ceil(-craftingTime() * 0.05);
+
             blockEntity.setCraftingProgress(craftingProgress + increase);
-            blockEntity.setLitProgress(litProgress - increase);
+            blockEntity.setLitProgress(litProgress - Mth.abs(increase));
         }
+    }
+
+    private static boolean canProcess(int progress) {
+        return PROGRESS_START <= progress && progress < craftingTime();
     }
 
     public static boolean canCraft(Level level, RecipeHolder<SoulCraftingRecipe> recipe, ItemStack existingResult) {
