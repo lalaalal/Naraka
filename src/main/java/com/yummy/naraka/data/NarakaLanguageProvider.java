@@ -66,6 +66,7 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK, "Soul Infused Redstone Block");
             addBlock(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK, "Soul Infused Copper Block");
             addBlock(NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK, "Soul Infused Gold Block");
+            addBlock(NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK, "Soul Infused Emerald Block");
             addBlock(NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK, "Soul Infused Diamond Block");
             addBlock(NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK, "Soul Infused Lapis Block");
             addBlock(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK, "Soul Infused Amethyst Block");
