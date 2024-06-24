@@ -73,12 +73,30 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         signBlock(NarakaBlocks.EBONY_WALL_SIGN, texture("ebony_planks"));
         signBlock(NarakaBlocks.EBONY_HANGING_SIGN, texture("ebony_planks"));
         signBlock(NarakaBlocks.EBONY_WALL_HANGING_SIGN, texture("ebony_planks"));
-        simpleBlockWithItem(NarakaBlocks.EBONY_SAPLING);
+        existingParentModelBlockWithItem(NarakaBlocks.EBONY_SAPLING, "cross", "cross");
         simpleBlockWithItem(NarakaBlocks.EBONY_PLANKS);
         slabBlock(NarakaBlocks.EBONY_SLAB.get(), texture("ebony_planks"), texture("ebony_planks"));
         simpleBlockItem(NarakaBlocks.EBONY_SLAB);
         stairsBlock(NarakaBlocks.EBONY_STAIRS.get(), texture("ebony_planks"));
         simpleBlockItem(NarakaBlocks.EBONY_STAIRS);
+    }
+
+    public void existingParentModelBlockWithItem(DeferredBlock<? extends Block> block, String parent, String textureKey) {
+        blockWithItem(
+                block,
+                modelWithExistingParent(block, parent)
+                        .texture(textureKey, blockTexture(block.get()))
+                        .renderType("cutout")
+        );
+    }
+
+    public void blockWithItem(DeferredBlock<? extends Block> block, ModelFile model) {
+        simpleBlock(block.get(), model);
+        simpleBlockItem(block);
+    }
+
+    public BlockModelBuilder modelWithExistingParent(DeferredBlock<? extends Block> block, String parent) {
+        return models().withExistingParent(block.getId().getPath(), parent);
     }
 
     public void signBlock(DeferredBlock<? extends SignBlock> signBlock, ResourceLocation texture) {

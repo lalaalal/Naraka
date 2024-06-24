@@ -59,6 +59,7 @@ public class NarakaCreativeModTabs {
                 output.accept(NarakaBlocks.STRIPPED_EBONY_LOG);
                 output.accept(NarakaBlocks.EBONY_WOOD);
                 output.accept(NarakaBlocks.STRIPPED_EBONY_WOOD);
+                output.accept(NarakaBlocks.EBONY_SAPLING);
                 output.accept(NarakaItems.EBONY_SIGN);
                 output.accept(NarakaItems.EBONY_HANGING_SIGN);
                 output.accept(NarakaBlocks.EBONY_PLANKS);
