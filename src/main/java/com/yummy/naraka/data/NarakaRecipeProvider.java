@@ -13,6 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -71,6 +72,9 @@ public class NarakaRecipeProvider extends RecipeProvider {
         stairBuilder(NarakaBlocks.EBONY_STAIRS.get(), Ingredient.of(NarakaBlocks.EBONY_PLANKS.get()))
                 .unlockedBy(getHasName(NarakaBlocks.EBONY_PLANKS), has(NarakaBlocks.EBONY_PLANKS))
                 .save(recipeOutput);
+
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.BUILDING_BLOCKS, Blocks.IRON_BLOCK.asItem(), RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT);
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT, RecipeCategory.MISC, NarakaBlocks.COMPRESSED_IRON_BLOCK);
     }
 
     protected static void smithing(RecipeOutput recipeOutput, ItemLike template, ItemLike base, ItemLike ingredient, RecipeCategory category, Item result) {

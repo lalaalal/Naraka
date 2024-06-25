@@ -23,6 +23,7 @@ public class NarakaBlockLootSubProvider extends BlockLootSubProvider {
         dropOre(NarakaBlocks.NECTARIUM_ORE, NarakaItems.NECTARIUM);
         dropOre(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, NarakaItems.NECTARIUM);
         dropSelf(NarakaBlocks.SOUL_CRAFTING_BLOCK);
+        dropSelf(NarakaBlocks.COMPRESSED_IRON_BLOCK);
 
         dropSelf(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
         dropSelf(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK);

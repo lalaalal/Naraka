@@ -20,5 +20,7 @@ public class NarakaBlockTagsProvider extends BlockTagsProvider {
     protected void addTags(HolderLookup.Provider pProvider) {
         tag(BlockTags.FIRE)
                 .add(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get());
+
+        // TODO : add ebony...
     }
 }

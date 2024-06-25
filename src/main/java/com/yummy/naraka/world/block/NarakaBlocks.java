@@ -1,7 +1,6 @@
 package com.yummy.naraka.world.block;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.world.block.grower.NarakaTreeGrowers;
 import net.minecraft.core.Holder;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.Item;
@@ -43,7 +42,6 @@ public class NarakaBlocks {
     public static final DeferredBlock<Block> NECTARIUM_BLOCK = registerBlockWithItem("nectarium_block", NectariumBlock::new, Blocks.IRON_BLOCK);
     public static final DeferredBlock<Block> PURIFIED_SOUL_BLOCK = registerSimpleBlockWithItem("purified_soul_block", Blocks.IRON_BLOCK, item().fireResistant());
     public static final DeferredBlock<Block> PURIFIED_SOUL_METAL_BLOCK = registerSimpleBlockWithItem("purified_soul_metal_block", Blocks.IRON_BLOCK, item().fireResistant());
-
     public static final DeferredBlock<BaseFireBlock> PURIFIED_SOUL_FIRE_BLOCK = registerBlockWithItem(
             "purified_soul_fire",
             properties -> new PurifiedSoulFireBlock(properties
@@ -60,6 +58,8 @@ public class NarakaBlocks {
             BlockBehaviour.Properties.ofFullCopy(Blocks.BLAST_FURNACE)
                     .lightLevel(SoulCraftingBlock::lightLevel)
     );
+
+    public static final DeferredBlock<Block> COMPRESSED_IRON_BLOCK = registerSimpleBlockWithItem("compressed_iron_block", Blocks.IRON_BLOCK);
 
     public static final DeferredBlock<Block> SOUL_INFUSED_REDSTONE_BLOCK = registerSimpleBlockWithItem("soul_infused_redstone_block", Blocks.REDSTONE_BLOCK, item().fireResistant());
     public static final DeferredBlock<Block> SOUL_INFUSED_COPPER_BLOCK = registerSimpleBlockWithItem("soul_infused_copper_block", Blocks.COPPER_BLOCK, item().fireResistant());
@@ -100,11 +100,7 @@ public class NarakaBlocks {
             properties -> new NarakaCeilingHangingSignBlock(NarakaBlockTypes.Wood.EBONY, properties),
             Blocks.DARK_OAK_HANGING_SIGN
     );
-    public static final DeferredBlock<SaplingBlock> EBONY_SAPLING = registerBlockWithItem(
-            "ebony_sapling",
-            properties -> new SaplingBlock(NarakaTreeGrowers.EBONY, properties),
-            Blocks.DARK_OAK_SAPLING
-    );
+    public static final DeferredBlock<EbonySaplingBlock> EBONY_SAPLING = registerBlockWithItem("ebony_sapling", EbonySaplingBlock::new, Blocks.DARK_OAK_SAPLING);
 
     public static BlockBehaviour.Properties from(Block block) {
         return BlockBehaviour.Properties.ofFullCopy(block);

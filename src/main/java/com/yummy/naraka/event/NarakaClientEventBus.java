@@ -16,6 +16,7 @@ import com.yummy.naraka.client.renderer.NarakaCustomRenderer;
 import com.yummy.naraka.client.renderer.NarakaItemEntityRenderer;
 import com.yummy.naraka.client.renderer.SpearRenderer;
 import com.yummy.naraka.world.block.NarakaBlockTypes;
+import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntities;
 import com.yummy.naraka.world.entity.NarakaEntities;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
@@ -27,6 +28,9 @@ import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.FoliageColor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -49,6 +53,19 @@ public class NarakaClientEventBus {
     @SubscribeEvent
     public static void registerClientReloadListener(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(NarakaCustomRenderer.getInstance());
+    }
+
+    @SubscribeEvent
+    public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
+        event.register((state, level, pos, tint) -> FoliageColor.getDefaultColor(), NarakaBlocks.EBONY_LEAVES.get());
+    }
+
+    @SubscribeEvent
+    public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
+        event.register((itemStack, tint) -> {
+            BlockState blockstate = ((BlockItem) itemStack.getItem()).getBlock().defaultBlockState();
+            return event.getBlockColors().getColor(blockstate, null, null, tint);
+        }, NarakaBlocks.EBONY_LEAVES.get());
     }
 
     @SubscribeEvent

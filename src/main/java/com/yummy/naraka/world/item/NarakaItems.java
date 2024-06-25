@@ -45,6 +45,8 @@ public class NarakaItems {
                     .rarity(Rarity.EPIC)
     );
 
+    public static final DeferredItem<Item> COMPRESSED_IRON_INGOT = ITEMS.registerSimpleItem("compressed_iron_ingot");
+
     public static final DeferredItem<Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = ITEMS.registerSimpleItem("purified_soul_upgrade_smithing_template");
     public static final DeferredItem<Item> PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE = ITEMS.registerSimpleItem("purified_gems_upgrade_smithing_template");
 
