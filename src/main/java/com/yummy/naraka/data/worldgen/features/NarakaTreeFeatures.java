@@ -19,7 +19,7 @@ import java.util.OptionalInt;
 public class NarakaTreeFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> EBONY = NarakaFeatures.createKey("ebony");
 
-    public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+    protected static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         FeatureUtils.register(context, EBONY, Feature.TREE, createEbony().build());
     }
 
