@@ -15,7 +15,7 @@ import java.util.stream.Stream;
  */
 @OnlyIn(Dist.CLIENT)
 public class ComponentStyles {
-    public static final RainbowColored LONGINUS_COLOR = new RainbowColored(
+    public static final ColorTransforming LONGINUS_COLOR = new ColorTransforming(
             Stream.of(0xB02E26, 0xF9801D, 0xFED83D, 0x80C71F, 0x169C9C, 0x3C44AA, 0x8932B8, 0xC74EBD)
                     .map(Color::of).toList(),
             10
@@ -28,14 +28,14 @@ public class ComponentStyles {
         tickCount++;
     }
 
-    public static class RainbowColored implements UnaryOperator<Style> {
+    public static class ColorTransforming implements UnaryOperator<Style> {
         private final List<Color> colors;
         private final int transformTime;
         private int lastChangedTime;
         private Color previousColor;
         private Color currentColor;
 
-        public RainbowColored(List<Color> colors, int transformTime) {
+        public ColorTransforming(List<Color> colors, int transformTime) {
             this.colors = colors;
             this.transformTime = transformTime;
             previousColor = colors.getFirst();

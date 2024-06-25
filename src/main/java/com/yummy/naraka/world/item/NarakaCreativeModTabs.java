@@ -52,6 +52,8 @@ public class NarakaCreativeModTabs {
                 output.accept(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
 
                 output.accept(NarakaItems.GOD_BLOOD);
+                output.accept(NarakaItems.COMPRESSED_IRON_INGOT);
+                output.accept(NarakaBlocks.COMPRESSED_IRON_BLOCK);
                 output.accept(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK);
                 output.accept(NarakaBlocks.PURIFIED_SOUL_BLOCK);
                 output.accept(NarakaBlocks.NECTARIUM_BLOCK);
@@ -59,6 +61,7 @@ public class NarakaCreativeModTabs {
                 output.accept(NarakaBlocks.STRIPPED_EBONY_LOG);
                 output.accept(NarakaBlocks.EBONY_WOOD);
                 output.accept(NarakaBlocks.STRIPPED_EBONY_WOOD);
+                output.accept(NarakaBlocks.EBONY_LEAVES);
                 output.accept(NarakaBlocks.EBONY_SAPLING);
                 output.accept(NarakaItems.EBONY_SIGN);
                 output.accept(NarakaItems.EBONY_HANGING_SIGN);

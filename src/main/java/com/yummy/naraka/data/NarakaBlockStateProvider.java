@@ -51,6 +51,7 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
                 .translation(0, 0, 8);
         simpleBlockItem(NarakaBlocks.SOUL_CRAFTING_BLOCK);
         simpleBlockWithItem(NarakaBlocks.NECTARIUM_BLOCK);
+        simpleBlockWithItem(NarakaBlocks.COMPRESSED_IRON_BLOCK);
 
         simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
         simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK);
@@ -67,13 +68,13 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         logBlockWithItem(NarakaBlocks.STRIPPED_EBONY_LOG);
         woodBlockWithItem(NarakaBlocks.EBONY_WOOD, NarakaBlocks.EBONY_LOG);
         woodBlockWithItem(NarakaBlocks.STRIPPED_EBONY_WOOD, NarakaBlocks.STRIPPED_EBONY_LOG);
-        simpleBlockWithItem(NarakaBlocks.EBONY_LEAVES);
+        parentModelBlockWithItem(NarakaBlocks.EBONY_LEAVES, "leaves", "all");
 
         signBlock(NarakaBlocks.EBONY_SIGN, texture("ebony_planks"));
         signBlock(NarakaBlocks.EBONY_WALL_SIGN, texture("ebony_planks"));
         signBlock(NarakaBlocks.EBONY_HANGING_SIGN, texture("ebony_planks"));
         signBlock(NarakaBlocks.EBONY_WALL_HANGING_SIGN, texture("ebony_planks"));
-        existingParentModelBlockWithItem(NarakaBlocks.EBONY_SAPLING, "cross", "cross");
+        parentCustomRenderTypeModelBlockWithItem(NarakaBlocks.EBONY_SAPLING, "cross", "cross", "cutout");
         simpleBlockWithItem(NarakaBlocks.EBONY_PLANKS);
         slabBlock(NarakaBlocks.EBONY_SLAB.get(), texture("ebony_planks"), texture("ebony_planks"));
         simpleBlockItem(NarakaBlocks.EBONY_SLAB);
@@ -81,12 +82,20 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         simpleBlockItem(NarakaBlocks.EBONY_STAIRS);
     }
 
-    public void existingParentModelBlockWithItem(DeferredBlock<? extends Block> block, String parent, String textureKey) {
+    public void parentModelBlockWithItem(DeferredBlock<? extends Block> block, String parent, String textureKey) {
         blockWithItem(
                 block,
                 modelWithExistingParent(block, parent)
                         .texture(textureKey, blockTexture(block.get()))
-                        .renderType("cutout")
+        );
+    }
+
+    public void parentCustomRenderTypeModelBlockWithItem(DeferredBlock<? extends Block> block, String parent, String textureKey, String renderType) {
+        blockWithItem(
+                block,
+                modelWithExistingParent(block, parent)
+                        .texture(textureKey, blockTexture(block.get()))
+                        .renderType(renderType)
         );
     }
 
@@ -141,7 +150,7 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
 
     public void fireBlock(DeferredBlock<? extends BaseFireBlock> block) {
         String name = block.getId().getPath();
-        MultiPartBlockStateBuilder builder = getMultipartBuilder(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get());
+        MultiPartBlockStateBuilder builder = getMultipartBuilder(block.get());
         builder.part()
                 .modelFile(firePartModelFile(name, FIRE_FLOOR_SUFFIX, 0, TEMPLATE_FIRE_FLOOR))
                 .nextModel()
