@@ -1,6 +1,7 @@
 package com.yummy.naraka.data;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.data.worldgen.features.NarakaTreeFeatures;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
 import net.minecraft.core.HolderLookup;
@@ -15,7 +16,8 @@ import java.util.concurrent.CompletableFuture;
 public class NarakaDatapackProvider extends DatapackBuiltinEntriesProvider {
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(Registries.DAMAGE_TYPE, NarakaDamageTypes::bootstrap)
-            .add(Registries.ENCHANTMENT, NarakaEnchantments::bootstrap);
+            .add(Registries.ENCHANTMENT, NarakaEnchantments::bootstrap)
+            .add(Registries.CONFIGURED_FEATURE, NarakaTreeFeatures::bootstrap);
 
     public NarakaDatapackProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of("minecraft", NarakaMod.MOD_ID));

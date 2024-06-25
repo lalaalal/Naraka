@@ -1,11 +1,11 @@
 package com.yummy.naraka.world.block;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.world.block.grower.NarakaTreeGrowers;
 import net.minecraft.core.Holder;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
@@ -100,9 +100,9 @@ public class NarakaBlocks {
             properties -> new NarakaCeilingHangingSignBlock(NarakaBlockTypes.Wood.EBONY, properties),
             Blocks.DARK_OAK_HANGING_SIGN
     );
-    public static final DeferredBlock<SaplingBlock> EBONY_SAPLING = registerBlock(
+    public static final DeferredBlock<SaplingBlock> EBONY_SAPLING = registerBlockWithItem(
             "ebony_sapling",
-            properties -> new SaplingBlock(TreeGrower.DARK_OAK, properties),
+            properties -> new SaplingBlock(NarakaTreeGrowers.EBONY, properties),
             Blocks.DARK_OAK_SAPLING
     );
 
