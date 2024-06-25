@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.function.Function;
 
 public class NarakaBlocks {
+    public static final String SOUL_INFUSED_PREFIX = "soul_infused_";
+
     private static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(NarakaMod.MOD_ID);
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(NarakaMod.MOD_ID);
 
@@ -61,14 +63,14 @@ public class NarakaBlocks {
 
     public static final DeferredBlock<Block> COMPRESSED_IRON_BLOCK = registerSimpleBlockWithItem("compressed_iron_block", Blocks.IRON_BLOCK);
 
-    public static final DeferredBlock<Block> SOUL_INFUSED_REDSTONE_BLOCK = registerSimpleBlockWithItem("soul_infused_redstone_block", Blocks.REDSTONE_BLOCK, item().fireResistant());
-    public static final DeferredBlock<Block> SOUL_INFUSED_COPPER_BLOCK = registerSimpleBlockWithItem("soul_infused_copper_block", Blocks.COPPER_BLOCK, item().fireResistant());
-    public static final DeferredBlock<Block> SOUL_INFUSED_GOLD_BLOCK = registerSimpleBlockWithItem("soul_infused_gold_block", Blocks.GOLD_BLOCK, item().fireResistant());
-    public static final DeferredBlock<Block> SOUL_INFUSED_EMERALD_BLOCK = registerSimpleBlockWithItem("soul_infused_emerald_block", Blocks.EMERALD_BLOCK, item().fireResistant());
-    public static final DeferredBlock<Block> SOUL_INFUSED_DIAMOND_BLOCK = registerSimpleBlockWithItem("soul_infused_diamond_block", Blocks.DIAMOND_BLOCK, item().fireResistant());
-    public static final DeferredBlock<Block> SOUL_INFUSED_LAPIS_BLOCK = registerSimpleBlockWithItem("soul_infused_lapis_block", Blocks.LAPIS_BLOCK, item().fireResistant());
-    public static final DeferredBlock<Block> SOUL_INFUSED_AMETHYST_BLOCK = registerSimpleBlockWithItem("soul_infused_amethyst_block", Blocks.AMETHYST_BLOCK, item().fireResistant());
-    public static final DeferredBlock<Block> SOUL_INFUSED_NECTARIUM_BLOCK = registerSimpleBlockWithItem("soul_infused_nectarium_block", NECTARIUM_BLOCK, item().fireResistant());
+    public static final DeferredBlock<Block> SOUL_INFUSED_REDSTONE_BLOCK = registerSoulInfusedBlock("redstone_block", Blocks.REDSTONE_BLOCK);
+    public static final DeferredBlock<Block> SOUL_INFUSED_COPPER_BLOCK = registerSoulInfusedBlock("copper_block", Blocks.COPPER_BLOCK);
+    public static final DeferredBlock<Block> SOUL_INFUSED_GOLD_BLOCK = registerSoulInfusedBlock("gold_block", Blocks.GOLD_BLOCK);
+    public static final DeferredBlock<Block> SOUL_INFUSED_EMERALD_BLOCK = registerSoulInfusedBlock("emerald_block", Blocks.EMERALD_BLOCK);
+    public static final DeferredBlock<Block> SOUL_INFUSED_DIAMOND_BLOCK = registerSoulInfusedBlock("diamond_block", Blocks.DIAMOND_BLOCK);
+    public static final DeferredBlock<Block> SOUL_INFUSED_LAPIS_BLOCK = registerSoulInfusedBlock("lapis_block", Blocks.LAPIS_BLOCK);
+    public static final DeferredBlock<Block> SOUL_INFUSED_AMETHYST_BLOCK = registerSoulInfusedBlock("amethyst_block", Blocks.AMETHYST_BLOCK);
+    public static final DeferredBlock<Block> SOUL_INFUSED_NECTARIUM_BLOCK = registerSoulInfusedBlock("nectarium_block", NECTARIUM_BLOCK);
 
     public static final DeferredBlock<RotatedPillarBlock> EBONY_LOG = registerBlockWithItem("ebony_log", RotatedPillarBlock::new, Blocks.DARK_OAK_LOG);
     public static final DeferredBlock<RotatedPillarBlock> STRIPPED_EBONY_LOG = registerBlockWithItem("stripped_ebony_log", RotatedPillarBlock::new, Blocks.STRIPPED_DARK_OAK_LOG);
@@ -90,15 +92,15 @@ public class NarakaBlocks {
             properties -> new NarakaWallSignBlock(NarakaBlockTypes.Wood.EBONY, properties),
             Blocks.DARK_OAK_WALL_SIGN
     );
+    public static final DeferredBlock<NarakaCeilingHangingSignBlock> EBONY_HANGING_SIGN = registerBlock(
+        "ebony_hanging_sign",
+        properties -> new NarakaCeilingHangingSignBlock(NarakaBlockTypes.Wood.EBONY, properties),
+        Blocks.DARK_OAK_HANGING_SIGN
+);
     public static final DeferredBlock<NarakaWallHangingSignBlock> EBONY_WALL_HANGING_SIGN = registerBlock(
             "ebony_wall_hanging_sign",
             properties -> new NarakaWallHangingSignBlock(NarakaBlockTypes.Wood.EBONY, properties),
             Blocks.DARK_OAK_WALL_HANGING_SIGN
-    );
-    public static final DeferredBlock<NarakaCeilingHangingSignBlock> EBONY_HANGING_SIGN = registerBlock(
-            "ebony_hanging_sign",
-            properties -> new NarakaCeilingHangingSignBlock(NarakaBlockTypes.Wood.EBONY, properties),
-            Blocks.DARK_OAK_HANGING_SIGN
     );
     public static final DeferredBlock<EbonySaplingBlock> EBONY_SAPLING = registerBlockWithItem("ebony_sapling", EbonySaplingBlock::new, Blocks.DARK_OAK_SAPLING);
 
@@ -124,8 +126,16 @@ public class NarakaBlocks {
         fire.setFlammable(EBONY_PLANKS.get(), 5, 20);
         fire.setFlammable(EBONY_SLAB.get(), 5, 20);
         fire.setFlammable(EBONY_STAIRS.get(), 5, 20);
-
     }
+
+    private static DeferredBlock<Block> registerSoulInfusedBlock(String name, DeferredBlock<Block> baseBlock) {
+        return registerSimpleBlockWithItem(SOUL_INFUSED_PREFIX + name, baseBlock, item().fireResistant());
+    }
+
+    private static DeferredBlock<Block> registerSoulInfusedBlock(String name, Block baseBlock) {
+        return registerSimpleBlockWithItem(SOUL_INFUSED_PREFIX + name, baseBlock, item().fireResistant());
+    }
+
 
     private static <B extends Block> DeferredBlock<B> registerBlock(String name, Function<BlockBehaviour.Properties, ? extends B> function, Block propertyBase) {
         return BLOCKS.registerBlock(name, function, BlockBehaviour.Properties.ofFullCopy(propertyBase));

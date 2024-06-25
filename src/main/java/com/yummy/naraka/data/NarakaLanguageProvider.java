@@ -7,10 +7,20 @@ import com.yummy.naraka.world.entity.NarakaEntities;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.registries.DeferredBlock;
 
 public abstract class NarakaLanguageProvider extends LanguageProvider {
+    public static String createId(String parent, String name) {
+        return "%s.%s.%s".formatted(parent, NarakaMod.MOD_ID, name);
+    }
+
+    public static String createId(String parent, ResourceLocation location) {
+        return createId(parent, location.getPath());
+    }
 
     public NarakaLanguageProvider(PackOutput output, String locale) {
         super(output, NarakaMod.MOD_ID, locale);
@@ -22,6 +32,11 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
 
         add(directKey, directMessage);
         add(indirectKey, indirectMessage);
+    }
+
+    public void addBlockWithActualId(DeferredBlock<? extends Block> block, String name) {
+        String id = createId("block", block.getId());
+        add(id, name);
     }
 
     public static class EN extends NarakaLanguageProvider {
@@ -38,6 +53,7 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addItem(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard");
             addItem(NarakaItems.NECTARIUM, "Nectarium");
             addItem(NarakaItems.GOD_BLOOD, "God Blood");
+            addItem(NarakaItems.COMPRESSED_IRON_INGOT, "Compressed Iron Ingot");
             addItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "Smithing Template");
             addItem(NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, "Smithing Template");
             addItem(NarakaItems.TEST_ITEM, "Test Item");
@@ -55,13 +71,11 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addItem(NarakaItems.SOUL_INFUSED_NECTARIUM, "Soul Infused Nectarium");
             addItem(NarakaItems.PURIFIED_SOUL_METAL, "Purified Soul Metal");
 
-            addItem(NarakaItems.EBONY_SIGN, "Ebony Sign");
-            addItem(NarakaItems.EBONY_HANGING_SIGN, "Ebony Hanging Sign");
-
             addBlock(NarakaBlocks.NECTARIUM_ORE, "Nectarium Ore");
             addBlock(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "Deepslate Nectarium Ore");
             addBlock(NarakaBlocks.NECTARIUM_BLOCK, "Nectarium Block");
             addBlock(NarakaBlocks.TRANSPARENT_BLOCK, "Transparent Block");
+            addBlock(NarakaBlocks.COMPRESSED_IRON_BLOCK, "Compressed Iron Block");
 
             addBlock(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK, "Soul Infused Redstone Block");
             addBlock(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK, "Soul Infused Copper Block");
@@ -84,6 +98,10 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.EBONY_PLANKS, "Ebony Planks");
             addBlock(NarakaBlocks.EBONY_SLAB, "Ebony Slab");
             addBlock(NarakaBlocks.EBONY_STAIRS, "Ebony Stairs");
+            addBlock(NarakaBlocks.EBONY_SIGN, "Ebony Sign");
+            addBlockWithActualId(NarakaBlocks.EBONY_WALL_SIGN, "Ebony Wall Sign");
+            addBlock(NarakaBlocks.EBONY_HANGING_SIGN, "Ebony Hanging Sign");
+            addBlockWithActualId(NarakaBlocks.EBONY_WALL_HANGING_SIGN, "Ebony Wall Hanging Sign");
 
             addEntityType(NarakaEntities.HEROBRINE, "Naraka: Herobrine");
             addEntityType(NarakaEntities.THROWN_SPEAR, "Spear");
@@ -105,12 +123,14 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
         protected void addTranslations() {
             add("itemGroup.naraka", "Naraka");
             add("container.soul_crafting", "영혼 세공기");
+
             addItem(NarakaItems.PURIFIED_SOUL_SHARD, "정화된 영혼 조각");
-            addItem(NarakaItems.TEST_ITEM, "테스트 아이템");
             addItem(NarakaItems.NECTARIUM, "넥타리움");
             addItem(NarakaItems.GOD_BLOOD, "신의 피");
+            addItem(NarakaItems.COMPRESSED_IRON_INGOT, "압축된 철 주괴");
             addItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "대장장이 형판");
             addItem(NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, "대장장이 형판");
+            addItem(NarakaItems.TEST_ITEM, "테스트 아이템");
             addItem(NarakaItems.SPEAR_ITEM, "창");
             addItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "강력한 성스러운 창");
             addItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM, "롱기누스의 창");
@@ -129,10 +149,12 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "심층암 넥타륨 광석");
             addBlock(NarakaBlocks.NECTARIUM_BLOCK, "넥타륨 블록");
             addBlock(NarakaBlocks.TRANSPARENT_BLOCK, "투명 블록");
+            addBlock(NarakaBlocks.COMPRESSED_IRON_BLOCK, "압축된 철 블록");
 
             addBlock(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK, "영혼이 주입된 레드스톤 블록");
             addBlock(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK, "영혼이 주입된 구리 블록");
             addBlock(NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK, "영혼이 주입된 금 블록");
+            addBlock(NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK, "영혼이 주입된 에메랄드 블록");
             addBlock(NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK, "영혼이 주입된 다이아몬드 블록");
             addBlock(NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK, "영혼이 주입된 청금석 블록");
             addBlock(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK, "영혼이 주입된 자수정 블록");
@@ -140,6 +162,20 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.PURIFIED_SOUL_BLOCK, "정화된 영혼 블록");
 
             addBlock(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK, "정화된 영혼 불");
+
+            addBlock(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK, "정화된 영혼 금속 블록");
+            addBlock(NarakaBlocks.EBONY_LOG, "흑단나무 원목");
+            addBlock(NarakaBlocks.STRIPPED_EBONY_LOG, "껍질 벗긴 흑단나무 원목");
+            addBlock(NarakaBlocks.EBONY_WOOD, "흑단나무");
+            addBlock(NarakaBlocks.STRIPPED_EBONY_WOOD, "껍질 벗긴 참나무");
+            addBlock(NarakaBlocks.EBONY_SAPLING, "흑단나무 묘목");
+            addBlock(NarakaBlocks.EBONY_PLANKS, "흑단나무 판자");
+            addBlock(NarakaBlocks.EBONY_SLAB, "흑단나무 반 블록");
+            addBlock(NarakaBlocks.EBONY_STAIRS, "흑단나무 계단");
+            addBlock(NarakaBlocks.EBONY_SIGN, "흑단나무 표지판");
+            addBlockWithActualId(NarakaBlocks.EBONY_WALL_SIGN, "흑단나무 벽 표지판");
+            addBlock(NarakaBlocks.EBONY_HANGING_SIGN, "흑단나무 매다는 표지판");
+            addBlockWithActualId(NarakaBlocks.EBONY_WALL_HANGING_SIGN, "흑단나무 벽 매다는 표지판");
 
             addEntityType(NarakaEntities.HEROBRINE, "히로빈");
             addEntityType(NarakaEntities.THROWN_SPEAR, "창");

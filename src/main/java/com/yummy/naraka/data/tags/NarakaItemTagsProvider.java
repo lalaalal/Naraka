@@ -35,14 +35,16 @@ public class NarakaItemTagsProvider extends ItemTagsProvider {
 
         tag(NarakaItemTags.EBONY_LOGS)
                 .add(NarakaBlocks.EBONY_LOG.asItem())
-                .add(NarakaBlocks.STRIPPED_EBONY_LOG.asItem());
+                .add(NarakaBlocks.EBONY_WOOD.asItem())
+                .add(NarakaBlocks.STRIPPED_EBONY_LOG.asItem())
+                .add(NarakaBlocks.STRIPPED_EBONY_WOOD.asItem());
 
         tag(ItemTags.WOODEN_STAIRS)
                 .add(NarakaBlocks.EBONY_STAIRS.asItem());
         tag(ItemTags.WOODEN_SLABS)
                 .add(NarakaBlocks.EBONY_SLAB.asItem());
 
-        tag(ItemTags.LOGS)
+        tag(ItemTags.LOGS_THAT_BURN)
                 .addTag(NarakaItemTags.EBONY_LOGS);
         tag(ItemTags.PLANKS)
                 .add(NarakaBlocks.EBONY_PLANKS.asItem());
