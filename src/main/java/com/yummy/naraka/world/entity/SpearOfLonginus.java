@@ -22,13 +22,13 @@ public class SpearOfLonginus extends Spear {
     }
 
     public SpearOfLonginus(Level level, Position position, ItemStack stack) {
-        super(NarakaEntities.THROWN_SPEAR_OF_LONGINUS, level, position, stack);
+        super(NarakaEntities.THROWN_SPEAR_OF_LONGINUS, level, position, stack, Float.MAX_VALUE);
         setInvulnerable(true);
         setNoGravity(true);
     }
 
     public SpearOfLonginus(Level level, LivingEntity owner, ItemStack stack) {
-        super(NarakaEntities.THROWN_SPEAR_OF_LONGINUS, level, owner, stack);
+        super(NarakaEntities.THROWN_SPEAR_OF_LONGINUS, level, owner, stack, Float.MAX_VALUE);
         setInvulnerable(true);
         setNoGravity(true);
     }

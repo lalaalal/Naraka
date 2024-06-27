@@ -11,8 +11,8 @@ public class SoulCraftingRecipe extends SingleItemRecipe {
         return new Serializer();
     }
 
-    public SoulCraftingRecipe(String pGroup, Ingredient pIngredient, ItemStack pResult) {
-        super(NarakaRecipeTypes.SOUL_CRAFTING.get(), NarakaRecipeSerializers.SOUL_CRAFTING_RECIPE.get(), pGroup, pIngredient, pResult);
+    public SoulCraftingRecipe(String group, Ingredient ingredient, ItemStack result) {
+        super(NarakaRecipeTypes.SOUL_CRAFTING.get(), NarakaRecipeSerializers.SOUL_CRAFTING_RECIPE.get(), group, ingredient, result);
     }
 
     @Override

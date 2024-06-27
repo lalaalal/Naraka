@@ -2,8 +2,6 @@ package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.client.renderer.NarakaCustomRenderer;
 import com.yummy.naraka.world.entity.Spear;
-import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
-import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,20 +21,16 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class SpearItem extends TieredItem implements ProjectileItem {
     protected final Supplier<? extends EntityType<? extends Spear>> spearType;
     private final ItemAttributeModifiers defaultModifiers;
-    private final Map<Integer, ItemAttributeModifiers> modifiersCache = new HashMap<>();
 
     public SpearItem(Tier tier, Properties properties, Supplier<? extends EntityType<? extends Spear>> spearType) {
         super(tier, properties);
@@ -45,7 +39,6 @@ public class SpearItem extends TieredItem implements ProjectileItem {
                 .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, tier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, tier.getSpeed(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .build();
-        modifiersCache.put(0, defaultModifiers);
     }
 
     @Override
@@ -87,7 +80,7 @@ public class SpearItem extends TieredItem implements ProjectileItem {
     }
 
     protected Spear createSpear(Level level, LivingEntity owner, ItemStack stack) {
-        return new Spear(spearType, level, owner, stack);
+        return new Spear(spearType, level, owner, stack, getTier().getAttackDamageBonus());
     }
 
     @Override
@@ -112,7 +105,7 @@ public class SpearItem extends TieredItem implements ProjectileItem {
 
     @Override
     public Projectile asProjectile(Level level, Position position, ItemStack stack, Direction direction) {
-        return new Spear(spearType, level, position, stack);
+        return new Spear(spearType, level, position, stack, getTier().getAttackDamageBonus());
     }
 
     @Override
@@ -126,13 +119,7 @@ public class SpearItem extends TieredItem implements ProjectileItem {
     }
 
     @Override
-    public ItemAttributeModifiers getAttributeModifiers(ItemStack stack) {
-        int level = stack.getEnchantmentLevel(NarakaEnchantments.get(Enchantments.IMPALING));
-        if (!modifiersCache.containsKey(level)) {
-            AttributeModifier modifier = NarakaAttributeModifiers.impaling(level);
-            ItemAttributeModifiers modifiers = defaultModifiers.withModifierAdded(Attributes.ATTACK_DAMAGE, modifier, EquipmentSlotGroup.MAINHAND);
-            modifiersCache.put(level, modifiers);
-        }
-        return modifiersCache.get(level);
+    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
+        return defaultModifiers;
     }
 }
