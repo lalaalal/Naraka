@@ -75,6 +75,9 @@ public class NarakaRecipeProvider extends RecipeProvider {
 
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.BUILDING_BLOCKS, Blocks.IRON_BLOCK.asItem(), RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT, RecipeCategory.MISC, NarakaBlocks.COMPRESSED_IRON_BLOCK);
+
+        signBuilder(NarakaItems.EBONY_SIGN, Ingredient.of(NarakaBlocks.EBONY_PLANKS));
+        hangingSign(recipeOutput, NarakaItems.EBONY_HANGING_SIGN, NarakaBlocks.EBONY_PLANKS);
     }
 
     protected static void smithing(RecipeOutput recipeOutput, ItemLike template, ItemLike base, ItemLike ingredient, RecipeCategory category, Item result) {
