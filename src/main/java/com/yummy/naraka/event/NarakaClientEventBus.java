@@ -28,9 +28,7 @@ import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.FoliageColor;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -62,10 +60,7 @@ public class NarakaClientEventBus {
 
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
-        event.register((itemStack, tint) -> {
-            BlockState blockstate = ((BlockItem) itemStack.getItem()).getBlock().defaultBlockState();
-            return event.getBlockColors().getColor(blockstate, null, null, tint);
-        }, NarakaBlocks.EBONY_LEAVES.get());
+        event.register((itemStack, tint) -> FoliageColor.getDefaultColor(), NarakaBlocks.EBONY_LEAVES.get());
     }
 
     @SubscribeEvent

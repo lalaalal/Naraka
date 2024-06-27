@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
@@ -61,30 +62,30 @@ public class NarakaGameEventBus {
      * @see DeathCountHelper#reduceDeathCount(LivingEntity, Entity)
      */
     @SubscribeEvent
-    public static void handleDeathCountOn(LivingDamageEvent event) {
-        DamageSource source = event.getSource();
+    public static void handleDeathCountOn(LivingDamageEvent.Pre event) {
+        DamageContainer container = event.getContainer();
+        DamageSource source = container.getSource();
         LivingEntity livingEntity = event.getEntity();
         if (!DeathCountHelper.isDeathCounted(livingEntity))
             return;
 
-        if (livingEntity.getHealth() - event.getAmount() > 0)
+        if (livingEntity.getHealth() - container.getNewDamage() > 0)
             return;
         if (livingEntity.getType().is(NarakaEntityTypeTags.APPLY_DEATH_COUNT)) {
             DeathCountHelper.reduceDeathCount(livingEntity, source.getEntity());
-            postDeathCountReduced(event);
+            postDeathCountReduced(event.getEntity(), container);
         }
     }
 
-    private static void postDeathCountReduced(LivingDamageEvent event) {
-        LivingEntity livingEntity = event.getEntity();
-        Entity entity = event.getSource().getEntity();
+    private static void postDeathCountReduced(LivingEntity livingEntity, DamageContainer container) {
+        Entity source = container.getSource().getEntity();
 
         if (DeathCountHelper.getDeathCount(livingEntity) < 1) {
-            if (entity instanceof DeathCountingEntity deathCountingEntity)
+            if (source instanceof DeathCountingEntity deathCountingEntity)
                 deathCountingEntity.onDeathCountZero(livingEntity);
             return;
         }
-        event.setCanceled(true);
+        container.setNewDamage(0);
         livingEntity.setHealth(livingEntity.getMaxHealth());
     }
 

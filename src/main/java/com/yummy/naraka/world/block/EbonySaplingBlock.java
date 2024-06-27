@@ -2,7 +2,6 @@ package com.yummy.naraka.world.block;
 
 import com.yummy.naraka.world.block.grower.NarakaTreeGrowers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.grower.TreeGrower;
@@ -18,12 +17,7 @@ public class EbonySaplingBlock extends SaplingBlock {
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState state, BlockGetter blockGetter, BlockPos pos) {
-        return state.is(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
-    }
-
-    @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        return super.canSurvive(state, level, pos);
+        return level.getBlockState(pos.below()).is(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
     }
 }
