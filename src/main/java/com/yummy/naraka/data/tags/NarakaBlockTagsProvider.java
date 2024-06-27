@@ -6,6 +6,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
@@ -19,6 +20,16 @@ public class NarakaBlockTagsProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
+        tag(NarakaBlockTags.NECTARIUM_ORES)
+                .add(NarakaBlocks.NECTARIUM_ORE.get())
+                .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
+        tag(Tags.Blocks.ORES)
+                .addTag(NarakaBlockTags.NECTARIUM_ORES);
+        tag(Tags.Blocks.ORES_IN_GROUND_STONE)
+                .add(NarakaBlocks.NECTARIUM_ORE.get());
+        tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE)
+                .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
+
         tag(BlockTags.FIRE)
                 .add(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get());
 
@@ -27,7 +38,7 @@ public class NarakaBlockTagsProvider extends BlockTagsProvider {
                 .add(NarakaBlocks.EBONY_WOOD.get())
                 .add(NarakaBlocks.STRIPPED_EBONY_LOG.get())
                 .add(NarakaBlocks.STRIPPED_EBONY_WOOD.get());
-        
+
         tag(BlockTags.WOODEN_STAIRS)
                 .add(NarakaBlocks.EBONY_STAIRS.get());
         tag(BlockTags.WOODEN_SLABS)

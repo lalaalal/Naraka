@@ -1,7 +1,6 @@
 package com.yummy.naraka.data.worldgen.placement;
 
 import com.yummy.naraka.NarakaMod;
-
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;

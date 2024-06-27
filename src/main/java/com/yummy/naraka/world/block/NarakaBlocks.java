@@ -93,10 +93,10 @@ public class NarakaBlocks {
             Blocks.DARK_OAK_WALL_SIGN
     );
     public static final DeferredBlock<NarakaCeilingHangingSignBlock> EBONY_HANGING_SIGN = registerBlock(
-        "ebony_hanging_sign",
-        properties -> new NarakaCeilingHangingSignBlock(NarakaBlockTypes.Wood.EBONY, properties),
-        Blocks.DARK_OAK_HANGING_SIGN
-);
+            "ebony_hanging_sign",
+            properties -> new NarakaCeilingHangingSignBlock(NarakaBlockTypes.Wood.EBONY, properties),
+            Blocks.DARK_OAK_HANGING_SIGN
+    );
     public static final DeferredBlock<NarakaWallHangingSignBlock> EBONY_WALL_HANGING_SIGN = registerBlock(
             "ebony_wall_hanging_sign",
             properties -> new NarakaWallHangingSignBlock(NarakaBlockTypes.Wood.EBONY, properties),

@@ -25,5 +25,8 @@ public class NarakaEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 .add(EntityType.PLAYER);
         tag(NarakaEntityTypeTags.DEATH_COUNTING_ENTITY)
                 .add(NarakaEntities.HEROBRINE.get());
+
+        tag(Tags.EntityTypes.BOSSES)
+                .add(NarakaEntities.HEROBRINE.get());
     }
 }

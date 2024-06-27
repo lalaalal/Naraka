@@ -111,58 +111,58 @@ public class NarakaRecipeProvider extends RecipeProvider {
                 .save(recipeOutput, location(unpacked, "_from_" + getItemName(packed)));
     }
 
-        protected static void oreSmelting(
-        RecipeOutput pRecipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup
+    protected static void oreSmelting(
+            RecipeOutput pRecipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup
     ) {
         NarakaRecipeProvider.oreCooking(
-            pRecipeOutput,
-            RecipeSerializer.SMELTING_RECIPE,
-            SmeltingRecipe::new,
-            pIngredients,
-            pCategory,
-            pResult,
-            pExperience,
-            pCookingTime,
-            pGroup,
-            "_from_smelting"
+                pRecipeOutput,
+                RecipeSerializer.SMELTING_RECIPE,
+                SmeltingRecipe::new,
+                pIngredients,
+                pCategory,
+                pResult,
+                pExperience,
+                pCookingTime,
+                pGroup,
+                "_from_smelting"
         );
     }
 
     protected static void oreBlasting(
-        RecipeOutput pRecipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup
+            RecipeOutput pRecipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup
     ) {
         NarakaRecipeProvider.oreCooking(
-            pRecipeOutput,
-            RecipeSerializer.BLASTING_RECIPE,
-            BlastingRecipe::new,
-            pIngredients,
-            pCategory,
-            pResult,
-            pExperience,
-            pCookingTime,
-            pGroup,
-            "_from_blasting"
+                pRecipeOutput,
+                RecipeSerializer.BLASTING_RECIPE,
+                BlastingRecipe::new,
+                pIngredients,
+                pCategory,
+                pResult,
+                pExperience,
+                pCookingTime,
+                pGroup,
+                "_from_blasting"
         );
     }
 
     protected static <T extends AbstractCookingRecipe> void oreCooking(
-        RecipeOutput pRecipeOutput,
-        RecipeSerializer<T> pSerializer,
-        AbstractCookingRecipe.Factory<T> pRecipeFactory,
-        List<ItemLike> pIngredients,
-        RecipeCategory pCategory,
-        ItemLike pResult,
-        float pExperience,
-        int pCookingTime,
-        String pGroup,
-        String pSuffix
+            RecipeOutput pRecipeOutput,
+            RecipeSerializer<T> pSerializer,
+            AbstractCookingRecipe.Factory<T> pRecipeFactory,
+            List<ItemLike> pIngredients,
+            RecipeCategory pCategory,
+            ItemLike pResult,
+            float pExperience,
+            int pCookingTime,
+            String pGroup,
+            String pSuffix
     ) {
         for (ItemLike itemlike : pIngredients) {
             String name = getItemName(pResult) + pSuffix + "_" + getItemName(itemlike);
             SimpleCookingRecipeBuilder.generic(Ingredient.of(itemlike), pCategory, pResult, pExperience, pCookingTime, pSerializer, pRecipeFactory)
-                .group(pGroup)
-                .unlockedBy(getHasName(itemlike), has(itemlike))
-                .save(pRecipeOutput, NarakaMod.location(name));
+                    .group(pGroup)
+                    .unlockedBy(getHasName(itemlike), has(itemlike))
+                    .save(pRecipeOutput, NarakaMod.location(name));
         }
     }
 
