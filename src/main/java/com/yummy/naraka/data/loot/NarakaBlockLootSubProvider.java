@@ -41,7 +41,7 @@ public class NarakaBlockLootSubProvider extends BlockLootSubProvider {
         dropSelf(NarakaBlocks.EBONY_WOOD);
         dropSelf(NarakaBlocks.STRIPPED_EBONY_WOOD);
 
-        add(NarakaBlocks.EBONY_LEAVES.get(), createLeavesDrops(NarakaBlocks.EBONY_LEAVES.get(), NarakaBlocks.EBONY_SAPLING.get(), 0.2f));
+        add(NarakaBlocks.EBONY_LEAVES.get(), createLeavesDrops(NarakaBlocks.EBONY_LEAVES.get(), NarakaBlocks.EBONY_SAPLING.get(), 0.01f));
         dropSelf(NarakaBlocks.EBONY_SAPLING);
 
         dropOther(NarakaBlocks.EBONY_SIGN.get(), NarakaItems.EBONY_SIGN);

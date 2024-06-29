@@ -42,16 +42,15 @@ public class NarakaBlocks {
             Blocks.DEEPSLATE_IRON_ORE
     );
     public static final DeferredBlock<Block> NECTARIUM_BLOCK = registerBlockWithItem("nectarium_block", NectariumBlock::new, Blocks.IRON_BLOCK);
-    public static final DeferredBlock<Block> PURIFIED_SOUL_BLOCK = registerSimpleBlockWithItem("purified_soul_block", Blocks.IRON_BLOCK, item().fireResistant());
+    public static final DeferredBlock<PurifiedSoulBlock> PURIFIED_SOUL_BLOCK = registerBlockWithItem("purified_soul_block", PurifiedSoulBlock::new, Blocks.IRON_BLOCK, item().fireResistant());
     public static final DeferredBlock<Block> PURIFIED_SOUL_METAL_BLOCK = registerSimpleBlockWithItem("purified_soul_metal_block", Blocks.IRON_BLOCK, item().fireResistant());
     public static final DeferredBlock<BaseFireBlock> PURIFIED_SOUL_FIRE_BLOCK = registerBlockWithItem(
             "purified_soul_fire",
-            properties -> new PurifiedSoulFireBlock(properties
+            PurifiedSoulFireBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(Blocks.SOUL_FIRE)
                     .noLootTable()
                     .lightLevel(state -> 7)
-                    .mapColor(MapColor.COLOR_BLACK)
-            ),
-            BlockBehaviour.Properties.ofFullCopy(Blocks.SOUL_FIRE),
+                    .mapColor(MapColor.COLOR_BLACK),
             new Item.Properties()
     );
     public static final DeferredBlock<SoulCraftingBlock> SOUL_CRAFTING_BLOCK = registerBlockWithItem(
@@ -114,15 +113,15 @@ public class NarakaBlocks {
 
     public static void setFlammableBlocks() {
         FireBlock fire = (FireBlock) Blocks.FIRE;
-        fire.setFlammable(EBONY_LOG.get(), 5, 20);
-        fire.setFlammable(STRIPPED_EBONY_LOG.get(), 5, 20);
-        fire.setFlammable(EBONY_WOOD.get(), 5, 20);
-        fire.setFlammable(STRIPPED_EBONY_WOOD.get(), 5, 20);
+        fire.setFlammable(EBONY_LOG.get(), 5, 5);
+        fire.setFlammable(STRIPPED_EBONY_LOG.get(), 5, 5);
+        fire.setFlammable(EBONY_WOOD.get(), 5, 5);
+        fire.setFlammable(STRIPPED_EBONY_WOOD.get(), 5, 5);
         fire.setFlammable(EBONY_SIGN.get(), 5, 20);
         fire.setFlammable(EBONY_WALL_SIGN.get(), 5, 20);
         fire.setFlammable(EBONY_HANGING_SIGN.get(), 5, 20);
         fire.setFlammable(EBONY_WALL_HANGING_SIGN.get(), 5, 20);
-        fire.setFlammable(EBONY_SAPLING.get(), 5, 20);
+        fire.setFlammable(EBONY_LEAVES.get(), 30, 60);
         fire.setFlammable(EBONY_PLANKS.get(), 5, 20);
         fire.setFlammable(EBONY_SLAB.get(), 5, 20);
         fire.setFlammable(EBONY_STAIRS.get(), 5, 20);
@@ -167,6 +166,10 @@ public class NarakaBlocks {
 
     private static <B extends Block> DeferredBlock<B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, Block propertyBase) {
         return registerBlockWithItem(name, function, BlockBehaviour.Properties.ofFullCopy(propertyBase));
+    }
+
+    private static <B extends Block> DeferredBlock<B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, Block propertyBase, Item.Properties itemProperties) {
+        return registerBlockWithItem(name, function, BlockBehaviour.Properties.ofFullCopy(propertyBase), itemProperties);
     }
 
     private static <B extends Block> DeferredBlock<B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function) {

@@ -74,7 +74,8 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         signBlock(NarakaBlocks.EBONY_WALL_SIGN, texture("ebony_planks"));
         signBlock(NarakaBlocks.EBONY_HANGING_SIGN, texture("ebony_planks"));
         signBlock(NarakaBlocks.EBONY_WALL_HANGING_SIGN, texture("ebony_planks"));
-        parentCustomRenderTypeModelBlockWithItem(NarakaBlocks.EBONY_SAPLING, "cross", "cross", "cutout");
+        parentCustomRenderTypeModelBlock(NarakaBlocks.EBONY_SAPLING, "cross", "cross", "cutout");
+        simpleItem(NarakaBlocks.EBONY_SAPLING);
         simpleBlockWithItem(NarakaBlocks.EBONY_PLANKS);
         slabBlock(NarakaBlocks.EBONY_SLAB.get(), texture("ebony_planks"), texture("ebony_planks"));
         simpleBlockItem(NarakaBlocks.EBONY_SLAB);
@@ -82,11 +83,26 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         simpleBlockItem(NarakaBlocks.EBONY_STAIRS);
     }
 
+    public void simpleItem(DeferredBlock<? extends Block> block) {
+        String name = block.getId().getPath();
+        itemModels().withExistingParent(name, "item/generated")
+                .texture("layer0", NarakaMod.location("block", name));
+    }
+
     public void parentModelBlockWithItem(DeferredBlock<? extends Block> block, String parent, String textureKey) {
         blockWithItem(
                 block,
                 modelWithExistingParent(block, parent)
                         .texture(textureKey, blockTexture(block.get()))
+        );
+    }
+
+    public void parentCustomRenderTypeModelBlock(DeferredBlock<? extends Block> block, String parent, String textureKey, String renderType) {
+        simpleBlock(
+                block.get(),
+                modelWithExistingParent(block, parent)
+                        .texture(textureKey, blockTexture(block.get()))
+                        .renderType(renderType)
         );
     }
 

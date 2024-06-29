@@ -102,9 +102,9 @@ public class NarakaItemModelProvider extends ItemModelProvider {
     }
 
     public ItemModelBuilder simpleItem(DeferredItem<? extends Item> item) {
-        String path = item.getId().getPath();
-        return withExistingParent(path, "item/generated")
-                .texture("layer0", NarakaMod.location("item", path));
+        String name = item.getId().getPath();
+        return withExistingParent(name, "item/generated")
+                .texture("layer0", NarakaMod.location("item", name));
     }
 
     public ItemModelBuilder withExistingParent(DeferredItem<? extends Item> item, String parent) {
