@@ -10,7 +10,7 @@ import net.minecraft.world.item.SmithingTemplateItem;
 
 import java.util.List;
 
-public class NarakaSmithingTemplateItem {
+public class NarakaSmithingTemplateItems {
     private static final ChatFormatting TITLE_FORMAT = ChatFormatting.GRAY;
     private static final ChatFormatting DESCRIPTION_FORMAT = ChatFormatting.BLUE;
 
@@ -61,23 +61,23 @@ public class NarakaSmithingTemplateItem {
 
     private static final ResourceLocation EMPTY_SLOT_INGOT = NarakaMod.mcLocation("item/empty_slot_ingot");
     private static final ResourceLocation EMPTY_SLOT_REDSTONE_DUST = NarakaMod.mcLocation("item/empty_slot_redstone_dust");
-    private static final ResourceLocation EMPTY_SLOT_QUARTZ = NarakaMod.mcLocation("item/empty_slot_quartz");
     private static final ResourceLocation EMPTY_SLOT_EMERALD = NarakaMod.mcLocation("item/empty_slot_emerald");
     private static final ResourceLocation EMPTY_SLOT_DIAMOND = NarakaMod.mcLocation("item/empty_slot_diamond");
     private static final ResourceLocation EMPTY_SLOT_LAPIS_LAZULI = NarakaMod.mcLocation("item/empty_slot_lapis_lazuli");
     private static final ResourceLocation EMPTY_SLOT_AMETHYST_SHARD = NarakaMod.mcLocation("item/empty_slot_amethyst_shard");
+    private static final ResourceLocation EMPTY_SLOT_GOD_BLOOD = NarakaMod.location("item/empty_slot_god_blood");
 
     private static final List<ResourceLocation> PURIFIED_SOUL_UPGRADE_BASE_ICONS = List.of(
-            EMPTY_SLOT_HOE, EMPTY_SLOT_AXE, EMPTY_SLOT_SWORD, EMPTY_SLOT_SHOVEL, EMPTY_SLOT_PICKAXE
+            EMPTY_SLOT_SWORD
     );
     private static final List<ResourceLocation> PURIFIED_SOUL_UPGRADE_ADDITIONS_ICONS = List.of(
             EMPTY_SLOT_INGOT
     );
     private static final List<ResourceLocation> PURIFIED_GEM_UPGRADE_BASE_ICONS = List.of(
-            EMPTY_SLOT_HELMET, EMPTY_SLOT_CHESTPLATE, EMPTY_SLOT_LEGGINGS, EMPTY_SLOT_BOOTS, EMPTY_SLOT_SPEAR
+            EMPTY_SLOT_SWORD, EMPTY_SLOT_SPEAR
     );
     private static final List<ResourceLocation> PURIFIED_GEM_UPGRADE_ADDITIONS_ICONS = List.of(
-            EMPTY_SLOT_INGOT, EMPTY_SLOT_REDSTONE_DUST, EMPTY_SLOT_QUARTZ, EMPTY_SLOT_EMERALD, EMPTY_SLOT_DIAMOND, EMPTY_SLOT_LAPIS_LAZULI, EMPTY_SLOT_AMETHYST_SHARD
+            EMPTY_SLOT_INGOT, EMPTY_SLOT_REDSTONE_DUST, EMPTY_SLOT_EMERALD, EMPTY_SLOT_DIAMOND, EMPTY_SLOT_LAPIS_LAZULI, EMPTY_SLOT_AMETHYST_SHARD, EMPTY_SLOT_GOD_BLOOD
     );
 
 

@@ -31,6 +31,16 @@ public class NarakaCreativeModTabs {
                 output.accept(NarakaItems.NECTARIUM);
                 output.accept(NarakaItems.PURIFIED_SOUL_SHARD);
 
+                output.accept(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD);
+                output.accept(NarakaItems.SOUL_INFUSED_COPPER_SWORD);
+                output.accept(NarakaItems.SOUL_INFUSED_GOLD_SWORD);
+                output.accept(NarakaItems.SOUL_INFUSED_EMERALD_SWORD);
+                output.accept(NarakaItems.SOUL_INFUSED_DIAMOND_SWORD);
+                output.accept(NarakaItems.SOUL_INFUSED_LAPIS_SWORD);
+                output.accept(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD);
+                output.accept(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD);
+                output.accept(NarakaItems.PURIFIED_SOUL_SWORD);
+
                 output.accept(NarakaItems.SOUL_INFUSED_REDSTONE);
                 output.accept(NarakaItems.SOUL_INFUSED_COPPER);
                 output.accept(NarakaItems.SOUL_INFUSED_GOLD);
@@ -68,6 +78,7 @@ public class NarakaCreativeModTabs {
                 output.accept(NarakaBlocks.EBONY_PLANKS);
                 output.accept(NarakaBlocks.EBONY_SLAB);
                 output.accept(NarakaBlocks.EBONY_STAIRS);
+                output.accept(NarakaItems.EBONY_SWORD);
             }).build());
 
     public static void register(IEventBus bus) {

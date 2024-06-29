@@ -65,13 +65,13 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             add(PURIFIED_SOUL_UPGRADE_KEY, "Purified Soul Upgrade");
             add(PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY, "Ebony Tools");
             add(PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "Purified Soul Metal");
-            add(PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add ebony weapon, or tool");
+            add(PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add ebony weapon");
             add(PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add Purified Soul Metal");
             add(PURIFIED_GEM_UPGRADE_KEY, "Purified Gem Upgrade");
-            add(PURIFIED_GEM_UPGRADE_APPLIES_TO_KEY, "Purified Soul Equipments");
-            add(PURIFIED_GEM_UPGRADE_INGREDIENTS_KEY, "Soul infused materials");
-            add(PURIFIED_GEM_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add soul armor");
-            add(PURIFIED_GEM_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add Soul infused materials");
+            add(PURIFIED_GEM_UPGRADE_APPLIES_TO_KEY, "Purified Soul Weapons");
+            add(PURIFIED_GEM_UPGRADE_INGREDIENTS_KEY, "Soul Infused Materials");
+            add(PURIFIED_GEM_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add soul weapon");
+            add(PURIFIED_GEM_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add soul infused materials");
 
             addItem(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard");
             addItem(NarakaItems.NECTARIUM, "Nectarium");
@@ -93,6 +93,18 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addItem(NarakaItems.SOUL_INFUSED_AMETHYST, "Soul Infused Amethyst");
             addItem(NarakaItems.SOUL_INFUSED_NECTARIUM, "Soul Infused Nectarium");
             addItem(NarakaItems.PURIFIED_SOUL_METAL, "Purified Soul Metal");
+
+            addItem(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD, "Soul Infused Redstone Sword");
+            addItem(NarakaItems.SOUL_INFUSED_COPPER_SWORD, "Soul Infused Copper Sword");
+            addItem(NarakaItems.SOUL_INFUSED_GOLD_SWORD, "Soul Infused Gold Sword");
+            addItem(NarakaItems.SOUL_INFUSED_EMERALD_SWORD, "Soul Infused Emerald Sword");
+            addItem(NarakaItems.SOUL_INFUSED_DIAMOND_SWORD, "Soul Infused Diamond Sword");
+            addItem(NarakaItems.SOUL_INFUSED_LAPIS_SWORD, "Soul Infused Lapis Sword");
+            addItem(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD, "Soul Infused Amethyst Sword");
+            addItem(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD, "Soul Infused Nectarium Sword");
+            addItem(NarakaItems.PURIFIED_SOUL_SWORD, "Purified Soul Sword");
+
+            addItem(NarakaItems.EBONY_SWORD, "Ebony Sword");
 
             addBlock(NarakaBlocks.NECTARIUM_ORE, "Nectarium Ore");
             addBlock(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "Deepslate Nectarium Ore");
@@ -148,18 +160,18 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             add("itemGroup.naraka", "Naraka");
             add("container.soul_crafting", "영혼 세공기");
             add(PURIFIED_SOUL_UPGRADE_KEY, "정화된 영혼 강화");
-            add(PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY, "흑단나무 장비");
+            add(PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY, "흑단나무 검");
             add(PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "정화된 영혼 금속");
-            add(PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "흑단나무 무기, 도구를 놓으세요");
+            add(PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "흑단나무 무기를 놓으세요");
             add(PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "정화된 영혼 금속을 놓으세요");
-            add(PURIFIED_GEM_UPGRADE_KEY, "Purified Gem Upgrade");
-            add(PURIFIED_GEM_UPGRADE_APPLIES_TO_KEY, "Purified Soul Equipments");
-            add(PURIFIED_GEM_UPGRADE_INGREDIENTS_KEY, "Soul infused materials");
-            add(PURIFIED_GEM_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add soul equipments");
-            add(PURIFIED_GEM_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add Soul infused materials");
+            add(PURIFIED_GEM_UPGRADE_KEY, "정화된 영혼 강화");
+            add(PURIFIED_GEM_UPGRADE_APPLIES_TO_KEY, "정화된 영혼 무기");
+            add(PURIFIED_GEM_UPGRADE_INGREDIENTS_KEY, "영혼이 주입된 재료");
+            add(PURIFIED_GEM_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "정화된 영혼 검 또는 창을 놓으세요");
+            add(PURIFIED_GEM_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "영혼이 주입된 재료 또는 신의 피를 놓으세요");
 
             addItem(NarakaItems.PURIFIED_SOUL_SHARD, "정화된 영혼 조각");
-            addItem(NarakaItems.NECTARIUM, "넥타리움");
+            addItem(NarakaItems.NECTARIUM, "넥타륨");
             addItem(NarakaItems.GOD_BLOOD, "신의 피");
             addItem(NarakaItems.COMPRESSED_IRON_INGOT, "압축된 철 주괴");
             addItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "대장장이 형판");
@@ -178,6 +190,18 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addItem(NarakaItems.SOUL_INFUSED_AMETHYST, "영혼이 주입된 자수정");
             addItem(NarakaItems.SOUL_INFUSED_NECTARIUM, "영혼이 주입된 넥타륨");
             addItem(NarakaItems.PURIFIED_SOUL_METAL, "정화된 영혼 금속");
+
+            addItem(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD, "영혼이 주입된 레드스톤 검");
+            addItem(NarakaItems.SOUL_INFUSED_COPPER_SWORD, "영혼이 주입된 구리 검");
+            addItem(NarakaItems.SOUL_INFUSED_GOLD_SWORD, "영혼이 주입된 금 검");
+            addItem(NarakaItems.SOUL_INFUSED_EMERALD_SWORD, "영혼이 주입된 에메랄드 검");
+            addItem(NarakaItems.SOUL_INFUSED_DIAMOND_SWORD, "영혼이 주입된 다이아몬드 검");
+            addItem(NarakaItems.SOUL_INFUSED_LAPIS_SWORD, "영혼이 주입된 청금석 검");
+            addItem(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD, "영혼이 주입된 자수정 검");
+            addItem(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD, "영혼이 주입된 넥타륨 검");
+            addItem(NarakaItems.PURIFIED_SOUL_SWORD, "정화된 영혼 검");
+
+            addItem(NarakaItems.EBONY_SWORD, "흑단나무 검");
 
             addBlock(NarakaBlocks.NECTARIUM_ORE, "넥타륨 광석");
             addBlock(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "심층암 넥타륨 광석");
