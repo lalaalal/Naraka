@@ -5,6 +5,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.entity.NarakaEntities;
 import com.yummy.naraka.world.item.NarakaItems;
+import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -14,6 +15,18 @@ import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
 public abstract class NarakaLanguageProvider extends LanguageProvider {
+    public static final String PURIFIED_SOUL_UPGRADE_KEY = Util.makeDescriptionId("upgrade", NarakaMod.location("purified_soul_upgrade"));
+    public static final String PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.applies_to"));
+    public static final String PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.ingredients"));
+    public static final String PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.base_slot_description"));
+    public static final String PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.additions_slot_description"));
+
+    public static final String PURIFIED_GEM_UPGRADE_KEY = Util.makeDescriptionId("upgrade", NarakaMod.location("purified_gem_upgrade"));
+    public static final String PURIFIED_GEM_UPGRADE_APPLIES_TO_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_gem_upgrade.applies_to"));
+    public static final String PURIFIED_GEM_UPGRADE_INGREDIENTS_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_gem_upgrade.ingredients"));
+    public static final String PURIFIED_GEM_UPGRADE_BASE_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_gem_upgrade.base_slot_description"));
+    public static final String PURIFIED_GEM_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_gem_upgrade.additions_slot_description"));
+
     public static String createId(String parent, String name) {
         return "%s.%s.%s".formatted(parent, NarakaMod.MOD_ID, name);
     }
@@ -49,6 +62,16 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
         protected void addTranslations() {
             add("itemGroup.naraka", "Naraka");
             add("container.soul_crafting", "Soul Crafter");
+            add(PURIFIED_SOUL_UPGRADE_KEY, "Purified Soul Upgrade");
+            add(PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY, "Ebony Tools");
+            add(PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "Purified Soul Metal");
+            add(PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add ebony weapon, or tool");
+            add(PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add Purified Soul Metal");
+            add(PURIFIED_GEM_UPGRADE_KEY, "Purified Gem Upgrade");
+            add(PURIFIED_GEM_UPGRADE_APPLIES_TO_KEY, "Purified Soul Equipments");
+            add(PURIFIED_GEM_UPGRADE_INGREDIENTS_KEY, "Soul infused materials");
+            add(PURIFIED_GEM_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add soul armor");
+            add(PURIFIED_GEM_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add Soul infused materials");
 
             addItem(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard");
             addItem(NarakaItems.NECTARIUM, "Nectarium");
@@ -124,6 +147,16 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
         protected void addTranslations() {
             add("itemGroup.naraka", "Naraka");
             add("container.soul_crafting", "영혼 세공기");
+            add(PURIFIED_SOUL_UPGRADE_KEY, "정화된 영혼 강화");
+            add(PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY, "흑단나무 장비");
+            add(PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "정화된 영혼 금속");
+            add(PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "흑단나무 무기, 도구를 놓으세요");
+            add(PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "정화된 영혼 금속을 놓으세요");
+            add(PURIFIED_GEM_UPGRADE_KEY, "Purified Gem Upgrade");
+            add(PURIFIED_GEM_UPGRADE_APPLIES_TO_KEY, "Purified Soul Equipments");
+            add(PURIFIED_GEM_UPGRADE_INGREDIENTS_KEY, "Soul infused materials");
+            add(PURIFIED_GEM_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add soul equipments");
+            add(PURIFIED_GEM_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add Soul infused materials");
 
             addItem(NarakaItems.PURIFIED_SOUL_SHARD, "정화된 영혼 조각");
             addItem(NarakaItems.NECTARIUM, "넥타리움");

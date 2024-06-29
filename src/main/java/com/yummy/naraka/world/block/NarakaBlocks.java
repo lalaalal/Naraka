@@ -117,10 +117,6 @@ public class NarakaBlocks {
         fire.setFlammable(STRIPPED_EBONY_LOG.get(), 5, 5);
         fire.setFlammable(EBONY_WOOD.get(), 5, 5);
         fire.setFlammable(STRIPPED_EBONY_WOOD.get(), 5, 5);
-        fire.setFlammable(EBONY_SIGN.get(), 5, 20);
-        fire.setFlammable(EBONY_WALL_SIGN.get(), 5, 20);
-        fire.setFlammable(EBONY_HANGING_SIGN.get(), 5, 20);
-        fire.setFlammable(EBONY_WALL_HANGING_SIGN.get(), 5, 20);
         fire.setFlammable(EBONY_LEAVES.get(), 30, 60);
         fire.setFlammable(EBONY_PLANKS.get(), 5, 20);
         fire.setFlammable(EBONY_SLAB.get(), 5, 20);

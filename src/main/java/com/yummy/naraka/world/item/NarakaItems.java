@@ -47,8 +47,8 @@ public class NarakaItems {
 
     public static final DeferredItem<Item> COMPRESSED_IRON_INGOT = ITEMS.registerSimpleItem("compressed_iron_ingot");
 
-    public static final DeferredItem<Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = ITEMS.registerSimpleItem("purified_soul_upgrade_smithing_template");
-    public static final DeferredItem<Item> PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE = ITEMS.registerSimpleItem("purified_gems_upgrade_smithing_template");
+    public static final DeferredItem<Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = ITEMS.registerItem("purified_soul_upgrade_smithing_template", NarakaSmithingTemplateItem::createPurifiedSoulUpgradeTemplate);
+    public static final DeferredItem<Item> PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE = ITEMS.registerItem("purified_gems_upgrade_smithing_template", NarakaSmithingTemplateItem::createPurifiedGemUpgradeTemplate);
 
     public static final DeferredItem<Item> SOUL_INFUSED_AMETHYST = registerSoulInfusedItem("amethyst");
     public static final DeferredItem<Item> SOUL_INFUSED_COPPER = registerSoulInfusedItem("copper");
