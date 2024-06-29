@@ -43,6 +43,14 @@ public class NarakaBlockTagsProvider extends BlockTagsProvider {
                 .add(NarakaBlocks.EBONY_STAIRS.get());
         tag(BlockTags.WOODEN_SLABS)
                 .add(NarakaBlocks.EBONY_SLAB.get());
+        tag(BlockTags.WOODEN_FENCES)
+                .add(NarakaBlocks.EBONY_FENCE.get());
+        tag(BlockTags.WOODEN_DOORS)
+                .add(NarakaBlocks.EBONY_DOOR.get());
+        tag(BlockTags.WOODEN_TRAPDOORS)
+                .add(NarakaBlocks.EBONY_TRAPDOOR.get());
+        tag(BlockTags.WOODEN_BUTTONS)
+                .add(NarakaBlocks.EBONY_BUTTON.get());
 
         tag(BlockTags.LOGS_THAT_BURN)
                 .addTag(NarakaBlockTags.EBONY_LOGS);

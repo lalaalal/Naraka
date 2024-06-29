@@ -52,6 +52,12 @@ public class NarakaBlockLootSubProvider extends BlockLootSubProvider {
         dropSelf(NarakaBlocks.EBONY_PLANKS);
         add(NarakaBlocks.EBONY_SLAB.get(), createSlabItemTable(NarakaBlocks.EBONY_SLAB.get()));
         dropSelf(NarakaBlocks.EBONY_STAIRS);
+        dropSelf(NarakaBlocks.EBONY_FENCE);
+        dropSelf(NarakaBlocks.EBONY_FENCE_GATE);
+        dropSelf(NarakaBlocks.EBONY_DOOR);
+        dropSelf(NarakaBlocks.EBONY_TRAPDOOR);
+        dropSelf(NarakaBlocks.EBONY_PRESSURE_PLATE);
+        dropSelf(NarakaBlocks.EBONY_BUTTON);
     }
 
     protected void dropSelf(DeferredBlock<? extends Block> block) {

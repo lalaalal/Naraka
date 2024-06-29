@@ -85,6 +85,12 @@ public class NarakaRecipeProvider extends RecipeProvider {
                         .sign(NarakaBlocks.EBONY_SIGN.get(), NarakaBlocks.EBONY_WALL_SIGN.get())
                         .stairs(NarakaBlocks.EBONY_STAIRS.get())
                         .slab(NarakaBlocks.EBONY_SLAB.get())
+                        .fence(NarakaBlocks.EBONY_FENCE.get())
+                        .fenceGate(NarakaBlocks.EBONY_FENCE_GATE.get())
+                        .door(NarakaBlocks.EBONY_DOOR.get())
+                        .trapdoor(NarakaBlocks.EBONY_TRAPDOOR.get())
+                        .pressurePlate(NarakaBlocks.EBONY_PRESSURE_PLATE.get())
+                        .button(NarakaBlocks.EBONY_BUTTON.get())
                         .getFamily(),
                 FeatureFlags.DEFAULT_FLAGS
         );

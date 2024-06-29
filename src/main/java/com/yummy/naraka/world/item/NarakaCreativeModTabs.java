@@ -78,6 +78,12 @@ public class NarakaCreativeModTabs {
                 output.accept(NarakaBlocks.EBONY_PLANKS);
                 output.accept(NarakaBlocks.EBONY_SLAB);
                 output.accept(NarakaBlocks.EBONY_STAIRS);
+                output.accept(NarakaBlocks.EBONY_FENCE);
+                output.accept(NarakaBlocks.EBONY_FENCE_GATE);
+                output.accept(NarakaBlocks.EBONY_DOOR);
+                output.accept(NarakaBlocks.EBONY_TRAPDOOR);
+                output.accept(NarakaBlocks.EBONY_PRESSURE_PLATE);
+                output.accept(NarakaBlocks.EBONY_BUTTON);
                 output.accept(NarakaItems.EBONY_SWORD);
             }).build());
 

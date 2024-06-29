@@ -75,18 +75,38 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         signBlock(NarakaBlocks.EBONY_HANGING_SIGN, texture("ebony_planks"));
         signBlock(NarakaBlocks.EBONY_WALL_HANGING_SIGN, texture("ebony_planks"));
         parentCustomRenderTypeModelBlock(NarakaBlocks.EBONY_SAPLING, "cross", "cross", "cutout");
-        simpleItem(NarakaBlocks.EBONY_SAPLING);
+        simpleItem(NarakaBlocks.EBONY_SAPLING, "block");
         simpleBlockWithItem(NarakaBlocks.EBONY_PLANKS);
         slabBlock(NarakaBlocks.EBONY_SLAB.get(), texture("ebony_planks"), texture("ebony_planks"));
         simpleBlockItem(NarakaBlocks.EBONY_SLAB);
         stairsBlock(NarakaBlocks.EBONY_STAIRS.get(), texture("ebony_planks"));
         simpleBlockItem(NarakaBlocks.EBONY_STAIRS);
+        fenceBlock(NarakaBlocks.EBONY_FENCE.get(), texture("ebony_planks"));
+        itemWithInventoryModel(NarakaBlocks.EBONY_FENCE, "fence", texture("ebony_planks"));
+        fenceGateBlock(NarakaBlocks.EBONY_FENCE_GATE.get(), texture("ebony_planks"));
+        simpleBlockItem(NarakaBlocks.EBONY_FENCE_GATE);
+        doorBlock(NarakaBlocks.EBONY_DOOR.get(), texture("ebony_door_bottom"), texture("ebony_door_top"));
+        simpleItem(NarakaBlocks.EBONY_DOOR, "item");
+        trapdoorBlock(NarakaBlocks.EBONY_TRAPDOOR.get(), texture("ebony_trapdoor"), true);
+        itemModels().withExistingParent(NarakaBlocks.EBONY_TRAPDOOR.getId().getPath(), NarakaMod.location("block", "ebony_trapdoor_bottom"));
+        pressurePlateBlock(NarakaBlocks.EBONY_PRESSURE_PLATE.get(), texture("ebony_planks"));
+        simpleBlockItem(NarakaBlocks.EBONY_PRESSURE_PLATE);
+        buttonBlock(NarakaBlocks.EBONY_BUTTON.get(), texture("ebony_planks"));
+        itemWithInventoryModel(NarakaBlocks.EBONY_BUTTON, "button", texture("ebony_planks"));
     }
 
-    public void simpleItem(DeferredBlock<? extends Block> block) {
+    public void itemWithInventoryModel(DeferredBlock<? extends Block> block, String type, ResourceLocation texture) {
+        String name = block.getId().getPath();
+        String modelName = name + "_inventory";
+        String parentName = "block/" + type + "_inventory";
+        itemModels().withExistingParent(name, parentName)
+                .texture("texture", texture);
+    }
+
+    public void simpleItem(DeferredBlock<? extends Block> block, String prefix) {
         String name = block.getId().getPath();
         itemModels().withExistingParent(name, "item/generated")
-                .texture("layer0", NarakaMod.location("block", name));
+                .texture("layer0", NarakaMod.location(prefix, name));
     }
 
     public void parentModelBlockWithItem(DeferredBlock<? extends Block> block, String parent, String textureKey) {

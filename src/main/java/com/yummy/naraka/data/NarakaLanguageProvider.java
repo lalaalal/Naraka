@@ -134,6 +134,12 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.EBONY_PLANKS, "Ebony Planks");
             addBlock(NarakaBlocks.EBONY_SLAB, "Ebony Slab");
             addBlock(NarakaBlocks.EBONY_STAIRS, "Ebony Stairs");
+            addBlock(NarakaBlocks.EBONY_FENCE, "Ebony Fence");
+            addBlock(NarakaBlocks.EBONY_FENCE_GATE, "Ebony Fence Gate");
+            addBlock(NarakaBlocks.EBONY_DOOR, "Ebony Door");
+            addBlock(NarakaBlocks.EBONY_TRAPDOOR, "Ebony Trapdoor");
+            addBlock(NarakaBlocks.EBONY_BUTTON, "Ebony Button");
+            addBlock(NarakaBlocks.EBONY_PRESSURE_PLATE, "Ebony Pressure Plate");
             addBlock(NarakaBlocks.EBONY_SIGN, "Ebony Sign");
             addBlockWithActualId(NarakaBlocks.EBONY_WALL_SIGN, "Ebony Wall Sign");
             addBlock(NarakaBlocks.EBONY_HANGING_SIGN, "Ebony Hanging Sign");
@@ -231,6 +237,12 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.EBONY_PLANKS, "흑단나무 판자");
             addBlock(NarakaBlocks.EBONY_SLAB, "흑단나무 반 블록");
             addBlock(NarakaBlocks.EBONY_STAIRS, "흑단나무 계단");
+            addBlock(NarakaBlocks.EBONY_FENCE, "흑단나무 울타리");
+            addBlock(NarakaBlocks.EBONY_FENCE_GATE, "흑단나무 울타리 문");
+            addBlock(NarakaBlocks.EBONY_DOOR, "흑단나무 문");
+            addBlock(NarakaBlocks.EBONY_TRAPDOOR, "흑단나무 Trapdoor");
+            addBlock(NarakaBlocks.EBONY_PRESSURE_PLATE, "흑단나무 감암판");
+            addBlock(NarakaBlocks.EBONY_BUTTON, "흑단나무 버튼");
             addBlock(NarakaBlocks.EBONY_SIGN, "흑단나무 표지판");
             addBlockWithActualId(NarakaBlocks.EBONY_WALL_SIGN, "흑단나무 벽 표지판");
             addBlock(NarakaBlocks.EBONY_HANGING_SIGN, "흑단나무 매다는 표지판");
