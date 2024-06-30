@@ -80,6 +80,12 @@ public class NarakaBlocks {
     public static final DeferredBlock<Block> EBONY_PLANKS = registerSimpleBlockWithItem("ebony_planks", Blocks.DARK_OAK_PLANKS);
     public static final DeferredBlock<SlabBlock> EBONY_SLAB = registerBlockWithItem("ebony_slab", SlabBlock::new, Blocks.DARK_OAK_SLAB);
     public static final DeferredBlock<StairBlock> EBONY_STAIRS = registerBlockWithItem("ebony_stairs", properties -> new StairBlock(EBONY_PLANKS.get().defaultBlockState(), properties), Blocks.DARK_OAK_STAIRS);
+    public static final DeferredBlock<FenceBlock> EBONY_FENCE = registerBlockWithItem("ebony_fence", FenceBlock::new, Blocks.DARK_OAK_FENCE);
+    public static final DeferredBlock<FenceGateBlock> EBONY_FENCE_GATE = registerBlockWithItem("ebony_fence_gate", properties -> new FenceGateBlock(NarakaBlockTypes.Wood.EBONY, properties), Blocks.DARK_OAK_FENCE_GATE);
+    public static final DeferredBlock<DoorBlock> EBONY_DOOR = registerBlockWithItem("ebony_door", properties -> new DoorBlock(NarakaBlockTypes.BlockSet.EBONY, properties), Blocks.DARK_OAK_DOOR);
+    public static final DeferredBlock<TrapDoorBlock> EBONY_TRAPDOOR = registerBlockWithItem("ebony_trapdoor", properties -> new TrapDoorBlock(NarakaBlockTypes.BlockSet.EBONY, properties), Blocks.DARK_OAK_TRAPDOOR);
+    public static final DeferredBlock<PressurePlateBlock> EBONY_PRESSURE_PLATE = registerBlockWithItem("ebony_pressure_plate", properties -> new PressurePlateBlock(NarakaBlockTypes.BlockSet.EBONY, properties), Blocks.DARK_OAK_PRESSURE_PLATE);
+    public static final DeferredBlock<ButtonBlock> EBONY_BUTTON = registerBlockWithItem("ebony_block", properties -> new ButtonBlock(NarakaBlockTypes.BlockSet.EBONY, 30, properties), Blocks.DARK_OAK_BUTTON);
 
     public static final DeferredBlock<NarakaStandingSignBlock> EBONY_SIGN = registerBlock(
             "ebony_sign",
@@ -117,10 +123,6 @@ public class NarakaBlocks {
         fire.setFlammable(STRIPPED_EBONY_LOG.get(), 5, 5);
         fire.setFlammable(EBONY_WOOD.get(), 5, 5);
         fire.setFlammable(STRIPPED_EBONY_WOOD.get(), 5, 5);
-        fire.setFlammable(EBONY_SIGN.get(), 5, 20);
-        fire.setFlammable(EBONY_WALL_SIGN.get(), 5, 20);
-        fire.setFlammable(EBONY_HANGING_SIGN.get(), 5, 20);
-        fire.setFlammable(EBONY_WALL_HANGING_SIGN.get(), 5, 20);
         fire.setFlammable(EBONY_LEAVES.get(), 30, 60);
         fire.setFlammable(EBONY_PLANKS.get(), 5, 20);
         fire.setFlammable(EBONY_SLAB.get(), 5, 20);

@@ -47,8 +47,8 @@ public class NarakaItems {
 
     public static final DeferredItem<Item> COMPRESSED_IRON_INGOT = ITEMS.registerSimpleItem("compressed_iron_ingot");
 
-    public static final DeferredItem<Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = ITEMS.registerSimpleItem("purified_soul_upgrade_smithing_template");
-    public static final DeferredItem<Item> PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE = ITEMS.registerSimpleItem("purified_gems_upgrade_smithing_template");
+    public static final DeferredItem<Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = ITEMS.registerItem("purified_soul_upgrade_smithing_template", NarakaSmithingTemplateItems::createPurifiedSoulUpgradeTemplate);
+    public static final DeferredItem<Item> PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE = ITEMS.registerItem("purified_gems_upgrade_smithing_template", NarakaSmithingTemplateItems::createPurifiedGemUpgradeTemplate);
 
     public static final DeferredItem<Item> SOUL_INFUSED_AMETHYST = registerSoulInfusedItem("amethyst");
     public static final DeferredItem<Item> SOUL_INFUSED_COPPER = registerSoulInfusedItem("copper");
@@ -80,9 +80,39 @@ public class NarakaItems {
     public static final DeferredItem<HangingSignItem> EBONY_HANGING_SIGN = ITEMS.registerItem(
             "ebony_hanging_sign", properties -> new HangingSignItem(NarakaBlocks.EBONY_HANGING_SIGN.get(), NarakaBlocks.EBONY_WALL_HANGING_SIGN.get(), properties)
     );
+    public static final DeferredItem<SwordItem> EBONY_SWORD = ITEMS.registerItem("ebony_sword", properties -> new SwordItem(
+                    Tiers.IRON, properties.attributes(SwordItem.createAttributes(Tiers.IRON, 0, 0))
+            )
+    );
+
+    public static final DeferredItem<SwordItem> SOUL_INFUSED_REDSTONE_SWORD = registerSoulInfusedSword("redstone", 2, -2);
+    public static final DeferredItem<SwordItem> SOUL_INFUSED_COPPER_SWORD = registerSoulInfusedSword("copper", 0, 2);
+    public static final DeferredItem<SwordItem> SOUL_INFUSED_GOLD_SWORD = registerSoulInfusedSword("gold", 1, 0);
+    public static final DeferredItem<SwordItem> SOUL_INFUSED_EMERALD_SWORD = registerSoulInfusedSword("emerald", 1, 0);
+    public static final DeferredItem<SwordItem> SOUL_INFUSED_DIAMOND_SWORD = registerSoulInfusedSword("diamond", 3, 1);
+    public static final DeferredItem<SwordItem> SOUL_INFUSED_LAPIS_SWORD = registerSoulInfusedSword("lapis", 0, 0);
+    public static final DeferredItem<SwordItem> SOUL_INFUSED_AMETHYST_SWORD = registerSoulInfusedSword("amethyst", 0, 0);
+    public static final DeferredItem<SwordItem> SOUL_INFUSED_NECTARIUM_SWORD = registerSoulInfusedSword("nectarium", 0, 0);
+    public static final DeferredItem<SwordItem> PURIFIED_SOUL_SWORD = ITEMS.registerItem(
+            "purified_soul_sword",
+            properties -> new SwordItem(Tiers.IRON, properties.fireResistant()
+                    .rarity(Rarity.UNCOMMON)
+                    .attributes(SwordItem.createAttributes(Tiers.IRON, 1, 0)))
+    );
 
     private static DeferredItem<Item> registerSoulInfusedItem(String name) {
         return ITEMS.registerSimpleItem(SOUL_INFUSED_PREFIX + name, new Item.Properties().fireResistant());
+    }
+
+    private static DeferredItem<SwordItem> registerSoulInfusedSword(String name, float attackDamage, float attackSpeed) {
+        return ITEMS.registerItem(SOUL_INFUSED_PREFIX + name + "_sword",
+                properties -> new SwordItem(
+                        Tiers.IRON,
+                        properties.fireResistant()
+                                .rarity(Rarity.RARE)
+                                .attributes(SwordItem.createAttributes(Tiers.IRON, attackDamage, attackSpeed))
+                )
+        );
     }
 
     public static void register(IEventBus bus) {

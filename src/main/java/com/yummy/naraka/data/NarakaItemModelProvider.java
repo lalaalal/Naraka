@@ -48,6 +48,17 @@ public class NarakaItemModelProvider extends ItemModelProvider {
 
         simpleItem(NarakaItems.EBONY_SIGN);
         simpleItem(NarakaItems.EBONY_HANGING_SIGN);
+
+        handheld(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD);
+        handheld(NarakaItems.SOUL_INFUSED_COPPER_SWORD);
+        handheld(NarakaItems.SOUL_INFUSED_GOLD_SWORD);
+        handheld(NarakaItems.SOUL_INFUSED_EMERALD_SWORD);
+        handheld(NarakaItems.SOUL_INFUSED_DIAMOND_SWORD);
+        handheld(NarakaItems.SOUL_INFUSED_LAPIS_SWORD);
+        handheld(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD);
+        handheld(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD);
+        handheld(NarakaItems.PURIFIED_SOUL_SWORD);
+        handheld(NarakaItems.EBONY_SWORD);
     }
 
     public ItemModelBuilder spearItem(DeferredItem<? extends SpearItem> spearItem, ItemDisplayContext... displayAsItem) {
@@ -107,6 +118,11 @@ public class NarakaItemModelProvider extends ItemModelProvider {
                 .texture("layer0", NarakaMod.location("item", name));
     }
 
+    public ItemModelBuilder handheld(DeferredItem<? extends Item> item) {
+        String name = item.getId().getPath();
+        return withExistingParent(name, "item/handheld")
+                .texture("layer0", NarakaMod.location("item", name));
+    }
     public ItemModelBuilder withExistingParent(DeferredItem<? extends Item> item, String parent) {
         return withExistingParent(item.getId().getPath(), parent);
     }

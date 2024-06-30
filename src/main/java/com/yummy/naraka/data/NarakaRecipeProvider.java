@@ -6,9 +6,11 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.crafting.SoulCraftingRecipe;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
@@ -56,6 +58,16 @@ public class NarakaRecipeProvider extends RecipeProvider {
         soulCraftingRecipe(recipeOutput, NarakaItems.NECTARIUM, NarakaItems.SOUL_INFUSED_NECTARIUM);
         soulCraftingRecipe(recipeOutput, Items.REDSTONE, NarakaItems.SOUL_INFUSED_REDSTONE);
 
+        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_REDSTONE, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get());
+        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_COPPER, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_COPPER_SWORD.get());
+        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_GOLD, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_GOLD_SWORD.get());
+        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_EMERALD, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get());
+        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_DIAMOND, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get());
+        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_LAPIS, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get());
+        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_AMETHYST, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get());
+        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_NECTARIUM, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get());
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.EBONY_SWORD, NarakaItems.PURIFIED_SOUL_METAL, RecipeCategory.COMBAT, NarakaItems.PURIFIED_SOUL_SWORD.get());
+
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_REDSTONE, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_COPPER, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_GOLD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK);
@@ -67,23 +79,27 @@ public class NarakaRecipeProvider extends RecipeProvider {
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_METAL, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_SHARD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.PURIFIED_SOUL_BLOCK);
 
+        generateRecipes(
+                recipeOutput,
+                new BlockFamily.Builder(NarakaBlocks.EBONY_PLANKS.get())
+                        .sign(NarakaBlocks.EBONY_SIGN.get(), NarakaBlocks.EBONY_WALL_SIGN.get())
+                        .stairs(NarakaBlocks.EBONY_STAIRS.get())
+                        .slab(NarakaBlocks.EBONY_SLAB.get())
+                        .fence(NarakaBlocks.EBONY_FENCE.get())
+                        .fenceGate(NarakaBlocks.EBONY_FENCE_GATE.get())
+                        .door(NarakaBlocks.EBONY_DOOR.get())
+                        .trapdoor(NarakaBlocks.EBONY_TRAPDOOR.get())
+                        .pressurePlate(NarakaBlocks.EBONY_PRESSURE_PLATE.get())
+                        .button(NarakaBlocks.EBONY_BUTTON.get())
+                        .getFamily(),
+                FeatureFlags.DEFAULT_FLAGS
+        );
         planksFromLog(recipeOutput, NarakaBlocks.EBONY_PLANKS, NarakaItemTags.EBONY_LOGS, 4);
-        slab(recipeOutput, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.EBONY_SLAB.get(), NarakaBlocks.EBONY_PLANKS);
-        stairBuilder(NarakaBlocks.EBONY_STAIRS.get(), Ingredient.of(NarakaBlocks.EBONY_PLANKS.get()))
-                .unlockedBy(getHasName(NarakaBlocks.EBONY_PLANKS), has(NarakaBlocks.EBONY_PLANKS))
-                .save(recipeOutput);
+        hangingSign(recipeOutput, NarakaItems.EBONY_HANGING_SIGN, NarakaBlocks.EBONY_PLANKS);
+        sword(recipeOutput, NarakaBlocks.EBONY_PLANKS, NarakaItems.EBONY_SWORD);
 
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.BUILDING_BLOCKS, Blocks.IRON_BLOCK.asItem(), RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT, RecipeCategory.MISC, NarakaBlocks.COMPRESSED_IRON_BLOCK);
-
-        signBuilder(NarakaItems.EBONY_SIGN, Ingredient.of(NarakaBlocks.EBONY_PLANKS));
-        hangingSign(recipeOutput, NarakaItems.EBONY_HANGING_SIGN, NarakaBlocks.EBONY_PLANKS);
-    }
-
-    protected static void smithing(RecipeOutput recipeOutput, ItemLike template, ItemLike base, ItemLike ingredient, RecipeCategory category, Item result) {
-        SmithingTransformRecipeBuilder.smithing(Ingredient.of(template), Ingredient.of(base), Ingredient.of(ingredient), category, result)
-                .unlocks(getHasName(ingredient), has(ingredient))
-                .save(recipeOutput, location(result, "_smithing"));
     }
 
     protected static ResourceLocation location(ItemLike item) {
@@ -92,6 +108,23 @@ public class NarakaRecipeProvider extends RecipeProvider {
 
     protected static ResourceLocation location(ItemLike item, String suffix) {
         return NarakaMod.location(getItemName(item) + suffix);
+    }
+
+    protected static void sword(RecipeOutput recipeOutput, ItemLike material, ItemLike result) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, result)
+                .define('/', Items.STICK)
+                .define('M', material)
+                .pattern(" M ")
+                .pattern(" M ")
+                .pattern(" / ")
+                .unlockedBy(getHasName(material), has(material))
+                .save(recipeOutput);
+    }
+
+    protected static void smithing(RecipeOutput recipeOutput, ItemLike template, ItemLike base, ItemLike ingredient, RecipeCategory category, Item result) {
+        SmithingTransformRecipeBuilder.smithing(Ingredient.of(template), Ingredient.of(base), Ingredient.of(ingredient), category, result)
+                .unlocks(getHasName(ingredient), has(ingredient))
+                .save(recipeOutput, location(result, "_smithing"));
     }
 
     protected static void nineBlockStorageRecipes(
