@@ -1,6 +1,6 @@
 package com.yummy.naraka.data.loot;
 
-import com.yummy.naraka.world.entity.NarakaEntities;
+import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.EntityLootSubProvider;
@@ -24,7 +24,7 @@ public class NarakaEntityLootSubProvider extends EntityLootSubProvider {
     @Override
     public void generate() {
         add(
-                NarakaEntities.HEROBRINE.get(),
+                NarakaEntityTypes.HEROBRINE.get(),
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(0.006f))
@@ -39,6 +39,6 @@ public class NarakaEntityLootSubProvider extends EntityLootSubProvider {
 
     @Override
     protected Stream<EntityType<?>> getKnownEntityTypes() {
-        return NarakaEntities.getKnownEntityTypes();
+        return NarakaEntityTypes.getKnownEntityTypes();
     }
 }

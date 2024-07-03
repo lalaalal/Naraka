@@ -2,6 +2,8 @@ package com.yummy.naraka.data;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.data.worldgen.NarakaBiomeModifiers;
+import com.yummy.naraka.data.worldgen.NarakaStructureSets;
+import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.data.worldgen.features.NarakaFeatures;
 import com.yummy.naraka.data.worldgen.placement.NarakaPlacements;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
@@ -22,6 +24,8 @@ public class NarakaDatapackProvider extends DatapackBuiltinEntriesProvider {
             .add(Registries.ENCHANTMENT, NarakaEnchantments::bootstrap)
             .add(Registries.CONFIGURED_FEATURE, NarakaFeatures::bootstrap)
             .add(Registries.PLACED_FEATURE, NarakaPlacements::bootstrap)
+            .add(Registries.STRUCTURE, NarakaStructures::bootstrap)
+            .add(Registries.STRUCTURE_SET, NarakaStructureSets::bootstrap)
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, NarakaBiomeModifiers::bootstrap);
 
     public NarakaDatapackProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {

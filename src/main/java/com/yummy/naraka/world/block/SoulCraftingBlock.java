@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.block;
 
 import com.mojang.serialization.MapCodec;
-import com.yummy.naraka.world.block.entity.NarakaBlockEntities;
+import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.block.entity.SoulCraftingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -98,6 +98,6 @@ public class SoulCraftingBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         if (level.isClientSide)
             return null;
-        return createTickerHelper(blockEntityType, NarakaBlockEntities.SOUL_CRAFTING_BLOCK_ENTITY.get(), SoulCraftingBlockEntity::serverTick);
+        return createTickerHelper(blockEntityType, NarakaBlockEntityTypes.SOUL_CRAFTING_BLOCK_ENTITY.get(), SoulCraftingBlockEntity::serverTick);
     }
 }

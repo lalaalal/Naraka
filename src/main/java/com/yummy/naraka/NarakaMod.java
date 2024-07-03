@@ -2,13 +2,14 @@ package com.yummy.naraka;
 
 import com.yummy.naraka.attachment.NarakaAttachments;
 import com.yummy.naraka.world.block.NarakaBlocks;
-import com.yummy.naraka.world.block.entity.NarakaBlockEntities;
-import com.yummy.naraka.world.entity.NarakaEntities;
+import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
+import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import com.yummy.naraka.world.item.NarakaCreativeModTabs;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeSerializers;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeTypes;
+import com.yummy.naraka.world.structure.NarakaStructureTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -23,12 +24,13 @@ public class NarakaMod {
         NarakaItems.register(modEventBus);
         NarakaCreativeModTabs.register(modEventBus);
         NarakaBlocks.register(modEventBus);
-        NarakaBlockEntities.register(modEventBus);
-        NarakaEntities.register(modEventBus);
+        NarakaBlockEntityTypes.register(modEventBus);
+        NarakaEntityTypes.register(modEventBus);
         NarakaAttachments.register(modEventBus);
         NarakaMenuTypes.register(modEventBus);
         NarakaRecipeTypes.register(modEventBus);
         NarakaRecipeSerializers.register(modEventBus);
+        NarakaStructureTypes.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, NarakaConfig.SPEC);
     }

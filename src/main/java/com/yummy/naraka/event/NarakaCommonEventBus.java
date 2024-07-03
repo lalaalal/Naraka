@@ -12,7 +12,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.NectariumBlock;
 import com.yummy.naraka.world.block.entity.SoulCraftingBlockEntity;
 import com.yummy.naraka.world.entity.Herobrine;
-import com.yummy.naraka.world.entity.NarakaEntities;
+import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
@@ -61,6 +61,6 @@ public class NarakaCommonEventBus {
 
     @SubscribeEvent
     public static void createEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(NarakaEntities.HEROBRINE.get(), Herobrine.getAttributeSupplier());
+        event.put(NarakaEntityTypes.HEROBRINE.get(), Herobrine.getAttributeSupplier());
     }
 }

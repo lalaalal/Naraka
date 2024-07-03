@@ -64,7 +64,7 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
     private RecipeHolder<?> recipeUsed;
 
     public SoulCraftingBlockEntity(BlockPos pos, BlockState blockState) {
-        super(NarakaBlockEntities.SOUL_CRAFTING_BLOCK_ENTITY.get(), pos, blockState);
+        super(NarakaBlockEntityTypes.SOUL_CRAFTING_BLOCK_ENTITY.get(), pos, blockState);
         setFuel(0);
         setCraftingProgress(PROGRESS_WAITING);
         setLitProgress(0);

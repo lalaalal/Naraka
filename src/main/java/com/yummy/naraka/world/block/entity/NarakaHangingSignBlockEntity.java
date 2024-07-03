@@ -14,7 +14,7 @@ public class NarakaHangingSignBlockEntity extends HangingSignBlockEntity {
 
     @Override
     public BlockEntityType<?> getType() {
-        return NarakaBlockEntities.EBONY_HANGING_SIGN.get();
+        return NarakaBlockEntityTypes.EBONY_HANGING_SIGN.get();
     }
 
     @Override
