@@ -17,8 +17,8 @@ import com.yummy.naraka.client.renderer.NarakaItemEntityRenderer;
 import com.yummy.naraka.client.renderer.SpearRenderer;
 import com.yummy.naraka.world.block.NarakaBlockTypes;
 import com.yummy.naraka.world.block.NarakaBlocks;
-import com.yummy.naraka.world.block.entity.NarakaBlockEntities;
-import com.yummy.naraka.world.entity.NarakaEntities;
+import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
+import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeTypes;
 import net.minecraft.client.RecipeBookCategories;
@@ -72,15 +72,15 @@ public class NarakaClientEventBus {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(NarakaBlockEntities.EBONY_SIGN.get(), SignRenderer::new);
-        event.registerBlockEntityRenderer(NarakaBlockEntities.EBONY_HANGING_SIGN.get(), HangingSignRenderer::new);
+        event.registerBlockEntityRenderer(NarakaBlockEntityTypes.EBONY_SIGN.get(), SignRenderer::new);
+        event.registerBlockEntityRenderer(NarakaBlockEntityTypes.EBONY_HANGING_SIGN.get(), HangingSignRenderer::new);
 
         event.registerEntityRenderer(EntityType.ITEM, NarakaItemEntityRenderer::new);
 
-        event.registerEntityRenderer(NarakaEntities.HEROBRINE.get(), HerobrineRenderer::new);
-        event.registerEntityRenderer(NarakaEntities.THROWN_SPEAR.get(), SpearRenderer::new);
-        event.registerEntityRenderer(NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR.get(), SpearRenderer::new);
-        event.registerEntityRenderer(NarakaEntities.THROWN_SPEAR_OF_LONGINUS.get(), SpearRenderer::longinus);
+        event.registerEntityRenderer(NarakaEntityTypes.HEROBRINE.get(), HerobrineRenderer::new);
+        event.registerEntityRenderer(NarakaEntityTypes.THROWN_SPEAR.get(), SpearRenderer::new);
+        event.registerEntityRenderer(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR.get(), SpearRenderer::new);
+        event.registerEntityRenderer(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.get(), SpearRenderer::longinus);
     }
 
     @SubscribeEvent

@@ -2,7 +2,7 @@ package com.yummy.naraka.data.tags;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
-import com.yummy.naraka.world.entity.NarakaEntities;
+import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
@@ -24,9 +24,9 @@ public class NarakaEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 .addTag(Tags.EntityTypes.BOSSES)
                 .add(EntityType.PLAYER);
         tag(NarakaEntityTypeTags.DEATH_COUNTING_ENTITY)
-                .add(NarakaEntities.HEROBRINE.get());
+                .add(NarakaEntityTypes.HEROBRINE.get());
 
         tag(Tags.EntityTypes.BOSSES)
-                .add(NarakaEntities.HEROBRINE.get());
+                .add(NarakaEntityTypes.HEROBRINE.get());
     }
 }

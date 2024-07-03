@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class NarakaSignBlockEntity extends SignBlockEntity {
     public NarakaSignBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(NarakaBlockEntities.EBONY_SIGN.get(), pPos, pBlockState);
+        super(NarakaBlockEntityTypes.EBONY_SIGN.get(), pPos, pBlockState);
     }
 
     public NarakaSignBlockEntity(BlockEntityType pType, BlockPos pPos, BlockState pBlockState) {

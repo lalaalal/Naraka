@@ -3,7 +3,7 @@ package com.yummy.naraka.data;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
-import com.yummy.naraka.world.entity.NarakaEntities;
+import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
@@ -145,10 +145,10 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.EBONY_HANGING_SIGN, "Ebony Hanging Sign");
             addBlockWithActualId(NarakaBlocks.EBONY_WALL_HANGING_SIGN, "Ebony Wall Hanging Sign");
 
-            addEntityType(NarakaEntities.HEROBRINE, "Naraka: Herobrine");
-            addEntityType(NarakaEntities.THROWN_SPEAR, "Spear");
-            addEntityType(NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR, "Mighty Holy Spear");
-            addEntityType(NarakaEntities.THROWN_SPEAR_OF_LONGINUS, "Spear of Longinus");
+            addEntityType(NarakaEntityTypes.HEROBRINE, "Naraka: Herobrine");
+            addEntityType(NarakaEntityTypes.THROWN_SPEAR, "Spear");
+            addEntityType(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, "Mighty Holy Spear");
+            addEntityType(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, "Spear of Longinus");
 
             addDamageType(NarakaDamageTypes.SPEAR_OF_LONGINUS,
                     "%1$s's AT Field was torn by %2$s",
@@ -248,10 +248,10 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.EBONY_HANGING_SIGN, "흑단나무 매다는 표지판");
             addBlockWithActualId(NarakaBlocks.EBONY_WALL_HANGING_SIGN, "흑단나무 벽 매다는 표지판");
 
-            addEntityType(NarakaEntities.HEROBRINE, "히로빈");
-            addEntityType(NarakaEntities.THROWN_SPEAR, "창");
-            addEntityType(NarakaEntities.THROWN_MIGHTY_HOLY_SPEAR, "강력한 성스러운 창");
-            addEntityType(NarakaEntities.THROWN_SPEAR_OF_LONGINUS, "롱기누스의 창");
+            addEntityType(NarakaEntityTypes.HEROBRINE, "히로빈");
+            addEntityType(NarakaEntityTypes.THROWN_SPEAR, "창");
+            addEntityType(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, "강력한 성스러운 창");
+            addEntityType(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, "롱기누스의 창");
 
             addDamageType(NarakaDamageTypes.SPEAR_OF_LONGINUS,
                     "%1$s의 AT 필드가 %2$s에 찢어졌습니다.",

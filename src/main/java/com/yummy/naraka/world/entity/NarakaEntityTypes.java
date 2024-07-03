@@ -12,7 +12,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.stream.Stream;
 
-public class NarakaEntities {
+public class NarakaEntityTypes {
     private static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, NarakaMod.MOD_ID);
 
     public static final DeferredHolder<EntityType<?>, EntityType<Herobrine>> HEROBRINE = ENTITY_TYPES.register(

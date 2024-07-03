@@ -2,7 +2,7 @@ package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
-import com.yummy.naraka.world.entity.NarakaEntities;
+import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.Spear;
 import com.yummy.naraka.world.entity.SpearOfLonginus;
 import net.minecraft.ChatFormatting;
@@ -20,7 +20,7 @@ import net.minecraft.world.phys.Vec3;
 public class SpearOfLonginusItem extends SpearItem {
 
     public SpearOfLonginusItem(Properties properties) {
-        super(NarakaTiers.LONGINUS, properties, NarakaEntities.THROWN_SPEAR_OF_LONGINUS);
+        super(NarakaTiers.LONGINUS, properties, NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS);
     }
 
     @Override
