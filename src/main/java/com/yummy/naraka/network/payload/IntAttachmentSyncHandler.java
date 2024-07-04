@@ -19,6 +19,7 @@ import java.util.function.Supplier;
  * @author lalaalal
  * @see SyncEntityIntAttachmentPayload
  */
+@Deprecated
 public class IntAttachmentSyncHandler {
     public static final IntAttachmentSyncHandler STIGMA_HANDLER = new IntAttachmentSyncHandler(NarakaAttachments.STIGMA);
     public static final IntAttachmentSyncHandler DEATH_COUNT_HANDLER = new IntAttachmentSyncHandler(NarakaAttachments.DEATH_COUNT);
@@ -64,8 +65,8 @@ public class IntAttachmentSyncHandler {
             return;
         if (player instanceof ServerPlayer serverPlayer) {
             int handlerId = getId(this);
-            SyncEntityIntAttachmentPayload payload = new SyncEntityIntAttachmentPayload(livingEntity, NarakaAttachments.STIGMA, handlerId);
-            serverPlayer.connection.send(payload);
+            // SyncEntityIntAttachmentPayload payload = new SyncEntityIntAttachmentPayload(livingEntity, () -> attachmentType, handlerId);
+            // serverPlayer.connection.send(payload);
         }
     }
 

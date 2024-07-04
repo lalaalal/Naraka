@@ -77,7 +77,7 @@ public class StigmaHelper {
      * @see AttachmentSyncHelper#sync(Entity, Supplier, IntAttachmentSyncHandler)
      */
     public static void syncStigma(LivingEntity livingEntity) {
-        AttachmentSyncHelper.sync(livingEntity, NarakaAttachments.STIGMA, IntAttachmentSyncHandler.STIGMA_HANDLER);
+        AttachmentSyncHelper.sync(livingEntity, NarakaAttachments.STIGMA, NarakaAttachmentSynchronizers.STIGMA_SYNCHRONIZER);
     }
 
     /**

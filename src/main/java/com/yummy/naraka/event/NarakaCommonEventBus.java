@@ -45,6 +45,12 @@ public class NarakaCommonEventBus {
                 .maxId(128)
                 .create()
         );
+        event.register(new RegistryBuilder<>(NarakaRegistries.ATTACHMENT_SYNCHRONIZER)
+                .sync(true)
+                .defaultKey(NarakaMod.location("empty"))
+                .maxId(128)
+                .create()
+        );
     }
 
     @SubscribeEvent
@@ -57,7 +63,7 @@ public class NarakaCommonEventBus {
 
     @SubscribeEvent
     public static void registerPayloadHandlers(RegisterPayloadHandlersEvent event) {
-        PayloadRegistrar registrar = event.registrar("2");
+        PayloadRegistrar registrar = event.registrar("3");
         registrar.playBidirectional(
                 SyncEntityIntAttachmentPayload.TYPE,
                 SyncEntityIntAttachmentPayload.CODEC,

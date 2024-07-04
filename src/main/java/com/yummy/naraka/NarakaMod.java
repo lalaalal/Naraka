@@ -1,5 +1,6 @@
 package com.yummy.naraka;
 
+import com.yummy.naraka.attachment.NarakaAttachmentSynchronizers;
 import com.yummy.naraka.attachment.NarakaAttachments;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
@@ -33,6 +34,7 @@ public class NarakaMod {
         NarakaRecipeSerializers.register(modEventBus);
         NarakaStructureTypes.register(modEventBus);
         NarakaPiecePlacements.register(modEventBus);
+        NarakaAttachmentSynchronizers.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, NarakaConfig.SPEC);
     }

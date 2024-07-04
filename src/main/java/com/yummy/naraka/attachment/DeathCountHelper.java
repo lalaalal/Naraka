@@ -174,7 +174,7 @@ public class DeathCountHelper {
      * @see AttachmentSyncHelper#sync(Entity, Supplier, IntAttachmentSyncHandler)
      */
     public static void syncDeathCount(LivingEntity livingEntity) {
-        AttachmentSyncHelper.sync(livingEntity, NarakaAttachments.DEATH_COUNT, IntAttachmentSyncHandler.DEATH_COUNT_HANDLER);
+        AttachmentSyncHelper.sync(livingEntity, NarakaAttachments.DEATH_COUNT, NarakaAttachmentSynchronizers.DEATH_COUNT_SYNCHRONIZER);
         if (livingEntity instanceof ServerPlayer serverPlayer)
             updateDeathCountVisibility(serverPlayer);
     }
