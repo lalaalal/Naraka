@@ -1,7 +1,9 @@
 package com.yummy.naraka.world.structure;
 
+import com.mojang.datafixers.util.Pair;
 import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -9,32 +11,23 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 import java.util.*;
 
-@Deprecated
-public class HerobrineSanctuaryPlacement {
-    public static final ComplexPiecePositionProvider POSITION_PROVIDER = new ComplexPiecePositionProvider(
-            "herobrine_sanctuary",
-            List.of(0, 1, 2, 3), List.of(30, 1, -28, -76),
-            List.of(0, 1, 2), List.of(1, 49, 97),
-            List.of(1, 2, 3, 4, 5, 6, 7, 8), List.of(26, 74, 122, 170, 90, 138, 110, 158)
-    );
-    public static final List<Vec3i> PIECE_POSITIONS = fromString(
-            "005", "006", "015", "016",
-            "101", "102", "103", "104", "111", "112", "113", "114", "127", "128",
-            "201", "202", "203", "204", "211", "212", "213", "214", "227", "228",
-            "305", "306", "315", "316"
-    );
-
-    public static final ResourceLocation ENTRANCE = NarakaMod.location("herobrine_sanctuary_entrance");
-    public static final BlockPos ENTRANCE_POS = new BlockPos(-4, -7, 0);
-
-    public static Optional<Structure.GenerationStub> addPieces(Structure.GenerationContext context, BlockPos basePos, BlockPos offset) {
-        final BlockPos structurePos = basePos.offset(offset);
+public class JumboPlacement {
+    public static Optional<Structure.GenerationStub> addPieces(
+            Structure.GenerationContext context,
+            PiecePositionProvider positionProvider,
+            List<Vec3i> piecePositions,
+            List<Pair<Holder<PiecePlacement>, BlockPos>> customPiecePlacements,
+            BlockPos basePos
+    ) {
         StructureTemplateManager templateManager = context.structureTemplateManager();
-        return Optional.of(new Structure.GenerationStub(structurePos, builder -> {
-            builder.addPiece(new JumboPiece(templateManager, ENTRANCE, structurePos.offset(ENTRANCE_POS)));
-            for (Vec3i piecePosition : PIECE_POSITIONS) {
-                ResourceLocation location = POSITION_PROVIDER.getPieceLocation(piecePosition);
-                BlockPos actualPosition = structurePos.offset(POSITION_PROVIDER.getPiecePosition(piecePosition));
+        return Optional.of(new Structure.GenerationStub(basePos, builder -> {
+            for (Pair<Holder<PiecePlacement>, BlockPos> pair : customPiecePlacements) {
+                PiecePlacement piecePlacement = pair.getFirst().value();
+                piecePlacement.place(context, builder, basePos, pair.getSecond());
+            }
+            for (Vec3i piecePosition : piecePositions) {
+                ResourceLocation location = positionProvider.getPieceLocation(piecePosition);
+                BlockPos actualPosition = basePos.offset(positionProvider.getPiecePosition(piecePosition));
                 builder.addPiece(new JumboPiece(templateManager, location, actualPosition));
             }
         }));
@@ -53,11 +46,24 @@ public class HerobrineSanctuaryPlacement {
         return list;
     }
 
+    public static List<Vec3i> simple(int xCount, int yCount, int zCount) {
+        List<Vec3i> list = new ArrayList<>();
+        for (int x = 0; x < xCount; x++) {
+            for (int y = 0; y < yCount; y++) {
+                for (int z = 0; z < zCount; z++) {
+                    list.add(new Vec3i(x, y, z));
+                }
+            }
+        }
+
+        return list;
+    }
+
     public interface PiecePositionProvider {
         String name();
 
         default ResourceLocation getPieceLocation(int pieceX, int pieceY, int pieceZ) {
-            return NarakaMod.location(name() + "_" + pieceX + pieceY + pieceZ);
+            return NarakaMod.location(name() + "/" + pieceX + pieceY + pieceZ);
         }
 
         default ResourceLocation getPieceLocation(Vec3i piecePosition) {

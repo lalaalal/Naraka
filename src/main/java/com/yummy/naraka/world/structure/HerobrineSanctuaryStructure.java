@@ -10,6 +10,7 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 
 import java.util.Optional;
 
+@Deprecated
 public class HerobrineSanctuaryStructure extends Structure {
     public static final MapCodec<HerobrineSanctuaryStructure> CODEC = simpleCodec(HerobrineSanctuaryStructure::new);
 
