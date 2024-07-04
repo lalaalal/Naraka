@@ -13,13 +13,13 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnorePr
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
-public class HerobrineSanctuaryPiece extends TemplateStructurePiece {
-    public HerobrineSanctuaryPiece(StructureTemplateManager structureTemplateManager, ResourceLocation location, BlockPos templatePosition) {
-        super(NarakaStructureTypes.HEROBRINE_SANCTUARY_PIECE.get(), 0, structureTemplateManager, location, location.toString(), makeSettings(location), templatePosition);
+public class JumboPiece extends TemplateStructurePiece {
+    public JumboPiece(StructureTemplateManager structureTemplateManager, ResourceLocation location, BlockPos templatePosition) {
+        super(NarakaStructureTypes.JUMBO_PIECE.get(), 0, structureTemplateManager, location, location.toString(), makeSettings(location), templatePosition);
     }
 
-    public HerobrineSanctuaryPiece(StructurePieceSerializationContext context, CompoundTag tag) {
-        super(NarakaStructureTypes.HEROBRINE_SANCTUARY_PIECE.get(), tag, context.structureTemplateManager(), HerobrineSanctuaryPiece::makeSettings);
+    public JumboPiece(StructurePieceSerializationContext context, CompoundTag tag) {
+        super(NarakaStructureTypes.JUMBO_PIECE.get(), tag, context.structureTemplateManager(), JumboPiece::makeSettings);
     }
 
     private static StructurePlaceSettings makeSettings(ResourceLocation location) {
