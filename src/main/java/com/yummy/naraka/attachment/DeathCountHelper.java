@@ -2,8 +2,8 @@ package com.yummy.naraka.attachment;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.event.NarakaGameEventBus;
+import com.yummy.naraka.network.IntAttachmentTypeProvider;
 import com.yummy.naraka.network.payload.ChangeDeathCountVisibilityPayload;
-import com.yummy.naraka.network.payload.IntAttachmentSyncHandler;
 import com.yummy.naraka.tags.NarakaDamageTypeTags;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaUtil;
@@ -19,7 +19,6 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 /**
  * Help control death count
@@ -171,10 +170,10 @@ public class DeathCountHelper {
      * Sync death count
      *
      * @param livingEntity Entity to sync death count
-     * @see AttachmentSyncHelper#sync(Entity, Supplier, IntAttachmentSyncHandler)
+     * @see AttachmentSyncHelper#sync(Entity, IntAttachmentTypeProvider)
      */
     public static void syncDeathCount(LivingEntity livingEntity) {
-        AttachmentSyncHelper.sync(livingEntity, NarakaAttachments.DEATH_COUNT, IntAttachmentSyncHandler.DEATH_COUNT_HANDLER);
+        AttachmentSyncHelper.sync(livingEntity, IntAttachmentTypeProvider.DEATH_COUNT);
         if (livingEntity instanceof ServerPlayer serverPlayer)
             updateDeathCountVisibility(serverPlayer);
     }
@@ -186,7 +185,7 @@ public class DeathCountHelper {
      *
      * @param livingEntity  Entity to reduce death count
      * @param causingEntity Entity causing death
-     * @see NarakaGameEventBus#handleDeathCountOn(LivingDamageEvent)
+     * @see NarakaGameEventBus#handleDeathCountOn(LivingDamageEvent.Pre)
      * @see StigmaHelper#consumeStigma(LivingEntity, Entity)
      */
     public static void reduceDeathCount(LivingEntity livingEntity, @Nullable Entity causingEntity) {

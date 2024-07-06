@@ -7,7 +7,6 @@ import com.yummy.naraka.attachment.DeathCountHelper;
 import com.yummy.naraka.attachment.StigmaHelper;
 import com.yummy.naraka.core.NarakaRegistries;
 import com.yummy.naraka.network.payload.ChangeDeathCountVisibilityPayload;
-import com.yummy.naraka.network.payload.IntAttachmentSyncHandler;
 import com.yummy.naraka.network.payload.SyncEntityIntAttachmentPayload;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.NectariumBlock;
@@ -31,7 +30,6 @@ public class NarakaCommonEventBus {
     public static void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             AttachmentSyncHelper.initialize();
-            IntAttachmentSyncHandler.initialize();
             NarakaContext.initialize();
             NarakaBlocks.setFlammableBlocks();
         });
@@ -39,7 +37,7 @@ public class NarakaCommonEventBus {
 
     @SubscribeEvent
     public static void registerRegistries(NewRegistryEvent event) {
-        event.register(new RegistryBuilder<>(NarakaRegistries.PIECE_PLACEMENT)
+        event.register(new RegistryBuilder<>(NarakaRegistries.STRUCTURE_PIECE_FACTORY)
                 .sync(true)
                 .defaultKey(NarakaMod.location("empty"))
                 .maxId(128)
@@ -57,7 +55,7 @@ public class NarakaCommonEventBus {
 
     @SubscribeEvent
     public static void registerPayloadHandlers(RegisterPayloadHandlersEvent event) {
-        PayloadRegistrar registrar = event.registrar("2");
+        PayloadRegistrar registrar = event.registrar("3");
         registrar.playBidirectional(
                 SyncEntityIntAttachmentPayload.TYPE,
                 SyncEntityIntAttachmentPayload.CODEC,
