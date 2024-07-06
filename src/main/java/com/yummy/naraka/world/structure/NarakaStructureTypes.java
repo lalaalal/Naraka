@@ -17,14 +17,14 @@ public class NarakaStructureTypes {
             () -> () -> JumboStructure.CODEC
     );
 
-    public static final DeferredHolder<StructureType<?>, StructureType<HerobrineSanctuaryStructure>> HEROBRINE_SANCTUARY = STRUCTURES.register(
-            "herobrine_sanctuary",
-            () -> () -> HerobrineSanctuaryStructure.CODEC
-    );
-
     public static final DeferredHolder<StructurePieceType, StructurePieceType> JUMBO_PIECE = STRUCTURE_PIECES.register(
             "jumbo_piece",
             () -> JumboPiece::new
+    );
+
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> HEROBRINE_SANCTUARY_OUTLINE = STRUCTURE_PIECES.register(
+            "herobrine_sanctuary_outline",
+            () -> HerobrineSanctuaryOutline::new
     );
 
     public static void register(IEventBus bus) {

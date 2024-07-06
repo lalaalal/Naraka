@@ -123,6 +123,7 @@ public class NarakaItemModelProvider extends ItemModelProvider {
         return withExistingParent(name, "item/handheld")
                 .texture("layer0", NarakaMod.location("item", name));
     }
+
     public ItemModelBuilder withExistingParent(DeferredItem<? extends Item> item, String parent) {
         return withExistingParent(item.getId().getPath(), parent);
     }
