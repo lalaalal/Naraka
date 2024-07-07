@@ -1,6 +1,6 @@
 package com.yummy.naraka.world.block;
 
-import com.yummy.naraka.util.NarakaUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -38,10 +38,14 @@ public class TransparentBlock extends Block {
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        Player player = NarakaUtil.getClientPlayer();
-        if (state.getValue(VISIBLE) || (player != null && player.isCreative()))
-            return super.getShape(state, pLevel, pPos, pContext);
-        return Shapes.empty();
+        try {
+            Player player = Minecraft.getInstance().player;
+            if (state.getValue(VISIBLE) || (player != null && player.isCreative()))
+                return super.getShape(state, pLevel, pPos, pContext);
+            return Shapes.empty();
+        } catch (RuntimeException e) {
+            return Shapes.empty();
+        }
     }
 
     @Override

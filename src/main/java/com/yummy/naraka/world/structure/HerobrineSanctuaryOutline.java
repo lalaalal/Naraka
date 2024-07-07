@@ -9,6 +9,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -17,38 +18,37 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 public class HerobrineSanctuaryOutline extends StructurePiece {
     private static final int STRUCTURE_WIDTH = 48 * 2 + 39;
     private static final int STRUCTURE_HEIGHT = 48 * 4;
-    private static final int WIDTH = 48 * 4;
+    private static final int WIDTH = 48 * 5;
     private static final int HEIGHT = 48 * 5;
     private static final int DEPTH = 24;
+    private static final int AIR_DEPTH = 48 * 4;
 
     private static final BlockPos OFFSET = new BlockPos(
-            ((WIDTH - STRUCTURE_WIDTH) / -2), -25, ((HEIGHT - STRUCTURE_HEIGHT) / -2)
+            ((WIDTH - STRUCTURE_WIDTH) / -2), -DEPTH - 1, ((HEIGHT - STRUCTURE_HEIGHT) / -2)
     ).offset(NarakaStructures.HEROBRINE_SANCTUARY_MAIN_OFFSET);
 
     private final BlockPos pos;
-    private final BoundingBox lavaBox;
-    private final BoundingBox airBox;
+    private BoundingBox lavaBox;
+    private BoundingBox airBox;
 
     private static BoundingBox createLavaBox(BlockPos pos) {
-        BlockPos start = pos.offset(OFFSET);
-        return BoundingBox.fromCorners(start, start.offset(WIDTH, DEPTH, HEIGHT));
+        return BoundingBox.fromCorners(pos, pos.offset(WIDTH, DEPTH, HEIGHT));
     }
 
     private static BoundingBox createAirBox(BlockPos pos) {
-        BlockPos start = pos.offset(OFFSET).offset(0, DEPTH, 0);
-        return BoundingBox.fromCorners(start, start.offset(WIDTH, DEPTH * 4, HEIGHT));
+        pos = pos.offset(0, DEPTH, 0);
+        return BoundingBox.fromCorners(pos, pos.offset(WIDTH, AIR_DEPTH, HEIGHT));
     }
 
     private static BoundingBox createBox(BlockPos pos) {
-        BlockPos start = pos.offset(OFFSET);
-        return BoundingBox.fromCorners(start, start.offset(WIDTH, DEPTH * 5, HEIGHT));
+        return BoundingBox.fromCorners(pos, pos.offset(WIDTH, DEPTH + AIR_DEPTH, HEIGHT));
     }
 
     public HerobrineSanctuaryOutline(BlockPos pos) {
-        super(NarakaStructureTypes.HEROBRINE_SANCTUARY_OUTLINE.get(), 0, createLavaBox(pos));
+        super(NarakaStructureTypes.HEROBRINE_SANCTUARY_OUTLINE.get(), 0, createBox(pos.offset(OFFSET)));
         this.pos = pos.offset(OFFSET);
-        this.lavaBox = createLavaBox(pos);
-        this.airBox = createAirBox(pos);
+        this.lavaBox = createLavaBox(this.pos);
+        this.airBox = createAirBox(this.pos);
     }
 
     public HerobrineSanctuaryOutline(StructurePieceSerializationContext context, CompoundTag tag) {
@@ -64,7 +64,40 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
     }
 
     @Override
+    public void move(int x, int y, int z) {
+        super.move(x, y, z);
+        airBox = airBox.moved(x, y, z);
+        lavaBox = lavaBox.moved(x, y, z);
+    }
+
+    @Override
     public void postProcess(WorldGenLevel pLevel, StructureManager pStructureManager, ChunkGenerator pGenerator, RandomSource pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
-        generateBox(pLevel, pBox, boundingBox, Blocks.LAVA.defaultBlockState(), Blocks.LAVA.defaultBlockState(), false);
+        generateSphere(pLevel, pBox, boundingBox, airBox.minY(), airBox.maxY(), Blocks.AIR.defaultBlockState(), 1.85f);
+        generateSphere(pLevel, pBox, boundingBox, lavaBox.minY(), lavaBox.maxY(), Blocks.LAVA.defaultBlockState(), 1.85f);
+    }
+
+    protected void generateSphere(WorldGenLevel level, BoundingBox boundingBox, BoundingBox box, int yStart, int yEnd, BlockState state, float size) {
+        float xRadius = (float) (box.maxX() - box.minX() + 1) / 2;
+        float zRadius = (float) (box.maxZ() - box.minZ() + 1) / 2;
+        float yRadius = (float) (box.maxY() - box.minZ() + 1) / 2;
+        float centerX = box.minX() + xRadius;
+        float centerZ = box.minZ() + zRadius;
+        float centerY = box.minY() + yRadius;
+
+        for (int y = box.minY(); y <= box.maxY(); y++) {
+            float yRatio = (y - centerY) / yRadius;
+            for (int x = box.minX(); x <= box.maxX(); x++) {
+                float xRatio = (x - centerX) / xRadius;
+                for (int z = box.minZ(); z <= box.maxZ(); z++) {
+                    float zRatio = (z - centerZ) / zRadius;
+                    if (yStart <= y && y <= yEnd && xRatio * xRatio + yRatio * yRatio + zRatio * zRatio <= 1.05f * size) {
+                        if (getBlock(level, x, y, z, boundingBox).is(Blocks.WATER))
+                            placeBlock(level, Blocks.OBSIDIAN.defaultBlockState(), x, y, z, boundingBox);
+                        else
+                            placeBlock(level, state, x, y, z, boundingBox);
+                    }
+                }
+            }
+        }
     }
 }
