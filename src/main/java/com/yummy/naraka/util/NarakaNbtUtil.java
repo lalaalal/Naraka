@@ -1,8 +1,6 @@
 package com.yummy.naraka.util;
 
 import com.yummy.naraka.event.NarakaGameEventBus;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -17,9 +15,7 @@ import java.util.*;
  *
  * @author lalaalal
  */
-public class NarakaUtil {
-    private static final float EASE_OUT_SLOPE = 1.13837021f;
-
+public class NarakaNbtUtil {
     private static MinecraftServer server;
     private static final Map<UUID, Entity> cache = new HashMap<>();
 
@@ -30,20 +26,7 @@ public class NarakaUtil {
      * @see NarakaGameEventBus#onServerStarted(ServerStartedEvent)
      */
     public static void initialize(MinecraftServer server) {
-        NarakaUtil.server = server;
-    }
-
-    /**
-     * Get LocalPlayer if Minecraft instance exists
-     *
-     * @return Local player
-     */
-    public static @Nullable LocalPlayer getClientPlayer() {
-        try {
-            return Minecraft.getInstance().player;
-        } catch (RuntimeException exception) {
-            return null;
-        }
+        NarakaNbtUtil.server = server;
     }
 
     public static void writeUUIDs(CompoundTag compoundTag, String name, Collection<UUID> uuids) {
@@ -113,7 +96,7 @@ public class NarakaUtil {
      * @param type Type to check
      * @param <T>  Type wanted
      * @return Cast to type if type is correct
-     * @see NarakaUtil#findEntityByUUID(ServerLevel, UUID, Class)
+     * @see NarakaNbtUtil#findEntityByUUID(ServerLevel, UUID, Class)
      */
     public static @Nullable <T> T findEntityByUUID(UUID uuid, Class<T> type) {
         for (ServerLevel serverLevel : server.getAllLevels()) {

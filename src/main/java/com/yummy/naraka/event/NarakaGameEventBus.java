@@ -6,7 +6,7 @@ import com.yummy.naraka.attachment.DeathCountHelper;
 import com.yummy.naraka.attachment.StigmaHelper;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.ComponentStyles;
-import com.yummy.naraka.util.NarakaUtil;
+import com.yummy.naraka.util.NarakaNbtUtil;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.DeathCountingEntity;
 import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
@@ -34,7 +34,7 @@ public class NarakaGameEventBus {
         RegistryAccess registryAccess = server.registryAccess();
         NarakaDamageSources.initialize(registryAccess);
         NarakaEnchantments.initialize(registryAccess);
-        NarakaUtil.initialize(server);
+        NarakaNbtUtil.initialize(server);
     }
 
     @SubscribeEvent
