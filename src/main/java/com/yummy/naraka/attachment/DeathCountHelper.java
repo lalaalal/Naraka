@@ -2,7 +2,6 @@ package com.yummy.naraka.attachment;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.event.NarakaGameEventBus;
-import com.yummy.naraka.network.IntAttachmentTypeProvider;
 import com.yummy.naraka.network.payload.ChangeDeathCountVisibilityPayload;
 import com.yummy.naraka.tags.NarakaDamageTypeTags;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
@@ -13,6 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 
 import javax.annotation.Nullable;
@@ -170,10 +170,10 @@ public class DeathCountHelper {
      * Sync death count
      *
      * @param livingEntity Entity to sync death count
-     * @see AttachmentSyncHelper#sync(Entity, IntAttachmentTypeProvider)
+     * @see AttachmentSyncHelper#sync(Entity, AttachmentType)
      */
     public static void syncDeathCount(LivingEntity livingEntity) {
-        AttachmentSyncHelper.sync(livingEntity, IntAttachmentTypeProvider.DEATH_COUNT);
+        AttachmentSyncHelper.sync(livingEntity, NarakaAttachments.DEATH_COUNT);
         if (livingEntity instanceof ServerPlayer serverPlayer)
             updateDeathCountVisibility(serverPlayer);
     }

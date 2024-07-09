@@ -8,11 +8,26 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.attachment.AttachmentType;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class SyncEntityAttachmentPayload<T, P extends AttachmentTypeProvider<T>> implements CustomPacketPayload {
+    private static final Map<Class<?>, Factory> factories = new HashMap<>();
+
     protected final int targetEntityId;
     protected final P attachmentTypeProvider;
     protected final AttachmentType<T> attachmentType;
     protected final T value;
+
+    public static void registerFactory(Class<?> type, Factory factory) {
+        factories.put(type, factory);
+    }
+
+    public static <T> SyncEntityAttachmentPayload<?, ?> create(Entity target, AttachmentType<T> attachmentType) {
+        T value = target.getData(attachmentType);
+        Factory factory = factories.get(value.getClass());
+        return factory.create(target, attachmentType);
+    }
 
     public SyncEntityAttachmentPayload(int targetEntityId, P attachmentTypeProvider, T value) {
         this.targetEntityId = targetEntityId;
@@ -57,5 +72,9 @@ public abstract class SyncEntityAttachmentPayload<T, P extends AttachmentTypePro
     protected void onClient(Player player, Entity target) {
         if (target instanceof LivingEntity livingEntity)
             livingEntity.setData(attachmentType, value);
+    }
+
+    public interface Factory {
+        SyncEntityAttachmentPayload<?, ?> create(Entity target, AttachmentType<?> attachmentType);
     }
 }
