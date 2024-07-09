@@ -29,7 +29,6 @@ public class NarakaBiomeModifiers {
                         GenerationStep.Decoration.UNDERGROUND_ORES
                 )
         );
-
     }
 
     private static ResourceKey<BiomeModifier> createKey(String name) {
