@@ -8,6 +8,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public final class SyncEntityIntAttachmentPayload extends SyncEntityAttachmentPayload<Integer, IntAttachmentTypeProvider> {
@@ -21,6 +22,11 @@ public final class SyncEntityIntAttachmentPayload extends SyncEntityAttachmentPa
             SyncEntityIntAttachmentPayload::getValue,
             SyncEntityIntAttachmentPayload::new
     );
+
+    public static SyncEntityIntAttachmentPayload createForInteger(Entity target, AttachmentType<?> attachmentType) {
+        IntAttachmentTypeProvider provider = IntAttachmentTypeProvider.from(attachmentType);
+        return new SyncEntityIntAttachmentPayload(target, provider);
+    }
 
     public SyncEntityIntAttachmentPayload(int targetEntityId, IntAttachmentTypeProvider attachmentTypeProvider, Integer value) {
         super(targetEntityId, attachmentTypeProvider, value);

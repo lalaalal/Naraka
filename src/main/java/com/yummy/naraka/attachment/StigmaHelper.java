@@ -3,13 +3,13 @@ package com.yummy.naraka.attachment;
 import com.yummy.naraka.NarakaConfig;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.event.NarakaGameEventBus;
-import com.yummy.naraka.network.IntAttachmentTypeProvider;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 import javax.annotation.Nullable;
@@ -73,10 +73,10 @@ public class StigmaHelper {
      * Sync stigma
      *
      * @param livingEntity Entity to sync
-     * @see AttachmentSyncHelper#sync(Entity, IntAttachmentTypeProvider)
+     * @see AttachmentSyncHelper#sync(Entity, AttachmentType)
      */
     public static void syncStigma(LivingEntity livingEntity) {
-        AttachmentSyncHelper.sync(livingEntity, IntAttachmentTypeProvider.STIGMA);
+        AttachmentSyncHelper.sync(livingEntity, NarakaAttachments.STIGMA);
     }
 
     /**

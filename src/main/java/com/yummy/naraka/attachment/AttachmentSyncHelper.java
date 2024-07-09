@@ -1,7 +1,7 @@
 package com.yummy.naraka.attachment;
 
 import com.yummy.naraka.event.NarakaGameEventBus;
-import com.yummy.naraka.network.IntAttachmentTypeProvider;
+import com.yummy.naraka.network.payload.SyncEntityAttachmentPayload;
 import com.yummy.naraka.network.payload.SyncEntityIntAttachmentPayload;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -9,11 +9,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Helper for syncing attachment<br>
@@ -40,23 +42,26 @@ public class AttachmentSyncHelper {
      * </ul>
      *
      * @param entity                 Entity having attachment
-     * @param attachmentTypeProvider Attachment provider
+     * @param attachmentType Attachment type
      * @see SyncEntityIntAttachmentPayload
      */
-    public static void sync(Entity entity, IntAttachmentTypeProvider attachmentTypeProvider) {
+    public static <T> void sync(Entity entity, AttachmentType<T> attachmentType) {
+        SyncEntityAttachmentPayload<?, ?> payload = SyncEntityAttachmentPayload.create(entity, attachmentType);
         if (entity.level() instanceof ServerLevel serverLevel) {
-            SyncEntityIntAttachmentPayload payload = new SyncEntityIntAttachmentPayload(entity, attachmentTypeProvider);
             for (ServerPlayer player : serverLevel.players()) {
                 player.connection.send(payload);
             }
         }
         if (entity.level().isClientSide) {
-            SyncEntityIntAttachmentPayload request = new SyncEntityIntAttachmentPayload(entity, attachmentTypeProvider);
             LocalPlayer localPlayer = Minecraft.getInstance().player;
             if (localPlayer == null)
                 return;
-            localPlayer.connection.send(request);
+            localPlayer.connection.send(payload);
         }
+    }
+
+    public static <T> void sync(Entity entity, Supplier<AttachmentType<T>> attachmentType) {
+        sync(entity, attachmentType.get());
     }
 
     /**

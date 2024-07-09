@@ -16,6 +16,14 @@ public enum IntAttachmentTypeProvider implements AttachmentTypeProvider<Integer>
 
     private final Supplier<AttachmentType<Integer>> supplier;
 
+    public static IntAttachmentTypeProvider from(AttachmentType<?> attachmentType) {
+        for (IntAttachmentTypeProvider value : values()) {
+            if (value.get() == attachmentType)
+                return value;
+        }
+        throw new IllegalArgumentException();
+    }
+
     IntAttachmentTypeProvider(Supplier<AttachmentType<Integer>> supplier) {
         this.supplier = supplier;
     }
