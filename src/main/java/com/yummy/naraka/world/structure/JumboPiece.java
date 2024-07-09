@@ -25,7 +25,8 @@ public class JumboPiece extends TemplateStructurePiece {
     private static StructurePlaceSettings makeSettings(ResourceLocation location) {
         return new StructurePlaceSettings()
                 .setMirror(Mirror.NONE)
-                .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
+                .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
+                .addProcessor(BlockIgnoreProcessor.AIR);
     }
 
     @Override

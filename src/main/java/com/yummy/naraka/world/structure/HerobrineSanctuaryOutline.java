@@ -18,13 +18,13 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 public class HerobrineSanctuaryOutline extends StructurePiece {
     private static final int STRUCTURE_WIDTH = 48 * 2 + 39;
     private static final int STRUCTURE_HEIGHT = 48 * 4;
-    private static final int WIDTH = 48 * 5;
-    private static final int HEIGHT = 48 * 5;
+    private static final int WIDTH = 48 * 6;
+    private static final int HEIGHT = 48 * 6;
     private static final int DEPTH = 24;
     private static final int AIR_DEPTH = 48 * 4;
 
     private static final BlockPos OFFSET = new BlockPos(
-            ((WIDTH - STRUCTURE_WIDTH) / -2), -DEPTH - 1, ((HEIGHT - STRUCTURE_HEIGHT) / -2)
+            ((WIDTH - STRUCTURE_WIDTH) / -2) + 1, -DEPTH - 1, ((HEIGHT - STRUCTURE_HEIGHT) / -2) + 1
     ).offset(NarakaStructures.HEROBRINE_SANCTUARY_MAIN_OFFSET);
 
     private final BlockPos pos;
@@ -72,8 +72,8 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
 
     @Override
     public void postProcess(WorldGenLevel pLevel, StructureManager pStructureManager, ChunkGenerator pGenerator, RandomSource pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
-        generateSphere(pLevel, pBox, boundingBox, airBox.minY(), airBox.maxY(), Blocks.AIR.defaultBlockState(), 1.85f);
-        generateSphere(pLevel, pBox, boundingBox, lavaBox.minY(), lavaBox.maxY(), Blocks.LAVA.defaultBlockState(), 1.85f);
+        generateSphere(pLevel, pBox, boundingBox, airBox.minY(), airBox.maxY(), Blocks.AIR.defaultBlockState(), 1.6f);
+        generateSphere(pLevel, pBox, boundingBox, lavaBox.minY(), lavaBox.maxY(), Blocks.LAVA.defaultBlockState(), 1.6f);
     }
 
     protected void generateSphere(WorldGenLevel level, BoundingBox boundingBox, BoundingBox box, int yStart, int yEnd, BlockState state, float size) {
@@ -91,10 +91,7 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
                 for (int z = box.minZ(); z <= box.maxZ(); z++) {
                     float zRatio = (z - centerZ) / zRadius;
                     if (yStart <= y && y <= yEnd && xRatio * xRatio + yRatio * yRatio + zRatio * zRatio <= 1.05f * size) {
-                        if (getBlock(level, x, y, z, boundingBox).is(Blocks.WATER))
-                            placeBlock(level, Blocks.OBSIDIAN.defaultBlockState(), x, y, z, boundingBox);
-                        else
-                            placeBlock(level, state, x, y, z, boundingBox);
+                        placeBlock(level, state, x, y, z, boundingBox);
                     }
                 }
             }

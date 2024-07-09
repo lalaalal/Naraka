@@ -4,11 +4,13 @@ import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -24,6 +26,7 @@ public class JumboStructure extends Structure {
             instance -> instance.group(
                     settingsCodec(instance),
                     Codec.STRING.fieldOf("name").forGetter(structure -> structure.name),
+                    Codec.BOOL.fieldOf("protect").forGetter(structure -> structure.protect),
                     Heightmap.Types.CODEC.fieldOf("heightmap_type").forGetter(structure -> structure.heightmapType),
                     JumboPart.CODEC.codec().listOf().fieldOf("parts").forGetter(structure -> structure.parts),
                     StructurePieceFactory.CODEC.listOf()
@@ -34,14 +37,16 @@ public class JumboStructure extends Structure {
     );
 
     private final String name;
+    private final boolean protect;
     private final Heightmap.Types heightmapType;
     private final List<JumboPart> parts;
     private final List<Holder<StructurePieceFactory>> customPieces;
     private final BlockPos structureOffset;
 
-    public JumboStructure(StructureSettings settings, String name, Heightmap.Types heightmapType, List<JumboPart> parts, List<Holder<StructurePieceFactory>> customPieces, BlockPos structureOffset) {
+    public JumboStructure(StructureSettings settings, String name, boolean protect, Heightmap.Types heightmapType, List<JumboPart> parts, List<Holder<StructurePieceFactory>> customPieces, BlockPos structureOffset) {
         super(settings);
         this.name = name;
+        this.protect = protect;
         this.heightmapType = heightmapType;
         this.parts = parts;
         this.customPieces = customPieces;
@@ -51,13 +56,14 @@ public class JumboStructure extends Structure {
     @Override
     protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
         ChunkPos chunkPos = context.chunkPos();
-        int height = context.chunkGenerator().getFirstFreeHeight(
+        ChunkGenerator generator = context.chunkGenerator();
+        int height = generator.getFirstFreeHeight(
                 chunkPos.x, chunkPos.z,
                 heightmapType,
                 context.heightAccessor(),
                 context.randomState()
         );
-        BlockPos base = new BlockPos(chunkPos.getMinBlockX(), height, chunkPos.getMinBlockZ());
+        BlockPos base = new BlockPos(chunkPos.getMinBlockX(), Math.max(height, generator.getSeaLevel()), chunkPos.getMinBlockZ());
         return addPieces(context, base.offset(structureOffset));
     }
 
@@ -67,6 +73,8 @@ public class JumboStructure extends Structure {
             for (Holder<StructurePieceFactory> holder : customPieces) {
                 StructurePieceFactory structurePieceFactory = holder.value();
                 StructurePiece structurePiece = structurePieceFactory.create(basePos);
+                if (protect)
+                    NarakaMod.context().addProtectedArea(structurePiece.getBoundingBox());
                 builder.addPiece(structurePiece);
             }
             for (JumboPart part : parts)

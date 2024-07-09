@@ -34,20 +34,21 @@ public class NarakaStructures {
 
         HolderSet<Biome> herobrineSanctuaryBiomes = biomes.getOrThrow(Tags.Biomes.IS_PLAINS);
 
-
         Map<MobCategory, StructureSpawnOverride> herobrineSanctuarySpawnOverrides = Map.of(
                 MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, MobSpawnSettings.EMPTY_MOB_LIST),
                 MobCategory.CREATURE, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, MobSpawnSettings.EMPTY_MOB_LIST)
         );
+
         context.register(
                 HEROBRINE_SANCTUARY,
                 new JumboStructure(
                         new Structure.StructureSettings.Builder(herobrineSanctuaryBiomes)
                                 .spawnOverrides(herobrineSanctuarySpawnOverrides)
-                                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                                .generationStep(GenerationStep.Decoration.STRONGHOLDS)
                                 .terrainAdapation(TerrainAdjustment.NONE)
                                 .build(),
                         "herobrine_sanctuary",
+                        true,
                         Heightmap.Types.WORLD_SURFACE_WG,
                         List.of(
                                 new JumboPart("main", 3, 3, 4, HEROBRINE_SANCTUARY_MAIN_OFFSET),
