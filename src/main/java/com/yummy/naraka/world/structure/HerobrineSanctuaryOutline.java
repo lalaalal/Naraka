@@ -2,6 +2,8 @@ package com.yummy.naraka.world.structure;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.data.worldgen.NarakaStructures;
+import com.yummy.naraka.util.NarakaUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -17,6 +19,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 
 public class HerobrineSanctuaryOutline extends StructurePiece {
+    public static final float SPHERE_SIZE = 1.6f;
     private static final int STRUCTURE_WIDTH = 48 * 2 + 39;
     private static final int STRUCTURE_HEIGHT = 48 * 4;
     private static final int WIDTH = 48 * 6;
@@ -75,29 +78,14 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
 
     @Override
     public void postProcess(WorldGenLevel pLevel, StructureManager pStructureManager, ChunkGenerator pGenerator, RandomSource pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
-        generateSphere(pLevel, pBox, boundingBox, airBox.minY(), airBox.maxY(), Blocks.AIR.defaultBlockState(), 1.6f);
-        generateSphere(pLevel, pBox, boundingBox, lavaBox.minY(), lavaBox.maxY(), Blocks.LAVA.defaultBlockState(), 1.6f);
+        generateSphere(pLevel, pBox, boundingBox, airBox.minY(), airBox.maxY(), Blocks.AIR.defaultBlockState(), SPHERE_SIZE);
+        generateSphere(pLevel, pBox, boundingBox, lavaBox.minY(), lavaBox.maxY(), Blocks.LAVA.defaultBlockState(), SPHERE_SIZE);
     }
 
     protected void generateSphere(WorldGenLevel level, BoundingBox boundingBox, BoundingBox box, int yStart, int yEnd, BlockState state, float size) {
-        float xRadius = (float) (box.maxX() - box.minX() + 1) / 2;
-        float zRadius = (float) (box.maxZ() - box.minZ() + 1) / 2;
-        float yRadius = (float) (box.maxY() - box.minZ() + 1) / 2;
-        float centerX = box.minX() + xRadius;
-        float centerZ = box.minZ() + zRadius;
-        float centerY = box.minY() + yRadius;
-
-        for (int y = box.minY(); y <= box.maxY(); y++) {
-            float yRatio = (y - centerY) / yRadius;
-            for (int x = box.minX(); x <= box.maxX(); x++) {
-                float xRatio = (x - centerX) / xRadius;
-                for (int z = box.minZ(); z <= box.maxZ(); z++) {
-                    float zRatio = (z - centerZ) / zRadius;
-                    if (yStart <= y && y <= yEnd && xRatio * xRatio + yRatio * yRatio + zRatio * zRatio <= 1.05f * size) {
-                        placeBlock(level, state, x, y, z, boundingBox);
-                    }
-                }
-            }
-        }
+        NarakaUtils.sphere(box, size, (x, y, z) -> {
+            if (yStart <= y && y <= yEnd)
+                placeBlock(level, state, x, y, z, boundingBox);
+        });
     }
 }

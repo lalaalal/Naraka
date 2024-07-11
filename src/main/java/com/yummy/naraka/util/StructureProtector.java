@@ -1,5 +1,6 @@
 package com.yummy.naraka.util;
 
+import com.mojang.logging.LogUtils;
 import com.yummy.naraka.core.NarakaRegistries;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -18,7 +19,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-public class StructureProtector extends SavedData {
+public class StructureProtector {
     private final Holder<ProtectionPredicate> predicate;
     private final BoundingBox box;
 
@@ -32,17 +33,16 @@ public class StructureProtector extends SavedData {
         ResourceKey<ProtectionPredicate> key = ResourceKey.create(NarakaRegistries.PROTECTION_PREDICATE, ResourceLocation.parse(keyName));
         HolderLookup.RegistryLookup<ProtectionPredicate> predicates = provider.lookupOrThrow(NarakaRegistries.PROTECTION_PREDICATE);
         this.predicate = predicates.getOrThrow(key);
-        Optional<BoundingBox> box = NarakaNbtUtil.readBoundingBox(tag, "box");
+        Optional<BoundingBox> box = NarakaNbtUtils.readBoundingBox(tag, "box");
         if (box.isEmpty())
             throw new IllegalStateException();
         this.box = box.get();
     }
 
-    @Override
     public CompoundTag save(CompoundTag tag, HolderLookup.Provider provider) {
         Optional<ResourceKey<ProtectionPredicate>> key = predicate.unwrapKey();
         key.ifPresent(resourceKey -> tag.putString("predicate", resourceKey.location().toString()));
-        Tag boxTag = NarakaNbtUtil.writeBoundingBox(box);
+        Tag boxTag = NarakaNbtUtils.writeBoundingBox(box);
         tag.put("box", boxTag);
 
         return tag;
@@ -81,7 +81,7 @@ public class StructureProtector extends SavedData {
         private static final Factory<Container> factory = new Factory<>(
                 Container::new, Container::new
         );
-        private static Container instance;
+        private static Container instance = new Container();
 
         private final Set<StructureProtector> protectors = new HashSet<>();
 
@@ -89,12 +89,16 @@ public class StructureProtector extends SavedData {
         }
 
         private Container(CompoundTag compoundTag, HolderLookup.Provider provider) {
-            NarakaNbtUtil.readCollection(compoundTag, "structure_protectors", StructureProtector::new, () -> protectors, provider);
+            try {
+                NarakaNbtUtils.readCollection(compoundTag, "structure_protectors", StructureProtector::new, () -> protectors, provider);
+            } catch (RuntimeException exception) {
+                LogUtils.getLogger().error("Error loading StructureProtectors");
+            }
         }
 
         @Override
         public CompoundTag save(CompoundTag compoundTag, HolderLookup.Provider provider) {
-            NarakaNbtUtil.writeCollection(compoundTag, "structure_protectors", protectors, StructureProtector::save, provider);
+            NarakaNbtUtils.writeCollection(compoundTag, "structure_protectors", protectors, StructureProtector::save, provider);
             return compoundTag;
         }
     }

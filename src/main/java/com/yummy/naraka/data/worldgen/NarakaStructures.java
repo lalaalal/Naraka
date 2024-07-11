@@ -1,6 +1,7 @@
 package com.yummy.naraka.data.worldgen;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.util.NarakaProtectionPredicates;
 import com.yummy.naraka.util.SeaLevelBasedHeightProvider;
 import com.yummy.naraka.world.structure.JumboPart;
 import com.yummy.naraka.world.structure.JumboStructure;
@@ -22,6 +23,7 @@ import net.neoforged.neoforge.common.Tags;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class NarakaStructures {
     public static final ResourceKey<Structure> HEROBRINE_SANCTUARY = create("herobrine_sanctuary");
@@ -48,7 +50,7 @@ public class NarakaStructures {
                                 .terrainAdapation(TerrainAdjustment.NONE)
                                 .build(),
                         "herobrine_sanctuary",
-                        true,
+                        Optional.of(NarakaProtectionPredicates.HEROBRINE_SANCTUARY_PROTECTION),
                         SeaLevelBasedHeightProvider.EXACT,
                         List.of(
                                 new JumboPart("main", 3, 3, 4, HEROBRINE_SANCTUARY_MAIN_OFFSET),

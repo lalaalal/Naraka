@@ -2,6 +2,8 @@ package com.yummy.naraka.util;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.NarakaRegistries;
+import com.yummy.naraka.world.structure.HerobrineSanctuaryOutline;
+
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -14,11 +16,9 @@ public class NarakaProtectionPredicates {
             () -> (box, pos) -> true
     );
 
-    public static final DeferredHolder<ProtectionPredicate, ProtectionPredicate> SPHERE = PROTECTION_PREDICATES.register(
-            "sphere",
-            () -> (box, pos) -> {
-                return true;
-            }
+    public static final DeferredHolder<ProtectionPredicate, ProtectionPredicate> HEROBRINE_SANCTUARY_PROTECTION = PROTECTION_PREDICATES.register(
+            "herobrine_sanctuary_protection",
+            () -> (box, pos) -> NarakaUtils.isInSphere(box, HerobrineSanctuaryOutline.SPHERE_SIZE, pos)
     );
 
     public static void register(IEventBus bus) {

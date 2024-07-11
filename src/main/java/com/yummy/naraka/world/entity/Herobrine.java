@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.attachment.DeathCountHelper;
-import com.yummy.naraka.util.NarakaNbtUtil;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -46,13 +46,13 @@ public class Herobrine extends Monster implements DeathCountingEntity {
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        NarakaNbtUtil.writeUUIDs(compoundTag, "DeathCountingEntities", deathCountedEntities);
+        NarakaNbtUtils.writeUUIDs(compoundTag, "DeathCountingEntities", deathCountedEntities);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        List<UUID> list = NarakaNbtUtil.readUUIDs(compoundTag, "DeathCountingEntities");
+        List<UUID> list = NarakaNbtUtils.readUUIDs(compoundTag, "DeathCountingEntities");
         if (list != null) {
             deathCountedEntities.clear();
             deathCountedEntities.addAll(list);

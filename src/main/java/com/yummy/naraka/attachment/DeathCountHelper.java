@@ -5,7 +5,7 @@ import com.yummy.naraka.event.NarakaGameEventBus;
 import com.yummy.naraka.network.payload.ChangeDeathCountVisibilityPayload;
 import com.yummy.naraka.tags.NarakaDamageTypeTags;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
-import com.yummy.naraka.util.NarakaNbtUtil;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.DeathCountingEntity;
 import net.minecraft.server.level.ServerPlayer;
@@ -43,7 +43,7 @@ public class DeathCountHelper {
         if (uuids.size() != cache.size()) {
             cache.clear();
             for (UUID uuid : uuids) {
-                DeathCountingEntity deathCountingEntity = NarakaNbtUtil.findEntityByUUID(uuid, DeathCountingEntity.class);
+                DeathCountingEntity deathCountingEntity = NarakaNbtUtils.findEntityByUUID(uuid, DeathCountingEntity.class);
                 if (deathCountingEntity != null)
                     cache.add(deathCountingEntity);
             }
@@ -62,7 +62,7 @@ public class DeathCountHelper {
             return;
         uuids.add(deathCountingEntity.getUUID());
         for (UUID uuid : deathCountingEntity.getDeathCountedEntities()) {
-            Entity deathCountedEntity = NarakaNbtUtil.findEntityByUUID(uuid);
+            Entity deathCountedEntity = NarakaNbtUtils.findEntityByUUID(uuid);
             if (deathCountedEntity instanceof ServerPlayer serverPlayer)
                 showDeathCount(serverPlayer);
         }
@@ -81,7 +81,7 @@ public class DeathCountHelper {
             return;
         uuids.remove(deathCountingEntity.getUUID());
         for (UUID uuid : deathCountingEntity.getDeathCountedEntities()) {
-            Entity deathCountedEntity = NarakaNbtUtil.findEntityByUUID(uuid);
+            Entity deathCountedEntity = NarakaNbtUtils.findEntityByUUID(uuid);
             if (deathCountedEntity instanceof ServerPlayer serverPlayer)
                 hideDeathCount(serverPlayer);
         }
@@ -121,7 +121,7 @@ public class DeathCountHelper {
             return;
         uuids.add(deathCountingEntity.getUUID());
         for (UUID uuid : deathCountingEntity.getDeathCountedEntities()) {
-            LivingEntity deathCountedEntity = NarakaNbtUtil.findEntityByUUID(uuid, LivingEntity.class);
+            LivingEntity deathCountedEntity = NarakaNbtUtils.findEntityByUUID(uuid, LivingEntity.class);
             if (deathCountedEntity != null)
                 syncDeathCount(deathCountedEntity);
         }

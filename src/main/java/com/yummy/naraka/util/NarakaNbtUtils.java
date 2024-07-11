@@ -21,7 +21,7 @@ import java.util.function.Supplier;
  *
  * @author lalaalal
  */
-public class NarakaNbtUtil {
+public class NarakaNbtUtils {
     private static MinecraftServer server;
     private static final Map<UUID, Entity> cache = new HashMap<>();
 
@@ -32,7 +32,7 @@ public class NarakaNbtUtil {
      * @see NarakaGameEventBus#onServerStarted(ServerStartedEvent)
      */
     public static void initialize(MinecraftServer server) {
-        NarakaNbtUtil.server = server;
+        NarakaNbtUtils.server = server;
     }
 
     public static Tag writeBoundingBox(BoundingBox box) {
@@ -157,7 +157,7 @@ public class NarakaNbtUtil {
      * @param type Type to check
      * @param <T>  Type wanted
      * @return Cast to type if type is correct
-     * @see NarakaNbtUtil#findEntityByUUID(ServerLevel, UUID, Class)
+     * @see NarakaNbtUtilss#findEntityByUUID(ServerLevel, UUID, Class)
      */
     public static @Nullable <T> T findEntityByUUID(UUID uuid, Class<T> type) {
         for (ServerLevel serverLevel : server.getAllLevels()) {
