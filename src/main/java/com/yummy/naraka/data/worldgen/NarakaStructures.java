@@ -1,6 +1,7 @@
 package com.yummy.naraka.data.worldgen;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.util.SeaLevelBasedHeightProvider;
 import com.yummy.naraka.world.structure.JumboPart;
 import com.yummy.naraka.world.structure.JumboStructure;
 import com.yummy.naraka.world.structure.NarakaStructurePieceFactories;
@@ -14,7 +15,6 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSpawnOverride;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
@@ -49,7 +49,7 @@ public class NarakaStructures {
                                 .build(),
                         "herobrine_sanctuary",
                         true,
-                        Heightmap.Types.WORLD_SURFACE_WG,
+                        SeaLevelBasedHeightProvider.EXACT,
                         List.of(
                                 new JumboPart("main", 3, 3, 4, HEROBRINE_SANCTUARY_MAIN_OFFSET),
                                 new JumboPart("bridge", 1, 1, 1, BlockPos.ZERO)

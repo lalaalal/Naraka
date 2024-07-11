@@ -3,10 +3,10 @@ package com.yummy.naraka;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Context of mod<br>
@@ -23,7 +23,7 @@ public class NarakaContext {
     private final Map<Class<?>, Map<String, ?>> contextMaps = new HashMap<>();
     private final Map<String, Boolean> booleanContexts = new HashMap<>();
     private final Map<String, Number> numberContexts = new HashMap<>();
-    private final List<BoundingBox> protectedAreas = new ArrayList<>();
+    private final Set<BoundingBox> protectedAreas = new HashSet<>();
 
     private NarakaContext() {
         contextMaps.put(Boolean.class, booleanContexts);

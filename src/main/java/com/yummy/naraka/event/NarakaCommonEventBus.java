@@ -41,6 +41,20 @@ public class NarakaCommonEventBus {
                 .maxId(128)
                 .create()
         );
+
+        event.register(new RegistryBuilder<>(NarakaRegistries.HEIGHT_PROVIDER_TYPE)
+                .sync(true)
+                .defaultKey(NarakaMod.location("empty"))
+                .maxId(32)
+                .create()
+        );
+
+        event.register(new RegistryBuilder<>(NarakaRegistries.PROTECTION_PREDICATE)
+                .sync(true)
+                .defaultKey(NarakaMod.location("empty"))
+                .maxId(32)
+                .create()
+        );
     }
 
     @SubscribeEvent

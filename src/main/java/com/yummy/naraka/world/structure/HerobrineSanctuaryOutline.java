@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.structure;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.data.worldgen.NarakaStructures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -49,6 +50,7 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
         this.pos = pos.offset(OFFSET);
         this.lavaBox = createLavaBox(this.pos);
         this.airBox = createAirBox(this.pos);
+        NarakaMod.context().addProtectedArea(getBoundingBox());
     }
 
     public HerobrineSanctuaryOutline(StructurePieceSerializationContext context, CompoundTag tag) {
@@ -56,6 +58,7 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
         this.pos = NbtUtils.readBlockPos(tag, "pos").orElse(BlockPos.ZERO);
         this.lavaBox = createLavaBox(pos);
         this.airBox = createAirBox(pos);
+        NarakaMod.context().addProtectedArea(getBoundingBox());
     }
 
     @Override

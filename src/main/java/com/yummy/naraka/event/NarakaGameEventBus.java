@@ -7,6 +7,7 @@ import com.yummy.naraka.attachment.StigmaHelper;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.util.NarakaNbtUtil;
+import com.yummy.naraka.util.StructureProtector;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.DeathCountingEntity;
 import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
@@ -23,11 +24,18 @@ import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 @SuppressWarnings("unused")
 @EventBusSubscriber(modid = NarakaMod.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class NarakaGameEventBus {
+    @SubscribeEvent
+    public static void onServerStarting(ServerStartingEvent event) {
+        MinecraftServer server = event.getServer();
+        StructureProtector.load(server);
+    }
+
     @SubscribeEvent
     public static void onServerStarted(ServerStartedEvent event) {
         MinecraftServer server = event.getServer();

@@ -4,14 +4,15 @@ import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.util.HeightProvider;
+import com.yummy.naraka.util.NarakaProtectionPredicates;
+import com.yummy.naraka.util.StructureProtector;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -27,7 +28,7 @@ public class JumboStructure extends Structure {
                     settingsCodec(instance),
                     Codec.STRING.fieldOf("name").forGetter(structure -> structure.name),
                     Codec.BOOL.fieldOf("protect").forGetter(structure -> structure.protect),
-                    Heightmap.Types.CODEC.fieldOf("heightmap_type").forGetter(structure -> structure.heightmapType),
+                    HeightProvider.CODEC.fieldOf("height_provider").forGetter(structure -> structure.heightProvider),
                     JumboPart.CODEC.codec().listOf().fieldOf("parts").forGetter(structure -> structure.parts),
                     StructurePieceFactory.CODEC.listOf()
                             .fieldOf("custom_pieces")
@@ -38,16 +39,16 @@ public class JumboStructure extends Structure {
 
     private final String name;
     private final boolean protect;
-    private final Heightmap.Types heightmapType;
+    private final HeightProvider heightProvider;
     private final List<JumboPart> parts;
     private final List<Holder<StructurePieceFactory>> customPieces;
     private final BlockPos structureOffset;
 
-    public JumboStructure(StructureSettings settings, String name, boolean protect, Heightmap.Types heightmapType, List<JumboPart> parts, List<Holder<StructurePieceFactory>> customPieces, BlockPos structureOffset) {
+    public JumboStructure(StructureSettings settings, String name, boolean protect, HeightProvider heightProvider, List<JumboPart> parts, List<Holder<StructurePieceFactory>> customPieces, BlockPos structureOffset) {
         super(settings);
         this.name = name;
         this.protect = protect;
-        this.heightmapType = heightmapType;
+        this.heightProvider = heightProvider;
         this.parts = parts;
         this.customPieces = customPieces;
         this.structureOffset = structureOffset;
@@ -57,12 +58,7 @@ public class JumboStructure extends Structure {
     protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
         ChunkPos chunkPos = context.chunkPos();
         ChunkGenerator generator = context.chunkGenerator();
-        int height = generator.getFirstFreeHeight(
-                chunkPos.x, chunkPos.z,
-                heightmapType,
-                context.heightAccessor(),
-                context.randomState()
-        );
+        int height = heightProvider.getHeight(context);
         BlockPos base = new BlockPos(chunkPos.getMinBlockX(), Math.max(height, generator.getSeaLevel()), chunkPos.getMinBlockZ());
         return addPieces(context, base.offset(structureOffset));
     }
@@ -73,12 +69,11 @@ public class JumboStructure extends Structure {
             for (Holder<StructurePieceFactory> holder : customPieces) {
                 StructurePieceFactory structurePieceFactory = holder.value();
                 StructurePiece structurePiece = structurePieceFactory.create(basePos);
-                if (protect)
-                    NarakaMod.context().addProtectedArea(structurePiece.getBoundingBox());
                 builder.addPiece(structurePiece);
             }
             for (JumboPart part : parts)
                 addPart(templateManager, builder, part, basePos);
+            StructureProtector.addProtector(NarakaProtectionPredicates.SPHERE, builder.getBoundingBox());
         }));
     }
 

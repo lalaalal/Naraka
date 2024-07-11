@@ -1,14 +1,20 @@
 package com.yummy.naraka.util;
 
 import com.yummy.naraka.event.NarakaGameEventBus;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * Utils
@@ -27,6 +33,61 @@ public class NarakaNbtUtil {
      */
     public static void initialize(MinecraftServer server) {
         NarakaNbtUtil.server = server;
+    }
+
+    public static Tag writeBoundingBox(BoundingBox box) {
+        CompoundTag boxTag = new CompoundTag();
+        BlockPos min = new BlockPos(box.minX(), box.minY(), box.minZ());
+        BlockPos max = new BlockPos(box.maxX(), box.maxY(), box.maxZ());
+        Tag minTag = NbtUtils.writeBlockPos(min);
+        Tag maxTag = NbtUtils.writeBlockPos(max);
+        boxTag.put("min", minTag);
+        boxTag.put("max", maxTag);
+
+        return boxTag;
+    }
+
+    public static Optional<BoundingBox> readBoundingBox(CompoundTag compoundTag, String key) {
+        if (!compoundTag.contains(key))
+            return Optional.empty();
+        CompoundTag boxTag = compoundTag.getCompound(key);
+        Optional<BlockPos> min = NbtUtils.readBlockPos(boxTag, "min");
+        Optional<BlockPos> max = NbtUtils.readBlockPos(boxTag, "max");
+        if (min.isEmpty() || max.isEmpty())
+            return Optional.empty();
+        return Optional.of(BoundingBox.fromCorners(min.get(), max.get()));
+    }
+
+    public interface Factory<T> {
+        T create(CompoundTag tag, HolderLookup.Provider provider);
+    }
+
+    public interface TagFactory<T> {
+        CompoundTag toTag(T value, CompoundTag tag, HolderLookup.Provider provider);
+    }
+
+    public static <T> void writeCollection(CompoundTag compoundTag, String name, Collection<T> collection, TagFactory<T> factory, HolderLookup.Provider provider) {
+        CompoundTag listTag = new CompoundTag();
+        listTag.putInt("size", collection.size());
+        int index = 0;
+        for (T value : collection) {
+            CompoundTag valueTag = factory.toTag(value, new CompoundTag(), provider);
+            listTag.put(String.valueOf(index), valueTag);
+            index += 1;
+        }
+        compoundTag.put(name, listTag);
+    }
+
+    public static <T> Collection<T> readCollection(CompoundTag compoundTag, String name, Factory<T> factory, Supplier<Collection<T>> supplier, HolderLookup.Provider provider) {
+        CompoundTag listTag = compoundTag.getCompound(name);
+        int size = listTag.getInt("size");
+        Collection<T> list = supplier.get();
+        for (int index = 0; index < size; index++) {
+            CompoundTag valueTag = listTag.getCompound(String.valueOf(index));
+            T value = factory.create(valueTag, provider);
+            list.add(value);
+        }
+        return list;
     }
 
     public static void writeUUIDs(CompoundTag compoundTag, String name, Collection<UUID> uuids) {
