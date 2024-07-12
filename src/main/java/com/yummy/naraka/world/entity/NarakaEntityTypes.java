@@ -17,7 +17,7 @@ public class NarakaEntityTypes {
 
     public static final DeferredHolder<EntityType<?>, EntityType<Herobrine>> HEROBRINE = ENTITY_TYPES.register(
             "herobrine",
-            () -> EntityType.Builder.of(Herobrine::new, MobCategory.MONSTER)
+            () -> EntityType.Builder.<Herobrine>of(Herobrine::new, MobCategory.MONSTER)
                     .sized(0.6f, 2.0f)
                     .build("herobrine")
     );

@@ -2,6 +2,8 @@ package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.attachment.DeathCountHelper;
 import com.yummy.naraka.util.NarakaNbtUtils;
+
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -11,6 +13,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.HashSet;
 import java.util.List;
@@ -29,8 +32,12 @@ public class Herobrine extends Monster implements DeathCountingEntity {
     public Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
         super(entityType, level);
         registerGoals();
-
         DeathCountHelper.addDeathCountingEntity(this);
+    }
+
+    public Herobrine(Level level, Vec3 pos) {
+        this(NarakaEntityTypes.HEROBRINE.get(), level);
+        setPos(pos);
     }
 
     public void addDeathCountedEntity(LivingEntity entity) {

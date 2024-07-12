@@ -7,6 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -43,7 +44,12 @@ public class NarakaBlocks {
             Blocks.DEEPSLATE_IRON_ORE
     );
     public static final DeferredBlock<Block> NECTARIUM_BLOCK = registerBlockWithItem("nectarium_block", NectariumBlock::new, Blocks.IRON_BLOCK);
-    public static final DeferredBlock<PurifiedSoulBlock> PURIFIED_SOUL_BLOCK = registerBlockWithItem("purified_soul_block", PurifiedSoulBlock::new, Blocks.IRON_BLOCK, item().fireResistant());
+    public static final DeferredBlock<PurifiedSoulBlock> PURIFIED_SOUL_BLOCK = registerBlockWithItem(
+            "purified_soul_block", 
+            properties -> new PurifiedSoulBlock(properties.speedFactor(0.4f)), 
+            Blocks.IRON_BLOCK, 
+            item().fireResistant()
+    );
     public static final DeferredBlock<Block> PURIFIED_SOUL_METAL_BLOCK = registerSimpleBlockWithItem("purified_soul_metal_block", Blocks.IRON_BLOCK, item().fireResistant());
     public static final DeferredBlock<BaseFireBlock> PURIFIED_SOUL_FIRE_BLOCK = registerBlockWithItem(
             "purified_soul_fire",
@@ -115,6 +121,18 @@ public class NarakaBlocks {
             properties -> new RotatedPillarBlock(properties.strength(40, 6)),
             Blocks.DARK_OAK_PLANKS
     );
+
+    public static final DeferredBlock<HerobrineTotem> HEROBRINE_TOTME = registerBlockWithItem(
+            "herobrine_totem", 
+            properties -> new HerobrineTotem(properties
+                    .pushReaction(PushReaction.BLOCK)
+                    .strength(50, 1200)
+                    .noLootTable()
+                    .lightLevel(HerobrineTotem::light)
+            ),
+            Blocks.NETHER_BRICKS
+    );
+
 
     public static final List<DeferredBlock<Block>> SOUL_INFUSED_BLOCKS = List.of(
             SOUL_INFUSED_REDSTONE_BLOCK,
