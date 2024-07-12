@@ -94,9 +94,11 @@ public class NarakaRecipeProvider extends RecipeProvider {
                         .getFamily(),
                 FeatureFlags.DEFAULT_FLAGS
         );
+        stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.HARD_EBONY_PLANKS, NarakaBlocks.EBONY_LOG, 1);
+        stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.HARD_EBONY_PLANKS, NarakaBlocks.EBONY_WOOD, 1);
         planksFromLog(recipeOutput, NarakaBlocks.EBONY_PLANKS, NarakaItemTags.EBONY_LOGS, 4);
         hangingSign(recipeOutput, NarakaItems.EBONY_HANGING_SIGN, NarakaBlocks.EBONY_PLANKS);
-        sword(recipeOutput, NarakaBlocks.EBONY_PLANKS, NarakaItems.EBONY_SWORD);
+        sword(recipeOutput, NarakaBlocks.HARD_EBONY_PLANKS, NarakaItems.EBONY_SWORD);
 
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.BUILDING_BLOCKS, Blocks.IRON_BLOCK.asItem(), RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT, RecipeCategory.MISC, NarakaBlocks.COMPRESSED_IRON_BLOCK);
@@ -125,6 +127,12 @@ public class NarakaRecipeProvider extends RecipeProvider {
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(template), Ingredient.of(base), Ingredient.of(ingredient), category, result)
                 .unlocks(getHasName(ingredient), has(ingredient))
                 .save(recipeOutput, location(result, "_smithing"));
+    }
+
+    protected static void stonecutterResultFromBase(RecipeOutput pRecipeOutput, RecipeCategory pCategory, ItemLike pResult, ItemLike pMaterial, int pResultCount) {
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(pMaterial), pCategory, pResult, pResultCount)
+                .unlockedBy(getHasName(pMaterial), has(pMaterial))
+                .save(pRecipeOutput, NarakaMod.location(getConversionRecipeName(pResult, pMaterial) + "_stonecutting"));
     }
 
     protected static void nineBlockStorageRecipes(

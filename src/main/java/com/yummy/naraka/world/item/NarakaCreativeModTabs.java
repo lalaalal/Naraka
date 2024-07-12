@@ -76,6 +76,7 @@ public class NarakaCreativeModTabs {
                 output.accept(NarakaItems.EBONY_SIGN);
                 output.accept(NarakaItems.EBONY_HANGING_SIGN);
                 output.accept(NarakaBlocks.EBONY_PLANKS);
+                output.accept(NarakaBlocks.HARD_EBONY_PLANKS);
                 output.accept(NarakaBlocks.EBONY_SLAB);
                 output.accept(NarakaBlocks.EBONY_STAIRS);
                 output.accept(NarakaBlocks.EBONY_FENCE);

@@ -53,14 +53,7 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         simpleBlockWithItem(NarakaBlocks.NECTARIUM_BLOCK);
         simpleBlockWithItem(NarakaBlocks.COMPRESSED_IRON_BLOCK);
 
-        simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
-        simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK);
-        simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK);
-        simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK);
-        simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK);
-        simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK);
-        simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK);
-        simpleBlockWithItem(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK);
+        NarakaBlocks.forEachSoulInfusedBlockHolder(this::simpleBlockWithItem);
         simpleBlockWithItem(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
         simpleBlockWithItem(NarakaBlocks.PURIFIED_SOUL_BLOCK);
 
@@ -77,6 +70,7 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         parentCustomRenderTypeModelBlock(NarakaBlocks.EBONY_SAPLING, "cross", "cross", "cutout");
         simpleItem(NarakaBlocks.EBONY_SAPLING, "block");
         simpleBlockWithItem(NarakaBlocks.EBONY_PLANKS);
+        simpleBlockWithItem(NarakaBlocks.HARD_EBONY_PLANKS);
         slabBlock(NarakaBlocks.EBONY_SLAB.get(), texture("ebony_planks"), texture("ebony_planks"));
         simpleBlockItem(NarakaBlocks.EBONY_SLAB);
         stairsBlock(NarakaBlocks.EBONY_STAIRS.get(), texture("ebony_planks"));

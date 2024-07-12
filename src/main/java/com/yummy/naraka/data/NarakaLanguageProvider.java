@@ -132,6 +132,7 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.EBONY_LEAVES, "Ebony Leaves");
             addBlock(NarakaBlocks.EBONY_SAPLING, "Ebony Sapling");
             addBlock(NarakaBlocks.EBONY_PLANKS, "Ebony Planks");
+            addBlock(NarakaBlocks.HARD_EBONY_PLANKS, "Hard Ebony Planks");
             addBlock(NarakaBlocks.EBONY_SLAB, "Ebony Slab");
             addBlock(NarakaBlocks.EBONY_STAIRS, "Ebony Stairs");
             addBlock(NarakaBlocks.EBONY_FENCE, "Ebony Fence");
@@ -235,6 +236,7 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.STRIPPED_EBONY_WOOD, "껍질 벗긴 흑단나무");
             addBlock(NarakaBlocks.EBONY_SAPLING, "흑단나무 묘목");
             addBlock(NarakaBlocks.EBONY_PLANKS, "흑단나무 판자");
+            addBlock(NarakaBlocks.HARD_EBONY_PLANKS, "단단한 흑단나무 판자");
             addBlock(NarakaBlocks.EBONY_SLAB, "흑단나무 반 블록");
             addBlock(NarakaBlocks.EBONY_STAIRS, "흑단나무 계단");
             addBlock(NarakaBlocks.EBONY_FENCE, "흑단나무 울타리");

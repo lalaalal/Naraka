@@ -12,6 +12,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class NarakaBlocks {
@@ -108,6 +109,33 @@ public class NarakaBlocks {
             Blocks.DARK_OAK_WALL_HANGING_SIGN
     );
     public static final DeferredBlock<EbonySaplingBlock> EBONY_SAPLING = registerBlockWithItem("ebony_sapling", EbonySaplingBlock::new, Blocks.DARK_OAK_SAPLING);
+    public static final DeferredBlock<Block> HARD_EBONY_PLANKS = registerBlockWithItem(
+            "hard_ebony_planks",
+            properties -> new RotatedPillarBlock(properties.strength(40, 6)),
+            Blocks.DARK_OAK_PLANKS
+    );
+
+    public static final List<DeferredBlock<Block>> SOUL_INFUSED_BLOCKS = List.of(
+            SOUL_INFUSED_REDSTONE_BLOCK,
+            SOUL_INFUSED_COPPER_BLOCK,
+            SOUL_INFUSED_GOLD_BLOCK,
+            SOUL_INFUSED_EMERALD_BLOCK,
+            SOUL_INFUSED_DIAMOND_BLOCK,
+            SOUL_INFUSED_LAPIS_BLOCK,
+            SOUL_INFUSED_AMETHYST_BLOCK,
+            SOUL_INFUSED_NECTARIUM_BLOCK
+    );
+
+    public static void forEachSoulInfusedBlock(Consumer<Block> consumer) {
+        for (DeferredBlock<Block> soulInfusedBlock : SOUL_INFUSED_BLOCKS)
+            consumer.accept(soulInfusedBlock.get());
+    }
+
+    public static void forEachSoulInfusedBlockHolder(Consumer<DeferredBlock<Block>> consumer) {
+        for (DeferredBlock<Block> soulInfusedBlock : SOUL_INFUSED_BLOCKS)
+            consumer.accept(soulInfusedBlock);
+    }
+
 
     public static BlockBehaviour.Properties from(Block block) {
         return BlockBehaviour.Properties.ofFullCopy(block);

@@ -6,6 +6,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
@@ -70,5 +71,27 @@ public class NarakaBlockTagsProvider extends BlockTagsProvider {
                 .add(Blocks.WATER)
                 .add(Blocks.GRAVEL)
                 .addTag(BlockTags.SAND);
+
+        IntrinsicTagAppender<Block> needsIronTool = tag(BlockTags.NEEDS_IRON_TOOL)
+                .add(NarakaBlocks.NECTARIUM_BLOCK.get())
+                .add(NarakaBlocks.NECTARIUM_ORE.get())
+                .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
+        NarakaBlocks.forEachSoulInfusedBlock(needsIronTool::add);
+
+        tag(BlockTags.NEEDS_DIAMOND_TOOL)
+                .add(NarakaBlocks.PURIFIED_SOUL_BLOCK.get())
+                .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
+
+        IntrinsicTagAppender<Block> mineableWithPickaxe = tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .add(NarakaBlocks.NECTARIUM_BLOCK.get())
+                .add(NarakaBlocks.NECTARIUM_ORE.get())
+                .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get())
+                .add(NarakaBlocks.PURIFIED_SOUL_BLOCK.get())
+                .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
+        NarakaBlocks.forEachSoulInfusedBlock(mineableWithPickaxe::add);
+
+        tag(BlockTags.MINEABLE_WITH_HOE)
+                .add(NarakaBlocks.PURIFIED_SOUL_BLOCK.get())
+                .add(NarakaBlocks.EBONY_LEAVES.get());
     }
 }

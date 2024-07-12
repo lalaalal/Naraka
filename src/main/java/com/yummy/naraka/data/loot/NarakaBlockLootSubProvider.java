@@ -25,14 +25,7 @@ public class NarakaBlockLootSubProvider extends BlockLootSubProvider {
         dropSelf(NarakaBlocks.SOUL_CRAFTING_BLOCK);
         dropSelf(NarakaBlocks.COMPRESSED_IRON_BLOCK);
 
-        dropSelf(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
-        dropSelf(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK);
-        dropSelf(NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK);
-        dropSelf(NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK);
-        dropSelf(NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK);
-        dropSelf(NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK);
-        dropSelf(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK);
-        dropSelf(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK);
+        NarakaBlocks.forEachSoulInfusedBlock(this::dropSelf);
         dropSelf(NarakaBlocks.PURIFIED_SOUL_BLOCK);
         dropSelf(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
 
@@ -40,6 +33,7 @@ public class NarakaBlockLootSubProvider extends BlockLootSubProvider {
         dropSelf(NarakaBlocks.STRIPPED_EBONY_LOG);
         dropSelf(NarakaBlocks.EBONY_WOOD);
         dropSelf(NarakaBlocks.STRIPPED_EBONY_WOOD);
+        dropSelf(NarakaBlocks.HARD_EBONY_PLANKS);
 
         add(NarakaBlocks.EBONY_LEAVES.get(), createLeavesDrops(NarakaBlocks.EBONY_LEAVES.get(), NarakaBlocks.EBONY_SAPLING.get(), 0.01f));
         dropSelf(NarakaBlocks.EBONY_SAPLING);
