@@ -52,6 +52,7 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         simpleBlockItem(NarakaBlocks.SOUL_CRAFTING_BLOCK);
         simpleBlockWithItem(NarakaBlocks.NECTARIUM_BLOCK);
         simpleBlockWithItem(NarakaBlocks.COMPRESSED_IRON_BLOCK);
+        simpleBlockWithItem(NarakaBlocks.FAKE_GOLD_BLOCK);
 
         NarakaBlocks.forEachSoulInfusedBlockHolder(this::simpleBlockWithItem);
         simpleBlockWithItem(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
@@ -91,7 +92,6 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
 
     public void itemWithInventoryModel(DeferredBlock<? extends Block> block, String type, ResourceLocation texture) {
         String name = block.getId().getPath();
-        String modelName = name + "_inventory";
         String parentName = "block/" + type + "_inventory";
         itemModels().withExistingParent(name, parentName)
                 .texture("texture", texture);

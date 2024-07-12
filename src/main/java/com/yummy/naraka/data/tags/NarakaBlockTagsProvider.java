@@ -75,7 +75,8 @@ public class NarakaBlockTagsProvider extends BlockTagsProvider {
         IntrinsicTagAppender<Block> needsIronTool = tag(BlockTags.NEEDS_IRON_TOOL)
                 .add(NarakaBlocks.NECTARIUM_BLOCK.get())
                 .add(NarakaBlocks.NECTARIUM_ORE.get())
-                .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
+                .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get())
+                .add(NarakaBlocks.FAKE_GOLD_BLOCK.get());
         NarakaBlocks.forEachSoulInfusedBlock(needsIronTool::add);
 
         tag(BlockTags.NEEDS_DIAMOND_TOOL)

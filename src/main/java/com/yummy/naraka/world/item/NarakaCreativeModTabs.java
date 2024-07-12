@@ -64,6 +64,8 @@ public class NarakaCreativeModTabs {
                 output.accept(NarakaItems.GOD_BLOOD);
                 output.accept(NarakaItems.COMPRESSED_IRON_INGOT);
                 output.accept(NarakaBlocks.COMPRESSED_IRON_BLOCK);
+                output.accept(NarakaItems.FAKE_GOLD_INGOT);
+                output.accept(NarakaBlocks.FAKE_GOLD_BLOCK);
                 output.accept(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK);
                 output.accept(NarakaBlocks.PURIFIED_SOUL_BLOCK);
                 output.accept(NarakaBlocks.NECTARIUM_BLOCK);

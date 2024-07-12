@@ -77,6 +77,7 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addItem(NarakaItems.NECTARIUM, "Nectarium");
             addItem(NarakaItems.GOD_BLOOD, "God Blood");
             addItem(NarakaItems.COMPRESSED_IRON_INGOT, "Compressed Iron Ingot");
+            addItem(NarakaItems.FAKE_GOLD_INGOT, "Fake Gold Ingot");
             addItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "Smithing Template");
             addItem(NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, "Smithing Template");
             addItem(NarakaItems.TEST_ITEM, "Test Item");
@@ -111,6 +112,7 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.NECTARIUM_BLOCK, "Nectarium Block");
             addBlock(NarakaBlocks.TRANSPARENT_BLOCK, "Transparent Block");
             addBlock(NarakaBlocks.COMPRESSED_IRON_BLOCK, "Compressed Iron Block");
+            addBlock(NarakaBlocks.FAKE_GOLD_BLOCK, "Fake Gold Block");
 
             addBlock(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK, "Soul Infused Redstone Block");
             addBlock(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK, "Soul Infused Copper Block");
@@ -181,6 +183,7 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addItem(NarakaItems.NECTARIUM, "넥타륨");
             addItem(NarakaItems.GOD_BLOOD, "신의 피");
             addItem(NarakaItems.COMPRESSED_IRON_INGOT, "압축된 철 주괴");
+            addItem(NarakaItems.FAKE_GOLD_INGOT, "거짓된 금 주괴");
             addItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "대장장이 형판");
             addItem(NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, "대장장이 형판");
             addItem(NarakaItems.TEST_ITEM, "테스트 아이템");
@@ -215,6 +218,7 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.NECTARIUM_BLOCK, "넥타륨 블록");
             addBlock(NarakaBlocks.TRANSPARENT_BLOCK, "투명 블록");
             addBlock(NarakaBlocks.COMPRESSED_IRON_BLOCK, "압축된 철 블록");
+            addBlock(NarakaBlocks.FAKE_GOLD_BLOCK, "거짓된 금 블록");
 
             addBlock(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK, "영혼이 주입된 레드스톤 블록");
             addBlock(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK, "영혼이 주입된 구리 블록");

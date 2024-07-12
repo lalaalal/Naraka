@@ -31,6 +31,7 @@ public class NarakaItemModelProvider extends ItemModelProvider {
         simpleItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE);
         simpleItem(NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE);
         simpleItem(NarakaItems.COMPRESSED_IRON_INGOT);
+        simpleItem(NarakaItems.FAKE_GOLD_INGOT);
 
         withExistingParent(NarakaItems.TEST_ITEM, "item/stick");
         spearItem(NarakaItems.SPEAR_ITEM, ItemDisplayContext.GUI, ItemDisplayContext.FIXED, ItemDisplayContext.GROUND);
