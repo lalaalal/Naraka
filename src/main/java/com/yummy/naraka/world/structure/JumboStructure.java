@@ -14,7 +14,6 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -61,9 +60,8 @@ public class JumboStructure extends Structure {
     @Override
     protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
         ChunkPos chunkPos = context.chunkPos();
-        ChunkGenerator generator = context.chunkGenerator();
         int height = heightProvider.getHeight(context);
-        BlockPos base = new BlockPos(chunkPos.getMinBlockX(), Math.max(height, generator.getSeaLevel()), chunkPos.getMinBlockZ());
+        BlockPos base = new BlockPos(chunkPos.getMinBlockX(), height, chunkPos.getMinBlockZ());
         return addPieces(context, base.offset(structureOffset));
     }
 

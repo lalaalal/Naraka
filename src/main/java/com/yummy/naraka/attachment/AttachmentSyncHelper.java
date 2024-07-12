@@ -41,7 +41,7 @@ public class AttachmentSyncHelper {
      *     <li>In Client : request server to notice</li>
      * </ul>
      *
-     * @param entity                 Entity having attachment
+     * @param entity         Entity having attachment
      * @param attachmentType Attachment type
      * @see SyncEntityIntAttachmentPayload
      */

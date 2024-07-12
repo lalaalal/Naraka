@@ -1,9 +1,9 @@
 package com.yummy.naraka.util;
 
-import java.util.function.Consumer;
-
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+
+import java.util.function.Consumer;
 
 /**
  * NarakaUtils
@@ -36,6 +36,10 @@ public class NarakaUtils {
 
     public static void sphere(BoundingBox box, float size, Consumer<Vec3i> consumer) {
         sphere(box, size, (x, y, z) -> consumer.accept(new Vec3i(x, y, z)));
+    }
+
+    public static boolean isInSphere(BoundingBox box, float size, int x, int y, int z) {
+        return isInSphere(box, size, new Vec3i(x, y, z));
     }
 
     public static boolean isInSphere(BoundingBox box, float size, Vec3i pos) {

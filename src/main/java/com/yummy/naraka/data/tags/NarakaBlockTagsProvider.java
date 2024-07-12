@@ -6,6 +6,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -64,5 +65,10 @@ public class NarakaBlockTagsProvider extends BlockTagsProvider {
                 .add(NarakaBlocks.EBONY_HANGING_SIGN.get());
         tag(BlockTags.WALL_HANGING_SIGNS)
                 .add(NarakaBlocks.EBONY_WALL_HANGING_SIGN.get());
+
+        tag(NarakaBlockTags.HEROBRINE_SANCTUARY_WRAP_TARGETS)
+                .add(Blocks.WATER)
+                .add(Blocks.GRAVEL)
+                .addTag(BlockTags.SAND);
     }
 }

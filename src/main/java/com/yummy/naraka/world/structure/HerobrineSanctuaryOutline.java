@@ -1,16 +1,18 @@
 package com.yummy.naraka.world.structure;
 
-import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.data.worldgen.NarakaStructures;
+import com.yummy.naraka.tags.NarakaBlockTags;
 import com.yummy.naraka.util.NarakaUtils;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -53,7 +55,6 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
         this.pos = pos.offset(OFFSET);
         this.lavaBox = createLavaBox(this.pos);
         this.airBox = createAirBox(this.pos);
-        NarakaMod.context().addProtectedArea(getBoundingBox());
     }
 
     public HerobrineSanctuaryOutline(StructurePieceSerializationContext context, CompoundTag tag) {
@@ -61,7 +62,6 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
         this.pos = NbtUtils.readBlockPos(tag, "pos").orElse(BlockPos.ZERO);
         this.lavaBox = createLavaBox(pos);
         this.airBox = createAirBox(pos);
-        NarakaMod.context().addProtectedArea(getBoundingBox());
     }
 
     @Override
@@ -77,15 +77,46 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
     }
 
     @Override
-    public void postProcess(WorldGenLevel pLevel, StructureManager pStructureManager, ChunkGenerator pGenerator, RandomSource pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
-        generateSphere(pLevel, pBox, boundingBox, airBox.minY(), airBox.maxY(), Blocks.AIR.defaultBlockState(), SPHERE_SIZE);
-        generateSphere(pLevel, pBox, boundingBox, lavaBox.minY(), lavaBox.maxY(), Blocks.LAVA.defaultBlockState(), SPHERE_SIZE);
+    public void postProcess(WorldGenLevel pLevel, StructureManager pStructureManager, ChunkGenerator generator, RandomSource pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
+        int seaLevel = generator.getSeaLevel();
+        generateSphere(pLevel, pBox, boundingBox, airBox.minY(), airBox.maxY(), seaLevel, Blocks.AIR.defaultBlockState(), NarakaBlockTags.HEROBRINE_SANCTUARY_WRAP_TARGETS, Blocks.DIRT);
+        generateSphere(pLevel, pBox, boundingBox, lavaBox.minY(), lavaBox.maxY(), seaLevel, Blocks.LAVA.defaultBlockState(), BlockTags.AIR, Blocks.STONE);
     }
 
-    protected void generateSphere(WorldGenLevel level, BoundingBox boundingBox, BoundingBox box, int yStart, int yEnd, BlockState state, float size) {
-        NarakaUtils.sphere(box, size, (x, y, z) -> {
-            if (yStart <= y && y <= yEnd)
+    protected void generateSphere(WorldGenLevel level, BoundingBox boundingBox, BoundingBox box, int yStart, int yEnd, int seaLevel, BlockState state, TagKey<Block> wrapTarget, Block defaultReplace) {
+        NarakaUtils.sphere(box, SPHERE_SIZE, (x, y, z) -> {
+            if (yStart <= y && y <= yEnd) {
+                wrap(level, boundingBox, box, x, y, z, seaLevel, wrapTarget, defaultReplace);
                 placeBlock(level, state, x, y, z, boundingBox);
+            }
         });
+    }
+
+    protected void wrap(WorldGenLevel level, BoundingBox boundingBox, BoundingBox box, int x, int y, int z, int seaLevel, TagKey<Block> target, Block defaultReplace) {
+        int[] xOffsets = {0, 1, 0, -1};
+        int[] zOffsets = {1, 0, -1, 0};
+        for (int i = 0; i < xOffsets.length; i++) {
+            int targetX = x + xOffsets[i];
+            int targetZ = z + zOffsets[i];
+            if (!NarakaUtils.isInSphere(box, SPHERE_SIZE, targetX, y, targetZ)) {
+                BlockState state = getBlock(level, targetX, y, targetZ, boundingBox);
+                if (state.is(target)) {
+                    BlockState replace = findAppropriateState(y, seaLevel, defaultReplace);
+                    placeBlock(level, replace, targetX, y, targetZ, boundingBox);
+                }
+            }
+        }
+    }
+
+    protected BlockState refineReplaceable(BlockState state, int y, int seaLevel) {
+        if (state.is(Blocks.DIRT) && y == seaLevel - 1)
+            return Blocks.GRASS_BLOCK.defaultBlockState();
+        return state;
+    }
+
+    protected BlockState findAppropriateState(int y, int seaLevel, Block defaultReplace) {
+        if (y < seaLevel - 3)
+            return Blocks.STONE.defaultBlockState();
+        return refineReplaceable(defaultReplace.defaultBlockState(), y, seaLevel);
     }
 }

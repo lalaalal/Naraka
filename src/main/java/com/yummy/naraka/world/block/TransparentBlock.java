@@ -40,7 +40,7 @@ public class TransparentBlock extends Block {
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         if (state.getValue(VISIBLE))
             return super.getShape(state, level, pos, context);
-        if (context instanceof EntityCollisionContext entityCollisionContext 
+        if (context instanceof EntityCollisionContext entityCollisionContext
                 && entityCollisionContext.getEntity() instanceof Player player) {
             if (player.isCreative())
                 return super.getShape(state, level, pos, context);

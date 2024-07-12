@@ -1,12 +1,7 @@
 package com.yummy.naraka;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Context of mod<br>
@@ -23,7 +18,6 @@ public class NarakaContext {
     private final Map<Class<?>, Map<String, ?>> contextMaps = new HashMap<>();
     private final Map<String, Boolean> booleanContexts = new HashMap<>();
     private final Map<String, Number> numberContexts = new HashMap<>();
-    private final Set<BoundingBox> protectedAreas = new HashSet<>();
 
     private NarakaContext() {
         contextMaps.put(Boolean.class, booleanContexts);
@@ -49,17 +43,5 @@ public class NarakaContext {
                 return type.cast(value);
         }
         throw new IllegalArgumentException("Key " + key + " not found");
-    }
-
-    public void addProtectedArea(BoundingBox box) {
-        protectedAreas.add(box);
-    }
-
-    public boolean isProtected(BlockPos pos) {
-        for (BoundingBox protectedArea : protectedAreas) {
-            if (protectedArea.isInside(pos))
-                return true;
-        }
-        return false;
     }
 }
