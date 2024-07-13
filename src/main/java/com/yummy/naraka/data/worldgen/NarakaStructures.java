@@ -1,11 +1,11 @@
 package com.yummy.naraka.data.worldgen;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.util.NarakaProtectionPredicates;
-import com.yummy.naraka.util.SeaLevelBasedHeightProvider;
 import com.yummy.naraka.world.structure.JumboPart;
 import com.yummy.naraka.world.structure.JumboStructure;
-import com.yummy.naraka.world.structure.NarakaStructurePieceFactories;
+import com.yummy.naraka.world.structure.height.SeaLevelBasedHeightProvider;
+import com.yummy.naraka.world.structure.piece.NarakaStructurePieceFactories;
+import com.yummy.naraka.world.structure.protection.NarakaProtectionPredicates;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;

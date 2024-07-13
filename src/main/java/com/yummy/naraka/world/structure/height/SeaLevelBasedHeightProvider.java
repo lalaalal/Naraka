@@ -1,4 +1,4 @@
-package com.yummy.naraka.util;
+package com.yummy.naraka.world.structure.height;
 
 import net.minecraft.core.Holder;
 import net.minecraft.util.valueproviders.ConstantInt;

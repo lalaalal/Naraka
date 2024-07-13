@@ -1,9 +1,9 @@
 package com.yummy.naraka.core;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.util.HeightProviderType;
-import com.yummy.naraka.util.ProtectionPredicate;
-import com.yummy.naraka.world.structure.StructurePieceFactory;
+import com.yummy.naraka.world.structure.height.HeightProviderType;
+import com.yummy.naraka.world.structure.piece.StructurePieceFactory;
+import com.yummy.naraka.world.structure.protection.ProtectionPredicate;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 

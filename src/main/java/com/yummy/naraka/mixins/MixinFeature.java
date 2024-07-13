@@ -1,6 +1,6 @@
 package com.yummy.naraka.mixins;
 
-import com.yummy.naraka.util.StructureProtector;
+import com.yummy.naraka.world.structure.protection.StructureProtector;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;

@@ -1,8 +1,6 @@
 package com.yummy.naraka;
 
 import com.yummy.naraka.attachment.NarakaAttachments;
-import com.yummy.naraka.util.NarakaHeightProviders;
-import com.yummy.naraka.util.NarakaProtectionPredicates;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
@@ -11,8 +9,11 @@ import com.yummy.naraka.world.item.NarakaCreativeModTabs;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeSerializers;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeTypes;
-import com.yummy.naraka.world.structure.NarakaStructurePieceFactories;
 import com.yummy.naraka.world.structure.NarakaStructureTypes;
+import com.yummy.naraka.world.structure.height.NarakaHeightProviders;
+import com.yummy.naraka.world.structure.piece.NarakaStructurePieceFactories;
+import com.yummy.naraka.world.structure.piece.NarakaStructurePieceTypes;
+import com.yummy.naraka.world.structure.protection.NarakaProtectionPredicates;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -35,6 +36,7 @@ public class NarakaMod {
         NarakaRecipeSerializers.register(modEventBus);
         NarakaHeightProviders.register(modEventBus);
         NarakaStructureTypes.register(modEventBus);
+        NarakaStructurePieceTypes.register(modEventBus);
         NarakaStructurePieceFactories.register(modEventBus);
         NarakaProtectionPredicates.register(modEventBus);
 

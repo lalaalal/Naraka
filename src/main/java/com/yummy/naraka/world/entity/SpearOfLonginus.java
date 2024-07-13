@@ -41,6 +41,11 @@ public class SpearOfLonginus extends Spear {
     }
 
     @Override
+    protected boolean canHitEntity(Entity entity) {
+        return true;
+    }
+
+    @Override
     public boolean hasFoil() {
         return false;
     }

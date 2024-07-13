@@ -3,6 +3,7 @@ package com.yummy.naraka.world.structure;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yummy.naraka.world.structure.piece.PiecePositionProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 

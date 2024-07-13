@@ -1,8 +1,9 @@
-package com.yummy.naraka.util;
+package com.yummy.naraka.world.structure.protection;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.NarakaRegistries;
-import com.yummy.naraka.world.structure.HerobrineSanctuaryOutline;
+import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.world.structure.piece.HerobrineSanctuaryOutline;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;

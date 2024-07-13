@@ -1,4 +1,4 @@
-package com.yummy.naraka.util;
+package com.yummy.naraka.world.structure.height;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

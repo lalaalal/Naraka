@@ -1,7 +1,8 @@
-package com.yummy.naraka.util;
+package com.yummy.naraka.world.structure.protection;
 
 import com.mojang.logging.LogUtils;
 import com.yummy.naraka.core.NarakaRegistries;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;

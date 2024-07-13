@@ -1,4 +1,4 @@
-package com.yummy.naraka.world.structure;
+package com.yummy.naraka.world.structure.piece;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.NarakaRegistries;

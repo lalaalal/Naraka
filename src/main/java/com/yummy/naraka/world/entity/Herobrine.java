@@ -5,6 +5,7 @@ import com.yummy.naraka.util.NarakaNbtUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -63,6 +64,8 @@ public class Herobrine extends Monster implements DeathCountingEntity {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
+        if (source.is(DamageTypes.IN_WALL))
+            return true;
         return super.isInvulnerableTo(source);
     }
 
@@ -73,6 +76,11 @@ public class Herobrine extends Monster implements DeathCountingEntity {
 
     @Override
     public boolean canBeHitByProjectile() {
+        return false;
+    }
+
+    @Override
+    public boolean isAffectedByPotions() {
         return false;
     }
 

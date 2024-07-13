@@ -1,4 +1,4 @@
-package com.yummy.naraka.world.structure;
+package com.yummy.naraka.world.structure.piece;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -16,11 +16,11 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 public class JumboPiece extends TemplateStructurePiece {
     public JumboPiece(StructureTemplateManager structureTemplateManager, ResourceLocation location, BlockPos templatePosition) {
-        super(NarakaStructureTypes.JUMBO_PIECE.get(), 0, structureTemplateManager, location, location.toString(), makeSettings(location), templatePosition);
+        super(NarakaStructurePieceTypes.JUMBO_PIECE.get(), 0, structureTemplateManager, location, location.toString(), makeSettings(location), templatePosition);
     }
 
     public JumboPiece(StructurePieceSerializationContext context, CompoundTag tag) {
-        super(NarakaStructureTypes.JUMBO_PIECE.get(), tag, context.structureTemplateManager(), JumboPiece::makeSettings);
+        super(NarakaStructurePieceTypes.JUMBO_PIECE.get(), tag, context.structureTemplateManager(), JumboPiece::makeSettings);
     }
 
     private static StructurePlaceSettings makeSettings(ResourceLocation location) {
