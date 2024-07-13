@@ -113,6 +113,7 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.TRANSPARENT_BLOCK, "Transparent Block");
             addBlock(NarakaBlocks.COMPRESSED_IRON_BLOCK, "Compressed Iron Block");
             addBlock(NarakaBlocks.FAKE_GOLD_BLOCK, "Fake Gold Block");
+            addBlock(NarakaBlocks.AMETHYST_SHARD_BLOCK, "Amethyst Shard Block");
 
             addBlock(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK, "Soul Infused Redstone Block");
             addBlock(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK, "Soul Infused Copper Block");
@@ -219,6 +220,7 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.TRANSPARENT_BLOCK, "투명 블록");
             addBlock(NarakaBlocks.COMPRESSED_IRON_BLOCK, "압축된 철 블록");
             addBlock(NarakaBlocks.FAKE_GOLD_BLOCK, "거짓된 금 블록");
+            addBlock(NarakaBlocks.AMETHYST_SHARD_BLOCK, "자수정 조각 블록");
 
             addBlock(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK, "영혼이 주입된 레드스톤 블록");
             addBlock(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK, "영혼이 주입된 구리 블록");

@@ -97,6 +97,7 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
                         new ConfiguredModel(totemModel(state))
                 });
         simpleBlockItem(NarakaBlocks.HEROBRINE_TOTEM);
+        simpleBlockWithItem(NarakaBlocks.AMETHYST_SHARD_BLOCK);
     }
 
     private ModelFile totemModel(BlockState state) {

@@ -69,6 +69,10 @@ public class NarakaBlocks {
 
     public static final DeferredBlock<Block> COMPRESSED_IRON_BLOCK = registerSimpleBlockWithItem("compressed_iron_block", Blocks.IRON_BLOCK);
     public static final DeferredBlock<Block> FAKE_GOLD_BLOCK = registerSimpleBlockWithItem("fake_gold_block", from(Blocks.GOLD_BLOCK).strength(5, 6));
+    public static final DeferredBlock<Block> AMETHYST_SHARD_BLOCK = registerSimpleBlockWithItem(
+            "amethyst_shard_block",
+            from(Blocks.AMETHYST_BLOCK).strength(0.5f)
+    );
 
     public static final DeferredBlock<Block> SOUL_INFUSED_REDSTONE_BLOCK = registerSoulInfusedBlock("redstone_block", Blocks.REDSTONE_BLOCK);
     public static final DeferredBlock<Block> SOUL_INFUSED_COPPER_BLOCK = registerSoulInfusedBlock("copper_block", Blocks.COPPER_BLOCK);

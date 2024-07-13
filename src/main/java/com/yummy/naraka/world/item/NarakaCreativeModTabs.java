@@ -19,7 +19,7 @@ public class NarakaCreativeModTabs {
 
     private static final DeferredHolder<CreativeModeTab, CreativeModeTab> NARAKA_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.naraka"))
-            .icon(() -> NarakaItems.TEST_ITEM.get().getDefaultInstance())
+            .icon(NarakaBlocks.HEROBRINE_TOTEM::toStack)
             .displayItems((parameters, output) -> {
                 output.accept(NarakaItems.SPEAR_ITEM);
                 output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
@@ -62,12 +62,12 @@ public class NarakaCreativeModTabs {
                 output.accept(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
 
                 output.accept(NarakaItems.GOD_BLOOD);
+                output.accept(NarakaBlocks.AMETHYST_SHARD_BLOCK);
                 output.accept(NarakaItems.COMPRESSED_IRON_INGOT);
                 output.accept(NarakaBlocks.COMPRESSED_IRON_BLOCK);
                 output.accept(NarakaItems.FAKE_GOLD_INGOT);
                 output.accept(NarakaBlocks.FAKE_GOLD_BLOCK);
                 output.accept(NarakaBlocks.HEROBRINE_TOTEM);
-                output.accept(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK);
                 output.accept(NarakaBlocks.PURIFIED_SOUL_BLOCK);
                 output.accept(NarakaBlocks.NECTARIUM_BLOCK);
                 output.accept(NarakaBlocks.EBONY_LOG);

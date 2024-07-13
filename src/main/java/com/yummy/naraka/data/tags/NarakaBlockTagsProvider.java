@@ -76,7 +76,8 @@ public class NarakaBlockTagsProvider extends BlockTagsProvider {
                 .add(NarakaBlocks.NECTARIUM_BLOCK.get())
                 .add(NarakaBlocks.NECTARIUM_ORE.get())
                 .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get())
-                .add(NarakaBlocks.FAKE_GOLD_BLOCK.get());
+                .add(NarakaBlocks.FAKE_GOLD_BLOCK.get())
+                .add(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
         NarakaBlocks.forEachSoulInfusedBlock(needsIronTool::add);
 
         tag(BlockTags.NEEDS_DIAMOND_TOOL)
@@ -88,7 +89,9 @@ public class NarakaBlockTagsProvider extends BlockTagsProvider {
                 .add(NarakaBlocks.NECTARIUM_ORE.get())
                 .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get())
                 .add(NarakaBlocks.PURIFIED_SOUL_BLOCK.get())
-                .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
+                .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get())
+                .add(NarakaBlocks.FAKE_GOLD_BLOCK.get())
+                .add(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
         NarakaBlocks.forEachSoulInfusedBlock(mineableWithPickaxe::add);
 
         tag(BlockTags.MINEABLE_WITH_HOE)
