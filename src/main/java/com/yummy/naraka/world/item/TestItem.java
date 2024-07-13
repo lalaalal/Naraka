@@ -2,6 +2,8 @@ package com.yummy.naraka.world.item;
 
 import com.mojang.logging.LogUtils;
 import com.yummy.naraka.attachment.StigmaHelper;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -28,6 +30,13 @@ public class TestItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player player, InteractionHand pUsedHand) {
         if (player.isLocalPlayer())
             return super.use(pLevel, player, pUsedHand);
+        if (pLevel instanceof ServerLevel level) {
+            level.sendParticles(ParticleTypes.WHITE_SMOKE,
+                    player.getX(), player.getY(), player.getZ(), 20,
+                    0, 1, 0, 0.1
+            );
+            return super.use(pLevel, player, pUsedHand);
+        }
         int stigma = StigmaHelper.getStigma(player);
         LOGGER.debug("%s 's value is %s".formatted(player.getDisplayName(), stigma));
         StigmaHelper.increaseStigma(player);

@@ -1,6 +1,7 @@
 package com.yummy.naraka.data;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +21,8 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
     public static final String FIRE_FLOOR_SUFFIX = "_floor";
     public static final String FIRE_SIDE_SUFFIX = "_side";
     public static final String FIRE_SIDE__ALT_SUFFIX = "_side_alt";
+    public static final String HEROBRINE_TOTEM = "herobrine_totem";
+    public static final String HEROBRINE_TOTEM_PREFIX = "herobrine_totem_";
 
     public static final ResourceLocation TEMPLATE_FIRE_FLOOR = NarakaMod.mcLocation("template_fire_floor");
     public static final ResourceLocation TEMPLATE_FIRE_SIDE = NarakaMod.mcLocation("template_fire_side");
@@ -88,6 +91,29 @@ public class NarakaBlockStateProvider extends BlockStateProvider {
         simpleBlockItem(NarakaBlocks.EBONY_PRESSURE_PLATE);
         buttonBlock(NarakaBlocks.EBONY_BUTTON.get(), texture("ebony_planks"));
         itemWithInventoryModel(NarakaBlocks.EBONY_BUTTON, "button", texture("ebony_planks"));
+
+        getVariantBuilder(NarakaBlocks.HEROBRINE_TOTEM.get())
+                .forAllStates(state -> new ConfiguredModel[]{
+                        new ConfiguredModel(totemModel(state))
+                });
+        simpleBlockItem(NarakaBlocks.HEROBRINE_TOTEM);
+    }
+
+    private ModelFile totemModel(BlockState state) {
+        int crack = state.getValue(HerobrineTotem.CRACK);
+        String name = crack == 0 ? HEROBRINE_TOTEM : HEROBRINE_TOTEM_PREFIX + crack;
+        String side = totemSideName(crack);
+        return models().cubeTop(
+                name,
+                texture(side),
+                texture("herobrine_totem_top")
+        );
+    }
+
+    private String totemSideName(int crack) {
+        if (crack == 0)
+            return HEROBRINE_TOTEM_PREFIX + "side";
+        return HEROBRINE_TOTEM_PREFIX + crack;
     }
 
     public void itemWithInventoryModel(DeferredBlock<? extends Block> block, String type, ResourceLocation texture) {

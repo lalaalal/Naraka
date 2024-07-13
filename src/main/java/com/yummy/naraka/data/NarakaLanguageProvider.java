@@ -124,8 +124,8 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK, "Soul Infused Nectarium Block");
             addBlock(NarakaBlocks.PURIFIED_SOUL_BLOCK, "Purified Soul Block");
 
+            addBlock(NarakaBlocks.HEROBRINE_TOTEM, "Herobrine Totem");
             addBlock(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK, "Purified Soul Fire");
-
             addBlock(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK, "Purified Soul Metal Block");
             addBlock(NarakaBlocks.EBONY_LOG, "Ebony Log");
             addBlock(NarakaBlocks.STRIPPED_EBONY_LOG, "Stripped Ebony Log");
@@ -230,8 +230,8 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             addBlock(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK, "영혼이 주입된 넥타륨 블록");
             addBlock(NarakaBlocks.PURIFIED_SOUL_BLOCK, "정화된 영혼 블록");
 
+            addBlock(NarakaBlocks.HEROBRINE_TOTEM, "히로빈 토템");
             addBlock(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK, "정화된 영혼 불");
-
             addBlock(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK, "정화된 영혼 금속 블록");
             addBlock(NarakaBlocks.EBONY_LOG, "흑단나무 원목");
             addBlock(NarakaBlocks.STRIPPED_EBONY_LOG, "껍질 벗긴 흑단나무 원목");

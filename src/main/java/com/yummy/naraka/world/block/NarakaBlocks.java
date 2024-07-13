@@ -122,7 +122,7 @@ public class NarakaBlocks {
             Blocks.DARK_OAK_PLANKS
     );
 
-    public static final DeferredBlock<HerobrineTotem> HEROBRINE_TOTME = registerBlockWithItem(
+    public static final DeferredBlock<HerobrineTotem> HEROBRINE_TOTEM = registerBlockWithItem(
             "herobrine_totem", 
             properties -> new HerobrineTotem(properties
                     .pushReaction(PushReaction.BLOCK)
