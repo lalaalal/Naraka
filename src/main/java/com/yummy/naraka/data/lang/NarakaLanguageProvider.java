@@ -1,4 +1,4 @@
-package com.yummy.naraka.data;
+package com.yummy.naraka.data.lang;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.block.NarakaBlocks;
@@ -39,6 +39,11 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
         super(output, NarakaMod.MOD_ID, locale);
     }
 
+    public void addAdvancement(AdvancementComponent advancementComponent, String title, String description) {
+        add(advancementComponent.titleKey(), title);
+        add(advancementComponent.descriptionKey(), description);
+    }
+
     public void addDamageType(ResourceKey<DamageType> damageType, String directMessage, String indirectMessage) {
         String directKey = "death.attack." + damageType.location().getPath();
         String indirectKey = directKey + ".player";
@@ -53,7 +58,6 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
     }
 
     public static class EN extends NarakaLanguageProvider {
-
         public EN(PackOutput output) {
             super(output, "en_us");
         }
@@ -72,6 +76,11 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             add(PURIFIED_GEM_UPGRADE_INGREDIENTS_KEY, "Soul Infused Materials");
             add(PURIFIED_GEM_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add soul weapon");
             add(PURIFIED_GEM_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add soul infused materials");
+
+            addAdvancement(AdvancementNarakaComponents.ROOT, "Naraka!", "Welcome to Naraka!");
+            addAdvancement(AdvancementNarakaComponents.SUMMON_HEROBRINE, "Naraka Tyrant", "Summon Herobrine");
+            addAdvancement(AdvancementNarakaComponents.KILL_HEROBRINE, "Purified Soul", "Defeat the lord of Naraka");
+            addAdvancement(AdvancementNarakaComponents.GOD_BLOOD, "Blood of God", "Very AWESOME!");
 
             addItem(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard");
             addItem(NarakaItems.NECTARIUM, "Nectarium");

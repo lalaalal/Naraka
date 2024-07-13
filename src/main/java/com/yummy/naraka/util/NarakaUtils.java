@@ -2,6 +2,7 @@ package com.yummy.naraka.util;
 
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Consumer;
 
@@ -54,5 +55,9 @@ public class NarakaUtils {
         float yRatio = (pos.getY() - centerY) / yRadius;
 
         return xRatio * xRatio + yRatio * yRatio + zRatio * zRatio <= 1.05f * size;
+    }
+
+    public static Vec3 vec3(Vec3i pos) {
+        return new Vec3(pos.getX(), pos.getY(), pos.getZ());
     }
 }

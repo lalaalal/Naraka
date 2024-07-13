@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.data.NarakaLanguageProvider;
+import com.yummy.naraka.data.lang.NarakaLanguageProvider;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+@SuppressWarnings("unused")
 public class NarakaBlocks {
     public static final String SOUL_INFUSED_PREFIX = "soul_infused_";
 
