@@ -6,6 +6,7 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -27,6 +28,10 @@ public class NarakaEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 .add(NarakaEntityTypes.HEROBRINE.get());
 
         tag(Tags.EntityTypes.BOSSES)
+                .add(NarakaEntityTypes.HEROBRINE.get());
+        tag(EntityTypeTags.CAN_BREATHE_UNDER_WATER)
+                .add(NarakaEntityTypes.HEROBRINE.get());
+        tag(EntityTypeTags.FALL_DAMAGE_IMMUNE)
                 .add(NarakaEntityTypes.HEROBRINE.get());
     }
 }

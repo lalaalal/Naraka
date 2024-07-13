@@ -89,10 +89,10 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         return false;
     }
 
-    private void summonHerobrine(Level level, BlockPos pos) {
+    private void summonHerobrine(ServerLevel level, BlockPos pos) {
         Herobrine herobrine = new Herobrine(level, new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5));
         level.addFreshEntity(herobrine);
-        ((ServerLevel) level).sendParticles(ParticleTypes.CLOUD,
+        level.sendParticles(ParticleTypes.CLOUD,
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 40,
                 1, 1, 1, 0.01
         );

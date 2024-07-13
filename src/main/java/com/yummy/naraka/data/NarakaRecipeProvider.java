@@ -103,10 +103,10 @@ public class NarakaRecipeProvider extends RecipeProvider {
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.BUILDING_BLOCKS, Blocks.IRON_BLOCK.asItem(), RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.COMPRESSED_IRON_BLOCK);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, NarakaItems.FAKE_GOLD_INGOT.toStack())
-                        .requires(Items.IRON_INGOT)
-                        .requires(Items.BLAZE_POWDER)
-                        .unlockedBy(getHasName(Items.BLAZE_POWDER), has(Items.BLAZE_POWDER))
-                        .save(recipeOutput);
+                .requires(Items.IRON_INGOT)
+                .requires(Items.BLAZE_POWDER)
+                .unlockedBy(getHasName(Items.BLAZE_POWDER), has(Items.BLAZE_POWDER))
+                .save(recipeOutput);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.FAKE_GOLD_INGOT, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.FAKE_GOLD_BLOCK);
     }
 
