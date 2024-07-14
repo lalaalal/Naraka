@@ -5,7 +5,11 @@ import net.minecraft.network.chat.Component;
 import java.util.Locale;
 
 public enum AdvancementNarakaComponents implements AdvancementComponent {
-    ROOT, SUMMON_HEROBRINE, KILL_HEROBRINE, GOD_BLOOD;
+    ROOT,
+    HEROBRINE_SANCTUARY,
+    SUMMON_HEROBRINE,
+    KILL_HEROBRINE,
+    GOD_BLOOD;
 
     public static final String ADVANCEMENT_NAME = "naraka";
 

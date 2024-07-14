@@ -3,15 +3,17 @@ package com.yummy.naraka.data.advancement;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.data.lang.AdvancementNarakaComponents;
+import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.advancements.*;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.KilledTrigger;
-import net.minecraft.advancements.critereon.SummonedEntityTrigger;
+import net.minecraft.advancements.critereon.*;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.neoforged.neoforge.common.data.AdvancementProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -26,6 +28,10 @@ public class NarakaAdvancementGenerator implements AdvancementProvider.Advanceme
 
     @Override
     public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> output, ExistingFileHelper existingFileHelper) {
+        HolderLookup.RegistryLookup<Structure> structures = registries.lookupOrThrow(Registries.STRUCTURE);
+
+        Holder<Structure> herobrineSanctuaryStructure = structures.getOrThrow(NarakaStructures.HEROBRINE_SANCTUARY);
+
         AdvancementHolder root = Advancement.Builder.advancement()
                 .display(
                         NarakaItems.NECTARIUM,
@@ -41,6 +47,22 @@ public class NarakaAdvancementGenerator implements AdvancementProvider.Advanceme
                 .addCriterion("killed_something", KilledTrigger.TriggerInstance.playerKilledEntity())
                 .addCriterion("killed_by_something", KilledTrigger.TriggerInstance.entityKilledPlayer())
                 .save(output, location("root"), existingFileHelper);
+        AdvancementHolder herobrineSanctuary = Advancement.Builder.advancement()
+                .display(
+                        NarakaBlocks.PURIFIED_SOUL_BLOCK,
+                        AdvancementNarakaComponents.HEROBRINE_SANCTUARY.title(),
+                        AdvancementNarakaComponents.HEROBRINE_SANCTUARY.description(),
+                        null,
+                        AdvancementType.GOAL,
+                        true,
+                        true,
+                        false
+                )
+                .addCriterion("herobrine_sanctuary", PlayerTrigger.TriggerInstance.located(
+                        LocationPredicate.Builder.inStructure(herobrineSanctuaryStructure)
+                ))
+                .rewards(AdvancementRewards.Builder.experience(3))
+                .save(output, location("herobrine_sanctuary"), existingFileHelper);
         AdvancementHolder summonHerobrine = Advancement.Builder.advancement()
                 .parent(root)
                 .display(

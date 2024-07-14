@@ -37,7 +37,10 @@ public class NarakaDataGenerators {
         generator.addProvider(event.includeServer(), new NarakaEntityTypeTagsProvider(packOutput, generatingProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new NarakaDamageTypeTagsProvider(packOutput, generatingProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new NarakaPlacementTagsProvider(packOutput, generatingProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new NarakaStructureSetsTagProvider(packOutput, generatingProvider, existingFileHelper));
+
         generator.addProvider(event.includeServer(), new NarakaAdvancementProvider(packOutput, generatingProvider, existingFileHelper));
+
 
         generator.addProvider(event.includeClient(), new NarakaItemModelProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new NarakaBlockStateProvider(packOutput, existingFileHelper));
