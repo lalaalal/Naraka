@@ -38,6 +38,12 @@ public class HerobrineTotem extends BaseEntityBlock {
         );
     }
 
+    public static void crack(Level level, BlockPos pos, BlockState state) {
+        int crack = state.getValue(CRACK);
+        if (crack < MAX_CRACK)
+            level.setBlock(pos, state.setValue(CRACK, crack + 1), UPDATE_ALL_IMMEDIATE);
+    }
+
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;

@@ -7,22 +7,32 @@ import com.yummy.naraka.attachment.StigmaHelper;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.util.NarakaNbtUtils;
+import com.yummy.naraka.world.block.HerobrineTotem;
+import com.yummy.naraka.world.block.entity.HerobrineTotemBlockEntity;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.DeathCountingEntity;
 import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -103,5 +113,21 @@ public class NarakaGameEventBus {
         if (DeathCountHelper.getDeathCount(player) < 1)
             DeathCountHelper.restoreDeathCount(player);
         AttachmentSyncHelper.syncAttachments(player);
+    }
+
+    @SubscribeEvent
+    public static void onPlayerIgnite(PlayerInteractEvent.RightClickBlock event) {
+        ItemStack item = event.getItemStack();
+        Level level = event.getLevel();
+        BlockPos pos = event.getPos();
+        BlockState state = level.getBlockState(pos);
+
+        if (event.getHitVec().getDirection() == Direction.UP
+                && item.is(ItemTags.CREEPER_IGNITERS) && state.is(Blocks.NETHERRACK)
+                && HerobrineTotemBlockEntity.isTotemStructure(level, pos.below())) {
+            BlockState totem = level.getBlockState(pos.below());
+            if (HerobrineTotemBlockEntity.isSleeping(totem))
+                HerobrineTotem.crack(level, pos.below(), totem);
+        }
     }
 }

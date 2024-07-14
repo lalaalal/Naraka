@@ -42,7 +42,14 @@ public class ExclusiveRandomSpreadStructurePlacement extends RandomSpreadStructu
     private final HolderSet<StructureSet> exclusiveStructures;
     private final int exclusiveRange;
 
-    public ExclusiveRandomSpreadStructurePlacement(int minDistanceFromCenter, int spacing, int separation, RandomSpreadType spreadType, HolderSet<StructureSet> exclusiveStructures, int exclusiveRange, int salt) {
+    public ExclusiveRandomSpreadStructurePlacement(
+            int minDistanceFromCenter,
+            int spacing,
+            int separation,
+            RandomSpreadType spreadType,
+            HolderSet<StructureSet> exclusiveStructures,
+            int exclusiveRange,
+            int salt) {
         super(spacing, separation, spreadType, salt);
         this.minDistanceFromCenter = minDistanceFromCenter;
         this.exclusiveStructures = exclusiveStructures;

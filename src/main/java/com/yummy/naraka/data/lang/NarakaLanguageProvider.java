@@ -78,6 +78,7 @@ public abstract class NarakaLanguageProvider extends LanguageProvider {
             add(PURIFIED_GEM_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add soul infused materials");
 
             addAdvancement(AdvancementNarakaComponents.ROOT, "Naraka!", "Welcome to Naraka!");
+            addAdvancement(AdvancementNarakaComponents.HEROBRINE_SANCTUARY, "Herobrine Sanctuary", "Too Big!");
             addAdvancement(AdvancementNarakaComponents.SUMMON_HEROBRINE, "Naraka Tyrant", "Summon Herobrine");
             addAdvancement(AdvancementNarakaComponents.KILL_HEROBRINE, "Purified Soul", "Defeat the lord of Naraka");
             addAdvancement(AdvancementNarakaComponents.GOD_BLOOD, "Blood of God", "Very AWESOME!");

@@ -49,12 +49,16 @@ public class NarakaBlocks {
     public static final DeferredBlock<PurifiedSoulBlock> PURIFIED_SOUL_BLOCK = registerBlockWithItem(
             "purified_soul_block",
             PurifiedSoulBlock::new,
-            from(Blocks.SOUL_SAND).mapColor(DyeColor.WHITE),
+            from(Blocks.SOUL_SAND)
+                    .mapColor(DyeColor.WHITE)
+                    .requiresCorrectToolForDrops(),
             item().fireResistant()
     );
     public static final DeferredBlock<Block> PURIFIED_SOUL_METAL_BLOCK = registerSimpleBlockWithItem(
             "purified_soul_metal_block",
-            from(Blocks.IRON_BLOCK).sound(SoundType.NETHERITE_BLOCK),
+            from(Blocks.IRON_BLOCK)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops(),
             item().fireResistant()
     );
     public static final DeferredBlock<BaseFireBlock> PURIFIED_SOUL_FIRE_BLOCK = registerBlockWithItem(

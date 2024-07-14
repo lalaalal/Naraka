@@ -54,7 +54,7 @@ public class NarakaAdvancementGenerator implements AdvancementProvider.Advanceme
                         AdvancementNarakaComponents.HEROBRINE_SANCTUARY.title(),
                         AdvancementNarakaComponents.HEROBRINE_SANCTUARY.description(),
                         null,
-                        AdvancementType.GOAL,
+                        AdvancementType.CHALLENGE,
                         true,
                         true,
                         false

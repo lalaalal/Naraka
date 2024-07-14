@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -44,18 +43,16 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     }
 
     public void serverTick(ServerLevel level, BlockPos pos, BlockState state) {
-        if (isSleeping(state)) {
-            if (isTotemStructure(level, pos) && refineFire(level, pos))
-                crack(level, pos, state);
+        if (isSleeping(state))
             return;
-        }
 
+        refineFire(level, pos);
         if (tickCount % 10 == 0) {
             if (state.getValue(CRACK) == MAX_CRACK) {
                 summonHerobrine(level, pos);
                 breakTotemStructure(level, pos);
             } else
-                crack(level, pos, state);
+                HerobrineTotem.crack(level, pos, state);
             if (level.random.nextFloat() < 0.8f) {
                 level.sendParticles(ParticleTypes.CLOUD,
                         pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 25,
@@ -67,33 +64,24 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         tickCount += 1;
     }
 
-    private boolean isActivated(BlockState state) {
+    public static boolean isActivated(BlockState state) {
         return 0 < state.getValue(CRACK);
     }
 
-    private boolean isSleeping(BlockState state) {
+    public static boolean isSleeping(BlockState state) {
         return !isActivated(state);
     }
 
-    private void crack(Level level, BlockPos pos, BlockState state) {
-        int crack = state.getValue(CRACK);
-        if (crack < MAX_CRACK)
-            level.setBlock(pos, state.setValue(CRACK, crack + 1), Block.UPDATE_ALL_IMMEDIATE);
-    }
-
-    public boolean isTotemStructure(Level level, BlockPos totemPos) {
+    public static boolean isTotemStructure(Level level, BlockPos totemPos) {
         return level.getBlockState(totemPos).is(NarakaBlocks.HEROBRINE_TOTEM)
                 && level.getBlockState(totemPos.above()).is(Blocks.NETHERRACK)
                 && level.getBlockState(totemPos.below(1)).is(NarakaBlocks.FAKE_GOLD_BLOCK)
                 && level.getBlockState(totemPos.below(2)).is(NarakaBlocks.FAKE_GOLD_BLOCK);
     }
 
-    public boolean refineFire(Level level, BlockPos totemPos) {
-        if (level.getBlockState(totemPos.above(2)).is(BlockTags.FIRE)) {
+    public void refineFire(Level level, BlockPos totemPos) {
+        if (!level.getBlockState(totemPos.above(2)).is(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK))
             level.setBlock(totemPos.above(2), NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get().defaultBlockState(), Block.UPDATE_CLIENTS);
-            return true;
-        }
-        return false;
     }
 
     private void summonHerobrine(ServerLevel level, BlockPos pos) {

@@ -96,7 +96,7 @@ public class NarakaItems {
     public static final DeferredItem<SwordItem> SOUL_INFUSED_NECTARIUM_SWORD = registerSoulInfusedSword("nectarium", 0, 0);
     public static final DeferredItem<SwordItem> PURIFIED_SOUL_SWORD = ITEMS.registerItem(
             "purified_soul_sword",
-            properties -> new SwordItem(Tiers.IRON, properties.fireResistant()
+            properties -> new PurifiedSoulSword(Tiers.IRON, properties.fireResistant()
                     .rarity(Rarity.UNCOMMON)
                     .attributes(SwordItem.createAttributes(Tiers.IRON, 1, 0)))
     );
