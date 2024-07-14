@@ -3,6 +3,7 @@ package com.yummy.naraka.world.block;
 import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.Holder;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -47,11 +48,15 @@ public class NarakaBlocks {
     public static final DeferredBlock<Block> NECTARIUM_BLOCK = registerBlockWithItem("nectarium_block", NectariumBlock::new, Blocks.IRON_BLOCK);
     public static final DeferredBlock<PurifiedSoulBlock> PURIFIED_SOUL_BLOCK = registerBlockWithItem(
             "purified_soul_block",
-            properties -> new PurifiedSoulBlock(properties.speedFactor(0.4f)),
-            Blocks.IRON_BLOCK,
+            PurifiedSoulBlock::new,
+            from(Blocks.SOUL_SAND).mapColor(DyeColor.WHITE),
             item().fireResistant()
     );
-    public static final DeferredBlock<Block> PURIFIED_SOUL_METAL_BLOCK = registerSimpleBlockWithItem("purified_soul_metal_block", Blocks.IRON_BLOCK, item().fireResistant());
+    public static final DeferredBlock<Block> PURIFIED_SOUL_METAL_BLOCK = registerSimpleBlockWithItem(
+            "purified_soul_metal_block",
+            from(Blocks.IRON_BLOCK).sound(SoundType.NETHERITE_BLOCK),
+            item().fireResistant()
+    );
     public static final DeferredBlock<BaseFireBlock> PURIFIED_SOUL_FIRE_BLOCK = registerBlockWithItem(
             "purified_soul_fire",
             PurifiedSoulFireBlock::new,

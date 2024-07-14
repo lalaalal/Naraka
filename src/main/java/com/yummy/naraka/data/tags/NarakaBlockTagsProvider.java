@@ -80,15 +80,13 @@ public class NarakaBlockTagsProvider extends BlockTagsProvider {
                 .add(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
         NarakaBlocks.forEachSoulInfusedBlock(needsIronTool::add);
 
-        tag(BlockTags.NEEDS_DIAMOND_TOOL)
+        tag(Tags.Blocks.NEEDS_NETHERITE_TOOL)
                 .add(NarakaBlocks.PURIFIED_SOUL_BLOCK.get())
                 .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
-
         IntrinsicTagAppender<Block> mineableWithPickaxe = tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(NarakaBlocks.NECTARIUM_BLOCK.get())
                 .add(NarakaBlocks.NECTARIUM_ORE.get())
                 .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get())
-                .add(NarakaBlocks.PURIFIED_SOUL_BLOCK.get())
                 .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get())
                 .add(NarakaBlocks.FAKE_GOLD_BLOCK.get())
                 .add(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());

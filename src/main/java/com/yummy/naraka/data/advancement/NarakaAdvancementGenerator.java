@@ -48,6 +48,7 @@ public class NarakaAdvancementGenerator implements AdvancementProvider.Advanceme
                 .addCriterion("killed_by_something", KilledTrigger.TriggerInstance.entityKilledPlayer())
                 .save(output, location("root"), existingFileHelper);
         AdvancementHolder herobrineSanctuary = Advancement.Builder.advancement()
+                .parent(root)
                 .display(
                         NarakaBlocks.PURIFIED_SOUL_BLOCK,
                         AdvancementNarakaComponents.HEROBRINE_SANCTUARY.title(),
@@ -64,7 +65,7 @@ public class NarakaAdvancementGenerator implements AdvancementProvider.Advanceme
                 .rewards(AdvancementRewards.Builder.experience(3))
                 .save(output, location("herobrine_sanctuary"), existingFileHelper);
         AdvancementHolder summonHerobrine = Advancement.Builder.advancement()
-                .parent(root)
+                .parent(herobrineSanctuary)
                 .display(
                         NarakaBlocks.HEROBRINE_TOTEM,
                         AdvancementNarakaComponents.SUMMON_HEROBRINE.title(),
