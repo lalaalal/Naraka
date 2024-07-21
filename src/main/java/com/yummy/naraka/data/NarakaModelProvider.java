@@ -13,7 +13,6 @@ import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.data.models.model.TexturedModel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.List;
@@ -25,6 +24,7 @@ public class NarakaModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators generator) {
+        generator.skipAutoItemBlock(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK);
         createPurifiedSoulFire(generator);
         generator.createTrivialCube(NarakaBlocks.TRANSPARENT_BLOCK);
         generator.createTrivialCube(NarakaBlocks.NECTARIUM_ORE);
@@ -35,6 +35,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_BLOCK);
         generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
         generator.createTrivialBlock(NarakaBlocks.EBONY_LEAVES, TexturedModel.LEAVES);
+        generator.createTrivialCube(NarakaBlocks.AMETHYST_SHARD_BLOCK);
         generator.woodProvider(NarakaBlocks.EBONY_LOG)
                 .log(NarakaBlocks.EBONY_LOG)
                 .wood(NarakaBlocks.EBONY_WOOD);
@@ -75,15 +76,16 @@ public class NarakaModelProvider extends FabricModelProvider {
     }
 
     private void createPurifiedSoulFire(BlockModelGenerators generator) {
-        List<ResourceLocation> floorModels = generator.createFloorFireModels(Blocks.SOUL_FIRE);
-        List<ResourceLocation> sideModels = generator.createSideFireModels(Blocks.SOUL_FIRE);
-        generator.blockStateOutput.accept(MultiPartGenerator.multiPart(Blocks.SOUL_FIRE)
+        List<ResourceLocation> floorModels = generator.createFloorFireModels(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK);
+        List<ResourceLocation> sideModels = generator.createSideFireModels(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK);
+        generator.blockStateOutput.accept(MultiPartGenerator.multiPart(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK)
                 .with(BlockModelGenerators.wrapModels(floorModels, (variant) -> variant))
                 .with(BlockModelGenerators.wrapModels(sideModels, (variant) -> variant))
                 .with(BlockModelGenerators.wrapModels(sideModels, (variant) -> variant.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)))
                 .with(BlockModelGenerators.wrapModels(sideModels, (variant) -> variant.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)))
                 .with(BlockModelGenerators.wrapModels(sideModels, (variant) -> variant.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)))
         );
+        generator.delegateItemModel(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK, sideModels.getFirst());
     }
 
     @Override

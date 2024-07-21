@@ -65,7 +65,7 @@ public class NarakaMod implements ModInitializer {
         FabricDefaultAttributeRegistry.register(NarakaEntityTypes.HEROBRINE, Herobrine.getAttributeSupplier());
 
         UseBlockCallback.EVENT.register((player, level, hand, hitResult) -> {
-            ItemStack item = player.getUseItem();
+            ItemStack item = player.getItemInHand(hand);
             BlockPos pos = hitResult.getBlockPos();
             BlockState state = level.getBlockState(pos);
 
