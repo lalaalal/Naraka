@@ -5,12 +5,11 @@ import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.crafting.SoulCraftingRecipe;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.BlockFamily;
-import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
@@ -20,15 +19,15 @@ import net.minecraft.world.level.block.Blocks;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class NarakaRecipeProvider extends RecipeProvider {
+public class NarakaRecipeProvider extends FabricRecipeProvider {
     private static final List<ItemLike> NECTARIUM_SMELTABLES = List.of(NarakaBlocks.NECTARIUM_ORE, NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
 
-    public NarakaRecipeProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> provider) {
-        super(packOutput, provider);
+    public NarakaRecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+        super(output, provider);
     }
 
     @Override
-    protected void buildRecipes(RecipeOutput recipeOutput) {
+    public void buildRecipes(RecipeOutput recipeOutput) {
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.NECTARIUM, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.NECTARIUM_BLOCK);
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, NarakaItems.SPEAR_ITEM)
                 .define('/', Items.STICK)
@@ -44,7 +43,7 @@ public class NarakaRecipeProvider extends RecipeProvider {
                 NarakaItems.SPEAR_ITEM,
                 NarakaItems.GOD_BLOOD,
                 RecipeCategory.COMBAT,
-                NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()
+                NarakaItems.MIGHTY_HOLY_SPEAR_ITEM
         );
         oreSmelting(recipeOutput, NECTARIUM_SMELTABLES, RecipeCategory.MISC, NarakaItems.NECTARIUM, 0.7f, 200, "nectarium");
         oreBlasting(recipeOutput, NECTARIUM_SMELTABLES, RecipeCategory.MISC, NarakaItems.NECTARIUM, 0.7f, 100, "nectarium");
@@ -58,15 +57,15 @@ public class NarakaRecipeProvider extends RecipeProvider {
         soulCraftingRecipe(recipeOutput, NarakaItems.NECTARIUM, NarakaItems.SOUL_INFUSED_NECTARIUM);
         soulCraftingRecipe(recipeOutput, Items.REDSTONE, NarakaItems.SOUL_INFUSED_REDSTONE);
 
-        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_REDSTONE, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get());
-        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_COPPER, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_COPPER_SWORD.get());
-        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_GOLD, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_GOLD_SWORD.get());
-        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_EMERALD, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get());
-        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_DIAMOND, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get());
-        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_LAPIS, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get());
-        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_AMETHYST, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get());
-        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_NECTARIUM, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get());
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.EBONY_SWORD, NarakaItems.PURIFIED_SOUL_METAL, RecipeCategory.COMBAT, NarakaItems.PURIFIED_SOUL_SWORD.get());
+        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_REDSTONE, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_REDSTONE_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_COPPER, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_COPPER_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_GOLD, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_GOLD_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_EMERALD, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_EMERALD_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_DIAMOND, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_LAPIS, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_LAPIS_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_AMETHYST, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_NECTARIUM, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.EBONY_SWORD, NarakaItems.PURIFIED_SOUL_METAL, RecipeCategory.COMBAT, NarakaItems.PURIFIED_SOUL_SWORD);
 
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_REDSTONE, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_COPPER, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK);
@@ -79,30 +78,14 @@ public class NarakaRecipeProvider extends RecipeProvider {
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_METAL, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_SHARD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.PURIFIED_SOUL_BLOCK);
 
-        generateRecipes(
-                recipeOutput,
-                new BlockFamily.Builder(NarakaBlocks.EBONY_PLANKS.get())
-                        .sign(NarakaBlocks.EBONY_SIGN.get(), NarakaBlocks.EBONY_WALL_SIGN.get())
-                        .stairs(NarakaBlocks.EBONY_STAIRS.get())
-                        .slab(NarakaBlocks.EBONY_SLAB.get())
-                        .fence(NarakaBlocks.EBONY_FENCE.get())
-                        .fenceGate(NarakaBlocks.EBONY_FENCE_GATE.get())
-                        .door(NarakaBlocks.EBONY_DOOR.get())
-                        .trapdoor(NarakaBlocks.EBONY_TRAPDOOR.get())
-                        .pressurePlate(NarakaBlocks.EBONY_PRESSURE_PLATE.get())
-                        .button(NarakaBlocks.EBONY_BUTTON.get())
-                        .getFamily(),
-                FeatureFlags.DEFAULT_FLAGS
-        );
         stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.HARD_EBONY_PLANKS, NarakaBlocks.EBONY_LOG, 1);
         stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.HARD_EBONY_PLANKS, NarakaBlocks.EBONY_WOOD, 1);
         planksFromLog(recipeOutput, NarakaBlocks.EBONY_PLANKS, NarakaItemTags.EBONY_LOGS, 4);
-        hangingSign(recipeOutput, NarakaItems.EBONY_HANGING_SIGN, NarakaBlocks.EBONY_PLANKS);
         sword(recipeOutput, NarakaBlocks.HARD_EBONY_PLANKS, NarakaItems.EBONY_SWORD);
 
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.BUILDING_BLOCKS, Blocks.IRON_BLOCK.asItem(), RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.COMPRESSED_IRON_BLOCK);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, NarakaItems.FAKE_GOLD_INGOT.toStack())
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, NarakaItems.FAKE_GOLD_INGOT)
                 .requires(Items.IRON_INGOT)
                 .requires(Items.BLAZE_POWDER)
                 .unlockedBy(getHasName(Items.BLAZE_POWDER), has(Items.BLAZE_POWDER))
@@ -119,7 +102,7 @@ public class NarakaRecipeProvider extends RecipeProvider {
         return NarakaMod.location(getItemName(item) + suffix);
     }
 
-    protected static void sword(RecipeOutput recipeOutput, ItemLike material, ItemLike result) {
+    public static void sword(RecipeOutput recipeOutput, ItemLike material, ItemLike result) {
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, result)
                 .define('/', Items.STICK)
                 .define('M', material)
@@ -130,19 +113,19 @@ public class NarakaRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
     }
 
-    protected static void smithing(RecipeOutput recipeOutput, ItemLike template, ItemLike base, ItemLike ingredient, RecipeCategory category, Item result) {
+    public static void smithing(RecipeOutput recipeOutput, ItemLike template, ItemLike base, ItemLike ingredient, RecipeCategory category, Item result) {
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(template), Ingredient.of(base), Ingredient.of(ingredient), category, result)
                 .unlocks(getHasName(ingredient), has(ingredient))
                 .save(recipeOutput, location(result, "_smithing"));
     }
 
-    protected static void stonecutterResultFromBase(RecipeOutput pRecipeOutput, RecipeCategory pCategory, ItemLike pResult, ItemLike pMaterial, int pResultCount) {
+    public static void stonecutterResultFromBase(RecipeOutput pRecipeOutput, RecipeCategory pCategory, ItemLike pResult, ItemLike pMaterial, int pResultCount) {
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(pMaterial), pCategory, pResult, pResultCount)
                 .unlockedBy(getHasName(pMaterial), has(pMaterial))
                 .save(pRecipeOutput, NarakaMod.location(getConversionRecipeName(pResult, pMaterial) + "_stonecutting"));
     }
 
-    protected static void nineBlockStorageRecipes(
+    public static void nineBlockStorageRecipes(
             RecipeOutput recipeOutput,
             RecipeCategory unpackedCategory,
             ItemLike unpacked,
@@ -162,7 +145,7 @@ public class NarakaRecipeProvider extends RecipeProvider {
                 .save(recipeOutput, location(unpacked, "_from_" + getItemName(packed)));
     }
 
-    protected static void oreSmelting(
+    public static void oreSmelting(
             RecipeOutput pRecipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup
     ) {
         NarakaRecipeProvider.oreCooking(
@@ -179,7 +162,7 @@ public class NarakaRecipeProvider extends RecipeProvider {
         );
     }
 
-    protected static void oreBlasting(
+    public static void oreBlasting(
             RecipeOutput pRecipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup
     ) {
         NarakaRecipeProvider.oreCooking(
@@ -196,7 +179,7 @@ public class NarakaRecipeProvider extends RecipeProvider {
         );
     }
 
-    protected static <T extends AbstractCookingRecipe> void oreCooking(
+    public static <T extends AbstractCookingRecipe> void oreCooking(
             RecipeOutput pRecipeOutput,
             RecipeSerializer<T> pSerializer,
             AbstractCookingRecipe.Factory<T> pRecipeFactory,

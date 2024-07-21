@@ -21,6 +21,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class JumboStructure extends Structure {
             instance -> instance.group(
                     settingsCodec(instance),
                     Codec.STRING.fieldOf("name").forGetter(structure -> structure.name),
-                    RegistryFixedCodec.create(NarakaRegistries.PROTECTION_PREDICATE)
+                    RegistryFixedCodec.create(NarakaRegistries.PROTECTION_PREDICATE.key())
                             .optionalFieldOf("protection_predicate")
                             .forGetter(structure -> structure.protectionPredicate),
                     HeightProvider.CODEC.fieldOf("height_provider").forGetter(structure -> structure.heightProvider),
@@ -60,7 +61,7 @@ public class JumboStructure extends Structure {
     }
 
     @Override
-    protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
+    protected @NotNull Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
         ChunkPos chunkPos = context.chunkPos();
         int height = heightProvider.getHeight(context);
         BlockPos base = new BlockPos(chunkPos.getMinBlockX(), height, chunkPos.getMinBlockZ());
@@ -90,7 +91,7 @@ public class JumboStructure extends Structure {
     }
 
     @Override
-    public StructureType<?> type() {
-        return NarakaStructureTypes.JUMBO.get();
+    public @NotNull StructureType<?> type() {
+        return NarakaStructureTypes.JUMBO;
     }
 }

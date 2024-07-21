@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.entity.PartEntity;
 
 public class SpearOfLonginus extends Spear {
     protected SpearOfLonginus(EntityType<? extends SpearOfLonginus> entityType, Level level) {
@@ -70,8 +69,7 @@ public class SpearOfLonginus extends Spear {
     private Entity getValidTarget(Entity entity) {
         if (entity instanceof LivingEntity livingEntity)
             return livingEntity;
-        if (entity instanceof PartEntity<?> partEntity)
-            return getValidTarget(partEntity.getParent());
+
         return entity;
     }
 

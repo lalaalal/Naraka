@@ -1,10 +1,9 @@
 {
   "required": true,
   "package": "com.yummy.naraka.mixin",
+  "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "MixinFeature"
-  ],
-  "client": [
+    "FeatureMixin"
   ],
   "injectors": {
     "defaultRequire": 1

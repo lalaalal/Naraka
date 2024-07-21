@@ -9,7 +9,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -22,7 +21,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class TransparentBlock extends Block {
     public static final BooleanProperty VISIBLE = BooleanProperty.create("visible");
 
-    public TransparentBlock(BlockBehaviour.Properties properties) {
+    public TransparentBlock(Properties properties) {
         super(properties);
         registerDefaultState(
                 this.stateDefinition

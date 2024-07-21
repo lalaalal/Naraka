@@ -3,15 +3,15 @@ package com.yummy.naraka.client.gui.screen;
 import com.yummy.naraka.client.NarakaSprites;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.world.inventory.SoulCraftingMenu;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class SoulCraftingScreen extends AbstractContainerScreen<SoulCraftingMenu> {
     public static final int CRAFTING_PROGRESS_WIDTH = 24;
     public static final int CRAFTING_PROGRESS_HEIGHT = 16;

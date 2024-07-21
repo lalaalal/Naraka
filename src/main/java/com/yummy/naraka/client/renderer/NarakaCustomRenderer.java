@@ -8,6 +8,8 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.SpearModel;
 import com.yummy.naraka.client.model.SpearOfLonginusModel;
 import com.yummy.naraka.world.item.NarakaItems;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -21,16 +23,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.Map;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class NarakaCustomRenderer extends BlockEntityWithoutLevelRenderer {
     private static final Map<Item, ResourceLocation> TEXTURE_LOCATIONS = Map.of(
-            NarakaItems.SPEAR_ITEM.get(), NarakaTextures.SPEAR,
-            NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), NarakaTextures.MIGHTY_HOLY_SPEAR
+            NarakaItems.SPEAR_ITEM, NarakaTextures.SPEAR,
+            NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, NarakaTextures.MIGHTY_HOLY_SPEAR
     );
 
     private static NarakaCustomRenderer INSTANCE = null;
@@ -55,9 +55,9 @@ public class NarakaCustomRenderer extends BlockEntityWithoutLevelRenderer {
         SpearOfLonginusModel longinusModel = new SpearOfLonginusModel(entityModels.bakeLayer(NarakaModelLayers.SPEAR_OF_LONGINUS));
 
         models = Map.of(
-                NarakaItems.SPEAR_ITEM.get(), spearModel,
-                NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), spearModel,
-                NarakaItems.SPEAR_OF_LONGINUS_ITEM.get(), longinusModel
+                NarakaItems.SPEAR_ITEM, spearModel,
+                NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, spearModel,
+                NarakaItems.SPEAR_OF_LONGINUS_ITEM, longinusModel
         );
     }
 

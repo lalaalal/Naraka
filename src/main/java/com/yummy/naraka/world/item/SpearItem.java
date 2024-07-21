@@ -1,8 +1,6 @@
 package com.yummy.naraka.world.item;
 
-import com.yummy.naraka.client.renderer.NarakaCustomRenderer;
 import com.yummy.naraka.world.entity.Spear;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
@@ -23,16 +21,12 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class SpearItem extends TieredItem implements ProjectileItem {
-    protected final Supplier<? extends EntityType<? extends Spear>> spearType;
+    protected final EntityType<? extends Spear> spearType;
     private final ItemAttributeModifiers defaultModifiers;
 
-    public SpearItem(Tier tier, Properties properties, Supplier<? extends EntityType<? extends Spear>> spearType) {
+    public SpearItem(Tier tier, Properties properties, EntityType<? extends Spear> spearType) {
         super(tier, properties);
         this.spearType = spearType;
         defaultModifiers = ItemAttributeModifiers.builder()
@@ -108,18 +102,5 @@ public class SpearItem extends TieredItem implements ProjectileItem {
         return new Spear(spearType, level, position, stack, getTier().getAttackDamageBonus());
     }
 
-    @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
-            @Override
-            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                return NarakaCustomRenderer.getInstance();
-            }
-        });
-    }
 
-    @Override
-    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
-        return defaultModifiers;
-    }
 }

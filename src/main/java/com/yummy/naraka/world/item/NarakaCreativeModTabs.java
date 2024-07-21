@@ -2,24 +2,15 @@ package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.block.NarakaBlocks;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
-@SuppressWarnings("unused")
-@EventBusSubscriber(modid = NarakaMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class NarakaCreativeModTabs {
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, NarakaMod.MOD_ID);
-
-    private static final DeferredHolder<CreativeModeTab, CreativeModeTab> NARAKA_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
+    private static final CreativeModeTab NARAKA_TAB = register("example_tab", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
             .title(Component.translatable("itemGroup.naraka"))
-            .icon(NarakaBlocks.HEROBRINE_TOTEM::toStack)
+            .icon(() -> NarakaBlocks.HEROBRINE_TOTEM.asItem().getDefaultInstance())
             .displayItems((parameters, output) -> {
                 output.accept(NarakaItems.SPEAR_ITEM);
                 output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
@@ -76,28 +67,15 @@ public class NarakaCreativeModTabs {
                 output.accept(NarakaBlocks.STRIPPED_EBONY_WOOD);
                 output.accept(NarakaBlocks.EBONY_LEAVES);
                 output.accept(NarakaBlocks.EBONY_SAPLING);
-                output.accept(NarakaItems.EBONY_SIGN);
-                output.accept(NarakaItems.EBONY_HANGING_SIGN);
                 output.accept(NarakaBlocks.EBONY_PLANKS);
                 output.accept(NarakaBlocks.HARD_EBONY_PLANKS);
-                output.accept(NarakaBlocks.EBONY_SLAB);
-                output.accept(NarakaBlocks.EBONY_STAIRS);
-                output.accept(NarakaBlocks.EBONY_FENCE);
-                output.accept(NarakaBlocks.EBONY_FENCE_GATE);
-                output.accept(NarakaBlocks.EBONY_DOOR);
-                output.accept(NarakaBlocks.EBONY_TRAPDOOR);
-                output.accept(NarakaBlocks.EBONY_PRESSURE_PLATE);
-                output.accept(NarakaBlocks.EBONY_BUTTON);
                 output.accept(NarakaItems.EBONY_SWORD);
             }).build());
 
-    public static void register(IEventBus bus) {
-        CREATIVE_MODE_TABS.register(bus);
+    private static CreativeModeTab register(String name, CreativeModeTab tab) {
+        return Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, NarakaMod.location(name), tab);
     }
 
-    @SubscribeEvent
-    public static void addCreative(BuildCreativeModeTabContentsEvent event) {
-//        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS)
-//            event.accept(EXAMPLE_BLOCK_ITEM);
+    public static void initialize() {
     }
 }

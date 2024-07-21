@@ -1,6 +1,5 @@
 package com.yummy.naraka.util;
 
-import com.yummy.naraka.event.NarakaGameEventBus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -10,9 +9,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.neoforged.neoforge.event.server.ServerStartedEvent;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Supplier;
 
@@ -25,12 +22,6 @@ public class NarakaNbtUtils {
     private static MinecraftServer server;
     private static final Map<UUID, Entity> cache = new HashMap<>();
 
-    /**
-     * Store {@linkplain MinecraftServer}
-     *
-     * @param server Minecraft server
-     * @see NarakaGameEventBus#onServerStarted(ServerStartedEvent)
-     */
     public static void initialize(MinecraftServer server) {
         NarakaNbtUtils.server = server;
     }
@@ -102,7 +93,7 @@ public class NarakaNbtUtils {
         compoundTag.put(name, listTag);
     }
 
-    public static @Nullable List<UUID> readUUIDs(CompoundTag compoundTag, String name) {
+    public static List<UUID> readUUIDs(CompoundTag compoundTag, String name) {
         if (!compoundTag.contains(name))
             return null;
         CompoundTag listTag = compoundTag.getCompound(name);
@@ -116,7 +107,7 @@ public class NarakaNbtUtils {
         return list;
     }
 
-    public static @Nullable Entity findEntityByUUID(ServerLevel serverLevel, UUID uuid) {
+    public static Entity findEntityByUUID(ServerLevel serverLevel, UUID uuid) {
         if (cache.containsKey(uuid))
             return cache.get(uuid);
         for (Entity entity : serverLevel.getAllEntities()) {
@@ -128,7 +119,7 @@ public class NarakaNbtUtils {
         return null;
     }
 
-    public static @Nullable <T> T findEntityByUUID(ServerLevel serverLevel, UUID uuid, Class<T> type) {
+    public static <T> T findEntityByUUID(ServerLevel serverLevel, UUID uuid, Class<T> type) {
         Entity entity = findEntityByUUID(serverLevel, uuid);
         if (type.isInstance(entity))
             return type.cast(entity);
@@ -141,7 +132,7 @@ public class NarakaNbtUtils {
      * @param uuid Entity UUID
      * @return Entity matching UUID null if absent
      */
-    public static @Nullable Entity findEntityByUUID(UUID uuid) {
+    public static Entity findEntityByUUID(UUID uuid) {
         for (ServerLevel serverLevel : server.getAllLevels()) {
             Entity entity = findEntityByUUID(serverLevel, uuid);
             if (entity != null)
@@ -150,16 +141,7 @@ public class NarakaNbtUtils {
         return null;
     }
 
-    /**
-     * Search entity using UUID from all levels
-     *
-     * @param uuid Entity UUID
-     * @param type Type to check
-     * @param <T>  Type wanted
-     * @return Cast to type if type is correct
-     * @see NarakaNbtUtilss#findEntityByUUID(ServerLevel, UUID, Class)
-     */
-    public static @Nullable <T> T findEntityByUUID(UUID uuid, Class<T> type) {
+    public static <T> T findEntityByUUID(UUID uuid, Class<T> type) {
         for (ServerLevel serverLevel : server.getAllLevels()) {
             T entity = findEntityByUUID(serverLevel, uuid, type);
             if (entity != null)

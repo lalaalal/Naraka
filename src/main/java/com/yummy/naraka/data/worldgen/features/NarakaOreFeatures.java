@@ -22,8 +22,8 @@ public class NarakaOreFeatures {
         RuleTest stone = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
         RuleTest deepslate = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
         List<OreConfiguration.TargetBlockState> nectariumTargetStates = List.of(
-                OreConfiguration.target(stone, NarakaBlocks.NECTARIUM_ORE.get().defaultBlockState()),
-                OreConfiguration.target(deepslate, NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get().defaultBlockState())
+                OreConfiguration.target(stone, NarakaBlocks.NECTARIUM_ORE.defaultBlockState()),
+                OreConfiguration.target(deepslate, NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.defaultBlockState())
         );
 
         FeatureUtils.register(context, NECTARIUM_ORE_SMALL, Feature.ORE, new OreConfiguration(nectariumTargetStates, 4, 0.5f));

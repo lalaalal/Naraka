@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.damagesource;
 
-import com.yummy.naraka.event.NarakaGameEventBus;
 import com.yummy.naraka.world.entity.Spear;
 import com.yummy.naraka.world.entity.SpearOfLonginus;
 import net.minecraft.core.Registry;
@@ -8,13 +7,9 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.event.server.ServerStartedEvent;
-
-import javax.annotation.Nullable;
 
 /**
  * Provides static methods for creating {@linkplain DamageSource} without level<br>
@@ -25,14 +20,6 @@ import javax.annotation.Nullable;
 public class NarakaDamageSources {
     private static Registry<DamageType> registry;
 
-    /**
-     * Required to access {@linkplain Registries#DAMAGE_TYPE}<br>
-     * Initialized in {@linkplain NarakaGameEventBus#onServerStarted(ServerStartedEvent)}
-     *
-     * @param registryAccess Registry access
-     * @see DamageSources
-     * @see NarakaGameEventBus#onServerStarted(ServerStartedEvent)
-     */
     public static void initialize(RegistryAccess registryAccess) {
         registry = registryAccess.registryOrThrow(Registries.DAMAGE_TYPE);
     }
@@ -47,21 +34,21 @@ public class NarakaDamageSources {
         return new DamageSource(registry.getHolderOrThrow(key));
     }
 
-    public static DamageSource source(ResourceKey<DamageType> key, @Nullable Entity causingEntity) {
+    public static DamageSource source(ResourceKey<DamageType> key, Entity causingEntity) {
         ensureInitialized();
         return new DamageSource(registry.getHolderOrThrow(key), causingEntity);
     }
 
-    public static DamageSource source(ResourceKey<DamageType> key, @Nullable Entity directEntity, @Nullable Entity causingEntity) {
+    public static DamageSource source(ResourceKey<DamageType> key, Entity directEntity, Entity causingEntity) {
         ensureInitialized();
         return new DamageSource(registry.getHolderOrThrow(key), directEntity, causingEntity);
     }
 
-    public static DamageSource stigma(@Nullable Entity causingEntity) {
+    public static DamageSource stigma(Entity causingEntity) {
         return source(NarakaDamageTypes.STIGMA, causingEntity);
     }
 
-    public static DamageSource deathCountZero(@Nullable Entity causingEntity) {
+    public static DamageSource deathCountZero(Entity causingEntity) {
         return source(NarakaDamageTypes.DEATH_COUNT_ZERO, causingEntity);
     }
 

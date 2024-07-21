@@ -1,31 +1,28 @@
 package com.yummy.naraka.world.item.crafting;
 
 import com.yummy.naraka.NarakaMod;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class NarakaRecipeTypes {
-    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, NarakaMod.MOD_ID);
+    public static final RecipeType<SoulCraftingRecipe> SOUL_CRAFTING = register("soul_crafting");
 
-    public static final DeferredHolder<RecipeType<?>, RecipeType<SoulCraftingRecipe>> SOUL_CRAFTING = register("soul_crafting");
-
-    private static <T extends Recipe<?>> DeferredHolder<RecipeType<?>, RecipeType<T>> register(String identifier) {
-        return RECIPE_TYPES.register(
-                identifier,
-                () -> new RecipeType<>() {
+    private static <I extends RecipeInput, T extends Recipe<I>> RecipeType<T> register(String name) {
+        return Registry.register(
+                BuiltInRegistries.RECIPE_TYPE,
+                NarakaMod.location(name),
+                new RecipeType<>() {
                     @Override
                     public String toString() {
-                        return identifier;
+                        return name;
                     }
                 }
         );
     }
 
-    public static void register(IEventBus bus) {
-        RECIPE_TYPES.register(bus);
+    public static void initialize() {
     }
 }

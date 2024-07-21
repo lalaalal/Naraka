@@ -5,14 +5,14 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.layer.HerobrineEyeLayer;
 import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.world.entity.Herobrine;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class HerobrineRenderer extends LivingEntityRenderer<Herobrine, HerobrineModel<Herobrine>> {
     public HerobrineRenderer(EntityRendererProvider.Context context) {
         this(context, NarakaModelLayers.HEROBRINE);

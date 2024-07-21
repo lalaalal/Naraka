@@ -4,24 +4,23 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.NarakaRegistries;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.structure.piece.HerobrineSanctuaryOutline;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 
 public class NarakaProtectionPredicates {
-    private static final DeferredRegister<ProtectionPredicate> PROTECTION_PREDICATES = DeferredRegister.create(NarakaRegistries.PROTECTION_PREDICATE, NarakaMod.MOD_ID);
-
-    public static final DeferredHolder<ProtectionPredicate, ProtectionPredicate> BOX = PROTECTION_PREDICATES.register(
-            "box",
-            () -> (box, pos) -> true
+    public static final Holder<ProtectionPredicate> BOX = register(
+            "box", (box, pos) -> true
     );
 
-    public static final DeferredHolder<ProtectionPredicate, ProtectionPredicate> HEROBRINE_SANCTUARY_PROTECTION = PROTECTION_PREDICATES.register(
-            "herobrine_sanctuary_protection",
-            () -> (box, pos) -> NarakaUtils.isInSphere(box, HerobrineSanctuaryOutline.SPHERE_SIZE, pos)
+    public static final Holder<ProtectionPredicate> HEROBRINE_SANCTUARY_PROTECTION = register(
+            "herobrine_sanctuary_protection", (box, pos) -> NarakaUtils.isInSphere(box, HerobrineSanctuaryOutline.SPHERE_SIZE, pos)
     );
 
-    public static void register(IEventBus bus) {
-        PROTECTION_PREDICATES.register(bus);
+    private static Holder<ProtectionPredicate> register(String name, ProtectionPredicate predicate) {
+        return Registry.registerForHolder(NarakaRegistries.PROTECTION_PREDICATE, NarakaMod.location(name), predicate);
+    }
+
+    public static void initialize() {
+
     }
 }

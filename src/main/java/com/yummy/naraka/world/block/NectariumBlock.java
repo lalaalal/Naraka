@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.block;
 
-import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -12,8 +11,8 @@ import net.minecraft.world.level.block.state.BlockState;
 public class NectariumBlock extends Block {
     private static double composeChance;
 
-    public static void loadConfig() {
-        composeChance = NarakaMod.config().nectariumComposeChance.get();
+    static {
+        composeChance = 0.5;
     }
 
     public NectariumBlock(Properties properties) {

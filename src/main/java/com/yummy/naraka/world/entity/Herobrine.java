@@ -1,9 +1,7 @@
 package com.yummy.naraka.world.entity;
 
-import com.yummy.naraka.attachment.DeathCountHelper;
 import com.yummy.naraka.util.NarakaNbtUtils;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -15,14 +13,13 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.fluids.FluidType;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class Herobrine extends Monster implements DeathCountingEntity {
+public class Herobrine extends Monster {
     private final Set<UUID> deathCountedEntities = new HashSet<>();
 
     public static AttributeSupplier getAttributeSupplier() {
@@ -34,11 +31,10 @@ public class Herobrine extends Monster implements DeathCountingEntity {
     public Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
         super(entityType, level);
         registerGoals();
-        DeathCountHelper.addDeathCountingEntity(this);
     }
 
     public Herobrine(Level level, Vec3 pos) {
-        this(NarakaEntityTypes.HEROBRINE.get(), level);
+        this(NarakaEntityTypes.HEROBRINE, level);
         setPos(pos);
     }
 
@@ -57,21 +53,12 @@ public class Herobrine extends Monster implements DeathCountingEntity {
         return false;
     }
 
-    @Override
-    public boolean isPushedByFluid(FluidType type) {
-        return false;
-    }
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
         if (source.is(DamageTypes.IN_WALL))
             return true;
         return super.isInvulnerableTo(source);
-    }
-
-    @Override
-    public boolean canDrownInFluidType(FluidType type) {
-        return false;
     }
 
     @Override
@@ -117,38 +104,6 @@ public class Herobrine extends Monster implements DeathCountingEntity {
         if (list != null) {
             deathCountedEntities.clear();
             deathCountedEntities.addAll(list);
-            DeathCountHelper.updateDeathCountingEntity(this);
         }
-    }
-
-    @Override
-    public Set<UUID> getDeathCountedEntities() {
-        return deathCountedEntities;
-    }
-
-    @Override
-    public void onDeathCountZero(LivingEntity livingEntity) {
-        removeDeathCountedEntity(livingEntity);
-        if (livingEntity instanceof ServerPlayer player)
-            DeathCountHelper.hideDeathCount(player);
-        kill();
-    }
-
-    @Override
-    public boolean hurt(DamageSource source, float amount) {
-        if (source.getEntity() instanceof LivingEntity livingEntity) {
-            addDeathCountedEntity(livingEntity);
-            if (livingEntity instanceof ServerPlayer serverPlayer)
-                DeathCountHelper.showDeathCount(serverPlayer);
-        }
-
-        return super.hurt(source, amount);
-    }
-
-    @Override
-    public void die(DamageSource damageSource) {
-        DeathCountHelper.removeDeathCountingEntity(this);
-        deathCountedEntities.clear();
-        super.die(damageSource);
     }
 }

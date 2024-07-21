@@ -1,63 +1,53 @@
 package com.yummy.naraka.data.tags;
 
-import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraft.world.item.Item;
 
 import java.util.concurrent.CompletableFuture;
 
-public class NarakaItemTagsProvider extends ItemTagsProvider {
-    public NarakaItemTagsProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> blockTags, ExistingFileHelper existingFileHelper) {
-        super(packOutput, provider, blockTags, NarakaMod.MOD_ID, existingFileHelper);
+public class NarakaItemTagsProvider extends FabricTagProvider<Item> {
+    public NarakaItemTagsProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+        super(output, Registries.ITEM, registriesFuture);
     }
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(NarakaItemTags.SPEAR)
-                .add(NarakaItems.SPEAR_ITEM.get())
-                .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get())
-                .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
+        getOrCreateTagBuilder(NarakaItemTags.SPEAR)
+                .add(NarakaItems.SPEAR_ITEM)
+                .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM)
+                .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM);
 
-        tag(NarakaItemTags.ALWAYS_RENDER_ITEM_ENTITY)
-                .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
+        getOrCreateTagBuilder(NarakaItemTags.ALWAYS_RENDER_ITEM_ENTITY)
+                .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM);
 
-        tag(NarakaItemTags.SPEAR_ENCHANTABLE)
-                .add(NarakaItems.SPEAR_ITEM.get())
-                .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get())
-                .addTag(ItemTags.TRIDENT_ENCHANTABLE);
+        getOrCreateTagBuilder(NarakaItemTags.SPEAR_ENCHANTABLE)
+                .add(NarakaItems.SPEAR_ITEM)
+                .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM)
+                .forceAddTag(ItemTags.TRIDENT_ENCHANTABLE);
 
-        tag(NarakaItemTags.EBONY_LOGS)
+        getOrCreateTagBuilder(NarakaItemTags.EBONY_LOGS)
                 .add(NarakaBlocks.EBONY_LOG.asItem())
                 .add(NarakaBlocks.EBONY_WOOD.asItem())
                 .add(NarakaBlocks.STRIPPED_EBONY_LOG.asItem())
                 .add(NarakaBlocks.STRIPPED_EBONY_WOOD.asItem());
 
-        tag(ItemTags.WOODEN_STAIRS)
-                .add(NarakaBlocks.EBONY_STAIRS.asItem());
-        tag(ItemTags.WOODEN_SLABS)
-                .add(NarakaBlocks.EBONY_SLAB.asItem());
-
-        tag(ItemTags.LOGS_THAT_BURN)
+        getOrCreateTagBuilder(ItemTags.LOGS_THAT_BURN)
                 .addTag(NarakaItemTags.EBONY_LOGS);
-        tag(ItemTags.PLANKS)
+        getOrCreateTagBuilder(ItemTags.PLANKS)
                 .add(NarakaBlocks.EBONY_PLANKS.asItem());
-        tag(ItemTags.SIGNS)
-                .add(NarakaItems.EBONY_SIGN.get());
-        tag(ItemTags.HANGING_SIGNS)
-                .add(NarakaItems.EBONY_HANGING_SIGN.get());
 
-        tag(ItemTags.DURABILITY_ENCHANTABLE)
-                .add(NarakaItems.SPEAR_ITEM.get())
-                .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get());
-        tag(ItemTags.VANISHING_ENCHANTABLE)
-                .add(NarakaItems.SPEAR_ITEM.get())
-                .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
+        getOrCreateTagBuilder(ItemTags.DURABILITY_ENCHANTABLE)
+                .add(NarakaItems.SPEAR_ITEM)
+                .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
+        getOrCreateTagBuilder(ItemTags.VANISHING_ENCHANTABLE)
+                .add(NarakaItems.SPEAR_ITEM)
+                .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM);
     }
 }

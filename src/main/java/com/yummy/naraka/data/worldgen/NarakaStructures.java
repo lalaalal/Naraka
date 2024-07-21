@@ -6,6 +6,7 @@ import com.yummy.naraka.world.structure.JumboStructure;
 import com.yummy.naraka.world.structure.height.SeaLevelBasedHeightProvider;
 import com.yummy.naraka.world.structure.piece.NarakaStructurePieceFactories;
 import com.yummy.naraka.world.structure.protection.NarakaProtectionPredicates;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
@@ -19,7 +20,6 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSpawnOverride;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
-import net.neoforged.neoforge.common.Tags;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +34,7 @@ public class NarakaStructures {
     public static void bootstrap(BootstrapContext<Structure> context) {
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 
-        HolderSet<Biome> herobrineSanctuaryBiomes = biomes.getOrThrow(Tags.Biomes.IS_PLAINS);
+        HolderSet<Biome> herobrineSanctuaryBiomes = biomes.getOrThrow(ConventionalBiomeTags.IS_PLAINS);
 
         Map<MobCategory, StructureSpawnOverride> herobrineSanctuarySpawnOverrides = Map.of(
                 MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, MobSpawnSettings.EMPTY_MOB_LIST),

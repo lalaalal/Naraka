@@ -1,8 +1,8 @@
 package com.yummy.naraka.util;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Style;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.List;
 import java.util.function.UnaryOperator;
@@ -13,14 +13,14 @@ import java.util.stream.Stream;
  *
  * @author lalaalal
  */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class ComponentStyles {
     public static final ColorTransforming LONGINUS_COLOR = new ColorTransforming(
             Stream.of(0xB02E26, 0xF9801D, 0xFED83D, 0x80C71F, 0x169C9C, 0x3C44AA, 0x8932B8, 0xC74EBD)
                     .map(Color::of).toList(),
             10
     );
-    private static int tickCount = 0;
+    private static long tickCount = 0;
 
     public static void tick() {
         LONGINUS_COLOR.updateColor();
@@ -30,12 +30,12 @@ public class ComponentStyles {
 
     public static class ColorTransforming implements UnaryOperator<Style> {
         private final List<Color> colors;
-        private final int transformTime;
-        private int lastChangedTime;
+        private final long transformTime;
+        private long lastChangedTime;
         private Color previousColor;
         private Color currentColor;
 
-        public ColorTransforming(List<Color> colors, int transformTime) {
+        public ColorTransforming(List<Color> colors, long transformTime) {
             this.colors = colors;
             this.transformTime = transformTime;
             previousColor = colors.getFirst();
