@@ -1,4 +1,4 @@
-package com.yummy.naraka.mixins;
+package com.yummy.naraka.mixin;
 
 import com.yummy.naraka.world.structure.protection.StructureProtector;
 import net.minecraft.core.BlockPos;

@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package com.yummy.naraka.mixins;
+package com.yummy.naraka.mixin;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 
