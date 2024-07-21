@@ -1,10 +1,7 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Position;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -17,21 +14,14 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.Optional;
-import java.util.function.Supplier;
 
 public class Spear extends AbstractArrow {
     private static final EntityDataAccessor<Integer> ID_LOYALTY = SynchedEntityData.defineId(Spear.class, EntityDataSerializers.INT);
@@ -45,15 +35,15 @@ public class Spear extends AbstractArrow {
         baseDamage = 1;
     }
 
-    public Spear(Supplier<? extends EntityType<? extends Spear>> type, Level level, Position position, ItemStack pickupItem, float baseDamage) {
-        super(type.get(), position.x(), position.y(), position.z(), level, pickupItem, null);
+    public Spear(EntityType<? extends Spear> type, Level level, Position position, ItemStack pickupItem, float baseDamage) {
+        super(type, position.x(), position.y(), position.z(), level, pickupItem, null);
         entityData.set(ID_LOYALTY, getLoyaltyFromItem(pickupItem));
         entityData.set(ID_FOIL, pickupItem.hasFoil());
         this.baseDamage = baseDamage;
     }
 
-    public Spear(Supplier<? extends EntityType<? extends Spear>> type, Level level, LivingEntity owner, ItemStack pickupItem, float baseDamage) {
-        super(type.get(), owner, level, pickupItem, null);
+    public Spear(EntityType<? extends Spear> type, Level level, LivingEntity owner, ItemStack pickupItem, float baseDamage) {
+        super(type, owner, level, pickupItem, null);
         entityData.set(ID_LOYALTY, getLoyaltyFromItem(pickupItem));
         entityData.set(ID_FOIL, pickupItem.hasFoil());
         this.baseDamage = baseDamage;
@@ -109,7 +99,7 @@ public class Spear extends AbstractArrow {
         int loyaltyLevel = getLoyalty();
         if (loyaltyLevel > 0 && (this.dealtDamage || this.isNoPhysics()) && owner != null) {
             if (!this.isAcceptibleReturnOwner()) {
-                if (!level().isClientSide && this.pickup == AbstractArrow.Pickup.ALLOWED) {
+                if (!level().isClientSide && this.pickup == Pickup.ALLOWED) {
                     this.spawnAtLocation(this.getPickupItem(), 0.1f);
                 }
 
@@ -152,19 +142,8 @@ public class Spear extends AbstractArrow {
     }
 
     protected void hurtHitEntity(Entity entity) {
-        ItemStack stack = getPickupItem();
-        Optional<HolderLookup.RegistryLookup<Enchantment>> enchantmentLookup = level().registryAccess().lookup(Registries.ENCHANTMENT);
-        double damage = stack.getAttributeModifiers().compute(baseDamage, EquipmentSlot.MAINHAND);
-        if (enchantmentLookup.isPresent()) {
-            ItemEnchantments enchantments = stack.getAllEnchantments(enchantmentLookup.get());
-            for (Holder<Enchantment> enchantment : enchantments.keySet()) {
-                if (enchantment.is(Enchantments.IMPALING))
-                    damage += 1;
-            }
-        }
-
         DamageSource damageSource = NarakaDamageSources.spear(this);
-        entity.hurt(damageSource, (float) damage);
+        entity.hurt(damageSource, baseDamage);
     }
 
     @Override

@@ -12,9 +12,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -31,8 +33,8 @@ public class StructureProtector {
 
     public StructureProtector(CompoundTag tag, HolderLookup.Provider provider) {
         String keyName = tag.getString("predicate");
-        ResourceKey<ProtectionPredicate> key = ResourceKey.create(NarakaRegistries.PROTECTION_PREDICATE, ResourceLocation.parse(keyName));
-        HolderLookup.RegistryLookup<ProtectionPredicate> predicates = provider.lookupOrThrow(NarakaRegistries.PROTECTION_PREDICATE);
+        ResourceKey<ProtectionPredicate> key = ResourceKey.create(NarakaRegistries.PROTECTION_PREDICATE.key(), ResourceLocation.parse(keyName));
+        HolderLookup.RegistryLookup<ProtectionPredicate> predicates = provider.lookupOrThrow(NarakaRegistries.PROTECTION_PREDICATE.key());
         this.predicate = predicates.getOrThrow(key);
         Optional<BoundingBox> box = NarakaNbtUtils.readBoundingBox(tag, "box");
         if (box.isEmpty())
@@ -80,7 +82,7 @@ public class StructureProtector {
 
     private static class Container extends SavedData {
         private static final Factory<Container> factory = new Factory<>(
-                Container::new, Container::new
+                Container::new, Container::new, DataFixTypes.LEVEL
         );
         private static Container instance = new Container();
 
@@ -98,7 +100,7 @@ public class StructureProtector {
         }
 
         @Override
-        public CompoundTag save(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        public @NotNull CompoundTag save(CompoundTag compoundTag, HolderLookup.Provider provider) {
             NarakaNbtUtils.writeCollection(compoundTag, "structure_protectors", protectors, StructureProtector::save, provider);
             return compoundTag;
         }

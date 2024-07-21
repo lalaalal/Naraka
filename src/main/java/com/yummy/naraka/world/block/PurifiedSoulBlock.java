@@ -20,7 +20,7 @@ public class PurifiedSoulBlock extends Block {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (itemStack.is(ItemTags.CREEPER_IGNITERS) && hitResult.getDirection() == Direction.UP) {
-            level.setBlock(pos.above(), NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get().defaultBlockState(), 10);
+            level.setBlock(pos.above(), NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.defaultBlockState(), 10);
             return ItemInteractionResult.SUCCESS;
         }
         return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult);

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "naraka",
+  "version": "${version}",
+  "name": "Naraka",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "Me!"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "CC0-1.0",
+  "icon": "assets/naraka/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.yummy.naraka.client.NarakaModClient"
+    ],
+    "main": [
+      "com.yummy.naraka.NarakaMod"
+    ],
+    "fabric-datagen": [
+      "com.yummy.naraka.data.NarakaDataGenerator"
+    ]
+  },
+  "accessWidener": "naraka.accesswidener",
+  "mixins": [
+    "naraka.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "minecraft": "~1.21",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

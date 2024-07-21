@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 public abstract class HeightProvider {
     public static final Codec<HeightProvider> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                    RegistryFixedCodec.create(NarakaRegistries.HEIGHT_PROVIDER_TYPE).fieldOf("type").forGetter(HeightProvider::getType),
+                    RegistryFixedCodec.create(NarakaRegistries.HEIGHT_PROVIDER_TYPE.key()).fieldOf("type").forGetter(HeightProvider::getType),
                     IntProvider.CODEC.fieldOf("sampler").forGetter(provider -> provider.sampler)
             ).apply(instance, HeightProvider::create)
     );

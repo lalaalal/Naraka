@@ -51,14 +51,14 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
     }
 
     public HerobrineSanctuaryOutline(BlockPos pos) {
-        super(NarakaStructurePieceTypes.HEROBRINE_SANCTUARY_OUTLINE.get(), 0, createBox(pos.offset(OFFSET)));
+        super(NarakaStructurePieceTypes.HEROBRINE_SANCTUARY_OUTLINE, 0, createBox(pos.offset(OFFSET)));
         this.pos = pos.offset(OFFSET);
         this.lavaBox = createLavaBox(this.pos);
         this.airBox = createAirBox(this.pos);
     }
 
     public HerobrineSanctuaryOutline(StructurePieceSerializationContext context, CompoundTag tag) {
-        super(NarakaStructurePieceTypes.HEROBRINE_SANCTUARY_OUTLINE.get(), tag);
+        super(NarakaStructurePieceTypes.HEROBRINE_SANCTUARY_OUTLINE, tag);
         this.pos = NbtUtils.readBlockPos(tag, "pos").orElse(BlockPos.ZERO);
         this.lavaBox = createLavaBox(pos);
         this.airBox = createAirBox(pos);

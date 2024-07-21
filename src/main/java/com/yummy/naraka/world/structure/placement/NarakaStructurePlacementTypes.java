@@ -1,21 +1,22 @@
 package com.yummy.naraka.world.structure.placement;
 
 import com.yummy.naraka.NarakaMod;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class NarakaStructurePlacementTypes {
-    private static final DeferredRegister<StructurePlacementType<?>> STRUCTURE_PLACEMENT_TYPES = DeferredRegister.create(Registries.STRUCTURE_PLACEMENT, NarakaMod.MOD_ID);
-
-    public static final DeferredHolder<StructurePlacementType<?>, StructurePlacementType<ExclusiveRandomSpreadStructurePlacement>> EXCLUSIVE_RANDOM_SPREAD = STRUCTURE_PLACEMENT_TYPES.register(
+    public static final StructurePlacementType<ExclusiveRandomSpreadStructurePlacement> EXCLUSIVE_RANDOM_SPREAD = register(
             "exclusive_random_spread",
-            () -> () -> ExclusiveRandomSpreadStructurePlacement.CODEC
+            () -> ExclusiveRandomSpreadStructurePlacement.CODEC
     );
 
-    public static void register(IEventBus bus) {
-        STRUCTURE_PLACEMENT_TYPES.register(bus);
+    private static <T extends StructurePlacement> StructurePlacementType<T> register(String name, StructurePlacementType<T> type) {
+        return Registry.register(BuiltInRegistries.STRUCTURE_PLACEMENT, NarakaMod.location(name), type);
+    }
+
+    public static void initialize() {
+
     }
 }

@@ -18,6 +18,6 @@ public class EbonySaplingBlock extends SaplingBlock {
 
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        return level.getBlockState(pos.below()).is(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
+        return level.getBlockState(pos.below()).is(NarakaBlocks.COMPRESSED_IRON_BLOCK);
     }
 }

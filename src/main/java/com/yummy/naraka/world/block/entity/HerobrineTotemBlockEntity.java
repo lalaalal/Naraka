@@ -35,7 +35,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     }
 
     public HerobrineTotemBlockEntity(BlockPos pos, BlockState state) {
-        this(NarakaBlockEntityTypes.HEROBRINE_TOTEM.get(), pos, state);
+        this(NarakaBlockEntityTypes.HEROBRINE_TOTEM, pos, state);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, HerobrineTotemBlockEntity blockEntity) {
@@ -81,7 +81,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
 
     public void refineFire(Level level, BlockPos totemPos) {
         if (!level.getBlockState(totemPos.above(2)).is(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK))
-            level.setBlock(totemPos.above(2), NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get().defaultBlockState(), Block.UPDATE_CLIENTS);
+            level.setBlock(totemPos.above(2), NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.defaultBlockState(), Block.UPDATE_CLIENTS);
     }
 
     private void summonHerobrine(ServerLevel level, BlockPos pos) {

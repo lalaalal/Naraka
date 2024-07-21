@@ -1,21 +1,21 @@
 package com.yummy.naraka.world.structure;
 
 import com.yummy.naraka.NarakaMod;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class NarakaStructureTypes {
-    private static final DeferredRegister<StructureType<?>> STRUCTURES = DeferredRegister.create(Registries.STRUCTURE_TYPE, NarakaMod.MOD_ID);
-
-    public static final DeferredHolder<StructureType<?>, StructureType<JumboStructure>> JUMBO = STRUCTURES.register(
-            "jumbo_structure",
-            () -> () -> JumboStructure.CODEC
+    public static final StructureType<JumboStructure> JUMBO = register(
+            "jumbo_structure", () -> JumboStructure.CODEC
     );
 
-    public static void register(IEventBus bus) {
-        STRUCTURES.register(bus);
+    private static <T extends Structure> StructureType<T> register(String name, StructureType<T> type) {
+        return Registry.register(BuiltInRegistries.STRUCTURE_TYPE, NarakaMod.location(name), type);
+    }
+
+    public static void initialize() {
+
     }
 }
