@@ -10,6 +10,7 @@ import com.yummy.naraka.client.model.SpearOfLonginusModel;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry.DynamicItemRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -19,6 +20,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -27,25 +29,21 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Map;
 
 @Environment(EnvType.CLIENT)
-public class NarakaCustomRenderer extends BlockEntityWithoutLevelRenderer {
+public class NarakaCustomRenderer implements DynamicItemRenderer, ResourceManagerReloadListener {
     private static final Map<Item, ResourceLocation> TEXTURE_LOCATIONS = Map.of(
             NarakaItems.SPEAR_ITEM, NarakaTextures.SPEAR,
             NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, NarakaTextures.MIGHTY_HOLY_SPEAR
     );
 
-    private static NarakaCustomRenderer INSTANCE = null;
+    public static NarakaCustomRenderer INSTANCE = new NarakaCustomRenderer();
 
+    private final Minecraft minecraft;
     private Map<Item, EntityModel<?>> models = Map.of();
     private final EntityModelSet entityModels;
 
-    public static NarakaCustomRenderer getInstance() {
-        if (INSTANCE == null)
-            return INSTANCE = new NarakaCustomRenderer(Minecraft.getInstance());
-        return INSTANCE;
-    }
 
-    private NarakaCustomRenderer(Minecraft minecraft) {
-        super(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels());
+    private NarakaCustomRenderer() {
+        this.minecraft = Minecraft.getInstance();
         this.entityModels = minecraft.getEntityModels();
     }
 
@@ -62,14 +60,14 @@ public class NarakaCustomRenderer extends BlockEntityWithoutLevelRenderer {
     }
 
     @Override
-    public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+    public void render(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
         Item item = stack.getItem();
         if (models.containsKey(item)) {
             ResourceLocation textureLocation = TEXTURE_LOCATIONS.get(item);
             EntityModel<?> model = models.get(item);
 
             poseStack.pushPose();
-            Player player = Minecraft.getInstance().player;
+            Player player = minecraft.player;
             boolean notFirstPerson = displayContext != ItemDisplayContext.FIRST_PERSON_LEFT_HAND && displayContext != ItemDisplayContext.FIRST_PERSON_RIGHT_HAND;
             if (player != null && player.isUsingItem() && notFirstPerson) {
                 poseStack.mulPose(Axis.ZP.rotationDegrees(180));
