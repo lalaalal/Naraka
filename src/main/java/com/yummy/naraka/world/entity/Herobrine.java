@@ -13,10 +13,9 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 
 public class Herobrine extends Monster {
-    public static AttributeSupplier getAttributeSupplier() {
+    public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 20)
-                .build();
+                .add(Attributes.MAX_HEALTH, 20);
     }
 
     public Herobrine(EntityType<? extends Herobrine> entityType, Level level) {

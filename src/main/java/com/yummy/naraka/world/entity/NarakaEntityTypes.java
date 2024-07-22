@@ -1,17 +1,27 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.NarakaMod;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityType;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.block.Blocks;
+
+import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 public class NarakaEntityTypes {
     public static final EntityType<Herobrine> HEROBRINE = register(
             "herobrine",
-            EntityType.Builder.<Herobrine>of(Herobrine::new, MobCategory.MONSTER)
+            FabricEntityType.Builder.<Herobrine>createLiving(
+                            Herobrine::new,
+                            MobCategory.MONSTER,
+                            attribute(Herobrine::getAttributeSupplier)
+                    )
                     .fireImmune()
                     .sized(0.6f, 2.0f)
     );
@@ -39,6 +49,10 @@ public class NarakaEntityTypes {
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
         EntityType<T> type = builder.build(name);
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, NarakaMod.location(name), type);
+    }
+
+    private static <T extends LivingEntity> UnaryOperator<FabricEntityType.Builder.Living<T>> attribute(Supplier<AttributeSupplier.Builder> supplier) {
+        return livingEntity -> livingEntity.defaultAttributes(supplier);
     }
 
     public static void initialize() {

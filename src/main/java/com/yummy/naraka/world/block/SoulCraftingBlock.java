@@ -87,7 +87,6 @@ public class SoulCraftingBlock extends BaseEntityBlock {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;

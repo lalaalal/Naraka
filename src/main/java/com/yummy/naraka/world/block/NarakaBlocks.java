@@ -196,6 +196,6 @@ public class NarakaBlocks {
     }
 
     public static void initialize() {
-
+        setFlammableBlocks();
     }
 }
