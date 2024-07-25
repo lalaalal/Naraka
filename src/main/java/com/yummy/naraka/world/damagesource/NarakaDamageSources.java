@@ -26,7 +26,7 @@ public class NarakaDamageSources {
 
     private static void ensureInitialized() {
         if (registry == null)
-            throw new IllegalStateException("Not initialized");
+            throw new IllegalStateException("NarakaDamageSources is not initialized");
     }
 
     public static DamageSource source(ResourceKey<DamageType> key) {

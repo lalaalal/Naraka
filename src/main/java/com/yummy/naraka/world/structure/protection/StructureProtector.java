@@ -74,7 +74,7 @@ public class StructureProtector {
         return false;
     }
 
-    public static void load(MinecraftServer server) {
+    public static void initialize(MinecraftServer server) {
         ServerLevel overworld = server.overworld();
         DimensionDataStorage storage = overworld.getDataStorage();
         Container.instance = storage.computeIfAbsent(Container.factory, "structure_protectors");
