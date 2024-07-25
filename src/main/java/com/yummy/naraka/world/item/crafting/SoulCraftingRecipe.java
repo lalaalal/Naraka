@@ -7,7 +7,7 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 
 public class SoulCraftingRecipe extends SingleItemRecipe {
-    public static Serializer SERIALIZER = new Serializer();
+    public static final Serializer SERIALIZER = new Serializer();
 
     public SoulCraftingRecipe(String group, Ingredient ingredient, ItemStack result) {
         super(NarakaRecipeTypes.SOUL_CRAFTING, NarakaRecipeSerializers.SOUL_CRAFTING_RECIPE, group, ingredient, result);

@@ -6,7 +6,6 @@ import com.mojang.math.Axis;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
-import com.yummy.naraka.client.model.CustomItemRenderManager;
 import com.yummy.naraka.client.model.SpearModel;
 import com.yummy.naraka.client.model.SpearOfLonginusModel;
 import com.yummy.naraka.world.item.NarakaItems;
@@ -66,7 +65,7 @@ public class NarakaSpearItemRenderer implements CustomItemRenderManager.CustomIt
         return new Vec3(x, y, z);
     }
 
-    public static NarakaSpearItemRenderer INSTANCE = new NarakaSpearItemRenderer();
+    public static final NarakaSpearItemRenderer INSTANCE = new NarakaSpearItemRenderer();
 
     private final Minecraft minecraft;
     private Map<Item, EntityModel<?>> models = Map.of();

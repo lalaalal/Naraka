@@ -1,8 +1,11 @@
 package com.yummy.naraka.client;
 
 import com.yummy.naraka.NarakaMod;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 
+@Environment(EnvType.CLIENT)
 public class NarakaModelLayers {
     public static final ModelLayerLocation HEROBRINE = location("herobrine");
     public static final ModelLayerLocation SPEAR = location("spear");

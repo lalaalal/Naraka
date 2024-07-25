@@ -13,37 +13,9 @@ import net.minecraft.client.model.geom.builders.*;
 @Environment(EnvType.CLIENT)
 public class HerobrineModel<T extends Herobrine> extends HierarchicalModel<T> {
     private final ModelPart root;
-    private final ModelPart head;
-    private final ModelPart body;
-    private final ModelPart left_arm;
-    private final ModelPart left_arm_upper;
-    private final ModelPart left_arm_lower;
-    private final ModelPart right_arm;
-    private final ModelPart right_arm_upper;
-    private final ModelPart right_arm_lower;
-    private final ModelPart left_leg;
-    private final ModelPart left_leg_upper;
-    private final ModelPart left_leg_lower;
-    private final ModelPart right_leg;
-    private final ModelPart right_leg_upper;
-    private final ModelPart right_leg_lower;
 
     public HerobrineModel(ModelPart root) {
         this.root = root;
-        this.head = root.getChild("head");
-        this.body = root.getChild("body");
-        this.left_arm = root.getChild("left_arm");
-        this.left_arm_upper = left_arm.getChild("left_arm_upper");
-        this.left_arm_lower = left_arm.getChild("left_arm_lower");
-        this.right_arm = root.getChild("right_arm");
-        this.right_arm_upper = right_arm.getChild("right_arm_upper");
-        this.right_arm_lower = right_arm.getChild("right_arm_lower");
-        this.left_leg = root.getChild("left_leg");
-        this.left_leg_upper = left_leg.getChild("left_leg_upper");
-        this.left_leg_lower = left_leg.getChild("left_leg_lower");
-        this.right_leg = root.getChild("right_leg");
-        this.right_leg_upper = right_leg.getChild("right_leg_upper");
-        this.right_leg_lower = right_leg.getChild("right_leg_lower");
     }
 
     public static LayerDefinition createBodyLayer() {

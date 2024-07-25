@@ -42,25 +42,20 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
     public static final int PROGRESS_WAITING = 0;
     public static final int PROGRESS_START = 1;
 
-    private static int requiredFuels;
-    private static int craftingTime;
+    private static final int REQUIRED_FUELS = 10;
+    private static final int CRAFTING_TIME = 20 * 30;
 
     public static int requiredFuels() {
-        return requiredFuels;
+        return REQUIRED_FUELS;
     }
 
     public static int craftingTime() {
-        return craftingTime;
-    }
-
-    static {
-        requiredFuels = 10;
-        craftingTime = 20 * 30;
+        return CRAFTING_TIME;
     }
 
     private NonNullList<ItemStack> items = NonNullList.withSize(SLOT_SIZE, ItemStack.EMPTY);
     private final ContainerData data = new SimpleContainerData(DATA_SIZE);
-    private RecipeHolder<?> recipeUsed;
+    private @Nullable RecipeHolder<?> recipeUsed;
 
     public SoulCraftingBlockEntity(BlockPos pos, BlockState blockState) {
         super(NarakaBlockEntityTypes.SOUL_CRAFTING_BLOCK_ENTITY, pos, blockState);

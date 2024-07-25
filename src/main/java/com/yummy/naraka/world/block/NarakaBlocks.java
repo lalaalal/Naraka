@@ -98,6 +98,8 @@ public class NarakaBlocks {
     public static final Block EBONY_PLANKS = registerSimpleBlockWithItem("ebony_planks", Blocks.DARK_OAK_PLANKS);
 
     public static final EbonySaplingBlock EBONY_SAPLING = registerBlockWithItem("ebony_sapling", EbonySaplingBlock::new, Blocks.DARK_OAK_SAPLING);
+    public static final FlowerPotBlock POTTED_EBONY_SAPLING = registerBlockWithItem("potted_ebony_sapling", properties -> new FlowerPotBlock(EBONY_SAPLING, properties), Blocks.POTTED_DARK_OAK_SAPLING);
+
     public static final Block HARD_EBONY_PLANKS = registerBlockWithItem(
             "hard_ebony_planks",
             properties -> new RotatedPillarBlock(properties.strength(40, 6)),

@@ -38,6 +38,7 @@ public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
         add(NarakaBlocks.EBONY_LEAVES, createLeavesDrops(NarakaBlocks.EBONY_LEAVES, NarakaBlocks.EBONY_SAPLING, 0.01f));
         dropSelf(NarakaBlocks.EBONY_SAPLING);
         dropSelf(NarakaBlocks.EBONY_PLANKS);
+        dropPottedContents(NarakaBlocks.POTTED_EBONY_SAPLING);
     }
 
     protected void dropOre(Block oreBlock, Item item) {

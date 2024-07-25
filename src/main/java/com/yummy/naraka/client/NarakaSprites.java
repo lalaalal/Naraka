@@ -1,8 +1,11 @@
 package com.yummy.naraka.client;
 
 import com.yummy.naraka.NarakaMod;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 
+@Environment(EnvType.CLIENT)
 public class NarakaSprites {
     public static final ResourceLocation SOUL_CRAFTING_PROGRESS = NarakaMod.location("container", "soul_crafting/crafting_progress");
     public static final ResourceLocation SOUL_CRAFTING_LIT_PROGRESS = NarakaMod.location("container", "soul_crafting/lit_progress");

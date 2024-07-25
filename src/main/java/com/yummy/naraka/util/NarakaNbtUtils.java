@@ -9,6 +9,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -19,7 +20,7 @@ import java.util.function.Supplier;
  * @author lalaalal
  */
 public class NarakaNbtUtils {
-    private static MinecraftServer server;
+    private static @Nullable MinecraftServer server;
     private static final Map<UUID, Entity> cache = new HashMap<>();
 
     public static void initialize(MinecraftServer server) {

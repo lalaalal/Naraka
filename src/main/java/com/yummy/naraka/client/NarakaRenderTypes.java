@@ -2,10 +2,13 @@ package com.yummy.naraka.client;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.TheEndPortalRenderer;
 
+@Environment(EnvType.CLIENT)
 public class NarakaRenderTypes {
     public static final RenderType LONGINUS = RenderType.create(
             "longinus",

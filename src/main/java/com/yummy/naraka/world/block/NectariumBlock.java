@@ -9,11 +9,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class NectariumBlock extends Block {
-    private static double composeChance;
-
-    static {
-        composeChance = 0.5;
-    }
+    private static final double COMPOSE_CHANCE = 0.5;
 
     public NectariumBlock(Properties properties) {
         super(properties.randomTicks());
@@ -25,7 +21,7 @@ public class NectariumBlock extends Block {
         for (Direction direction : UPDATE_SHAPE_ORDER) {
             mutablePos.setWithOffset(pos, direction);
             if (level.getBlockState(mutablePos.immutable()).is(Blocks.HONEY_BLOCK)
-                    && random.nextFloat() < composeChance) {
+                    && random.nextFloat() < COMPOSE_CHANCE) {
                 level.setBlock(mutablePos.immutable(), defaultBlockState(), 2);
                 return;
             }

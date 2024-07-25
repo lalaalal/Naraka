@@ -10,6 +10,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Provides static methods for creating {@linkplain DamageSource} without level<br>
@@ -18,29 +19,29 @@ import net.minecraft.world.entity.LivingEntity;
  * @author lalaalal
  */
 public class NarakaDamageSources {
-    private static Registry<DamageType> registry;
+    private static @Nullable Registry<DamageType> registry;
 
     public static void initialize(RegistryAccess registryAccess) {
         registry = registryAccess.registryOrThrow(Registries.DAMAGE_TYPE);
     }
 
-    private static void ensureInitialized() {
+    private static void ensureInitialized(Registry<DamageType> registry) {
         if (registry == null)
             throw new IllegalStateException("NarakaDamageSources is not initialized");
     }
 
     public static DamageSource source(ResourceKey<DamageType> key) {
-        ensureInitialized();
+        ensureInitialized(registry);
         return new DamageSource(registry.getHolderOrThrow(key));
     }
 
     public static DamageSource source(ResourceKey<DamageType> key, Entity causingEntity) {
-        ensureInitialized();
+        ensureInitialized(registry);
         return new DamageSource(registry.getHolderOrThrow(key), causingEntity);
     }
 
     public static DamageSource source(ResourceKey<DamageType> key, Entity directEntity, Entity causingEntity) {
-        ensureInitialized();
+        ensureInitialized(registry);
         return new DamageSource(registry.getHolderOrThrow(key), directEntity, causingEntity);
     }
 

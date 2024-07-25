@@ -10,7 +10,6 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageType;
 
 import java.util.concurrent.CompletableFuture;
@@ -34,10 +33,6 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
 
     public static String createId(String parent, String name) {
         return "%s.%s.%s".formatted(parent, NarakaMod.MOD_ID, name);
-    }
-
-    public static String createId(String parent, ResourceLocation location) {
-        return createId(parent, location.getPath());
     }
 
     public void addAdvancement(TranslationBuilder builder, AdvancementComponent advancementComponent, String title, String description) {
@@ -140,6 +135,7 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(NarakaBlocks.STRIPPED_EBONY_WOOD, "Stripped Ebony Wood");
             builder.add(NarakaBlocks.EBONY_LEAVES, "Ebony Leaves");
             builder.add(NarakaBlocks.EBONY_SAPLING, "Ebony Sapling");
+            builder.add(NarakaBlocks.POTTED_EBONY_SAPLING, "Potted Ebony Sapling");
             builder.add(NarakaBlocks.EBONY_PLANKS, "Ebony Planks");
             builder.add(NarakaBlocks.HARD_EBONY_PLANKS, "Hard Ebony Planks");
 

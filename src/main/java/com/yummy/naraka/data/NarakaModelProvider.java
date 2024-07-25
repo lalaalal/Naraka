@@ -46,7 +46,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.HARD_EBONY_PLANKS);
         createHerobrineTotem(generator);
         generator.createFurnace(NarakaBlocks.SOUL_CRAFTING_BLOCK, TexturedModel.ORIENTABLE_ONLY_TOP);
-        generator.createCrossBlockWithDefaultItem(NarakaBlocks.EBONY_SAPLING, BlockModelGenerators.TintState.NOT_TINTED);
+        generator.createPlant(NarakaBlocks.EBONY_SAPLING, NarakaBlocks.POTTED_EBONY_SAPLING, BlockModelGenerators.TintState.NOT_TINTED);
         NarakaBlocks.forEachSoulInfusedBlock(generator::createTrivialCube);
     }
 

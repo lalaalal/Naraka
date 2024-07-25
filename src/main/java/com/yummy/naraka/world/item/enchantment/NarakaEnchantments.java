@@ -21,9 +21,10 @@ import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.AddValue;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
+import org.jetbrains.annotations.Nullable;
 
 public class NarakaEnchantments {
-    private static Registry<Enchantment> registry;
+    private static @Nullable Registry<Enchantment> registry;
 
     public static void initialize(RegistryAccess registryAccess) {
         registry = registryAccess.registryOrThrow(Registries.ENCHANTMENT);
@@ -80,6 +81,8 @@ public class NarakaEnchantments {
     }
 
     public static Holder<Enchantment> get(ResourceKey<Enchantment> key) {
+        if (registry == null)
+            throw new IllegalStateException("NarakaEnchantments is not initialized");
         return registry.getHolderOrThrow(key);
     }
 }

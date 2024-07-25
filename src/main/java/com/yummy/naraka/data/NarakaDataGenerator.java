@@ -10,11 +10,12 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataProvider;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
 public class NarakaDataGenerator implements DataGeneratorEntrypoint {
-    private CompletableFuture<HolderLookup.Provider> patched;
+    private @Nullable CompletableFuture<HolderLookup.Provider> patched;
 
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {

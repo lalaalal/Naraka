@@ -35,13 +35,14 @@ public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
                 .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
         getOrCreateTagBuilder(ConventionalBlockTags.ORES)
                 .addTag(NarakaBlockTags.NECTARIUM_ORES);
-//        getOrCreateTagBuilder(ConventionalBlockTags.ORES)
-//                .add(NarakaBlocks.NECTARIUM_ORE);
-//        getOrCreateTagBuilder(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE)
-//                .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
 
         getOrCreateTagBuilder(BlockTags.FIRE)
                 .add(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK);
+
+        getOrCreateTagBuilder(BlockTags.FLOWER_POTS)
+                .add(NarakaBlocks.POTTED_EBONY_SAPLING);
+        getOrCreateTagBuilder(BlockTags.SAPLINGS)
+                .add(NarakaBlocks.EBONY_SAPLING);
 
         getOrCreateTagBuilder(NarakaBlockTags.EBONY_LOGS)
                 .add(NarakaBlocks.EBONY_LOG)

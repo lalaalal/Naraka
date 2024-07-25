@@ -35,8 +35,6 @@ public class SpearOfLonginus extends Spear {
     @Override
     public void tick() {
         super.tick();
-        if (getY() > 255)
-            dealtDamage = true;
     }
 
     @Override
@@ -62,18 +60,6 @@ public class SpearOfLonginus extends Spear {
 
     @Override
     protected void hurtHitEntity(Entity entity) {
-        Entity target = getValidTarget(entity);
-        killEntity(target);
-    }
-
-    private Entity getValidTarget(Entity entity) {
-        if (entity instanceof LivingEntity livingEntity)
-            return livingEntity;
-
-        return entity;
-    }
-
-    private void killEntity(Entity entity) {
         DamageSource source = NarakaDamageSources.longinus(this);
         entity.hurt(source, Float.MAX_VALUE);
         if (entity.isAlive())
@@ -88,7 +74,9 @@ public class SpearOfLonginus extends Spear {
 
     @Override
     public int getLoyalty() {
-        return 3;
+        if (getOwner() != null)
+            return 3;
+        return 0;
     }
 
     @Override

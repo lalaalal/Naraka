@@ -32,6 +32,8 @@ public class Spear extends AbstractArrow {
 
     protected Spear(EntityType<? extends Spear> entityType, Level level) {
         super(entityType, level);
+        entityData.set(ID_LOYALTY, 0);
+        entityData.set(ID_FOIL, false);
         baseDamage = 1;
     }
 
