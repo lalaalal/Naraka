@@ -41,7 +41,11 @@ public class NarakaBlocks {
             properties -> new DropExperienceBlock(UniformInt.of(3, 7), properties),
             Blocks.DEEPSLATE_IRON_ORE
     );
-    public static final Block NECTARIUM_BLOCK = registerBlockWithItem("nectarium_block", NectariumBlock::new, Blocks.IRON_BLOCK);
+    public static final Block NECTARIUM_BLOCK = registerBlockWithItem(
+            "nectarium_block",
+            properties -> new EncroachingBlock(properties, Blocks.HONEY_BLOCK),
+            Blocks.IRON_BLOCK
+    );
     public static final PurifiedSoulBlock PURIFIED_SOUL_BLOCK = registerBlockWithItem(
             "purified_soul_block",
             PurifiedSoulBlock::new,
@@ -69,15 +73,21 @@ public class NarakaBlocks {
     public static final SoulCraftingBlock SOUL_CRAFTING_BLOCK = registerBlockWithItem(
             "soul_crafting_block",
             SoulCraftingBlock::new,
-            BlockBehaviour.Properties.ofFullCopy(Blocks.BLAST_FURNACE)
+            from(Blocks.BLAST_FURNACE)
                     .lightLevel(SoulCraftingBlock::lightLevel)
     );
 
     public static final Block COMPRESSED_IRON_BLOCK = registerSimpleBlockWithItem("compressed_iron_block", Blocks.IRON_BLOCK);
-    public static final Block FAKE_GOLD_BLOCK = registerSimpleBlockWithItem("fake_gold_block", from(Blocks.GOLD_BLOCK).strength(5, 6));
+    public static final Block FAKE_GOLD_BLOCK = registerBlockWithItem(
+            "fake_gold_block",
+            properties -> new EncroachingBlock(properties.strength(5, 6), NarakaBlocks.COMPRESSED_IRON_BLOCK),
+            Blocks.GOLD_BLOCK
+    );
     public static final Block AMETHYST_SHARD_BLOCK = registerSimpleBlockWithItem(
             "amethyst_shard_block",
-            from(Blocks.AMETHYST_BLOCK).strength(0.5f)
+            from(Blocks.AMETHYST_BLOCK)
+                    .strength(0.5f)
+                    .requiresCorrectToolForDrops()
     );
 
     public static final Block SOUL_INFUSED_REDSTONE_BLOCK = registerSoulInfusedBlock("redstone_block", Blocks.REDSTONE_BLOCK);
@@ -89,29 +99,42 @@ public class NarakaBlocks {
     public static final Block SOUL_INFUSED_AMETHYST_BLOCK = registerSoulInfusedBlock("amethyst_block", Blocks.AMETHYST_BLOCK);
     public static final Block SOUL_INFUSED_NECTARIUM_BLOCK = registerSoulInfusedBlock("nectarium_block", NECTARIUM_BLOCK);
 
-    public static final RotatedPillarBlock EBONY_LOG = registerBlockWithItem("ebony_log", RotatedPillarBlock::new, Blocks.DARK_OAK_LOG);
-    public static final RotatedPillarBlock STRIPPED_EBONY_LOG = registerBlockWithItem("stripped_ebony_log", RotatedPillarBlock::new, Blocks.STRIPPED_DARK_OAK_LOG);
-    public static final RotatedPillarBlock EBONY_WOOD = registerBlockWithItem("ebony_wood", RotatedPillarBlock::new, Blocks.DARK_OAK_WOOD);
-    public static final RotatedPillarBlock STRIPPED_EBONY_WOOD = registerBlockWithItem("stripped_ebony_wood", RotatedPillarBlock::new, Blocks.STRIPPED_DARK_OAK_WOOD);
+    public static final RotatedPillarBlock EBONY_LOG = registerBlockWithItem("ebony_log", RotatedPillarBlock::new,
+            from(Blocks.DARK_OAK_LOG)
+                    .strength(5, 6)
+                    .requiresCorrectToolForDrops()
+    );
+    public static final RotatedPillarBlock STRIPPED_EBONY_LOG = registerBlockWithItem("stripped_ebony_log", RotatedPillarBlock::new,
+            from(Blocks.STRIPPED_DARK_OAK_LOG)
+                    .strength(5, 6).
+                    requiresCorrectToolForDrops()
+    );
+    public static final RotatedPillarBlock EBONY_WOOD = registerBlockWithItem("ebony_wood", RotatedPillarBlock::new,
+            from(Blocks.DARK_OAK_WOOD)
+                    .strength(5, 6).
+                    requiresCorrectToolForDrops()
+    );
+    public static final RotatedPillarBlock STRIPPED_EBONY_WOOD = registerBlockWithItem("stripped_ebony_wood", RotatedPillarBlock::new,
+            from(Blocks.STRIPPED_DARK_OAK_WOOD)
+                    .strength(5, 6).
+                    requiresCorrectToolForDrops()
+    );
+    public static final Block HARD_EBONY_PLANKS = registerBlockWithItem("hard_ebony_planks", RotatedPillarBlock::new,
+            from(Blocks.DARK_OAK_PLANKS)
+                    .strength(40, 6)
+                    .requiresCorrectToolForDrops()
+    );
     public static final LeavesBlock EBONY_LEAVES = registerBlockWithItem("ebony_leaves", LeavesBlock::new, Blocks.DARK_OAK_LEAVES);
-
-    public static final Block EBONY_PLANKS = registerSimpleBlockWithItem("ebony_planks", Blocks.DARK_OAK_PLANKS);
 
     public static final EbonySaplingBlock EBONY_SAPLING = registerBlockWithItem("ebony_sapling", EbonySaplingBlock::new, Blocks.DARK_OAK_SAPLING);
     public static final FlowerPotBlock POTTED_EBONY_SAPLING = registerBlockWithItem("potted_ebony_sapling", properties -> new FlowerPotBlock(EBONY_SAPLING, properties), Blocks.POTTED_DARK_OAK_SAPLING);
-
-    public static final Block HARD_EBONY_PLANKS = registerBlockWithItem(
-            "hard_ebony_planks",
-            properties -> new RotatedPillarBlock(properties.strength(40, 6)),
-            Blocks.DARK_OAK_PLANKS
-    );
 
     public static final HerobrineTotem HEROBRINE_TOTEM = registerBlockWithItem(
             "herobrine_totem",
             properties -> new HerobrineTotem(properties
                     .pushReaction(PushReaction.BLOCK)
                     .strength(50, 1200)
-                    .noLootTable()
+                    .requiresCorrectToolForDrops()
                     .lightLevel(HerobrineTotem::light)
             ),
             Blocks.NETHER_BRICKS
@@ -145,12 +168,7 @@ public class NarakaBlocks {
 
     public static void setFlammableBlocks() {
         FireBlock fire = (FireBlock) Blocks.FIRE;
-        fire.setFlammable(EBONY_LOG, 5, 5);
-        fire.setFlammable(STRIPPED_EBONY_LOG, 5, 5);
-        fire.setFlammable(EBONY_WOOD, 5, 5);
-        fire.setFlammable(STRIPPED_EBONY_WOOD, 5, 5);
-        fire.setFlammable(EBONY_LEAVES, 30, 60);
-        fire.setFlammable(EBONY_PLANKS, 5, 20);
+
     }
 
     private static Block registerSoulInfusedBlock(String name, Block baseBlock) {

@@ -114,10 +114,6 @@ public class SoulCraftingMenu extends AbstractContainerMenu {
         return itemStack.is(NarakaItems.PURIFIED_SOUL_SHARD);
     }
 
-    public boolean isCrafting() {
-        return getCraftingProgress() > 0;
-    }
-
     public double getCraftingProgress() {
         double progress = Math.min(data.get(CRAFTING_PROGRESS_DATA_ID), SoulCraftingBlockEntity.craftingTime());
         return progress / (double) SoulCraftingBlockEntity.craftingTime();

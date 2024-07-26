@@ -5,6 +5,10 @@ import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.block.entity.SoulCraftingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +35,7 @@ public class SoulCraftingBlock extends BaseEntityBlock {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     public static int lightLevel(BlockState blockState) {
-        return blockState.getValue(SoulCraftingBlock.LIT) ? 5 : 0;
+        return blockState.getValue(SoulCraftingBlock.LIT) ? 13 : 0;
     }
 
     protected SoulCraftingBlock(Properties properties) {
@@ -62,6 +66,26 @@ public class SoulCraftingBlock extends BaseEntityBlock {
         if (level.getBlockEntity(pos) instanceof SoulCraftingBlockEntity soulCraftingBlockEntity)
             player.openMenu(soulCraftingBlockEntity);
         return InteractionResult.CONSUME;
+    }
+
+    @Override
+    public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
+        if (blockState.getValue(LIT)) {
+            double x = blockPos.getX() + 0.5;
+            double y = blockPos.getY();
+            double z = blockPos.getZ() + 0.5;
+            if (randomSource.nextDouble() < 0.1) {
+                level.playLocalSound(x, y, z, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0f, 1.0f, false);
+            }
+
+            Direction direction = blockState.getValue(FACING);
+            Direction.Axis axis = direction.getAxis();
+            double xzDelta = randomSource.nextDouble() * 0.6 - 0.3;
+            double dx = axis == Direction.Axis.X ? direction.getStepX() * 0.52 : xzDelta;
+            double yDelta = randomSource.nextDouble() * 9.0 / 16.0;
+            double dz = axis == Direction.Axis.Z ? direction.getStepZ() * 0.52 : xzDelta;
+            level.addParticle(ParticleTypes.WHITE_SMOKE, x + dx, y + yDelta, z + dz, 0, 0, 0);
+        }
     }
 
     @Override

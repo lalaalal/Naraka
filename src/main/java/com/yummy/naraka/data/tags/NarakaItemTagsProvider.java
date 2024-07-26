@@ -41,7 +41,7 @@ public class NarakaItemTagsProvider extends FabricTagProvider<Item> {
         getOrCreateTagBuilder(ItemTags.LOGS_THAT_BURN)
                 .addTag(NarakaItemTags.EBONY_LOGS);
         getOrCreateTagBuilder(ItemTags.PLANKS)
-                .add(NarakaBlocks.EBONY_PLANKS.asItem());
+                .add(NarakaBlocks.HARD_EBONY_PLANKS.asItem());
 
         getOrCreateTagBuilder(ItemTags.DURABILITY_ENCHANTABLE)
                 .add(NarakaItems.SPEAR_ITEM)

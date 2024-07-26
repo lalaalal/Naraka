@@ -12,7 +12,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -46,7 +45,6 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         if (isSleeping(state))
             return;
 
-        refineFire(level, pos);
         if (tickCount % 10 == 0) {
             if (state.getValue(CRACK) == MAX_CRACK) {
                 summonHerobrine(level, pos);
@@ -77,11 +75,6 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
                 && level.getBlockState(totemPos.above()).is(Blocks.NETHERRACK)
                 && level.getBlockState(totemPos.below(1)).is(NarakaBlocks.FAKE_GOLD_BLOCK)
                 && level.getBlockState(totemPos.below(2)).is(NarakaBlocks.FAKE_GOLD_BLOCK);
-    }
-
-    public void refineFire(Level level, BlockPos totemPos) {
-        if (!level.getBlockState(totemPos.above(2)).is(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK))
-            level.setBlock(totemPos.above(2), NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.defaultBlockState(), Block.UPDATE_CLIENTS);
     }
 
     private void summonHerobrine(ServerLevel level, BlockPos pos) {

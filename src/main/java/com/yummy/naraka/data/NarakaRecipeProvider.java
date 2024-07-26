@@ -1,7 +1,6 @@
 package com.yummy.naraka.data;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.crafting.SoulCraftingRecipe;
@@ -39,7 +38,7 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .save(recipeOutput);
         smithing(
                 recipeOutput,
-                NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE,
+                NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE,
                 NarakaItems.SPEAR_ITEM,
                 NarakaItems.GOD_BLOOD,
                 RecipeCategory.COMBAT,
@@ -57,14 +56,14 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
         soulCraftingRecipe(recipeOutput, NarakaItems.NECTARIUM, NarakaItems.SOUL_INFUSED_NECTARIUM);
         soulCraftingRecipe(recipeOutput, Items.REDSTONE, NarakaItems.SOUL_INFUSED_REDSTONE);
 
-        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_REDSTONE, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_REDSTONE_SWORD);
-        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_COPPER, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_COPPER_SWORD);
-        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_GOLD, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_GOLD_SWORD);
-        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_EMERALD, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_EMERALD_SWORD);
-        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_DIAMOND, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD);
-        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_LAPIS, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_LAPIS_SWORD);
-        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_AMETHYST, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD);
-        smithing(recipeOutput, NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_NECTARIUM, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_REDSTONE, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_REDSTONE_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_COPPER, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_COPPER_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_GOLD, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_GOLD_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_EMERALD, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_EMERALD_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_DIAMOND, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_LAPIS, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_LAPIS_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_AMETHYST, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_NECTARIUM, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD);
         smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.EBONY_SWORD, NarakaItems.PURIFIED_SOUL_METAL, RecipeCategory.COMBAT, NarakaItems.PURIFIED_SOUL_SWORD);
 
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_REDSTONE, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
@@ -80,17 +79,10 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
 
         stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.HARD_EBONY_PLANKS, NarakaBlocks.EBONY_LOG, 1);
         stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.HARD_EBONY_PLANKS, NarakaBlocks.EBONY_WOOD, 1);
-        planksFromLog(recipeOutput, NarakaBlocks.EBONY_PLANKS, NarakaItemTags.EBONY_LOGS, 4);
         sword(recipeOutput, NarakaBlocks.HARD_EBONY_PLANKS, NarakaItems.EBONY_SWORD);
 
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.BUILDING_BLOCKS, Blocks.IRON_BLOCK.asItem(), RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.COMPRESSED_IRON_BLOCK);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, NarakaItems.FAKE_GOLD_INGOT)
-                .requires(Items.IRON_INGOT)
-                .requires(Items.BLAZE_POWDER)
-                .unlockedBy(getHasName(Items.BLAZE_POWDER), has(Items.BLAZE_POWDER))
-                .save(recipeOutput);
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.FAKE_GOLD_INGOT, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.FAKE_GOLD_BLOCK);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, Items.AMETHYST_SHARD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.AMETHYST_SHARD_BLOCK);
     }
 

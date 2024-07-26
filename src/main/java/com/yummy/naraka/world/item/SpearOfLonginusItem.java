@@ -42,7 +42,7 @@ public class SpearOfLonginusItem extends SpearItem {
     @Override
     public Component getName(ItemStack stack) {
         return super.getName(stack).copy()
-                .withStyle(ChatFormatting.ITALIC)
+                .withStyle(ChatFormatting.BOLD)
                 .withStyle(ComponentStyles.LONGINUS_COLOR);
     }
 }

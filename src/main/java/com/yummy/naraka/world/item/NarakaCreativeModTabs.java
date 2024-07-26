@@ -2,80 +2,109 @@ package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.block.NarakaBlocks;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 
 public class NarakaCreativeModTabs {
-    private static final CreativeModeTab NARAKA_TAB = register("example_tab", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
+    private static final CreativeModeTab NARAKA_TAB = register("naraka", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
             .title(Component.translatable("itemGroup.naraka"))
-            .icon(() -> NarakaBlocks.HEROBRINE_TOTEM.asItem().getDefaultInstance())
-            .displayItems((parameters, output) -> {
-                output.accept(NarakaItems.SPEAR_ITEM);
-                output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
-                output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM);
-                output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE);
-                output.accept(NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE);
-                output.accept(NarakaBlocks.NECTARIUM_ORE);
-                output.accept(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
-                output.accept(NarakaItems.NECTARIUM);
-                output.accept(NarakaItems.PURIFIED_SOUL_SHARD);
-
-                output.accept(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD);
-                output.accept(NarakaItems.SOUL_INFUSED_COPPER_SWORD);
-                output.accept(NarakaItems.SOUL_INFUSED_GOLD_SWORD);
-                output.accept(NarakaItems.SOUL_INFUSED_EMERALD_SWORD);
-                output.accept(NarakaItems.SOUL_INFUSED_DIAMOND_SWORD);
-                output.accept(NarakaItems.SOUL_INFUSED_LAPIS_SWORD);
-                output.accept(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD);
-                output.accept(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD);
-                output.accept(NarakaItems.PURIFIED_SOUL_SWORD);
-
-                output.accept(NarakaItems.SOUL_INFUSED_REDSTONE);
-                output.accept(NarakaItems.SOUL_INFUSED_COPPER);
-                output.accept(NarakaItems.SOUL_INFUSED_GOLD);
-                output.accept(NarakaItems.SOUL_INFUSED_EMERALD);
-                output.accept(NarakaItems.SOUL_INFUSED_DIAMOND);
-                output.accept(NarakaItems.SOUL_INFUSED_LAPIS);
-                output.accept(NarakaItems.SOUL_INFUSED_AMETHYST);
-                output.accept(NarakaItems.SOUL_INFUSED_NECTARIUM);
-                output.accept(NarakaItems.PURIFIED_SOUL_METAL);
-
-                output.accept(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
-                output.accept(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK);
-                output.accept(NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK);
-                output.accept(NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK);
-                output.accept(NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK);
-                output.accept(NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK);
-                output.accept(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK);
-                output.accept(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK);
-                output.accept(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
-
-                output.accept(NarakaItems.GOD_BLOOD);
-                output.accept(NarakaBlocks.AMETHYST_SHARD_BLOCK);
-                output.accept(NarakaItems.COMPRESSED_IRON_INGOT);
-                output.accept(NarakaBlocks.COMPRESSED_IRON_BLOCK);
-                output.accept(NarakaItems.FAKE_GOLD_INGOT);
-                output.accept(NarakaBlocks.FAKE_GOLD_BLOCK);
-                output.accept(NarakaBlocks.HEROBRINE_TOTEM);
-                output.accept(NarakaBlocks.PURIFIED_SOUL_BLOCK);
-                output.accept(NarakaBlocks.NECTARIUM_BLOCK);
-                output.accept(NarakaBlocks.EBONY_LOG);
-                output.accept(NarakaBlocks.STRIPPED_EBONY_LOG);
-                output.accept(NarakaBlocks.EBONY_WOOD);
-                output.accept(NarakaBlocks.STRIPPED_EBONY_WOOD);
-                output.accept(NarakaBlocks.EBONY_LEAVES);
-                output.accept(NarakaBlocks.EBONY_SAPLING);
-                output.accept(NarakaBlocks.EBONY_PLANKS);
-                output.accept(NarakaBlocks.HARD_EBONY_PLANKS);
-                output.accept(NarakaItems.EBONY_SWORD);
-            }).build());
+            .icon(NarakaItems.GOD_BLOOD::getDefaultInstance)
+            .displayItems(NarakaCreativeModTabs::createNarakaTab)
+            .build()
+    );
 
     private static CreativeModeTab register(String name, CreativeModeTab tab) {
         return Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, NarakaMod.location(name), tab);
     }
 
     public static void initialize() {
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.BUILDING_BLOCKS)
+                .register(NarakaCreativeModTabs::modifyBuildingBlocksTab);
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.NATURAL_BLOCKS)
+                .register(NarakaCreativeModTabs::modifyNaturalBlocksTab);
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FOOD_AND_DRINKS)
+                .register(NarakaCreativeModTabs::modifyFoodAndDrinksTab);
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS)
+                .register(NarakaCreativeModTabs::modifySpawnEggsTab);
+    }
+
+    private static void createNarakaTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
+        output.accept(NarakaBlocks.EBONY_LOG);
+        output.accept(NarakaBlocks.EBONY_WOOD);
+        output.accept(NarakaBlocks.STRIPPED_EBONY_LOG);
+        output.accept(NarakaBlocks.STRIPPED_EBONY_WOOD);
+        output.accept(NarakaBlocks.HARD_EBONY_PLANKS);
+        // Ebony Root block, item
+        output.accept(NarakaBlocks.EBONY_LEAVES);
+        output.accept(NarakaBlocks.EBONY_SAPLING);
+
+        output.accept(NarakaItems.EBONY_SWORD);
+        output.accept(NarakaItems.SPEAR_ITEM);
+        output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
+        output.accept(NarakaItems.COMPRESSED_IRON_INGOT);
+        output.accept(NarakaBlocks.COMPRESSED_IRON_BLOCK);
+        output.accept(NarakaItems.PURIFIED_SOUL_SHARD);
+        output.accept(NarakaBlocks.PURIFIED_SOUL_BLOCK);
+        output.accept(NarakaItems.GOD_BLOOD);
+        output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE);
+
+        output.accept(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD);
+        output.accept(NarakaItems.SOUL_INFUSED_COPPER_SWORD);
+        output.accept(NarakaItems.SOUL_INFUSED_GOLD_SWORD);
+        output.accept(NarakaItems.SOUL_INFUSED_EMERALD_SWORD);
+        output.accept(NarakaItems.SOUL_INFUSED_DIAMOND_SWORD);
+        output.accept(NarakaItems.SOUL_INFUSED_LAPIS_SWORD);
+        output.accept(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD);
+        output.accept(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD);
+        output.accept(NarakaItems.PURIFIED_SOUL_SWORD);
+
+        output.accept(NarakaItems.SOUL_INFUSED_REDSTONE);
+        output.accept(NarakaItems.SOUL_INFUSED_COPPER);
+        output.accept(NarakaItems.SOUL_INFUSED_GOLD);
+        output.accept(NarakaItems.SOUL_INFUSED_EMERALD);
+        output.accept(NarakaItems.SOUL_INFUSED_DIAMOND);
+        output.accept(NarakaItems.SOUL_INFUSED_LAPIS);
+        output.accept(NarakaItems.SOUL_INFUSED_AMETHYST);
+        output.accept(NarakaItems.SOUL_INFUSED_NECTARIUM);
+        output.accept(NarakaItems.PURIFIED_SOUL_METAL);
+
+        output.accept(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
+        output.accept(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK);
+        output.accept(NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK);
+        output.accept(NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK);
+        output.accept(NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK);
+        output.accept(NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK);
+        output.accept(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK);
+        output.accept(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK);
+        output.accept(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
+
+        output.accept(NarakaBlocks.SOUL_CRAFTING_BLOCK);
+    }
+
+    private static void modifyBuildingBlocksTab(FabricItemGroupEntries entries) {
+        entries.addAfter(Blocks.AMETHYST_BLOCK,
+                NarakaBlocks.AMETHYST_SHARD_BLOCK,
+                NarakaBlocks.NECTARIUM_BLOCK,
+                NarakaBlocks.FAKE_GOLD_BLOCK
+        );
+    }
+
+    private static void modifyNaturalBlocksTab(FabricItemGroupEntries entries) {
+        entries.addAfter(Blocks.DEEPSLATE_DIAMOND_ORE, NarakaBlocks.NECTARIUM_ORE, NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
+    }
+
+    private static void modifyFoodAndDrinksTab(FabricItemGroupEntries entries) {
+        entries.addAfter(Items.ENCHANTED_GOLDEN_APPLE, NarakaItems.NECTARIUM);
+    }
+
+    private static void modifySpawnEggsTab(FabricItemGroupEntries entries) {
+        entries.addAfter(Blocks.TRIAL_SPAWNER, NarakaBlocks.HEROBRINE_TOTEM);
     }
 }

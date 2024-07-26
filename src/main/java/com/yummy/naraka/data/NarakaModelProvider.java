@@ -42,7 +42,6 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.woodProvider(NarakaBlocks.STRIPPED_EBONY_LOG)
                 .log(NarakaBlocks.STRIPPED_EBONY_LOG)
                 .wood(NarakaBlocks.STRIPPED_EBONY_WOOD);
-        generator.createTrivialCube(NarakaBlocks.EBONY_PLANKS);
         generator.createTrivialCube(NarakaBlocks.HARD_EBONY_PLANKS);
         createHerobrineTotem(generator);
         generator.createFurnace(NarakaBlocks.SOUL_CRAFTING_BLOCK, TexturedModel.ORIENTABLE_ONLY_TOP);
@@ -97,8 +96,6 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.generateFlatItem(NarakaItems.NECTARIUM, ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.EBONY_SWORD, ModelTemplates.FLAT_HANDHELD_ITEM);
         generator.generateFlatItem(NarakaItems.COMPRESSED_IRON_INGOT, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.FAKE_GOLD_INGOT, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_METAL, ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SHARD, ModelTemplates.FLAT_ITEM);

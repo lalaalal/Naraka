@@ -52,10 +52,8 @@ public class NarakaItems {
     );
 
     public static final Item COMPRESSED_IRON_INGOT = registerSimpleItem("compressed_iron_ingot");
-    public static final Item FAKE_GOLD_INGOT = registerSimpleItem("fake_gold_ingot");
 
     public static final Item PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = registerItem("purified_soul_upgrade_smithing_template", NarakaSmithingTemplateItems::createPurifiedSoulUpgradeTemplate);
-    public static final Item PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE = registerItem("purified_gems_upgrade_smithing_template", NarakaSmithingTemplateItems::createPurifiedGemUpgradeTemplate);
 
     public static final Item SOUL_INFUSED_AMETHYST = registerSoulInfusedItem("amethyst");
     public static final Item SOUL_INFUSED_COPPER = registerSoulInfusedItem("copper");
@@ -68,35 +66,47 @@ public class NarakaItems {
 
     // Spears
     public static final SpearItem SPEAR_ITEM = registerItem(
-            "spear", properties -> new SpearItem(Tiers.IRON, properties.fireResistant(), NarakaEntityTypes.THROWN_SPEAR)
+            "spear",
+            properties -> new SpearItem(Tiers.IRON,
+                    properties
+                            .fireResistant()
+                            .attributes(SpearItem.createAttributes(8, -3)),
+                    NarakaEntityTypes.THROWN_SPEAR
+            )
     );
     public static final SpearItem MIGHTY_HOLY_SPEAR_ITEM = registerItem(
-            "mighty_holy_spear", properties -> new SpearItem(Tiers.NETHERITE, properties.fireResistant(), NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR)
+            "mighty_holy_spear",
+            properties -> new SpearItem(Tiers.NETHERITE,
+                    properties
+                            .fireResistant()
+                            .attributes(SpearItem.createAttributes(65, -3)),
+                    NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR
+            )
     );
     public static final SpearOfLonginusItem SPEAR_OF_LONGINUS_ITEM = registerItem(
-            "spear_of_longinus", properties -> new SpearOfLonginusItem(properties
+            "spear_of_longinus",
+            properties -> new SpearOfLonginusItem(properties
                     .fireResistant()
                     .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
             )
     );
     public static final SwordItem EBONY_SWORD = registerItem("ebony_sword", properties -> new SwordItem(
-                    Tiers.IRON, properties.attributes(SwordItem.createAttributes(Tiers.IRON, 0, 0))
+            Tiers.IRON, properties.attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f))
             )
     );
 
-    public static final SwordItem SOUL_INFUSED_REDSTONE_SWORD = registerSoulInfusedSword("redstone", 2, -2);
-    public static final SwordItem SOUL_INFUSED_COPPER_SWORD = registerSoulInfusedSword("copper", 0, 2);
-    public static final SwordItem SOUL_INFUSED_GOLD_SWORD = registerSoulInfusedSword("gold", 1, 0);
-    public static final SwordItem SOUL_INFUSED_EMERALD_SWORD = registerSoulInfusedSword("emerald", 1, 0);
-    public static final SwordItem SOUL_INFUSED_DIAMOND_SWORD = registerSoulInfusedSword("diamond", 3, 1);
-    public static final SwordItem SOUL_INFUSED_LAPIS_SWORD = registerSoulInfusedSword("lapis", 0, 0);
-    public static final SwordItem SOUL_INFUSED_AMETHYST_SWORD = registerSoulInfusedSword("amethyst", 0, 0);
-    public static final SwordItem SOUL_INFUSED_NECTARIUM_SWORD = registerSoulInfusedSword("nectarium", 0, 0);
+    public static final SwordItem SOUL_INFUSED_REDSTONE_SWORD = registerSoulInfusedSword("redstone", 0xeb4747);
+    public static final SwordItem SOUL_INFUSED_COPPER_SWORD = registerSoulInfusedSword("copper", 0xff8000);
+    public static final SwordItem SOUL_INFUSED_GOLD_SWORD = registerSoulInfusedSword("gold", 0xffd24d);
+    public static final SwordItem SOUL_INFUSED_EMERALD_SWORD = registerSoulInfusedSword("emerald", 0x0ec70e);
+    public static final SwordItem SOUL_INFUSED_DIAMOND_SWORD = registerSoulInfusedSword("diamond", 0x33cccc);
+    public static final SwordItem SOUL_INFUSED_LAPIS_SWORD = registerSoulInfusedSword("lapis", 0x3939c6);
+    public static final SwordItem SOUL_INFUSED_AMETHYST_SWORD = registerSoulInfusedSword("amethyst", 0x9957db);
+    public static final SwordItem SOUL_INFUSED_NECTARIUM_SWORD = registerSoulInfusedSword("nectarium", 0xd65cd6);
     public static final SwordItem PURIFIED_SOUL_SWORD = registerItem(
             "purified_soul_sword",
             properties -> new PurifiedSoulSword(Tiers.IRON, properties.fireResistant()
-                    .rarity(Rarity.UNCOMMON)
-                    .attributes(SwordItem.createAttributes(Tiers.IRON, 1, 0)))
+                    .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f)))
     );
 
 
@@ -116,13 +126,14 @@ public class NarakaItems {
         return item;
     }
 
-    private static SwordItem registerSoulInfusedSword(String name, int attackDamage, float attackSpeed) {
+    private static SwordItem registerSoulInfusedSword(String name, int color) {
         SwordItem item = registerItem(SOUL_INFUSED_PREFIX + name + "_sword",
-                properties -> new SwordItem(
+                properties -> new SoulInfusedSwordItem(
                         Tiers.IRON,
                         properties.fireResistant()
                                 .rarity(Rarity.RARE)
-                                .attributes(SwordItem.createAttributes(Tiers.IRON, attackDamage, attackSpeed))
+                                .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f)),
+                        color
                 )
         );
         SOUL_INFUSED_SWORDS.add(item);

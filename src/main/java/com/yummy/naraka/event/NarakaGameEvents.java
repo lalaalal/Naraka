@@ -2,6 +2,7 @@ package com.yummy.naraka.event;
 
 import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.block.HerobrineTotem;
+import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.HerobrineTotemBlockEntity;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
@@ -18,7 +19,9 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,6 +32,7 @@ public class NarakaGameEvents {
         ServerLifecycleEvents.SERVER_STARTED.register(NarakaGameEvents::onServerStarted);
         ServerWorldEvents.LOAD.register(NarakaGameEvents::onWorldLoad);
         UseBlockCallback.EVENT.register(NarakaGameEvents::checkHerobrineTotemTrigger);
+        UseBlockCallback.EVENT.register(NarakaGameEvents::ironNuggetUse);
     }
 
     private static void onWorldLoad(MinecraftServer server, ServerLevel level) {
@@ -40,6 +44,19 @@ public class NarakaGameEvents {
         NarakaDamageSources.initialize(registryAccess);
         NarakaEnchantments.initialize(registryAccess);
         NarakaNbtUtils.initialize(server);
+    }
+
+    private static InteractionResult ironNuggetUse(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
+        ItemStack stack = player.getItemInHand(hand);
+        BlockPos pos = hitResult.getBlockPos();
+        BlockState state = level.getBlockState(pos);
+
+        if (stack.is(Items.IRON_NUGGET) && state.is(NarakaBlocks.EBONY_SAPLING)
+                && BoneMealItem.growCrop(stack, level, pos)) {
+            return InteractionResult.SUCCESS;
+        }
+
+        return InteractionResult.PASS;
     }
 
     private static InteractionResult checkHerobrineTotemTrigger(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {

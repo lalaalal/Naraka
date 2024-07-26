@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -154,7 +155,7 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
             blockEntity.setCraftingProgress(PROGRESS_START);
             blockEntity.setLitProgress(craftingTime());
             blockEntity.setFuel(0);
-            level.setBlock(pos, state.setValue(SoulCraftingBlock.LIT, true), 10);
+            level.setBlock(pos, state.setValue(SoulCraftingBlock.LIT, true), Block.UPDATE_ALL_IMMEDIATE);
             return;
         }
 
@@ -164,17 +165,18 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
                 blockEntity.setItem(RESULT_SLOT, crafted);
             else if (existingResult.is(crafted.getItem()))
                 existingResult.grow(1);
-            level.setBlock(pos, state.setValue(SoulCraftingBlock.LIT, false), 10);
             blockEntity.setCraftingProgress(PROGRESS_WAITING);
         }
 
-        if (canProcess(craftingProgress)) {
+        if (canProcess(craftingProgress) || litProgress > 0) {
             int increase = 1;
             if (ingredientItem.isEmpty())
                 increase = Mth.ceil(-craftingTime() * 0.05);
 
             blockEntity.setCraftingProgress(craftingProgress + increase);
             blockEntity.setLitProgress(litProgress - Mth.abs(increase));
+        } else if (state.getValue(SoulCraftingBlock.LIT)) {
+            level.setBlock(pos, state.setValue(SoulCraftingBlock.LIT, false), Block.UPDATE_ALL_IMMEDIATE);
         }
     }
 

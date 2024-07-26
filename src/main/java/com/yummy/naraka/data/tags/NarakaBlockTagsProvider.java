@@ -53,7 +53,7 @@ public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
         getOrCreateTagBuilder(BlockTags.LOGS_THAT_BURN)
                 .addTag(NarakaBlockTags.EBONY_LOGS);
         getOrCreateTagBuilder(BlockTags.PLANKS)
-                .add(NarakaBlocks.EBONY_PLANKS);
+                .add(NarakaBlocks.HARD_EBONY_PLANKS);
 
         getOrCreateTagBuilder(NarakaBlockTags.HEROBRINE_SANCTUARY_WRAP_TARGETS)
                 .add(Blocks.WATER)
@@ -65,13 +65,18 @@ public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
                 .add(NarakaBlocks.NECTARIUM_ORE)
                 .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE)
                 .add(NarakaBlocks.FAKE_GOLD_BLOCK)
-                .add(NarakaBlocks.COMPRESSED_IRON_BLOCK);
+                .add(NarakaBlocks.COMPRESSED_IRON_BLOCK)
+                .addTag(NarakaBlockTags.EBONY_LOGS)
+                .add(NarakaBlocks.HARD_EBONY_PLANKS);
         NarakaBlocks.forEachSoulInfusedBlock(needsIronTool::add);
 
         getOrCreateTagBuilder(NarakaBlockTags.NEEDS_NETHERITE_TOOL)
+                .add(NarakaBlocks.HEROBRINE_TOTEM)
                 .add(NarakaBlocks.PURIFIED_SOUL_BLOCK)
                 .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
         FabricTagBuilder mineableWithPickaxe = getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_PICKAXE)
+                .add(NarakaBlocks.HEROBRINE_TOTEM)
+                .add(NarakaBlocks.AMETHYST_SHARD_BLOCK)
                 .add(NarakaBlocks.NECTARIUM_BLOCK)
                 .add(NarakaBlocks.NECTARIUM_ORE)
                 .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE)
@@ -83,5 +88,9 @@ public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
         getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_HOE)
                 .add(NarakaBlocks.PURIFIED_SOUL_BLOCK)
                 .add(NarakaBlocks.EBONY_LEAVES);
+
+        getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_AXE)
+                .addTag(NarakaBlockTags.EBONY_LOGS)
+                .add(NarakaBlocks.HARD_EBONY_PLANKS);
     }
 }

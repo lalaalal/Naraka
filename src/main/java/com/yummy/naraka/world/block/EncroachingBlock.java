@@ -5,14 +5,16 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class NectariumBlock extends Block {
+public class EncroachingBlock extends Block {
     private static final double COMPOSE_CHANCE = 0.5;
 
-    public NectariumBlock(Properties properties) {
+    private final Block targetBlock;
+
+    public EncroachingBlock(Properties properties, Block targetBlock) {
         super(properties.randomTicks());
+        this.targetBlock = targetBlock;
     }
 
     @Override
@@ -20,7 +22,7 @@ public class NectariumBlock extends Block {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction direction : UPDATE_SHAPE_ORDER) {
             mutablePos.setWithOffset(pos, direction);
-            if (level.getBlockState(mutablePos.immutable()).is(Blocks.HONEY_BLOCK)
+            if (level.getBlockState(mutablePos.immutable()).is(targetBlock)
                     && random.nextFloat() < COMPOSE_CHANCE) {
                 level.setBlock(mutablePos.immutable(), defaultBlockState(), 2);
                 return;

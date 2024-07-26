@@ -42,12 +42,11 @@ public class SoulCraftingScreen extends AbstractContainerScreen<SoulCraftingMenu
         guiGraphics.blitSprite(NarakaSprites.SOUL_CRAFTING_PROGRESS, CRAFTING_PROGRESS_WIDTH, CRAFTING_PROGRESS_HEIGHT, 0, 0, leftPos + 79, topPos + 34, craftingProgress, CRAFTING_PROGRESS_HEIGHT);
 
         int litProgress = Mth.ceil(menu.getLitProgress() * LIT_PROGRESS_HEIGHT);
-        if (menu.isCrafting())
-            guiGraphics.blitSprite(
-                    NarakaSprites.SOUL_CRAFTING_LIT_PROGRESS, LIT_PROGRESS_WIDTH, LIT_PROGRESS_HEIGHT,
-                    0, LIT_PROGRESS_HEIGHT - litProgress, leftPos + 57, topPos + 37 + LIT_PROGRESS_HEIGHT - litProgress,
-                    LIT_PROGRESS_WIDTH, litProgress
-            );
+        guiGraphics.blitSprite(
+                NarakaSprites.SOUL_CRAFTING_LIT_PROGRESS, LIT_PROGRESS_WIDTH, LIT_PROGRESS_HEIGHT,
+                0, LIT_PROGRESS_HEIGHT - litProgress, leftPos + 57, topPos + 37 + LIT_PROGRESS_HEIGHT - litProgress,
+                LIT_PROGRESS_WIDTH, litProgress
+        );
 
         int fuelCharge = Mth.ceil(menu.getFuelCharge() * FUEL_CHARGE_WIDTH);
         guiGraphics.blitSprite(NarakaSprites.SOUL_CRAFTING_FUEL_CHARGE, FUEL_CHARGE_WIDTH, FUEL_CHARGE_HEIGHT, 0, 0, leftPos + 55, topPos + 53, fuelCharge, FUEL_CHARGE_HEIGHT);

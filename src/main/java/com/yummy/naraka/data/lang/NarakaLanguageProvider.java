@@ -21,18 +21,8 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
     public static final String PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.base_slot_description"));
     public static final String PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.additions_slot_description"));
 
-    public static final String PURIFIED_GEM_UPGRADE_KEY = Util.makeDescriptionId("upgrade", NarakaMod.location("purified_gem_upgrade"));
-    public static final String PURIFIED_GEM_UPGRADE_APPLIES_TO_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_gem_upgrade.applies_to"));
-    public static final String PURIFIED_GEM_UPGRADE_INGREDIENTS_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_gem_upgrade.ingredients"));
-    public static final String PURIFIED_GEM_UPGRADE_BASE_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_gem_upgrade.base_slot_description"));
-    public static final String PURIFIED_GEM_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_gem_upgrade.additions_slot_description"));
-
     protected NarakaLanguageProvider(FabricDataOutput dataOutput, String languageCode, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(dataOutput, languageCode, registryLookup);
-    }
-
-    public static String createId(String parent, String name) {
-        return "%s.%s.%s".formatted(parent, NarakaMod.MOD_ID, name);
     }
 
     public void addAdvancement(TranslationBuilder builder, AdvancementComponent advancementComponent, String title, String description) {
@@ -58,15 +48,10 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add("itemGroup.naraka", "Naraka");
             builder.add("container.soul_crafting", "Soul Crafter");
             builder.add(PURIFIED_SOUL_UPGRADE_KEY, "Purified Soul Upgrade");
-            builder.add(PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY, "Ebony Tools");
-            builder.add(PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "Purified Soul Metal");
-            builder.add(PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add ebony weapon");
-            builder.add(PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add Purified Soul Metal");
-            builder.add(PURIFIED_GEM_UPGRADE_KEY, "Purified Gem Upgrade");
-            builder.add(PURIFIED_GEM_UPGRADE_APPLIES_TO_KEY, "Purified Soul Weapons");
-            builder.add(PURIFIED_GEM_UPGRADE_INGREDIENTS_KEY, "Soul Infused Materials");
-            builder.add(PURIFIED_GEM_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add soul weapon");
-            builder.add(PURIFIED_GEM_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add soul infused materials");
+            builder.add(PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY, "Ebony Tools, Purified Soul Weapons");
+            builder.add(PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "Purified Soul Metal, Soul Infused Materials");
+            builder.add(PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add Ebony Sword, Soul Weapon");
+            builder.add(PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add Purified Soul Metal, Soul Infused Materials");
 
             addAdvancement(builder, AdvancementNarakaComponents.ROOT, "Naraka!", "Welcome to Naraka!");
             addAdvancement(builder, AdvancementNarakaComponents.HEROBRINE_SANCTUARY, "Herobrine Sanctuary", "Too Big!");
@@ -76,11 +61,9 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
 
             builder.add(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard");
             builder.add(NarakaItems.NECTARIUM, "Nectarium");
-            builder.add(NarakaItems.GOD_BLOOD, "God Blood");
+            builder.add(NarakaItems.GOD_BLOOD, "§lGod Blood");
             builder.add(NarakaItems.COMPRESSED_IRON_INGOT, "Compressed Iron Ingot");
-            builder.add(NarakaItems.FAKE_GOLD_INGOT, "Fake Gold Ingot");
             builder.add(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "Smithing Template");
-            builder.add(NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, "Smithing Template");
             builder.add(NarakaItems.SPEAR_ITEM, "Spear");
             builder.add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "Mighty Holy Spear");
             builder.add(NarakaItems.SPEAR_OF_LONGINUS_ITEM, "Spear of Longinus");
@@ -109,26 +92,26 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
 
             builder.add(NarakaBlocks.NECTARIUM_ORE, "Nectarium Ore");
             builder.add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "Deepslate Nectarium Ore");
-            builder.add(NarakaBlocks.NECTARIUM_BLOCK, "Nectarium Block");
-            builder.add(NarakaBlocks.TRANSPARENT_BLOCK, "Transparent Block");
-            builder.add(NarakaBlocks.COMPRESSED_IRON_BLOCK, "Compressed Iron Block");
-            builder.add(NarakaBlocks.FAKE_GOLD_BLOCK, "Fake Gold Block");
-            builder.add(NarakaBlocks.AMETHYST_SHARD_BLOCK, "Amethyst Shard Block");
-            builder.add(NarakaBlocks.SOUL_CRAFTING_BLOCK, "Soul Crafting Block");
+            builder.add(NarakaBlocks.NECTARIUM_BLOCK, "Block of Nectarium");
+            builder.add(NarakaBlocks.TRANSPARENT_BLOCK, "Block of Transparent");
+            builder.add(NarakaBlocks.COMPRESSED_IRON_BLOCK, "Block of Compressed Iron");
+            builder.add(NarakaBlocks.FAKE_GOLD_BLOCK, "Block of Fake Gold");
+            builder.add(NarakaBlocks.AMETHYST_SHARD_BLOCK, "Block of Amethyst Shard");
+            builder.add(NarakaBlocks.SOUL_CRAFTING_BLOCK, "Block of Soul Crafting");
 
-            builder.add(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK, "Soul Infused Redstone Block");
-            builder.add(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK, "Soul Infused Copper Block");
-            builder.add(NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK, "Soul Infused Gold Block");
-            builder.add(NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK, "Soul Infused Emerald Block");
-            builder.add(NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK, "Soul Infused Diamond Block");
-            builder.add(NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK, "Soul Infused Lapis Block");
-            builder.add(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK, "Soul Infused Amethyst Block");
-            builder.add(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK, "Soul Infused Nectarium Block");
-            builder.add(NarakaBlocks.PURIFIED_SOUL_BLOCK, "Purified Soul Block");
+            builder.add(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK, "Block of Soul Infused Redstone");
+            builder.add(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK, "Block of Soul Infused Copper");
+            builder.add(NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK, "Block of Soul Infused Gold");
+            builder.add(NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK, "Block of Soul Infused Emerald");
+            builder.add(NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK, "Block of Soul Infused Diamond");
+            builder.add(NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK, "Block of Soul Infused Lapis");
+            builder.add(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK, "Block of Soul Infused Amethyst");
+            builder.add(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK, "Block of Soul Infused Nectarium");
+            builder.add(NarakaBlocks.PURIFIED_SOUL_BLOCK, "Block of Purified Soul");
 
             builder.add(NarakaBlocks.HEROBRINE_TOTEM, "Herobrine Totem");
             builder.add(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK, "Purified Soul Fire");
-            builder.add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK, "Purified Soul Metal Block");
+            builder.add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK, "Block of Purified Soul Metal");
             builder.add(NarakaBlocks.EBONY_LOG, "Ebony Log");
             builder.add(NarakaBlocks.STRIPPED_EBONY_LOG, "Stripped Ebony Log");
             builder.add(NarakaBlocks.EBONY_WOOD, "Ebony Wood");
@@ -136,7 +119,6 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(NarakaBlocks.EBONY_LEAVES, "Ebony Leaves");
             builder.add(NarakaBlocks.EBONY_SAPLING, "Ebony Sapling");
             builder.add(NarakaBlocks.POTTED_EBONY_SAPLING, "Potted Ebony Sapling");
-            builder.add(NarakaBlocks.EBONY_PLANKS, "Ebony Planks");
             builder.add(NarakaBlocks.HARD_EBONY_PLANKS, "Hard Ebony Planks");
 
             builder.add(NarakaEntityTypes.HEROBRINE, "Naraka: Herobrine");
@@ -160,23 +142,16 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add("itemGroup.naraka", "Naraka");
             builder.add("container.soul_crafting", "영혼 세공기");
             builder.add(PURIFIED_SOUL_UPGRADE_KEY, "정화된 영혼 강화");
-            builder.add(PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY, "흑단나무 검");
-            builder.add(PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "정화된 영혼 금속");
-            builder.add(PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "흑단나무 무기를 놓으세요");
-            builder.add(PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "정화된 영혼 금속을 놓으세요");
-            builder.add(PURIFIED_GEM_UPGRADE_KEY, "정화된 영혼 강화");
-            builder.add(PURIFIED_GEM_UPGRADE_APPLIES_TO_KEY, "정화된 영혼 무기");
-            builder.add(PURIFIED_GEM_UPGRADE_INGREDIENTS_KEY, "영혼이 주입된 재료");
-            builder.add(PURIFIED_GEM_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "정화된 영혼 검 또는 창을 놓으세요");
-            builder.add(PURIFIED_GEM_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "영혼이 주입된 재료 또는 신의 피를 놓으세요");
+            builder.add(PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY, "흑단나무 검, 정화된 영혼 무기");
+            builder.add(PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "정화된 영혼 금속, 영혼이 주입된 재료");
+            builder.add(PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "흑단나무 무기, 정화된 영혼 검 또는 창를 놓으세요");
+            builder.add(PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "정화된 영혼 금속, 영혼이 주입된 재료 또는 신의 피를 놓으세요");
 
             builder.add(NarakaItems.PURIFIED_SOUL_SHARD, "정화된 영혼 조각");
             builder.add(NarakaItems.NECTARIUM, "넥타륨");
-            builder.add(NarakaItems.GOD_BLOOD, "신의 피");
+            builder.add(NarakaItems.GOD_BLOOD, "§l신의 피");
             builder.add(NarakaItems.COMPRESSED_IRON_INGOT, "압축된 철 주괴");
-            builder.add(NarakaItems.FAKE_GOLD_INGOT, "거짓된 금 주괴");
             builder.add(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "대장장이 형판");
-            builder.add(NarakaItems.PURIFIED_GEMS_UPGRADE_SMITHING_TEMPLATE, "대장장이 형판");
             builder.add(NarakaItems.SPEAR_ITEM, "창");
             builder.add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "강력한 성스러운 창");
             builder.add(NarakaItems.SPEAR_OF_LONGINUS_ITEM, "롱기누스의 창");
@@ -231,7 +206,6 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(NarakaBlocks.EBONY_LEAVES, "흑단나무 나뭇잎");
             builder.add(NarakaBlocks.STRIPPED_EBONY_WOOD, "껍질 벗긴 흑단나무");
             builder.add(NarakaBlocks.EBONY_SAPLING, "흑단나무 묘목");
-            builder.add(NarakaBlocks.EBONY_PLANKS, "흑단나무 판자");
             builder.add(NarakaBlocks.HARD_EBONY_PLANKS, "단단한 흑단나무 판자");
 
             builder.add(NarakaEntityTypes.HEROBRINE, "히로빈");
