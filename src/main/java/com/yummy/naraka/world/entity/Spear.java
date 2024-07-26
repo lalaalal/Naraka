@@ -1,7 +1,9 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
+import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
 import net.minecraft.core.Position;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -14,11 +16,16 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TieredItem;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -26,7 +33,6 @@ import net.minecraft.world.phys.Vec3;
 public class Spear extends AbstractArrow {
     private static final EntityDataAccessor<Integer> ID_LOYALTY = SynchedEntityData.defineId(Spear.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(Spear.class, EntityDataSerializers.BOOLEAN);
-    private final float baseDamage;
     protected boolean dealtDamage = false;
     private int clientSideReturnTickCount = 0;
 
@@ -34,21 +40,18 @@ public class Spear extends AbstractArrow {
         super(entityType, level);
         entityData.set(ID_LOYALTY, 0);
         entityData.set(ID_FOIL, false);
-        baseDamage = 1;
     }
 
-    public Spear(EntityType<? extends Spear> type, Level level, Position position, ItemStack pickupItem, float baseDamage) {
+    public Spear(EntityType<? extends Spear> type, Level level, Position position, ItemStack pickupItem) {
         super(type, position.x(), position.y(), position.z(), level, pickupItem, null);
         entityData.set(ID_LOYALTY, getLoyaltyFromItem(pickupItem));
         entityData.set(ID_FOIL, pickupItem.hasFoil());
-        this.baseDamage = baseDamage;
     }
 
-    public Spear(EntityType<? extends Spear> type, Level level, LivingEntity owner, ItemStack pickupItem, float baseDamage) {
+    public Spear(EntityType<? extends Spear> type, Level level, LivingEntity owner, ItemStack pickupItem) {
         super(type, owner, level, pickupItem, null);
         entityData.set(ID_LOYALTY, getLoyaltyFromItem(pickupItem));
         entityData.set(ID_FOIL, pickupItem.hasFoil());
-        this.baseDamage = baseDamage;
     }
 
     @Override
@@ -145,7 +148,22 @@ public class Spear extends AbstractArrow {
 
     protected void hurtHitEntity(Entity entity) {
         DamageSource damageSource = NarakaDamageSources.spear(this);
-        entity.hurt(damageSource, baseDamage);
+        entity.hurt(damageSource, getAttackDamage());
+    }
+
+    protected float getAttackDamage() {
+        ItemStack spearItem = getPickupItem();
+        float baseDamage = 1;
+        if (spearItem.getItem() instanceof TieredItem tieredItem)
+            baseDamage = tieredItem.getTier().getAttackDamageBonus();
+        ItemAttributeModifiers attributeModifiers = spearItem.get(DataComponents.ATTRIBUTE_MODIFIERS);
+        ItemEnchantments enchantments = spearItem.get(DataComponents.ENCHANTMENTS);
+        if (attributeModifiers == null)
+            return 1;
+        if (enchantments == null)
+            return (float) attributeModifiers.compute(baseDamage, EquipmentSlot.MAINHAND);
+        int sharpness = enchantments.getLevel(NarakaEnchantments.get(Enchantments.SHARPNESS));
+        return (float) attributeModifiers.compute(baseDamage + sharpness, EquipmentSlot.MAINHAND);
     }
 
     @Override

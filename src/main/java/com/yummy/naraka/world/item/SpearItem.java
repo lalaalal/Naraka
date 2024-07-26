@@ -80,7 +80,7 @@ public class SpearItem extends TieredItem implements ProjectileItem {
     }
 
     protected Spear createSpear(Level level, LivingEntity owner, ItemStack stack) {
-        return new Spear(spearType, level, owner, stack, getTier().getAttackDamageBonus());
+        return new Spear(spearType, level, owner, stack);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class SpearItem extends TieredItem implements ProjectileItem {
 
     @Override
     public Projectile asProjectile(Level level, Position position, ItemStack stack, Direction direction) {
-        return new Spear(spearType, level, position, stack, getTier().getAttackDamageBonus());
+        return new Spear(spearType, level, position, stack);
     }
 
 

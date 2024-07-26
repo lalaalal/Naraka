@@ -10,6 +10,7 @@ public interface NarakaItemTags {
     TagKey<Item> ALWAYS_RENDER_ITEM_ENTITY = create("always_render_item_entity");
 
     TagKey<Item> SPEAR_ENCHANTABLE = create("enchantable/spear");
+    TagKey<Item> LOYALTY_ENCHANTABLE = create("enchantable/loyalty");
 
     TagKey<Item> EBONY_LOGS = create("ebony_logs");
 

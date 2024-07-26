@@ -1,8 +1,6 @@
 package com.yummy.naraka.world.item.enchantment;
 
 import com.yummy.naraka.tags.NarakaItemTags;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.EntityTypePredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Registry;
@@ -11,7 +9,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.EnchantmentTags;
-import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -19,8 +17,6 @@ import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.AddValue;
-import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import org.jetbrains.annotations.Nullable;
 
 public class NarakaEnchantments {
@@ -35,30 +31,23 @@ public class NarakaEnchantments {
         HolderGetter<Item> itemHolderGetter = context.lookup(Registries.ITEM);
 
         context.register(
-                Enchantments.IMPALING,
+                Enchantments.SHARPNESS,
                 Enchantment.enchantment(
                                 Enchantment.definition(
-                                        itemHolderGetter.getOrThrow(NarakaItemTags.SPEAR_ENCHANTABLE),
-                                        2,
+                                        itemHolderGetter.getOrThrow(ItemTags.SHARP_WEAPON_ENCHANTABLE),
+                                        itemHolderGetter.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                        10,
                                         5,
-                                        Enchantment.dynamicCost(1, 8),
-                                        Enchantment.dynamicCost(21, 8),
-                                        4,
+                                        Enchantment.dynamicCost(1, 11),
+                                        Enchantment.dynamicCost(21, 11),
+                                        1,
                                         EquipmentSlotGroup.MAINHAND
                                 )
                         )
                         .exclusiveWith(enchantmentHolderGetter.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
-                        .withEffect(
-                                EnchantmentEffectComponents.DAMAGE,
-                                new AddValue(LevelBasedValue.perLevel(2.5F)),
-                                LootItemEntityPropertyCondition.hasProperties(
-                                        LootContext.EntityTarget.THIS,
-                                        EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(EntityTypeTags.SENSITIVE_TO_IMPALING)).build()
-                                )
-                        )
-                        .build(Enchantments.IMPALING.location())
+                        .withEffect(EnchantmentEffectComponents.DAMAGE, new AddValue(LevelBasedValue.perLevel(1.0F, 0.5F)))
+                        .build(Enchantments.SHARPNESS.location())
         );
-
         context.register(
                 Enchantments.LOYALTY,
                 Enchantment.enchantment(

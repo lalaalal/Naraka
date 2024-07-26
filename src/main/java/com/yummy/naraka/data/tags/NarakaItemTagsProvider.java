@@ -29,7 +29,9 @@ public class NarakaItemTagsProvider extends FabricTagProvider<Item> {
 
         getOrCreateTagBuilder(NarakaItemTags.SPEAR_ENCHANTABLE)
                 .add(NarakaItems.SPEAR_ITEM)
-                .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM)
+                .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
+        getOrCreateTagBuilder(NarakaItemTags.LOYALTY_ENCHANTABLE)
+                .addTag(NarakaItemTags.SPEAR_ENCHANTABLE)
                 .forceAddTag(ItemTags.TRIDENT_ENCHANTABLE);
 
         getOrCreateTagBuilder(NarakaItemTags.EBONY_LOGS)
@@ -44,10 +46,10 @@ public class NarakaItemTagsProvider extends FabricTagProvider<Item> {
                 .add(NarakaBlocks.HARD_EBONY_PLANKS.asItem());
 
         getOrCreateTagBuilder(ItemTags.DURABILITY_ENCHANTABLE)
-                .add(NarakaItems.SPEAR_ITEM)
-                .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
+                .addTag(NarakaItemTags.SPEAR_ENCHANTABLE);
         getOrCreateTagBuilder(ItemTags.VANISHING_ENCHANTABLE)
-                .add(NarakaItems.SPEAR_ITEM)
-                .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM);
+                .addTag(NarakaItemTags.SPEAR_ENCHANTABLE);
+        getOrCreateTagBuilder(ItemTags.SHARP_WEAPON_ENCHANTABLE)
+                .addTag(NarakaItemTags.SPEAR_ENCHANTABLE);
     }
 }
