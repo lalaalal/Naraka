@@ -48,7 +48,6 @@ public class NarakaItems {
             "god_blood", new Item.Properties()
                     .stacksTo(1)
                     .fireResistant()
-                    .rarity(Rarity.EPIC)
     );
 
     public static final Item COMPRESSED_IRON_INGOT = registerSimpleItem("compressed_iron_ingot");
