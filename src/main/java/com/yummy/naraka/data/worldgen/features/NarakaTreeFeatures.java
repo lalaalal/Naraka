@@ -26,7 +26,7 @@ public class NarakaTreeFeatures {
     private static TreeConfiguration.TreeConfigurationBuilder createEbony() {
         return new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(NarakaBlocks.EBONY_LOG),
-                new EbonyTrunkPlacer(8, 11, 0),
+                new EbonyTrunkPlacer(4, 8, 11),
                 BlockStateProvider.simple(NarakaBlocks.EBONY_LEAVES),
                 new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
                 new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))

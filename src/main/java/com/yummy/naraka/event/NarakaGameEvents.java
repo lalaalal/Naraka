@@ -33,6 +33,7 @@ public class NarakaGameEvents {
         ServerWorldEvents.LOAD.register(NarakaGameEvents::onWorldLoad);
         UseBlockCallback.EVENT.register(NarakaGameEvents::checkHerobrineTotemTrigger);
         UseBlockCallback.EVENT.register(NarakaGameEvents::ironNuggetUse);
+        UseBlockCallback.EVENT.register(NarakaGameEvents::boneMealUse);
     }
 
     private static void onWorldLoad(MinecraftServer server, ServerLevel level) {
@@ -46,17 +47,41 @@ public class NarakaGameEvents {
         NarakaNbtUtils.initialize(server);
     }
 
+    private static InteractionResult boneMealUse(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
+        ItemStack stack = player.getItemInHand(hand);
+        BlockPos pos = hitResult.getBlockPos();
+        BlockState state = level.getBlockState(pos);
+
+        if (stack.is(Items.BONE_MEAL) && state.is(NarakaBlocks.EBONY_SAPLING))
+            return InteractionResult.FAIL;
+        return InteractionResult.PASS;
+    }
+
     private static InteractionResult ironNuggetUse(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
         ItemStack stack = player.getItemInHand(hand);
         BlockPos pos = hitResult.getBlockPos();
         BlockState state = level.getBlockState(pos);
 
         if (stack.is(Items.IRON_NUGGET) && state.is(NarakaBlocks.EBONY_SAPLING)
-                && BoneMealItem.growCrop(stack, level, pos)) {
+                && growEbony(stack, player, level, pos)) {
+            BoneMealItem.addGrowthParticles(level, pos, 10);
             return InteractionResult.SUCCESS;
         }
-
         return InteractionResult.PASS;
+    }
+
+    private static boolean growEbony(ItemStack itemStack, Player player, Level level, BlockPos blockPos) {
+        BlockState blockState = level.getBlockState(blockPos);
+        if (blockState.is(NarakaBlocks.EBONY_SAPLING)) {
+            if (level instanceof ServerLevel serverLevel) {
+                if (NarakaBlocks.EBONY_SAPLING.isBonemealSuccess(level, level.random, blockPos, blockState))
+                    NarakaBlocks.EBONY_SAPLING.performBonemeal(serverLevel, level.random, blockPos, blockState);
+                itemStack.consume(1, player);
+            }
+            return true;
+        }
+
+        return false;
     }
 
     private static InteractionResult checkHerobrineTotemTrigger(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {

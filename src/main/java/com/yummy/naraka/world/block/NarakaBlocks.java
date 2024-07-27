@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-@SuppressWarnings("unused")
 public class NarakaBlocks {
     public static final String SOUL_INFUSED_PREFIX = "soul_infused_";
 
@@ -166,11 +165,6 @@ public class NarakaBlocks {
         return new Item.Properties();
     }
 
-    public static void setFlammableBlocks() {
-        FireBlock fire = (FireBlock) Blocks.FIRE;
-
-    }
-
     private static Block registerSoulInfusedBlock(String name, Block baseBlock) {
         return registerSimpleBlockWithItem(SOUL_INFUSED_PREFIX + name, baseBlock, item().fireResistant());
     }
@@ -216,6 +210,6 @@ public class NarakaBlocks {
     }
 
     public static void initialize() {
-        setFlammableBlocks();
+
     }
 }

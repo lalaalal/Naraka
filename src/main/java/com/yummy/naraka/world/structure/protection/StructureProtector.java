@@ -65,8 +65,6 @@ public class StructureProtector {
     }
 
     public static boolean checkProtected(Vec3i pos) {
-        if (Container.instance == null)
-            return false;
         for (StructureProtector protector : Container.instance.protectors) {
             if (protector.isProtected(pos))
                 return true;
