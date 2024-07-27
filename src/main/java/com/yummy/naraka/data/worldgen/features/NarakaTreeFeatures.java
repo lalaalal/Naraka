@@ -1,6 +1,7 @@
 package com.yummy.naraka.data.worldgen.features;
 
 import com.yummy.naraka.world.block.NarakaBlocks;
+import com.yummy.naraka.world.trunkplacers.EbonyTrunkPlacer;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;
@@ -12,7 +13,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 
 import java.util.OptionalInt;
 
@@ -26,7 +26,7 @@ public class NarakaTreeFeatures {
     private static TreeConfiguration.TreeConfigurationBuilder createEbony() {
         return new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(NarakaBlocks.EBONY_LOG),
-                new FancyTrunkPlacer(8, 11, 0),
+                new EbonyTrunkPlacer(8, 11, 0),
                 BlockStateProvider.simple(NarakaBlocks.EBONY_LEAVES),
                 new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
                 new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))

@@ -17,6 +17,7 @@ import com.yummy.naraka.world.structure.piece.NarakaStructurePieceFactories;
 import com.yummy.naraka.world.structure.piece.NarakaStructurePieceTypes;
 import com.yummy.naraka.world.structure.placement.NarakaStructurePlacementTypes;
 import com.yummy.naraka.world.structure.protection.NarakaProtectionPredicates;
+import com.yummy.naraka.world.trunkplacers.NarakaTruncPlacerTypes;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.ResourceLocation;
 
@@ -41,6 +42,7 @@ public class NarakaMod implements ModInitializer {
         NarakaStructurePieceFactories.initialize();
         NarakaProtectionPredicates.initialize();
         NarakaBiomes.initialize();
+        NarakaTruncPlacerTypes.initialize();
 
         NarakaGameEvents.initialize();
         NarakaContext.initialize();
