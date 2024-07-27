@@ -14,5 +14,4 @@ public class NarakaModelLayers {
     public static ModelLayerLocation location(String name) {
         return new ModelLayerLocation(NarakaMod.location(name), "main");
     }
-
 }
