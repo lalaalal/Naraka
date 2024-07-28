@@ -39,6 +39,7 @@ public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
         dropSelf(NarakaBlocks.EBONY_SAPLING);
         dropSelf(NarakaBlocks.HEROBRINE_TOTEM);
         dropPottedContents(NarakaBlocks.POTTED_EBONY_SAPLING);
+        dropSelf(NarakaBlocks.EBONY_ROOTS);
     }
 
     protected void dropOre(Block oreBlock, Item item) {

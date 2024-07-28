@@ -9,7 +9,6 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.util.valueproviders.WeightedListInt;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -38,7 +37,7 @@ public class NarakaTreeFeatures {
                 BlockStateProvider.simple(NarakaBlocks.EBONY_LEAVES),
                 new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
                 new TwoLayersFeatureSize(1, 0, 1, OptionalInt.of(4))
-        ).ignoreVines().dirt(BlockStateProvider.simple(Blocks.ROOTED_DIRT));
+        ).ignoreVines().dirt(BlockStateProvider.simple(NarakaBlocks.EBONY_ROOTS));
     }
 
     private static TreeConfiguration.TreeConfigurationBuilder createCherryEbony() {
@@ -59,6 +58,6 @@ public class NarakaTreeFeatures {
                 BlockStateProvider.simple(NarakaBlocks.EBONY_LEAVES),
                 new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), ConstantInt.of(5), 0.25F, 0.5F, 0.16666667F, 0.33333334F),
                 new TwoLayersFeatureSize(1, 0, 2)
-        ).ignoreVines().dirt(BlockStateProvider.simple(Blocks.ROOTED_DIRT));
+        ).ignoreVines().dirt(BlockStateProvider.simple(NarakaBlocks.EBONY_ROOTS));
     }
 }

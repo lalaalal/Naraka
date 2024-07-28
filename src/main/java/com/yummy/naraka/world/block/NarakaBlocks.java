@@ -124,6 +124,7 @@ public class NarakaBlocks {
                     .requiresCorrectToolForDrops()
     );
     public static final LeavesBlock EBONY_LEAVES = registerBlockWithItem("ebony_leaves", LeavesBlock::new, Blocks.DARK_OAK_LEAVES);
+    public static final RotatedPillarBlock EBONY_ROOTS = registerBlockWithItem("ebony_roots", RotatedPillarBlock::new, Blocks.MUDDY_MANGROVE_ROOTS);
 
     public static final EbonySaplingBlock EBONY_SAPLING = registerBlockWithItem("ebony_sapling", EbonySaplingBlock::new, Blocks.DARK_OAK_SAPLING);
     public static final FlowerPotBlock POTTED_EBONY_SAPLING = registerBlockWithItem("potted_ebony_sapling", properties -> new FlowerPotBlock(EBONY_SAPLING, properties), Blocks.POTTED_DARK_OAK_SAPLING);

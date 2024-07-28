@@ -120,6 +120,7 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(NarakaBlocks.EBONY_SAPLING, "Ebony Sapling");
             builder.add(NarakaBlocks.POTTED_EBONY_SAPLING, "Potted Ebony Sapling");
             builder.add(NarakaBlocks.HARD_EBONY_PLANKS, "Hard Ebony Planks");
+            builder.add(NarakaBlocks.EBONY_ROOTS, "Ebony Roots");
 
             builder.add(NarakaEntityTypes.HEROBRINE, "Naraka: Herobrine");
             builder.add(NarakaEntityTypes.THROWN_SPEAR, "Spear");
@@ -207,6 +208,7 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(NarakaBlocks.STRIPPED_EBONY_WOOD, "껍질 벗긴 흑단나무");
             builder.add(NarakaBlocks.EBONY_SAPLING, "흑단나무 묘목");
             builder.add(NarakaBlocks.HARD_EBONY_PLANKS, "단단한 흑단나무 판자");
+            builder.add(NarakaBlocks.EBONY_ROOTS, "흑단나무 뿌리");
 
             builder.add(NarakaEntityTypes.HEROBRINE, "히로빈");
             builder.add(NarakaEntityTypes.THROWN_SPEAR, "창");

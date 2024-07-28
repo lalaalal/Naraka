@@ -13,6 +13,7 @@ import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.data.models.model.TexturedModel;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.List;
@@ -45,8 +46,17 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.HARD_EBONY_PLANKS);
         createHerobrineTotem(generator);
         generator.createFurnace(NarakaBlocks.SOUL_CRAFTING_BLOCK, TexturedModel.ORIENTABLE_ONLY_TOP);
+        createEbonyRoots(generator);
         generator.createPlant(NarakaBlocks.EBONY_SAPLING, NarakaBlocks.POTTED_EBONY_SAPLING, BlockModelGenerators.TintState.NOT_TINTED);
         NarakaBlocks.forEachSoulInfusedBlock(generator::createTrivialCube);
+    }
+
+    private static void createEbonyRoots(BlockModelGenerators generator) {
+        TextureMapping textureMapping = TextureMapping.column(
+                TextureMapping.getBlockTexture(NarakaBlocks.EBONY_ROOTS, "_side"), TextureMapping.getBlockTexture(NarakaBlocks.EBONY_ROOTS, "_top")
+        );
+        ResourceLocation resourceLocation = ModelTemplates.CUBE_COLUMN.create(Blocks.MUDDY_MANGROVE_ROOTS, textureMapping, generator.modelOutput);
+        generator.blockStateOutput.accept(BlockModelGenerators.createAxisAlignedPillarBlock(Blocks.MUDDY_MANGROVE_ROOTS, resourceLocation));
     }
 
     private static PropertyDispatch createIntegerModelDispatch(IntegerProperty property, ResourceLocation[] models) {
