@@ -13,7 +13,6 @@ import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.data.models.model.TexturedModel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.List;
@@ -55,8 +54,8 @@ public class NarakaModelProvider extends FabricModelProvider {
         TextureMapping textureMapping = TextureMapping.column(
                 TextureMapping.getBlockTexture(NarakaBlocks.EBONY_ROOTS, "_side"), TextureMapping.getBlockTexture(NarakaBlocks.EBONY_ROOTS, "_top")
         );
-        ResourceLocation resourceLocation = ModelTemplates.CUBE_COLUMN.create(Blocks.MUDDY_MANGROVE_ROOTS, textureMapping, generator.modelOutput);
-        generator.blockStateOutput.accept(BlockModelGenerators.createAxisAlignedPillarBlock(Blocks.MUDDY_MANGROVE_ROOTS, resourceLocation));
+        ResourceLocation resourceLocation = ModelTemplates.CUBE_COLUMN.create(NarakaBlocks.EBONY_ROOTS, textureMapping, generator.modelOutput);
+        generator.blockStateOutput.accept(BlockModelGenerators.createAxisAlignedPillarBlock(NarakaBlocks.EBONY_ROOTS, resourceLocation));
     }
 
     private static PropertyDispatch createIntegerModelDispatch(IntegerProperty property, ResourceLocation[] models) {
