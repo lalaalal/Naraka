@@ -49,6 +49,9 @@ public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
                 .add(NarakaBlocks.EBONY_WOOD)
                 .add(NarakaBlocks.STRIPPED_EBONY_LOG)
                 .add(NarakaBlocks.STRIPPED_EBONY_WOOD);
+        getOrCreateTagBuilder(NarakaBlockTags.EBONY_ROOTS_CAN_GROW_THROUGH)
+                .forceAddTag(BlockTags.DIRT)
+                .forceAddTag(BlockTags.BASE_STONE_OVERWORLD);
 
         getOrCreateTagBuilder(BlockTags.LOGS_THAT_BURN)
                 .addTag(NarakaBlockTags.EBONY_LOGS);
@@ -70,11 +73,14 @@ public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
                 .add(NarakaBlocks.HARD_EBONY_PLANKS);
         NarakaBlocks.forEachSoulInfusedBlock(needsIronTool::add);
 
+        getOrCreateTagBuilder(BlockTags.NEEDS_DIAMOND_TOOL)
+                .add(NarakaBlocks.EBONY_METAL_BLOCK);
         getOrCreateTagBuilder(NarakaBlockTags.NEEDS_NETHERITE_TOOL)
                 .add(NarakaBlocks.HEROBRINE_TOTEM)
                 .add(NarakaBlocks.PURIFIED_SOUL_BLOCK)
                 .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
         FabricTagBuilder mineableWithPickaxe = getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_PICKAXE)
+                .add(NarakaBlocks.EBONY_METAL_BLOCK)
                 .add(NarakaBlocks.HEROBRINE_TOTEM)
                 .add(NarakaBlocks.AMETHYST_SHARD_BLOCK)
                 .add(NarakaBlocks.NECTARIUM_BLOCK)

@@ -1,5 +1,6 @@
 package com.yummy.naraka.data;
 
+import com.yummy.naraka.world.block.EbonyLogBlock;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
@@ -13,6 +14,8 @@ import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.data.models.model.TexturedModel;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.List;
@@ -36,8 +39,8 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
         generator.createTrivialBlock(NarakaBlocks.EBONY_LEAVES, TexturedModel.LEAVES);
         generator.createTrivialCube(NarakaBlocks.AMETHYST_SHARD_BLOCK);
+        createEbonyLog(generator, NarakaBlocks.EBONY_LOG);
         generator.woodProvider(NarakaBlocks.EBONY_LOG)
-                .log(NarakaBlocks.EBONY_LOG)
                 .wood(NarakaBlocks.EBONY_WOOD);
         generator.woodProvider(NarakaBlocks.STRIPPED_EBONY_LOG)
                 .log(NarakaBlocks.STRIPPED_EBONY_LOG)
@@ -45,17 +48,39 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.HARD_EBONY_PLANKS);
         createHerobrineTotem(generator);
         generator.createFurnace(NarakaBlocks.SOUL_CRAFTING_BLOCK, TexturedModel.ORIENTABLE_ONLY_TOP);
-        createEbonyRoots(generator);
+        generator.createNonTemplateModelBlock(NarakaBlocks.EBONY_ROOTS);
         generator.createPlant(NarakaBlocks.EBONY_SAPLING, NarakaBlocks.POTTED_EBONY_SAPLING, BlockModelGenerators.TintState.NOT_TINTED);
         NarakaBlocks.forEachSoulInfusedBlock(generator::createTrivialCube);
+        generator.createTrivialCube(NarakaBlocks.EBONY_METAL_BLOCK);
     }
 
-    private static void createEbonyRoots(BlockModelGenerators generator) {
-        TextureMapping textureMapping = TextureMapping.column(
-                TextureMapping.getBlockTexture(NarakaBlocks.EBONY_ROOTS, "_side"), TextureMapping.getBlockTexture(NarakaBlocks.EBONY_ROOTS, "_top")
+    private static void createEbonyLog(BlockModelGenerators generator, Block block) {
+        ResourceLocation model = ModelTemplates.CUBE_COLUMN.create(block, TextureMapping.logColumn(block), generator.modelOutput);
+        generator.blockStateOutput.accept(MultiVariantGenerator
+                .multiVariant(block, Variant.variant()
+                        .with(VariantProperties.MODEL, model))
+                .with(createEbonyLog(createEbonyBranchModel(generator, block)))
         );
-        ResourceLocation resourceLocation = ModelTemplates.CUBE_COLUMN.create(NarakaBlocks.EBONY_ROOTS, textureMapping, generator.modelOutput);
-        generator.blockStateOutput.accept(BlockModelGenerators.createAxisAlignedPillarBlock(NarakaBlocks.EBONY_ROOTS, resourceLocation));
+    }
+
+    private static ResourceLocation createEbonyBranchModel(BlockModelGenerators generator, Block block) {
+        return TexturedModel.CUBE.createWithSuffix(block, "_branch", generator.modelOutput);
+    }
+
+    private static PropertyDispatch createEbonyLog(ResourceLocation branchModel) {
+        return PropertyDispatch.properties(BlockStateProperties.AXIS, EbonyLogBlock.BRANCH)
+                .generate((axis, branch) -> {
+                    if (branch) {
+                        return Variant.variant().with(VariantProperties.MODEL, branchModel);
+                    } else {
+                        return switch (axis) {
+                            case Y -> Variant.variant();
+                            case Z -> Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R90);
+                            case X -> Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+                                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90);
+                        };
+                    }
+                });
     }
 
     private static PropertyDispatch createIntegerModelDispatch(IntegerProperty property, ResourceLocation[] models) {
@@ -109,6 +134,8 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_METAL, ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SHARD, ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SWORD, ModelTemplates.FLAT_HANDHELD_ITEM);
+        generator.generateFlatItem(NarakaItems.EBONY_METAL_INGOT, ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.EBONY_ROOTS_SCRAP, ModelTemplates.FLAT_ITEM);
         NarakaItems.forEachSoulInfusedItem(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_ITEM));
         NarakaItems.forEachSoulInfusedSword(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM));
     }

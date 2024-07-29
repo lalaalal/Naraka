@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.structure.piece;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.core.NarakaRegistries;
+import com.yummy.naraka.core.registries.NarakaRegistries;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 

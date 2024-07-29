@@ -1,4 +1,4 @@
-package com.yummy.naraka.core;
+package com.yummy.naraka.core.registries;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.structure.height.HeightProviderType;

@@ -6,10 +6,12 @@ import com.yummy.naraka.client.gui.screen.SoulCraftingScreen;
 import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.client.model.SpearModel;
 import com.yummy.naraka.client.model.SpearOfLonginusModel;
+import com.yummy.naraka.client.particle.EbonyParticle;
 import com.yummy.naraka.client.renderer.CustomItemRenderManager;
 import com.yummy.naraka.client.renderer.HerobrineRenderer;
 import com.yummy.naraka.client.renderer.NarakaSpearItemRenderer;
 import com.yummy.naraka.client.renderer.SpearRenderer;
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
@@ -20,6 +22,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.CoreShaderRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -49,8 +52,11 @@ public class NarakaModClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(),
                 NarakaBlocks.EBONY_SAPLING,
                 NarakaBlocks.POTTED_EBONY_SAPLING,
-                NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK
+                NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK,
+                NarakaBlocks.EBONY_ROOTS
         );
+
+        ParticleFactoryRegistry.getInstance().register(NarakaParticleTypes.EBONY_LEAVES, EbonyParticle.Provider::new);
 
         CustomItemRenderManager.register(NarakaItems.SPEAR_ITEM, NarakaSpearItemRenderer.INSTANCE);
         CustomItemRenderManager.register(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, NarakaSpearItemRenderer.INSTANCE);

@@ -84,6 +84,13 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.BUILDING_BLOCKS, Blocks.IRON_BLOCK.asItem(), RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.COMPRESSED_IRON_BLOCK);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, Items.AMETHYST_SHARD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.AMETHYST_SHARD_BLOCK);
+        smeltingResultFromBase(recipeOutput, NarakaItems.EBONY_ROOTS_SCRAP, NarakaBlocks.EBONY_ROOTS);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, NarakaItems.EBONY_METAL_INGOT)
+                .requires(NarakaItems.EBONY_ROOTS_SCRAP, 4)
+                .requires(Items.NETHERITE_SCRAP, 4)
+                .unlockedBy(getHasName(NarakaItems.EBONY_ROOTS_SCRAP), has(NarakaItems.EBONY_ROOTS_SCRAP))
+                .save(recipeOutput);
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.EBONY_METAL_INGOT, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.EBONY_METAL_BLOCK);
     }
 
     protected static ResourceLocation location(ItemLike item) {

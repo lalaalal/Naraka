@@ -1,6 +1,7 @@
 package com.yummy.naraka;
 
-import com.yummy.naraka.core.NarakaRegistries;
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.event.NarakaGameEvents;
 import com.yummy.naraka.world.NarakaBiomes;
 import com.yummy.naraka.world.block.NarakaBlocks;
@@ -12,6 +13,7 @@ import com.yummy.naraka.world.item.NarakaCreativeModTabs;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeSerializers;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeTypes;
+import com.yummy.naraka.world.rootplacers.NarakaRootPlacerTypes;
 import com.yummy.naraka.world.structure.NarakaStructureTypes;
 import com.yummy.naraka.world.structure.height.NarakaHeightProviders;
 import com.yummy.naraka.world.structure.piece.NarakaStructurePieceFactories;
@@ -43,6 +45,8 @@ public class NarakaMod implements ModInitializer {
         NarakaProtectionPredicates.initialize();
         NarakaBiomes.initialize();
         NarakaTreeGrowers.initialize();
+        NarakaRootPlacerTypes.initialize();
+        NarakaParticleTypes.initialize();
 
         NarakaGameEvents.initialize();
         NarakaContext.initialize();

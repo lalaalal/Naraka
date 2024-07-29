@@ -36,25 +36,6 @@ public class NarakaCreativeModTabs {
     }
 
     private static void createNarakaTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-        output.accept(NarakaBlocks.EBONY_LOG);
-        output.accept(NarakaBlocks.EBONY_WOOD);
-        output.accept(NarakaBlocks.STRIPPED_EBONY_LOG);
-        output.accept(NarakaBlocks.STRIPPED_EBONY_WOOD);
-        output.accept(NarakaBlocks.HARD_EBONY_PLANKS);
-        // Ebony Root block, item
-        output.accept(NarakaBlocks.EBONY_LEAVES);
-        output.accept(NarakaBlocks.EBONY_SAPLING);
-
-        output.accept(NarakaItems.EBONY_SWORD);
-        output.accept(NarakaItems.SPEAR_ITEM);
-        output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
-        output.accept(NarakaItems.COMPRESSED_IRON_INGOT);
-        output.accept(NarakaBlocks.COMPRESSED_IRON_BLOCK);
-        output.accept(NarakaItems.PURIFIED_SOUL_SHARD);
-        output.accept(NarakaBlocks.PURIFIED_SOUL_BLOCK);
-        output.accept(NarakaItems.GOD_BLOOD);
-        output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE);
-
         output.accept(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD);
         output.accept(NarakaItems.SOUL_INFUSED_COPPER_SWORD);
         output.accept(NarakaItems.SOUL_INFUSED_GOLD_SWORD);
@@ -85,6 +66,35 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK);
         output.accept(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
 
+        output.accept(NarakaItems.EBONY_SWORD);
+        output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE);
+        // armor trim template
+        // armors
+        output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
+        output.accept(NarakaItems.GOD_BLOOD);
+
+        output.accept(NarakaItems.EBONY_METAL_INGOT);
+        output.accept(NarakaItems.COMPRESSED_IRON_INGOT);
+        output.accept(NarakaItems.PURIFIED_SOUL_SHARD);
+        // soul armors
+        output.accept(NarakaItems.SPEAR_ITEM);
+        output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM);
+
+        output.accept(NarakaBlocks.EBONY_METAL_BLOCK);
+        output.accept(NarakaBlocks.COMPRESSED_IRON_BLOCK);
+        output.accept(NarakaBlocks.PURIFIED_SOUL_BLOCK);
+        output.accept(NarakaBlocks.EBONY_LOG);
+        output.accept(NarakaBlocks.EBONY_WOOD);
+        output.accept(NarakaBlocks.STRIPPED_EBONY_LOG);
+        output.accept(NarakaBlocks.STRIPPED_EBONY_WOOD);
+        output.accept(NarakaBlocks.HARD_EBONY_PLANKS);
+        output.accept(NarakaBlocks.EBONY_ROOTS);
+
+        output.accept(NarakaItems.EBONY_ROOTS_SCRAP);
+        output.accept(NarakaBlocks.EBONY_LEAVES);
+        output.accept(NarakaBlocks.EBONY_SAPLING);
+        // discs
+        // finder
         output.accept(NarakaBlocks.SOUL_CRAFTING_BLOCK);
     }
 

@@ -1,6 +1,14 @@
 accessWidener v2 named
-transitive-accessible class net/minecraft/client/renderer/RenderType$CompositeState
-transitive-accessible class net/minecraft/client/renderer/RenderStateShard$MultiTextureStateShard
-transitive-accessible class net/minecraft/client/renderer/RenderStateShard$ShaderStateShard
-transitive-accessible method net/minecraft/world/level/block/state/properties/BlockSetType register (Lnet/minecraft/world/level/block/state/properties/BlockSetType;)Lnet/minecraft/world/level/block/state/properties/BlockSetType;
-transitive-accessible method net/minecraft/world/level/block/state/properties/WoodType register (Lnet/minecraft/world/level/block/state/properties/WoodType;)Lnet/minecraft/world/level/block/state/properties/WoodType;
+accessible class net/minecraft/client/renderer/RenderType$CompositeState
+accessible class net/minecraft/client/renderer/RenderStateShard$MultiTextureStateShard
+accessible class net/minecraft/client/renderer/RenderStateShard$ShaderStateShard
+accessible method net/minecraft/world/level/block/state/properties/BlockSetType register (Lnet/minecraft/world/level/block/state/properties/BlockSetType;)Lnet/minecraft/world/level/block/state/properties/BlockSetType;
+accessible method net/minecraft/world/level/block/state/properties/WoodType register (Lnet/minecraft/world/level/block/state/properties/WoodType;)Lnet/minecraft/world/level/block/state/properties/WoodType;
+
+accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/CherryTrunkPlacer BRANCH_START_CODEC Lcom/mojang/serialization/Codec;
+accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/CherryTrunkPlacer branchCount Lnet/minecraft/util/valueproviders/IntProvider;
+accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/CherryTrunkPlacer branchHorizontalLength Lnet/minecraft/util/valueproviders/IntProvider;
+accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/CherryTrunkPlacer branchStartOffsetFromTop Lnet/minecraft/util/valueproviders/UniformInt;
+accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/CherryTrunkPlacer secondBranchStartOffsetFromTop Lnet/minecraft/util/valueproviders/UniformInt;
+accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/CherryTrunkPlacer branchEndOffsetFromTop Lnet/minecraft/util/valueproviders/IntProvider;
+accessible method net/minecraft/world/level/levelgen/feature/trunkplacers/CherryTrunkPlacer generateBranch (Lnet/minecraft/world/level/LevelSimulatedReader;Ljava/util/function/BiConsumer;Lnet/minecraft/util/RandomSource;ILnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/feature/configurations/TreeConfiguration;Ljava/util/function/Function;Lnet/minecraft/core/Direction;IZLnet/minecraft/core/BlockPos$MutableBlockPos;)Lnet/minecraft/world/level/levelgen/feature/foliageplacers/FoliagePlacer$FoliageAttachment;

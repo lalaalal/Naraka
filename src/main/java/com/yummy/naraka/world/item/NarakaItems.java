@@ -44,6 +44,9 @@ public class NarakaItems {
                     )
     );
 
+    public static final Item EBONY_ROOTS_SCRAP = registerSimpleItem("ebony_roots_scrap");
+    public static final Item EBONY_METAL_INGOT = registerSimpleItem("ebony_metal_ingot", new Item.Properties().fireResistant());
+
     public static final Item GOD_BLOOD = registerSimpleItem(
             "god_blood", new Item.Properties()
                     .stacksTo(1)

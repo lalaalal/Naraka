@@ -1,6 +1,7 @@
 package com.yummy.naraka.data.worldgen.features;
 
 import com.yummy.naraka.world.block.NarakaBlocks;
+import com.yummy.naraka.world.rootplacers.EbonyRootPlacer;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.trunkplacers.CherryTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 
+import java.util.Optional;
 import java.util.OptionalInt;
 
 public class NarakaTreeFeatures {
@@ -42,7 +44,7 @@ public class NarakaTreeFeatures {
 
     private static TreeConfiguration.TreeConfigurationBuilder createCherryEbony() {
         return new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(NarakaBlocks.EBONY_LOG),
+                BlockStateProvider.simple(NarakaBlocks.EBONY_LOG.branchBlockState()),
                 new CherryTrunkPlacer(
                         7, 1, 0,
                         new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder()
@@ -57,6 +59,16 @@ public class NarakaTreeFeatures {
                 ),
                 BlockStateProvider.simple(NarakaBlocks.EBONY_LEAVES),
                 new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), ConstantInt.of(5), 0.25F, 0.5F, 0.16666667F, 0.33333334F),
+                Optional.of(
+                        new EbonyRootPlacer(
+                                UniformInt.of(0, 0),
+                                BlockStateProvider.simple(NarakaBlocks.EBONY_ROOTS),
+                                Optional.empty(),
+                                UniformInt.of(3, 4),
+                                UniformInt.of(4, 7),
+                                0.45f
+                        )
+                ),
                 new TwoLayersFeatureSize(1, 0, 2)
         ).ignoreVines().dirt(BlockStateProvider.simple(NarakaBlocks.EBONY_ROOTS));
     }

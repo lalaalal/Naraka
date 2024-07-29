@@ -2,7 +2,7 @@ package com.yummy.naraka.world.structure.height;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yummy.naraka.core.NarakaRegistries;
+import com.yummy.naraka.core.registries.NarakaRegistries;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.util.valueproviders.IntProvider;

@@ -3,7 +3,7 @@ package com.yummy.naraka.world.structure;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yummy.naraka.core.NarakaRegistries;
+import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.world.structure.height.HeightProvider;
 import com.yummy.naraka.world.structure.piece.JumboPiece;
 import com.yummy.naraka.world.structure.piece.StructurePieceFactory;

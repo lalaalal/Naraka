@@ -89,6 +89,8 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(NarakaItems.PURIFIED_SOUL_SWORD, "Purified Soul Sword");
 
             builder.add(NarakaItems.EBONY_SWORD, "Ebony Sword");
+            builder.add(NarakaItems.EBONY_ROOTS_SCRAP, "Ebony Roots Scrap");
+            builder.add(NarakaItems.EBONY_METAL_INGOT, "Ebony Metal Ingot");
 
             builder.add(NarakaBlocks.NECTARIUM_ORE, "Nectarium Ore");
             builder.add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "Deepslate Nectarium Ore");
@@ -121,6 +123,7 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(NarakaBlocks.POTTED_EBONY_SAPLING, "Potted Ebony Sapling");
             builder.add(NarakaBlocks.HARD_EBONY_PLANKS, "Hard Ebony Planks");
             builder.add(NarakaBlocks.EBONY_ROOTS, "Ebony Roots");
+            builder.add(NarakaBlocks.EBONY_METAL_BLOCK, "Ebony Metal Block");
 
             builder.add(NarakaEntityTypes.HEROBRINE, "Naraka: Herobrine");
             builder.add(NarakaEntityTypes.THROWN_SPEAR, "Spear");
@@ -178,6 +181,7 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(NarakaItems.PURIFIED_SOUL_SWORD, "정화된 영혼 검");
 
             builder.add(NarakaItems.EBONY_SWORD, "흑단나무 검");
+            builder.add(NarakaItems.EBONY_METAL_INGOT, "흑단나무 금속 주괴");
 
             builder.add(NarakaBlocks.NECTARIUM_ORE, "넥타륨 광석");
             builder.add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "심층암 넥타륨 광석");

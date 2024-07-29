@@ -98,7 +98,7 @@ public class NarakaBlocks {
     public static final Block SOUL_INFUSED_AMETHYST_BLOCK = registerSoulInfusedBlock("amethyst_block", Blocks.AMETHYST_BLOCK);
     public static final Block SOUL_INFUSED_NECTARIUM_BLOCK = registerSoulInfusedBlock("nectarium_block", NECTARIUM_BLOCK);
 
-    public static final RotatedPillarBlock EBONY_LOG = registerBlockWithItem("ebony_log", RotatedPillarBlock::new,
+    public static final EbonyLogBlock EBONY_LOG = registerBlockWithItem("ebony_log", EbonyLogBlock::new,
             from(Blocks.DARK_OAK_LOG)
                     .strength(5, 6)
                     .requiresCorrectToolForDrops()
@@ -123,8 +123,9 @@ public class NarakaBlocks {
                     .strength(40, 6)
                     .requiresCorrectToolForDrops()
     );
-    public static final LeavesBlock EBONY_LEAVES = registerBlockWithItem("ebony_leaves", LeavesBlock::new, Blocks.DARK_OAK_LEAVES);
-    public static final RotatedPillarBlock EBONY_ROOTS = registerBlockWithItem("ebony_roots", RotatedPillarBlock::new, Blocks.MUDDY_MANGROVE_ROOTS);
+    public static final Block EBONY_METAL_BLOCK = registerSimpleBlockWithItem("ebony_metal_block", Blocks.NETHERITE_BLOCK);
+    public static final EbonyLeavesBlock EBONY_LEAVES = registerBlockWithItem("ebony_leaves", EbonyLeavesBlock::new, Blocks.DARK_OAK_LEAVES);
+    public static final MangroveRootsBlock EBONY_ROOTS = registerBlockWithItem("ebony_roots", MangroveRootsBlock::new, Blocks.MANGROVE_ROOTS);
 
     public static final EbonySaplingBlock EBONY_SAPLING = registerBlockWithItem("ebony_sapling", EbonySaplingBlock::new, Blocks.DARK_OAK_SAPLING);
     public static final FlowerPotBlock POTTED_EBONY_SAPLING = registerBlockWithItem("potted_ebony_sapling", properties -> new FlowerPotBlock(EBONY_SAPLING, properties), Blocks.POTTED_DARK_OAK_SAPLING);
