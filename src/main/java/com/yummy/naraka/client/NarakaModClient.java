@@ -17,6 +17,8 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.component.NarakaDataComponents;
+import com.yummy.naraka.world.item.component.SanctuaryTracker;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -29,7 +31,12 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.world.level.Level;
 
 @Environment(EnvType.CLIENT)
 public class NarakaModClient implements ClientModInitializer {
@@ -61,6 +68,13 @@ public class NarakaModClient implements ClientModInitializer {
         CustomItemRenderManager.register(NarakaItems.SPEAR_ITEM, NarakaSpearItemRenderer.INSTANCE);
         CustomItemRenderManager.register(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, NarakaSpearItemRenderer.INSTANCE);
         CustomItemRenderManager.register(NarakaItems.SPEAR_OF_LONGINUS_ITEM, NarakaSpearItemRenderer.INSTANCE);
+
+        ItemProperties.register(NarakaItems.SANCTUARY_COMPASS, NarakaMod.location("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) -> {
+            SanctuaryTracker tracker = itemStack.get(NarakaDataComponents.SANCTUARY_TRACKER);
+            if (tracker == null)
+                return GlobalPos.of(Level.OVERWORLD, BlockPos.ZERO);
+            return tracker.sanctuaryPos();
+        }));
 
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(NarakaSpearItemRenderer.INSTANCE);
 

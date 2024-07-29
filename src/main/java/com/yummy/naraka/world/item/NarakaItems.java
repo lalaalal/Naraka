@@ -53,6 +53,7 @@ public class NarakaItems {
                     .fireResistant()
     );
 
+    public static final SanctuaryCompassItem SANCTUARY_COMPASS = registerItem("sanctuary_compass", SanctuaryCompassItem::new);
     public static final Item COMPRESSED_IRON_INGOT = registerSimpleItem("compressed_iron_ingot");
 
     public static final Item PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = registerItem("purified_soul_upgrade_smithing_template", NarakaSmithingTemplateItems::createPurifiedSoulUpgradeTemplate);

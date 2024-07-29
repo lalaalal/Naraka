@@ -51,5 +51,8 @@ public class NarakaItemTagsProvider extends FabricTagProvider<Item> {
                 .addTag(NarakaItemTags.SPEAR_ENCHANTABLE);
         getOrCreateTagBuilder(ItemTags.SHARP_WEAPON_ENCHANTABLE)
                 .addTag(NarakaItemTags.SPEAR_ENCHANTABLE);
+
+        getOrCreateTagBuilder(ItemTags.COMPASSES)
+                .add(NarakaItems.SANCTUARY_COMPASS);
     }
 }

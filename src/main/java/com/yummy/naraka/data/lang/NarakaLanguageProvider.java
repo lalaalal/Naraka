@@ -91,6 +91,7 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(NarakaItems.EBONY_SWORD, "Ebony Sword");
             builder.add(NarakaItems.EBONY_ROOTS_SCRAP, "Ebony Roots Scrap");
             builder.add(NarakaItems.EBONY_METAL_INGOT, "Ebony Metal Ingot");
+            builder.add(NarakaItems.SANCTUARY_COMPASS, "Sanctuary Compass");
 
             builder.add(NarakaBlocks.NECTARIUM_ORE, "Nectarium Ore");
             builder.add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "Deepslate Nectarium Ore");
