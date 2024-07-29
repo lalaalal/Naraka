@@ -94,7 +94,7 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaBlocks.EBONY_LEAVES);
         output.accept(NarakaBlocks.EBONY_SAPLING);
         // discs
-        // finder
+        output.accept(NarakaItems.SANCTUARY_COMPASS);
         output.accept(NarakaBlocks.SOUL_CRAFTING_BLOCK);
     }
 

@@ -13,22 +13,28 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
-public record SanctuaryTracker(GlobalPos sanctuaryPos, boolean tracked) {
-    public static final SanctuaryTracker UNTRACKED = new SanctuaryTracker(GlobalPos.of(Level.OVERWORLD, BlockPos.ZERO), false);
+import java.util.Optional;
+
+public record SanctuaryTracker(Optional<GlobalPos> sanctuaryPos, boolean tracked) {
+    public static final SanctuaryTracker UNTRACKED = new SanctuaryTracker(Optional.empty(), false);
 
     public static final Codec<SanctuaryTracker> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                    GlobalPos.CODEC.fieldOf("sanctuary_pos").forGetter(SanctuaryTracker::sanctuaryPos),
+                    GlobalPos.CODEC.optionalFieldOf("sanctuary_pos").forGetter(SanctuaryTracker::sanctuaryPos),
                     Codec.BOOL.fieldOf("tracked").forGetter(SanctuaryTracker::tracked)
             ).apply(instance, SanctuaryTracker::new)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, SanctuaryTracker> STREAM_CODEC = StreamCodec.composite(
-            GlobalPos.STREAM_CODEC,
+            GlobalPos.STREAM_CODEC.apply(ByteBufCodecs::optional),
             SanctuaryTracker::sanctuaryPos,
             ByteBufCodecs.BOOL,
             SanctuaryTracker::tracked,
             SanctuaryTracker::new
     );
+
+    public SanctuaryTracker(GlobalPos sanctuaryPos, boolean tracked) {
+        this(Optional.of(sanctuaryPos), tracked);
+    }
 
     public SanctuaryTracker update(ServerLevel serverLevel, BlockPos userPos, boolean forceUpdate) {
         if (tracked && !forceUpdate)
