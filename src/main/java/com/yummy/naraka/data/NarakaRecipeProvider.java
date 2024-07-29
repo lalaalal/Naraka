@@ -91,6 +91,7 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .unlockedBy(getHasName(NarakaItems.EBONY_ROOTS_SCRAP), has(NarakaItems.EBONY_ROOTS_SCRAP))
                 .save(recipeOutput);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.EBONY_METAL_INGOT, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.EBONY_METAL_BLOCK);
+        copySmithingTemplate(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.EBONY_METAL_INGOT, Blocks.IRON_BLOCK);
     }
 
     protected static ResourceLocation location(ItemLike item) {
@@ -99,6 +100,18 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
 
     protected static ResourceLocation location(ItemLike item, String suffix) {
         return NarakaMod.location(getItemName(item) + suffix);
+    }
+
+    public static void copySmithingTemplate(RecipeOutput recipeOutput, ItemLike templateItem, ItemLike ingredient, ItemLike core) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, templateItem, 2)
+                .define('#', ingredient)
+                .define('C', core)
+                .define('S', templateItem)
+                .pattern("#S#")
+                .pattern("#C#")
+                .pattern("###")
+                .unlockedBy(getHasName(templateItem), has(templateItem))
+                .save(recipeOutput);
     }
 
     public static void sword(RecipeOutput recipeOutput, ItemLike material, ItemLike result) {
