@@ -12,7 +12,6 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.resources.ResourceLocation;
 
 @JeiPlugin
-@SuppressWarnings("unused")
 public class NarakaJeiPlugin implements IModPlugin {
     public static final ResourceLocation ID = NarakaMod.location("jei", "naraka");
 

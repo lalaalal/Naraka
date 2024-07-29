@@ -70,7 +70,8 @@ public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
                 .add(NarakaBlocks.FAKE_GOLD_BLOCK)
                 .add(NarakaBlocks.COMPRESSED_IRON_BLOCK)
                 .addTag(NarakaBlockTags.EBONY_LOGS)
-                .add(NarakaBlocks.HARD_EBONY_PLANKS);
+                .add(NarakaBlocks.HARD_EBONY_PLANKS)
+                .add(NarakaBlocks.EBONY_ROOTS);
         NarakaBlocks.forEachSoulInfusedBlock(needsIronTool::add);
 
         getOrCreateTagBuilder(BlockTags.NEEDS_DIAMOND_TOOL)
@@ -97,6 +98,7 @@ public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
 
         getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_AXE)
                 .addTag(NarakaBlockTags.EBONY_LOGS)
-                .add(NarakaBlocks.HARD_EBONY_PLANKS);
+                .add(NarakaBlocks.HARD_EBONY_PLANKS)
+                .add(NarakaBlocks.EBONY_ROOTS);
     }
 }
