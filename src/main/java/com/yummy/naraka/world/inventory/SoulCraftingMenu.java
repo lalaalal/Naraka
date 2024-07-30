@@ -124,6 +124,6 @@ public class SoulCraftingMenu extends AbstractContainerMenu {
     }
 
     public double getFuelCharge() {
-        return (double) data.get(FUEL_DATA_ID) / (double) SoulCraftingBlockEntity.requiredFuels();
+        return (double) data.get(FUEL_DATA_ID) / (double) SoulCraftingBlockEntity.FUEL_CHARGE;
     }
 }

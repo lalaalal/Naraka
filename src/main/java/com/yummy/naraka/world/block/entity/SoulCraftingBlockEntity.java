@@ -43,7 +43,8 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
     public static final int PROGRESS_WAITING = 0;
     public static final int PROGRESS_START = 1;
 
-    private static final int REQUIRED_FUELS = 10;
+    public static final int FUEL_CHARGE = 32;
+    private static final int REQUIRED_FUELS = 1;
     private static final int CRAFTING_TIME = 20 * 30;
 
     public static int requiredFuels() {
@@ -78,7 +79,7 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
     }
 
     public void setFuel(int fuel) {
-        data.set(FUEL_DATA_ID, fuel);
+        data.set(FUEL_DATA_ID, Math.max(fuel, 0));
     }
 
     public void setCraftingProgress(int craftingProgress) {
@@ -141,26 +142,27 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
         ItemStack fuelItem = blockEntity.getItem(FUEL_SLOT);
         if (!fuelItem.isEmpty() && fuel < requiredFuels()) {
             fuelItem.shrink(1);
-            fuel += 1;
+            fuel = FUEL_CHARGE;
             blockEntity.setFuel(fuel);
         }
 
         ItemStack ingredientItem = blockEntity.getItem(INGREDIENT_SLOT);
         ItemStack existingResult = blockEntity.getItem(RESULT_SLOT);
-        Optional<RecipeHolder<SoulCraftingRecipe>> optional = getRecipeFor(level, ingredientItem);
+        Optional<RecipeHolder<SoulCraftingRecipe>> recipe = getRecipeFor(level, ingredientItem);
         if (!ingredientItem.isEmpty()
-                && optional.isPresent() && canCraft(level, optional.get(), existingResult)
-                && fuel == requiredFuels()
+                && recipe.isPresent() && canCraft(level, recipe.get(), existingResult)
+                && existingResult.getCount() < existingResult.getMaxStackSize()
+                && fuel >= requiredFuels()
                 && craftingProgress == PROGRESS_WAITING) {
             blockEntity.setCraftingProgress(PROGRESS_START);
-            blockEntity.setLitProgress(craftingTime());
-            blockEntity.setFuel(0);
+            blockEntity.setLitProgress(craftingTime() - 1);
+            blockEntity.setFuel(fuel - 1);
             level.setBlock(pos, state.setValue(SoulCraftingBlock.LIT, true), Block.UPDATE_ALL_IMMEDIATE);
             return;
         }
 
-        if (craftingProgress == craftingTime() && optional.isPresent() && !ingredientItem.isEmpty()) {
-            ItemStack crafted = assemble(level, optional.get(), ingredientItem);
+        if (craftingProgress >= craftingTime() && recipe.isPresent() && !ingredientItem.isEmpty()) {
+            ItemStack crafted = assemble(level, recipe.get(), ingredientItem);
             if (existingResult.isEmpty())
                 blockEntity.setItem(RESULT_SLOT, crafted);
             else if (existingResult.is(crafted.getItem()))
@@ -168,7 +170,7 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
             blockEntity.setCraftingProgress(PROGRESS_WAITING);
         }
 
-        if (canProcess(craftingProgress) || litProgress > 0) {
+        if (canProcess(craftingProgress) || blockEntity.getLitProgress() > 0) {
             int increase = 1;
             if (ingredientItem.isEmpty())
                 increase = Mth.ceil(-craftingTime() * 0.05);
