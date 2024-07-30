@@ -55,7 +55,7 @@ public class NarakaItemTagsProvider extends FabricTagProvider<Item> {
         getOrCreateTagBuilder(ItemTags.COMPASSES)
                 .add(NarakaItems.SANCTUARY_COMPASS);
         getOrCreateTagBuilder(ItemTags.TRIM_TEMPLATES)
-                .add(NarakaItems.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE);
+                .add(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE);
         FabricTagBuilder trimMaterials = getOrCreateTagBuilder(ItemTags.TRIM_MATERIALS);
         NarakaItems.forEachSoulInfusedItem(trimMaterials::add);
     }

@@ -68,7 +68,7 @@ public class NarakaCreativeModTabs {
 
         output.accept(NarakaItems.EBONY_SWORD);
         output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE);
-        // armor trim template
+        output.accept(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE);
         // armors
         output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
         output.accept(NarakaItems.GOD_BLOOD);

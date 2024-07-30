@@ -26,14 +26,14 @@ public class NarakaTrimMaterials {
     public static final ResourceKey<TrimMaterial> SOUL_INFUSED_NECTARIUM = create("soul_infused_nectarium");
 
     public static void bootstrap(BootstrapContext<TrimMaterial> context) {
-        register(context, SOUL_INFUSED_REDSTONE, NarakaItems.SOUL_INFUSED_REDSTONE, 0xeb4747, 1.1f);
-        register(context, SOUL_INFUSED_COPPER, NarakaItems.SOUL_INFUSED_COPPER, 0xff8000, 1.2f);
-        register(context, SOUL_INFUSED_GOLD, NarakaItems.SOUL_INFUSED_GOLD, 0xffd24d, 1.3f);
-        register(context, SOUL_INFUSED_EMERALD, NarakaItems.SOUL_INFUSED_EMERALD, 0x0ec70e, 1.4f);
-        register(context, SOUL_INFUSED_DIAMOND, NarakaItems.SOUL_INFUSED_DIAMOND, 0x33cccc, 1.5f);
-        register(context, SOUL_INFUSED_LAPIS, NarakaItems.SOUL_INFUSED_LAPIS, 0x3939c6, 1.6f);
-        register(context, SOUL_INFUSED_AMETHYST, NarakaItems.SOUL_INFUSED_AMETHYST, 0x9957db, 1.7f);
-        register(context, SOUL_INFUSED_NECTARIUM, NarakaItems.SOUL_INFUSED_NECTARIUM, 0xd65cd6, 1.8f);
+        register(context, SOUL_INFUSED_REDSTONE, NarakaItems.SOUL_INFUSED_REDSTONE, 0xeb4747, 0.4f);
+        register(context, SOUL_INFUSED_COPPER, NarakaItems.SOUL_INFUSED_COPPER, 0xff8000, 0.5f);
+        register(context, SOUL_INFUSED_GOLD, NarakaItems.SOUL_INFUSED_GOLD, 0xffd24d, 0.6f);
+        register(context, SOUL_INFUSED_EMERALD, NarakaItems.SOUL_INFUSED_EMERALD, 0x0ec70e, 0.7f);
+        register(context, SOUL_INFUSED_DIAMOND, NarakaItems.SOUL_INFUSED_DIAMOND, 0x33cccc, 0.8f);
+        register(context, SOUL_INFUSED_LAPIS, NarakaItems.SOUL_INFUSED_LAPIS, 0x3939c6, 0.9f);
+        register(context, SOUL_INFUSED_AMETHYST, NarakaItems.SOUL_INFUSED_AMETHYST, 0x9957db, 1.0f);
+        register(context, SOUL_INFUSED_NECTARIUM, NarakaItems.SOUL_INFUSED_NECTARIUM, 0xd65cd6, 0.3f);
     }
 
     private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> key, Item item, int color, float f) {

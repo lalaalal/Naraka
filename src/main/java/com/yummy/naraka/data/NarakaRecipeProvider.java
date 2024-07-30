@@ -92,7 +92,7 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .save(recipeOutput);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.EBONY_METAL_INGOT, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.EBONY_METAL_BLOCK);
         copySmithingTemplate(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.EBONY_METAL_INGOT, Blocks.IRON_BLOCK);
-        trimSmithing(recipeOutput, NarakaItems.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE);
+        trimSmithing(recipeOutput, NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE);
 
     }
 

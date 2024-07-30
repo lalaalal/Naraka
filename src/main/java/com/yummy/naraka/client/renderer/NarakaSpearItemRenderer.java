@@ -2,6 +2,7 @@ package com.yummy.naraka.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.logging.LogUtils;
 import com.mojang.math.Axis;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModelLayers;
@@ -18,6 +19,7 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -139,5 +141,7 @@ public class NarakaSpearItemRenderer implements CustomItemRenderManager.CustomIt
                 NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, spearModel,
                 NarakaItems.SPEAR_OF_LONGINUS_ITEM, longinusModel
         );
+        TextureAtlasSprite sprite = minecraft.getTextureAtlas(NarakaMod.mcLocation("textures/atlas/blocks.png")).apply(NarakaMod.location("trims/models/armor/purified_soul_silence_soul_infused_redstone"));
+        LogUtils.getLogger().debug("sprite: {}", sprite);
     }
 }

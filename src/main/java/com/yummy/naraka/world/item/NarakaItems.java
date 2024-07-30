@@ -55,9 +55,9 @@ public class NarakaItems {
     public static final Item COMPRESSED_IRON_INGOT = registerSimpleItem("compressed_iron_ingot");
 
     public static final Item PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = registerItem("purified_soul_upgrade_smithing_template", NarakaSmithingTemplateItems::createPurifiedSoulUpgradeTemplate);
-    public static final SmithingTemplateItem SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE = registerItemDirect(
-            "silence_armor_trim_smithing_template",
-            SmithingTemplateItem.createArmorTrimTemplate(NarakaTrimPatterns.SILENCE)
+    public static final SmithingTemplateItem PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE = registerItemDirect(
+            "purified_soul_silence_armor_trim_smithing_template",
+            SmithingTemplateItem.createArmorTrimTemplate(NarakaTrimPatterns.PURIFIED_SOUL_SILENCE)
     );
 
     public static final Item SOUL_INFUSED_AMETHYST = registerSoulInfusedItem("amethyst");

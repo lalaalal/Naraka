@@ -35,8 +35,8 @@
                 "trims/models/armor/raiser_leggings",
                 "trims/models/armor/host",
                 "trims/models/armor/host_leggings",
-                "trims/models/armor/silence",
-                "trims/models/armor/silence_leggings"
+                "naraka:trims/models/armor/purified_soul_silence",
+                "naraka:trims/models/armor/purified_soul_silence_leggings"
             ],
             "palette_key": "trims/color_palettes/trim_palette",
             "permutations": {
@@ -54,14 +54,14 @@
                 "gold_darker": "trims/color_palettes/gold_darker",
                 "diamond_darker": "trims/color_palettes/diamond_darker",
                 "netherite_darker": "trims/color_palettes/netherite_darker",
-                "soul_infused_amethyst": "trims/color_palettes/soul_infused_amethyst",
-                "soul_infused_copper": "trims/color_palettes/soul_infused_copper",
-                "soul_infused_diamond": "trims/color_palettes/soul_infused_diamond",
-                "soul_infused_emerald": "trims/color_palettes/soul_infused_emerald",
-                "soul_infused_gold": "trims/color_palettes/soul_infused_gold",
-                "soul_infused_lapis": "trims/color_palettes/soul_infused_lapis",
-                "soul_infused_nectarium": "trims/color_palettes/soul_infused_nectarium",
-                "soul_infused_redstone": "trims/color_palettes/soul_infused_redstone"
+                "soul_infused_amethyst": "naraka:trims/color_palettes/soul_infused_amethyst",
+                "soul_infused_copper": "naraka:trims/color_palettes/soul_infused_copper",
+                "soul_infused_diamond": "naraka:trims/color_palettes/soul_infused_diamond",
+                "soul_infused_emerald": "naraka:trims/color_palettes/soul_infused_emerald",
+                "soul_infused_gold": "naraka:trims/color_palettes/soul_infused_gold",
+                "soul_infused_lapis": "naraka:trims/color_palettes/soul_infused_lapis",
+                "soul_infused_nectarium": "naraka:trims/color_palettes/soul_infused_nectarium",
+                "soul_infused_redstone": "naraka:trims/color_palettes/soul_infused_redstone"
             }
         }
     ]

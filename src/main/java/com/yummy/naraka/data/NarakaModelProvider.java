@@ -136,7 +136,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SWORD, ModelTemplates.FLAT_HANDHELD_ITEM);
         generator.generateFlatItem(NarakaItems.EBONY_METAL_INGOT, ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.EBONY_ROOTS_SCRAP, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, ModelTemplates.FLAT_ITEM);
         NarakaItems.forEachSoulInfusedItem(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_ITEM));
         NarakaItems.forEachSoulInfusedSword(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM));
         generator.generateCompassItem(NarakaItems.SANCTUARY_COMPASS);

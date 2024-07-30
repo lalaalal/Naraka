@@ -9,10 +9,10 @@ import net.minecraft.world.item.armortrim.TrimPattern;
 import net.minecraft.world.item.armortrim.TrimPatterns;
 
 public class NarakaTrimPatterns {
-    public static final ResourceKey<TrimPattern> SILENCE = create("silence");
+    public static final ResourceKey<TrimPattern> PURIFIED_SOUL_SILENCE = create("purified_soul_silence");
 
     public static void bootstrap(BootstrapContext<TrimPattern> context) {
-        TrimPatterns.register(context, NarakaItems.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, SILENCE);
+        TrimPatterns.register(context, NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, PURIFIED_SOUL_SILENCE);
     }
 
     private static ResourceKey<TrimPattern> create(String name) {
