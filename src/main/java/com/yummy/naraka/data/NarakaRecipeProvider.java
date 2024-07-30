@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
@@ -93,7 +94,52 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.EBONY_METAL_INGOT, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.EBONY_METAL_BLOCK);
         copySmithingTemplate(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.EBONY_METAL_INGOT, Blocks.IRON_BLOCK);
         trimSmithing(recipeOutput, NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE);
+        helmet(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL, NarakaItems.PURIFIED_SOUL_HELMET);
+        chestplate(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL, NarakaItems.PURIFIED_SOUL_CHESTPLATE);
+        legging(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL, NarakaItems.PURIFIED_SOUL_LEGGINGS);
+        boots(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL, NarakaItems.PURIFIED_SOUL_BOOTS);
+        helmet(recipeOutput, NarakaItems.EBONY_METAL_INGOT, NarakaItems.EBONY_METAL_HELMET);
+        chestplate(recipeOutput, NarakaItems.EBONY_METAL_INGOT, NarakaItems.EBONY_METAL_CHESTPLATE);
+        legging(recipeOutput, NarakaItems.EBONY_METAL_INGOT, NarakaItems.EBONY_METAL_LEGGINGS);
+        boots(recipeOutput, NarakaItems.EBONY_METAL_INGOT, NarakaItems.EBONY_METAL_BOOTS);
+    }
 
+    protected static void helmet(RecipeOutput recipeOutput, ItemLike material, ArmorItem helmet) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, helmet)
+                .define('X', material)
+                .pattern("XXX")
+                .pattern("X X")
+                .unlockedBy("has_diamond", has(material))
+                .save(recipeOutput);
+    }
+
+    protected static void chestplate(RecipeOutput recipeOutput, ItemLike material, ArmorItem chestplate) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, chestplate)
+                .define('X', material)
+                .pattern("X X")
+                .pattern("XXX")
+                .pattern("XXX")
+                .unlockedBy("has_diamond", has(material))
+                .save(recipeOutput);
+    }
+
+    protected static void legging(RecipeOutput recipeOutput, ItemLike material, ArmorItem legging) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, legging)
+                .define('X', material)
+                .pattern("XXX")
+                .pattern("X X")
+                .pattern("X X")
+                .unlockedBy("has_diamond", has(material))
+                .save(recipeOutput);
+    }
+
+    protected static void boots(RecipeOutput recipeOutput, ItemLike material, ArmorItem boots) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, boots)
+                .define('X', material)
+                .pattern("X X")
+                .pattern("X X")
+                .unlockedBy("has_diamond", has(material))
+                .save(recipeOutput);
     }
 
     protected static void trimSmithing(RecipeOutput recipeOutput, Item item) {

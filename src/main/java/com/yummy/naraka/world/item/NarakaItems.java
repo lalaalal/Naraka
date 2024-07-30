@@ -3,9 +3,11 @@ package com.yummy.naraka.world.item;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.armortrim.NarakaTrimPatterns;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -13,6 +15,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Unbreakable;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -114,6 +117,23 @@ public class NarakaItems {
                     .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f)))
     );
 
+    public static final ArmorItem PURIFIED_SOUL_HELMET = registerArmorItem(NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.HELMET);
+    public static final ArmorItem PURIFIED_SOUL_CHESTPLATE = registerArmorItem(NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.CHESTPLATE);
+    public static final ArmorItem PURIFIED_SOUL_LEGGINGS = registerArmorItem(NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.LEGGINGS);
+    public static final ArmorItem PURIFIED_SOUL_BOOTS = registerArmorItem(NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.BOOTS);
+
+    public static final ArmorItem EBONY_METAL_HELMET = registerArmorItem(NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.HELMET);
+    public static final ArmorItem EBONY_METAL_CHESTPLATE = registerArmorItem(NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.CHESTPLATE);
+    public static final ArmorItem EBONY_METAL_LEGGINGS = registerArmorItem(NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.LEGGINGS);
+    public static final ArmorItem EBONY_METAL_BOOTS = registerArmorItem(NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.BOOTS);
+
+    public static ArmorItem registerArmorItem(Holder<ArmorMaterial> armorMaterial, ArmorItem.Type armorType) {
+        Optional<ResourceKey<ArmorMaterial>> key = armorMaterial.unwrapKey();
+        if (key.isEmpty())
+            throw new IllegalStateException();
+        String name = key.get().location().getPath() + "_" + armorType.getName();
+        return registerItem(name, properties -> new ArmorItem(armorMaterial, armorType, properties));
+    }
 
     public static void forEachSoulInfusedItem(Consumer<Item> consumer) {
         for (Item item : SOUL_INFUSED_ITEMS)

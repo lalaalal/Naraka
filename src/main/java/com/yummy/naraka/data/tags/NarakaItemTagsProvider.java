@@ -58,5 +58,18 @@ public class NarakaItemTagsProvider extends FabricTagProvider<Item> {
                 .add(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE);
         FabricTagBuilder trimMaterials = getOrCreateTagBuilder(ItemTags.TRIM_MATERIALS);
         NarakaItems.forEachSoulInfusedItem(trimMaterials::add);
+
+        getOrCreateTagBuilder(ItemTags.HEAD_ARMOR)
+                .add(NarakaItems.PURIFIED_SOUL_HELMET)
+                .add(NarakaItems.EBONY_METAL_HELMET);
+        getOrCreateTagBuilder(ItemTags.CHEST_ARMOR)
+                .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE)
+                .add(NarakaItems.EBONY_METAL_CHESTPLATE);
+        getOrCreateTagBuilder(ItemTags.LEG_ARMOR)
+                .add(NarakaItems.PURIFIED_SOUL_LEGGINGS)
+                .add(NarakaItems.EBONY_METAL_LEGGINGS);
+        getOrCreateTagBuilder(ItemTags.FOOT_ARMOR)
+                .add(NarakaItems.PURIFIED_SOUL_BOOTS)
+                .add(NarakaItems.EBONY_METAL_BOOTS);
     }
 }

@@ -69,14 +69,20 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaItems.EBONY_SWORD);
         output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE);
         output.accept(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE);
-        // armors
+        output.accept(NarakaItems.EBONY_METAL_HELMET);
+        output.accept(NarakaItems.EBONY_METAL_CHESTPLATE);
+        output.accept(NarakaItems.EBONY_METAL_LEGGINGS);
+        output.accept(NarakaItems.EBONY_METAL_BOOTS);
         output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
         output.accept(NarakaItems.GOD_BLOOD);
 
         output.accept(NarakaItems.EBONY_METAL_INGOT);
         output.accept(NarakaItems.COMPRESSED_IRON_INGOT);
         output.accept(NarakaItems.PURIFIED_SOUL_SHARD);
-        // soul armors
+        output.accept(NarakaItems.PURIFIED_SOUL_HELMET);
+        output.accept(NarakaItems.PURIFIED_SOUL_CHESTPLATE);
+        output.accept(NarakaItems.PURIFIED_SOUL_LEGGINGS);
+        output.accept(NarakaItems.PURIFIED_SOUL_BOOTS);
         output.accept(NarakaItems.SPEAR_ITEM);
         output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM);
 
