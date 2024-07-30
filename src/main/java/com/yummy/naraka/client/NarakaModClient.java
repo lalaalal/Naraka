@@ -41,6 +41,7 @@ public class NarakaModClient implements ClientModInitializer {
         initializeBlocks();
         initializeParticles();
 
+
         NarakaClientEvents.initialize();
         MenuScreens.register(NarakaMenuTypes.SOUL_CRAFTING, SoulCraftingScreen::new);
     }

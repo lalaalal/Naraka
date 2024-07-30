@@ -2,16 +2,14 @@ package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
+import com.yummy.naraka.world.item.armortrim.NarakaTrimPatterns;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Unbreakable;
 
 import java.util.HashSet;
@@ -57,6 +55,10 @@ public class NarakaItems {
     public static final Item COMPRESSED_IRON_INGOT = registerSimpleItem("compressed_iron_ingot");
 
     public static final Item PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = registerItem("purified_soul_upgrade_smithing_template", NarakaSmithingTemplateItems::createPurifiedSoulUpgradeTemplate);
+    public static final SmithingTemplateItem SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE = registerItemDirect(
+            "silence_armor_trim_smithing_template",
+            SmithingTemplateItem.createArmorTrimTemplate(NarakaTrimPatterns.SILENCE)
+    );
 
     public static final Item SOUL_INFUSED_AMETHYST = registerSoulInfusedItem("amethyst");
     public static final Item SOUL_INFUSED_COPPER = registerSoulInfusedItem("copper");
@@ -145,6 +147,10 @@ public class NarakaItems {
 
     private static <I extends Item> I registerItem(String name, Function<Item.Properties, I> factory, Item.Properties properties) {
         return Registry.register(BuiltInRegistries.ITEM, NarakaMod.location(name), factory.apply(properties));
+    }
+
+    private static <I extends Item> I registerItemDirect(String name, I item) {
+        return Registry.register(BuiltInRegistries.ITEM, NarakaMod.location(name), item);
     }
 
     private static <I extends Item> I registerItem(String name, Function<Item.Properties, I> factory) {
