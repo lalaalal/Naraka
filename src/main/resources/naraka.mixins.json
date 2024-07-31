@@ -1,16 +1,17 @@
 {
-  "required": true,
-  "package": "com.yummy.naraka.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "FeatureMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "client": [
-    "client.ItemBlockRenderTypesMixin",
-    "client.ItemEntityRendererMixin",
-    "client.ItemRendererMixin"
+    "required": true,
+    "package": "com.yummy.naraka.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [
+        "FeatureMixin",
+        "SmithingTemplateItemMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    },
+    "client": [
+        "client.ItemBlockRenderTypesMixin",
+        "client.ItemEntityRendererMixin",
+        "client.ItemRendererMixin"
   ]
 }

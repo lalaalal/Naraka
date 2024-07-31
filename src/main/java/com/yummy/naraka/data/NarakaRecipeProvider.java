@@ -1,6 +1,7 @@
 package com.yummy.naraka.data;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.crafting.SoulCraftingRecipe;
@@ -9,6 +10,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -92,8 +94,12 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .unlockedBy(getHasName(NarakaItems.EBONY_ROOTS_SCRAP), has(NarakaItems.EBONY_ROOTS_SCRAP))
                 .save(recipeOutput);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.EBONY_METAL_INGOT, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.EBONY_METAL_BLOCK);
-        copySmithingTemplate(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.EBONY_METAL_INGOT, Blocks.IRON_BLOCK);
-        trimSmithing(recipeOutput, NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE);
+        copySmithingTemplate(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.EBONY_METAL_INGOT, NarakaBlocks.COMPRESSED_IRON_BLOCK);
+        trimSmithing(recipeOutput,
+                NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE,
+                Ingredient.of(NarakaItemTags.PURIFIED_SOUL_ARMORS),
+                Ingredient.of(ItemTags.TRIM_MATERIALS)
+        );
         helmet(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL, NarakaItems.PURIFIED_SOUL_HELMET);
         chestplate(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL, NarakaItems.PURIFIED_SOUL_CHESTPLATE);
         legging(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL, NarakaItems.PURIFIED_SOUL_LEGGINGS);
@@ -142,8 +148,10 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .save(recipeOutput);
     }
 
-    protected static void trimSmithing(RecipeOutput recipeOutput, Item item) {
-        trimSmithing(recipeOutput, item, location(item, "_smithing_trim"));
+    protected static void trimSmithing(RecipeOutput recipeOutput, ItemLike item, Ingredient base, Ingredient material) {
+        SmithingTrimRecipeBuilder.smithingTrim(Ingredient.of(item), base, material, RecipeCategory.MISC)
+                .unlocks("has_smithing_trim_template", has(item))
+                .save(recipeOutput, location(item, "_smithing_trim"));
     }
 
     protected static ResourceLocation location(ItemLike item) {

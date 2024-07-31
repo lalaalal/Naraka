@@ -117,22 +117,22 @@ public class NarakaItems {
                     .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f)))
     );
 
-    public static final ArmorItem PURIFIED_SOUL_HELMET = registerArmorItem(NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.HELMET);
-    public static final ArmorItem PURIFIED_SOUL_CHESTPLATE = registerArmorItem(NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.CHESTPLATE);
-    public static final ArmorItem PURIFIED_SOUL_LEGGINGS = registerArmorItem(NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.LEGGINGS);
-    public static final ArmorItem PURIFIED_SOUL_BOOTS = registerArmorItem(NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.BOOTS);
+    public static final ArmorItem PURIFIED_SOUL_HELMET = registerArmorItem(NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.HELMET, 0);
+    public static final ArmorItem PURIFIED_SOUL_CHESTPLATE = registerArmorItem(NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.CHESTPLATE, 0);
+    public static final ArmorItem PURIFIED_SOUL_LEGGINGS = registerArmorItem(NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.LEGGINGS, 0);
+    public static final ArmorItem PURIFIED_SOUL_BOOTS = registerArmorItem(NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.BOOTS, 0);
 
-    public static final ArmorItem EBONY_METAL_HELMET = registerArmorItem(NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.HELMET);
-    public static final ArmorItem EBONY_METAL_CHESTPLATE = registerArmorItem(NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.CHESTPLATE);
-    public static final ArmorItem EBONY_METAL_LEGGINGS = registerArmorItem(NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.LEGGINGS);
-    public static final ArmorItem EBONY_METAL_BOOTS = registerArmorItem(NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.BOOTS);
+    public static final ArmorItem EBONY_METAL_HELMET = registerArmorItem(NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.HELMET, 7);
+    public static final ArmorItem EBONY_METAL_CHESTPLATE = registerArmorItem(NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.CHESTPLATE, 7);
+    public static final ArmorItem EBONY_METAL_LEGGINGS = registerArmorItem(NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.LEGGINGS, 7);
+    public static final ArmorItem EBONY_METAL_BOOTS = registerArmorItem(NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.BOOTS, 7);
 
-    public static ArmorItem registerArmorItem(Holder<ArmorMaterial> armorMaterial, ArmorItem.Type armorType) {
+    public static ArmorItem registerArmorItem(Holder<ArmorMaterial> armorMaterial, ArmorItem.Type armorType, int durability) {
         Optional<ResourceKey<ArmorMaterial>> key = armorMaterial.unwrapKey();
         if (key.isEmpty())
             throw new IllegalStateException();
         String name = key.get().location().getPath() + "_" + armorType.getName();
-        return registerItem(name, properties -> new ArmorItem(armorMaterial, armorType, properties));
+        return registerItem(name, properties -> new ArmorItem(armorMaterial, armorType, properties.durability(durability)));
     }
 
     public static void forEachSoulInfusedItem(Consumer<Item> consumer) {

@@ -5,12 +5,16 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.armortrim.NarakaTrimMaterials;
+import com.yummy.naraka.world.item.armortrim.NarakaTrimPatterns;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.item.armortrim.TrimMaterial;
+import net.minecraft.world.item.armortrim.TrimPattern;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -23,6 +27,16 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
 
     protected NarakaLanguageProvider(FabricDataOutput dataOutput, String languageCode, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(dataOutput, languageCode, registryLookup);
+    }
+
+    public void addTrimPattern(TranslationBuilder builder, ResourceKey<TrimPattern> trimPattern, String value) {
+        String key = trimPattern.location().toLanguageKey("trim_pattern");
+        builder.add(key, value);
+    }
+
+    public void addTrimMaterial(TranslationBuilder builder, ResourceKey<TrimMaterial> trimMaterial, String value) {
+        String key = trimMaterial.location().toLanguageKey("trim_material");
+        builder.add(key, value);
     }
 
     public void addAdvancement(TranslationBuilder builder, AdvancementComponent advancementComponent, String title, String description) {
@@ -53,6 +67,16 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add Ebony Sword, Soul Weapon");
             builder.add(PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add Purified Soul Metal, Soul Infused Materials");
 
+            addTrimPattern(builder, NarakaTrimPatterns.PURIFIED_SOUL_SILENCE, "Purified Soul Silence Armor Trim");
+            addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, "Soul Infused Redstone Material");
+            addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_COPPER, "Soul Infused Copper Material");
+            addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_GOLD, "Soul Infused Gold Material");
+            addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_EMERALD, "Soul Infused Emerald Material");
+            addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_DIAMOND, "Soul Infused Diamond Material");
+            addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_LAPIS, "Soul Infused Lapis Material");
+            addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_AMETHYST, "Soul Infused Amethyst Material");
+            addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_NECTARIUM, "Soul Infused Nectarium Material");
+
             addAdvancement(builder, AdvancementNarakaComponents.ROOT, "Naraka!", "Welcome to Naraka!");
             addAdvancement(builder, AdvancementNarakaComponents.HEROBRINE_SANCTUARY, "Herobrine Sanctuary", "Too Big!");
             addAdvancement(builder, AdvancementNarakaComponents.SUMMON_HEROBRINE, "Naraka Tyrant", "Summon Herobrine");
@@ -64,9 +88,19 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(NarakaItems.GOD_BLOOD, "§lGod Blood");
             builder.add(NarakaItems.COMPRESSED_IRON_INGOT, "Compressed Iron Ingot");
             builder.add(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "Smithing Template");
+            builder.add(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, "Smithing Template");
             builder.add(NarakaItems.SPEAR_ITEM, "Spear");
             builder.add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "Mighty Holy Spear");
             builder.add(NarakaItems.SPEAR_OF_LONGINUS_ITEM, "Spear of Longinus");
+
+            builder.add(NarakaItems.EBONY_METAL_HELMET, "Ebony Metal Helmet");
+            builder.add(NarakaItems.EBONY_METAL_CHESTPLATE, "Ebony Metal Chestplate");
+            builder.add(NarakaItems.EBONY_METAL_LEGGINGS, "Ebony Metal Leggings");
+            builder.add(NarakaItems.EBONY_METAL_BOOTS, "Ebony Metal Boots");
+            builder.add(NarakaItems.PURIFIED_SOUL_HELMET, "Purified Soul Helmet");
+            builder.add(NarakaItems.PURIFIED_SOUL_CHESTPLATE, "Purified Soul Chestplate");
+            builder.add(NarakaItems.PURIFIED_SOUL_LEGGINGS, "Purified Soul Leggings");
+            builder.add(NarakaItems.PURIFIED_SOUL_BOOTS, "Purified Soul Boots");
 
             builder.add(NarakaItems.SOUL_INFUSED_REDSTONE, "Soul Infused Redstone");
             builder.add(NarakaItems.SOUL_INFUSED_COPPER, "Soul Infused Copper");
@@ -124,7 +158,7 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(NarakaBlocks.POTTED_EBONY_SAPLING, "Potted Ebony Sapling");
             builder.add(NarakaBlocks.HARD_EBONY_PLANKS, "Hard Ebony Planks");
             builder.add(NarakaBlocks.EBONY_ROOTS, "Ebony Roots");
-            builder.add(NarakaBlocks.EBONY_METAL_BLOCK, "Ebony Metal Block");
+            builder.add(NarakaBlocks.EBONY_METAL_BLOCK, "Block of Ebony Metal");
 
             builder.add(NarakaEntityTypes.HEROBRINE, "Naraka: Herobrine");
             builder.add(NarakaEntityTypes.THROWN_SPEAR, "Spear");
@@ -151,12 +185,23 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "정화된 영혼 금속, 영혼이 주입된 재료");
             builder.add(PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "흑단나무 무기, 정화된 영혼 검 또는 창를 놓으세요");
             builder.add(PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "정화된 영혼 금속, 영혼이 주입된 재료 또는 신의 피를 놓으세요");
+            addTrimPattern(builder, NarakaTrimPatterns.PURIFIED_SOUL_SILENCE, "정화된 영혼 고요 갑옷 장식");
+            addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, "영혼이 주입된 레드스톤 소재");
+            addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_COPPER, "영혼이 주입된 구리 소재");
+            addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_GOLD, "영혼이 주입된 금 소재");
+            addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_EMERALD, "영혼이 주입된 에메랄드 소재");
+            addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_DIAMOND, "영혼이 주입된 다이아몬드 소재");
+            addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_LAPIS, "영혼이 주입된 청금석 소재");
+            addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_AMETHYST, "영혼이 주입된 자수정 소재");
+            addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_NECTARIUM, "영혼이 주입된 넥타륨 소재");
 
             builder.add(NarakaItems.PURIFIED_SOUL_SHARD, "정화된 영혼 조각");
             builder.add(NarakaItems.NECTARIUM, "넥타륨");
             builder.add(NarakaItems.GOD_BLOOD, "§l신의 피");
             builder.add(NarakaItems.COMPRESSED_IRON_INGOT, "압축된 철 주괴");
             builder.add(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "대장장이 형판");
+            builder.add(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, "대장장이 형판");
+
             builder.add(NarakaItems.SPEAR_ITEM, "창");
             builder.add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "강력한 성스러운 창");
             builder.add(NarakaItems.SPEAR_OF_LONGINUS_ITEM, "롱기누스의 창");
@@ -182,7 +227,9 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(NarakaItems.PURIFIED_SOUL_SWORD, "정화된 영혼 검");
 
             builder.add(NarakaItems.EBONY_SWORD, "흑단나무 검");
+            builder.add(NarakaItems.EBONY_ROOTS_SCRAP, "흑단나무 뿌리 파편");
             builder.add(NarakaItems.EBONY_METAL_INGOT, "흑단나무 금속 주괴");
+            builder.add(NarakaItems.SANCTUARY_COMPASS, "생츄어리 나침반");
 
             builder.add(NarakaBlocks.NECTARIUM_ORE, "넥타륨 광석");
             builder.add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "심층암 넥타륨 광석");
@@ -214,11 +261,21 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(NarakaBlocks.EBONY_SAPLING, "흑단나무 묘목");
             builder.add(NarakaBlocks.HARD_EBONY_PLANKS, "단단한 흑단나무 판자");
             builder.add(NarakaBlocks.EBONY_ROOTS, "흑단나무 뿌리");
+            builder.add(NarakaBlocks.EBONY_METAL_BLOCK, "흑단나무 금속 블록");
 
             builder.add(NarakaEntityTypes.HEROBRINE, "히로빈");
             builder.add(NarakaEntityTypes.THROWN_SPEAR, "창");
             builder.add(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, "강력한 성스러운 창");
             builder.add(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, "롱기누스의 창");
+
+            builder.add(NarakaItems.EBONY_METAL_HELMET, "흑단나무 금속 투구");
+            builder.add(NarakaItems.EBONY_METAL_CHESTPLATE, "흑단나무 금속 흉갑");
+            builder.add(NarakaItems.EBONY_METAL_LEGGINGS, "흑단나무 금속 레깅스");
+            builder.add(NarakaItems.EBONY_METAL_BOOTS, "흑단나무 금속 부츠");
+            builder.add(NarakaItems.PURIFIED_SOUL_HELMET, "정화된 영혼 투구");
+            builder.add(NarakaItems.PURIFIED_SOUL_CHESTPLATE, "정화된 영혼 흉갑");
+            builder.add(NarakaItems.PURIFIED_SOUL_LEGGINGS, "정화된 영혼 레깅스");
+            builder.add(NarakaItems.PURIFIED_SOUL_BOOTS, "정화된 영혼 부츠");
 
             addDamageType(builder, NarakaDamageTypes.SPEAR_OF_LONGINUS,
                     "%1$s의 AT 필드가 %2$s에 찢어졌습니다.",

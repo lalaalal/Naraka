@@ -13,6 +13,7 @@ public interface NarakaItemTags {
     TagKey<Item> LOYALTY_ENCHANTABLE = create("enchantable/loyalty");
 
     TagKey<Item> EBONY_LOGS = create("ebony_logs");
+    TagKey<Item> PURIFIED_SOUL_ARMORS = create("purified_soul_armors");
 
     private static TagKey<Item> create(String name) {
         return TagKey.create(Registries.ITEM, NarakaMod.location(name));
