@@ -5,10 +5,12 @@ import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.HerobrineTotemBlockEntity;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
+import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
@@ -45,6 +47,7 @@ public class NarakaGameEvents {
         UseBlockCallback.EVENT.register(NarakaGameEvents::checkHerobrineTotemTrigger);
         UseBlockCallback.EVENT.register(NarakaGameEvents::ironNuggetUse);
         UseBlockCallback.EVENT.register(NarakaGameEvents::boneMealUse);
+        ServerTickEvents.END_SERVER_TICK.register(NarakaGameEvents::onEndTick);
 
         LootTableEvents.MODIFY.register(NarakaGameEvents::modifyLootTable);
     }
@@ -59,6 +62,10 @@ public class NarakaGameEvents {
         NarakaEnchantments.initialize(registryAccess);
 
         NarakaNetworks.initializeServer();
+    }
+
+    private static void onEndTick(MinecraftServer server) {
+        StigmaHelper.tick();
     }
 
     private static void modifyLootTable(ResourceKey<LootTable> key, LootTable.Builder tableBuilder, LootTableSource source, HolderLookup.Provider registries) {

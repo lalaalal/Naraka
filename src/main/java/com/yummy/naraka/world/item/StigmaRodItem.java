@@ -1,7 +1,6 @@
 package com.yummy.naraka.world.item;
 
-import com.yummy.naraka.world.entity.data.EntityDataHelper;
-import com.yummy.naraka.world.entity.data.EntityDataTypes;
+import com.yummy.naraka.world.entity.data.StigmaHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,13 +17,14 @@ public class StigmaRodItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         if (!level.isClientSide())
-            EntityDataHelper.setEntityData(player, EntityDataTypes.STIGMA, EntityDataHelper.getEntityData(player, EntityDataTypes.STIGMA) + 1);
+            StigmaHelper.increaseStigma(player, null);
         return super.use(level, player, interactionHand);
     }
 
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity user) {
-        EntityDataHelper.setEntityData(target, EntityDataTypes.STIGMA, EntityDataHelper.getEntityData(target, EntityDataTypes.STIGMA) + 1);
+        if (!user.level().isClientSide)
+            StigmaHelper.increaseStigma(target, user);
         return super.hurtEnemy(itemStack, target, user);
     }
 }
