@@ -25,6 +25,8 @@ public class NarakaItems {
     private static final Set<Item> SOUL_INFUSED_ITEMS = new HashSet<>();
     private static final Set<SwordItem> SOUL_INFUSED_SWORDS = new HashSet<>();
 
+    public static final Item STIGMA_ROD = registerItem("stigma_rod", StigmaRodItem::new);
+
     // Ingredients
     public static final Item PURIFIED_SOUL_METAL = registerSimpleItem(
             "purified_soul_metal", new Item.Properties().fireResistant()

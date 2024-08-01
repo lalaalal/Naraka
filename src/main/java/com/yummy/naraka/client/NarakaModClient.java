@@ -12,6 +12,7 @@ import com.yummy.naraka.client.renderer.NarakaSpearItemRenderer;
 import com.yummy.naraka.client.renderer.SpearRenderer;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.event.NarakaClientEvents;
+import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
@@ -40,6 +41,8 @@ public class NarakaModClient implements ClientModInitializer {
         initializeItems();
         initializeBlocks();
         initializeParticles();
+
+        NarakaNetworks.initializeClient();
 
         NarakaClientEvents.initialize();
         MenuScreens.register(NarakaMenuTypes.SOUL_CRAFTING, SoulCraftingScreen::new);

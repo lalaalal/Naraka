@@ -3,11 +3,13 @@ package com.yummy.naraka;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.event.NarakaGameEvents;
+import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.world.NarakaBiomes;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.block.grower.NarakaTreeGrowers;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
+import com.yummy.naraka.world.entity.data.EntityDataTypes;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import com.yummy.naraka.world.item.NarakaArmorMaterials;
 import com.yummy.naraka.world.item.NarakaCreativeModTabs;
@@ -52,8 +54,11 @@ public class NarakaMod implements ModInitializer {
         NarakaRootPlacerTypes.initialize();
         NarakaParticleTypes.initialize();
 
+        EntityDataTypes.initialize();
+
         NarakaGameEvents.initialize();
         NarakaContext.initialize();
+        NarakaNetworks.initialize();
     }
 
     public static ResourceLocation mcLocation(String path) {

@@ -44,7 +44,7 @@ public class SoulCraftingScreen extends AbstractContainerScreen<SoulCraftingMenu
         int litProgress = Mth.ceil(menu.getLitProgress() * LIT_PROGRESS_HEIGHT);
         guiGraphics.blitSprite(
                 NarakaSprites.SOUL_CRAFTING_LIT_PROGRESS, LIT_PROGRESS_WIDTH, LIT_PROGRESS_HEIGHT,
-                0, LIT_PROGRESS_HEIGHT - litProgress, leftPos + 57, topPos + 37 + LIT_PROGRESS_HEIGHT - litProgress,
+                0, LIT_PROGRESS_HEIGHT - litProgress, leftPos + 56, topPos + 36 + LIT_PROGRESS_HEIGHT - litProgress,
                 LIT_PROGRESS_WIDTH, litProgress
         );
 

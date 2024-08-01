@@ -25,6 +25,7 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
     public static final String PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.base_slot_description"));
     public static final String PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.additions_slot_description"));
     public static final String JADE_SOUL_CRAFTING_FUEL_KEY = "jade.naraka.soul_crafting.fuel";
+    public static final String JADE_STIGMA_KEY = "jade.naraka.stigma";
 
     protected NarakaLanguageProvider(FabricDataOutput dataOutput, String languageCode, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(dataOutput, languageCode, registryLookup);
@@ -70,6 +71,8 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
 
             builder.add(JADE_SOUL_CRAFTING_FUEL_KEY, "Fuel: %d");
             builder.add(NarakaJadeProviders.SOUL_CRAFTING_BLOCK.translationKey, "Soul Crafting Block");
+            builder.add(JADE_STIGMA_KEY, "Stigma: %d");
+            builder.add(NarakaJadeProviders.STIGMA.translationKey, "Stigma");
 
             addTrimPattern(builder, NarakaTrimPatterns.PURIFIED_SOUL_SILENCE, "Purified Soul Silence Armor Trim");
             addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, "Soul Infused Redstone Material");
@@ -87,6 +90,7 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             addAdvancement(builder, AdvancementNarakaComponents.KILL_HEROBRINE, "Purified Soul", "Defeat the lord of Naraka");
             addAdvancement(builder, AdvancementNarakaComponents.GOD_BLOOD, "Blood of God", "Very AWESOME!");
 
+            builder.add(NarakaItems.STIGMA_ROD, "Stigma Rod");
             builder.add(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard");
             builder.add(NarakaItems.NECTARIUM, "Nectarium");
             builder.add(NarakaItems.GOD_BLOOD, "§lGod Blood");
@@ -190,8 +194,10 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "흑단나무 무기, 정화된 영혼 검 또는 창를 놓으세요");
             builder.add(PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "정화된 영혼 금속, 영혼이 주입된 재료 또는 신의 피를 놓으세요");
 
-            builder.add(JADE_SOUL_CRAFTING_FUEL_KEY, "연로: %d");
+            builder.add(JADE_SOUL_CRAFTING_FUEL_KEY, "연료: %d");
             builder.add(NarakaJadeProviders.SOUL_CRAFTING_BLOCK.translationKey, "영혼 세공기");
+            builder.add(JADE_STIGMA_KEY, "낙인: %d");
+            builder.add(NarakaJadeProviders.STIGMA.translationKey, "낙인");
 
             addTrimPattern(builder, NarakaTrimPatterns.PURIFIED_SOUL_SILENCE, "정화된 영혼 고요 갑옷 장식");
             addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, "영혼이 주입된 레드스톤 소재");
@@ -203,6 +209,7 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_AMETHYST, "영혼이 주입된 자수정 소재");
             addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_NECTARIUM, "영혼이 주입된 넥타륨 소재");
 
+            builder.add(NarakaItems.STIGMA_ROD, "낙인 막대기");
             builder.add(NarakaItems.PURIFIED_SOUL_SHARD, "정화된 영혼 조각");
             builder.add(NarakaItems.NECTARIUM, "넥타륨");
             builder.add(NarakaItems.GOD_BLOOD, "§l신의 피");

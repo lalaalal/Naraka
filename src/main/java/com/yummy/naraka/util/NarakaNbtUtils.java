@@ -9,6 +9,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -60,27 +61,19 @@ public class NarakaNbtUtils {
         return Optional.of(BoundingBox.fromCorners(min.get(), max.get()));
     }
 
-    public interface Factory<T> {
-        T create(CompoundTag tag, HolderLookup.Provider provider);
-    }
-
-    public interface TagFactory<T> {
-        CompoundTag toTag(T value, CompoundTag tag, HolderLookup.Provider provider);
-    }
-
-    public static <T> void writeCollection(CompoundTag compoundTag, String name, Collection<T> collection, TagFactory<T> factory, HolderLookup.Provider provider) {
+    public static <T> void writeCollection(CompoundTag compoundTag, String name, Collection<T> collection, TagWriter<T> factory, HolderLookup.Provider provider) {
         ListTag listTag = new ListTag();
         for (T value : collection)
-            listTag.add(factory.toTag(value, new CompoundTag(), provider));
+            listTag.add(factory.write(value, new CompoundTag(), provider));
         compoundTag.put(name, listTag);
     }
 
-    public static <T, C extends Collection<T>> C readCollection(CompoundTag compoundTag, String name, Supplier<C> supplier, Factory<T> factory, HolderLookup.Provider provider) {
+    public static <T, C extends Collection<T>> C readCollection(CompoundTag compoundTag, String name, Supplier<C> supplier, TagReader<T> tagReader, HolderLookup.Provider provider) {
         ListTag listTag = compoundTag.getList(name, 10);
         C list = supplier.get();
         for (int index = 0; index < listTag.size(); index++) {
             CompoundTag valueTag = listTag.getCompound(index);
-            T value = factory.create(valueTag, provider);
+            T value = tagReader.read(valueTag, provider);
             list.add(value);
         }
         return list;
@@ -112,4 +105,11 @@ public class NarakaNbtUtils {
         return list;
     }
 
+    public interface TagReader<T> {
+        T read(CompoundTag tag, @Nullable HolderLookup.Provider provider);
+    }
+
+    public interface TagWriter<T> {
+        CompoundTag write(T value, CompoundTag tag, @Nullable HolderLookup.Provider provider);
+    }
 }

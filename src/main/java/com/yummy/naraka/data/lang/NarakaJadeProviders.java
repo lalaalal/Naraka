@@ -4,7 +4,7 @@ import com.yummy.naraka.NarakaMod;
 import net.minecraft.resources.ResourceLocation;
 
 public enum NarakaJadeProviders {
-    SOUL_CRAFTING_BLOCK;
+    SOUL_CRAFTING_BLOCK, STIGMA;
 
     public final ResourceLocation location;
     public final String translationKey;

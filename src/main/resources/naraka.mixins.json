@@ -4,6 +4,7 @@
     "compatibilityLevel": "JAVA_21",
     "mixins": [
         "FeatureMixin",
+        "LivingEntityMixin",
         "SmithingTemplateItemMixin"
     ],
     "injectors": {
@@ -12,6 +13,7 @@
     "client": [
         "client.ItemBlockRenderTypesMixin",
         "client.ItemEntityRendererMixin",
-        "client.ItemRendererMixin"
+        "client.ItemRendererMixin",
+        "client.LivingEntityMixin"
   ]
 }
