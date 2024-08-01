@@ -119,7 +119,6 @@ public class NarakaGameEvents {
             BlockState totem = level.getBlockState(pos.below());
             if (HerobrineTotemBlockEntity.isSleeping(totem))
                 HerobrineTotem.crack(level, pos.below(), totem);
-            return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
     }
