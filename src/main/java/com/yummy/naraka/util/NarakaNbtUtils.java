@@ -4,36 +4,35 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Supplier;
 
-/**
- * Utils
- *
- * @author lalaalal
- */
 public class NarakaNbtUtils {
-    private static @Nullable MinecraftServer server;
-    private static final Map<UUID, Entity> cache = new HashMap<>();
-
-    public static void initialize(MinecraftServer server) {
-        NarakaNbtUtils.server = server;
-    }
-
+    /**
+     * Create a new compound tag with {@link ItemStack}
+     *
+     * @param registries Registry access
+     * @param item       Item to save
+     * @return New {@link Tag}
+     */
     public static Tag writeItem(RegistryAccess registries, ItemStack item) {
         CompoundTag tag = new CompoundTag();
         return item.save(registries, tag);
     }
 
+    /**
+     * Read item from given {@link CompoundTag}
+     *
+     * @param registries RegistryAccess
+     * @param tag        Tag of item
+     * @return Item
+     */
     public static ItemStack readItem(RegistryAccess registries, CompoundTag tag) {
         return ItemStack.parseOptional(registries, tag);
     }
@@ -70,23 +69,17 @@ public class NarakaNbtUtils {
     }
 
     public static <T> void writeCollection(CompoundTag compoundTag, String name, Collection<T> collection, TagFactory<T> factory, HolderLookup.Provider provider) {
-        CompoundTag listTag = new CompoundTag();
-        listTag.putInt("size", collection.size());
-        int index = 0;
-        for (T value : collection) {
-            CompoundTag valueTag = factory.toTag(value, new CompoundTag(), provider);
-            listTag.put(String.valueOf(index), valueTag);
-            index += 1;
-        }
+        ListTag listTag = new ListTag();
+        for (T value : collection)
+            listTag.add(factory.toTag(value, new CompoundTag(), provider));
         compoundTag.put(name, listTag);
     }
 
-    public static <T> Collection<T> readCollection(CompoundTag compoundTag, String name, Factory<T> factory, Supplier<Collection<T>> supplier, HolderLookup.Provider provider) {
-        CompoundTag listTag = compoundTag.getCompound(name);
-        int size = listTag.getInt("size");
-        Collection<T> list = supplier.get();
-        for (int index = 0; index < size; index++) {
-            CompoundTag valueTag = listTag.getCompound(String.valueOf(index));
+    public static <T, C extends Collection<T>> C readCollection(CompoundTag compoundTag, String name, Supplier<C> supplier, Factory<T> factory, HolderLookup.Provider provider) {
+        ListTag listTag = compoundTag.getList(name, 10);
+        C list = supplier.get();
+        for (int index = 0; index < listTag.size(); index++) {
+            CompoundTag valueTag = listTag.getCompound(index);
             T value = factory.create(valueTag, provider);
             list.add(value);
         }
@@ -107,7 +100,7 @@ public class NarakaNbtUtils {
 
     public static List<UUID> readUUIDs(CompoundTag compoundTag, String name) {
         if (!compoundTag.contains(name))
-            return null;
+            return List.of();
         CompoundTag listTag = compoundTag.getCompound(name);
         int size = listTag.getInt("size");
         List<UUID> list = new ArrayList<>();
@@ -119,46 +112,4 @@ public class NarakaNbtUtils {
         return list;
     }
 
-    public static Entity findEntityByUUID(ServerLevel serverLevel, UUID uuid) {
-        if (cache.containsKey(uuid))
-            return cache.get(uuid);
-        for (Entity entity : serverLevel.getAllEntities()) {
-            if (entity.getUUID().equals(uuid)) {
-                cache.put(uuid, entity);
-                return entity;
-            }
-        }
-        return null;
-    }
-
-    public static <T> T findEntityByUUID(ServerLevel serverLevel, UUID uuid, Class<T> type) {
-        Entity entity = findEntityByUUID(serverLevel, uuid);
-        if (type.isInstance(entity))
-            return type.cast(entity);
-        return null;
-    }
-
-    /**
-     * Search entity using UUID from all levels
-     *
-     * @param uuid Entity UUID
-     * @return Entity matching UUID null if absent
-     */
-    public static Entity findEntityByUUID(UUID uuid) {
-        for (ServerLevel serverLevel : server.getAllLevels()) {
-            Entity entity = findEntityByUUID(serverLevel, uuid);
-            if (entity != null)
-                return entity;
-        }
-        return null;
-    }
-
-    public static <T> T findEntityByUUID(UUID uuid, Class<T> type) {
-        for (ServerLevel serverLevel : server.getAllLevels()) {
-            T entity = findEntityByUUID(serverLevel, uuid, type);
-            if (entity != null)
-                return entity;
-        }
-        return null;
-    }
 }

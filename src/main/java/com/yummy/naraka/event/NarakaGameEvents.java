@@ -1,6 +1,5 @@
 package com.yummy.naraka.event;
 
-import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.HerobrineTotemBlockEntity;
@@ -57,7 +56,6 @@ public class NarakaGameEvents {
         RegistryAccess registryAccess = server.registryAccess();
         NarakaDamageSources.initialize(registryAccess);
         NarakaEnchantments.initialize(registryAccess);
-        NarakaNbtUtils.initialize(server);
     }
 
     private static void modifyLootTable(ResourceKey<LootTable> key, LootTable.Builder tableBuilder, LootTableSource source, HolderLookup.Provider registries) {

@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.structure.protection;
 
-import com.mojang.logging.LogUtils;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.util.NarakaNbtUtils;
 import net.minecraft.core.Holder;
@@ -80,20 +79,25 @@ public class StructureProtector {
 
     private static class Container extends SavedData {
         private static final Factory<Container> factory = new Factory<>(
-                Container::new, Container::new, DataFixTypes.LEVEL
+                Container::new, Container::create, DataFixTypes.LEVEL
         );
         private static Container instance = new Container();
 
-        private final Set<StructureProtector> protectors = new HashSet<>();
+        private final Set<StructureProtector> protectors;
 
         private Container() {
+            protectors = new HashSet<>();
         }
 
-        private Container(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        private Container(Set<StructureProtector> protectors) {
+            this.protectors = protectors;
+        }
+
+        private static Container create(CompoundTag compoundTag, HolderLookup.Provider provider) {
             try {
-                NarakaNbtUtils.readCollection(compoundTag, "structure_protectors", StructureProtector::new, () -> protectors, provider);
+                return new Container(NarakaNbtUtils.readCollection(compoundTag, "structure_protectors", HashSet::new, StructureProtector::new, provider));
             } catch (RuntimeException exception) {
-                LogUtils.getLogger().error("Error loading StructureProtectors");
+                return new Container();
             }
         }
 
