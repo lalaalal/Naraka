@@ -16,6 +16,10 @@ repositories {
 		name = "Jared's maven"
 		url = "https://maven.blamejared.com/"
 	}
+	maven {
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
+	}
 }
 
 fabricApi {
@@ -37,6 +41,8 @@ dependencies {
 	modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-lib:${jei_version}")
 	// at runtime, use the full JEI jar for Fabric
 	modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+
+	modImplementation "maven.modrinth:jade:${jade_version}+fabric"
 }
 
 loom {

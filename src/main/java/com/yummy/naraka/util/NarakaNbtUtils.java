@@ -2,12 +2,14 @@ package com.yummy.naraka.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,6 +27,15 @@ public class NarakaNbtUtils {
 
     public static void initialize(MinecraftServer server) {
         NarakaNbtUtils.server = server;
+    }
+
+    public static Tag writeItem(RegistryAccess registries, ItemStack item) {
+        CompoundTag tag = new CompoundTag();
+        return item.save(registries, tag);
+    }
+
+    public static ItemStack readItem(RegistryAccess registries, CompoundTag tag) {
+        return ItemStack.parseOptional(registries, tag);
     }
 
     public static Tag writeBoundingBox(BoundingBox box) {

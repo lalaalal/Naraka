@@ -24,6 +24,7 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
     public static final String PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.ingredients"));
     public static final String PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.base_slot_description"));
     public static final String PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.additions_slot_description"));
+    public static final String JADE_SOUL_CRAFTING_FUEL_KEY = "jade.naraka.soul_crafting.fuel";
 
     protected NarakaLanguageProvider(FabricDataOutput dataOutput, String languageCode, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(dataOutput, languageCode, registryLookup);
@@ -66,6 +67,9 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "Purified Soul Metal, Soul Infused Materials");
             builder.add(PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add Ebony Sword, Soul Weapon");
             builder.add(PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add Purified Soul Metal, Soul Infused Materials");
+
+            builder.add(JADE_SOUL_CRAFTING_FUEL_KEY, "Fuel: %d");
+            builder.add(NarakaJadeProviders.SOUL_CRAFTING_BLOCK.translationKey, "Soul Crafting Block");
 
             addTrimPattern(builder, NarakaTrimPatterns.PURIFIED_SOUL_SILENCE, "Purified Soul Silence Armor Trim");
             addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, "Soul Infused Redstone Material");
@@ -185,6 +189,10 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "정화된 영혼 금속, 영혼이 주입된 재료");
             builder.add(PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "흑단나무 무기, 정화된 영혼 검 또는 창를 놓으세요");
             builder.add(PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "정화된 영혼 금속, 영혼이 주입된 재료 또는 신의 피를 놓으세요");
+
+            builder.add(JADE_SOUL_CRAFTING_FUEL_KEY, "연로: %d");
+            builder.add(NarakaJadeProviders.SOUL_CRAFTING_BLOCK.translationKey, "영혼 세공기");
+
             addTrimPattern(builder, NarakaTrimPatterns.PURIFIED_SOUL_SILENCE, "정화된 영혼 고요 갑옷 장식");
             addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, "영혼이 주입된 레드스톤 소재");
             addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_COPPER, "영혼이 주입된 구리 소재");

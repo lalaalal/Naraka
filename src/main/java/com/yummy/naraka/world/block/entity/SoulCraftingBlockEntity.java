@@ -177,7 +177,7 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
 
             blockEntity.setCraftingProgress(craftingProgress + increase);
             blockEntity.setLitProgress(litProgress - Mth.abs(increase));
-        } else if (state.getValue(SoulCraftingBlock.LIT)) {
+        } else if (state.getValue(SoulCraftingBlock.LIT) && blockEntity.getLitProgress() == 0 && ingredientItem.isEmpty()) {
             level.setBlock(pos, state.setValue(SoulCraftingBlock.LIT, false), Block.UPDATE_ALL_IMMEDIATE);
         }
     }
