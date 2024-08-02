@@ -24,17 +24,13 @@ public interface DeathCountingEntity {
 
     default void forget(LivingEntity livingEntity) {
         getCountingInstance().remove(livingEntity);
-        DeathCountHelper.unapplyDeathCount(livingEntity);
-    }
-
-    default boolean isCounting(LivingEntity livingEntity) {
-        return getCountingInstance().contains(livingEntity);
+        DeathCountHelper.removeDeathCount(livingEntity);
     }
 
     default void releaseAllCounting() {
         if (living().level() instanceof ServerLevel serverLevel) {
             for (LivingEntity countedEntity : getCountingInstance().countedEntities(serverLevel))
-                DeathCountHelper.unapplyDeathCount(countedEntity);
+                DeathCountHelper.removeDeathCount(countedEntity);
             getCountingInstance().countedEntities.clear();
         }
     }
@@ -57,10 +53,6 @@ public interface DeathCountingEntity {
 
         public void remove(LivingEntity livingEntity) {
             countedEntities.remove(livingEntity.getUUID());
-        }
-
-        public boolean contains(LivingEntity livingEntity) {
-            return countedEntities.contains(livingEntity.getUUID());
         }
 
         public Set<LivingEntity> countedEntities(ServerLevel serverLevel) {

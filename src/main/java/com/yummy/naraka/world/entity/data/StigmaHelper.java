@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.data;
 
+import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -14,6 +15,8 @@ public class StigmaHelper {
     }
 
     public static void increaseStigma(LivingEntity livingEntity, Entity cause) {
+        if (livingEntity.getType().is(NarakaEntityTypeTags.HEROBRINE))
+            return;
         Stigma stigma = get(livingEntity);
         if (!MARKED_ENTITIES.contains(livingEntity))
             MARKED_ENTITIES.add(livingEntity);

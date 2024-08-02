@@ -10,11 +10,9 @@ public interface NarakaEntityTypeTags {
      * Entities that should apply death count<br>
      * Player and bosses
      */
-    TagKey<EntityType<?>> APPLY_DEATH_COUNT = create("apply_death_count");
-    /**
-     * Entity that counting death of other entities
-     */
-    TagKey<EntityType<?>> DEATH_COUNTING_ENTITY = create("death_counting_entity");
+    TagKey<EntityType<?>> DEATH_COUNTABLE = create("death_countable");
+    TagKey<EntityType<?>> DEATH_COUNTING = create("death_count_exclude");
+    TagKey<EntityType<?>> HEROBRINE = create("herobrine");
 
     private static TagKey<EntityType<?>> create(String name) {
         return TagKey.create(Registries.ENTITY_TYPE, NarakaMod.location(name));
