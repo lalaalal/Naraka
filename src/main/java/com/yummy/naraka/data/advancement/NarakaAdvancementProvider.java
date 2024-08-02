@@ -51,7 +51,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
                         AdvancementNarakaComponents.HEROBRINE_SANCTUARY.title(),
                         AdvancementNarakaComponents.HEROBRINE_SANCTUARY.description(),
                         null,
-                        AdvancementType.CHALLENGE,
+                        AdvancementType.TASK,
                         true,
                         true,
                         false

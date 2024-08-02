@@ -49,4 +49,11 @@ public class NarakaAttributeModifiers {
             return;
         instance.removeModifier(modifier);
     }
+
+    public static boolean hasAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, AttributeModifier modifier) {
+        AttributeInstance instance = livingEntity.getAttribute(attribute);
+        if (instance == null)
+            return false;
+        return instance.hasModifier(modifier.id());
+    }
 }

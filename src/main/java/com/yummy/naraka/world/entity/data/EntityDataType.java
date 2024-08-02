@@ -5,22 +5,41 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 
-public interface EntityDataType<T> extends NarakaNbtUtils.TagWriter<T>, NarakaNbtUtils.TagReader<T> {
-    ResourceLocation getId();
+import java.util.function.Supplier;
 
-    default String name() {
+public abstract class EntityDataType<T> implements NarakaNbtUtils.TagWriter<T>, NarakaNbtUtils.TagReader<T> {
+    private final ResourceLocation id;
+    private final Supplier<T> defaultValue;
+
+    protected EntityDataType(ResourceLocation id, T defaultValue) {
+        this.id = id;
+        this.defaultValue = () -> defaultValue;
+    }
+
+    protected EntityDataType(ResourceLocation id, Supplier<T> defaultValue) {
+        this.id = id;
+        this.defaultValue = defaultValue;
+    }
+
+    public ResourceLocation getId() {
+        return id;
+    }
+
+    public T getDefaultValue() {
+        return defaultValue.get();
+    }
+
+    public String name() {
         return getId().getPath();
     }
 
-    T getDefaultValue();
+    public abstract Class<T> getValueType();
 
-    Class<T> getValueType();
-
-    default boolean saveExists(CompoundTag compoundTag) {
+    public boolean saveExists(CompoundTag compoundTag) {
         return compoundTag.contains(name());
     }
 
-    default CompoundTag castAndWrite(Object value, CompoundTag tag, HolderLookup.Provider registries) {
+    public CompoundTag castAndWrite(Object value, CompoundTag tag, HolderLookup.Provider registries) {
         return write(getValueType().cast(value), tag, registries);
     }
 }

@@ -11,7 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class NarakaNbtUtils {
@@ -74,42 +75,18 @@ public class NarakaNbtUtils {
         for (int index = 0; index < listTag.size(); index++) {
             CompoundTag valueTag = listTag.getCompound(index);
             T value = tagReader.read(valueTag, provider);
-            list.add(value);
+            if (value != null)
+                list.add(value);
         }
-        return list;
-    }
-
-    public static void writeUUIDs(CompoundTag compoundTag, String name, Collection<UUID> uuids) {
-        CompoundTag listTag = new CompoundTag();
-        listTag.putInt("size", uuids.size());
-        int index = 0;
-        for (UUID uuid : uuids) {
-            listTag.putUUID(String.valueOf(index), uuid);
-
-            index += 1;
-        }
-        compoundTag.put(name, listTag);
-    }
-
-    public static List<UUID> readUUIDs(CompoundTag compoundTag, String name) {
-        if (!compoundTag.contains(name))
-            return List.of();
-        CompoundTag listTag = compoundTag.getCompound(name);
-        int size = listTag.getInt("size");
-        List<UUID> list = new ArrayList<>();
-        for (int index = 0; index < size; index++) {
-            UUID uuid = listTag.getUUID(String.valueOf(index));
-            list.add(uuid);
-        }
-
         return list;
     }
 
     public interface TagReader<T> {
-        T read(CompoundTag tag, @Nullable HolderLookup.Provider provider);
+        @Nullable
+        T read(CompoundTag tag, HolderLookup.Provider provider);
     }
 
     public interface TagWriter<T> {
-        CompoundTag write(T value, CompoundTag tag, @Nullable HolderLookup.Provider provider);
+        CompoundTag write(T value, CompoundTag tag, HolderLookup.Provider provider);
     }
 }

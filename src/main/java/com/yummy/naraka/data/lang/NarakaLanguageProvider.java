@@ -26,6 +26,7 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
     public static final String PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.additions_slot_description"));
     public static final String JADE_SOUL_CRAFTING_FUEL_KEY = "jade.naraka.soul_crafting.fuel";
     public static final String JADE_STIGMA_KEY = "jade.naraka.stigma";
+    public static final String JADE_DEATH_COUNT_KEY = "jade.naraka.death_count";
 
     protected NarakaLanguageProvider(FabricDataOutput dataOutput, String languageCode, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(dataOutput, languageCode, registryLookup);
@@ -72,7 +73,8 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(JADE_SOUL_CRAFTING_FUEL_KEY, "Fuel: %d");
             builder.add(NarakaJadeProviders.SOUL_CRAFTING_BLOCK.translationKey, "Soul Crafting Block");
             builder.add(JADE_STIGMA_KEY, "Stigma: %d");
-            builder.add(NarakaJadeProviders.STIGMA.translationKey, "Stigma");
+            builder.add(JADE_DEATH_COUNT_KEY, "Death Count: %d");
+            builder.add(NarakaJadeProviders.ENTITY_DATA.translationKey, "Stigma");
 
             addTrimPattern(builder, NarakaTrimPatterns.PURIFIED_SOUL_SILENCE, "Purified Soul Silence Armor Trim");
             addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, "Soul Infused Redstone Material");
@@ -197,7 +199,8 @@ public abstract class NarakaLanguageProvider extends FabricLanguageProvider {
             builder.add(JADE_SOUL_CRAFTING_FUEL_KEY, "연료: %d");
             builder.add(NarakaJadeProviders.SOUL_CRAFTING_BLOCK.translationKey, "영혼 세공기");
             builder.add(JADE_STIGMA_KEY, "낙인: %d");
-            builder.add(NarakaJadeProviders.STIGMA.translationKey, "낙인");
+            builder.add(JADE_DEATH_COUNT_KEY, "데스카운트: %d");
+            builder.add(NarakaJadeProviders.ENTITY_DATA.translationKey, "낙인");
 
             addTrimPattern(builder, NarakaTrimPatterns.PURIFIED_SOUL_SILENCE, "정화된 영혼 고요 갑옷 장식");
             addTrimMaterial(builder, NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, "영혼이 주입된 레드스톤 소재");
