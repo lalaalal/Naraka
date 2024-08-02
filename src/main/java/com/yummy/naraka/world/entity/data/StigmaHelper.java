@@ -9,8 +9,12 @@ import java.util.List;
 public class StigmaHelper {
     private static final List<LivingEntity> MARKED_ENTITIES = new ArrayList<>();
 
+    public static Stigma get(LivingEntity livingEntity) {
+        return EntityDataHelper.getEntityData(livingEntity, EntityDataTypes.STIGMA);
+    }
+
     public static void increaseStigma(LivingEntity livingEntity, Entity cause) {
-        Stigma stigma = EntityDataHelper.getEntityData(livingEntity, EntityDataTypes.STIGMA);
+        Stigma stigma = get(livingEntity);
         if (!MARKED_ENTITIES.contains(livingEntity))
             MARKED_ENTITIES.add(livingEntity);
         stigma.increaseStigma(livingEntity, cause);
@@ -20,7 +24,7 @@ public class StigmaHelper {
     public static void tick() {
         List<LivingEntity> liberatedEntities = new ArrayList<>();
         for (LivingEntity markedEntity : MARKED_ENTITIES) {
-            Stigma stigma = EntityDataHelper.getEntityData(markedEntity, EntityDataTypes.STIGMA);
+            Stigma stigma = get(markedEntity);
             stigma.tryRelease(markedEntity);
             if (stigma.tryDecrease(markedEntity) || markedEntity.isDeadOrDying())
                 liberatedEntities.add(markedEntity);

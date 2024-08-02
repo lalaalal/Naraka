@@ -5,10 +5,12 @@ import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.HerobrineTotemBlockEntity;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
+import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
@@ -25,6 +27,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;
@@ -48,8 +52,13 @@ public class NarakaGameEvents {
         UseBlockCallback.EVENT.register(NarakaGameEvents::ironNuggetUse);
         UseBlockCallback.EVENT.register(NarakaGameEvents::boneMealUse);
         ServerTickEvents.END_SERVER_TICK.register(NarakaGameEvents::onEndTick);
+        ServerLivingEntityEvents.ALLOW_DEATH.register(NarakaGameEvents::allowDeath);
 
         LootTableEvents.MODIFY.register(NarakaGameEvents::modifyLootTable);
+    }
+
+    private static boolean allowDeath(LivingEntity livingEntity, DamageSource source, float damage) {
+        return !DeathCountHelper.useDeathCount(livingEntity);
     }
 
     private static void onWorldLoad(MinecraftServer server, ServerLevel level) {

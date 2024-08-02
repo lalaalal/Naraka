@@ -16,6 +16,6 @@ public class NarakaJadePlugin implements IWailaPlugin {
     @Override
     public void registerClient(IWailaClientRegistration registration) {
         registration.registerBlockComponent(SoulCraftingBlockComponentProvider.INSTANCE, SoulCraftingBlock.class);
-        registration.registerEntityComponent(EntityStigmaDataProvider.INSTANCE, LivingEntity.class);
+        registration.registerEntityComponent(NarakaEntityDataProvider.INSTANCE, LivingEntity.class);
     }
 }

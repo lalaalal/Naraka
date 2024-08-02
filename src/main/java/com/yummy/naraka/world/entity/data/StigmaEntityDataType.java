@@ -6,17 +6,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
-public class StigmaEntityDataType implements EntityDataType<Stigma> {
+public class StigmaEntityDataType extends EntityDataType<Stigma> {
     public static final ResourceLocation ID = NarakaMod.location("stigma");
 
-    @Override
-    public ResourceLocation getId() {
-        return ID;
-    }
-
-    @Override
-    public Stigma getDefaultValue() {
-        return new Stigma();
+    protected StigmaEntityDataType() {
+        super(ID, Stigma::new);
     }
 
     @Override
