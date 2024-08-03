@@ -5,7 +5,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 
-public class NarakaDataComponents {
+public class NarakaDataComponentTypes {
     public static final DataComponentType<SanctuaryTracker> SANCTUARY_TRACKER = register(
             "sanctuary_tracker",
             DataComponentType.<SanctuaryTracker>builder()

@@ -13,8 +13,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
  * @author lalaalal
  */
 public class NarakaAttributeModifiers {
-    public static final AttributeModifier BLOCK_MOVING = new AttributeModifier(NarakaMod.location("movement_speed"), -0.15f * 256, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
-    public static final AttributeModifier BLOCK_JUMPING = new AttributeModifier(NarakaMod.location("jump_strength"), -256f, AttributeModifier.Operation.ADD_VALUE);
+    public static final AttributeModifier PREVENT_MOVING = new AttributeModifier(NarakaMod.location("prevent_moving"), -0.15f * 256, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+    public static final AttributeModifier PREVENT_JUMPING = new AttributeModifier(NarakaMod.location("prevent_jumping"), -256f, AttributeModifier.Operation.ADD_VALUE);
+    public static final AttributeModifier PREVENT_BLOCK_ATTACKING = new AttributeModifier(NarakaMod.location("prevent_attack_block"), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+    public static final AttributeModifier PREVENT_ENTITY_ATTACKING = new AttributeModifier(NarakaMod.location("prevent_attack_entity"), -4.0 * 256, AttributeModifier.Operation.ADD_VALUE);
 
     public static AttributeModifier impaling(int level) {
         return new AttributeModifier(NarakaMod.location("impaling_damage"), level, AttributeModifier.Operation.ADD_VALUE);

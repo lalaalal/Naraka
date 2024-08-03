@@ -1,6 +1,6 @@
 package com.yummy.naraka.world.item;
 
-import com.yummy.naraka.world.item.component.NarakaDataComponents;
+import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.component.SanctuaryTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 
 public class SanctuaryCompassItem extends Item {
     public SanctuaryCompassItem(Properties properties) {
-        super(properties.component(NarakaDataComponents.SANCTUARY_TRACKER, SanctuaryTracker.UNTRACKED));
+        super(properties.component(NarakaDataComponentTypes.SANCTUARY_TRACKER, SanctuaryTracker.UNTRACKED));
     }
 
     @Override
@@ -32,10 +32,10 @@ public class SanctuaryCompassItem extends Item {
     }
 
     protected void updateTracker(ItemStack itemStack, Level level, BlockPos pos, boolean forceUpdate) {
-        SanctuaryTracker tracker = itemStack.get(NarakaDataComponents.SANCTUARY_TRACKER);
+        SanctuaryTracker tracker = itemStack.get(NarakaDataComponentTypes.SANCTUARY_TRACKER);
         if (tracker != null && (!tracker.tracked() || forceUpdate) && level instanceof ServerLevel serverLevel) {
             tracker = tracker.update(serverLevel, pos, forceUpdate);
-            itemStack.set(NarakaDataComponents.SANCTUARY_TRACKER, tracker);
+            itemStack.set(NarakaDataComponentTypes.SANCTUARY_TRACKER, tracker);
         }
     }
 }
