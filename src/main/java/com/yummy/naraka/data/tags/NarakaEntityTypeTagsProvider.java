@@ -18,7 +18,7 @@ public class NarakaEntityTypeTagsProvider extends FabricTagProvider<EntityType<?
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider pProvider) {
+    protected void addTags(HolderLookup.Provider provider) {
         getOrCreateTagBuilder(NarakaEntityTypeTags.DEATH_COUNTABLE)
                 .addTag(ConventionalEntityTypeTags.BOSSES)
                 .add(EntityType.PLAYER);

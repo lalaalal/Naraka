@@ -57,6 +57,12 @@ public class DeathCountHelper {
             for (DeathCountingEntity deathCountingEntity : DEATH_COUNTING_ENTITIES)
                 deathCountingEntity.forget(livingEntity);
         }
+        if (deathCount > 0) {
+            for (DeathCountingEntity deathCountingEntity : DEATH_COUNTING_ENTITIES) {
+                if (deathCountingEntity.isCounting(livingEntity))
+                    deathCountingEntity.onEntityUseDeathCount(livingEntity);
+            }
+        }
         return deathCount > 1;
     }
 }

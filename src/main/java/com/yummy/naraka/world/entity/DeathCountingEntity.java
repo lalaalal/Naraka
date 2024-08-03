@@ -35,6 +35,12 @@ public interface DeathCountingEntity {
         }
     }
 
+    default boolean isCounting(LivingEntity livingEntity) {
+        return getCountingInstance().contains(livingEntity);
+    }
+
+    void onEntityUseDeathCount(LivingEntity livingEntity);
+
     class DeathCountingInstance {
         private final Set<UUID> countedEntities = new HashSet<>();
 
@@ -53,6 +59,10 @@ public interface DeathCountingEntity {
 
         public void remove(LivingEntity livingEntity) {
             countedEntities.remove(livingEntity.getUUID());
+        }
+
+        public boolean contains(LivingEntity livingEntity) {
+            return countedEntities.contains(livingEntity.getUUID());
         }
 
         public Set<LivingEntity> countedEntities(ServerLevel serverLevel) {

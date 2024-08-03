@@ -109,4 +109,9 @@ public class Herobrine extends Monster implements DeathCountingEntity {
     public DeathCountingInstance getCountingInstance() {
         return countingInstance;
     }
+
+    @Override
+    public void onEntityUseDeathCount(LivingEntity livingEntity) {
+
+    }
 }
