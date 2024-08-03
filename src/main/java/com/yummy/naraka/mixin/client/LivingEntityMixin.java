@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
-public class LivingEntityMixin {
+public abstract class LivingEntityMixin {
     @Inject(method = "recreateFromPacket", at = @At("RETURN"))
     public void recreateFromPacket(ClientboundAddEntityPacket clientboundAddEntityPacket, CallbackInfo ci) {
         NarakaRegistries.ENTITY_DATA_TYPE.holders()

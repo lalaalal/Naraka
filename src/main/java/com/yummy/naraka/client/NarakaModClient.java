@@ -17,7 +17,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import com.yummy.naraka.world.item.NarakaItems;
-import com.yummy.naraka.world.item.component.NarakaDataComponents;
+import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.component.SanctuaryTracker;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -66,7 +66,7 @@ public class NarakaModClient implements ClientModInitializer {
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(NarakaSpearItemRenderer.INSTANCE);
 
         ItemProperties.register(NarakaItems.SANCTUARY_COMPASS, NarakaMod.location("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) -> {
-            SanctuaryTracker tracker = itemStack.get(NarakaDataComponents.SANCTUARY_TRACKER);
+            SanctuaryTracker tracker = itemStack.get(NarakaDataComponentTypes.SANCTUARY_TRACKER);
             if (tracker == null)
                 return null;
             return tracker.sanctuaryPos().orElse(null);

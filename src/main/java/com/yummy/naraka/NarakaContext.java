@@ -11,8 +11,6 @@ import java.util.Map;
  * @see NarakaContext#get(String, Class)
  */
 public class NarakaContext {
-    public static final String KEY_CLIENT_DEATH_COUNT_VISIBILITY = "client.gui.death_count.visible";
-
     static final NarakaContext INSTANCE = new NarakaContext();
 
     private final Map<Class<?>, Map<String, ?>> contextMaps = new HashMap<>();
@@ -25,7 +23,7 @@ public class NarakaContext {
     }
 
     public static void initialize() {
-        INSTANCE.set(KEY_CLIENT_DEATH_COUNT_VISIBILITY, false);
+
     }
 
     public void set(String key, boolean value) {

@@ -70,12 +70,22 @@ public class Stigma {
         NarakaAttributeModifiers.addAttributeModifier(
                 livingEntity,
                 Attributes.MOVEMENT_SPEED,
-                NarakaAttributeModifiers.BLOCK_MOVING
+                NarakaAttributeModifiers.PREVENT_MOVING
         );
         NarakaAttributeModifiers.addAttributeModifier(
                 livingEntity,
                 Attributes.JUMP_STRENGTH,
-                NarakaAttributeModifiers.BLOCK_JUMPING
+                NarakaAttributeModifiers.PREVENT_JUMPING
+        );
+        NarakaAttributeModifiers.addAttributeModifier(
+                livingEntity,
+                Attributes.ATTACK_DAMAGE,
+                NarakaAttributeModifiers.PREVENT_ENTITY_ATTACKING
+        );
+        NarakaAttributeModifiers.addAttributeModifier(
+                livingEntity,
+                Attributes.BLOCK_BREAK_SPEED,
+                NarakaAttributeModifiers.PREVENT_BLOCK_ATTACKING
         );
         if (livingEntity instanceof Mob mob)
             mob.setNoAi(true);
@@ -85,12 +95,22 @@ public class Stigma {
         NarakaAttributeModifiers.removeAttributeModifier(
                 livingEntity,
                 Attributes.MOVEMENT_SPEED,
-                NarakaAttributeModifiers.BLOCK_MOVING
+                NarakaAttributeModifiers.PREVENT_MOVING
         );
         NarakaAttributeModifiers.removeAttributeModifier(
                 livingEntity,
                 Attributes.JUMP_STRENGTH,
-                NarakaAttributeModifiers.BLOCK_JUMPING
+                NarakaAttributeModifiers.PREVENT_JUMPING
+        );
+        NarakaAttributeModifiers.removeAttributeModifier(
+                livingEntity,
+                Attributes.ATTACK_DAMAGE,
+                NarakaAttributeModifiers.PREVENT_ENTITY_ATTACKING
+        );
+        NarakaAttributeModifiers.removeAttributeModifier(
+                livingEntity,
+                Attributes.BLOCK_BREAK_SPEED,
+                NarakaAttributeModifiers.PREVENT_BLOCK_ATTACKING
         );
         if (livingEntity instanceof Mob mob)
             mob.setNoAi(false);
