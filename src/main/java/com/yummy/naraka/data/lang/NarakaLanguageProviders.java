@@ -72,20 +72,23 @@ public class NarakaLanguageProviders {
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_NECTARIUM, "Soul Infused Nectarium Material", "영혼이 주입된 넥타륨 소재");
 
         addAdvancement(AdvancementNarakaComponents.ROOT,
-                List.of("Naraka!"),
-                List.of("Welcome to Naraka!"));
+                List.of("Naraka", "나라카"),
+                List.of("Lasciate ogni speranza, voi ch'entrate", "여기 들어오는 자, 모든 희망을 버려라"));
+        addAdvancement(AdvancementNarakaComponents.SANCTUARY_COMPASS,
+                List.of("Way to him", "그에게로 가는 길"),
+                List.of("Get Sanctuary Compass", "생츄어리 나침반을 얻으세요"));
         addAdvancement(AdvancementNarakaComponents.HEROBRINE_SANCTUARY,
-                List.of("Herobrine Sanctuary"),
-                List.of("Too Big!"));
+                List.of("Herobrine Sanctuary", "폭군의 성역"),
+                List.of("Too Big!", "뭐가 이렇게 커?"));
         addAdvancement(AdvancementNarakaComponents.SUMMON_HEROBRINE,
                 List.of("Naraka Tyrant"),
                 List.of("Summon Herobrine"));
         addAdvancement(AdvancementNarakaComponents.KILL_HEROBRINE,
-                List.of("Purified Soul"),
-                List.of("Defeat the lord of Naraka"));
+                List.of("Purified Soul", "정화된 영혼"),
+                List.of("Defeat the lord of Naraka", "나락의 군주를 쓰러트리세요"));
         addAdvancement(AdvancementNarakaComponents.GOD_BLOOD,
-                List.of("Blood of God"),
-                List.of("Very AWESOME!"));
+                List.of("Blood of God", "신의 피"),
+                List.of("Very AWESOME!", "광장히 엄청나"));
 
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_1, "Herobrine Phase 1", "히로빈 1 페이즈");
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_2, "Herobrine Phase 2", "히로빈 2 페이즈");

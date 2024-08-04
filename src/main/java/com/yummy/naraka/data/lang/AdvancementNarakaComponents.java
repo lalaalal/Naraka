@@ -6,10 +6,14 @@ import java.util.Locale;
 
 public enum AdvancementNarakaComponents implements AdvancementComponent {
     ROOT,
+    SANCTUARY_COMPASS,
     HEROBRINE_SANCTUARY,
     SUMMON_HEROBRINE,
     KILL_HEROBRINE,
-    GOD_BLOOD;
+    TAKE_EBONY_ROOT,
+    GOD_BLOOD,
+    EBONY_METAL,
+    SOUL_INFUSING;
 
     public static final String ADVANCEMENT_NAME = "naraka";
 

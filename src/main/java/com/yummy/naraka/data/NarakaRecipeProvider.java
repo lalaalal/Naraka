@@ -108,6 +108,15 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
         chestplate(recipeOutput, NarakaItems.EBONY_METAL_INGOT, NarakaItems.EBONY_METAL_CHESTPLATE);
         legging(recipeOutput, NarakaItems.EBONY_METAL_INGOT, NarakaItems.EBONY_METAL_LEGGINGS);
         boots(recipeOutput, NarakaItems.EBONY_METAL_INGOT, NarakaItems.EBONY_METAL_BOOTS);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NarakaBlocks.SOUL_CRAFTING_BLOCK)
+                .define('m', NarakaItems.EBONY_METAL_INGOT)
+                .define('#', Items.BLAST_FURNACE)
+                .define('B', Items.DEEPSLATE_TILES)
+                .pattern("mmm")
+                .pattern("m#m")
+                .pattern("BBB")
+                .unlockedBy(getHasName(NarakaItems.EBONY_METAL_INGOT), has(NarakaItems.EBONY_METAL_INGOT))
+                .save(recipeOutput);
     }
 
     protected static void helmet(RecipeOutput recipeOutput, ItemLike material, ArmorItem helmet) {
@@ -115,7 +124,7 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .define('X', material)
                 .pattern("XXX")
                 .pattern("X X")
-                .unlockedBy("has_diamond", has(material))
+                .unlockedBy(getHasName(material), has(material))
                 .save(recipeOutput);
     }
 
