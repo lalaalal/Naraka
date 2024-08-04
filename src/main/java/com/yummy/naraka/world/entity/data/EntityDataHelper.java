@@ -12,9 +12,10 @@ import net.minecraft.world.entity.LivingEntity;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class EntityDataHelper {
-    private static final Map<LivingEntity, EntityDataContainer> ENTITY_DATA_MAP = new HashMap<>();
+    private static final Map<UUID, EntityDataContainer> ENTITY_DATA_MAP = new HashMap<>();
 
     public static void syncEntityData(LivingEntity livingEntity, EntityDataType<?> entityDataType) {
         Holder<EntityDataType<?>> holder = EntityDataTypes.holder(entityDataType);
@@ -27,25 +28,25 @@ public class EntityDataHelper {
     }
 
     public static void setEntityData(LivingEntity livingEntity, EntityDataType<?> entityDataType, Object value) {
-        EntityDataContainer container = ENTITY_DATA_MAP.computeIfAbsent(livingEntity, e -> new EntityDataContainer());
+        EntityDataContainer container = ENTITY_DATA_MAP.computeIfAbsent(livingEntity.getUUID(), uuid -> new EntityDataContainer());
         container.setEntityData(entityDataType, value);
         syncEntityData(livingEntity, entityDataType);
     }
 
     public static <T> T getEntityData(LivingEntity entity, EntityDataType<T> entityDataType) {
-        if (!ENTITY_DATA_MAP.containsKey(entity))
+        if (!ENTITY_DATA_MAP.containsKey(entity.getUUID()))
             return entityDataType.getDefaultValue();
-        EntityDataContainer container = ENTITY_DATA_MAP.get(entity);
+        EntityDataContainer container = ENTITY_DATA_MAP.get(entity.getUUID());
         return container.getEntityData(entityDataType);
     }
 
     public static void removeEntityData(LivingEntity entity) {
-        ENTITY_DATA_MAP.remove(entity);
+        ENTITY_DATA_MAP.remove(entity.getUUID());
     }
 
     public static void saveEntityData(LivingEntity entity, CompoundTag compoundTag) {
         RegistryAccess registries = entity.level().registryAccess();
-        EntityDataContainer container = ENTITY_DATA_MAP.get(entity);
+        EntityDataContainer container = ENTITY_DATA_MAP.get(entity.getUUID());
         if (container != null)
             container.save(compoundTag, registries);
     }
@@ -54,7 +55,7 @@ public class EntityDataHelper {
         RegistryAccess registries = entity.level().registryAccess();
         for (EntityDataType<?> entityDataType : NarakaRegistries.ENTITY_DATA_TYPE) {
             if (entityDataType.saveExists(compoundTag)) {
-                EntityDataContainer container = ENTITY_DATA_MAP.computeIfAbsent(entity, e -> new EntityDataContainer());
+                EntityDataContainer container = ENTITY_DATA_MAP.computeIfAbsent(entity.getUUID(), uuid -> new EntityDataContainer());
                 Object data = entityDataType.read(compoundTag, registries);
                 container.setEntityData(entityDataType, data);
             }
@@ -62,6 +63,6 @@ public class EntityDataHelper {
     }
 
     public static boolean hasEntityData(LivingEntity entity) {
-        return ENTITY_DATA_MAP.containsKey(entity);
+        return ENTITY_DATA_MAP.containsKey(entity.getUUID());
     }
 }
