@@ -184,6 +184,9 @@ public class NarakaLanguageProviders {
         addDamageType(NarakaDamageTypes.SPEAR_OF_LONGINUS,
                 List.of("%1$s's AT Field was torn by %2$s", "%1$s의 AT 필드가 %2$s에 찢어졌습니다."),
                 List.of("%1$s's AT Field was torn by %2$s thrown %3$s", "%1$s의 AT 필드가 %3$s가 던진 %2$s에 찢어졌습니다."));
+        addDamageType(NarakaDamageTypes.STIGMA,
+                List.of("Stigma"),
+                List.of("Stigma"));
     }
 
     public void addProvidersTo(Consumer<FabricDataGenerator.Pack.RegistryDependentFactory<FabricLanguageProvider>> consumer) {
