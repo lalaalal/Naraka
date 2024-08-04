@@ -5,6 +5,7 @@ import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.data.worldgen.features.NarakaFeatures;
 import com.yummy.naraka.data.worldgen.placement.NarakaPlacements;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
+import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.armortrim.NarakaTrimMaterials;
 import com.yummy.naraka.world.item.armortrim.NarakaTrimPatterns;
 import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
@@ -26,7 +27,8 @@ public class NarakaDatapackProvider extends RegistriesDatapackGenerator {
             .add(Registries.STRUCTURE, NarakaStructures::bootstrap)
             .add(Registries.STRUCTURE_SET, NarakaStructureSets::bootstrap)
             .add(Registries.TRIM_PATTERN, NarakaTrimPatterns::bootstrap)
-            .add(Registries.TRIM_MATERIAL, NarakaTrimMaterials::bootstrap);
+            .add(Registries.TRIM_MATERIAL, NarakaTrimMaterials::bootstrap)
+            .add(Registries.JUKEBOX_SONG, NarakaJukeboxSongs::bootstrap);
 
     private final CompletableFuture<HolderLookup.Provider> fullRegistries;
 

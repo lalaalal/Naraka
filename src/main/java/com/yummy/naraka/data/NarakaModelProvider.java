@@ -146,6 +146,10 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.generateArmorTrims(NarakaItems.PURIFIED_SOUL_LEGGINGS);
         generator.generateArmorTrims(NarakaItems.PURIFIED_SOUL_BOOTS);
         generator.generateFlatItem(NarakaItems.STIGMA_ROD, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
+        generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_1_DISC, ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_2_DISC, ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_3_DISC, ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_4_DISC, ModelTemplates.FLAT_ITEM);
 
         NarakaItems.forEachSoulInfusedItem(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_ITEM));
         NarakaItems.forEachSoulInfusedSword(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM));

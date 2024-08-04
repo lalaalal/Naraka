@@ -1,7 +1,7 @@
 package com.yummy.naraka.data;
 
 import com.yummy.naraka.data.advancement.NarakaAdvancementProvider;
-import com.yummy.naraka.data.lang.NarakaLanguageProvider;
+import com.yummy.naraka.data.lang.NarakaLanguageProviders;
 import com.yummy.naraka.data.loot.NarakaBlockLootProvider;
 import com.yummy.naraka.data.loot.NarakaEntityLootProvider;
 import com.yummy.naraka.data.tags.*;
@@ -24,10 +24,10 @@ public class NarakaDataGenerator implements DataGeneratorEntrypoint {
         NarakaDatapackProvider datapackProvider = pack.addProvider(NarakaDatapackProvider::new);
         patched = datapackProvider.getRegistryProvider();
 
+        new NarakaLanguageProviders("en_us", "ko_kr")
+                .addProvidersTo(pack::addProvider);
         pack.addProvider(NarakaRecipeProvider::new);
         pack.addProvider(NarakaModelProvider::new);
-        pack.addProvider(NarakaLanguageProvider.EN::new);
-        pack.addProvider(NarakaLanguageProvider.KR::new);
 
         pack.addProvider(patched(NarakaAdvancementProvider::new));
         pack.addProvider(NarakaBlockLootProvider::new);

@@ -4,6 +4,7 @@ import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.event.NarakaGameEvents;
 import com.yummy.naraka.network.NarakaNetworks;
+import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.world.NarakaBiomes;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
@@ -33,28 +34,37 @@ public class NarakaMod implements ModInitializer {
     @Override
     public void onInitialize() {
         NarakaRegistries.initialize();
+        NarakaParticleTypes.initialize();
+
+        NarakaSoundEvents.initialize();
+
         NarakaBlocks.initialize();
-        NarakaDataComponentTypes.initialize();
+        NarakaTreeGrowers.initialize();
+
         NarakaItems.initialize();
+        NarakaDataComponentTypes.initialize();
         NarakaArmorMaterials.initialize();
         NarakaCreativeModTabs.initialize();
-        NarakaEntityTypes.initialize();
-        NarakaBlockEntityTypes.initialize();
-        NarakaMenuTypes.initialize();
         NarakaRecipeTypes.initialize();
         NarakaRecipeSerializers.initialize();
-        NarakaHeightProviders.initialize();
-        NarakaStructurePlacementTypes.initialize();
+
+        NarakaEntityTypes.initialize();
+        EntityDataTypes.initialize();
+
+        NarakaBlockEntityTypes.initialize();
+
+        NarakaMenuTypes.initialize();
+
         NarakaStructureTypes.initialize();
         NarakaStructurePieceTypes.initialize();
         NarakaStructurePieceFactories.initialize();
+        NarakaHeightProviders.initialize();
+        NarakaStructurePlacementTypes.initialize();
         NarakaProtectionPredicates.initialize();
-        NarakaBiomes.initialize();
-        NarakaTreeGrowers.initialize();
-        NarakaRootPlacerTypes.initialize();
-        NarakaParticleTypes.initialize();
 
-        EntityDataTypes.initialize();
+        NarakaBiomes.initialize();
+
+        NarakaRootPlacerTypes.initialize();
 
         NarakaGameEvents.initialize();
         NarakaContext.initialize();

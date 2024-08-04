@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.data.lang.NarakaLanguageProvider;
+import com.yummy.naraka.data.lang.NarakaLanguageProviders;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -16,19 +16,19 @@ public abstract class NarakaSmithingTemplateItems extends SmithingTemplateItem {
     private static final ChatFormatting DESCRIPTION_FORMAT = ChatFormatting.BLUE;
 
     public static final Component PURIFIED_SOUL_UPGRADE = Component.translatable(
-            NarakaLanguageProvider.PURIFIED_SOUL_UPGRADE_KEY
+            NarakaLanguageProviders.PURIFIED_SOUL_UPGRADE_KEY
     ).withStyle(TITLE_FORMAT);
     public static final Component PURIFIED_SOUL_UPGRADE_APPLIES_TO = Component.translatable(
-            NarakaLanguageProvider.PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY
+            NarakaLanguageProviders.PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY
     ).withStyle(DESCRIPTION_FORMAT);
     public static final Component PURIFIED_SOUL_UPGRADE_INGREDIENTS = Component.translatable(
-            NarakaLanguageProvider.PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY
+            NarakaLanguageProviders.PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY
     ).withStyle(DESCRIPTION_FORMAT);
     public static final Component PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION = Component.translatable(
-            NarakaLanguageProvider.PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY
+            NarakaLanguageProviders.PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY
     );
     public static final Component PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION = Component.translatable(
-            NarakaLanguageProvider.PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY
+            NarakaLanguageProviders.PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY
     );
 
     public static final ResourceLocation EMPTY_SLOT_SPEAR = NarakaMod.location("item/empty_slot_spear");

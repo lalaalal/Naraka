@@ -1,7 +1,7 @@
 package com.yummy.naraka.jade;
 
-import com.yummy.naraka.data.lang.NarakaJadeProviders;
-import com.yummy.naraka.data.lang.NarakaLanguageProvider;
+import com.yummy.naraka.data.lang.NarakaJadeProviderComponents;
+import com.yummy.naraka.data.lang.NarakaLanguageProviders;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
@@ -19,7 +19,7 @@ public class NarakaEntityDataProvider implements IEntityComponentProvider {
 
     @Override
     public ResourceLocation getUid() {
-        return NarakaJadeProviders.ENTITY_DATA.location;
+        return NarakaJadeProviderComponents.ENTITY_DATA.location;
     }
 
     @Override
@@ -28,9 +28,9 @@ public class NarakaEntityDataProvider implements IEntityComponentProvider {
         if (entity instanceof LivingEntity livingEntity) {
             Stigma stigma = StigmaHelper.get(livingEntity);
             if (stigma.getStigma() > 0)
-                tooltip.add(Component.translatable(NarakaLanguageProvider.JADE_STIGMA_KEY, stigma.getStigma()));
+                tooltip.add(Component.translatable(NarakaLanguageProviders.JADE_STIGMA_KEY, stigma.getStigma()));
             if (DeathCountHelper.isDeathCounted(livingEntity))
-                tooltip.add(Component.translatable(NarakaLanguageProvider.JADE_DEATH_COUNT_KEY, DeathCountHelper.get(livingEntity)));
+                tooltip.add(Component.translatable(NarakaLanguageProviders.JADE_DEATH_COUNT_KEY, DeathCountHelper.get(livingEntity)));
         }
     }
 }

@@ -27,6 +27,11 @@ public class NarakaItems {
 
     public static final Item STIGMA_ROD = registerItem("stigma_rod", StigmaRodItem::new);
 
+    public static final Item HEROBRINE_PHASE_1_DISC = registerDiscItem("herobrine_phase_1_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_1);
+    public static final Item HEROBRINE_PHASE_2_DISC = registerDiscItem("herobrine_phase_2_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_2);
+    public static final Item HEROBRINE_PHASE_3_DISC = registerDiscItem("herobrine_phase_3_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_3);
+    public static final Item HEROBRINE_PHASE_4_DISC = registerDiscItem("herobrine_phase_4_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_4);
+
     // Ingredients
     public static final Item PURIFIED_SOUL_METAL = registerSimpleItem(
             "purified_soul_metal", new Item.Properties().fireResistant()
@@ -165,6 +170,14 @@ public class NarakaItems {
         );
         SOUL_INFUSED_SWORDS.add(item);
         return item;
+    }
+
+    private static Item registerDiscItem(String name, ResourceKey<JukeboxSong> song) {
+        return registerSimpleItem(name, new Item.Properties()
+                .stacksTo(1)
+                .rarity(Rarity.RARE)
+                .jukeboxPlayable(song)
+        );
     }
 
     private static <I extends Item> I registerItem(String name, Function<Item.Properties, I> factory, Item.Properties properties) {

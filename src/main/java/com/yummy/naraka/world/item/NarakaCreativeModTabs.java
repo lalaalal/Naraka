@@ -13,7 +13,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 
 public class NarakaCreativeModTabs {
-    private static final CreativeModeTab NARAKA_TAB = register("naraka", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
+    public static final CreativeModeTab NARAKA_TAB = register("naraka", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
             .title(Component.translatable("itemGroup.naraka"))
             .icon(NarakaItems.GOD_BLOOD::getDefaultInstance)
             .displayItems(NarakaCreativeModTabs::createNarakaTab)
@@ -99,7 +99,10 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaItems.EBONY_ROOTS_SCRAP);
         output.accept(NarakaBlocks.EBONY_LEAVES);
         output.accept(NarakaBlocks.EBONY_SAPLING);
-        // discs
+        output.accept(NarakaItems.HEROBRINE_PHASE_1_DISC);
+        output.accept(NarakaItems.HEROBRINE_PHASE_2_DISC);
+        output.accept(NarakaItems.HEROBRINE_PHASE_3_DISC);
+        output.accept(NarakaItems.HEROBRINE_PHASE_4_DISC);
         output.accept(NarakaItems.SANCTUARY_COMPASS);
         output.accept(NarakaBlocks.SOUL_CRAFTING_BLOCK);
     }
