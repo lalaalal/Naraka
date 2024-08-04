@@ -1,7 +1,7 @@
 package com.yummy.naraka.jade;
 
-import com.yummy.naraka.data.lang.NarakaJadeProviders;
-import com.yummy.naraka.data.lang.NarakaLanguageProvider;
+import com.yummy.naraka.data.lang.NarakaJadeProviderComponents;
+import com.yummy.naraka.data.lang.NarakaLanguageProviders;
 import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.block.entity.SoulCraftingBlockEntity;
 import com.yummy.naraka.world.item.NarakaItems;
@@ -56,7 +56,7 @@ public class SoulCraftingBlockComponentProvider implements IBlockComponentProvid
 
             if (data.getInt("Fuel") > 0) {
                 tooltip.add(fuelIcon);
-                tooltip.append(Component.translatable(NarakaLanguageProvider.JADE_SOUL_CRAFTING_FUEL_KEY, data.get("Fuel")));
+                tooltip.append(Component.translatable(NarakaLanguageProviders.JADE_SOUL_CRAFTING_FUEL_KEY, data.get("Fuel")));
             }
 
             if (itemExists(data)) {
@@ -87,6 +87,6 @@ public class SoulCraftingBlockComponentProvider implements IBlockComponentProvid
 
     @Override
     public ResourceLocation getUid() {
-        return NarakaJadeProviders.SOUL_CRAFTING_BLOCK.location;
+        return NarakaJadeProviderComponents.SOUL_CRAFTING_BLOCK.location;
     }
 }

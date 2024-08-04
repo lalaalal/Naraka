@@ -18,10 +18,6 @@ public class NarakaAttributeModifiers {
     public static final AttributeModifier PREVENT_BLOCK_ATTACKING = new AttributeModifier(NarakaMod.location("prevent_attack_block"), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     public static final AttributeModifier PREVENT_ENTITY_ATTACKING = new AttributeModifier(NarakaMod.location("prevent_attack_entity"), -4.0 * 256, AttributeModifier.Operation.ADD_VALUE);
 
-    public static AttributeModifier impaling(int level) {
-        return new AttributeModifier(NarakaMod.location("impaling_damage"), level, AttributeModifier.Operation.ADD_VALUE);
-    }
-
     /**
      * Add {@linkplain AttributeModifier} to given entity
      *
