@@ -1,32 +1,32 @@
 {
-    "herobrine_music_phase_1": {
+    "herobrine_phase_1": {
         "sounds": [
             {
-                "name": "yummy:herobrine_music_phase_1",
+                "name": "naraka:herobrine_phase_1",
                 "stream": true
             }
         ]
     },
-    "herobrine_music_phase_2": {
+    "herobrine_phase_2": {
         "sounds": [
             {
-                "name": "yummy:herobrine_music_phase_2",
+                "name": "naraka:herobrine_phase_2",
                 "stream": true
             }
         ]
     },
-    "herobrine_music_phase_3": {
+    "herobrine_phase_3": {
         "sounds": [
             {
-                "name": "yummy:herobrine_music_phase_3",
+                "name": "naraka:herobrine_phase_3",
                 "stream": true
             }
         ]
     },
-    "herobrine_music_phase_4": {
+    "herobrine_phase_4": {
         "sounds": [
             {
-                "name": "yummy:herobrine_music_phase_4",
+                "name": "naraka:herobrine_phase_4",
                 "stream": true
             }
         ]

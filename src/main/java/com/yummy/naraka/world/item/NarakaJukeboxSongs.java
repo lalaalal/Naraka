@@ -19,9 +19,9 @@ public class NarakaJukeboxSongs {
 
     public static void bootstrap(BootstrapContext<JukeboxSong> context) {
         register(context, HEROBRINE_PHASE_1, NarakaSoundEvents.HEROBRINE_PHASE_1, 120, 11);
-        register(context, HEROBRINE_PHASE_2, NarakaSoundEvents.HEROBRINE_PHASE_2, 121, 12);
+        register(context, HEROBRINE_PHASE_2, NarakaSoundEvents.HEROBRINE_PHASE_2, 160, 12);
         register(context, HEROBRINE_PHASE_3, NarakaSoundEvents.HEROBRINE_PHASE_3, 120, 13);
-        register(context, HEROBRINE_PHASE_4, NarakaSoundEvents.HEROBRINE_PHASE_4, 100, 10);
+        register(context, HEROBRINE_PHASE_4, NarakaSoundEvents.HEROBRINE_PHASE_4, 150, 10);
     }
 
     private static void register(BootstrapContext<JukeboxSong> context, ResourceKey<JukeboxSong> key, Holder<SoundEvent> sound, float lengthInSeconds, int comparatorOutput) {

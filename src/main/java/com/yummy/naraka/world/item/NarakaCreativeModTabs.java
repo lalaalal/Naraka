@@ -4,6 +4,7 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -13,15 +14,27 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 
 public class NarakaCreativeModTabs {
-    public static final CreativeModeTab NARAKA_TAB = register("naraka", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
+    public static final CreativeModeTab NARAKA_TAB = register("naraka", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
             .title(Component.translatable("itemGroup.naraka"))
             .icon(NarakaItems.GOD_BLOOD::getDefaultInstance)
             .displayItems(NarakaCreativeModTabs::createNarakaTab)
             .build()
     );
+    public static final CreativeModeTab NARAKA_TEST_TAB = registerIfDev("naraka_test", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
+            .title(Component.translatable("itemGroup.naraka.test"))
+            .icon(NarakaItems.STIGMA_ROD::getDefaultInstance)
+            .displayItems(NarakaCreativeModTabs::createNarakaTestTab)
+            .build()
+    );
 
     private static CreativeModeTab register(String name, CreativeModeTab tab) {
         return Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, NarakaMod.location(name), tab);
+    }
+
+    private static CreativeModeTab registerIfDev(String name, CreativeModeTab tab) {
+        if (FabricLoader.getInstance().isDevelopmentEnvironment())
+            return register(name, tab);
+        return tab;
     }
 
     public static void initialize() {
@@ -125,5 +138,9 @@ public class NarakaCreativeModTabs {
 
     private static void modifySpawnEggsTab(FabricItemGroupEntries entries) {
         entries.addAfter(Blocks.TRIAL_SPAWNER, NarakaBlocks.HEROBRINE_TOTEM);
+    }
+
+    private static void createNarakaTestTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
+        output.accept(NarakaItems.STIGMA_ROD);
     }
 }

@@ -47,6 +47,7 @@ public class NarakaLanguageProviders {
 
     protected void generate() {
         add("itemGroup.naraka", "Naraka", "Naraka");
+        add("itemGroup.naraka.test", "Naraka Test", "나락!");
         add("container.soul_crafting", "Soul Crafter", "영혼 세공기");
         add(PURIFIED_SOUL_UPGRADE_KEY, "Purified Soul Upgrade", "정화된 영혼 강화");
         add(PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY, "Ebony Tools, Purified Soul Weapons", "흑단나무 검, 정화된 영혼 무기");
