@@ -14,31 +14,39 @@ public class StigmaHelper {
         return EntityDataHelper.getEntityData(livingEntity, EntityDataTypes.STIGMA);
     }
 
+    private static void set(LivingEntity livingEntity, Stigma stigma) {
+        EntityDataHelper.setEntityData(livingEntity, EntityDataTypes.STIGMA, stigma);
+    }
+
     public static void increaseStigma(LivingEntity livingEntity, Entity cause) {
         if (livingEntity.getType().is(NarakaEntityTypeTags.HEROBRINE))
             return;
         Stigma stigma = get(livingEntity);
-        if (!MARKED_ENTITIES.contains(livingEntity))
-            MARKED_ENTITIES.add(livingEntity);
-        stigma.increaseStigma(livingEntity, cause);
-        sync(livingEntity, stigma);
+        Stigma increased = stigma.increase(livingEntity, cause);
+        set(livingEntity, increased);
     }
 
     public static void tick() {
         List<LivingEntity> liberatedEntities = new ArrayList<>();
         for (LivingEntity markedEntity : MARKED_ENTITIES) {
             Stigma stigma = get(markedEntity);
+            Stigma decreased = stigma.tryDecrease(markedEntity);
             stigma.tryRelease(markedEntity);
-            if (stigma.tryDecrease(markedEntity) || markedEntity.isDeadOrDying())
+
+            if ((stigma != decreased && decreased.value() == 0) || markedEntity.isRemoved())
                 liberatedEntities.add(markedEntity);
-            sync(markedEntity, stigma);
+            if (stigma != decreased)
+                set(markedEntity, decreased);
         }
         MARKED_ENTITIES.removeAll(liberatedEntities);
     }
 
-    private static void sync(LivingEntity livingEntity, Stigma stigma) {
-        if (stigma.isDirty())
-            EntityDataHelper.syncEntityData(livingEntity, EntityDataTypes.STIGMA);
-        stigma.setDirty(false);
+    public static void initialize() {
+        EntityDataHelper.registerDataChangeListener(EntityDataTypes.STIGMA, StigmaHelper::watchEntity);
+    }
+
+    private static void watchEntity(LivingEntity livingEntity, EntityDataType<Stigma> entityDataType, Stigma from, Stigma to) {
+        if (to.value() > 0 && !MARKED_ENTITIES.contains(livingEntity))
+            MARKED_ENTITIES.add(livingEntity);
     }
 }

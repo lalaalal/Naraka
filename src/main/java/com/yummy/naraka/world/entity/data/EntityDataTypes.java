@@ -32,6 +32,6 @@ public class EntityDataTypes {
     }
 
     public static void initialize() {
-
+        StigmaHelper.initialize();
     }
 }

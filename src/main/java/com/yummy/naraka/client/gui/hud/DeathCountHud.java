@@ -2,10 +2,14 @@ package com.yummy.naraka.client.gui.hud;
 
 import com.yummy.naraka.client.NarakaSprites;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
+import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import com.yummy.naraka.world.entity.data.EntityDataType;
+import com.yummy.naraka.world.entity.data.EntityDataTypes;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 public class DeathCountHud implements HudRenderCallback {
@@ -27,7 +31,6 @@ public class DeathCountHud implements HudRenderCallback {
 
     public static final int BLINKING_TIME = 60;
 
-    private int prevDeathCount;
     private int blinkTime;
 
     private static void drawHeart(GuiGraphics guiGraphics, int x, int y, boolean fill, boolean blink) {
@@ -36,6 +39,17 @@ public class DeathCountHud implements HudRenderCallback {
             guiGraphics.blitSprite(NarakaSprites.DEATH_COUNT_HEART, HEART_WIDTH, HEART_HEIGHT,
                     u, 0, x, y,
                     HEART_SIZE_SINGLE, HEART_SIZE_SINGLE);
+        }
+    }
+
+    public DeathCountHud() {
+        EntityDataHelper.registerDataChangeListener(EntityDataTypes.DEATH_COUNT, this::onDeathCountChanged);
+    }
+
+    private void onDeathCountChanged(LivingEntity livingEntity, EntityDataType<Integer> entityDataType, Integer from, Integer to) {
+        if (livingEntity == Minecraft.getInstance().player) {
+            if (to < from && to < DeathCountHelper.MAX_DEATH_COUNT)
+                blinkTime = BLINKING_TIME;
         }
     }
 
@@ -49,8 +63,6 @@ public class DeathCountHud implements HudRenderCallback {
         if (deathCount <= 0)
             return;
 
-        if (deathCount < prevDeathCount)
-            blinkTime = BLINKING_TIME;
         boolean blink = (blinkTime / 10) % 2 == 0;
         guiGraphics.blitSprite(NarakaSprites.DEATH_COUNT_BACKGROUND, BASE_X, BASE_Y, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
         for (int i = 0; i < DeathCountHelper.MAX_DEATH_COUNT; i++) {
@@ -60,7 +72,6 @@ public class DeathCountHud implements HudRenderCallback {
             drawHeart(guiGraphics, x, y, fill, blink);
         }
 
-        prevDeathCount = deathCount;
         if (blinkTime > 0)
             blinkTime--;
     }

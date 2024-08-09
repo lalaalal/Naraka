@@ -9,6 +9,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
@@ -162,7 +163,7 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
         }
 
         if (craftingProgress >= craftingTime() && recipe.isPresent() && !ingredientItem.isEmpty()) {
-            ItemStack crafted = assemble(level, recipe.get(), ingredientItem);
+            ItemStack crafted = blockEntity.assemble(level, recipe.get(), ingredientItem);
             if (existingResult.isEmpty())
                 blockEntity.setItem(RESULT_SLOT, crafted);
             else if (existingResult.is(crafted.getItem()))
@@ -195,9 +196,15 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
         return level.getRecipeManager().getRecipeFor(NarakaRecipeTypes.SOUL_CRAFTING, new SingleRecipeInput(ingredient), level);
     }
 
-    public static ItemStack assemble(Level level, RecipeHolder<SoulCraftingRecipe> recipe, ItemStack ingredient) {
+    public ItemStack assemble(Level level, RecipeHolder<SoulCraftingRecipe> recipe, ItemStack ingredient) {
         ingredient.shrink(1);
+        setRecipeUsed(recipe);
         return recipe.value().assemble(new SingleRecipeInput(ingredient), level.registryAccess());
+    }
+
+    public void award(ServerPlayer serverPlayer) {
+        serverPlayer.triggerRecipeCrafted(recipeUsed, items);
+        serverPlayer.giveExperienceLevels(5);
     }
 
     @Override

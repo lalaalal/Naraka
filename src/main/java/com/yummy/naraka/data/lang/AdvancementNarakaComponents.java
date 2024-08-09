@@ -13,7 +13,8 @@ public enum AdvancementNarakaComponents implements AdvancementComponent {
     TAKE_EBONY_ROOT,
     GOD_BLOOD,
     EBONY_METAL,
-    SOUL_INFUSING;
+    SOUL_INFUSING,
+    PURIFIED_SOUL_METAL;
 
     public static final String ADVANCEMENT_NAME = "naraka";
 

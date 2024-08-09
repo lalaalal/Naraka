@@ -23,7 +23,7 @@ public class StigmaHud implements HudRenderCallback {
         if (player == null)
             return;
 
-        int stigma = StigmaHelper.get(player).getStigma();
+        int stigma = StigmaHelper.get(player).value();
 
         int baseX = DeathCountHud.BASE_X + DeathCountHud.BACKGROUND_WIDTH + 8;
         int baseY = DeathCountHud.BASE_Y + (DeathCountHud.BACKGROUND_HEIGHT - BACKGROUND_HEIGHT) / 2;

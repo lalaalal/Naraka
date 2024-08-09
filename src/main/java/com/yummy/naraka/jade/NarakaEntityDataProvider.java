@@ -27,8 +27,8 @@ public class NarakaEntityDataProvider implements IEntityComponentProvider {
         Entity entity = entityAccessor.getEntity();
         if (entity instanceof LivingEntity livingEntity) {
             Stigma stigma = StigmaHelper.get(livingEntity);
-            if (stigma.getStigma() > 0)
-                tooltip.add(Component.translatable(NarakaLanguageProviders.JADE_STIGMA_KEY, stigma.getStigma()));
+            if (stigma.value() > 0)
+                tooltip.add(Component.translatable(NarakaLanguageProviders.JADE_STIGMA_KEY, stigma.value()));
             if (DeathCountHelper.isDeathCounted(livingEntity))
                 tooltip.add(Component.translatable(NarakaLanguageProviders.JADE_DEATH_COUNT_KEY, DeathCountHelper.get(livingEntity)));
         }

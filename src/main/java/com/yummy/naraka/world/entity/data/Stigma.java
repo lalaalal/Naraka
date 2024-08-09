@@ -8,65 +8,35 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
-public class Stigma {
+public record Stigma(int value, long lastMarkedTime) {
+    public static final Stigma ZERO = new Stigma(0, 0);
     public static final int MAX_STIGMA = 2;
     public static final int HOLD_ENTITY_DURATION = 20 * 5;
     public static final int STIGMA_DECREASE_COOLDOWN = 20 * 60;
 
-    private int stigma = 0;
-    private long lastMarkedTime = 0;
-    private boolean dirty = false;
-
-    public Stigma() {
-
+    public Stigma increase(LivingEntity livingEntity, Entity cause) {
+        long now = livingEntity.level().getGameTime();
+        if (value < MAX_STIGMA)
+            return new Stigma(value + 1, now);
+        return consume(livingEntity, cause);
     }
 
-    public Stigma(int stigma, long lastMarkedTime) {
-        this.stigma = stigma;
-        this.lastMarkedTime = lastMarkedTime;
+    public Stigma decrease(long now) {
+        if (value > 0)
+            return new Stigma(value - 1, now);
+        return this;
     }
 
-    public void increaseStigma(LivingEntity livingEntity, Entity cause) {
-        if (stigma < MAX_STIGMA) {
-            stigma += 1;
-        } else {
-            consumeStigma(livingEntity, cause);
-        }
-        holdEntity(livingEntity);
-        lastMarkedTime = livingEntity.level().getGameTime();
-        dirty = true;
-    }
-
-    public void decreaseStigma() {
-        if (stigma > 0) {
-            stigma -= 1;
-            dirty = true;
-        }
-    }
-
-    public int getStigma() {
-        return stigma;
-    }
-
-    public long getLastMarkedTime() {
-        return lastMarkedTime;
-    }
-
-    public boolean isDirty() {
-        return dirty;
-    }
-
-    public void setDirty(boolean value) {
-        dirty = value;
-    }
-
-    public void consumeStigma(LivingEntity livingEntity, Entity cause) {
-        stigma = 0;
+    public Stigma consume(LivingEntity livingEntity, Entity cause) {
+        long now = livingEntity.level().getGameTime();
         DamageSource source = NarakaDamageSources.stigma(cause);
         livingEntity.hurt(source, Float.MAX_VALUE);
+        holdEntity(livingEntity);
+
+        return new Stigma(0, now);
     }
 
-    public void holdEntity(LivingEntity livingEntity) {
+    public static void holdEntity(LivingEntity livingEntity) {
         NarakaAttributeModifiers.addAttributeModifier(
                 livingEntity,
                 Attributes.MOVEMENT_SPEED,
@@ -91,7 +61,7 @@ public class Stigma {
             mob.setNoAi(true);
     }
 
-    public void releaseEntity(LivingEntity livingEntity) {
+    public static void releaseEntity(LivingEntity livingEntity) {
         NarakaAttributeModifiers.removeAttributeModifier(
                 livingEntity,
                 Attributes.MOVEMENT_SPEED,
@@ -121,11 +91,10 @@ public class Stigma {
             releaseEntity(livingEntity);
     }
 
-    public boolean tryDecrease(LivingEntity livingEntity) {
-        if (livingEntity.level().getGameTime() - lastMarkedTime >= STIGMA_DECREASE_COOLDOWN) {
-            decreaseStigma();
-            return stigma == 0;
-        }
-        return false;
+    public Stigma tryDecrease(LivingEntity livingEntity) {
+        long now = livingEntity.level().getGameTime();
+        if (now - lastMarkedTime >= STIGMA_DECREASE_COOLDOWN)
+            return decrease(now);
+        return this;
     }
 }
