@@ -50,7 +50,12 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
         oreSmelting(recipeOutput, NECTARIUM_SMELTABLES, RecipeCategory.MISC, NarakaItems.NECTARIUM, 0.7f, 200, "nectarium");
         oreBlasting(recipeOutput, NECTARIUM_SMELTABLES, RecipeCategory.MISC, NarakaItems.NECTARIUM, 0.7f, 100, "nectarium");
 
-        soulCraftingRecipe(recipeOutput, NarakaItems.PURIFIED_SOUL_SHARD, NarakaItems.PURIFIED_SOUL_METAL);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_METAL)
+                .requires(Items.GHAST_TEAR, 4)
+                .requires(Items.NETHERITE_SCRAP, 4)
+                .requires(NarakaItems.PURIFIED_SOUL_SHARD)
+                .unlockedBy(getHasName(NarakaItems.PURIFIED_SOUL_SHARD), has(NarakaItems.PURIFIED_SOUL_SHARD))
+                .save(recipeOutput);
         soulCraftingRecipe(recipeOutput, Items.AMETHYST_SHARD, NarakaItems.SOUL_INFUSED_AMETHYST);
         soulCraftingRecipe(recipeOutput, Items.COPPER_INGOT, NarakaItems.SOUL_INFUSED_COPPER);
         soulCraftingRecipe(recipeOutput, Items.DIAMOND, NarakaItems.SOUL_INFUSED_DIAMOND);

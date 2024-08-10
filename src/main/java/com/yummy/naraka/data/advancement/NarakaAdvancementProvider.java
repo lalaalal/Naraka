@@ -120,7 +120,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder purifiedSoulMetal = task(soulInfusing, NarakaItems.PURIFIED_SOUL_METAL, AdvancementNarakaComponents.PURIFIED_SOUL_METAL)
                 .rewards(AdvancementRewards.Builder.experience(6))
                 .addCriterion("craft_purified_soul_metal", RecipeCraftedTrigger.TriggerInstance.craftedItem(
-                        NarakaMod.location("purified_soul_metal_soul_crafting")
+                        NarakaMod.location("purified_soul_metal")
                 ))
                 .save(generator, "purified_soul_metal");
     }
