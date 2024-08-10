@@ -49,6 +49,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class NarakaGameEvents {
     public static void initialize() {
+        ServerLifecycleEvents.SERVER_STARTING.register(NarakaGameEvents::onServerStarting);
         ServerLifecycleEvents.SERVER_STARTED.register(NarakaGameEvents::onServerStarted);
         ServerWorldEvents.LOAD.register(NarakaGameEvents::onWorldLoad);
 
@@ -74,6 +75,11 @@ public class NarakaGameEvents {
 
     private static void onWorldLoad(MinecraftServer server, ServerLevel level) {
         StructureProtector.initialize(server);
+    }
+
+    private static void onServerStarting(MinecraftServer server) {
+        EntityDataHelper.clear();
+        StigmaHelper.clear();
     }
 
     private static void onServerStarted(MinecraftServer server) {

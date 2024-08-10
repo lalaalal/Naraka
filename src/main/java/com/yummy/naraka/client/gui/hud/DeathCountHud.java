@@ -4,7 +4,7 @@ import com.yummy.naraka.client.NarakaSprites;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.EntityDataType;
-import com.yummy.naraka.world.entity.data.EntityDataTypes;
+import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -43,7 +43,7 @@ public class DeathCountHud implements HudRenderCallback {
     }
 
     public DeathCountHud() {
-        EntityDataHelper.registerDataChangeListener(EntityDataTypes.DEATH_COUNT, this::onDeathCountChanged);
+        EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.DEATH_COUNT, this::onDeathCountChanged);
     }
 
     private void onDeathCountChanged(LivingEntity livingEntity, EntityDataType<Integer> entityDataType, Integer from, Integer to) {

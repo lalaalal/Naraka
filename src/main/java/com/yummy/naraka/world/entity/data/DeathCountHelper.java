@@ -31,7 +31,7 @@ public class DeathCountHelper {
     }
 
     public static int get(LivingEntity livingEntity) {
-        return EntityDataHelper.getEntityData(livingEntity, EntityDataTypes.DEATH_COUNT);
+        return EntityDataHelper.getEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT);
     }
 
     public static boolean isDeathCounted(LivingEntity livingEntity) {
@@ -41,17 +41,17 @@ public class DeathCountHelper {
     public static void applyDeathCount(LivingEntity livingEntity) {
         int deathCount = get(livingEntity);
         if (deathCount == NOT_APPLIED && isDeathCountable(livingEntity))
-            EntityDataHelper.setEntityData(livingEntity, EntityDataTypes.DEATH_COUNT, MAX_DEATH_COUNT);
+            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT, MAX_DEATH_COUNT);
     }
 
     public static void removeDeathCount(LivingEntity livingEntity) {
-        EntityDataHelper.setEntityData(livingEntity, EntityDataTypes.DEATH_COUNT, NOT_APPLIED);
+        EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT, NOT_APPLIED);
     }
 
     public static boolean useDeathCount(LivingEntity livingEntity) {
         int deathCount = get(livingEntity);
         if (deathCount > 1) {
-            EntityDataHelper.setEntityData(livingEntity, EntityDataTypes.DEATH_COUNT, deathCount - 1);
+            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT, deathCount - 1);
             livingEntity.setHealth(livingEntity.getMaxHealth());
         } else {
             for (DeathCountingEntity deathCountingEntity : DEATH_COUNTING_ENTITIES)

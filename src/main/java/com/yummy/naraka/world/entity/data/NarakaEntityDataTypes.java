@@ -3,13 +3,14 @@ package com.yummy.naraka.world.entity.data;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
-public class EntityDataTypes {
+public class NarakaEntityDataTypes {
     public static final StigmaEntityDataType STIGMA = register("stigma", StigmaEntityDataType::new);
     public static final IntegerEntityDataType DEATH_COUNT = register("death_count", IntegerEntityDataType::new, -1);
 
@@ -29,6 +30,10 @@ public class EntityDataTypes {
 
     public static Holder<EntityDataType<?>> holder(EntityDataType<?> type) {
         return NarakaRegistries.ENTITY_DATA_TYPE.wrapAsHolder(type);
+    }
+
+    public static HolderSet<EntityDataType<?>> full() {
+        return HolderSet.direct(NarakaRegistries.ENTITY_DATA_TYPE.holders().toList());
     }
 
     public static void initialize() {

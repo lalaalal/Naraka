@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.entity.data;
 
-import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.network.SyncEntityDataPayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.Holder;
@@ -10,13 +9,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.*;
 
 public class EntityDataHelper {
     private static final Map<UUID, EntityDataContainer> ENTITY_DATA_MAP = new HashMap<>();
     private static final Map<EntityDataType<?>, List<EntityDataChangeListener>> DATA_CHANGE_LISTENERS = new HashMap<>();
+
+    public static void clear() {
+        ENTITY_DATA_MAP.clear();
+    }
 
     public static <T> void registerDataChangeListener(EntityDataType<T> entityDataType, DataChangeListener<T> listener) {
         List<EntityDataChangeListener> listeners = DATA_CHANGE_LISTENERS.computeIfAbsent(entityDataType, _entityDataType -> new ArrayList<>());
@@ -31,7 +33,7 @@ public class EntityDataHelper {
     }
 
     public static void syncEntityData(LivingEntity livingEntity, EntityDataType<?> entityDataType) {
-        Holder<EntityDataType<?>> holder = EntityDataTypes.holder(entityDataType);
+        Holder<EntityDataType<?>> holder = NarakaEntityDataTypes.holder(entityDataType);
         if (livingEntity.level() instanceof ServerLevel serverLevel) {
             CompoundTag data = new CompoundTag();
             saveEntityData(livingEntity, data);
@@ -41,14 +43,10 @@ public class EntityDataHelper {
     }
 
     public static void syncEntityData(LivingEntity livingEntity) {
-        HolderSet<EntityDataType<?>> holders = HolderSet.direct(
-                NarakaRegistries.ENTITY_DATA_TYPE.holders()
-                        .filter(holder -> hasEntityData(livingEntity, holder.value()))
-                        .toList()
-        );
+        HolderSet<EntityDataType<?>> holders = NarakaEntityDataTypes.full();
         if (livingEntity.level() instanceof ServerLevel serverLevel) {
             CompoundTag data = new CompoundTag();
-            saveEntityData(livingEntity, data);
+            saveEntityData(livingEntity, data, holders);
             for (ServerPlayer player : serverLevel.players())
                 ServerPlayNetworking.send(player, new SyncEntityDataPayload(livingEntity, holders, data));
         }
@@ -81,12 +79,18 @@ public class EntityDataHelper {
             container.save(compoundTag, registries);
     }
 
+    public static void saveEntityData(LivingEntity livingEntity, CompoundTag compoundTag, HolderSet<EntityDataType<?>> entityDataTypes) {
+        RegistryAccess registries = livingEntity.level().registryAccess();
+        EntityDataContainer container = ENTITY_DATA_MAP.get(livingEntity.getUUID());
+        if (container != null)
+            container.save(compoundTag, registries, entityDataTypes);
+    }
+
     public static void readEntityData(LivingEntity livingEntity, CompoundTag compoundTag) {
         RegistryAccess registries = livingEntity.level().registryAccess();
-        EntityDataContainer container = ENTITY_DATA_MAP.computeIfAbsent(livingEntity.getUUID(), uuid -> new EntityDataContainer());
-        if (livingEntity instanceof Player)
-            container.loadDefault();
+        EntityDataContainer container = new EntityDataContainer();
         container.read(compoundTag, registries);
+        ENTITY_DATA_MAP.put(livingEntity.getUUID(), container);
     }
 
     public static boolean hasEntityData(LivingEntity livingEntity) {

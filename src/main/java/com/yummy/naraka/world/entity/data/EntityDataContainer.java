@@ -1,7 +1,9 @@
 package com.yummy.naraka.world.entity.data;
 
 import com.yummy.naraka.core.registries.NarakaRegistries;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.nbt.CompoundTag;
 
 import java.util.HashMap;
@@ -26,7 +28,15 @@ public class EntityDataContainer {
 
     public void save(CompoundTag compoundTag, HolderLookup.Provider registries) {
         for (EntityDataType<?> entityDataType : entityDataMap.keySet()) {
-            entityDataType.castAndWrite(entityDataMap.get(entityDataType), compoundTag, registries);
+            if (entityDataMap.get(entityDataType) != entityDataType.getDefaultValue())
+                entityDataType.castAndWrite(entityDataMap.get(entityDataType), compoundTag, registries);
+        }
+    }
+
+    public void save(CompoundTag compoundTag, HolderLookup.Provider registries, HolderSet<EntityDataType<?>> entityDataTypes) {
+        for (Holder<EntityDataType<?>> holder : entityDataTypes) {
+            Object value = getEntityData(holder.value());
+            holder.value().castAndWrite(value, compoundTag, registries);
         }
     }
 
@@ -37,10 +47,5 @@ public class EntityDataContainer {
                 setEntityData(entityDataType, data);
             }
         }
-    }
-
-    public void loadDefault() {
-        for (EntityDataType<?> entityDataType : NarakaRegistries.ENTITY_DATA_TYPE)
-            setEntityData(entityDataType, entityDataType.getDefaultValue());
     }
 }

@@ -1,19 +1,19 @@
 {
-    "required": true,
-    "package": "com.yummy.naraka.mixin",
-    "compatibilityLevel": "JAVA_21",
-    "mixins": [
-        "FeatureMixin",
-        "LivingEntityMixin",
-        "SmithingTemplateItemMixin"
-    ],
-    "injectors": {
-        "defaultRequire": 1
-    },
-    "client": [
-        "client.ItemBlockRenderTypesMixin",
-        "client.ItemEntityRendererMixin",
-        "client.ItemRendererMixin",
-        "client.LivingEntityMixin"
+  "required": true,
+  "package": "com.yummy.naraka.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "FeatureMixin",
+    "LivingEntityMixin",
+    "ServerEntityMixin",
+    "SmithingTemplateItemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "client.ItemBlockRenderTypesMixin",
+    "client.ItemEntityRendererMixin",
+    "client.ItemRendererMixin"
   ]
 }

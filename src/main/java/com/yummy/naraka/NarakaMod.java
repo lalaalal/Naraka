@@ -10,7 +10,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.block.grower.NarakaTreeGrowers;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
-import com.yummy.naraka.world.entity.data.EntityDataTypes;
+import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import com.yummy.naraka.world.item.NarakaArmorMaterials;
 import com.yummy.naraka.world.item.NarakaCreativeModTabs;
@@ -49,7 +49,7 @@ public class NarakaMod implements ModInitializer {
         NarakaRecipeSerializers.initialize();
 
         NarakaEntityTypes.initialize();
-        EntityDataTypes.initialize();
+        NarakaEntityDataTypes.initialize();
 
         NarakaBlockEntityTypes.initialize();
 
