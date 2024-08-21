@@ -15,6 +15,7 @@ import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.data.models.model.TexturedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
@@ -52,6 +53,8 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createPlant(NarakaBlocks.EBONY_SAPLING, NarakaBlocks.POTTED_EBONY_SAPLING, BlockModelGenerators.TintState.NOT_TINTED);
         NarakaBlocks.forEachSoulInfusedBlock(generator::createTrivialCube);
         generator.createTrivialCube(NarakaBlocks.EBONY_METAL_BLOCK);
+        generator.blockEntityModels(NarakaBlocks.FORGING_BLOCK, Blocks.ANVIL)
+                .createWithoutBlockItem(NarakaBlocks.FORGING_BLOCK);
     }
 
     private static void createEbonyLog(BlockModelGenerators generator, Block block) {

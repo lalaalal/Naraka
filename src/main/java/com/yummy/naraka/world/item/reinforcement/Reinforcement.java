@@ -10,7 +10,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryCodecs;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -72,7 +71,6 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
             MutableComponent component = Component.translatable(NarakaLanguageProviders.REINFORCEMENT_KEY, value)
                     .withStyle(ChatFormatting.YELLOW);
             appender.accept(component);
-            appender.accept(CommonComponents.EMPTY);
         }
     }
 }

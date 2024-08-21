@@ -35,6 +35,7 @@ public abstract class ItemStackMixin implements DataComponentHolder {
 
         List<Component> additions = new ArrayList<>();
         addToTooltip(NarakaDataComponentTypes.REINFORCEMENT, tooltipContext, additions::add, tooltipFlag);
-        original.addAll(2, additions);
+
+        original.addAll(1, additions);
     }
 }

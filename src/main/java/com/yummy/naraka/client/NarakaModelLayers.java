@@ -11,6 +11,8 @@ public class NarakaModelLayers {
     public static final ModelLayerLocation SPEAR = location("spear");
     public static final ModelLayerLocation SPEAR_OF_LONGINUS = location("spear_of_longinus");
 
+    public static final ModelLayerLocation FORGING_BLOCK = location("forging_block");
+
     public static ModelLayerLocation location(String name) {
         return new ModelLayerLocation(NarakaMod.location(name), "main");
     }

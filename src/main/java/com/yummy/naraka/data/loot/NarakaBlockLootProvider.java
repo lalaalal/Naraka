@@ -21,6 +21,7 @@ public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
         dropOre(NarakaBlocks.NECTARIUM_ORE, NarakaItems.NECTARIUM);
         dropOre(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, NarakaItems.NECTARIUM);
         dropSelf(NarakaBlocks.SOUL_CRAFTING_BLOCK);
+        dropSelf(NarakaBlocks.FORGING_BLOCK);
         dropSelf(NarakaBlocks.COMPRESSED_IRON_BLOCK);
         dropSelf(NarakaBlocks.FAKE_GOLD_BLOCK);
         dropSelf(NarakaBlocks.AMETHYST_SHARD_BLOCK);

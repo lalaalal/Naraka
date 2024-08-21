@@ -8,14 +8,12 @@ import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.client.model.SpearModel;
 import com.yummy.naraka.client.model.SpearOfLonginusModel;
 import com.yummy.naraka.client.particle.EbonyParticle;
-import com.yummy.naraka.client.renderer.CustomItemRenderManager;
-import com.yummy.naraka.client.renderer.HerobrineRenderer;
-import com.yummy.naraka.client.renderer.NarakaSpearItemRenderer;
-import com.yummy.naraka.client.renderer.SpearRenderer;
+import com.yummy.naraka.client.renderer.*;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.event.NarakaClientEvents;
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.world.block.NarakaBlocks;
+import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import com.yummy.naraka.world.item.NarakaItems;
@@ -32,6 +30,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.server.packs.PackType;
@@ -57,11 +56,14 @@ public class NarakaModClient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(NarakaModelLayers.HEROBRINE, HerobrineModel::createBodyLayer);
         EntityModelLayerRegistry.registerModelLayer(NarakaModelLayers.SPEAR, SpearModel::createBodyLayer);
         EntityModelLayerRegistry.registerModelLayer(NarakaModelLayers.SPEAR_OF_LONGINUS, SpearOfLonginusModel::createBodyLayer);
+        EntityModelLayerRegistry.registerModelLayer(NarakaModelLayers.FORGING_BLOCK, ForgingBlockEntityRenderer::createBodyLayer);
 
         EntityRendererRegistry.register(NarakaEntityTypes.HEROBRINE, HerobrineRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, SpearRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR, SpearRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, SpearRenderer::longinus);
+
+        BlockEntityRenderers.register(NarakaBlockEntityTypes.FORGING_BLOCK_ENTITY, ForgingBlockEntityRenderer::new);
     }
 
     private void initializeItems() {

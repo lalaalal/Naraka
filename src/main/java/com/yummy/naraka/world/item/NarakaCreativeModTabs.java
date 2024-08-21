@@ -118,6 +118,8 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaItems.HEROBRINE_PHASE_4_DISC);
         output.accept(NarakaItems.SANCTUARY_COMPASS);
         output.accept(NarakaBlocks.SOUL_CRAFTING_BLOCK);
+
+        output.accept(NarakaBlocks.FORGING_BLOCK);
     }
 
     private static void modifyBuildingBlocksTab(FabricItemGroupEntries entries) {

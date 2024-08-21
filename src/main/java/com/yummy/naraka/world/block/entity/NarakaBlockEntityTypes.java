@@ -21,6 +21,14 @@ public class NarakaBlockEntityTypes {
             )
     );
 
+    public static final BlockEntityType<ForgingBlockEntity> FORGING_BLOCK_ENTITY = register(
+            "forging_block_entity",
+            BlockEntityType.Builder.of(
+                    ForgingBlockEntity::new,
+                    NarakaBlocks.FORGING_BLOCK
+            )
+    );
+
     private static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType.Builder<T> builder) {
         return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, NarakaMod.location(name), builder.build(null));
     }

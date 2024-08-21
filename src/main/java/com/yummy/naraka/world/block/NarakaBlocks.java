@@ -63,17 +63,22 @@ public class NarakaBlocks {
     public static final BaseFireBlock PURIFIED_SOUL_FIRE_BLOCK = registerBlockWithItem(
             "purified_soul_fire",
             PurifiedSoulFireBlock::new,
-            BlockBehaviour.Properties.ofFullCopy(Blocks.SOUL_FIRE)
+            from(Blocks.SOUL_FIRE)
+                    .mapColor(MapColor.COLOR_BLACK)
                     .noLootTable()
                     .lightLevel(state -> 7)
-                    .mapColor(MapColor.COLOR_BLACK),
-            new Item.Properties()
+
     );
     public static final SoulCraftingBlock SOUL_CRAFTING_BLOCK = registerBlockWithItem(
             "soul_crafting_block",
             SoulCraftingBlock::new,
             from(Blocks.BLAST_FURNACE)
                     .lightLevel(SoulCraftingBlock::lightLevel)
+    );
+    public static final ForgingBlock FORGING_BLOCK = registerBlockWithItem(
+            "forging_block",
+            ForgingBlock::new,
+            Blocks.ANVIL
     );
 
     public static final Block COMPRESSED_IRON_BLOCK = registerSimpleBlockWithItem("compressed_iron_block", Blocks.IRON_BLOCK);
