@@ -18,6 +18,7 @@ import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeSerializers;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeTypes;
+import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.rootplacers.NarakaRootPlacerTypes;
 import com.yummy.naraka.world.structure.NarakaStructureTypes;
 import com.yummy.naraka.world.structure.height.NarakaHeightProviders;
@@ -42,6 +43,7 @@ public class NarakaMod implements ModInitializer {
         NarakaTreeGrowers.initialize();
 
         NarakaItems.initialize();
+        NarakaReinforcementEffects.initialize();
         NarakaDataComponentTypes.initialize();
         NarakaArmorMaterials.initialize();
         NarakaCreativeModTabs.initialize();

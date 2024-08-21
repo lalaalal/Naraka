@@ -9,7 +9,10 @@ import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
+import com.yummy.naraka.world.item.reinforcement.Reinforcement;
+import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
@@ -19,10 +22,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableSource;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.*;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -32,6 +32,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BoneMealItem;
@@ -58,7 +59,7 @@ public class NarakaGameEvents {
         UseBlockCallback.EVENT.register(NarakaGameEvents::boneMealUse);
         ServerTickEvents.END_SERVER_TICK.register(NarakaGameEvents::onEndTick);
         ServerLivingEntityEvents.ALLOW_DEATH.register(NarakaGameEvents::useDeathCount);
-
+        ServerEntityEvents.EQUIPMENT_CHANGE.register(NarakaGameEvents::handleReinforcementEffect);
         ServerEntityEvents.ENTITY_LOAD.register(NarakaGameEvents::syncPlayerEntityData);
 
         LootTableEvents.MODIFY.register(NarakaGameEvents::modifyLootTable);
@@ -71,6 +72,18 @@ public class NarakaGameEvents {
 
     private static boolean useDeathCount(LivingEntity livingEntity, DamageSource source, float damage) {
         return source.is(DamageTypes.GENERIC_KILL) || !DeathCountHelper.useDeathCount(livingEntity);
+    }
+
+    private static void handleReinforcementEffect(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack previousStack, ItemStack currentStack) {
+        Reinforcement previousItemReinforcement = previousStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, Reinforcement.ZERO);
+        for (Holder<ReinforcementEffect> effect : previousItemReinforcement.effects())
+            effect.value().onUnequipped(livingEntity, equipmentSlot, previousStack);
+
+        Reinforcement currentItemReinforcement = currentStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, Reinforcement.ZERO);
+        for (Holder<ReinforcementEffect> effect : currentItemReinforcement.effects()) {
+            if (effect.value().canApply(livingEntity, equipmentSlot, currentStack, currentItemReinforcement.value()))
+                effect.value().onEquipped(livingEntity, equipmentSlot, currentStack);
+        }
     }
 
     private static void onWorldLoad(MinecraftServer server, ServerLevel level) {

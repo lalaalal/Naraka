@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.item.component;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -11,6 +12,14 @@ public class NarakaDataComponentTypes {
             DataComponentType.<SanctuaryTracker>builder()
                     .persistent(SanctuaryTracker.CODEC)
                     .networkSynchronized(SanctuaryTracker.STREAM_CODEC)
+                    .build()
+    );
+
+    public static final DataComponentType<Reinforcement> REINFORCEMENT = register(
+            "reinforcement",
+            DataComponentType.<Reinforcement>builder()
+                    .persistent(Reinforcement.CODEC)
+                    .networkSynchronized(Reinforcement.STREAM_CODEC)
                     .build()
     );
 

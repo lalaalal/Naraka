@@ -6,7 +6,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.block.Blocks;
@@ -17,7 +17,7 @@ import java.util.function.UnaryOperator;
 public class NarakaEntityTypes {
     public static final EntityType<Herobrine> HEROBRINE = register(
             "herobrine",
-            FabricEntityType.Builder.<Herobrine>createLiving(
+            FabricEntityType.Builder.<Herobrine>createMob(
                             Herobrine::new,
                             MobCategory.MONSTER,
                             attribute(Herobrine::getAttributeSupplier)
@@ -51,8 +51,8 @@ public class NarakaEntityTypes {
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, NarakaMod.location(name), type);
     }
 
-    private static <T extends LivingEntity> UnaryOperator<FabricEntityType.Builder.Living<T>> attribute(Supplier<AttributeSupplier.Builder> supplier) {
-        return livingEntity -> livingEntity.defaultAttributes(supplier);
+    private static <T extends Mob> UnaryOperator<FabricEntityType.Builder.Mob<T>> attribute(Supplier<AttributeSupplier.Builder> supplier) {
+        return mob -> mob.defaultAttributes(supplier);
     }
 
     public static void initialize() {

@@ -1,6 +1,8 @@
 package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.world.entity.data.StigmaHelper;
+import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
+import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,8 +25,10 @@ public class StigmaRodItem extends Item {
 
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity user) {
-        if (!user.level().isClientSide)
+        if (!user.level().isClientSide) {
             StigmaHelper.increaseStigma(target, user);
+            Reinforcement.increase(itemStack, NarakaReinforcementEffects.DAMAGE_INCREASE);
+        }
         return super.hurtEnemy(itemStack, target, user);
     }
 }

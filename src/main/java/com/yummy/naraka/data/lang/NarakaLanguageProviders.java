@@ -37,6 +37,8 @@ public class NarakaLanguageProviders {
     public static final String JADE_SOUL_CRAFTING_FUEL_KEY = "jade.naraka.soul_crafting.fuel";
     public static final String JADE_STIGMA_KEY = "jade.naraka.stigma";
     public static final String JADE_DEATH_COUNT_KEY = "jade.naraka.death_count";
+    public static final String REINFORCEMENT_KEY = "item.reinforcement";
+
     private final String[] languageCodes;
     private final Map<String, String[]> translationMap = new HashMap<>();
 
@@ -49,6 +51,7 @@ public class NarakaLanguageProviders {
         add("itemGroup.naraka", "Naraka", "Naraka");
         add("itemGroup.naraka.test", "Naraka Test", "나락!");
         add("container.soul_crafting", "Soul Crafter", "영혼 세공기");
+        add(REINFORCEMENT_KEY, "Reinforcement: %d", "강화: %d");
         add(PURIFIED_SOUL_UPGRADE_KEY, "Purified Soul Upgrade", "정화된 영혼 강화");
         add(PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY, "Ebony Tools, Purified Soul Weapons", "흑단나무 검, 정화된 영혼 무기");
         add(PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "Purified Soul Metal, Soul Infused Materials", "정화된 영혼 금속, 영혼이 주입된 재료");
