@@ -47,7 +47,7 @@ public class ForgingBlockEntityRenderer implements BlockEntityRenderer<ForgingBl
         poseStack.pushPose();
         poseStack.translate(0.5, 0.7, 0.5);
         ItemStack itemStack = blockEntity.getItemStack();
-        itemRenderer.renderStatic(itemStack, ItemDisplayContext.GROUND, light, overlay, poseStack, multiBufferSource, blockEntity.getLevel(), 1);
+        itemRenderer.renderStatic(itemStack, ItemDisplayContext.FIXED, light, overlay, poseStack, multiBufferSource, blockEntity.getLevel(), 1);
         poseStack.popPose();
     }
 }

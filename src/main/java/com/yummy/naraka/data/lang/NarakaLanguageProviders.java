@@ -34,13 +34,19 @@ public class NarakaLanguageProviders {
     public static final String PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.ingredients"));
     public static final String PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.base_slot_description"));
     public static final String PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.additions_slot_description"));
+
     public static final String JADE_SOUL_CRAFTING_FUEL_KEY = "jade.naraka.soul_crafting.fuel";
     public static final String JADE_STIGMA_KEY = "jade.naraka.stigma";
     public static final String JADE_DEATH_COUNT_KEY = "jade.naraka.death_count";
+
     public static final String REINFORCEMENT_KEY = "item.reinforcement";
 
     private final String[] languageCodes;
     private final Map<String, String[]> translationMap = new HashMap<>();
+
+    public static String tooltipKey(Block block) {
+        return block.getDescriptionId() + ".tooltip";
+    }
 
     public NarakaLanguageProviders(String... languageCodes) {
         this.languageCodes = languageCodes;
@@ -181,6 +187,8 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.HARD_EBONY_PLANKS, "Hard Ebony Planks", "단단한 흑단나무 판자");
         addBlock(NarakaBlocks.EBONY_ROOTS, "Ebony Roots", "흑단나무 뿌리");
         addBlock(NarakaBlocks.EBONY_METAL_BLOCK, "Block of Ebony Metal", "흑단나무 금속 블록");
+        addBlock(NarakaBlocks.FORGING_BLOCK, "Forging Block", "단조 블록");
+        addTooltip(NarakaBlocks.FORGING_BLOCK, "Smash item with a hammer...?", "아이템을 망치로 부수기..?");
 
         addEntityType(NarakaEntityTypes.HEROBRINE, "Naraka: Herobrine", "히로빈");
         addEntityType(NarakaEntityTypes.THROWN_SPEAR, "Spear", "창");
@@ -215,6 +223,10 @@ public class NarakaLanguageProviders {
 
     public void addBlock(Block block, String... translations) {
         add(block.getDescriptionId(), translations);
+    }
+
+    public void addTooltip(Block block, String... translations) {
+        add(tooltipKey(block), translations);
     }
 
     public void addEntityType(EntityType<?> entityType, String... translations) {
