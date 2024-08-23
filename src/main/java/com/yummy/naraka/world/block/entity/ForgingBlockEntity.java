@@ -2,10 +2,8 @@ package com.yummy.naraka.world.block.entity;
 
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
-import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -33,10 +31,13 @@ public class ForgingBlockEntity extends BlockEntity {
 
     public void dropItem() {
         if (level != null && !itemStack.isEmpty()) {
-            int x = getBlockPos().getX();
-            int y = getBlockPos().getY();
-            int z = getBlockPos().getZ();
-            level.addFreshEntity(new ItemEntity(level, x, y, z, itemStack));
+            level.addFreshEntity(new ItemEntity(
+                    level,
+                    getBlockPos().getX(),
+                    getBlockPos().getY() + 1,
+                    getBlockPos().getZ(),
+                    itemStack
+            ));
             itemStack = ItemStack.EMPTY;
         }
     }
@@ -48,16 +49,12 @@ public class ForgingBlockEntity extends BlockEntity {
     public void tryReinforce() {
         if (level != null && !level.isClientSide) {
             if (level.random.nextFloat() < SUCCESS_CHANCE) {
-                Reinforcement.increase(itemStack, getEffects());
+                Reinforcement.increase(itemStack, NarakaReinforcementEffects.get(itemStack));
                 level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
             } else {
                 level.playSound(null, getBlockPos(), SoundEvents.ANVIL_DESTROY, SoundSource.BLOCKS);
             }
         }
-    }
-
-    private HolderSet<ReinforcementEffect> getEffects() {
-        return HolderSet.direct(NarakaReinforcementEffects.DAMAGE_INCREASE);
     }
 
     @Override

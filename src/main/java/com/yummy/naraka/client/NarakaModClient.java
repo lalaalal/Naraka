@@ -24,6 +24,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -47,6 +48,11 @@ public class NarakaModClient implements ClientModInitializer {
         NarakaNetworks.initializeClient();
 
         NarakaClientEvents.initialize();
+
+        ResourceManagerHelper clientResourceManagerHelper = ResourceManagerHelper.get(PackType.CLIENT_RESOURCES);
+        clientResourceManagerHelper.registerReloadListener(SpearItemRenderer.INSTANCE);
+        clientResourceManagerHelper.registerReloadListener(NarakaCustomRenderer.INSTANCE);
+
         MenuScreens.register(NarakaMenuTypes.SOUL_CRAFTING, SoulCraftingScreen::new);
         HudRenderCallback.EVENT.register(new DeathCountHud());
         HudRenderCallback.EVENT.register(new StigmaHud());
@@ -67,10 +73,10 @@ public class NarakaModClient implements ClientModInitializer {
     }
 
     private void initializeItems() {
-        CustomItemRenderManager.register(NarakaItems.SPEAR_ITEM, NarakaSpearItemRenderer.INSTANCE);
-        CustomItemRenderManager.register(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, NarakaSpearItemRenderer.INSTANCE);
-        CustomItemRenderManager.register(NarakaItems.SPEAR_OF_LONGINUS_ITEM, NarakaSpearItemRenderer.INSTANCE);
-        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(NarakaSpearItemRenderer.INSTANCE);
+        BuiltinItemRendererRegistry.INSTANCE.register(NarakaBlocks.FORGING_BLOCK, NarakaCustomRenderer.INSTANCE);
+        CustomItemRenderManager.register(NarakaItems.SPEAR_ITEM, SpearItemRenderer.INSTANCE);
+        CustomItemRenderManager.register(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, SpearItemRenderer.INSTANCE);
+        CustomItemRenderManager.register(NarakaItems.SPEAR_OF_LONGINUS_ITEM, SpearItemRenderer.INSTANCE);
 
         ItemProperties.register(NarakaItems.SANCTUARY_COMPASS, NarakaMod.location("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) -> {
             SanctuaryTracker tracker = itemStack.get(NarakaDataComponentTypes.SANCTUARY_TRACKER);

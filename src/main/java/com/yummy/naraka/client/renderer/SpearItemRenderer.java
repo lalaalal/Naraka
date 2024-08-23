@@ -2,7 +2,6 @@ package com.yummy.naraka.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.logging.LogUtils;
 import com.mojang.math.Axis;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModelLayers;
@@ -19,7 +18,6 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -34,7 +32,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Environment(EnvType.CLIENT)
-public class NarakaSpearItemRenderer implements CustomItemRenderManager.CustomItemRenderer, IdentifiableResourceReloadListener, ResourceManagerReloadListener {
+public class SpearItemRenderer implements CustomItemRenderManager.CustomItemRenderer, IdentifiableResourceReloadListener, ResourceManagerReloadListener {
     private static final Map<Item, ResourceLocation> TEXTURE_LOCATIONS = Map.of(
             NarakaItems.SPEAR_ITEM, NarakaTextures.SPEAR,
             NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, NarakaTextures.MIGHTY_HOLY_SPEAR
@@ -67,12 +65,12 @@ public class NarakaSpearItemRenderer implements CustomItemRenderManager.CustomIt
         return new Vec3(x, y, z);
     }
 
-    public static final NarakaSpearItemRenderer INSTANCE = new NarakaSpearItemRenderer();
+    public static final SpearItemRenderer INSTANCE = new SpearItemRenderer();
 
     private final Minecraft minecraft;
     private Map<Item, EntityModel<?>> models = Map.of();
 
-    private NarakaSpearItemRenderer() {
+    private SpearItemRenderer() {
         this.minecraft = Minecraft.getInstance();
     }
 
@@ -126,7 +124,7 @@ public class NarakaSpearItemRenderer implements CustomItemRenderManager.CustomIt
 
     @Override
     public ResourceLocation getFabricId() {
-        return NarakaMod.location("custom_renderer");
+        return NarakaMod.location("spear_renderer");
     }
 
     @Override
@@ -141,7 +139,5 @@ public class NarakaSpearItemRenderer implements CustomItemRenderManager.CustomIt
                 NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, spearModel,
                 NarakaItems.SPEAR_OF_LONGINUS_ITEM, longinusModel
         );
-        TextureAtlasSprite sprite = minecraft.getTextureAtlas(NarakaMod.mcLocation("textures/atlas/blocks.png")).apply(NarakaMod.location("trims/models/armor/purified_soul_silence_soul_infused_redstone"));
-        LogUtils.getLogger().debug("sprite: {}", sprite);
     }
 }
