@@ -15,7 +15,6 @@ import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -102,7 +101,7 @@ public class StructureProtector {
         }
 
         @Override
-        public @NotNull CompoundTag save(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        public CompoundTag save(CompoundTag compoundTag, HolderLookup.Provider provider) {
             NarakaNbtUtils.writeCollection(compoundTag, "structure_protectors", protectors, StructureProtector::save, provider);
             return compoundTag;
         }

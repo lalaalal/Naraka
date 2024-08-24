@@ -1,12 +1,16 @@
 package com.yummy.naraka.world.block.entity;
 
+import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.Herobrine;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -18,6 +22,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.entity.EntityTypeTest;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -75,6 +80,18 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
                 && level.getBlockState(totemPos.above()).is(Blocks.NETHERRACK)
                 && level.getBlockState(totemPos.below(1)).is(NarakaBlocks.FAKE_GOLD_BLOCK)
                 && level.getBlockState(totemPos.below(2)).is(NarakaBlocks.FAKE_GOLD_BLOCK);
+    }
+
+    public static boolean isSanctuaryExists(Level level, BlockPos pos) {
+        if (level instanceof ServerLevel serverLevel) {
+            HolderLookup<Structure> structures = serverLevel.holderLookup(Registries.STRUCTURE);
+            LocationPredicate predicate = LocationPredicate.Builder.inStructure(
+                            structures.getOrThrow(NarakaStructures.HEROBRINE_SANCTUARY)
+                    )
+                    .build();
+            return predicate.matches(serverLevel, pos.getX(), pos.getY(), pos.getZ());
+        }
+        return false;
     }
 
     private void summonHerobrine(ServerLevel level, BlockPos pos) {

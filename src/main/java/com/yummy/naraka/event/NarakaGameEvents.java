@@ -161,7 +161,8 @@ public class NarakaGameEvents {
 
         if (hitResult.getDirection() == Direction.UP
                 && item.is(ItemTags.CREEPER_IGNITERS) && state.is(Blocks.NETHERRACK)
-                && HerobrineTotemBlockEntity.isTotemStructure(level, pos.below())) {
+                && HerobrineTotemBlockEntity.isTotemStructure(level, pos.below())
+                && HerobrineTotemBlockEntity.isSanctuaryExists(level, pos)) {
             BlockState totem = level.getBlockState(pos.below());
             if (HerobrineTotemBlockEntity.isSleeping(totem))
                 HerobrineTotem.crack(level, pos.below(), totem);
