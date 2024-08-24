@@ -1,28 +1,28 @@
 package com.yummy.naraka.data;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.block.EbonyLogBlock;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
+import net.minecraft.core.Holder;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.data.models.blockstates.*;
-import net.minecraft.data.models.model.ModelTemplates;
-import net.minecraft.data.models.model.TextureMapping;
-import net.minecraft.data.models.model.TextureSlot;
-import net.minecraft.data.models.model.TexturedModel;
+import net.minecraft.data.models.model.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.List;
+import java.util.Map;
 
 public class NarakaModelProvider extends FabricModelProvider {
     public NarakaModelProvider(FabricDataOutput output) {
@@ -127,13 +127,36 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.delegateItemModel(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK, sideModels.getFirst());
     }
 
+    private static final List<ItemModelGenerators.TrimModelData> TRIM_MODELS = List.of(
+            new ItemModelGenerators.TrimModelData("quartz", 0.055f, Map.of()),
+            new ItemModelGenerators.TrimModelData("iron", 0.110f, Map.of(ArmorMaterials.IRON, "iron_darker")),
+            new ItemModelGenerators.TrimModelData("netherite", 0.165f, Map.of(ArmorMaterials.NETHERITE, "netherite_darker")),
+            new ItemModelGenerators.TrimModelData("redstone", 0.220f, Map.of()),
+            new ItemModelGenerators.TrimModelData("copper", 0.275f, Map.of()),
+            new ItemModelGenerators.TrimModelData("gold", 0.330f, Map.of(ArmorMaterials.GOLD, "gold_darker")),
+            new ItemModelGenerators.TrimModelData("emerald", 0.385f, Map.of()),
+            new ItemModelGenerators.TrimModelData("diamond", 0.440f, Map.of(ArmorMaterials.DIAMOND, "diamond_darker")),
+            new ItemModelGenerators.TrimModelData("lapis", 0.495f, Map.of()),
+            new ItemModelGenerators.TrimModelData("amethyst", 0.550f, Map.of()),
+            new ItemModelGenerators.TrimModelData("soul_infused_redstone", 0.605f, Map.of()),
+            new ItemModelGenerators.TrimModelData("soul_infused_copper", 0.660f, Map.of()),
+            new ItemModelGenerators.TrimModelData("soul_infused_gold", 0.715f, Map.of()),
+            new ItemModelGenerators.TrimModelData("soul_infused_emerald", 0.770f, Map.of()),
+            new ItemModelGenerators.TrimModelData("soul_infused_diamond", 0.825f, Map.of()),
+            new ItemModelGenerators.TrimModelData("soul_infused_lapis", 0.880f, Map.of()),
+            new ItemModelGenerators.TrimModelData("soul_infused_amethyst", 0.935f, Map.of()),
+            new ItemModelGenerators.TrimModelData("soul_infused_nectarium", 1.0f, Map.of())
+    );
+
     @Override
     public void generateItemModels(ItemModelGenerators generator) {
         List<Item> armorItems = List.of(
                 Items.LEATHER_CHESTPLATE, Items.CHAINMAIL_CHESTPLATE, Items.IRON_CHESTPLATE, Items.GOLDEN_CHESTPLATE, Items.DIAMOND_CHESTPLATE, Items.NETHERITE_CHESTPLATE,
                 Items.LEATHER_HELMET, Items.CHAINMAIL_HELMET, Items.TURTLE_HELMET, Items.IRON_HELMET, Items.GOLDEN_HELMET, Items.DIAMOND_HELMET, Items.NETHERITE_HELMET,
                 Items.LEATHER_LEGGINGS, Items.CHAINMAIL_LEGGINGS, Items.IRON_LEGGINGS, Items.GOLDEN_LEGGINGS, Items.DIAMOND_LEGGINGS, Items.NETHERITE_LEGGINGS,
-                Items.LEATHER_BOOTS, Items.CHAINMAIL_BOOTS, Items.IRON_BOOTS, Items.GOLDEN_BOOTS, Items.DIAMOND_BOOTS, Items.NETHERITE_BOOTS
+                Items.LEATHER_BOOTS, Items.CHAINMAIL_BOOTS, Items.IRON_BOOTS, Items.GOLDEN_BOOTS, Items.DIAMOND_BOOTS, Items.NETHERITE_BOOTS,
+                NarakaItems.PURIFIED_SOUL_HELMET, NarakaItems.PURIFIED_SOUL_CHESTPLATE, NarakaItems.PURIFIED_SOUL_LEGGINGS, NarakaItems.PURIFIED_SOUL_BOOTS,
+                NarakaItems.EBONY_METAL_HELMET, NarakaItems.EBONY_METAL_CHESTPLATE, NarakaItems.EBONY_METAL_LEGGINGS, NarakaItems.EBONY_METAL_BOOTS
         );
 
         generator.generateFlatItem(NarakaItems.SPEAR_ITEM, ModelTemplates.FLAT_ITEM);
@@ -153,16 +176,8 @@ public class NarakaModelProvider extends FabricModelProvider {
 
         for (Item item : armorItems) {
             if (item instanceof ArmorItem armorItem)
-                generator.generateArmorTrims(armorItem);
+                generateArmorTrims(generator, armorItem);
         }
-        generator.generateArmorTrims(NarakaItems.EBONY_METAL_HELMET);
-        generator.generateArmorTrims(NarakaItems.EBONY_METAL_CHESTPLATE);
-        generator.generateArmorTrims(NarakaItems.EBONY_METAL_LEGGINGS);
-        generator.generateArmorTrims(NarakaItems.EBONY_METAL_BOOTS);
-        generator.generateArmorTrims(NarakaItems.PURIFIED_SOUL_HELMET);
-        generator.generateArmorTrims(NarakaItems.PURIFIED_SOUL_CHESTPLATE);
-        generator.generateArmorTrims(NarakaItems.PURIFIED_SOUL_LEGGINGS);
-        generator.generateArmorTrims(NarakaItems.PURIFIED_SOUL_BOOTS);
         generator.generateFlatItem(NarakaItems.STIGMA_ROD, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
         generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_1_DISC, ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_2_DISC, ModelTemplates.FLAT_ITEM);
@@ -172,5 +187,58 @@ public class NarakaModelProvider extends FabricModelProvider {
         NarakaItems.forEachSoulInfusedItem(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_ITEM));
         NarakaItems.forEachSoulInfusedSword(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM));
         generator.generateCompassItem(NarakaItems.SANCTUARY_COMPASS);
+    }
+
+    public static void generateArmorTrims(ItemModelGenerators generator, ArmorItem armorItem) {
+        ResourceLocation modelLocation = ModelLocationUtils.getModelLocation(armorItem);
+        ResourceLocation texture = TextureMapping.getItemTexture(armorItem);
+        ResourceLocation textureOverlay = TextureMapping.getItemTexture(armorItem, "_overlay");
+        if (armorItem.getMaterial().is(ArmorMaterials.LEATHER.unwrapKey().orElseThrow())) {
+            ModelTemplates.TWO_LAYERED_ITEM
+                    .create(
+                            modelLocation,
+                            TextureMapping.layered(texture, textureOverlay),
+                            generator.output,
+                            (resourceLocation, map) -> generator.generateBaseArmorTrimTemplate(resourceLocation, map, armorItem.getMaterial())
+                    );
+        } else {
+            ModelTemplates.FLAT_ITEM
+                    .create(
+                            modelLocation,
+                            TextureMapping.layer0(texture),
+                            generator.output,
+                            (resourceLocation, map) -> generateBaseArmorTrimTemplate(generator, resourceLocation, map, armorItem.getMaterial())
+                    );
+        }
+
+        for (ItemModelGenerators.TrimModelData trimModelData : TRIM_MODELS) {
+            String materialName = trimModelData.name(armorItem.getMaterial());
+            ResourceLocation trimMaterialModel = generator.getItemModelForTrimMaterial(modelLocation, materialName);
+            String armorName = armorItem.getType().getName();
+            String trimmedArmorName = armorName + "_trim_" + materialName;
+            ResourceLocation trimmedArmorModel = NarakaMod.mcLocation(trimmedArmorName).withPrefix("trims/items/");
+            if (armorItem.getMaterial().is(ArmorMaterials.LEATHER.unwrapKey().orElseThrow())) {
+                generator.generateLayeredItem(trimMaterialModel, texture, textureOverlay, trimmedArmorModel);
+            } else {
+                generator.generateLayeredItem(trimMaterialModel, texture, trimmedArmorModel);
+            }
+        }
+    }
+
+    public static JsonObject generateBaseArmorTrimTemplate(ItemModelGenerators generator, ResourceLocation modelLocation, Map<TextureSlot, ResourceLocation> modelGetter, Holder<ArmorMaterial> armorMaterial) {
+        JsonObject jsonObject = ModelTemplates.TWO_LAYERED_ITEM.createBaseTemplate(modelLocation, modelGetter);
+        JsonArray overrides = new JsonArray();
+
+        for (ItemModelGenerators.TrimModelData trimModelData : TRIM_MODELS) {
+            JsonObject predicate = new JsonObject();
+            JsonObject model = new JsonObject();
+            model.addProperty(ItemModelGenerators.TRIM_TYPE_PREDICATE_ID.getPath(), trimModelData.itemModelIndex());
+            predicate.add("predicate", model);
+            predicate.addProperty("model", generator.getItemModelForTrimMaterial(modelLocation, trimModelData.name(armorMaterial)).toString());
+            overrides.add(predicate);
+        }
+
+        jsonObject.add("overrides", overrides);
+        return jsonObject;
     }
 }

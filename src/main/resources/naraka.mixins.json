@@ -4,10 +4,10 @@
     "compatibilityLevel": "JAVA_21",
     "mixins": [
         "FeatureMixin",
-        "ItemModelGeneratorsMixin",
         "LivingEntityMixin",
         "ServerEntityMixin",
-        "SmithingTemplateItemMixin"
+        "SmithingTemplateItemMixin",
+        "WanderingTraderMixin"
     ],
     "injectors": {
         "defaultRequire": 1
