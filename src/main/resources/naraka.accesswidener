@@ -21,3 +21,6 @@ accessible field net/minecraft/world/item/SmithingTemplateItem EMPTY_SLOT_DIAMON
 accessible field net/minecraft/world/item/SmithingTemplateItem EMPTY_SLOT_EMERALD Lnet/minecraft/resources/ResourceLocation;
 accessible field net/minecraft/world/item/SmithingTemplateItem EMPTY_SLOT_AMETHYST_SHARD Lnet/minecraft/resources/ResourceLocation;
 accessible field net/minecraft/world/item/SmithingTemplateItem EMPTY_SLOT_SWORD Lnet/minecraft/resources/ResourceLocation;
+
+accessible class net/minecraft/data/models/ItemModelGenerators$TrimModelData
+accessible method net/minecraft/data/models/ItemModelGenerators$TrimModelData <init> (Ljava/lang/String;FLjava/util/Map;)V

@@ -10,7 +10,6 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import java.util.List;
 
 public class NarakaRecipes {
-
     public static List<SoulCraftingRecipe> soulCrafting() {
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null)
