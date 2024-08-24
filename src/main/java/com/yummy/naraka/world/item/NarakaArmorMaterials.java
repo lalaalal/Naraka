@@ -24,17 +24,18 @@ public class NarakaArmorMaterials {
                     ArmorItem.Type.BODY, 0),
             15, SoundEvents.ARMOR_EQUIP_NETHERITE,
             () -> Ingredient.of(NarakaItems.PURIFIED_SOUL_METAL),
-            3, 0.1f
+            0, 0.25f
     );
-    public static final Holder<ArmorMaterial> EBONY_METAL = register("ebony_metal",
+    public static final Holder<ArmorMaterial> EBONY_METAL = register(
+            "ebony_metal",
             Map.of(ArmorItem.Type.BOOTS, 0,
                     ArmorItem.Type.LEGGINGS, 0,
                     ArmorItem.Type.CHESTPLATE, 0,
                     ArmorItem.Type.HELMET, 0,
                     ArmorItem.Type.BODY, 0),
-            15, SoundEvents.ARMOR_EQUIP_NETHERITE,
+            12, SoundEvents.ARMOR_EQUIP_GENERIC,
             () -> Ingredient.of(NarakaItems.EBONY_METAL_INGOT),
-            0, 0.25f
+            1, 0.1f
     );
 
     private static Holder<ArmorMaterial> register(String name,

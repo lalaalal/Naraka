@@ -79,29 +79,44 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK);
         output.accept(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
 
-        output.accept(NarakaItems.EBONY_SWORD);
-        output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE);
         output.accept(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE);
-        output.accept(NarakaItems.EBONY_METAL_HELMET);
-        output.accept(NarakaItems.EBONY_METAL_CHESTPLATE);
-        output.accept(NarakaItems.EBONY_METAL_LEGGINGS);
-        output.accept(NarakaItems.EBONY_METAL_BOOTS);
-        output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
         output.accept(NarakaItems.GOD_BLOOD);
 
-        output.accept(NarakaItems.EBONY_METAL_INGOT);
-        output.accept(NarakaItems.COMPRESSED_IRON_INGOT);
         output.accept(NarakaItems.PURIFIED_SOUL_SHARD);
         output.accept(NarakaItems.PURIFIED_SOUL_HELMET);
         output.accept(NarakaItems.PURIFIED_SOUL_CHESTPLATE);
         output.accept(NarakaItems.PURIFIED_SOUL_LEGGINGS);
         output.accept(NarakaItems.PURIFIED_SOUL_BOOTS);
+
+        output.accept(NarakaItems.HEROBRINE_PHASE_1_DISC);
+        output.accept(NarakaItems.HEROBRINE_PHASE_2_DISC);
+        output.accept(NarakaItems.HEROBRINE_PHASE_3_DISC);
+        output.accept(NarakaItems.HEROBRINE_PHASE_4_DISC);
+        output.accept(NarakaItems.SANCTUARY_COMPASS);
+        output.accept(NarakaBlocks.SOUL_CRAFTING_BLOCK);
+
+        output.accept(NarakaBlocks.FORGING_BLOCK);
+    }
+
+    private static void createNarakaTestTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
+        output.accept(NarakaItems.EBONY_SWORD);
+        output.accept(NarakaItems.EBONY_METAL_HELMET);
+        output.accept(NarakaItems.EBONY_METAL_CHESTPLATE);
+        output.accept(NarakaItems.EBONY_METAL_LEGGINGS);
+        output.accept(NarakaItems.EBONY_METAL_BOOTS);
+        output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE);
+
+        output.accept(NarakaItems.EBONY_METAL_INGOT);
+        output.accept(NarakaItems.COMPRESSED_IRON_INGOT);
+
         output.accept(NarakaItems.SPEAR_ITEM);
+        output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM);
         output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM);
 
         output.accept(NarakaBlocks.EBONY_METAL_BLOCK);
         output.accept(NarakaBlocks.COMPRESSED_IRON_BLOCK);
         output.accept(NarakaBlocks.PURIFIED_SOUL_BLOCK);
+
         output.accept(NarakaBlocks.EBONY_LOG);
         output.accept(NarakaBlocks.EBONY_WOOD);
         output.accept(NarakaBlocks.STRIPPED_EBONY_LOG);
@@ -112,14 +127,11 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaItems.EBONY_ROOTS_SCRAP);
         output.accept(NarakaBlocks.EBONY_LEAVES);
         output.accept(NarakaBlocks.EBONY_SAPLING);
-        output.accept(NarakaItems.HEROBRINE_PHASE_1_DISC);
-        output.accept(NarakaItems.HEROBRINE_PHASE_2_DISC);
-        output.accept(NarakaItems.HEROBRINE_PHASE_3_DISC);
-        output.accept(NarakaItems.HEROBRINE_PHASE_4_DISC);
-        output.accept(NarakaItems.SANCTUARY_COMPASS);
-        output.accept(NarakaBlocks.SOUL_CRAFTING_BLOCK);
 
-        output.accept(NarakaBlocks.FORGING_BLOCK);
+        output.accept(NarakaItems.STIGMA_ROD);
+
+        output.accept(NarakaBlocks.NECTARIUM_ORE);
+        output.accept(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
     }
 
     private static void modifyBuildingBlocksTab(FabricItemGroupEntries entries) {
@@ -131,7 +143,7 @@ public class NarakaCreativeModTabs {
     }
 
     private static void modifyNaturalBlocksTab(FabricItemGroupEntries entries) {
-        entries.addAfter(Blocks.DEEPSLATE_DIAMOND_ORE, NarakaBlocks.NECTARIUM_ORE, NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
+
     }
 
     private static void modifyFoodAndDrinksTab(FabricItemGroupEntries entries) {
@@ -140,9 +152,5 @@ public class NarakaCreativeModTabs {
 
     private static void modifySpawnEggsTab(FabricItemGroupEntries entries) {
         entries.addAfter(Blocks.TRIAL_SPAWNER, NarakaBlocks.HEROBRINE_TOTEM);
-    }
-
-    private static void createNarakaTestTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-        output.accept(NarakaItems.STIGMA_ROD);
     }
 }

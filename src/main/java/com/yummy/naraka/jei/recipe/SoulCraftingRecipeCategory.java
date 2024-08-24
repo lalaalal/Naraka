@@ -51,7 +51,7 @@ public class SoulCraftingRecipeCategory implements IRecipeCategory<SoulCraftingR
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, SoulCraftingRecipe recipe, IFocusGroup focuses) {
         builder.addSlot(INPUT, 1, 31)
-                .addItemStack(new ItemStack(NarakaItems.PURIFIED_SOUL_SHARD, 10));
+                .addItemStack(new ItemStack(NarakaItems.PURIFIED_SOUL_SHARD));
         builder.addSlot(INPUT, 31, 1)
                 .addIngredients(recipe.getIngredients().getFirst());
         builder.addSlot(OUTPUT, 91, 19)
