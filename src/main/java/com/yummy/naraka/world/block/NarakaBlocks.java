@@ -84,7 +84,7 @@ public class NarakaBlocks {
     public static final Block COMPRESSED_IRON_BLOCK = registerSimpleBlockWithItem("compressed_iron_block", Blocks.IRON_BLOCK);
     public static final Block FAKE_GOLD_BLOCK = registerBlockWithItem(
             "fake_gold_block",
-            properties -> new EncroachingBlock(properties.strength(5, 6), NarakaBlocks.COMPRESSED_IRON_BLOCK),
+            properties -> new EncroachingBlock(properties.strength(5, 6), Blocks.IRON_BLOCK),
             Blocks.GOLD_BLOCK
     );
     public static final Block AMETHYST_SHARD_BLOCK = registerSimpleBlockWithItem(
