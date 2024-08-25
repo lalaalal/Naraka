@@ -3,6 +3,7 @@ package com.yummy.naraka.world.block;
 import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.data.lang.NarakaLanguageProviders;
 import com.yummy.naraka.world.block.entity.ForgingBlockEntity;
+import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -56,14 +57,19 @@ public class ForgingBlock extends BaseEntityBlock {
             if (itemStack.is(Items.MACE)) {
                 forgingBlockEntity.tryReinforce();
                 itemStack.hurtAndBreak(5, player, EquipmentSlot.MAINHAND);
+                return ItemInteractionResult.SUCCESS;
             } else if (!forgingBlockEntity.getItemStack().isEmpty()) {
                 forgingBlockEntity.dropItem();
-            } else {
+                return ItemInteractionResult.SUCCESS;
+            } else if (Reinforcement.canReinforce(itemStack)) {
                 forgingBlockEntity.setItemStack(itemStack);
                 itemStack.shrink(1);
+                return ItemInteractionResult.CONSUME;
+            } else {
+                return ItemInteractionResult.FAIL;
             }
         }
-        return ItemInteractionResult.SUCCESS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override

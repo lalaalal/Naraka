@@ -47,13 +47,14 @@ public class ForgingBlockEntity extends BlockEntity {
     }
 
     public void tryReinforce() {
-        if (level != null && !level.isClientSide) {
-            if (level.random.nextFloat() < SUCCESS_CHANCE) {
-                Reinforcement.increase(itemStack, NarakaReinforcementEffects.get(itemStack));
+        if (itemStack.isEmpty() || !Reinforcement.canReinforce(itemStack)
+                || level == null || level.isClientSide)
+            return;
+        if (level.random.nextFloat() < SUCCESS_CHANCE) {
+            if (Reinforcement.increase(itemStack, NarakaReinforcementEffects.get(itemStack)))
                 level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
-            } else {
-                level.playSound(null, getBlockPos(), SoundEvents.ANVIL_DESTROY, SoundSource.BLOCKS);
-            }
+        } else {
+            level.playSound(null, getBlockPos(), SoundEvents.ANVIL_DESTROY, SoundSource.BLOCKS);
         }
     }
 

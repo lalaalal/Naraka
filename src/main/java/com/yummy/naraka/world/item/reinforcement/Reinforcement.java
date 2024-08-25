@@ -23,6 +23,7 @@ import java.util.function.Consumer;
 
 public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) implements TooltipProvider {
     public static final Reinforcement ZERO = new Reinforcement(0, HolderSet.empty());
+    public static final int MAX_VALUE = 10;
 
     public static final Codec<Reinforcement> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
@@ -49,20 +50,29 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
         return new Reinforcement(0, HolderSet.direct(effect));
     }
 
-    public static void increase(ItemStack itemStack, HolderSet<ReinforcementEffect> effects) {
+    public static boolean increase(ItemStack itemStack, HolderSet<ReinforcementEffect> effects) {
         Reinforcement original = itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, zero(effects));
+        if (original.value >= MAX_VALUE)
+            return false;
+
         Reinforcement increased = original.increase();
         itemStack.set(NarakaDataComponentTypes.REINFORCEMENT, increased);
         for (Holder<ReinforcementEffect> effect : effects)
             effect.value().onReinforcementIncreased(itemStack, original.value, increased.value);
+        return true;
     }
 
-    public static void increase(ItemStack itemStack, Holder<ReinforcementEffect> effect) {
-        increase(itemStack, HolderSet.direct(effect));
+    public static boolean increase(ItemStack itemStack, Holder<ReinforcementEffect> effect) {
+        return increase(itemStack, HolderSet.direct(effect));
     }
 
     public Reinforcement increase() {
         return new Reinforcement(value + 1, effects);
+    }
+
+    public static boolean canReinforce(ItemStack itemStack) {
+        Reinforcement reinforcement = itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, ZERO);
+        return reinforcement.value < MAX_VALUE;
     }
 
     @Override

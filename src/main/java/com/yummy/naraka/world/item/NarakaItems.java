@@ -139,7 +139,8 @@ public class NarakaItems {
         if (key.isEmpty())
             throw new IllegalStateException();
         String name = key.get().location().getPath() + "_" + armorType.getName();
-        return registerItem(name, properties -> new ArmorItem(armorMaterial, armorType, properties.durability(durability)));
+        return registerItem(name, properties -> new ArmorItem(armorMaterial, armorType, properties.durability(durability)
+                .component(DataComponents.UNBREAKABLE, new Unbreakable(true))));
     }
 
     public static void forEachSoulInfusedItem(Consumer<Item> consumer) {

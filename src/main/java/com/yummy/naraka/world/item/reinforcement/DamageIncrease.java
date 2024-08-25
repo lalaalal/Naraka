@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.item.reinforcement;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.util.NarakaItemUtils;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -13,7 +14,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 public class DamageIncrease implements ReinforcementEffect {
     private static AttributeModifier createModifier(int reinforcement) {
         return new AttributeModifier(
-                NarakaMod.location("reinforcement", "damage_increment"),
+                NarakaMod.location("reinforcement_effect", "damage_increment"),
                 reinforcement,
                 AttributeModifier.Operation.ADD_VALUE
         );
@@ -25,11 +26,8 @@ public class DamageIncrease implements ReinforcementEffect {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onReinforcementIncreased(ItemStack itemStack, int previousReinforcement, int currentReinforcement) {
-        ItemAttributeModifiers modifiers = itemStack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
-        if (modifiers.modifiers().isEmpty())
-            modifiers = itemStack.getItem().getDefaultAttributeModifiers();
+        ItemAttributeModifiers modifiers = NarakaItemUtils.getAttributeModifiers(itemStack);
         itemStack.set(
                 DataComponents.ATTRIBUTE_MODIFIERS,
                 modifiers.withModifierAdded(
