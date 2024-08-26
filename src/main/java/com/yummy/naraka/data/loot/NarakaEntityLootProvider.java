@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -39,6 +40,16 @@ public class NarakaEntityLootProvider extends SimpleFabricLootTableProvider {
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK)
                                         .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1))))
+                        ).withPool(LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(0.4f))
+                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_1_DISC))
+                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_2_DISC))
+                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_3_DISC))
+                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_4_DISC))
+                                .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        ).withPool(LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(0.3f))
+                                .add(LootItem.lootTableItem(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE))
                         )
         );
     }

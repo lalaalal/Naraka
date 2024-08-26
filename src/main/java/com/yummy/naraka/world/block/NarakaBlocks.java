@@ -45,6 +45,17 @@ public class NarakaBlocks {
             properties -> new EncroachingBlock(properties, Blocks.HONEY_BLOCK),
             Blocks.IRON_BLOCK
     );
+
+    public static final NectariumCoreBlock NECTARIUM_CORE_BLOCK = registerBlockWithItem(
+            "nectarium_core_block",
+            NectariumCoreBlock::new,
+            Blocks.AMETHYST_CLUSTER
+    );
+    public static final Block NECTARIUM_CRYSTAL_BLOCK = registerSimpleBlockWithItem(
+            "nectarium_crystal_block",
+            Blocks.AMETHYST_BLOCK
+    );
+
     public static final PurifiedSoulBlock PURIFIED_SOUL_BLOCK = registerBlockWithItem(
             "purified_soul_block",
             PurifiedSoulBlock::new,
