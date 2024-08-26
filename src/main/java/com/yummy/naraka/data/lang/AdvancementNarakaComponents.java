@@ -1,8 +1,6 @@
 package com.yummy.naraka.data.lang;
 
-import net.minecraft.network.chat.Component;
-
-import java.util.Locale;
+import com.yummy.naraka.NarakaMod;
 
 public enum AdvancementNarakaComponents implements AdvancementComponent {
     ROOT,
@@ -10,43 +8,24 @@ public enum AdvancementNarakaComponents implements AdvancementComponent {
     HEROBRINE_SANCTUARY,
     SUMMON_HEROBRINE,
     KILL_HEROBRINE,
-    TAKE_EBONY_ROOT,
+    PURIFIED_SOUL_METAL,
+    PURIFIED_SOUL_SWORD,
     GOD_BLOOD,
-    EBONY_METAL,
+    SOUL_INFUSED_THINGS,
+    STABILIZER,
+    FILL_STABILIZER,
     SOUL_INFUSING,
-    PURIFIED_SOUL_METAL;
+    CHALLENGER_BLESSING,
+    ALL_BLESSED_SWORDS,
+    ULTIMATE_SWORD;
 
-    public static final String ADVANCEMENT_NAME = "naraka";
-
-    private final String titleKey;
-    private final String descriptionKey;
-    private final Component title;
-    private final Component description;
-
-    AdvancementNarakaComponents() {
-        this.titleKey = AdvancementComponent.title(ADVANCEMENT_NAME, name().toLowerCase(Locale.ROOT));
-        this.descriptionKey = AdvancementComponent.description(ADVANCEMENT_NAME, name().toLowerCase(Locale.ROOT));
-        this.title = Component.translatable(titleKey);
-        this.description = Component.translatable(descriptionKey);
+    @Override
+    public String rootName() {
+        return NarakaMod.MOD_ID;
     }
 
     @Override
-    public String titleKey() {
-        return titleKey;
-    }
-
-    @Override
-    public String descriptionKey() {
-        return descriptionKey;
-    }
-
-    @Override
-    public Component title() {
-        return title;
-    }
-
-    @Override
-    public Component description() {
-        return description;
+    public String advancementName() {
+        return name().toLowerCase();
     }
 }

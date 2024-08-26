@@ -97,25 +97,13 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
                 )
                 .rewards(AdvancementRewards.Builder.experience(66))
                 .save(generator, location("kill_herobrine"));
-        AdvancementHolder takeEbonyRoot = task(killHerobrine, NarakaBlocks.EBONY_ROOTS, AdvancementNarakaComponents.TAKE_EBONY_ROOT)
-                .rewards(AdvancementRewards.Builder.experience(3))
-                .addCriterion("take_ebony_root", InventoryChangeTrigger.TriggerInstance.hasItems(
-                        NarakaBlocks.EBONY_ROOTS
-                ))
-                .save(generator, location("take_ebony_root"));
         AdvancementHolder godBlood = challenge(killHerobrine, NarakaItems.GOD_BLOOD, AdvancementNarakaComponents.GOD_BLOOD)
                 .rewards(AdvancementRewards.Builder.experience(66))
                 .addCriterion("has_god_blood", InventoryChangeTrigger.TriggerInstance.hasItems(
                         NarakaItems.GOD_BLOOD
                 ))
                 .save(generator, location("god_blood"));
-        AdvancementHolder ebonyMetal = goal(takeEbonyRoot, NarakaItems.EBONY_METAL_INGOT, AdvancementNarakaComponents.EBONY_METAL)
-                .rewards(AdvancementRewards.Builder.experience(6))
-                .addCriterion("has_ebony_metal_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(
-                        NarakaItems.EBONY_METAL_INGOT
-                ))
-                .save(generator, location("ebony_metal"));
-        AdvancementHolder soulInfusing = task(ebonyMetal, NarakaBlocks.SOUL_CRAFTING_BLOCK, AdvancementNarakaComponents.SOUL_INFUSING)
+        AdvancementHolder soulInfusing = task(root, NarakaBlocks.SOUL_CRAFTING_BLOCK, AdvancementNarakaComponents.SOUL_INFUSING)
                 .rewards(AdvancementRewards.Builder.experience(6))
                 .addCriterion("craft_soul_crafting_block", RecipeCraftedTrigger.TriggerInstance.craftedItem(
                         NarakaMod.location("soul_crafting_block")

@@ -90,14 +90,11 @@ public class NarakaLanguageProviders {
                 List.of("Herobrine Sanctuary", "폭군의 성역"),
                 List.of("Too Big!", "뭐가 이렇게 커?"));
         addAdvancement(AdvancementNarakaComponents.SUMMON_HEROBRINE,
-                List.of("Naraka Tyrant"),
-                List.of("Summon Herobrine"));
+                List.of("Naraka Tyrant", "나락의 폭군"),
+                List.of("Summon Herobrine", "나락의 군주를 목도하세요"));
         addAdvancement(AdvancementNarakaComponents.KILL_HEROBRINE,
                 List.of("Purified Soul", "정화된 영혼"),
                 List.of("Defeat the lord of Naraka", "나락의 군주를 쓰러트리세요"));
-        addAdvancement(AdvancementNarakaComponents.GOD_BLOOD,
-                List.of("Blood of God", "신의 피"),
-                List.of("Very AWESOME!", "광장히 엄청나"));
 
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_1, "Herobrine Phase 1", "히로빈 1 페이즈");
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_2, "Herobrine Phase 2", "히로빈 2 페이즈");

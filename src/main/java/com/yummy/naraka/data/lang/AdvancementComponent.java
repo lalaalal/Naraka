@@ -3,13 +3,25 @@ package com.yummy.naraka.data.lang;
 import net.minecraft.network.chat.Component;
 
 public interface AdvancementComponent {
-    String titleKey();
+    String rootName();
 
-    String descriptionKey();
+    String advancementName();
 
-    Component title();
+    default String titleKey() {
+        return title(rootName(), advancementName());
+    }
 
-    Component description();
+    default String descriptionKey() {
+        return description(rootName(), advancementName());
+    }
+
+    default Component title() {
+        return Component.translatable(titleKey());
+    }
+
+    default Component description() {
+        return Component.translatable(descriptionKey());
+    }
 
     static String title(String parent, String title) {
         return "advancements." + parent + "." + title + ".title";
