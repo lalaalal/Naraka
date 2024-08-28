@@ -63,6 +63,10 @@ public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
                 .add(Blocks.GRAVEL)
                 .forceAddTag(BlockTags.SAND);
 
+        getOrCreateTagBuilder(BlockTags.NEEDS_STONE_TOOL)
+                .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK)
+                .add(NarakaBlocks.NECTARIUM_CORE_BLOCK);
+
         FabricTagBuilder needsIronTool = getOrCreateTagBuilder(BlockTags.NEEDS_IRON_TOOL)
                 .add(NarakaBlocks.NECTARIUM_BLOCK)
                 .add(NarakaBlocks.NECTARIUM_ORE)
@@ -89,7 +93,9 @@ public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
                 .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE)
                 .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK)
                 .add(NarakaBlocks.FAKE_GOLD_BLOCK)
-                .add(NarakaBlocks.COMPRESSED_IRON_BLOCK);
+                .add(NarakaBlocks.COMPRESSED_IRON_BLOCK)
+                .add(NarakaBlocks.NECTARIUM_CORE_BLOCK)
+                .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK);
         NarakaBlocks.forEachSoulInfusedBlock(mineableWithPickaxe::add);
 
         getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_HOE)

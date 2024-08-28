@@ -48,11 +48,15 @@ public class NarakaBlocks {
 
     public static final NectariumCoreBlock NECTARIUM_CORE_BLOCK = registerBlockWithItem(
             "nectarium_core_block",
-            NectariumCoreBlock::new,
+            properties -> new NectariumCoreBlock(properties
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(NectariumCoreBlock::lightLevel)),
             Blocks.AMETHYST_CLUSTER
     );
-    public static final Block NECTARIUM_CRYSTAL_BLOCK = registerSimpleBlockWithItem(
+    public static final Block NECTARIUM_CRYSTAL_BLOCK = registerBlockWithItem(
             "nectarium_crystal_block",
+            properties -> new NectariumCrystalBlock(properties
+                    .requiresCorrectToolForDrops()),
             Blocks.AMETHYST_BLOCK
     );
 
