@@ -91,7 +91,8 @@ public class NarakaModClient implements ClientModInitializer {
                 NarakaBlocks.EBONY_SAPLING,
                 NarakaBlocks.POTTED_EBONY_SAPLING,
                 NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK,
-                NarakaBlocks.EBONY_ROOTS
+                NarakaBlocks.EBONY_ROOTS,
+                NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK
         );
     }
 

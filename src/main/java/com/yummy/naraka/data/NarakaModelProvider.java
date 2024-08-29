@@ -9,6 +9,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
@@ -19,6 +20,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DripstoneThickness;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.List;
@@ -58,6 +60,30 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.EBONY_METAL_BLOCK);
         generator.blockEntityModels(NarakaBlocks.FORGING_BLOCK, Blocks.ANVIL)
                 .createWithoutBlockItem(NarakaBlocks.FORGING_BLOCK);
+        createNectariumCrystal(generator);
+        generator.createTrivialCube(NarakaBlocks.NECTARIUM_CORE_BLOCK);
+    }
+
+    private static void createNectariumCrystal(BlockModelGenerators generator) {
+        generator.skipAutoItemBlock(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK);
+        PropertyDispatch.C2<Direction, DripstoneThickness> properties = PropertyDispatch.properties(
+                BlockStateProperties.VERTICAL_DIRECTION, BlockStateProperties.DRIPSTONE_THICKNESS
+        );
+
+        for (DripstoneThickness dripstoneThickness : DripstoneThickness.values())
+            properties.select(Direction.UP, dripstoneThickness, createNectariumCrystalVariant(generator, Direction.UP, dripstoneThickness));
+
+        for (DripstoneThickness dripstoneThickness : DripstoneThickness.values())
+            properties.select(Direction.DOWN, dripstoneThickness, createNectariumCrystalVariant(generator, Direction.DOWN, dripstoneThickness));
+
+        generator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK).with(properties));
+    }
+
+    private static Variant createNectariumCrystalVariant(BlockModelGenerators generator, Direction direction, DripstoneThickness dripstoneThickness) {
+        String model_name = "_" + direction.getSerializedName() + "_" + dripstoneThickness.getSerializedName();
+        TextureMapping textureMapping = TextureMapping.cross(TextureMapping.getBlockTexture(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, model_name));
+        return Variant.variant()
+                .with(VariantProperties.MODEL, ModelTemplates.POINTED_DRIPSTONE.createWithSuffix(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, model_name, textureMapping, generator.modelOutput));
     }
 
     private static void createEbonyLog(BlockModelGenerators generator, Block block) {
