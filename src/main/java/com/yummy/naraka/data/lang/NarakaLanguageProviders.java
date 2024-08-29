@@ -95,6 +95,36 @@ public class NarakaLanguageProviders {
         addAdvancement(AdvancementNarakaComponents.KILL_HEROBRINE,
                 List.of("Purified Soul", "정화된 영혼"),
                 List.of("Defeat the lord of Naraka", "나락의 군주를 쓰러트리세요"));
+        addAdvancement(AdvancementNarakaComponents.PURIFIED_SOUL_METAL,
+                List.of("Soap...?", "비누...?"),
+                List.of("Get purified soul metal", "정화된 영혼 금속을 얻으세요"));
+        addAdvancement(AdvancementNarakaComponents.PURIFIED_SOUL_SWORD,
+                List.of("Pure vessel", "순수한 그릇"),
+                List.of("It can be anything!", "무엇이든 될 수 있어!"));
+        addAdvancement(AdvancementNarakaComponents.GOD_BLOOD,
+                List.of("God's blood", "신의 피"),
+                List.of("Amazing!", "굉장해 엄청나!"));
+        addAdvancement(AdvancementNarakaComponents.SOUL_INFUSED_THINGS,
+                List.of("Soul infused Minerals", "영혼이 깃든 광물"),
+                List.of("Make one kind of soul infused minerals", "아무 종류의 영혼이 깃든 광물을 만드세요"));
+        addAdvancement(AdvancementNarakaComponents.STABILIZER,
+                List.of("Stabilizer", "안정기"),
+                List.of("Make soul stabilizer that contains large amount of soul minerals", "대량의 영혼이 깃든 광물을 저장할 수 있는 영혼 안정기를 만드세요"));
+        addAdvancement(AdvancementNarakaComponents.FILL_STABILIZER,
+                List.of("Fully charged", "충전 완료"),
+                List.of("Fill soul stabilizer with one kind of soul infused minerals", "영혼 안정기를 아무 종류의 영혼이 깃든 광물로 가득 채우세요"));
+        addAdvancement(AdvancementNarakaComponents.SOUL_INFUSING,
+                List.of("Soul infusing", "영혼 주입"),
+                List.of("Get Soul forging table", "영혼 세공기를 제작하세요"));
+        addAdvancement(AdvancementNarakaComponents.CHALLENGER_BLESSING,
+                List.of("Challenger", "도전자"),
+                List.of("Get challenger's blessing with full armor of soul armor and sword", "아무 종류의 영혼이 깃든 갑옷과 검을 가지고 도전자의 축복을 받으세요"));
+        addAdvancement(AdvancementNarakaComponents.ALL_BLESSED_SWORDS,
+                List.of("Rainbow!", "무지개!"),
+                List.of("Get every color type of blessed soul sword", "모든 색의 축복받은 검을 수집하세요"));
+        addAdvancement(AdvancementNarakaComponents.ULTIMATE_SWORD,
+                List.of("Long live the new Naraka tyrant", "새 나락의 폭군"),
+                List.of("Get Ultimate soul sword", "궁극의 검을 얻으세요"));
 
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_1, "Herobrine Phase 1", "히로빈 1 페이즈");
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_2, "Herobrine Phase 2", "히로빈 2 페이즈");
