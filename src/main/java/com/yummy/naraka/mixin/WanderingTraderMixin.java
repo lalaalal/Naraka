@@ -1,5 +1,6 @@
 package com.yummy.naraka.mixin;
 
+import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.AbstractVillager;
@@ -18,7 +19,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class WanderingTraderMixin extends AbstractVillager {
     @Unique
     private static final VillagerTrades.ItemListing[] TRADES = new VillagerTrades.ItemListing[]{
-            new VillagerTrades.ItemsForEmeralds(NarakaItems.SANCTUARY_COMPASS, 30, 1, 1, 1)
+            new VillagerTrades.ItemsForEmeralds(NarakaItems.SANCTUARY_COMPASS, 30, 1, 1, 1),
+            new VillagerTrades.ItemsForEmeralds(NarakaBlocks.NECTARIUM_CORE_BLOCK, 30, 1, 1, 1)
     };
 
     public WanderingTraderMixin(EntityType<? extends AbstractVillager> entityType, Level level) {
