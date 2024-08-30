@@ -97,6 +97,7 @@ public class NarakaModClient implements ClientModInitializer {
     }
 
     private void initializeParticles() {
-        ParticleFactoryRegistry.getInstance().register(NarakaParticleTypes.EBONY_LEAVES, EbonyParticle.Provider::new);
+        ParticleFactoryRegistry registry = ParticleFactoryRegistry.getInstance();
+        registry.register(NarakaParticleTypes.EBONY_LEAVES, EbonyParticle.Provider::new);
     }
 }

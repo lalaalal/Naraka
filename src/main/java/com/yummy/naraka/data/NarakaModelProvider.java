@@ -62,6 +62,7 @@ public class NarakaModelProvider extends FabricModelProvider {
                 .createWithoutBlockItem(NarakaBlocks.FORGING_BLOCK);
         createNectariumCrystal(generator);
         generator.createTrivialCube(NarakaBlocks.NECTARIUM_CORE_BLOCK);
+        generator.createSimpleFlatItemModel(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK);
     }
 
     private static void createNectariumCrystal(BlockModelGenerators generator) {
