@@ -71,7 +71,7 @@ public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
                 .add(NarakaBlocks.NECTARIUM_BLOCK)
                 .add(NarakaBlocks.NECTARIUM_ORE)
                 .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE)
-                .add(NarakaBlocks.FAKE_GOLD_BLOCK)
+                .add(NarakaBlocks.IMITATION_GOLD_BLOCK)
                 .add(NarakaBlocks.COMPRESSED_IRON_BLOCK)
                 .addTag(NarakaBlockTags.EBONY_LOGS)
                 .add(NarakaBlocks.HARD_EBONY_PLANKS)
@@ -92,7 +92,7 @@ public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
                 .add(NarakaBlocks.NECTARIUM_ORE)
                 .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE)
                 .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK)
-                .add(NarakaBlocks.FAKE_GOLD_BLOCK)
+                .add(NarakaBlocks.IMITATION_GOLD_BLOCK)
                 .add(NarakaBlocks.COMPRESSED_IRON_BLOCK)
                 .add(NarakaBlocks.NECTARIUM_CORE_BLOCK)
                 .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK);

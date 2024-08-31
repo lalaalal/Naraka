@@ -39,7 +39,7 @@ public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
         dropSelf(NarakaBlocks.SOUL_CRAFTING_BLOCK);
         dropSelf(NarakaBlocks.FORGING_BLOCK);
         dropSelf(NarakaBlocks.COMPRESSED_IRON_BLOCK);
-        dropSelf(NarakaBlocks.FAKE_GOLD_BLOCK);
+        dropSelf(NarakaBlocks.IMITATION_GOLD_BLOCK);
         dropSelf(NarakaBlocks.AMETHYST_SHARD_BLOCK);
 
         NarakaBlocks.forEachSoulInfusedBlock(this::dropSelf);

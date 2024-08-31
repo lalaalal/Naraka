@@ -78,8 +78,8 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     public static boolean isTotemStructure(Level level, BlockPos totemPos) {
         return level.getBlockState(totemPos).is(NarakaBlocks.HEROBRINE_TOTEM)
                 && level.getBlockState(totemPos.above()).is(Blocks.NETHERRACK)
-                && level.getBlockState(totemPos.below(1)).is(NarakaBlocks.FAKE_GOLD_BLOCK)
-                && level.getBlockState(totemPos.below(2)).is(NarakaBlocks.FAKE_GOLD_BLOCK);
+                && level.getBlockState(totemPos.below(1)).is(NarakaBlocks.IMITATION_GOLD_BLOCK)
+                && level.getBlockState(totemPos.below(2)).is(NarakaBlocks.IMITATION_GOLD_BLOCK);
     }
 
     public static boolean isSanctuaryExists(Level level, BlockPos pos) {

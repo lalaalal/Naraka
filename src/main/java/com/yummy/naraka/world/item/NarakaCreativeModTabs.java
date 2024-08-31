@@ -142,7 +142,7 @@ public class NarakaCreativeModTabs {
         entries.addAfter(Blocks.AMETHYST_BLOCK,
                 NarakaBlocks.AMETHYST_SHARD_BLOCK,
                 NarakaBlocks.NECTARIUM_BLOCK,
-                NarakaBlocks.FAKE_GOLD_BLOCK
+                NarakaBlocks.IMITATION_GOLD_BLOCK
         );
     }
 

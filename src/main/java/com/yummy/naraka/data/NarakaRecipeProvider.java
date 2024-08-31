@@ -79,7 +79,7 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NarakaBlocks.HEROBRINE_TOTEM, 2)
-                .define('G', NarakaBlocks.FAKE_GOLD_BLOCK)
+                .define('G', NarakaBlocks.IMITATION_GOLD_BLOCK)
                 .define('T', NarakaBlocks.HEROBRINE_TOTEM)
                 .pattern("GGG")
                 .pattern("GTG")

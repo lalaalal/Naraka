@@ -187,7 +187,7 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.NECTARIUM_BLOCK, "Block of Nectarium", "넥타륨 블록");
         addBlock(NarakaBlocks.TRANSPARENT_BLOCK, "Block of Transparent", "투명 블록");
         addBlock(NarakaBlocks.COMPRESSED_IRON_BLOCK, "Block of Compressed Iron", "압축된 철 블록");
-        addBlock(NarakaBlocks.FAKE_GOLD_BLOCK, "Block of Fake Gold", "거짓된 금 블록");
+        addBlock(NarakaBlocks.IMITATION_GOLD_BLOCK, "Block of Imitation Gold", "거짓된 금 블록");
         addBlock(NarakaBlocks.AMETHYST_SHARD_BLOCK, "Block of Amethyst Shard", "자수정 조각 블록");
         addBlock(NarakaBlocks.SOUL_CRAFTING_BLOCK, "Block of Soul Crafting", "영혼 세공기");
 

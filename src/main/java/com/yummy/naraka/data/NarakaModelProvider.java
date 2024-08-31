@@ -40,7 +40,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
         generator.createTrivialCube(NarakaBlocks.COMPRESSED_IRON_BLOCK);
         generator.createTrivialCube(NarakaBlocks.NECTARIUM_BLOCK);
-        generator.createTrivialCube(NarakaBlocks.FAKE_GOLD_BLOCK);
+        generator.createTrivialCube(NarakaBlocks.IMITATION_GOLD_BLOCK);
         generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_BLOCK);
         generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
         generator.createTrivialBlock(NarakaBlocks.EBONY_LEAVES, TexturedModel.LEAVES);
