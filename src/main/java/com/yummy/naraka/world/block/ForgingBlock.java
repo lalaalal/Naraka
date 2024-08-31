@@ -81,8 +81,8 @@ public class ForgingBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
-        list.add(
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(
                 Component.translatable(NarakaLanguageProviders.tooltipKey(this))
                         .withStyle(ChatFormatting.GRAY)
         );

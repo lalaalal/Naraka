@@ -215,6 +215,10 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.EBONY_ROOTS, "Ebony Roots", "흑단나무 뿌리");
         addBlock(NarakaBlocks.EBONY_METAL_BLOCK, "Block of Ebony Metal", "흑단나무 금속 블록");
         addBlock(NarakaBlocks.FORGING_BLOCK, "Forging Block", "단조 블록");
+        addBlock(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Nectarium Core", "넥타륨 코어");
+        addBlock(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, "Nectarium Crystal", "넥타륨 결정");
+
+        addTooltip(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Honey is dripping", "꿀이 뚝뚝 떨어져");
         addTooltip(NarakaBlocks.FORGING_BLOCK, "Smash item with a hammer...?", "아이템을 망치로 부수기..?");
 
         addEntityType(NarakaEntityTypes.HEROBRINE, "Naraka: Herobrine", "히로빈");

@@ -44,6 +44,8 @@ public class NarakaCreativeModTabs {
                 .register(NarakaCreativeModTabs::modifyNaturalBlocksTab);
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FOOD_AND_DRINKS)
                 .register(NarakaCreativeModTabs::modifyFoodAndDrinksTab);
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS)
+                .register(NarakaCreativeModTabs::modifyIngredientsTab);
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS)
                 .register(NarakaCreativeModTabs::modifySpawnEggsTab);
     }
@@ -96,6 +98,8 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaBlocks.SOUL_CRAFTING_BLOCK);
 
         output.accept(NarakaBlocks.FORGING_BLOCK);
+        output.accept(NarakaBlocks.NECTARIUM_CORE_BLOCK);
+        output.accept(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK);
     }
 
     private static void createNarakaTestTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
@@ -148,6 +152,10 @@ public class NarakaCreativeModTabs {
 
     private static void modifyFoodAndDrinksTab(FabricItemGroupEntries entries) {
         entries.addAfter(Items.ENCHANTED_GOLDEN_APPLE, NarakaItems.NECTARIUM);
+    }
+
+    private static void modifyIngredientsTab(FabricItemGroupEntries entries) {
+        entries.addAfter(Items.DIAMOND, NarakaItems.NECTARIUM);
     }
 
     private static void modifySpawnEggsTab(FabricItemGroupEntries entries) {

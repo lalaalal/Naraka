@@ -4,10 +4,8 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.gui.hud.DeathCountHud;
 import com.yummy.naraka.client.gui.hud.StigmaHud;
 import com.yummy.naraka.client.gui.screen.SoulCraftingScreen;
-import com.yummy.naraka.client.model.HerobrineModel;
-import com.yummy.naraka.client.model.SpearModel;
-import com.yummy.naraka.client.model.SpearOfLonginusModel;
 import com.yummy.naraka.client.particle.EbonyParticle;
+import com.yummy.naraka.client.particle.NarakaDripParticles;
 import com.yummy.naraka.client.renderer.*;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.event.NarakaClientEvents;
@@ -25,51 +23,38 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.packs.PackType;
 
 @Environment(EnvType.CLIENT)
 public class NarakaModClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        initializeEntities();
+        NarakaModelLayers.initialize();
         initializeItems();
         initializeBlocks();
-        initializeParticles();
+
+        registerRenderers();
+        registerParticles();
+        registerHudRenders();
+        registerMenus();
 
         NarakaNetworks.initializeClient();
-
         NarakaClientEvents.initialize();
 
         ResourceManagerHelper clientResourceManagerHelper = ResourceManagerHelper.get(PackType.CLIENT_RESOURCES);
         clientResourceManagerHelper.registerReloadListener(SpearItemRenderer.INSTANCE);
         clientResourceManagerHelper.registerReloadListener(NarakaCustomRenderer.INSTANCE);
-
-        MenuScreens.register(NarakaMenuTypes.SOUL_CRAFTING, SoulCraftingScreen::new);
-        HudRenderCallback.EVENT.register(new DeathCountHud());
-        HudRenderCallback.EVENT.register(new StigmaHud());
-    }
-
-    private void initializeEntities() {
-        EntityModelLayerRegistry.registerModelLayer(NarakaModelLayers.HEROBRINE, HerobrineModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(NarakaModelLayers.SPEAR, SpearModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(NarakaModelLayers.SPEAR_OF_LONGINUS, SpearOfLonginusModel::createBodyLayer);
-        EntityModelLayerRegistry.registerModelLayer(NarakaModelLayers.FORGING_BLOCK, ForgingBlockEntityRenderer::createBodyLayer);
-
-        EntityRendererRegistry.register(NarakaEntityTypes.HEROBRINE, HerobrineRenderer::new);
-        EntityRendererRegistry.register(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, SpearRenderer::new);
-        EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR, SpearRenderer::new);
-        EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, SpearRenderer::longinus);
-
-        BlockEntityRenderers.register(NarakaBlockEntityTypes.FORGING_BLOCK_ENTITY, ForgingBlockEntityRenderer::new);
     }
 
     private void initializeItems() {
@@ -96,8 +81,47 @@ public class NarakaModClient implements ClientModInitializer {
         );
     }
 
-    private void initializeParticles() {
+    private void registerRenderers() {
+        EntityRendererRegistry.register(NarakaEntityTypes.HEROBRINE, HerobrineRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, SpearRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR, SpearRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, SpearRenderer::longinus);
+
+        BlockEntityRenderers.register(NarakaBlockEntityTypes.FORGING_BLOCK_ENTITY, ForgingBlockEntityRenderer::new);
+    }
+
+    private void registerHudRenders() {
+        HudRenderCallback.EVENT.register(new DeathCountHud());
+        HudRenderCallback.EVENT.register(new StigmaHud());
+    }
+
+    private void registerMenus() {
+        MenuScreens.register(NarakaMenuTypes.SOUL_CRAFTING, SoulCraftingScreen::new);
+    }
+
+    private void registerParticles() {
         ParticleFactoryRegistry registry = ParticleFactoryRegistry.getInstance();
         registry.register(NarakaParticleTypes.EBONY_LEAVES, EbonyParticle.Provider::new);
+        registry.register(
+                NarakaParticleTypes.DRIPPING_NECTARIUM_CORE_HONEY,
+                withSprite(NarakaDripParticles::createNectariumCoreHoneyHangParticle)
+        );
+        registry.register(
+                NarakaParticleTypes.FALLING_NECTARIUM_CORE_HONEY,
+                withSprite(NarakaDripParticles::createNectariumCoreHoneyFallParticle)
+        );
+        registry.register(
+                NarakaParticleTypes.LANDING_NECTARIUM_CORE_HONEY,
+                withSprite(NarakaDripParticles::createNectariumCoreHoneyLandParticle)
+        );
+    }
+
+    private <T extends ParticleOptions> ParticleFactoryRegistry.PendingParticleFactory<T> withSprite(ParticleProvider.Sprite<T> factory) {
+        return sprite -> (type, level, x, y, z, xSpeed, ySpeed, zSpeed) -> {
+            TextureSheetParticle particle = factory.createParticle(type, level, x, y, z, xSpeed, ySpeed, zSpeed);
+            if (particle != null)
+                particle.pickSprite(sprite);
+            return particle;
+        };
     }
 }
