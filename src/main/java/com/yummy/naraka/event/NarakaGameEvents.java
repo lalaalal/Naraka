@@ -61,13 +61,27 @@ public class NarakaGameEvents {
         ServerLivingEntityEvents.ALLOW_DEATH.register(NarakaGameEvents::useDeathCount);
         ServerEntityEvents.EQUIPMENT_CHANGE.register(NarakaGameEvents::handleReinforcementEffect);
         ServerEntityEvents.ENTITY_LOAD.register(NarakaGameEvents::syncPlayerEntityData);
+        ServerEntityEvents.ENTITY_LOAD.register(NarakaGameEvents::updateReinforcementEffect);
 
         LootTableEvents.MODIFY.register(NarakaGameEvents::modifyLootTable);
     }
 
-    private static void syncPlayerEntityData(Entity entity, ServerLevel world) {
+    private static void syncPlayerEntityData(Entity entity, ServerLevel level) {
         if (entity instanceof Player player)
             EntityDataHelper.syncEntityData(player);
+    }
+
+    private static void updateReinforcementEffect(Entity entity, ServerLevel level) {
+        if (entity instanceof LivingEntity livingEntity) {
+            for (ItemStack itemStack : livingEntity.getAllSlots()) {
+                Reinforcement reinforcement = itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, Reinforcement.ZERO);
+                EquipmentSlot slot = livingEntity.getEquipmentSlotForItem(itemStack);
+                for (Holder<ReinforcementEffect> effect : reinforcement.effects()) {
+                    if (reinforcement.canApplyEffect(effect, livingEntity, slot, itemStack))
+                        effect.value().onEquipped(livingEntity, slot, itemStack);
+                }
+            }
+        }
     }
 
     private static boolean useDeathCount(LivingEntity livingEntity, DamageSource source, float damage) {
