@@ -75,13 +75,13 @@ public class NectariumCrystalBlock extends Block {
         Direction tipDirection = state.getValue(TIP_DIRECTION);
         BlockPos basePos = pos.relative(tipDirection.getOpposite());
         BlockState baseState = level.getBlockState(basePos);
+
+        if (!neighborState.is(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK))
+            return DripstoneThickness.TIP;
         DripstoneThickness thickness = neighborState.getValue(THICKNESS);
 
         if (canMerge(level, pos, tipDirection))
             return DripstoneThickness.TIP_MERGE;
-
-        if (!neighborState.is(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK))
-            return DripstoneThickness.TIP;
         if (baseState.isFaceSturdy(level, basePos, tipDirection))
             return thicker(thickness);
         if (baseState.is(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK))

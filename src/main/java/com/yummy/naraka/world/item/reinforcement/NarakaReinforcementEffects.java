@@ -27,14 +27,12 @@ public class NarakaReinforcementEffects {
             "knockback_resistance", new KnockbackResistance()
     );
 
-    public static final Holder<ReinforcementEffect> IGNORE_WATER_PUSH = register(
-            "ignore_water_push",
-            new SimpleReinforcementEffect(EquipmentSlot.LEGS, 10)
+    public static final Holder<ReinforcementEffect> IGNORE_LIQUID_PUSH = register(
+            "ignore_liquid_push", new SimpleReinforcementEffect(EquipmentSlot.LEGS, 10)
     );
 
     public static final Holder<ReinforcementEffect> FLYING = register(
-            "flying",
-            new SimpleReinforcementEffect(EquipmentSlot.BODY, 10)
+            "flying", new Flying()
     );
 
     private static Holder<ReinforcementEffect> register(String name, ReinforcementEffect effect) {
@@ -72,7 +70,7 @@ public class NarakaReinforcementEffects {
         add(ItemTags.TRIDENT_ENCHANTABLE, DAMAGE_INCREASE);
         add(ItemTags.ARMOR_ENCHANTABLE, ARMOR_INCREASE);
         add(ItemTags.CHEST_ARMOR_ENCHANTABLE, FLYING);
-        add(ItemTags.LEG_ARMOR_ENCHANTABLE, IGNORE_WATER_PUSH);
+        add(ItemTags.LEG_ARMOR_ENCHANTABLE, IGNORE_LIQUID_PUSH);
         add(ItemTags.FOOT_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);
     }
 }

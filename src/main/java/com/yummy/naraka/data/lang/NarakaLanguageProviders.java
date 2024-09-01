@@ -10,7 +10,6 @@ import com.yummy.naraka.world.item.armortrim.NarakaTrimMaterials;
 import com.yummy.naraka.world.item.armortrim.NarakaTrimPatterns;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
-
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
@@ -87,7 +86,7 @@ public class NarakaLanguageProviders {
         addReinforcementEffect(NarakaReinforcementEffects.DAMAGE_INCREASE, "Increase attack damage", "공격력 증가");
         addReinforcementEffect(NarakaReinforcementEffects.ARMOR_INCREASE, "Increase armor", "방어력 증가");
         addReinforcementEffect(NarakaReinforcementEffects.KNOCKBACK_RESISTANCE, "Knockback resistance", "넉백 저항");
-        addReinforcementEffect(NarakaReinforcementEffects.IGNORE_WATER_PUSH, "Ignore water push");
+        addReinforcementEffect(NarakaReinforcementEffects.IGNORE_LIQUID_PUSH, "Ignore liquid push");
         addReinforcementEffect(NarakaReinforcementEffects.FLYING, "Flying", "비행");
 
         addTrimPattern(NarakaTrimPatterns.PURIFIED_SOUL_SILENCE, "Purified Soul Silence Armor Trim", "정화된 영혼 고요 갑옷 장식");
