@@ -19,8 +19,8 @@ public class NarakaReinforcementEffects {
             "damage_increase", new DamageIncrease()
     );
 
-    public static final Holder<ReinforcementEffect> DEFENCE_INCREASE = register(
-            "defence_increase", new DefenceIncrease()
+    public static final Holder<ReinforcementEffect> ARMOR_INCREASE = register(
+            "armor_increase", new ArmorIncrease()
     );
 
     public static final Holder<ReinforcementEffect> KNOCKBACK_RESISTANCE = register(
@@ -29,7 +29,12 @@ public class NarakaReinforcementEffects {
 
     public static final Holder<ReinforcementEffect> IGNORE_WATER_PUSH = register(
             "ignore_water_push",
-            (entity, equipmentSlot, itemStack, reinforcement) -> equipmentSlot == EquipmentSlot.LEGS && reinforcement == 10
+            (entity, equipmentSlot, itemStack, reinforcement) -> equipmentSlot == EquipmentSlot.LEGS && reinforcement >= 10
+    );
+
+    public static final Holder<ReinforcementEffect> FLYING = register(
+            "flying",
+            (entity, equipmentSlot, itemStack, reinforcement) -> equipmentSlot == EquipmentSlot.BODY && reinforcement >= 10
     );
 
     private static Holder<ReinforcementEffect> register(String name, ReinforcementEffect effect) {
@@ -65,7 +70,8 @@ public class NarakaReinforcementEffects {
     public static void initialize() {
         add(ItemTags.SWORDS, DAMAGE_INCREASE);
         add(ItemTags.TRIDENT_ENCHANTABLE, DAMAGE_INCREASE);
-        add(ItemTags.ARMOR_ENCHANTABLE, DEFENCE_INCREASE);
+        add(ItemTags.ARMOR_ENCHANTABLE, ARMOR_INCREASE);
+        add(ItemTags.CHEST_ARMOR_ENCHANTABLE, FLYING);
         add(ItemTags.LEG_ARMOR_ENCHANTABLE, IGNORE_WATER_PUSH);
         add(ItemTags.FOOT_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);
     }

@@ -11,7 +11,6 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryCodecs;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
@@ -24,6 +23,8 @@ import java.util.function.Consumer;
 public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) implements TooltipProvider {
     public static final Reinforcement ZERO = new Reinforcement(0, HolderSet.empty());
     public static final int MAX_VALUE = 10;
+
+    private static final Component HEADER = Component.literal("@ ").withStyle(ChatFormatting.GRAY);
 
     public static final Codec<Reinforcement> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
@@ -78,9 +79,16 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
     @Override
     public void addToTooltip(Item.TooltipContext tooltipContext, Consumer<Component> appender, TooltipFlag tooltipFlag) {
         if (value > 0) {
-            MutableComponent component = Component.translatable(NarakaLanguageProviders.REINFORCEMENT_KEY, value)
+            Component reinforcementComponent = Component.translatable(NarakaLanguageProviders.REINFORCEMENT_KEY, value)
                     .withStyle(ChatFormatting.YELLOW);
-            appender.accept(component);
+            appender.accept(reinforcementComponent);
+            
+            for (Holder<ReinforcementEffect> effect : effects) {
+                String key = NarakaLanguageProviders.reinforcementEffectKey(effect);
+                Component effectComponent = Component.translatable(key)
+                        .withStyle(ChatFormatting.GRAY);
+                appender.accept(HEADER.copy().append(effectComponent));
+            }
         }
     }
 }

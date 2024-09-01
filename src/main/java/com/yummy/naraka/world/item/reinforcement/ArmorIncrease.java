@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public class DefenceIncrease extends AttributeModifyingEffect {
+public class ArmorIncrease extends AttributeModifyingEffect {
     private static final int[] DEFENCE_POINTS = {
             1, 1, 2, 2, 2, 3, 3, 6, 12, 50
     };
@@ -24,7 +24,7 @@ public class DefenceIncrease extends AttributeModifyingEffect {
             itemStack -> itemStack.is(ItemTags.FOOT_ARMOR), EquipmentSlotGroup.FEET
     );
 
-    public DefenceIncrease() {
+    public ArmorIncrease() {
         super(Attributes.ARMOR);
     }
 

@@ -8,12 +8,17 @@ import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.armortrim.NarakaTrimMaterials;
 import com.yummy.naraka.world.item.armortrim.NarakaTrimPatterns;
+import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
+import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
+
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.Util;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -25,6 +30,7 @@ import net.minecraft.world.level.block.Block;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -43,6 +49,14 @@ public class NarakaLanguageProviders {
 
     private final String[] languageCodes;
     private final Map<String, String[]> translationMap = new HashMap<>();
+
+    public static String reinforcementEffectKey(Holder<ReinforcementEffect> reinforcementEffect) {
+        Optional<ResourceKey<ReinforcementEffect>> key = reinforcementEffect.unwrapKey();
+        if (key.isEmpty())
+            throw new IllegalStateException("Resource key doesn't exists : " + reinforcementEffect);
+        ResourceLocation id = key.get().location();
+        return Util.makeDescriptionId("reinforcement_effect", id);
+    }
 
     public static String tooltipKey(Block block) {
         return block.getDescriptionId() + ".tooltip";
@@ -69,6 +83,12 @@ public class NarakaLanguageProviders {
         add(JADE_STIGMA_KEY, "Stigma: %d", "낙인: %d");
         add(JADE_DEATH_COUNT_KEY, "Death Count: %d", "데스카운트: %d");
         add(NarakaJadeProviderComponents.ENTITY_DATA.translationKey, "Stigma", "낙인");
+
+        addReinforcementEffect(NarakaReinforcementEffects.DAMAGE_INCREASE, "Increase attack damage", "공격력 증가");
+        addReinforcementEffect(NarakaReinforcementEffects.ARMOR_INCREASE, "Increase armor", "방어력 증가");
+        addReinforcementEffect(NarakaReinforcementEffects.KNOCKBACK_RESISTANCE, "Knockback resistance", "넉백 저항");
+        addReinforcementEffect(NarakaReinforcementEffects.IGNORE_WATER_PUSH, "Ignore water push");
+        addReinforcementEffect(NarakaReinforcementEffects.FLYING, "Flying", "비행");
 
         addTrimPattern(NarakaTrimPatterns.PURIFIED_SOUL_SILENCE, "Purified Soul Silence Armor Trim", "정화된 영혼 고요 갑옷 장식");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, "Soul Infused Redstone Material", "영혼이 주입된 레드스톤 소재");
@@ -289,6 +309,10 @@ public class NarakaLanguageProviders {
 
         add(directKey, directMessages.toArray(new String[0]));
         add(indirectKey, indirectMessages.toArray(new String[0]));
+    }
+
+    public void addReinforcementEffect(Holder<ReinforcementEffect> effect, String... translations) {
+        add(reinforcementEffectKey(effect), translations);
     }
 
     private class LanguageProvider extends FabricLanguageProvider {

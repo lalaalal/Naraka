@@ -48,7 +48,7 @@ public class NarakaDripParticles {
     ) {
         TextureSheetParticle particle = new NarakaDripHangParticle(level, x, y, z, Fluids.EMPTY, NarakaParticleTypes.FALLING_NECTARIUM_CORE_HONEY, true, DEFAULT_GRAVITY * 0.01f);
         particle.setLifetime(100);
-        particle.setColor(0.973f, 0.8f, 0.298f);
+        particle.setColor(0.051f, 0.396f, 0.804f);
         return particle;
     }
 
@@ -57,7 +57,7 @@ public class NarakaDripParticles {
             SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed
     ) {
         TextureSheetParticle particle = new NarakaFallAndLandParticle(level, x, y, z, Fluids.EMPTY, NarakaParticleTypes.LANDING_NECTARIUM_CORE_HONEY, true, 0.01f);
-        particle.setColor(0.973f, 0.8f, 0.298f);
+        particle.setColor(0.051f, 0.396f, 0.804f);
         return particle;
     }
 
@@ -67,7 +67,7 @@ public class NarakaDripParticles {
     ) {
         TextureSheetParticle particle = new NarakaDripLandParticle(level, x, y, z, Fluids.EMPTY, true, DEFAULT_GRAVITY);
         particle.setLifetime((int) (28.0 / (Math.random() * 0.8 + 0.2)));
-        particle.setColor(0.973f, 0.8f, 0.298f);
+        particle.setColor(0.051f, 0.396f, 0.804f);
         return particle;
     }
 }
