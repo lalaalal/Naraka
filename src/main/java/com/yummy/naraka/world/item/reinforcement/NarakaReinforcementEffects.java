@@ -22,6 +22,10 @@ public class NarakaReinforcementEffects {
             "defence_increase", new DefenceIncrease()
     );
 
+    public static final Holder<ReinforcementEffect> KNOCKBACK_RESISTANCE = register(
+            "knockback_resistance", new KnockbackResistance()
+    );
+
     private static Holder<ReinforcementEffect> register(String name, ReinforcementEffect effect) {
         return Registry.registerForHolder(NarakaRegistries.REINFORCEMENT_EFFECT, NarakaMod.location(name), effect);
     }
@@ -56,5 +60,6 @@ public class NarakaReinforcementEffects {
         add(ItemTags.SWORDS, DAMAGE_INCREASE);
         add(ItemTags.TRIDENT_ENCHANTABLE, DAMAGE_INCREASE);
         add(ItemTags.ARMOR_ENCHANTABLE, DEFENCE_INCREASE);
+        add(ItemTags.FOOT_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);
     }
 }

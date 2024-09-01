@@ -19,6 +19,7 @@ public class Herobrine extends Monster implements DeathCountingEntity {
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.MAX_HEALTH, 20);
     }
 

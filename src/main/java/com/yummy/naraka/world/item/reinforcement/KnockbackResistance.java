@@ -7,27 +7,27 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
-public class DamageIncrease extends AttributeModifingEffect {
-    @Override
-    public boolean canApply(LivingEntity entity, EquipmentSlot equipmentSlot, ItemStack itemStack, int reinforcement) {
-        return equipmentSlot == EquipmentSlot.MAINHAND;
+public class KnockbackResistance extends AttributeModifingEffect {
+    public KnockbackResistance() {
+        super(Attributes.KNOCKBACK_RESISTANCE);
     }
 
-    public DamageIncrease() {
-        super(Attributes.ATTACK_DAMAGE);
+    @Override
+    public boolean canApply(LivingEntity entity, EquipmentSlot equipmentSlot, ItemStack itemStack, int reinforcement) {
+        return equipmentSlot == EquipmentSlot.FEET && reinforcement >= 10;
     }
 
     @Override
     protected AttributeModifier createModifier(int reinforcement) {
         return new AttributeModifier(
-                modifierId("attack_damage"),
-                reinforcement,
-                AttributeModifier.Operation.ADD_VALUE
+            modifierId("knockback_resistance"),
+            1,
+            AttributeModifier.Operation.ADD_VALUE
         );
     }
 
     @Override
     protected EquipmentSlotGroup getTargetSlot(ItemStack itemStack) {
-        return EquipmentSlotGroup.MAINHAND;
+        return EquipmentSlotGroup.FEET;
     }
 }
