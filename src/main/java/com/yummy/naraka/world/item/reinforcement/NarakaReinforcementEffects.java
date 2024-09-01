@@ -66,11 +66,11 @@ public class NarakaReinforcementEffects {
     }
 
     public static void initialize() {
-        add(ItemTags.CHEST_ARMOR_ENCHANTABLE, FLYING);
-        add(ItemTags.LEG_ARMOR_ENCHANTABLE, IGNORE_LIQUID_PUSH);
-        add(ItemTags.FOOT_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);
         add(ItemTags.SWORDS, DAMAGE_INCREASE);
         add(ItemTags.TRIDENT_ENCHANTABLE, DAMAGE_INCREASE);
         add(ItemTags.ARMOR_ENCHANTABLE, ARMOR_INCREASE);
+        add(ItemTags.CHEST_ARMOR_ENCHANTABLE, FLYING);
+        add(ItemTags.LEG_ARMOR_ENCHANTABLE, IGNORE_LIQUID_PUSH);
+        add(ItemTags.FOOT_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);
     }
 }
