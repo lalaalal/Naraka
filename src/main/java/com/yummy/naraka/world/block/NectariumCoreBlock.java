@@ -49,14 +49,15 @@ public class NectariumCoreBlock extends Block {
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         int honey = state.getValue(HONEY);
-        if (honey == MAX_HONEY) {
+        BlockState belowState = level.getBlockState(pos.below());
+        if (belowState.isAir()) {
             BlockPos growingPos = pos.below();
             BlockState crystal = NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.defaultBlockState()
                     .setValue(NectariumCrystalBlock.TIP_DIRECTION, Direction.DOWN)
                     .setValue(NectariumCrystalBlock.THICKNESS, DripstoneThickness.TIP);
             level.setBlock(growingPos, crystal, UPDATE_ALL);
             level.setBlock(pos, state.setValue(HONEY, honey - 1), UPDATE_ALL);
-        } else if (honey > 0) {
+        } else if (honey > 0 && belowState.is(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK)) {
             BlockPos growingPos = findUpFaceSturdyBlock(level, pos).above();
             if (growingPos.equals(pos) || growingPos.equals(pos.below()) || pos.getY() - growingPos.getY() > MAX_HEIGHT)
                 return;
