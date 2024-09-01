@@ -29,12 +29,12 @@ public class NarakaReinforcementEffects {
 
     public static final Holder<ReinforcementEffect> IGNORE_WATER_PUSH = register(
             "ignore_water_push",
-            (entity, equipmentSlot, itemStack, reinforcement) -> equipmentSlot == EquipmentSlot.LEGS && reinforcement >= 10
+            new SimpleReinforcementEffect(EquipmentSlot.LEGS, 10)
     );
 
     public static final Holder<ReinforcementEffect> FLYING = register(
             "flying",
-            (entity, equipmentSlot, itemStack, reinforcement) -> equipmentSlot == EquipmentSlot.BODY && reinforcement >= 10
+            new SimpleReinforcementEffect(EquipmentSlot.BODY, 10)
     );
 
     private static Holder<ReinforcementEffect> register(String name, ReinforcementEffect effect) {

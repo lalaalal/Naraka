@@ -13,6 +13,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -69,6 +71,10 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
 
     public Reinforcement increase() {
         return new Reinforcement(value + 1, effects);
+    }
+
+    public boolean canApplyEffect(Holder<ReinforcementEffect> effect, LivingEntity entity, EquipmentSlot slot, ItemStack itemStack) {
+        return effects.contains(effect) && effect.value().canApply(entity, slot, itemStack, MAX_VALUE);
     }
 
     public static boolean canReinforce(ItemStack itemStack) {

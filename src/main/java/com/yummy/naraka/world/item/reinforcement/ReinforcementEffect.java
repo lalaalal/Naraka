@@ -7,6 +7,10 @@ import net.minecraft.world.item.ItemStack;
 public interface ReinforcementEffect {
     boolean canApply(LivingEntity entity, EquipmentSlot equipmentSlot, ItemStack itemStack, int reinforcement);
 
+    default boolean showInTooltip(int reinforcement) {
+        return true;
+    }
+
     default void onReinforcementIncreased(ItemStack itemStack, int previousReinforcement, int currentReinforcement) {
 
     }

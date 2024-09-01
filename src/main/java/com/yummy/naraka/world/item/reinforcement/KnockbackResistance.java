@@ -18,6 +18,11 @@ public class KnockbackResistance extends AttributeModifyingEffect {
     }
 
     @Override
+    public boolean showInTooltip(int reinforcement) {
+        return reinforcement >= 10;
+    }
+
+    @Override
     protected AttributeModifier createModifier(int reinforcement) {
         return new AttributeModifier(
             modifierId("knockback_resistance"),
