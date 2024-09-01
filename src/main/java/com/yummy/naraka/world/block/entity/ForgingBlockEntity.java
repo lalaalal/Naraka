@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -19,6 +20,7 @@ public class ForgingBlockEntity extends BlockEntity {
     public static final float SUCCESS_CHANCE = 0.5f;
 
     private ItemStack itemStack = ItemStack.EMPTY;
+    private int cooldownTick = 0;
 
     public ForgingBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(NarakaBlockEntityTypes.FORGING_BLOCK_ENTITY, blockPos, blockState);
@@ -48,7 +50,8 @@ public class ForgingBlockEntity extends BlockEntity {
 
     public void tryReinforce() {
         if (itemStack.isEmpty() || !Reinforcement.canReinforce(itemStack)
-                || level == null || level.isClientSide)
+                || level == null || level.isClientSide 
+                || cooldownTick > 0)
             return;
         if (level.random.nextFloat() < SUCCESS_CHANCE) {
             if (Reinforcement.increase(itemStack, NarakaReinforcementEffects.get(itemStack)))
@@ -56,6 +59,7 @@ public class ForgingBlockEntity extends BlockEntity {
         } else {
             level.playSound(null, getBlockPos(), SoundEvents.ANVIL_DESTROY, SoundSource.BLOCKS);
         }
+        cooldownTick = 50;
     }
 
     @Override
@@ -79,5 +83,10 @@ public class ForgingBlockEntity extends BlockEntity {
         if (!itemStack.isEmpty()) {
             compoundTag.put("ForgingItem", itemStack.save(provider));
         }
+    }
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, ForgingBlockEntity blockEntity) {
+        if (blockEntity.cooldownTick > 0)
+            blockEntity.cooldownTick -= 1;
     }
 }

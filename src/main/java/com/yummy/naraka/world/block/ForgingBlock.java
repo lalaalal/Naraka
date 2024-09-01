@@ -3,6 +3,7 @@ package com.yummy.naraka.world.block;
 import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.data.lang.NarakaLanguageProviders;
 import com.yummy.naraka.world.block.entity.ForgingBlockEntity;
+import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -20,6 +21,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -91,5 +94,13 @@ public class ForgingBlock extends BaseEntityBlock {
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        if (level.isClientSide)
+            return super.getTicker(level, state, type);
+        return createTickerHelper(type, NarakaBlockEntityTypes.FORGING_BLOCK_ENTITY, ForgingBlockEntity::serverTick);
     }
 }

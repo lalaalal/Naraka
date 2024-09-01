@@ -90,10 +90,12 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
             appender.accept(reinforcementComponent);
             
             for (Holder<ReinforcementEffect> effect : effects) {
-                String key = NarakaLanguageProviders.reinforcementEffectKey(effect);
-                Component effectComponent = Component.translatable(key)
-                        .withStyle(ChatFormatting.GRAY);
-                appender.accept(HEADER.copy().append(effectComponent));
+                if (effect.value().showInTooltip(value)) {
+                    String key = NarakaLanguageProviders.reinforcementEffectKey(effect);
+                    Component effectComponent = Component.translatable(key)
+                            .withStyle(ChatFormatting.GRAY);
+                    appender.accept(HEADER.copy().append(effectComponent));
+                }
             }
         }
     }
