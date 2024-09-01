@@ -58,9 +58,11 @@ public class ForgingBlock extends BaseEntityBlock {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         if (blockEntity instanceof ForgingBlockEntity forgingBlockEntity) {
             if (itemStack.is(Items.MACE)) {
-                forgingBlockEntity.tryReinforce();
-                itemStack.hurtAndBreak(5, player, EquipmentSlot.MAINHAND);
-                return ItemInteractionResult.SUCCESS;
+                if (forgingBlockEntity.tryReinforce()) {
+                    itemStack.hurtAndBreak(5, player, EquipmentSlot.MAINHAND);
+                    return ItemInteractionResult.SUCCESS;
+                }
+                return ItemInteractionResult.FAIL;
             } else if (!forgingBlockEntity.getItemStack().isEmpty()) {
                 forgingBlockEntity.dropItem();
                 return ItemInteractionResult.SUCCESS;

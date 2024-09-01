@@ -48,18 +48,19 @@ public class ForgingBlockEntity extends BlockEntity {
         return itemStack;
     }
 
-    public void tryReinforce() {
+    public boolean tryReinforce() {
         if (itemStack.isEmpty() || !Reinforcement.canReinforce(itemStack)
                 || level == null || level.isClientSide 
                 || cooldownTick > 0)
-            return;
+            return false;
         if (level.random.nextFloat() < SUCCESS_CHANCE) {
             if (Reinforcement.increase(itemStack, NarakaReinforcementEffects.get(itemStack)))
                 level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
         } else {
             level.playSound(null, getBlockPos(), SoundEvents.ANVIL_DESTROY, SoundSource.BLOCKS);
         }
-        cooldownTick = 50;
+        cooldownTick = 30;
+        return true;
     }
 
     @Override

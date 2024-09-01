@@ -4,10 +4,13 @@ import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
+
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,6 +30,8 @@ public abstract class EntityMixin {
                 Reinforcement reinforcement = itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, Reinforcement.ZERO);
                 if (reinforcement.effects().contains(NarakaReinforcementEffects.IGNORE_WATER_PUSH)
                         && IGNORE_WATER_PUSH_INSTANCE.canApply(livingEntity, slot, itemStack, reinforcement.value()))
+                    if (livingEntity.getFluidHeight(FluidTags.WATER) > 0)
+                        livingEntity.updateFluidHeightAndDoFluidPushing(FluidTags.WATER, 0.014);
                     ci.cancel();
             }
         }
