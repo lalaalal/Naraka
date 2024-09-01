@@ -8,10 +8,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+
 import java.util.Map;
 import java.util.function.Predicate;
 
-public class DefenceIncrease extends AttributeModifingEffect {
+public class DefenceIncrease extends AttributeModifyingEffect {
     private static final int[] DEFENCE_POINTS = {
             1, 1, 2, 2, 2, 3, 3, 6, 12, 50
     };

@@ -2,7 +2,6 @@ package com.yummy.naraka.world.item.reinforcement;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.util.NarakaItemUtils;
-
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
@@ -12,10 +11,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 
-public abstract class AttributeModifingEffect implements ReinforcementEffect {
+public abstract class AttributeModifyingEffect implements ReinforcementEffect {
     protected final Holder<Attribute> attribute;
 
-    protected AttributeModifingEffect(Holder<Attribute> attribute) {
+    protected AttributeModifyingEffect(Holder<Attribute> attribute) {
         this.attribute = attribute;
     }
 

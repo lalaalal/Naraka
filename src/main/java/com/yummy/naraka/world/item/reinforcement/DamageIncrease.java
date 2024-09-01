@@ -7,7 +7,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
-public class DamageIncrease extends AttributeModifingEffect {
+public class DamageIncrease extends AttributeModifyingEffect {
     @Override
     public boolean canApply(LivingEntity entity, EquipmentSlot equipmentSlot, ItemStack itemStack, int reinforcement) {
         return equipmentSlot == EquipmentSlot.MAINHAND;

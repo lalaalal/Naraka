@@ -7,7 +7,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
-public class KnockbackResistance extends AttributeModifingEffect {
+public class KnockbackResistance extends AttributeModifyingEffect {
     public KnockbackResistance() {
         super(Attributes.KNOCKBACK_RESISTANCE);
     }
@@ -29,5 +29,11 @@ public class KnockbackResistance extends AttributeModifingEffect {
     @Override
     protected EquipmentSlotGroup getTargetSlot(ItemStack itemStack) {
         return EquipmentSlotGroup.FEET;
+    }
+
+    @Override
+    public void onReinforcementIncreased(ItemStack itemStack, int previousReinforcement, int currentReinforcement) {
+        if (currentReinforcement >= 10)
+            super.onReinforcementIncreased(itemStack, previousReinforcement, currentReinforcement);
     }
 }

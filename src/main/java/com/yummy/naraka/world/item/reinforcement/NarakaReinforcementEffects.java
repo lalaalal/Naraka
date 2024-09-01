@@ -7,6 +7,7 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -24,6 +25,11 @@ public class NarakaReinforcementEffects {
 
     public static final Holder<ReinforcementEffect> KNOCKBACK_RESISTANCE = register(
             "knockback_resistance", new KnockbackResistance()
+    );
+
+    public static final Holder<ReinforcementEffect> IGNORE_WATER_PUSH = register(
+            "ignore_water_push",
+            (entity, equipmentSlot, itemStack, reinforcement) -> equipmentSlot == EquipmentSlot.LEGS && reinforcement == 10
     );
 
     private static Holder<ReinforcementEffect> register(String name, ReinforcementEffect effect) {
@@ -60,6 +66,7 @@ public class NarakaReinforcementEffects {
         add(ItemTags.SWORDS, DAMAGE_INCREASE);
         add(ItemTags.TRIDENT_ENCHANTABLE, DAMAGE_INCREASE);
         add(ItemTags.ARMOR_ENCHANTABLE, DEFENCE_INCREASE);
+        add(ItemTags.LEG_ARMOR_ENCHANTABLE, IGNORE_WATER_PUSH);
         add(ItemTags.FOOT_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);
     }
 }

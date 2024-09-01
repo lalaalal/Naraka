@@ -1,0 +1,40 @@
+package com.yummy.naraka.mixin;
+
+import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
+import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
+import com.yummy.naraka.world.item.reinforcement.Reinforcement;
+import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
+import net.minecraft.core.Holder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+@Mixin(Entity.class)
+public abstract class EntityMixin {
+    @Inject(method = "updateInWaterStateAndDoWaterCurrentPushing", at = @At("HEAD"), cancellable = true)
+    protected void updateInWaterStateAndDoWaterCurrentPushing(CallbackInfo ci) {
+        if (self() instanceof LivingEntity livingEntity) {
+            for (ItemStack itemStack : livingEntity.getArmorSlots()) {
+                EquipmentSlot slot = livingEntity.getEquipmentSlotForItem(itemStack);
+                Reinforcement reinforcement = itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, Reinforcement.ZERO);
+                for (Holder<ReinforcementEffect> effect : reinforcement.effects()) {
+                    if (effect == NarakaReinforcementEffects.IGNORE_WATER_PUSH
+                            && effect.value().canApply(livingEntity, slot, itemStack, reinforcement.value())) {
+                        ci.cancel();
+                    }
+                }
+            }
+        }
+    }
+
+    @Unique
+    private Entity self() {
+        return (Entity) (Object) this;
+    }
+}

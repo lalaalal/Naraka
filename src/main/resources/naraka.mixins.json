@@ -3,6 +3,7 @@
     "package": "com.yummy.naraka.mixin",
     "compatibilityLevel": "JAVA_21",
     "mixins": [
+        "EntityMixin",
         "FeatureMixin",
         "LivingEntityMixin",
         "ServerEntityMixin",
