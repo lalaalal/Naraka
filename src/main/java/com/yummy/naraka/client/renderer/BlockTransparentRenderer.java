@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -83,13 +84,14 @@ public class BlockTransparentRenderer implements IdentifiableResourceReloadListe
     public void renderTransparentBlock(BlockState state, PoseStack poseStack, MultiBufferSource bufferSource, float alpha, int packedLight, int packedOverlay) {
         if (isRendererLoaded() && state.getRenderShape() == RenderShape.MODEL) {
             BakedModel bakedModel = blockRenderer.getBlockModel(state);
+            RenderType renderType = Minecraft.useShaderTransparency() ? Sheets.translucentItemSheet() : Sheets.translucentCullBlockSheet();
             int color = this.blockColors.getColor(state, null, null, 0);
             float red = (float) (color >> 16 & 0xFF) / 255.0F;
             float green = (float) (color >> 8 & 0xFF) / 255.0F;
             float blue = (float) (color & 0xFF) / 255.0F;
             renderModel(
                     poseStack.last(),
-                    bufferSource.getBuffer(Sheets.translucentCullBlockSheet()),
+                    bufferSource.getBuffer(renderType),
                     state,
                     bakedModel,
                     red, green, blue, alpha,
