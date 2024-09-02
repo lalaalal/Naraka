@@ -77,7 +77,7 @@ public class NarakaGameEvents {
                 Reinforcement reinforcement = itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, Reinforcement.ZERO);
                 EquipmentSlot slot = livingEntity.getEquipmentSlotForItem(itemStack);
                 for (Holder<ReinforcementEffect> effect : reinforcement.effects()) {
-                    if (reinforcement.canApplyEffect(effect, livingEntity, slot, itemStack))
+                    if (effect.value().canApply(livingEntity, slot, itemStack, reinforcement.value()))
                         effect.value().onEquipped(livingEntity, slot, itemStack);
                 }
             }

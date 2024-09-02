@@ -52,9 +52,10 @@ public class NarakaModClient implements ClientModInitializer {
         NarakaNetworks.initializeClient();
         NarakaClientEvents.initialize();
 
-        ResourceManagerHelper clientResourceManagerHelper = ResourceManagerHelper.get(PackType.CLIENT_RESOURCES);
-        clientResourceManagerHelper.registerReloadListener(SpearItemRenderer.INSTANCE);
-        clientResourceManagerHelper.registerReloadListener(NarakaCustomRenderer.INSTANCE);
+        ResourceManagerHelper resourceManagerHelper = ResourceManagerHelper.get(PackType.CLIENT_RESOURCES);
+        resourceManagerHelper.registerReloadListener(SpearItemRenderer.INSTANCE);
+        resourceManagerHelper.registerReloadListener(NarakaCustomRenderer.INSTANCE);
+        resourceManagerHelper.registerReloadListener(BlockTransparentRenderer.INSTANCE);
     }
 
     private void initializeItems() {

@@ -1,5 +1,6 @@
 package com.yummy.naraka.util;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.Vec3;
@@ -35,8 +36,8 @@ public class NarakaUtils {
         }
     }
 
-    public static void sphere(BoundingBox box, float size, Consumer<Vec3i> consumer) {
-        sphere(box, size, (x, y, z) -> consumer.accept(new Vec3i(x, y, z)));
+    public static void sphere(BoundingBox box, float size, Consumer<BlockPos> consumer) {
+        sphere(box, size, (x, y, z) -> consumer.accept(new BlockPos(x, y, z)));
     }
 
     public static boolean isInSphere(BoundingBox box, float size, int x, int y, int z) {
@@ -59,5 +60,9 @@ public class NarakaUtils {
 
     public static Vec3 vec3(Vec3i pos) {
         return new Vec3(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public static BlockPos pos(Vec3 pos) {
+        return new BlockPos((int) pos.x, (int) pos.y, (int) pos.z);
     }
 }

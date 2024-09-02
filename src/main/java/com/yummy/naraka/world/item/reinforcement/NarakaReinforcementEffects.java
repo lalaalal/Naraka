@@ -35,6 +35,10 @@ public class NarakaReinforcementEffects {
             "flying", new Flying()
     );
 
+    public static final Holder<ReinforcementEffect> ORE_SEE_THROUGH = register(
+            "ore_see_through", new SimpleReinforcementEffect(EquipmentSlot.HEAD, 10)
+    );
+
     private static Holder<ReinforcementEffect> register(String name, ReinforcementEffect effect) {
         return Registry.registerForHolder(NarakaRegistries.REINFORCEMENT_EFFECT, NarakaMod.location(name), effect);
     }
@@ -69,6 +73,7 @@ public class NarakaReinforcementEffects {
         add(ItemTags.SWORDS, DAMAGE_INCREASE);
         add(ItemTags.TRIDENT_ENCHANTABLE, DAMAGE_INCREASE);
         add(ItemTags.ARMOR_ENCHANTABLE, ARMOR_INCREASE);
+        add(ItemTags.HEAD_ARMOR_ENCHANTABLE, ORE_SEE_THROUGH);
         add(ItemTags.CHEST_ARMOR_ENCHANTABLE, FLYING);
         add(ItemTags.LEG_ARMOR_ENCHANTABLE, IGNORE_LIQUID_PUSH);
         add(ItemTags.FOOT_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);
