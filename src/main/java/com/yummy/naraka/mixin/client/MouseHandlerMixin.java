@@ -24,6 +24,7 @@ public abstract class MouseHandlerMixin {
     public boolean allowSpectatorFlyingSpeedForFlyingReinforcementEffect(boolean original) {
         return original || (minecraft.player != null
                 && minecraft.player.getAbilities().flying
+                && minecraft.player.isSprinting()
                 && NarakaItemUtils.canApplyReinforcementEffect(minecraft.player, EquipmentSlot.CHEST, NarakaReinforcementEffects.FLYING));
     }
 }
