@@ -1,8 +1,12 @@
 package com.yummy.naraka.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -27,6 +31,14 @@ public abstract class LivingEntityMixin {
     public void remove(Entity.RemovalReason removalReason, CallbackInfo ci) {
         if (removalReason.shouldDestroy())
             EntityDataHelper.removeEntityData(self());
+    }
+
+    @ModifyReturnValue(method = "getWaterSlowDown", at = @At("RETURN"))
+    protected float getWaterSlowDown(float original) {
+        if (NarakaItemUtils.canApplyReinforcementEffect(
+                self(), EquipmentSlot.CHEST, NarakaReinforcementEffects.FASTER_LIQUID_SWIMMING
+        )) return -original;
+        return original;
     }
 
     @Unique
