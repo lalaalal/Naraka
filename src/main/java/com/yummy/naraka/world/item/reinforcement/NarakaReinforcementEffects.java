@@ -28,7 +28,7 @@ public class NarakaReinforcementEffects {
     );
 
     public static final Holder<ReinforcementEffect> FASTER_LIQUID_SWIMMING = register(
-            "faster_liquid_swimming", new SimpleReinforcementEffect(EquipmentSlot.LEGS, 10)
+            "faster_liquid_swimming", new FasterLiquidSwimming()
     );
 
     public static final Holder<ReinforcementEffect> FLYING = register(
