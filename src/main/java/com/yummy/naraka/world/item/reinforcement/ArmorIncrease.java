@@ -10,9 +10,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class ArmorIncrease extends AttributeModifyingEffect {
+    private static final Set<EquipmentSlot> SLOTS = Set.of(
+        EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET
+    );
+
     private static final int[] DEFENCE_POINTS = {
             1, 1, 2, 2, 2, 3, 3, 6, 12, 50
     };
@@ -31,6 +36,11 @@ public class ArmorIncrease extends AttributeModifyingEffect {
     @Override
     public boolean canApply(LivingEntity entity, EquipmentSlot equipmentSlot, ItemStack itemStack, int reinforcement) {
         return itemStack.is(ItemTags.ARMOR_ENCHANTABLE);
+    }
+
+    @Override
+    public Set<EquipmentSlot> getAvailableSlots() {
+        return SLOTS;
     }
 
     @Override

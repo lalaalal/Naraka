@@ -53,6 +53,24 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
         return new Reinforcement(0, HolderSet.direct(effect));
     }
 
+    public static Reinforcement get(ItemStack itemStack) {
+        return itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, ZERO);
+    }
+
+    public static boolean canReinforce(ItemStack itemStack) {
+        Reinforcement reinforcement = itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, ZERO);
+        return reinforcement.value < MAX_VALUE;
+    }
+
+    /**
+     * Increase reinforcement of given item<br>
+     * If item doesn't have reinforcement, given effects will be applied
+     * 
+     * @param itemStack Item to increase reinforcement
+     * @param effects Applying effects if item doesn't have reinforcement
+     * @return True if succeed, false if value is bigger than {@linkplain #MAX_VALUE}
+     * @see Reinforcement#increase(ItemStack, Holder)
+     */
     public static boolean increase(ItemStack itemStack, HolderSet<ReinforcementEffect> effects) {
         Reinforcement original = itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, zero(effects));
         if (original.value >= MAX_VALUE)
@@ -69,17 +87,17 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
         return increase(itemStack, HolderSet.direct(effect));
     }
 
+    /**
+     * Use {@link Reinforcement#increase(ItemStack, HolderSet)} to update effects
+     * 
+     * @return Increased reinforcement
+     */
     public Reinforcement increase() {
         return new Reinforcement(value + 1, effects);
     }
 
     public boolean canApplyEffect(Holder<ReinforcementEffect> effect, LivingEntity entity, EquipmentSlot slot, ItemStack itemStack) {
         return effects.contains(effect) && effect.value().canApply(entity, slot, itemStack, MAX_VALUE);
-    }
-
-    public static boolean canReinforce(ItemStack itemStack) {
-        Reinforcement reinforcement = itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, ZERO);
-        return reinforcement.value < MAX_VALUE;
     }
 
     @Override

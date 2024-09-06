@@ -68,7 +68,7 @@ public class NarakaLanguageProviders {
 
     protected void generate() {
         add("itemGroup.naraka", "Naraka", "Naraka");
-        add("itemGroup.naraka.test", "Naraka Test", "나락!");
+        add("itemGroup.naraka.test", "Naraka Test", "나락! 테스트");
         add("container.soul_crafting", "Soul Crafter", "영혼 세공기");
         add(REINFORCEMENT_KEY, "Reinforcement: %d", "강화: %d");
         add(PURIFIED_SOUL_UPGRADE_KEY, "Purified Soul Upgrade", "정화된 영혼 강화");
@@ -86,8 +86,8 @@ public class NarakaLanguageProviders {
         addReinforcementEffect(NarakaReinforcementEffects.DAMAGE_INCREASE, "Increase attack damage", "공격력 증가");
         addReinforcementEffect(NarakaReinforcementEffects.ARMOR_INCREASE, "Increase armor", "방어력 증가");
         addReinforcementEffect(NarakaReinforcementEffects.KNOCKBACK_RESISTANCE, "Knockback resistance", "넉백 저항");
-        addReinforcementEffect(NarakaReinforcementEffects.FASTER_LIQUID_SWIMMING, "Faster liquid swimming");
-        addReinforcementEffect(NarakaReinforcementEffects.FLYING, "Flying", "비행");
+        addReinforcementEffect(NarakaReinforcementEffects.FASTER_LIQUID_SWIMMING, "Increase liquid swimming speed", "액체 수영 속도 증가");
+        addReinforcementEffect(NarakaReinforcementEffects.FLYING, "Flying (Scroll!)", "비행 (스크롤!)");
         addReinforcementEffect(NarakaReinforcementEffects.ORE_SEE_THROUGH, "Ore see through", "광물 투시");
 
         addTrimPattern(NarakaTrimPatterns.PURIFIED_SOUL_SILENCE, "Purified Soul Silence Armor Trim", "정화된 영혼 고요 갑옷 장식");
@@ -237,6 +237,7 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.FORGING_BLOCK, "Forging Block", "단조 블록");
         addBlock(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Nectarium Core", "넥타륨 코어");
         addBlock(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, "Nectarium Crystal", "넥타륨 결정");
+        addBlock(NarakaBlocks.NARAKA_FORGING_BLOCK, "Naraka Forging Block", "나락의 단조 블록");
 
         addTooltip(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Honey is dripping", "꿀이 뚝뚝 떨어져");
         addTooltip(NarakaBlocks.FORGING_BLOCK, "Smash item with a hammer...?", "아이템을 망치로 부수기..?");

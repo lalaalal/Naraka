@@ -18,9 +18,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(WanderingTrader.class)
 public abstract class WanderingTraderMixin extends AbstractVillager {
     @Unique
-    private static final VillagerTrades.ItemListing[] TRADES = new VillagerTrades.ItemListing[]{
+    private static final VillagerTrades.ItemListing[] TRADES = new VillagerTrades.ItemListing[] {
             new VillagerTrades.ItemsForEmeralds(NarakaItems.SANCTUARY_COMPASS, 30, 1, 1, 1),
-            new VillagerTrades.ItemsForEmeralds(NarakaBlocks.NECTARIUM_CORE_BLOCK, 30, 1, 1, 1)
+            new VillagerTrades.ItemsForEmeralds(NarakaBlocks.NECTARIUM_CORE_BLOCK, 8, 1, 1, 1)
     };
 
     public WanderingTraderMixin(EntityType<? extends AbstractVillager> entityType, Level level) {
@@ -28,7 +28,7 @@ public abstract class WanderingTraderMixin extends AbstractVillager {
     }
 
     @Inject(method = "updateTrades", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/trading/MerchantOffers;add(Ljava/lang/Object;)Z"), cancellable = true)
-    protected void updateTrades(CallbackInfo ci) {
+    protected void addNarakaItemsToTrades(CallbackInfo ci) {
         if (random.nextFloat() < 0.1) {
             MerchantOffers merchantOffers = getOffers();
             int index = random.nextInt(TRADES.length);

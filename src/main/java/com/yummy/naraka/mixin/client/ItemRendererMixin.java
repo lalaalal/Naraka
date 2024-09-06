@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    public void render(ItemStack itemStack, ItemDisplayContext itemDisplayContext, boolean bl, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, int overlay, BakedModel bakedModel, CallbackInfo ci) {
+    public void renderCustom(ItemStack itemStack, ItemDisplayContext itemDisplayContext, boolean bl, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, int overlay, BakedModel bakedModel, CallbackInfo ci) {
         if (CustomItemRenderManager.hasCustomRenderer(itemStack)) {
             CustomItemRenderManager.CustomItemRenderer itemRenderer = CustomItemRenderManager.getCustomRenderer(itemStack);
             if (itemRenderer.shouldRenderCustom(itemStack, itemDisplayContext)) {

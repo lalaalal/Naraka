@@ -17,7 +17,7 @@ public abstract class ServerPlayerGameModeMixin {
     protected ServerPlayer player;
 
     @Inject(method = "setGameModeForPlayer", at = @At("RETURN"))
-    public void setGameModeForPlayer(CallbackInfo ci) {
+    public void updateReinforcementEffects(CallbackInfo ci) {
         NarakaItemUtils.updateReinforcementEffects(player);
     }
 }

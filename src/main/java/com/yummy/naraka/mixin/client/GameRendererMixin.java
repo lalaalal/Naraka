@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.yummy.naraka.client.renderer.BlockTransparentRenderer;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.util.NarakaUtils;
-import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
@@ -22,7 +21,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -65,7 +63,7 @@ public abstract class GameRendererMixin {
         LocalPlayer player = minecraft.player;
         ClientLevel level = minecraft.level;
         if (player == null || level == null || poseStack == null
-                || !NarakaItemUtils.canApplyReinforcementEffect(player, EquipmentSlot.HEAD, NarakaReinforcementEffects.ORE_SEE_THROUGH))
+                || !NarakaItemUtils.canApplyOreSeeThrough(player))
             return;
         Vec3 cameraPosition = mainCamera.getPosition();
         BlockPos cameraBlockPos = NarakaUtils.pos(cameraPosition).offset(0, 0, -1);

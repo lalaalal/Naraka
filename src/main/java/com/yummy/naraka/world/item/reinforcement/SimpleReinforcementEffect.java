@@ -1,27 +1,34 @@
 package com.yummy.naraka.world.item.reinforcement;
 
+import java.util.Collection;
+import java.util.Set;
+
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 public class SimpleReinforcementEffect implements ReinforcementEffect {
-    private final EquipmentSlotGroup slots;
+    private final Set<EquipmentSlot> slots;
     private final int requiredReinforcement;
 
-    public SimpleReinforcementEffect(EquipmentSlotGroup slots, int requiredReinforcement) {
-        this.slots = slots;
+    public SimpleReinforcementEffect(Collection<EquipmentSlot> slots, int requiredReinforcement) {
+        this.slots = Set.copyOf(slots);
         this.requiredReinforcement = requiredReinforcement;
     }
 
     public SimpleReinforcementEffect(EquipmentSlot slot, int requiredReinforcement) {
-        this.slots = EquipmentSlotGroup.bySlot(slot);
+        this.slots = Set.of(slot);
         this.requiredReinforcement = requiredReinforcement;
     }
 
     @Override
+    public Set<EquipmentSlot> getAvailableSlots() {
+        return slots;
+    }
+
+    @Override
     public boolean canApply(LivingEntity entity, EquipmentSlot equipmentSlot, ItemStack itemStack, int reinforcement) {
-        return slots.test(equipmentSlot) && reinforcement >= requiredReinforcement;
+        return slots.contains(equipmentSlot) && reinforcement >= requiredReinforcement;
     }
     
     @Override

@@ -1,5 +1,7 @@
 package com.yummy.naraka.world.item.reinforcement;
 
+import java.util.Set;
+
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
@@ -8,6 +10,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
 public class DamageIncrease extends AttributeModifyingEffect {
+    private static final Set<EquipmentSlot> SLOTS = Set.of(EquipmentSlot.MAINHAND);
+
     @Override
     public boolean canApply(LivingEntity entity, EquipmentSlot equipmentSlot, ItemStack itemStack, int reinforcement) {
         return equipmentSlot == EquipmentSlot.MAINHAND;
@@ -15,6 +19,11 @@ public class DamageIncrease extends AttributeModifyingEffect {
 
     public DamageIncrease() {
         super(Attributes.ATTACK_DAMAGE);
+    }
+
+    @Override
+    public Set<EquipmentSlot> getAvailableSlots() {
+        return SLOTS;
     }
 
     @Override

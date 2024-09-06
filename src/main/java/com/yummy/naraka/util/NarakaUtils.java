@@ -7,9 +7,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Consumer;
 
-/**
- * NarakaUtils
- */
 public class NarakaUtils {
     public interface PositionConsumer {
         void accept(int x, int y, int z);

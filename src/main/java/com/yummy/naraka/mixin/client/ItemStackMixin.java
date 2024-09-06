@@ -28,7 +28,7 @@ public abstract class ItemStackMixin implements DataComponentHolder {
     protected abstract <T extends TooltipProvider> void addToTooltip(DataComponentType<T> dataComponentType, Item.TooltipContext tooltipContext, Consumer<Component> consumer, TooltipFlag tooltipFlag);
 
     @Inject(method = "getTooltipLines", at = @At("RETURN"))
-    public void getTooltipLines(Item.TooltipContext tooltipContext, Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir) {
+    public void addReinforcementTooltips(Item.TooltipContext tooltipContext, Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir) {
         List<Component> original = cir.getReturnValue();
         if (original.isEmpty())
             return;

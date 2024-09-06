@@ -1,11 +1,9 @@
 package com.yummy.naraka.mixin;
 
 import com.yummy.naraka.util.NarakaItemUtils;
-import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
@@ -52,9 +50,9 @@ public abstract class EntityMixin {
     }
 
     @Inject(method = "updateSwimming", at = @At("HEAD"), cancellable = true)
-    public void updateSwimming(CallbackInfo ci) {
+    public void updateSwimmingForFasterLiquidSwimming(CallbackInfo ci) {
         if (self() instanceof LivingEntity livingEntity
-                && NarakaItemUtils.canApplyReinforcementEffect(livingEntity, EquipmentSlot.LEGS, NarakaReinforcementEffects.FASTER_LIQUID_SWIMMING)) {
+                && NarakaItemUtils.canApplyFasterLiquidSwimming(livingEntity)) {
             if (isSwimming()) {
                 this.setSwimming(this.isSprinting() && this.isInLiquid() && !this.isPassenger());
             } else {

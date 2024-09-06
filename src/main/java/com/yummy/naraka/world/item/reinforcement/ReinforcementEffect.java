@@ -1,11 +1,20 @@
 package com.yummy.naraka.world.item.reinforcement;
 
+import java.util.Set;
+
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 public interface ReinforcementEffect {
     boolean canApply(LivingEntity entity, EquipmentSlot equipmentSlot, ItemStack itemStack, int reinforcement);
+
+    /**
+     * @return Slots effect can be applied
+     */
+    default Set<EquipmentSlot> getAvailableSlots() {
+        return Set.of();
+    }
 
     default boolean showInTooltip(int reinforcement) {
         return true;

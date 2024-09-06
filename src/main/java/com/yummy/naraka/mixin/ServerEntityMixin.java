@@ -24,8 +24,13 @@ public abstract class ServerEntityMixin {
     @Final
     private Entity entity;
 
+    /**
+     * Synchronize entity data
+     * 
+     * @see 
+     */
     @Inject(method = "addPairing", at = @At("RETURN"))
-    public void addParing(ServerPlayer serverPlayer, CallbackInfo ci) {
+    public void addParingEntityData(ServerPlayer serverPlayer, CallbackInfo ci) {
         if (entity instanceof LivingEntity livingEntity) {
             HolderSet<EntityDataType<?>> entityDataTypes = HolderSet.direct(
                     NarakaRegistries.ENTITY_DATA_TYPE.holders()

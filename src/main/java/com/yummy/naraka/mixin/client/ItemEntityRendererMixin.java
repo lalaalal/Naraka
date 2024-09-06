@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(EntityRenderer.class)
 public abstract class ItemEntityRendererMixin {
     @Inject(method = "shouldRender", at = @At("HEAD"), cancellable = true)
-    public void shouldRender(Entity entity, Frustum frustum, double d, double e, double f, CallbackInfoReturnable<Boolean> cir) {
+    public void checkAlwaysRender(Entity entity, Frustum frustum, double d, double e, double f, CallbackInfoReturnable<Boolean> cir) {
         if (entity instanceof ItemEntity itemEntity
                 && itemEntity.getItem().is(NarakaItemTags.ALWAYS_RENDER_ITEM_ENTITY)) {
             cir.setReturnValue(true);
