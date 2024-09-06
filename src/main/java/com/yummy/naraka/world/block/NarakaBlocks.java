@@ -161,6 +161,11 @@ public class NarakaBlocks {
             Blocks.NETHER_BRICKS
     );
 
+    public static final NarakaForgingBlock NARAKA_FORGING_BLOCK = registerBlockWithItem(
+            "naraka_forging_block",
+            NarakaForgingBlock::new,
+            Blocks.ANVIL
+    );
 
     public static final List<Block> SOUL_INFUSED_BLOCKS = List.of(
             SOUL_INFUSED_REDSTONE_BLOCK,

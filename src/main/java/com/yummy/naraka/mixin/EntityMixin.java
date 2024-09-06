@@ -60,7 +60,6 @@ public abstract class EntityMixin {
             } else {
                 this.setSwimming(this.isSprinting() && this.isUnderLiquid() && !this.isPassenger() && !level.getFluidState(blockPosition).isEmpty());
             }
-
             ci.cancel();
         }
     }

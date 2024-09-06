@@ -1,30 +1,30 @@
 package com.yummy.naraka.mixin;
 
+import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
-import net.minecraft.core.Holder;
+import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
+    @Shadow
+    public abstract float getSpeed();
+
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
-
-    @Shadow
-    public abstract double getAttributeValue(Holder<Attribute> attribute);
 
     @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
     public void addAdditionalSaveData(CompoundTag compoundTag, CallbackInfo ci) {
@@ -38,17 +38,16 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "remove", at = @At("RETURN"))
-    public void remove(Entity.RemovalReason removalReason, CallbackInfo ci) {
+    public void remove(RemovalReason removalReason, CallbackInfo ci) {
         if (removalReason.shouldDestroy())
             EntityDataHelper.removeEntityData(self());
     }
 
-    @Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInLava()Z", shift = At.Shift.AFTER))
-    protected void travel(Vec3 travelVector, CallbackInfo ci) {
-        if (isInLava()) {
-            double waterMovementEfficiency = getAttributeValue(Attributes.WATER_MOVEMENT_EFFICIENCY) * 2;
-            setDeltaMovement(getDeltaMovement().multiply(waterMovementEfficiency, 1, waterMovementEfficiency));
-        }
+    @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V"))
+    public float increaseSpeedInLiquid(float scale) {
+        if (NarakaItemUtils.canApplyReinforcementEffect(self(), EquipmentSlot.LEGS, NarakaReinforcementEffects.FASTER_LIQUID_SWIMMING))
+            return scale * 5;
+        return scale;
     }
 
     @Unique

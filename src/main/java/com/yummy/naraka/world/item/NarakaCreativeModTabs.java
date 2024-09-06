@@ -136,6 +136,7 @@ public class NarakaCreativeModTabs {
 
         output.accept(NarakaBlocks.NECTARIUM_ORE);
         output.accept(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
+        output.accept(NarakaBlocks.NARAKA_FORGING_BLOCK);
     }
 
     private static void modifyBuildingBlocksTab(FabricItemGroupEntries entries) {
