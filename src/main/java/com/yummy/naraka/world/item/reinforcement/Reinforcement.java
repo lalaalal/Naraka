@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.data.lang.NarakaLanguageProviders;
+import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -20,8 +21,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
+/**
+ * Reinforcement for item
+ *
+ * @param value   Actual reinforcement value
+ * @param effects Reinforcement effect holders
+ * @see NarakaItemUtils
+ */
 public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) implements TooltipProvider {
     public static final Reinforcement ZERO = new Reinforcement(0, HolderSet.empty());
     public static final int MAX_VALUE = 10;
@@ -58,6 +67,8 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
     }
 
     public static boolean canReinforce(ItemStack itemStack) {
+        if (itemStack.isEmpty())
+            return false;
         Reinforcement reinforcement = itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, ZERO);
         return reinforcement.value < MAX_VALUE;
     }
@@ -65,10 +76,10 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
     /**
      * Increase reinforcement of given item<br>
      * If item doesn't have reinforcement, given effects will be applied
-     * 
+     *
      * @param itemStack Item to increase reinforcement
-     * @param effects Applying effects if item doesn't have reinforcement
-     * @return True if succeed, false if value is bigger than {@linkplain #MAX_VALUE}
+     * @param effects   Applying effects if item doesn't have reinforcement
+     * @return True if succeeded, false if value is bigger than {@linkplain #MAX_VALUE}
      * @see Reinforcement#increase(ItemStack, Holder)
      */
     public static boolean increase(ItemStack itemStack, HolderSet<ReinforcementEffect> effects) {
@@ -89,7 +100,7 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
 
     /**
      * Use {@link Reinforcement#increase(ItemStack, HolderSet)} to update effects
-     * 
+     *
      * @return Increased reinforcement
      */
     public Reinforcement increase() {
@@ -106,7 +117,7 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
             Component reinforcementComponent = Component.translatable(NarakaLanguageProviders.REINFORCEMENT_KEY, value)
                     .withStyle(ChatFormatting.YELLOW);
             appender.accept(reinforcementComponent);
-            
+
             for (Holder<ReinforcementEffect> effect : effects) {
                 if (effect.value().showInTooltip(value)) {
                     String key = NarakaLanguageProviders.reinforcementEffectKey(effect);
@@ -116,5 +127,17 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
                 }
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Reinforcement that)) return false;
+        return value == that.value && Objects.equals(effects, that.effects);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, effects);
     }
 }

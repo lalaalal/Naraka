@@ -26,8 +26,6 @@ public abstract class ServerEntityMixin {
 
     /**
      * Synchronize entity data
-     * 
-     * @see 
      */
     @Inject(method = "addPairing", at = @At("RETURN"))
     public void addParingEntityData(ServerPlayer serverPlayer, CallbackInfo ci) {

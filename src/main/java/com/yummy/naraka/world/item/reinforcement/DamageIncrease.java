@@ -1,13 +1,13 @@
 package com.yummy.naraka.world.item.reinforcement;
 
-import java.util.Set;
-
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.Set;
 
 public class DamageIncrease extends AttributeModifyingEffect {
     private static final Set<EquipmentSlot> SLOTS = Set.of(EquipmentSlot.MAINHAND);

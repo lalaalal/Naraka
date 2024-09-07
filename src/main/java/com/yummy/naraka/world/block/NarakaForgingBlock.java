@@ -22,6 +22,6 @@ public class NarakaForgingBlock extends Block {
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         while (Reinforcement.canReinforce(stack))
             Reinforcement.increase(stack, NarakaReinforcementEffects.get(stack));
-        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+        return ItemInteractionResult.SUCCESS;
     }
 }

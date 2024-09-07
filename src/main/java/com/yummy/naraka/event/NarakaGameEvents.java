@@ -1,6 +1,7 @@
 package com.yummy.naraka.event;
 
 import com.yummy.naraka.network.NarakaNetworks;
+import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.HerobrineTotemBlockEntity;
@@ -89,15 +90,16 @@ public class NarakaGameEvents {
     }
 
     private static void handleReinforcementEffect(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack previousStack, ItemStack currentStack) {
-        Reinforcement previousItemReinforcement = previousStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, Reinforcement.ZERO);
-        for (Holder<ReinforcementEffect> effect : previousItemReinforcement.effects())
-            effect.value().onUnequipped(livingEntity, equipmentSlot, previousStack);
-
-        Reinforcement currentItemReinforcement = currentStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, Reinforcement.ZERO);
-        for (Holder<ReinforcementEffect> effect : currentItemReinforcement.effects()) {
-            if (effect.value().canApply(livingEntity, equipmentSlot, currentStack, currentItemReinforcement.value()))
-                effect.value().onEquipped(livingEntity, equipmentSlot, currentStack);
+        if (Reinforcement.get(previousStack) == Reinforcement.get(currentStack)) {
+            NarakaItemUtils.checkAndUpdateReinforcementEffects(livingEntity, equipmentSlot, currentStack,
+                    ReinforcementEffect::onEquippedItemChanged);
+            return;
         }
+
+        NarakaItemUtils.updateReinforcementEffects(livingEntity, equipmentSlot, currentStack,
+                ReinforcementEffect::onUnequipped);
+        NarakaItemUtils.checkAndUpdateReinforcementEffects(livingEntity, equipmentSlot, currentStack,
+                ReinforcementEffect::onEquipped);
     }
 
     private static void onWorldLoad(MinecraftServer server, ServerLevel level) {

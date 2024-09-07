@@ -32,17 +32,6 @@ public class NarakaItemUtils {
         return false;
     }
 
-    public static void updateReinforcementEffects(LivingEntity livingEntity) {
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            ItemStack itemStack = livingEntity.getItemBySlot(slot);
-            Reinforcement reinforcement = Reinforcement.get(itemStack);
-            for (Holder<ReinforcementEffect> effect : reinforcement.effects()) {
-                if (effect.value().canApply(livingEntity, slot, itemStack, reinforcement.value()))
-                    effect.value().onEquipped(livingEntity, slot, itemStack);
-            }
-        }
-    }
-
     public static boolean canApplyFlying(LivingEntity livingEntity) {
         return canApplyReinforcementEffect(livingEntity, NarakaReinforcementEffects.FLYING);
     }
@@ -50,8 +39,37 @@ public class NarakaItemUtils {
     public static boolean canApplyOreSeeThrough(LivingEntity livingEntity) {
         return canApplyReinforcementEffect(livingEntity, NarakaReinforcementEffects.ORE_SEE_THROUGH);
     }
-    
+
     public static boolean canApplyFasterLiquidSwimming(LivingEntity livingEntity) {
         return canApplyReinforcementEffect(livingEntity, NarakaReinforcementEffects.FASTER_LIQUID_SWIMMING);
+    }
+
+    public static void checkAndUpdateReinforcementEffects(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack itemStack, EquippedItemChangeListener listener) {
+        Reinforcement reinforcement = Reinforcement.get(itemStack);
+        for (Holder<ReinforcementEffect> holder : reinforcement.effects()) {
+            ReinforcementEffect effect = holder.value();
+            if (effect.canApply(livingEntity, equipmentSlot, itemStack, reinforcement.value()))
+                listener.onChange(effect, livingEntity, equipmentSlot, itemStack);
+        }
+    }
+
+    public static void updateReinforcementEffects(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack itemStack, EquippedItemChangeListener listener) {
+        Reinforcement reinforcement = Reinforcement.get(itemStack);
+        for (Holder<ReinforcementEffect> holder : reinforcement.effects()) {
+            ReinforcementEffect effect = holder.value();
+            listener.onChange(effect, livingEntity, equipmentSlot, itemStack);
+        }
+    }
+
+    public static void updateAllReinforcementEffects(LivingEntity livingEntity) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            ItemStack itemStack = livingEntity.getItemBySlot(slot);
+            checkAndUpdateReinforcementEffects(livingEntity, slot, itemStack, ReinforcementEffect::onEquipped);
+        }
+    }
+
+    @FunctionalInterface
+    public interface EquippedItemChangeListener {
+        void onChange(ReinforcementEffect effect, LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack itemStack);
     }
 }

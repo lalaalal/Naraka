@@ -18,6 +18,6 @@ public abstract class ServerPlayerGameModeMixin {
 
     @Inject(method = "setGameModeForPlayer", at = @At("RETURN"))
     public void updateReinforcementEffects(CallbackInfo ci) {
-        NarakaItemUtils.updateReinforcementEffects(player);
+        NarakaItemUtils.updateAllReinforcementEffects(player);
     }
 }

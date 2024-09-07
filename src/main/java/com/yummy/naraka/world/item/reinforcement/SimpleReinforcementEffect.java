@@ -1,11 +1,11 @@
 package com.yummy.naraka.world.item.reinforcement;
 
-import java.util.Collection;
-import java.util.Set;
-
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.Collection;
+import java.util.Set;
 
 public class SimpleReinforcementEffect implements ReinforcementEffect {
     private final Set<EquipmentSlot> slots;
@@ -30,7 +30,7 @@ public class SimpleReinforcementEffect implements ReinforcementEffect {
     public boolean canApply(LivingEntity entity, EquipmentSlot equipmentSlot, ItemStack itemStack, int reinforcement) {
         return slots.contains(equipmentSlot) && reinforcement >= requiredReinforcement;
     }
-    
+
     @Override
     public boolean showInTooltip(int reinforcement) {
         return reinforcement >= requiredReinforcement;

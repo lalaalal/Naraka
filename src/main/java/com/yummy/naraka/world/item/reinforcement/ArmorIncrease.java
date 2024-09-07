@@ -15,7 +15,7 @@ import java.util.function.Predicate;
 
 public class ArmorIncrease extends AttributeModifyingEffect {
     private static final Set<EquipmentSlot> SLOTS = Set.of(
-        EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET
+            EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET
     );
 
     private static final int[] DEFENCE_POINTS = {

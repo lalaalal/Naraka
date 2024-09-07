@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(WanderingTrader.class)
 public abstract class WanderingTraderMixin extends AbstractVillager {
     @Unique
-    private static final VillagerTrades.ItemListing[] TRADES = new VillagerTrades.ItemListing[] {
+    private static final VillagerTrades.ItemListing[] TRADES = new VillagerTrades.ItemListing[]{
             new VillagerTrades.ItemsForEmeralds(NarakaItems.SANCTUARY_COMPASS, 30, 1, 1, 1),
             new VillagerTrades.ItemsForEmeralds(NarakaBlocks.NECTARIUM_CORE_BLOCK, 8, 1, 1, 1)
     };

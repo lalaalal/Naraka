@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.Optional;
 
 public class ForgingBlockEntity extends BlockEntity {
-    public static final int MAX_REINFORCEMENT = 10;
     public static final float SUCCESS_CHANCE = 0.5f;
 
     private ItemStack itemStack = ItemStack.EMPTY;
@@ -50,7 +49,7 @@ public class ForgingBlockEntity extends BlockEntity {
 
     public boolean tryReinforce() {
         if (itemStack.isEmpty() || !Reinforcement.canReinforce(itemStack)
-                || level == null || level.isClientSide 
+                || level == null || level.isClientSide
                 || cooldownTick > 0)
             return false;
         if (level.random.nextFloat() < SUCCESS_CHANCE) {
