@@ -4,21 +4,16 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.Collection;
 import java.util.Set;
 
 public class SimpleReinforcementEffect implements ReinforcementEffect {
-    private final Set<EquipmentSlot> slots;
     private final int requiredReinforcement;
+    private final Set<EquipmentSlot> slots;
 
-    public SimpleReinforcementEffect(Collection<EquipmentSlot> slots, int requiredReinforcement) {
-        this.slots = Set.copyOf(slots);
-        this.requiredReinforcement = requiredReinforcement;
-    }
 
-    public SimpleReinforcementEffect(EquipmentSlot slot, int requiredReinforcement) {
-        this.slots = Set.of(slot);
+    public SimpleReinforcementEffect(int requiredReinforcement, EquipmentSlot... slots) {
         this.requiredReinforcement = requiredReinforcement;
+        this.slots = Set.of(slots);
     }
 
     @Override

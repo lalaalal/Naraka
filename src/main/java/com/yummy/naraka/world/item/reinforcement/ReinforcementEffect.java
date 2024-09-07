@@ -12,9 +12,7 @@ public interface ReinforcementEffect {
     /**
      * @return Slots effect can be applied
      */
-    default Set<EquipmentSlot> getAvailableSlots() {
-        return Set.of();
-    }
+    Set<EquipmentSlot> getAvailableSlots();
 
     default boolean showInTooltip(int reinforcement) {
         return true;

@@ -7,23 +7,14 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.Set;
-
 public class DamageIncrease extends AttributeModifyingEffect {
-    private static final Set<EquipmentSlot> SLOTS = Set.of(EquipmentSlot.MAINHAND);
-
     @Override
     public boolean canApply(LivingEntity entity, EquipmentSlot equipmentSlot, ItemStack itemStack, int reinforcement) {
         return equipmentSlot == EquipmentSlot.MAINHAND;
     }
 
     public DamageIncrease() {
-        super(Attributes.ATTACK_DAMAGE);
-    }
-
-    @Override
-    public Set<EquipmentSlot> getAvailableSlots() {
-        return SLOTS;
+        super(Attributes.ATTACK_DAMAGE, EquipmentSlot.MAINHAND);
     }
 
     @Override

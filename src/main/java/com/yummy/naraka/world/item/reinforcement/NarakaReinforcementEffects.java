@@ -28,7 +28,7 @@ public class NarakaReinforcementEffects {
     );
 
     public static final Holder<ReinforcementEffect> FASTER_LIQUID_SWIMMING = register(
-            "faster_liquid_swimming", new SimpleReinforcementEffect(EquipmentSlot.LEGS, 10)
+            "faster_liquid_swimming", new SimpleReinforcementEffect(10, EquipmentSlot.LEGS)
     );
 
     public static final Holder<ReinforcementEffect> FLYING = register(
@@ -36,7 +36,7 @@ public class NarakaReinforcementEffects {
     );
 
     public static final Holder<ReinforcementEffect> ORE_SEE_THROUGH = register(
-            "ore_see_through", new SimpleReinforcementEffect(EquipmentSlot.HEAD, 10)
+            "ore_see_through", new SimpleReinforcementEffect(10, EquipmentSlot.HEAD)
     );
 
     private static Holder<ReinforcementEffect> register(String name, ReinforcementEffect effect) {

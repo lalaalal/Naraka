@@ -9,12 +9,12 @@ import net.minecraft.world.item.ItemStack;
 
 public class KnockbackResistance extends AttributeModifyingEffect {
     public KnockbackResistance() {
-        super(Attributes.KNOCKBACK_RESISTANCE);
+        super(Attributes.KNOCKBACK_RESISTANCE, EquipmentSlot.FEET);
     }
 
     @Override
     public boolean canApply(LivingEntity entity, EquipmentSlot equipmentSlot, ItemStack itemStack, int reinforcement) {
-        return equipmentSlot == EquipmentSlot.FEET && reinforcement >= 10;
+        return getAvailableSlots().contains(equipmentSlot) && reinforcement >= 10;
     }
 
     @Override

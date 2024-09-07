@@ -30,17 +30,12 @@ public class ArmorIncrease extends AttributeModifyingEffect {
     );
 
     public ArmorIncrease() {
-        super(Attributes.ARMOR);
+        super(Attributes.ARMOR, SLOTS);
     }
 
     @Override
     public boolean canApply(LivingEntity entity, EquipmentSlot equipmentSlot, ItemStack itemStack, int reinforcement) {
         return itemStack.is(ItemTags.ARMOR_ENCHANTABLE);
-    }
-
-    @Override
-    public Set<EquipmentSlot> getAvailableSlots() {
-        return SLOTS;
     }
 
     @Override
