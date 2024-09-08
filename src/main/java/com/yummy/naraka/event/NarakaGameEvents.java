@@ -96,7 +96,7 @@ public class NarakaGameEvents {
             return;
         }
 
-        NarakaItemUtils.updateReinforcementEffects(livingEntity, equipmentSlot, currentStack,
+        NarakaItemUtils.updateReinforcementEffects(livingEntity, equipmentSlot, previousStack,
                 ReinforcementEffect::onUnequipped);
         NarakaItemUtils.checkAndUpdateReinforcementEffects(livingEntity, equipmentSlot, currentStack,
                 ReinforcementEffect::onEquipped);
