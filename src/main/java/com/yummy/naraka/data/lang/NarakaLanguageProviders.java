@@ -92,6 +92,8 @@ public class NarakaLanguageProviders {
         addReinforcementEffect(NarakaReinforcementEffects.FLYING, "Flying (Scroll!)", "비행 (스크롤!)");
         addReinforcementEffect(NarakaReinforcementEffects.ORE_SEE_THROUGH, "Ore see through", "광물 투시");
         addReinforcementEffect(NarakaReinforcementEffects.LAVA_VISION, "Lava vision", "용암 투시");
+        addReinforcementEffect(NarakaReinforcementEffects.EFFICIENT_MINING_IN_WATER, "Efficient mining in water", "수중 채쿨 효율");
+        addReinforcementEffect(NarakaReinforcementEffects.EFFICIENT_MINING_IN_AIR, "Efficient mining in air", "공중 채굴 효율");
 
         addTrimPattern(NarakaTrimPatterns.PURIFIED_SOUL_SILENCE, "Purified Soul Silence Armor Trim", "정화된 영혼 고요 갑옷 장식");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, "Soul Infused Redstone Material", "영혼이 주입된 레드스톤 소재");

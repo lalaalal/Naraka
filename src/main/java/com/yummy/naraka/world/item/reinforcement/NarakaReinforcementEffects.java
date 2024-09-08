@@ -2,6 +2,7 @@ package com.yummy.naraka.world.item.reinforcement;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.NarakaRegistries;
+import com.yummy.naraka.tags.NarakaItemTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
@@ -53,6 +54,14 @@ public class NarakaReinforcementEffects {
             "lava_vision", new SimpleReinforcementEffect(10, EquipmentSlot.HEAD)
     );
 
+    public static final Holder<ReinforcementEffect> EFFICIENT_MINING_IN_AIR = register(
+            "efficient_mining_in_air", new SimpleReinforcementEffect(10, EquipmentSlot.FEET)
+    );
+
+    public static final Holder<ReinforcementEffect> EFFICIENT_MINING_IN_WATER = register(
+            "efficient_mining_in_water", new SimpleReinforcementEffect(10, EquipmentSlot.HEAD)
+    );
+
     private static Holder<ReinforcementEffect> register(String name, ReinforcementEffect effect) {
         return Registry.registerForHolder(NarakaRegistries.REINFORCEMENT_EFFECT, NarakaMod.location(name), effect);
     }
@@ -86,10 +95,11 @@ public class NarakaReinforcementEffects {
     public static void initialize() {
         addEffectsByItem(ItemTags.SWORDS, INCREASE_ATTACK_DAMAGE);
         addEffectsByItem(ItemTags.TRIDENT_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
+        addEffectsByItem(NarakaItemTags.SPEAR_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
         addEffectsByItem(ItemTags.ARMOR_ENCHANTABLE, INCREASE_ARMOR, INCREASE_ARMOR_TOUGHNESS);
-        addEffectsByItem(ItemTags.HEAD_ARMOR_ENCHANTABLE, ORE_SEE_THROUGH, LAVA_VISION);
+        addEffectsByItem(ItemTags.HEAD_ARMOR_ENCHANTABLE, ORE_SEE_THROUGH, LAVA_VISION, EFFICIENT_MINING_IN_WATER);
         addEffectsByItem(ItemTags.CHEST_ARMOR_ENCHANTABLE, FLYING);
         addEffectsByItem(ItemTags.LEG_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);
-        addEffectsByItem(ItemTags.FOOT_ARMOR_ENCHANTABLE, FASTER_LIQUID_SWIMMING, IGNORE_LIQUID_PUSHING);
+        addEffectsByItem(ItemTags.FOOT_ARMOR_ENCHANTABLE, FASTER_LIQUID_SWIMMING, IGNORE_LIQUID_PUSHING, EFFICIENT_MINING_IN_AIR);
     }
 }

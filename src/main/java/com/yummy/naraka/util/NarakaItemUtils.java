@@ -52,6 +52,14 @@ public class NarakaItemUtils {
         return canApplyReinforcementEffect(livingEntity, NarakaReinforcementEffects.LAVA_VISION);
     }
 
+    public static boolean canApplyEfficientMiningInAir(LivingEntity livingEntity) {
+        return canApplyReinforcementEffect(livingEntity, NarakaReinforcementEffects.EFFICIENT_MINING_IN_AIR);
+    }
+
+    public static boolean canApplyEfficientMiningInWater(LivingEntity livingEntity) {
+        return canApplyReinforcementEffect(livingEntity, NarakaReinforcementEffects.EFFICIENT_MINING_IN_WATER);
+    }
+
     public static void checkAndUpdateReinforcementEffects(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack itemStack, EquippedItemChangeListener listener) {
         Reinforcement reinforcement = Reinforcement.get(itemStack);
         for (Holder<ReinforcementEffect> holder : reinforcement.effects()) {
@@ -70,8 +78,8 @@ public class NarakaItemUtils {
     }
 
     public static void updateAllReinforcementEffects(LivingEntity livingEntity) {
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            ItemStack itemStack = livingEntity.getItemBySlot(slot);
+        for (ItemStack itemStack : livingEntity.getAllSlots()) {
+            EquipmentSlot slot = livingEntity.getEquipmentSlotForItem(itemStack);
             checkAndUpdateReinforcementEffects(livingEntity, slot, itemStack, ReinforcementEffect::onEquipped);
         }
     }

@@ -51,7 +51,7 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInWater()Z"))
-    public boolean handleLiquidAsWater(boolean original) {
+    public boolean considerLiquidAsWater(boolean original) {
         if (NarakaItemUtils.canApplyFasterLiquidSwimming(living()))
             return isInLiquid();
         return original;

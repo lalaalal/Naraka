@@ -10,7 +10,6 @@ import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.NarakaItems;
-import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
@@ -23,7 +22,10 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableSource;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -73,16 +75,8 @@ public class NarakaGameEvents {
     }
 
     private static void updateReinforcementEffect(Entity entity, ServerLevel level) {
-        if (entity instanceof LivingEntity livingEntity) {
-            for (ItemStack itemStack : livingEntity.getAllSlots()) {
-                Reinforcement reinforcement = itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, Reinforcement.ZERO);
-                EquipmentSlot slot = livingEntity.getEquipmentSlotForItem(itemStack);
-                for (Holder<ReinforcementEffect> effect : reinforcement.effects()) {
-                    if (effect.value().canApply(livingEntity, slot, itemStack, reinforcement.value()))
-                        effect.value().onEquipped(livingEntity, slot, itemStack);
-                }
-            }
-        }
+        if (entity instanceof LivingEntity livingEntity)
+            NarakaItemUtils.updateAllReinforcementEffects(livingEntity);
     }
 
     private static boolean useDeathCount(LivingEntity livingEntity, DamageSource source, float damage) {
