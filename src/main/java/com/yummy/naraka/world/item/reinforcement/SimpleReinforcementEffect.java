@@ -10,7 +10,6 @@ public class SimpleReinforcementEffect implements ReinforcementEffect {
     private final int requiredReinforcement;
     private final Set<EquipmentSlot> slots;
 
-
     public SimpleReinforcementEffect(int requiredReinforcement, EquipmentSlot... slots) {
         this.requiredReinforcement = requiredReinforcement;
         this.slots = Set.of(slots);

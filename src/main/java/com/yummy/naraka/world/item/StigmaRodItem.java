@@ -27,7 +27,7 @@ public class StigmaRodItem extends Item {
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity user) {
         if (!user.level().isClientSide) {
             StigmaHelper.increaseStigma(target, user);
-            Reinforcement.increase(itemStack, NarakaReinforcementEffects.DAMAGE_INCREASE);
+            Reinforcement.increase(itemStack, NarakaReinforcementEffects.INCREASE_ATTACK_DAMAGE);
         }
         return super.hurtEnemy(itemStack, target, user);
     }

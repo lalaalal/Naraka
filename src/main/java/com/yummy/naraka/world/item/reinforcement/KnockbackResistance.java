@@ -8,8 +8,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
 public class KnockbackResistance extends AttributeModifyingEffect {
-    public KnockbackResistance(EquipmentSlot... slots) {
-        super(Attributes.KNOCKBACK_RESISTANCE, slots);
+    public KnockbackResistance(EquipmentSlotGroup slotGroup) {
+        super(Attributes.KNOCKBACK_RESISTANCE, slotGroup);
     }
 
     @Override
@@ -29,11 +29,6 @@ public class KnockbackResistance extends AttributeModifyingEffect {
                 1,
                 AttributeModifier.Operation.ADD_VALUE
         );
-    }
-
-    @Override
-    protected EquipmentSlotGroup getTargetSlot(ItemStack itemStack) {
-        return EquipmentSlotGroup.FEET;
     }
 
     @Override

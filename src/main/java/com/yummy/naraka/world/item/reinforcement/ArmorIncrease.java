@@ -9,28 +9,13 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Predicate;
-
 public class ArmorIncrease extends AttributeModifyingEffect {
-    private static final Set<EquipmentSlot> SLOTS = Set.of(
-            EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET
-    );
-
     private static final int[] DEFENCE_POINTS = {
             1, 1, 2, 2, 2, 3, 3, 6, 12, 50
     };
 
-    private static final Map<Predicate<ItemStack>, EquipmentSlotGroup> SLOT_GROUP_MAP = Map.of(
-            itemStack -> itemStack.is(ItemTags.HEAD_ARMOR), EquipmentSlotGroup.HEAD,
-            itemStack -> itemStack.is(ItemTags.CHEST_ARMOR), EquipmentSlotGroup.CHEST,
-            itemStack -> itemStack.is(ItemTags.LEG_ARMOR), EquipmentSlotGroup.LEGS,
-            itemStack -> itemStack.is(ItemTags.FOOT_ARMOR), EquipmentSlotGroup.FEET
-    );
-
     public ArmorIncrease() {
-        super(Attributes.ARMOR, SLOTS);
+        super(Attributes.ARMOR, EquipmentSlotGroup.ARMOR);
     }
 
     @Override
@@ -45,14 +30,5 @@ public class ArmorIncrease extends AttributeModifyingEffect {
         for (int i = 0; i < reinforcement; i++)
             defence += DEFENCE_POINTS[i];
         return new AttributeModifier(modifierId("armor"), defence, AttributeModifier.Operation.ADD_VALUE);
-    }
-
-    @Override
-    protected EquipmentSlotGroup getTargetSlot(ItemStack itemStack) {
-        for (Predicate<ItemStack> predicate : SLOT_GROUP_MAP.keySet()) {
-            if (predicate.test(itemStack))
-                return SLOT_GROUP_MAP.get(predicate);
-        }
-        return EquipmentSlotGroup.ARMOR;
     }
 }

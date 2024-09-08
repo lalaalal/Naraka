@@ -4,29 +4,62 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.util.NarakaItemUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 public abstract class AttributeModifyingEffect implements ReinforcementEffect {
     protected final Holder<Attribute> attribute;
     protected final Set<EquipmentSlot> slots;
+    protected final EquipmentSlotGroup slotGroup;
 
-    protected AttributeModifyingEffect(Holder<Attribute> attribute, Collection<EquipmentSlot> slots) {
-        this.attribute = attribute;
-        this.slots = Set.copyOf(slots);
+    private static Set<EquipmentSlot> getSlots(EquipmentSlotGroup slotGroup) {
+        Set<EquipmentSlot> slots = new HashSet<>();
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            if (slotGroup.test(slot))
+                slots.add(slot);
+        }
+
+        return Set.copyOf(slots);
     }
 
-    protected AttributeModifyingEffect(Holder<Attribute> attribute, EquipmentSlot... slots) {
+    public static AttributeModifyingEffect simple(Holder<Attribute> attribute, EquipmentSlotGroup slotGroup) {
+        final String modifierName = attribute.unwrapKey()
+                .map(ResourceKey::location)
+                .map(ResourceLocation::getPath)
+                .orElse("unidentified")
+                .replaceAll(".*\\.", "");
+
+        return new AttributeModifyingEffect(attribute, slotGroup) {
+            @Override
+            protected AttributeModifier createModifier(int reinforcement) {
+                return new AttributeModifier(
+                        modifierId(modifierName),
+                        reinforcement,
+                        AttributeModifier.Operation.ADD_VALUE
+                );
+            }
+
+            @Override
+            public boolean canApply(LivingEntity entity, EquipmentSlot equipmentSlot, ItemStack itemStack, int reinforcement) {
+                return slotGroup.test(equipmentSlot);
+            }
+        };
+    }
+
+    protected AttributeModifyingEffect(Holder<Attribute> attribute, EquipmentSlotGroup slotGroup) {
         this.attribute = attribute;
-        this.slots = Set.of(slots);
+        this.slots = getSlots(slotGroup);
+        this.slotGroup = slotGroup;
     }
 
     @Override
@@ -40,8 +73,6 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
 
     protected abstract AttributeModifier createModifier(int reinforcement);
 
-    protected abstract EquipmentSlotGroup getTargetSlot(ItemStack itemStack);
-
     @Override
     public void onReinforcementIncreased(ItemStack itemStack, int previousReinforcement, int currentReinforcement) {
         ItemAttributeModifiers modifiers = NarakaItemUtils.getAttributeModifiers(itemStack);
@@ -50,7 +81,7 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
                 modifiers.withModifierAdded(
                         attribute,
                         createModifier(currentReinforcement),
-                        getTargetSlot(itemStack)
+                        slotGroup
                 )
         );
     }

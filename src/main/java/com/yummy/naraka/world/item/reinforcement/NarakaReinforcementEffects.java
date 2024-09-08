@@ -8,6 +8,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -15,16 +17,20 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class NarakaReinforcementEffects {
-    public static final Holder<ReinforcementEffect> DAMAGE_INCREASE = register(
-            "damage_increase", new DamageIncrease()
+    public static final Holder<ReinforcementEffect> INCREASE_ATTACK_DAMAGE = register(
+            "increase_attack_damage", AttributeModifyingEffect.simple(Attributes.ATTACK_DAMAGE, EquipmentSlotGroup.MAINHAND)
     );
 
-    public static final Holder<ReinforcementEffect> ARMOR_INCREASE = register(
-            "armor_increase", new ArmorIncrease()
+    public static final Holder<ReinforcementEffect> INCREASE_ARMOR = register(
+            "increase_armor", new ArmorIncrease()
+    );
+
+    public static final Holder<ReinforcementEffect> INCREASE_ARMOR_TOUGHNESS = register(
+            "increase_armor_toughness", AttributeModifyingEffect.simple(Attributes.ARMOR_TOUGHNESS, EquipmentSlotGroup.ARMOR)
     );
 
     public static final Holder<ReinforcementEffect> KNOCKBACK_RESISTANCE = register(
-            "knockback_resistance", new KnockbackResistance(EquipmentSlot.LEGS)
+            "increase_knockback_resistance", new KnockbackResistance(EquipmentSlotGroup.ARMOR)
     );
 
     public static final Holder<ReinforcementEffect> FASTER_LIQUID_SWIMMING = register(
@@ -32,7 +38,7 @@ public class NarakaReinforcementEffects {
     );
 
     public static final Holder<ReinforcementEffect> IGNORE_LIQUID_PUSHING = register(
-            "ignore_liquid_pushing", new SimpleReinforcementEffect(8, EquipmentSlot.FEET)
+            "ignore_liquid_pushing", new SimpleReinforcementEffect(10, EquipmentSlot.FEET)
     );
 
     public static final Holder<ReinforcementEffect> FLYING = register(
@@ -74,9 +80,9 @@ public class NarakaReinforcementEffects {
     }
 
     public static void initialize() {
-        add(ItemTags.SWORDS, DAMAGE_INCREASE);
-        add(ItemTags.TRIDENT_ENCHANTABLE, DAMAGE_INCREASE);
-        add(ItemTags.ARMOR_ENCHANTABLE, ARMOR_INCREASE);
+        add(ItemTags.SWORDS, INCREASE_ATTACK_DAMAGE);
+        add(ItemTags.TRIDENT_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
+        add(ItemTags.ARMOR_ENCHANTABLE, INCREASE_ARMOR_TOUGHNESS, INCREASE_ARMOR);
         add(ItemTags.HEAD_ARMOR_ENCHANTABLE, ORE_SEE_THROUGH);
         add(ItemTags.CHEST_ARMOR_ENCHANTABLE, FLYING);
         add(ItemTags.LEG_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);

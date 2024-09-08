@@ -83,11 +83,12 @@ public class NarakaLanguageProviders {
         add(JADE_DEATH_COUNT_KEY, "Death Count: %d", "데스카운트: %d");
         add(NarakaJadeProviderComponents.ENTITY_DATA.translationKey, "Stigma", "낙인");
 
-        addReinforcementEffect(NarakaReinforcementEffects.DAMAGE_INCREASE, "Increase attack damage", "공격력 증가");
-        addReinforcementEffect(NarakaReinforcementEffects.ARMOR_INCREASE, "Increase armor", "방어력 증가");
+        addReinforcementEffect(NarakaReinforcementEffects.INCREASE_ATTACK_DAMAGE, "Increase attack damage", "공격력 증가");
+        addReinforcementEffect(NarakaReinforcementEffects.INCREASE_ARMOR, "Increase armor", "방어력 증가");
+        addReinforcementEffect(NarakaReinforcementEffects.INCREASE_ARMOR_TOUGHNESS, "Increase armor toughness", "방어 강도 증가");
         addReinforcementEffect(NarakaReinforcementEffects.KNOCKBACK_RESISTANCE, "Knockback resistance", "넉백 저항");
         addReinforcementEffect(NarakaReinforcementEffects.FASTER_LIQUID_SWIMMING, "Increase liquid swimming speed", "액체 수영 속도 증가");
-        addReinforcementEffect(NarakaReinforcementEffects.IGNORE_LIQUID_PUSHING, "Ignore Liquid Pushing", "유체 흐름 무시");
+        addReinforcementEffect(NarakaReinforcementEffects.IGNORE_LIQUID_PUSHING, "Ignore liquid pushing", "유체 흐름 무시");
         addReinforcementEffect(NarakaReinforcementEffects.FLYING, "Flying (Scroll!)", "비행 (스크롤!)");
         addReinforcementEffect(NarakaReinforcementEffects.ORE_SEE_THROUGH, "Ore see through", "광물 투시");
 
