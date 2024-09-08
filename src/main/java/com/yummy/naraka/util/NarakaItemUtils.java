@@ -60,6 +60,10 @@ public class NarakaItemUtils {
         return canApplyReinforcementEffect(livingEntity, NarakaReinforcementEffects.EFFICIENT_MINING_IN_WATER);
     }
 
+    public static boolean canApplyWaterBreathing(LivingEntity livingEntity) {
+        return canApplyReinforcementEffect(livingEntity, NarakaReinforcementEffects.WATER_BREATHING);
+    }
+
     public static void checkAndUpdateReinforcementEffects(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack itemStack, EquippedItemChangeListener listener) {
         Reinforcement reinforcement = Reinforcement.get(itemStack);
         for (Holder<ReinforcementEffect> holder : reinforcement.effects()) {

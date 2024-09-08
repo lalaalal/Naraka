@@ -62,6 +62,10 @@ public class NarakaReinforcementEffects {
             "efficient_mining_in_water", new SimpleReinforcementEffect(10, EquipmentSlot.HEAD)
     );
 
+    public static final Holder<ReinforcementEffect> WATER_BREATHING = register(
+            "water_breathing", new SimpleReinforcementEffect(10, EquipmentSlot.HEAD)
+    );
+
     private static Holder<ReinforcementEffect> register(String name, ReinforcementEffect effect) {
         return Registry.registerForHolder(NarakaRegistries.REINFORCEMENT_EFFECT, NarakaMod.location(name), effect);
     }
@@ -97,7 +101,7 @@ public class NarakaReinforcementEffects {
         addEffectsByItem(ItemTags.TRIDENT_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
         addEffectsByItem(NarakaItemTags.SPEAR_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
         addEffectsByItem(ItemTags.ARMOR_ENCHANTABLE, INCREASE_ARMOR, INCREASE_ARMOR_TOUGHNESS);
-        addEffectsByItem(ItemTags.HEAD_ARMOR_ENCHANTABLE, ORE_SEE_THROUGH, LAVA_VISION, EFFICIENT_MINING_IN_WATER);
+        addEffectsByItem(ItemTags.HEAD_ARMOR_ENCHANTABLE, ORE_SEE_THROUGH, LAVA_VISION, EFFICIENT_MINING_IN_WATER, WATER_BREATHING);
         addEffectsByItem(ItemTags.CHEST_ARMOR_ENCHANTABLE, FLYING);
         addEffectsByItem(ItemTags.LEG_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);
         addEffectsByItem(ItemTags.FOOT_ARMOR_ENCHANTABLE, FASTER_LIQUID_SWIMMING, IGNORE_LIQUID_PUSHING, EFFICIENT_MINING_IN_AIR);

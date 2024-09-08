@@ -20,7 +20,6 @@
         "client.ItemBlockRenderTypesMixin",
         "client.ItemEntityRendererMixin",
         "client.ItemRendererMixin",
-        "client.ItemStackMixin",
         "client.LocalPlayerMixin",
         "client.MouseHandlerMixin"
     ]
