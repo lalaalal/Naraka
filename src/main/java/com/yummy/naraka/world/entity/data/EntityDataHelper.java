@@ -14,18 +14,18 @@ import java.util.*;
 
 public class EntityDataHelper {
     private static final Map<UUID, EntityDataContainer> ENTITY_DATA_MAP = new HashMap<>();
-    private static final Map<EntityDataType<?>, List<EntityDataChangeListener>> DATA_CHANGE_LISTENERS = new HashMap<>();
+    private static final Map<EntityDataType<?>, List<WrapperListener>> DATA_CHANGE_LISTENERS = new HashMap<>();
 
     public static void clear() {
         ENTITY_DATA_MAP.clear();
     }
 
     public static <T> void registerDataChangeListener(EntityDataType<T> entityDataType, DataChangeListener<T> listener) {
-        List<EntityDataChangeListener> listeners = DATA_CHANGE_LISTENERS.computeIfAbsent(entityDataType, _entityDataType -> new ArrayList<>());
+        List<WrapperListener> listeners = DATA_CHANGE_LISTENERS.computeIfAbsent(entityDataType, _entityDataType -> new ArrayList<>());
         listeners.add(wrap(entityDataType, listener));
     }
 
-    private static <T> EntityDataHelper.EntityDataChangeListener wrap(EntityDataType<T> entityDataType, EntityDataHelper.DataChangeListener<T> listener) {
+    private static <T> WrapperListener wrap(EntityDataType<T> entityDataType, EntityDataHelper.DataChangeListener<T> listener) {
         return (livingEntity, _entityDataType, from, to) -> {
             Class<T> type = entityDataType.getValueType();
             listener.onChange(livingEntity, entityDataType, type.cast(from), type.cast(to));
@@ -57,7 +57,7 @@ public class EntityDataHelper {
         Object original = container.getEntityData(entityDataType);
         container.setEntityData(entityDataType, value);
         syncEntityData(livingEntity, entityDataType);
-        for (EntityDataChangeListener listener : DATA_CHANGE_LISTENERS.computeIfAbsent(entityDataType, type -> new ArrayList<>()))
+        for (WrapperListener listener : DATA_CHANGE_LISTENERS.computeIfAbsent(entityDataType, type -> new ArrayList<>()))
             listener.onChange(livingEntity, entityDataType, original, value);
     }
 
@@ -105,7 +105,7 @@ public class EntityDataHelper {
         return false;
     }
 
-    private interface EntityDataChangeListener {
+    private interface WrapperListener {
         void onChange(LivingEntity livingEntity, EntityDataType<?> entityDataType, Object from, Object to);
     }
 

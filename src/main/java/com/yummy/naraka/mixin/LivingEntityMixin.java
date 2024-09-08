@@ -1,5 +1,6 @@
 package com.yummy.naraka.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import net.minecraft.core.BlockPos;
@@ -42,11 +43,18 @@ public abstract class LivingEntityMixin extends Entity {
     @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V"))
     public float increaseSpeedInLiquid(float scale) {
         if (NarakaItemUtils.canApplyFasterLiquidSwimming(living())) {
-            if (isInLava())
-                return scale * 10;
+            if (isInLava() && isSwimming())
+                return scale * 15;
             return scale * 5;
         }
         return scale;
+    }
+
+    @ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInWater()Z"))
+    public boolean handleLiquidAsWater(boolean original) {
+        if (NarakaItemUtils.canApplyFasterLiquidSwimming(living()))
+            return isInLiquid();
+        return original;
     }
 
     @Unique

@@ -49,6 +49,10 @@ public class NarakaReinforcementEffects {
             "ore_see_through", new SimpleReinforcementEffect(10, EquipmentSlot.HEAD)
     );
 
+    public static final Holder<ReinforcementEffect> LAVA_VISION = register(
+            "lava_vision", new SimpleReinforcementEffect(10, EquipmentSlot.HEAD)
+    );
+
     private static Holder<ReinforcementEffect> register(String name, ReinforcementEffect effect) {
         return Registry.registerForHolder(NarakaRegistries.REINFORCEMENT_EFFECT, NarakaMod.location(name), effect);
     }
@@ -56,21 +60,21 @@ public class NarakaReinforcementEffects {
     private static final Map<Predicate<ItemStack>, List<Holder<ReinforcementEffect>>> ITEM_REINFORCEMENT_EFFECTS = new LinkedHashMap<>();
 
     @SafeVarargs
-    public static void add(Item item, Holder<ReinforcementEffect>... effects) {
-        add(test -> test.is(item), effects);
+    public static void addEffectsByItem(Item item, Holder<ReinforcementEffect>... effects) {
+        addEffectsByItem(test -> test.is(item), effects);
     }
 
     @SafeVarargs
-    public static void add(TagKey<Item> itemTag, Holder<ReinforcementEffect>... effects) {
-        add(test -> test.is(itemTag), effects);
+    public static void addEffectsByItem(TagKey<Item> itemTag, Holder<ReinforcementEffect>... effects) {
+        addEffectsByItem(test -> test.is(itemTag), effects);
     }
 
     @SafeVarargs
-    public static void add(Predicate<ItemStack> predicate, Holder<ReinforcementEffect>... effects) {
+    public static void addEffectsByItem(Predicate<ItemStack> predicate, Holder<ReinforcementEffect>... effects) {
         ITEM_REINFORCEMENT_EFFECTS.put(predicate, List.of(effects));
     }
 
-    public static HolderSet<ReinforcementEffect> get(ItemStack itemStack) {
+    public static HolderSet<ReinforcementEffect> byItem(ItemStack itemStack) {
         Set<Holder<ReinforcementEffect>> effects = new LinkedHashSet<>();
         for (Predicate<ItemStack> predicate : ITEM_REINFORCEMENT_EFFECTS.keySet()) {
             if (predicate.test(itemStack))
@@ -80,12 +84,12 @@ public class NarakaReinforcementEffects {
     }
 
     public static void initialize() {
-        add(ItemTags.SWORDS, INCREASE_ATTACK_DAMAGE);
-        add(ItemTags.TRIDENT_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
-        add(ItemTags.ARMOR_ENCHANTABLE, INCREASE_ARMOR, INCREASE_ARMOR_TOUGHNESS);
-        add(ItemTags.HEAD_ARMOR_ENCHANTABLE, ORE_SEE_THROUGH);
-        add(ItemTags.CHEST_ARMOR_ENCHANTABLE, FLYING);
-        add(ItemTags.LEG_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);
-        add(ItemTags.FOOT_ARMOR_ENCHANTABLE, FASTER_LIQUID_SWIMMING, IGNORE_LIQUID_PUSHING);
+        addEffectsByItem(ItemTags.SWORDS, INCREASE_ATTACK_DAMAGE);
+        addEffectsByItem(ItemTags.TRIDENT_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
+        addEffectsByItem(ItemTags.ARMOR_ENCHANTABLE, INCREASE_ARMOR, INCREASE_ARMOR_TOUGHNESS);
+        addEffectsByItem(ItemTags.HEAD_ARMOR_ENCHANTABLE, ORE_SEE_THROUGH, LAVA_VISION);
+        addEffectsByItem(ItemTags.CHEST_ARMOR_ENCHANTABLE, FLYING);
+        addEffectsByItem(ItemTags.LEG_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);
+        addEffectsByItem(ItemTags.FOOT_ARMOR_ENCHANTABLE, FASTER_LIQUID_SWIMMING, IGNORE_LIQUID_PUSHING);
     }
 }

@@ -53,7 +53,7 @@ public class ForgingBlockEntity extends BlockEntity {
                 || cooldownTick > 0)
             return false;
         if (level.random.nextFloat() < SUCCESS_CHANCE) {
-            if (Reinforcement.increase(itemStack, NarakaReinforcementEffects.get(itemStack)))
+            if (Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack)))
                 level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
         } else {
             level.playSound(null, getBlockPos(), SoundEvents.ANVIL_DESTROY, SoundSource.BLOCKS);

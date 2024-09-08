@@ -48,6 +48,10 @@ public class NarakaItemUtils {
         return canApplyReinforcementEffect(livingEntity, NarakaReinforcementEffects.IGNORE_LIQUID_PUSHING);
     }
 
+    public static boolean canApplyLavaVision(LivingEntity livingEntity) {
+        return canApplyReinforcementEffect(livingEntity, NarakaReinforcementEffects.LAVA_VISION);
+    }
+
     public static void checkAndUpdateReinforcementEffects(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack itemStack, EquippedItemChangeListener listener) {
         Reinforcement reinforcement = Reinforcement.get(itemStack);
         for (Holder<ReinforcementEffect> holder : reinforcement.effects()) {
