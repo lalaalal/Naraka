@@ -44,6 +44,10 @@ public class NarakaItemUtils {
         return canApplyReinforcementEffect(livingEntity, NarakaReinforcementEffects.FASTER_LIQUID_SWIMMING);
     }
 
+    public static boolean canApplyIgnoreLiquidPushing(LivingEntity livingEntity) {
+        return canApplyReinforcementEffect(livingEntity, NarakaReinforcementEffects.IGNORE_LIQUID_PUSHING);
+    }
+
     public static void checkAndUpdateReinforcementEffects(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack itemStack, EquippedItemChangeListener listener) {
         Reinforcement reinforcement = Reinforcement.get(itemStack);
         for (Holder<ReinforcementEffect> holder : reinforcement.effects()) {

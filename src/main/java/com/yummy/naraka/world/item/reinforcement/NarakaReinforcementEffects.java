@@ -24,15 +24,19 @@ public class NarakaReinforcementEffects {
     );
 
     public static final Holder<ReinforcementEffect> KNOCKBACK_RESISTANCE = register(
-            "knockback_resistance", new KnockbackResistance()
+            "knockback_resistance", new KnockbackResistance(EquipmentSlot.LEGS)
     );
 
     public static final Holder<ReinforcementEffect> FASTER_LIQUID_SWIMMING = register(
-            "faster_liquid_swimming", new SimpleReinforcementEffect(10, EquipmentSlot.LEGS)
+            "faster_liquid_swimming", new SimpleReinforcementEffect(10, EquipmentSlot.FEET)
+    );
+
+    public static final Holder<ReinforcementEffect> IGNORE_LIQUID_PUSHING = register(
+            "ignore_liquid_pushing", new SimpleReinforcementEffect(8, EquipmentSlot.FEET)
     );
 
     public static final Holder<ReinforcementEffect> FLYING = register(
-            "flying", new Flying()
+            "flying", new Flying(EquipmentSlot.CHEST)
     );
 
     public static final Holder<ReinforcementEffect> ORE_SEE_THROUGH = register(
@@ -75,7 +79,7 @@ public class NarakaReinforcementEffects {
         add(ItemTags.ARMOR_ENCHANTABLE, ARMOR_INCREASE);
         add(ItemTags.HEAD_ARMOR_ENCHANTABLE, ORE_SEE_THROUGH);
         add(ItemTags.CHEST_ARMOR_ENCHANTABLE, FLYING);
-        add(ItemTags.LEG_ARMOR_ENCHANTABLE, FASTER_LIQUID_SWIMMING);
-        add(ItemTags.FOOT_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);
+        add(ItemTags.LEG_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);
+        add(ItemTags.FOOT_ARMOR_ENCHANTABLE, FASTER_LIQUID_SWIMMING, IGNORE_LIQUID_PUSHING);
     }
 }

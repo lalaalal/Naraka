@@ -8,8 +8,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
 public class KnockbackResistance extends AttributeModifyingEffect {
-    public KnockbackResistance() {
-        super(Attributes.KNOCKBACK_RESISTANCE, EquipmentSlot.FEET);
+    public KnockbackResistance(EquipmentSlot... slots) {
+        super(Attributes.KNOCKBACK_RESISTANCE, slots);
     }
 
     @Override

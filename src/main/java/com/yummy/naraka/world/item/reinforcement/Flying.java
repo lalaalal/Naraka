@@ -7,8 +7,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class Flying extends SimpleReinforcementEffect {
-    public Flying() {
-        super(10, EquipmentSlot.CHEST);
+    public Flying(EquipmentSlot... slots) {
+        super(10, slots);
     }
 
     @Override
