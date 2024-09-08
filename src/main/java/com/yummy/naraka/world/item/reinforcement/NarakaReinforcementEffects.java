@@ -71,7 +71,7 @@ public class NarakaReinforcementEffects {
     }
 
     public static HolderSet<ReinforcementEffect> get(ItemStack itemStack) {
-        Set<Holder<ReinforcementEffect>> effects = new HashSet<>();
+        Set<Holder<ReinforcementEffect>> effects = new LinkedHashSet<>();
         for (Predicate<ItemStack> predicate : ITEM_REINFORCEMENT_EFFECTS.keySet()) {
             if (predicate.test(itemStack))
                 effects.addAll(ITEM_REINFORCEMENT_EFFECTS.get(predicate));
@@ -82,7 +82,7 @@ public class NarakaReinforcementEffects {
     public static void initialize() {
         add(ItemTags.SWORDS, INCREASE_ATTACK_DAMAGE);
         add(ItemTags.TRIDENT_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
-        add(ItemTags.ARMOR_ENCHANTABLE, INCREASE_ARMOR_TOUGHNESS, INCREASE_ARMOR);
+        add(ItemTags.ARMOR_ENCHANTABLE, INCREASE_ARMOR, INCREASE_ARMOR_TOUGHNESS);
         add(ItemTags.HEAD_ARMOR_ENCHANTABLE, ORE_SEE_THROUGH);
         add(ItemTags.CHEST_ARMOR_ENCHANTABLE, FLYING);
         add(ItemTags.LEG_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);
