@@ -29,6 +29,14 @@ public class NarakaBlockEntityTypes {
             )
     );
 
+    public static final BlockEntityType<SoulStabilizerBlockEntity> SOUL_STABILIZER_BLOCK_ENTITY = register(
+            "soul_stabilizer_block_entity",
+            BlockEntityType.Builder.of(
+                    SoulStabilizerBlockEntity::new,
+                    NarakaBlocks.SOUL_STABILIZER
+            )
+    );
+
     private static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType.Builder<T> builder) {
         return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, NarakaMod.location(name), builder.build(null));
     }

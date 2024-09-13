@@ -5,6 +5,9 @@ import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -28,6 +31,7 @@ public class ForgingBlockEntity extends BlockEntity {
 
     public void setItemStack(ItemStack itemStack) {
         this.itemStack = itemStack.copy();
+        setChanged();
     }
 
     public void dropItem() {
@@ -40,6 +44,7 @@ public class ForgingBlockEntity extends BlockEntity {
                     itemStack
             ));
             itemStack = ItemStack.EMPTY;
+            setChanged();
         }
     }
 
@@ -55,11 +60,17 @@ public class ForgingBlockEntity extends BlockEntity {
         if (level.random.nextFloat() < SUCCESS_CHANCE) {
             if (Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack)))
                 level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
+            setChanged();
         } else {
             level.playSound(null, getBlockPos(), SoundEvents.ANVIL_DESTROY, SoundSource.BLOCKS);
         }
         cooldownTick = 30;
         return true;
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override

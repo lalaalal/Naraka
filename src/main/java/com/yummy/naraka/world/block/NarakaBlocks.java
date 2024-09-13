@@ -167,6 +167,12 @@ public class NarakaBlocks {
             Blocks.ANVIL
     );
 
+    public static final SoulStabilizer SOUL_STABILIZER = registerBlockWithItem(
+            "soul_stabilizer",
+            SoulStabilizer::new,
+            Blocks.GLASS
+    );
+
     public static final List<Block> SOUL_INFUSED_BLOCKS = List.of(
             SOUL_INFUSED_REDSTONE_BLOCK,
             SOUL_INFUSED_COPPER_BLOCK,

@@ -6,6 +6,7 @@ import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.NarakaJukeboxSongs;
+import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.armortrim.NarakaTrimMaterials;
 import com.yummy.naraka.world.item.armortrim.NarakaTrimPatterns;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
@@ -43,6 +44,7 @@ public class NarakaLanguageProviders {
     public static final String JADE_SOUL_CRAFTING_FUEL_KEY = "jade.naraka.soul_crafting.fuel";
     public static final String JADE_STIGMA_KEY = "jade.naraka.stigma";
     public static final String JADE_DEATH_COUNT_KEY = "jade.naraka.death_count";
+    public static final String JADE_SOUL_STABILIZER_KEY = "jade.naraka.soul_stabilizer";
 
     public static final String REINFORCEMENT_KEY = "item.reinforcement";
 
@@ -79,9 +81,20 @@ public class NarakaLanguageProviders {
 
         add(JADE_SOUL_CRAFTING_FUEL_KEY, "Fuel: %d", "연료: %d");
         add(NarakaJadeProviderComponents.SOUL_CRAFTING_BLOCK.translationKey, "Soul Crafting Block", "영혼 세공기");
+        add(JADE_SOUL_STABILIZER_KEY, "%d");
+        add(NarakaJadeProviderComponents.SOUL_STABILIZER.translationKey, "Soul Stabilizer", "영혼 안정기");
         add(JADE_STIGMA_KEY, "Stigma: %d", "낙인: %d");
         add(JADE_DEATH_COUNT_KEY, "Death Count: %d", "데스카운트: %d");
         add(NarakaJadeProviderComponents.ENTITY_DATA.translationKey, "Stigma", "낙인");
+
+        add(SoulType.REDSTONE.translationKey(), "Redstone", "레드스톤");
+        add(SoulType.COPPER.translationKey(), "Copper", "구리");
+        add(SoulType.GOLD.translationKey(), "Gold", "금");
+        add(SoulType.EMERALD.translationKey(), "Emerald", "에메랄드");
+        add(SoulType.DIAMOND.translationKey(), "Diamond", "다이아몬드");
+        add(SoulType.LAPIS.translationKey(), "Lapis", "청금석");
+        add(SoulType.AMETHYST.translationKey(), "Amethyst", "자수정");
+        add(SoulType.NECTARIUM.translationKey(), "Nectarium", "넥타륨");
 
         addReinforcementEffect(NarakaReinforcementEffects.INCREASE_ATTACK_DAMAGE, "Increase attack damage", "공격력 증가");
         addReinforcementEffect(NarakaReinforcementEffects.INCREASE_ARMOR, "Increase armor", "방어력 증가");
@@ -244,6 +257,7 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Nectarium Core", "넥타륨 코어");
         addBlock(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, "Nectarium Crystal", "넥타륨 결정");
         addBlock(NarakaBlocks.NARAKA_FORGING_BLOCK, "Naraka Forging Block", "나락의 단조 블록");
+        addBlock(NarakaBlocks.SOUL_STABILIZER, "Soul Stabilizer", "영혼 안정기");
 
         addTooltip(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Honey is dripping", "꿀이 뚝뚝 떨어져");
         addTooltip(NarakaBlocks.FORGING_BLOCK, "Smash item with a hammer...?", "아이템을 망치로 부수기..?");
