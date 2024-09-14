@@ -1,4 +1,4 @@
-package com.yummy.naraka.event;
+package com.yummy.naraka;
 
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.util.NarakaItemUtils;

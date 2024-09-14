@@ -8,7 +8,6 @@ import com.yummy.naraka.client.particle.EbonyParticle;
 import com.yummy.naraka.client.particle.NarakaDripParticles;
 import com.yummy.naraka.client.renderer.*;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
-import com.yummy.naraka.event.NarakaClientEvents;
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;

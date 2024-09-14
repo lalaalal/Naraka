@@ -1,8 +1,7 @@
-package com.yummy.naraka.event;
+package com.yummy.naraka.client;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.client.NarakaShaders;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.fabricmc.api.EnvType;

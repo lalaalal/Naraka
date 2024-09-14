@@ -2,7 +2,6 @@ package com.yummy.naraka;
 
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
-import com.yummy.naraka.event.NarakaGameEvents;
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.world.NarakaBiomes;
@@ -69,7 +68,6 @@ public class NarakaMod implements ModInitializer {
         NarakaRootPlacerTypes.initialize();
 
         NarakaGameEvents.initialize();
-        NarakaContext.initialize();
         NarakaNetworks.initialize();
     }
 
