@@ -47,6 +47,7 @@ public class NarakaLanguageProviders {
     public static final String JADE_SOUL_STABILIZER_KEY = "jade.naraka.soul_stabilizer";
 
     public static final String REINFORCEMENT_KEY = "item.reinforcement";
+    public static final String BLESSED_KEY = "item.blessed";
 
     private final String[] languageCodes;
     private final Map<String, String[]> translationMap = new HashMap<>();
@@ -73,6 +74,7 @@ public class NarakaLanguageProviders {
         add("itemGroup.naraka.test", "Naraka Test", "나락! 테스트");
         add("container.soul_crafting", "Soul Crafter", "영혼 세공기");
         add(REINFORCEMENT_KEY, "Reinforcement: %d", "강화: %d");
+        add(BLESSED_KEY, "Blessed", "축복받음");
         add(PURIFIED_SOUL_UPGRADE_KEY, "Purified Soul Upgrade", "정화된 영혼 강화");
         add(PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY, "Ebony Tools, Purified Soul Weapons", "흑단나무 검, 정화된 영혼 무기");
         add(PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "Purified Soul Metal, Soul Infused Materials", "정화된 영혼 금속, 영혼이 주입된 재료");
@@ -258,9 +260,11 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, "Nectarium Crystal", "넥타륨 결정");
         addBlock(NarakaBlocks.NARAKA_FORGING_BLOCK, "Naraka Forging Block", "나락의 단조 블록");
         addBlock(NarakaBlocks.SOUL_STABILIZER, "Soul Stabilizer", "영혼 안정기");
+        addBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, "Soul Smithing Block", "영혼 대장장이 블록");
 
         addTooltip(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Honey is dripping", "꿀이 뚝뚝 떨어져");
         addTooltip(NarakaBlocks.FORGING_BLOCK, "Smash item with a hammer...?", "아이템을 망치로 부수기..?");
+        addTooltip(NarakaBlocks.SOUL_SMITHING_BLOCK, "Smash item with a hammer...?", "아이템을 망치로 부수기..?");
 
         addEntityType(NarakaEntityTypes.HEROBRINE, "Naraka: Herobrine", "히로빈");
         addEntityType(NarakaEntityTypes.THROWN_SPEAR, "Spear", "창");

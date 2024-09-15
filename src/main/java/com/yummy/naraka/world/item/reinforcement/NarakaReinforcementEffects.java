@@ -3,6 +3,8 @@ package com.yummy.naraka.world.item.reinforcement;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.tags.NarakaItemTags;
+import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
+import net.minecraft.advancements.critereon.TagPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
@@ -87,6 +89,11 @@ public class NarakaReinforcementEffects {
         ITEM_REINFORCEMENT_EFFECTS.put(predicate, List.of(effects));
     }
 
+    @SafeVarargs
+    public static void addEffectsByItem(TagPredicate<Item> predicate, Holder<ReinforcementEffect>... effects) {
+        ITEM_REINFORCEMENT_EFFECTS.put(itemStack -> predicate.matches(itemStack.getItemHolder()), List.of(effects));
+    }
+
     public static HolderSet<ReinforcementEffect> byItem(ItemStack itemStack) {
         Set<Holder<ReinforcementEffect>> effects = new LinkedHashSet<>();
         for (Predicate<ItemStack> predicate : ITEM_REINFORCEMENT_EFFECTS.keySet()) {
@@ -101,9 +108,21 @@ public class NarakaReinforcementEffects {
         addEffectsByItem(ItemTags.TRIDENT_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
         addEffectsByItem(NarakaItemTags.SPEAR_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
         addEffectsByItem(ItemTags.ARMOR_ENCHANTABLE, INCREASE_ARMOR, INCREASE_ARMOR_TOUGHNESS);
-        addEffectsByItem(ItemTags.HEAD_ARMOR_ENCHANTABLE, ORE_SEE_THROUGH, LAVA_VISION, EFFICIENT_MINING_IN_WATER, WATER_BREATHING);
-        addEffectsByItem(ItemTags.CHEST_ARMOR_ENCHANTABLE, FLYING);
+        addEffectsByItem(and(isBlessed(), is(ItemTags.HEAD_ARMOR_ENCHANTABLE)), ORE_SEE_THROUGH, LAVA_VISION, EFFICIENT_MINING_IN_WATER, WATER_BREATHING);
+        addEffectsByItem(and(isBlessed(), is(ItemTags.CHEST_ARMOR_ENCHANTABLE)), FLYING);
         addEffectsByItem(ItemTags.LEG_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);
-        addEffectsByItem(ItemTags.FOOT_ARMOR_ENCHANTABLE, FASTER_LIQUID_SWIMMING, IGNORE_LIQUID_PUSHING, EFFICIENT_MINING_IN_AIR);
+        addEffectsByItem(and(isBlessed(), is(ItemTags.FOOT_ARMOR_ENCHANTABLE)), FASTER_LIQUID_SWIMMING, IGNORE_LIQUID_PUSHING, EFFICIENT_MINING_IN_AIR);
+    }
+
+    private static Predicate<ItemStack> isBlessed() {
+        return itemStack -> itemStack.getOrDefault(NarakaDataComponentTypes.BLESSED, false);
+    }
+
+    private static Predicate<ItemStack> and(Predicate<ItemStack> left, Predicate<ItemStack> right) {
+        return itemStack -> left.test(itemStack) && right.test(itemStack);
+    }
+
+    private static Predicate<ItemStack> is(TagKey<Item> tag) {
+        return itemStack -> itemStack.is(tag);
     }
 }

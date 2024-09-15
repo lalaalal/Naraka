@@ -10,6 +10,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryCodecs;
+import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -62,7 +63,7 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
         return new Reinforcement(0, HolderSet.direct(effect));
     }
 
-    public static Reinforcement get(ItemStack itemStack) {
+    public static Reinforcement get(DataComponentHolder itemStack) {
         return itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, ZERO);
     }
 

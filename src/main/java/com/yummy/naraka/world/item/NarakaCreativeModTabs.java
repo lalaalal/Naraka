@@ -2,15 +2,14 @@ package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.block.NarakaBlocks;
+import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Blocks;
 
 public class NarakaCreativeModTabs {
@@ -139,6 +138,17 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaBlocks.NARAKA_FORGING_BLOCK);
         output.accept(NarakaBlocks.SOUL_STABILIZER);
         output.accept(NarakaBlocks.SOUL_SMITHING_BLOCK);
+
+        output.accept(blessed(NarakaItems.PURIFIED_SOUL_HELMET));
+        output.accept(blessed(NarakaItems.PURIFIED_SOUL_CHESTPLATE));
+        output.accept(blessed(NarakaItems.PURIFIED_SOUL_LEGGINGS));
+        output.accept(blessed(NarakaItems.PURIFIED_SOUL_BOOTS));
+    }
+
+    private static ItemStack blessed(Item item) {
+        ItemStack itemStack = new ItemStack(item);
+        itemStack.set(NarakaDataComponentTypes.BLESSED, true);
+        return itemStack;
     }
 
     private static void modifyBuildingBlocksTab(FabricItemGroupEntries entries) {
