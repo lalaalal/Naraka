@@ -24,8 +24,9 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     }
 
     public boolean canInject(ItemStack itemStack) {
-        return (soulType == null || soulType.test(itemStack))
-                && souls + getSoulByItem(itemStack) <= CAPACITY;
+        if (soulType == null)
+            return SoulType.fromItem(itemStack) != null;
+        return soulType.test(itemStack) && souls + getSoulByItem(itemStack) <= CAPACITY;
     }
 
     private int getSoulByItem(ItemStack itemStack) {

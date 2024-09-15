@@ -63,6 +63,7 @@ public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
         add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, this::createNectariumCrystalDrops);
 
         add(NarakaBlocks.SOUL_STABILIZER, this::createSilkTouchOnlyTable);
+        add(NarakaBlocks.SOUL_SMITHING_BLOCK, this::createSilkTouchOnlyTable);
     }
 
     protected void dropOre(Block oreBlock, Item item) {

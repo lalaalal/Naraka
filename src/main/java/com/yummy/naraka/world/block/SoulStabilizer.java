@@ -67,9 +67,9 @@ public class SoulStabilizer extends BaseEntityBlock {
                         0.5
                 );
 
-            return ItemInteractionResult.CONSUME;
+            return ItemInteractionResult.SUCCESS;
         }
-        return ItemInteractionResult.FAIL;
+        return ItemInteractionResult.CONSUME;
     }
 
     @Override

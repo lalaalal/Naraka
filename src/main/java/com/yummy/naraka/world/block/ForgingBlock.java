@@ -62,19 +62,17 @@ public class ForgingBlock extends BaseEntityBlock {
                     itemStack.hurtAndBreak(5, player, EquipmentSlot.MAINHAND);
                     return ItemInteractionResult.SUCCESS;
                 }
-                return ItemInteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.CONSUME;
             } else if (!forgingBlockEntity.getForgingItem().isEmpty()) {
                 forgingBlockEntity.dropItem();
                 return ItemInteractionResult.SUCCESS;
             } else if (Reinforcement.canReinforce(itemStack)) {
                 forgingBlockEntity.setForgingItem(itemStack);
                 itemStack.shrink(1);
-                return ItemInteractionResult.CONSUME;
-            } else {
-                return ItemInteractionResult.FAIL;
+                return ItemInteractionResult.SUCCESS;
             }
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return ItemInteractionResult.CONSUME;
     }
 
     @Override
