@@ -6,6 +6,7 @@ import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -51,6 +52,23 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
             return true;
         }
         return false;
+    }
+
+    public void detachSoulStabilizer() {
+        if (isStabilizerAttached && level != null) {
+            ItemStack itemStack = new ItemStack(NarakaBlocks.SOUL_STABILIZER);
+            soulStabilizer.saveToItem(itemStack, level.registryAccess());
+            level.addFreshEntity(new ItemEntity(
+                    level,
+                    getBlockPos().getX(),
+                    getBlockPos().getY() + 1,
+                    getBlockPos().getZ(),
+                    itemStack
+            ));
+
+            isStabilizerAttached = false;
+            setChanged();
+        }
     }
 
     @Override

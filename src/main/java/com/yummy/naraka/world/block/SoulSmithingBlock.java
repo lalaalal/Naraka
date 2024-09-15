@@ -30,7 +30,10 @@ public class SoulSmithingBlock extends ForgingBlock {
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof SoulSmithingBlockEntity soulSmithingBlockEntity) {
-            if (soulSmithingBlockEntity.tryAttachSoulStabilizer(stack))
+            if (stack.isEmpty() && soulSmithingBlockEntity.isStabilizerAttached()) {
+                soulSmithingBlockEntity.detachSoulStabilizer();
+                return ItemInteractionResult.SUCCESS;
+            } else if (soulSmithingBlockEntity.tryAttachSoulStabilizer(stack))
                 return ItemInteractionResult.CONSUME;
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
