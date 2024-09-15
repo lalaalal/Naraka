@@ -39,7 +39,7 @@ public class ForgingBlock extends BaseEntityBlock {
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new ForgingBlockEntity(blockPos, blockState);
     }
 
@@ -63,11 +63,11 @@ public class ForgingBlock extends BaseEntityBlock {
                     return ItemInteractionResult.SUCCESS;
                 }
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
-            } else if (!forgingBlockEntity.getItemStack().isEmpty()) {
+            } else if (!forgingBlockEntity.getForgingItem().isEmpty()) {
                 forgingBlockEntity.dropItem();
                 return ItemInteractionResult.SUCCESS;
             } else if (Reinforcement.canReinforce(itemStack)) {
-                forgingBlockEntity.setItemStack(itemStack);
+                forgingBlockEntity.setForgingItem(itemStack);
                 itemStack.shrink(1);
                 return ItemInteractionResult.CONSUME;
             } else {
@@ -103,6 +103,6 @@ public class ForgingBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         if (level.isClientSide)
             return super.getTicker(level, state, type);
-        return createTickerHelper(type, NarakaBlockEntityTypes.FORGING_BLOCK_ENTITY, ForgingBlockEntity::serverTick);
+        return createTickerHelper(type, NarakaBlockEntityTypes.FORGING, ForgingBlockEntity::serverTick);
     }
 }

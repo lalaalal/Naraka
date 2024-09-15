@@ -20,7 +20,7 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     private int souls = 0;
 
     public SoulStabilizerBlockEntity(BlockPos pos, BlockState blockState) {
-        super(NarakaBlockEntityTypes.SOUL_STABILIZER_BLOCK_ENTITY, pos, blockState);
+        super(NarakaBlockEntityTypes.SOUL_STABILIZER, pos, blockState);
     }
 
     public boolean canInject(ItemStack itemStack) {
@@ -30,9 +30,9 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
 
     private int getSoulByItem(ItemStack itemStack) {
         if (soulType != null) {
-            if (soulType.item() == itemStack.getItem())
+            if (soulType.getItem() == itemStack.getItem())
                 return 1;
-            if (soulType.block().asItem() == itemStack.getItem())
+            if (soulType.getBlock().asItem() == itemStack.getItem())
                 return 9;
         }
         return 0;

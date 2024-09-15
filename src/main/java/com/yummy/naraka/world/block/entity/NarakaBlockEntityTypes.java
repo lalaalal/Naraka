@@ -8,8 +8,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class NarakaBlockEntityTypes {
-    public static final BlockEntityType<SoulCraftingBlockEntity> SOUL_CRAFTING_BLOCK_ENTITY = register(
-            "soul_crafting_block_entity",
+    public static final BlockEntityType<SoulCraftingBlockEntity> SOUL_CRAFTING = register(
+            "soul_crafting",
             BlockEntityType.Builder.of(SoulCraftingBlockEntity::new, NarakaBlocks.SOUL_CRAFTING_BLOCK)
     );
 
@@ -21,16 +21,24 @@ public class NarakaBlockEntityTypes {
             )
     );
 
-    public static final BlockEntityType<ForgingBlockEntity> FORGING_BLOCK_ENTITY = register(
-            "forging_block_entity",
+    public static final BlockEntityType<ForgingBlockEntity> FORGING = register(
+            "forging",
             BlockEntityType.Builder.of(
                     ForgingBlockEntity::new,
                     NarakaBlocks.FORGING_BLOCK
             )
     );
 
-    public static final BlockEntityType<SoulStabilizerBlockEntity> SOUL_STABILIZER_BLOCK_ENTITY = register(
-            "soul_stabilizer_block_entity",
+    public static final BlockEntityType<SoulSmithingBlockEntity> SOUL_SMITHING = register(
+            "soul_smithing",
+            BlockEntityType.Builder.of(
+                    SoulSmithingBlockEntity::new,
+                    NarakaBlocks.SOUL_SMITHING_BLOCK
+            )
+    );
+
+    public static final BlockEntityType<SoulStabilizerBlockEntity> SOUL_STABILIZER = register(
+            "soul_stabilizer",
             BlockEntityType.Builder.of(
                     SoulStabilizerBlockEntity::new,
                     NarakaBlocks.SOUL_STABILIZER

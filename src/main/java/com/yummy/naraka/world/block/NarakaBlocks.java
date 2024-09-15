@@ -95,6 +95,11 @@ public class NarakaBlocks {
             ForgingBlock::new,
             Blocks.ANVIL
     );
+    public static final SoulSmithingBlock SOUL_SMITHING_BLOCK = registerBlockWithItem(
+            "soul_smithing_block",
+            SoulSmithingBlock::new,
+            Blocks.ANVIL
+    );
 
     public static final Block COMPRESSED_IRON_BLOCK = registerSimpleBlockWithItem("compressed_iron_block", Blocks.IRON_BLOCK);
     public static final Block IMITATION_GOLD_BLOCK = registerBlockWithItem(
@@ -190,11 +195,11 @@ public class NarakaBlocks {
     }
 
 
-    public static BlockBehaviour.Properties from(Block block) {
+    private static BlockBehaviour.Properties from(Block block) {
         return BlockBehaviour.Properties.ofFullCopy(block);
     }
 
-    public static Item.Properties item() {
+    private static Item.Properties item() {
         return new Item.Properties();
     }
 

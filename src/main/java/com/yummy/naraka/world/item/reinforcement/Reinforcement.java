@@ -67,10 +67,9 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
     }
 
     public static boolean canReinforce(ItemStack itemStack) {
-        if (itemStack.isEmpty())
+        if (itemStack.isEmpty() || itemStack.isStackable())
             return false;
-        Reinforcement reinforcement = itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, ZERO);
-        return reinforcement.value < MAX_VALUE;
+        return get(itemStack).value < MAX_VALUE;
     }
 
     /**

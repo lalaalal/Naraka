@@ -138,6 +138,7 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
         output.accept(NarakaBlocks.NARAKA_FORGING_BLOCK);
         output.accept(NarakaBlocks.SOUL_STABILIZER);
+        output.accept(NarakaBlocks.SOUL_SMITHING_BLOCK);
     }
 
     private static void modifyBuildingBlocksTab(FabricItemGroupEntries entries) {

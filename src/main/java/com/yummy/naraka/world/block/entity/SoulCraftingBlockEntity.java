@@ -61,7 +61,7 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
     private @Nullable RecipeHolder<?> recipeUsed;
 
     public SoulCraftingBlockEntity(BlockPos pos, BlockState blockState) {
-        super(NarakaBlockEntityTypes.SOUL_CRAFTING_BLOCK_ENTITY, pos, blockState);
+        super(NarakaBlockEntityTypes.SOUL_CRAFTING, pos, blockState);
         setFuel(0);
         setCraftingProgress(PROGRESS_WAITING);
         setLitProgress(0);

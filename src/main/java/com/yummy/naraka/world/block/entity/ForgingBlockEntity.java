@@ -14,51 +14,61 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class ForgingBlockEntity extends BlockEntity {
-    public static final float SUCCESS_CHANCE = 0.5f;
+    public static final float DEFAULT_SUCCESS_CHANCE = 0.3f;
 
-    private ItemStack itemStack = ItemStack.EMPTY;
+    private final float successChance;
+    private final Predicate<ItemStack> itemPredicate;
+    private ItemStack forgingItem = ItemStack.EMPTY;
     private int cooldownTick = 0;
 
-    public ForgingBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(NarakaBlockEntityTypes.FORGING_BLOCK_ENTITY, blockPos, blockState);
-
+    public ForgingBlockEntity(BlockPos pos, BlockState state) {
+        this(NarakaBlockEntityTypes.FORGING, pos, state, DEFAULT_SUCCESS_CHANCE, itemStack -> true);
     }
 
-    public void setItemStack(ItemStack itemStack) {
-        this.itemStack = itemStack.copy();
+    protected ForgingBlockEntity(BlockEntityType<? extends ForgingBlockEntity> type, BlockPos blockPos, BlockState blockState, float successChance, Predicate<ItemStack> itemPredicate) {
+        super(type, blockPos, blockState);
+        this.successChance = successChance;
+        this.itemPredicate = itemPredicate;
+    }
+
+    public void setForgingItem(ItemStack forgingItem) {
+        this.forgingItem = forgingItem.copy();
         setChanged();
     }
 
     public void dropItem() {
-        if (level != null && !itemStack.isEmpty()) {
+        if (level != null && !forgingItem.isEmpty()) {
             level.addFreshEntity(new ItemEntity(
                     level,
                     getBlockPos().getX(),
                     getBlockPos().getY() + 1,
                     getBlockPos().getZ(),
-                    itemStack
+                    forgingItem
             ));
-            itemStack = ItemStack.EMPTY;
+            forgingItem = ItemStack.EMPTY;
             setChanged();
         }
     }
 
-    public ItemStack getItemStack() {
-        return itemStack;
+    public ItemStack getForgingItem() {
+        return forgingItem;
     }
 
     public boolean tryReinforce() {
-        if (itemStack.isEmpty() || !Reinforcement.canReinforce(itemStack)
+        if (forgingItem.isEmpty() || !itemPredicate.test(forgingItem)
+                || !Reinforcement.canReinforce(forgingItem)
                 || level == null || level.isClientSide
                 || cooldownTick > 0)
             return false;
-        if (level.random.nextFloat() < SUCCESS_CHANCE) {
-            if (Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack)))
+        if (level.random.nextFloat() < successChance) {
+            if (Reinforcement.increase(forgingItem, NarakaReinforcementEffects.byItem(forgingItem)))
                 level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
             setChanged();
         } else {
@@ -76,8 +86,8 @@ public class ForgingBlockEntity extends BlockEntity {
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         CompoundTag compoundTag = new CompoundTag();
-        if (!itemStack.isEmpty())
-            compoundTag.put("ForgingItem", itemStack.save(provider));
+        if (!forgingItem.isEmpty())
+            compoundTag.put("ForgingItem", forgingItem.save(provider));
         return compoundTag;
     }
 
@@ -85,14 +95,14 @@ public class ForgingBlockEntity extends BlockEntity {
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
         super.loadAdditional(compoundTag, provider);
         Optional<ItemStack> optional = ItemStack.parse(provider, compoundTag.get("ForgingItem"));
-        optional.ifPresentOrElse(stack -> itemStack = stack, () -> itemStack = ItemStack.EMPTY);
+        optional.ifPresentOrElse(stack -> forgingItem = stack, () -> forgingItem = ItemStack.EMPTY);
     }
 
     @Override
     protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
         super.saveAdditional(compoundTag, provider);
-        if (!itemStack.isEmpty()) {
-            compoundTag.put("ForgingItem", itemStack.save(provider));
+        if (!forgingItem.isEmpty()) {
+            compoundTag.put("ForgingItem", forgingItem.save(provider));
         }
     }
 

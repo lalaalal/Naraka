@@ -87,7 +87,7 @@ public class NarakaModClient implements ClientModInitializer {
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR, SpearRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, SpearRenderer::longinus);
 
-        BlockEntityRenderers.register(NarakaBlockEntityTypes.FORGING_BLOCK_ENTITY, ForgingBlockEntityRenderer::new);
+        BlockEntityRenderers.register(NarakaBlockEntityTypes.FORGING, ForgingBlockEntityRenderer::new);
     }
 
     private void registerHudRenders() {

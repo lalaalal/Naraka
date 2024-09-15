@@ -38,7 +38,7 @@ public class ForgingBlockEntityRenderer implements BlockEntityRenderer<ForgingBl
     }
 
     @Override
-    public void render(ForgingBlockEntity blockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, int overlay) {
+    public void render(ForgingBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, int overlay) {
         poseStack.pushPose();
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entityCutout(NarakaTextures.FORGING_BLOCK));
         root.render(poseStack, vertexConsumer, light, overlay);
@@ -46,7 +46,7 @@ public class ForgingBlockEntityRenderer implements BlockEntityRenderer<ForgingBl
 
         poseStack.pushPose();
         poseStack.translate(0.5, 0.7, 0.5);
-        ItemStack itemStack = blockEntity.getItemStack();
+        ItemStack itemStack = blockEntity.getForgingItem();
         itemRenderer.renderStatic(itemStack, ItemDisplayContext.FIXED, light, overlay, poseStack, multiBufferSource, blockEntity.getLevel(), 1);
         poseStack.popPose();
     }
