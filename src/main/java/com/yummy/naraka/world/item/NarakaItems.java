@@ -110,14 +110,14 @@ public class NarakaItems {
             )
     );
 
-    public static final SwordItem SOUL_INFUSED_REDSTONE_SWORD = registerSoulInfusedSword("redstone", 0xeb4747);
-    public static final SwordItem SOUL_INFUSED_COPPER_SWORD = registerSoulInfusedSword("copper", 0xff8000);
-    public static final SwordItem SOUL_INFUSED_GOLD_SWORD = registerSoulInfusedSword("gold", 0xffd24d);
-    public static final SwordItem SOUL_INFUSED_EMERALD_SWORD = registerSoulInfusedSword("emerald", 0x0ec70e);
-    public static final SwordItem SOUL_INFUSED_DIAMOND_SWORD = registerSoulInfusedSword("diamond", 0x33cccc);
-    public static final SwordItem SOUL_INFUSED_LAPIS_SWORD = registerSoulInfusedSword("lapis", 0x3939c6);
-    public static final SwordItem SOUL_INFUSED_AMETHYST_SWORD = registerSoulInfusedSword("amethyst", 0x9957db);
-    public static final SwordItem SOUL_INFUSED_NECTARIUM_SWORD = registerSoulInfusedSword("nectarium", 0xd65cd6);
+    public static final SwordItem SOUL_INFUSED_REDSTONE_SWORD = registerSoulInfusedSword(SoulType.REDSTONE);
+    public static final SwordItem SOUL_INFUSED_COPPER_SWORD = registerSoulInfusedSword(SoulType.COPPER);
+    public static final SwordItem SOUL_INFUSED_GOLD_SWORD = registerSoulInfusedSword(SoulType.GOLD);
+    public static final SwordItem SOUL_INFUSED_EMERALD_SWORD = registerSoulInfusedSword(SoulType.EMERALD);
+    public static final SwordItem SOUL_INFUSED_DIAMOND_SWORD = registerSoulInfusedSword(SoulType.DIAMOND);
+    public static final SwordItem SOUL_INFUSED_LAPIS_SWORD = registerSoulInfusedSword(SoulType.LAPIS);
+    public static final SwordItem SOUL_INFUSED_AMETHYST_SWORD = registerSoulInfusedSword(SoulType.AMETHYST);
+    public static final SwordItem SOUL_INFUSED_NECTARIUM_SWORD = registerSoulInfusedSword(SoulType.NECTARIUM);
     public static final SwordItem PURIFIED_SOUL_SWORD = registerItem(
             "purified_soul_sword",
             properties -> new PurifiedSoulSword(Tiers.IRON, properties.fireResistant()
@@ -159,14 +159,14 @@ public class NarakaItems {
         return item;
     }
 
-    private static SwordItem registerSoulInfusedSword(String name, int color) {
-        SwordItem item = registerItem(SOUL_INFUSED_PREFIX + name + "_sword",
+    private static SwordItem registerSoulInfusedSword(SoulType type) {
+        SwordItem item = registerItem(SOUL_INFUSED_PREFIX + type.getSerializedName() + "_sword",
                 properties -> new SoulInfusedSwordItem(
                         Tiers.IRON,
                         properties.fireResistant()
                                 .rarity(Rarity.RARE)
                                 .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f)),
-                        color
+                        type.color
                 )
         );
         SOUL_INFUSED_SWORDS.add(item);

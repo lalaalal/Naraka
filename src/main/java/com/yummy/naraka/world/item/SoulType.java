@@ -16,22 +16,23 @@ import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
 public enum SoulType implements StringRepresentable {
-    REDSTONE(0, () -> NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK, () -> NarakaItems.SOUL_INFUSED_REDSTONE),
-    COPPER(1, () -> NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK, () -> NarakaItems.SOUL_INFUSED_COPPER),
-    GOLD(2, () -> NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK, () -> NarakaItems.SOUL_INFUSED_GOLD),
-    EMERALD(3, () -> NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK, () -> NarakaItems.SOUL_INFUSED_EMERALD),
-    DIAMOND(4, () -> NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK, () -> NarakaItems.SOUL_INFUSED_DIAMOND),
-    LAPIS(5, () -> NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK, () -> NarakaItems.SOUL_INFUSED_LAPIS),
-    AMETHYST(6, () -> NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK, () -> NarakaItems.SOUL_INFUSED_AMETHYST),
-    NECTARIUM(7, () -> NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK, () -> NarakaItems.SOUL_INFUSED_NECTARIUM);
+    REDSTONE(0, () -> NarakaItems.SOUL_INFUSED_REDSTONE, () -> NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK, 0xeb4747),
+    COPPER(1, () -> NarakaItems.SOUL_INFUSED_COPPER, () -> NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK, 0xff8000),
+    GOLD(2, () -> NarakaItems.SOUL_INFUSED_GOLD, () -> NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK, 0xffd24d),
+    EMERALD(3, () -> NarakaItems.SOUL_INFUSED_EMERALD, () -> NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK, 0x0ec70e),
+    DIAMOND(4, () -> NarakaItems.SOUL_INFUSED_DIAMOND, () -> NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK, 0x33cccc),
+    LAPIS(5, () -> NarakaItems.SOUL_INFUSED_LAPIS, () -> NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK, 0x3939c6),
+    AMETHYST(6, () -> NarakaItems.SOUL_INFUSED_AMETHYST, () -> NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK, 0x9957db),
+    NECTARIUM(7, () -> NarakaItems.SOUL_INFUSED_NECTARIUM, () -> NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK, 0xd65cd6);
 
     private static final IntFunction<SoulType> BY_ID = ByIdMap.continuous(SoulType::getId, SoulType.values(), ByIdMap.OutOfBoundsStrategy.ZERO);
     public static final Codec<SoulType> CODEC = StringRepresentable.fromEnum(SoulType::values);
     public static final StreamCodec<ByteBuf, SoulType> STREAM_CODEC = ByteBufCodecs.idMapper(BY_ID, SoulType::getId);
 
     public final int id;
-    private final Supplier<Block> soulBlock;
     private final Supplier<Item> soulItem;
+    private final Supplier<Block> soulBlock;
+    public final int color;
     public final String translationKey;
 
     @Nullable
@@ -43,15 +44,20 @@ public enum SoulType implements StringRepresentable {
         return null;
     }
 
-    SoulType(int id, Supplier<Block> soulBlock, Supplier<Item> soulItem) {
+    SoulType(int id, Supplier<Item> soulItem, Supplier<Block> soulBlock, int color) {
         this.id = id;
         this.soulBlock = soulBlock;
         this.soulItem = soulItem;
+        this.color = color;
         this.translationKey = "soul_type.naraka." + name().toLowerCase();
     }
 
     public int getId() {
         return id;
+    }
+
+    public int getColor() {
+        return color;
     }
 
     public Block getBlock() {

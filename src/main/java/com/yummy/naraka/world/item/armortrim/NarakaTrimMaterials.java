@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.item.armortrim;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -39,14 +39,18 @@ public class NarakaTrimMaterials {
         register(context, TrimMaterials.DIAMOND, Items.DIAMOND, 7269586, 0.440f, Map.of(ArmorMaterials.DIAMOND, "diamond_darker"));
         register(context, TrimMaterials.LAPIS, Items.LAPIS_LAZULI, 4288151, 0.495f);
         register(context, TrimMaterials.AMETHYST, Items.AMETHYST_SHARD, 10116294, 0.550f);
-        register(context, SOUL_INFUSED_REDSTONE, NarakaItems.SOUL_INFUSED_REDSTONE, 0xeb4747, 0.605f);
-        register(context, SOUL_INFUSED_COPPER, NarakaItems.SOUL_INFUSED_COPPER, 0xff8000, 0.660f);
-        register(context, SOUL_INFUSED_GOLD, NarakaItems.SOUL_INFUSED_GOLD, 0xffd24d, 0.715f);
-        register(context, SOUL_INFUSED_EMERALD, NarakaItems.SOUL_INFUSED_EMERALD, 0x0ec70e, 0.770f);
-        register(context, SOUL_INFUSED_DIAMOND, NarakaItems.SOUL_INFUSED_DIAMOND, 0x33cccc, 0.825f);
-        register(context, SOUL_INFUSED_LAPIS, NarakaItems.SOUL_INFUSED_LAPIS, 0x3939c6, 0.880f);
-        register(context, SOUL_INFUSED_AMETHYST, NarakaItems.SOUL_INFUSED_AMETHYST, 0x9957db, 0.935f);
-        register(context, SOUL_INFUSED_NECTARIUM, NarakaItems.SOUL_INFUSED_NECTARIUM, 0xd65cd6, 1.0f);
+        register(context, SOUL_INFUSED_REDSTONE, SoulType.REDSTONE, 0.605f);
+        register(context, SOUL_INFUSED_COPPER, SoulType.COPPER, 0.660f);
+        register(context, SOUL_INFUSED_GOLD, SoulType.GOLD, 0.715f);
+        register(context, SOUL_INFUSED_EMERALD, SoulType.EMERALD, 0.770f);
+        register(context, SOUL_INFUSED_DIAMOND, SoulType.DIAMOND, 0.825f);
+        register(context, SOUL_INFUSED_LAPIS, SoulType.LAPIS, 0.880f);
+        register(context, SOUL_INFUSED_AMETHYST, SoulType.AMETHYST, 0.935f);
+        register(context, SOUL_INFUSED_NECTARIUM, SoulType.NECTARIUM, 1.0f);
+    }
+
+    private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> key, SoulType type, float itemModelIndex) {
+        register(context, key, type.getItem(), type.getColor(), itemModelIndex);
     }
 
     private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> key, Item item, int color, float itemModelIndex) {
