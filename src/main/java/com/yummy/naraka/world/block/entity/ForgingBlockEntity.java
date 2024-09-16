@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.Optional;
 import java.util.function.Predicate;
 
 public class ForgingBlockEntity extends BlockEntity {
@@ -94,8 +93,7 @@ public class ForgingBlockEntity extends BlockEntity {
     @Override
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
         super.loadAdditional(compoundTag, provider);
-        Optional<ItemStack> optional = ItemStack.parse(provider, compoundTag.get("ForgingItem"));
-        optional.ifPresentOrElse(stack -> forgingItem = stack, () -> forgingItem = ItemStack.EMPTY);
+        forgingItem = ItemStack.parseOptional(provider, compoundTag.getCompound("ForgingItem"));
     }
 
     @Override

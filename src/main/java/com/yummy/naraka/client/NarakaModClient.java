@@ -59,6 +59,9 @@ public class NarakaModClient implements ClientModInitializer {
 
     private void initializeItems() {
         BuiltinItemRendererRegistry.INSTANCE.register(NarakaBlocks.FORGING_BLOCK, NarakaCustomRenderer.INSTANCE);
+        BuiltinItemRendererRegistry.INSTANCE.register(NarakaBlocks.SOUL_STABILIZER, NarakaCustomRenderer.INSTANCE);
+        BuiltinItemRendererRegistry.INSTANCE.register(NarakaBlocks.SOUL_SMITHING_BLOCK, NarakaCustomRenderer.INSTANCE);
+
         CustomItemRenderManager.register(NarakaItems.SPEAR_ITEM, SpearItemRenderer.INSTANCE);
         CustomItemRenderManager.register(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, SpearItemRenderer.INSTANCE);
         CustomItemRenderManager.register(NarakaItems.SPEAR_OF_LONGINUS_ITEM, SpearItemRenderer.INSTANCE);
@@ -88,6 +91,8 @@ public class NarakaModClient implements ClientModInitializer {
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, SpearRenderer::longinus);
 
         BlockEntityRenderers.register(NarakaBlockEntityTypes.FORGING, ForgingBlockEntityRenderer::new);
+        BlockEntityRenderers.register(NarakaBlockEntityTypes.SOUL_STABILIZER, SoulStabilizerBlockEntityRenderer::new);
+        BlockEntityRenderers.register(NarakaBlockEntityTypes.SOUL_SMITHING, ForgingBlockEntityRenderer::new);
     }
 
     private void registerHudRenders() {

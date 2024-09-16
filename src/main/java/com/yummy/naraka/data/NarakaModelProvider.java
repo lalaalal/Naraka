@@ -25,8 +25,11 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class NarakaModelProvider extends FabricModelProvider {
+    private static final ModelTemplate BLOCK_ENTITY_ITEM = new ModelTemplate(Optional.of(NarakaMod.location("item", "template_block_entity")), Optional.empty(), TextureSlot.PARTICLE);
+
     public NarakaModelProvider(FabricDataOutput output) {
         super(output);
     }
@@ -59,7 +62,9 @@ public class NarakaModelProvider extends FabricModelProvider {
         NarakaBlocks.forEachSoulInfusedBlock(generator::createTrivialCube);
         generator.createTrivialCube(NarakaBlocks.EBONY_METAL_BLOCK);
         generator.blockEntityModels(NarakaBlocks.FORGING_BLOCK, Blocks.ANVIL)
-                .createWithoutBlockItem(NarakaBlocks.FORGING_BLOCK);
+                .createWithCustomBlockItemModel(BLOCK_ENTITY_ITEM, NarakaBlocks.FORGING_BLOCK, NarakaBlocks.SOUL_SMITHING_BLOCK);
+        generator.blockEntityModels(NarakaBlocks.SOUL_STABILIZER, Blocks.GLASS)
+                .createWithCustomBlockItemModel(BLOCK_ENTITY_ITEM, NarakaBlocks.SOUL_STABILIZER);
         createNectariumCrystal(generator);
         generator.createTrivialCube(NarakaBlocks.NECTARIUM_CORE_BLOCK);
         generator.createSimpleFlatItemModel(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK);
