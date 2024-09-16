@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,6 +30,13 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
         return soulType.test(itemStack) && souls + getSoulByItem(itemStack) <= CAPACITY;
     }
 
+    private int findMaxInjectableCount(ItemStack itemStack) {
+        int itemSoul = getSoulByItem(itemStack);
+        if (itemSoul == 0)
+            return 0;
+        return Mth.clamp((CAPACITY - souls) / itemSoul, 0, itemStack.getCount());
+    }
+
     private int getSoulByItem(ItemStack itemStack) {
         if (soulType != null) {
             if (soulType.getItem() == itemStack.getItem())
@@ -44,6 +52,22 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
             soulType = SoulType.fromItem(itemStack);
         this.souls += getSoulByItem(itemStack);
         setChanged();
+    }
+
+    public int injectAll(ItemStack itemStack) {
+        if (soulType == null)
+            soulType = SoulType.fromItem(itemStack);
+        int count = findMaxInjectableCount(itemStack);
+        this.souls += getSoulByItem(itemStack) * count;
+        setChanged();
+        return count;
+    }
+
+    public int tryInject(ItemStack itemStack, boolean injectAll) {
+        if (injectAll)
+            return injectAll(itemStack);
+        inject(itemStack);
+        return 1;
     }
 
     @Nullable

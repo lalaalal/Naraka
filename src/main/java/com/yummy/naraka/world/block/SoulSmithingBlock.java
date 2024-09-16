@@ -5,6 +5,7 @@ import com.yummy.naraka.world.block.entity.ForgingBlockEntity;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.block.entity.SoulSmithingBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -29,11 +30,23 @@ public class SoulSmithingBlock extends ForgingBlock {
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof SoulSmithingBlockEntity soulSmithingBlockEntity) {
-            if (player.isShiftKeyDown() && soulSmithingBlockEntity.isStabilizerAttached()) {
+            if (stack.isEmpty()
+                    && hitResult.getDirection() == Direction.WEST
+                    && soulSmithingBlockEntity.isStabilizerAttached()) {
                 soulSmithingBlockEntity.detachSoulStabilizer();
                 return ItemInteractionResult.SUCCESS;
-            } else if (soulSmithingBlockEntity.tryAttachSoulStabilizer(stack))
+            } else if (stack.isEmpty()
+                    && hitResult.getDirection() == Direction.SOUTH
+                    && !soulSmithingBlockEntity.getTemplateItem().isEmpty()) {
+                soulSmithingBlockEntity.detachTemplateItem();
                 return ItemInteractionResult.SUCCESS;
+            } else if (soulSmithingBlockEntity.tryAttachSoulStabilizer(stack)) {
+                stack.consume(1, player);
+                return ItemInteractionResult.SUCCESS;
+            } else if (soulSmithingBlockEntity.tryAttachTemplate(stack)) {
+                stack.consume(1, player);
+                return ItemInteractionResult.SUCCESS;
+            }
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }

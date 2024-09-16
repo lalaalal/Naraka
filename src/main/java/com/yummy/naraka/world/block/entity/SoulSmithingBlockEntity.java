@@ -6,6 +6,7 @@ import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -17,6 +18,7 @@ import java.util.function.Predicate;
 public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     private final SoulStabilizerBlockEntity soulStabilizer;
     private boolean isStabilizerAttached;
+    private ItemStack templateItem = ItemStack.EMPTY;
 
     public SoulSmithingBlockEntity(BlockPos pos, BlockState state) {
         this(NarakaBlockEntityTypes.SOUL_SMITHING, pos, state, 1, itemStack -> itemStack.is(NarakaItemTags.PURIFIED_SOUL_ARMORS));
@@ -71,6 +73,39 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         }
     }
 
+    public boolean tryAttachTemplate(ItemStack template) {
+        if (templateItem.isEmpty() && template.is(ItemTags.TRIM_TEMPLATES)) {
+            this.templateItem = template;
+            return true;
+        }
+        return false;
+    }
+
+    public void detachTemplateItem() {
+        if (!templateItem.isEmpty() && level != null) {
+            level.addFreshEntity(new ItemEntity(
+                    level,
+                    getBlockPos().getX(),
+                    getBlockPos().getY() + 1,
+                    getBlockPos().getZ(),
+                    templateItem
+            ));
+            templateItem = ItemStack.EMPTY;
+            setChanged();
+        }
+    }
+
+    public ItemStack getTemplateItem() {
+        return templateItem;
+    }
+
+    @Override
+    public void dropItem() {
+        super.dropItem();
+        detachSoulStabilizer();
+        detachTemplateItem();
+    }
+
     @Override
     public boolean tryReinforce() {
         if (isStabilizerAttached)
@@ -82,10 +117,10 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         CompoundTag tag = super.getUpdateTag(provider);
         tag.putBoolean("IsStabilizerAttached", isStabilizerAttached);
-        if (isStabilizerAttached) {
-            CompoundTag stabilizerTag = soulStabilizer.getUpdateTag(provider);
-            tag.put("StabilizerData", stabilizerTag);
-        }
+        if (isStabilizerAttached)
+            tag.put("StabilizerData", soulStabilizer.getUpdateTag(provider));
+        if (!templateItem.isEmpty())
+            tag.put("TemplateItem", templateItem.save(provider));
 
         return tag;
     }
@@ -94,19 +129,19 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
         super.saveAdditional(compoundTag, provider);
         compoundTag.putBoolean("IsStabilizerAttached", isStabilizerAttached);
-        if (isStabilizerAttached) {
-            CompoundTag stabilizerTag = new CompoundTag();
-            compoundTag.put("StabilizerData", stabilizerTag);
-        }
+        if (isStabilizerAttached)
+            compoundTag.put("StabilizerData", new CompoundTag());
+        if (!templateItem.isEmpty())
+            compoundTag.put("TemplateItem", templateItem.save(provider));
     }
 
     @Override
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
         super.loadAdditional(compoundTag, provider);
         isStabilizerAttached = compoundTag.getBoolean("IsStabilizerAttached");
-        if (isStabilizerAttached) {
-            CompoundTag stabilizerTag = compoundTag.getCompound("StabilizerData");
-            soulStabilizer.loadAdditional(stabilizerTag, provider);
-        }
+        if (isStabilizerAttached)
+            soulStabilizer.loadAdditional(compoundTag.getCompound("StabilizerData"), provider);
+        if (compoundTag.contains("TemplateItem"))
+            templateItem = ItemStack.parseOptional(provider, compoundTag.getCompound("TemplateItem"));
     }
 }

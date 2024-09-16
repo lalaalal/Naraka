@@ -77,5 +77,8 @@ public class NarakaItemTagsProvider extends FabricTagProvider<Item> {
         getOrCreateTagBuilder(ItemTags.FOOT_ARMOR)
                 .add(NarakaItems.PURIFIED_SOUL_BOOTS)
                 .add(NarakaItems.EBONY_METAL_BOOTS);
+
+        getOrCreateTagBuilder(ItemTags.TRIM_TEMPLATES)
+                .add(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE);
     }
 }
