@@ -21,9 +21,10 @@ public class SoulSmithingBlockComponentProvider implements IBlockComponentProvid
         IElementHelper elements = IElementHelper.get();
 
         if (blockAccessor.getBlockEntity() instanceof SoulSmithingBlockEntity soulSmithingBlockEntity) {
+            tooltip.add(elements.spacer(0, 1));
             ItemStack templateItem = soulSmithingBlockEntity.getTemplateItem();
             if (!templateItem.isEmpty())
-                tooltip.add(elements.smallItem(templateItem));
+                tooltip.append(elements.smallItem(templateItem));
 
             SoulType type = soulSmithingBlockEntity.getSoulType();
             if (type != null) {

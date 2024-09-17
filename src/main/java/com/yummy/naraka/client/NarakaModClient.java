@@ -92,7 +92,7 @@ public class NarakaModClient implements ClientModInitializer {
 
         BlockEntityRenderers.register(NarakaBlockEntityTypes.FORGING, ForgingBlockEntityRenderer::new);
         BlockEntityRenderers.register(NarakaBlockEntityTypes.SOUL_STABILIZER, SoulStabilizerBlockEntityRenderer::new);
-        BlockEntityRenderers.register(NarakaBlockEntityTypes.SOUL_SMITHING, ForgingBlockEntityRenderer::new);
+        BlockEntityRenderers.register(NarakaBlockEntityTypes.SOUL_SMITHING, SoulSmithingBlockEntityRenderer::new);
     }
 
     private void registerHudRenders() {

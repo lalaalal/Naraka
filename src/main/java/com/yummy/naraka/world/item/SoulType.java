@@ -23,7 +23,7 @@ public enum SoulType implements StringRepresentable {
     LAPIS(5, () -> NarakaItems.SOUL_INFUSED_LAPIS, NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK::asItem, 0x3939c6),
     AMETHYST(6, () -> NarakaItems.SOUL_INFUSED_AMETHYST, NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK::asItem, 0x9957db),
     NECTARIUM(7, () -> NarakaItems.SOUL_INFUSED_NECTARIUM, NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK::asItem, 0xd65cd6),
-    GOD_BLOOD(8, () -> NarakaItems.GOD_BLOOD, () -> NarakaItems.GOD_BLOOD, 0x000000);
+    GOD_BLOOD(8, () -> NarakaItems.GOD_BLOOD, () -> NarakaItems.GOD_BLOOD, 0x625859);
 
     private static final IntFunction<SoulType> BY_ID = ByIdMap.continuous(SoulType::getId, SoulType.values(), ByIdMap.OutOfBoundsStrategy.ZERO);
     public static final Codec<SoulType> CODEC = StringRepresentable.fromEnum(SoulType::values);
