@@ -1,27 +1,37 @@
 package com.yummy.naraka.world.block.entity;
 
 import com.yummy.naraka.tags.NarakaItemTags;
+import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.SoulType;
+import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
+import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.armortrim.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public class SoulSmithingBlockEntity extends ForgingBlockEntity {
+    public static final int COOLDOWN = 40;
+
     private final SoulStabilizerBlockEntity soulStabilizer;
     private boolean isStabilizerAttached;
     private ItemStack templateItem = ItemStack.EMPTY;
 
     public SoulSmithingBlockEntity(BlockPos pos, BlockState state) {
-        this(NarakaBlockEntityTypes.SOUL_SMITHING, pos, state, 1, itemStack -> itemStack.is(NarakaItemTags.PURIFIED_SOUL_ARMORS));
+        this(NarakaBlockEntityTypes.SOUL_SMITHING, pos, state, 1, itemStack -> itemStack.is(NarakaItemTags.SOUL_REINFORCEABLE));
     }
 
     protected SoulSmithingBlockEntity(BlockEntityType<? extends SoulSmithingBlockEntity> type, BlockPos pos, BlockState state, float successChance, Predicate<ItemStack> itemPredicate) {
@@ -47,8 +57,8 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     }
 
     public boolean tryAttachSoulStabilizer(ItemStack stack) {
-        if (!isStabilizerAttached && stack.is(NarakaBlocks.SOUL_STABILIZER.asItem())) {
-            soulStabilizer.applyComponentsFromItemStack(stack);
+        if (level != null && !isStabilizerAttached && stack.is(NarakaBlocks.SOUL_STABILIZER.asItem())) {
+            NarakaItemUtils.loadBlockEntity(stack, soulStabilizer, level.registryAccess());
             isStabilizerAttached = true;
             setChanged();
             return true;
@@ -60,13 +70,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         if (isStabilizerAttached && level != null) {
             ItemStack itemStack = new ItemStack(NarakaBlocks.SOUL_STABILIZER);
             soulStabilizer.saveToItem(itemStack, level.registryAccess());
-            level.addFreshEntity(new ItemEntity(
-                    level,
-                    getBlockPos().getX(),
-                    getBlockPos().getY() + 1,
-                    getBlockPos().getZ(),
-                    itemStack
-            ));
+            NarakaItemUtils.summonItemEntity(level, itemStack, getBlockPos());
 
             isStabilizerAttached = false;
             setChanged();
@@ -75,7 +79,8 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
     public boolean tryAttachTemplate(ItemStack template) {
         if (templateItem.isEmpty() && template.is(ItemTags.TRIM_TEMPLATES)) {
-            this.templateItem = template;
+            this.templateItem = template.copyWithCount(1);
+            setChanged();
             return true;
         }
         return false;
@@ -83,13 +88,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
     public void detachTemplateItem() {
         if (!templateItem.isEmpty() && level != null) {
-            level.addFreshEntity(new ItemEntity(
-                    level,
-                    getBlockPos().getX(),
-                    getBlockPos().getY() + 1,
-                    getBlockPos().getZ(),
-                    templateItem
-            ));
+            NarakaItemUtils.summonItemEntity(level, templateItem, getBlockPos());
             templateItem = ItemStack.EMPTY;
             setChanged();
         }
@@ -100,16 +99,37 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     }
 
     @Override
-    public void dropItem() {
-        super.dropItem();
+    public void dropItems() {
+        super.dropItems();
         detachSoulStabilizer();
         detachTemplateItem();
     }
 
     @Override
     public boolean tryReinforce() {
-        if (isStabilizerAttached)
-            return super.tryReinforce();
+        if (level != null
+                && cooldownTick <= 0
+                && isStabilizerAttached && soulStabilizer.getSouls() >= 9 * 16) {
+            soulStabilizer.consumeSoul(9 * 16);
+            while (Reinforcement.canReinforce(forgingItem))
+                Reinforcement.increase(forgingItem, NarakaReinforcementEffects.byItem(forgingItem));
+
+            setChanged();
+            level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
+            cooldownTick = COOLDOWN;
+
+            SoulType soulType = soulStabilizer.getSoulType();
+            if (soulType == null)
+                return true;
+            Optional<Holder.Reference<TrimMaterial>> material = TrimMaterials.getFromIngredient(level.registryAccess(), soulType.getItem().getDefaultInstance());
+            Optional<Holder.Reference<TrimPattern>> pattern = TrimPatterns.getFromTemplate(level.registryAccess(), templateItem);
+            if (material.isPresent() && pattern.isPresent()) {
+                ArmorTrim armorTrim = new ArmorTrim(material.get(), pattern.get());
+                forgingItem.set(DataComponents.TRIM, armorTrim);
+                setChanged();
+            }
+            return true;
+        }
         return false;
     }
 
@@ -129,8 +149,11 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
         super.saveAdditional(compoundTag, provider);
         compoundTag.putBoolean("IsStabilizerAttached", isStabilizerAttached);
-        if (isStabilizerAttached)
-            compoundTag.put("StabilizerData", new CompoundTag());
+        if (isStabilizerAttached) {
+            CompoundTag stabilizerData = new CompoundTag();
+            soulStabilizer.saveAdditional(stabilizerData, provider);
+            compoundTag.put("StabilizerData", stabilizerData);
+        }
         if (!templateItem.isEmpty())
             compoundTag.put("TemplateItem", templateItem.save(provider));
     }

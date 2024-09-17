@@ -10,33 +10,68 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class SoulSmithingBlock extends ForgingBlock {
     private static final MapCodec<SoulSmithingBlock> CODEC = simpleCodec(SoulSmithingBlock::new);
+    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public SoulSmithingBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(FACING);
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+        return box(0, 0, 0, 16, 12, 16);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    }
+
+    private boolean isStabilizerSide(BlockState state, Direction direction) {
+        return state.getValue(FACING) == direction;
+    }
+
+    private boolean isTemplatedSide(BlockState state, Direction direction) {
+        return state.getValue(FACING).getClockWise() == direction;
     }
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (stack.is(Items.MACE))
+            return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
         if (blockEntity instanceof SoulSmithingBlockEntity soulSmithingBlockEntity) {
-            if (stack.isEmpty()
-                    && hitResult.getDirection() == Direction.WEST
+            if (isStabilizerSide(state, hitResult.getDirection())
                     && soulSmithingBlockEntity.isStabilizerAttached()) {
                 soulSmithingBlockEntity.detachSoulStabilizer();
                 return ItemInteractionResult.SUCCESS;
-            } else if (stack.isEmpty()
-                    && hitResult.getDirection() == Direction.SOUTH
+            } else if (isTemplatedSide(state, hitResult.getDirection())
                     && !soulSmithingBlockEntity.getTemplateItem().isEmpty()) {
                 soulSmithingBlockEntity.detachTemplateItem();
                 return ItemInteractionResult.SUCCESS;

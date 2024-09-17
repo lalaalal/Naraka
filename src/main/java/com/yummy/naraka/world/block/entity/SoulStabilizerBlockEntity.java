@@ -9,6 +9,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -39,9 +40,11 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
 
     private int getSoulByItem(ItemStack itemStack) {
         if (soulType != null) {
+            if (soulType == SoulType.GOD_BLOOD)
+                return 9 * 64;
             if (soulType.getItem() == itemStack.getItem())
                 return 1;
-            if (soulType.getBlock().asItem() == itemStack.getItem())
+            if (soulType.getBlockItem() == itemStack.getItem())
                 return 9;
         }
         return 0;
@@ -77,6 +80,17 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
 
     public int getSouls() {
         return souls;
+    }
+
+    public void consumeSoul(int consume) {
+        souls = Mth.clamp(souls - consume, 0, CAPACITY);
+    }
+
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        if (level != null)
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
     }
 
     @Override

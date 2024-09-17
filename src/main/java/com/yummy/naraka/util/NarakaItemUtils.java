@@ -3,12 +3,18 @@ package com.yummy.naraka.util;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class NarakaItemUtils {
     /**
@@ -20,6 +26,23 @@ public class NarakaItemUtils {
         if (modifiers == null || modifiers.modifiers().isEmpty())
             return itemStack.getItem().getDefaultAttributeModifiers();
         return modifiers;
+    }
+
+    public static void summonItemEntity(Level level, ItemStack itemStack, BlockPos pos) {
+        if (!level.isClientSide) {
+            level.addFreshEntity(new ItemEntity(
+                    level,
+                    pos.getX() + 0.5,
+                    pos.getY() + 1,
+                    pos.getZ() + 0.5,
+                    itemStack
+            ));
+        }
+    }
+
+    public static void loadBlockEntity(ItemStack itemStack, BlockEntity blockEntity, HolderLookup.Provider provider) {
+        CustomData customData = itemStack.getOrDefault(DataComponents.BLOCK_ENTITY_DATA, CustomData.EMPTY);
+        customData.loadInto(blockEntity, provider);
     }
 
     public static boolean canApplyReinforcementEffect(LivingEntity livingEntity, Holder<ReinforcementEffect> effect) {

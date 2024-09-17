@@ -115,7 +115,7 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
         copySmithingTemplate(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.EBONY_METAL_INGOT, NarakaBlocks.COMPRESSED_IRON_BLOCK);
         trimSmithing(recipeOutput,
                 NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE,
-                Ingredient.of(NarakaItemTags.PURIFIED_SOUL_ARMORS),
+                Ingredient.of(NarakaItemTags.PURIFIED_SOUL_ARMOR),
                 Ingredient.of(ItemTags.TRIM_MATERIALS)
         );
         helmet(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL, NarakaItems.PURIFIED_SOUL_HELMET);

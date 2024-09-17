@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.block.entity;
 
+import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.BlockPos;
@@ -10,9 +11,9 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,11 +22,12 @@ import java.util.function.Predicate;
 
 public class ForgingBlockEntity extends BlockEntity {
     public static final float DEFAULT_SUCCESS_CHANCE = 0.3f;
+    public static final int COOLDOWN = 30;
 
     private final float successChance;
     private final Predicate<ItemStack> itemPredicate;
-    private ItemStack forgingItem = ItemStack.EMPTY;
-    private int cooldownTick = 0;
+    protected ItemStack forgingItem = ItemStack.EMPTY;
+    protected int cooldownTick = 0;
 
     public ForgingBlockEntity(BlockPos pos, BlockState state) {
         this(NarakaBlockEntityTypes.FORGING, pos, state, DEFAULT_SUCCESS_CHANCE, itemStack -> true);
@@ -42,18 +44,16 @@ public class ForgingBlockEntity extends BlockEntity {
         setChanged();
     }
 
-    public void dropItem() {
+    public void dropForgingItem() {
         if (level != null && !forgingItem.isEmpty()) {
-            level.addFreshEntity(new ItemEntity(
-                    level,
-                    getBlockPos().getX(),
-                    getBlockPos().getY() + 1,
-                    getBlockPos().getZ(),
-                    forgingItem
-            ));
+            NarakaItemUtils.summonItemEntity(level, forgingItem, getBlockPos());
             forgingItem = ItemStack.EMPTY;
             setChanged();
         }
+    }
+
+    public void dropItems() {
+        dropForgingItem();
     }
 
     public ItemStack getForgingItem() {
@@ -61,7 +61,7 @@ public class ForgingBlockEntity extends BlockEntity {
     }
 
     public boolean tryReinforce() {
-        if (forgingItem.isEmpty() || !itemPredicate.test(forgingItem)
+        if (!itemPredicate.test(forgingItem)
                 || !Reinforcement.canReinforce(forgingItem)
                 || level == null || level.isClientSide
                 || cooldownTick > 0)
@@ -73,8 +73,15 @@ public class ForgingBlockEntity extends BlockEntity {
         } else {
             level.playSound(null, getBlockPos(), SoundEvents.ANVIL_DESTROY, SoundSource.BLOCKS);
         }
-        cooldownTick = 30;
+        cooldownTick = COOLDOWN;
         return true;
+    }
+
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        if (level != null)
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
     }
 
     @Override

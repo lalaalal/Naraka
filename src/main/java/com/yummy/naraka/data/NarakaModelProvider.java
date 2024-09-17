@@ -160,24 +160,25 @@ public class NarakaModelProvider extends FabricModelProvider {
     }
 
     private static final List<ItemModelGenerators.TrimModelData> TRIM_MODELS = List.of(
-            new ItemModelGenerators.TrimModelData("quartz", 0.055f, Map.of()),
-            new ItemModelGenerators.TrimModelData("iron", 0.110f, Map.of(ArmorMaterials.IRON, "iron_darker")),
-            new ItemModelGenerators.TrimModelData("netherite", 0.165f, Map.of(ArmorMaterials.NETHERITE, "netherite_darker")),
-            new ItemModelGenerators.TrimModelData("redstone", 0.220f, Map.of()),
-            new ItemModelGenerators.TrimModelData("copper", 0.275f, Map.of()),
-            new ItemModelGenerators.TrimModelData("gold", 0.330f, Map.of(ArmorMaterials.GOLD, "gold_darker")),
-            new ItemModelGenerators.TrimModelData("emerald", 0.385f, Map.of()),
-            new ItemModelGenerators.TrimModelData("diamond", 0.440f, Map.of(ArmorMaterials.DIAMOND, "diamond_darker")),
-            new ItemModelGenerators.TrimModelData("lapis", 0.495f, Map.of()),
-            new ItemModelGenerators.TrimModelData("amethyst", 0.550f, Map.of()),
-            new ItemModelGenerators.TrimModelData("soul_infused_redstone", 0.605f, Map.of()),
-            new ItemModelGenerators.TrimModelData("soul_infused_copper", 0.660f, Map.of()),
-            new ItemModelGenerators.TrimModelData("soul_infused_gold", 0.715f, Map.of()),
-            new ItemModelGenerators.TrimModelData("soul_infused_emerald", 0.770f, Map.of()),
-            new ItemModelGenerators.TrimModelData("soul_infused_diamond", 0.825f, Map.of()),
-            new ItemModelGenerators.TrimModelData("soul_infused_lapis", 0.880f, Map.of()),
-            new ItemModelGenerators.TrimModelData("soul_infused_amethyst", 0.935f, Map.of()),
-            new ItemModelGenerators.TrimModelData("soul_infused_nectarium", 1.0f, Map.of())
+            new ItemModelGenerators.TrimModelData("quartz", 0.052f, Map.of()),
+            new ItemModelGenerators.TrimModelData("iron", 0.104f, Map.of(ArmorMaterials.IRON, "iron_darker")),
+            new ItemModelGenerators.TrimModelData("netherite", 0.156f, Map.of(ArmorMaterials.NETHERITE, "netherite_darker")),
+            new ItemModelGenerators.TrimModelData("redstone", 0.208f, Map.of()),
+            new ItemModelGenerators.TrimModelData("copper", 0.26f, Map.of()),
+            new ItemModelGenerators.TrimModelData("gold", 0.312f, Map.of(ArmorMaterials.GOLD, "gold_darker")),
+            new ItemModelGenerators.TrimModelData("emerald", 0.364f, Map.of()),
+            new ItemModelGenerators.TrimModelData("diamond", 0.416f, Map.of(ArmorMaterials.DIAMOND, "diamond_darker")),
+            new ItemModelGenerators.TrimModelData("lapis", 0.468f, Map.of()),
+            new ItemModelGenerators.TrimModelData("amethyst", 0.52f, Map.of()),
+            new ItemModelGenerators.TrimModelData("soul_infused_redstone", 0.572f, Map.of()),
+            new ItemModelGenerators.TrimModelData("soul_infused_copper", 0.624f, Map.of()),
+            new ItemModelGenerators.TrimModelData("soul_infused_gold", 0.676f, Map.of()),
+            new ItemModelGenerators.TrimModelData("soul_infused_emerald", 0.728f, Map.of()),
+            new ItemModelGenerators.TrimModelData("soul_infused_diamond", 0.780f, Map.of()),
+            new ItemModelGenerators.TrimModelData("soul_infused_lapis", 0.832f, Map.of()),
+            new ItemModelGenerators.TrimModelData("soul_infused_amethyst", 0.884f, Map.of()),
+            new ItemModelGenerators.TrimModelData("soul_infused_nectarium", 0.935f, Map.of()),
+            new ItemModelGenerators.TrimModelData("god_blood", 1.0f, Map.of())
     );
 
     @Override

@@ -58,17 +58,15 @@ public class ForgingBlock extends BaseEntityBlock {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         if (blockEntity instanceof ForgingBlockEntity forgingBlockEntity) {
             if (itemStack.is(Items.MACE)) {
-                if (forgingBlockEntity.tryReinforce()) {
+                if (forgingBlockEntity.tryReinforce())
                     itemStack.hurtAndBreak(5, player, EquipmentSlot.MAINHAND);
-                    return ItemInteractionResult.SUCCESS;
-                }
-                return ItemInteractionResult.CONSUME;
+                return ItemInteractionResult.SUCCESS;
             } else if (!forgingBlockEntity.getForgingItem().isEmpty()) {
-                forgingBlockEntity.dropItem();
+                forgingBlockEntity.dropForgingItem();
                 return ItemInteractionResult.SUCCESS;
             } else if (Reinforcement.canReinforce(itemStack)) {
                 forgingBlockEntity.setForgingItem(itemStack);
-                itemStack.shrink(1);
+                itemStack.consume(1, player);
                 return ItemInteractionResult.SUCCESS;
             }
         }
@@ -79,7 +77,7 @@ public class ForgingBlock extends BaseEntityBlock {
     protected void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         if (blockEntity instanceof ForgingBlockEntity forgingBlockEntity)
-            forgingBlockEntity.dropItem();
+            forgingBlockEntity.dropItems();
         super.onRemove(blockState, level, blockPos, blockState2, bl);
     }
 

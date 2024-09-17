@@ -56,14 +56,19 @@ public class NarakaItemTagsProvider extends FabricTagProvider<Item> {
                 .add(NarakaItems.SANCTUARY_COMPASS);
         getOrCreateTagBuilder(ItemTags.TRIM_TEMPLATES)
                 .add(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE);
-        FabricTagBuilder trimMaterials = getOrCreateTagBuilder(ItemTags.TRIM_MATERIALS);
+        FabricTagBuilder trimMaterials = getOrCreateTagBuilder(ItemTags.TRIM_MATERIALS)
+                .add(NarakaItems.GOD_BLOOD);
         NarakaItems.forEachSoulInfusedItem(trimMaterials::add);
 
-        getOrCreateTagBuilder(NarakaItemTags.PURIFIED_SOUL_ARMORS)
+        getOrCreateTagBuilder(NarakaItemTags.PURIFIED_SOUL_ARMOR)
                 .add(NarakaItems.PURIFIED_SOUL_HELMET)
                 .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE)
                 .add(NarakaItems.PURIFIED_SOUL_LEGGINGS)
                 .add(NarakaItems.PURIFIED_SOUL_BOOTS);
+
+        FabricTagBuilder soulReinforceable = getOrCreateTagBuilder(NarakaItemTags.SOUL_REINFORCEABLE)
+                .addTag(NarakaItemTags.PURIFIED_SOUL_ARMOR);
+        NarakaItems.forEachSoulInfusedSword(soulReinforceable::add);
 
         getOrCreateTagBuilder(ItemTags.HEAD_ARMOR)
                 .add(NarakaItems.PURIFIED_SOUL_HELMET)
