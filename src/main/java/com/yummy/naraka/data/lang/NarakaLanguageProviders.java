@@ -87,6 +87,7 @@ public class NarakaLanguageProviders {
         add(NarakaJadeProviderComponents.SOUL_STABILIZER.translationKey, "Soul Stabilizer", "영혼 안정기");
         add(JADE_STIGMA_KEY, "Stigma: %d", "낙인: %d");
         add(JADE_DEATH_COUNT_KEY, "Death Count: %d", "데스카운트: %d");
+        add(NarakaJadeProviderComponents.SOUL_SMITHING_BLOCK.translationKey, "Soul Smithing Block", "영혼 대장장이 블록");
         add(NarakaJadeProviderComponents.ENTITY_DATA.translationKey, "Stigma", "낙인");
 
         add(SoulType.REDSTONE.translationKey(), "Redstone", "레드스톤");
@@ -97,6 +98,7 @@ public class NarakaLanguageProviders {
         add(SoulType.LAPIS.translationKey(), "Lapis", "청금석");
         add(SoulType.AMETHYST.translationKey(), "Amethyst", "자수정");
         add(SoulType.NECTARIUM.translationKey(), "Nectarium", "넥타륨");
+        add(SoulType.GOD_BLOOD.translationKey(), "God Blood", "시의 피");
 
         addReinforcementEffect(NarakaReinforcementEffects.INCREASE_ATTACK_DAMAGE, "Increase attack damage", "공격력 증가");
         addReinforcementEffect(NarakaReinforcementEffects.INCREASE_ARMOR, "Increase armor", "방어력 증가");
