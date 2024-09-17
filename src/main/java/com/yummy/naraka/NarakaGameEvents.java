@@ -11,6 +11,7 @@ import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
+import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
@@ -63,6 +64,7 @@ public class NarakaGameEvents {
         ServerTickEvents.END_SERVER_TICK.register(NarakaGameEvents::onEndTick);
         ServerLivingEntityEvents.ALLOW_DEATH.register(NarakaGameEvents::useDeathCount);
         ServerEntityEvents.EQUIPMENT_CHANGE.register(NarakaGameEvents::handleReinforcementEffect);
+        ServerEntityEvents.EQUIPMENT_CHANGE.register(NarakaGameEvents::handleEquipmentSetEffect);
         ServerEntityEvents.ENTITY_LOAD.register(NarakaGameEvents::syncPlayerEntityData);
         ServerEntityEvents.ENTITY_LOAD.register(NarakaGameEvents::updateReinforcementEffect);
 
@@ -94,6 +96,10 @@ public class NarakaGameEvents {
                 ReinforcementEffect::onUnequipped);
         NarakaItemUtils.checkAndUpdateReinforcementEffects(livingEntity, equipmentSlot, currentStack,
                 ReinforcementEffect::onEquipped);
+    }
+
+    private static void handleEquipmentSetEffect(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack previousStack, ItemStack currentStack) {
+        NarakaEquipmentSets.updateAllSetEffects(livingEntity);
     }
 
     private static void onWorldLoad(MinecraftServer server, ServerLevel level) {

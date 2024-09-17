@@ -1,4 +1,4 @@
-package com.yummy.naraka.world.rootplacers;
+package com.yummy.naraka.world.rootplacer;
 
 import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.NarakaMod;

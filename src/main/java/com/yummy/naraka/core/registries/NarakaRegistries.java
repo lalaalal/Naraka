@@ -2,6 +2,7 @@ package com.yummy.naraka.core.registries;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.data.EntityDataType;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import com.yummy.naraka.world.structure.height.HeightProviderType;
 import com.yummy.naraka.world.structure.piece.StructurePieceFactory;
@@ -17,6 +18,7 @@ public class NarakaRegistries {
     public static final Registry<ProtectionPredicate> PROTECTION_PREDICATE = create("protection_predicate");
     public static final Registry<EntityDataType<?>> ENTITY_DATA_TYPE = create("entity_data_type");
     public static final Registry<ReinforcementEffect> REINFORCEMENT_EFFECT = create("reinforcement_effect");
+    public static final Registry<EquipmentSet> EQUIPMENT_SET = create("equipment_set");
 
     private static <T> Registry<T> create(String name) {
         ResourceKey<Registry<T>> key = ResourceKey.createRegistryKey(NarakaMod.location(name));

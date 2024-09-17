@@ -3,6 +3,7 @@ package com.yummy.naraka.world.item;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.armortrim.NarakaTrimPatterns;
+import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
@@ -70,14 +71,14 @@ public class NarakaItems {
             SmithingTemplateItem.createArmorTrimTemplate(NarakaTrimPatterns.PURIFIED_SOUL_SILENCE)
     );
 
-    public static final Item SOUL_INFUSED_AMETHYST = registerSoulInfusedItem("amethyst");
-    public static final Item SOUL_INFUSED_COPPER = registerSoulInfusedItem("copper");
-    public static final Item SOUL_INFUSED_DIAMOND = registerSoulInfusedItem("diamond");
-    public static final Item SOUL_INFUSED_EMERALD = registerSoulInfusedItem("emerald");
-    public static final Item SOUL_INFUSED_GOLD = registerSoulInfusedItem("gold");
-    public static final Item SOUL_INFUSED_LAPIS = registerSoulInfusedItem("lapis");
-    public static final Item SOUL_INFUSED_NECTARIUM = registerSoulInfusedItem("nectarium");
-    public static final Item SOUL_INFUSED_REDSTONE = registerSoulInfusedItem("redstone");
+    public static final Item SOUL_INFUSED_REDSTONE = registerSoulInfusedItem(SoulType.REDSTONE);
+    public static final Item SOUL_INFUSED_COPPER = registerSoulInfusedItem(SoulType.COPPER);
+    public static final Item SOUL_INFUSED_GOLD = registerSoulInfusedItem(SoulType.GOLD);
+    public static final Item SOUL_INFUSED_EMERALD = registerSoulInfusedItem(SoulType.EMERALD);
+    public static final Item SOUL_INFUSED_DIAMOND = registerSoulInfusedItem(SoulType.DIAMOND);
+    public static final Item SOUL_INFUSED_LAPIS = registerSoulInfusedItem(SoulType.LAPIS);
+    public static final Item SOUL_INFUSED_AMETHYST = registerSoulInfusedItem(SoulType.AMETHYST);
+    public static final Item SOUL_INFUSED_NECTARIUM = registerSoulInfusedItem(SoulType.NECTARIUM);
 
     // Spears
     public static final SpearItem SPEAR_ITEM = registerItem(
@@ -153,8 +154,13 @@ public class NarakaItems {
             consumer.accept(item);
     }
 
-    private static Item registerSoulInfusedItem(String name) {
-        Item item = registerSimpleItem(SOUL_INFUSED_PREFIX + name, new Item.Properties().fireResistant());
+    private static Item registerSoulInfusedItem(SoulType type) {
+        Item item = registerSimpleItem(
+                SOUL_INFUSED_PREFIX + type.getSerializedName(),
+                new Item.Properties()
+                        .component(NarakaDataComponentTypes.SOUL, type)
+                        .fireResistant()
+        );
         SOUL_INFUSED_ITEMS.add(item);
         return item;
     }
@@ -165,6 +171,7 @@ public class NarakaItems {
                         Tiers.IRON,
                         properties.fireResistant()
                                 .rarity(Rarity.RARE)
+                                .component(NarakaDataComponentTypes.SOUL, type)
                                 .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f)),
                         type.color
                 )

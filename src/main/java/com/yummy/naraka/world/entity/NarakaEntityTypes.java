@@ -47,7 +47,7 @@ public class NarakaEntityTypes {
     );
 
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
-        EntityType<T> type = builder.build(name);
+        EntityType<T> type = builder.build(null);
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, NarakaMod.location(name), type);
     }
 

@@ -2,6 +2,7 @@ package com.yummy.naraka.world.item.component;
 
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
@@ -30,6 +31,14 @@ public class NarakaDataComponentTypes {
             DataComponentType.<Boolean>builder()
                     .persistent(Codec.BOOL)
                     .networkSynchronized(ByteBufCodecs.BOOL)
+                    .build()
+    );
+
+    public static final DataComponentType<SoulType> SOUL = register(
+            "soul",
+            DataComponentType.<SoulType>builder()
+                    .persistent(SoulType.CODEC)
+                    .networkSynchronized(SoulType.STREAM_CODEC)
                     .build()
     );
 

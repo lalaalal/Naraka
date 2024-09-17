@@ -1,7 +1,11 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
+import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -10,6 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
@@ -39,6 +44,26 @@ public class Herobrine extends Monster implements DeathCountingEntity {
         if (cause instanceof LivingEntity livingEntity)
             countDeath(livingEntity);
         return super.hurt(damageSource, damage);
+    }
+
+    @Override
+    public void die(DamageSource damageSource) {
+        if (level() instanceof ServerLevel serverLevel)
+            getCountingInstance().countedEntities(serverLevel)
+                    .forEach(this::rewardChallenger);
+        super.die(damageSource);
+    }
+
+    private void rewardChallenger(LivingEntity livingEntity) {
+        if (livingEntity.hasEffect(NarakaMobEffects.CHALLENGERS_BLESSING)) {
+            livingEntity.removeEffect(NarakaMobEffects.CHALLENGERS_BLESSING);
+            for (ItemStack stack : livingEntity.getArmorSlots()) {
+                stack.consume(1, livingEntity);
+                level().playSound(null, livingEntity.getOnPos(), stack.getBreakingSound(), SoundSource.PLAYERS);
+            }
+            ItemStack weaponStack = livingEntity.getMainHandItem();
+            weaponStack.set(NarakaDataComponentTypes.BLESSED, true);
+        }
     }
 
     @Override
