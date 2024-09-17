@@ -2,11 +2,11 @@ package com.yummy.naraka.mixin.client;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.yummy.naraka.data.lang.NarakaLanguageProviders;
+import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -45,6 +45,6 @@ public abstract class ItemStackMixin implements DataComponentHolder {
     public void addBlessedTooltip(Item.TooltipContext tooltipContext, @Nullable Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir) {
         if (getOrDefault(NarakaDataComponentTypes.BLESSED, false))
             lines.add(Component.translatable(NarakaLanguageProviders.BLESSED_KEY)
-                    .withStyle(ChatFormatting.BLUE));
+                    .withStyle(ComponentStyles.LONGINUS_COLOR));
     }
 }
