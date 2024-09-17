@@ -18,25 +18,21 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.function.Predicate;
-
 public class ForgingBlockEntity extends BlockEntity {
     public static final float DEFAULT_SUCCESS_CHANCE = 0.3f;
     public static final int COOLDOWN = 30;
 
     private final float successChance;
-    private final Predicate<ItemStack> itemPredicate;
     protected ItemStack forgingItem = ItemStack.EMPTY;
     protected int cooldownTick = 0;
 
     public ForgingBlockEntity(BlockPos pos, BlockState state) {
-        this(NarakaBlockEntityTypes.FORGING, pos, state, DEFAULT_SUCCESS_CHANCE, itemStack -> true);
+        this(NarakaBlockEntityTypes.FORGING, pos, state, DEFAULT_SUCCESS_CHANCE);
     }
 
-    protected ForgingBlockEntity(BlockEntityType<? extends ForgingBlockEntity> type, BlockPos blockPos, BlockState blockState, float successChance, Predicate<ItemStack> itemPredicate) {
+    protected ForgingBlockEntity(BlockEntityType<? extends ForgingBlockEntity> type, BlockPos blockPos, BlockState blockState, float successChance) {
         super(type, blockPos, blockState);
         this.successChance = successChance;
-        this.itemPredicate = itemPredicate;
     }
 
     public void setForgingItem(ItemStack forgingItem) {
@@ -61,8 +57,7 @@ public class ForgingBlockEntity extends BlockEntity {
     }
 
     public boolean tryReinforce() {
-        if (!itemPredicate.test(forgingItem)
-                || !Reinforcement.canReinforce(forgingItem)
+        if (!Reinforcement.canReinforce(forgingItem)
                 || level == null || level.isClientSide
                 || cooldownTick > 0)
             return false;

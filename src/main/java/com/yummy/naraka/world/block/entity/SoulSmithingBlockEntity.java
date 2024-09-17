@@ -4,6 +4,7 @@ import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.SoulType;
+import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.BlockPos;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.function.Predicate;
 
 public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     public static final int COOLDOWN = 40;
@@ -31,11 +31,11 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     private ItemStack templateItem = ItemStack.EMPTY;
 
     public SoulSmithingBlockEntity(BlockPos pos, BlockState state) {
-        this(NarakaBlockEntityTypes.SOUL_SMITHING, pos, state, 1, itemStack -> itemStack.is(NarakaItemTags.SOUL_REINFORCEABLE));
+        this(NarakaBlockEntityTypes.SOUL_SMITHING, pos, state, 1);
     }
 
-    protected SoulSmithingBlockEntity(BlockEntityType<? extends SoulSmithingBlockEntity> type, BlockPos pos, BlockState state, float successChance, Predicate<ItemStack> itemPredicate) {
-        super(type, pos, state, successChance, itemPredicate);
+    protected SoulSmithingBlockEntity(BlockEntityType<? extends SoulSmithingBlockEntity> type, BlockPos pos, BlockState state, float successChance) {
+        super(type, pos, state, successChance);
         soulStabilizer = new SoulStabilizerBlockEntity(pos, NarakaBlocks.SOUL_STABILIZER.defaultBlockState());
     }
 
@@ -107,20 +107,22 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
     @Override
     public boolean tryReinforce() {
-        if (level != null
+        if (level != null && forgingItem.is(NarakaItemTags.SOUL_REINFORCEABLE)
                 && cooldownTick <= 0
                 && isStabilizerAttached && soulStabilizer.getSouls() >= 9 * 16) {
+            SoulType soulType = soulStabilizer.getSoulType();
+            if (soulType == null)
+                return true;
+
+            if (soulType == SoulType.GOD_BLOOD)
+                forgingItem.set(NarakaDataComponentTypes.BLESSED, true);
             soulStabilizer.consumeSoul(9 * 16);
             while (Reinforcement.canReinforce(forgingItem))
                 Reinforcement.increase(forgingItem, NarakaReinforcementEffects.byItem(forgingItem));
 
-            setChanged();
             level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
             cooldownTick = COOLDOWN;
 
-            SoulType soulType = soulStabilizer.getSoulType();
-            if (soulType == null)
-                return true;
             Optional<Holder.Reference<TrimMaterial>> material = TrimMaterials.getFromIngredient(level.registryAccess(), soulType.getItem().getDefaultInstance());
             Optional<Holder.Reference<TrimPattern>> pattern = TrimPatterns.getFromTemplate(level.registryAccess(), templateItem);
             if (material.isPresent() && pattern.isPresent()) {
