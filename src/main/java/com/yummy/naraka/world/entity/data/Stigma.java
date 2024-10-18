@@ -5,8 +5,6 @@ import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public record Stigma(int value, long lastMarkedTime) {
     public static final Stigma ZERO = new Stigma(0, 0);
@@ -31,64 +29,9 @@ public record Stigma(int value, long lastMarkedTime) {
         long now = livingEntity.level().getGameTime();
         DamageSource source = NarakaDamageSources.stigma(cause);
         livingEntity.hurt(source, Float.MAX_VALUE);
-        holdEntity(livingEntity);
+        NarakaAttributeModifiers.stunEntity(livingEntity, HOLD_ENTITY_DURATION);
 
         return new Stigma(0, now);
-    }
-
-    public static void holdEntity(LivingEntity livingEntity) {
-        NarakaAttributeModifiers.addAttributeModifier(
-                livingEntity,
-                Attributes.MOVEMENT_SPEED,
-                NarakaAttributeModifiers.PREVENT_MOVING
-        );
-        NarakaAttributeModifiers.addAttributeModifier(
-                livingEntity,
-                Attributes.JUMP_STRENGTH,
-                NarakaAttributeModifiers.PREVENT_JUMPING
-        );
-        NarakaAttributeModifiers.addAttributeModifier(
-                livingEntity,
-                Attributes.ATTACK_DAMAGE,
-                NarakaAttributeModifiers.PREVENT_ENTITY_ATTACKING
-        );
-        NarakaAttributeModifiers.addAttributeModifier(
-                livingEntity,
-                Attributes.BLOCK_BREAK_SPEED,
-                NarakaAttributeModifiers.PREVENT_BLOCK_ATTACKING
-        );
-        if (livingEntity instanceof Mob mob)
-            mob.setNoAi(true);
-    }
-
-    public static void releaseEntity(LivingEntity livingEntity) {
-        NarakaAttributeModifiers.removeAttributeModifier(
-                livingEntity,
-                Attributes.MOVEMENT_SPEED,
-                NarakaAttributeModifiers.PREVENT_MOVING
-        );
-        NarakaAttributeModifiers.removeAttributeModifier(
-                livingEntity,
-                Attributes.JUMP_STRENGTH,
-                NarakaAttributeModifiers.PREVENT_JUMPING
-        );
-        NarakaAttributeModifiers.removeAttributeModifier(
-                livingEntity,
-                Attributes.ATTACK_DAMAGE,
-                NarakaAttributeModifiers.PREVENT_ENTITY_ATTACKING
-        );
-        NarakaAttributeModifiers.removeAttributeModifier(
-                livingEntity,
-                Attributes.BLOCK_BREAK_SPEED,
-                NarakaAttributeModifiers.PREVENT_BLOCK_ATTACKING
-        );
-        if (livingEntity instanceof Mob mob)
-            mob.setNoAi(false);
-    }
-
-    public void tryRelease(LivingEntity livingEntity) {
-        if (livingEntity.level().getGameTime() - lastMarkedTime >= HOLD_ENTITY_DURATION)
-            releaseEntity(livingEntity);
     }
 
     public Stigma tryDecrease(LivingEntity livingEntity) {

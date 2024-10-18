@@ -22,14 +22,7 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
     protected void addTags(HolderLookup.Provider provider) {
         addTags(NarakaDamageTypes.STIGMA,
                 DamageTypeTags.BYPASSES_INVULNERABILITY,
-                DamageTypeTags.BYPASSES_EFFECTS,
-                DamageTypeTags.BYPASSES_ENCHANTMENTS,
-                DamageTypeTags.BYPASSES_RESISTANCE,
-                DamageTypeTags.BYPASSES_SHIELD,
-                DamageTypeTags.BYPASSES_COOLDOWN
-        );
-        addTags(NarakaDamageTypes.DEATH_COUNT_ZERO,
-                DamageTypeTags.BYPASSES_INVULNERABILITY,
+                DamageTypeTags.BYPASSES_ARMOR,
                 DamageTypeTags.BYPASSES_EFFECTS,
                 DamageTypeTags.BYPASSES_ENCHANTMENTS,
                 DamageTypeTags.BYPASSES_RESISTANCE,
@@ -38,11 +31,16 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
         );
         addTags(NarakaDamageTypes.SPEAR_OF_LONGINUS,
                 DamageTypeTags.BYPASSES_INVULNERABILITY,
+                DamageTypeTags.BYPASSES_ARMOR,
                 DamageTypeTags.BYPASSES_EFFECTS,
                 DamageTypeTags.BYPASSES_ENCHANTMENTS,
                 DamageTypeTags.BYPASSES_RESISTANCE,
                 DamageTypeTags.BYPASSES_SHIELD,
                 DamageTypeTags.BYPASSES_COOLDOWN
+        );
+        addTags(NarakaDamageTypes.MOB_ATTACK_FIXED,
+                DamageTypeTags.BYPASSES_EFFECTS,
+                DamageTypeTags.BYPASSES_RESISTANCE
         );
         tag(NarakaDamageTypeTags.DEATH_COUNTING_ATTACK)
                 .add(NarakaDamageTypes.STIGMA);

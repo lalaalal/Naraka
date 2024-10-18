@@ -2,6 +2,7 @@ package com.yummy.naraka;
 
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.util.TickSchedule;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.HerobrineTotemBlockEntity;
@@ -121,6 +122,7 @@ public class NarakaGameEvents {
 
     private static void onEndTick(MinecraftServer server) {
         StigmaHelper.tick();
+        TickSchedule.tick(server.overworld());
     }
 
     private static void modifyLootTable(ResourceKey<LootTable> key, LootTable.Builder tableBuilder, LootTableSource source, HolderLookup.Provider registries) {

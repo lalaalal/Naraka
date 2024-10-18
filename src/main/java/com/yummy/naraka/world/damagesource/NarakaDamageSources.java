@@ -45,12 +45,12 @@ public class NarakaDamageSources {
         return new DamageSource(registry.getHolderOrThrow(key), directEntity, causingEntity);
     }
 
-    public static DamageSource stigma(Entity causingEntity) {
-        return source(NarakaDamageTypes.STIGMA, causingEntity);
+    public static DamageSource fixed(Entity causingEntity) {
+        return source(NarakaDamageTypes.MOB_ATTACK_FIXED, causingEntity);
     }
 
-    public static DamageSource deathCountZero(Entity causingEntity) {
-        return source(NarakaDamageTypes.DEATH_COUNT_ZERO, causingEntity);
+    public static DamageSource stigma(Entity causingEntity) {
+        return source(NarakaDamageTypes.STIGMA, causingEntity);
     }
 
     public static DamageSource spear(Spear spear) {

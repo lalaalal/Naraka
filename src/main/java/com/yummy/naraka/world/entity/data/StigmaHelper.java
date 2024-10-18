@@ -31,7 +31,6 @@ public class StigmaHelper {
         for (LivingEntity markedEntity : MARKED_ENTITIES) {
             Stigma stigma = get(markedEntity);
             Stigma decreased = stigma.tryDecrease(markedEntity);
-            stigma.tryRelease(markedEntity);
 
             if ((stigma != decreased && decreased.value() == 0) || markedEntity.isRemoved())
                 liberatedEntities.add(markedEntity);
