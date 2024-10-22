@@ -55,7 +55,7 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
     }
 
     public Herobrine(Level level, Vec3 pos) {
-        this(NarakaEntityTypes.HEROBRINE, level);
+        this(NarakaEntityTypes.HEROBRINE.get(), level);
         setPos(pos);
     }
 
@@ -127,7 +127,7 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
                 level().playSound(null, livingEntity.getOnPos(), stack.getBreakingSound(), SoundSource.PLAYERS);
             }
             ItemStack weaponStack = livingEntity.getMainHandItem();
-            weaponStack.set(NarakaDataComponentTypes.BLESSED, true);
+            weaponStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
         }
     }
 

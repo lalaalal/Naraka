@@ -41,7 +41,7 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
     public static final Codec<Reinforcement> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                     Codec.INT.fieldOf("value").forGetter(Reinforcement::value),
-                    RegistryCodecs.homogeneousList(NarakaRegistries.REINFORCEMENT_EFFECT.key())
+                    RegistryCodecs.homogeneousList(NarakaRegistries.Keys.REINFORCEMENT_EFFECT)
                             .fieldOf("effects")
                             .forGetter(Reinforcement::effects)
             ).apply(instance, Reinforcement::new)
@@ -50,7 +50,7 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
     public static final StreamCodec<RegistryFriendlyByteBuf, Reinforcement> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT,
             Reinforcement::value,
-            ByteBufCodecs.holderSet(NarakaRegistries.REINFORCEMENT_EFFECT.key()),
+            ByteBufCodecs.holderSet(NarakaRegistries.Keys.REINFORCEMENT_EFFECT),
             Reinforcement::effects,
             Reinforcement::new
     );
@@ -64,7 +64,7 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
     }
 
     public static Reinforcement get(DataComponentHolder itemStack) {
-        return itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, ZERO);
+        return itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT.get(), ZERO);
     }
 
     public static boolean canReinforce(ItemStack itemStack) {
@@ -83,12 +83,12 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
      * @see Reinforcement#increase(ItemStack, Holder)
      */
     public static boolean increase(ItemStack itemStack, HolderSet<ReinforcementEffect> effects) {
-        Reinforcement original = itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT, zero(effects));
+        Reinforcement original = itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT.get(), zero(effects));
         if (original.value >= MAX_VALUE)
             return false;
 
         Reinforcement increased = original.increase();
-        itemStack.set(NarakaDataComponentTypes.REINFORCEMENT, increased);
+        itemStack.set(NarakaDataComponentTypes.REINFORCEMENT.get(), increased);
         for (Holder<ReinforcementEffect> effect : effects)
             effect.value().onReinforcementIncreased(itemStack, original.value, increased.value);
         return true;

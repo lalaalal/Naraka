@@ -8,7 +8,7 @@ import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 
 public interface StructurePieceFactory {
-    Codec<Holder<StructurePieceFactory>> CODEC = RegistryFixedCodec.create(NarakaRegistries.STRUCTURE_PIECE_FACTORY.key());
+    Codec<Holder<StructurePieceFactory>> CODEC = RegistryFixedCodec.create(NarakaRegistries.Keys.STRUCTURE_PIECE_FACTORY);
 
     StructurePiece create(BlockPos pos);
 }

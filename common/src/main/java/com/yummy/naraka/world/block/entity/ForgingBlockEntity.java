@@ -27,7 +27,7 @@ public class ForgingBlockEntity extends BlockEntity {
     protected int cooldownTick = 0;
 
     public ForgingBlockEntity(BlockPos pos, BlockState state) {
-        this(NarakaBlockEntityTypes.FORGING, pos, state, DEFAULT_SUCCESS_CHANCE);
+        this(NarakaBlockEntityTypes.FORGING.get(), pos, state, DEFAULT_SUCCESS_CHANCE);
     }
 
     protected ForgingBlockEntity(BlockEntityType<? extends ForgingBlockEntity> type, BlockPos blockPos, BlockState blockState, float successChance) {

@@ -31,7 +31,7 @@ public class JumboStructure extends Structure {
             instance -> instance.group(
                     settingsCodec(instance),
                     Codec.STRING.fieldOf("name").forGetter(structure -> structure.name),
-                    RegistryFixedCodec.create(NarakaRegistries.PROTECTION_PREDICATE.key())
+                    RegistryFixedCodec.create(NarakaRegistries.Keys.PROTECTION_PREDICATE)
                             .optionalFieldOf("protection_predicate")
                             .forGetter(structure -> structure.protectionPredicate),
                     HeightProvider.CODEC.fieldOf("height_provider").forGetter(structure -> structure.heightProvider),
@@ -92,6 +92,6 @@ public class JumboStructure extends Structure {
 
     @Override
     public @NotNull StructureType<?> type() {
-        return NarakaStructureTypes.JUMBO;
+        return NarakaStructureTypes.JUMBO.get();
     }
 }

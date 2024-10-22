@@ -1,9 +1,9 @@
 package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
+import dev.architectury.registry.registries.DeferredRegister;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class NarakaArmorMaterials {
+    private static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(NarakaMod.MOD_ID, Registries.ARMOR_MATERIAL);
+
     public static final Holder<ArmorMaterial> PURIFIED_SOUL = register(
             "purified_soul",
             Map.of(ArmorItem.Type.BOOTS, 0,
@@ -23,7 +25,7 @@ public class NarakaArmorMaterials {
                     ArmorItem.Type.HELMET, 0,
                     ArmorItem.Type.BODY, 0),
             15, SoundEvents.ARMOR_EQUIP_NETHERITE,
-            () -> Ingredient.of(NarakaItems.PURIFIED_SOUL_METAL),
+            () -> Ingredient.of(NarakaItems.PURIFIED_SOUL_METAL.get()),
             0, 0.25f
     );
     public static final Holder<ArmorMaterial> EBONY_METAL = register(
@@ -34,7 +36,7 @@ public class NarakaArmorMaterials {
                     ArmorItem.Type.HELMET, 0,
                     ArmorItem.Type.BODY, 0),
             12, SoundEvents.ARMOR_EQUIP_GENERIC,
-            () -> Ingredient.of(NarakaItems.EBONY_METAL_INGOT),
+            () -> Ingredient.of(NarakaItems.EBONY_METAL_INGOT.get()),
             1, 0.1f
     );
 
@@ -46,12 +48,12 @@ public class NarakaArmorMaterials {
                                                   float toughness,
                                                   float knockbackResistance) {
         List<ArmorMaterial.Layer> layers = List.of(new ArmorMaterial.Layer(NarakaMod.location(name)));
-        return Registry.registerForHolder(BuiltInRegistries.ARMOR_MATERIAL, NarakaMod.location(name), new ArmorMaterial(
+        return ARMOR_MATERIALS.register(name, () -> new ArmorMaterial(
                 defense, enchantmentValue, equipSound, repairIngredient, layers, toughness, knockbackResistance
         ));
     }
 
     public static void initialize() {
-
+        ARMOR_MATERIALS.register();
     }
 }

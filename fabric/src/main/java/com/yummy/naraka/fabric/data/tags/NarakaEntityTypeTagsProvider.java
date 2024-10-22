@@ -23,15 +23,15 @@ public class NarakaEntityTypeTagsProvider extends FabricTagProvider<EntityType<?
                 .addTag(ConventionalEntityTypeTags.BOSSES)
                 .add(EntityType.PLAYER);
         getOrCreateTagBuilder(NarakaEntityTypeTags.HEROBRINE)
-                .add(NarakaEntityTypes.HEROBRINE);
+                .add(NarakaEntityTypes.HEROBRINE.get());
         getOrCreateTagBuilder(NarakaEntityTypeTags.DEATH_COUNTING)
                 .addTag(NarakaEntityTypeTags.HEROBRINE);
 
         getOrCreateTagBuilder(ConventionalEntityTypeTags.BOSSES)
-                .add(NarakaEntityTypes.HEROBRINE);
+                .add(NarakaEntityTypes.HEROBRINE.get());
         getOrCreateTagBuilder(EntityTypeTags.CAN_BREATHE_UNDER_WATER)
-                .add(NarakaEntityTypes.HEROBRINE);
+                .add(NarakaEntityTypes.HEROBRINE.get());
         getOrCreateTagBuilder(EntityTypeTags.FALL_DAMAGE_IMMUNE)
-                .add(NarakaEntityTypes.HEROBRINE);
+                .add(NarakaEntityTypes.HEROBRINE.get());
     }
 }

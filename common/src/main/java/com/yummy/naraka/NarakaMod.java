@@ -33,29 +33,33 @@ import net.minecraft.resources.ResourceLocation;
 public class NarakaMod {
     public static final String MOD_ID = "naraka";
 
-    public static void initialize(NarakaInitializer initializer) {
+    public static void prepareRegistries(NarakaInitializer initializer) {
         RegistryFactory.initialize(initializer);
 
         NarakaRegistries.initialize();
+    }
+
+    public static void initialize(NarakaInitializer initializer) {
         NarakaParticleTypes.initialize();
 
         NarakaSoundEvents.initialize();
 
+        NarakaEntityTypes.initialize();
+        NarakaEntityDataTypes.initialize();
+        NarakaMobEffects.initialize();
+
         NarakaBlocks.initialize();
         NarakaTreeGrowers.initialize();
 
-        NarakaItems.initialize();
         NarakaReinforcementEffects.initialize();
-        NarakaDataComponentTypes.initialize();
         NarakaArmorMaterials.initialize();
-        initializer.registerCreativeModeTabs();
+        NarakaDataComponentTypes.initialize();
+        NarakaItems.initialize();
         NarakaRecipeTypes.initialize();
         NarakaRecipeSerializers.initialize();
         NarakaEquipmentSets.initialize();
 
-        NarakaEntityTypes.initialize();
-        NarakaEntityDataTypes.initialize();
-        NarakaMobEffects.initialize();
+        initializer.registerCreativeModeTabs();
 
         NarakaBlockEntityTypes.initialize();
 

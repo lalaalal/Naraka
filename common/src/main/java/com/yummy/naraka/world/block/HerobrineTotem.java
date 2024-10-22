@@ -89,6 +89,6 @@ public class HerobrineTotem extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         if (level.isClientSide)
             return super.getTicker(level, state, type);
-        return createTickerHelper(type, NarakaBlockEntityTypes.HEROBRINE_TOTEM, HerobrineTotemBlockEntity::serverTick);
+        return createTickerHelper(type, NarakaBlockEntityTypes.HEROBRINE_TOTEM.get(), HerobrineTotemBlockEntity::serverTick);
     }
 }

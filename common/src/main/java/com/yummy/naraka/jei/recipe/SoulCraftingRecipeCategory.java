@@ -13,7 +13,6 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.library.util.RecipeUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
 import static mezz.jei.api.recipe.RecipeIngredientRole.INPUT;
 import static mezz.jei.api.recipe.RecipeIngredientRole.OUTPUT;
@@ -25,7 +24,7 @@ public class SoulCraftingRecipeCategory implements IRecipeCategory<SoulCraftingR
 
     public SoulCraftingRecipeCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.createDrawable(NarakaTextures.SOUL_CRAFTING, 25, 16, 113, 49);
-        this.icon = guiHelper.createDrawableItemStack(NarakaBlocks.SOUL_CRAFTING_BLOCK.asItem().getDefaultInstance());
+        this.icon = guiHelper.createDrawableItemStack(NarakaBlocks.SOUL_CRAFTING_BLOCK.get().asItem().getDefaultInstance());
         this.title = Component.translatable("container.soul_crafting");
     }
 
@@ -40,7 +39,6 @@ public class SoulCraftingRecipeCategory implements IRecipeCategory<SoulCraftingR
     }
 
     @Override
-    @Nullable
     public IDrawable getBackground() {
         return background;
     }

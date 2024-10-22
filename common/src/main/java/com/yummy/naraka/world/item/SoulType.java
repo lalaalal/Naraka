@@ -15,15 +15,15 @@ import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
 public enum SoulType implements StringRepresentable {
-    REDSTONE(0, () -> NarakaItems.SOUL_INFUSED_REDSTONE, NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK::asItem, 0xeb4747),
-    COPPER(1, () -> NarakaItems.SOUL_INFUSED_COPPER, NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK::asItem, 0xff8000),
-    GOLD(2, () -> NarakaItems.SOUL_INFUSED_GOLD, NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK::asItem, 0xffd24d),
-    EMERALD(3, () -> NarakaItems.SOUL_INFUSED_EMERALD, NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK::asItem, 0x0ec70e),
-    DIAMOND(4, () -> NarakaItems.SOUL_INFUSED_DIAMOND, NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK::asItem, 0x33cccc),
-    LAPIS(5, () -> NarakaItems.SOUL_INFUSED_LAPIS, NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK::asItem, 0x3939c6),
-    AMETHYST(6, () -> NarakaItems.SOUL_INFUSED_AMETHYST, NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK::asItem, 0x9957db),
-    NECTARIUM(7, () -> NarakaItems.SOUL_INFUSED_NECTARIUM, NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK::asItem, 0xd65cd6),
-    GOD_BLOOD(8, () -> NarakaItems.GOD_BLOOD, () -> NarakaItems.GOD_BLOOD, 0x625859);
+    REDSTONE(0, () -> NarakaItems.SOUL_INFUSED_REDSTONE.get(), () -> NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK.get().asItem(), 0xeb4747),
+    COPPER(1, () -> NarakaItems.SOUL_INFUSED_COPPER.get(), () -> NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK.get().asItem(), 0xff8000),
+    GOLD(2, () -> NarakaItems.SOUL_INFUSED_GOLD.get(), () -> NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK.get().asItem(), 0xffd24d),
+    EMERALD(3, () -> NarakaItems.SOUL_INFUSED_EMERALD.get(), () -> NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK.get().asItem(), 0x0ec70e),
+    DIAMOND(4, () -> NarakaItems.SOUL_INFUSED_DIAMOND.get(), () -> NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK.get().asItem(), 0x33cccc),
+    LAPIS(5, () -> NarakaItems.SOUL_INFUSED_LAPIS.get(), () -> NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK.get().asItem(), 0x3939c6),
+    AMETHYST(6, () -> NarakaItems.SOUL_INFUSED_AMETHYST.get(), () -> NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK.get().asItem(), 0x9957db),
+    NECTARIUM(7, () -> NarakaItems.SOUL_INFUSED_NECTARIUM.get(), () -> NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK.get().asItem(), 0xd65cd6),
+    GOD_BLOOD(8, () -> NarakaItems.GOD_BLOOD.get(), () -> NarakaItems.GOD_BLOOD.get(), 0x625859);
 
     private static final IntFunction<SoulType> BY_ID = ByIdMap.continuous(SoulType::getId, SoulType.values(), ByIdMap.OutOfBoundsStrategy.ZERO);
     public static final Codec<SoulType> CODEC = StringRepresentable.fromEnum(SoulType::values);

@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class NarakaRecipeProvider extends FabricRecipeProvider {
-    private static final List<ItemLike> NECTARIUM_SMELTABLES = List.of(NarakaBlocks.NECTARIUM_ORE, NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
+    private static final List<ItemLike> NECTARIUM_SMELTABLES = List.of(NarakaBlocks.NECTARIUM_ORE.get(), NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
 
     public NarakaRecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> provider) {
         super(output, provider);
@@ -30,110 +30,110 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
 
     @Override
     public void buildRecipes(RecipeOutput recipeOutput) {
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.NECTARIUM, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.NECTARIUM_BLOCK);
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, NarakaItems.SPEAR_ITEM)
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.NECTARIUM.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.NECTARIUM_BLOCK.get());
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, NarakaItems.SPEAR_ITEM.get())
                 .define('/', Items.STICK)
-                .define('=', NarakaItems.PURIFIED_SOUL_METAL)
+                .define('=', NarakaItems.PURIFIED_SOUL_METAL.get())
                 .pattern("  =")
                 .pattern(" / ")
                 .pattern("/  ")
-                .unlockedBy(getHasName(NarakaItems.PURIFIED_SOUL_METAL), has(NarakaItems.PURIFIED_SOUL_METAL))
+                .unlockedBy(getHasName(NarakaItems.PURIFIED_SOUL_METAL.get()), has(NarakaItems.PURIFIED_SOUL_METAL.get()))
                 .save(recipeOutput);
         smithing(
                 recipeOutput,
-                NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE,
-                NarakaItems.SPEAR_ITEM,
-                NarakaItems.GOD_BLOOD,
+                NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(),
+                NarakaItems.SPEAR_ITEM.get(),
+                NarakaItems.GOD_BLOOD.get(),
                 RecipeCategory.COMBAT,
-                NarakaItems.MIGHTY_HOLY_SPEAR_ITEM
+                NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()
         );
-        oreSmelting(recipeOutput, NECTARIUM_SMELTABLES, RecipeCategory.MISC, NarakaItems.NECTARIUM, 0.7f, 200, "nectarium");
-        oreBlasting(recipeOutput, NECTARIUM_SMELTABLES, RecipeCategory.MISC, NarakaItems.NECTARIUM, 0.7f, 100, "nectarium");
+        oreSmelting(recipeOutput, NECTARIUM_SMELTABLES, RecipeCategory.MISC, NarakaItems.NECTARIUM.get(), 0.7f, 200, "nectarium");
+        oreBlasting(recipeOutput, NECTARIUM_SMELTABLES, RecipeCategory.MISC, NarakaItems.NECTARIUM.get(), 0.7f, 100, "nectarium");
 
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_SHARD, RecipeCategory.BUILDING_BLOCKS, NarakaItems.PURIFIED_SOUL_METAL);
-        soulCraftingRecipe(recipeOutput, Items.AMETHYST_SHARD, NarakaItems.SOUL_INFUSED_AMETHYST);
-        soulCraftingRecipe(recipeOutput, Items.COPPER_INGOT, NarakaItems.SOUL_INFUSED_COPPER);
-        soulCraftingRecipe(recipeOutput, Items.DIAMOND, NarakaItems.SOUL_INFUSED_DIAMOND);
-        soulCraftingRecipe(recipeOutput, Items.EMERALD, NarakaItems.SOUL_INFUSED_EMERALD);
-        soulCraftingRecipe(recipeOutput, Items.GOLD_INGOT, NarakaItems.SOUL_INFUSED_GOLD);
-        soulCraftingRecipe(recipeOutput, Items.LAPIS_LAZULI, NarakaItems.SOUL_INFUSED_LAPIS);
-        soulCraftingRecipe(recipeOutput, NarakaItems.NECTARIUM, NarakaItems.SOUL_INFUSED_NECTARIUM);
-        soulCraftingRecipe(recipeOutput, Items.REDSTONE, NarakaItems.SOUL_INFUSED_REDSTONE);
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_SHARD.get(), RecipeCategory.BUILDING_BLOCKS, NarakaItems.PURIFIED_SOUL_METAL.get());
+        soulCraftingRecipe(recipeOutput, Items.AMETHYST_SHARD, NarakaItems.SOUL_INFUSED_AMETHYST.get());
+        soulCraftingRecipe(recipeOutput, Items.COPPER_INGOT, NarakaItems.SOUL_INFUSED_COPPER.get());
+        soulCraftingRecipe(recipeOutput, Items.DIAMOND, NarakaItems.SOUL_INFUSED_DIAMOND.get());
+        soulCraftingRecipe(recipeOutput, Items.EMERALD, NarakaItems.SOUL_INFUSED_EMERALD.get());
+        soulCraftingRecipe(recipeOutput, Items.GOLD_INGOT, NarakaItems.SOUL_INFUSED_GOLD.get());
+        soulCraftingRecipe(recipeOutput, Items.LAPIS_LAZULI, NarakaItems.SOUL_INFUSED_LAPIS.get());
+        soulCraftingRecipe(recipeOutput, NarakaItems.NECTARIUM.get(), NarakaItems.SOUL_INFUSED_NECTARIUM.get());
+        soulCraftingRecipe(recipeOutput, Items.REDSTONE, NarakaItems.SOUL_INFUSED_REDSTONE.get());
 
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_REDSTONE, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_REDSTONE_SWORD);
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_COPPER, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_COPPER_SWORD);
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_GOLD, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_GOLD_SWORD);
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_EMERALD, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_EMERALD_SWORD);
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_DIAMOND, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD);
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_LAPIS, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_LAPIS_SWORD);
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_AMETHYST, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD);
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.PURIFIED_SOUL_SWORD, NarakaItems.SOUL_INFUSED_NECTARIUM, RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD);
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_SWORD.get(), NarakaItems.SOUL_INFUSED_REDSTONE.get(), RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get());
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_SWORD.get(), NarakaItems.SOUL_INFUSED_COPPER.get(), RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_COPPER_SWORD.get());
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_SWORD.get(), NarakaItems.SOUL_INFUSED_GOLD.get(), RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_GOLD_SWORD.get());
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_SWORD.get(), NarakaItems.SOUL_INFUSED_EMERALD.get(), RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get());
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_SWORD.get(), NarakaItems.SOUL_INFUSED_DIAMOND.get(), RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get());
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_SWORD.get(), NarakaItems.SOUL_INFUSED_LAPIS.get(), RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get());
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_SWORD.get(), NarakaItems.SOUL_INFUSED_AMETHYST.get(), RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get());
+        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_SWORD.get(), NarakaItems.SOUL_INFUSED_NECTARIUM.get(), RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get());
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, NarakaItems.PURIFIED_SOUL_SWORD)
-                .define('M', NarakaItems.PURIFIED_SOUL_METAL)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, NarakaItems.PURIFIED_SOUL_SWORD.get())
+                .define('M', NarakaItems.PURIFIED_SOUL_METAL.get())
                 .define('/', Items.STICK)
                 .pattern(" M ")
                 .pattern(" M ")
                 .pattern(" / ")
-                .unlockedBy(getHasName(NarakaItems.PURIFIED_SOUL_METAL), has(NarakaItems.PURIFIED_SOUL_METAL))
+                .unlockedBy(getHasName(NarakaItems.PURIFIED_SOUL_METAL.get()), has(NarakaItems.PURIFIED_SOUL_METAL.get()))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NarakaBlocks.HEROBRINE_TOTEM, 2)
-                .define('G', NarakaBlocks.IMITATION_GOLD_BLOCK)
-                .define('T', NarakaBlocks.HEROBRINE_TOTEM)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NarakaBlocks.HEROBRINE_TOTEM.get(), 2)
+                .define('G', NarakaBlocks.IMITATION_GOLD_BLOCK.get())
+                .define('T', NarakaBlocks.HEROBRINE_TOTEM.get())
                 .pattern("GGG")
                 .pattern("GTG")
                 .pattern("GGG")
-                .unlockedBy(getHasName(NarakaBlocks.HEROBRINE_TOTEM), has(NarakaBlocks.HEROBRINE_TOTEM))
+                .unlockedBy(getHasName(NarakaBlocks.HEROBRINE_TOTEM.get()), has(NarakaBlocks.HEROBRINE_TOTEM.get()))
                 .save(recipeOutput);
 
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_REDSTONE, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK);
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_COPPER, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK);
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_GOLD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK);
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_EMERALD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK);
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_DIAMOND, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK);
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_LAPIS, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK);
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_AMETHYST, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK);
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_NECTARIUM, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK);
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_METAL, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_SHARD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.PURIFIED_SOUL_BLOCK);
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_REDSTONE.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK.get());
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_COPPER.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK.get());
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_GOLD.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK.get());
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_EMERALD.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK.get());
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_DIAMOND.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK.get());
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_LAPIS.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK.get());
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_AMETHYST.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK.get());
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_NECTARIUM.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK.get());
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_METAL.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_SHARD.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.PURIFIED_SOUL_BLOCK.get());
 
-        stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.HARD_EBONY_PLANKS, NarakaBlocks.EBONY_LOG, 1);
-        stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.HARD_EBONY_PLANKS, NarakaBlocks.EBONY_WOOD, 1);
-        sword(recipeOutput, NarakaBlocks.HARD_EBONY_PLANKS, NarakaItems.EBONY_SWORD);
+        stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.HARD_EBONY_PLANKS.get(), NarakaBlocks.EBONY_LOG.get(), 1);
+        stonecutterResultFromBase(recipeOutput, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.HARD_EBONY_PLANKS.get(), NarakaBlocks.EBONY_WOOD.get(), 1);
+        sword(recipeOutput, NarakaBlocks.HARD_EBONY_PLANKS.get(), NarakaItems.EBONY_SWORD.get());
 
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.BUILDING_BLOCKS, Blocks.IRON_BLOCK.asItem(), RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT);
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.COMPRESSED_IRON_BLOCK);
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, Items.AMETHYST_SHARD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.AMETHYST_SHARD_BLOCK);
-        smeltingResultFromBase(recipeOutput, NarakaItems.EBONY_ROOTS_SCRAP, NarakaBlocks.EBONY_ROOTS);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, NarakaItems.EBONY_METAL_INGOT)
-                .requires(NarakaItems.EBONY_ROOTS_SCRAP, 4)
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.BUILDING_BLOCKS, Blocks.IRON_BLOCK.asItem(), RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT.get());
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, Items.AMETHYST_SHARD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.AMETHYST_SHARD_BLOCK.get());
+        smeltingResultFromBase(recipeOutput, NarakaItems.EBONY_ROOTS_SCRAP.get(), NarakaBlocks.EBONY_ROOTS.get());
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, NarakaItems.EBONY_METAL_INGOT.get())
+                .requires(NarakaItems.EBONY_ROOTS_SCRAP.get(), 4)
                 .requires(Items.NETHERITE_SCRAP, 4)
-                .unlockedBy(getHasName(NarakaItems.EBONY_ROOTS_SCRAP), has(NarakaItems.EBONY_ROOTS_SCRAP))
+                .unlockedBy(getHasName(NarakaItems.EBONY_ROOTS_SCRAP.get()), has(NarakaItems.EBONY_ROOTS_SCRAP.get()))
                 .save(recipeOutput);
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.EBONY_METAL_INGOT, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.EBONY_METAL_BLOCK);
-        copySmithingTemplate(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, NarakaItems.EBONY_METAL_INGOT, NarakaBlocks.COMPRESSED_IRON_BLOCK);
+        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.EBONY_METAL_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.EBONY_METAL_BLOCK.get());
+        copySmithingTemplate(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.EBONY_METAL_INGOT.get(), NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
         trimSmithing(recipeOutput,
-                NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE,
+                NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get(),
                 Ingredient.of(NarakaItemTags.PURIFIED_SOUL_ARMOR),
                 Ingredient.of(ItemTags.TRIM_MATERIALS)
         );
-        helmet(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL, NarakaItems.PURIFIED_SOUL_HELMET);
-        chestplate(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL, NarakaItems.PURIFIED_SOUL_CHESTPLATE);
-        legging(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL, NarakaItems.PURIFIED_SOUL_LEGGINGS);
-        boots(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL, NarakaItems.PURIFIED_SOUL_BOOTS);
-        helmet(recipeOutput, NarakaItems.EBONY_METAL_INGOT, NarakaItems.EBONY_METAL_HELMET);
-        chestplate(recipeOutput, NarakaItems.EBONY_METAL_INGOT, NarakaItems.EBONY_METAL_CHESTPLATE);
-        legging(recipeOutput, NarakaItems.EBONY_METAL_INGOT, NarakaItems.EBONY_METAL_LEGGINGS);
-        boots(recipeOutput, NarakaItems.EBONY_METAL_INGOT, NarakaItems.EBONY_METAL_BOOTS);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NarakaBlocks.SOUL_CRAFTING_BLOCK)
-                .define('m', NarakaItems.EBONY_METAL_INGOT)
+        helmet(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL.get(), NarakaItems.PURIFIED_SOUL_HELMET.get());
+        chestplate(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL.get(), NarakaItems.PURIFIED_SOUL_CHESTPLATE.get());
+        legging(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL.get(), NarakaItems.PURIFIED_SOUL_LEGGINGS.get());
+        boots(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL.get(), NarakaItems.PURIFIED_SOUL_BOOTS.get());
+        helmet(recipeOutput, NarakaItems.EBONY_METAL_INGOT.get(), NarakaItems.EBONY_METAL_HELMET.get());
+        chestplate(recipeOutput, NarakaItems.EBONY_METAL_INGOT.get(), NarakaItems.EBONY_METAL_CHESTPLATE.get());
+        legging(recipeOutput, NarakaItems.EBONY_METAL_INGOT.get(), NarakaItems.EBONY_METAL_LEGGINGS.get());
+        boots(recipeOutput, NarakaItems.EBONY_METAL_INGOT.get(), NarakaItems.EBONY_METAL_BOOTS.get());
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NarakaBlocks.SOUL_CRAFTING_BLOCK.get())
+                .define('m', NarakaItems.EBONY_METAL_INGOT.get())
                 .define('#', Items.BLAST_FURNACE)
                 .define('B', Items.DEEPSLATE_TILES)
                 .pattern("mmm")
                 .pattern("m#m")
                 .pattern("BBB")
-                .unlockedBy(getHasName(NarakaItems.EBONY_METAL_INGOT), has(NarakaItems.EBONY_METAL_INGOT))
+                .unlockedBy(getHasName(NarakaItems.EBONY_METAL_INGOT.get()), has(NarakaItems.EBONY_METAL_INGOT.get()))
                 .save(recipeOutput);
     }
 
@@ -301,7 +301,7 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
 
     protected static void soulCraftingRecipe(RecipeOutput recipeOutput, ItemLike ingredient, ItemLike result) {
         new SingleItemRecipeBuilder(RecipeCategory.MISC, SoulCraftingRecipe::new, Ingredient.of(ingredient), result, 1)
-                .unlockedBy(getHasName(NarakaItems.PURIFIED_SOUL_SHARD), has(NarakaItems.PURIFIED_SOUL_SHARD))
+                .unlockedBy(getHasName(NarakaItems.PURIFIED_SOUL_SHARD.get()), has(NarakaItems.PURIFIED_SOUL_SHARD.get()))
                 .save(recipeOutput, location(result, "_soul_crafting"));
     }
 }

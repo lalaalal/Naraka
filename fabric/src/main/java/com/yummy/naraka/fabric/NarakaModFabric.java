@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceKey;
 public final class NarakaModFabric implements ModInitializer, NarakaInitializer {
     @Override
     public void onInitialize() {
+        NarakaMod.prepareRegistries(this);
         NarakaMod.initialize(this);
     }
 

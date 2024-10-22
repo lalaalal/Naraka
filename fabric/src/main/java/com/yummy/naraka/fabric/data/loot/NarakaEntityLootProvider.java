@@ -28,11 +28,11 @@ public class NarakaEntityLootProvider extends SimpleFabricLootTableProvider {
     @Override
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> generator) {
         generator.accept(
-                NarakaEntityTypes.HEROBRINE.getDefaultLootTable(),
+                NarakaEntityTypes.HEROBRINE.get().getDefaultLootTable(),
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                .add(LootItem.lootTableItem(NarakaItems.GOD_BLOOD))
+                                .add(LootItem.lootTableItem(NarakaItems.GOD_BLOOD.get()))
                                 .when(AllOfCondition.allOf(
                                         LootItemKilledByPlayerCondition.killedByPlayer(),
                                         LootItemRandomChanceCondition.randomChance(0.02f)
@@ -40,10 +40,10 @@ public class NarakaEntityLootProvider extends SimpleFabricLootTableProvider {
                         ).withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
                                 .setBonusRolls(ConstantValue.exactly(0.3f))
-                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_1_DISC))
-                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_2_DISC))
-                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_3_DISC))
-                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_4_DISC))
+                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_1_DISC.get()))
+                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_2_DISC.get()))
+                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_3_DISC.get()))
+                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_4_DISC.get()))
                                 .when(AllOfCondition.allOf(
                                         LootItemKilledByPlayerCondition.killedByPlayer(),
                                         LootItemRandomChanceCondition.randomChance(0.1f)
@@ -54,10 +54,10 @@ public class NarakaEntityLootProvider extends SimpleFabricLootTableProvider {
                                 .when(LootItemRandomChanceCondition.randomChance(0.3f))
                         ).withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                .add(LootItem.lootTableItem(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK))
+                                .add(LootItem.lootTableItem(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get()))
                         ).withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                .add(LootItem.lootTableItem(NarakaItems.STIGMA_ROD))
+                                .add(LootItem.lootTableItem(NarakaItems.STIGMA_ROD.get()))
                                 .when(AllOfCondition.allOf(
                                         LootItemKilledByPlayerCondition.killedByPlayer(),
                                         LootItemRandomChanceCondition.randomChance(0.0001f)

@@ -101,11 +101,11 @@ public class NarakaGameEvents {
     }
 
     private static EventResult modifyLootTable(ResourceKey<LootTable> key, LootEvent.LootTableModificationContext context, boolean builtin) {
-        if (key.location().getPath().contains("chests")) {
+        if (!builtin && key.location().getPath().contains("chests")) {
             context.addPool(LootPool.lootPool()
                     .when(LootItemRandomChanceCondition.randomChance(0.2f))
                     .setRolls(ConstantValue.exactly(1))
-                    .add(LootItem.lootTableItem(NarakaItems.SANCTUARY_COMPASS).setWeight(1))
+                    .add(LootItem.lootTableItem(NarakaItems.SANCTUARY_COMPASS.get()).setWeight(1))
             );
         }
 
@@ -117,7 +117,7 @@ public class NarakaGameEvents {
         ItemStack stack = player.getItemInHand(hand);
         BlockState state = level.getBlockState(pos);
 
-        if (stack.is(Items.BONE_MEAL) && state.is(NarakaBlocks.EBONY_SAPLING))
+        if (stack.is(Items.BONE_MEAL) && state.is(NarakaBlocks.EBONY_SAPLING.get()))
             return EventResult.interruptFalse();
         return EventResult.pass();
     }
@@ -127,7 +127,7 @@ public class NarakaGameEvents {
         ItemStack stack = player.getItemInHand(hand);
         BlockState state = level.getBlockState(pos);
 
-        if (stack.is(Items.IRON_NUGGET) && state.is(NarakaBlocks.EBONY_SAPLING)
+        if (stack.is(Items.IRON_NUGGET) && state.is(NarakaBlocks.EBONY_SAPLING.get())
                 && growEbony(stack, player, level, pos)) {
             BoneMealItem.addGrowthParticles(level, pos, 10);
             return EventResult.interruptDefault();
@@ -137,10 +137,10 @@ public class NarakaGameEvents {
 
     private static boolean growEbony(ItemStack itemStack, Player player, Level level, BlockPos blockPos) {
         BlockState blockState = level.getBlockState(blockPos);
-        if (blockState.is(NarakaBlocks.EBONY_SAPLING)) {
+        if (blockState.is(NarakaBlocks.EBONY_SAPLING.get())) {
             if (level instanceof ServerLevel serverLevel) {
-                if (NarakaBlocks.EBONY_SAPLING.isBonemealSuccess(level, level.random, blockPos, blockState))
-                    NarakaBlocks.EBONY_SAPLING.performBonemeal(serverLevel, level.random, blockPos, blockState);
+                if (NarakaBlocks.EBONY_SAPLING.get().isBonemealSuccess(level, level.random, blockPos, blockState))
+                    NarakaBlocks.EBONY_SAPLING.get().performBonemeal(serverLevel, level.random, blockPos, blockState);
                 itemStack.consume(1, player);
             }
             return true;

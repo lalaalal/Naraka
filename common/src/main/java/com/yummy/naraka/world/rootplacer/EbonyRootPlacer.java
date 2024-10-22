@@ -43,7 +43,7 @@ public class EbonyRootPlacer extends RootPlacer {
 
     @Override
     protected RootPlacerType<?> type() {
-        return NarakaRootPlacerTypes.EBONY_ROOT;
+        return NarakaRootPlacerTypes.EBONY_ROOT.get();
     }
 
     @Override

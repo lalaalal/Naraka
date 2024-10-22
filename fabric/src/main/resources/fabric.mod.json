@@ -18,7 +18,6 @@
             "com.yummy.naraka.fabric.NarakaModFabric"
         ],
         "fabric-datagen": [
-            "com.yummy.naraka.fabric.data.NarakaDataGenerator"
         ],
         "client": [
             "com.yummy.naraka.fabric.client.NarakaModFabricClient"

@@ -1,19 +1,23 @@
 package com.yummy.naraka.core.particles;
 
 import com.yummy.naraka.NarakaMod;
-import net.minecraft.core.Registry;
+import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 
 public class NarakaParticleTypes {
-    public static final SimpleParticleType EBONY_LEAVES = register("ebony_leaves", false);
+    private static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(NarakaMod.MOD_ID, Registries.PARTICLE_TYPE);
 
-    private static SimpleParticleType register(String name, boolean alwaysSpawn) {
-        return Registry.register(BuiltInRegistries.PARTICLE_TYPE, NarakaMod.location(name), new NarakaSimpleParticleType(alwaysSpawn));
+    public static final RegistrySupplier<SimpleParticleType> EBONY_LEAVES = register("ebony_leaves", false);
+
+    private static RegistrySupplier<SimpleParticleType> register(String name, boolean alwaysSpawn) {
+        return PARTICLE_TYPES.register(name, () -> new NarakaSimpleParticleType(alwaysSpawn));
     }
 
     public static void initialize() {
-
+        PARTICLE_TYPES.register();
     }
 
     private static class NarakaSimpleParticleType extends SimpleParticleType {

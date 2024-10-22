@@ -1,39 +1,57 @@
 package com.yummy.naraka.neoforge;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.core.registries.NarakaRegisterProxy;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.item.Item;
+import com.yummy.naraka.core.registries.RegistryFactory;
+import com.yummy.naraka.init.NarakaInitializer;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
+import net.neoforged.neoforge.registries.RegistryBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod(NarakaMod.MOD_ID)
-public final class NarakaModNeoForge {
-    public NarakaModNeoForge(IEventBus modBus, ModContainer container) {
-        ItemRegistry.INSTANCE.register();
-//        ItemRegistry.INSTANCE.registerForHolder("test3", new Item(new Item.Properties()));
+public final class NarakaModNeoForge implements NarakaInitializer {
+    private final List<Registry<?>> registries = new ArrayList<>();
 
+    public NarakaModNeoForge(IEventBus modBus, ModContainer container) {
+        NarakaMod.prepareRegistries(this);
+        modBus.addListener(this::commonSetup);
+        modBus.addListener(this::createRegistries);
     }
 
-    public static class ItemRegistry implements NarakaRegisterProxy<Item> {
+    public void commonSetup(FMLCommonSetupEvent event) {
+        NarakaMod.initialize(this);
+    }
 
-        public static final ItemRegistry INSTANCE = new ItemRegistry();
+    public void createRegistries(NewRegistryEvent event) {
+        for (Registry<?> registry : registries)
+            event.register(registry);
+    }
 
-        private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(NarakaMod.MOD_ID, Registries.ITEM);
+    @Override
+    public RegistryFactory getRegistryFactory() {
+        return new RegistryFactory() {
+            @Override
+            public <T> Registry<T> createSimple(ResourceKey<Registry<T>> key) {
+                Registry<T> registry = new RegistryBuilder<>(key)
+                        .sync(true)
+                        .maxId(128)
+                        .defaultKey(NarakaMod.location("empty"))
+                        .create();
+                registries.add(registry);
+                return registry;
+            }
+        };
+    }
 
-        public static final RegistrySupplier<Item> TEST = ITEMS.register("test", () -> new Item(new Item.Properties()));
+    @Override
+    public void registerCreativeModeTabs() {
 
-        @Override
-        public Holder<Item> registerForHolder(String name, Item value) {
-            return ITEMS.register(name, () -> value);
-        }
-
-        public void register() {
-            ITEMS.register();
-        }
     }
 }

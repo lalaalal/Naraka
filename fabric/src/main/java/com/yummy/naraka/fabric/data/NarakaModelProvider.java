@@ -36,42 +36,42 @@ public class NarakaModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators generator) {
-        generator.skipAutoItemBlock(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK);
+        generator.skipAutoItemBlock(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get());
         createPurifiedSoulFire(generator);
-        generator.createTrivialCube(NarakaBlocks.TRANSPARENT_BLOCK);
-        generator.createTrivialCube(NarakaBlocks.NECTARIUM_ORE);
-        generator.createTrivialCube(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE);
-        generator.createTrivialCube(NarakaBlocks.COMPRESSED_IRON_BLOCK);
-        generator.createTrivialCube(NarakaBlocks.NECTARIUM_BLOCK);
-        generator.createTrivialCube(NarakaBlocks.IMITATION_GOLD_BLOCK);
-        generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_BLOCK);
-        generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
-        generator.createTrivialBlock(NarakaBlocks.EBONY_LEAVES, TexturedModel.LEAVES);
-        generator.createTrivialCube(NarakaBlocks.AMETHYST_SHARD_BLOCK);
-        createEbonyLog(generator, NarakaBlocks.EBONY_LOG);
-        generator.woodProvider(NarakaBlocks.EBONY_LOG)
-                .wood(NarakaBlocks.EBONY_WOOD);
-        generator.woodProvider(NarakaBlocks.STRIPPED_EBONY_LOG)
-                .log(NarakaBlocks.STRIPPED_EBONY_LOG)
-                .wood(NarakaBlocks.STRIPPED_EBONY_WOOD);
-        generator.createTrivialCube(NarakaBlocks.HARD_EBONY_PLANKS);
+        generator.createTrivialCube(NarakaBlocks.TRANSPARENT_BLOCK.get());
+        generator.createTrivialCube(NarakaBlocks.NECTARIUM_ORE.get());
+        generator.createTrivialCube(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
+        generator.createTrivialCube(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
+        generator.createTrivialCube(NarakaBlocks.NECTARIUM_BLOCK.get());
+        generator.createTrivialCube(NarakaBlocks.IMITATION_GOLD_BLOCK.get());
+        generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_BLOCK.get());
+        generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
+        generator.createTrivialBlock(NarakaBlocks.EBONY_LEAVES.get(), TexturedModel.LEAVES);
+        generator.createTrivialCube(NarakaBlocks.AMETHYST_SHARD_BLOCK.get());
+        createEbonyLog(generator, NarakaBlocks.EBONY_LOG.get());
+        generator.woodProvider(NarakaBlocks.EBONY_LOG.get())
+                .wood(NarakaBlocks.EBONY_WOOD.get());
+        generator.woodProvider(NarakaBlocks.STRIPPED_EBONY_LOG.get())
+                .log(NarakaBlocks.STRIPPED_EBONY_LOG.get())
+                .wood(NarakaBlocks.STRIPPED_EBONY_WOOD.get());
+        generator.createTrivialCube(NarakaBlocks.HARD_EBONY_PLANKS.get());
         createHerobrineTotem(generator);
-        generator.createFurnace(NarakaBlocks.SOUL_CRAFTING_BLOCK, TexturedModel.ORIENTABLE_ONLY_TOP);
-        generator.createNonTemplateModelBlock(NarakaBlocks.EBONY_ROOTS);
-        generator.createPlant(NarakaBlocks.EBONY_SAPLING, NarakaBlocks.POTTED_EBONY_SAPLING, BlockModelGenerators.TintState.NOT_TINTED);
+        generator.createFurnace(NarakaBlocks.SOUL_CRAFTING_BLOCK.get(), TexturedModel.ORIENTABLE_ONLY_TOP);
+        generator.createNonTemplateModelBlock(NarakaBlocks.EBONY_ROOTS.get());
+        generator.createPlant(NarakaBlocks.EBONY_SAPLING.get(), NarakaBlocks.POTTED_EBONY_SAPLING.get(), BlockModelGenerators.TintState.NOT_TINTED);
         NarakaBlocks.forEachSoulInfusedBlock(generator::createTrivialCube);
-        generator.createTrivialCube(NarakaBlocks.EBONY_METAL_BLOCK);
-        generator.blockEntityModels(NarakaBlocks.FORGING_BLOCK, Blocks.ANVIL)
-                .createWithCustomBlockItemModel(BLOCK_ENTITY_ITEM, NarakaBlocks.FORGING_BLOCK, NarakaBlocks.SOUL_SMITHING_BLOCK);
-        generator.blockEntityModels(NarakaBlocks.SOUL_STABILIZER, Blocks.GLASS)
-                .createWithCustomBlockItemModel(BLOCK_ENTITY_ITEM, NarakaBlocks.SOUL_STABILIZER);
+        generator.createTrivialCube(NarakaBlocks.EBONY_METAL_BLOCK.get());
+        generator.blockEntityModels(NarakaBlocks.FORGING_BLOCK.get(), Blocks.ANVIL)
+                .createWithCustomBlockItemModel(BLOCK_ENTITY_ITEM, NarakaBlocks.FORGING_BLOCK.get(), NarakaBlocks.SOUL_SMITHING_BLOCK.get());
+        generator.blockEntityModels(NarakaBlocks.SOUL_STABILIZER.get(), Blocks.GLASS)
+                .createWithCustomBlockItemModel(BLOCK_ENTITY_ITEM, NarakaBlocks.SOUL_STABILIZER.get());
         createNectariumCrystal(generator);
-        generator.createTrivialCube(NarakaBlocks.NECTARIUM_CORE_BLOCK);
-        generator.createSimpleFlatItemModel(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK);
+        generator.createTrivialCube(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
+        generator.createSimpleFlatItemModel(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get());
     }
 
     private static void createNectariumCrystal(BlockModelGenerators generator) {
-        generator.skipAutoItemBlock(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK);
+        generator.skipAutoItemBlock(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get());
         PropertyDispatch.C2<Direction, DripstoneThickness> properties = PropertyDispatch.properties(
                 BlockStateProperties.VERTICAL_DIRECTION, BlockStateProperties.DRIPSTONE_THICKNESS
         );
@@ -82,14 +82,14 @@ public class NarakaModelProvider extends FabricModelProvider {
         for (DripstoneThickness dripstoneThickness : DripstoneThickness.values())
             properties.select(Direction.DOWN, dripstoneThickness, createNectariumCrystalVariant(generator, Direction.DOWN, dripstoneThickness));
 
-        generator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK).with(properties));
+        generator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get()).with(properties));
     }
 
     private static Variant createNectariumCrystalVariant(BlockModelGenerators generator, Direction direction, DripstoneThickness dripstoneThickness) {
         String model_name = "_" + direction.getSerializedName() + "_" + dripstoneThickness.getSerializedName();
-        TextureMapping textureMapping = TextureMapping.cross(TextureMapping.getBlockTexture(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, model_name));
+        TextureMapping textureMapping = TextureMapping.cross(TextureMapping.getBlockTexture(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get(), model_name));
         return Variant.variant()
-                .with(VariantProperties.MODEL, ModelTemplates.POINTED_DRIPSTONE.createWithSuffix(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, model_name, textureMapping, generator.modelOutput));
+                .with(VariantProperties.MODEL, ModelTemplates.POINTED_DRIPSTONE.createWithSuffix(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get(), model_name, textureMapping, generator.modelOutput));
     }
 
     private static void createEbonyLog(BlockModelGenerators generator, Block block) {
@@ -130,33 +130,33 @@ public class NarakaModelProvider extends FabricModelProvider {
 
     private static ResourceLocation[] createTotemModels(BlockModelGenerators generator) {
         ResourceLocation[] models = new ResourceLocation[HerobrineTotem.MAX_CRACK + 1];
-        models[0] = TexturedModel.CUBE_TOP.create(NarakaBlocks.HEROBRINE_TOTEM, generator.modelOutput);
+        models[0] = TexturedModel.CUBE_TOP.create(NarakaBlocks.HEROBRINE_TOTEM.get(), generator.modelOutput);
         for (int crack = 1; crack <= HerobrineTotem.MAX_CRACK; crack++) {
-            ResourceLocation texture = TextureMapping.getBlockTexture(NarakaBlocks.HEROBRINE_TOTEM, "_" + crack);
+            ResourceLocation texture = TextureMapping.getBlockTexture(NarakaBlocks.HEROBRINE_TOTEM.get(), "_" + crack);
             models[crack] = TexturedModel.CUBE_TOP
                     .updateTexture(mapping -> mapping.put(TextureSlot.SIDE, texture))
-                    .createWithSuffix(NarakaBlocks.HEROBRINE_TOTEM, "_" + crack, generator.modelOutput);
+                    .createWithSuffix(NarakaBlocks.HEROBRINE_TOTEM.get(), "_" + crack, generator.modelOutput);
         }
         return models;
     }
 
     private void createHerobrineTotem(BlockModelGenerators generator) {
-        generator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(NarakaBlocks.HEROBRINE_TOTEM)
+        generator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(NarakaBlocks.HEROBRINE_TOTEM.get())
                 .with(createIntegerModelDispatch(HerobrineTotem.CRACK, createTotemModels(generator)))
         );
     }
 
     private void createPurifiedSoulFire(BlockModelGenerators generator) {
-        List<ResourceLocation> floorModels = generator.createFloorFireModels(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK);
-        List<ResourceLocation> sideModels = generator.createSideFireModels(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK);
-        generator.blockStateOutput.accept(MultiPartGenerator.multiPart(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK)
+        List<ResourceLocation> floorModels = generator.createFloorFireModels(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get());
+        List<ResourceLocation> sideModels = generator.createSideFireModels(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get());
+        generator.blockStateOutput.accept(MultiPartGenerator.multiPart(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get())
                 .with(BlockModelGenerators.wrapModels(floorModels, (variant) -> variant))
                 .with(BlockModelGenerators.wrapModels(sideModels, (variant) -> variant))
                 .with(BlockModelGenerators.wrapModels(sideModels, (variant) -> variant.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)))
                 .with(BlockModelGenerators.wrapModels(sideModels, (variant) -> variant.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)))
                 .with(BlockModelGenerators.wrapModels(sideModels, (variant) -> variant.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)))
         );
-        generator.delegateItemModel(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK, sideModels.getFirst());
+        generator.delegateItemModel(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(), sideModels.getFirst());
     }
 
     private static final List<ItemModelGenerators.TrimModelData> TRIM_MODELS = List.of(
@@ -188,38 +188,38 @@ public class NarakaModelProvider extends FabricModelProvider {
                 Items.LEATHER_HELMET, Items.CHAINMAIL_HELMET, Items.TURTLE_HELMET, Items.IRON_HELMET, Items.GOLDEN_HELMET, Items.DIAMOND_HELMET, Items.NETHERITE_HELMET,
                 Items.LEATHER_LEGGINGS, Items.CHAINMAIL_LEGGINGS, Items.IRON_LEGGINGS, Items.GOLDEN_LEGGINGS, Items.DIAMOND_LEGGINGS, Items.NETHERITE_LEGGINGS,
                 Items.LEATHER_BOOTS, Items.CHAINMAIL_BOOTS, Items.IRON_BOOTS, Items.GOLDEN_BOOTS, Items.DIAMOND_BOOTS, Items.NETHERITE_BOOTS,
-                NarakaItems.PURIFIED_SOUL_HELMET, NarakaItems.PURIFIED_SOUL_CHESTPLATE, NarakaItems.PURIFIED_SOUL_LEGGINGS, NarakaItems.PURIFIED_SOUL_BOOTS,
-                NarakaItems.EBONY_METAL_HELMET, NarakaItems.EBONY_METAL_CHESTPLATE, NarakaItems.EBONY_METAL_LEGGINGS, NarakaItems.EBONY_METAL_BOOTS
+                NarakaItems.PURIFIED_SOUL_HELMET.get(), NarakaItems.PURIFIED_SOUL_CHESTPLATE.get(), NarakaItems.PURIFIED_SOUL_LEGGINGS.get(), NarakaItems.PURIFIED_SOUL_BOOTS.get(),
+                NarakaItems.EBONY_METAL_HELMET.get(), NarakaItems.EBONY_METAL_CHESTPLATE.get(), NarakaItems.EBONY_METAL_LEGGINGS.get(), NarakaItems.EBONY_METAL_BOOTS.get()
         );
 
-        generator.generateFlatItem(NarakaItems.SPEAR_ITEM, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.GOD_BLOOD, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.NECTARIUM, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.EBONY_SWORD, ModelTemplates.FLAT_HANDHELD_ITEM);
-        generator.generateFlatItem(NarakaItems.COMPRESSED_IRON_INGOT, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_METAL, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SHARD, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SWORD, ModelTemplates.FLAT_HANDHELD_ITEM);
-        generator.generateFlatItem(NarakaItems.EBONY_METAL_INGOT, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.EBONY_ROOTS_SCRAP, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.SPEAR_ITEM.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.GOD_BLOOD.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.NECTARIUM.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.EBONY_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        generator.generateFlatItem(NarakaItems.COMPRESSED_IRON_INGOT.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_METAL.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SHARD.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        generator.generateFlatItem(NarakaItems.EBONY_METAL_INGOT.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.EBONY_ROOTS_SCRAP.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModelTemplates.FLAT_ITEM);
 
         for (Item item : armorItems) {
             if (item instanceof ArmorItem armorItem)
                 generateArmorTrims(generator, armorItem);
         }
-        generator.generateFlatItem(NarakaItems.STIGMA_ROD, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
-        generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_1_DISC, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_2_DISC, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_3_DISC, ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_4_DISC, ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.STIGMA_ROD.get(), ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
+        generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_1_DISC.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_2_DISC.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_3_DISC.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_4_DISC.get(), ModelTemplates.FLAT_ITEM);
 
         NarakaItems.forEachSoulInfusedItem(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_ITEM));
         NarakaItems.forEachSoulInfusedSword(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM));
-        generator.generateCompassItem(NarakaItems.SANCTUARY_COMPASS);
+        generator.generateCompassItem(NarakaItems.SANCTUARY_COMPASS.get());
     }
 
     public static void generateArmorTrims(ItemModelGenerators generator, ArmorItem armorItem) {

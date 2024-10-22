@@ -21,7 +21,7 @@ public class EbonyLeavesBlock extends LeavesBlock {
             BlockPos blockPos2 = blockPos.below();
             BlockState blockState2 = level.getBlockState(blockPos2);
             if (!isFaceFull(blockState2.getCollisionShape(level, blockPos2), Direction.UP)) {
-                ParticleUtils.spawnParticleBelow(level, blockPos, randomSource, NarakaParticleTypes.EBONY_LEAVES);
+                ParticleUtils.spawnParticleBelow(level, blockPos, randomSource, NarakaParticleTypes.EBONY_LEAVES.get());
             }
         }
     }

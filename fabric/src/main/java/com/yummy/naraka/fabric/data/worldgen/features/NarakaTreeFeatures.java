@@ -30,17 +30,17 @@ public class NarakaTreeFeatures {
 
     private static TreeConfiguration.TreeConfigurationBuilder createEbony() {
         return new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(NarakaBlocks.EBONY_LOG),
+                BlockStateProvider.simple(NarakaBlocks.EBONY_LOG.get()),
                 new FancyTrunkPlacer(4, 8, 8),
-                BlockStateProvider.simple(NarakaBlocks.EBONY_LEAVES),
+                BlockStateProvider.simple(NarakaBlocks.EBONY_LEAVES.get()),
                 new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
                 new TwoLayersFeatureSize(1, 0, 1, OptionalInt.of(4))
-        ).ignoreVines().dirt(BlockStateProvider.simple(NarakaBlocks.EBONY_ROOTS));
+        ).ignoreVines().dirt(BlockStateProvider.simple(NarakaBlocks.EBONY_ROOTS.get()));
     }
 
     private static TreeConfiguration.TreeConfigurationBuilder createCherryEbony() {
         return new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(NarakaBlocks.EBONY_LOG.branchBlockState()),
+                BlockStateProvider.simple(NarakaBlocks.EBONY_LOG.get().branchBlockState()),
                 new CherryTrunkPlacer(
                         7, 1, 0,
                         new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder()
@@ -53,12 +53,12 @@ public class NarakaTreeFeatures {
                         UniformInt.of(-4, -3),
                         UniformInt.of(-1, 0)
                 ),
-                BlockStateProvider.simple(NarakaBlocks.EBONY_LEAVES),
+                BlockStateProvider.simple(NarakaBlocks.EBONY_LEAVES.get()),
                 new CherryFoliagePlacer(ConstantInt.of(4), ConstantInt.of(0), ConstantInt.of(5), 0.25F, 0.5F, 0.16666667F, 0.33333334F),
                 Optional.of(
                         new EbonyRootPlacer(
                                 UniformInt.of(0, 0),
-                                BlockStateProvider.simple(NarakaBlocks.EBONY_ROOTS),
+                                BlockStateProvider.simple(NarakaBlocks.EBONY_ROOTS.get()),
                                 Optional.empty(),
                                 UniformInt.of(3, 4),
                                 UniformInt.of(4, 7),
@@ -66,6 +66,6 @@ public class NarakaTreeFeatures {
                         )
                 ),
                 new TwoLayersFeatureSize(1, 0, 2)
-        ).ignoreVines().dirt(BlockStateProvider.simple(NarakaBlocks.EBONY_ROOTS));
+        ).ignoreVines().dirt(BlockStateProvider.simple(NarakaBlocks.EBONY_ROOTS.get()));
     }
 }

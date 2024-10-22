@@ -54,16 +54,16 @@ public class NectariumCoreBlock extends Block {
         BlockState belowState = level.getBlockState(pos.below());
         if (belowState.isAir()) {
             BlockPos growingPos = pos.below();
-            BlockState crystal = NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.defaultBlockState()
+            BlockState crystal = NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get().defaultBlockState()
                     .setValue(NectariumCrystalBlock.TIP_DIRECTION, Direction.DOWN)
                     .setValue(NectariumCrystalBlock.THICKNESS, DripstoneThickness.TIP);
             level.setBlock(growingPos, crystal, UPDATE_ALL);
             level.setBlock(pos, state.setValue(HONEY, honey - 1), UPDATE_ALL);
-        } else if (belowState.is(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK)) {
+        } else if (belowState.is(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get())) {
             BlockPos growingPos = findUpFaceSturdyBlock(level, pos).above();
             if (growingPos.equals(pos) || growingPos.equals(pos.below()) || pos.getY() - growingPos.getY() > MAX_HEIGHT)
                 return;
-            BlockState crystal = NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.defaultBlockState()
+            BlockState crystal = NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get().defaultBlockState()
                     .setValue(NectariumCrystalBlock.TIP_DIRECTION, Direction.UP)
                     .setValue(NectariumCrystalBlock.THICKNESS, DripstoneThickness.TIP);
             level.setBlock(growingPos, crystal, UPDATE_ALL);
@@ -103,7 +103,7 @@ public class NectariumCoreBlock extends Block {
     private BlockPos findUpFaceSturdyBlock(ServerLevel level, BlockPos pos) {
         BlockPos.MutableBlockPos mutableBlockPos = pos.below(2).mutable();
         BlockState searchingState = level.getBlockState(mutableBlockPos);
-        while (!searchingState.isFaceSturdy(level, mutableBlockPos, Direction.UP) && !searchingState.is(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK)) {
+        while (!searchingState.isFaceSturdy(level, mutableBlockPos, Direction.UP) && !searchingState.is(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get())) {
             if (pos.getY() - mutableBlockPos.getY() > MAX_HEIGHT)
                 return mutableBlockPos.immutable();
             mutableBlockPos.move(Direction.DOWN);

@@ -49,7 +49,7 @@ public class TransparentBlock extends Block {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level pLevel, BlockPos pos, Player player, InteractionHand pHand, BlockHitResult pHitResult) {
-        if (player.isCreative() && itemStack.is(NarakaBlocks.TRANSPARENT_BLOCK.asItem())) {
+        if (player.isCreative() && itemStack.is(NarakaBlocks.TRANSPARENT_BLOCK.get().asItem())) {
             pLevel.setBlock(pos, blockState.cycle(VISIBLE), 10);
             return ItemInteractionResult.sidedSuccess(pLevel.isClientSide);
         }

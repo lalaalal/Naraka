@@ -12,7 +12,7 @@ public class NarakaTrimPatterns {
     public static final ResourceKey<TrimPattern> PURIFIED_SOUL_SILENCE = create("purified_soul_silence");
 
     public static void bootstrap(BootstrapContext<TrimPattern> context) {
-        TrimPatterns.register(context, NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, PURIFIED_SOUL_SILENCE);
+        TrimPatterns.register(context, NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get(), PURIFIED_SOUL_SILENCE);
     }
 
     private static ResourceKey<TrimPattern> create(String name) {

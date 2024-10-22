@@ -45,7 +45,7 @@ public class SoulCraftingMenu extends AbstractContainerMenu {
     }
 
     public SoulCraftingMenu(int containerId, Inventory inventory, Container container, ContainerData data) {
-        super(NarakaMenuTypes.SOUL_CRAFTING, containerId);
+        super(NarakaMenuTypes.SOUL_CRAFTING.get(), containerId);
         checkContainerSize(container, SLOT_SIZE);
         checkContainerDataCount(data, DATA_SIZE);
         this.container = container;
@@ -107,7 +107,7 @@ public class SoulCraftingMenu extends AbstractContainerMenu {
 
     public boolean isIngredient(ItemStack itemStack) {
         SingleRecipeInput input = new SingleRecipeInput(itemStack);
-        return recipeManager.getRecipeFor(NarakaRecipeTypes.SOUL_CRAFTING, input, level).isPresent();
+        return recipeManager.getRecipeFor(NarakaRecipeTypes.SOUL_CRAFTING.get(), input, level).isPresent();
     }
 
     public boolean isFuel(ItemStack itemStack) {

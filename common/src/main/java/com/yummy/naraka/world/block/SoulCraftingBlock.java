@@ -121,6 +121,6 @@ public class SoulCraftingBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         if (level.isClientSide)
             return null;
-        return createTickerHelper(blockEntityType, NarakaBlockEntityTypes.SOUL_CRAFTING, SoulCraftingBlockEntity::serverTick);
+        return createTickerHelper(blockEntityType, NarakaBlockEntityTypes.SOUL_CRAFTING.get(), SoulCraftingBlockEntity::serverTick);
     }
 }

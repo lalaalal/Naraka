@@ -6,6 +6,7 @@ import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.EntityDataType;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerPlayer;
@@ -29,9 +30,10 @@ public abstract class ServerEntityMixin {
      */
     @Inject(method = "addPairing", at = @At("RETURN"))
     public void addParingEntityData(ServerPlayer serverPlayer, CallbackInfo ci) {
+        RegistryAccess registryAccess = entity.level().registryAccess();
         if (entity instanceof LivingEntity livingEntity) {
             HolderSet<EntityDataType<?>> entityDataTypes = HolderSet.direct(
-                    NarakaRegistries.ENTITY_DATA_TYPE.holders()
+                    registryAccess.registryOrThrow(NarakaRegistries.Keys.ENTITY_DATA_TYPE).holders()
                             .filter(holder -> EntityDataHelper.hasEntityData(livingEntity, holder.value()))
                             .toList()
             );

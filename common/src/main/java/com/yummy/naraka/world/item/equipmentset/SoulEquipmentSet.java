@@ -12,7 +12,7 @@ import net.minecraft.world.item.armortrim.TrimMaterial;
 public class SoulEquipmentSet extends EquipmentSet {
     private static boolean test(LivingEntity livingEntity) {
         ItemStack handItem = livingEntity.getMainHandItem();
-        SoulType soulType = handItem.get(NarakaDataComponentTypes.SOUL);
+        SoulType soulType = handItem.get(NarakaDataComponentTypes.SOUL.get());
         if (soulType == null)
             return false;
 

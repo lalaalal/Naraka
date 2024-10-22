@@ -39,7 +39,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     }
 
     public HerobrineTotemBlockEntity(BlockPos pos, BlockState state) {
-        this(NarakaBlockEntityTypes.HEROBRINE_TOTEM, pos, state);
+        this(NarakaBlockEntityTypes.HEROBRINE_TOTEM.get(), pos, state);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, HerobrineTotemBlockEntity blockEntity) {
@@ -76,7 +76,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     }
 
     public static boolean isTotemStructure(Level level, BlockPos totemPos) {
-        return level.getBlockState(totemPos).is(NarakaBlocks.HEROBRINE_TOTEM)
+        return level.getBlockState(totemPos).is(NarakaBlocks.HEROBRINE_TOTEM.get())
                 && level.getBlockState(totemPos.above()).is(Blocks.NETHERRACK)
                 && level.getBlockState(totemPos.below(1)).is(NarakaBlocks.IMITATION_GOLD_BLOCK)
                 && level.getBlockState(totemPos.below(2)).is(NarakaBlocks.IMITATION_GOLD_BLOCK);

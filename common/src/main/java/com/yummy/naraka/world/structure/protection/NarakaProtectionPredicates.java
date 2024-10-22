@@ -4,10 +4,12 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.structure.piece.HerobrineSanctuaryOutline;
+import dev.architectury.registry.registries.DeferredRegister;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 
 public class NarakaProtectionPredicates {
+    private static final DeferredRegister<ProtectionPredicate> PROTECTION_PREDICATES = DeferredRegister.create(NarakaMod.MOD_ID, NarakaRegistries.Keys.PROTECTION_PREDICATE);
+
     public static final Holder<ProtectionPredicate> BOX = register(
             "box", (box, pos) -> true
     );
@@ -17,10 +19,10 @@ public class NarakaProtectionPredicates {
     );
 
     private static Holder<ProtectionPredicate> register(String name, ProtectionPredicate predicate) {
-        return Registry.registerForHolder(NarakaRegistries.PROTECTION_PREDICATE, NarakaMod.location(name), predicate);
+        return PROTECTION_PREDICATES.register(name, () -> predicate);
     }
 
     public static void initialize() {
-
+        PROTECTION_PREDICATES.register();
     }
 }

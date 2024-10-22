@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class NarakaLanguageProviders {
     public static final String PURIFIED_SOUL_UPGRADE_KEY = Util.makeDescriptionId("upgrade", NarakaMod.location("purified_soul_upgrade"));
@@ -282,20 +283,20 @@ public class NarakaLanguageProviders {
     }
 
 
-    public void addItem(Item item, String... translations) {
-        add(item.getDescriptionId(), translations);
+    public void addItem(Supplier<? extends Item> item, String... translations) {
+        add(item.get().getDescriptionId(), translations);
     }
 
-    public void addBlock(Block block, String... translations) {
-        add(block.getDescriptionId(), translations);
+    public void addBlock(Supplier<? extends Block> block, String... translations) {
+        add(block.get().getDescriptionId(), translations);
     }
 
-    public void addTooltip(Block block, String... translations) {
-        add(LanguageKey.tooltipKey(block), translations);
+    public void addTooltip(Supplier<? extends Block> block, String... translations) {
+        add(LanguageKey.tooltipKey(block.get()), translations);
     }
 
-    public void addEntityType(EntityType<?> entityType, String... translations) {
-        add(entityType.getDescriptionId(), translations);
+    public void addEntityType(Supplier<? extends EntityType<?>> entityType, String... translations) {
+        add(entityType.get().getDescriptionId(), translations);
     }
 
     public void addJukeboxSound(ResourceKey<JukeboxSong> key, String... translations) {

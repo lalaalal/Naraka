@@ -14,26 +14,26 @@ import java.util.*;
 
 public class EntityDataHelper {
     private static final Map<UUID, EntityDataContainer> ENTITY_DATA_MAP = new HashMap<>();
-    private static final Map<EntityDataType<?>, List<WrapperListener>> DATA_CHANGE_LISTENERS = new HashMap<>();
+    private static final Map<Holder<? extends EntityDataType<?>>, List<WrapperListener>> DATA_CHANGE_LISTENERS = new HashMap<>();
 
     public static void clear() {
         ENTITY_DATA_MAP.clear();
     }
 
-    public static <T> void registerDataChangeListener(EntityDataType<T> entityDataType, DataChangeListener<T> listener) {
+    public static <T> void registerDataChangeListener(Holder<? extends EntityDataType<T>> entityDataType, DataChangeListener<T> listener) {
         List<WrapperListener> listeners = DATA_CHANGE_LISTENERS.computeIfAbsent(entityDataType, _entityDataType -> new ArrayList<>());
         listeners.add(wrap(entityDataType, listener));
     }
 
-    private static <T> WrapperListener wrap(EntityDataType<T> entityDataType, DataChangeListener<T> listener) {
+    private static <T> WrapperListener wrap(Holder<? extends EntityDataType<T>> entityDataType, DataChangeListener<T> listener) {
         return (livingEntity, _entityDataType, from, to) -> {
-            Class<T> type = entityDataType.getValueType();
-            listener.onChange(livingEntity, entityDataType, type.cast(from), type.cast(to));
+            Class<T> type = entityDataType.value().getValueType();
+            listener.onChange(livingEntity, entityDataType.value(), type.cast(from), type.cast(to));
         };
     }
 
-    public static void syncEntityData(LivingEntity livingEntity, EntityDataType<?> entityDataType) {
-        Holder<EntityDataType<?>> holder = NarakaEntityDataTypes.holder(entityDataType);
+    public static void syncEntityData(LivingEntity livingEntity, Holder<? extends EntityDataType<?>> entityDataType) {
+        Holder<EntityDataType<?>> holder = NarakaEntityDataTypes.holder(livingEntity.registryAccess(), entityDataType.value());
         if (livingEntity.level() instanceof ServerLevel serverLevel) {
             CompoundTag data = new CompoundTag();
             saveEntityData(livingEntity, data);
@@ -43,7 +43,7 @@ public class EntityDataHelper {
     }
 
     public static void syncEntityData(LivingEntity livingEntity) {
-        HolderSet<EntityDataType<?>> holders = NarakaEntityDataTypes.full();
+        HolderSet<EntityDataType<?>> holders = NarakaEntityDataTypes.full(livingEntity.registryAccess());
         if (livingEntity.level() instanceof ServerLevel serverLevel) {
             CompoundTag data = new CompoundTag();
             saveEntityData(livingEntity, data, holders);
@@ -52,20 +52,20 @@ public class EntityDataHelper {
         }
     }
 
-    public static void setEntityData(LivingEntity livingEntity, EntityDataType<?> entityDataType, Object value) {
+    public static void setEntityData(LivingEntity livingEntity, Holder<? extends EntityDataType<?>> entityDataType, Object value) {
         EntityDataContainer container = ENTITY_DATA_MAP.computeIfAbsent(livingEntity.getUUID(), uuid -> new EntityDataContainer());
-        Object original = container.getEntityData(entityDataType);
-        container.setEntityData(entityDataType, value);
+        Object original = container.getEntityData(entityDataType.value());
+        container.setEntityData(entityDataType.value(), value);
         syncEntityData(livingEntity, entityDataType);
         for (WrapperListener listener : DATA_CHANGE_LISTENERS.computeIfAbsent(entityDataType, type -> new ArrayList<>()))
-            listener.onChange(livingEntity, entityDataType, original, value);
+            listener.onChange(livingEntity, entityDataType.value(), original, value);
     }
 
-    public static <T> T getEntityData(LivingEntity livingEntity, EntityDataType<T> entityDataType) {
+    public static <T> T getEntityData(LivingEntity livingEntity, Holder<? extends EntityDataType<T>> entityDataType) {
         if (!ENTITY_DATA_MAP.containsKey(livingEntity.getUUID()))
-            return entityDataType.getDefaultValue();
+            return entityDataType.value().getDefaultValue();
         EntityDataContainer container = ENTITY_DATA_MAP.get(livingEntity.getUUID());
-        return container.getEntityData(entityDataType);
+        return container.getEntityData(entityDataType.value());
     }
 
     public static void removeEntityData(LivingEntity entity) {

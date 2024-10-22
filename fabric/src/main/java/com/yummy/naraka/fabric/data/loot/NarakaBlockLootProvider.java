@@ -33,37 +33,37 @@ public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
-        dropSelf(NarakaBlocks.NECTARIUM_BLOCK);
-        dropOre(NarakaBlocks.NECTARIUM_ORE, NarakaItems.NECTARIUM);
-        dropOre(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, NarakaItems.NECTARIUM);
-        dropSelf(NarakaBlocks.SOUL_CRAFTING_BLOCK);
-        dropSelf(NarakaBlocks.FORGING_BLOCK);
-        dropSelf(NarakaBlocks.COMPRESSED_IRON_BLOCK);
-        dropSelf(NarakaBlocks.IMITATION_GOLD_BLOCK);
-        dropSelf(NarakaBlocks.AMETHYST_SHARD_BLOCK);
+        dropSelf(NarakaBlocks.NECTARIUM_BLOCK.get());
+        dropOre(NarakaBlocks.NECTARIUM_ORE.get(), NarakaItems.NECTARIUM.get());
+        dropOre(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get(), NarakaItems.NECTARIUM.get());
+        dropSelf(NarakaBlocks.SOUL_CRAFTING_BLOCK.get());
+        dropSelf(NarakaBlocks.FORGING_BLOCK.get());
+        dropSelf(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
+        dropSelf(NarakaBlocks.IMITATION_GOLD_BLOCK.get());
+        dropSelf(NarakaBlocks.AMETHYST_SHARD_BLOCK.get());
 
         NarakaBlocks.forEachSoulInfusedBlock(this::dropSelf);
-        dropSelf(NarakaBlocks.PURIFIED_SOUL_BLOCK);
-        dropSelf(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK);
+        dropSelf(NarakaBlocks.PURIFIED_SOUL_BLOCK.get());
+        dropSelf(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
 
-        dropSelf(NarakaBlocks.EBONY_LOG);
-        dropSelf(NarakaBlocks.STRIPPED_EBONY_LOG);
-        dropSelf(NarakaBlocks.EBONY_WOOD);
-        dropSelf(NarakaBlocks.STRIPPED_EBONY_WOOD);
-        dropSelf(NarakaBlocks.HARD_EBONY_PLANKS);
+        dropSelf(NarakaBlocks.EBONY_LOG.get());
+        dropSelf(NarakaBlocks.STRIPPED_EBONY_LOG.get());
+        dropSelf(NarakaBlocks.EBONY_WOOD.get());
+        dropSelf(NarakaBlocks.STRIPPED_EBONY_WOOD.get());
+        dropSelf(NarakaBlocks.HARD_EBONY_PLANKS.get());
 
-        add(NarakaBlocks.EBONY_LEAVES, createLeavesDrops(NarakaBlocks.EBONY_LEAVES, NarakaBlocks.EBONY_SAPLING, 0.01f));
-        dropSelf(NarakaBlocks.EBONY_SAPLING);
-        dropWhenSilkTouch(NarakaBlocks.HEROBRINE_TOTEM);
-        dropPottedContents(NarakaBlocks.POTTED_EBONY_SAPLING);
-        dropSelf(NarakaBlocks.EBONY_ROOTS);
-        dropSelf(NarakaBlocks.EBONY_METAL_BLOCK);
+        add(NarakaBlocks.EBONY_LEAVES.get(), createLeavesDrops(NarakaBlocks.EBONY_LEAVES.get(), NarakaBlocks.EBONY_SAPLING.get(), 0.01f));
+        dropSelf(NarakaBlocks.EBONY_SAPLING.get());
+        dropWhenSilkTouch(NarakaBlocks.HEROBRINE_TOTEM.get());
+        dropPottedContents(NarakaBlocks.POTTED_EBONY_SAPLING.get());
+        dropSelf(NarakaBlocks.EBONY_ROOTS.get());
+        dropSelf(NarakaBlocks.EBONY_METAL_BLOCK.get());
 
-        add(NarakaBlocks.NECTARIUM_CORE_BLOCK, this::createSilkTouchOnlyTable);
-        add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, this::createNectariumCrystalDrops);
+        add(NarakaBlocks.NECTARIUM_CORE_BLOCK.get(), this::createSilkTouchOnlyTable);
+        add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get(), this::createNectariumCrystalDrops);
 
-        add(NarakaBlocks.SOUL_STABILIZER, this::createSilkTouchOnlyTable);
-        add(NarakaBlocks.SOUL_SMITHING_BLOCK, this::createSilkTouchOnlyTable);
+        add(NarakaBlocks.SOUL_STABILIZER.get(), this::createSilkTouchOnlyTable);
+        add(NarakaBlocks.SOUL_SMITHING_BLOCK.get(), this::createSilkTouchOnlyTable);
     }
 
     protected void dropOre(Block oreBlock, Item item) {
@@ -77,12 +77,12 @@ public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
                         .add(LootItem.lootTableItem(block)
                                 .when(hasSilkTouch())
                                 .otherwise(
-                                        LootItem.lootTableItem(NarakaItems.NECTARIUM)
+                                        LootItem.lootTableItem(NarakaItems.NECTARIUM.get())
                                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5)))
                                                 .apply(ApplyBonusCount.addUniformBonusCount(enchantments.getOrThrow(Enchantments.FORTUNE)))
                                                 .when(NECTARIUM_CRYSTAL_TOOLS)
                                                 .otherwise(
-                                                        LootItem.lootTableItem(NarakaItems.NECTARIUM)
+                                                        LootItem.lootTableItem(NarakaItems.NECTARIUM.get())
                                                                 .apply(ApplyExplosionDecay.explosionDecay())
                                                 )
                                 )

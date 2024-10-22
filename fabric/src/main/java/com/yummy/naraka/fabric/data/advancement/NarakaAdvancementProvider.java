@@ -55,7 +55,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         Holder<Structure> herobrineSanctuaryStructure = structures.getOrThrow(NarakaStructures.HEROBRINE_SANCTUARY);
 
         AdvancementHolder root = Advancement.Builder.advancement()
-                .display(NarakaItems.NECTARIUM,
+                .display(NarakaItems.NECTARIUM.get(),
                         AdvancementNarakaComponents.ROOT.title(),
                         AdvancementNarakaComponents.ROOT.description(),
                         NarakaTextures.NARAKA_ADVANCEMENT_ROOT_BACKGROUND,
@@ -68,48 +68,48 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
                 .addCriterion("killed_something", KilledTrigger.TriggerInstance.playerKilledEntity())
                 .addCriterion("killed_by_something", KilledTrigger.TriggerInstance.entityKilledPlayer())
                 .save(generator, location("root"));
-        AdvancementHolder sanctuaryCompass = task(root, NarakaItems.SANCTUARY_COMPASS, AdvancementNarakaComponents.SANCTUARY_COMPASS)
+        AdvancementHolder sanctuaryCompass = task(root, NarakaItems.SANCTUARY_COMPASS.get(), AdvancementNarakaComponents.SANCTUARY_COMPASS)
                 .rewards(AdvancementRewards.Builder.experience(6))
                 .addCriterion("has_sanctuary_compass", InventoryChangeTrigger.TriggerInstance.hasItems(
-                        NarakaItems.SANCTUARY_COMPASS
+                        NarakaItems.SANCTUARY_COMPASS.get()
                 ))
                 .save(generator, location("sanctuary_compass"));
-        AdvancementHolder herobrineSanctuary = task(sanctuaryCompass, NarakaBlocks.PURIFIED_SOUL_BLOCK, AdvancementNarakaComponents.HEROBRINE_SANCTUARY)
+        AdvancementHolder herobrineSanctuary = task(sanctuaryCompass, NarakaBlocks.PURIFIED_SOUL_BLOCK.get(), AdvancementNarakaComponents.HEROBRINE_SANCTUARY)
                 .addCriterion("herobrine_sanctuary", PlayerTrigger.TriggerInstance.located(
                                 LocationPredicate.Builder.inStructure(herobrineSanctuaryStructure)
                         )
                 )
                 .rewards(AdvancementRewards.Builder.experience(3))
                 .save(generator, location("herobrine_sanctuary"));
-        AdvancementHolder summonHerobrine = goal(herobrineSanctuary, NarakaBlocks.HEROBRINE_TOTEM, AdvancementNarakaComponents.SUMMON_HEROBRINE)
+        AdvancementHolder summonHerobrine = goal(herobrineSanctuary, NarakaBlocks.HEROBRINE_TOTEM.get(), AdvancementNarakaComponents.SUMMON_HEROBRINE)
                 .addCriterion("summon_herobrine", SummonedEntityTrigger.TriggerInstance.summonedEntity(
                                 EntityPredicate.Builder.entity()
-                                        .of(NarakaEntityTypes.HEROBRINE)
+                                        .of(NarakaEntityTypes.HEROBRINE.get())
                         )
                 )
                 .rewards(AdvancementRewards.Builder.experience(6))
                 .save(generator, location("summon_herobrine"));
-        AdvancementHolder killHerobrine = challenge(summonHerobrine, NarakaItems.PURIFIED_SOUL_SHARD, AdvancementNarakaComponents.KILL_HEROBRINE)
+        AdvancementHolder killHerobrine = challenge(summonHerobrine, NarakaItems.PURIFIED_SOUL_SHARD.get(), AdvancementNarakaComponents.KILL_HEROBRINE)
                 .addCriterion("kill_herobrine", KilledTrigger.TriggerInstance.playerKilledEntity(
                                 EntityPredicate.Builder.entity()
-                                        .of(NarakaEntityTypes.HEROBRINE)
+                                        .of(NarakaEntityTypes.HEROBRINE.get())
                         )
                 )
                 .rewards(AdvancementRewards.Builder.experience(66))
                 .save(generator, location("kill_herobrine"));
-        AdvancementHolder godBlood = challenge(killHerobrine, NarakaItems.GOD_BLOOD, AdvancementNarakaComponents.GOD_BLOOD)
+        AdvancementHolder godBlood = challenge(killHerobrine, NarakaItems.GOD_BLOOD.get(), AdvancementNarakaComponents.GOD_BLOOD)
                 .rewards(AdvancementRewards.Builder.experience(66))
                 .addCriterion("has_god_blood", InventoryChangeTrigger.TriggerInstance.hasItems(
-                        NarakaItems.GOD_BLOOD
+                        NarakaItems.GOD_BLOOD.get()
                 ))
                 .save(generator, location("god_blood"));
-        AdvancementHolder soulInfusing = task(root, NarakaBlocks.SOUL_CRAFTING_BLOCK, AdvancementNarakaComponents.SOUL_INFUSING)
+        AdvancementHolder soulInfusing = task(root, NarakaBlocks.SOUL_CRAFTING_BLOCK.get(), AdvancementNarakaComponents.SOUL_INFUSING)
                 .rewards(AdvancementRewards.Builder.experience(6))
                 .addCriterion("craft_soul_crafting_block", RecipeCraftedTrigger.TriggerInstance.craftedItem(
                         NarakaMod.location("soul_crafting_block")
                 ))
                 .save(generator, location("soul_infusing"));
-        AdvancementHolder purifiedSoulMetal = task(soulInfusing, NarakaItems.PURIFIED_SOUL_METAL, AdvancementNarakaComponents.PURIFIED_SOUL_METAL)
+        AdvancementHolder purifiedSoulMetal = task(soulInfusing, NarakaItems.PURIFIED_SOUL_METAL.get(), AdvancementNarakaComponents.PURIFIED_SOUL_METAL)
                 .rewards(AdvancementRewards.Builder.experience(6))
                 .addCriterion("craft_purified_soul_metal", RecipeCraftedTrigger.TriggerInstance.craftedItem(
                         NarakaMod.location("purified_soul_metal")

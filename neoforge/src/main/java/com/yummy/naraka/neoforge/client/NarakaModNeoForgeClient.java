@@ -3,6 +3,7 @@ package com.yummy.naraka.neoforge.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.client.NarakaModClient;
 import com.yummy.naraka.client.renderer.CustomItemRenderManager;
 import com.yummy.naraka.client.renderer.NarakaCustomRenderer;
 import com.yummy.naraka.init.NarakaClientInitializer;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.javafmlmod.FMLModContainer;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
@@ -31,6 +33,10 @@ import java.util.function.Consumer;
 public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClientItemExtensions {
     public NarakaModNeoForgeClient(FMLModContainer container, IEventBus modBus, Dist dist) {
 
+    }
+
+    public void clientSetup(FMLClientSetupEvent event) {
+        NarakaModClient.initializeClient(this);
     }
 
     @Override
@@ -56,7 +62,6 @@ public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClient
 
     @Override
     public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-
         return new BlockEntityWithoutLevelRenderer(null, null) {
             @Override
             public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {

@@ -61,7 +61,7 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
     private @Nullable RecipeHolder<?> recipeUsed;
 
     public SoulCraftingBlockEntity(BlockPos pos, BlockState blockState) {
-        super(NarakaBlockEntityTypes.SOUL_CRAFTING, pos, blockState);
+        super(NarakaBlockEntityTypes.SOUL_CRAFTING.get(), pos, blockState);
         setFuel(0);
         setCraftingProgress(PROGRESS_WAITING);
         setLitProgress(0);
@@ -193,7 +193,7 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
     }
 
     public static Optional<RecipeHolder<SoulCraftingRecipe>> getRecipeFor(Level level, ItemStack ingredient) {
-        return level.getRecipeManager().getRecipeFor(NarakaRecipeTypes.SOUL_CRAFTING, new SingleRecipeInput(ingredient), level);
+        return level.getRecipeManager().getRecipeFor(NarakaRecipeTypes.SOUL_CRAFTING.get(), new SingleRecipeInput(ingredient), level);
     }
 
     public ItemStack assemble(Level level, RecipeHolder<SoulCraftingRecipe> recipe, ItemStack ingredient) {

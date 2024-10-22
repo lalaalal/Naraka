@@ -99,6 +99,6 @@ public class ForgingBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         if (level.isClientSide)
             return super.getTicker(level, state, type);
-        return createTickerHelper(type, NarakaBlockEntityTypes.FORGING, ForgingBlockEntity::serverTick);
+        return createTickerHelper(type, NarakaBlockEntityTypes.FORGING.get(), ForgingBlockEntity::serverTick);
     }
 }

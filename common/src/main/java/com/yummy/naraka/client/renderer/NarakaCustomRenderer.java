@@ -22,13 +22,13 @@ public class NarakaCustomRenderer implements CustomItemRenderManager.CustomItemR
     public static final NarakaCustomRenderer INSTANCE = new NarakaCustomRenderer();
 
     private final Minecraft minecraft;
-    private final ForgingBlockEntity forgingBlockEntity = new ForgingBlockEntity(BlockPos.ZERO, NarakaBlocks.FORGING_BLOCK.defaultBlockState());
-    private final SoulStabilizerBlockEntity soulStabilizerBlockEntity = new SoulStabilizerBlockEntity(BlockPos.ZERO, NarakaBlocks.SOUL_STABILIZER.defaultBlockState());
-    private final SoulSmithingBlockEntity soulSmithingBlockEntity = new SoulSmithingBlockEntity(BlockPos.ZERO, NarakaBlocks.SOUL_SMITHING_BLOCK.defaultBlockState());
+    private final ForgingBlockEntity forgingBlockEntity = new ForgingBlockEntity(BlockPos.ZERO, NarakaBlocks.FORGING_BLOCK.get().defaultBlockState());
+    private final SoulStabilizerBlockEntity soulStabilizerBlockEntity = new SoulStabilizerBlockEntity(BlockPos.ZERO, NarakaBlocks.SOUL_STABILIZER.get().defaultBlockState());
+    private final SoulSmithingBlockEntity soulSmithingBlockEntity = new SoulSmithingBlockEntity(BlockPos.ZERO, NarakaBlocks.SOUL_SMITHING_BLOCK.get().defaultBlockState());
     private final Map<Item, BlockEntity> entityByItem = Map.of(
-            NarakaBlocks.FORGING_BLOCK.asItem(), forgingBlockEntity,
-            NarakaBlocks.SOUL_STABILIZER.asItem(), soulStabilizerBlockEntity,
-            NarakaBlocks.SOUL_SMITHING_BLOCK.asItem(), soulSmithingBlockEntity
+            NarakaBlocks.FORGING_BLOCK.get().asItem(), forgingBlockEntity,
+            NarakaBlocks.SOUL_STABILIZER.get().asItem(), soulStabilizerBlockEntity,
+            NarakaBlocks.SOUL_SMITHING_BLOCK.get().asItem(), soulSmithingBlockEntity
     );
 
     private BlockEntityRenderDispatcher blockEntityRenderDispatcher;

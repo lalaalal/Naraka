@@ -4,10 +4,10 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
+import dev.architectury.registry.registries.DeferredRegister;
 import net.minecraft.advancements.critereon.TagPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -20,6 +20,8 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class NarakaReinforcementEffects {
+    private static final DeferredRegister<ReinforcementEffect> REINFORCEMENT_EFFECTS = DeferredRegister.create(NarakaMod.MOD_ID, NarakaRegistries.Keys.REINFORCEMENT_EFFECT);
+
     public static final Holder<ReinforcementEffect> INCREASE_ATTACK_DAMAGE = register(
             "increase_attack_damage", AttributeModifyingEffect.simple(Attributes.ATTACK_DAMAGE, EquipmentSlotGroup.MAINHAND)
     );
@@ -69,7 +71,7 @@ public class NarakaReinforcementEffects {
     );
 
     private static Holder<ReinforcementEffect> register(String name, ReinforcementEffect effect) {
-        return Registry.registerForHolder(NarakaRegistries.REINFORCEMENT_EFFECT, NarakaMod.location(name), effect);
+        return REINFORCEMENT_EFFECTS.register(name, () -> effect);
     }
 
     private static final Map<Predicate<ItemStack>, List<Holder<ReinforcementEffect>>> ITEM_REINFORCEMENT_EFFECTS = new LinkedHashMap<>();
@@ -104,6 +106,8 @@ public class NarakaReinforcementEffects {
     }
 
     public static void initialize() {
+        REINFORCEMENT_EFFECTS.register();
+
         addEffectsByItem(ItemTags.SWORDS, INCREASE_ATTACK_DAMAGE);
         addEffectsByItem(ItemTags.TRIDENT_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
         addEffectsByItem(NarakaItemTags.SPEAR_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
@@ -115,7 +119,7 @@ public class NarakaReinforcementEffects {
     }
 
     private static Predicate<ItemStack> isBlessed() {
-        return itemStack -> itemStack.getOrDefault(NarakaDataComponentTypes.BLESSED, false);
+        return itemStack -> itemStack.getOrDefault(NarakaDataComponentTypes.BLESSED.get(), false);
     }
 
     private static Predicate<ItemStack> and(Predicate<ItemStack> left, Predicate<ItemStack> right) {

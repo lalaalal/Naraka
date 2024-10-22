@@ -1,5 +1,6 @@
 package com.yummy.naraka.network;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.EntityDataType;
@@ -18,12 +19,12 @@ import net.minecraft.world.entity.player.Player;
 
 public record SyncEntityDataPayload(int entityId, HolderSet<EntityDataType<?>> entityDataTypes,
                                     CompoundTag data) implements CustomPacketPayload {
-    public static final Type<SyncEntityDataPayload> TYPE = CustomPacketPayload.createType("sync_entity_data");
+    public static final Type<SyncEntityDataPayload> TYPE = new Type<>(NarakaMod.location("sync_entity_data"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncEntityDataPayload> CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT,
             SyncEntityDataPayload::entityId,
-            ByteBufCodecs.holderSet(NarakaRegistries.ENTITY_DATA_TYPE.key()),
+            ByteBufCodecs.holderSet(NarakaRegistries.Keys.ENTITY_DATA_TYPE),
             SyncEntityDataPayload::entityDataTypes,
             ByteBufCodecs.COMPOUND_TAG,
             SyncEntityDataPayload::data,
@@ -53,7 +54,7 @@ public record SyncEntityDataPayload(int entityId, HolderSet<EntityDataType<?>> e
             EntityDataType<?> entityDataType = holder.value();
             Object value = entityDataType.read(data, context.registryAccess());
             if (entity instanceof LivingEntity livingEntity)
-                EntityDataHelper.setEntityData(livingEntity, entityDataType, value);
+                EntityDataHelper.setEntityData(livingEntity, holder, value);
         }
     }
 }

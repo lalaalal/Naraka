@@ -52,16 +52,16 @@ public class NarakaModClient {
     }
 
     private static void initializeItems(NarakaClientInitializer initializer) {
-        initializer.registerCustomItemRenderer(NarakaBlocks.FORGING_BLOCK, NarakaCustomRenderer.INSTANCE);
-        initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_STABILIZER, NarakaCustomRenderer.INSTANCE);
-        initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_SMITHING_BLOCK, NarakaCustomRenderer.INSTANCE);
+        initializer.registerCustomItemRenderer(NarakaBlocks.FORGING_BLOCK.get(), NarakaCustomRenderer.INSTANCE);
+        initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_STABILIZER.get(), NarakaCustomRenderer.INSTANCE);
+        initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_SMITHING_BLOCK.get(), NarakaCustomRenderer.INSTANCE);
 
-        CustomItemRenderManager.register(NarakaItems.SPEAR_ITEM, SpearItemRenderer.INSTANCE);
-        CustomItemRenderManager.register(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, SpearItemRenderer.INSTANCE);
-        CustomItemRenderManager.register(NarakaItems.SPEAR_OF_LONGINUS_ITEM, SpearItemRenderer.INSTANCE);
+        CustomItemRenderManager.register(NarakaItems.SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
+        CustomItemRenderManager.register(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
+        CustomItemRenderManager.register(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get(), SpearItemRenderer.INSTANCE);
 
-        ItemPropertiesRegistry.register(NarakaItems.SANCTUARY_COMPASS, NarakaMod.location("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) -> {
-            SanctuaryTracker tracker = itemStack.get(NarakaDataComponentTypes.SANCTUARY_TRACKER);
+        ItemPropertiesRegistry.register(NarakaItems.SANCTUARY_COMPASS.get(), NarakaMod.location("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) -> {
+            SanctuaryTracker tracker = itemStack.get(NarakaDataComponentTypes.SANCTUARY_TRACKER.get());
             if (tracker == null)
                 return null;
             return tracker.sanctuaryPos().orElse(null);
@@ -70,11 +70,11 @@ public class NarakaModClient {
 
     private static void initializeBlocks(NarakaClientInitializer initializer) {
         initializer.registerBlockRenderLayer(RenderType.cutout(),
-                NarakaBlocks.EBONY_SAPLING,
-                NarakaBlocks.POTTED_EBONY_SAPLING,
-                NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK,
-                NarakaBlocks.EBONY_ROOTS,
-                NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK
+                NarakaBlocks.EBONY_SAPLING.get(),
+                NarakaBlocks.POTTED_EBONY_SAPLING.get(),
+                NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(),
+                NarakaBlocks.EBONY_ROOTS.get(),
+                NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get()
         );
     }
 
@@ -85,14 +85,14 @@ public class NarakaModClient {
     }
 
     private static void registerRenderers() {
-        EntityRendererRegistry.register(() -> NarakaEntityTypes.HEROBRINE, HerobrineRenderer::new);
-        EntityRendererRegistry.register(() -> NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, SpearRenderer::new);
-        EntityRendererRegistry.register(() -> NarakaEntityTypes.THROWN_SPEAR, SpearRenderer::new);
-        EntityRendererRegistry.register(() -> NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, SpearRenderer::longinus);
+        EntityRendererRegistry.register(NarakaEntityTypes.HEROBRINE, HerobrineRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, SpearRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR, SpearRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, SpearRenderer::longinus);
 
-        BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.FORGING, ForgingBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.SOUL_STABILIZER, SoulStabilizerBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.SOUL_SMITHING, SoulSmithingBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.FORGING.get(), ForgingBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.SOUL_STABILIZER.get(), SoulStabilizerBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.SOUL_SMITHING.get(), SoulSmithingBlockEntityRenderer::new);
     }
 
     private static void registerHudRenders() {
@@ -101,7 +101,7 @@ public class NarakaModClient {
     }
 
     private static void registerMenus() {
-        MenuRegistry.registerScreenFactory(NarakaMenuTypes.SOUL_CRAFTING, SoulCraftingScreen::new);
+        MenuRegistry.registerScreenFactory(NarakaMenuTypes.SOUL_CRAFTING.get(), SoulCraftingScreen::new);
     }
 
     private static void registerParticles() {

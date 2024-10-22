@@ -29,9 +29,9 @@ import java.util.Map;
 @Environment(EnvType.CLIENT)
 public class SpearRenderer extends EntityRenderer<Spear> {
     private static final Map<EntityType<? extends Spear>, ResourceLocation> TEXTURE_MAP = Map.of(
-            NarakaEntityTypes.THROWN_SPEAR, NarakaTextures.SPEAR,
-            NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, NarakaTextures.MIGHTY_HOLY_SPEAR,
-            NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, NarakaTextures.LONGINUS
+            NarakaEntityTypes.THROWN_SPEAR.get(), NarakaTextures.SPEAR,
+            NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR.get(), NarakaTextures.MIGHTY_HOLY_SPEAR,
+            NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.get(), NarakaTextures.LONGINUS
     );
 
     protected final EntityModel<? extends Spear> model;
@@ -72,7 +72,7 @@ public class SpearRenderer extends EntityRenderer<Spear> {
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, spear.yRotO, spear.getYRot()) - 90.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, spear.xRotO, spear.getXRot()) + 90.0F));
         poseStack.translate(0, yOffset, 0);
-        if (spear.getType() == NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS)
+        if (spear.getType() == NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.get())
             packedLight = LightTexture.FULL_BRIGHT;
         RenderType renderType = model.renderType(getTextureLocation(spear));
         VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, renderType, false, spear.hasFoil());

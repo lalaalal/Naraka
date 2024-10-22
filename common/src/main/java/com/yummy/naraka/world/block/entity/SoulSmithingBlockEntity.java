@@ -31,12 +31,12 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     private ItemStack templateItem = ItemStack.EMPTY;
 
     public SoulSmithingBlockEntity(BlockPos pos, BlockState state) {
-        this(NarakaBlockEntityTypes.SOUL_SMITHING, pos, state, 1);
+        this(NarakaBlockEntityTypes.SOUL_SMITHING.get(), pos, state, 1);
     }
 
     protected SoulSmithingBlockEntity(BlockEntityType<? extends SoulSmithingBlockEntity> type, BlockPos pos, BlockState state, float successChance) {
         super(type, pos, state, successChance);
-        soulStabilizer = new SoulStabilizerBlockEntity(pos, NarakaBlocks.SOUL_STABILIZER.defaultBlockState());
+        soulStabilizer = new SoulStabilizerBlockEntity(pos, NarakaBlocks.SOUL_STABILIZER.get().defaultBlockState());
     }
 
     public boolean isStabilizerAttached() {
@@ -57,7 +57,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     }
 
     public boolean tryAttachSoulStabilizer(ItemStack stack) {
-        if (level != null && !isStabilizerAttached && stack.is(NarakaBlocks.SOUL_STABILIZER.asItem())) {
+        if (level != null && !isStabilizerAttached && stack.is(NarakaBlocks.SOUL_STABILIZER.get().asItem())) {
             NarakaItemUtils.loadBlockEntity(stack, soulStabilizer, level.registryAccess());
             isStabilizerAttached = true;
             setChanged();
@@ -68,7 +68,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
     public void detachSoulStabilizer() {
         if (isStabilizerAttached && level != null) {
-            ItemStack itemStack = new ItemStack(NarakaBlocks.SOUL_STABILIZER);
+            ItemStack itemStack = new ItemStack(NarakaBlocks.SOUL_STABILIZER.get());
             soulStabilizer.saveToItem(itemStack, level.registryAccess());
             NarakaItemUtils.summonItemEntity(level, itemStack, getBlockPos());
 
@@ -115,7 +115,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
                 return true;
 
             if (soulType == SoulType.GOD_BLOOD)
-                forgingItem.set(NarakaDataComponentTypes.BLESSED, true);
+                forgingItem.set(NarakaDataComponentTypes.BLESSED.get(), true);
             soulStabilizer.consumeSoul(9 * 16);
             while (Reinforcement.canReinforce(forgingItem))
                 Reinforcement.increase(forgingItem, NarakaReinforcementEffects.byItem(forgingItem));

@@ -22,7 +22,7 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     private int souls = 0;
 
     public SoulStabilizerBlockEntity(BlockPos pos, BlockState blockState) {
-        super(NarakaBlockEntityTypes.SOUL_STABILIZER, pos, blockState);
+        super(NarakaBlockEntityTypes.SOUL_STABILIZER.get(), pos, blockState);
     }
 
     public boolean canInject(ItemStack itemStack) {

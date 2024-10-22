@@ -41,11 +41,14 @@ public class EntityDataContainer {
     }
 
     public void read(CompoundTag compoundTag, HolderLookup.Provider registries) {
-        for (EntityDataType<?> entityDataType : NarakaRegistries.ENTITY_DATA_TYPE) {
-            if (entityDataType.saveExists(compoundTag)) {
-                Object data = entityDataType.read(compoundTag, registries);
-                setEntityData(entityDataType, data);
-            }
-        }
+        registries.lookupOrThrow(NarakaRegistries.Keys.ENTITY_DATA_TYPE)
+                .listElements()
+                .forEach(reference -> {
+                    EntityDataType<?> entityDataType = reference.value();
+                    if (entityDataType.saveExists(compoundTag)) {
+                        Object data = entityDataType.read(compoundTag, registries);
+                        setEntityData(entityDataType, data);
+                    }
+                });
     }
 }

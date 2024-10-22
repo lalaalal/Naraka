@@ -25,7 +25,7 @@ import java.util.List;
 public abstract class ItemStackMixin implements DataComponentHolder {
     @Inject(method = "getTooltipLines", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;addAttributeTooltips(Ljava/util/function/Consumer;Lnet/minecraft/world/entity/player/Player;)V", shift = At.Shift.AFTER))
     public void addBlessedTooltip(Item.TooltipContext tooltipContext, @Nullable Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
-        if (getOrDefault(NarakaDataComponentTypes.BLESSED, false))
+        if (getOrDefault(NarakaDataComponentTypes.BLESSED.get(), false))
             list.add(Component.translatable(LanguageKey.BLESSED_KEY)
                     .withStyle(ComponentStyles.LONGINUS_COLOR));
     }

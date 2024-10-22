@@ -15,7 +15,7 @@ public class NarakaRecipes {
         if (level == null)
             return List.of();
         RecipeManager recipeManager = level.getRecipeManager();
-        return recipeManager.getAllRecipesFor(NarakaRecipeTypes.SOUL_CRAFTING)
+        return recipeManager.getAllRecipesFor(NarakaRecipeTypes.SOUL_CRAFTING.get())
                 .stream()
                 .map(RecipeHolder::value)
                 .toList();

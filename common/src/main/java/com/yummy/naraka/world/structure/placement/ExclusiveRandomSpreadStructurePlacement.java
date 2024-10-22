@@ -81,6 +81,6 @@ public class ExclusiveRandomSpreadStructurePlacement extends RandomSpreadStructu
 
     @Override
     public StructurePlacementType<?> type() {
-        return NarakaStructurePlacementTypes.EXCLUSIVE_RANDOM_SPREAD;
+        return NarakaStructurePlacementTypes.EXCLUSIVE_RANDOM_SPREAD.get();
     }
 }

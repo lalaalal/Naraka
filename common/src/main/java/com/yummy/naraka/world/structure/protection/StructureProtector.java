@@ -30,8 +30,8 @@ public class StructureProtector {
 
     public StructureProtector(CompoundTag tag, HolderLookup.Provider provider) {
         String keyName = tag.getString("predicate");
-        ResourceKey<ProtectionPredicate> key = ResourceKey.create(NarakaRegistries.PROTECTION_PREDICATE.key(), ResourceLocation.parse(keyName));
-        HolderLookup.RegistryLookup<ProtectionPredicate> predicates = provider.lookupOrThrow(NarakaRegistries.PROTECTION_PREDICATE.key());
+        ResourceKey<ProtectionPredicate> key = ResourceKey.create(NarakaRegistries.Keys.PROTECTION_PREDICATE, ResourceLocation.parse(keyName));
+        HolderLookup.RegistryLookup<ProtectionPredicate> predicates = provider.lookupOrThrow(NarakaRegistries.Keys.PROTECTION_PREDICATE);
         this.predicate = predicates.getOrThrow(key);
         Optional<BoundingBox> box = NarakaNbtUtils.readBoundingBox(tag, "box");
         if (box.isEmpty())

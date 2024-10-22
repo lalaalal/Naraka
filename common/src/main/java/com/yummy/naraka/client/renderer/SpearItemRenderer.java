@@ -32,8 +32,8 @@ import java.util.Set;
 @Environment(EnvType.CLIENT)
 public class SpearItemRenderer implements CustomItemRenderManager.CustomItemRenderer, ResourceManagerReloadListener {
     private static final Map<Item, ResourceLocation> TEXTURE_LOCATIONS = Map.of(
-            NarakaItems.SPEAR_ITEM, NarakaTextures.SPEAR,
-            NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, NarakaTextures.MIGHTY_HOLY_SPEAR
+            NarakaItems.SPEAR_ITEM.get(), NarakaTextures.SPEAR,
+            NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), NarakaTextures.MIGHTY_HOLY_SPEAR
     );
     private static final Set<ItemDisplayContext> LONGINUS_EXCLUDING_CONTEXTS = Set.of(
             ItemDisplayContext.GUI, ItemDisplayContext.FIXED
@@ -49,9 +49,9 @@ public class SpearItemRenderer implements CustomItemRenderManager.CustomItemRend
             ItemDisplayContext.FIRST_PERSON_LEFT_HAND, vec3(0.5, -0.1, -0.3)
     );
     private static final Map<Item, Map<ItemDisplayContext, Vec3>> TRANSLATIONS = Map.of(
-            NarakaItems.SPEAR_ITEM, SPEAR_TRANSLATION,
-            NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, SPEAR_TRANSLATION,
-            NarakaItems.SPEAR_OF_LONGINUS_ITEM, Map.of(
+            NarakaItems.SPEAR_ITEM.get(), SPEAR_TRANSLATION,
+            NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), SPEAR_TRANSLATION,
+            NarakaItems.SPEAR_OF_LONGINUS_ITEM.get(), Map.of(
                     ItemDisplayContext.FIRST_PERSON_RIGHT_HAND, vec3(-0.6, -1, -0.6)
             )
     );
@@ -74,7 +74,7 @@ public class SpearItemRenderer implements CustomItemRenderManager.CustomItemRend
 
     @Override
     public boolean shouldRenderCustom(ItemStack stack, ItemDisplayContext context) {
-        if (stack.is(NarakaItems.SPEAR_OF_LONGINUS_ITEM))
+        if (stack.is(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get()))
             return !LONGINUS_EXCLUDING_CONTEXTS.contains(context);
         return !SPEAR_EXCLUDING_CONTEXTS.contains(context);
     }
@@ -115,7 +115,7 @@ public class SpearItemRenderer implements CustomItemRenderManager.CustomItemRend
     }
 
     private VertexConsumer getBuffer(MultiBufferSource buffer, RenderType renderType, ItemStack itemStack) {
-        if (itemStack.is(NarakaItems.SPEAR_OF_LONGINUS_ITEM))
+        if (itemStack.is(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get()))
             return buffer.getBuffer(renderType);
         return ItemRenderer.getFoilBufferDirect(buffer, renderType, false, itemStack.hasFoil());
     }
@@ -128,9 +128,9 @@ public class SpearItemRenderer implements CustomItemRenderManager.CustomItemRend
         SpearOfLonginusModel longinusModel = new SpearOfLonginusModel(entityModels.bakeLayer(NarakaModelLayers.SPEAR_OF_LONGINUS));
 
         models = Map.of(
-                NarakaItems.SPEAR_ITEM, spearModel,
-                NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, spearModel,
-                NarakaItems.SPEAR_OF_LONGINUS_ITEM, longinusModel
+                NarakaItems.SPEAR_ITEM.get(), spearModel,
+                NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), spearModel,
+                NarakaItems.SPEAR_OF_LONGINUS_ITEM.get(), longinusModel
         );
     }
 }

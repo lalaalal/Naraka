@@ -101,6 +101,6 @@ public class SoulSmithingBlock extends ForgingBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         if (level.isClientSide)
             return super.getTicker(level, state, type);
-        return createTickerHelper(type, NarakaBlockEntityTypes.SOUL_SMITHING, ForgingBlockEntity::serverTick);
+        return createTickerHelper(type, NarakaBlockEntityTypes.SOUL_SMITHING.get(), ForgingBlockEntity::serverTick);
     }
 }
