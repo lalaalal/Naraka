@@ -1,0 +1,45 @@
+{
+    "schemaVersion": 1,
+    "id": "naraka",
+    "version": "${version}",
+    "name": "Naraka",
+    "description": "",
+    "authors": [
+        ""
+    ],
+    "contact": {
+        "homepage": ""
+    },
+    "license": "All-Rights-Reserved",
+    "icon": "assets/naraka/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "com.yummy.naraka.fabric.NarakaModFabric"
+        ],
+        "fabric-datagen": [
+            "com.yummy.naraka.fabric.data.NarakaDataGenerator"
+        ],
+        "client": [
+            "com.yummy.naraka.fabric.client.NarakaModFabricClient"
+        ],
+        "jei_mod_plugin": [
+            "com.yummy.naraka.jei.NarakaJeiPlugin"
+        ]
+    },
+    "accessWidener": "naraka.accesswidener",
+    "mixins": [
+        "naraka.mixins.json",
+        "naraka.mixins.fabric.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.15.11",
+        "minecraft": "~1.21",
+        "java": ">=21",
+        "architectury": ">=13.0.6",
+        "fabric-api": "*"
+    },
+    "suggests": {
+        "another-mod": "*"
+    }
+}

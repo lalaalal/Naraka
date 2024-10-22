@@ -1,0 +1,41 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+#issueTrackerURL = ""
+license = "All Rights Reserved"
+
+[[mods]]
+modId = "naraka"
+version = "${version}"
+displayName = "Naraka"
+authors = ""
+description = '''
+
+'''
+#logoFile = ""
+
+[[dependencies.naraka]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.naraka]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.naraka]]
+modId = "architectury"
+type = "required"
+versionRange = "[13.0.6,)"
+ordering = "AFTER"
+side = "BOTH"
+
+#[[mixins]]
+#config = "naraka.mixins.json"
+#
+#[[mixins]]
+#config = "naraka.mixins.neoforge.json"

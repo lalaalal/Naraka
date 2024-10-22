@@ -1,0 +1,59 @@
+package com.yummy.naraka.network;
+
+import com.yummy.naraka.core.registries.NarakaRegistries;
+import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import com.yummy.naraka.world.entity.data.EntityDataType;
+import dev.architectury.networking.NetworkManager;
+import dev.architectury.utils.Env;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+
+public record SyncEntityDataPayload(int entityId, HolderSet<EntityDataType<?>> entityDataTypes,
+                                    CompoundTag data) implements CustomPacketPayload {
+    public static final Type<SyncEntityDataPayload> TYPE = CustomPacketPayload.createType("sync_entity_data");
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, SyncEntityDataPayload> CODEC = StreamCodec.composite(
+            ByteBufCodecs.VAR_INT,
+            SyncEntityDataPayload::entityId,
+            ByteBufCodecs.holderSet(NarakaRegistries.ENTITY_DATA_TYPE.key()),
+            SyncEntityDataPayload::entityDataTypes,
+            ByteBufCodecs.COMPOUND_TAG,
+            SyncEntityDataPayload::data,
+            SyncEntityDataPayload::new
+    );
+
+    public SyncEntityDataPayload(LivingEntity livingEntity, Holder<EntityDataType<?>> entityDataType, CompoundTag data) {
+        this(livingEntity.getId(), HolderSet.direct(entityDataType), data);
+    }
+
+    public SyncEntityDataPayload(LivingEntity livingEntity, HolderSet<EntityDataType<?>> entityDataTypes, CompoundTag data) {
+        this(livingEntity.getId(), entityDataTypes, data);
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
+
+    public static void handleClient(SyncEntityDataPayload payload, NetworkManager.PacketContext context) {
+        if (context.getEnvironment() == Env.SERVER)
+            return;
+        Player player = context.getPlayer();
+        Entity entity = player.level().getEntity(payload.entityId);
+        CompoundTag data = payload.data;
+        for (Holder<EntityDataType<?>> holder : payload.entityDataTypes) {
+            EntityDataType<?> entityDataType = holder.value();
+            Object value = entityDataType.read(data, context.registryAccess());
+            if (entity instanceof LivingEntity livingEntity)
+                EntityDataHelper.setEntityData(livingEntity, entityDataType, value);
+        }
+    }
+}

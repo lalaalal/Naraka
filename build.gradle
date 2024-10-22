@@ -1,97 +1,94 @@
 plugins {
-	id 'fabric-loom' version '1.7-SNAPSHOT'
-	id 'maven-publish'
+    id 'dev.architectury.loom' version '1.7-SNAPSHOT' apply false
+    id 'architectury-plugin' version '3.4-SNAPSHOT'
+    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
 }
 
-version = project.mod_version
-group = project.maven_group
-
-base {
-	archivesName = project.archives_base_name
+architectury {
+    minecraft = project.minecraft_version
 }
 
-repositories {
-	maven {
-		name = "Jared's maven"
-		url = "https://maven.blamejared.com/"
-	}
-	maven {
-		name = "Modrinth"
-		url = "https://api.modrinth.com/maven"
-	}
-	maven {
-		name = 'ParchmentMC'
-		url = 'https://maven.parchmentmc.org'
-	}
+allprojects {
+    group = rootProject.maven_group
+    version = rootProject.mod_version
 }
 
-fabricApi {
-	configureDataGeneration()
-}
+subprojects {
+    apply plugin: 'dev.architectury.loom'
+    apply plugin: 'architectury-plugin'
+    apply plugin: 'maven-publish'
 
-dependencies {
-	minecraft "com.mojang:minecraft:${minecraft_version}"
-	mappings loom.layered() {
-		officialMojangMappings()
-		parchment("org.parchmentmc.data:parchment-${parchmentmc_mc_version}:${parchmentmc_version}@zip")
-	}
-	modImplementation "net.fabricmc:fabric-loader:${loader_version}"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    base {
+        // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
+        archivesName = "$rootProject.archives_name-$project.name"
+    }
 
-	modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
-	modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}")
-	modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-lib:${jei_version}")
-	modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+    repositories {
+        // Add repositories to retrieve artifacts from in here.
+        // You should only use this when depending on other mods because
+        // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+        // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+        // for more information about repositories.
+        maven {
+            name = 'ParchmentMC'
+            url = 'https://maven.parchmentmc.org'
+        }
+        maven {
+            name = "Jared's maven"
+            url = "https://maven.blamejared.com/"
+        }
+        maven {
+            name = "Modrinth"
+            url = "https://api.modrinth.com/maven"
+        }
+        maven {
+            url "https://www.cursemaven.com"
+            content {
+                includeGroup "curse.maven"
+            }
+        }
+    }
 
-	modImplementation "maven.modrinth:jade:${jade_version}+fabric"
-}
+    dependencies {
+        minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
+        mappings loom.layered() {
+            officialMojangMappings()
+            parchment("org.parchmentmc.data:parchment-${parchmentmc_mc_version}:${parchmentmc_version}@zip")
+        }
 
-loom {
-	accessWidenerPath = file("src/main/resources/naraka.accesswidener")
-}
+        modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+        modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-lib:${jei_version}")
+    }
 
-processResources {
-	inputs.property "version", project.version
+    java {
+        // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+        // if it is present.
+        // If you remove this line, sources will not be generated.
+        withSourcesJar()
 
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
-	}
-}
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
 
-tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
-}
+    tasks.withType(JavaCompile).configureEach {
+        it.options.release = 21
+    }
 
-java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
+    // Configure Maven publishing.
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                artifactId = base.archivesName.get()
+                from components.java
+            }
+        }
 
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
-}
-
-jar {
-	from("LICENSE") {
-		rename { "${it}_${project.base.archivesName.get()}" }
-	}
-}
-
-// configure the maven publication
-publishing {
-	publications {
-		create("mavenJava", MavenPublication) {
-			artifactId = project.archives_base_name
-			from components.java
-		}
-	}
-
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
-	}
+        // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+        repositories {
+            // Add repositories to publish to here.
+            // Notice: This block does NOT have the same function as the block in the top level.
+            // The repositories here will be used for publishing your artifact, not for
+            // retrieving dependencies.
+        }
+    }
 }

@@ -1,0 +1,30 @@
+{
+    "required": true,
+    "package": "com.yummy.naraka.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "minVersion": "0.8",
+    "client": [
+        "client.FogRendererMixin",
+        "client.GameRendererMixin",
+        "client.ItemBlockRenderTypesMixin",
+        "client.ItemEntityRendererMixin",
+        "client.ItemRendererMixin",
+        "client.ItemStackMixin",
+        "client.LocalPlayerMixin",
+        "client.MouseHandlerMixin"
+    ],
+    "mixins": [
+        "FeatureMixin",
+        "LivingEntityMixin",
+        "PlayerMixin",
+        "ServerEntityMixin",
+        "ServerPlayerGameModeMixin",
+        "SmithingTemplateItemMixin",
+        "WanderingTraderMixin",
+        "invoker.MobEffectInvoker",
+        "invoker.RootPlacerTypeInvoker"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

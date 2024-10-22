@@ -1,0 +1,15 @@
+{
+    "required": true,
+    "package": "com.yummy.naraka.fabric.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "minVersion": "0.8",
+    "client": [
+        "client.ItemStackMixin"
+    ],
+    "mixins": [
+        "PlayerMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}
