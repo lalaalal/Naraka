@@ -1,15 +1,13 @@
 package com.yummy.naraka.world.item.equipmentset;
 
-import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.core.registries.LazyHolder;
 import com.yummy.naraka.core.registries.NarakaRegistries;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
+import com.yummy.naraka.core.registries.RegistryInitializer;
+import com.yummy.naraka.core.registries.RegistryProxy;
 import net.minecraft.world.entity.LivingEntity;
 
 public class NarakaEquipmentSets {
-    private static final DeferredRegister<EquipmentSet> EQUIPMENT_SETS = DeferredRegister.create(NarakaMod.MOD_ID, NarakaRegistries.Keys.EQUIPMENT_SET);
-
-    public static final RegistrySupplier<EquipmentSet> SOUL_ARMOR_AND_SWORD = register(
+    public static final LazyHolder<EquipmentSet, EquipmentSet> SOUL_ARMOR_AND_SWORD = register(
             "soul_armor_and_sword",
             new SoulEquipmentSet()
     );
@@ -20,11 +18,12 @@ public class NarakaEquipmentSets {
                 .forEach(equipmentSet -> equipmentSet.updateEffect(livingEntity));
     }
 
-    private static RegistrySupplier<EquipmentSet> register(String name, EquipmentSet equipmentSet) {
-        return EQUIPMENT_SETS.register(name, () -> equipmentSet);
+    private static LazyHolder<EquipmentSet, EquipmentSet> register(String name, EquipmentSet equipmentSet) {
+        return RegistryProxy.register(NarakaRegistries.Keys.EQUIPMENT_SET, name, () -> equipmentSet);
     }
 
     public static void initialize() {
-        EQUIPMENT_SETS.register();
+        RegistryInitializer.get(NarakaRegistries.Keys.EQUIPMENT_SET)
+                .onRegistrationFinished();
     }
 }

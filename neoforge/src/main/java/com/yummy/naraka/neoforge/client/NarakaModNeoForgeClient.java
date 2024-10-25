@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -24,15 +23,20 @@ import net.neoforged.fml.javafmlmod.FMLModContainer;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
-import net.neoforged.neoforge.common.NeoForge;
 
 import java.io.IOException;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @Mod(value = NarakaMod.MOD_ID, dist = Dist.CLIENT)
 public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClientItemExtensions {
-    public NarakaModNeoForgeClient(FMLModContainer container, IEventBus modBus, Dist dist) {
+    private final IEventBus bus;
 
+    public NarakaModNeoForgeClient(FMLModContainer container, IEventBus modBus, Dist dist) {
+        this.bus = modBus;
+        NarakaModClient.prepareInitialization();
+
+        modBus.addListener(this::clientSetup);
     }
 
     public void clientSetup(FMLClientSetupEvent event) {
@@ -40,8 +44,9 @@ public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClient
     }
 
     @Override
-    public void registerCustomItemRenderer(ItemLike item, CustomItemRenderManager.CustomItemRenderer renderer) {
-        NeoForge.EVENT_BUS.register((Consumer<RegisterClientExtensionsEvent>) event -> event.registerItem(this, item.asItem()));
+    public void registerCustomItemRenderer(Supplier<? extends Block> block, CustomItemRenderManager.CustomItemRenderer renderer) {
+        bus.addListener((Consumer<RegisterClientExtensionsEvent>) event -> event.registerItem(this, block.get().asItem()));
+        RegisterClientExtensionsEvent event;
     }
 
     @Override
@@ -51,7 +56,7 @@ public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClient
 
     @Override
     public void registerShader(ResourceLocation id, VertexFormat format, Consumer<ShaderInstance> consumer) {
-        NeoForge.EVENT_BUS.register((Consumer<RegisterShadersEvent>) event -> {
+        bus.addListener((Consumer<RegisterShadersEvent>) event -> {
             try {
                 event.registerShader(new ShaderInstance(event.getResourceProvider(), id, format), consumer);
             } catch (IOException e) {

@@ -1,24 +1,23 @@
 package com.yummy.naraka.world.structure;
 
-import com.yummy.naraka.NarakaMod;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
+import com.yummy.naraka.core.registries.LazyHolder;
+import com.yummy.naraka.core.registries.RegistryInitializer;
+import com.yummy.naraka.core.registries.RegistryProxy;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 
 public class NarakaStructureTypes {
-    private static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(NarakaMod.MOD_ID, Registries.STRUCTURE_TYPE);
-
-    public static final RegistrySupplier<StructureType<JumboStructure>> JUMBO = register(
+    public static final LazyHolder<StructureType<?>, StructureType<JumboStructure>> JUMBO = register(
             "jumbo_structure", () -> JumboStructure.CODEC
     );
 
-    private static <T extends Structure> RegistrySupplier<StructureType<T>> register(String name, StructureType<T> type) {
-        return STRUCTURE_TYPES.register(name, () -> type);
+    private static <T extends Structure> LazyHolder<StructureType<?>, StructureType<T>> register(String name, StructureType<T> type) {
+        return RegistryProxy.register(Registries.STRUCTURE_TYPE, name, () -> type);
     }
 
     public static void initialize() {
-        STRUCTURE_TYPES.register();
+        RegistryInitializer.get(Registries.STRUCTURE_TYPE)
+                .onRegistrationFinished();
     }
 }
