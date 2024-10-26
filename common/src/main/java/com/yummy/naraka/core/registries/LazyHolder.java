@@ -31,11 +31,11 @@ public class LazyHolder<T, V extends T> implements Holder<T>, Supplier<V> {
     protected void bind(boolean throwOnMissing) {
         Registry<T> registry = (Registry<T>) BuiltInRegistries.REGISTRY.get(key.registry());
         if (registry == null)
-            throw new IllegalStateException();
+            throw new IllegalStateException(key.registry() + " does not exist");
         Optional<Reference<T>> found = registry.getHolder(key);
         found.ifPresent(tReference -> holder = tReference);
         if (found.isEmpty() && throwOnMissing)
-            throw new IllegalStateException();
+            throw new IllegalStateException(key + " is not registered");
     }
 
     @SuppressWarnings("unchecked")

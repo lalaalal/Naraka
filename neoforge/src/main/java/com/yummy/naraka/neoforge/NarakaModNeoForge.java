@@ -39,15 +39,6 @@ public final class NarakaModNeoForge implements NarakaInitializer {
         bus.addListener(this::modifyCreativeModeTabs);
     }
 
-    public void commonSetup(FMLCommonSetupEvent event) {
-
-    }
-
-    public void createRegistries(NewRegistryEvent event) {
-        for (Registry<?> registry : registries)
-            event.register(registry);
-    }
-
     @Override
     public RegistryFactory getRegistryFactory() {
         return new NeoForgeRegistryFactory();
@@ -56,6 +47,15 @@ public final class NarakaModNeoForge implements NarakaInitializer {
     @Override
     public void modifyCreativeModeTab(ResourceKey<CreativeModeTab> tabKey, Consumer<NarakaCreativeModTabs.TabEntries> entries) {
         tabEntriesMap.put(tabKey, entries);
+    }
+
+    public void commonSetup(FMLCommonSetupEvent event) {
+
+    }
+
+    public void createRegistries(NewRegistryEvent event) {
+        for (Registry<?> registry : registries)
+            event.register(registry);
     }
 
     public void modifyCreativeModeTabs(BuildCreativeModeTabContentsEvent event) {

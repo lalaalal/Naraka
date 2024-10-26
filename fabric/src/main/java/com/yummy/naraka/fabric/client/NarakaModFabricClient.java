@@ -11,10 +11,10 @@ import net.fabricmc.fabric.api.client.rendering.v1.CoreShaderRegistrationCallbac
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public final class NarakaModFabricClient implements ClientModInitializer, NarakaClientInitializer {
     @Override
@@ -24,8 +24,8 @@ public final class NarakaModFabricClient implements ClientModInitializer, Naraka
     }
 
     @Override
-    public void registerCustomItemRenderer(Supplier<? extends Block> block, CustomItemRenderManager.CustomItemRenderer renderer) {
-        BuiltinItemRendererRegistry.INSTANCE.register(block.get(), renderer::render);
+    public void registerCustomItemRenderer(ItemLike item, CustomItemRenderManager.CustomItemRenderer renderer) {
+        BuiltinItemRendererRegistry.INSTANCE.register(item, renderer::render);
     }
 
     @Override

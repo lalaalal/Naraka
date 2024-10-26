@@ -27,20 +27,22 @@ public final class NarakaModFabric implements ModInitializer, NarakaInitializer 
 
     @Override
     public RegistryFactory getRegistryFactory() {
-        return new RegistryFactory() {
-            @Override
-            public <T> Registry<T> createSimple(ResourceKey<Registry<T>> key) {
-                return FabricRegistryBuilder.createSimple(key)
-                        .attribute(RegistryAttribute.SYNCED)
-                        .buildAndRegister();
-            }
-        };
+        return new FabricRegistryFactory();
     }
 
     @Override
     public void modifyCreativeModeTab(ResourceKey<CreativeModeTab> tabKey, Consumer<NarakaCreativeModTabs.TabEntries> consumer) {
         ItemGroupEvents.modifyEntriesEvent(tabKey)
                 .register(wrap(consumer));
+    }
+
+    private static class FabricRegistryFactory extends RegistryFactory {
+        @Override
+        public <T> Registry<T> createSimple(ResourceKey<Registry<T>> key) {
+            return FabricRegistryBuilder.createSimple(key)
+                    .attribute(RegistryAttribute.SYNCED)
+                    .buildAndRegister();
+        }
     }
 
     private static ItemGroupEvents.ModifyEntries wrap(Consumer<NarakaCreativeModTabs.TabEntries> consumer) {

@@ -5,6 +5,9 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.ForgingBlockEntity;
 import com.yummy.naraka.world.block.entity.SoulSmithingBlockEntity;
 import com.yummy.naraka.world.block.entity.SoulStabilizerBlockEntity;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
@@ -18,11 +21,21 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.Map;
 
+@Environment(EnvType.CLIENT)
 public class NarakaCustomRenderer implements CustomItemRenderManager.CustomItemRenderer, ResourceManagerReloadListener {
     public static final NarakaCustomRenderer INSTANCE = new NarakaCustomRenderer();
 
     private final Minecraft minecraft;
-    private Map<Item, BlockEntity> entityByItem = Map.of();
+
+    private final ForgingBlockEntity FORGING_BLOCK_ENTITY = new ForgingBlockEntity(BlockPos.ZERO, NarakaBlocks.FORGING_BLOCK.get().defaultBlockState());
+    private final SoulStabilizerBlockEntity SOUL_STABILIZER_BLOCK_ENTITY = new SoulStabilizerBlockEntity(BlockPos.ZERO, NarakaBlocks.SOUL_STABILIZER.get().defaultBlockState());
+    private final SoulSmithingBlockEntity SOUL_SMITHING_BLOCK_ENTITY = new SoulSmithingBlockEntity(BlockPos.ZERO, NarakaBlocks.SOUL_SMITHING_BLOCK.get().defaultBlockState());
+
+    private final Map<Item, BlockEntity> entityByItem = Map.of(
+        NarakaBlocks.FORGING_BLOCK.get().asItem(), FORGING_BLOCK_ENTITY,
+        NarakaBlocks.SOUL_STABILIZER.get().asItem(), SOUL_STABILIZER_BLOCK_ENTITY,
+        NarakaBlocks.SOUL_SMITHING_BLOCK.get().asItem(), SOUL_SMITHING_BLOCK_ENTITY
+    );
 
     private BlockEntityRenderDispatcher blockEntityRenderDispatcher;
 
@@ -47,13 +60,5 @@ public class NarakaCustomRenderer implements CustomItemRenderManager.CustomItemR
     @Override
     public void onResourceManagerReload(ResourceManager resourceManager) {
         blockEntityRenderDispatcher = minecraft.getBlockEntityRenderDispatcher();
-        ForgingBlockEntity forgingBlockEntity = new ForgingBlockEntity(BlockPos.ZERO, NarakaBlocks.FORGING_BLOCK.get().defaultBlockState());
-        SoulStabilizerBlockEntity soulStabilizerBlockEntity = new SoulStabilizerBlockEntity(BlockPos.ZERO, NarakaBlocks.SOUL_STABILIZER.get().defaultBlockState());
-        SoulSmithingBlockEntity soulSmithingBlockEntity = new SoulSmithingBlockEntity(BlockPos.ZERO, NarakaBlocks.SOUL_SMITHING_BLOCK.get().defaultBlockState());
-        entityByItem = Map.of(
-                NarakaBlocks.FORGING_BLOCK.get().asItem(), forgingBlockEntity,
-                NarakaBlocks.SOUL_STABILIZER.get().asItem(), soulStabilizerBlockEntity,
-                NarakaBlocks.SOUL_SMITHING_BLOCK.get().asItem(), soulSmithingBlockEntity
-        );
     }
 }

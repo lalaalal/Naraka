@@ -14,7 +14,7 @@ public class RegistryInitializer {
 
     public static void allocateInstance(RegistryInitializer instance) {
         if (INSTANCE != null)
-            throw new IllegalStateException();
+            throw new IllegalStateException("RegistryInitializer instance is already allocated");
         INSTANCE = instance;
     }
 
@@ -32,7 +32,7 @@ public class RegistryInitializer {
     }
 
     protected <T> RegistryProxy<T> create(ResourceKey<Registry<T>> key) {
-        throw new IllegalStateException();
+        throw new IllegalStateException("Creating RegistryProxy is not supported for default RegistryInitializer");
     }
 
     public <T> RegistryInitializer add(RegistryProxy<T> proxy) {

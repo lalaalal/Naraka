@@ -5,15 +5,18 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModClient;
 import com.yummy.naraka.client.renderer.CustomItemRenderManager;
-import com.yummy.naraka.client.renderer.NarakaCustomRenderer;
 import com.yummy.naraka.init.NarakaClientInitializer;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -23,10 +26,10 @@ import net.neoforged.fml.javafmlmod.FMLModContainer;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
-
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 @Mod(value = NarakaMod.MOD_ID, dist = Dist.CLIENT)
 public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClientItemExtensions {
@@ -44,14 +47,17 @@ public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClient
     }
 
     @Override
-    public void registerCustomItemRenderer(Supplier<? extends Block> block, CustomItemRenderManager.CustomItemRenderer renderer) {
-        bus.addListener((Consumer<RegisterClientExtensionsEvent>) event -> event.registerItem(this, block.get().asItem()));
-        RegisterClientExtensionsEvent event;
+    public void registerCustomItemRenderer(ItemLike item, CustomItemRenderManager.CustomItemRenderer renderer) {
+        bus.addListener((Consumer<RegisterClientExtensionsEvent>) event -> {
+                event.registerItem(this, item.asItem());
+                NeoForgeCustomItemRenderer.getInstance().register(item, renderer);
+            }
+        );
     }
 
     @Override
     public void registerBlockRenderLayer(RenderType renderType, Block... blocks) {
-
+        
     }
 
     @Override
@@ -67,11 +73,37 @@ public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClient
 
     @Override
     public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-        return new BlockEntityWithoutLevelRenderer(null, null) {
-            @Override
-            public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-                NarakaCustomRenderer.INSTANCE.render(stack, displayContext, poseStack, buffer, packedLight, packedOverlay);
-            }
-        };
+        return NeoForgeCustomItemRenderer.getInstance();
+    }
+
+    private static class NeoForgeCustomItemRenderer extends BlockEntityWithoutLevelRenderer {
+        private static NeoForgeCustomItemRenderer INSTANCE = null;
+
+        public static NeoForgeCustomItemRenderer getInstance() {
+            if (INSTANCE == null)
+                return INSTANCE = new NeoForgeCustomItemRenderer(Minecraft.getInstance());
+            return INSTANCE;
+        }
+
+        private final Map<Item, CustomItemRenderManager.CustomItemRenderer> rendererByItem = new HashMap<>();
+        
+        public NeoForgeCustomItemRenderer(Minecraft minecraft) {
+            super(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels());
+        }
+
+        public void register(Item item, CustomItemRenderManager.CustomItemRenderer renderer) {
+            rendererByItem.put(item, renderer);
+        }
+
+        public void register(ItemLike item, CustomItemRenderManager.CustomItemRenderer renderer) {
+            this.register(item.asItem(), renderer);
+        }
+
+        @Override
+        public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+            CustomItemRenderManager.CustomItemRenderer renderer = rendererByItem.get(stack.getItem());
+            if (renderer != null)
+                renderer.render(stack, displayContext, poseStack, buffer, packedLight, packedOverlay);
+        }
     }
 }

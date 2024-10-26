@@ -56,9 +56,9 @@ public class NarakaModClient {
     }
 
     private static void initializeItems(NarakaClientInitializer initializer) {
-        initializer.registerCustomItemRenderer(NarakaBlocks.FORGING_BLOCK, NarakaCustomRenderer.INSTANCE);
-        initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_STABILIZER, NarakaCustomRenderer.INSTANCE);
-        initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_SMITHING_BLOCK, NarakaCustomRenderer.INSTANCE);
+        initializer.registerCustomItemRenderer(NarakaBlocks.FORGING_BLOCK.get(), NarakaCustomRenderer.INSTANCE);
+        initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_STABILIZER.get(), NarakaCustomRenderer.INSTANCE);
+        initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_SMITHING_BLOCK.get(), NarakaCustomRenderer.INSTANCE);
 
         CustomItemRenderManager.register(NarakaItems.SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
         CustomItemRenderManager.register(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
