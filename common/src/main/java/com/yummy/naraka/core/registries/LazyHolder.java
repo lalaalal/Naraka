@@ -8,7 +8,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -29,58 +28,66 @@ public class LazyHolder<T, V extends T> implements Holder<T>, Supplier<V> {
     }
 
     @SuppressWarnings("unchecked")
+    protected void bind(boolean throwOnMissing) {
+        Registry<T> registry = (Registry<T>) BuiltInRegistries.REGISTRY.get(key.registry());
+        if (registry == null)
+            throw new IllegalStateException();
+        Optional<Reference<T>> found = registry.getHolder(key);
+        found.ifPresent(tReference -> holder = tReference);
+        if (found.isEmpty() && throwOnMissing)
+            throw new IllegalStateException();
+    }
+
+    @SuppressWarnings("unchecked")
     @Override
     public V get() {
         return (V) value();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public T value() {
-        if (holder == null) {
-            Registry<Item> item = BuiltInRegistries.ITEM;
-            Registry<T> registry = (Registry<T>) BuiltInRegistries.REGISTRY.get(key.registry());
-            if (registry == null)
-                throw new IllegalStateException(key + "is unbound!");
-            holder = registry.getHolderOrThrow(key);
-        }
-
+        if (holder == null)
+            bind(true);
         return holder.value();
     }
 
     @Override
     public boolean isBound() {
+        bind(false);
         return holder != null && holder.isBound();
     }
 
     @Override
     public boolean is(ResourceLocation location) {
-        return holder != null && holder.is(location);
+        return location.equals(key.location());
     }
 
     @Override
     public boolean is(ResourceKey<T> resourceKey) {
-        return holder != null && holder.is(resourceKey);
+        return key == resourceKey;
     }
 
     @Override
     public boolean is(Predicate<ResourceKey<T>> predicate) {
-        return holder != null && holder.is(predicate);
+        return predicate.test(key);
     }
 
     @Override
     public boolean is(TagKey<T> tagKey) {
+        bind(false);
         return holder != null && holder.is(tagKey);
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public boolean is(Holder<T> holder) {
+        bind(false);
         return holder != null && holder.is(holder);
     }
 
     @Override
     public Stream<TagKey<T>> tags() {
+        bind(false);
         return holder == null ? Stream.empty() : holder.tags();
     }
 
@@ -101,6 +108,7 @@ public class LazyHolder<T, V extends T> implements Holder<T>, Supplier<V> {
 
     @Override
     public boolean canSerializeIn(HolderOwner<T> owner) {
+        bind(false);
         return holder != null && holder.canSerializeIn(owner);
     }
 

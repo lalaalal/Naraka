@@ -8,27 +8,24 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.CoreShaderRegistrationCallback;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public final class NarakaModFabricClient implements ClientModInitializer, NarakaClientInitializer {
-    private final ResourceManagerHelper resourceManagerHelper = ResourceManagerHelper.get(PackType.CLIENT_RESOURCES);
-
     @Override
     public void onInitializeClient() {
+        NarakaModClient.prepareInitialization();
         NarakaModClient.initializeClient(this);
     }
 
     @Override
-    public void registerCustomItemRenderer(ItemLike item, CustomItemRenderManager.CustomItemRenderer renderer) {
-        BuiltinItemRendererRegistry.INSTANCE.register(item, renderer::render);
+    public void registerCustomItemRenderer(Supplier<? extends Block> block, CustomItemRenderManager.CustomItemRenderer renderer) {
+        BuiltinItemRendererRegistry.INSTANCE.register(block.get(), renderer::render);
     }
 
     @Override

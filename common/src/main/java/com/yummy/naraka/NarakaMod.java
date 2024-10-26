@@ -15,6 +15,7 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import com.yummy.naraka.world.item.NarakaArmorMaterials;
+import com.yummy.naraka.world.item.NarakaCreativeModTabs;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeSerializers;
@@ -33,13 +34,10 @@ import net.minecraft.resources.ResourceLocation;
 public class NarakaMod {
     public static final String MOD_ID = "naraka";
 
-    public static void prepareRegistries(NarakaInitializer initializer) {
-        RegistryFactory.initialize(initializer);
-
-        NarakaRegistries.initialize();
-    }
-
     public static void initialize(NarakaInitializer initializer) {
+        RegistryFactory.initialize(initializer);
+        NarakaRegistries.initialize();
+
         NarakaParticleTypes.initialize();
 
         NarakaSoundEvents.initialize();
@@ -59,7 +57,7 @@ public class NarakaMod {
         NarakaRecipeSerializers.initialize();
         NarakaEquipmentSets.initialize();
 
-        initializer.registerCreativeModeTabs();
+        NarakaCreativeModTabs.initialize(initializer);
 
         NarakaBlockEntityTypes.initialize();
 
