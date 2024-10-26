@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.Map;
 
 @Environment(EnvType.CLIENT)
-public class NarakaCustomRenderer implements CustomItemRenderManager.CustomItemRenderer, ResourceManagerReloadListener {
+public class NarakaCustomRenderer implements CustomRenderManager.CustomItemRenderer, ResourceManagerReloadListener {
     public static final NarakaCustomRenderer INSTANCE = new NarakaCustomRenderer();
 
     private final Minecraft minecraft;

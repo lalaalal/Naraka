@@ -2,7 +2,7 @@ package com.yummy.naraka.fabric.client;
 
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.yummy.naraka.client.NarakaModClient;
-import com.yummy.naraka.client.renderer.CustomItemRenderManager;
+import com.yummy.naraka.client.renderer.CustomRenderManager;
 import com.yummy.naraka.init.NarakaClientInitializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -24,7 +24,7 @@ public final class NarakaModFabricClient implements ClientModInitializer, Naraka
     }
 
     @Override
-    public void registerCustomItemRenderer(ItemLike item, CustomItemRenderManager.CustomItemRenderer renderer) {
+    public void registerCustomItemRenderer(ItemLike item, CustomRenderManager.CustomItemRenderer renderer) {
         BuiltinItemRendererRegistry.INSTANCE.register(item, renderer::render);
     }
 

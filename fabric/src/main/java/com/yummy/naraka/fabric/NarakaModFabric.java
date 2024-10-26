@@ -2,8 +2,8 @@ package com.yummy.naraka.fabric;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.RegistryFactory;
-import com.yummy.naraka.core.registries.RegistryInitializer;
 import com.yummy.naraka.init.NarakaInitializer;
+import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.world.item.NarakaCreativeModTabs;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;

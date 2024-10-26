@@ -2,8 +2,9 @@ package com.yummy.naraka.fabric;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.LazyHolder;
-import com.yummy.naraka.core.registries.RegistryInitializer;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.init.RegistryInitializer;
+
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;

@@ -1,6 +1,7 @@
 package com.yummy.naraka.core.registries;
 
 import com.yummy.naraka.NarakaMod;
+
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 

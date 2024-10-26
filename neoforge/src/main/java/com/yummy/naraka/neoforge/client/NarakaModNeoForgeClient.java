@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModClient;
-import com.yummy.naraka.client.renderer.CustomItemRenderManager;
+import com.yummy.naraka.client.renderer.CustomRenderManager;
 import com.yummy.naraka.init.NarakaClientInitializer;
 
 import net.minecraft.client.Minecraft;
@@ -47,7 +47,7 @@ public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClient
     }
 
     @Override
-    public void registerCustomItemRenderer(ItemLike item, CustomItemRenderManager.CustomItemRenderer renderer) {
+    public void registerCustomItemRenderer(ItemLike item, CustomRenderManager.CustomItemRenderer renderer) {
         bus.addListener((Consumer<RegisterClientExtensionsEvent>) event -> {
                 event.registerItem(this, item.asItem());
                 NeoForgeCustomItemRenderer.getInstance().register(item, renderer);
@@ -57,7 +57,9 @@ public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClient
 
     @Override
     public void registerBlockRenderLayer(RenderType renderType, Block... blocks) {
-        
+        for (Block block : blocks) {
+            CustomRenderManager.register(block.asItem(), renderType);
+        }
     }
 
     @Override
@@ -85,23 +87,23 @@ public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClient
             return INSTANCE;
         }
 
-        private final Map<Item, CustomItemRenderManager.CustomItemRenderer> rendererByItem = new HashMap<>();
+        private final Map<Item, CustomRenderManager.CustomItemRenderer> rendererByItem = new HashMap<>();
         
         public NeoForgeCustomItemRenderer(Minecraft minecraft) {
             super(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels());
         }
 
-        public void register(Item item, CustomItemRenderManager.CustomItemRenderer renderer) {
+        public void register(Item item, CustomRenderManager.CustomItemRenderer renderer) {
             rendererByItem.put(item, renderer);
         }
 
-        public void register(ItemLike item, CustomItemRenderManager.CustomItemRenderer renderer) {
+        public void register(ItemLike item, CustomRenderManager.CustomItemRenderer renderer) {
             this.register(item.asItem(), renderer);
         }
 
         @Override
         public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-            CustomItemRenderManager.CustomItemRenderer renderer = rendererByItem.get(stack.getItem());
+            CustomRenderManager.CustomItemRenderer renderer = rendererByItem.get(stack.getItem());
             if (renderer != null)
                 renderer.render(stack, displayContext, poseStack, buffer, packedLight, packedOverlay);
         }

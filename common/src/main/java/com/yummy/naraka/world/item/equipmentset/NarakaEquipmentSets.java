@@ -2,8 +2,9 @@ package com.yummy.naraka.world.item.equipmentset;
 
 import com.yummy.naraka.core.registries.LazyHolder;
 import com.yummy.naraka.core.registries.NarakaRegistries;
-import com.yummy.naraka.core.registries.RegistryInitializer;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.init.RegistryInitializer;
+
 import net.minecraft.world.entity.LivingEntity;
 
 public class NarakaEquipmentSets {

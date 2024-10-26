@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Environment(EnvType.CLIENT)
-public class SpearItemRenderer implements CustomItemRenderManager.CustomItemRenderer, ResourceManagerReloadListener {
+public class SpearItemRenderer implements CustomRenderManager.CustomItemRenderer, ResourceManagerReloadListener {
     private static final Map<Item, ResourceLocation> TEXTURE_LOCATIONS = Map.of(
             NarakaItems.SPEAR_ITEM.get(), NarakaTextures.SPEAR,
             NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), NarakaTextures.MIGHTY_HOLY_SPEAR

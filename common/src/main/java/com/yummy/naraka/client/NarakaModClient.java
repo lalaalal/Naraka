@@ -60,9 +60,9 @@ public class NarakaModClient {
         initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_STABILIZER.get(), NarakaCustomRenderer.INSTANCE);
         initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_SMITHING_BLOCK.get(), NarakaCustomRenderer.INSTANCE);
 
-        CustomItemRenderManager.register(NarakaItems.SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
-        CustomItemRenderManager.register(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
-        CustomItemRenderManager.register(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get(), SpearItemRenderer.INSTANCE);
+        CustomRenderManager.register(NarakaItems.SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
+        CustomRenderManager.register(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
+        CustomRenderManager.register(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get(), SpearItemRenderer.INSTANCE);
 
         ItemPropertiesRegistry.register(NarakaItems.SANCTUARY_COMPASS.get(), NarakaMod.location("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) -> {
             SanctuaryTracker tracker = itemStack.get(NarakaDataComponentTypes.SANCTUARY_TRACKER.get());
@@ -73,7 +73,7 @@ public class NarakaModClient {
     }
 
     private static void initializeBlocks(NarakaClientInitializer initializer) {
-        initializer.registerBlockRenderLayer(RenderType.cutout(),
+        CustomRenderManager.register(RenderType.cutout(),
                 NarakaBlocks.EBONY_SAPLING.get(),
                 NarakaBlocks.POTTED_EBONY_SAPLING.get(),
                 NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(),

@@ -1,8 +1,8 @@
 package com.yummy.naraka.world.structure.protection;
 
 import com.yummy.naraka.core.registries.NarakaRegistries;
-import com.yummy.naraka.core.registries.RegistryInitializer;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.structure.piece.HerobrineSanctuaryOutline;
 import net.minecraft.core.Holder;
