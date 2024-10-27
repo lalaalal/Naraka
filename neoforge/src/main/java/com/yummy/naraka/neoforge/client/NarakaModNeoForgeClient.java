@@ -28,6 +28,7 @@ import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -42,13 +43,13 @@ public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClient
 
     public NarakaModNeoForgeClient(FMLModContainer container, IEventBus modBus, Dist dist) {
         this.bus = modBus;
-        NarakaModClient.prepareInitialization(this);
+        NarakaModClient.registerToEvent(this);
 
         modBus.addListener(this::clientSetup);
     }
 
     public void clientSetup(FMLClientSetupEvent event) {
-        NarakaModClient.initializeClient(this);
+        NarakaModClient.initialize(this);
     }
 
     @Override
@@ -90,7 +91,7 @@ public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClient
     }
 
     private static class NeoForgeCustomItemRenderer extends BlockEntityWithoutLevelRenderer {
-        private static NeoForgeCustomItemRenderer INSTANCE = null;
+        private static @Nullable NeoForgeCustomItemRenderer INSTANCE = null;
 
         public static NeoForgeCustomItemRenderer getInstance() {
             if (INSTANCE == null)

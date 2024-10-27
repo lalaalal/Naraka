@@ -30,7 +30,7 @@ import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 
 @Environment(EnvType.CLIENT)
 public class NarakaModClient {
-    public static void prepareInitialization(NarakaClientInitializer initializer) {
+    public static void registerToEvent(NarakaClientInitializer initializer) {
         NarakaModelLayers.initialize();
         registerEntityRenderers();
         registerShaders(initializer);
@@ -44,7 +44,7 @@ public class NarakaModClient {
         initializer.registerResourceReloadListener("block_transparent_renderer", () -> BlockTransparentRenderer.INSTANCE);
     }
 
-    public static void initializeClient(NarakaClientInitializer initializer) {
+    public static void initialize(NarakaClientInitializer initializer) {
         initializeItems();
         initializeBlocks(initializer);
 

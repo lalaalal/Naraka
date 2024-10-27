@@ -29,8 +29,8 @@ import java.util.function.Supplier;
 public final class NarakaModFabricClient implements ClientModInitializer, NarakaClientInitializer {
     @Override
     public void onInitializeClient() {
-        NarakaModClient.prepareInitialization(this);
-        NarakaModClient.initializeClient(this);
+        NarakaModClient.registerToEvent(this);
+        NarakaModClient.initialize(this);
     }
 
     @Override
