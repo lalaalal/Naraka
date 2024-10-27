@@ -33,7 +33,7 @@ public class NarakaStructures {
     public static void bootstrap(BootstrapContext<Structure> context) {
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 
-        HolderSet<Biome> herobrineSanctuaryBiomes = biomes.getOrThrow(ConventionalTags.Biomes.IS_PLAIN);
+        HolderSet<Biome> herobrineSanctuaryBiomes = biomes.getOrThrow(ConventionalTags.Biomes.IS_PLAINS);
 
         Map<MobCategory, StructureSpawnOverride> herobrineSanctuarySpawnOverrides = Map.of(
                 MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, MobSpawnSettings.EMPTY_MOB_LIST),

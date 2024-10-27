@@ -18,7 +18,7 @@ public class ConventionalTags {
     }
 
     public static class Biomes {
-        public static final TagKey<Biome> IS_PLAIN = get("is_plain");
+        public static final TagKey<Biome> IS_PLAINS = get("is_plains");
 
         public static TagKey<Biome> get(String name) {
             return ConventionalTags.get(Registries.BIOME, name);
