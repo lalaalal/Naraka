@@ -85,6 +85,7 @@ public class NarakaLanguageProviders {
         addReinforcementEffect(NarakaReinforcementEffects.FLYING, "Flying (Scroll!)", "비행 (스크롤!)");
         addReinforcementEffect(NarakaReinforcementEffects.ORE_SEE_THROUGH, "Ore see through", "광물 투시");
         addReinforcementEffect(NarakaReinforcementEffects.LAVA_VISION, "Lava vision", "용암 투시");
+        addReinforcementEffect(NarakaReinforcementEffects.FIRE_RESISTANCE, "Fire Resistance", "화염 저항");
         addReinforcementEffect(NarakaReinforcementEffects.EFFICIENT_MINING_IN_WATER, "Efficient mining in water", "수중 채쿨 효율");
         addReinforcementEffect(NarakaReinforcementEffects.EFFICIENT_MINING_IN_AIR, "Efficient mining in air", "공중 채굴 효율");
         addReinforcementEffect(NarakaReinforcementEffects.WATER_BREATHING, "Water breathing", "수중 호흡");

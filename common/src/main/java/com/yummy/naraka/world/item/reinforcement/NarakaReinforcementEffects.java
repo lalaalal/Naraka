@@ -10,6 +10,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -54,6 +55,10 @@ public class NarakaReinforcementEffects {
 
     public static final Holder<ReinforcementEffect> LAVA_VISION = register(
             "lava_vision", new SimpleReinforcementEffect(10, EquipmentSlot.HEAD)
+    );
+
+    public static final Holder<ReinforcementEffect> FIRE_RESISTANCE = register(
+            "fire_resistance", new MobEffectReinforcementEffect(MobEffects.FIRE_RESISTANCE, 10, EquipmentSlot.CHEST)
     );
 
     public static final Holder<ReinforcementEffect> EFFICIENT_MINING_IN_AIR = register(
@@ -112,8 +117,8 @@ public class NarakaReinforcementEffects {
         addEffectsByItem(NarakaItemTags.SPEAR_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
         addEffectsByItem(ItemTags.ARMOR_ENCHANTABLE, INCREASE_ARMOR, INCREASE_ARMOR_TOUGHNESS);
         addEffectsByItem(and(isBlessed(), is(ItemTags.HEAD_ARMOR_ENCHANTABLE)), ORE_SEE_THROUGH, LAVA_VISION, EFFICIENT_MINING_IN_WATER, WATER_BREATHING);
-        addEffectsByItem(and(isBlessed(), is(ItemTags.CHEST_ARMOR_ENCHANTABLE)), FLYING);
-        addEffectsByItem(ItemTags.LEG_ARMOR_ENCHANTABLE, KNOCKBACK_RESISTANCE);
+        addEffectsByItem(and(isBlessed(), is(ItemTags.CHEST_ARMOR_ENCHANTABLE)), FLYING, FIRE_RESISTANCE);
+        addEffectsByItem(and(isBlessed(), is(ItemTags.LEG_ARMOR_ENCHANTABLE)), KNOCKBACK_RESISTANCE);
         addEffectsByItem(and(isBlessed(), is(ItemTags.FOOT_ARMOR_ENCHANTABLE)), FASTER_LIQUID_SWIMMING, IGNORE_LIQUID_PUSHING, EFFICIENT_MINING_IN_AIR);
     }
 
