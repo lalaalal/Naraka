@@ -1,11 +1,13 @@
 package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.core.registries.LazyHolder;
+import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.armortrim.NarakaTrimPatterns;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -26,26 +28,26 @@ public class NarakaItems {
 
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(NarakaMod.MOD_ID, Registries.ITEM);
 
-    private static final Set<RegistrySupplier<Item>> SOUL_INFUSED_ITEMS = new HashSet<>();
-    private static final Set<RegistrySupplier<SwordItem>> SOUL_INFUSED_SWORDS = new HashSet<>();
+    private static final Set<LazyHolder<Item, Item>> SOUL_INFUSED_ITEMS = new HashSet<>();
+    private static final Set<LazyHolder<Item, SwordItem>> SOUL_INFUSED_SWORDS = new HashSet<>();
 
-    public static final RegistrySupplier<Item> STIGMA_ROD = registerItem("stigma_rod", StigmaRodItem::new);
+    public static final LazyHolder<Item, Item> STIGMA_ROD = registerItem("stigma_rod", StigmaRodItem::new);
 
-    public static final RegistrySupplier<Item> HEROBRINE_PHASE_1_DISC = registerDiscItem("herobrine_phase_1_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_1);
-    public static final RegistrySupplier<Item> HEROBRINE_PHASE_2_DISC = registerDiscItem("herobrine_phase_2_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_2);
-    public static final RegistrySupplier<Item> HEROBRINE_PHASE_3_DISC = registerDiscItem("herobrine_phase_3_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_3);
-    public static final RegistrySupplier<Item> HEROBRINE_PHASE_4_DISC = registerDiscItem("herobrine_phase_4_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_4);
+    public static final LazyHolder<Item, Item> HEROBRINE_PHASE_1_DISC = registerDiscItem("herobrine_phase_1_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_1);
+    public static final LazyHolder<Item, Item> HEROBRINE_PHASE_2_DISC = registerDiscItem("herobrine_phase_2_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_2);
+    public static final LazyHolder<Item, Item> HEROBRINE_PHASE_3_DISC = registerDiscItem("herobrine_phase_3_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_3);
+    public static final LazyHolder<Item, Item> HEROBRINE_PHASE_4_DISC = registerDiscItem("herobrine_phase_4_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_4);
 
     // Ingredients
-    public static final RegistrySupplier<Item> PURIFIED_SOUL_METAL = registerSimpleItem(
+    public static final LazyHolder<Item, Item> PURIFIED_SOUL_METAL = registerSimpleItem(
             "purified_soul_metal", new Item.Properties().fireResistant()
     );
 
-    public static final RegistrySupplier<Item> PURIFIED_SOUL_SHARD = registerSimpleItem(
+    public static final LazyHolder<Item, Item> PURIFIED_SOUL_SHARD = registerSimpleItem(
             "purified_soul_shard", new Item.Properties().fireResistant()
     );
 
-    public static final RegistrySupplier<Item> NECTARIUM = registerSimpleItem(
+    public static final LazyHolder<Item, Item> NECTARIUM = registerSimpleItem(
             "nectarium", new Item.Properties()
                     .food(new FoodProperties.Builder()
                             .nutrition(20)
@@ -56,105 +58,105 @@ public class NarakaItems {
                     )
     );
 
-    public static final RegistrySupplier<Item> EBONY_ROOTS_SCRAP = registerSimpleItem("ebony_roots_scrap");
-    public static final RegistrySupplier<Item> EBONY_METAL_INGOT = registerSimpleItem("ebony_metal_ingot", new Item.Properties().fireResistant());
+    public static final LazyHolder<Item, Item> EBONY_ROOTS_SCRAP = registerSimpleItem("ebony_roots_scrap");
+    public static final LazyHolder<Item, Item> EBONY_METAL_INGOT = registerSimpleItem("ebony_metal_ingot", new Item.Properties().fireResistant());
 
-    public static final RegistrySupplier<Item> GOD_BLOOD = registerSimpleItem(
+    public static final LazyHolder<Item, Item> GOD_BLOOD = registerSimpleItem(
             "god_blood", new Item.Properties()
                     .stacksTo(1)
                     .fireResistant()
     );
 
-    public static final RegistrySupplier<SanctuaryCompassItem> SANCTUARY_COMPASS = registerItem("sanctuary_compass", SanctuaryCompassItem::new);
-    public static final RegistrySupplier<Item> COMPRESSED_IRON_INGOT = registerSimpleItem("compressed_iron_ingot");
+    public static final LazyHolder<Item, SanctuaryCompassItem> SANCTUARY_COMPASS = registerItem("sanctuary_compass", SanctuaryCompassItem::new);
+    public static final LazyHolder<Item, Item> COMPRESSED_IRON_INGOT = registerSimpleItem("compressed_iron_ingot");
 
-    public static final RegistrySupplier<Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = registerItem("purified_soul_upgrade_smithing_template", NarakaSmithingTemplateItems::createPurifiedSoulUpgradeTemplate);
-    public static final RegistrySupplier<SmithingTemplateItem> PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE = registerItem(
+    public static final LazyHolder<Item, Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = registerItem("purified_soul_upgrade_smithing_template", NarakaSmithingTemplateItems::createPurifiedSoulUpgradeTemplate);
+    public static final LazyHolder<Item, SmithingTemplateItem> PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE = registerItem(
             "purified_soul_silence_armor_trim_smithing_template",
             properties -> SmithingTemplateItem.createArmorTrimTemplate(NarakaTrimPatterns.PURIFIED_SOUL_SILENCE)
     );
 
-    public static final RegistrySupplier<Item> SOUL_INFUSED_REDSTONE = registerSoulInfusedItem(SoulType.REDSTONE);
-    public static final RegistrySupplier<Item> SOUL_INFUSED_COPPER = registerSoulInfusedItem(SoulType.COPPER);
-    public static final RegistrySupplier<Item> SOUL_INFUSED_GOLD = registerSoulInfusedItem(SoulType.GOLD);
-    public static final RegistrySupplier<Item> SOUL_INFUSED_EMERALD = registerSoulInfusedItem(SoulType.EMERALD);
-    public static final RegistrySupplier<Item> SOUL_INFUSED_DIAMOND = registerSoulInfusedItem(SoulType.DIAMOND);
-    public static final RegistrySupplier<Item> SOUL_INFUSED_LAPIS = registerSoulInfusedItem(SoulType.LAPIS);
-    public static final RegistrySupplier<Item> SOUL_INFUSED_AMETHYST = registerSoulInfusedItem(SoulType.AMETHYST);
-    public static final RegistrySupplier<Item> SOUL_INFUSED_NECTARIUM = registerSoulInfusedItem(SoulType.NECTARIUM);
+    public static final LazyHolder<Item, Item> SOUL_INFUSED_REDSTONE = registerSoulInfusedItem(SoulType.REDSTONE);
+    public static final LazyHolder<Item, Item> SOUL_INFUSED_COPPER = registerSoulInfusedItem(SoulType.COPPER);
+    public static final LazyHolder<Item, Item> SOUL_INFUSED_GOLD = registerSoulInfusedItem(SoulType.GOLD);
+    public static final LazyHolder<Item, Item> SOUL_INFUSED_EMERALD = registerSoulInfusedItem(SoulType.EMERALD);
+    public static final LazyHolder<Item, Item> SOUL_INFUSED_DIAMOND = registerSoulInfusedItem(SoulType.DIAMOND);
+    public static final LazyHolder<Item, Item> SOUL_INFUSED_LAPIS = registerSoulInfusedItem(SoulType.LAPIS);
+    public static final LazyHolder<Item, Item> SOUL_INFUSED_AMETHYST = registerSoulInfusedItem(SoulType.AMETHYST);
+    public static final LazyHolder<Item, Item> SOUL_INFUSED_NECTARIUM = registerSoulInfusedItem(SoulType.NECTARIUM);
 
     // Spears
-    public static final RegistrySupplier<SpearItem> SPEAR_ITEM = registerItem(
+    public static final LazyHolder<Item, SpearItem> SPEAR_ITEM = registerItem(
             "spear",
             properties -> new SpearItem(Tiers.IRON,
                     properties
                             .fireResistant()
                             .attributes(SpearItem.createAttributes(8, -3)),
-                    NarakaEntityTypes.THROWN_SPEAR.get()
+                    NarakaEntityTypes.THROWN_SPEAR
             )
     );
-    public static final RegistrySupplier<SpearItem> MIGHTY_HOLY_SPEAR_ITEM = registerItem(
+    public static final LazyHolder<Item, SpearItem> MIGHTY_HOLY_SPEAR_ITEM = registerItem(
             "mighty_holy_spear",
             properties -> new SpearItem(Tiers.NETHERITE,
                     properties
                             .fireResistant()
                             .attributes(SpearItem.createAttributes(65, -3)),
-                    NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR.get()
+                    NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR
             )
     );
-    public static final RegistrySupplier<SpearOfLonginusItem> SPEAR_OF_LONGINUS_ITEM = registerItem(
+    public static final LazyHolder<Item, SpearOfLonginusItem> SPEAR_OF_LONGINUS_ITEM = registerItem(
             "spear_of_longinus",
             properties -> new SpearOfLonginusItem(properties
                     .fireResistant()
                     .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
             )
     );
-    public static final RegistrySupplier<SwordItem> EBONY_SWORD = registerItem("ebony_sword", properties -> new SwordItem(
+    public static final LazyHolder<Item, SwordItem> EBONY_SWORD = registerItem("ebony_sword", properties -> new SwordItem(
                     Tiers.IRON, properties.attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f))
             )
     );
 
-    public static final RegistrySupplier<SwordItem> SOUL_INFUSED_REDSTONE_SWORD = registerSoulInfusedSword(SoulType.REDSTONE);
-    public static final RegistrySupplier<SwordItem> SOUL_INFUSED_COPPER_SWORD = registerSoulInfusedSword(SoulType.COPPER);
-    public static final RegistrySupplier<SwordItem> SOUL_INFUSED_GOLD_SWORD = registerSoulInfusedSword(SoulType.GOLD);
-    public static final RegistrySupplier<SwordItem> SOUL_INFUSED_EMERALD_SWORD = registerSoulInfusedSword(SoulType.EMERALD);
-    public static final RegistrySupplier<SwordItem> SOUL_INFUSED_DIAMOND_SWORD = registerSoulInfusedSword(SoulType.DIAMOND);
-    public static final RegistrySupplier<SwordItem> SOUL_INFUSED_LAPIS_SWORD = registerSoulInfusedSword(SoulType.LAPIS);
-    public static final RegistrySupplier<SwordItem> SOUL_INFUSED_AMETHYST_SWORD = registerSoulInfusedSword(SoulType.AMETHYST);
-    public static final RegistrySupplier<SwordItem> SOUL_INFUSED_NECTARIUM_SWORD = registerSoulInfusedSword(SoulType.NECTARIUM);
-    public static final RegistrySupplier<SwordItem> PURIFIED_SOUL_SWORD = registerItem(
+    public static final LazyHolder<Item, SwordItem> SOUL_INFUSED_REDSTONE_SWORD = registerSoulInfusedSword(SoulType.REDSTONE);
+    public static final LazyHolder<Item, SwordItem> SOUL_INFUSED_COPPER_SWORD = registerSoulInfusedSword(SoulType.COPPER);
+    public static final LazyHolder<Item, SwordItem> SOUL_INFUSED_GOLD_SWORD = registerSoulInfusedSword(SoulType.GOLD);
+    public static final LazyHolder<Item, SwordItem> SOUL_INFUSED_EMERALD_SWORD = registerSoulInfusedSword(SoulType.EMERALD);
+    public static final LazyHolder<Item, SwordItem> SOUL_INFUSED_DIAMOND_SWORD = registerSoulInfusedSword(SoulType.DIAMOND);
+    public static final LazyHolder<Item, SwordItem> SOUL_INFUSED_LAPIS_SWORD = registerSoulInfusedSword(SoulType.LAPIS);
+    public static final LazyHolder<Item, SwordItem> SOUL_INFUSED_AMETHYST_SWORD = registerSoulInfusedSword(SoulType.AMETHYST);
+    public static final LazyHolder<Item, SwordItem> SOUL_INFUSED_NECTARIUM_SWORD = registerSoulInfusedSword(SoulType.NECTARIUM);
+    public static final LazyHolder<Item, SwordItem> PURIFIED_SOUL_SWORD = registerItem(
             "purified_soul_sword",
             properties -> new PurifiedSoulSword(Tiers.IRON, properties.fireResistant()
                     .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f)))
     );
 
-    public static final RegistrySupplier<ArmorItem> PURIFIED_SOUL_HELMET = registerArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.HELMET, 0);
-    public static final RegistrySupplier<ArmorItem> PURIFIED_SOUL_CHESTPLATE = registerArmorItem("purified_soul_chestplate", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.CHESTPLATE, 0);
-    public static final RegistrySupplier<ArmorItem> PURIFIED_SOUL_LEGGINGS = registerArmorItem("purified_soul_leggings", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.LEGGINGS, 0);
-    public static final RegistrySupplier<ArmorItem> PURIFIED_SOUL_BOOTS = registerArmorItem("purified_soul_boots", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.BOOTS, 0);
+    public static final LazyHolder<Item, ArmorItem> PURIFIED_SOUL_HELMET = registerArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.HELMET, 0);
+    public static final LazyHolder<Item, ArmorItem> PURIFIED_SOUL_CHESTPLATE = registerArmorItem("purified_soul_chestplate", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.CHESTPLATE, 0);
+    public static final LazyHolder<Item, ArmorItem> PURIFIED_SOUL_LEGGINGS = registerArmorItem("purified_soul_leggings", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.LEGGINGS, 0);
+    public static final LazyHolder<Item, ArmorItem> PURIFIED_SOUL_BOOTS = registerArmorItem("purified_soul_boots", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.BOOTS, 0);
 
-    public static final RegistrySupplier<ArmorItem> EBONY_METAL_HELMET = registerArmorItem("ebony_metal_helmet", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.HELMET, 7);
-    public static final RegistrySupplier<ArmorItem> EBONY_METAL_CHESTPLATE = registerArmorItem("ebony_metal_chestplate", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.CHESTPLATE, 7);
-    public static final RegistrySupplier<ArmorItem> EBONY_METAL_LEGGINGS = registerArmorItem("ebony_metal_leggings", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.LEGGINGS, 7);
-    public static final RegistrySupplier<ArmorItem> EBONY_METAL_BOOTS = registerArmorItem("ebony_metal_boots", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.BOOTS, 7);
+    public static final LazyHolder<Item, ArmorItem> EBONY_METAL_HELMET = registerArmorItem("ebony_metal_helmet", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.HELMET, 7);
+    public static final LazyHolder<Item, ArmorItem> EBONY_METAL_CHESTPLATE = registerArmorItem("ebony_metal_chestplate", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.CHESTPLATE, 7);
+    public static final LazyHolder<Item, ArmorItem> EBONY_METAL_LEGGINGS = registerArmorItem("ebony_metal_leggings", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.LEGGINGS, 7);
+    public static final LazyHolder<Item, ArmorItem> EBONY_METAL_BOOTS = registerArmorItem("ebony_metal_boots", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.BOOTS, 7);
 
-    public static RegistrySupplier<ArmorItem> registerArmorItem(String name, Holder<ArmorMaterial> armorMaterial, ArmorItem.Type armorType, int durability) {
+    public static LazyHolder<Item, ArmorItem> registerArmorItem(String name, Holder<ArmorMaterial> armorMaterial, ArmorItem.Type armorType, int durability) {
         return registerItem(name, properties -> new ArmorItem(armorMaterial, armorType, properties.durability(durability)
                 .component(DataComponents.UNBREAKABLE, new Unbreakable(true))));
     }
 
     public static void forEachSoulInfusedItem(Consumer<Item> consumer) {
-        for (RegistrySupplier<Item> item : SOUL_INFUSED_ITEMS)
+        for (LazyHolder<Item, Item> item : SOUL_INFUSED_ITEMS)
             consumer.accept(item.get());
     }
 
     public static void forEachSoulInfusedSword(Consumer<SwordItem> consumer) {
-        for (RegistrySupplier<SwordItem> item : SOUL_INFUSED_SWORDS)
+        for (LazyHolder<Item, SwordItem> item : SOUL_INFUSED_SWORDS)
             consumer.accept(item.get());
     }
 
-    private static RegistrySupplier<Item> registerSoulInfusedItem(SoulType type) {
-        RegistrySupplier<Item> item = registerItem(
+    private static LazyHolder<Item, Item> registerSoulInfusedItem(SoulType type) {
+        LazyHolder<Item, Item> item = registerItem(
                 SOUL_INFUSED_PREFIX + type.getSerializedName(),
                 properties -> new Item(properties
                         .component(NarakaDataComponentTypes.SOUL.get(), type)
@@ -165,8 +167,8 @@ public class NarakaItems {
         return item;
     }
 
-    private static RegistrySupplier<SwordItem> registerSoulInfusedSword(SoulType type) {
-        RegistrySupplier<SwordItem> item = registerItem(SOUL_INFUSED_PREFIX + type.getSerializedName() + "_sword",
+    private static LazyHolder<Item, SwordItem> registerSoulInfusedSword(SoulType type) {
+        LazyHolder<Item, SwordItem> item = registerItem(SOUL_INFUSED_PREFIX + type.getSerializedName() + "_sword",
                 properties -> new SoulInfusedSwordItem(
                         Tiers.IRON,
                         properties.fireResistant()
@@ -180,7 +182,7 @@ public class NarakaItems {
         return item;
     }
 
-    private static RegistrySupplier<Item> registerDiscItem(String name, ResourceKey<JukeboxSong> song) {
+    private static LazyHolder<Item, Item> registerDiscItem(String name, ResourceKey<JukeboxSong> song) {
         return registerSimpleItem(name, new Item.Properties()
                 .stacksTo(1)
                 .rarity(Rarity.RARE)
@@ -188,27 +190,28 @@ public class NarakaItems {
         );
     }
 
-    private static <I extends Item> RegistrySupplier<I> registerItem(String name, Function<Item.Properties, I> factory, Item.Properties properties) {
-        return ITEMS.register(name, () -> factory.apply(properties));
+    private static <I extends Item> LazyHolder<Item, I> registerItem(String name, Function<Item.Properties, I> factory, Item.Properties properties) {
+        return RegistryProxy.register(Registries.ITEM, name, () -> factory.apply(properties));
     }
 
-    private static <I extends Item> RegistrySupplier<I> registerItemDirect(String name, I item) {
-        return ITEMS.register(name, () -> item);
+    private static <I extends Item> LazyHolder<Item, I> registerItemDirect(String name, I item) {
+        return RegistryProxy.register(Registries.ITEM, name, () -> item);
     }
 
-    private static <I extends Item> RegistrySupplier<I> registerItem(String name, Function<Item.Properties, I> factory) {
+    private static <I extends Item> LazyHolder<Item, I> registerItem(String name, Function<Item.Properties, I> factory) {
         return registerItem(name, factory, new Item.Properties());
     }
 
-    private static RegistrySupplier<Item> registerSimpleItem(String name, Item.Properties properties) {
+    private static LazyHolder<Item, Item> registerSimpleItem(String name, Item.Properties properties) {
         return registerItem(name, Item::new, properties);
     }
 
-    private static RegistrySupplier<Item> registerSimpleItem(String name) {
+    private static LazyHolder<Item, Item> registerSimpleItem(String name) {
         return registerSimpleItem(name, new Item.Properties());
     }
 
     public static void initialize() {
-        ITEMS.register();
+        RegistryInitializer.get(Registries.ITEM)
+                .onRegistrationFinished();
     }
 }

@@ -56,7 +56,6 @@ public class TransparentBlock extends Block {
         return super.useItemOn(itemStack, blockState, pLevel, pos, player, pHand, pHitResult);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected RenderShape getRenderShape(BlockState state) {
         if (state.getValue(VISIBLE))

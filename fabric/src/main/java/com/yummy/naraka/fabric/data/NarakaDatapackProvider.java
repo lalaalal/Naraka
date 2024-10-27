@@ -1,9 +1,9 @@
 package com.yummy.naraka.fabric.data;
 
-import com.yummy.naraka.fabric.data.worldgen.NarakaStructureSets;
-import com.yummy.naraka.fabric.data.worldgen.NarakaStructures;
-import com.yummy.naraka.fabric.data.worldgen.features.NarakaFeatures;
-import com.yummy.naraka.fabric.data.worldgen.placement.NarakaPlacements;
+import com.yummy.naraka.data.worldgen.NarakaStructureSets;
+import com.yummy.naraka.data.worldgen.NarakaStructures;
+import com.yummy.naraka.data.worldgen.features.NarakaFeatures;
+import com.yummy.naraka.data.worldgen.placement.NarakaPlacements;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.armortrim.NarakaTrimMaterials;

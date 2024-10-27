@@ -1,9 +1,11 @@
-package com.yummy.naraka.fabric.data.worldgen.features;
+package com.yummy.naraka.data.worldgen.features;
 
 import com.yummy.naraka.world.block.NarakaBlocks;
+import com.yummy.naraka.world.features.NarakaFeatures;
 import com.yummy.naraka.world.rootplacer.EbonyRootPlacer;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -23,9 +25,12 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class NarakaTreeFeatures {
+    public static final ResourceKey<ConfiguredFeature<?, ?>> EBONY = NarakaFeatures.createKey("ebony");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> EBONY_CHERRY = NarakaFeatures.createKey("ebony_cherry");
+
     protected static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-        FeatureUtils.register(context, com.yummy.naraka.world.features.NarakaTreeFeatures.EBONY, Feature.TREE, createEbony().build());
-        FeatureUtils.register(context, com.yummy.naraka.world.features.NarakaTreeFeatures.EBONY_CHERRY, Feature.TREE, createCherryEbony().build());
+        FeatureUtils.register(context, EBONY, Feature.TREE, createEbony().build());
+        FeatureUtils.register(context, EBONY_CHERRY, Feature.TREE, createCherryEbony().build());
     }
 
     private static TreeConfiguration.TreeConfigurationBuilder createEbony() {

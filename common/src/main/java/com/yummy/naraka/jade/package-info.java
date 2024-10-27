@@ -1,7 +1,7 @@
 @MethodsReturnNonnullByDefault
 @FieldsAreNonnullByDefault
 
-package com.yummy.naraka.fabric.data.worldgen.placement;
+package com.yummy.naraka.jade;
 
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;

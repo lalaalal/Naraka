@@ -1,10 +1,10 @@
 package com.yummy.naraka.world.block.entity;
 
+import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.Herobrine;
-import com.yummy.naraka.world.structure.NarakaStructures;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.BlockPos;

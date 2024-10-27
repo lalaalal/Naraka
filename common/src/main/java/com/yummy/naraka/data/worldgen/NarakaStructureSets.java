@@ -1,8 +1,7 @@
-package com.yummy.naraka.fabric.data.worldgen;
+package com.yummy.naraka.data.worldgen;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.tags.NarakaStructureSetTags;
-import com.yummy.naraka.world.structure.NarakaStructures;
 import com.yummy.naraka.world.structure.placement.ExclusiveRandomSpreadStructurePlacement;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;

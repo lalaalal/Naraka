@@ -18,12 +18,14 @@
             "com.yummy.naraka.fabric.NarakaModFabric"
         ],
         "fabric-datagen": [
+            "com.yummy.naraka.fabric.data.NarakaDataGenerator"
         ],
         "client": [
             "com.yummy.naraka.fabric.client.NarakaModFabricClient"
         ],
-        "jei_mod_plugin": [
-            "com.yummy.naraka.jei.NarakaJeiPlugin"
+        "jade": [
+            "com.yummy.naraka.jade.NarakaJadePlugin"
+
         ]
     },
     "accessWidener": "naraka.accesswidener",

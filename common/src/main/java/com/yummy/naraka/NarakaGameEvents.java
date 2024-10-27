@@ -74,7 +74,7 @@ public class NarakaGameEvents {
 
     private static EventResult useDeathCount(LivingEntity livingEntity, DamageSource source) {
         boolean result = source.is(DamageTypes.GENERIC_KILL) || !DeathCountHelper.useDeathCount(livingEntity);
-        return EventResult.interrupt(!result);
+        return EventResult.interrupt(result);
     }
 
     private static void onWorldLoad(ServerLevel level) {
@@ -100,7 +100,7 @@ public class NarakaGameEvents {
         TickSchedule.tick(server.overworld());
     }
 
-    private static EventResult modifyLootTable(ResourceKey<LootTable> key, LootEvent.LootTableModificationContext context, boolean builtin) {
+    private static void modifyLootTable(ResourceKey<LootTable> key, LootEvent.LootTableModificationContext context, boolean builtin) {
         if (!builtin && key.location().getPath().contains("chests")) {
             context.addPool(LootPool.lootPool()
                     .when(LootItemRandomChanceCondition.randomChance(0.2f))
@@ -108,8 +108,6 @@ public class NarakaGameEvents {
                     .add(LootItem.lootTableItem(NarakaItems.SANCTUARY_COMPASS.get()).setWeight(1))
             );
         }
-
-        return EventResult.pass();
     }
 
     private static EventResult boneMealUse(Player player, InteractionHand hand, BlockPos pos, Direction direction) {
@@ -118,7 +116,7 @@ public class NarakaGameEvents {
         BlockState state = level.getBlockState(pos);
 
         if (stack.is(Items.BONE_MEAL) && state.is(NarakaBlocks.EBONY_SAPLING.get()))
-            return EventResult.interruptFalse();
+            return EventResult.interruptTrue();
         return EventResult.pass();
     }
 

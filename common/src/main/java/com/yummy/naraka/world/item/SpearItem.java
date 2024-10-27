@@ -22,8 +22,10 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.function.Supplier;
+
 public class SpearItem extends TieredItem implements ProjectileItem {
-    protected final EntityType<? extends Spear> spearType;
+    protected final Supplier<? extends EntityType<? extends Spear>> spearType;
 
     public static ItemAttributeModifiers createAttributes(double attackDamage, double attackSpeed) {
         return ItemAttributeModifiers.builder()
@@ -36,7 +38,7 @@ public class SpearItem extends TieredItem implements ProjectileItem {
                 ).build();
     }
 
-    public SpearItem(Tier tier, Properties properties, EntityType<? extends Spear> spearType) {
+    public SpearItem(Tier tier, Properties properties, Supplier<? extends EntityType<? extends Spear>> spearType) {
         super(tier, properties);
         this.spearType = spearType;
     }
@@ -80,7 +82,7 @@ public class SpearItem extends TieredItem implements ProjectileItem {
     }
 
     protected Spear createSpear(Level level, LivingEntity owner, ItemStack stack) {
-        return new Spear(spearType, level, owner, stack);
+        return new Spear(spearType.get(), level, owner, stack);
     }
 
     @Override
@@ -105,8 +107,10 @@ public class SpearItem extends TieredItem implements ProjectileItem {
 
     @Override
     public Projectile asProjectile(Level level, Position position, ItemStack stack, Direction direction) {
-        return new Spear(spearType, level, position, stack);
+        return new Spear(spearType.get(), level, position, stack);
     }
 
-
+    public interface SpearProvider {
+        Spear createSpear(Level level, LivingEntity owner, ItemStack stack);
+    }
 }

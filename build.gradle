@@ -55,9 +55,6 @@ subprojects {
             officialMojangMappings()
             parchment("org.parchmentmc.data:parchment-${parchmentmc_mc_version}:${parchmentmc_version}@zip")
         }
-
-        modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
-        modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-lib:${jei_version}")
     }
 
     java {

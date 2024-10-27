@@ -1,7 +1,8 @@
 package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
-import dev.architectury.registry.registries.DeferredRegister;
+import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.init.RegistryInitializer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
@@ -15,8 +16,6 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class NarakaArmorMaterials {
-    private static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(NarakaMod.MOD_ID, Registries.ARMOR_MATERIAL);
-
     public static final Holder<ArmorMaterial> PURIFIED_SOUL = register(
             "purified_soul",
             Map.of(ArmorItem.Type.BOOTS, 0,
@@ -48,12 +47,13 @@ public class NarakaArmorMaterials {
                                                   float toughness,
                                                   float knockbackResistance) {
         List<ArmorMaterial.Layer> layers = List.of(new ArmorMaterial.Layer(NarakaMod.location(name)));
-        return ARMOR_MATERIALS.register(name, () -> new ArmorMaterial(
+        return RegistryProxy.register(Registries.ARMOR_MATERIAL, name, () -> new ArmorMaterial(
                 defense, enchantmentValue, equipSound, repairIngredient, layers, toughness, knockbackResistance
         ));
     }
 
     public static void initialize() {
-        ARMOR_MATERIALS.register();
+        RegistryInitializer.get(Registries.ARMOR_MATERIAL)
+                .onRegistrationFinished();
     }
 }

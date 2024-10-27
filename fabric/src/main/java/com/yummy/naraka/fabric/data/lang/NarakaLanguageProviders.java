@@ -1,7 +1,9 @@
 package com.yummy.naraka.fabric.data.lang;
 
-import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.data.lang.AdvancementComponent;
+import com.yummy.naraka.data.lang.AdvancementNarakaComponents;
 import com.yummy.naraka.data.lang.LanguageKey;
+import com.yummy.naraka.data.lang.NarakaJadeProviderComponents;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
@@ -35,20 +37,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class NarakaLanguageProviders {
-    public static final String PURIFIED_SOUL_UPGRADE_KEY = Util.makeDescriptionId("upgrade", NarakaMod.location("purified_soul_upgrade"));
-    public static final String PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.applies_to"));
-    public static final String PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.ingredients"));
-    public static final String PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.base_slot_description"));
-    public static final String PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.additions_slot_description"));
-
-    public static final String JADE_SOUL_CRAFTING_FUEL_KEY = "jade.naraka.soul_crafting.fuel";
-    public static final String JADE_STIGMA_KEY = "jade.naraka.stigma";
-    public static final String JADE_DEATH_COUNT_KEY = "jade.naraka.death_count";
-    public static final String JADE_SOUL_STABILIZER_KEY = "jade.naraka.soul_stabilizer";
-
-    public static final String REINFORCEMENT_KEY = "item.reinforcement";
-    public static final String BLESSED_KEY = "item.blessed";
-
     private final String[] languageCodes;
     private final Map<String, String[]> translationMap = new HashMap<>();
 
@@ -61,20 +49,20 @@ public class NarakaLanguageProviders {
         add("itemGroup.naraka", "Naraka", "Naraka");
         add("itemGroup.naraka.test", "Naraka Test", "나락! 테스트");
         add("container.soul_crafting", "Soul Crafter", "영혼 세공기");
-        add(REINFORCEMENT_KEY, "Reinforcement: %d", "강화: %d");
-        add(BLESSED_KEY, "Blessed", "축복받음");
-        add(PURIFIED_SOUL_UPGRADE_KEY, "Purified Soul Upgrade", "정화된 영혼 강화");
-        add(PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY, "Ebony Tools, Purified Soul Weapons", "흑단나무 검, 정화된 영혼 무기");
-        add(PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "Purified Soul Metal, Soul Infused Materials", "정화된 영혼 금속, 영혼이 주입된 재료");
-        add(PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add Ebony Sword, Soul Weapon", "흑단나무 무기, 정화된 영혼 검 또는 창를 놓으세요");
-        add(PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add Purified Soul Metal, Soul Infused Materials", "정화된 영혼 금속, 영혼이 주입된 재료 또는 신의 피를 놓으세요");
+        add(LanguageKey.REINFORCEMENT_KEY, "Reinforcement: %d", "강화: %d");
+        add(LanguageKey.BLESSED_KEY, "Blessed", "축복받음");
+        add(LanguageKey.PURIFIED_SOUL_UPGRADE_KEY, "Purified Soul Upgrade", "정화된 영혼 강화");
+        add(LanguageKey.PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY, "Ebony Tools, Purified Soul Weapons", "흑단나무 검, 정화된 영혼 무기");
+        add(LanguageKey.PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "Purified Soul Metal, Soul Infused Materials", "정화된 영혼 금속, 영혼이 주입된 재료");
+        add(LanguageKey.PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add Ebony Sword, Soul Weapon", "흑단나무 무기, 정화된 영혼 검 또는 창를 놓으세요");
+        add(LanguageKey.PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add Purified Soul Metal, Soul Infused Materials", "정화된 영혼 금속, 영혼이 주입된 재료 또는 신의 피를 놓으세요");
 
-        add(JADE_SOUL_CRAFTING_FUEL_KEY, "Fuel: %d", "연료: %d");
+        add(LanguageKey.JADE_SOUL_CRAFTING_FUEL_KEY, "Fuel: %d", "연료: %d");
         add(NarakaJadeProviderComponents.SOUL_CRAFTING_BLOCK.translationKey, "Soul Crafting Block", "영혼 세공기");
-        add(JADE_SOUL_STABILIZER_KEY, "%d");
+        add(LanguageKey.JADE_SOUL_STABILIZER_KEY, "%d");
         add(NarakaJadeProviderComponents.SOUL_STABILIZER.translationKey, "Soul Stabilizer", "영혼 안정기");
-        add(JADE_STIGMA_KEY, "Stigma: %d", "낙인: %d");
-        add(JADE_DEATH_COUNT_KEY, "Death Count: %d", "데스카운트: %d");
+        add(LanguageKey.JADE_STIGMA_KEY, "Stigma: %d", "낙인: %d");
+        add(LanguageKey.JADE_DEATH_COUNT_KEY, "Death Count: %d", "데스카운트: %d");
         add(NarakaJadeProviderComponents.SOUL_SMITHING_BLOCK.translationKey, "Soul Smithing Block", "영혼 대장장이 블록");
         add(NarakaJadeProviderComponents.ENTITY_DATA.translationKey, "Stigma", "낙인");
 
@@ -97,6 +85,7 @@ public class NarakaLanguageProviders {
         addReinforcementEffect(NarakaReinforcementEffects.FLYING, "Flying (Scroll!)", "비행 (스크롤!)");
         addReinforcementEffect(NarakaReinforcementEffects.ORE_SEE_THROUGH, "Ore see through", "광물 투시");
         addReinforcementEffect(NarakaReinforcementEffects.LAVA_VISION, "Lava vision", "용암 투시");
+        addReinforcementEffect(NarakaReinforcementEffects.FIRE_RESISTANCE, "Fire Resistance", "화염 저항");
         addReinforcementEffect(NarakaReinforcementEffects.EFFICIENT_MINING_IN_WATER, "Efficient mining in water", "수중 채쿨 효율");
         addReinforcementEffect(NarakaReinforcementEffects.EFFICIENT_MINING_IN_AIR, "Efficient mining in air", "공중 채굴 효율");
         addReinforcementEffect(NarakaReinforcementEffects.WATER_BREATHING, "Water breathing", "수중 호흡");

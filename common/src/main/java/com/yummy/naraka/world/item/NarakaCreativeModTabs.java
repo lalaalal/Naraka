@@ -1,53 +1,42 @@
-package com.yummy.naraka.fabric;
+package com.yummy.naraka.world.item;
 
-import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.core.registries.LazyHolder;
+import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.init.NarakaInitializer;
+import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.world.block.NarakaBlocks;
-import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 
 public class NarakaCreativeModTabs {
-    public static final CreativeModeTab NARAKA_TAB = register("naraka", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
+    public static final LazyHolder<CreativeModeTab, CreativeModeTab> NARAKA_TAB = register("naraka", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
             .title(Component.translatable("itemGroup.naraka"))
-            .icon(NarakaItems.GOD_BLOOD.get()::getDefaultInstance)
+            .icon(() -> NarakaItems.GOD_BLOOD.get().getDefaultInstance())
             .displayItems(NarakaCreativeModTabs::createNarakaTab)
-            .build()
     );
-    public static final CreativeModeTab NARAKA_TEST_TAB = registerIfDev("naraka_test", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
+    public static final LazyHolder<CreativeModeTab, CreativeModeTab> NARAKA_TEST_TAB = register("naraka_test", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
             .title(Component.translatable("itemGroup.naraka.test"))
-            .icon(NarakaItems.STIGMA_ROD.get()::getDefaultInstance)
+            .icon(() -> NarakaItems.STIGMA_ROD.get().getDefaultInstance())
             .displayItems(NarakaCreativeModTabs::createNarakaTestTab)
-            .build()
     );
 
-    private static CreativeModeTab register(String name, CreativeModeTab tab) {
-        return Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, NarakaMod.location(name), tab);
+    private static LazyHolder<CreativeModeTab, CreativeModeTab> register(String name, CreativeModeTab.Builder builder) {
+        return RegistryProxy.register(Registries.CREATIVE_MODE_TAB, name, builder::build);
     }
 
-    private static CreativeModeTab registerIfDev(String name, CreativeModeTab tab) {
-        if (FabricLoader.getInstance().isDevelopmentEnvironment())
-            return register(name, tab);
-        return tab;
-    }
+    public static void initialize(NarakaInitializer initializer) {
+        RegistryInitializer.get(Registries.CREATIVE_MODE_TAB)
+                .onRegistrationFinished();
 
-    public static void initialize() {
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.BUILDING_BLOCKS)
-                .register(NarakaCreativeModTabs::modifyBuildingBlocksTab);
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.NATURAL_BLOCKS)
-                .register(NarakaCreativeModTabs::modifyNaturalBlocksTab);
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FOOD_AND_DRINKS)
-                .register(NarakaCreativeModTabs::modifyFoodAndDrinksTab);
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS)
-                .register(NarakaCreativeModTabs::modifyIngredientsTab);
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS)
-                .register(NarakaCreativeModTabs::modifySpawnEggsTab);
+        initializer.modifyCreativeModeTab(CreativeModeTabs.BUILDING_BLOCKS, NarakaCreativeModTabs::modifyBuildingBlocksTab);
+        initializer.modifyCreativeModeTab(CreativeModeTabs.NATURAL_BLOCKS, NarakaCreativeModTabs::modifyNaturalBlocksTab);
+        initializer.modifyCreativeModeTab(CreativeModeTabs.FOOD_AND_DRINKS, NarakaCreativeModTabs::modifyFoodAndDrinksTab);
+        initializer.modifyCreativeModeTab(CreativeModeTabs.INGREDIENTS, NarakaCreativeModTabs::modifyIngredientsTab);
+        initializer.modifyCreativeModeTab(CreativeModeTabs.SPAWN_EGGS, NarakaCreativeModTabs::modifySpawnEggsTab);
     }
 
     private static void createNarakaTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
@@ -152,7 +141,7 @@ public class NarakaCreativeModTabs {
         return itemStack;
     }
 
-    private static void modifyBuildingBlocksTab(FabricItemGroupEntries entries) {
+    private static void modifyBuildingBlocksTab(TabEntries entries) {
         entries.addAfter(Blocks.AMETHYST_BLOCK,
                 NarakaBlocks.AMETHYST_SHARD_BLOCK.get(),
                 NarakaBlocks.NECTARIUM_BLOCK.get(),
@@ -160,19 +149,25 @@ public class NarakaCreativeModTabs {
         );
     }
 
-    private static void modifyNaturalBlocksTab(FabricItemGroupEntries entries) {
+    private static void modifyNaturalBlocksTab(TabEntries entries) {
 
     }
 
-    private static void modifyFoodAndDrinksTab(FabricItemGroupEntries entries) {
+    private static void modifyFoodAndDrinksTab(TabEntries entries) {
         entries.addAfter(Items.ENCHANTED_GOLDEN_APPLE, NarakaItems.NECTARIUM.get());
     }
 
-    private static void modifyIngredientsTab(FabricItemGroupEntries entries) {
+    private static void modifyIngredientsTab(TabEntries entries) {
         entries.addAfter(Items.DIAMOND, NarakaItems.NECTARIUM.get());
     }
 
-    private static void modifySpawnEggsTab(FabricItemGroupEntries entries) {
+    private static void modifySpawnEggsTab(TabEntries entries) {
         entries.addAfter(Blocks.TRIAL_SPAWNER, NarakaBlocks.HEROBRINE_TOTEM.get());
+    }
+
+    public interface TabEntries {
+        void addBefore(ItemLike pivot, ItemLike... items);
+
+        void addAfter(ItemLike pivot, ItemLike... items);
     }
 }
