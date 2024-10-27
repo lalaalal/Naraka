@@ -1,6 +1,6 @@
-package com.yummy.naraka.fabric.data.worldgen.placement;
+package com.yummy.naraka.data.worldgen.placement;
 
-import com.yummy.naraka.world.features.NarakaOreFeatures;
+import com.yummy.naraka.data.worldgen.features.NarakaOreFeatures;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -23,13 +23,13 @@ public class NarakaOrePlacements {
         PlacementUtils.register(
                 context,
                 NECTARIUM_ORE_SMALL_PLACED_KEY,
-                configuredFeatures.getOrThrow(com.yummy.naraka.world.features.NarakaOreFeatures.NECTARIUM_ORE_SMALL),
+                configuredFeatures.getOrThrow(com.yummy.naraka.data.worldgen.features.NarakaOreFeatures.NECTARIUM_ORE_SMALL),
                 commonOrePlacement(7, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)))
         );
         PlacementUtils.register(
                 context,
                 NECTARIUM_ORE_LARGE_PLACED_KEY,
-                configuredFeatures.getOrThrow(com.yummy.naraka.world.features.NarakaOreFeatures.NECTARIUM_ORE_LARGE),
+                configuredFeatures.getOrThrow(com.yummy.naraka.data.worldgen.features.NarakaOreFeatures.NECTARIUM_ORE_LARGE),
                 rareOrePlacement(9, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)))
         );
         PlacementUtils.register(

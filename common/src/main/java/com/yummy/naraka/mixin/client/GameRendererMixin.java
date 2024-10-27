@@ -3,6 +3,7 @@ package com.yummy.naraka.mixin.client;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.yummy.naraka.client.renderer.BlockTransparentRenderer;
+import com.yummy.naraka.tags.ConventionalTags;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import net.fabricmc.api.EnvType;
@@ -20,7 +21,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -76,7 +76,7 @@ public abstract class GameRendererMixin {
 
         NarakaUtils.sphere(box, 1, pos -> {
             BlockState state = level.getBlockState(pos);
-            if (state.is(BlockTags.DIAMOND_ORES)
+            if (state.is(ConventionalTags.Blocks.ORES)
                     && (cameraPosition.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) > 24
                     || naraka$isSideOccluded(level, state, pos, xAxisDirection.getOpposite())
                     && naraka$isSideOccluded(level, state, pos, yAxisDirection.getOpposite())

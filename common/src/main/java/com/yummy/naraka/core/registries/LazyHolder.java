@@ -27,15 +27,29 @@ public class LazyHolder<T, V extends T> implements Holder<T>, Supplier<V> {
         this.key = key;
     }
 
-    @SuppressWarnings("unchecked")
     protected void bind(boolean throwOnMissing) {
-        Registry<T> registry = (Registry<T>) BuiltInRegistries.REGISTRY.get(key.registry());
-        if (registry == null)
+        if (holder != null)
+            return;
+        Optional<Registry<T>> registry = findRegistry(throwOnMissing);
+        if (registry.isEmpty())
+            return;
+        Optional<Reference<T>> found = findReference(registry.get(), throwOnMissing);
+        found.ifPresent(reference -> this.holder = reference);
+    }
+
+    @SuppressWarnings("unchecked")
+    private Optional<Registry<T>> findRegistry(boolean throwOnMissing) {
+        Optional<Registry<T>> registry = (Optional<Registry<T>>) BuiltInRegistries.REGISTRY.getOptional(key.registry());
+        if (registry.isEmpty() && throwOnMissing)
             throw new IllegalStateException(key.registry() + " does not exist");
+        return registry;
+    }
+
+    private Optional<Reference<T>> findReference(Registry<T> registry, boolean throwOnMissing) {
         Optional<Reference<T>> found = registry.getHolder(key);
-        found.ifPresent(tReference -> holder = tReference);
         if (found.isEmpty() && throwOnMissing)
             throw new IllegalStateException(key + " is not registered");
+        return found;
     }
 
     @SuppressWarnings("unchecked")
@@ -115,11 +129,18 @@ public class LazyHolder<T, V extends T> implements Holder<T>, Supplier<V> {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        return obj instanceof Holder<?> h && h.kind() == Kind.REFERENCE && h.unwrapKey().orElse(null) == this.key;
+        bind(false);
+        if (holder != null) return holder.equals(obj);
+        return obj instanceof Holder<?> h
+                && h.kind() == this.kind()
+                && h.unwrapKey().orElse(null) == this.key;
     }
 
     @Override
     public int hashCode() {
+        bind(false);
+        if (holder != null)
+            return holder.hashCode();
         return key.hashCode();
     }
 }

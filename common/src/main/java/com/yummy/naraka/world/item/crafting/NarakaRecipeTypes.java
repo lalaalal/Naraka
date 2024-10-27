@@ -3,7 +3,6 @@ package com.yummy.naraka.world.item.crafting;
 import com.yummy.naraka.core.registries.LazyHolder;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.init.RegistryInitializer;
-
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;

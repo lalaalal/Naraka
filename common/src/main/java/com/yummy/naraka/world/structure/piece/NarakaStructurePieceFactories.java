@@ -3,7 +3,6 @@ package com.yummy.naraka.world.structure.piece;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.init.RegistryInitializer;
-
 import net.minecraft.core.Holder;
 
 public class NarakaStructurePieceFactories {

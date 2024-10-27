@@ -3,7 +3,7 @@ package com.yummy.naraka.world.item.component;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yummy.naraka.world.structure.NarakaStructures;
+import com.yummy.naraka.data.worldgen.NarakaStructures;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;

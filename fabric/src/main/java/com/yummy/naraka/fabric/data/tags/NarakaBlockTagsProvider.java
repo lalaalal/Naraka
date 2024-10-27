@@ -1,10 +1,10 @@
 package com.yummy.naraka.fabric.data.tags;
 
+import com.yummy.naraka.tags.ConventionalTags;
 import com.yummy.naraka.tags.NarakaBlockTags;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BlockTags;
@@ -33,7 +33,7 @@ public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
         getOrCreateTagBuilder(NarakaBlockTags.NECTARIUM_ORES)
                 .add(NarakaBlocks.NECTARIUM_ORE.get())
                 .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
-        getOrCreateTagBuilder(ConventionalBlockTags.ORES)
+        getOrCreateTagBuilder(ConventionalTags.Blocks.ORES)
                 .addTag(NarakaBlockTags.NECTARIUM_ORES);
 
         getOrCreateTagBuilder(BlockTags.FIRE)

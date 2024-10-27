@@ -1,11 +1,9 @@
-package com.yummy.naraka.mixin.client;
+package com.yummy.naraka.neoforge.mixin.client;
 
 import com.yummy.naraka.client.renderer.CustomRenderManager;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.client.ChunkRenderTypeSet;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -15,15 +13,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
 
-@Environment(EnvType.CLIENT)
 @Mixin(ItemBlockRenderTypes.class)
 public abstract class ItemBlockRenderTypesMixin {
     @Shadow
     @Final
-    private static Map<Block, RenderType> TYPE_BY_BLOCK;
+    private static Map<Block, ChunkRenderTypeSet> BLOCK_RENDER_TYPES;
 
     @Inject(method = "<clinit>", at = @At("RETURN"))
     private static void afterInitializeClass(CallbackInfo ci) {
-        TYPE_BY_BLOCK.putAll(CustomRenderManager.getCustomBlockRenderTypes());
+        CustomRenderManager.getCustomBlockRenderTypes().forEach((block, renderType) -> {
+            BLOCK_RENDER_TYPES.put(block, ChunkRenderTypeSet.of(renderType));
+        });
     }
 }

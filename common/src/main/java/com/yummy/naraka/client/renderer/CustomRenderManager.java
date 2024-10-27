@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 
 import java.util.HashMap;
@@ -16,15 +17,10 @@ import java.util.Map;
 @Environment(EnvType.CLIENT)
 public class CustomRenderManager {
     private static final Map<Item, CustomItemRenderer> CUSTOM_RENDERERS = new HashMap<>();
-    private static final Map<Item, RenderType> CUSTOM_ITEM_RENDER_TYPES = new HashMap<>();
     private static final Map<Block, RenderType> CUSTOM_BLOCK_RENDER_TYPES = new HashMap<>();
 
-    public static void register(Item item, CustomItemRenderer customItemRenderer) {
-        CUSTOM_RENDERERS.put(item, customItemRenderer);
-    }
-
-    public static void register(Item item, RenderType renderType) {
-        CUSTOM_ITEM_RENDER_TYPES.put(item, renderType);
+    public static void register(ItemLike item, CustomItemRenderer customItemRenderer) {
+        CUSTOM_RENDERERS.put(item.asItem(), customItemRenderer);
     }
 
     public static void register(RenderType renderType, Block... blocks) {
@@ -36,10 +32,7 @@ public class CustomRenderManager {
         return CUSTOM_RENDERERS.containsKey(stack.getItem());
     }
 
-    public static boolean hasCustomRenderType(ItemStack stack) {
-        return CUSTOM_ITEM_RENDER_TYPES.containsKey(stack.getItem());
-    }
-
+    @Deprecated
     public static boolean hasCustomRenderType(Block block) {
         return CUSTOM_BLOCK_RENDER_TYPES.containsKey(block);
     }
@@ -51,13 +44,11 @@ public class CustomRenderManager {
         return itemRenderer;
     }
 
-    public static RenderType getCustomRenderType(ItemStack stack) {
-        RenderType renderType = CUSTOM_ITEM_RENDER_TYPES.get(stack.getItem());
-        if (renderType == null)
-            throw new IllegalArgumentException("Item " + stack.getItem() + " is not registered");
-        return renderType;
+    public static Map<Block, RenderType> getCustomBlockRenderTypes() {
+        return Map.copyOf(CUSTOM_BLOCK_RENDER_TYPES);
     }
 
+    @Deprecated
     public static RenderType getCustomRenderType(Block block) {
         RenderType renderType = CUSTOM_BLOCK_RENDER_TYPES.get(block);
         if (renderType == null)

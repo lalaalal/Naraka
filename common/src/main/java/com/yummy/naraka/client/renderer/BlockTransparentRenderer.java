@@ -2,7 +2,6 @@ package com.yummy.naraka.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -37,7 +36,6 @@ public class BlockTransparentRenderer implements ResourceManagerReloadListener {
     public BlockTransparentRenderer() {
         this.minecraft = Minecraft.getInstance();
     }
-
 
     public void renderModel(
             PoseStack.Pose pose,

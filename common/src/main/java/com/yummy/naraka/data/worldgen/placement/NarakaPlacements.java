@@ -1,4 +1,4 @@
-package com.yummy.naraka.fabric.data.worldgen.placement;
+package com.yummy.naraka.data.worldgen.placement;
 
 import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.registries.Registries;

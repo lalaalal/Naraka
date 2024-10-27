@@ -2,12 +2,12 @@ package com.yummy.naraka.fabric.data.advancement;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaTextures;
-import com.yummy.naraka.fabric.data.lang.AdvancementComponent;
-import com.yummy.naraka.fabric.data.lang.AdvancementNarakaComponents;
+import com.yummy.naraka.data.lang.AdvancementComponent;
+import com.yummy.naraka.data.lang.AdvancementNarakaComponents;
+import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
-import com.yummy.naraka.world.structure.NarakaStructures;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.*;

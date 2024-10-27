@@ -1,6 +1,6 @@
 package com.yummy.naraka.fabric.data.tags;
 
-import com.yummy.naraka.fabric.data.worldgen.placement.NarakaOrePlacements;
+import com.yummy.naraka.data.worldgen.placement.NarakaOrePlacements;
 import com.yummy.naraka.tags.NarakaPlacementTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;

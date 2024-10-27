@@ -1,6 +1,6 @@
 package com.yummy.naraka.world.block.grower;
 
-import com.yummy.naraka.world.features.NarakaTreeFeatures;
+import com.yummy.naraka.data.worldgen.features.NarakaTreeFeatures;
 import net.minecraft.world.level.block.grower.TreeGrower;
 
 import java.util.Optional;

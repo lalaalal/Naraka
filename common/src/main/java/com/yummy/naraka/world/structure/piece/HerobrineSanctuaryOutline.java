@@ -1,8 +1,8 @@
 package com.yummy.naraka.world.structure.piece;
 
+import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.tags.NarakaBlockTags;
 import com.yummy.naraka.util.NarakaUtils;
-import com.yummy.naraka.world.structure.NarakaStructures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;

@@ -1,10 +1,9 @@
 package com.yummy.naraka.init;
 
+import com.yummy.naraka.core.registries.RegistryProxy;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import org.jetbrains.annotations.Nullable;
-
-import com.yummy.naraka.core.registries.RegistryProxy;
 
 import java.util.HashMap;
 import java.util.Map;
