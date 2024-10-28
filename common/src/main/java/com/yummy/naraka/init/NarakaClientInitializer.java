@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
 public interface NarakaClientInitializer {
-    void registerCustomItemRenderer(Supplier<? extends ItemLike> item, CustomRenderManager.CustomItemRenderer renderer);
+    void registerCustomItemRenderer(Supplier<? extends ItemLike> item, Supplier<CustomRenderManager.CustomItemRenderer> renderer);
 
     void registerResourceReloadListener(String name, Supplier<PreparableReloadListener> listener);
 

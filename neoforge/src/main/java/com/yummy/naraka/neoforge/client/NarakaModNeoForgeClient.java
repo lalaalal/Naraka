@@ -49,14 +49,14 @@ public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClient
     }
 
     public void clientSetup(FMLClientSetupEvent event) {
-        NarakaModClient.initialize(this);
+        NarakaModClient.initialize();
     }
 
     @Override
-    public void registerCustomItemRenderer(Supplier<? extends ItemLike> item, CustomRenderManager.CustomItemRenderer renderer) {
+    public void registerCustomItemRenderer(Supplier<? extends ItemLike> item, Supplier<CustomRenderManager.CustomItemRenderer> renderer) {
         bus.addListener((Consumer<RegisterClientExtensionsEvent>) event -> {
             event.registerItem(this, item.get().asItem());
-            NeoForgeCustomItemRenderer.getInstance().register(item.get(), renderer);
+            NeoForgeCustomItemRenderer.getInstance().register(item.get(), renderer.get());
         });
     }
 

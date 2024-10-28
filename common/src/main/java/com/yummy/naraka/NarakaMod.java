@@ -70,7 +70,7 @@ public class NarakaMod {
         NarakaStructurePlacementTypes.initialize();
         NarakaProtectionPredicates.initialize();
 
-        NarakaBiomes.initialize();
+        NarakaBiomes.initialize(initializer);
 
         NarakaRootPlacerTypes.initialize();
 

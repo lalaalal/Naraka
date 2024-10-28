@@ -30,12 +30,12 @@ public final class NarakaModFabricClient implements ClientModInitializer, Naraka
     @Override
     public void onInitializeClient() {
         NarakaModClient.registerToEvent(this);
-        NarakaModClient.initialize(this);
+        NarakaModClient.initialize();
     }
 
     @Override
-    public void registerCustomItemRenderer(Supplier<? extends ItemLike> item, CustomRenderManager.CustomItemRenderer renderer) {
-        BuiltinItemRendererRegistry.INSTANCE.register(item.get(), renderer::render);
+    public void registerCustomItemRenderer(Supplier<? extends ItemLike> item, Supplier<CustomRenderManager.CustomItemRenderer> renderer) {
+        BuiltinItemRendererRegistry.INSTANCE.register(item.get(), renderer.get()::render);
     }
 
     @Override

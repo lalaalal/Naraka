@@ -23,14 +23,6 @@ subprojects {
         archivesName = "$rootProject.archives_name-$project.name-$rootProject.minecraft_version"
     }
 
-    jar {
-        archiveClassifier.set("")
-        if (project.name != "common") {
-            destinationDirectory.set(file(project.layout.buildDirectory.file("mods")))
-            from(project(":common").sourceSets.main.output)
-        }
-    }
-
     repositories {
         // Add repositories to retrieve artifacts from in here.
         // You should only use this when depending on other mods because
