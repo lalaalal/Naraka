@@ -61,7 +61,3 @@ shadowJar {
 remapJar {
     input.set shadowJar.archiveFile
 }
-
-jar {
-    from(project(":common").sourceSets.main.output)
-}

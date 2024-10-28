@@ -58,8 +58,6 @@ public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClient
             event.registerItem(this, item.get().asItem());
             NeoForgeCustomItemRenderer.getInstance().register(item.get(), renderer);
         });
-
-        RegisterClientReloadListenersEvent event;
     }
 
     @Override
