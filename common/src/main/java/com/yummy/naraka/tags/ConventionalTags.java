@@ -5,6 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 
@@ -23,6 +24,14 @@ public class ConventionalTags {
 
         public static TagKey<Biome> get(String name) {
             return ConventionalTags.get(Registries.BIOME, name);
+        }
+    }
+
+    public static class Entities {
+        public static final TagKey<EntityType<?>> BOSSES = get("bosses");
+
+        public static TagKey<EntityType<?>> get(String name) {
+            return ConventionalTags.get(Registries.ENTITY_TYPE, name);
         }
     }
 
