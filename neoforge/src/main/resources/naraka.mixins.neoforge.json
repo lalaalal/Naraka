@@ -4,8 +4,7 @@
     "compatibilityLevel": "JAVA_21",
     "minVersion": "0.8",
     "client": [
-        "client.ItemBlockRenderTypesMixin",
-        "client.ItemStackMixin"
+        "client.ItemBlockRenderTypesMixin"
     ],
     "mixins": [
         "PlayerMixin"

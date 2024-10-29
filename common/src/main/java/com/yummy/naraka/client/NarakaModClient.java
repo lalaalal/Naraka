@@ -30,23 +30,23 @@ import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 
 @Environment(EnvType.CLIENT)
 public class NarakaModClient {
-    public static void prepareInitialization(NarakaClientInitializer initializer) {
+    public static void registerToEvent(NarakaClientInitializer initializer) {
         NarakaModelLayers.initialize();
         registerEntityRenderers();
         registerShaders(initializer);
 
-        initializer.registerCustomItemRenderer(NarakaBlocks.FORGING_BLOCK, NarakaCustomRenderer.INSTANCE);
-        initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_STABILIZER, NarakaCustomRenderer.INSTANCE);
-        initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_SMITHING_BLOCK, NarakaCustomRenderer.INSTANCE);
+        initializer.registerCustomItemRenderer(NarakaBlocks.FORGING_BLOCK, () -> NarakaCustomRenderer.INSTANCE);
+        initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_STABILIZER, () -> NarakaCustomRenderer.INSTANCE);
+        initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_SMITHING_BLOCK, () -> NarakaCustomRenderer.INSTANCE);
 
         initializer.registerResourceReloadListener("spear_item_renderer", () -> SpearItemRenderer.INSTANCE);
         initializer.registerResourceReloadListener("custom_renderer", () -> NarakaCustomRenderer.INSTANCE);
         initializer.registerResourceReloadListener("block_transparent_renderer", () -> BlockTransparentRenderer.INSTANCE);
     }
 
-    public static void initializeClient(NarakaClientInitializer initializer) {
+    public static void initialize() {
         initializeItems();
-        initializeBlocks(initializer);
+        initializeBlocks();
 
         registerBlockEntityRenderers();
         registerParticles();
@@ -70,7 +70,7 @@ public class NarakaModClient {
         }));
     }
 
-    private static void initializeBlocks(NarakaClientInitializer initializer) {
+    private static void initializeBlocks() {
         CustomRenderManager.register(RenderType.cutout(),
                 NarakaBlocks.EBONY_SAPLING.get(),
                 NarakaBlocks.POTTED_EBONY_SAPLING.get(),
@@ -81,9 +81,11 @@ public class NarakaModClient {
     }
 
     private static void registerShaders(NarakaClientInitializer initializer) {
-        initializer.registerShader(NarakaMod.location("longinus"), DefaultVertexFormat.POSITION, shaderInstance -> {
-            NarakaShaders.longinus = shaderInstance;
-        });
+        initializer.registerShader(
+                NarakaMod.location("longinus"),
+                DefaultVertexFormat.POSITION,
+                shaderInstance -> NarakaShaders.longinus = shaderInstance
+        );
     }
 
     private static void registerBlockEntityRenderers() {

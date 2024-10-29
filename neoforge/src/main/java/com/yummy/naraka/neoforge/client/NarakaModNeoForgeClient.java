@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -27,6 +28,7 @@ import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -34,29 +36,28 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+@OnlyIn(Dist.CLIENT)
 @Mod(value = NarakaMod.MOD_ID, dist = Dist.CLIENT)
 public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClientItemExtensions {
     private final IEventBus bus;
 
     public NarakaModNeoForgeClient(FMLModContainer container, IEventBus modBus, Dist dist) {
         this.bus = modBus;
-        NarakaModClient.prepareInitialization(this);
+        NarakaModClient.registerToEvent(this);
 
         modBus.addListener(this::clientSetup);
     }
 
     public void clientSetup(FMLClientSetupEvent event) {
-        NarakaModClient.initializeClient(this);
+        NarakaModClient.initialize();
     }
 
     @Override
-    public void registerCustomItemRenderer(Supplier<? extends ItemLike> item, CustomRenderManager.CustomItemRenderer renderer) {
+    public void registerCustomItemRenderer(Supplier<? extends ItemLike> item, Supplier<CustomRenderManager.CustomItemRenderer> renderer) {
         bus.addListener((Consumer<RegisterClientExtensionsEvent>) event -> {
             event.registerItem(this, item.get().asItem());
-            NeoForgeCustomItemRenderer.getInstance().register(item.get(), renderer);
+            NeoForgeCustomItemRenderer.getInstance().register(item.get(), renderer.get());
         });
-
-        RegisterClientReloadListenersEvent event;
     }
 
     @Override
@@ -88,7 +89,7 @@ public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClient
     }
 
     private static class NeoForgeCustomItemRenderer extends BlockEntityWithoutLevelRenderer {
-        private static NeoForgeCustomItemRenderer INSTANCE = null;
+        private static @Nullable NeoForgeCustomItemRenderer INSTANCE = null;
 
         public static NeoForgeCustomItemRenderer getInstance() {
             if (INSTANCE == null)

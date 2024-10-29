@@ -7,9 +7,13 @@ import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.world.item.NarakaCreativeModTabs;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -37,6 +41,11 @@ public final class NarakaModNeoForge implements NarakaInitializer {
         bus.addListener(this::commonSetup);
         bus.addListener(this::createRegistries);
         bus.addListener(this::modifyCreativeModeTabs);
+    }
+
+    @Override
+    public void registerFeatureBiomeModifier(String name, TagKey<Biome> target, GenerationStep.Decoration step, List<ResourceKey<PlacedFeature>> featureKeys) {
+
     }
 
     @Override
@@ -92,4 +101,5 @@ public final class NarakaModNeoForge implements NarakaInitializer {
                 event.insertAfter(new ItemStack(pivot), new ItemStack(item), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
     }
+
 }

@@ -6,6 +6,8 @@ import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
+import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
+import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
@@ -133,11 +135,23 @@ public class NarakaCreativeModTabs {
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get()));
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_LEGGINGS.get()));
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_BOOTS.get()));
+
+        output.accept(reinforced(NarakaItems.PURIFIED_SOUL_HELMET.get()));
+        output.accept(reinforced(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get()));
+        output.accept(reinforced(NarakaItems.PURIFIED_SOUL_LEGGINGS.get()));
+        output.accept(reinforced(NarakaItems.PURIFIED_SOUL_BOOTS.get()));
     }
 
     private static ItemStack blessed(Item item) {
         ItemStack itemStack = new ItemStack(item);
         itemStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
+        return itemStack;
+    }
+
+    private static ItemStack reinforced(ArmorItem item) {
+        ItemStack itemStack = blessed(item);
+        while (Reinforcement.canReinforce(itemStack))
+            Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack));
         return itemStack;
     }
 

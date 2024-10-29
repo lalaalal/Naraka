@@ -113,7 +113,6 @@ public abstract class LivingEntityMixin extends Entity {
             naraka$handleEquipmentSetEffect(naraka$living(), slot, previousStack, currentStack);
             naraka$handleReinforcementEffect(naraka$living(), slot, previousStack, currentStack);
         }
-
     }
 
     @Unique

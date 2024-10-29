@@ -2,7 +2,7 @@
 @FieldsAreNonnullByDefault
 @ParametersAreNonnullByDefault
 
-package com.yummy.naraka.neoforge.client;
+package com.yummy.naraka.neoforge.data;
 
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
