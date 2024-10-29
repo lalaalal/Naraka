@@ -20,7 +20,7 @@ subprojects {
 
     base {
         // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
-        archivesName = "$rootProject.archives_name-$project.name-$rootProject.minecraft_version"
+        archivesName = "$rootProject.archives_name-$project.name-$rootProject.supporting_minecraft_version"
     }
 
     repositories {
