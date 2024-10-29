@@ -9,7 +9,6 @@ import com.yummy.naraka.init.NarakaClientInitializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
@@ -17,7 +16,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
@@ -65,11 +63,6 @@ public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClient
         bus.addListener((Consumer<RegisterClientReloadListenersEvent>) event -> {
             event.registerReloadListener(listener.get());
         });
-    }
-
-    @Override
-    public void registerBlockRenderLayer(RenderType renderType, Block... blocks) {
-
     }
 
     @Override

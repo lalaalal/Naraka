@@ -6,12 +6,10 @@ import com.yummy.naraka.client.NarakaModClient;
 import com.yummy.naraka.client.renderer.CustomRenderManager;
 import com.yummy.naraka.init.NarakaClientInitializer;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.CoreShaderRegistrationCallback;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -19,7 +17,6 @@ import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -42,11 +39,6 @@ public final class NarakaModFabricClient implements ClientModInitializer, Naraka
     public void registerResourceReloadListener(String name, Supplier<PreparableReloadListener> listener) {
         ResourceManagerHelper helper = ResourceManagerHelper.get(PackType.CLIENT_RESOURCES);
         helper.registerReloadListener(new FabricResourceReloadListener(name, listener));
-    }
-
-    @Override
-    public void registerBlockRenderLayer(RenderType renderType, Block... blocks) {
-        BlockRenderLayerMap.INSTANCE.putBlocks(renderType, blocks);
     }
 
     @Override
