@@ -5,7 +5,6 @@ import com.yummy.naraka.core.registries.LazyHolder;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.init.RegistryInitializer;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 
 import java.util.function.Supplier;
@@ -21,11 +20,6 @@ public class FabricRegistryInitializer extends RegistryInitializer {
 
         public FabricRegistryProxy(ResourceKey<Registry<T>> key) {
             this.key = key;
-        }
-
-        @SuppressWarnings("unchecked")
-        private Registry<T> getRegistry() {
-            return (Registry<T>) BuiltInRegistries.REGISTRY.get(key.location());
         }
 
         @Override
