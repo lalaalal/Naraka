@@ -59,6 +59,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     public boolean tryAttachSoulStabilizer(ItemStack stack) {
         if (level != null && !isStabilizerAttached && stack.is(NarakaBlocks.SOUL_STABILIZER.get().asItem())) {
             NarakaItemUtils.loadBlockEntity(stack, soulStabilizer, level.registryAccess());
+            soulStabilizer.setLevel(level);
             isStabilizerAttached = true;
             setChanged();
             return true;
@@ -75,6 +76,10 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
             isStabilizerAttached = false;
             setChanged();
         }
+    }
+
+    public SoulStabilizerBlockEntity getSoulStabilizer() {
+        return soulStabilizer;
     }
 
     public boolean tryAttachTemplate(ItemStack template) {
@@ -139,8 +144,10 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         CompoundTag tag = super.getUpdateTag(provider);
         tag.putBoolean("IsStabilizerAttached", isStabilizerAttached);
-        if (isStabilizerAttached)
+        if (isStabilizerAttached) {
             tag.put("StabilizerData", soulStabilizer.getUpdateTag(provider));
+            soulStabilizer.setLevel(level);
+        }
         if (!templateItem.isEmpty())
             tag.put("TemplateItem", templateItem.save(provider));
 
@@ -164,8 +171,10 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
         super.loadAdditional(compoundTag, provider);
         isStabilizerAttached = compoundTag.getBoolean("IsStabilizerAttached");
-        if (isStabilizerAttached)
+        if (isStabilizerAttached) {
             soulStabilizer.loadAdditional(compoundTag.getCompound("StabilizerData"), provider);
+            soulStabilizer.setLevel(level);
+        }
         if (compoundTag.contains("TemplateItem"))
             templateItem = ItemStack.parseOptional(provider, compoundTag.getCompound("TemplateItem"));
     }

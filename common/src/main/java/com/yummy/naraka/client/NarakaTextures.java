@@ -1,24 +1,54 @@
 package com.yummy.naraka.client;
 
 import com.yummy.naraka.NarakaMod;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class NarakaTextures {
-    public static final ResourceLocation HEROBRINE = NarakaMod.location("textures", "entity/herobrine.png");
-    public static final ResourceLocation HEROBRINE_EYE = NarakaMod.location("textures", "entity/herobrine_eye.png");
+    public static final ResourceLocation HEROBRINE = entity("herobrine.png");
+    public static final ResourceLocation HEROBRINE_EYE = entity("herobrine_eye.png");
 
-    public static final ResourceLocation LONGINUS = NarakaMod.location("textures", "entity/longinus.png");
+    public static final ResourceLocation LONGINUS = entity("longinus.png");
 
-    public static final ResourceLocation SPEAR = NarakaMod.location("textures", "entity/spear.png");
-    public static final ResourceLocation MIGHTY_HOLY_SPEAR = NarakaMod.location("textures", "entity/mighty_holy_spear.png");
+    public static final ResourceLocation SPEAR = entity("spear.png");
+    public static final ResourceLocation MIGHTY_HOLY_SPEAR = entity("entity/mighty_holy_spear.png");
 
-    public static final ResourceLocation FORGING_BLOCK = NarakaMod.location("textures", "entity/forging_block.png");
+    public static final ResourceLocation FORGING_BLOCK = entity("forging_block.png");
+    public static final ResourceLocation SOUL_STABILIZER = entity("soul_stabilizer.png");
+    public static final ResourceLocation SOUL_SMITHING_BLOCK = entity("soul_smithing_block.png");
 
-    public static final ResourceLocation SOUL_CRAFTING = NarakaMod.location("textures", "gui/container/soul_crafting.png");
+    public static final ResourceLocation SOUL_CRAFTING = gui("container/soul_crafting.png");
 
-    public static final ResourceLocation NARAKA_ADVANCEMENT_ROOT_BACKGROUND = texture("gui/advancements/backgrounds/naraka.png");
+    public static final ResourceLocation NARAKA_ADVANCEMENT_ROOT_BACKGROUND = gui("advancements/backgrounds/naraka.png");
 
-    private static ResourceLocation texture(String path) {
-        return NarakaMod.location("textures", path);
+    private static ResourceLocation texture(String parent, String path) {
+        return NarakaMod.location("textures/%s".formatted(parent), path);
+    }
+
+    private static ResourceLocation entity(String path) {
+        return texture("entity", path);
+    }
+
+    private static ResourceLocation gui(String path) {
+        return texture("gui", path);
+    }
+
+    private static final Map<Item, ResourceLocation> TRIM_TEMPLATE_TEXTURES = new HashMap<>();
+
+    public static ResourceLocation getTemplateTexture(ItemStack itemStack) {
+        Item item = itemStack.getItem();
+        if (TRIM_TEMPLATE_TEXTURES.containsKey(item))
+            return TRIM_TEMPLATE_TEXTURES.get(item);
+
+        String trimName = BuiltInRegistries.ITEM.getKey(item)
+                .getPath().replace("_armor_trim_smithing_template", "");
+        ResourceLocation trimTemplateLocation = entity("trims/" + trimName + ".png");
+        TRIM_TEMPLATE_TEXTURES.put(item, trimTemplateLocation);
+        return trimTemplateLocation;
     }
 }
