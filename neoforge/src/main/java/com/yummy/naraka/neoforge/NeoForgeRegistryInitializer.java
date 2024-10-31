@@ -9,13 +9,16 @@ import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class NeoForgeRegistryInitializer extends RegistryInitializer {
     private final IEventBus bus;
+    private final Function<ResourceKey<? extends Registry<?>>, Registry<?>> narakaRegistryProvider;
 
-    public NeoForgeRegistryInitializer(IEventBus bus) {
+    public NeoForgeRegistryInitializer(IEventBus bus, Function<ResourceKey<? extends Registry<?>>, Registry<?>> narakaRegistryProvider) {
         this.bus = bus;
+        this.narakaRegistryProvider = narakaRegistryProvider;
     }
 
     @Override
@@ -28,6 +31,15 @@ public class NeoForgeRegistryInitializer extends RegistryInitializer {
 
         public NeoForgeRegistryProxy(ResourceKey<Registry<T>> registryKey) {
             registry = DeferredRegister.create(registryKey, NarakaMod.MOD_ID);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Registry<T> getRegistry() {
+            Registry<T> result = RegistryProxy.super.getRegistry();
+            if (result == null)
+                return (Registry<T>) narakaRegistryProvider.apply(registry.getRegistryKey());
+            return result;
         }
 
         @SuppressWarnings("unchecked")

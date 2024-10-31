@@ -52,16 +52,6 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
                 PartPose.ZERO
         );
 
-        partdefinition.addOrReplaceChild("trim_template",
-                CubeListBuilder.create()
-                        .texOffs(0, 0)
-                        .addBox(3, 1, 7,
-                                1, 10, 8,
-                                new CubeDeformation(0.0F)
-                        ),
-                PartPose.offset(0, 0, 0)
-        );
-
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
@@ -93,7 +83,7 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
         Direction direction = blockEntity.getBlockState().getValue(SoulSmithingBlock.FACING);
         Quaternionf rotation = Axis.YN.rotationDegrees(direction.toYRot());
         poseStack.rotateAround(rotation, 0.5f, 0.5f, 0.5f);
-        poseStack.rotateAround(Axis.ZN.rotation(Mth.PI), 0.5f, 0.5f, 0.5f);
+        poseStack.rotateAround(Axis.ZP.rotation(Mth.PI), 0.5f, 0.5f, 0.5f);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutout(NarakaTextures.SOUL_SMITHING_BLOCK));
         main.render(poseStack, vertexConsumer, light, overlay);
         poseStack.popPose();
@@ -132,7 +122,8 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
 
         poseStack.pushPose();
         poseStack.rotateAround(rotation.rotateX(Mth.HALF_PI), 0.5f, 0.5f, 0.5f);
-        poseStack.translate(0.5, 0.5, -1d / 16);
+        poseStack.translate(0.5, 0.5, 0);
+        poseStack.scale(0.8f, 0.8f, 0.8f);
         ItemStack itemStack = blockEntity.getForgingItem();
         itemRenderer.renderStatic(itemStack, ItemDisplayContext.FIXED, light, overlay, poseStack, bufferSource, blockEntity.getLevel(), 1);
         poseStack.popPose();

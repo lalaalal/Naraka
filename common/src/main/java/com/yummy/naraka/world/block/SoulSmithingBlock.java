@@ -54,7 +54,7 @@ public class SoulSmithingBlock extends ForgingBlock {
     }
 
     private boolean isStabilizerSide(BlockState state, Direction direction) {
-        return state.getValue(FACING) == direction;
+        return state.getValue(FACING).getOpposite() == direction;
     }
 
     private boolean isTemplatedSide(BlockState state, Direction direction) {

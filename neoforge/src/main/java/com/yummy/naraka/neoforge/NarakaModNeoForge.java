@@ -22,7 +22,6 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,11 +29,11 @@ import java.util.function.Consumer;
 
 @Mod(NarakaMod.MOD_ID)
 public final class NarakaModNeoForge implements NarakaInitializer {
-    private final List<Registry<?>> registries = new ArrayList<>();
+    private final Map<ResourceKey<? extends Registry<?>>, Registry<?>> registries = new HashMap<>();
     private final Map<ResourceKey<CreativeModeTab>, Consumer<NarakaCreativeModTabs.TabEntries>> tabEntriesMap = new HashMap<>();
 
     public NarakaModNeoForge(IEventBus bus, ModContainer container) {
-        RegistryInitializer.allocateInstance(new NeoForgeRegistryInitializer(bus));
+        RegistryInitializer.allocateInstance(new NeoForgeRegistryInitializer(bus, registries::get));
 
         NarakaMod.initialize(this);
 
@@ -63,7 +62,7 @@ public final class NarakaModNeoForge implements NarakaInitializer {
     }
 
     public void createRegistries(NewRegistryEvent event) {
-        for (Registry<?> registry : registries)
+        for (Registry<?> registry : registries.values())
             event.register(registry);
     }
 
@@ -81,7 +80,7 @@ public final class NarakaModNeoForge implements NarakaInitializer {
                     .maxId(128)
                     .defaultKey(NarakaMod.location("empty"))
                     .create();
-            registries.add(registry);
+            registries.put(key, registry);
             return registry;
         }
     }
