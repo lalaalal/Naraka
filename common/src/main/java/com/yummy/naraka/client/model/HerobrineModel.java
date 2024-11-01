@@ -56,7 +56,7 @@ public class HerobrineModel<T extends Herobrine> extends HierarchicalModel<T> {
     }
 
     @Override
-    public void setupAnim(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
+    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
     }
 }

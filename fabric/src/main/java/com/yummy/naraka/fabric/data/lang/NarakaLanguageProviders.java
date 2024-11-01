@@ -202,6 +202,8 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.HEROBRINE_PHASE_3_DISC, "Herobrine Phase 3 Disc", "히로빈 3 페이즈 음반");
         addItem(NarakaItems.HEROBRINE_PHASE_4_DISC, "Herobrine Phase 4 Disc", "히로빈 4 페이즈 음반");
 
+        addBlock(NarakaBlocks.AMETHYST_ORE, "Amethyst Ore", "자수정 광석");
+        addBlock(NarakaBlocks.DEEPSLATE_AMETHYST_ORE, "Deepslate Amethyst Ore", "심층암 자수정 광석");
         addBlock(NarakaBlocks.NECTARIUM_ORE, "Nectarium Ore", "넥타륨 광석");
         addBlock(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "Deepslate Nectarium Ore", "심층암 넥타륨 광석");
         addBlock(NarakaBlocks.NECTARIUM_BLOCK, "Block of Nectarium", "넥타륨 블록");
@@ -237,7 +239,6 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.FORGING_BLOCK, "Forging Block", "단조 블록");
         addBlock(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Nectarium Core", "넥타륨 코어");
         addBlock(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, "Nectarium Crystal", "넥타륨 결정");
-        addBlock(NarakaBlocks.NARAKA_FORGING_BLOCK, "Naraka Forging Block", "나락의 단조 블록");
         addBlock(NarakaBlocks.SOUL_STABILIZER, "Soul Stabilizer", "영혼 안정기");
         addBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, "Soul Smithing Block", "영혼 대장장이 블록");
 

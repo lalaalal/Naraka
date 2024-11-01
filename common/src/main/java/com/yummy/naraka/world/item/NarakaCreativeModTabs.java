@@ -72,7 +72,7 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK.get());
         output.accept(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
 
-        output.accept(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+        output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get());
         output.accept(NarakaItems.GOD_BLOOD.get());
 
         output.accept(NarakaItems.PURIFIED_SOUL_SHARD.get());
@@ -88,9 +88,12 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaItems.SANCTUARY_COMPASS.get());
         output.accept(NarakaBlocks.SOUL_CRAFTING_BLOCK.get());
 
-        output.accept(NarakaBlocks.FORGING_BLOCK.get());
+        output.accept(NarakaBlocks.SOUL_STABILIZER.get());
+        output.accept(NarakaBlocks.SOUL_SMITHING_BLOCK.get());
         output.accept(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
         output.accept(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get());
+        output.accept(NarakaBlocks.AMETHYST_ORE.get());
+        output.accept(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
     }
 
     private static void createNarakaTestTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
@@ -99,7 +102,7 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaItems.EBONY_METAL_CHESTPLATE.get());
         output.accept(NarakaItems.EBONY_METAL_LEGGINGS.get());
         output.accept(NarakaItems.EBONY_METAL_BOOTS.get());
-        output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get());
+        output.accept(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get());
 
         output.accept(NarakaItems.EBONY_METAL_INGOT.get());
         output.accept(NarakaItems.COMPRESSED_IRON_INGOT.get());
@@ -124,12 +127,9 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaBlocks.EBONY_SAPLING.get());
 
         output.accept(NarakaItems.STIGMA_ROD.get());
-
         output.accept(NarakaBlocks.NECTARIUM_ORE.get());
         output.accept(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
-        output.accept(NarakaBlocks.NARAKA_FORGING_BLOCK.get());
-        output.accept(NarakaBlocks.SOUL_STABILIZER.get());
-        output.accept(NarakaBlocks.SOUL_SMITHING_BLOCK.get());
+        output.accept(NarakaBlocks.FORGING_BLOCK.get());
 
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_HELMET.get()));
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get()));

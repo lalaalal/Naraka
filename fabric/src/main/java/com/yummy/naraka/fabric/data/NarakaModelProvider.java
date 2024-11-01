@@ -68,6 +68,8 @@ public class NarakaModelProvider extends FabricModelProvider {
         createNectariumCrystal(generator);
         generator.createTrivialCube(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
         generator.createSimpleFlatItemModel(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get());
+        generator.createTrivialCube(NarakaBlocks.AMETHYST_ORE.get());
+        generator.createTrivialCube(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
     }
 
     private static void createNectariumCrystal(BlockModelGenerators generator) {
