@@ -9,7 +9,6 @@ import com.yummy.naraka.world.block.SoulSmithingBlock;
 import com.yummy.naraka.world.block.entity.SoulSmithingBlockEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -29,8 +28,8 @@ import org.joml.Quaternionf;
 public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<SoulSmithingBlockEntity> {
     private final ModelPart main;
     private final ModelPart trimTemplate;
-    private final ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-    private final BlockEntityRenderDispatcher blockEntityRenderDispatcher = Minecraft.getInstance().getBlockEntityRenderDispatcher();
+    private final ItemRenderer itemRenderer;
+    private final BlockEntityRenderDispatcher blockEntityRenderDispatcher;
 
     public static LayerDefinition createMainLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
@@ -62,11 +61,11 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
         partdefinition.addOrReplaceChild("trim_template",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(12, 1, 2,
+                        .addBox(3, 0, 2,
                                 1, 10, 8,
                                 new CubeDeformation(0.0F)
                         ),
-                PartPose.ZERO
+                PartPose.offsetAndRotation(16, 11, 0, 0, 0, Mth.PI)
         );
 
         return LayerDefinition.create(meshdefinition, 32, 32);
@@ -75,6 +74,8 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
     public SoulSmithingBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         main = context.bakeLayer(NarakaModelLayers.SOUL_SMITHING_BLOCK);
         trimTemplate = context.bakeLayer(NarakaModelLayers.TRIM_TEMPLATE);
+        itemRenderer = context.getItemRenderer();
+        blockEntityRenderDispatcher = context.getBlockEntityRenderDispatcher();
     }
 
     @Override

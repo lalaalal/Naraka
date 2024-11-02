@@ -95,7 +95,9 @@ public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
                 .add(NarakaBlocks.IMITATION_GOLD_BLOCK.get())
                 .add(NarakaBlocks.COMPRESSED_IRON_BLOCK.get())
                 .add(NarakaBlocks.NECTARIUM_CORE_BLOCK.get())
-                .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get());
+                .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get())
+                .add(NarakaBlocks.AMETHYST_ORE.get())
+                .add(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
         NarakaBlocks.forEachSoulInfusedBlock(mineableWithPickaxe::add);
 
         getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_HOE)

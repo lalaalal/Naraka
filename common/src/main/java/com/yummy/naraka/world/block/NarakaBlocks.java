@@ -34,12 +34,12 @@ public class NarakaBlocks {
 
     public static final LazyHolder<Block, DropExperienceBlock> AMETHYST_ORE = registerBlockWithItem(
             "amethyst_ore",
-            properties -> new DropExperienceBlock(UniformInt.of(0, 2), properties),
+            properties -> new DropExperienceBlock(UniformInt.of(0, 2), properties.requiresCorrectToolForDrops()),
             Blocks.STONE
     );
     public static final LazyHolder<Block, DropExperienceBlock> DEEPSLATE_AMETHYST_ORE = registerBlockWithItem(
             "deepslate_amethyst_ore",
-            properties -> new DropExperienceBlock(UniformInt.of(1, 2), properties),
+            properties -> new DropExperienceBlock(UniformInt.of(1, 2), properties.requiresCorrectToolForDrops()),
             Blocks.DEEPSLATE
     );
 
