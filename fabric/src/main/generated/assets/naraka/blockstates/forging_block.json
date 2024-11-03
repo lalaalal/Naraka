@@ -1,7 +1,7 @@
 {
-    "variants": {
-        "": {
-            "model": "naraka:block/forging_block"
-        }
+  "variants": {
+    "": {
+      "model": "naraka:block/forging_block"
     }
+  }
 }

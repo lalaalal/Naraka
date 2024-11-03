@@ -1,13 +1,13 @@
 {
   "values": [
     "naraka:god_blood",
-    "naraka:soul_infused_amethyst",
-    "naraka:soul_infused_nectarium",
-    "naraka:soul_infused_copper",
-      "naraka:soul_infused_gold",
-    "naraka:soul_infused_emerald",
+    "naraka:soul_infused_lapis",
+    "naraka:soul_infused_diamond",
+    "naraka:soul_infused_gold",
     "naraka:soul_infused_redstone",
-      "naraka:soul_infused_lapis",
-      "naraka:soul_infused_diamond"
+    "naraka:soul_infused_nectarium",
+    "naraka:soul_infused_emerald",
+    "naraka:soul_infused_copper",
+    "naraka:soul_infused_amethyst"
   ]
 }
