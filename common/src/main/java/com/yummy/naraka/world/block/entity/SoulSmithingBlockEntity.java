@@ -3,6 +3,7 @@ package com.yummy.naraka.world.block.entity;
 import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.block.NarakaBlocks;
+import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
@@ -83,7 +84,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     }
 
     public boolean tryAttachTemplate(ItemStack template) {
-        if (templateItem.isEmpty() && template.is(ItemTags.TRIM_TEMPLATES)) {
+        if (templateItem.isEmpty() && (template.is(ItemTags.TRIM_TEMPLATES) || template.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE))) {
             this.templateItem = template.copyWithCount(1);
             setChanged();
             return true;
@@ -117,7 +118,13 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
                 && isStabilizerAttached && soulStabilizer.getSouls() >= 9 * 16) {
             SoulType soulType = soulStabilizer.getSoulType();
             if (soulType == null)
+                return false;
+
+            if (templateItem.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE)
+                    && forgingItem.is(NarakaItems.PURIFIED_SOUL_SWORD)) {
+                forgingItem = new ItemStack(NarakaItems.getSoulSwordOf(soulType));
                 return true;
+            }
 
             if (soulType == SoulType.GOD_BLOOD)
                 forgingItem.set(NarakaDataComponentTypes.BLESSED.get(), true);

@@ -1,7 +1,6 @@
 package com.yummy.naraka.fabric.data;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.crafting.SoulCraftingRecipe;
@@ -10,7 +9,6 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -60,15 +58,6 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
         soulCraftingRecipe(recipeOutput, NarakaItems.NECTARIUM.get(), NarakaItems.SOUL_INFUSED_NECTARIUM.get());
         soulCraftingRecipe(recipeOutput, Items.REDSTONE, NarakaItems.SOUL_INFUSED_REDSTONE.get());
 
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_SWORD.get(), NarakaItems.SOUL_INFUSED_REDSTONE.get(), RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get());
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_SWORD.get(), NarakaItems.SOUL_INFUSED_COPPER.get(), RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_COPPER_SWORD.get());
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_SWORD.get(), NarakaItems.SOUL_INFUSED_GOLD.get(), RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_GOLD_SWORD.get());
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_SWORD.get(), NarakaItems.SOUL_INFUSED_EMERALD.get(), RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get());
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_SWORD.get(), NarakaItems.SOUL_INFUSED_DIAMOND.get(), RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get());
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_SWORD.get(), NarakaItems.SOUL_INFUSED_LAPIS.get(), RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get());
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_SWORD.get(), NarakaItems.SOUL_INFUSED_AMETHYST.get(), RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get());
-        smithing(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_SWORD.get(), NarakaItems.SOUL_INFUSED_NECTARIUM.get(), RecipeCategory.COMBAT, NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get());
-
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, NarakaItems.PURIFIED_SOUL_SWORD.get())
                 .define('M', NarakaItems.PURIFIED_SOUL_METAL.get())
                 .define('/', Items.STICK)
@@ -113,11 +102,7 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .save(recipeOutput);
         nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, NarakaItems.EBONY_METAL_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.EBONY_METAL_BLOCK.get());
         copySmithingTemplate(recipeOutput, NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.EBONY_METAL_INGOT.get(), NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
-        trimSmithing(recipeOutput,
-                NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get(),
-                Ingredient.of(NarakaItemTags.PURIFIED_SOUL_ARMOR),
-                Ingredient.of(ItemTags.TRIM_MATERIALS)
-        );
+
         helmet(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL.get(), NarakaItems.PURIFIED_SOUL_HELMET.get());
         chestplate(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL.get(), NarakaItems.PURIFIED_SOUL_CHESTPLATE.get());
         legging(recipeOutput, NarakaItems.PURIFIED_SOUL_METAL.get(), NarakaItems.PURIFIED_SOUL_LEGGINGS.get());
@@ -134,6 +119,20 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .pattern("m#m")
                 .pattern("BBB")
                 .unlockedBy(getHasName(NarakaItems.EBONY_METAL_INGOT.get()), has(NarakaItems.EBONY_METAL_INGOT.get()))
+                .save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NarakaBlocks.SOUL_STABILIZER.get())
+                .define('#', Blocks.GLASS_PANE)
+                .pattern("##")
+                .pattern("##")
+                .unlockedBy(getHasName(Blocks.GLASS_PANE), has(Blocks.GLASS_PANE))
+                .save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NarakaBlocks.SOUL_SMITHING_BLOCK.get())
+                .define('#', Items.HEAVY_CORE)
+                .define('B', Blocks.SMITHING_TABLE)
+                .pattern("##")
+                .pattern("BB")
+                .pattern("BB")
+                .unlockedBy(getHasName(Items.HEAVY_CORE), has(Items.HEAVY_CORE))
                 .save(recipeOutput);
     }
 

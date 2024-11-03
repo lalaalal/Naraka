@@ -1,13 +1,11 @@
 package com.yummy.naraka.world.item;
 
-import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.LazyHolder;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.armortrim.NarakaTrimPatterns;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
-import dev.architectury.registry.registries.DeferredRegister;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -18,7 +16,9 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Unbreakable;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -26,10 +26,9 @@ import java.util.function.Function;
 public class NarakaItems {
     private static final String SOUL_INFUSED_PREFIX = "soul_infused_";
 
-    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(NarakaMod.MOD_ID, Registries.ITEM);
-
     private static final Set<LazyHolder<Item, Item>> SOUL_INFUSED_ITEMS = new HashSet<>();
     private static final Set<LazyHolder<Item, SwordItem>> SOUL_INFUSED_SWORDS = new HashSet<>();
+    private static final Map<SoulType, LazyHolder<Item, SwordItem>> SWORD_BY_SOUL_TYPE = new HashMap<>();
 
     public static final LazyHolder<Item, Item> STIGMA_ROD = registerItem("stigma_rod", StigmaRodItem::new);
 
@@ -155,6 +154,10 @@ public class NarakaItems {
             consumer.accept(item.get());
     }
 
+    public static Item getSoulSwordOf(SoulType type) {
+        return SWORD_BY_SOUL_TYPE.get(type).get();
+    }
+
     private static LazyHolder<Item, Item> registerSoulInfusedItem(SoulType type) {
         LazyHolder<Item, Item> item = registerItem(
                 SOUL_INFUSED_PREFIX + type.getSerializedName(),
@@ -179,6 +182,7 @@ public class NarakaItems {
                 )
         );
         SOUL_INFUSED_SWORDS.add(item);
+        SWORD_BY_SOUL_TYPE.put(type, item);
         return item;
     }
 
