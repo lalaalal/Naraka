@@ -1,0 +1,10 @@
+{
+  "type": "naraka:soul_crafting",
+  "ingredient": {
+    "item": "minecraft:redstone"
+  },
+  "result": {
+    "count": 1,
+    "id": "naraka:soul_infused_redstone"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_herobrine_totem": {
+      "conditions": {
+        "items": [
+          {
+            "items": "naraka:herobrine_totem"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "naraka:herobrine_totem"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_herobrine_totem"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "naraka:herobrine_totem"
+    ]
+  }
+}

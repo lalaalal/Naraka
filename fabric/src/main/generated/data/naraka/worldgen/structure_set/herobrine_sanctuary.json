@@ -1,0 +1,18 @@
+{
+  "placement": {
+    "type": "naraka:exclusive_random_spread",
+    "exclusive_range": 10,
+    "exclusive_structures": "#naraka:herobrine_sanctuary_exclusive",
+    "min_distance_from_center": 48,
+    "salt": 8927916,
+    "separation": 20,
+    "spacing": 80,
+    "spread_type": "triangular"
+  },
+  "structures": [
+    {
+      "structure": "naraka:herobrine_sanctuary",
+      "weight": 1
+    }
+  ]
+}

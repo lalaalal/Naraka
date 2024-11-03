@@ -1,0 +1,25 @@
+{
+  "values": [
+    "naraka:ebony_metal_block",
+    "naraka:herobrine_totem",
+    "naraka:amethyst_shard_block",
+    "naraka:nectarium_block",
+    "naraka:nectarium_ore",
+    "naraka:deepslate_nectarium_ore",
+    "naraka:purified_soul_metal_block",
+    "naraka:imitation_gold_block",
+    "naraka:compressed_iron_block",
+    "naraka:nectarium_core",
+    "naraka:nectarium_crystal",
+    "naraka:amethyst_ore",
+    "naraka:deepslate_amethyst_ore",
+    "naraka:soul_infused_redstone_block",
+    "naraka:soul_infused_copper_block",
+    "naraka:soul_infused_gold_block",
+    "naraka:soul_infused_emerald_block",
+    "naraka:soul_infused_diamond_block",
+    "naraka:soul_infused_lapis_block",
+    "naraka:soul_infused_amethyst_block",
+    "naraka:soul_infused_nectarium_block"
+  ]
+}

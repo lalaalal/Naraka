@@ -1,0 +1,32 @@
+{
+  "parent": "naraka:soul_infusing",
+  "criteria": {
+    "craft_purified_soul_metal": {
+      "conditions": {
+        "recipe_id": "naraka:purified_soul_metal"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.naraka.purified_soul_metal.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "naraka:purified_soul_metal"
+    },
+    "title": {
+      "translate": "advancements.naraka.purified_soul_metal.title"
+    }
+  },
+  "requirements": [
+    [
+      "craft_purified_soul_metal"
+    ]
+  ],
+  "rewards": {
+    "experience": 6
+  },
+  "sends_telemetry_event": true
+}

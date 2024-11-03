@@ -1,0 +1,37 @@
+{
+  "parent": "naraka:kill_herobrine",
+  "criteria": {
+    "has_god_blood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "naraka:god_blood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.naraka.god_blood.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "naraka:god_blood"
+    },
+    "title": {
+      "translate": "advancements.naraka.god_blood.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_god_blood"
+    ]
+  ],
+  "rewards": {
+    "experience": 66
+  },
+  "sends_telemetry_event": true
+}

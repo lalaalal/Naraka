@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "naraka:soul_infused_gold"
+  },
+  "base": {
+    "item": "naraka:purified_soul_sword"
+  },
+  "result": {
+    "count": 1,
+    "id": "naraka:soul_infused_gold_sword"
+  },
+  "template": {
+    "item": "naraka:purified_soul_upgrade_smithing_template"
+  }
+}

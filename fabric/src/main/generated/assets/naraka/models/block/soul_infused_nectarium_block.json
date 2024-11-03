@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "naraka:block/soul_infused_nectarium_block"
+  }
+}

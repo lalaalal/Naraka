@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing_trim",
+  "addition": {
+    "tag": "minecraft:trim_materials"
+  },
+  "base": {
+    "tag": "naraka:purified_soul_armor"
+  },
+  "template": {
+    "item": "naraka:purified_soul_silence_armor_trim_smithing_template"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "parent": "naraka:summon_herobrine",
+  "criteria": {
+    "kill_herobrine": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "naraka:herobrine"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.naraka.kill_herobrine.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "naraka:purified_soul_shard"
+    },
+    "title": {
+      "translate": "advancements.naraka.kill_herobrine.title"
+    }
+  },
+  "requirements": [
+    [
+      "kill_herobrine"
+    ]
+  ],
+  "rewards": {
+    "experience": 66
+  },
+  "sends_telemetry_event": true
+}

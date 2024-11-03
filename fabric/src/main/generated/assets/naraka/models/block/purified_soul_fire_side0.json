@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_fire_side",
+  "textures": {
+    "fire": "naraka:block/purified_soul_fire_0"
+  }
+}

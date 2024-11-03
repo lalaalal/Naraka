@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "naraka:nectarium_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "naraka:nectarium"
+  }
+}

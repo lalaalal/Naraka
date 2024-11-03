@@ -1,0 +1,32 @@
+{
+  "criteria": {
+    "killed_by_something": {
+      "trigger": "minecraft:entity_killed_player"
+    },
+    "killed_something": {
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "naraka:textures/gui/advancements/backgrounds/naraka.png",
+    "description": {
+      "translate": "advancements.naraka.root.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "naraka:nectarium"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.naraka.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "killed_something",
+      "killed_by_something"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,41 @@
+{
+  "parent": "naraka:herobrine_sanctuary",
+  "criteria": {
+    "summon_herobrine": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "naraka:herobrine"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:summoned_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.naraka.summon_herobrine.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "naraka:herobrine_totem"
+    },
+    "title": {
+      "translate": "advancements.naraka.summon_herobrine.title"
+    }
+  },
+  "requirements": [
+    [
+      "summon_herobrine"
+    ]
+  ],
+  "rewards": {
+    "experience": 6
+  },
+  "sends_telemetry_event": true
+}

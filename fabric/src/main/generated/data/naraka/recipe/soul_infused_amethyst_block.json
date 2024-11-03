@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "naraka:soul_infused_amethyst_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "naraka:soul_infused_amethyst"
+  }
+}

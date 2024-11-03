@@ -1,0 +1,9 @@
+{
+  "asset_name": "god_blood",
+  "description": {
+    "color": "#625859",
+    "translate": "trim_material.naraka.god_blood"
+  },
+  "ingredient": "naraka:god_blood",
+  "item_model_index": 1.0
+}

@@ -28,7 +28,9 @@ import java.util.Map;
 import java.util.Optional;
 
 public class NarakaModelProvider extends FabricModelProvider {
-    private static final ModelTemplate BLOCK_ENTITY_ITEM = new ModelTemplate(Optional.of(NarakaMod.location("item", "template_block_entity")), Optional.empty(), TextureSlot.PARTICLE);
+    private static final ModelTemplate BLOCK_ENTITY_ITEM = new ModelTemplate(
+            Optional.of(NarakaMod.location("item", "template_block_entity")), Optional.empty()
+    );
 
     public NarakaModelProvider(FabricDataOutput output) {
         super(output);
@@ -61,15 +63,20 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createPlant(NarakaBlocks.EBONY_SAPLING.get(), NarakaBlocks.POTTED_EBONY_SAPLING.get(), BlockModelGenerators.TintState.NOT_TINTED);
         NarakaBlocks.forEachSoulInfusedBlock(generator::createTrivialCube);
         generator.createTrivialCube(NarakaBlocks.EBONY_METAL_BLOCK.get());
-        generator.blockEntityModels(NarakaBlocks.FORGING_BLOCK.get(), Blocks.ANVIL)
-                .createWithCustomBlockItemModel(BLOCK_ENTITY_ITEM, NarakaBlocks.FORGING_BLOCK.get(), NarakaBlocks.SOUL_SMITHING_BLOCK.get());
-        generator.blockEntityModels(NarakaBlocks.SOUL_STABILIZER.get(), Blocks.GLASS)
-                .createWithCustomBlockItemModel(BLOCK_ENTITY_ITEM, NarakaBlocks.SOUL_STABILIZER.get());
+        generator.blockEntityModels(NarakaBlocks.FORGING_BLOCK.get(), Blocks.ANVIL);
+        createBlockEntityItemModel(generator, NarakaBlocks.FORGING_BLOCK.get(), NarakaBlocks.SOUL_SMITHING_BLOCK.get());
+        generator.blockEntityModels(NarakaBlocks.SOUL_STABILIZER.get(), Blocks.GLASS);
+        createBlockEntityItemModel(generator, NarakaBlocks.SOUL_STABILIZER.get());
         createNectariumCrystal(generator);
         generator.createTrivialCube(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
         generator.createSimpleFlatItemModel(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get());
         generator.createTrivialCube(NarakaBlocks.AMETHYST_ORE.get());
         generator.createTrivialCube(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
+    }
+
+    private static void createBlockEntityItemModel(BlockModelGenerators generator, Block... blocks) {
+        for (Block block : blocks)
+            BLOCK_ENTITY_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), new TextureMapping(), generator.modelOutput);
     }
 
     private static void createNectariumCrystal(BlockModelGenerators generator) {

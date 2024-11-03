@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#c:is_overworld",
+  "features": [
+    "naraka:nectarium_ore_buried_placed",
+    "naraka:nectarium_ore_small_placed",
+    "naraka:nectarium_ore_large_placed"
+  ],
+  "step": "underground_ores"
+}

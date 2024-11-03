@@ -16,7 +16,7 @@ public class NarakaTextures {
     public static final ResourceLocation LONGINUS = entity("longinus.png");
 
     public static final ResourceLocation SPEAR = entity("spear.png");
-    public static final ResourceLocation MIGHTY_HOLY_SPEAR = entity("entity/mighty_holy_spear.png");
+    public static final ResourceLocation MIGHTY_HOLY_SPEAR = entity("mighty_holy_spear.png");
 
     public static final ResourceLocation FORGING_BLOCK = entity("forging_block.png");
     public static final ResourceLocation SOUL_STABILIZER = entity("soul_stabilizer.png");
