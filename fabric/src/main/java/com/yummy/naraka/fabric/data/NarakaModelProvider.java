@@ -29,7 +29,9 @@ import java.util.Optional;
 
 public class NarakaModelProvider extends FabricModelProvider {
     private static final ModelTemplate BLOCK_ENTITY_ITEM = new ModelTemplate(
-            Optional.of(NarakaMod.location("item", "template_block_entity")), Optional.empty()
+            Optional.of(NarakaMod.location("item", "template_block_entity")),
+            Optional.empty(),
+            TextureSlot.PARTICLE
     );
 
     public NarakaModelProvider(FabricDataOutput output) {
@@ -63,10 +65,8 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createPlant(NarakaBlocks.EBONY_SAPLING.get(), NarakaBlocks.POTTED_EBONY_SAPLING.get(), BlockModelGenerators.TintState.NOT_TINTED);
         NarakaBlocks.forEachSoulInfusedBlock(generator::createTrivialCube);
         generator.createTrivialCube(NarakaBlocks.EBONY_METAL_BLOCK.get());
-        generator.blockEntityModels(NarakaBlocks.FORGING_BLOCK.get(), Blocks.ANVIL);
-        createBlockEntityItemModel(generator, NarakaBlocks.FORGING_BLOCK.get(), NarakaBlocks.SOUL_SMITHING_BLOCK.get());
-        generator.blockEntityModels(NarakaBlocks.SOUL_STABILIZER.get(), Blocks.GLASS);
-        createBlockEntityItemModel(generator, NarakaBlocks.SOUL_STABILIZER.get());
+        createBlockEntityModels(generator, Blocks.ANVIL, NarakaBlocks.FORGING_BLOCK.get(), NarakaBlocks.SOUL_SMITHING_BLOCK.get());
+        createBlockEntityModels(generator, Blocks.GLASS, NarakaBlocks.SOUL_STABILIZER.get());
         createNectariumCrystal(generator);
         generator.createTrivialCube(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
         generator.createSimpleFlatItemModel(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get());
@@ -74,9 +74,11 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
     }
 
-    private static void createBlockEntityItemModel(BlockModelGenerators generator, Block... blocks) {
-        for (Block block : blocks)
-            BLOCK_ENTITY_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), new TextureMapping(), generator.modelOutput);
+    private static void createBlockEntityModels(BlockModelGenerators generator, Block particle, Block... blocks) {
+        for (Block block : blocks) {
+            BLOCK_ENTITY_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.particle(particle), generator.modelOutput);
+            generator.blockEntityModels(block, particle).create(block);
+        }
     }
 
     private static void createNectariumCrystal(BlockModelGenerators generator) {

@@ -84,7 +84,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     }
 
     public boolean tryAttachTemplate(ItemStack template) {
-        if (templateItem.isEmpty() && (template.is(ItemTags.TRIM_TEMPLATES) || template.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE))) {
+        if (templateItem.isEmpty() && (template.is(ItemTags.TRIM_TEMPLATES) || template.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get()))) {
             this.templateItem = template.copyWithCount(1);
             setChanged();
             return true;
@@ -120,8 +120,8 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
             if (soulType == null)
                 return false;
 
-            if (templateItem.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE)
-                    && forgingItem.is(NarakaItems.PURIFIED_SOUL_SWORD)) {
+            if (templateItem.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get())
+                    && forgingItem.is(NarakaItems.PURIFIED_SOUL_SWORD.get())) {
                 forgingItem = new ItemStack(NarakaItems.getSoulSwordOf(soulType));
                 return true;
             }

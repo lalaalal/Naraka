@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "#": {
+            "item": "minecraft:heavy_core"
+        },
+        "B": {
+            "item": "minecraft:smithing_table"
+        }
+    },
+    "pattern": [
+        "##",
+        "BB",
+        "BB"
+    ],
+    "result": {
+        "count": 1,
+        "id": "naraka:soul_smithing_block"
+    }
+}
