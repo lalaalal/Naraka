@@ -123,6 +123,8 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
             if (templateItem.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get())
                     && forgingItem.is(NarakaItems.PURIFIED_SOUL_SWORD.get())) {
                 forgingItem = new ItemStack(NarakaItems.getSoulSwordOf(soulType));
+                setChanged();
+                level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
                 return true;
             }
 
