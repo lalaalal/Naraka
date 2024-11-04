@@ -33,6 +33,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class NarakaMod {
     public static final String MOD_ID = "naraka";
+    public static boolean isDataGeneration = false;
+    public static boolean isModLoaded = false;
 
     public static void initialize(NarakaInitializer initializer) {
         RegistryFactory.initialize(initializer);

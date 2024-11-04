@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 
 public class NarakaFeatures {
-    public static ResourceKey<ConfiguredFeature<?, ?>> createKey(String name) {
+    public static ResourceKey<ConfiguredFeature<?, ?>> create(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, NarakaMod.location(name));
     }
 }

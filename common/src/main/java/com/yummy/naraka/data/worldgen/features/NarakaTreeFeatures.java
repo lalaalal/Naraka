@@ -25,8 +25,8 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class NarakaTreeFeatures {
-    public static final ResourceKey<ConfiguredFeature<?, ?>> EBONY = NarakaFeatures.createKey("ebony");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> EBONY_CHERRY = NarakaFeatures.createKey("ebony_cherry");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> EBONY = NarakaFeatures.create("ebony");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> EBONY_CHERRY = NarakaFeatures.create("ebony_cherry");
 
     protected static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         FeatureUtils.register(context, EBONY, Feature.TREE, createEbony().build());

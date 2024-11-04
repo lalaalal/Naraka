@@ -58,7 +58,7 @@ public final class NarakaModNeoForge implements NarakaInitializer {
     }
 
     public void commonSetup(FMLCommonSetupEvent event) {
-
+        NarakaMod.isModLoaded = true;
     }
 
     public void createRegistries(NewRegistryEvent event) {

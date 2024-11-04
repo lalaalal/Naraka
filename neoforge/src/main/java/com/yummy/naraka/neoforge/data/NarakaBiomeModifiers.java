@@ -28,9 +28,9 @@ public class NarakaBiomeModifiers {
                 new BiomeModifiers.AddFeaturesBiomeModifier(
                         overworldBiomes,
                         HolderSet.direct(features::getOrThrow,
-                                NarakaOrePlacements.NECTARIUM_ORE_BURIED_PLACED_KEY,
-                                NarakaOrePlacements.NECTARIUM_ORE_SMALL_PLACED_KEY,
-                                NarakaOrePlacements.NECTARIUM_ORE_LARGE_PLACED_KEY
+                                NarakaOrePlacements.NECTARIUM_ORE_BURIED,
+                                NarakaOrePlacements.NECTARIUM_ORE_SMALL,
+                                NarakaOrePlacements.NECTARIUM_ORE_LARGE
                         ),
                         GenerationStep.Decoration.UNDERGROUND_ORES
                 )

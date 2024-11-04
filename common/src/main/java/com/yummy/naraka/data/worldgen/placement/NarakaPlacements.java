@@ -11,7 +11,7 @@ public class NarakaPlacements {
         NarakaOrePlacements.bootstrap(context);
     }
 
-    public static ResourceKey<PlacedFeature> createKey(String name) {
+    public static ResourceKey<PlacedFeature> create(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, NarakaMod.location(name));
     }
 }

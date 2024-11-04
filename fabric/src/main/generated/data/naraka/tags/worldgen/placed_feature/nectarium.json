@@ -1,7 +1,7 @@
 {
   "values": [
-    "naraka:nectarium_ore_small_placed",
-    "naraka:nectarium_ore_large_placed",
-    "naraka:nectarium_ore_buried_placed"
+    "naraka:nectarium_ore_small",
+    "naraka:nectarium_ore_large",
+    "naraka:nectarium_ore_buried"
   ]
 }

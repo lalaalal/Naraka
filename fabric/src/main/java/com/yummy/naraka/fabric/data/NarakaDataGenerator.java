@@ -1,5 +1,6 @@
 package com.yummy.naraka.fabric.data;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.fabric.data.advancement.NarakaAdvancementProvider;
 import com.yummy.naraka.fabric.data.lang.NarakaLanguageProviders;
 import com.yummy.naraka.fabric.data.loot.NarakaBlockLootProvider;
@@ -19,6 +20,7 @@ public class NarakaDataGenerator implements DataGeneratorEntrypoint {
 
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
+        NarakaMod.isDataGeneration = true;
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
         NarakaDatapackProvider datapackProvider = pack.addProvider(NarakaDatapackProvider::new);
