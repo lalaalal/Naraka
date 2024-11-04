@@ -30,6 +30,7 @@ public final class NarakaModFabric implements ModInitializer, NarakaInitializer 
         RegistryInitializer.allocateInstance(new FabricRegistryInitializer());
 
         NarakaMod.initialize(this);
+        NarakaMod.isModLoaded = true;
     }
 
     @Override
