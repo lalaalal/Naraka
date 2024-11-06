@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.item;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.LazyHolder;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.init.NarakaInitializer;
@@ -8,6 +9,8 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
+import dev.architectury.platform.Platform;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
@@ -15,19 +18,30 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 
 public class NarakaCreativeModTabs {
-    public static final LazyHolder<CreativeModeTab, CreativeModeTab> NARAKA_TAB = register("naraka", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
+    public static final LazyHolder<CreativeModeTab, CreativeModeTab> NARAKA_TAB = register("naraka", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
             .title(Component.translatable("itemGroup.naraka"))
-            .icon(() -> NarakaItems.GOD_BLOOD.get().getDefaultInstance())
+            .icon(() -> NarakaItems.STIGMA_ROD.get().getDefaultInstance())
             .displayItems(NarakaCreativeModTabs::createNarakaTab)
+    );
+    public static final LazyHolder<CreativeModeTab, CreativeModeTab> SOUL_MATERIALS_TAB = register("soul_materials", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
+            .title(Component.translatable("itemGroup.naraka.soul_materials"))
+            .icon(() -> NarakaItems.EBONY_SWORD.get().getDefaultInstance())
+            .displayItems(NarakaCreativeModTabs::createSoulMaterialsTab)
     );
     public static final LazyHolder<CreativeModeTab, CreativeModeTab> NARAKA_TEST_TAB = register("naraka_test", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
             .title(Component.translatable("itemGroup.naraka.test"))
-            .icon(() -> NarakaItems.STIGMA_ROD.get().getDefaultInstance())
+            .icon(() -> NarakaItems.SPEAR_ITEM.get().getDefaultInstance())
             .displayItems(NarakaCreativeModTabs::createNarakaTestTab)
     );
 
     private static LazyHolder<CreativeModeTab, CreativeModeTab> register(String name, CreativeModeTab.Builder builder) {
         return RegistryProxy.register(Registries.CREATIVE_MODE_TAB, name, builder::build);
+    }
+
+    private static LazyHolder<CreativeModeTab, CreativeModeTab> registerOnlyDev(String name, CreativeModeTab.Builder builder) {
+        if (Platform.isDevelopmentEnvironment())
+            return RegistryProxy.register(Registries.CREATIVE_MODE_TAB, name, builder::build);
+        return new LazyHolder<>(BuiltInRegistries.CREATIVE_MODE_TAB, NarakaMod.location(name));
     }
 
     public static void initialize(NarakaInitializer initializer) {
@@ -42,6 +56,31 @@ public class NarakaCreativeModTabs {
     }
 
     private static void createNarakaTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
+        output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get());
+        output.accept(NarakaItems.GOD_BLOOD.get());
+
+        output.accept(NarakaItems.PURIFIED_SOUL_SHARD.get());
+        output.accept(NarakaItems.PURIFIED_SOUL_HELMET.get());
+        output.accept(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get());
+        output.accept(NarakaItems.PURIFIED_SOUL_LEGGINGS.get());
+        output.accept(NarakaItems.PURIFIED_SOUL_BOOTS.get());
+
+        output.accept(NarakaItems.HEROBRINE_PHASE_1_DISC.get());
+        output.accept(NarakaItems.HEROBRINE_PHASE_2_DISC.get());
+        output.accept(NarakaItems.HEROBRINE_PHASE_3_DISC.get());
+        output.accept(NarakaItems.HEROBRINE_PHASE_4_DISC.get());
+        output.accept(NarakaItems.SANCTUARY_COMPASS.get());
+        output.accept(NarakaBlocks.SOUL_CRAFTING_BLOCK.get());
+
+        output.accept(NarakaBlocks.SOUL_STABILIZER.get());
+        output.accept(NarakaBlocks.SOUL_SMITHING_BLOCK.get());
+        output.accept(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
+        output.accept(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get());
+        output.accept(NarakaBlocks.AMETHYST_ORE.get());
+        output.accept(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
+    }
+
+    private static void createSoulMaterialsTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
         output.accept(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get());
         output.accept(NarakaItems.SOUL_INFUSED_COPPER_SWORD.get());
         output.accept(NarakaItems.SOUL_INFUSED_GOLD_SWORD.get());
@@ -71,29 +110,6 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK.get());
         output.accept(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK.get());
         output.accept(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
-
-        output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get());
-        output.accept(NarakaItems.GOD_BLOOD.get());
-
-        output.accept(NarakaItems.PURIFIED_SOUL_SHARD.get());
-        output.accept(NarakaItems.PURIFIED_SOUL_HELMET.get());
-        output.accept(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get());
-        output.accept(NarakaItems.PURIFIED_SOUL_LEGGINGS.get());
-        output.accept(NarakaItems.PURIFIED_SOUL_BOOTS.get());
-
-        output.accept(NarakaItems.HEROBRINE_PHASE_1_DISC.get());
-        output.accept(NarakaItems.HEROBRINE_PHASE_2_DISC.get());
-        output.accept(NarakaItems.HEROBRINE_PHASE_3_DISC.get());
-        output.accept(NarakaItems.HEROBRINE_PHASE_4_DISC.get());
-        output.accept(NarakaItems.SANCTUARY_COMPASS.get());
-        output.accept(NarakaBlocks.SOUL_CRAFTING_BLOCK.get());
-
-        output.accept(NarakaBlocks.SOUL_STABILIZER.get());
-        output.accept(NarakaBlocks.SOUL_SMITHING_BLOCK.get());
-        output.accept(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
-        output.accept(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get());
-        output.accept(NarakaBlocks.AMETHYST_ORE.get());
-        output.accept(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
     }
 
     private static void createNarakaTestTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
