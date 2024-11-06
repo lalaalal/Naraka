@@ -13,7 +13,7 @@
             "max_inclusive": 5,
             "min_inclusive": 3
         },
-        "spread_chance": 0.75,
+        "spread_chance": 0.9,
         "use_single_ore": true
     }
 }

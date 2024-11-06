@@ -34,7 +34,7 @@ public class EntityDataHelper {
     }
 
     public static void syncEntityData(LivingEntity livingEntity, Supplier<? extends EntityDataType<?>> entityDataType) {
-        Holder<EntityDataType<?>> holder = NarakaEntityDataTypes.holder(livingEntity.registryAccess(), entityDataType.get());
+        Holder<EntityDataType<?>> holder = NarakaEntityDataTypes.holder(entityDataType.get());
         if (livingEntity.level() instanceof ServerLevel serverLevel) {
             CompoundTag data = new CompoundTag();
             saveEntityData(livingEntity, data);
@@ -44,7 +44,7 @@ public class EntityDataHelper {
     }
 
     public static void syncEntityData(LivingEntity livingEntity) {
-        HolderSet<EntityDataType<?>> holders = NarakaEntityDataTypes.full(livingEntity.registryAccess());
+        HolderSet<EntityDataType<?>> holders = NarakaEntityDataTypes.full();
         if (livingEntity.level() instanceof ServerLevel serverLevel) {
             CompoundTag data = new CompoundTag();
             saveEntityData(livingEntity, data, holders);
