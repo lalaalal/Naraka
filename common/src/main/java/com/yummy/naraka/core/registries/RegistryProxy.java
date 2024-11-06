@@ -21,15 +21,19 @@ public interface RegistryProxy<T> {
         return (Registry<T>) BuiltInRegistries.REGISTRY.get(getRegistryKey().location());
     }
 
+    default Registry<T> getRegistryOrThrow() {
+        Registry<T> registry = getRegistry();
+        if (registry == null)
+            throw new IllegalStateException("No registry found for " + getRegistryKey().location());
+        return registry;
+    }
+
     ResourceKey<Registry<T>> getRegistryKey();
 
     <V extends T> LazyHolder<T, V> register(String name, Supplier<V> value);
 
     default <V extends T> LazyHolder<T, V> createHolder(String name) {
-        Registry<T> registry = getRegistry();
-        if (registry == null)
-            throw new IllegalStateException(getRegistryKey() + " does not exist");
-        return new LazyHolder<>(registry, NarakaMod.location(name));
+        return new LazyHolder<>(getRegistryOrThrow(), NarakaMod.location(name));
     }
 
     default void onRegistrationFinished() {

@@ -19,7 +19,7 @@ public class RegistryInitializer {
         INSTANCE = instance;
     }
 
-    public static RegistryInitializer getInstance() {
+    protected static RegistryInitializer getInstance() {
         if (INSTANCE == null)
             INSTANCE = new RegistryInitializer();
         return INSTANCE;

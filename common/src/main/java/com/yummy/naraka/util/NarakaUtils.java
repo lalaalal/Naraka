@@ -1,7 +1,10 @@
 package com.yummy.naraka.util;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.Vec3;
 
@@ -61,5 +64,26 @@ public class NarakaUtils {
 
     public static BlockPos pos(Vec3 pos) {
         return new BlockPos((int) pos.x, (int) pos.y, (int) pos.z);
+    }
+
+    public static BlockPos findFaceSturdy(LevelAccessor level, BlockPos from, Direction faceDirection) {
+        BlockPos.MutableBlockPos current = from.mutable();
+        while (-60 < current.getY() && current.getY() < 200) {
+            BlockPos pos = current.immutable();
+            BlockState state = level.getBlockState(pos);
+            if (state.isFaceSturdy(level, pos, faceDirection))
+                return pos;
+            current.move(faceDirection.getOpposite());
+        }
+
+        return from;
+    }
+
+    public static BlockPos findCeiling(LevelAccessor level, BlockPos from) {
+        return findFaceSturdy(level, from, Direction.DOWN);
+    }
+
+    public static BlockPos findFloor(LevelAccessor level, BlockPos from) {
+        return findFaceSturdy(level, from, Direction.UP);
     }
 }

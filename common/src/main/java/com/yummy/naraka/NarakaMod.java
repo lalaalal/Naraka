@@ -13,6 +13,7 @@ import com.yummy.naraka.world.block.grower.NarakaTreeGrowers;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
+import com.yummy.naraka.world.features.NarakaFeatures;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import com.yummy.naraka.world.item.NarakaArmorMaterials;
 import com.yummy.naraka.world.item.NarakaCreativeModTabs;
@@ -72,6 +73,7 @@ public class NarakaMod {
         NarakaStructurePlacementTypes.initialize();
         NarakaProtectionPredicates.initialize();
 
+        NarakaFeatures.initialize();
         NarakaBiomes.initialize(initializer);
 
         NarakaRootPlacerTypes.initialize();

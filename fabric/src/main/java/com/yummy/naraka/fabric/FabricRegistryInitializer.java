@@ -29,7 +29,7 @@ public class FabricRegistryInitializer extends RegistryInitializer {
 
         @Override
         public <V extends T> LazyHolder<T, V> register(String name, Supplier<V> value) {
-            Registry.register(getRegistry(), NarakaMod.location(name), value.get());
+            Registry.register(getRegistryOrThrow(), NarakaMod.location(name), value.get());
             return createHolder(name);
         }
     }

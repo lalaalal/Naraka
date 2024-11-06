@@ -38,6 +38,8 @@ public class NarakaBiomes {
         BiomeDefaultFeatures.addPlainGrass(biomeGenerationSettings);
         BiomeDefaultFeatures.addDefaultOres(biomeGenerationSettings);
         biomeGenerationSettings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, NarakaOrePlacements.AMETHYST_ORE);
+        biomeGenerationSettings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, NarakaOrePlacements.ORE_PILLAR);
+        biomeGenerationSettings.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, NarakaOrePlacements.ORE_PILLAR);
         BiomeDefaultFeatures.addDefaultSoftDisks(biomeGenerationSettings);
         BiomeDefaultFeatures.addPlainVegetation(biomeGenerationSettings);
         BiomeDefaultFeatures.addDefaultMushrooms(biomeGenerationSettings);

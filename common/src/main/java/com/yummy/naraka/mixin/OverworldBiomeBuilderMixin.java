@@ -19,16 +19,16 @@ import java.util.function.Consumer;
 @Mixin(OverworldBiomeBuilder.class)
 public abstract class OverworldBiomeBuilderMixin {
     @Shadow
-    protected abstract void addBottomBiome(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer, Climate.Parameter temerature, Climate.Parameter humidity, Climate.Parameter continentalness, Climate.Parameter erosion, Climate.Parameter depth, float weirdness, ResourceKey<Biome> key);
-
-    @Shadow
     @Final
     private Climate.Parameter FULL_RANGE;
+
+    @Shadow
+    protected abstract void addUndergroundBiome(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consumer, Climate.Parameter temperature, Climate.Parameter humidity, Climate.Parameter continentalness, Climate.Parameter erosion, Climate.Parameter depth, float weirdness, ResourceKey<Biome> key);
 
     @Inject(method = "addUndergroundBiomes", at = @At("RETURN"))
     private void modifyUndergroundBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consume, CallbackInfo ci) {
         if (!NarakaMod.isDataGeneration && NarakaMod.isModLoaded)
-            addBottomBiome(
+            addUndergroundBiome(
                     consume,
                     this.FULL_RANGE,
                     this.FULL_RANGE,

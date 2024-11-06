@@ -19,19 +19,21 @@ public class NarakaOrePlacements {
 
     public static final ResourceKey<PlacedFeature> AMETHYST_ORE = NarakaPlacements.create("amethyst_ore");
 
+    public static final ResourceKey<PlacedFeature> ORE_PILLAR = NarakaPlacements.create("ore_pillar");
+
     protected static void bootstrap(BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
 
         PlacementUtils.register(
                 context,
                 NECTARIUM_ORE_SMALL,
-                configuredFeatures.getOrThrow(com.yummy.naraka.data.worldgen.features.NarakaOreFeatures.NECTARIUM_ORE_SMALL),
+                configuredFeatures.getOrThrow(NarakaOreFeatures.NECTARIUM_ORE_SMALL),
                 commonOrePlacement(7, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)))
         );
         PlacementUtils.register(
                 context,
                 NECTARIUM_ORE_LARGE,
-                configuredFeatures.getOrThrow(com.yummy.naraka.data.worldgen.features.NarakaOreFeatures.NECTARIUM_ORE_LARGE),
+                configuredFeatures.getOrThrow(NarakaOreFeatures.NECTARIUM_ORE_LARGE),
                 rareOrePlacement(9, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)))
         );
         PlacementUtils.register(
@@ -44,7 +46,16 @@ public class NarakaOrePlacements {
                 context,
                 AMETHYST_ORE,
                 configuredFeatures.getOrThrow(NarakaOreFeatures.AMETHYST_ORE),
-                commonOrePlacement(20, HeightRangePlacement.triangle(VerticalAnchor.absolute(-10), VerticalAnchor.absolute(160)))
+                commonOrePlacement(9, HeightRangePlacement.triangle(VerticalAnchor.absolute(-60), VerticalAnchor.absolute(160)))
+        );
+        PlacementUtils.register(
+                context,
+                ORE_PILLAR,
+                configuredFeatures.getOrThrow(NarakaOreFeatures.SINGLE_ORE_PILLAR),
+                CountPlacement.of(48),
+                InSquarePlacement.spread(),
+                PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
+                BiomeFilter.biome()
         );
     }
 
