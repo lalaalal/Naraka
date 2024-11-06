@@ -45,7 +45,7 @@ public class SoulSmithingBlock extends ForgingBlock {
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return box(0, 0, 0, 16, 17, 16);
+        return box(0, 0.1, 0, 16, 16, 16);
     }
 
     @Override

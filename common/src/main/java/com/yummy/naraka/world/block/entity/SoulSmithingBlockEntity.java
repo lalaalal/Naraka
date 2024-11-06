@@ -123,6 +123,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
             if (templateItem.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get())
                     && forgingItem.is(NarakaItems.PURIFIED_SOUL_SWORD.get())) {
                 forgingItem = new ItemStack(NarakaItems.getSoulSwordOf(soulType));
+                soulStabilizer.consumeSoul(9 * 16);
                 setChanged();
                 level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
                 return true;
@@ -155,7 +156,8 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         tag.putBoolean("IsStabilizerAttached", isStabilizerAttached);
         if (isStabilizerAttached) {
             tag.put("StabilizerData", soulStabilizer.getUpdateTag(provider));
-            soulStabilizer.setLevel(level);
+            if (level != null)
+                soulStabilizer.setLevel(level);
         }
         if (!templateItem.isEmpty())
             tag.put("TemplateItem", templateItem.save(provider));
@@ -182,7 +184,8 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         isStabilizerAttached = compoundTag.getBoolean("IsStabilizerAttached");
         if (isStabilizerAttached) {
             soulStabilizer.loadAdditional(compoundTag.getCompound("StabilizerData"), provider);
-            soulStabilizer.setLevel(level);
+            if (level != null)
+                soulStabilizer.setLevel(level);
         }
         if (compoundTag.contains("TemplateItem"))
             templateItem = ItemStack.parseOptional(provider, compoundTag.getCompound("TemplateItem"));
