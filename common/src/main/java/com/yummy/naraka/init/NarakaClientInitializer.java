@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
-public interface NarakaClientInitializer {
+public interface NarakaClientInitializer extends RegistryLoadedListener {
     void registerCustomItemRenderer(Supplier<? extends ItemLike> item, Supplier<CustomRenderManager.CustomItemRenderer> renderer);
 
     void registerResourceReloadListener(String name, Supplier<PreparableReloadListener> listener);

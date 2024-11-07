@@ -74,7 +74,7 @@ public class NarakaLanguageProviders {
         add(SoulType.LAPIS.translationKey(), "Lapis", "청금석");
         add(SoulType.AMETHYST.translationKey(), "Amethyst", "자수정");
         add(SoulType.NECTARIUM.translationKey(), "Nectarium", "넥타륨");
-        add(SoulType.GOD_BLOOD.translationKey(), "God Blood", "시의 피");
+        add(SoulType.GOD_BLOOD.translationKey(), "God Blood", "신의 피");
 
         addReinforcementEffect(NarakaReinforcementEffects.INCREASE_ATTACK_DAMAGE, "Increase attack damage", "공격력 증가");
         addReinforcementEffect(NarakaReinforcementEffects.INCREASE_ARMOR, "Increase armor", "방어력 증가");

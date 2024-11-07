@@ -29,7 +29,9 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -38,16 +40,23 @@ import java.util.function.Supplier;
 @Mod(value = NarakaMod.MOD_ID, dist = Dist.CLIENT)
 public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClientItemExtensions {
     private final IEventBus bus;
+    private final List<Runnable> runAfterRegistryLoaded = new ArrayList<>();
 
     public NarakaModNeoForgeClient(FMLModContainer container, IEventBus modBus, Dist dist) {
         this.bus = modBus;
-        NarakaModClient.registerToEvent(this);
+        NarakaModClient.initialize(this);
 
         modBus.addListener(this::clientSetup);
     }
 
     public void clientSetup(FMLClientSetupEvent event) {
-        NarakaModClient.initialize();
+        for (Runnable runnable : runAfterRegistryLoaded)
+            runnable.run();
+    }
+
+    @Override
+    public void runAfterRegistryLoaded(Runnable runnable) {
+        runAfterRegistryLoaded.add(runnable);
     }
 
     @Override

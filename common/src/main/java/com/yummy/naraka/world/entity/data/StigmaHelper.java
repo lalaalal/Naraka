@@ -11,11 +11,11 @@ public class StigmaHelper {
     private static final List<LivingEntity> MARKED_ENTITIES = new ArrayList<>();
 
     public static Stigma get(LivingEntity livingEntity) {
-        return EntityDataHelper.getEntityData(livingEntity, NarakaEntityDataTypes.STIGMA);
+        return EntityDataHelper.getEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.get());
     }
 
     private static void set(LivingEntity livingEntity, Stigma stigma) {
-        EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA, stigma);
+        EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.get(), stigma);
     }
 
     public static void increaseStigma(LivingEntity livingEntity, Entity cause) {
@@ -41,7 +41,7 @@ public class StigmaHelper {
     }
 
     public static void initialize() {
-        EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.STIGMA, StigmaHelper::watchEntity);
+        EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.STIGMA.get(), StigmaHelper::watchEntity);
     }
 
     public static void clear() {

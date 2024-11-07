@@ -22,6 +22,7 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,7 @@ import java.util.function.Consumer;
 public final class NarakaModNeoForge implements NarakaInitializer {
     private final Map<ResourceKey<? extends Registry<?>>, Registry<?>> registries = new HashMap<>();
     private final Map<ResourceKey<CreativeModeTab>, Consumer<NarakaCreativeModTabs.TabEntries>> tabEntriesMap = new HashMap<>();
+    private final List<Runnable> runAfterRegistryLoaded = new ArrayList<>();
 
     public NarakaModNeoForge(IEventBus bus, ModContainer container) {
         RegistryInitializer.allocateInstance(new NeoForgeRegistryInitializer(bus, registries::get));
@@ -40,6 +42,11 @@ public final class NarakaModNeoForge implements NarakaInitializer {
         bus.addListener(this::commonSetup);
         bus.addListener(this::createRegistries);
         bus.addListener(this::modifyCreativeModeTabs);
+    }
+
+    @Override
+    public void runAfterRegistryLoaded(Runnable runnable) {
+        runAfterRegistryLoaded.add(runnable);
     }
 
     @Override
@@ -59,6 +66,8 @@ public final class NarakaModNeoForge implements NarakaInitializer {
 
     public void commonSetup(FMLCommonSetupEvent event) {
         NarakaMod.isModLoaded = true;
+        for (Runnable runnable : runAfterRegistryLoaded)
+            runnable.run();
     }
 
     public void createRegistries(NewRegistryEvent event) {

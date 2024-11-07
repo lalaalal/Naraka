@@ -54,7 +54,7 @@ public record SyncEntityDataPayload(int entityId, HolderSet<EntityDataType<?>> e
             EntityDataType<?> entityDataType = holder.value();
             Object value = entityDataType.read(data, context.registryAccess());
             if (entity instanceof LivingEntity livingEntity)
-                EntityDataHelper.setEntityData(livingEntity, holder::value, value);
+                EntityDataHelper.setEntityData(livingEntity, holder.value(), value);
         }
     }
 }

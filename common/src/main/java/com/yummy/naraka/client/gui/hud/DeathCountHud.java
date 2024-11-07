@@ -42,7 +42,7 @@ public class DeathCountHud implements ClientGuiEvent.RenderHud {
     }
 
     public DeathCountHud() {
-        EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.DEATH_COUNT, this::onDeathCountChanged);
+        EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.DEATH_COUNT.get(), this::onDeathCountChanged);
     }
 
     private void onDeathCountChanged(LivingEntity livingEntity, EntityDataType<Integer> entityDataType, Integer from, Integer to) {

@@ -1,9 +1,9 @@
 {
-    "feature": "naraka:single_ore_pillar",
+    "feature": "naraka:mixed_ore_pillar",
     "placement": [
         {
             "type": "minecraft:count",
-            "count": 48
+            "count": 32
         },
         {
             "type": "minecraft:in_square"

@@ -7,11 +7,11 @@ license = "All Rights Reserved"
 modId = "naraka"
 version = "${version}"
 displayName = "Naraka"
-authors = ""
+authors = "lalaalal, joachimbeen, GuEunso"
 description = '''
 
 '''
-#logoFile = ""
+logoFile = "naraka.png"
 
 [[dependencies.naraka]]
 modId = "neoforge"

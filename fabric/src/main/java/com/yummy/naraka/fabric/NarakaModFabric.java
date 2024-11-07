@@ -34,6 +34,11 @@ public final class NarakaModFabric implements ModInitializer, NarakaInitializer 
     }
 
     @Override
+    public void runAfterRegistryLoaded(Runnable runnable) {
+        runnable.run();
+    }
+
+    @Override
     public RegistryFactory getRegistryFactory() {
         return new FabricRegistryFactory();
     }

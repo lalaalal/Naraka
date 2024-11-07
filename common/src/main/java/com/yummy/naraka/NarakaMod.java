@@ -46,7 +46,7 @@ public class NarakaMod {
         NarakaSoundEvents.initialize();
 
         NarakaEntityTypes.initialize();
-        NarakaEntityDataTypes.initialize();
+        NarakaEntityDataTypes.initialize(initializer);
         NarakaMobEffects.initialize();
 
         NarakaBlocks.initialize();

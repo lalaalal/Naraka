@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import java.util.List;
 import java.util.function.Consumer;
 
-public interface NarakaInitializer {
+public interface NarakaInitializer extends RegistryLoadedListener {
     RegistryFactory getRegistryFactory();
 
     void modifyCreativeModeTab(ResourceKey<CreativeModeTab> tabKey, Consumer<NarakaCreativeModTabs.TabEntries> entries);
