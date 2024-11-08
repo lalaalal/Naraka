@@ -1,7 +1,7 @@
 {
-    "variants": {
-        "": {
-            "model": "naraka:block/soul_stabilizer"
-        }
+  "variants": {
+    "": {
+      "model": "naraka:block/soul_stabilizer"
     }
+  }
 }

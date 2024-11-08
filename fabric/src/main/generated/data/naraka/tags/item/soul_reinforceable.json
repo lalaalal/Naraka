@@ -2,13 +2,13 @@
   "values": [
     "#naraka:purified_soul_armor",
     "naraka:purified_soul_sword",
-      "naraka:soul_infused_diamond_sword",
+    "naraka:soul_infused_emerald_sword",
+    "naraka:soul_infused_lapis_sword",
+    "naraka:soul_infused_gold_sword",
+    "naraka:soul_infused_redstone_sword",
+    "naraka:soul_infused_copper_sword",
+    "naraka:soul_infused_diamond_sword",
     "naraka:soul_infused_nectarium_sword",
-      "naraka:soul_infused_gold_sword",
-    "naraka:soul_infused_amethyst_sword",
-      "naraka:soul_infused_redstone_sword",
-      "naraka:soul_infused_copper_sword",
-      "naraka:soul_infused_emerald_sword",
-      "naraka:soul_infused_lapis_sword"
+    "naraka:soul_infused_amethyst_sword"
   ]
 }

@@ -1,6 +1,7 @@
 package com.yummy.naraka.world;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.data.worldgen.NarakaConfiguredWorldCarvers;
 import com.yummy.naraka.data.worldgen.placement.NarakaOrePlacements;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.mixin.invoker.OverworldBiomesInvoker;
@@ -8,7 +9,6 @@ import com.yummy.naraka.tags.ConventionalTags;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
-import net.minecraft.data.worldgen.Carvers;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
@@ -28,9 +28,7 @@ public class NarakaBiomes {
     public static Biome yummy(HolderGetter<PlacedFeature> placedFeatures, HolderGetter<ConfiguredWorldCarver<?>> worldCarvers) {
         MobSpawnSettings.Builder mobSettings = new MobSpawnSettings.Builder();
         BiomeGenerationSettings.Builder biomeGenerationSettings = new BiomeGenerationSettings.Builder(placedFeatures, worldCarvers);
-        biomeGenerationSettings.addCarver(GenerationStep.Carving.AIR, Carvers.CAVE);
-        biomeGenerationSettings.addCarver(GenerationStep.Carving.AIR, Carvers.CAVE_EXTRA_UNDERGROUND);
-        biomeGenerationSettings.addCarver(GenerationStep.Carving.AIR, Carvers.CANYON);
+        biomeGenerationSettings.addCarver(GenerationStep.Carving.AIR, NarakaConfiguredWorldCarvers.YUMMY);
         BiomeDefaultFeatures.addDefaultCrystalFormations(biomeGenerationSettings);
         BiomeDefaultFeatures.addDefaultMonsterRoom(biomeGenerationSettings);
         BiomeDefaultFeatures.addDefaultUndergroundVariety(biomeGenerationSettings);
