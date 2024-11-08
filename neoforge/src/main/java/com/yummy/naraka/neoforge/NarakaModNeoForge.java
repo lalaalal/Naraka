@@ -77,8 +77,9 @@ public final class NarakaModNeoForge implements NarakaInitializer {
 
     public void modifyCreativeModeTabs(BuildCreativeModeTabContentsEvent event) {
         ResourceKey<CreativeModeTab> tabKey = event.getTabKey();
+        NeoForgeTabEntries tabEntries = new NeoForgeTabEntries(event);
         if (tabEntriesMap.containsKey(tabKey))
-            tabEntriesMap.get(tabKey).accept(new NeoForgeTabEntries(event));
+            tabEntriesMap.get(tabKey).accept(tabEntries);
     }
 
     private class NeoForgeRegistryFactory extends RegistryFactory {
@@ -99,14 +100,24 @@ public final class NarakaModNeoForge implements NarakaInitializer {
 
         @Override
         public void addBefore(ItemLike pivot, ItemLike... items) {
-            for (ItemLike item : items)
-                event.insertBefore(new ItemStack(pivot), new ItemStack(item), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            List.of(items).reversed()
+                    .forEach(item -> event.insertBefore(
+                                    new ItemStack(pivot),
+                                    new ItemStack(item),
+                                    CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS
+                            )
+                    );
         }
 
         @Override
         public void addAfter(ItemLike pivot, ItemLike... items) {
-            for (ItemLike item : items)
-                event.insertAfter(new ItemStack(pivot), new ItemStack(item), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            List.of(items).reversed()
+                    .forEach(item -> event.insertAfter(
+                                    new ItemStack(pivot),
+                                    new ItemStack(item),
+                                    CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS
+                            )
+                    );
         }
     }
 
