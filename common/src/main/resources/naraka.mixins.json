@@ -1,32 +1,33 @@
 {
-    "required": true,
-    "package": "com.yummy.naraka.mixin",
-    "compatibilityLevel": "JAVA_21",
-    "minVersion": "0.8",
-    "client": [
-        "client.FogRendererMixin",
-        "client.GameRendererMixin",
-        "client.ItemBlockRenderTypesMixin",
-        "client.ItemEntityRendererMixin",
-        "client.ItemRendererMixin",
-        "client.ItemStackMixin",
-        "client.LocalPlayerMixin",
-        "client.MouseHandlerMixin"
-    ],
-    "mixins": [
-        "FeatureMixin",
-        "LivingEntityMixin",
-        "OverworldBiomeBuilderMixin",
-        "PlayerMixin",
-        "ServerEntityMixin",
-        "ServerPlayerGameModeMixin",
-        "SmithingTemplateItemMixin",
-        "WanderingTraderMixin",
-        "invoker.MobEffectInvoker",
-        "invoker.OverworldBiomesInvoker",
-        "invoker.RootPlacerTypeInvoker"
-    ],
-    "injectors": {
-        "defaultRequire": 1
-    }
+  "required": true,
+  "package": "com.yummy.naraka.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [
+    "client.FogRendererMixin",
+    "client.GameRendererMixin",
+    "client.ItemBlockRenderTypesMixin",
+    "client.ItemEntityRendererMixin",
+    "client.ItemRendererMixin",
+    "client.ItemStackMixin",
+    "client.LocalPlayerMixin",
+    "client.MouseHandlerMixin"
+  ],
+  "mixins": [
+    "FeatureMixin",
+    "LivingEntityMixin",
+    "OverworldBiomeBuilderMixin",
+    "PlayerMixin",
+    "ServerEntityMixin",
+    "ServerPlayerGameModeMixin",
+    "SmithingTemplateItemMixin",
+    "WanderingTraderMixin",
+    "invoker.MobEffectInvoker",
+    "invoker.OverworldBiomesInvoker",
+    "invoker.RootPlacerTypeInvoker",
+    "invoker.SpawnPlacementsInvoker"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }
