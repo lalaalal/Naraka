@@ -13,7 +13,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 
 @Environment(EnvType.CLIENT)
-public class NarakaModelLayers {
+public final class NarakaModelLayers {
     public static final ModelLayerLocation HEROBRINE = location("herobrine");
     public static final ModelLayerLocation SPEAR = location("spear");
     public static final ModelLayerLocation SPEAR_OF_LONGINUS = location("spear_of_longinus");

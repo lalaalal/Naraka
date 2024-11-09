@@ -5,13 +5,10 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
 
-public interface NarakaDamageTypeTags {
-    /**
-     * Stigma,
-     */
-    TagKey<DamageType> DEATH_COUNTING_ATTACK = create("death_counting_attack");
+public final class NarakaDamageTypeTags {
+    public static final TagKey<DamageType> DEATH_COUNTING_ATTACK = create("death_counting_attack");
 
-    private static TagKey<DamageType> create(String name) {
+    public static TagKey<DamageType> create(String name) {
         return TagKey.create(Registries.DAMAGE_TYPE, NarakaMod.location(name));
     }
 }

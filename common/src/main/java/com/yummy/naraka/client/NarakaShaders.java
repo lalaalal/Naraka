@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.ShaderInstance;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
-public class NarakaShaders {
+public final class NarakaShaders {
     public static @Nullable ShaderInstance longinus;
 
     public static ShaderInstance longinus() {

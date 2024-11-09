@@ -50,7 +50,7 @@ public class NarakaMod {
         NarakaEntityTypes.initialize();
         NarakaEntityDataTypes.initialize(initializer);
         NarakaMobEffects.initialize();
-        NarakaSpawnPlacements.initialize(initializer);
+        initializer.runAfterRegistryLoaded(NarakaSpawnPlacements::initialize);
 
         NarakaBlocks.initialize();
         NarakaTreeGrowers.initialize();

@@ -36,7 +36,6 @@ public class NarakaDatapackProvider extends RegistriesDatapackGenerator {
 
     private final CompletableFuture<HolderLookup.Provider> fullRegistries;
 
-
     public NarakaDatapackProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, RegistryPatchGenerator.createLookup(registries, BUILDER)
                 .thenApply(RegistrySetBuilder.PatchedRegistries::patches)

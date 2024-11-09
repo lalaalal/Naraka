@@ -20,7 +20,7 @@ public abstract class EntityTypeBuilderMixin {
 
     @ModifyExpressionValue(method = "build", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/EntityType$Builder;serialize:Z"))
     public boolean avoidFetchChoiceType(boolean original) {
-        if (naraka$keyIsNull && original)
+        if (naraka$keyIsNull)
             return false;
         return original;
     }

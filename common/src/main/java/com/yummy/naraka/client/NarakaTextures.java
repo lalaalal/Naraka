@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NarakaTextures {
+public final class NarakaTextures {
     public static final ResourceLocation HEROBRINE = entity("herobrine.png");
     public static final ResourceLocation HEROBRINE_EYE = entity("herobrine_eye.png");
 
