@@ -17,7 +17,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Unbreakable;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -26,8 +26,8 @@ import java.util.function.Function;
 public class NarakaItems {
     private static final String SOUL_INFUSED_PREFIX = "soul_infused_";
 
-    private static final Set<LazyHolder<Item, Item>> SOUL_INFUSED_ITEMS = new HashSet<>();
-    private static final Set<LazyHolder<Item, SwordItem>> SOUL_INFUSED_SWORDS = new HashSet<>();
+    private static final Set<LazyHolder<Item, Item>> SOUL_INFUSED_ITEMS = new LinkedHashSet<>();
+    private static final Set<LazyHolder<Item, SwordItem>> SOUL_INFUSED_SWORDS = new LinkedHashSet<>();
     private static final Map<SoulType, LazyHolder<Item, SwordItem>> SWORD_BY_SOUL_TYPE = new HashMap<>();
 
     public static final LazyHolder<Item, Item> STIGMA_ROD = registerItem("stigma_rod", StigmaRodItem::new);

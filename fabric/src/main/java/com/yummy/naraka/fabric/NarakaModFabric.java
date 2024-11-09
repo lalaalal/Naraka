@@ -2,32 +2,26 @@ package com.yummy.naraka.fabric;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.RegistryFactory;
+import com.yummy.naraka.fabric.init.FabricBiomeModifier;
+import com.yummy.naraka.fabric.init.FabricRegistryFactory;
+import com.yummy.naraka.fabric.init.FabricRegistryInitializer;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.init.RegistryInitializer;
+import com.yummy.naraka.world.NarakaBiomes;
 import com.yummy.naraka.world.item.NarakaCreativeModTabs;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
-import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
-import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public final class NarakaModFabric implements ModInitializer, NarakaInitializer {
     @Override
     public void onInitialize() {
-        RegistryInitializer.allocateInstance(new FabricRegistryInitializer());
+        RegistryInitializer.setInstance(new FabricRegistryInitializer());
 
         NarakaMod.initialize(this);
         NarakaMod.isModLoaded = true;
@@ -40,7 +34,7 @@ public final class NarakaModFabric implements ModInitializer, NarakaInitializer 
 
     @Override
     public RegistryFactory getRegistryFactory() {
-        return new FabricRegistryFactory();
+        return FabricRegistryFactory.INSTANCE;
     }
 
     @Override
@@ -50,18 +44,8 @@ public final class NarakaModFabric implements ModInitializer, NarakaInitializer 
     }
 
     @Override
-    public void registerFeatureBiomeModifier(String name, TagKey<Biome> target, GenerationStep.Decoration step, List<ResourceKey<PlacedFeature>> featureKeys) {
-        for (ResourceKey<PlacedFeature> featureKey : featureKeys)
-            BiomeModifications.addFeature(BiomeSelectors.tag(target), step, featureKey);
-    }
-
-    private static class FabricRegistryFactory extends RegistryFactory {
-        @Override
-        public <T> Registry<T> createSimple(ResourceKey<Registry<T>> key) {
-            return FabricRegistryBuilder.createSimple(key)
-                    .attribute(RegistryAttribute.SYNCED)
-                    .buildAndRegister();
-        }
+    public NarakaBiomes.Modifier getBiomeModifier() {
+        return FabricBiomeModifier.INSTANCE;
     }
 
     private static ItemGroupEvents.ModifyEntries wrap(Consumer<NarakaCreativeModTabs.TabEntries> consumer) {
@@ -69,6 +53,7 @@ public final class NarakaModFabric implements ModInitializer, NarakaInitializer 
     }
 
     private record FabricTabEntries(FabricItemGroupEntries entries) implements NarakaCreativeModTabs.TabEntries {
+        @Override
         public void addBefore(ItemLike pivot, ItemLike... items) {
             entries.addBefore(pivot, items);
         }

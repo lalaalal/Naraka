@@ -15,11 +15,11 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(modid = NarakaMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
-public class NeoForgeDataGenerator extends DatapackBuiltinEntriesProvider {
+public class NarakaDataGenerator extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, NarakaBiomeModifiers::bootstrap);
 
-    public NeoForgeDataGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+    public NarakaDataGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of("minecraft", "naraka"));
     }
 
@@ -28,6 +28,6 @@ public class NeoForgeDataGenerator extends DatapackBuiltinEntriesProvider {
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> registries = event.getLookupProvider();
-        generator.addProvider(event.includeServer(), new NeoForgeDataGenerator(output, registries));
+        generator.addProvider(event.includeServer(), new NarakaDataGenerator(output, registries));
     }
 }

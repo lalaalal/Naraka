@@ -1,13 +1,13 @@
 package com.yummy.naraka.neoforge.data;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.data.worldgen.placement.NarakaOrePlacements;
-import com.yummy.naraka.tags.ConventionalTags;
+import com.yummy.naraka.world.NarakaBiomes;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -15,29 +15,45 @@ import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
-public class NarakaBiomeModifiers {
-    public static final ResourceKey<BiomeModifier> NECTARIUM_GENERATION = create("nectarium_generation");
+import java.util.ArrayList;
+import java.util.List;
+
+public class NarakaBiomeModifiers implements NarakaBiomes.Modifier {
+    public static final NarakaBiomeModifiers INSTANCE = new NarakaBiomeModifiers();
+
+    private final List<BiomeModifierRecord> modifiers = new ArrayList<>();
 
     public static void bootstrap(BootstrapContext<BiomeModifier> context) {
-        HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
-        HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);
+        for (BiomeModifierRecord modifier : INSTANCE.modifiers)
+            modifier.register(context);
+    }
 
-        HolderSet<Biome> overworldBiomes = biomes.getOrThrow(ConventionalTags.Biomes.IS_OVERWORLD);
+    private NarakaBiomeModifiers() {
+    }
 
-        context.register(NECTARIUM_GENERATION,
-                new BiomeModifiers.AddFeaturesBiomeModifier(
-                        overworldBiomes,
-                        HolderSet.direct(features::getOrThrow,
-                                NarakaOrePlacements.NECTARIUM_ORE_BURIED,
-                                NarakaOrePlacements.NECTARIUM_ORE_SMALL,
-                                NarakaOrePlacements.NECTARIUM_ORE_LARGE
-                        ),
-                        GenerationStep.Decoration.UNDERGROUND_ORES
-                )
-        );
+    @Override
+    public void addFeatures(String name, TagKey<Biome> target, GenerationStep.Decoration generationStep, List<ResourceKey<PlacedFeature>> features) {
+        modifiers.add(context -> {
+            HolderGetter<Biome> biomeGetter = context.lookup(Registries.BIOME);
+            HolderGetter<PlacedFeature> featureGetter = context.lookup(Registries.PLACED_FEATURE);
+
+            HolderSet<Biome> targetBiomes = biomeGetter.getOrThrow(target);
+
+            context.register(create(name),
+                    new BiomeModifiers.AddFeaturesBiomeModifier(
+                            targetBiomes,
+                            HolderSet.direct(featureGetter::getOrThrow, features),
+                            generationStep
+                    )
+            );
+        });
     }
 
     private static ResourceKey<BiomeModifier> create(String name) {
         return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, NarakaMod.location(name));
+    }
+
+    public interface BiomeModifierRecord {
+        void register(BootstrapContext<BiomeModifier> context);
     }
 }

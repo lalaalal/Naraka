@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -47,8 +48,9 @@ public class NarakaBiomes {
     }
 
     public static void initialize(NarakaInitializer initializer) {
-        initializer.registerFeatureBiomeModifier(
-                "nectarium",
+        Modifier modifier = initializer.getBiomeModifier();
+        modifier.addFeatures(
+                "add_nectarium_generation",
                 ConventionalTags.Biomes.IS_OVERWORLD,
                 GenerationStep.Decoration.UNDERGROUND_ORES,
                 List.of(
@@ -61,5 +63,9 @@ public class NarakaBiomes {
 
     private static ResourceKey<Biome> create(String name) {
         return ResourceKey.create(Registries.BIOME, NarakaMod.location(name));
+    }
+
+    public interface Modifier {
+        void addFeatures(String name, TagKey<Biome> target, GenerationStep.Decoration step, List<ResourceKey<PlacedFeature>> features);
     }
 }

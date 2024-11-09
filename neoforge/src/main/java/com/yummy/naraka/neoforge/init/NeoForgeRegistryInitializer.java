@@ -1,4 +1,4 @@
-package com.yummy.naraka.neoforge;
+package com.yummy.naraka.neoforge.init;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.LazyHolder;

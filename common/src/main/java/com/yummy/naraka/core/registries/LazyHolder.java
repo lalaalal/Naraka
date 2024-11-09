@@ -12,6 +12,12 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+/**
+ * A {@link Holder.Reference} supplying derived value for neoforge registration
+ *
+ * @param <T> Registry value type
+ * @param <V> Derived value type
+ */
 public class LazyHolder<T, V extends T> extends Holder.Reference<T> implements Supplier<V> {
     private @Nullable Holder<T> holder;
 

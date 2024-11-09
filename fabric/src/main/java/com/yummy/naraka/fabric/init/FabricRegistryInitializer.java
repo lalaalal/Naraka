@@ -1,4 +1,4 @@
-package com.yummy.naraka.fabric;
+package com.yummy.naraka.fabric.init;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.LazyHolder;
