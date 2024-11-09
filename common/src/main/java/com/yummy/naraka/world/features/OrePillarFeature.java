@@ -6,10 +6,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -32,7 +34,8 @@ public class OrePillarFeature extends Feature<OrePillarConfiguration> {
             return false;
 
         BlockPos pos = NarakaUtils.findFloor(level, origin);
-        if (pos.equals(origin))
+        BlockState floorState = level.getBlockState(pos);
+        if (pos.equals(origin) || floorState.is(BlockTags.OVERWORLD_CARVER_REPLACEABLES))
             return false;
         placePillar(level, context.random(), pos, oreSelector, config);
 
@@ -53,17 +56,27 @@ public class OrePillarFeature extends Feature<OrePillarConfiguration> {
             return;
 
         BlockPos rootPos = NarakaUtils.findFaceSturdy(level, start, growingDirection);
-        BlockState state = oreSelector.selectOre(random);
         int offset = Math.abs(start.getY() - rootPos.getY());
+        if (offset > radius + 2)
+            rootPos = start.relative(growingDirection.getOpposite(), radius + 2);
 
-        for (int y = 0; y < height + offset; y++)
-            safeSetBlock(level, rootPos.relative(growingDirection, y), state, BlockState::isAir);
+        for (int y = 0; y < height + offset; y++) {
+            BlockState state = selectBlockState(random, oreSelector, config);
+            safeSetBlock(level, rootPos.relative(growingDirection, y), state, BlockBehaviour.BlockStateBase::canBeReplaced);
+        }
+
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             float scale = 0.67f * (height / (float) config.heightProvider().getMaxValue());
             int subPillarHeight = (int) Math.min(config.sampleHeight(random) * scale, height - 1);
             if (spreadDirection.getOpposite() != direction && random.nextFloat() < config.spreadChance())
                 placeSubPillar(level, random, start.relative(direction), oreSelector, config, maxRadius, radius + 1, subPillarHeight, direction, growingDirection);
         }
+    }
+
+    protected BlockState selectBlockState(RandomSource random, OreSelector oreSelector, OrePillarConfiguration config) {
+        if (random.nextFloat() < config.orePlaceChance())
+            return oreSelector.selectOre(random);
+        return config.baseBlock().value().defaultBlockState();
     }
 
     @FunctionalInterface

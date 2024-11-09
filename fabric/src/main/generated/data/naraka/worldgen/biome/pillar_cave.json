@@ -1,6 +1,10 @@
 {
   "carvers": {
-    "air": "naraka:yummy"
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
   },
   "downfall": 0.4,
   "effects": {
@@ -15,7 +19,7 @@
       "max_delay": 24000,
       "min_delay": 12000,
       "replace_current_music": false,
-      "sound": "minecraft:music.overworld.deep_dark"
+      "sound": "minecraft:music.overworld.dripstone_caves"
     },
     "sky_color": 7907327,
     "water_color": 4159204,
@@ -23,7 +27,10 @@
   },
   "features": [
     [],
-    [],
+    [
+      "minecraft:lake_lava_underground",
+      "minecraft:lake_lava_surface"
+    ],
     [
       "minecraft:amethyst_geode"
     ],
@@ -61,13 +68,14 @@
       "minecraft:ore_copper",
       "minecraft:underwater_magma",
       "naraka:amethyst_ore",
-      "naraka:single_ore_pillar",
-      "naraka:mixed_ore_pillar",
       "minecraft:disk_sand",
       "minecraft:disk_clay",
       "minecraft:disk_gravel"
     ],
-    [],
+    [
+      "naraka:diamond_ore_pillar",
+      "naraka:deepslate_diamond_ore_pillar"
+    ],
     [],
     [
       "minecraft:glow_lichen",

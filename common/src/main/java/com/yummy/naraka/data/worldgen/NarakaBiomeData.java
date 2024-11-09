@@ -12,6 +12,6 @@ public class NarakaBiomeData {
     public static void bootstrap(BootstrapContext<Biome> context) {
         HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);
         HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
-        context.register(NarakaBiomes.YUMMY, NarakaBiomes.yummy(features, carvers));
+        context.register(NarakaBiomes.PILLAR_CAVE, NarakaBiomes.pillarCaves(features, carvers));
     }
 }

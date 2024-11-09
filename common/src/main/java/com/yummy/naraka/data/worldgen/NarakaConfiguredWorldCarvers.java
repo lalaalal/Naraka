@@ -17,13 +17,13 @@ import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 
 public class NarakaConfiguredWorldCarvers {
-    public static final ResourceKey<ConfiguredWorldCarver<?>> YUMMY = create("yummy");
+    public static final ResourceKey<ConfiguredWorldCarver<?>> PILLAR_CAVE = create("pillar_cave");
 
     public static void bootstrap(BootstrapContext<ConfiguredWorldCarver<?>> context) {
         HolderGetter<Block> blocks = context.lookup(Registries.BLOCK);
         context.register(
-                YUMMY,
-                NarakaWorldCarvers.YUMMY.get().configured(
+                PILLAR_CAVE,
+                NarakaWorldCarvers.PILLAR_CAVE.get().configured(
                         new CarverConfiguration(
                                 0.2f,
                                 UniformHeight.of(VerticalAnchor.aboveBottom(8), VerticalAnchor.absolute(47)),

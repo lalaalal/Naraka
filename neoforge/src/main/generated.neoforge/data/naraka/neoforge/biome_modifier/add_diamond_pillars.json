@@ -1,0 +1,9 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#c:is_overworld",
+  "features": [
+    "naraka:diamond_ore_pillar",
+    "naraka:deepslate_diamond_ore_pillar"
+  ],
+  "step": "underground_ores"
+}

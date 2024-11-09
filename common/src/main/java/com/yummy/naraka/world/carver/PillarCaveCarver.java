@@ -14,8 +14,8 @@ import net.minecraft.world.level.levelgen.carver.WorldCarver;
 
 import java.util.function.Function;
 
-public class YummyCarver extends WorldCarver<CarverConfiguration> {
-    public YummyCarver() {
+public class PillarCaveCarver extends WorldCarver<CarverConfiguration> {
+    public PillarCaveCarver() {
         super(CarverConfiguration.CODEC.codec());
     }
 

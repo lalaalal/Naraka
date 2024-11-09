@@ -19,8 +19,6 @@ public class NarakaOrePlacements {
 
     public static final ResourceKey<PlacedFeature> AMETHYST_ORE = NarakaPlacements.create("amethyst_ore");
 
-    public static final ResourceKey<PlacedFeature> SINGLE_ORE_PILLAR = NarakaPlacements.create("single_ore_pillar");
-    public static final ResourceKey<PlacedFeature> MIXED_ORE_PILLAR = NarakaPlacements.create("mixed_ore_pillar");
 
     protected static void bootstrap(BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
@@ -48,24 +46,6 @@ public class NarakaOrePlacements {
                 AMETHYST_ORE,
                 configuredFeatures.getOrThrow(NarakaOreFeatures.AMETHYST_ORE),
                 commonOrePlacement(9, HeightRangePlacement.triangle(VerticalAnchor.absolute(-60), VerticalAnchor.absolute(160)))
-        );
-        PlacementUtils.register(
-                context,
-                SINGLE_ORE_PILLAR,
-                configuredFeatures.getOrThrow(NarakaOreFeatures.SINGLE_ORE_PILLAR),
-                CountPlacement.of(98),
-                InSquarePlacement.spread(),
-                PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
-                BiomeFilter.biome()
-        );
-        PlacementUtils.register(
-                context,
-                MIXED_ORE_PILLAR,
-                configuredFeatures.getOrThrow(NarakaOreFeatures.MIXED_ORE_PILLAR),
-                CountPlacement.of(32),
-                InSquarePlacement.spread(),
-                PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
-                BiomeFilter.biome()
         );
     }
 

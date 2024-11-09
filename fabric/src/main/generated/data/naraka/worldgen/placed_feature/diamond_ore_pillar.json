@@ -1,9 +1,9 @@
 {
-  "feature": "naraka:single_ore_pillar",
+  "feature": "naraka:diamond_ore_pillar",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 98
+      "count": 18
     },
     {
       "type": "minecraft:in_square"
@@ -13,10 +13,10 @@
       "height": {
         "type": "minecraft:uniform",
         "max_inclusive": {
-          "absolute": 256
+          "absolute": 15
         },
         "min_inclusive": {
-          "above_bottom": 0
+          "absolute": 0
         }
       }
     },
