@@ -7,24 +7,20 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * Singleton class provides {@link RegistryProxy}<br>
  * Override {@link RegistryInitializer#create(ResourceKey)} to create {@linkplain RegistryProxy} by default<br>
- * Use {@link RegistryInitializer#setInstance(RegistryInitializer)} to set instance
- *
- * @see RegistryProxy#register(ResourceKey, String, Supplier)
  */
 public class RegistryInitializer {
     private static @Nullable RegistryInitializer INSTANCE;
 
     private final Map<ResourceKey<? extends Registry<?>>, RegistryProxy<?>> registryProxyMap = new HashMap<>();
 
-    public static void setInstance(RegistryInitializer instance) {
+    public static void initialize(NarakaInitializer initializer) {
         if (INSTANCE != null)
             throw new IllegalStateException("RegistryInitializer instance is already allocated");
-        INSTANCE = instance;
+        INSTANCE = initializer.getRegistryInitializer();
     }
 
     protected static RegistryInitializer getInstance() {

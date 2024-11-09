@@ -9,7 +9,13 @@ import net.minecraft.resources.ResourceKey;
 
 import java.util.function.Supplier;
 
-public class FabricRegistryInitializer extends RegistryInitializer {
+public final class FabricRegistryInitializer extends RegistryInitializer {
+    public static final FabricRegistryInitializer INSTANCE = new FabricRegistryInitializer();
+
+    private FabricRegistryInitializer() {
+
+    }
+
     @Override
     protected <T> RegistryProxy<T> create(ResourceKey<Registry<T>> key) {
         return new FabricRegistryProxy<>(key);

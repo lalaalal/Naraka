@@ -1,7 +1,6 @@
 package com.yummy.naraka.mixin;
 
 import com.mojang.datafixers.util.Pair;
-import com.yummy.naraka.NarakaConfig;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.NarakaBiomes;
 import net.minecraft.resources.ResourceKey;
@@ -28,12 +27,12 @@ public abstract class OverworldBiomeBuilderMixin {
 
     @Inject(method = "addUndergroundBiomes", at = @At("RETURN"))
     private void modifyUndergroundBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consume, CallbackInfo ci) {
-        if (!NarakaMod.isDataGeneration && NarakaMod.isModLoaded && NarakaConfig.GENERATE_PILLAR_CAVES)
+        if (!NarakaMod.isDataGeneration && NarakaMod.isModLoaded && NarakaMod.config().generatePillarCaves.getValue())
             addUndergroundBiome(
                     consume,
                     this.FULL_RANGE,
                     this.FULL_RANGE,
-                    Climate.Parameter.span(0.8F, 1.0F),
+                    Climate.Parameter.span(0.6f, 1.0f),
                     this.FULL_RANGE,
                     this.FULL_RANGE,
                     0.0F,

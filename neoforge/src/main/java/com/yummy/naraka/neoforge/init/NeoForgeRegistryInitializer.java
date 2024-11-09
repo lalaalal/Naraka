@@ -8,13 +8,23 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class NeoForgeRegistryInitializer extends RegistryInitializer {
+public final class NeoForgeRegistryInitializer extends RegistryInitializer {
+    @Nullable
+    private static NeoForgeRegistryInitializer INSTANCE;
+
     private final IEventBus bus;
     private final Function<ResourceKey<? extends Registry<?>>, Registry<?>> narakaRegistryProvider;
+
+    public static NeoForgeRegistryInitializer getInstance(IEventBus bus, Function<ResourceKey<? extends Registry<?>>, Registry<?>> narakaRegistryProvider) {
+        if (INSTANCE == null)
+            INSTANCE = new NeoForgeRegistryInitializer(bus, narakaRegistryProvider);
+        return INSTANCE;
+    }
 
     public NeoForgeRegistryInitializer(IEventBus bus, Function<ResourceKey<? extends Registry<?>>, Registry<?>> narakaRegistryProvider) {
         this.bus = bus;

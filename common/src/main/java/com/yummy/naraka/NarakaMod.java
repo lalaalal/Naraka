@@ -4,8 +4,10 @@ import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryFactory;
 import com.yummy.naraka.init.NarakaInitializer;
+import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
+import com.yummy.naraka.util.Platform;
 import com.yummy.naraka.world.NarakaBiomes;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
@@ -40,6 +42,11 @@ public class NarakaMod {
     public static boolean isModLoaded = false;
 
     public static void initialize(NarakaInitializer initializer) {
+        Platform.initialize(initializer);
+        RegistryInitializer.initialize(initializer);
+
+        NarakaConfig.load();
+
         RegistryFactory.initialize(initializer);
         NarakaRegistries.initialize();
 
@@ -84,6 +91,10 @@ public class NarakaMod {
 
         NarakaGameEvents.initialize();
         NarakaNetworks.initialize();
+    }
+
+    public static NarakaConfig config() {
+        return NarakaConfig.INSTANCE;
     }
 
     public static ResourceLocation mcLocation(String path) {

@@ -6,6 +6,7 @@ import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.neoforge.data.NarakaBiomeModifiers;
 import com.yummy.naraka.neoforge.init.NeoForgeRegistryInitializer;
+import com.yummy.naraka.util.Platform;
 import com.yummy.naraka.world.NarakaBiomes;
 import com.yummy.naraka.world.item.NarakaCreativeModTabs;
 import net.minecraft.core.Registry;
@@ -33,15 +34,26 @@ public final class NarakaModNeoForge implements NarakaInitializer {
     private final Map<ResourceKey<CreativeModeTab>, Consumer<NarakaCreativeModTabs.TabEntries>> tabEntriesMap = new HashMap<>();
     private final List<Runnable> runAfterRegistryLoaded = new ArrayList<>();
     private final NeoForgeRegistryFactory registryFactory = new NeoForgeRegistryFactory();
+    private final IEventBus bus;
     
     public NarakaModNeoForge(IEventBus bus, ModContainer container) {
-        RegistryInitializer.setInstance(new NeoForgeRegistryInitializer(bus, registries::get));
+        this.bus = bus;
 
         NarakaMod.initialize(this);
 
         bus.addListener(this::commonSetup);
         bus.addListener(this::createRegistries);
         bus.addListener(this::modifyCreativeModeTabs);
+    }
+
+    @Override
+    public Platform getPlatform() {
+        return NeoForgePlatform.INSTANCE;
+    }
+
+    @Override
+    public RegistryInitializer getRegistryInitializer() {
+        return NeoForgeRegistryInitializer.getInstance(bus, registries::get);
     }
 
     @Override

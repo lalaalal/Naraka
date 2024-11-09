@@ -7,6 +7,7 @@ import com.yummy.naraka.fabric.init.FabricRegistryFactory;
 import com.yummy.naraka.fabric.init.FabricRegistryInitializer;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.init.RegistryInitializer;
+import com.yummy.naraka.util.Platform;
 import com.yummy.naraka.world.NarakaBiomes;
 import com.yummy.naraka.world.item.NarakaCreativeModTabs;
 import net.fabricmc.api.ModInitializer;
@@ -21,10 +22,18 @@ import java.util.function.Consumer;
 public final class NarakaModFabric implements ModInitializer, NarakaInitializer {
     @Override
     public void onInitialize() {
-        RegistryInitializer.setInstance(new FabricRegistryInitializer());
-
         NarakaMod.initialize(this);
         NarakaMod.isModLoaded = true;
+    }
+
+    @Override
+    public Platform getPlatform() {
+        return FabricPlatform.INSTANCE;
+    }
+
+    @Override
+    public RegistryInitializer getRegistryInitializer() {
+        return FabricRegistryInitializer.INSTANCE;
     }
 
     @Override

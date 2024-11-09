@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 
-public class FabricRegistryFactory extends RegistryFactory {
+public final class FabricRegistryFactory extends RegistryFactory {
     public static final FabricRegistryFactory INSTANCE = new FabricRegistryFactory();
 
     private FabricRegistryFactory() {

@@ -38,7 +38,7 @@ import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
 @Mod(value = NarakaMod.MOD_ID, dist = Dist.CLIENT)
-public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClientItemExtensions {
+public final class NarakaModNeoForgeClient implements NarakaClientInitializer, IClientItemExtensions {
     private final IEventBus bus;
     private final List<Runnable> runAfterRegistryLoaded = new ArrayList<>();
 

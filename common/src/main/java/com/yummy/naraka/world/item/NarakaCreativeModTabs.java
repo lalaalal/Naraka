@@ -5,11 +5,11 @@ import com.yummy.naraka.core.registries.LazyHolder;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.init.RegistryInitializer;
+import com.yummy.naraka.util.Platform;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
-import dev.architectury.platform.Platform;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -28,7 +28,7 @@ public class NarakaCreativeModTabs {
             .icon(() -> NarakaItems.EBONY_SWORD.get().getDefaultInstance())
             .displayItems(NarakaCreativeModTabs::createSoulMaterialsTab)
     );
-    public static final LazyHolder<CreativeModeTab, CreativeModeTab> NARAKA_TEST_TAB = register("naraka_test", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
+    public static final LazyHolder<CreativeModeTab, CreativeModeTab> NARAKA_TEST_TAB = registerOnlyDev("naraka_test", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
             .title(Component.translatable("itemGroup.naraka.test"))
             .icon(() -> NarakaItems.SPEAR_ITEM.get().getDefaultInstance())
             .displayItems(NarakaCreativeModTabs::createNarakaTestTab)
@@ -39,7 +39,7 @@ public class NarakaCreativeModTabs {
     }
 
     private static LazyHolder<CreativeModeTab, CreativeModeTab> registerOnlyDev(String name, CreativeModeTab.Builder builder) {
-        if (Platform.isDevelopmentEnvironment())
+        if (Platform.getInstance().isDevelopmentEnvironment())
             return RegistryProxy.register(Registries.CREATIVE_MODE_TAB, name, builder::build);
         return new LazyHolder<>(BuiltInRegistries.CREATIVE_MODE_TAB, NarakaMod.location(name));
     }
