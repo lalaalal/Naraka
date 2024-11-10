@@ -11,6 +11,10 @@ import net.minecraft.world.level.block.Block;
 import java.util.Optional;
 
 public final class LanguageKey {
+    public static final String ITEM_GROUP_NARAKA = itemGroup("naraka");
+    public static final String ITEM_GROUP_TEST = itemGroup("naraka.test");
+    public static final String ITEM_GROUP_SOUL_MATERIALS = itemGroup("naraka.soul_materials");
+
     public static final String PURIFIED_SOUL_UPGRADE_KEY = Util.makeDescriptionId("upgrade", NarakaMod.location("purified_soul_upgrade"));
     public static final String PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.applies_to"));
     public static final String PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.ingredients"));
@@ -33,5 +37,9 @@ public final class LanguageKey {
 
     public static String tooltipKey(Block block) {
         return block.getDescriptionId() + ".tooltip";
+    }
+
+    public static String itemGroup(String path) {
+        return "itemGroup." + path;
     }
 }

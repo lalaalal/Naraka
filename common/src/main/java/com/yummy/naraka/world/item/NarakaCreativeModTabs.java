@@ -3,6 +3,7 @@ package com.yummy.naraka.world.item;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.LazyHolder;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.util.Platform;
@@ -17,19 +18,20 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 
+@SuppressWarnings("unused")
 public class NarakaCreativeModTabs {
     public static final LazyHolder<CreativeModeTab, CreativeModeTab> NARAKA_TAB = register("naraka", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
-            .title(Component.translatable("itemGroup.naraka"))
+            .title(Component.translatable(LanguageKey.ITEM_GROUP_NARAKA))
             .icon(() -> NarakaItems.STIGMA_ROD.get().getDefaultInstance())
             .displayItems(NarakaCreativeModTabs::createNarakaTab)
     );
     public static final LazyHolder<CreativeModeTab, CreativeModeTab> SOUL_MATERIALS_TAB = register("soul_materials", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
-            .title(Component.translatable("itemGroup.naraka.soul_materials"))
+            .title(Component.translatable(LanguageKey.ITEM_GROUP_SOUL_MATERIALS))
             .icon(() -> NarakaItems.EBONY_SWORD.get().getDefaultInstance())
             .displayItems(NarakaCreativeModTabs::createSoulMaterialsTab)
     );
     public static final LazyHolder<CreativeModeTab, CreativeModeTab> NARAKA_TEST_TAB = registerOnlyDev("naraka_test", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
-            .title(Component.translatable("itemGroup.naraka.test"))
+            .title(Component.translatable(LanguageKey.ITEM_GROUP_TEST))
             .icon(() -> NarakaItems.SPEAR_ITEM.get().getDefaultInstance())
             .displayItems(NarakaCreativeModTabs::createNarakaTestTab)
     );
@@ -70,7 +72,6 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaItems.HEROBRINE_PHASE_3_DISC.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_4_DISC.get());
         output.accept(NarakaItems.SANCTUARY_COMPASS.get());
-        output.accept(NarakaBlocks.SOUL_CRAFTING_BLOCK.get());
 
         output.accept(NarakaBlocks.SOUL_STABILIZER.get());
         output.accept(NarakaBlocks.SOUL_SMITHING_BLOCK.get());
@@ -146,6 +147,7 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaBlocks.NECTARIUM_ORE.get());
         output.accept(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
         output.accept(NarakaBlocks.FORGING_BLOCK.get());
+        output.accept(NarakaBlocks.SOUL_CRAFTING_BLOCK.get());
 
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_HELMET.get()));
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get()));

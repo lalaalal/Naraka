@@ -77,7 +77,7 @@ public final class NarakaModNeoForge implements NarakaInitializer {
     }
 
     public void commonSetup(FMLCommonSetupEvent event) {
-        NarakaMod.isModLoaded = true;
+        NarakaMod.isRegistryLoaded = true;
         for (Runnable runnable : runAfterRegistryLoaded)
             runnable.run();
     }

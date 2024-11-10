@@ -23,7 +23,7 @@ public final class NarakaModFabric implements ModInitializer, NarakaInitializer 
     @Override
     public void onInitialize() {
         NarakaMod.initialize(this);
-        NarakaMod.isModLoaded = true;
+        NarakaMod.isRegistryLoaded = true;
     }
 
     @Override

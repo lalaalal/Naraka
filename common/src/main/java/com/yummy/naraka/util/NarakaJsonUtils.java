@@ -16,7 +16,7 @@ public class NarakaJsonUtils {
     );
 
     public static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(NarakaConfig.ConfigValue.class, new ConfigValueDeserializer())
+            .registerTypeAdapter(NarakaConfig.ConfigValue.class, new ConfigValueSerializer())
             .create();
 
     @SuppressWarnings("unchecked")
@@ -26,7 +26,7 @@ public class NarakaJsonUtils {
         throw new IllegalStateException("Cannot find matching json parser for " + type);
     }
 
-    public static class ConfigValueDeserializer implements JsonSerializer<NarakaConfig.ConfigValue<?>> {
+    public static class ConfigValueSerializer implements JsonSerializer<NarakaConfig.ConfigValue<?>> {
         @Override
         public JsonElement serialize(NarakaConfig.ConfigValue<?> src, Type typeOfSrc, JsonSerializationContext context) {
             return context.serialize(src.getValue());

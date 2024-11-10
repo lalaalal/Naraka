@@ -27,7 +27,7 @@ public abstract class OverworldBiomeBuilderMixin {
 
     @Inject(method = "addUndergroundBiomes", at = @At("RETURN"))
     private void modifyUndergroundBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> consume, CallbackInfo ci) {
-        if (!NarakaMod.isDataGeneration && NarakaMod.isModLoaded && NarakaMod.config().generatePillarCaves.getValue())
+        if (!NarakaMod.isDataGeneration && NarakaMod.isRegistryLoaded && NarakaMod.config().generatePillarCaves.getValue())
             addUndergroundBiome(
                     consume,
                     this.FULL_RANGE,

@@ -40,7 +40,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
-public class NarakaGameEvents {
+public final class NarakaGameEvents {
     public static void initialize() {
         LifecycleEvent.SERVER_STARTING.register(NarakaGameEvents::onServerStarting);
         LifecycleEvent.SERVER_STARTED.register(NarakaGameEvents::onServerStarted);

@@ -46,8 +46,9 @@ public class NarakaLanguageProviders {
     }
 
     protected void generate() {
-        add("itemGroup.naraka", "Naraka", "Naraka");
-        add("itemGroup.naraka.test", "Naraka Test", "나락! 테스트");
+        add(LanguageKey.ITEM_GROUP_NARAKA, "Naraka", "Naraka");
+        add(LanguageKey.ITEM_GROUP_SOUL_MATERIALS, "Soul Materials", "영혼 재료");
+        add(LanguageKey.ITEM_GROUP_TEST, "Naraka Test", "나락! 테스트");
         add("container.soul_crafting", "Soul Crafter", "영혼 세공기");
         add(LanguageKey.REINFORCEMENT_KEY, "Reinforcement: %d", "강화: %d");
         add(LanguageKey.BLESSED_KEY, "Blessed", "축복받음");

@@ -133,6 +133,27 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .pattern("BB")
                 .unlockedBy(getHasName(Items.HEAVY_CORE), has(Items.HEAVY_CORE))
                 .save(recipeOutput);
+
+        soulInfusedMaterial(recipeOutput, NarakaItems.SOUL_INFUSED_REDSTONE.get(), Items.REDSTONE);
+        soulInfusedMaterial(recipeOutput, NarakaItems.SOUL_INFUSED_COPPER.get(), Items.COPPER_INGOT);
+        soulInfusedMaterial(recipeOutput, NarakaItems.SOUL_INFUSED_GOLD.get(), Items.GOLD_INGOT);
+        soulInfusedMaterial(recipeOutput, NarakaItems.SOUL_INFUSED_EMERALD.get(), Items.EMERALD);
+        soulInfusedMaterial(recipeOutput, NarakaItems.SOUL_INFUSED_DIAMOND.get(), Items.DIAMOND);
+        soulInfusedMaterial(recipeOutput, NarakaItems.SOUL_INFUSED_LAPIS.get(), Items.LAPIS_LAZULI);
+        soulInfusedMaterial(recipeOutput, NarakaItems.SOUL_INFUSED_AMETHYST.get(), Items.AMETHYST_SHARD);
+        soulInfusedMaterial(recipeOutput, NarakaItems.SOUL_INFUSED_NECTARIUM.get(), NarakaItems.NECTARIUM.get());
+    }
+
+    protected static void soulInfusedMaterial(RecipeOutput recipeOutput, ItemLike result, ItemLike material) {
+        Item purifiedSoulShard = NarakaItems.PURIFIED_SOUL_SHARD.get();
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result)
+                .define('P', purifiedSoulShard)
+                .define('M', material)
+                .pattern("MMM")
+                .pattern("MPM")
+                .pattern("MMM")
+                .unlockedBy(getHasName(purifiedSoulShard), has(purifiedSoulShard))
+                .save(recipeOutput);
     }
 
     protected static void helmet(RecipeOutput recipeOutput, ItemLike material, ArmorItem helmet) {

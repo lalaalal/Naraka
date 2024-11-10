@@ -6,6 +6,7 @@ import com.yummy.naraka.client.gui.hud.DeathCountHud;
 import com.yummy.naraka.client.gui.hud.StigmaHud;
 import com.yummy.naraka.client.gui.screen.SoulCraftingScreen;
 import com.yummy.naraka.client.particle.EbonyParticle;
+import com.yummy.naraka.client.particle.NectariumParticle;
 import com.yummy.naraka.client.renderer.*;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.init.NarakaClientInitializer;
@@ -19,7 +20,6 @@ import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.component.SanctuaryTracker;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
-import dev.architectury.registry.client.particle.ParticleProviderRegistry;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import dev.architectury.registry.item.ItemPropertiesRegistry;
 import dev.architectury.registry.menu.MenuRegistry;
@@ -29,10 +29,11 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 
 @Environment(EnvType.CLIENT)
-public class NarakaModClient {
+public final class NarakaModClient {
     public static void initialize(NarakaClientInitializer initializer) {
         NarakaModelLayers.initialize();
         registerEntityRenderers();
+        registerParticles(initializer);
         registerShaders(initializer);
 
         initializer.registerCustomItemRenderer(NarakaBlocks.FORGING_BLOCK, () -> NarakaCustomRenderer.INSTANCE);
@@ -51,7 +52,6 @@ public class NarakaModClient {
         initializeBlocks();
 
         registerBlockEntityRenderers();
-        registerParticles();
         registerHudRenders();
         registerMenus();
 
@@ -112,7 +112,10 @@ public class NarakaModClient {
         MenuRegistry.registerScreenFactory(NarakaMenuTypes.SOUL_CRAFTING.get(), SoulCraftingScreen::new);
     }
 
-    private static void registerParticles() {
-        ParticleProviderRegistry.register(NarakaParticleTypes.EBONY_LEAVES.get(), EbonyParticle.Provider::new);
+    private static void registerParticles(NarakaClientInitializer initializer) {
+        initializer.registerParticle(NarakaParticleTypes.EBONY_LEAVES, EbonyParticle.Provider::new);
+        initializer.registerParticle(NarakaParticleTypes.DRIPPING_NECTARIUM, NectariumParticle::createNectariumHangParticle);
+        initializer.registerParticle(NarakaParticleTypes.FALLING_NECTARIUM, NectariumParticle::createNectariumFallParticle);
+        initializer.registerParticle(NarakaParticleTypes.LANDING_NECTARIUM, NectariumParticle::createNectariumLandParticle);
     }
 }

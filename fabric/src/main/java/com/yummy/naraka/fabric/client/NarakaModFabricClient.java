@@ -3,14 +3,19 @@ package com.yummy.naraka.fabric.client;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModClient;
+import com.yummy.naraka.client.particle.ParticleFactory;
 import com.yummy.naraka.client.renderer.CustomRenderManager;
 import com.yummy.naraka.init.NarakaClientInitializer;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.CoreShaderRegistrationCallback;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
@@ -48,6 +53,16 @@ public final class NarakaModFabricClient implements ClientModInitializer, Naraka
     @Override
     public void registerShader(ResourceLocation id, VertexFormat format, Consumer<ShaderInstance> consumer) {
         CoreShaderRegistrationCallback.EVENT.register(context -> context.register(id, format, consumer));
+    }
+
+    @Override
+    public <T extends ParticleOptions> void registerParticle(Supplier<? extends ParticleType<T>> particle, ParticleFactory<T> provider) {
+        ParticleFactoryRegistry.getInstance().register(particle.get(), provider::create);
+    }
+
+    @Override
+    public <T extends ParticleOptions> void registerParticle(Supplier<? extends ParticleType<T>> particle, ParticleProvider<T> provider) {
+        ParticleFactoryRegistry.getInstance().register(particle.get(), provider);
     }
 
     private record FabricResourceReloadListener(ResourceLocation name,
