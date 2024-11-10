@@ -50,7 +50,7 @@ public class NarakaBiomes {
     public static void initialize(NarakaInitializer initializer) {
         Modifier modifier = initializer.getBiomeModifier();
         modifier.addFeatures(
-                "add_nectarium_generation",
+                "add_nectarium_ore_generation",
                 ConventionalTags.Biomes.IS_OVERWORLD,
                 GenerationStep.Decoration.UNDERGROUND_ORES,
                 List.of(
@@ -58,6 +58,12 @@ public class NarakaBiomes {
                         NarakaOrePlacements.NECTARIUM_ORE_SMALL,
                         NarakaOrePlacements.NECTARIUM_ORE_LARGE
                 )
+        );
+        modifier.addFeatures(
+                "add_amethyst_ore_generation",
+                ConventionalTags.Biomes.IS_OVERWORLD,
+                GenerationStep.Decoration.UNDERGROUND_ORES,
+                List.of(NarakaOrePlacements.AMETHYST_ORE)
         );
         modifier.addFeatures(
                 "add_diamond_pillars",

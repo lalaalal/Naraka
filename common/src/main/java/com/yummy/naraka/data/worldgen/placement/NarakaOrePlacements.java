@@ -45,7 +45,7 @@ public class NarakaOrePlacements {
                 context,
                 AMETHYST_ORE,
                 configuredFeatures.getOrThrow(NarakaOreFeatures.AMETHYST_ORE),
-                commonOrePlacement(9, HeightRangePlacement.triangle(VerticalAnchor.absolute(-60), VerticalAnchor.absolute(160)))
+                commonOrePlacement(7, HeightRangePlacement.triangle(VerticalAnchor.absolute(-60), VerticalAnchor.absolute(60)))
         );
     }
 

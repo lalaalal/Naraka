@@ -31,7 +31,7 @@ public class NectariumCoreBlock extends Block {
     public static final IntegerProperty HONEY = IntegerProperty.create("honey", 0, MAX_HONEY);
 
     public static int lightLevel(BlockState blockState) {
-        return blockState.getValue(HONEY) * 3;
+        return blockState.getValue(HONEY) * 2;
     }
 
     public NectariumCoreBlock(Properties properties) {

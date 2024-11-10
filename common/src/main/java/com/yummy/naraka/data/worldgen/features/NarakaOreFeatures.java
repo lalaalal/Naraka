@@ -38,7 +38,6 @@ public class NarakaOreFeatures {
                 OreConfiguration.target(stone, NarakaBlocks.AMETHYST_ORE.get().defaultBlockState()),
                 OreConfiguration.target(deepslate, NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get().defaultBlockState())
         );
-        FeatureUtils.register(context, AMETHYST_ORE, Feature.ORE, new OreConfiguration(amethystTargetStates, 16, 0));
-
+        FeatureUtils.register(context, AMETHYST_ORE, Feature.ORE, new OreConfiguration(amethystTargetStates, 12, 0.1f));
     }
 }
