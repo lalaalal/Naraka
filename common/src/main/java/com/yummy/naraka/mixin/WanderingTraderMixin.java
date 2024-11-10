@@ -24,7 +24,7 @@ public abstract class WanderingTraderMixin extends AbstractVillager {
     @Unique
     private static final VillagerTrades.ItemListing[] naraka$TRADES = new VillagerTrades.ItemListing[]{
             naraka$itemsForEmeralds(NarakaItems.SANCTUARY_COMPASS.get(), 10, 1, 1, 1),
-            naraka$itemsForEmeralds(NarakaBlocks.NECTARIUM_CORE_BLOCK.get(), 8, 1, 1, 1)
+            naraka$itemTrades(Items.BEE_NEST, NarakaBlocks.NECTARIUM_CORE_BLOCK.get(), 1, 1, 1, 1)
     };
 
     @Unique

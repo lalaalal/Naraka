@@ -58,27 +58,38 @@ public class NarakaCreativeModTabs {
     }
 
     private static void createNarakaTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-        output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get());
-        output.accept(NarakaItems.GOD_BLOOD.get());
+        output.accept(NarakaBlocks.AMETHYST_ORE.get());
+        output.accept(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
+        output.accept(NarakaBlocks.AMETHYST_SHARD_BLOCK.get());
+        output.accept(NarakaBlocks.NECTARIUM_ORE.get());
+        output.accept(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
+        output.accept(NarakaBlocks.NECTARIUM_BLOCK.get());
+        output.accept(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
+        output.accept(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get());
+        output.accept(NarakaItems.NECTARIUM.get());
 
+        output.accept(NarakaBlocks.IMITATION_GOLD_BLOCK.get());
+        output.accept(NarakaBlocks.HEROBRINE_TOTEM.get());
         output.accept(NarakaItems.PURIFIED_SOUL_SHARD.get());
+        output.accept(NarakaItems.PURIFIED_SOUL_METAL.get());
+        output.accept(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
         output.accept(NarakaItems.PURIFIED_SOUL_HELMET.get());
         output.accept(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get());
         output.accept(NarakaItems.PURIFIED_SOUL_LEGGINGS.get());
         output.accept(NarakaItems.PURIFIED_SOUL_BOOTS.get());
 
+        output.accept(NarakaItems.PURIFIED_SOUL_SWORD.get());
+        output.accept(NarakaItems.GOD_BLOOD.get());
+        output.accept(NarakaItems.EBONY_SWORD.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_1_DISC.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_2_DISC.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_3_DISC.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_4_DISC.get());
+        output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get());
         output.accept(NarakaItems.SANCTUARY_COMPASS.get());
 
-        output.accept(NarakaBlocks.SOUL_STABILIZER.get());
         output.accept(NarakaBlocks.SOUL_SMITHING_BLOCK.get());
-        output.accept(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
-        output.accept(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get());
-        output.accept(NarakaBlocks.AMETHYST_ORE.get());
-        output.accept(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
+        output.accept(NarakaBlocks.SOUL_STABILIZER.get());
     }
 
     private static void createSoulMaterialsTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
@@ -144,8 +155,7 @@ public class NarakaCreativeModTabs {
         output.accept(NarakaBlocks.EBONY_SAPLING.get());
 
         output.accept(NarakaItems.STIGMA_ROD.get());
-        output.accept(NarakaBlocks.NECTARIUM_ORE.get());
-        output.accept(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
+
         output.accept(NarakaBlocks.FORGING_BLOCK.get());
         output.accept(NarakaBlocks.SOUL_CRAFTING_BLOCK.get());
 

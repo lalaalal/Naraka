@@ -16,6 +16,7 @@ public class NarakaJsonUtils {
     );
 
     public static final Gson GSON = new GsonBuilder()
+            .setPrettyPrinting()
             .registerTypeAdapter(NarakaConfig.ConfigValue.class, new ConfigValueSerializer())
             .create();
 

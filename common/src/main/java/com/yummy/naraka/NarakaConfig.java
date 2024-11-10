@@ -7,14 +7,16 @@ import com.yummy.naraka.util.Platform;
 
 import java.io.*;
 import java.nio.file.Path;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class NarakaConfig {
     public static final NarakaConfig INSTANCE = new NarakaConfig();
 
-    protected final Map<String, ConfigValue<?>> configuration = new HashMap<>();
+    protected final Map<String, ConfigValue<?>> configuration = new LinkedHashMap<>();
+
     public final ConfigValue<Boolean> generatePillarCaves;
+    public final ConfigValue<Boolean> showReinforcementValue;
 
     protected static void load() {
 
@@ -22,6 +24,7 @@ public class NarakaConfig {
 
     protected NarakaConfig() {
         this.generatePillarCaves = define("generate_pillar_caves", false);
+        this.showReinforcementValue = define("show_reinforcement_value", false);
 
         loadValues();
     }
@@ -40,6 +43,8 @@ public class NarakaConfig {
                 JsonElement element = jsonObject.get(key);
                 configuration.get(key).load(element);
             });
+            if (jsonObject.size() != configuration.size())
+                saveValues();
         } catch (FileNotFoundException exception) {
             saveValues();
         } catch (IOException exception) {

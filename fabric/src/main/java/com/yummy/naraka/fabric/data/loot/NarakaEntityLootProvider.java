@@ -7,7 +7,6 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -35,7 +34,7 @@ public class NarakaEntityLootProvider extends SimpleFabricLootTableProvider {
                                 .add(LootItem.lootTableItem(NarakaItems.GOD_BLOOD.get()))
                                 .when(AllOfCondition.allOf(
                                         LootItemKilledByPlayerCondition.killedByPlayer(),
-                                        LootItemRandomChanceCondition.randomChance(0.02f)
+                                        LootItemRandomChanceCondition.randomChance(0.01f)
                                 ))
                         ).withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
@@ -50,7 +49,7 @@ public class NarakaEntityLootProvider extends SimpleFabricLootTableProvider {
                                 ))
                         ).withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                .add(LootItem.lootTableItem(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE))
+                                .add(LootItem.lootTableItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get()))
                                 .when(LootItemRandomChanceCondition.randomChance(0.3f))
                         ).withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))

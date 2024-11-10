@@ -4,7 +4,6 @@ import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.world.block.entity.ForgingBlockEntity;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
-import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -56,7 +55,7 @@ public class ForgingBlock extends BaseEntityBlock {
             } else if (!forgingBlockEntity.getForgingItem().isEmpty()) {
                 forgingBlockEntity.dropForgingItem();
                 return ItemInteractionResult.SUCCESS;
-            } else if (Reinforcement.canReinforce(itemStack)) {
+            } else if (forgingBlockEntity.canReinforce(itemStack)) {
                 forgingBlockEntity.setForgingItem(itemStack);
                 itemStack.consume(1, player);
                 return ItemInteractionResult.SUCCESS;

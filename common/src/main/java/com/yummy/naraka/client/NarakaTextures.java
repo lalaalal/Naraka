@@ -46,7 +46,9 @@ public final class NarakaTextures {
             return TRIM_TEMPLATE_TEXTURES.get(item);
 
         String trimName = BuiltInRegistries.ITEM.getKey(item)
-                .getPath().replace("_armor_trim_smithing_template", "");
+                .getPath()
+                .replace("_smithing_template", "")
+                .replace("_armor_trim", "");
         ResourceLocation trimTemplateLocation = entity("trims/" + trimName + ".png");
         TRIM_TEMPLATE_TEXTURES.put(item, trimTemplateLocation);
         return trimTemplateLocation;

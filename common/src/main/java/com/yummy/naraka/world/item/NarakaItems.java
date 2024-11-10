@@ -15,6 +15,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Unbreakable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -154,8 +155,11 @@ public class NarakaItems {
             consumer.accept(item.get());
     }
 
+    @Nullable
     public static Item getSoulSwordOf(SoulType type) {
-        return SWORD_BY_SOUL_TYPE.get(type).get();
+        if (SWORD_BY_SOUL_TYPE.containsKey(type))
+            return SWORD_BY_SOUL_TYPE.get(type).get();
+        return null;
     }
 
     private static LazyHolder<Item, Item> registerSoulInfusedItem(SoulType type) {
