@@ -3,39 +3,38 @@ package com.yummy.naraka;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.yummy.naraka.util.NarakaJsonUtils;
-import com.yummy.naraka.util.Platform;
 
 import java.io.*;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class NarakaConfig {
+public final class NarakaConfig {
     public static final NarakaConfig INSTANCE = new NarakaConfig();
 
-    protected final Map<String, ConfigValue<?>> configuration = new LinkedHashMap<>();
+    private final Map<String, ConfigValue<?>> configuration = new LinkedHashMap<>();
 
     public final ConfigValue<Boolean> generatePillarCaves;
     public final ConfigValue<Boolean> showReinforcementValue;
 
-    protected static void load() {
+    static void load() {
 
     }
 
-    protected NarakaConfig() {
+    private NarakaConfig() {
         this.generatePillarCaves = define("generate_pillar_caves", false);
         this.showReinforcementValue = define("show_reinforcement_value", false);
 
         loadValues();
     }
 
-    protected <T> ConfigValue<T> define(String path, T defaultValue) {
+    private <T> ConfigValue<T> define(String path, T defaultValue) {
         ConfigValue<T> value = new ConfigValue<>(defaultValue);
         configuration.put(path, value);
         return value;
     }
 
-    protected void loadValues() {
+    private void loadValues() {
         Path configPath = Platform.getInstance().getConfigurationPath().resolve("naraka-common.json");
         try (Reader reader = new FileReader(configPath.toFile())) {
             JsonObject jsonObject = NarakaJsonUtils.GSON.fromJson(reader, JsonObject.class);

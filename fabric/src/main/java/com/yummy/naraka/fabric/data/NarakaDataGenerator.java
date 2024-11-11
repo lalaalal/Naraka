@@ -26,8 +26,7 @@ public class NarakaDataGenerator implements DataGeneratorEntrypoint {
         NarakaDatapackProvider datapackProvider = pack.addProvider(NarakaDatapackProvider::new);
         patched = datapackProvider.getRegistryProvider();
 
-        new NarakaLanguageProviders("en_us", "ko_kr")
-                .addProvidersTo(pack::addProvider);
+        NarakaLanguageProviders.add(pack::addProvider, "en_us", "ko_kr");
         pack.addProvider(NarakaRecipeProvider::new);
         pack.addProvider(NarakaModelProvider::new);
 
@@ -43,10 +42,10 @@ public class NarakaDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(patched(NarakaStructureSetsTagProvider::new));
     }
 
-    private class PatchedRegistryFactory<T extends DataProvider> implements FabricDataGenerator.Pack.Factory<T> {
-        private final FabricDataGenerator.Pack.RegistryDependentFactory<T> factory;
+    private class PatchedRegistryFactory<T extends DataProvider> implements net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator.Pack.Factory<T> {
+        private final net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator.Pack.RegistryDependentFactory<T> factory;
 
-        private PatchedRegistryFactory(FabricDataGenerator.Pack.RegistryDependentFactory<T> factory) {
+        private PatchedRegistryFactory(net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator.Pack.RegistryDependentFactory<T> factory) {
             this.factory = factory;
         }
 
@@ -58,7 +57,7 @@ public class NarakaDataGenerator implements DataGeneratorEntrypoint {
         }
     }
 
-    private <T extends DataProvider> FabricDataGenerator.Pack.Factory<T> patched(FabricDataGenerator.Pack.RegistryDependentFactory<T> factory) {
+    private <T extends DataProvider> net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator.Pack.Factory<T> patched(net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator.Pack.RegistryDependentFactory<T> factory) {
         return new PatchedRegistryFactory<>(factory);
     }
 }

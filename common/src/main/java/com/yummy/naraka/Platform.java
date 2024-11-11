@@ -1,4 +1,4 @@
-package com.yummy.naraka.util;
+package com.yummy.naraka;
 
 import com.yummy.naraka.init.NarakaInitializer;
 import org.jetbrains.annotations.Nullable;

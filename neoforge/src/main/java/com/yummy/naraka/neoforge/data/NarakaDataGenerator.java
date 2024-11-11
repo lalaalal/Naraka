@@ -1,6 +1,7 @@
 package com.yummy.naraka.neoforge.data;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.neoforge.init.NeoForgeBiomeModifier;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.DataGenerator;
@@ -17,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 @EventBusSubscriber(modid = NarakaMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class NarakaDataGenerator {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-            .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, NarakaBiomeModifiers::bootstrap);
+            .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, NeoForgeBiomeModifier::bootstrap);
 
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {

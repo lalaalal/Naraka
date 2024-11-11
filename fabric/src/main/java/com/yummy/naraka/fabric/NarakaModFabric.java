@@ -1,13 +1,13 @@
 package com.yummy.naraka.fabric;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.Platform;
 import com.yummy.naraka.core.registries.RegistryFactory;
 import com.yummy.naraka.fabric.init.FabricBiomeModifier;
 import com.yummy.naraka.fabric.init.FabricRegistryFactory;
 import com.yummy.naraka.fabric.init.FabricRegistryInitializer;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.init.RegistryInitializer;
-import com.yummy.naraka.util.Platform;
 import com.yummy.naraka.world.NarakaBiomes;
 import com.yummy.naraka.world.item.NarakaCreativeModTabs;
 import net.fabricmc.api.ModInitializer;

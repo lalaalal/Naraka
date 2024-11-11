@@ -1,4 +1,4 @@
-package com.yummy.naraka.neoforge.data;
+package com.yummy.naraka.neoforge.init;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.NarakaBiomes;
@@ -18,8 +18,8 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NarakaBiomeModifiers implements NarakaBiomes.Modifier {
-    public static final NarakaBiomeModifiers INSTANCE = new NarakaBiomeModifiers();
+public class NeoForgeBiomeModifier implements NarakaBiomes.Modifier {
+    public static final NeoForgeBiomeModifier INSTANCE = new NeoForgeBiomeModifier();
 
     private final List<BiomeModifierRecord> modifiers = new ArrayList<>();
 
@@ -28,7 +28,7 @@ public class NarakaBiomeModifiers implements NarakaBiomes.Modifier {
             modifier.register(context);
     }
 
-    private NarakaBiomeModifiers() {
+    private NeoForgeBiomeModifier() {
     }
 
     @Override

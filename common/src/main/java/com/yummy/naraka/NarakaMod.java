@@ -7,7 +7,6 @@ import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
-import com.yummy.naraka.util.Platform;
 import com.yummy.naraka.world.NarakaBiomes;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;

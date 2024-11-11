@@ -1,6 +1,6 @@
 package com.yummy.naraka.fabric;
 
-import com.yummy.naraka.util.Platform;
+import com.yummy.naraka.Platform;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;

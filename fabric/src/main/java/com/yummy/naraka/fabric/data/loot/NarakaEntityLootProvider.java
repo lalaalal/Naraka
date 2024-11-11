@@ -14,18 +14,27 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithEnchantedBonusCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 public class NarakaEntityLootProvider extends SimpleFabricLootTableProvider {
+    @Nullable
+    private HolderLookup.Provider registries;
+
     public NarakaEntityLootProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(output, registryLookup, LootContextParamSets.ENTITY);
+
+        registryLookup.thenApply(provider -> this.registries = provider);
     }
 
     @Override
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> generator) {
+        if (registries == null)
+            throw new IllegalStateException("Lookup provider not allocated");
         generator.accept(
                 NarakaEntityTypes.HEROBRINE.get().getDefaultLootTable(),
                 LootTable.lootTable()
@@ -43,14 +52,11 @@ public class NarakaEntityLootProvider extends SimpleFabricLootTableProvider {
                                 .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_2_DISC.get()))
                                 .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_3_DISC.get()))
                                 .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_4_DISC.get()))
-                                .when(AllOfCondition.allOf(
-                                        LootItemKilledByPlayerCondition.killedByPlayer(),
-                                        LootItemRandomChanceCondition.randomChance(0.1f)
-                                ))
+                                .when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(registries, 0.1f, 0.08f))
                         ).withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get()))
-                                .when(LootItemRandomChanceCondition.randomChance(0.3f))
+                                .when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(registries, 0.3f, 0.08f))
                         ).withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get()))

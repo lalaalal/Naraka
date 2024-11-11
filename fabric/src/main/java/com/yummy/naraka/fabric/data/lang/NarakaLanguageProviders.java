@@ -40,6 +40,11 @@ public class NarakaLanguageProviders {
     private final String[] languageCodes;
     private final Map<String, String[]> translationMap = new HashMap<>();
 
+    public static void add(Consumer<FabricDataGenerator.Pack.RegistryDependentFactory<FabricLanguageProvider>> adder, String... languageCodes) {
+        new NarakaLanguageProviders(languageCodes)
+                .addProvidersTo(adder);
+    }
+
     public NarakaLanguageProviders(String... languageCodes) {
         this.languageCodes = languageCodes;
         generate();

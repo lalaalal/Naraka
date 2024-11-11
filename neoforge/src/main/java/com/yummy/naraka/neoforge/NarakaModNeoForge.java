@@ -1,12 +1,12 @@
 package com.yummy.naraka.neoforge;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.Platform;
 import com.yummy.naraka.core.registries.RegistryFactory;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.init.RegistryInitializer;
-import com.yummy.naraka.neoforge.data.NarakaBiomeModifiers;
+import com.yummy.naraka.neoforge.init.NeoForgeBiomeModifier;
 import com.yummy.naraka.neoforge.init.NeoForgeRegistryInitializer;
-import com.yummy.naraka.util.Platform;
 import com.yummy.naraka.world.NarakaBiomes;
 import com.yummy.naraka.world.item.NarakaCreativeModTabs;
 import net.minecraft.core.Registry;
@@ -38,12 +38,9 @@ public final class NarakaModNeoForge implements NarakaInitializer {
     
     public NarakaModNeoForge(IEventBus bus, ModContainer container) {
         this.bus = bus;
-
         NarakaMod.initialize(this);
 
         bus.addListener(this::commonSetup);
-        bus.addListener(this::createRegistries);
-        bus.addListener(this::modifyCreativeModeTabs);
     }
 
     @Override
@@ -63,7 +60,7 @@ public final class NarakaModNeoForge implements NarakaInitializer {
 
     @Override
     public NarakaBiomes.Modifier getBiomeModifier() {
-        return NarakaBiomeModifiers.INSTANCE;
+        return NeoForgeBiomeModifier.INSTANCE;
     }
 
     @Override
@@ -73,25 +70,17 @@ public final class NarakaModNeoForge implements NarakaInitializer {
 
     @Override
     public void modifyCreativeModeTab(ResourceKey<CreativeModeTab> tabKey, Consumer<NarakaCreativeModTabs.TabEntries> entries) {
-        tabEntriesMap.put(tabKey, entries);
+        bus.addListener((Consumer<BuildCreativeModeTabContentsEvent>) event -> {
+            NeoForgeTabEntries tabEntries = new NeoForgeTabEntries(event);
+            if (tabKey.equals(event.getTabKey()))
+                entries.accept(tabEntries);
+        });
     }
 
     public void commonSetup(FMLCommonSetupEvent event) {
         NarakaMod.isRegistryLoaded = true;
         for (Runnable runnable : runAfterRegistryLoaded)
             runnable.run();
-    }
-
-    public void createRegistries(NewRegistryEvent event) {
-        for (Registry<?> registry : registries.values())
-            event.register(registry);
-    }
-
-    public void modifyCreativeModeTabs(BuildCreativeModeTabContentsEvent event) {
-        ResourceKey<CreativeModeTab> tabKey = event.getTabKey();
-        NeoForgeTabEntries tabEntries = new NeoForgeTabEntries(event);
-        if (tabEntriesMap.containsKey(tabKey))
-            tabEntriesMap.get(tabKey).accept(tabEntries);
     }
 
     private class NeoForgeRegistryFactory extends RegistryFactory {
@@ -103,12 +92,13 @@ public final class NarakaModNeoForge implements NarakaInitializer {
                     .defaultKey(NarakaMod.location("empty"))
                     .create();
             registries.put(key, registry);
+            bus.addListener((Consumer<NewRegistryEvent>) event -> event.register(registry));
             return registry;
         }
     }
 
-    private record NeoForgeTabEntries(
-            BuildCreativeModeTabContentsEvent event) implements NarakaCreativeModTabs.TabEntries {
+    private record NeoForgeTabEntries(BuildCreativeModeTabContentsEvent event)
+            implements NarakaCreativeModTabs.TabEntries {
 
         @Override
         public void addBefore(ItemLike pivot, ItemLike... items) {

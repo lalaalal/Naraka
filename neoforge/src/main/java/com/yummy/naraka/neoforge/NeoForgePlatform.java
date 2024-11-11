@@ -1,6 +1,6 @@
 package com.yummy.naraka.neoforge;
 
-import com.yummy.naraka.util.Platform;
+import com.yummy.naraka.Platform;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 
