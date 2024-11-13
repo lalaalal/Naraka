@@ -7,6 +7,7 @@ import com.yummy.naraka.client.gui.hud.StigmaHud;
 import com.yummy.naraka.client.gui.screen.SoulCraftingScreen;
 import com.yummy.naraka.client.particle.EbonyParticle;
 import com.yummy.naraka.client.particle.NectariumParticle;
+import com.yummy.naraka.client.particle.SoulParticle;
 import com.yummy.naraka.client.renderer.*;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.init.NarakaClientInitializer;
@@ -117,5 +118,6 @@ public final class NarakaModClient {
         initializer.registerParticle(NarakaParticleTypes.DRIPPING_NECTARIUM, NectariumParticle::createNectariumHangParticle);
         initializer.registerParticle(NarakaParticleTypes.FALLING_NECTARIUM, NectariumParticle::createNectariumFallParticle);
         initializer.registerParticle(NarakaParticleTypes.LANDING_NECTARIUM, NectariumParticle::createNectariumLandParticle);
+        initializer.registerParticle(NarakaParticleTypes.SOUL, SoulParticle::create);
     }
 }

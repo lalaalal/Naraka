@@ -1,9 +1,9 @@
 package com.yummy.naraka.world.block;
 
 import com.mojang.serialization.MapCodec;
+import com.yummy.naraka.core.particles.SoulParticleOption;
 import com.yummy.naraka.world.block.entity.SoulStabilizerBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -58,13 +58,12 @@ public class SoulStabilizer extends BaseEntityBlock {
             int consumeCount = soulStabilizerBlockEntity.tryInject(stack, !player.onGround());
             stack.consume(consumeCount, player);
             if (level instanceof ServerLevel serverLevel)
-                serverLevel.sendParticles(ParticleTypes.ASH,
-                        pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5,
-                        10,
-                        0.2, 0.1, 0.2,
-                        0.5
+                serverLevel.sendParticles(SoulParticleOption.with(soulStabilizerBlockEntity.getSoulType()),
+                        pos.getX() + 0.5, pos.getY() + 0.4, pos.getZ() + 0.5,
+                        20,
+                        0.1, 0.1, 0.1,
+                        1
                 );
-
             return ItemInteractionResult.SUCCESS;
         }
         return ItemInteractionResult.CONSUME;
