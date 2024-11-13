@@ -57,16 +57,16 @@ public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
 
         add(NarakaBlocks.EBONY_LEAVES.get(), createLeavesDrops(NarakaBlocks.EBONY_LEAVES.get(), NarakaBlocks.EBONY_SAPLING.get(), 0.01f));
         dropSelf(NarakaBlocks.EBONY_SAPLING.get());
-        dropWhenSilkTouch(NarakaBlocks.HEROBRINE_TOTEM.get());
+        dropSelf(NarakaBlocks.HEROBRINE_TOTEM.get());
         dropPottedContents(NarakaBlocks.POTTED_EBONY_SAPLING.get());
         dropSelf(NarakaBlocks.EBONY_ROOTS.get());
         dropSelf(NarakaBlocks.EBONY_METAL_BLOCK.get());
 
-        add(NarakaBlocks.NECTARIUM_CORE_BLOCK.get(), this::createSilkTouchOnlyTable);
+        dropWhenSilkTouch(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
         add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get(), this::createNectariumCrystalDrops);
 
-        add(NarakaBlocks.SOUL_STABILIZER.get(), this::createSilkTouchOnlyTable);
-        add(NarakaBlocks.SOUL_SMITHING_BLOCK.get(), this::createSilkTouchOnlyTable);
+        dropWhenSilkTouch(NarakaBlocks.SOUL_STABILIZER.get());
+        dropSelf(NarakaBlocks.SOUL_SMITHING_BLOCK.get());
     }
 
     protected void dropOre(Block oreBlock, Item item) {

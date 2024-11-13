@@ -104,6 +104,7 @@ public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider 
 
         getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_AXE)
                 .addTag(NarakaBlockTags.EBONY_LOGS)
+                .add(NarakaBlocks.SOUL_SMITHING_BLOCK.get())
                 .add(NarakaBlocks.HARD_EBONY_PLANKS.get())
                 .add(NarakaBlocks.EBONY_ROOTS.get());
     }

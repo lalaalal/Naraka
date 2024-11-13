@@ -100,6 +100,8 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     private int getRequiredSoul() {
         if (getSoulType() != null && getSoulType() == SoulType.GOD_BLOOD)
             return 3888;
+        if (templateItem.is(NarakaItems.PURIFIED_SOUL_SWORD))
+            return 14976;
         return 9 * 16;
     }
 
