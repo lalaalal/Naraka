@@ -60,7 +60,7 @@ public class SoulStabilizer extends BaseEntityBlock {
             if (level instanceof ServerLevel serverLevel)
                 serverLevel.sendParticles(SoulParticleOption.with(soulStabilizerBlockEntity.getSoulType()),
                         pos.getX() + 0.5, pos.getY() + 0.4, pos.getZ() + 0.5,
-                        20,
+                        30,
                         0.1, 0.1, 0.1,
                         1
                 );
