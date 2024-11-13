@@ -8,18 +8,22 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Singleton class provides {@link RegistryProxy}<br>
+ * Override {@link RegistryInitializer#create(ResourceKey)} to create {@linkplain RegistryProxy} by default<br>
+ */
 public class RegistryInitializer {
     private static @Nullable RegistryInitializer INSTANCE;
 
     private final Map<ResourceKey<? extends Registry<?>>, RegistryProxy<?>> registryProxyMap = new HashMap<>();
 
-    public static void allocateInstance(RegistryInitializer instance) {
+    public static void initialize(NarakaInitializer initializer) {
         if (INSTANCE != null)
             throw new IllegalStateException("RegistryInitializer instance is already allocated");
-        INSTANCE = instance;
+        INSTANCE = initializer.getRegistryInitializer();
     }
 
-    public static RegistryInitializer getInstance() {
+    protected static RegistryInitializer getInstance() {
         if (INSTANCE == null)
             INSTANCE = new RegistryInitializer();
         return INSTANCE;
@@ -32,16 +36,30 @@ public class RegistryInitializer {
     protected RegistryInitializer() {
     }
 
+    /**
+     * Create default {@link RegistryProxy}<br>
+     *
+     * @param key Registry key
+     * @param <T> Registry type
+     * @return throws exception in this class
+     */
     protected <T> RegistryProxy<T> create(ResourceKey<Registry<T>> key) {
         throw new IllegalStateException("Creating RegistryProxy is not supported for default RegistryInitializer");
     }
 
+    /**
+     * Add {@link RegistryProxy}
+     *
+     * @param proxy New {@linkplain RegistryProxy}
+     * @param <T>   Registry type
+     * @return Self
+     */
     public <T> RegistryInitializer add(RegistryProxy<T> proxy) {
         registryProxyMap.put(proxy.getRegistryKey(), proxy);
         return this;
     }
 
-    protected <T> RegistryProxy<T> register(RegistryProxy<T> proxy) {
+    private <T> RegistryProxy<T> addAndReturn(RegistryProxy<T> proxy) {
         add(proxy);
         return proxy;
     }
@@ -51,6 +69,6 @@ public class RegistryInitializer {
         RegistryProxy<?> proxy = registryProxyMap.get(key);
         if (proxy != null)
             return (RegistryProxy<T>) proxy;
-        return register(create(key));
+        return addAndReturn(create(key));
     }
 }

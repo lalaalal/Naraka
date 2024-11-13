@@ -3,23 +3,25 @@ package com.yummy.naraka.fabric.client;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModClient;
+import com.yummy.naraka.client.particle.ParticleFactory;
 import com.yummy.naraka.client.renderer.CustomRenderManager;
 import com.yummy.naraka.init.NarakaClientInitializer;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.CoreShaderRegistrationCallback;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -29,8 +31,12 @@ import java.util.function.Supplier;
 public final class NarakaModFabricClient implements ClientModInitializer, NarakaClientInitializer {
     @Override
     public void onInitializeClient() {
-        NarakaModClient.registerToEvent(this);
-        NarakaModClient.initialize();
+        NarakaModClient.initialize(this);
+    }
+
+    @Override
+    public void runAfterRegistryLoaded(Runnable runnable) {
+        runnable.run();
     }
 
     @Override
@@ -45,13 +51,18 @@ public final class NarakaModFabricClient implements ClientModInitializer, Naraka
     }
 
     @Override
-    public void registerBlockRenderLayer(RenderType renderType, Block... blocks) {
-        BlockRenderLayerMap.INSTANCE.putBlocks(renderType, blocks);
+    public void registerShader(ResourceLocation id, VertexFormat format, Consumer<ShaderInstance> consumer) {
+        CoreShaderRegistrationCallback.EVENT.register(context -> context.register(id, format, consumer));
     }
 
     @Override
-    public void registerShader(ResourceLocation id, VertexFormat format, Consumer<ShaderInstance> consumer) {
-        CoreShaderRegistrationCallback.EVENT.register(context -> context.register(id, format, consumer));
+    public <T extends ParticleOptions> void registerParticle(Supplier<? extends ParticleType<T>> particle, ParticleFactory<T> provider) {
+        ParticleFactoryRegistry.getInstance().register(particle.get(), provider::create);
+    }
+
+    @Override
+    public <T extends ParticleOptions> void registerParticle(Supplier<? extends ParticleType<T>> particle, ParticleProvider<T> provider) {
+        ParticleFactoryRegistry.getInstance().register(particle.get(), provider);
     }
 
     private record FabricResourceReloadListener(ResourceLocation name,

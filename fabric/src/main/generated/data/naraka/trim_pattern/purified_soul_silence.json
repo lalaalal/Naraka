@@ -1,0 +1,8 @@
+{
+  "asset_id": "naraka:purified_soul_silence",
+  "decal": false,
+  "description": {
+    "translate": "trim_pattern.naraka.purified_soul_silence"
+  },
+  "template_item": "naraka:purified_soul_silence_armor_trim_smithing_template"
+}

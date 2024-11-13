@@ -2,6 +2,7 @@ package com.yummy.naraka.world.item.reinforcement;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.util.NarakaItemUtils;
@@ -116,7 +117,8 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
         if (value > 0) {
             Component reinforcementComponent = Component.translatable(LanguageKey.REINFORCEMENT_KEY, value)
                     .withStyle(ChatFormatting.YELLOW);
-            appender.accept(reinforcementComponent);
+            if (NarakaMod.config().showReinforcementValue.getValue())
+                appender.accept(reinforcementComponent);
 
             for (Holder<ReinforcementEffect> effect : effects) {
                 if (effect.value().showInTooltip(value)) {

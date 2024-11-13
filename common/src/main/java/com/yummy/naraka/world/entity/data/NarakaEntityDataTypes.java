@@ -4,10 +4,10 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.LazyHolder;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.init.RegistryInitializer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.BiFunction;
@@ -31,18 +31,17 @@ public class NarakaEntityDataTypes {
         return RegistryProxy.register(NarakaRegistries.Keys.ENTITY_DATA_TYPE, name, factory);
     }
 
-    public static Holder<EntityDataType<?>> holder(RegistryAccess registryAccess, EntityDataType<?> type) {
-        return registryAccess.registryOrThrow(NarakaRegistries.Keys.ENTITY_DATA_TYPE).wrapAsHolder(type);
+    public static Holder<EntityDataType<?>> holder(EntityDataType<?> type) {
+        return NarakaRegistries.ENTITY_DATA_TYPE.wrapAsHolder(type);
     }
 
-    public static HolderSet<EntityDataType<?>> full(RegistryAccess registryAccess) {
-        return HolderSet.direct(registryAccess.registryOrThrow(NarakaRegistries.Keys.ENTITY_DATA_TYPE)
-                .holders().toList());
+    public static HolderSet<EntityDataType<?>> full() {
+        return HolderSet.direct(NarakaRegistries.ENTITY_DATA_TYPE.holders().toList());
     }
 
-    public static void initialize() {
+    public static void initialize(NarakaInitializer initializer) {
         RegistryInitializer.get(NarakaRegistries.Keys.ENTITY_DATA_TYPE)
                 .onRegistrationFinished();
-        StigmaHelper.initialize();
+        initializer.runAfterRegistryLoaded(StigmaHelper::initialize);
     }
 }

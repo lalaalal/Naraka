@@ -5,13 +5,15 @@
     "name": "Naraka",
     "description": "",
     "authors": [
-        ""
+        "lalaalal",
+        "joachimbeen",
+        "GuEunso"
     ],
     "contact": {
-        "homepage": ""
+        "homepage": "https://github.com/lalaalal/Naraka"
     },
     "license": "All-Rights-Reserved",
-    "icon": "assets/naraka/icon.png",
+    "icon": "naraka.png",
     "environment": "*",
     "entrypoints": {
         "main": [

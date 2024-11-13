@@ -13,9 +13,7 @@ public class NarakaEquipmentSets {
     );
 
     public static void updateAllSetEffects(LivingEntity livingEntity) {
-        livingEntity.registryAccess()
-                .registryOrThrow(NarakaRegistries.Keys.EQUIPMENT_SET)
-                .forEach(equipmentSet -> equipmentSet.updateEffect(livingEntity));
+        NarakaRegistries.EQUIPMENT_SET.forEach(equipmentSet -> equipmentSet.updateEffect(livingEntity));
     }
 
     private static LazyHolder<EquipmentSet, EquipmentSet> register(String name, EquipmentSet equipmentSet) {

@@ -41,10 +41,8 @@ public class EntityDataContainer {
     }
 
     public void read(CompoundTag compoundTag, HolderLookup.Provider registries) {
-        registries.lookupOrThrow(NarakaRegistries.Keys.ENTITY_DATA_TYPE)
-                .listElements()
-                .forEach(reference -> {
-                    EntityDataType<?> entityDataType = reference.value();
+        NarakaRegistries.ENTITY_DATA_TYPE.stream().toList()
+                .forEach(entityDataType -> {
                     if (entityDataType.saveExists(compoundTag)) {
                         Object data = entityDataType.read(compoundTag, registries);
                         setEntityData(entityDataType, data);

@@ -1,0 +1,9 @@
+{
+  "asset_name": "soul_infused_redstone",
+  "description": {
+    "color": "#EB4747",
+    "translate": "trim_material.naraka.soul_infused_redstone"
+  },
+  "ingredient": "naraka:soul_infused_redstone",
+  "item_model_index": 0.572
+}

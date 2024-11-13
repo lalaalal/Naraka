@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.TheEndPortalRenderer;
 
 @Environment(EnvType.CLIENT)
-public class NarakaRenderTypes {
+public final class NarakaRenderTypes {
     public static final RenderType LONGINUS = RenderType.create(
             "longinus",
             DefaultVertexFormat.POSITION,

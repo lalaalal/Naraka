@@ -10,6 +10,7 @@ import net.minecraft.world.item.SmithingTemplateItem;
 
 import java.util.List;
 
+@Deprecated
 public abstract class NarakaSmithingTemplateItems extends SmithingTemplateItem {
     public static final ResourceLocation EMPTY_SLOT_SWORD = ResourceLocation.withDefaultNamespace("item/empty_slot_sword");
     public static final ResourceLocation EMPTY_SLOT_INGOT = ResourceLocation.withDefaultNamespace("item/empty_slot_ingot");
@@ -50,7 +51,7 @@ public abstract class NarakaSmithingTemplateItems extends SmithingTemplateItem {
             EMPTY_SLOT_SWORD, EMPTY_SLOT_SPEAR
     );
     private static final List<ResourceLocation> PURIFIED_SOUL_UPGRADE_ADDITIONS_ICONS = List.of(
-            EMPTY_SLOT_INGOT, EMPTY_SLOT_REDSTONE_DUST, EMPTY_SLOT_EMERALD, EMPTY_SLOT_DIAMOND, EMPTY_SLOT_LAPIS_LAZULI, EMPTY_SLOT_AMETHYST_SHARD, EMPTY_SLOT_BEAD
+            EMPTY_SLOT_INGOT, EMPTY_SLOT_REDSTONE_DUST, EMPTY_SLOT_EMERALD, EMPTY_SLOT_DIAMOND, EMPTY_SLOT_LAPIS_LAZULI, EMPTY_SLOT_QUARTZ, EMPTY_SLOT_AMETHYST_SHARD, EMPTY_SLOT_BEAD
     );
 
     private NarakaSmithingTemplateItems(Component component, Component component2, Component component3, Component component4, Component component5, List<ResourceLocation> list, List<ResourceLocation> list2, FeatureFlag... featureFlags) {

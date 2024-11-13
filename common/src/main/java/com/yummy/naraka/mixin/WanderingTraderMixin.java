@@ -23,17 +23,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class WanderingTraderMixin extends AbstractVillager {
     @Unique
     private static final VillagerTrades.ItemListing[] naraka$TRADES = new VillagerTrades.ItemListing[]{
-            naraka$itemsForEmeralds(NarakaItems.SANCTUARY_COMPASS.get(), 30, 1, 1, 1),
-            naraka$itemsForEmeralds(NarakaBlocks.NECTARIUM_CORE_BLOCK.get(), 8, 1, 1, 1)
+            naraka$itemsForEmeralds(NarakaItems.SANCTUARY_COMPASS.get(), 10, 1, 1, 1),
+            naraka$itemTrades(Items.BEE_NEST, NarakaBlocks.NECTARIUM_CORE_BLOCK.get(), 1, 1, 1, 1)
     };
 
     @Unique
-    private static VillagerTrades.ItemListing naraka$itemsForEmeralds(ItemLike item, int emeraldCost, int numberOfItems, int maxUses, int villagerXp) {
+    private static VillagerTrades.ItemListing naraka$itemTrades(ItemLike costItem, ItemLike item, int cost, int numberOfItems, int maxUses, int villagerXp) {
         return (trader, random) -> new MerchantOffer(
-                new ItemCost(Items.EMERALD, emeraldCost),
+                new ItemCost(costItem, cost),
                 new ItemStack(item, numberOfItems),
                 maxUses, villagerXp, 0.05f
         );
+    }
+
+    @Unique
+    private static VillagerTrades.ItemListing naraka$itemsForEmeralds(ItemLike item, int emeraldCost, int numberOfItems, int maxUses, int villagerXp) {
+        return naraka$itemTrades(Items.EMERALD, item, emeraldCost, numberOfItems, maxUses, villagerXp);
     }
 
     public WanderingTraderMixin(EntityType<? extends AbstractVillager> entityType, Level level) {

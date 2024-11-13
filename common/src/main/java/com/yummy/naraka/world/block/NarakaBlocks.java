@@ -32,6 +32,17 @@ public class NarakaBlocks {
             Blocks.BEDROCK
     );
 
+    public static final LazyHolder<Block, DropExperienceBlock> AMETHYST_ORE = registerBlockWithItem(
+            "amethyst_ore",
+            properties -> new DropExperienceBlock(UniformInt.of(0, 2), properties.requiresCorrectToolForDrops()),
+            Blocks.STONE
+    );
+    public static final LazyHolder<Block, DropExperienceBlock> DEEPSLATE_AMETHYST_ORE = registerBlockWithItem(
+            "deepslate_amethyst_ore",
+            properties -> new DropExperienceBlock(UniformInt.of(1, 2), properties.requiresCorrectToolForDrops()),
+            Blocks.DEEPSLATE
+    );
+
     public static final LazyHolder<Block, DropExperienceBlock> NECTARIUM_ORE = registerBlockWithItem(
             "nectarium_ore",
             properties -> new DropExperienceBlock(UniformInt.of(3, 7), properties),
@@ -166,12 +177,6 @@ public class NarakaBlocks {
                     .lightLevel(HerobrineTotem::light)
             ),
             Blocks.NETHER_BRICKS
-    );
-
-    public static final LazyHolder<Block, NarakaForgingBlock> NARAKA_FORGING_BLOCK = registerBlockWithItem(
-            "naraka_forging_block",
-            NarakaForgingBlock::new,
-            Blocks.ANVIL
     );
 
     public static final LazyHolder<Block, SoulStabilizer> SOUL_STABILIZER = registerBlockWithItem(

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_top",
+  "textures": {
+    "side": "naraka:block/herobrine_totem_side",
+    "top": "naraka:block/herobrine_totem_top"
+  }
+}

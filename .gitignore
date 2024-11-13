@@ -31,7 +31,7 @@ bin/
 # minecraft
 
 run/
-generated*/
+.cache/
 
 # java
 

@@ -55,7 +55,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         Holder<Structure> herobrineSanctuaryStructure = structures.getOrThrow(NarakaStructures.HEROBRINE_SANCTUARY);
 
         AdvancementHolder root = Advancement.Builder.advancement()
-                .display(NarakaItems.NECTARIUM.get(),
+                .display(NarakaItems.STIGMA_ROD.get(),
                         AdvancementNarakaComponents.ROOT.title(),
                         AdvancementNarakaComponents.ROOT.description(),
                         NarakaTextures.NARAKA_ADVANCEMENT_ROOT_BACKGROUND,

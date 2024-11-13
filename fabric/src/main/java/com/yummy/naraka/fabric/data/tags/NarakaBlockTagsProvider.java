@@ -6,16 +6,14 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 import java.util.concurrent.CompletableFuture;
 
-public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
+public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider {
     public NarakaBlockTagsProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-        super(output, Registries.BLOCK, registriesFuture);
+        super(output, registriesFuture);
     }
 
     @Override
@@ -95,7 +93,9 @@ public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
                 .add(NarakaBlocks.IMITATION_GOLD_BLOCK.get())
                 .add(NarakaBlocks.COMPRESSED_IRON_BLOCK.get())
                 .add(NarakaBlocks.NECTARIUM_CORE_BLOCK.get())
-                .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get());
+                .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get())
+                .add(NarakaBlocks.AMETHYST_ORE.get())
+                .add(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
         NarakaBlocks.forEachSoulInfusedBlock(mineableWithPickaxe::add);
 
         getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_HOE)
@@ -104,6 +104,7 @@ public class NarakaBlockTagsProvider extends FabricTagProvider<Block> {
 
         getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_AXE)
                 .addTag(NarakaBlockTags.EBONY_LOGS)
+                .add(NarakaBlocks.SOUL_SMITHING_BLOCK.get())
                 .add(NarakaBlocks.HARD_EBONY_PLANKS.get())
                 .add(NarakaBlocks.EBONY_ROOTS.get());
     }

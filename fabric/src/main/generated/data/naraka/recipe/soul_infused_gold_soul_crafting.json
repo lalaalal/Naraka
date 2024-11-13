@@ -1,0 +1,10 @@
+{
+  "type": "naraka:soul_crafting",
+  "ingredient": {
+    "item": "minecraft:gold_ingot"
+  },
+  "result": {
+    "count": 1,
+    "id": "naraka:soul_infused_gold"
+  }
+}

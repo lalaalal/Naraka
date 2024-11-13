@@ -40,7 +40,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
-public class NarakaGameEvents {
+public final class NarakaGameEvents {
     public static void initialize() {
         LifecycleEvent.SERVER_STARTING.register(NarakaGameEvents::onServerStarting);
         LifecycleEvent.SERVER_STARTED.register(NarakaGameEvents::onServerStarted);
@@ -101,7 +101,7 @@ public class NarakaGameEvents {
     }
 
     private static void modifyLootTable(ResourceKey<LootTable> key, LootEvent.LootTableModificationContext context, boolean builtin) {
-        if (!builtin && key.location().getPath().contains("chests")) {
+        if (key.location().getPath().contains("chests")) {
             context.addPool(LootPool.lootPool()
                     .when(LootItemRandomChanceCondition.randomChance(0.2f))
                     .setRolls(ConstantValue.exactly(1))

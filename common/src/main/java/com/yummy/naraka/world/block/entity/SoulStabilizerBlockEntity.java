@@ -41,7 +41,7 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     private int getSoulByItem(ItemStack itemStack) {
         if (soulType != null) {
             if (soulType == SoulType.GOD_BLOOD)
-                return 9 * 64;
+                return 15552;
             if (soulType.getItem() == itemStack.getItem())
                 return 1;
             if (soulType.getBlockItem() == itemStack.getItem())

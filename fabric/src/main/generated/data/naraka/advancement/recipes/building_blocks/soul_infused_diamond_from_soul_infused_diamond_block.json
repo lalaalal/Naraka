@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_soul_infused_diamond": {
+      "conditions": {
+        "items": [
+          {
+            "items": "naraka:soul_infused_diamond"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "naraka:soul_infused_diamond_from_soul_infused_diamond_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_soul_infused_diamond"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "naraka:soul_infused_diamond_from_soul_infused_diamond_block"
+    ]
+  }
+}

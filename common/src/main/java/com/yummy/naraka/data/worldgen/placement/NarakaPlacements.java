@@ -9,9 +9,10 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 public class NarakaPlacements {
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         NarakaOrePlacements.bootstrap(context);
+        NarakaCavePlacements.bootstrap(context);
     }
 
-    public static ResourceKey<PlacedFeature> createKey(String name) {
+    public static ResourceKey<PlacedFeature> create(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, NarakaMod.location(name));
     }
 }

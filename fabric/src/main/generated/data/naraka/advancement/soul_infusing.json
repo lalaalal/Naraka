@@ -1,0 +1,32 @@
+{
+  "parent": "naraka:root",
+  "criteria": {
+    "craft_soul_crafting_block": {
+      "conditions": {
+        "recipe_id": "naraka:soul_crafting_block"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.naraka.soul_infusing.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "naraka:soul_crafting_block"
+    },
+    "title": {
+      "translate": "advancements.naraka.soul_infusing.title"
+    }
+  },
+  "requirements": [
+    [
+      "craft_soul_crafting_block"
+    ]
+  ],
+  "rewards": {
+    "experience": 6
+  },
+  "sends_telemetry_event": true
+}

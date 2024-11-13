@@ -35,6 +35,10 @@ public class ForgingBlockEntity extends BlockEntity {
         this.successChance = successChance;
     }
 
+    public boolean canReinforce(ItemStack stack) {
+        return Reinforcement.canReinforce(stack);
+    }
+
     public void setForgingItem(ItemStack forgingItem) {
         this.forgingItem = forgingItem.copy();
         setChanged();

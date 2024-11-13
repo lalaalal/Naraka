@@ -1,14 +1,15 @@
 package com.yummy.naraka.world.block;
 
 import com.mojang.serialization.MapCodec;
+import com.yummy.naraka.core.particles.SoulParticleOption;
 import com.yummy.naraka.world.block.entity.SoulStabilizerBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -17,6 +18,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.List;
 
@@ -30,6 +33,11 @@ public class SoulStabilizer extends BaseEntityBlock {
     @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return box(5.5f, 0, 5.5f, 10.5f, 5, 10.5f);
     }
 
     @Override
@@ -50,13 +58,12 @@ public class SoulStabilizer extends BaseEntityBlock {
             int consumeCount = soulStabilizerBlockEntity.tryInject(stack, !player.onGround());
             stack.consume(consumeCount, player);
             if (level instanceof ServerLevel serverLevel)
-                serverLevel.sendParticles(ParticleTypes.ASH,
-                        pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5,
-                        10,
-                        0.2, 0.1, 0.2,
-                        0.5
+                serverLevel.sendParticles(SoulParticleOption.with(soulStabilizerBlockEntity.getSoulType()),
+                        pos.getX() + 0.5, pos.getY() + 0.4, pos.getZ() + 0.5,
+                        30,
+                        0.1, 0.1, 0.1,
+                        1
                 );
-
             return ItemInteractionResult.SUCCESS;
         }
         return ItemInteractionResult.CONSUME;

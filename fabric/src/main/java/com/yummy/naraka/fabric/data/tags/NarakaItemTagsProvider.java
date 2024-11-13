@@ -6,15 +6,13 @@ import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.Item;
 
 import java.util.concurrent.CompletableFuture;
 
-public class NarakaItemTagsProvider extends FabricTagProvider<Item> {
+public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
     public NarakaItemTagsProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-        super(output, Registries.ITEM, registriesFuture);
+        super(output, registriesFuture);
     }
 
     @Override
@@ -56,9 +54,15 @@ public class NarakaItemTagsProvider extends FabricTagProvider<Item> {
                 .add(NarakaItems.SANCTUARY_COMPASS.get());
         getOrCreateTagBuilder(ItemTags.TRIM_TEMPLATES)
                 .add(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        FabricTagBuilder trimMaterials = getOrCreateTagBuilder(ItemTags.TRIM_MATERIALS)
-                .add(NarakaItems.GOD_BLOOD.get());
-        NarakaItems.forEachSoulInfusedItem(trimMaterials::add);
+
+        getOrCreateTagBuilder(ItemTags.HEAD_ARMOR_ENCHANTABLE)
+                .add(NarakaItems.PURIFIED_SOUL_HELMET.get());
+        getOrCreateTagBuilder(ItemTags.CHEST_ARMOR_ENCHANTABLE)
+                .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get());
+        getOrCreateTagBuilder(ItemTags.LEG_ARMOR_ENCHANTABLE)
+                .add(NarakaItems.PURIFIED_SOUL_LEGGINGS.get());
+        getOrCreateTagBuilder(ItemTags.FOOT_ARMOR_ENCHANTABLE)
+                .add(NarakaItems.PURIFIED_SOUL_BOOTS.get());
 
         getOrCreateTagBuilder(NarakaItemTags.PURIFIED_SOUL_ARMOR)
                 .add(NarakaItems.PURIFIED_SOUL_HELMET.get())
@@ -67,20 +71,17 @@ public class NarakaItemTagsProvider extends FabricTagProvider<Item> {
                 .add(NarakaItems.PURIFIED_SOUL_BOOTS.get());
 
         FabricTagBuilder soulReinforceable = getOrCreateTagBuilder(NarakaItemTags.SOUL_REINFORCEABLE)
-                .addTag(NarakaItemTags.PURIFIED_SOUL_ARMOR);
+                .addTag(NarakaItemTags.PURIFIED_SOUL_ARMOR)
+                .add(NarakaItems.PURIFIED_SOUL_SWORD.get());
         NarakaItems.forEachSoulInfusedSword(soulReinforceable::add);
 
         getOrCreateTagBuilder(ItemTags.HEAD_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_HELMET.get())
                 .add(NarakaItems.EBONY_METAL_HELMET.get());
         getOrCreateTagBuilder(ItemTags.CHEST_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get())
                 .add(NarakaItems.EBONY_METAL_CHESTPLATE.get());
         getOrCreateTagBuilder(ItemTags.LEG_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_LEGGINGS.get())
                 .add(NarakaItems.EBONY_METAL_LEGGINGS.get());
         getOrCreateTagBuilder(ItemTags.FOOT_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_BOOTS.get())
                 .add(NarakaItems.EBONY_METAL_BOOTS.get());
 
         getOrCreateTagBuilder(ItemTags.TRIM_TEMPLATES)

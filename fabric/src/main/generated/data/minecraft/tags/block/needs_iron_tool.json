@@ -1,0 +1,20 @@
+{
+  "values": [
+    "naraka:nectarium_block",
+    "naraka:nectarium_ore",
+    "naraka:deepslate_nectarium_ore",
+    "naraka:imitation_gold_block",
+    "naraka:compressed_iron_block",
+    "#naraka:ebony_log",
+    "naraka:hard_ebony_planks",
+    "naraka:ebony_roots",
+    "naraka:soul_infused_redstone_block",
+    "naraka:soul_infused_copper_block",
+    "naraka:soul_infused_gold_block",
+    "naraka:soul_infused_emerald_block",
+    "naraka:soul_infused_diamond_block",
+    "naraka:soul_infused_lapis_block",
+    "naraka:soul_infused_amethyst_block",
+    "naraka:soul_infused_nectarium_block"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "asset_name": "soul_infused_nectarium",
+  "description": {
+    "color": "#D65CD6",
+    "translate": "trim_material.naraka.soul_infused_nectarium"
+  },
+  "ingredient": "naraka:soul_infused_nectarium",
+  "item_model_index": 0.935
+}

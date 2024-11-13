@@ -6,15 +6,14 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.EntityType;
 
 import java.util.concurrent.CompletableFuture;
 
-public class NarakaEntityTypeTagsProvider extends FabricTagProvider<EntityType<?>> {
+public class NarakaEntityTypeTagsProvider extends FabricTagProvider.EntityTypeTagProvider {
     public NarakaEntityTypeTagsProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-        super(output, Registries.ENTITY_TYPE, registriesFuture);
+        super(output, registriesFuture);
     }
 
     @Override

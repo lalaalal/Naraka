@@ -42,7 +42,7 @@ public class NarakaEntityTypes {
     );
 
     private static <T extends Entity> LazyHolder<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {
-        return RegistryProxy.register(Registries.ENTITY_TYPE, name, () -> builder.build(name));
+        return RegistryProxy.register(Registries.ENTITY_TYPE, name, () -> builder.build(null));
     }
 
     public static void initialize() {

@@ -35,6 +35,10 @@
                 "trims/models/armor/raiser_leggings",
                 "trims/models/armor/host",
                 "trims/models/armor/host_leggings",
+                "trims/models/armor/bolt",
+                "trims/models/armor/bolt_leggings",
+                "trims/models/armor/flow",
+                "trims/models/armor/flow_leggings",
                 "naraka:trims/models/armor/purified_soul_silence",
                 "naraka:trims/models/armor/purified_soul_silence_leggings"
             ],

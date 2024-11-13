@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/pointed_dripstone",
+  "textures": {
+    "cross": "naraka:block/nectarium_crystal_down_tip_merge"
+  }
+}

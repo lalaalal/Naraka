@@ -4,20 +4,22 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModClient;
+import com.yummy.naraka.client.particle.ParticleFactory;
 import com.yummy.naraka.client.renderer.CustomRenderManager;
 import com.yummy.naraka.init.NarakaClientInitializer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
@@ -25,31 +27,41 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.javafmlmod.FMLModContainer;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
 @Mod(value = NarakaMod.MOD_ID, dist = Dist.CLIENT)
-public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClientItemExtensions {
+public final class NarakaModNeoForgeClient implements NarakaClientInitializer, IClientItemExtensions {
     private final IEventBus bus;
+    private final List<Runnable> runAfterRegistryLoaded = new ArrayList<>();
 
     public NarakaModNeoForgeClient(FMLModContainer container, IEventBus modBus, Dist dist) {
         this.bus = modBus;
-        NarakaModClient.registerToEvent(this);
+        NarakaModClient.initialize(this);
 
         modBus.addListener(this::clientSetup);
     }
 
-    public void clientSetup(FMLClientSetupEvent event) {
-        NarakaModClient.initialize();
+    private void clientSetup(FMLClientSetupEvent event) {
+        for (Runnable runnable : runAfterRegistryLoaded)
+            runnable.run();
+    }
+
+    @Override
+    public void runAfterRegistryLoaded(Runnable runnable) {
+        runAfterRegistryLoaded.add(runnable);
     }
 
     @Override
@@ -68,11 +80,6 @@ public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClient
     }
 
     @Override
-    public void registerBlockRenderLayer(RenderType renderType, Block... blocks) {
-
-    }
-
-    @Override
     public void registerShader(ResourceLocation id, VertexFormat format, Consumer<ShaderInstance> consumer) {
         bus.addListener((Consumer<RegisterShadersEvent>) event -> {
             try {
@@ -81,6 +88,16 @@ public class NarakaModNeoForgeClient implements NarakaClientInitializer, IClient
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    @Override
+    public <T extends ParticleOptions> void registerParticle(Supplier<? extends ParticleType<T>> particle, ParticleProvider<T> provider) {
+        bus.addListener((Consumer<RegisterParticleProvidersEvent>) event -> event.registerSpecial(particle.get(), provider));
+    }
+
+    @Override
+    public <T extends ParticleOptions> void registerParticle(Supplier<? extends ParticleType<T>> particle, ParticleFactory<T> provider) {
+        bus.addListener((Consumer<RegisterParticleProvidersEvent>) event -> event.registerSpriteSet(particle.get(), provider::create));
     }
 
     @Override

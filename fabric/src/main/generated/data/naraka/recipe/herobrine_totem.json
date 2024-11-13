@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "item": "naraka:imitation_gold_block"
+    },
+    "T": {
+      "item": "naraka:herobrine_totem"
+    }
+  },
+  "pattern": [
+    "GGG",
+    "GTG",
+    "GGG"
+  ],
+  "result": {
+    "count": 2,
+    "id": "naraka:herobrine_totem"
+  }
+}

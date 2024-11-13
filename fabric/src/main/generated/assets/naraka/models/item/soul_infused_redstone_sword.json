@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "naraka:item/soul_infused_redstone_sword"
+  }
+}

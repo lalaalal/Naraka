@@ -1,10 +1,10 @@
 package com.yummy.naraka.world.block;
 
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -31,7 +31,7 @@ public class NectariumCoreBlock extends Block {
     public static final IntegerProperty HONEY = IntegerProperty.create("honey", 0, MAX_HONEY);
 
     public static int lightLevel(BlockState blockState) {
-        return blockState.getValue(HONEY);
+        return blockState.getValue(HONEY) * 2;
     }
 
     public NectariumCoreBlock(Properties properties) {
@@ -71,6 +71,7 @@ public class NectariumCoreBlock extends Block {
         }
     }
 
+
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (stack.is(Items.HONEY_BOTTLE)) {
@@ -94,7 +95,7 @@ public class NectariumCoreBlock extends Block {
                     double xOffset = direction.getStepX() == 0 ? random.nextDouble() : 0.5 + (double) direction.getStepX() * 0.6;
                     double yOffset = direction.getStepY() == 0 ? random.nextDouble() : 0.5 + (double) direction.getStepY() * 0.6;
                     double zOffset = direction.getStepZ() == 0 ? random.nextDouble() : 0.5 + (double) direction.getStepZ() * 0.6;
-                    level.addParticle(ParticleTypes.DRIPPING_HONEY, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0.0, 0.0, 0.0);
+                    level.addParticle(NarakaParticleTypes.DRIPPING_NECTARIUM.get(), pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0.0, 0.0, 0.0);
                 }
             }
         }

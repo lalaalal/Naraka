@@ -9,8 +9,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 
-public class ConventionalTags {
-    public static class Blocks {
+public final class ConventionalTags {
+    public static final class Blocks {
         public static final TagKey<Block> ORES = get("ores");
 
         public static TagKey<Block> get(String name) {
@@ -18,7 +18,7 @@ public class ConventionalTags {
         }
     }
 
-    public static class Biomes {
+    public static final class Biomes {
         public static final TagKey<Biome> IS_OVERWORLD = get("is_overworld");
         public static final TagKey<Biome> IS_PLAINS = get("is_plains");
 
@@ -27,7 +27,7 @@ public class ConventionalTags {
         }
     }
 
-    public static class Entities {
+    public static final class Entities {
         public static final TagKey<EntityType<?>> BOSSES = get("bosses");
 
         public static TagKey<EntityType<?>> get(String name) {

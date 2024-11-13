@@ -10,7 +10,23 @@ public record Color(int alpha, int red, int green, int blue) {
         return new Color(alpha, red, green, blue);
     }
 
+    public float red01() {
+        return red / 255f;
+    }
+
+    public float green01() {
+        return green / 255f;
+    }
+
+    public float blue01() {
+        return blue / 255f;
+    }
+
     public int pack() {
         return alpha << 24 | red << 16 | green << 8 | blue;
+    }
+
+    public int withAlpha(int alpha) {
+        return new Color(alpha, red, green, blue).pack();
     }
 }

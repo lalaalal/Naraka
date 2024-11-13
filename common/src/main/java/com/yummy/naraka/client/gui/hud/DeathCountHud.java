@@ -13,7 +13,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 public class DeathCountHud implements ClientGuiEvent.RenderHud {
-
     public static final int HEART_WIDTH = 14;
     public static final int HEART_HEIGHT = 7;
     public static final int BACKGROUND_WIDTH = 75;
@@ -43,7 +42,7 @@ public class DeathCountHud implements ClientGuiEvent.RenderHud {
     }
 
     public DeathCountHud() {
-        EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.DEATH_COUNT, this::onDeathCountChanged);
+        EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.DEATH_COUNT.get(), this::onDeathCountChanged);
     }
 
     private void onDeathCountChanged(LivingEntity livingEntity, EntityDataType<Integer> entityDataType, Integer from, Integer to) {

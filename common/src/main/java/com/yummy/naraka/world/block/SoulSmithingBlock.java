@@ -44,21 +44,21 @@ public class SoulSmithingBlock extends ForgingBlock {
     }
 
     @Override
-    protected VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
-        return box(0, 0, 0, 16, 12, 16);
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return box(0, 0.1, 0, 16, 16, 16);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
     }
 
     private boolean isStabilizerSide(BlockState state, Direction direction) {
-        return state.getValue(FACING) == direction;
+        return state.getValue(FACING).getOpposite() == direction;
     }
 
     private boolean isTemplatedSide(BlockState state, Direction direction) {
-        return state.getValue(FACING).getClockWise() == direction;
+        return state.getValue(FACING).getCounterClockWise() == direction;
     }
 
     @Override

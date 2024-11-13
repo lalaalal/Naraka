@@ -1,0 +1,57 @@
+{
+  "type": "naraka:jumbo_structure",
+  "biomes": "#c:is_plains",
+  "custom_pieces": [
+    "naraka:herobrine_sanctuary_outline"
+  ],
+  "height_provider": {
+    "type": "naraka:sea_level_based",
+    "sampler": 0
+  },
+  "name": "herobrine_sanctuary",
+  "parts": [
+    {
+      "offset": [
+        -63,
+        0,
+        -192
+      ],
+      "part_name": "main",
+      "piece_count": [
+        3,
+        3,
+        4
+      ]
+    },
+    {
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "part_name": "bridge",
+      "piece_count": [
+        1,
+        1,
+        1
+      ]
+    }
+  ],
+  "protection_predicate": "naraka:herobrine_sanctuary_protection",
+  "spawn_overrides": {
+    "creature": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "monster": {
+      "bounding_box": "full",
+      "spawns": []
+    }
+  },
+  "step": "vegetal_decoration",
+  "structure_offset": [
+    -4,
+    -6,
+    96
+  ]
+}

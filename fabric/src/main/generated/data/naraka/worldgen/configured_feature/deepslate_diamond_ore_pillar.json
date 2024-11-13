@@ -1,0 +1,21 @@
+{
+  "type": "naraka:ore_pillar",
+  "config": {
+    "base_block": "minecraft:deepslate",
+    "height_provider": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 48,
+      "min_inclusive": 36
+    },
+    "max_height": 48,
+    "ore_candidates": "minecraft:deepslate_diamond_ore",
+    "ore_place_chance": 0.48,
+    "radius_provider": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 8,
+      "min_inclusive": 5
+    },
+    "spread_chance": 0.9,
+    "use_single_ore": true
+  }
+}
