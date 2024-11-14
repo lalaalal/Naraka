@@ -76,22 +76,22 @@
       "entries": [
         {
           "type": "minecraft:item",
-            "functions": [
-                {
-                    "add": false,
-                    "count": 1.0,
-                    "function": "minecraft:set_count"
-                },
-                {
-                    "count": {
-                        "type": "minecraft:uniform",
-                        "max": 1.0,
-                        "min": 0.0
-                    },
-                    "enchantment": "minecraft:looting",
-                    "function": "minecraft:enchanted_count_increase"
-                }
-            ],
+          "functions": [
+            {
+              "add": false,
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": 0.0
+              },
+              "enchantment": "minecraft:looting",
+              "function": "minecraft:enchanted_count_increase"
+            }
+          ],
           "name": "naraka:purified_soul_upgrade_smithing_template"
         }
       ],

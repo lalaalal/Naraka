@@ -2,8 +2,8 @@
   "feature": "naraka:diamond_ore_pillar",
   "placement": [
     {
-        "type": "minecraft:rarity_filter",
-        "chance": 4
+      "type": "minecraft:rarity_filter",
+      "chance": 9
     },
     {
       "type": "minecraft:in_square"
