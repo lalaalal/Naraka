@@ -16,6 +16,8 @@ public final class NarakaItemTags {
     public static final TagKey<Item> PURIFIED_SOUL_ARMOR = create("purified_soul_armor");
 
     public static final TagKey<Item> SOUL_REINFORCEABLE = create("soul_reinforceable");
+    public static final TagKey<Item> SOUL_MATERIALS = create("soul_materials");
+    public static final TagKey<Item> SOUL_SWORDS = create("soul_swords");
 
     public static TagKey<Item> create(String name) {
         return TagKey.create(Registries.ITEM, NarakaMod.location(name));

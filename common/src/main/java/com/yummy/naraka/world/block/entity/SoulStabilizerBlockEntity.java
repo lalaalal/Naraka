@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.block.entity;
 
+import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -7,7 +8,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -50,27 +53,26 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
         return 0;
     }
 
-    public void inject(ItemStack itemStack) {
+    public int inject(ItemStack itemStack, boolean injectAll) {
         if (soulType == null)
             soulType = SoulType.fromItem(itemStack);
-        this.souls += getSoulByItem(itemStack);
-        setChanged();
-    }
-
-    public int injectAll(ItemStack itemStack) {
-        if (soulType == null)
-            soulType = SoulType.fromItem(itemStack);
-        int count = findMaxInjectableCount(itemStack);
+        int count = injectAll ? findMaxInjectableCount(itemStack) : 1;
         this.souls += getSoulByItem(itemStack) * count;
         setChanged();
         return count;
     }
 
-    public int tryInject(ItemStack itemStack, boolean injectAll) {
-        if (injectAll)
-            return injectAll(itemStack);
-        inject(itemStack);
-        return 1;
+    /**
+     * @param player    Player injecting
+     * @param itemStack Injecting item
+     * @param injectAll Use all stacks
+     * @return Used count of item
+     */
+    public int tryInject(Player player, ItemStack itemStack, boolean injectAll) {
+        int count = inject(itemStack, injectAll);
+        if (player instanceof ServerPlayer serverPlayer)
+            NarakaCriteriaTriggers.FILL_SOUL_STABILIZER.get().trigger(serverPlayer, souls == CAPACITY);
+        return count;
     }
 
     @Nullable

@@ -1,0 +1,32 @@
+{
+  "parent": "naraka:stabilizer",
+  "criteria": {
+    "fill_soul_stabilizer": {
+      "conditions": {
+        "check_full": true
+      },
+      "trigger": "naraka:fill_soul_stabilizer"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.naraka.fully_charged.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "naraka:soul_stabilizer"
+    },
+    "title": {
+      "translate": "advancements.naraka.fully_charged.title"
+    }
+  },
+  "requirements": [
+    [
+      "fill_soul_stabilizer"
+    ]
+  ],
+  "rewards": {
+    "experience": 9
+  },
+  "sends_telemetry_event": true
+}

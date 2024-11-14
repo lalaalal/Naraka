@@ -130,13 +130,13 @@ public class NarakaLanguageProviders {
         addAdvancement(AdvancementNarakaComponents.GOD_BLOOD,
                 List.of("God's blood", "신의 피"),
                 List.of("Amazing!", "굉장해 엄청나!"));
-        addAdvancement(AdvancementNarakaComponents.SOUL_INFUSED_THINGS,
+        addAdvancement(AdvancementNarakaComponents.SOUL_INFUSED_MATERIALS,
                 List.of("Soul infused Minerals", "영혼이 깃든 광물"),
                 List.of("Make one kind of soul infused minerals", "아무 종류의 영혼이 깃든 광물을 만드세요"));
         addAdvancement(AdvancementNarakaComponents.STABILIZER,
                 List.of("Stabilizer", "안정기"),
                 List.of("Make soul stabilizer that contains large amount of soul minerals", "대량의 영혼이 깃든 광물을 저장할 수 있는 영혼 안정기를 만드세요"));
-        addAdvancement(AdvancementNarakaComponents.FILL_STABILIZER,
+        addAdvancement(AdvancementNarakaComponents.FULLY_CHARGED,
                 List.of("Fully charged", "충전 완료"),
                 List.of("Fill soul stabilizer with one kind of soul infused minerals", "영혼 안정기를 아무 종류의 영혼이 깃든 광물로 가득 채우세요"));
         addAdvancement(AdvancementNarakaComponents.SOUL_INFUSING,
@@ -145,7 +145,7 @@ public class NarakaLanguageProviders {
         addAdvancement(AdvancementNarakaComponents.CHALLENGER_BLESSING,
                 List.of("Challenger", "도전자"),
                 List.of("Get challenger's blessing with full armor of soul armor and sword", "아무 종류의 영혼이 깃든 갑옷과 검을 가지고 도전자의 축복을 받으세요"));
-        addAdvancement(AdvancementNarakaComponents.ALL_BLESSED_SWORDS,
+        addAdvancement(AdvancementNarakaComponents.RAINBOW,
                 List.of("Rainbow!", "무지개!"),
                 List.of("Get every color type of blessed soul sword", "모든 색의 축복받은 검을 수집하세요"));
         addAdvancement(AdvancementNarakaComponents.ULTIMATE_SWORD,

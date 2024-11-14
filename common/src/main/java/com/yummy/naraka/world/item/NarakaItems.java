@@ -150,9 +150,19 @@ public class NarakaItems {
             consumer.accept(item.get());
     }
 
+    public static void forEachSoulInfusedItemHolder(Consumer<Holder<Item>> consumer) {
+        for (LazyHolder<Item, Item> item : SOUL_INFUSED_ITEMS)
+            consumer.accept(item);
+    }
+
     public static void forEachSoulInfusedSword(Consumer<SwordItem> consumer) {
         for (LazyHolder<Item, SwordItem> item : SOUL_INFUSED_SWORDS)
             consumer.accept(item.get());
+    }
+
+    public static void forEachSoulInfusedSwordHolder(Consumer<Holder<Item>> consumer) {
+        for (LazyHolder<Item, SwordItem> item : SOUL_INFUSED_SWORDS)
+            consumer.accept(item);
     }
 
     @Nullable

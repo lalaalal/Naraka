@@ -1,7 +1,7 @@
 {
   "parent": "naraka:sanctuary_compass",
   "criteria": {
-    "herobrine_sanctuary": {
+    "find_herobrine_sanctuary": {
       "conditions": {
         "player": [
           {
@@ -32,7 +32,7 @@
   },
   "requirements": [
     [
-      "herobrine_sanctuary"
+      "find_herobrine_sanctuary"
     ]
   ],
   "rewards": {

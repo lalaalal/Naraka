@@ -1,0 +1,37 @@
+{
+  "parent": "naraka:rainbow",
+  "criteria": {
+    "has_ultimate_sword": {
+      "conditions": {
+        "items": [
+          {
+            "items": "naraka:ebony_sword"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.naraka.ultimate_sword.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "naraka:ebony_sword"
+    },
+    "title": {
+      "translate": "advancements.naraka.ultimate_sword.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_ultimate_sword"
+    ]
+  ],
+  "rewards": {
+    "experience": 666
+  },
+  "sends_telemetry_event": true
+}

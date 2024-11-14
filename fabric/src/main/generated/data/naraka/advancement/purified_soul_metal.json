@@ -1,9 +1,9 @@
 {
-  "parent": "naraka:soul_infusing",
+  "parent": "naraka:kill_herobrine",
   "criteria": {
-    "craft_purified_soul_metal": {
+    "decompose_purified_soul_metal": {
       "conditions": {
-        "recipe_id": "naraka:purified_soul_metal"
+        "recipe_id": "naraka:purified_soul_metal_from_purified_soul_metal_block"
       },
       "trigger": "minecraft:recipe_crafted"
     }
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "craft_purified_soul_metal"
+      "decompose_purified_soul_metal"
     ]
   ],
   "rewards": {

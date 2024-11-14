@@ -1,5 +1,6 @@
 package com.yummy.naraka;
 
+import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryFactory;
@@ -49,8 +50,9 @@ public final class NarakaMod {
         RegistryFactory.initialize(initializer);
         NarakaRegistries.initialize();
 
-        NarakaParticleTypes.initialize();
+        NarakaCriteriaTriggers.initialize();
 
+        NarakaParticleTypes.initialize();
         NarakaSoundEvents.initialize();
 
         NarakaEntityTypes.initialize();

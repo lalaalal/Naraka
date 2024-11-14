@@ -1,0 +1,78 @@
+{
+  "parent": "naraka:purified_soul_metal",
+  "criteria": {
+    "craft_soul_infused_amethyst": {
+      "conditions": {
+        "recipe_id": "naraka:soul_infused_amethyst"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "craft_soul_infused_copper": {
+      "conditions": {
+        "recipe_id": "naraka:soul_infused_copper"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "craft_soul_infused_diamond": {
+      "conditions": {
+        "recipe_id": "naraka:soul_infused_diamond"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "craft_soul_infused_emerald": {
+      "conditions": {
+        "recipe_id": "naraka:soul_infused_emerald"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "craft_soul_infused_gold": {
+      "conditions": {
+        "recipe_id": "naraka:soul_infused_gold"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "craft_soul_infused_lapis": {
+      "conditions": {
+        "recipe_id": "naraka:soul_infused_lapis"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "craft_soul_infused_nectarium": {
+      "conditions": {
+        "recipe_id": "naraka:soul_infused_nectarium"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "craft_soul_infused_redstone": {
+      "conditions": {
+        "recipe_id": "naraka:soul_infused_redstone"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.naraka.soul_infused_materials.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "naraka:purified_soul_shard"
+    },
+    "title": {
+      "translate": "advancements.naraka.soul_infused_materials.title"
+    }
+  },
+  "requirements": [
+    [
+      "craft_soul_infused_redstone",
+      "craft_soul_infused_copper",
+      "craft_soul_infused_gold",
+      "craft_soul_infused_emerald",
+      "craft_soul_infused_diamond",
+      "craft_soul_infused_lapis",
+      "craft_soul_infused_amethyst",
+      "craft_soul_infused_nectarium"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

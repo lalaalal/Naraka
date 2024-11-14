@@ -11,12 +11,12 @@ public enum AdvancementNarakaComponents implements AdvancementComponent {
     PURIFIED_SOUL_METAL,
     PURIFIED_SOUL_SWORD,
     GOD_BLOOD,
-    SOUL_INFUSED_THINGS,
+    SOUL_INFUSED_MATERIALS,
     STABILIZER,
-    FILL_STABILIZER,
+    FULLY_CHARGED,
     SOUL_INFUSING,
     CHALLENGER_BLESSING,
-    ALL_BLESSED_SWORDS,
+    RAINBOW,
     ULTIMATE_SWORD;
 
     @Override
