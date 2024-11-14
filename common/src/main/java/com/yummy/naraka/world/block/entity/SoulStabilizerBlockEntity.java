@@ -75,6 +75,12 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
         return count;
     }
 
+    public void clear() {
+        soulType = null;
+        souls = 0;
+        setChanged();
+    }
+
     @Nullable
     public SoulType getSoulType() {
         return soulType;
@@ -86,6 +92,8 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
 
     public void consumeSoul(int consume) {
         souls = Mth.clamp(souls - consume, 0, CAPACITY);
+        if (souls == 0)
+            soulType = null;
     }
 
     @Override
@@ -103,28 +111,26 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag compoundTag = super.getUpdateTag(registries);
-        if (soulType != null) {
+        if (soulType != null)
             compoundTag.putString("SoulType", soulType.toString());
-            compoundTag.putInt("Souls", souls);
-        }
+        compoundTag.putInt("Souls", souls);
         return compoundTag;
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        if (soulType != null) {
+        if (soulType != null)
             tag.putString("SoulType", soulType.toString());
-            tag.putInt("Souls", souls);
-        }
+        tag.putInt("Souls", souls);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        if (tag.contains("SoulType")) {
+        if (tag.contains("SoulType"))
             soulType = SoulType.valueOf(tag.getString("SoulType"));
-            souls = tag.getInt("Souls");
-        }
+        else soulType = null;
+        souls = tag.getInt("Souls");
     }
 }

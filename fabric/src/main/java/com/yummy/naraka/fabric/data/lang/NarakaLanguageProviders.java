@@ -105,6 +105,7 @@ public class NarakaLanguageProviders {
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_LAPIS, "Soul Infused Lapis Material", "영혼이 주입된 청금석 소재");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_AMETHYST, "Soul Infused Amethyst Material", "영혼이 주입된 자수정 소재");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_NECTARIUM, "Soul Infused Nectarium Material", "영혼이 주입된 넥타륨 소재");
+        addTrimMaterial(NarakaTrimMaterials.GOD_BLOOD, "God Blood Material", "신의 피 소재");
 
         addAdvancement(AdvancementNarakaComponents.ROOT,
                 List.of("Naraka", "나라카"),
