@@ -191,6 +191,7 @@ public class NarakaItems {
                         properties.fireResistant()
                                 .rarity(Rarity.RARE)
                                 .component(NarakaDataComponentTypes.SOUL.get(), type)
+                                .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
                                 .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f)),
                         type.color
                 )
