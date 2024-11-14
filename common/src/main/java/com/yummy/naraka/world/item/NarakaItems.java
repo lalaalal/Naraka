@@ -127,7 +127,9 @@ public class NarakaItems {
     public static final LazyHolder<Item, SwordItem> PURIFIED_SOUL_SWORD = registerItem(
             "purified_soul_sword",
             properties -> new PurifiedSoulSword(Tiers.IRON, properties.fireResistant()
-                    .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f)))
+                    .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
+                    .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f))
+            )
     );
 
     public static final LazyHolder<Item, ArmorItem> PURIFIED_SOUL_HELMET = registerArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.HELMET, 0);
