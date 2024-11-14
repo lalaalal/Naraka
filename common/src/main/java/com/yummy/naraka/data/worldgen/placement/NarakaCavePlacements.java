@@ -21,7 +21,7 @@ public class NarakaCavePlacements {
                 context,
                 DIAMOND_ORE_PILLAR,
                 configuredFeatures.getOrThrow(NarakaCaveFeatures.DIAMOND_ORE_PILLAR),
-                CountPlacement.of(18),
+                RarityFilter.onAverageOnceEvery(4),
                 InSquarePlacement.spread(),
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(15)),
                 BiomeFilter.biome()
@@ -30,7 +30,7 @@ public class NarakaCavePlacements {
                 context,
                 DEEPSLATE_DIAMOND_ORE_PILLAR,
                 configuredFeatures.getOrThrow(NarakaCaveFeatures.DEEPSLATE_DIAMOND_ORE_PILLAR),
-                CountPlacement.of(12),
+                RarityFilter.onAverageOnceEvery(9),
                 InSquarePlacement.spread(),
                 HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(0)),
                 BiomeFilter.biome()

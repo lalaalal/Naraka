@@ -35,7 +35,7 @@ public class OrePillarFeature extends Feature<OrePillarConfiguration> {
 
         BlockPos pos = NarakaUtils.findFloor(level, origin);
         BlockState floorState = level.getBlockState(pos);
-        if (pos.equals(origin) || floorState.is(BlockTags.OVERWORLD_CARVER_REPLACEABLES))
+        if (pos.equals(origin) || !floorState.is(BlockTags.OVERWORLD_CARVER_REPLACEABLES))
             return false;
         placePillar(level, context.random(), pos, oreSelector, config);
 
