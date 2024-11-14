@@ -68,7 +68,7 @@ public class NarakaBiomes {
         modifier.addFeatures(
                 "add_diamond_pillars",
                 ConventionalTags.Biomes.IS_OVERWORLD,
-                GenerationStep.Decoration.UNDERGROUND_ORES,
+                GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
                 List.of(
                         NarakaCavePlacements.DIAMOND_ORE_PILLAR,
                         NarakaCavePlacements.DEEPSLATE_DIAMOND_ORE_PILLAR
