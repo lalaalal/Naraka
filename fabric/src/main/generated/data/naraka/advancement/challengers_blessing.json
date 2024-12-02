@@ -1,0 +1,29 @@
+{
+    "parent": "naraka:pure_vessel",
+    "criteria": {
+        "has_challengers_blessing_with_equipments": {
+            "trigger": "naraka:challengers_blessing"
+        }
+    },
+    "display": {
+        "description": {
+            "translate": "advancements.naraka.challengers_blessing.description"
+        },
+        "icon": {
+            "count": 1,
+            "id": "naraka:stigma_rod"
+        },
+        "title": {
+            "translate": "advancements.naraka.challengers_blessing.title"
+        }
+    },
+    "requirements": [
+        [
+            "has_challengers_blessing_with_equipments"
+        ]
+    ],
+    "rewards": {
+        "experience": 6
+    },
+    "sends_telemetry_event": true
+}

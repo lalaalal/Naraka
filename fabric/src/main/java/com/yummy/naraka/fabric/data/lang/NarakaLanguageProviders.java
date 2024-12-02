@@ -110,7 +110,7 @@ public class NarakaLanguageProviders {
         addAdvancement(AdvancementNarakaComponents.ROOT,
                 List.of("Naraka", "나라카"),
                 List.of("Lasciate ogni speranza, voi ch'entrate", "여기 들어오는 자, 모든 희망을 버려라"));
-        addAdvancement(AdvancementNarakaComponents.SANCTUARY_COMPASS,
+        addAdvancement(AdvancementNarakaComponents.WAY_TO_HIM,
                 List.of("Way to him", "그에게로 가는 길"),
                 List.of("Get Sanctuary Compass", "생츄어리 나침반을 얻으세요"));
         addAdvancement(AdvancementNarakaComponents.HEROBRINE_SANCTUARY,
@@ -122,10 +122,10 @@ public class NarakaLanguageProviders {
         addAdvancement(AdvancementNarakaComponents.KILL_HEROBRINE,
                 List.of("Purified Soul", "정화된 영혼"),
                 List.of("Defeat the lord of Naraka", "나락의 군주를 쓰러트리세요"));
-        addAdvancement(AdvancementNarakaComponents.PURIFIED_SOUL_METAL,
+        addAdvancement(AdvancementNarakaComponents.SOAP,
                 List.of("Soap...?", "비누...?"),
                 List.of("Get purified soul metal", "정화된 영혼 금속을 얻으세요"));
-        addAdvancement(AdvancementNarakaComponents.PURIFIED_SOUL_SWORD,
+        addAdvancement(AdvancementNarakaComponents.PURE_VESSEL,
                 List.of("Pure vessel", "순수한 그릇"),
                 List.of("It can be anything!", "무엇이든 될 수 있어!"));
         addAdvancement(AdvancementNarakaComponents.GOD_BLOOD,
@@ -140,10 +140,7 @@ public class NarakaLanguageProviders {
         addAdvancement(AdvancementNarakaComponents.FULLY_CHARGED,
                 List.of("Fully charged", "충전 완료"),
                 List.of("Fill soul stabilizer with one kind of soul infused minerals", "영혼 안정기를 아무 종류의 영혼이 깃든 광물로 가득 채우세요"));
-        addAdvancement(AdvancementNarakaComponents.SOUL_INFUSING,
-                List.of("Soul infusing", "영혼 주입"),
-                List.of("Get Soul forging table", "영혼 세공기를 제작하세요"));
-        addAdvancement(AdvancementNarakaComponents.CHALLENGER_BLESSING,
+        addAdvancement(AdvancementNarakaComponents.CHALLENGERS_BLESSING,
                 List.of("Challenger", "도전자"),
                 List.of("Get challenger's blessing with full armor of soul armor and sword", "아무 종류의 영혼이 깃든 갑옷과 검을 가지고 도전자의 축복을 받으세요"));
         addAdvancement(AdvancementNarakaComponents.RAINBOW,

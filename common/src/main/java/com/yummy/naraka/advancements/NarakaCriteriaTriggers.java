@@ -1,5 +1,6 @@
 package com.yummy.naraka.advancements;
 
+import com.yummy.naraka.advancements.criterion.ChallengersBlessingTrigger;
 import com.yummy.naraka.advancements.criterion.FillSoulStabilizerTrigger;
 import com.yummy.naraka.core.registries.LazyHolder;
 import com.yummy.naraka.core.registries.RegistryProxy;
@@ -11,6 +12,7 @@ import java.util.function.Supplier;
 
 public class NarakaCriteriaTriggers {
     public static final LazyHolder<CriterionTrigger<?>, FillSoulStabilizerTrigger> FILL_SOUL_STABILIZER = register("fill_soul_stabilizer", FillSoulStabilizerTrigger::new);
+    public static final LazyHolder<CriterionTrigger<?>, ChallengersBlessingTrigger> CHALLENGERS_BLESSING = register("challengers_blessing", ChallengersBlessingTrigger::new);
 
     public static <T extends CriterionTrigger<?>> LazyHolder<CriterionTrigger<?>, T> register(String name, Supplier<T> value) {
         return RegistryProxy.register(Registries.TRIGGER_TYPE, name, value);

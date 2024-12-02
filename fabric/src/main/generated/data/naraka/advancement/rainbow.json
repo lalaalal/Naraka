@@ -1,5 +1,5 @@
 {
-  "parent": "naraka:kill_herobrine",
+    "parent": "naraka:pure_vessel",
   "criteria": {
     "hassoul_infused_amethyst_sword": {
       "conditions": {

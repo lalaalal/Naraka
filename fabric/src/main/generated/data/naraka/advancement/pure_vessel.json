@@ -1,0 +1,36 @@
+{
+    "parent": "naraka:soap",
+    "criteria": {
+        "has_purified_soul_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": "naraka:purified_soul_sword"
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "display": {
+        "description": {
+            "translate": "advancements.naraka.pure_vessel.description"
+        },
+        "icon": {
+            "count": 1,
+            "id": "naraka:purified_soul_sword"
+        },
+        "title": {
+            "translate": "advancements.naraka.pure_vessel.title"
+        }
+    },
+    "requirements": [
+        [
+            "has_purified_soul_sword"
+        ]
+    ],
+    "rewards": {
+        "experience": 6
+    },
+    "sends_telemetry_event": true
+}

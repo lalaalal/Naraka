@@ -4,18 +4,17 @@ import com.yummy.naraka.NarakaMod;
 
 public enum AdvancementNarakaComponents implements AdvancementComponent {
     ROOT,
-    SANCTUARY_COMPASS,
+    WAY_TO_HIM,
     HEROBRINE_SANCTUARY,
     SUMMON_HEROBRINE,
     KILL_HEROBRINE,
-    PURIFIED_SOUL_METAL,
-    PURIFIED_SOUL_SWORD,
+    SOAP,
+    PURE_VESSEL,
     GOD_BLOOD,
     SOUL_INFUSED_MATERIALS,
     STABILIZER,
     FULLY_CHARGED,
-    SOUL_INFUSING,
-    CHALLENGER_BLESSING,
+    CHALLENGERS_BLESSING,
     RAINBOW,
     ULTIMATE_SWORD;
 

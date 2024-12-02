@@ -1,0 +1,32 @@
+{
+    "parent": "naraka:kill_herobrine",
+    "criteria": {
+        "decompose_purified_soul_metal": {
+            "conditions": {
+                "recipe_id": "naraka:purified_soul_metal_from_purified_soul_metal_block"
+            },
+            "trigger": "minecraft:recipe_crafted"
+        }
+    },
+    "display": {
+        "description": {
+            "translate": "advancements.naraka.soap.description"
+        },
+        "icon": {
+            "count": 1,
+            "id": "naraka:purified_soul_metal"
+        },
+        "title": {
+            "translate": "advancements.naraka.soap.title"
+        }
+    },
+    "requirements": [
+        [
+            "decompose_purified_soul_metal"
+        ]
+    ],
+    "rewards": {
+        "experience": 6
+    },
+    "sends_telemetry_event": true
+}

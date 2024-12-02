@@ -1,5 +1,5 @@
 {
-  "parent": "naraka:sanctuary_compass",
+    "parent": "naraka:way_to_him",
   "criteria": {
     "find_herobrine_sanctuary": {
       "conditions": {
@@ -24,7 +24,7 @@
     },
     "icon": {
       "count": 1,
-      "id": "naraka:purified_soul_block"
+        "id": "naraka:sanctuary_compass"
     },
     "title": {
       "translate": "advancements.naraka.herobrine_sanctuary.title"
