@@ -46,6 +46,9 @@ public class NarakaItems {
     public static final LazyHolder<Item, Item> PURIFIED_SOUL_SHARD = registerSimpleItem(
             "purified_soul_shard", new Item.Properties().fireResistant()
     );
+    public static final LazyHolder<Item, Item> RAINBOW_SWORD = registerSimpleItem(
+            "rainbow_sword", new Item.Properties()
+    );
 
     public static final LazyHolder<Item, Item> NECTARIUM = registerSimpleItem(
             "nectarium", new Item.Properties()

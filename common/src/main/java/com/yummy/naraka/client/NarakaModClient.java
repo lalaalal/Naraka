@@ -37,12 +37,12 @@ public final class NarakaModClient {
         registerParticles(initializer);
         registerShaders(initializer);
 
-        initializer.registerCustomItemRenderer(NarakaBlocks.FORGING_BLOCK, () -> NarakaCustomRenderer.INSTANCE);
-        initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_STABILIZER, () -> NarakaCustomRenderer.INSTANCE);
-        initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_SMITHING_BLOCK, () -> NarakaCustomRenderer.INSTANCE);
+        initializer.registerCustomItemRenderer(NarakaBlocks.FORGING_BLOCK, () -> NarakaBlockEntityItemRenderer.INSTANCE);
+        initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_STABILIZER, () -> NarakaBlockEntityItemRenderer.INSTANCE);
+        initializer.registerCustomItemRenderer(NarakaBlocks.SOUL_SMITHING_BLOCK, () -> NarakaBlockEntityItemRenderer.INSTANCE);
 
         initializer.registerResourceReloadListener("spear_item_renderer", () -> SpearItemRenderer.INSTANCE);
-        initializer.registerResourceReloadListener("custom_renderer", () -> NarakaCustomRenderer.INSTANCE);
+        initializer.registerResourceReloadListener("custom_renderer", () -> NarakaBlockEntityItemRenderer.INSTANCE);
         initializer.registerResourceReloadListener("block_transparent_renderer", () -> BlockTransparentRenderer.INSTANCE);
 
         initializer.runAfterRegistryLoaded(NarakaModClient::onRegistryLoaded);
@@ -64,6 +64,8 @@ public final class NarakaModClient {
         CustomRenderManager.register(NarakaItems.SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
         CustomRenderManager.register(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
         CustomRenderManager.register(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get(), SpearItemRenderer.INSTANCE);
+
+        CustomRenderManager.renderRainbow(NarakaItems.RAINBOW_SWORD.get());
 
         ItemPropertiesRegistry.register(NarakaItems.SANCTUARY_COMPASS.get(), NarakaMod.location("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) -> {
             SanctuaryTracker tracker = itemStack.get(NarakaDataComponentTypes.SANCTUARY_TRACKER.get());

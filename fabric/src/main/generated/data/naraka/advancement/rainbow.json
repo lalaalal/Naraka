@@ -89,7 +89,7 @@
     "frame": "challenge",
     "icon": {
       "count": 1,
-      "id": "naraka:purified_soul_sword"
+        "id": "naraka:rainbow_sword"
     },
     "title": {
       "translate": "advancements.naraka.rainbow.title"

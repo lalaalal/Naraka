@@ -156,6 +156,7 @@ public class NarakaLanguageProviders {
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_4, "Herobrine Phase 4", "히로빈 4 페이즈");
 
         addItem(NarakaItems.STIGMA_ROD, "Stigma Rod", "낙인 막대기");
+        addItem(NarakaItems.RAINBOW_SWORD, "Rainbow Sword", "무지개 검");
         addItem(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard", "정화된 영혼 조각");
         addItem(NarakaItems.NECTARIUM, "Nectarium", "넥타륨");
         addItem(NarakaItems.GOD_BLOOD, "§lGod Blood", "§l신의 피");

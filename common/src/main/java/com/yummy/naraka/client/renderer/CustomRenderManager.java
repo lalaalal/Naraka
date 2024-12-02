@@ -12,12 +12,15 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Environment(EnvType.CLIENT)
 public class CustomRenderManager {
     private static final Map<Item, CustomItemRenderer> CUSTOM_RENDERERS = new HashMap<>();
     private static final Map<Block, RenderType> CUSTOM_BLOCK_RENDER_TYPES = new HashMap<>();
+    private static final Set<Item> RAINBOW_ITEMS = new HashSet<>();
 
     public static void register(ItemLike item, CustomItemRenderer customItemRenderer) {
         CUSTOM_RENDERERS.put(item.asItem(), customItemRenderer);
@@ -26,6 +29,14 @@ public class CustomRenderManager {
     public static void register(RenderType renderType, Block... blocks) {
         for (Block block : blocks)
             CUSTOM_BLOCK_RENDER_TYPES.put(block, renderType);
+    }
+
+    public static void renderRainbow(Item item) {
+        RAINBOW_ITEMS.add(item);
+    }
+
+    public static boolean shouldRenderRainbow(ItemStack itemStack) {
+        return RAINBOW_ITEMS.contains(itemStack.getItem());
     }
 
     public static boolean hasCustomRenderer(ItemStack stack) {

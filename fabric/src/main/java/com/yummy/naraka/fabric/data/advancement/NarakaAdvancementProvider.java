@@ -165,7 +165,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
                         FillSoulStabilizerTrigger.TriggerInstance.fullFilled()
                 ).rewards(AdvancementRewards.Builder.experience(9))
         );
-        AdvancementHolder rainbow = challenge(pureVessel, NarakaItems.PURIFIED_SOUL_SWORD.get(), AdvancementNarakaComponents.RAINBOW,
+        AdvancementHolder rainbow = challenge(pureVessel, NarakaItems.RAINBOW_SWORD.get(), AdvancementNarakaComponents.RAINBOW,
                 builder -> {
                     NarakaItems.forEachSoulInfusedSwordHolder(sword -> {
                         String name = sword.unwrapKey().orElseThrow().location().getPath();
