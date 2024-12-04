@@ -16,7 +16,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,9 +26,6 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 @Mixin(value = ItemRenderer.class, priority = 990)
 public abstract class ItemRendererMixin {
-    @Shadow
-    protected abstract void renderQuadList(PoseStack poseStack, VertexConsumer buffer, List<BakedQuad> quads, ItemStack itemStack, int combinedLight, int combinedOverlay);
-
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public void renderCustom(ItemStack itemStack, ItemDisplayContext itemDisplayContext, boolean bl, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, int overlay, BakedModel bakedModel, CallbackInfo ci) {
         if (CustomRenderManager.hasCustomRenderer(itemStack)) {
@@ -38,14 +34,6 @@ public abstract class ItemRendererMixin {
                 itemRenderer.render(itemStack, itemDisplayContext, poseStack, multiBufferSource, light, overlay);
                 ci.cancel();
             }
-        }
-    }
-
-    @Inject(method = "renderQuadList", at = @At("HEAD"), cancellable = true)
-    public void renderRainbow(PoseStack poseStack, VertexConsumer buffer, List<BakedQuad> quads, ItemStack itemStack, int combinedLight, int combinedOverlay, CallbackInfo ci) {
-        if (CustomRenderManager.shouldRenderRainbow(itemStack)) {
-            naraka$renderQuadList(poseStack, buffer, quads, itemStack, combinedLight, combinedOverlay);
-            ci.cancel();
         }
     }
 
@@ -63,11 +51,11 @@ public abstract class ItemRendererMixin {
 
         for (Direction direction : Direction.values()) {
             randomSource.setSeed(42L);
-            this.renderQuadList(poseStack, buffer, model.getQuads(null, direction, randomSource), stack, combinedLight, combinedOverlay);
+            this.naraka$renderQuadList(poseStack, buffer, model.getQuads(null, direction, randomSource), stack, combinedLight, combinedOverlay);
         }
 
         randomSource.setSeed(42L);
-        this.renderQuadList(poseStack, buffer, model.getQuads(null, null, randomSource), stack, combinedLight, combinedOverlay);
+        this.naraka$renderQuadList(poseStack, buffer, model.getQuads(null, null, randomSource), stack, combinedLight, combinedOverlay);
     }
 
     @Unique
