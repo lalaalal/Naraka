@@ -1,11 +1,11 @@
 {
-    "parent": "naraka:soap",
+    "parent": "naraka:root",
     "criteria": {
-        "has_purified_soul_sword": {
+        "has_sanctuary_compass": {
             "conditions": {
                 "items": [
                     {
-                        "items": "naraka:purified_soul_sword"
+                        "items": "naraka:sanctuary_compass"
                     }
                 ]
             },
@@ -14,19 +14,19 @@
     },
     "display": {
         "description": {
-            "translate": "advancements.naraka.pure_vessel.description"
+            "translate": "advancements.naraka.sanctuary_compass.description"
         },
         "icon": {
             "count": 1,
-            "id": "naraka:purified_soul_sword"
+            "id": "naraka:sanctuary_compass"
         },
         "title": {
-            "translate": "advancements.naraka.pure_vessel.title"
+            "translate": "advancements.naraka.sanctuary_compass.title"
         }
     },
     "requirements": [
         [
-            "has_purified_soul_sword"
+            "has_sanctuary_compass"
         ]
     ],
     "rewards": {

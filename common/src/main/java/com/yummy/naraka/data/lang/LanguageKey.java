@@ -27,6 +27,8 @@ public final class LanguageKey {
     public static final String REINFORCEMENT_KEY = "item.reinforcement";
     public static final String BLESSED_KEY = "item.blessed";
 
+    public static final String CHALLENGERS_BLESSING = Util.makeDescriptionId("effect", NarakaMod.location("challengers_blessing"));
+
     public static String reinforcementEffectKey(Holder<ReinforcementEffect> reinforcementEffect) {
         Optional<ResourceKey<ReinforcementEffect>> key = reinforcementEffect.unwrapKey();
         if (key.isEmpty())

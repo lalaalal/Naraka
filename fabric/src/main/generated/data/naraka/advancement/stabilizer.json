@@ -1,5 +1,5 @@
 {
-  "parent": "naraka:root",
+    "parent": "naraka:soul_infused_materials",
   "criteria": {
     "craft_soul_stabilizer": {
       "conditions": {

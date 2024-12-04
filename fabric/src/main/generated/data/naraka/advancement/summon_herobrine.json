@@ -1,5 +1,5 @@
 {
-  "parent": "naraka:herobrine_sanctuary",
+    "parent": "naraka:find_herobrine_sanctuary",
   "criteria": {
     "summon_herobrine": {
       "conditions": {

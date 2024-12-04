@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.item.equipmentset;
 
 import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
+import com.yummy.naraka.advancements.criterion.SimpleTrigger;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
@@ -43,7 +44,7 @@ public class SoulEquipmentSet extends EquipmentSet {
         public void activate(LivingEntity livingEntity) {
             super.activate(livingEntity);
             if (livingEntity instanceof ServerPlayer serverPlayer)
-                NarakaCriteriaTriggers.CHALLENGERS_BLESSING.get().trigger(serverPlayer);
+                NarakaCriteriaTriggers.SIMPLE_TRIGGER.get().trigger(serverPlayer, SimpleTrigger.CHALLENGERS_BLESSING);
         }
     }
 }

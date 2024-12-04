@@ -10,14 +10,14 @@
     },
     "display": {
         "description": {
-            "translate": "advancements.naraka.soap.description"
+            "translate": "advancements.naraka.purified_soul_metal.description"
         },
         "icon": {
             "count": 1,
             "id": "naraka:purified_soul_metal"
         },
         "title": {
-            "translate": "advancements.naraka.soap.title"
+            "translate": "advancements.naraka.purified_soul_metal.title"
         }
     },
     "requirements": [

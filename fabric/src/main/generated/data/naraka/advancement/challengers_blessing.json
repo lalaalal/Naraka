@@ -1,7 +1,10 @@
 {
-    "parent": "naraka:pure_vessel",
+    "parent": "naraka:purified_soul_sword",
     "criteria": {
         "has_challengers_blessing_with_equipments": {
+            "conditions": {
+                "name": "challengers_blessing"
+            },
             "trigger": "naraka:challengers_blessing"
         }
     },
@@ -9,6 +12,7 @@
         "description": {
             "translate": "advancements.naraka.challengers_blessing.description"
         },
+        "frame": "goal",
         "icon": {
             "count": 1,
             "id": "naraka:stigma_rod"

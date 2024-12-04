@@ -1,0 +1,29 @@
+{
+    "parent": "naraka:buy_nectarium_core",
+    "criteria": {
+        "activate_nectarium_core": {
+            "conditions": {
+                "name": "activate_nectarium_core"
+            },
+            "trigger": "naraka:challengers_blessing"
+        }
+    },
+    "display": {
+        "description": {
+            "translate": "advancements.naraka.extra.activate_nectarium_core.description"
+        },
+        "icon": {
+            "count": 1,
+            "id": "minecraft:honey_bottle"
+        },
+        "title": {
+            "translate": "advancements.naraka.extra.activate_nectarium_core.title"
+        }
+    },
+    "requirements": [
+        [
+            "activate_nectarium_core"
+        ]
+    ],
+    "sends_telemetry_event": true
+}

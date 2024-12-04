@@ -1,5 +1,5 @@
 {
-  "parent": "naraka:rainbow",
+    "parent": "naraka:soul_swords",
   "criteria": {
     "has_ultimate_sword": {
       "conditions": {

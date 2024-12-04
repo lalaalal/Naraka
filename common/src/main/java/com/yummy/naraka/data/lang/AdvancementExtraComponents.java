@@ -6,7 +6,7 @@ public enum AdvancementExtraComponents implements AdvancementComponent {
     BUY_NECTARIUM_CORE,
     ACTIVATE_NECTARIUM_CORE,
     EAT_NECTARIUM,
-    SOUL_INFUSED_NECTARIUM,
+    CRAFT_SOUL_INFUSED_NECTARIUM,
     STIGMA_ROD;
 
     @Override

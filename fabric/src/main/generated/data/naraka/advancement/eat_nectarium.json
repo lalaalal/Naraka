@@ -1,0 +1,31 @@
+{
+    "parent": "naraka:activate_nectarium_core",
+    "criteria": {
+        "eat_nectarium": {
+            "conditions": {
+                "item": {
+                    "items": "naraka:nectarium"
+                }
+            },
+            "trigger": "minecraft:consume_item"
+        }
+    },
+    "display": {
+        "description": {
+            "translate": "advancements.naraka.extra.eat_nectarium.description"
+        },
+        "icon": {
+            "count": 1,
+            "id": "naraka:nectarium"
+        },
+        "title": {
+            "translate": "advancements.naraka.extra.eat_nectarium.title"
+        }
+    },
+    "requirements": [
+        [
+            "eat_nectarium"
+        ]
+    ],
+    "sends_telemetry_event": true
+}

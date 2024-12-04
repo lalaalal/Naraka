@@ -1,11 +1,11 @@
 {
     "parent": "naraka:root",
     "criteria": {
-        "has_sanctuary_compass": {
+        "buy_nectarium_core": {
             "conditions": {
                 "items": [
                     {
-                        "items": "naraka:sanctuary_compass"
+                        "items": "naraka:nectarium_core"
                     }
                 ]
             },
@@ -14,23 +14,20 @@
     },
     "display": {
         "description": {
-            "translate": "advancements.naraka.way_to_him.description"
+            "translate": "advancements.naraka.extra.buy_nectarium_core.description"
         },
         "icon": {
             "count": 1,
-            "id": "naraka:sanctuary_compass"
+            "id": "naraka:nectarium_core"
         },
         "title": {
-            "translate": "advancements.naraka.way_to_him.title"
+            "translate": "advancements.naraka.extra.buy_nectarium_core.title"
         }
     },
     "requirements": [
         [
-            "has_sanctuary_compass"
+            "buy_nectarium_core"
         ]
     ],
-    "rewards": {
-        "experience": 6
-    },
     "sends_telemetry_event": true
 }
