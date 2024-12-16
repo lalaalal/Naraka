@@ -2,21 +2,29 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SkillManager {
-    private final ArrayList<Skill> skills = new ArrayList<>();
+    private final Map<String, Skill> skills = new HashMap<>();
     private @Nullable Skill currentSkill = null;
 
     public void addSkill(Skill skill) {
-        this.skills.add(skill);
+        this.skills.put(skill.name, skill);
     }
 
     private List<Skill> getUsableSkills() {
-        return skills.stream()
+        return skills.values().stream()
                 .filter(skill -> skill.readyToUse() && skill.canUse())
                 .toList();
+    }
+
+    public void setCurrentSkill(String name) {
+        if (currentSkill == null) {
+            currentSkill = skills.get(name);
+            currentSkill.prepare();
+        }
     }
 
     public void tick() {
@@ -34,9 +42,14 @@ public class SkillManager {
             }
         }
 
-        for (Skill skill : skills) {
+        for (Skill skill : skills.values()) {
             if (!skill.readyToUse())
                 skill.reduceCooldown();
         }
+    }
+
+    @Nullable
+    public Skill getCurrentSkill() {
+        return currentSkill;
     }
 }
