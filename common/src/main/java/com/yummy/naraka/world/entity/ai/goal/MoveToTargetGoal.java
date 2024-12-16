@@ -13,6 +13,7 @@ public class MoveToTargetGoal extends Goal {
     private LivingEntity target;
     private final double speedModifier;
     private final float within;
+    private int updateTime;
 
     public MoveToTargetGoal(PathfinderMob mob, double speedModifier, float within) {
         this.mob = mob;
@@ -32,6 +33,7 @@ public class MoveToTargetGoal extends Goal {
     @Override
     public boolean canContinueToUse() {
         return !this.mob.getNavigation().isDone()
+                && updateTime > 0
                 && this.target != null
                 && this.target.isAlive()
                 && this.target.distanceToSqr(this.mob) < (this.within * this.within);
@@ -44,6 +46,13 @@ public class MoveToTargetGoal extends Goal {
 
     @Override
     public void start() {
-        this.mob.getNavigation().moveTo(target, speedModifier);
+        if (target != null)
+            this.mob.getNavigation().moveTo(target, speedModifier);
+        updateTime = 5;
+    }
+
+    @Override
+    public void tick() {
+        updateTime -= 1;
     }
 }

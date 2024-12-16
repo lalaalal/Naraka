@@ -3,6 +3,7 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
+import com.yummy.naraka.world.entity.ai.skill.DashSkill;
 import com.yummy.naraka.world.entity.ai.skill.PunchSkill;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
@@ -79,6 +80,7 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
     @Override
     protected void registerSkills() {
         registerSkill(new PunchSkill(this));
+        registerSkill(new DashSkill(this));
     }
 
     @Override
