@@ -13,7 +13,7 @@ public class GodBlowSkill extends Skill {
     private LivingEntity target;
 
     public GodBlowSkill(SkillUsingMob mob) {
-        super("god_blow", 100, 120, mob);
+        super("god_blow", 100, 600, mob);
     }
 
     @Override

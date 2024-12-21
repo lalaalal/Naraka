@@ -18,6 +18,8 @@ public class DashSkill extends Skill {
     @Override
     protected void skillTick() {
         mob.getNavigation().stop();
+        if (10 <= tickCount && tickCount <= 15)
+            mob.createAfterimage();
         if (tickCount == 10) {
             LivingEntity target = mob.getTarget();
             if (target == null)
