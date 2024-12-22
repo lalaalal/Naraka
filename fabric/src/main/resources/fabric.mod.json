@@ -27,6 +27,9 @@
         ],
         "jade": [
             "com.yummy.naraka.jade.NarakaJadePlugin"
+        ],
+        "jei_mod_plugin": [
+            "com.yummy.naraka.jei.NarakaJeiPlugin"
 
         ]
     },

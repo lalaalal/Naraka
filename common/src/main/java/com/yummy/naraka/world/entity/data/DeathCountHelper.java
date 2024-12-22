@@ -1,7 +1,10 @@
 package com.yummy.naraka.world.entity.data;
 
+import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.DeathCountingEntity;
+import dev.architectury.networking.NetworkManager;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.ArrayList;
@@ -53,6 +56,8 @@ public class DeathCountHelper {
         if (deathCount > 1) {
             EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT.get(), deathCount - 1);
             livingEntity.setHealth(livingEntity.getMaxHealth());
+            if (livingEntity instanceof ServerPlayer serverPlayer)
+                NetworkManager.sendToPlayer(serverPlayer, new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.DEATH_COUNT_USED));
         } else {
             for (DeathCountingEntity deathCountingEntity : DEATH_COUNTING_ENTITIES)
                 deathCountingEntity.forget(livingEntity);
