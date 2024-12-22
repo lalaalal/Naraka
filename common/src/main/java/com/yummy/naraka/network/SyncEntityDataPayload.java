@@ -44,7 +44,7 @@ public record SyncEntityDataPayload(int entityId, HolderSet<EntityDataType<?>> e
         return TYPE;
     }
 
-    public static void handleClient(SyncEntityDataPayload payload, NetworkManager.PacketContext context) {
+    public static void handle(SyncEntityDataPayload payload, NetworkManager.PacketContext context) {
         if (context.getEnvironment() == Env.SERVER)
             return;
         Player player = context.getPlayer();

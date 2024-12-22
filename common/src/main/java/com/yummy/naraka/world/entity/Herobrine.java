@@ -23,6 +23,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -41,6 +42,8 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
+                .add(Attributes.FOLLOW_RANGE, 128)
+                .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 1)
                 .add(Attributes.STEP_HEIGHT, 2)
                 .add(Attributes.MOVEMENT_SPEED, 0.2f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
@@ -74,7 +77,8 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
     protected void registerGoals() {
         targetSelector.addGoal(1, new HurtByTargetGoal(this, Herobrine.class));
 
-        goalSelector.addGoal(1, new MoveToTargetGoal(this, 1, 64));
+        goalSelector.addGoal(1, new FloatGoal(this));
+        goalSelector.addGoal(2, new MoveToTargetGoal(this, 1, 64));
 //        goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8));
     }
 

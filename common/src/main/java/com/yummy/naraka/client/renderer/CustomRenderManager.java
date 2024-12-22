@@ -1,6 +1,7 @@
 package com.yummy.naraka.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.yummy.naraka.util.Color;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -20,6 +21,7 @@ import java.util.Set;
 public class CustomRenderManager {
     private static final Map<Item, CustomItemRenderer> CUSTOM_RENDERERS = new HashMap<>();
     private static final Map<Block, RenderType> CUSTOM_BLOCK_RENDER_TYPES = new HashMap<>();
+    private static final Map<Item, Color> COLORED_ITEMS = new HashMap<>();
     private static final Set<Item> RAINBOW_ITEMS = new HashSet<>();
 
     public static void register(ItemLike item, CustomItemRenderer customItemRenderer) {
@@ -35,8 +37,20 @@ public class CustomRenderManager {
         RAINBOW_ITEMS.add(item);
     }
 
+    public static void renderColored(Item item, Color color) {
+        COLORED_ITEMS.put(item, color);
+    }
+
+    public static void restoreColor(Item item) {
+        COLORED_ITEMS.remove(item);
+    }
+
     public static boolean shouldRenderRainbow(ItemStack itemStack) {
         return RAINBOW_ITEMS.contains(itemStack.getItem());
+    }
+
+    public static boolean shouldRenderColored(ItemStack itemStack) {
+        return COLORED_ITEMS.containsKey(itemStack.getItem());
     }
 
     public static boolean hasCustomRenderer(ItemStack stack) {
@@ -59,12 +73,8 @@ public class CustomRenderManager {
         return Map.copyOf(CUSTOM_BLOCK_RENDER_TYPES);
     }
 
-    @Deprecated
-    public static RenderType getCustomRenderType(Block block) {
-        RenderType renderType = CUSTOM_BLOCK_RENDER_TYPES.get(block);
-        if (renderType == null)
-            throw new IllegalArgumentException("Block " + block + " is not registered");
-        return renderType;
+    public static Color getItemColor(ItemStack stack) {
+        return COLORED_ITEMS.get(stack.getItem());
     }
 
     public interface CustomItemRenderer {

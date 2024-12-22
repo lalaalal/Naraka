@@ -21,6 +21,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -45,6 +46,7 @@ public final class NarakaGameEvents {
         LifecycleEvent.SERVER_STARTING.register(NarakaGameEvents::onServerStarting);
         LifecycleEvent.SERVER_STARTED.register(NarakaGameEvents::onServerStarted);
         LifecycleEvent.SERVER_LEVEL_LOAD.register(NarakaGameEvents::onWorldLoad);
+        PlayerEvent.PLAYER_JOIN.register(NarakaGameEvents::syncPlayerEntityData);
 
         InteractionEvent.RIGHT_CLICK_BLOCK.register(NarakaGameEvents::checkHerobrineTotemTrigger);
         InteractionEvent.RIGHT_CLICK_BLOCK.register(NarakaGameEvents::ironNuggetUse);
@@ -54,16 +56,13 @@ public final class NarakaGameEvents {
 
         EntityEvent.LIVING_DEATH.register(NarakaGameEvents::useDeathCount);
 
-        EntityEvent.ADD.register(NarakaGameEvents::syncPlayerEntityData);
         EntityEvent.ADD.register(NarakaGameEvents::updateReinforcementEffect);
 
         LootEvent.MODIFY_LOOT_TABLE.register(NarakaGameEvents::modifyLootTable);
     }
 
-    private static EventResult syncPlayerEntityData(Entity entity, Level level) {
-        if (!level.isClientSide && entity instanceof Player player)
-            EntityDataHelper.syncEntityData(player);
-        return EventResult.pass();
+    private static void syncPlayerEntityData(ServerPlayer player) {
+        EntityDataHelper.syncEntityData(player);
     }
 
     private static EventResult updateReinforcementEffect(Entity entity, Level level) {

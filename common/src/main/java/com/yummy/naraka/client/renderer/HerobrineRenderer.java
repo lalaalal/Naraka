@@ -60,7 +60,7 @@ public class HerobrineRenderer extends LivingEntityRenderer<Herobrine, Herobrine
 
         RenderType renderType = RenderType.entityTranslucent(getTextureLocation(herobrine));
         VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
-        int color = Color.of(0x0000aa).withAlpha(afterimage.getAlpha());
+        int color = Color.of(0xddddff).withAlpha(afterimage.getAlpha()).pack();
         this.model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color);
         poseStack.popPose();
     }

@@ -62,6 +62,6 @@ public class Afterimage {
 
     public int getAlpha() {
         float alpha01 = 1 - tickCount / (float) maxTickCount;
-        return (int) (alpha01 * 0xff);
+        return (int) (alpha01 * 0.8 * 0xff);
     }
 }

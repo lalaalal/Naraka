@@ -16,7 +16,7 @@ public class NarakaNetworks {
 
     @Environment(EnvType.CLIENT)
     public static void initializeClient() {
-        NetworkManager.registerReceiver(NetworkManager.s2c(), SyncEntityDataPayload.TYPE, SyncEntityDataPayload.CODEC, SyncEntityDataPayload::handleClient);
-        NetworkManager.registerReceiver(NetworkManager.s2c(), NarakaClientboundEventPacket.TYPE, NarakaClientboundEventPacket.CODEC, NarakaClientboundEventPacket::handle);
+        NetworkManager.registerReceiver(NetworkManager.s2c(), SyncEntityDataPayload.TYPE, SyncEntityDataPayload.CODEC, SyncEntityDataPayload::handle);
+        NetworkManager.registerReceiver(NetworkManager.s2c(), NarakaClientboundEventPacket.TYPE, NarakaClientboundEventPacket.CODEC, NarakaClientboundEventHandler::handle);
     }
 }
