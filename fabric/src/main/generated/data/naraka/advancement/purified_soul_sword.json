@@ -1,36 +1,36 @@
 {
-    "parent": "naraka:purified_soul_metal",
-    "criteria": {
-        "has_purified_soul_sword": {
-            "conditions": {
-                "items": [
-                    {
-                        "items": "naraka:purified_soul_sword"
-                    }
-                ]
-            },
-            "trigger": "minecraft:inventory_changed"
-        }
-    },
-    "display": {
-        "description": {
-            "translate": "advancements.naraka.purified_soul_sword.description"
-        },
-        "icon": {
-            "count": 1,
-            "id": "naraka:purified_soul_sword"
-        },
-        "title": {
-            "translate": "advancements.naraka.purified_soul_sword.title"
-        }
-    },
-    "requirements": [
-        [
-            "has_purified_soul_sword"
+  "parent": "naraka:purified_soul_metal",
+  "criteria": {
+    "has_purified_soul_sword": {
+      "conditions": {
+        "items": [
+          {
+            "items": "naraka:purified_soul_sword"
+          }
         ]
-    ],
-    "rewards": {
-        "experience": 6
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.naraka.purified_soul_sword.description"
     },
-    "sends_telemetry_event": true
+    "icon": {
+      "count": 1,
+      "id": "naraka:purified_soul_sword"
+    },
+    "title": {
+      "translate": "advancements.naraka.purified_soul_sword.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_purified_soul_sword"
+    ]
+  ],
+  "rewards": {
+    "experience": 6
+  },
+  "sends_telemetry_event": true
 }

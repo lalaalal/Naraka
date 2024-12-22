@@ -1,29 +1,29 @@
 {
-    "parent": "naraka:eat_nectarium",
-    "criteria": {
-        "craft_soul_infused_nectarium": {
-            "conditions": {
-                "recipe_id": "naraka:soul_infused_nectarium"
-            },
-            "trigger": "minecraft:recipe_crafted"
-        }
+  "parent": "naraka:eat_nectarium",
+  "criteria": {
+    "craft_soul_infused_nectarium": {
+      "conditions": {
+        "recipe_id": "naraka:soul_infused_nectarium"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.naraka.extra.craft_soul_infused_nectarium.description"
     },
-    "display": {
-        "description": {
-            "translate": "advancements.naraka.extra.craft_soul_infused_nectarium.description"
-        },
-        "icon": {
-            "count": 1,
-            "id": "naraka:soul_infused_nectarium"
-        },
-        "title": {
-            "translate": "advancements.naraka.extra.craft_soul_infused_nectarium.title"
-        }
+    "icon": {
+      "count": 1,
+      "id": "naraka:soul_infused_nectarium"
     },
-    "requirements": [
-        [
-            "craft_soul_infused_nectarium"
-        ]
-    ],
-    "sends_telemetry_event": true
+    "title": {
+      "translate": "advancements.naraka.extra.craft_soul_infused_nectarium.title"
+    }
+  },
+  "requirements": [
+    [
+      "craft_soul_infused_nectarium"
+    ]
+  ],
+  "sends_telemetry_event": true
 }
