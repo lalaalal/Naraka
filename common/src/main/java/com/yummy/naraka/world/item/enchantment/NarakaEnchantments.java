@@ -20,7 +20,8 @@ import net.minecraft.world.item.enchantment.effects.AddValue;
 import org.jetbrains.annotations.Nullable;
 
 public class NarakaEnchantments {
-    private static @Nullable Registry<Enchantment> registry;
+    @Nullable
+    private static Registry<Enchantment> registry;
 
     public static void initialize(RegistryAccess registryAccess) {
         registry = registryAccess.registryOrThrow(Registries.ENCHANTMENT);

@@ -19,7 +19,8 @@ import java.util.stream.Stream;
  * @param <V> Derived value type
  */
 public class LazyHolder<T, V extends T> extends Holder.Reference<T> implements Supplier<V> {
-    private @Nullable Holder<T> holder;
+    @Nullable
+    private Holder<T> holder;
 
     public LazyHolder(Registry<T> registry, ResourceLocation name) {
         super(Type.STAND_ALONE, registry.holderOwner(), ResourceKey.create(registry.key(), name), null);

@@ -20,8 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Environment(EnvType.CLIENT)
 @Mixin(DripParticle.class)
 public abstract class DripParticleMixin {
-    @Unique
-    @Nullable
+    @Unique @Nullable
     private static SimpleParticleType naraka$currentParticle = null;
 
     @Inject(method = "createHoneyHangParticle", at = @At("HEAD"))

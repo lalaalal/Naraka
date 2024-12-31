@@ -2,13 +2,14 @@ package com.yummy.naraka.network;
 
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.NarakaMod;
+import dev.architectury.networking.NetworkManager;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.util.StringRepresentable;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public record NarakaClientboundEventPacket(Event event) implements CustomPacketPayload {
     public static final Type<NarakaClientboundEventPacket> TYPE = new Type<>(NarakaMod.location("clientbound_event_packet"));
@@ -25,20 +26,19 @@ public record NarakaClientboundEventPacket(Event event) implements CustomPacketP
     }
 
     public interface EventHandler {
-        @Deprecated
-        void handleDeathCountUsed();
+
     }
 
     public enum Event implements StringRepresentable {
-        DEATH_COUNT_USED(EventHandler::handleDeathCountUsed);
+        ;
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
         public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.idMapper(Event::byId, Event::getId);
 
         public final int id;
-        public final Consumer<EventHandler> handler;
+        public final BiConsumer<EventHandler, NetworkManager.PacketContext> handler;
 
-        Event(Consumer<EventHandler> handler) {
+        Event(BiConsumer<EventHandler, NetworkManager.PacketContext> handler) {
             this.id = ordinal();
             this.handler = handler;
         }
@@ -55,8 +55,8 @@ public record NarakaClientboundEventPacket(Event event) implements CustomPacketP
             return id;
         }
 
-        public void handle(EventHandler listener) {
-            this.handler.accept(listener);
+        public void handle(EventHandler listener, NetworkManager.PacketContext context) {
+            this.handler.accept(listener, context);
         }
 
         @Override

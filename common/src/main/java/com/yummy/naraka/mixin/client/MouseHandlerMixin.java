@@ -14,8 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Environment(EnvType.CLIENT)
 @Mixin(MouseHandler.class)
 public abstract class MouseHandlerMixin {
-    @Shadow
-    @Final
+    @Shadow @Final
     private Minecraft minecraft;
 
     @ModifyExpressionValue(method = "onScroll", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isSpectator()Z"))

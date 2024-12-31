@@ -24,8 +24,7 @@
     "WanderingTraderMixin",
     "invoker.MobEffectInvoker",
     "invoker.OverworldBiomesInvoker",
-    "invoker.RootPlacerTypeInvoker",
-    "invoker.SpawnPlacementsInvoker"
+    "invoker.RootPlacerTypeInvoker"
   ],
   "injectors": {
     "defaultRequire": 1

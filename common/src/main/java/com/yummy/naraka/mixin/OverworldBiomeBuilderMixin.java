@@ -18,8 +18,7 @@ import java.util.function.Consumer;
 
 @Mixin(OverworldBiomeBuilder.class)
 public abstract class OverworldBiomeBuilderMixin {
-    @Shadow
-    @Final
+    @Shadow @Final
     private Climate.Parameter FULL_RANGE;
 
     @Shadow

@@ -7,7 +7,8 @@ import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
 public final class NarakaShaders {
-    public static @Nullable ShaderInstance longinus;
+    @Nullable
+    public static ShaderInstance longinus;
 
     public static ShaderInstance longinus() {
         if (longinus == null)

@@ -21,7 +21,7 @@ public class NarakaJsonUtils {
             .create();
 
     @SuppressWarnings("unchecked")
-    public static <T> T parser(Class<T> type, JsonElement jsonElement) {
+    public static <T> T parse(Class<T> type, JsonElement jsonElement) {
         if (JSON_PARSERS.containsKey(type))
             return (T) JSON_PARSERS.get(type).apply(jsonElement);
         throw new IllegalStateException("Cannot find matching json parser for " + type);

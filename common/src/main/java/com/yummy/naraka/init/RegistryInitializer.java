@@ -13,7 +13,8 @@ import java.util.Map;
  * Override {@link RegistryInitializer#create(ResourceKey)} to create {@linkplain RegistryProxy} by default<br>
  */
 public class RegistryInitializer {
-    private static @Nullable RegistryInitializer INSTANCE;
+    @Nullable
+    private static RegistryInitializer INSTANCE;
 
     private final Map<ResourceKey<? extends Registry<?>>, RegistryProxy<?>> registryProxyMap = new HashMap<>();
 

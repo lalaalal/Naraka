@@ -11,7 +11,8 @@ import java.util.UUID;
 public class NarakaEntityUtils {
     private static final Map<UUID, Entity> cache = new HashMap<>();
 
-    public static @Nullable Entity findEntityByUUID(ServerLevel serverLevel, UUID uuid) {
+    @Nullable
+    public static Entity findEntityByUUID(ServerLevel serverLevel, UUID uuid) {
         if (cache.containsKey(uuid))
             return cache.get(uuid);
         for (Entity entity : serverLevel.getAllEntities()) {
@@ -23,7 +24,8 @@ public class NarakaEntityUtils {
         return null;
     }
 
-    public static @Nullable <T> T findEntityByUUID(ServerLevel serverLevel, UUID uuid, Class<T> type) {
+    @Nullable
+    public static <T> T findEntityByUUID(ServerLevel serverLevel, UUID uuid, Class<T> type) {
         Entity entity = findEntityByUUID(serverLevel, uuid);
         if (type.isInstance(entity))
             return type.cast(entity);

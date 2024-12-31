@@ -8,7 +8,8 @@ import java.util.Map;
 
 public class SkillManager {
     private final Map<String, Skill> skills = new HashMap<>();
-    private @Nullable Skill currentSkill = null;
+    @Nullable
+    private Skill currentSkill = null;
 
     public void addSkill(Skill skill) {
         this.skills.put(skill.name, skill);

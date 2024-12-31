@@ -1,13 +1,11 @@
 package com.yummy.naraka.world.item.component;
 
 import com.mojang.serialization.Codec;
-import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.LazyHolder;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
-import dev.architectury.registry.registries.DeferredRegister;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -15,8 +13,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import java.util.function.UnaryOperator;
 
 public class NarakaDataComponentTypes {
-    private static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES = DeferredRegister.create(NarakaMod.MOD_ID, Registries.DATA_COMPONENT_TYPE);
-
     public static final LazyHolder<DataComponentType<?>, DataComponentType<SanctuaryTracker>> SANCTUARY_TRACKER = register(
             "sanctuary_tracker",
             builder -> builder.persistent(SanctuaryTracker.CODEC)

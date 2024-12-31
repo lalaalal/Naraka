@@ -57,11 +57,6 @@ public class CustomRenderManager {
         return CUSTOM_RENDERERS.containsKey(stack.getItem());
     }
 
-    @Deprecated
-    public static boolean hasCustomRenderType(Block block) {
-        return CUSTOM_BLOCK_RENDER_TYPES.containsKey(block);
-    }
-
     public static CustomItemRenderer getCustomRenderer(ItemStack stack) {
         CustomItemRenderer itemRenderer = CUSTOM_RENDERERS.get(stack.getItem());
         if (itemRenderer == null)

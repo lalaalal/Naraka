@@ -60,7 +60,7 @@ public abstract class SkillUsingMob extends PathfinderMob implements AfterimageE
     public void createAfterimage() {
         List<Afterimage> afterimages = new ArrayList<>(getAfterimages());
         if (!level().isClientSide) {
-            afterimages.add(new Afterimage(this.position(), 10));
+            afterimages.add(new Afterimage(this.position(), 12));
             this.entityData.set(AFTERIMAGES, afterimages, true);
         }
     }
