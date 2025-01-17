@@ -86,6 +86,8 @@ public abstract class LivingEntityMixin extends Entity {
             } else {
                 this.setSwimming(this.isSprinting() && this.naraka$isUnderLiquid() && !this.isPassenger() && !level().getFluidState(blockPosition()).isEmpty());
             }
+        } else {
+            super.updateSwimming();
         }
     }
 
