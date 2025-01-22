@@ -61,7 +61,6 @@ public class NarakaAttributeModifiers {
         return instance.hasModifier(modifier.id());
     }
 
-
     public static void holdEntity(LivingEntity livingEntity) {
         NarakaAttributeModifiers.addAttributeModifier(
                 livingEntity,
@@ -110,6 +109,7 @@ public class NarakaAttributeModifiers {
         );
         if (livingEntity instanceof Mob mob)
             mob.setNoAi(false);
+        STUN_RELEASE_TIME.remove(livingEntity);
     }
 
     public static void stunEntity(LivingEntity livingEntity, int duration) {

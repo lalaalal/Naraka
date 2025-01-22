@@ -16,7 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class NarakaDataGenerator implements DataGeneratorEntrypoint {
-    private @Nullable CompletableFuture<HolderLookup.Provider> patched;
+    @Nullable
+    private CompletableFuture<HolderLookup.Provider> patched;
 
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {

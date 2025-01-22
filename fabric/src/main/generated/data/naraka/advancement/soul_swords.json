@@ -1,0 +1,128 @@
+{
+    "parent": "naraka:challengers_blessing",
+    "criteria": {
+        "hassoul_infused_amethyst_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": "naraka:soul_infused_amethyst_sword"
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "hassoul_infused_copper_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": "naraka:soul_infused_copper_sword"
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "hassoul_infused_diamond_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": "naraka:soul_infused_diamond_sword"
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "hassoul_infused_emerald_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": "naraka:soul_infused_emerald_sword"
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "hassoul_infused_gold_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": "naraka:soul_infused_gold_sword"
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "hassoul_infused_lapis_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": "naraka:soul_infused_lapis_sword"
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "hassoul_infused_nectarium_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": "naraka:soul_infused_nectarium_sword"
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "hassoul_infused_redstone_sword": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": "naraka:soul_infused_redstone_sword"
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "display": {
+        "description": {
+            "translate": "advancements.naraka.soul_swords.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "count": 1,
+            "id": "naraka:rainbow_sword"
+        },
+        "title": {
+            "translate": "advancements.naraka.soul_swords.title"
+        }
+    },
+    "requirements": [
+        [
+            "hassoul_infused_redstone_sword"
+        ],
+        [
+            "hassoul_infused_copper_sword"
+        ],
+        [
+            "hassoul_infused_gold_sword"
+        ],
+        [
+            "hassoul_infused_emerald_sword"
+        ],
+        [
+            "hassoul_infused_diamond_sword"
+        ],
+        [
+            "hassoul_infused_lapis_sword"
+        ],
+        [
+            "hassoul_infused_amethyst_sword"
+        ],
+        [
+            "hassoul_infused_nectarium_sword"
+        ]
+    ],
+    "rewards": {
+        "experience": 6
+    },
+    "sends_telemetry_event": true
+}

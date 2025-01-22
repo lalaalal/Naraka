@@ -9,11 +9,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 @Environment(EnvType.CLIENT)
-public class HerobrineRenderer extends LivingEntityRenderer<Herobrine, HerobrineModel<Herobrine>> {
+public class HerobrineRenderer extends AfterimageEntityRenderer<Herobrine, HerobrineModel<Herobrine>> {
     public HerobrineRenderer(EntityRendererProvider.Context context) {
         this(context, NarakaModelLayers.HEROBRINE);
     }

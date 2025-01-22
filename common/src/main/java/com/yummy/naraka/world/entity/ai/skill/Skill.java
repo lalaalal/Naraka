@@ -42,6 +42,8 @@ public abstract class Skill {
             onFirstTick();
         if (tickCount < duration)
             skillTick();
+        if (tickCount == duration - 1)
+            onLastTick();
         tickCount += 1;
     }
 
@@ -54,6 +56,10 @@ public abstract class Skill {
     }
 
     protected void onFirstTick() {
+
+    }
+
+    protected void onLastTick() {
 
     }
 

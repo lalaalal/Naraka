@@ -1,28 +1,28 @@
 {
-  "parent": "naraka:root",
+    "parent": "naraka:soul_infused_materials",
   "criteria": {
-    "craft_soul_crafting_block": {
+    "craft_soul_stabilizer": {
       "conditions": {
-        "recipe_id": "naraka:soul_crafting_block"
+        "recipe_id": "naraka:soul_stabilizer"
       },
       "trigger": "minecraft:recipe_crafted"
     }
   },
   "display": {
     "description": {
-      "translate": "advancements.naraka.soul_infusing.description"
+      "translate": "advancements.naraka.stabilizer.description"
     },
     "icon": {
       "count": 1,
-      "id": "naraka:soul_crafting_block"
+      "id": "naraka:soul_stabilizer"
     },
     "title": {
-      "translate": "advancements.naraka.soul_infusing.title"
+      "translate": "advancements.naraka.stabilizer.title"
     }
   },
   "requirements": [
     [
-      "craft_soul_crafting_block"
+      "craft_soul_stabilizer"
     ]
   ],
   "rewards": {

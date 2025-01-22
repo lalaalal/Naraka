@@ -1,0 +1,33 @@
+{
+    "parent": "naraka:root",
+    "criteria": {
+        "buy_nectarium_core": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": "naraka:nectarium_core"
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "display": {
+        "description": {
+            "translate": "advancements.naraka.extra.buy_nectarium_core.description"
+        },
+        "icon": {
+            "count": 1,
+            "id": "naraka:nectarium_core"
+        },
+        "title": {
+            "translate": "advancements.naraka.extra.buy_nectarium_core.title"
+        }
+    },
+    "requirements": [
+        [
+            "buy_nectarium_core"
+        ]
+    ],
+    "sends_telemetry_event": true
+}

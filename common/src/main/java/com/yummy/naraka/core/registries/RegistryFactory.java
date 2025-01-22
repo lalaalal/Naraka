@@ -6,9 +6,11 @@ import net.minecraft.resources.ResourceKey;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class RegistryFactory {
-    private static @Nullable RegistryFactory instance = null;
+    @Nullable
+    private static RegistryFactory instance = null;
 
-    public static @Nullable RegistryFactory getInstance() {
+    @Nullable
+    public static RegistryFactory getInstance() {
         return instance;
     }
 

@@ -1,9 +1,6 @@
 package com.yummy.naraka.fabric.data.lang;
 
-import com.yummy.naraka.data.lang.AdvancementComponent;
-import com.yummy.naraka.data.lang.AdvancementNarakaComponents;
-import com.yummy.naraka.data.lang.LanguageKey;
-import com.yummy.naraka.data.lang.NarakaJadeProviderComponents;
+import com.yummy.naraka.data.lang.*;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
@@ -82,6 +79,8 @@ public class NarakaLanguageProviders {
         add(SoulType.NECTARIUM.translationKey(), "Nectarium", "넥타륨");
         add(SoulType.GOD_BLOOD.translationKey(), "God Blood", "신의 피");
 
+        add(LanguageKey.CHALLENGERS_BLESSING, "Challenger's Blessing", "도전자의 축복");
+
         addReinforcementEffect(NarakaReinforcementEffects.INCREASE_ATTACK_DAMAGE, "Increase attack damage", "공격력 증가");
         addReinforcementEffect(NarakaReinforcementEffects.INCREASE_ARMOR, "Increase armor", "방어력 증가");
         addReinforcementEffect(NarakaReinforcementEffects.INCREASE_ARMOR_TOUGHNESS, "Increase armor toughness", "방어 강도 증가");
@@ -105,52 +104,81 @@ public class NarakaLanguageProviders {
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_LAPIS, "Soul Infused Lapis Material", "영혼이 주입된 청금석 소재");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_AMETHYST, "Soul Infused Amethyst Material", "영혼이 주입된 자수정 소재");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_NECTARIUM, "Soul Infused Nectarium Material", "영혼이 주입된 넥타륨 소재");
+        addTrimMaterial(NarakaTrimMaterials.GOD_BLOOD, "God Blood Material", "신의 피 소재");
 
         addAdvancement(AdvancementNarakaComponents.ROOT,
                 List.of("Naraka", "나라카"),
-                List.of("Lasciate ogni speranza, voi ch'entrate", "여기 들어오는 자, 모든 희망을 버려라"));
+                List.of("Lasciate ogni speranza, voi ch'entrate", "여기 들어오는 자, 모든 희망을 버려라")
+        );
         addAdvancement(AdvancementNarakaComponents.SANCTUARY_COMPASS,
                 List.of("Way to him", "그에게로 가는 길"),
-                List.of("Get Sanctuary Compass", "생츄어리 나침반을 얻으세요"));
-        addAdvancement(AdvancementNarakaComponents.HEROBRINE_SANCTUARY,
+                List.of("Get Sanctuary Compass", "생츄어리 나침반을 얻으세요")
+        );
+        addAdvancement(AdvancementNarakaComponents.FIND_HEROBRINE_SANCTUARY,
                 List.of("Herobrine Sanctuary", "폭군의 성역"),
-                List.of("Too Big!", "뭐가 이렇게 커?"));
+                List.of("Too Big!", "뭐가 이렇게 커?")
+        );
         addAdvancement(AdvancementNarakaComponents.SUMMON_HEROBRINE,
                 List.of("Naraka Tyrant", "나락의 폭군"),
-                List.of("Summon Herobrine", "나락의 군주를 목도하세요"));
+                List.of("Summon Herobrine", "나락의 군주를 목도하세요")
+        );
         addAdvancement(AdvancementNarakaComponents.KILL_HEROBRINE,
                 List.of("Purified Soul", "정화된 영혼"),
-                List.of("Defeat the lord of Naraka", "나락의 군주를 쓰러트리세요"));
+                List.of("Defeat the lord of Naraka", "나락의 군주를 쓰러트리세요")
+        );
         addAdvancement(AdvancementNarakaComponents.PURIFIED_SOUL_METAL,
                 List.of("Soap...?", "비누...?"),
-                List.of("Get purified soul metal", "정화된 영혼 금속을 얻으세요"));
+                List.of("Get purified soul metal", "정화된 영혼 금속을 얻으세요")
+        );
         addAdvancement(AdvancementNarakaComponents.PURIFIED_SOUL_SWORD,
                 List.of("Pure vessel", "순수한 그릇"),
-                List.of("It can be anything!", "무엇이든 될 수 있어!"));
+                List.of("It can be anything!", "무엇이든 될 수 있어!")
+        );
         addAdvancement(AdvancementNarakaComponents.GOD_BLOOD,
                 List.of("God's blood", "신의 피"),
-                List.of("Amazing!", "굉장해 엄청나!"));
-        addAdvancement(AdvancementNarakaComponents.SOUL_INFUSED_THINGS,
+                List.of("Amazing!", "굉장해 엄청나!")
+        );
+        addAdvancement(AdvancementNarakaComponents.SOUL_INFUSED_MATERIALS,
                 List.of("Soul infused Minerals", "영혼이 깃든 광물"),
-                List.of("Make one kind of soul infused minerals", "아무 종류의 영혼이 깃든 광물을 만드세요"));
+                List.of("Make one kind of soul infused minerals", "아무 종류의 영혼이 깃든 광물을 만드세요")
+        );
         addAdvancement(AdvancementNarakaComponents.STABILIZER,
                 List.of("Stabilizer", "안정기"),
-                List.of("Make soul stabilizer that contains large amount of soul minerals", "대량의 영혼이 깃든 광물을 저장할 수 있는 영혼 안정기를 만드세요"));
-        addAdvancement(AdvancementNarakaComponents.FILL_STABILIZER,
+                List.of("Make soul stabilizer that contains large amount of soul minerals", "대량의 영혼이 깃든 광물을 저장할 수 있는 영혼 안정기를 만드세요"))
+        ;
+        addAdvancement(AdvancementNarakaComponents.FILL_SOUL_STABILIZER,
                 List.of("Fully charged", "충전 완료"),
-                List.of("Fill soul stabilizer with one kind of soul infused minerals", "영혼 안정기를 아무 종류의 영혼이 깃든 광물로 가득 채우세요"));
-        addAdvancement(AdvancementNarakaComponents.SOUL_INFUSING,
-                List.of("Soul infusing", "영혼 주입"),
-                List.of("Get Soul forging table", "영혼 세공기를 제작하세요"));
-        addAdvancement(AdvancementNarakaComponents.CHALLENGER_BLESSING,
+                List.of("Fill soul stabilizer with one kind of soul infused minerals", "영혼 안정기를 아무 종류의 영혼이 깃든 광물로 가득 채우세요")
+        );
+        addAdvancement(AdvancementNarakaComponents.CHALLENGERS_BLESSING,
                 List.of("Challenger", "도전자"),
-                List.of("Get challenger's blessing with full armor of soul armor and sword", "아무 종류의 영혼이 깃든 갑옷과 검을 가지고 도전자의 축복을 받으세요"));
-        addAdvancement(AdvancementNarakaComponents.ALL_BLESSED_SWORDS,
+                List.of("Get challenger's blessing with full armor of soul armor and sword", "아무 종류의 영혼이 깃든 갑옷과 검을 가지고 도전자의 축복을 받으세요")
+        );
+        addAdvancement(AdvancementNarakaComponents.SOUL_SWORDS,
                 List.of("Rainbow!", "무지개!"),
-                List.of("Get every color type of blessed soul sword", "모든 색의 축복받은 검을 수집하세요"));
+                List.of("Get every color type of blessed soul sword", "모든 색의 축복받은 검을 수집하세요")
+        );
         addAdvancement(AdvancementNarakaComponents.ULTIMATE_SWORD,
                 List.of("Long live the new Naraka tyrant", "새 나락의 폭군"),
-                List.of("Get Ultimate soul sword", "궁극의 검을 얻으세요"));
+                List.of("Get Ultimate soul sword", "궁극의 검을 얻으세요")
+        );
+
+        addAdvancement(AdvancementExtraComponents.BUY_NECTARIUM_CORE,
+                List.of("What is this?", "이게 뭐지?"),
+                List.of("Buy nectarium core from wandering trader", "떠돌이 상인으로부터 넥타륨 코어를 구입하세요")
+        );
+        addAdvancement(AdvancementExtraComponents.ACTIVATE_NECTARIUM_CORE,
+                List.of("A block flowing with tears and honey", "눈물과 꿀이 흐르는 블록"),
+                List.of("Activate nectarium core", "넥타륨 코어에 꿀을 부어 활성화하세요")
+        );
+        addAdvancement(AdvancementExtraComponents.EAT_NECTARIUM,
+                List.of("Yummy", "냠냠"),
+                List.of("Eat nectarium", "자라는 넥타륨을 채굴해서 먹어보세요")
+        );
+        addAdvancement(AdvancementExtraComponents.CRAFT_SOUL_INFUSED_NECTARIUM,
+                List.of("Not eatable", "먹을 수 없잖아?!"),
+                List.of("Don't eat, give it to your soul", "먹지 마세요, 영혼에 양보하세요")
+        );
 
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_1, "Herobrine Phase 1", "히로빈 1 페이즈");
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_2, "Herobrine Phase 2", "히로빈 2 페이즈");
@@ -158,6 +186,7 @@ public class NarakaLanguageProviders {
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_4, "Herobrine Phase 4", "히로빈 4 페이즈");
 
         addItem(NarakaItems.STIGMA_ROD, "Stigma Rod", "낙인 막대기");
+        addItem(NarakaItems.RAINBOW_SWORD, "Rainbow Sword", "무지개 검");
         addItem(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard", "정화된 영혼 조각");
         addItem(NarakaItems.NECTARIUM, "Nectarium", "넥타륨");
         addItem(NarakaItems.GOD_BLOOD, "§lGod Blood", "§l신의 피");

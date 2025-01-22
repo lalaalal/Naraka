@@ -23,7 +23,7 @@
     "frame": "challenge",
     "icon": {
       "count": 1,
-      "id": "naraka:purified_soul_shard"
+        "id": "naraka:purified_soul_metal_block"
     },
     "title": {
       "translate": "advancements.naraka.kill_herobrine.title"

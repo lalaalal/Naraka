@@ -35,7 +35,7 @@ public class OrePillarFeature extends Feature<OrePillarConfiguration> {
 
         BlockPos pos = NarakaUtils.findFloor(level, origin);
         BlockState floorState = level.getBlockState(pos);
-        if (pos.equals(origin) || floorState.is(BlockTags.OVERWORLD_CARVER_REPLACEABLES))
+        if (pos.equals(origin) || !floorState.is(BlockTags.OVERWORLD_CARVER_REPLACEABLES))
             return false;
         placePillar(level, context.random(), pos, oreSelector, config);
 
@@ -52,7 +52,7 @@ public class OrePillarFeature extends Feature<OrePillarConfiguration> {
 
     protected void placeSubPillar(WorldGenLevel level, RandomSource random, BlockPos start, OreSelector oreSelector, OrePillarConfiguration config,
                                   int maxRadius, int radius, int height, Direction spreadDirection, Direction growingDirection) {
-        if (maxRadius <= radius || config.maxHeight() < height || height <= 0)
+        if (maxRadius <= radius || config.maxHeight() < height || height <= 1)
             return;
 
         BlockPos rootPos = NarakaUtils.findFaceSturdy(level, start, growingDirection);

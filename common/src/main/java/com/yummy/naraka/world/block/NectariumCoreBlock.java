@@ -1,5 +1,7 @@
 package com.yummy.naraka.world.block;
 
+import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
+import com.yummy.naraka.advancements.criterion.SimpleTrigger;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import net.minecraft.ChatFormatting;
@@ -7,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -79,6 +82,8 @@ public class NectariumCoreBlock extends Block {
             level.setBlock(pos, activatedState, UPDATE_ALL_IMMEDIATE);
             if (!player.isCreative())
                 player.setItemInHand(hand, new ItemStack(Items.GLASS_BOTTLE));
+            if (player instanceof ServerPlayer serverPlayer)
+                NarakaCriteriaTriggers.SIMPLE_TRIGGER.get().trigger(serverPlayer, SimpleTrigger.ACTIVATE_NECTARIUM_CORE);
             return ItemInteractionResult.CONSUME;
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);

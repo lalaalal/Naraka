@@ -1,5 +1,6 @@
 package com.yummy.naraka;
 
+import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryFactory;
@@ -14,7 +15,6 @@ import com.yummy.naraka.world.block.grower.NarakaTreeGrowers;
 import com.yummy.naraka.world.carver.NarakaWorldCarvers;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
-import com.yummy.naraka.world.entity.NarakaSpawnPlacements;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.features.NarakaFeatures;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
@@ -49,14 +49,14 @@ public final class NarakaMod {
         RegistryFactory.initialize(initializer);
         NarakaRegistries.initialize();
 
-        NarakaParticleTypes.initialize();
+        NarakaCriteriaTriggers.initialize();
 
+        NarakaParticleTypes.initialize();
         NarakaSoundEvents.initialize();
 
         NarakaEntityTypes.initialize();
         NarakaEntityDataTypes.initialize(initializer);
         NarakaMobEffects.initialize();
-        initializer.runAfterRegistryLoaded(NarakaSpawnPlacements::initialize);
 
         NarakaBlocks.initialize();
         NarakaTreeGrowers.initialize();

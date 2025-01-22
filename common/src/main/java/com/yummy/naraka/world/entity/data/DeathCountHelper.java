@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity.data;
 
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.DeathCountingEntity;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class DeathCountHelper {
         if (deathCount > 1) {
             EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT.get(), deathCount - 1);
             livingEntity.setHealth(livingEntity.getMaxHealth());
+            livingEntity.level().playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.TOTEM_USE, livingEntity.getSoundSource(), 1.0F, 1.0F);
         } else {
             for (DeathCountingEntity deathCountingEntity : DEATH_COUNTING_ENTITIES)
                 deathCountingEntity.forget(livingEntity);

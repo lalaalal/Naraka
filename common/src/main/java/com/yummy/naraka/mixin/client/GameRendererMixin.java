@@ -37,20 +37,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Environment(EnvType.CLIENT)
 @Mixin(value = GameRenderer.class)
 public abstract class GameRendererMixin {
-    @Shadow
-    @Final
+    @Shadow @Final
     private RenderBuffers renderBuffers;
 
-    @Shadow
-    @Final
+    @Shadow @Final
     private Camera mainCamera;
 
-    @Shadow
-    @Final
+    @Shadow @Final
     Minecraft minecraft;
 
-    @Unique
-    @Nullable PoseStack naraka$poseStack;
+    @Unique @Nullable
+    PoseStack naraka$poseStack;
 
     @ModifyExpressionValue(method = "renderLevel", at = @At(value = "NEW", target = "()Lcom/mojang/blaze3d/vertex/PoseStack;"))
     private PoseStack getPoseStack(PoseStack poseStack) {

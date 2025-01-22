@@ -46,6 +46,9 @@ public class NarakaItems {
     public static final LazyHolder<Item, Item> PURIFIED_SOUL_SHARD = registerSimpleItem(
             "purified_soul_shard", new Item.Properties().fireResistant()
     );
+    public static final LazyHolder<Item, Item> RAINBOW_SWORD = registerSimpleItem(
+            "rainbow_sword", new Item.Properties()
+    );
 
     public static final LazyHolder<Item, Item> NECTARIUM = registerSimpleItem(
             "nectarium", new Item.Properties()
@@ -127,7 +130,9 @@ public class NarakaItems {
     public static final LazyHolder<Item, SwordItem> PURIFIED_SOUL_SWORD = registerItem(
             "purified_soul_sword",
             properties -> new PurifiedSoulSword(Tiers.IRON, properties.fireResistant()
-                    .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f)))
+                    .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
+                    .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f))
+            )
     );
 
     public static final LazyHolder<Item, ArmorItem> PURIFIED_SOUL_HELMET = registerArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.HELMET, 0);
@@ -150,9 +155,19 @@ public class NarakaItems {
             consumer.accept(item.get());
     }
 
+    public static void forEachSoulInfusedItemHolder(Consumer<Holder<Item>> consumer) {
+        for (LazyHolder<Item, Item> item : SOUL_INFUSED_ITEMS)
+            consumer.accept(item);
+    }
+
     public static void forEachSoulInfusedSword(Consumer<SwordItem> consumer) {
         for (LazyHolder<Item, SwordItem> item : SOUL_INFUSED_SWORDS)
             consumer.accept(item.get());
+    }
+
+    public static void forEachSoulInfusedSwordHolder(Consumer<Holder<Item>> consumer) {
+        for (LazyHolder<Item, SwordItem> item : SOUL_INFUSED_SWORDS)
+            consumer.accept(item);
     }
 
     @Nullable
@@ -181,6 +196,7 @@ public class NarakaItems {
                         properties.fireResistant()
                                 .rarity(Rarity.RARE)
                                 .component(NarakaDataComponentTypes.SOUL.get(), type)
+                                .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
                                 .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f)),
                         type.color
                 )

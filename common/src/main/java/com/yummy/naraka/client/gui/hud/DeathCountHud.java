@@ -9,6 +9,7 @@ import dev.architectury.event.events.client.ClientGuiEvent;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
@@ -24,6 +25,9 @@ public class DeathCountHud implements ClientGuiEvent.RenderHud {
     public static final int HEART_START_X = 6;
     public static final int HEART_START_Y = 8;
     public static final int HEART_OFFSET_BORDER = 2;
+
+    public static final int DEATH_WIDTH = 150;
+    public static final int DEATH_HEIGHT = 150;
 
     public static final int BASE_X = HEART_SIZE_SINGLE;
     public static final int BASE_Y = HEART_SIZE_SINGLE;
@@ -46,10 +50,19 @@ public class DeathCountHud implements ClientGuiEvent.RenderHud {
     }
 
     private void onDeathCountChanged(LivingEntity livingEntity, EntityDataType<Integer> entityDataType, Integer from, Integer to) {
-        if (livingEntity == Minecraft.getInstance().player) {
+        if (livingEntity instanceof Player) {
             if (to < from && to < DeathCountHelper.MAX_DEATH_COUNT)
                 blinkTime = BLINKING_TIME;
         }
+    }
+
+    private void renderDeath(GuiGraphics guiGraphics) {
+        int x = guiGraphics.guiWidth() / 2 - DEATH_WIDTH / 2;
+        int y = guiGraphics.guiHeight() / 2 - DEATH_HEIGHT / 2;
+
+        float alpha = blinkTime / (float) BLINKING_TIME;
+        TextureAtlasSprite sprite = Minecraft.getInstance().getGuiSprites().getSprite(NarakaSprites.DEATH);
+        guiGraphics.blit(x, y, 0, DEATH_WIDTH, DEATH_HEIGHT, sprite, 1, 1, 1, alpha);
     }
 
     @Override
@@ -71,7 +84,9 @@ public class DeathCountHud implements ClientGuiEvent.RenderHud {
             drawHeart(guiGraphics, x, y, fill, blink);
         }
 
-        if (blinkTime > 0)
+        if (blinkTime > 0) {
+            renderDeath(guiGraphics);
             blinkTime--;
+        }
     }
 }

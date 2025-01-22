@@ -18,8 +18,7 @@ import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 @Mixin(ItemBlockRenderTypes.class)
 public abstract class ItemBlockRenderTypesMixin {
-    @Shadow
-    @Final
+    @Shadow @Final
     private static Map<Block, ChunkRenderTypeSet> BLOCK_RENDER_TYPES;
 
     @Inject(method = "<clinit>", at = @At("RETURN"))

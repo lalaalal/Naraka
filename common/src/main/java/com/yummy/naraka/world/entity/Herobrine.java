@@ -3,6 +3,9 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
+import com.yummy.naraka.world.entity.ai.skill.BlockingSkill;
+import com.yummy.naraka.world.entity.ai.skill.DashSkill;
+import com.yummy.naraka.world.entity.ai.skill.GodBlowSkill;
 import com.yummy.naraka.world.entity.ai.skill.PunchSkill;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
@@ -11,6 +14,7 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -19,12 +23,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -39,6 +42,8 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
+                .add(Attributes.FOLLOW_RANGE, 128)
+                .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 1)
                 .add(Attributes.STEP_HEIGHT, 2)
                 .add(Attributes.MOVEMENT_SPEED, 0.2f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
@@ -72,13 +77,17 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
     protected void registerGoals() {
         targetSelector.addGoal(1, new HurtByTargetGoal(this, Herobrine.class));
 
-        goalSelector.addGoal(1, new MoveToTargetGoal(this, 1, 64));
-        goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8));
+        goalSelector.addGoal(1, new FloatGoal(this));
+        goalSelector.addGoal(2, new MoveToTargetGoal(this, 1, 64));
+//        goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8));
     }
 
     @Override
     protected void registerSkills() {
         registerSkill(new PunchSkill(this));
+        registerSkill(new DashSkill(this));
+        registerSkill(new GodBlowSkill(this));
+        registerSkill(new BlockingSkill(this));
     }
 
     @Override
@@ -103,6 +112,10 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
         Entity cause = damageSource.getEntity();
         if (cause instanceof LivingEntity livingEntity)
             countDeath(livingEntity);
+        if (damageSource.is(DamageTypeTags.IS_PROJECTILE)) {
+            this.skillManager.setCurrentSkill(BlockingSkill.NAME);
+            return false;
+        }
         return super.hurt(damageSource, damage);
     }
 
@@ -162,11 +175,6 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
         if (source.is(DamageTypes.IN_WALL))
             return true;
         return super.isInvulnerableTo(source);
-    }
-
-    @Override
-    public boolean canBeHitByProjectile() {
-        return false;
     }
 
     @Override

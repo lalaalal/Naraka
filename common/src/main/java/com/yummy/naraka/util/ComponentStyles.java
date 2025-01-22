@@ -58,6 +58,10 @@ public class ComponentStyles {
             currentColor = ColorUtil.transform(previousColor, nextColor, delta);
         }
 
+        public Color getCurrentColor() {
+            return currentColor;
+        }
+
         @Override
         public Style apply(Style style) {
             return style.withColor(currentColor.pack());

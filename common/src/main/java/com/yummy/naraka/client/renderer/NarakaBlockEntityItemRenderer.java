@@ -21,8 +21,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.Map;
 
 @Environment(EnvType.CLIENT)
-public class NarakaCustomRenderer implements CustomRenderManager.CustomItemRenderer, ResourceManagerReloadListener {
-    public static final NarakaCustomRenderer INSTANCE = new NarakaCustomRenderer();
+public class NarakaBlockEntityItemRenderer implements CustomRenderManager.CustomItemRenderer, ResourceManagerReloadListener {
+    public static final NarakaBlockEntityItemRenderer INSTANCE = new NarakaBlockEntityItemRenderer();
 
     private final Minecraft minecraft;
 
@@ -30,7 +30,7 @@ public class NarakaCustomRenderer implements CustomRenderManager.CustomItemRende
 
     private BlockEntityRenderDispatcher blockEntityRenderDispatcher;
 
-    public NarakaCustomRenderer() {
+    public NarakaBlockEntityItemRenderer() {
         this.minecraft = Minecraft.getInstance();
         this.blockEntityRenderDispatcher = minecraft.getBlockEntityRenderDispatcher();
     }

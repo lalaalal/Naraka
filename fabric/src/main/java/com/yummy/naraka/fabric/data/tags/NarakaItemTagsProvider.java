@@ -75,6 +75,12 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
                 .add(NarakaItems.PURIFIED_SOUL_SWORD.get());
         NarakaItems.forEachSoulInfusedSword(soulReinforceable::add);
 
+        FabricTagBuilder soulMaterials = getOrCreateTagBuilder(NarakaItemTags.SOUL_MATERIALS);
+        NarakaItems.forEachSoulInfusedItem(soulMaterials::add);
+
+        FabricTagBuilder soulSwords = getOrCreateTagBuilder(NarakaItemTags.SOUL_SWORDS);
+        NarakaItems.forEachSoulInfusedSword(soulSwords::add);
+
         getOrCreateTagBuilder(ItemTags.HEAD_ARMOR)
                 .add(NarakaItems.EBONY_METAL_HELMET.get());
         getOrCreateTagBuilder(ItemTags.CHEST_ARMOR)

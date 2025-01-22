@@ -12,8 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerGameMode.class)
 public abstract class ServerPlayerGameModeMixin {
-    @Shadow
-    @Final
+    @Shadow @Final
     protected ServerPlayer player;
 
     @Inject(method = "setGameModeForPlayer", at = @At("RETURN"))

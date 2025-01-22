@@ -21,7 +21,6 @@ public class NarakaOreFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> AMETHYST_ORE = NarakaConfiguredFeatures.create("amethyst_ore");
 
     protected static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-
         RuleTest stone = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
         RuleTest deepslate = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
         List<OreConfiguration.TargetBlockState> nectariumTargetStates = List.of(
@@ -37,6 +36,6 @@ public class NarakaOreFeatures {
                 OreConfiguration.target(stone, NarakaBlocks.AMETHYST_ORE.get().defaultBlockState()),
                 OreConfiguration.target(deepslate, NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get().defaultBlockState())
         );
-        FeatureUtils.register(context, AMETHYST_ORE, Feature.ORE, new OreConfiguration(amethystTargetStates, 6, 0.4f));
+        FeatureUtils.register(context, AMETHYST_ORE, Feature.ORE, new OreConfiguration(amethystTargetStates, 6, 0.6f));
     }
 }

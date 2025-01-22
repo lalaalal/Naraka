@@ -6,11 +6,13 @@ import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.crafting.SoulCraftingRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.library.util.RecipeUtil;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
@@ -29,6 +31,16 @@ public class SoulCraftingRecipeCategory implements IRecipeCategory<SoulCraftingR
     }
 
     @Override
+    public int getWidth() {
+        return 113;
+    }
+
+    @Override
+    public int getHeight() {
+        return 49;
+    }
+
+    @Override
     public RecipeType<SoulCraftingRecipe> getRecipeType() {
         return NarakaJeiRecipeTypes.SOUL_CRAFTING;
     }
@@ -36,11 +48,6 @@ public class SoulCraftingRecipeCategory implements IRecipeCategory<SoulCraftingR
     @Override
     public Component getTitle() {
         return title;
-    }
-
-    @Override
-    public IDrawable getBackground() {
-        return background;
     }
 
     @Override
@@ -56,5 +63,10 @@ public class SoulCraftingRecipeCategory implements IRecipeCategory<SoulCraftingR
                 .addIngredients(recipe.getIngredients().getFirst());
         builder.addSlot(OUTPUT, 91, 19)
                 .addItemStack(RecipeUtil.getResultItem(recipe));
+    }
+
+    @Override
+    public void draw(SoulCraftingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        background.draw(guiGraphics, 0, 0);
     }
 }

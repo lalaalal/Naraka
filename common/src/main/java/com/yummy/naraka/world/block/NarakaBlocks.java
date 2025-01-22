@@ -111,7 +111,7 @@ public class NarakaBlocks {
     public static final LazyHolder<Block, SoulSmithingBlock> SOUL_SMITHING_BLOCK = registerBlockWithItem(
             "soul_smithing_block",
             SoulSmithingBlock::new,
-            Blocks.ANVIL
+            Blocks.SMITHING_TABLE
     );
 
     public static final LazyHolder<Block, Block> COMPRESSED_IRON_BLOCK = registerSimpleBlockWithItem("compressed_iron_block", Blocks.IRON_BLOCK);

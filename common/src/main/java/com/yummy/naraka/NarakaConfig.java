@@ -83,7 +83,7 @@ public final class NarakaConfig {
         @SuppressWarnings("unchecked")
         public void load(JsonElement jsonElement) {
             Class<T> type = (Class<T>) value.getClass();
-            this.value = NarakaJsonUtils.parser(type, jsonElement);
+            this.value = NarakaJsonUtils.parse(type, jsonElement);
         }
 
         public T getDefaultValue() {

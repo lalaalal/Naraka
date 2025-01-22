@@ -19,7 +19,8 @@ import org.jetbrains.annotations.Nullable;
  * @author lalaalal
  */
 public class NarakaDamageSources {
-    private static @Nullable Registry<DamageType> registry;
+    @Nullable
+    private static Registry<DamageType> registry;
 
     public static void initialize(RegistryAccess registryAccess) {
         registry = registryAccess.registryOrThrow(Registries.DAMAGE_TYPE);
