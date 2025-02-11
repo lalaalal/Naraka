@@ -14,6 +14,7 @@ import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.block.grower.NarakaTreeGrowers;
 import com.yummy.naraka.world.carver.NarakaWorldCarvers;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
+import com.yummy.naraka.world.entity.NarakaEntityDataSerializers;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.features.NarakaFeatures;
@@ -55,6 +56,7 @@ public final class NarakaMod {
         NarakaSoundEvents.initialize();
 
         NarakaEntityTypes.initialize();
+        NarakaEntityDataSerializers.initialize(initializer);
         NarakaEntityDataTypes.initialize(initializer);
         NarakaMobEffects.initialize();
 

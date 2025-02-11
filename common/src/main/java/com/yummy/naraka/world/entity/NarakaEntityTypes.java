@@ -49,7 +49,5 @@ public class NarakaEntityTypes {
         RegistryInitializer.get(Registries.ENTITY_TYPE)
                 .onRegistrationFinished();
         EntityAttributeRegistry.register(HEROBRINE, Herobrine::getAttributeSupplier);
-
-        NarakaEntityDataSerializers.initialize();
     }
 }

@@ -4,11 +4,14 @@ import com.yummy.naraka.client.NarakaSprites;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import dev.architectury.event.events.client.ClientGuiEvent;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
 
+@Environment(EnvType.CLIENT)
 public class StigmaHud implements ClientGuiEvent.RenderHud {
     public static final int BACKGROUND_WIDTH = 16;
     public static final int BACKGROUND_HEIGHT = 21;
