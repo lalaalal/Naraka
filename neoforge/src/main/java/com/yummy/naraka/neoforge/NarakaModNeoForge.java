@@ -73,9 +73,8 @@ public final class NarakaModNeoForge implements NarakaInitializer {
     @Override
     public void modifyCreativeModeTab(ResourceKey<CreativeModeTab> tabKey, Consumer<NarakaCreativeModTabs.TabEntries> entries) {
         bus.addListener((Consumer<BuildCreativeModeTabContentsEvent>) event -> {
-            NeoForgeTabEntries tabEntries = new NeoForgeTabEntries(event);
             if (tabKey.equals(event.getTabKey()))
-                entries.accept(tabEntries);
+                entries.accept(new NeoForgeTabEntries(event));
         });
     }
 
