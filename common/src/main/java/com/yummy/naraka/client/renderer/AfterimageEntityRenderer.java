@@ -41,7 +41,7 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
         RenderType renderType = RenderType.entityTranslucent(getTextureLocation(entity));
         VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
-        int color = Color.of(0xddddff).withAlpha(afterimage.getAlpha()).pack();
+        int color = Color.of(0x9957db).withAlpha(afterimage.getAlpha()).pack();
         this.model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color);
         poseStack.popPose();
     }

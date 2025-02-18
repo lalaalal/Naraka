@@ -32,6 +32,7 @@ public class NarakaItems {
     private static final Map<SoulType, LazyHolder<Item, SwordItem>> SWORD_BY_SOUL_TYPE = new HashMap<>();
 
     public static final LazyHolder<Item, Item> STIGMA_ROD = registerItem("stigma_rod", StigmaRodItem::new);
+    public static final LazyHolder<Item, Item> STARDUST_STAFF = registerItem("stardust_staff", StardustStaff::new);
 
     public static final LazyHolder<Item, Item> HEROBRINE_PHASE_1_DISC = registerDiscItem("herobrine_phase_1_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_1);
     public static final LazyHolder<Item, Item> HEROBRINE_PHASE_2_DISC = registerDiscItem("herobrine_phase_2_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_2);
