@@ -57,13 +57,14 @@ public class SoulStabilizer extends BaseEntityBlock {
                 && soulStabilizerBlockEntity.canInject(stack)) {
             int consumeCount = soulStabilizerBlockEntity.tryInject(player, stack, !player.onGround());
             stack.consume(consumeCount, player);
-            if (level instanceof ServerLevel serverLevel)
+            if (level instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(SoulParticleOption.with(soulStabilizerBlockEntity.getSoulType()),
                         pos.getX() + 0.5, pos.getY() + 0.4, pos.getZ() + 0.5,
                         30,
                         0.1, 0.1, 0.1,
                         1
                 );
+            }
             return ItemInteractionResult.SUCCESS;
         }
         return ItemInteractionResult.CONSUME;

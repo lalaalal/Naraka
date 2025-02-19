@@ -18,12 +18,12 @@ public class StigmaHelper {
         EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.get(), stigma);
     }
 
-    public static void increaseStigma(LivingEntity livingEntity, Entity cause) {
-        if (livingEntity.getType().is(NarakaEntityTypeTags.HEROBRINE))
+    public static void increaseStigma(LivingEntity target, Entity cause) {
+        if (target.getType().is(NarakaEntityTypeTags.HEROBRINE))
             return;
-        Stigma stigma = get(livingEntity);
-        Stigma increased = stigma.increase(livingEntity, cause);
-        set(livingEntity, increased);
+        Stigma stigma = get(target);
+        Stigma increased = stigma.increase(target, cause);
+        set(target, increased);
     }
 
     public static void tick() {

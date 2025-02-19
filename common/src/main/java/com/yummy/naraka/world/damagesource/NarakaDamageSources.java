@@ -27,7 +27,7 @@ public class NarakaDamageSources {
         registry = registryAccess.registryOrThrow(Registries.DAMAGE_TYPE);
     }
 
-    private static void ensureInitialized(Registry<DamageType> registry) {
+    private static void ensureInitialized(@Nullable Registry<DamageType> registry) {
         if (registry == null)
             throw new IllegalStateException("NarakaDamageSources is not initialized");
     }
@@ -42,7 +42,7 @@ public class NarakaDamageSources {
         return new DamageSource(registry.getHolderOrThrow(key), causingEntity);
     }
 
-    public static DamageSource source(ResourceKey<DamageType> key, Entity directEntity, Entity causingEntity) {
+    public static DamageSource source(ResourceKey<DamageType> key, Entity directEntity, @Nullable Entity causingEntity) {
         ensureInitialized(registry);
         return new DamageSource(registry.getHolderOrThrow(key), directEntity, causingEntity);
     }

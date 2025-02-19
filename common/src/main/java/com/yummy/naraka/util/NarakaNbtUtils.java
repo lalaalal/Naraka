@@ -9,7 +9,6 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -75,14 +74,12 @@ public class NarakaNbtUtils {
         for (int index = 0; index < listTag.size(); index++) {
             CompoundTag valueTag = listTag.getCompound(index);
             T value = tagReader.read(valueTag, provider);
-            if (value != null)
-                list.add(value);
+            list.add(value);
         }
         return list;
     }
 
     public interface TagReader<T> {
-        @Nullable
         T read(CompoundTag tag, HolderLookup.Provider provider);
     }
 

@@ -16,15 +16,16 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.IntFunction;
 
 public enum SoulType implements StringRepresentable {
-    REDSTONE(0, 0xeb4747),
-    COPPER(1, 0xff8000),
-    GOLD(2, 0xffd24d),
-    EMERALD(3, 0x0ec70e),
-    DIAMOND(4, 0x33cccc),
-    LAPIS(5, 0x3939c6),
-    AMETHYST(6, 0x9957db),
-    NECTARIUM(7, 0xd65cd6),
-    GOD_BLOOD(8, "god_blood", "god_blood", 0x625859);
+    NONE(0xffffff),
+    REDSTONE(0xeb4747),
+    COPPER(0xff8000),
+    GOLD(0xffd24d),
+    EMERALD(0x0ec70e),
+    DIAMOND(0x33cccc),
+    LAPIS(0x3939c6),
+    AMETHYST(0x9957db),
+    NECTARIUM(0xd65cd6),
+    GOD_BLOOD("god_blood", "god_blood", 0x625859);
 
     private static final IntFunction<SoulType> BY_ID = ByIdMap.continuous(SoulType::getId, SoulType.values(), ByIdMap.OutOfBoundsStrategy.ZERO);
     public static final Codec<SoulType> CODEC = StringRepresentable.fromEnum(SoulType::values);
@@ -40,17 +41,16 @@ public enum SoulType implements StringRepresentable {
     public final int color;
     public final String translationKey;
 
-    @Nullable
     public static SoulType fromItem(ItemStack itemStack) {
         for (SoulType soulType : values()) {
             if (soulType.test(itemStack))
                 return soulType;
         }
-        return null;
+        return NONE;
     }
 
-    SoulType(int id, String itemName, String blockItemName, int color) {
-        this.id = id;
+    SoulType(String itemName, String blockItemName, int color) {
+        this.id = ordinal();
         this.itemName = NarakaMod.location(itemName);
         this.blockItemName = NarakaMod.location(blockItemName);
         BuiltInRegistries.ITEM.getOptional(this.itemName)
@@ -61,8 +61,8 @@ public enum SoulType implements StringRepresentable {
         this.translationKey = "soul_type.naraka." + name().toLowerCase();
     }
 
-    SoulType(int id, int color) {
-        this.id = id;
+    SoulType(int color) {
+        this.id = ordinal();
         this.itemName = getDefaultItemName();
         this.blockItemName = getDefaultBlockItemName();
         this.color = color;
@@ -98,6 +98,8 @@ public enum SoulType implements StringRepresentable {
     }
 
     public boolean test(ItemStack itemStack) {
+        if (this == NONE)
+            return false;
         Item item = itemStack.getItem();
         return !itemStack.isEmpty()
                 && (this.getItem() == item || this.getBlockItem() == item);

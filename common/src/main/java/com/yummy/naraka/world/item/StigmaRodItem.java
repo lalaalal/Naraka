@@ -19,7 +19,7 @@ public class StigmaRodItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         if (!level.isClientSide())
-            StigmaHelper.increaseStigma(player, null);
+            StigmaHelper.increaseStigma(player, player);
         return super.use(level, player, interactionHand);
     }
 

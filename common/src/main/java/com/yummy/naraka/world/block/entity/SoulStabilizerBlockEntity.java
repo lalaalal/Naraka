@@ -15,13 +15,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 
 public class SoulStabilizerBlockEntity extends BlockEntity {
     public static final int CAPACITY = 15552;
 
-    @Nullable
-    private SoulType soulType;
+    private SoulType soulType = SoulType.NONE;
     private int souls = 0;
 
     public SoulStabilizerBlockEntity(BlockPos pos, BlockState blockState) {
@@ -29,8 +27,8 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     }
 
     public boolean canInject(ItemStack itemStack) {
-        if (soulType == null)
-            return SoulType.fromItem(itemStack) != null;
+        if (soulType == SoulType.NONE)
+            return SoulType.fromItem(itemStack) != SoulType.NONE;
         return soulType.test(itemStack) && souls + getSoulByItem(itemStack) <= CAPACITY;
     }
 
@@ -42,7 +40,7 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     }
 
     private int getSoulByItem(ItemStack itemStack) {
-        if (soulType != null) {
+        if (soulType != SoulType.NONE) {
             if (soulType == SoulType.GOD_BLOOD)
                 return 15552;
             if (soulType.getItem() == itemStack.getItem())
@@ -54,7 +52,7 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     }
 
     public int inject(ItemStack itemStack, boolean injectAll) {
-        if (soulType == null)
+        if (soulType == SoulType.NONE)
             soulType = SoulType.fromItem(itemStack);
         int count = injectAll ? findMaxInjectableCount(itemStack) : 1;
         this.souls += getSoulByItem(itemStack) * count;
@@ -76,12 +74,11 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     }
 
     public void clear() {
-        soulType = null;
+        soulType = SoulType.NONE;
         souls = 0;
         setChanged();
     }
 
-    @Nullable
     public SoulType getSoulType() {
         return soulType;
     }
@@ -93,7 +90,7 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     public void consumeSoul(int consume) {
         souls = Mth.clamp(souls - consume, 0, CAPACITY);
         if (souls == 0)
-            soulType = null;
+            soulType = SoulType.NONE;
     }
 
     @Override
@@ -111,8 +108,7 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag compoundTag = super.getUpdateTag(registries);
-        if (soulType != null)
-            compoundTag.putString("SoulType", soulType.toString());
+        compoundTag.putString("SoulType", soulType.toString());
         compoundTag.putInt("Souls", souls);
         return compoundTag;
     }
@@ -120,17 +116,14 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        if (soulType != null)
-            tag.putString("SoulType", soulType.toString());
+        tag.putString("SoulType", soulType.toString());
         tag.putInt("Souls", souls);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        if (tag.contains("SoulType"))
-            soulType = SoulType.valueOf(tag.getString("SoulType"));
-        else soulType = null;
+        soulType = SoulType.valueOf(tag.getString("SoulType"));
         souls = tag.getInt("Souls");
     }
 }

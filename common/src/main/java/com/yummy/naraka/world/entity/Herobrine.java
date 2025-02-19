@@ -38,7 +38,7 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this);
-    private final DeathCountingInstance countingInstance = new DeathCountingInstance();
+    private final DeathCountingInstance countingInstance;
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
@@ -52,7 +52,7 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
 
     public Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
         super(entityType, level);
-
+        this.countingInstance = new DeathCountingInstance(level.registryAccess());
         bossEvent.setDarkenScreen(true)
                 .setPlayBossMusic(true);
         DeathCountHelper.attachCountingEntity(this);
