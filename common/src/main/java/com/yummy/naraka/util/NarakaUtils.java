@@ -86,4 +86,14 @@ public class NarakaUtils {
     public static BlockPos findFloor(LevelAccessor level, BlockPos from) {
         return findFaceSturdy(level, from, Direction.UP);
     }
+
+    public static BlockPos findAir(LevelAccessor level, BlockPos from, Direction findingDirection) {
+        if (level.getMaxBuildHeight() < from.getY())
+            return from;
+        BlockPos findingPos = from.relative(findingDirection);
+        BlockState state = level.getBlockState(findingPos);
+        if (state.isCollisionShapeFullBlock(level, findingPos))
+            return findAir(level, findingPos, findingDirection);
+        return findingPos;
+    }
 }

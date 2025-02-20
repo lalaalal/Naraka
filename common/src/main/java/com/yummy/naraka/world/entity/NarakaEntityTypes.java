@@ -36,7 +36,7 @@ public class NarakaEntityTypes {
     public static final LazyHolder<EntityType<?>, EntityType<Stardust>> STARDUST = register(
             "stardust",
             EntityType.Builder.<Stardust>of(Stardust::new, MobCategory.MISC)
-                    .sized(0.5f, 0.5f)
+                    .sized(1, 1)
     );
 
     public static final LazyHolder<EntityType<?>, EntityType<SpearOfLonginus>> THROWN_SPEAR_OF_LONGINUS = register(
