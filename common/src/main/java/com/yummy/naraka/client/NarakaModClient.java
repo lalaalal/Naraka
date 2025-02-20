@@ -27,6 +27,7 @@ import dev.architectury.registry.menu.MenuRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 
 @Environment(EnvType.CLIENT)
@@ -105,6 +106,7 @@ public final class NarakaModClient {
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR, SpearRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, SpearRenderer::longinus);
         EntityRendererRegistry.register(NarakaEntityTypes.STARDUST, StardustRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_FIREBALL, ThrownItemRenderer::new);
     }
 
     private static void registerHudRenders() {

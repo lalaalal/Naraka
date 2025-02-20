@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -30,34 +31,46 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.List;
+
 public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
     private static final float[] HEALTH_BY_PHASE = {106, 210, 350};
+    private static final int MAX_HIBERNATE_MODE_TICK = 20 * 120;
+
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.RED, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.BLUE};
     public static final int MAX_HURT_DAMAGE_LIMIT = 50;
 
     public final AnimationState punchAnimationState = new AnimationState();
     public final AnimationState dashAnimationState = new AnimationState();
     public final AnimationState godBlowAnimationState = new AnimationState();
+    public final AnimationState throwFireballAnimationState = new AnimationState();
+    public final AnimationState blockingSkillAnimationState = new AnimationState();
 
     private final Skill punchSkill = new PunchSkill(this);
     private final Skill dashSkill = new DashSkill(this);
     private final Skill godBlowSkill = new GodBlowSkill(this);
+    private final Skill throwFireballSkill = new ThrowFireballSkill(this);
+    private final Skill blockingSkill = new BlockingSkill(this);
+
+    private final List<Skill> PHASE_1_SKILLS = List.of(punchSkill, dashSkill, throwFireballSkill, blockingSkill);
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this);
     private final DeathCountingInstance countingInstance;
     private int hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
     private boolean hibernateMode = false;
-    private final boolean madMode = false;
+    private boolean madMode = false;
+    private int hibernateModeTickCount = 0;
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.ARMOR, 66)
+                .add(Attributes.ARMOR, 30)
                 .add(Attributes.FOLLOW_RANGE, 128)
                 .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 1)
                 .add(Attributes.STEP_HEIGHT, 2)
                 .add(Attributes.MOVEMENT_SPEED, 0.2f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
+                .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.MAX_HEALTH, 666);
     }
 
@@ -75,6 +88,17 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
     public Herobrine(Level level, Vec3 pos) {
         this(NarakaEntityTypes.HEROBRINE.get(), level);
         setPos(pos);
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (hibernateMode) {
+            if (hibernateModeTickCount >= MAX_HIBERNATE_MODE_TICK)
+                madMode = true;
+
+            hibernateModeTickCount += 1;
+        }
     }
 
     @Override
@@ -96,9 +120,11 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
     }
 
     protected void registerSkills() {
-        registerSkill(new PunchSkill(this), punchAnimationState);
-        registerSkill(new DashSkill(this), dashAnimationState);
-        registerSkill(new GodBlowSkill(this), godBlowAnimationState);
+        registerSkill(punchSkill, punchAnimationState);
+        registerSkill(dashSkill, dashAnimationState);
+//        registerSkill(godBlowSkill, godBlowAnimationState);
+        registerSkill(throwFireballSkill, throwFireballAnimationState);
+        registerSkill(blockingSkill, blockingSkillAnimationState);
     }
 
     @Override
@@ -119,21 +145,52 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
     }
 
     @Override
-    public boolean hurt(DamageSource damageSource, float damage) {
-        updateHurtDamageLimit();
-        Entity cause = damageSource.getEntity();
+    public boolean hurt(DamageSource source, float damage) {
+        float actualDamage = getActualDamage(source, damage);
+        updateHurtDamageLimit(source, actualDamage);
+
+        if (phaseManager.getCurrentPhase() == 1) {
+            float healthAfterHurt = phaseManager.getCurrentPhaseHealth() + getAbsorptionAmount() - actualDamage;
+            if (healthAfterHurt < 1) {
+                setHealth(phaseManager.getActualPhaseMaxHealth(2) + 1);
+                startHibernateMode();
+                return true;
+            }
+        }
+
+        Entity cause = source.getEntity();
         if (cause instanceof LivingEntity livingEntity)
             countDeath(livingEntity);
-        if (damageSource.is(DamageTypeTags.IS_PROJECTILE)) {
-            this.skillManager.setCurrentSkill(BlockingSkill.NAME);
+        if (source.is(DamageTypeTags.IS_PROJECTILE)) {
+            this.skillManager.setCurrentSkill(blockingSkill);
             return false;
         }
-        return super.hurt(damageSource, damage);
+
+        if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+            damage = Math.min(hurtDamageLimit, damage);
+        return super.hurt(source, damage);
     }
 
-    private void updateHurtDamageLimit() {
-        if (phaseManager.getCurrentPhase() == 1) {
-            hurtDamageLimit /= 2;
+    private float getActualDamage(DamageSource source, float damage) {
+        damage = getDamageAfterArmorAbsorb(source, damage);
+        return getDamageAfterMagicAbsorb(source, damage);
+    }
+
+    private void updateHurtDamageLimit(DamageSource source, float actualDamage) {
+        if (hibernateMode) {
+            Entity cause = source.getDirectEntity();
+            if (cause != null && cause.getType() == NarakaEntityTypes.NARAKA_FIREBALL.get()) {
+                hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
+                stopHibernateMode();
+
+                if (phaseManager.getCurrentPhaseHealth() == 1)
+                    setHealth(phaseManager.getActualPhaseMaxHealth(2));
+            }
+        }
+
+        if (phaseManager.getCurrentPhase() == 1 && hurtDamageLimit > 1) {
+            int reduce = Mth.clamp(1, Math.round(actualDamage) - 1, 20);
+            hurtDamageLimit = Math.max(1, hurtDamageLimit - reduce);
             if (hurtDamageLimit == 1)
                 startHibernateMode();
         }
@@ -141,6 +198,15 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
 
     private void startHibernateMode() {
         hibernateMode = true;
+        skillManager.getSkills().stream()
+                .filter(skill -> skill != throwFireballSkill && skill != blockingSkill)
+                .forEach(Skill::disable);
+    }
+
+    private void stopHibernateMode() {
+        hibernateMode = false;
+        for (Skill skill : PHASE_1_SKILLS)
+            skill.enable();
     }
 
     @Override

@@ -32,5 +32,8 @@ public class NarakaEntityTypeTagsProvider extends FabricTagProvider.EntityTypeTa
                 .add(NarakaEntityTypes.HEROBRINE.get());
         getOrCreateTagBuilder(EntityTypeTags.FALL_DAMAGE_IMMUNE)
                 .add(NarakaEntityTypes.HEROBRINE.get());
+
+        getOrCreateTagBuilder(EntityTypeTags.REDIRECTABLE_PROJECTILE)
+                .add(NarakaEntityTypes.NARAKA_FIREBALL.get());
     }
 }

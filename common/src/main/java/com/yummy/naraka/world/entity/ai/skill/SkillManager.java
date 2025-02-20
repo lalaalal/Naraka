@@ -1,14 +1,20 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
 
 public class SkillManager {
+    private final RandomSource random;
     private final Map<String, Skill> skills = new HashMap<>();
     private final List<Consumer<Skill>> skillStartListeners = new ArrayList<>();
     private final List<Consumer<Skill>> skillEndListeners = new ArrayList<>();
+
+    public SkillManager(RandomSource random) {
+        this.random = random;
+    }
 
     @Nullable
     private Skill currentSkill = null;
@@ -35,10 +41,12 @@ public class SkillManager {
                 .toList();
     }
 
-    public void setCurrentSkill(String name) {
+    public void setCurrentSkill(Skill skill) {
         if (currentSkill == null) {
-            currentSkill = skills.get(name);
+            currentSkill = skill;
             currentSkill.prepare();
+            for (Consumer<Skill> listener : skillStartListeners)
+                listener.accept(currentSkill);
         }
     }
 
@@ -54,10 +62,8 @@ public class SkillManager {
         } else {
             List<Skill> usable = getUsableSkills();
             if (!usable.isEmpty()) {
-                currentSkill = usable.getFirst();
-                currentSkill.prepare();
-                for (Consumer<Skill> listener : skillStartListeners)
-                    listener.accept(currentSkill);
+                Skill skill = usable.get(random.nextInt(usable.size()));
+                setCurrentSkill(skill);
             }
         }
 

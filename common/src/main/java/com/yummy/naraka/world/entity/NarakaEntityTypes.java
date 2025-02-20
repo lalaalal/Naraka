@@ -39,6 +39,12 @@ public class NarakaEntityTypes {
                     .sized(1, 1)
     );
 
+    public static final LazyHolder<EntityType<?>, EntityType<NarakaFireball>> NARAKA_FIREBALL = register(
+            "naraka_fireball",
+            EntityType.Builder.<NarakaFireball>of(NarakaFireball::new, MobCategory.MISC)
+                    .sized(1, 1)
+    );
+
     public static final LazyHolder<EntityType<?>, EntityType<SpearOfLonginus>> THROWN_SPEAR_OF_LONGINUS = register(
             "spear_of_longinus",
             EntityType.Builder.<SpearOfLonginus>of(SpearOfLonginus::new, MobCategory.MISC)

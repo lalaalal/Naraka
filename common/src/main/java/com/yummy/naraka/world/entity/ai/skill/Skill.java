@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.world.entity.SkillUsingMob;
+import net.minecraft.world.level.Level;
 
 public abstract class Skill {
     public final String name;
@@ -18,6 +19,10 @@ public abstract class Skill {
         this.duration = duration;
         this.cooldown = cooldown;
         this.cooldownTick = cooldown;
+    }
+
+    protected Level level() {
+        return mob.level();
     }
 
     public abstract boolean canUse();

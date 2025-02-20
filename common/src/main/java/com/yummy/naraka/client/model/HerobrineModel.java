@@ -2,6 +2,7 @@ package com.yummy.naraka.client.model;
 
 import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
 import com.yummy.naraka.client.animation.herobrine.HerobrinePunchAnimation;
+import com.yummy.naraka.client.animation.herobrine.HerobrineSkillAnimation;
 import com.yummy.naraka.world.entity.Herobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -58,5 +59,7 @@ public class HerobrineModel<T extends Herobrine> extends HierarchicalModel<T> {
         this.root.getAllParts().forEach(ModelPart::resetPose);
         this.animateWalk(HerobrineAnimation.WALKING, limbSwing, limbSwingAmount, 2, 2.5f);
         this.animate(entity.punchAnimationState, HerobrinePunchAnimation.PUNCH_1, ageInTicks);
+        this.animate(entity.throwFireballAnimationState, HerobrineSkillAnimation.THROW_NARAKA_FIREBALL, ageInTicks);
+        this.animate(entity.blockingSkillAnimationState, HerobrineAnimation.BLOCKING, ageInTicks);
     }
 }

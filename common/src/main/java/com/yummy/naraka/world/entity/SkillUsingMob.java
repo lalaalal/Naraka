@@ -8,6 +8,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,7 +22,7 @@ public abstract class SkillUsingMob extends PathfinderMob implements AfterimageE
     public static final EntityDataAccessor<List<Afterimage>> AFTERIMAGES = SynchedEntityData.defineId(SkillUsingMob.class, NarakaEntityDataSerializers.AFTERIMAGES);
     public static final EntityDataAccessor<String> CURRENT_SKILL = SynchedEntityData.defineId(SkillUsingMob.class, EntityDataSerializers.STRING);
 
-    protected final SkillManager skillManager = new SkillManager();
+    protected final SkillManager skillManager = new SkillManager(random);
     protected final Map<String, AnimationState> animationStates = new HashMap<>();
 
     protected SkillUsingMob(EntityType<? extends PathfinderMob> entityType, Level level) {
@@ -48,6 +50,13 @@ public abstract class SkillUsingMob extends PathfinderMob implements AfterimageE
     public void registerSkill(Skill skill, AnimationState animationState) {
         skillManager.addSkill(skill);
         animationStates.put(skill.name, animationState);
+    }
+
+    public double getAttackDamage() {
+        AttributeInstance instance = getAttribute(Attributes.ATTACK_DAMAGE);
+        if (instance == null)
+            return 1;
+        return instance.getValue();
     }
 
     @Override

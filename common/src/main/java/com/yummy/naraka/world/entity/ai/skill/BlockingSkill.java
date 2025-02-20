@@ -7,7 +7,7 @@ public class BlockingSkill extends Skill {
     public static final String NAME = "blocking";
 
     public BlockingSkill(SkillUsingMob mob) {
-        super(NAME, 20, 0, mob);
+        super(NAME, 30, 0, mob);
     }
 
     @Override
