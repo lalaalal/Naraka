@@ -10,6 +10,7 @@ public abstract class Skill {
 
     protected int tickCount = 0;
     protected int cooldownTick;
+    protected boolean disabled = false;
 
     public Skill(String name, int duration, int cooldown, SkillUsingMob mob) {
         this.name = name;
@@ -21,8 +22,16 @@ public abstract class Skill {
 
     public abstract boolean canUse();
 
+    public void disable() {
+        disabled = true;
+    }
+
+    public void enable() {
+        disabled = false;
+    }
+
     public boolean readyToUse() {
-        return cooldownTick >= cooldown;
+        return !disabled && cooldownTick >= cooldown;
     }
 
     public void prepare() {

@@ -7,8 +7,10 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 
 public class PunchSkill extends Skill {
+    public static final String NAME = "punch";
+
     public PunchSkill(SkillUsingMob mob) {
-        super("punch", 20, 100, mob);
+        super(NAME, 30, 100, mob);
     }
 
     @Override
@@ -20,9 +22,9 @@ public class PunchSkill extends Skill {
     }
 
     @Override
-    protected void onFirstTick() {
+    protected void skillTick() {
         LivingEntity target = mob.getTarget();
-        if (target == null)
+        if (target == null || tickCount != 8)
             return;
 
         DamageSource fixedAttack = NarakaDamageSources.fixed(mob);
@@ -31,10 +33,5 @@ public class PunchSkill extends Skill {
             NarakaAttributeModifiers.stunEntity(target, 100);
         target.hurt(fixedAttack, damage);
         target.knockback(2f, mob.getX() - target.getX(), mob.getZ() - target.getZ());
-    }
-
-    @Override
-    protected void skillTick() {
-
     }
 }

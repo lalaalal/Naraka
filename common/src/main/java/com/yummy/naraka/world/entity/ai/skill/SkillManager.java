@@ -2,17 +2,31 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Consumer;
 
 public class SkillManager {
     private final Map<String, Skill> skills = new HashMap<>();
+    private final List<Consumer<Skill>> skillStartListeners = new ArrayList<>();
+    private final List<Consumer<Skill>> skillEndListeners = new ArrayList<>();
+
     @Nullable
     private Skill currentSkill = null;
 
     public void addSkill(Skill skill) {
         this.skills.put(skill.name, skill);
+    }
+
+    public Collection<Skill> getSkills() {
+        return skills.values();
+    }
+
+    public void runOnSkillStart(Consumer<Skill> listener) {
+        this.skillStartListeners.add(listener);
+    }
+
+    public void runOnSkillEnd(Consumer<Skill> listener) {
+        this.skillEndListeners.add(listener);
     }
 
     private List<Skill> getUsableSkills() {
@@ -32,6 +46,8 @@ public class SkillManager {
         if (currentSkill != null) {
             currentSkill.tick();
             if (currentSkill.isEnded()) {
+                for (Consumer<Skill> listener : skillEndListeners)
+                    listener.accept(currentSkill);
                 currentSkill.setCooldown();
                 currentSkill = null;
             }
@@ -40,6 +56,8 @@ public class SkillManager {
             if (!usable.isEmpty()) {
                 currentSkill = usable.getFirst();
                 currentSkill.prepare();
+                for (Consumer<Skill> listener : skillStartListeners)
+                    listener.accept(currentSkill);
             }
         }
 
