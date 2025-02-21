@@ -9,13 +9,13 @@ public class ThrowFireballSkill extends Skill {
     public static final String NAME = "throw_fireball";
 
     public ThrowFireballSkill(SkillUsingMob mob) {
-        super(NAME, 30, 100, mob);
+        super(NAME, 30, 20 * 20, mob);
     }
 
     @Override
     public boolean canUse() {
         LivingEntity target = mob.getTarget();
-        return target != null;
+        return target != null && mob.distanceToSqr(target) > 5 * 5;
     }
 
     @Override

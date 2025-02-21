@@ -12,7 +12,7 @@ public class DashSkill extends Skill {
     @Override
     public boolean canUse() {
         LivingEntity target = mob.getTarget();
-        return target != null && mob.distanceToSqr(target) >= 10 * 10;
+        return target != null;
     }
 
     @Override

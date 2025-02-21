@@ -5,6 +5,7 @@ import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class PunchSkill extends Skill {
     public static final String NAME = "punch";
@@ -29,8 +30,12 @@ public class PunchSkill extends Skill {
 
         DamageSource fixedAttack = NarakaDamageSources.fixed(mob);
         float damage = target.getMaxHealth() * 0.03f + 6;
-        if (!target.isBlocking())
-            NarakaAttributeModifiers.stunEntity(target, 100);
+        if (target instanceof Player player && target.isBlocking()) {
+            player.disableShield();
+            return;
+        }
+
+        NarakaAttributeModifiers.stunEntity(target, 100);
         target.hurt(fixedAttack, damage);
         target.knockback(2f, mob.getX() - target.getX(), mob.getZ() - target.getZ());
     }

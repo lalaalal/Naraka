@@ -23,10 +23,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -116,15 +118,16 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
 
         goalSelector.addGoal(1, new FloatGoal(this));
         goalSelector.addGoal(2, new MoveToTargetGoal(this, 1, 64));
-//        goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8));
+        goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8));
     }
 
     protected void registerSkills() {
+        registerSkill(blockingSkill, blockingSkillAnimationState);
+
         registerSkill(punchSkill, punchAnimationState);
         registerSkill(dashSkill, dashAnimationState);
 //        registerSkill(godBlowSkill, godBlowAnimationState);
         registerSkill(throwFireballSkill, throwFireballAnimationState);
-        registerSkill(blockingSkill, blockingSkillAnimationState);
     }
 
     @Override
@@ -146,6 +149,9 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
 
     @Override
     public boolean hurt(DamageSource source, float damage) {
+        if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+            return super.hurt(source, damage);
+
         float actualDamage = getActualDamage(source, damage);
         updateHurtDamageLimit(source, actualDamage);
 
@@ -165,10 +171,7 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
             this.skillManager.setCurrentSkill(blockingSkill);
             return false;
         }
-
-        if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
-            damage = Math.min(hurtDamageLimit, damage);
-        return super.hurt(source, damage);
+        return super.hurt(source, Math.min(hurtDamageLimit, damage));
     }
 
     private float getActualDamage(DamageSource source, float damage) {
