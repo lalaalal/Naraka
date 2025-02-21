@@ -7,12 +7,14 @@ import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.HerobrineTotemBlockEntity;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
+import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
+import dev.architectury.event.CompoundEventResult;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.*;
 import net.minecraft.core.BlockPos;
@@ -28,6 +30,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;
@@ -40,6 +43,8 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.phys.EntityHitResult;
+import org.jetbrains.annotations.Nullable;
 
 public final class NarakaGameEvents {
     public static void initialize() {
@@ -51,6 +56,8 @@ public final class NarakaGameEvents {
         InteractionEvent.RIGHT_CLICK_BLOCK.register(NarakaGameEvents::checkHerobrineTotemTrigger);
         InteractionEvent.RIGHT_CLICK_BLOCK.register(NarakaGameEvents::ironNuggetUse);
         InteractionEvent.RIGHT_CLICK_BLOCK.register(NarakaGameEvents::boneMealUse);
+        InteractionEvent.RIGHT_CLICK_ITEM.register(NarakaGameEvents::preventItemUseDuringStun);
+        PlayerEvent.ATTACK_ENTITY.register(NarakaGameEvents::preventAttackEntityDuringStun);
 
         TickEvent.SERVER_POST.register(NarakaGameEvents::onEndTick);
 
@@ -59,6 +66,18 @@ public final class NarakaGameEvents {
         EntityEvent.ADD.register(NarakaGameEvents::updateReinforcementEffect);
 
         LootEvent.MODIFY_LOOT_TABLE.register(NarakaGameEvents::modifyLootTable);
+    }
+
+    private static CompoundEventResult<ItemStack> preventItemUseDuringStun(Player player, InteractionHand interactionHand) {
+        if (NarakaAttributeModifiers.hasAttributeModifier(player, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING))
+            return CompoundEventResult.interruptTrue(player.getItemInHand(interactionHand));
+        return CompoundEventResult.pass();
+    }
+
+    private static EventResult preventAttackEntityDuringStun(Player player, Level level, Entity target, InteractionHand hand, @Nullable EntityHitResult result) {
+        if (NarakaAttributeModifiers.hasAttributeModifier(player, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING))
+            return EventResult.interruptTrue();
+        return EventResult.pass();
     }
 
     private static void syncPlayerEntityData(ServerPlayer player) {
