@@ -1,15 +1,11 @@
 package com.yummy.naraka.world.entity;
 
-import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.*;
-import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerBossEvent;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
@@ -34,7 +30,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
+public class Herobrine extends SkillUsingMob {
     private static final float[] HEALTH_BY_PHASE = {106, 210, 350};
     private static final int MAX_HIBERNATE_MODE_TICK = 20 * 120;
 
@@ -61,7 +57,6 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this);
-    private final DeathCountingInstance countingInstance;
     private int hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
     private boolean hibernateMode = false;
     private boolean madMode = false;
@@ -81,11 +76,9 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
 
     public Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
         super(entityType, level);
-        this.countingInstance = new DeathCountingInstance(level.registryAccess());
 
         bossEvent.setDarkenScreen(true)
                 .setPlayBossMusic(true);
-        DeathCountHelper.attachCountingEntity(this);
         setPersistenceRequired();
         registerSkills();
     }
@@ -164,9 +157,6 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
             }
         }
 
-        Entity cause = source.getEntity();
-        if (cause instanceof LivingEntity livingEntity)
-            countDeath(livingEntity);
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
             this.skillManager.setCurrentSkill(blockingSkill);
             return false;
@@ -214,9 +204,8 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
 
     @Override
     public void die(DamageSource damageSource) {
-        if (level() instanceof ServerLevel serverLevel)
-            getCountingInstance().countedEntities(serverLevel)
-                    .forEach(this::rewardChallenger);
+        if (damageSource.getEntity() instanceof LivingEntity livingEntity)
+            rewardChallenger(livingEntity);
         super.die(damageSource);
     }
 
@@ -235,12 +224,6 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
             ItemStack weaponStack = livingEntity.getMainHandItem();
             weaponStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
         }
-    }
-
-    @Override
-    public void remove(RemovalReason removalReason) {
-        super.remove(removalReason);
-        DeathCountHelper.detachCountingEntity(this);
     }
 
     @Override
@@ -278,34 +261,5 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
     @Override
     public boolean canFreeze() {
         return false;
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag compoundTag) {
-        super.addAdditionalSaveData(compoundTag);
-        countingInstance.save(compoundTag);
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag compoundTag) {
-        super.readAdditionalSaveData(compoundTag);
-        countingInstance.load(compoundTag);
-    }
-
-    @Override
-    public LivingEntity living() {
-        return this;
-    }
-
-    @Override
-    public DeathCountingInstance getCountingInstance() {
-        return countingInstance;
-    }
-
-    @Override
-    public void onEntityUseDeathCount(LivingEntity livingEntity) {
-        DamageSource source = livingEntity.getLastDamageSource();
-        if (source != null && source.is(NarakaDamageTypes.STIGMA))
-            heal(66);
     }
 }

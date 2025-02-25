@@ -16,4 +16,6 @@ public final class NarakaSprites {
     public static final ResourceLocation DEATH_COUNT_BACKGROUND = NarakaMod.location("hud/death_count_background");
     public static final ResourceLocation DEATH_COUNT_HEART = NarakaMod.location("hud/death_count_heart");
     public static final ResourceLocation DEATH = NarakaMod.location("hud/death");
+
+    public static final ResourceLocation HEART_CONTAINER = ResourceLocation.withDefaultNamespace("hud/heart/container");
 }

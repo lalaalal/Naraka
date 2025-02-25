@@ -16,6 +16,7 @@ import java.util.function.Supplier;
 public class NarakaEntityDataTypes {
     public static final LazyHolder<EntityDataType<?>, StigmaEntityDataType> STIGMA = register("stigma", StigmaEntityDataType::new);
     public static final LazyHolder<EntityDataType<?>, IntegerEntityDataType> DEATH_COUNT = register("death_count", IntegerEntityDataType::new, -1);
+    public static final LazyHolder<EntityDataType<?>, DoubleEntityDataType> LOCKED_HEALTH = register("locked_health", DoubleEntityDataType::new, 0.0);
 
     private static <D, T extends EntityDataType<D>> LazyHolder<EntityDataType<?>, T> register(String name, BiFunction<ResourceLocation, Supplier<D>, T> factory, Supplier<D> defaultValue) {
         ResourceLocation id = NarakaMod.location(name);

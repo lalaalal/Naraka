@@ -3,6 +3,7 @@ package com.yummy.naraka.client;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.gui.hud.DeathCountHud;
+import com.yummy.naraka.client.gui.hud.LockedHealthHud;
 import com.yummy.naraka.client.gui.hud.StigmaHud;
 import com.yummy.naraka.client.gui.screen.SoulCraftingScreen;
 import com.yummy.naraka.client.particle.EbonyParticle;
@@ -112,6 +113,7 @@ public final class NarakaModClient {
     private static void registerHudRenders() {
         ClientGuiEvent.RENDER_HUD.register(new DeathCountHud());
         ClientGuiEvent.RENDER_HUD.register(new StigmaHud());
+        ClientGuiEvent.RENDER_HUD.register(new LockedHealthHud());
     }
 
     private static void registerMenus() {

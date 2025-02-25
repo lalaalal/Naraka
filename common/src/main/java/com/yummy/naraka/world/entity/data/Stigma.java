@@ -2,9 +2,12 @@ package com.yummy.naraka.world.entity.data;
 
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.StunHelper;
+import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public record Stigma(int value, long lastMarkedTime) {
     public static final Stigma ZERO = new Stigma(0, 0);
@@ -27,11 +30,29 @@ public record Stigma(int value, long lastMarkedTime) {
 
     public Stigma consume(LivingEntity livingEntity, Entity cause) {
         long now = livingEntity.level().getGameTime();
-        DamageSource source = NarakaDamageSources.stigma(cause);
-        livingEntity.hurt(source, Float.MAX_VALUE);
+        if (livingEntity != cause && cause instanceof LivingEntity livingCause)
+            livingCause.heal(66);
+        reduceHealth(livingEntity, cause);
         StunHelper.stunEntity(livingEntity, HOLD_ENTITY_DURATION);
 
         return new Stigma(0, now);
+    }
+
+    private void reduceHealth(LivingEntity livingEntity, Entity cause) {
+        float maxHealth = livingEntity.getMaxHealth();
+        double lockedHealth = EntityDataHelper.getEntityData(livingEntity, NarakaEntityDataTypes.LOCKED_HEALTH.get());
+        double originalMaxHealth = maxHealth + lockedHealth;
+        double reducingHealth = originalMaxHealth * 0.2;
+        lockedHealth += reducingHealth;
+
+        if (lockedHealth >= originalMaxHealth) {
+            DamageSource source = NarakaDamageSources.stigma(cause);
+            livingEntity.hurt(source, Float.MAX_VALUE);
+        } else {
+            AttributeModifier maxHealthModifier = NarakaAttributeModifiers.reduceMaxHealth(lockedHealth);
+            NarakaAttributeModifiers.addPermanentModifier(livingEntity, Attributes.MAX_HEALTH, maxHealthModifier);
+            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.LOCKED_HEALTH.get(), lockedHealth);
+        }
     }
 
     public Stigma tryDecrease(LivingEntity livingEntity) {

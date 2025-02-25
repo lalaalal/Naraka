@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity.ai.attribute;
 
 import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -18,6 +19,12 @@ public class NarakaAttributeModifiers {
     public static final AttributeModifier PREVENT_BLOCK_ATTACKING = new AttributeModifier(NarakaMod.location("prevent_attack_block"), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     public static final AttributeModifier PREVENT_ENTITY_ATTACKING = new AttributeModifier(NarakaMod.location("prevent_attack_entity"), -4.0 * 256, AttributeModifier.Operation.ADD_VALUE);
 
+    public static final ResourceLocation REDUCE_MAX_HEALTH_ID = NarakaMod.location("reduce_max_health");
+
+    public static AttributeModifier reduceMaxHealth(double value) {
+        return new AttributeModifier(NarakaMod.location("reduce_max_health"), -value, AttributeModifier.Operation.ADD_VALUE);
+    }
+
     /**
      * Add {@linkplain AttributeModifier} to given entity
      *
@@ -27,9 +34,14 @@ public class NarakaAttributeModifiers {
      */
     public static void addAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, AttributeModifier modifier) {
         AttributeInstance instance = livingEntity.getAttribute(attribute);
-        if (instance == null)
-            return;
-        instance.addOrUpdateTransientModifier(modifier);
+        if (instance != null)
+            instance.addOrUpdateTransientModifier(modifier);
+    }
+
+    public static void addPermanentModifier(LivingEntity livingEntity, Holder<Attribute> attribute, AttributeModifier modifier) {
+        AttributeInstance instance = livingEntity.getAttribute(attribute);
+        if (instance != null)
+            instance.addOrReplacePermanentModifier(modifier);
     }
 
     /**
@@ -47,9 +59,13 @@ public class NarakaAttributeModifiers {
     }
 
     public static boolean hasAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, AttributeModifier modifier) {
+        return hasAttributeModifier(livingEntity, attribute, modifier.id());
+    }
+
+    public static boolean hasAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, ResourceLocation modifierId) {
         AttributeInstance instance = livingEntity.getAttribute(attribute);
         if (instance == null)
             return false;
-        return instance.hasModifier(modifier.id());
+        return instance.hasModifier(modifierId);
     }
 }
