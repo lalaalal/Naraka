@@ -2,7 +2,7 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.SkillUsingMob;
-import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
+import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -11,7 +11,7 @@ public class PunchSkill extends Skill {
     public static final String NAME = "punch";
 
     public PunchSkill(SkillUsingMob mob) {
-        super(NAME, 30, 100, mob);
+        super(NAME, 30, 120, mob);
     }
 
     @Override
@@ -28,6 +28,7 @@ public class PunchSkill extends Skill {
         if (target == null || tickCount != 8)
             return;
 
+        mob.lookAt(target, 360, 0);
         DamageSource fixedAttack = NarakaDamageSources.fixed(mob);
         float damage = target.getMaxHealth() * 0.03f + 6;
         if (target instanceof Player player && target.isBlocking()) {
@@ -35,7 +36,7 @@ public class PunchSkill extends Skill {
             return;
         }
 
-        NarakaAttributeModifiers.stunEntity(target, 100);
+        StunHelper.stunEntity(target, 100);
         target.hurt(fixedAttack, damage);
         target.knockback(2f, mob.getX() - target.getX(), mob.getZ() - target.getZ());
     }

@@ -10,13 +10,16 @@ import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Mth;
 
 @Environment(EnvType.CLIENT)
 public class HerobrineModel<T extends Herobrine> extends HierarchicalModel<T> {
     private final ModelPart root;
+    private final ModelPart head;
 
     public HerobrineModel(ModelPart root) {
         this.root = root;
+        this.head = root.getChild("body").getChild("head");
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -57,9 +60,21 @@ public class HerobrineModel<T extends Herobrine> extends HierarchicalModel<T> {
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root.getAllParts().forEach(ModelPart::resetPose);
+        applyHeadRotation(netHeadYaw, headPitch);
         this.animateWalk(HerobrineAnimation.WALKING, limbSwing, limbSwingAmount, 2, 2.5f);
-        this.animate(entity.punchAnimationState, HerobrinePunchAnimation.PUNCH_1, ageInTicks);
+        this.animate(entity.punchAnimationState1, HerobrinePunchAnimation.PUNCH_1, ageInTicks);
+        this.animate(entity.punchAnimationState2, HerobrinePunchAnimation.PUNCH_2, ageInTicks);
+        this.animate(entity.punchAnimationState3, HerobrinePunchAnimation.PUNCH_3, ageInTicks);
+        this.animate(entity.rushAnimationState, HerobrineSkillAnimation.RUSH, ageInTicks);
         this.animate(entity.throwFireballAnimationState, HerobrineSkillAnimation.THROW_NARAKA_FIREBALL, ageInTicks);
         this.animate(entity.blockingSkillAnimationState, HerobrineAnimation.BLOCKING, ageInTicks);
+    }
+
+    private void applyHeadRotation(float netHeadYaw, float headPitch) {
+        netHeadYaw = Mth.clamp(netHeadYaw, -30, 30);
+        headPitch = Mth.clamp(headPitch, -25, 45);
+
+        this.head.yRot = netHeadYaw * (Mth.PI / 180f);
+        this.head.xRot = headPitch * (Mth.PI / 180f);
     }
 }

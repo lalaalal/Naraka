@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.entity.data;
 
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
-import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
+import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,7 +29,7 @@ public record Stigma(int value, long lastMarkedTime) {
         long now = livingEntity.level().getGameTime();
         DamageSource source = NarakaDamageSources.stigma(cause);
         livingEntity.hurt(source, Float.MAX_VALUE);
-        NarakaAttributeModifiers.stunEntity(livingEntity, HOLD_ENTITY_DURATION);
+        StunHelper.stunEntity(livingEntity, HOLD_ENTITY_DURATION);
 
         return new Stigma(0, now);
     }

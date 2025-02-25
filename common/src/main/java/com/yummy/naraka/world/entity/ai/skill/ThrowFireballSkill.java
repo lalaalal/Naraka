@@ -9,7 +9,7 @@ public class ThrowFireballSkill extends Skill {
     public static final String NAME = "throw_fireball";
 
     public ThrowFireballSkill(SkillUsingMob mob) {
-        super(NAME, 30, 20 * 20, mob);
+        super(NAME, 30, 160, mob);
     }
 
     @Override

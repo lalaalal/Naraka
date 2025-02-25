@@ -5,6 +5,7 @@ import com.yummy.naraka.world.entity.ai.skill.SkillManager;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -23,7 +24,7 @@ public abstract class SkillUsingMob extends PathfinderMob implements AfterimageE
     public static final EntityDataAccessor<String> CURRENT_SKILL = SynchedEntityData.defineId(SkillUsingMob.class, EntityDataSerializers.STRING);
 
     protected final SkillManager skillManager = new SkillManager(random);
-    protected final Map<String, AnimationState> animationStates = new HashMap<>();
+    protected final Map<String, AnimationController> animationStates = new HashMap<>();
 
     protected SkillUsingMob(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -49,7 +50,12 @@ public abstract class SkillUsingMob extends PathfinderMob implements AfterimageE
 
     public void registerSkill(Skill skill, AnimationState animationState) {
         skillManager.addSkill(skill);
-        animationStates.put(skill.name, animationState);
+        animationStates.put(skill.name, AnimationController.simple(animationState));
+    }
+
+    public void registerSkill(Skill skill, AnimationState... animationStates) {
+        this.skillManager.addSkill(skill);
+        this.animationStates.put(skill.name, AnimationController.random(random, animationStates));
     }
 
     public double getAttackDamage() {
@@ -64,11 +70,11 @@ public abstract class SkillUsingMob extends PathfinderMob implements AfterimageE
         super.onSyncedDataUpdated(dataAccessor);
         if (level().isClientSide && dataAccessor == CURRENT_SKILL) {
             String currentSkillName = entityData.get(CURRENT_SKILL);
-            animationStates.forEach((name, animationState) -> {
+            animationStates.forEach((name, animationController) -> {
                 if (currentSkillName.equals(name))
-                    animationState.start(tickCount);
+                    animationController.start(tickCount);
                 else
-                    animationState.stop();
+                    animationController.stop();
             });
         }
     }
@@ -98,5 +104,46 @@ public abstract class SkillUsingMob extends PathfinderMob implements AfterimageE
     @Override
     public List<Afterimage> getAfterimages() {
         return this.entityData.get(AFTERIMAGES);
+    }
+
+    public interface AnimationController {
+        static AnimationController simple(AnimationState animationState) {
+            return new AnimationController() {
+                @Override
+                public void start(int tickCount) {
+                    animationState.start(tickCount);
+                }
+
+                @Override
+                public void stop() {
+                    animationState.stop();
+                }
+            };
+        }
+
+        static AnimationController random(RandomSource random, AnimationState... animationStates) {
+            return new AnimationController() {
+                @Override
+                public void start(int tickCount) {
+                    int selected = random.nextInt(animationStates.length);
+                    for (int index = 0; index < animationStates.length; index++) {
+                        if (index == selected)
+                            animationStates[index].start(tickCount);
+                        else
+                            animationStates[index].stop();
+                    }
+                }
+
+                @Override
+                public void stop() {
+                    for (AnimationState animationState : animationStates)
+                        animationState.stop();
+                }
+            };
+        }
+
+        void start(int tickCount);
+
+        void stop();
     }
 }

@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
+import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.*;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
@@ -23,12 +24,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -42,14 +41,18 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.RED, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.BLUE};
     public static final int MAX_HURT_DAMAGE_LIMIT = 50;
 
-    public final AnimationState punchAnimationState = new AnimationState();
+    public final AnimationState punchAnimationState1 = new AnimationState();
+    public final AnimationState punchAnimationState2 = new AnimationState();
+    public final AnimationState punchAnimationState3 = new AnimationState();
     public final AnimationState dashAnimationState = new AnimationState();
+    public final AnimationState rushAnimationState = new AnimationState();
     public final AnimationState godBlowAnimationState = new AnimationState();
     public final AnimationState throwFireballAnimationState = new AnimationState();
     public final AnimationState blockingSkillAnimationState = new AnimationState();
 
     private final Skill punchSkill = new PunchSkill(this);
     private final Skill dashSkill = new DashSkill(this);
+    private final Skill rushSkill = new RushSkill(this);
     private final Skill godBlowSkill = new GodBlowSkill(this);
     private final Skill throwFireballSkill = new ThrowFireballSkill(this);
     private final Skill blockingSkill = new BlockingSkill(this);
@@ -93,17 +96,6 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
     }
 
     @Override
-    public void aiStep() {
-        super.aiStep();
-        if (hibernateMode) {
-            if (hibernateModeTickCount >= MAX_HIBERNATE_MODE_TICK)
-                madMode = true;
-
-            hibernateModeTickCount += 1;
-        }
-    }
-
-    @Override
     protected PathNavigation createNavigation(Level level) {
         GroundPathNavigation navigation = new GroundPathNavigation(this, level);
         navigation.setCanFloat(true);
@@ -118,14 +110,15 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
 
         goalSelector.addGoal(1, new FloatGoal(this));
         goalSelector.addGoal(2, new MoveToTargetGoal(this, 1, 64));
-        goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8));
+        goalSelector.addGoal(3, new LookAtTargetGoal(this));
     }
 
     protected void registerSkills() {
         registerSkill(blockingSkill, blockingSkillAnimationState);
 
-        registerSkill(punchSkill, punchAnimationState);
+        registerSkill(punchSkill, punchAnimationState1, punchAnimationState2, punchAnimationState3);
         registerSkill(dashSkill, dashAnimationState);
+        registerSkill(rushSkill, rushAnimationState);
 //        registerSkill(godBlowSkill, godBlowAnimationState);
         registerSkill(throwFireballSkill, throwFireballAnimationState);
     }
@@ -133,7 +126,14 @@ public class Herobrine extends SkillUsingMob implements DeathCountingEntity {
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
+
         phaseManager.updatePhase(bossEvent);
+        if (hibernateMode) {
+            if (hibernateModeTickCount >= MAX_HIBERNATE_MODE_TICK)
+                madMode = true;
+
+            hibernateModeTickCount += 1;
+        }
     }
 
     @Override
