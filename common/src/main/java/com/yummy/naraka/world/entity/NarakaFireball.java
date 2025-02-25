@@ -67,7 +67,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     protected void onHit(HitResult result) {
         super.onHit(result);
         if (!level().isClientSide) {
-            level().explode(this, level().damageSources().fireball(this, getOwner()), null, position(), 3, false, Level.ExplosionInteraction.NONE);
+            level().explode(this, damageSources().fireball(this, getOwner()), null, position(), 3, false, Level.ExplosionInteraction.NONE);
             discard();
         }
     }

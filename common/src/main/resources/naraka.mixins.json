@@ -7,7 +7,6 @@
     "client.DripParticleMixin",
     "client.FogRendererMixin",
     "client.GameRendererMixin",
-    "client.GuiMixin",
     "client.ItemBlockRenderTypesMixin",
     "client.ItemEntityRendererMixin",
     "client.ItemRendererMixin",

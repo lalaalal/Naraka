@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.world.effect.NarakaMobEffects;
+import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.*;
@@ -13,6 +14,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -27,6 +30,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -64,7 +68,6 @@ public class Herobrine extends SkillUsingMob {
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.ARMOR, 30)
                 .add(Attributes.FOLLOW_RANGE, 128)
                 .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 1)
                 .add(Attributes.STEP_HEIGHT, 2)
@@ -144,9 +147,11 @@ public class Herobrine extends SkillUsingMob {
     public boolean hurt(DamageSource source, float damage) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             return super.hurt(source, damage);
+        if (source.getEntity() == this)
+            return false;
 
         float actualDamage = getActualDamage(source, damage);
-        updateHurtDamageLimit(source, actualDamage);
+        updateHurtDamageLimit(actualDamage);
 
         if (phaseManager.getCurrentPhase() == 1) {
             float healthAfterHurt = phaseManager.getCurrentPhaseHealth() + getAbsorptionAmount() - actualDamage;
@@ -169,17 +174,9 @@ public class Herobrine extends SkillUsingMob {
         return getDamageAfterMagicAbsorb(source, damage);
     }
 
-    private void updateHurtDamageLimit(DamageSource source, float actualDamage) {
-        if (hibernateMode) {
-            Entity cause = source.getDirectEntity();
-            if (cause != null && cause.getType() == NarakaEntityTypes.NARAKA_FIREBALL.get()) {
-                hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
-                stopHibernateMode();
-
-                if (phaseManager.getCurrentPhaseHealth() == 1)
-                    setHealth(phaseManager.getActualPhaseMaxHealth(2));
-            }
-        }
+    private void updateHurtDamageLimit(float actualDamage) {
+        if (actualDamage >= 50 || level().isClientSide)
+            return;
 
         if (phaseManager.getCurrentPhase() == 1 && hurtDamageLimit > 1) {
             int reduce = Mth.clamp(1, Math.round(actualDamage) - 1, 20);
@@ -194,12 +191,15 @@ public class Herobrine extends SkillUsingMob {
         skillManager.getSkills().stream()
                 .filter(skill -> skill != throwFireballSkill && skill != blockingSkill)
                 .forEach(Skill::disable);
+        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
     }
 
     private void stopHibernateMode() {
         hibernateMode = false;
+        hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
         for (Skill skill : PHASE_1_SKILLS)
             skill.enable();
+        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
     }
 
     @Override
@@ -224,6 +224,16 @@ public class Herobrine extends SkillUsingMob {
             ItemStack weaponStack = livingEntity.getMainHandItem();
             weaponStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
         }
+    }
+
+    @Override
+    public boolean addEffect(MobEffectInstance effectInstance, @Nullable Entity entity) {
+        if (hibernateMode && effectInstance.is(MobEffects.WEAKNESS)) {
+            stopHibernateMode();
+            if (phaseManager.getCurrentPhaseHealth() == 1)
+                setHealth(getHealth() - 1);
+        }
+        return false;
     }
 
     @Override

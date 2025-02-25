@@ -10,8 +10,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
@@ -33,7 +31,7 @@ public class RushSkill extends Skill {
     @Override
     public boolean canUse() {
         LivingEntity target = mob.getTarget();
-        return target != null && mob.distanceToSqr(target) > 5 * 5;
+        return target != null && mob.distanceToSqr(target) > 4 * 4;
     }
 
     @Override
@@ -86,10 +84,8 @@ public class RushSkill extends Skill {
     }
 
     private void hurtHitTarget(LivingEntity target) {
-        if (target.isBlocking() && target instanceof Player player) {
-            player.getCooldowns().addCooldown(Items.SHIELD, 20 * 8);
+        if (NarakaEntityUtils.disableAndHurtShield(target, 20 * 8, 2))
             return;
-        }
 
         DamageSource source = NarakaDamageSources.fixed(mob);
         target.hurt(source, 3);
