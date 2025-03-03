@@ -68,7 +68,7 @@ public final class StunHelper {
         return TickSchedule.executeAfter(gameTime, tickAfter, () -> releaseEntity(livingEntity));
     }
 
-    public static synchronized void stunEntity(LivingEntity livingEntity, int duration) {
+    public static void stunEntity(LivingEntity livingEntity, int duration) {
         holdEntity(livingEntity);
         long gameTime = livingEntity.level().getGameTime();
         TickSchedule schedule = STUN_RELEASE_SCHEDULES.computeIfAbsent(livingEntity, key -> createReleaseSchedule(key, duration));

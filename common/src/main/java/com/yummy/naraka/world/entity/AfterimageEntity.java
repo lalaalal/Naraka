@@ -1,9 +1,9 @@
 package com.yummy.naraka.world.entity;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface AfterimageEntity {
-    void createAfterimage();
+    void addAfterimage(Afterimage afterimage);
 
-    Collection<Afterimage> getAfterimages();
+    List<Afterimage> getAfterimages();
 }

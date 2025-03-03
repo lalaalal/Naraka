@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
@@ -31,10 +32,10 @@ public class DashSkill extends Skill {
 
         mob.getNavigation().stop();
         Vec3 delta = NarakaEntityUtils.getDirectionNormalVector(mob, target)
-                .scale(4);
+                .scale(3);
 
         if (10 <= tickCount && tickCount <= 15)
-            mob.createAfterimage();
+            mob.addAfterimage(new Afterimage(mob.position(), 15));
         if (tickCount == 10)
             mob.setDeltaMovement(delta);
         if (tickCount == 15)

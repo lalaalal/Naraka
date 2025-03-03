@@ -33,7 +33,10 @@ public class NarakaBlocks {
     );
 
     public static final LazyHolder<Block, UnstableBlock> UNSTABLE_BLOCK = registerBlockWithItem(
-            "unstable_block", UnstableBlock::new, Blocks.DIRT
+            "unstable_block", properties -> new UnstableBlock(
+                    properties.strength(-1, 3600000)
+                            .noLootTable()
+            ), Blocks.DIRT
     );
 
     public static final LazyHolder<Block, DropExperienceBlock> AMETHYST_ORE = registerBlockWithItem(

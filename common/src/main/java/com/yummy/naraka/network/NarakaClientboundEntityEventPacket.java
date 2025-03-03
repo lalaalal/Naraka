@@ -2,23 +2,27 @@ package com.yummy.naraka.network;
 
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.NarakaMod;
-import dev.architectury.networking.NetworkManager;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.Entity;
 
-import java.util.function.BiConsumer;
+public record NarakaClientboundEntityEventPacket(Event event, int entityId) implements CustomPacketPayload {
+    public static final Type<NarakaClientboundEntityEventPacket> TYPE = new Type<>(NarakaMod.location("clientbound_event_packet"));
 
-public record NarakaClientboundEventPacket(Event event) implements CustomPacketPayload {
-    public static final Type<NarakaClientboundEventPacket> TYPE = new Type<>(NarakaMod.location("clientbound_event_packet"));
-
-    public static final StreamCodec<ByteBuf, NarakaClientboundEventPacket> CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, NarakaClientboundEntityEventPacket> CODEC = StreamCodec.composite(
             Event.STREAM_CODEC,
-            NarakaClientboundEventPacket::event,
-            NarakaClientboundEventPacket::new
+            NarakaClientboundEntityEventPacket::event,
+            ByteBufCodecs.INT,
+            NarakaClientboundEntityEventPacket::entityId,
+            NarakaClientboundEntityEventPacket::new
     );
+
+    public NarakaClientboundEntityEventPacket(Event event, Entity entity) {
+        this(event, entity.getId());
+    }
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
@@ -26,7 +30,7 @@ public record NarakaClientboundEventPacket(Event event) implements CustomPacketP
     }
 
     public interface EventHandler {
-
+        void handle(Entity entity);
     }
 
     public enum Event implements StringRepresentable {
@@ -36,9 +40,9 @@ public record NarakaClientboundEventPacket(Event event) implements CustomPacketP
         public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.idMapper(Event::byId, Event::getId);
 
         public final int id;
-        public final BiConsumer<EventHandler, NetworkManager.PacketContext> handler;
+        public final EventHandler handler;
 
-        Event(BiConsumer<EventHandler, NetworkManager.PacketContext> handler) {
+        Event(EventHandler handler) {
             this.id = ordinal();
             this.handler = handler;
         }
@@ -55,8 +59,8 @@ public record NarakaClientboundEventPacket(Event event) implements CustomPacketP
             return id;
         }
 
-        public void handle(EventHandler listener, NetworkManager.PacketContext context) {
-            this.handler.accept(listener, context);
+        public void handle(Entity entity) {
+            this.handler.handle(entity);
         }
 
         @Override
