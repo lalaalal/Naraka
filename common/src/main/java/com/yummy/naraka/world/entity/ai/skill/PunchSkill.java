@@ -7,7 +7,7 @@ import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 
-public class PunchSkill extends Skill {
+public class PunchSkill extends Skill<SkillUsingMob> {
     public static final String NAME = "punch";
 
     public PunchSkill(SkillUsingMob mob) {

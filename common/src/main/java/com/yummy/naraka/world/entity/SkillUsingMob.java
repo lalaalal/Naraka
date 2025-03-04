@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.entity;
 
-import com.yummy.naraka.network.SyncAfterimagePayload;
 import com.yummy.naraka.network.SyncAnimationPayload;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
@@ -20,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class SkillUsingMob extends PathfinderMob implements AfterimageEntity {
+public abstract class SkillUsingMob extends PathfinderMob {
     protected final SkillManager skillManager = new SkillManager(random);
     protected final Map<String, AnimationController> animationStates = new HashMap<>();
     protected final List<Afterimage> afterimages = new ArrayList<>();
@@ -37,18 +36,13 @@ public abstract class SkillUsingMob extends PathfinderMob implements AfterimageE
     }
 
     @Nullable
-    public Skill getCurrentSkill() {
+    public Skill<?> getCurrentSkill() {
         return skillManager.getCurrentSkill();
     }
 
-    public void registerSkill(Skill skill, AnimationState animationState) {
-        skillManager.addSkill(skill);
-        animationStates.put(skill.name, AnimationController.simple(animationState));
-    }
-
-    public void registerSkill(Skill skill, AnimationState... animationStates) {
+    public void registerSkill(Skill<?> skill, AnimationState... animationStates) {
         this.skillManager.addSkill(skill);
-        this.animationStates.put(skill.name, AnimationController.random(random, animationStates));
+        this.animationStates.put(skill.name, AnimationController.of(random, animationStates));
     }
 
     @Override
@@ -71,7 +65,7 @@ public abstract class SkillUsingMob extends PathfinderMob implements AfterimageE
         }
     }
 
-    private void setAnimation(Skill skill) {
+    private void setAnimation(Skill<?> skill) {
         this.setAnimation(skill.name);
     }
 
@@ -89,23 +83,14 @@ public abstract class SkillUsingMob extends PathfinderMob implements AfterimageE
         skillManager.tick();
     }
 
-    @Override
-    public void addAfterimage(Afterimage afterimage) {
-        if (level().isClientSide)
-            this.afterimages.add(afterimage);
-        if (level() instanceof ServerLevel serverLevel) {
-            SyncAfterimagePayload payload = new SyncAfterimagePayload(this, afterimage);
-            NetworkManager.sendToPlayers(serverLevel.players(), payload);
-        }
-    }
-
-    @Override
-    public List<Afterimage> getAfterimages() {
-        return afterimages;
-    }
-
     public interface AnimationController {
-        static AnimationController simple(AnimationState animationState) {
+        static AnimationController of(final RandomSource random, final AnimationState... animationStates) {
+            if (animationStates.length == 1)
+                return simple(animationStates[0]);
+            return random(random, animationStates);
+        }
+
+        static AnimationController simple(final AnimationState animationState) {
             return new AnimationController() {
                 @Override
                 public void start(int tickCount) {
@@ -119,7 +104,7 @@ public abstract class SkillUsingMob extends PathfinderMob implements AfterimageE
             };
         }
 
-        static AnimationController random(RandomSource random, AnimationState... animationStates) {
+        static AnimationController random(final RandomSource random, final AnimationState... animationStates) {
             return new AnimationController() {
                 @Override
                 public void start(int tickCount) {

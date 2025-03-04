@@ -99,6 +99,7 @@ public final class NarakaModClient {
         BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.FORGING.get(), ForgingBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.SOUL_STABILIZER.get(), SoulStabilizerBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.SOUL_SMITHING.get(), SoulSmithingBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.UNSTABLE_BLOCK.get(), UnstableBlockEntityRenderer::new);
     }
 
     private static void registerEntityRenderers() {

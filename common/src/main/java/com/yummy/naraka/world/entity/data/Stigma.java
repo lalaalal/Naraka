@@ -3,6 +3,7 @@ package com.yummy.naraka.world.entity.data;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.StunHelper;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,6 +35,7 @@ public record Stigma(int value, long lastMarkedTime) {
             livingCause.heal(66);
         reduceHealth(livingEntity, cause);
         StunHelper.stunEntity(livingEntity, HOLD_ENTITY_DURATION);
+        livingEntity.level().playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.TOTEM_USE, livingEntity.getSoundSource(), 1.0F, 1.0F);
 
         return new Stigma(0, now);
     }

@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
-public class GodBlowSkill extends Skill {
+public class GodBlowSkill extends Skill<SkillUsingMob> {
     private final boolean[] hurt = new boolean[5];
     @Nullable
     private LivingEntity target;

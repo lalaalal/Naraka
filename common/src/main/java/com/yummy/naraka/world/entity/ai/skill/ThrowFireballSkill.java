@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
 
-public class ThrowFireballSkill extends Skill {
+public class ThrowFireballSkill extends Skill<SkillUsingMob> {
     public static final String NAME = "throw_fireball";
 
     public ThrowFireballSkill(SkillUsingMob mob) {

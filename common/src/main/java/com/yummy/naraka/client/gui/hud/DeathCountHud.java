@@ -56,7 +56,6 @@ public class DeathCountHud implements ClientGuiEvent.RenderHud {
 
     public DeathCountHud() {
         EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.DEATH_COUNT.get(), this::onDeathCountChanged);
-        EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.STIGMA.get(), this::onStigmaConsumed);
     }
 
     private void onDeathCountChanged(LivingEntity livingEntity, EntityDataType<Integer> entityDataType, Integer from, Integer to) {
@@ -78,7 +77,7 @@ public class DeathCountHud implements ClientGuiEvent.RenderHud {
         int y = guiGraphics.guiHeight() / 2 - DEATH_HEIGHT / 2;
 
         float alpha = blinkTime / (float) BLINKING_TIME;
-        TextureAtlasSprite sprite = Minecraft.getInstance().getGuiSprites().getSprite(NarakaSprites.DEATH);
+        TextureAtlasSprite sprite = Minecraft.getInstance().getGuiSprites().getSprite(NarakaSprites.STIGMA_CONSUME);
         guiGraphics.blit(x, y, 0, DEATH_WIDTH, DEATH_HEIGHT, sprite, 1, 1, 1, alpha);
     }
 

@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.world.block.NarakaBlocks;
+import com.yummy.naraka.world.block.UnstableBlock;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.StunHelper;
@@ -11,10 +11,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 
-public class RushSkill extends Skill {
+public class RushSkill extends Skill<SkillUsingMob> {
     public static final String NAME = "rush";
 
     private static final int START_RUNNING_TICK = 25;
@@ -74,7 +73,8 @@ public class RushSkill extends Skill {
             int x = mob.blockPosition().getX() + (int) Math.round(Math.cos(angle) * distance);
             int z = mob.blockPosition().getZ() + (int) Math.round(Math.sin(angle) * distance);
 
-            level.setBlock(new BlockPos(x, mob.getBlockY() - 1, z), NarakaBlocks.UNSTABLE_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
+            BlockPos pos = new BlockPos(x, mob.getBlockY() - 1, z);
+            UnstableBlock.makeUnstable(level, pos);
         }
     }
 

@@ -2,12 +2,13 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.Afterimage;
+import com.yummy.naraka.world.entity.AfterimageEntity;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
-public class DashSkill extends Skill {
-    public DashSkill(SkillUsingMob mob) {
+public class DashSkill<H extends SkillUsingMob & AfterimageEntity> extends Skill<H> {
+    public DashSkill(H mob) {
         super("dash", 20, 60, mob);
     }
 

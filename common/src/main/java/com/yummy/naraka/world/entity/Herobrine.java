@@ -1,12 +1,16 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.network.SyncAfterimagePayload;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.*;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
+import dev.architectury.networking.NetworkManager;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
@@ -26,6 +30,7 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -34,9 +39,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class Herobrine extends SkillUsingMob {
+public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy {
     private static final float[] HEALTH_BY_PHASE = {106, 210, 350};
-    private static final int MAX_HIBERNATE_MODE_TICK = 20 * 120;
 
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.RED, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.BLUE};
     public static final int MAX_HURT_DAMAGE_LIMIT = 50;
@@ -46,24 +50,21 @@ public class Herobrine extends SkillUsingMob {
     public final AnimationState punchAnimationState3 = new AnimationState();
     public final AnimationState dashAnimationState = new AnimationState();
     public final AnimationState rushAnimationState = new AnimationState();
-    public final AnimationState godBlowAnimationState = new AnimationState();
     public final AnimationState throwFireballAnimationState = new AnimationState();
     public final AnimationState blockingSkillAnimationState = new AnimationState();
 
-    private final Skill punchSkill = new PunchSkill(this);
-    private final Skill dashSkill = new DashSkill(this);
-    private final Skill rushSkill = new RushSkill(this);
-    private final Skill godBlowSkill = new GodBlowSkill(this);
-    private final Skill throwFireballSkill = new ThrowFireballSkill(this);
-    private final Skill blockingSkill = new BlockingSkill(this);
+    private final PunchSkill punchSkill = new PunchSkill(this);
+    private final DashSkill<Herobrine> dashSkill = new DashSkill<>(this);
+    private final RushSkill rushSkill = new RushSkill(this);
+    private final ThrowFireballSkill throwFireballSkill = new ThrowFireballSkill(this);
+    private final BlockingSkill blockingSkill = new BlockingSkill(this);
 
-    private final List<Skill> PHASE_1_SKILLS = List.of(punchSkill, dashSkill, throwFireballSkill, blockingSkill);
+    private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashSkill, throwFireballSkill, blockingSkill);
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this);
     private int hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
     private boolean hibernateMode = false;
-    private boolean madMode = false;
     private int hibernateModeTickCount = 0;
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
@@ -115,8 +116,22 @@ public class Herobrine extends SkillUsingMob {
         registerSkill(punchSkill, punchAnimationState1, punchAnimationState2, punchAnimationState3);
         registerSkill(dashSkill, dashAnimationState);
         registerSkill(rushSkill, rushAnimationState);
-//        registerSkill(godBlowSkill, godBlowAnimationState);
         registerSkill(throwFireballSkill, throwFireballAnimationState);
+    }
+
+    @Override
+    public void addAfterimage(Afterimage afterimage) {
+        if (level().isClientSide)
+            this.afterimages.add(afterimage);
+        if (level() instanceof ServerLevel serverLevel) {
+            SyncAfterimagePayload payload = new SyncAfterimagePayload(this, afterimage);
+            NetworkManager.sendToPlayers(serverLevel.players(), payload);
+        }
+    }
+
+    @Override
+    public List<Afterimage> getAfterimages() {
+        return afterimages;
     }
 
     @Override
@@ -124,12 +139,6 @@ public class Herobrine extends SkillUsingMob {
         super.customServerAiStep();
 
         phaseManager.updatePhase(bossEvent);
-        if (hibernateMode) {
-            if (hibernateModeTickCount >= MAX_HIBERNATE_MODE_TICK)
-                madMode = true;
-
-            hibernateModeTickCount += 1;
-        }
     }
 
     @Override
@@ -197,7 +206,7 @@ public class Herobrine extends SkillUsingMob {
     private void stopHibernateMode() {
         hibernateMode = false;
         hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
-        for (Skill skill : PHASE_1_SKILLS)
+        for (Skill<?> skill : PHASE_1_SKILLS)
             skill.enable();
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
     }
@@ -271,5 +280,21 @@ public class Herobrine extends SkillUsingMob {
     @Override
     public boolean canFreeze() {
         return false;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("HibernateMode", hibernateMode);
+        compound.putInt("HibernateModeTickCount", hibernateModeTickCount);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        if (compound.contains("HibernatedMode"))
+            hibernateMode = compound.getBoolean("HibernatedMode");
+        if (compound.contains("HibernateModeTickCount"))
+            hibernateModeTickCount = compound.getInt("HibernateModeTickCount");
     }
 }
