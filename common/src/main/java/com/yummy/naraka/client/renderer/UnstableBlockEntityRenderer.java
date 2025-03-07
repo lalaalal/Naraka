@@ -16,7 +16,6 @@ public class UnstableBlockEntityRenderer implements BlockEntityRenderer<Unstable
 
     public UnstableBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         this.blockRenderDispatcher = context.getBlockRenderDispatcher();
-
     }
 
     @Override

@@ -18,7 +18,7 @@ public class HerobrineRenderer extends AfterimageEntityRenderer<Herobrine, Herob
     }
 
     public HerobrineRenderer(EntityRendererProvider.Context context, ModelLayerLocation layerLocation) {
-        super(context, new HerobrineModel<>(context.bakeLayer(layerLocation)), 0.5f);
+        super(context, () -> new HerobrineModel<>(context.bakeLayer(layerLocation)), 0.5f);
         addLayer(new HerobrineEyeLayer<>(this));
     }
 
@@ -30,5 +30,10 @@ public class HerobrineRenderer extends AfterimageEntityRenderer<Herobrine, Herob
     @Override
     public ResourceLocation getTextureLocation(Herobrine herobrine) {
         return NarakaTextures.HEROBRINE;
+    }
+
+    @Override
+    protected ResourceLocation getAfterimageTexture(Herobrine entity) {
+        return NarakaTextures.HEROBRINE_AFTERIMAGE;
     }
 }

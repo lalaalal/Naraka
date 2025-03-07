@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class Skill<T extends SkillUsingMob> {
     public final String name;
@@ -12,6 +13,9 @@ public abstract class Skill<T extends SkillUsingMob> {
     protected int tickCount = 0;
     protected int cooldownTick;
     protected boolean disabled = false;
+
+    @Nullable
+    protected Skill<?> linkedSkill;
 
     public Skill(String name, int duration, int cooldown, T mob) {
         this.name = name;
@@ -49,6 +53,19 @@ public abstract class Skill<T extends SkillUsingMob> {
 
     public boolean isEnded() {
         return tickCount >= duration;
+    }
+
+    public boolean hasLinkedSkill() {
+        return linkedSkill != null;
+    }
+
+    public void setLinkedSkill(@Nullable Skill<?> skill) {
+        this.linkedSkill = skill;
+    }
+
+    @Nullable
+    public Skill<?> getLinkedSkill() {
+        return linkedSkill;
     }
 
     public final void tick() {

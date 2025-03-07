@@ -62,15 +62,17 @@ public final class NarakaConfig {
     }
 
     public static class ConfigValue<T> {
+        private final Class<T> type;
         private final T defaultValue;
         private T value;
 
         public ConfigValue(T defaultValue) {
-            this.defaultValue = defaultValue;
-            this.value = defaultValue;
+            this(defaultValue, defaultValue);
         }
 
+        @SuppressWarnings("unchecked")
         public ConfigValue(T defaultValue, T value) {
+            this.type = (Class<T>) defaultValue.getClass();
             this.defaultValue = defaultValue;
             this.value = value;
         }
@@ -80,9 +82,7 @@ public final class NarakaConfig {
             return this;
         }
 
-        @SuppressWarnings("unchecked")
         public void load(JsonElement jsonElement) {
-            Class<T> type = (Class<T>) value.getClass();
             this.value = NarakaJsonUtils.parse(type, jsonElement);
         }
 

@@ -13,10 +13,6 @@ import com.yummy.naraka.world.item.NarakaCreativeModTabs;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.ItemLike;
 
 import java.util.function.Consumer;
@@ -49,19 +45,14 @@ public final class NarakaModFabric implements ModInitializer, NarakaInitializer 
     }
 
     @Override
-    public void modifyCreativeModeTab(ResourceKey<CreativeModeTab> tabKey, Consumer<NarakaCreativeModTabs.TabEntries> consumer) {
-        ItemGroupEvents.modifyEntriesEvent(tabKey)
-                .register(wrap(consumer));
+    public NarakaCreativeModTabs.CreativeModeTabModifier getCreativeModeTabModifier() {
+        return (tabKey, entries) -> ItemGroupEvents.modifyEntriesEvent(tabKey)
+                .register(wrap(entries));
     }
 
     @Override
     public NarakaBiomes.Modifier getBiomeModifier() {
         return FabricBiomeModifier.INSTANCE;
-    }
-
-    @Override
-    public void registerEntityDataSerializer(String name, EntityDataSerializer<?> serializer) {
-        EntityDataSerializers.registerSerializer(serializer);
     }
 
     private static ItemGroupEvents.ModifyEntries wrap(Consumer<NarakaCreativeModTabs.TabEntries> consumer) {

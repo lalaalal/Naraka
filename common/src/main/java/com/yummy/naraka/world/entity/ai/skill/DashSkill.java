@@ -7,15 +7,17 @@ import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
-public class DashSkill<H extends SkillUsingMob & AfterimageEntity> extends Skill<H> {
-    public DashSkill(H mob) {
+public class DashSkill<T extends SkillUsingMob & AfterimageEntity> extends Skill<T> {
+    private Vec3 deltaMovement = Vec3.ZERO;
+
+    public DashSkill(T mob) {
         super("dash", 20, 60, mob);
     }
 
     @Override
     public boolean canUse() {
         LivingEntity target = mob.getTarget();
-        return target != null && mob.distanceToSqr(target) > 3 * 3;
+        return target != null;
     }
 
     @Override
@@ -32,14 +34,15 @@ public class DashSkill<H extends SkillUsingMob & AfterimageEntity> extends Skill
             return;
 
         mob.getNavigation().stop();
-        Vec3 delta = NarakaEntityUtils.getDirectionNormalVector(mob, target)
-                .scale(3);
 
-        if (10 <= tickCount && tickCount <= 15)
-            mob.addAfterimage(new Afterimage(mob.position(), 15));
-        if (tickCount == 10)
-            mob.setDeltaMovement(delta);
-        if (tickCount == 15)
+        if (tickCount == 10) {
+            this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob, target);
+        }
+        if (10 <= tickCount && tickCount < 15 && mob.distanceToSqr(target) > 3) {
+            mob.setDeltaMovement(deltaMovement);
+            mob.addAfterimage(Afterimage.of(mob, 15));
+        }
+        if (tickCount == 15 || mob.distanceToSqr(target) < 3)
             mob.setDeltaMovement(Vec3.ZERO);
     }
 }

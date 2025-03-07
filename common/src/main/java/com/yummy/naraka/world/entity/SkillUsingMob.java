@@ -85,9 +85,23 @@ public abstract class SkillUsingMob extends PathfinderMob {
 
     public interface AnimationController {
         static AnimationController of(final RandomSource random, final AnimationState... animationStates) {
+            if (animationStates.length == 0)
+                return empty();
             if (animationStates.length == 1)
                 return simple(animationStates[0]);
             return random(random, animationStates);
+        }
+
+        static AnimationController empty() {
+            return new AnimationController() {
+                @Override
+                public void start(int tickCount) {
+                }
+
+                @Override
+                public void stop() {
+                }
+            };
         }
 
         static AnimationController simple(final AnimationState animationState) {

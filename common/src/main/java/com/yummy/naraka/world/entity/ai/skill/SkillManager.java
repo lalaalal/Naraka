@@ -41,13 +41,18 @@ public class SkillManager {
                 .toList();
     }
 
-    public void setCurrentSkill(Skill<?> skill) {
-        if (currentSkill == null) {
-            currentSkill = skill;
-            currentSkill.prepare();
-            for (Consumer<Skill<?>> listener : skillStartListeners)
-                listener.accept(currentSkill);
-        }
+    public void setCurrentSkillIfAbsence(Skill<?> skill) {
+        if (currentSkill == null)
+            setCurrentSkill(skill);
+    }
+
+    public void setCurrentSkill(@Nullable Skill<?> skill) {
+        if (skill == null)
+            return;
+        currentSkill = skill;
+        currentSkill.prepare();
+        for (Consumer<Skill<?>> listener : skillStartListeners)
+            listener.accept(currentSkill);
     }
 
     public void tick() {
@@ -57,13 +62,16 @@ public class SkillManager {
                 for (Consumer<Skill<?>> listener : skillEndListeners)
                     listener.accept(currentSkill);
                 currentSkill.setCooldown();
-                currentSkill = null;
+                if (currentSkill.hasLinkedSkill())
+                    setCurrentSkill(currentSkill.getLinkedSkill());
+                else
+                    currentSkill = null;
             }
         } else {
             List<Skill<?>> usable = getUsableSkills();
             if (!usable.isEmpty()) {
                 Skill<?> skill = usable.get(random.nextInt(usable.size()));
-                setCurrentSkill(skill);
+                setCurrentSkillIfAbsence(skill);
             }
         }
 

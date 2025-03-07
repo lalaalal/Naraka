@@ -48,18 +48,19 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
     public final AnimationState punchAnimationState1 = new AnimationState();
     public final AnimationState punchAnimationState2 = new AnimationState();
     public final AnimationState punchAnimationState3 = new AnimationState();
-    public final AnimationState dashAnimationState = new AnimationState();
     public final AnimationState rushAnimationState = new AnimationState();
     public final AnimationState throwFireballAnimationState = new AnimationState();
     public final AnimationState blockingSkillAnimationState = new AnimationState();
 
     private final PunchSkill punchSkill = new PunchSkill(this);
     private final DashSkill<Herobrine> dashSkill = new DashSkill<>(this);
+    private final DashAroundSkill<Herobrine> dashAroundSkill = new DashAroundSkill<>(this);
     private final RushSkill rushSkill = new RushSkill(this);
     private final ThrowFireballSkill throwFireballSkill = new ThrowFireballSkill(this);
     private final BlockingSkill blockingSkill = new BlockingSkill(this);
 
-    private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashSkill, throwFireballSkill, blockingSkill);
+    private final List<Skill<?>> GENERAL_SKILLS = List.of();
+    private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, throwFireballSkill, rushSkill);
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this);
@@ -114,18 +115,19 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
         registerSkill(blockingSkill, blockingSkillAnimationState);
 
         registerSkill(punchSkill, punchAnimationState1, punchAnimationState2, punchAnimationState3);
-        registerSkill(dashSkill, dashAnimationState);
+        registerSkill(dashSkill);
+        registerSkill(dashAroundSkill);
         registerSkill(rushSkill, rushAnimationState);
         registerSkill(throwFireballSkill, throwFireballAnimationState);
     }
 
     @Override
     public void addAfterimage(Afterimage afterimage) {
-        if (level().isClientSide)
-            this.afterimages.add(afterimage);
         if (level() instanceof ServerLevel serverLevel) {
             SyncAfterimagePayload payload = new SyncAfterimagePayload(this, afterimage);
             NetworkManager.sendToPlayers(serverLevel.players(), payload);
+        } else {
+            this.afterimages.add(afterimage);
         }
     }
 
@@ -172,7 +174,7 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
         }
 
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
-            this.skillManager.setCurrentSkill(blockingSkill);
+            this.skillManager.setCurrentSkillIfAbsence(blockingSkill);
             return false;
         }
         return super.hurt(source, Math.min(hurtDamageLimit, damage));

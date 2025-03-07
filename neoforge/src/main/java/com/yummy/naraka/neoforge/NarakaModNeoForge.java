@@ -6,12 +6,10 @@ import com.yummy.naraka.core.registries.RegistryFactory;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.neoforge.init.NeoForgeBiomeModifier;
-import com.yummy.naraka.neoforge.init.NeoForgeEntityDataSerializerRegistry;
 import com.yummy.naraka.neoforge.init.NeoForgeRegistryInitializer;
 import com.yummy.naraka.world.NarakaBiomes;
 import com.yummy.naraka.world.item.NarakaCreativeModTabs;
 import net.minecraft.core.Registry;
-import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -34,13 +32,12 @@ public final class NarakaModNeoForge implements NarakaInitializer {
     private final Map<ResourceKey<? extends Registry<?>>, Registry<?>> registries = new HashMap<>();
     private final List<Runnable> runAfterRegistryLoaded = new ArrayList<>();
     private final NeoForgeRegistryFactory registryFactory = new NeoForgeRegistryFactory();
-    private final NeoForgeEntityDataSerializerRegistry entityDataSerializerRegistry = new NeoForgeEntityDataSerializerRegistry();
+    private final NeoForgeCreativeModeTabModifier creativeModeTabModifier = new NeoForgeCreativeModeTabModifier();
     private final IEventBus bus;
 
     public NarakaModNeoForge(IEventBus bus) {
         this.bus = bus;
         NarakaMod.initialize(this);
-        entityDataSerializerRegistry.register(bus);
 
         bus.addListener(this::commonSetup);
     }
@@ -71,22 +68,24 @@ public final class NarakaModNeoForge implements NarakaInitializer {
     }
 
     @Override
-    public void modifyCreativeModeTab(ResourceKey<CreativeModeTab> tabKey, Consumer<NarakaCreativeModTabs.TabEntries> entries) {
-        bus.addListener((Consumer<BuildCreativeModeTabContentsEvent>) event -> {
-            if (tabKey.equals(event.getTabKey()))
-                entries.accept(new NeoForgeTabEntries(event));
-        });
-    }
-
-    @Override
-    public void registerEntityDataSerializer(String name, EntityDataSerializer<?> serializer) {
-        entityDataSerializerRegistry.register(name, serializer);
+    public NarakaCreativeModTabs.CreativeModeTabModifier getCreativeModeTabModifier() {
+        return creativeModeTabModifier;
     }
 
     public void commonSetup(FMLCommonSetupEvent event) {
         NarakaMod.isRegistryLoaded = true;
         for (Runnable runnable : runAfterRegistryLoaded)
             runnable.run();
+    }
+
+    private class NeoForgeCreativeModeTabModifier implements NarakaCreativeModTabs.CreativeModeTabModifier {
+        @Override
+        public void modify(ResourceKey<CreativeModeTab> tabKey, Consumer<NarakaCreativeModTabs.TabEntries> entries) {
+            bus.addListener((Consumer<BuildCreativeModeTabContentsEvent>) event -> {
+                if (tabKey.equals(event.getTabKey()))
+                    entries.accept(new NeoForgeTabEntries(event));
+            });
+        }
     }
 
     private class NeoForgeRegistryFactory extends RegistryFactory {

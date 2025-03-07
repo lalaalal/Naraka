@@ -14,9 +14,12 @@ import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+
+import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
 public class NarakaCreativeModTabs {
@@ -47,14 +50,15 @@ public class NarakaCreativeModTabs {
     }
 
     public static void initialize(NarakaInitializer initializer) {
+        CreativeModeTabModifier modifier = initializer.getCreativeModeTabModifier();
+        modifier.modify(CreativeModeTabs.BUILDING_BLOCKS, NarakaCreativeModTabs::modifyBuildingBlocksTab);
+        modifier.modify(CreativeModeTabs.NATURAL_BLOCKS, NarakaCreativeModTabs::modifyNaturalBlocksTab);
+        modifier.modify(CreativeModeTabs.FOOD_AND_DRINKS, NarakaCreativeModTabs::modifyFoodAndDrinksTab);
+        modifier.modify(CreativeModeTabs.INGREDIENTS, NarakaCreativeModTabs::modifyIngredientsTab);
+        modifier.modify(CreativeModeTabs.SPAWN_EGGS, NarakaCreativeModTabs::modifySpawnEggsTab);
+
         RegistryInitializer.get(Registries.CREATIVE_MODE_TAB)
                 .onRegistrationFinished();
-
-        initializer.modifyCreativeModeTab(CreativeModeTabs.BUILDING_BLOCKS, NarakaCreativeModTabs::modifyBuildingBlocksTab);
-        initializer.modifyCreativeModeTab(CreativeModeTabs.NATURAL_BLOCKS, NarakaCreativeModTabs::modifyNaturalBlocksTab);
-        initializer.modifyCreativeModeTab(CreativeModeTabs.FOOD_AND_DRINKS, NarakaCreativeModTabs::modifyFoodAndDrinksTab);
-        initializer.modifyCreativeModeTab(CreativeModeTabs.INGREDIENTS, NarakaCreativeModTabs::modifyIngredientsTab);
-        initializer.modifyCreativeModeTab(CreativeModeTabs.SPAWN_EGGS, NarakaCreativeModTabs::modifySpawnEggsTab);
     }
 
     private static void createNarakaTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
@@ -212,5 +216,10 @@ public class NarakaCreativeModTabs {
         void addBefore(ItemLike pivot, ItemLike... items);
 
         void addAfter(ItemLike pivot, ItemLike... items);
+    }
+
+    @FunctionalInterface
+    public interface CreativeModeTabModifier {
+        void modify(ResourceKey<CreativeModeTab> tabKey, Consumer<TabEntries> entries);
     }
 }
