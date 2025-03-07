@@ -95,4 +95,8 @@ public abstract class Skill<T extends SkillUsingMob> {
     }
 
     protected abstract void skillTick();
+
+    public void interrupt() {
+        setCooldown();
+    }
 }

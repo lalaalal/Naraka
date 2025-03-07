@@ -44,6 +44,7 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
 
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.RED, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.BLUE};
     public static final int MAX_HURT_DAMAGE_LIMIT = 50;
+    public static final int MAX_WEAKNESS_TICK = 40;
 
     public final AnimationState punchAnimationState1 = new AnimationState();
     public final AnimationState punchAnimationState2 = new AnimationState();
@@ -51,6 +52,7 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
     public final AnimationState rushAnimationState = new AnimationState();
     public final AnimationState throwFireballAnimationState = new AnimationState();
     public final AnimationState blockingSkillAnimationState = new AnimationState();
+    public final AnimationState weaknessAnimationState = new AnimationState();
 
     private final PunchSkill punchSkill = new PunchSkill(this);
     private final DashSkill<Herobrine> dashSkill = new DashSkill<>(this);
@@ -67,6 +69,7 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
     private int hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
     private boolean hibernateMode = false;
     private int hibernateModeTickCount = 0;
+    private int weaknessTickCount = Integer.MAX_VALUE;
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
@@ -138,8 +141,12 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
 
     @Override
     protected void customServerAiStep() {
-        super.customServerAiStep();
+        if (weaknessTickCount == MAX_WEAKNESS_TICK)
+            stopWeakness();
+        if (weaknessTickCount < MAX_WEAKNESS_TICK)
+            weaknessTickCount += 1;
 
+        super.customServerAiStep();
         phaseManager.updatePhase(bossEvent);
     }
 
@@ -213,6 +220,21 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
     }
 
+    private void startWeakness() {
+
+        weaknessAnimationState.start(tickCount);
+        weaknessTickCount = 0;
+        skillManager.pause(true);
+        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
+    }
+
+    private void stopWeakness() {
+        weaknessAnimationState.stop();
+        weaknessTickCount = Integer.MAX_VALUE;
+        skillManager.resume();
+        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
+    }
+
     @Override
     public void die(DamageSource damageSource) {
         if (damageSource.getEntity() instanceof LivingEntity livingEntity)
@@ -241,6 +263,7 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
     public boolean addEffect(MobEffectInstance effectInstance, @Nullable Entity entity) {
         if (hibernateMode && effectInstance.is(MobEffects.WEAKNESS)) {
             stopHibernateMode();
+            startWeakness();
             if (phaseManager.getCurrentPhaseHealth() == 1)
                 setHealth(getHealth() - 1);
         }

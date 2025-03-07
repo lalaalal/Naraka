@@ -11,6 +11,7 @@ public class SkillManager {
     private final Map<String, Skill<?>> skills = new HashMap<>();
     private final List<Consumer<Skill<?>>> skillStartListeners = new ArrayList<>();
     private final List<Consumer<Skill<?>>> skillEndListeners = new ArrayList<>();
+    private boolean paused = false;
 
     public SkillManager(RandomSource random) {
         this.random = random;
@@ -36,6 +37,8 @@ public class SkillManager {
     }
 
     private List<Skill<?>> getUsableSkills() {
+        if (paused)
+            return List.of();
         return skills.values().stream()
                 .filter(skill -> skill.readyToUse() && skill.canUse())
                 .toList();
@@ -53,6 +56,25 @@ public class SkillManager {
         currentSkill.prepare();
         for (Consumer<Skill<?>> listener : skillStartListeners)
             listener.accept(currentSkill);
+    }
+
+    public void pause(boolean interrupt) {
+        this.paused = true;
+        if (interrupt)
+            this.interrupt();
+    }
+
+    public void resume() {
+        this.paused = false;
+    }
+
+    public void interrupt() {
+        if (currentSkill != null) {
+            for (Consumer<Skill<?>> listener : skillEndListeners)
+                listener.accept(currentSkill);
+            this.currentSkill.interrupt();
+        }
+        currentSkill = null;
     }
 
     public void tick() {
