@@ -5,11 +5,14 @@ import com.google.gson.JsonObject;
 import com.yummy.naraka.util.NarakaJsonUtils;
 
 import java.io.*;
-import java.nio.file.Path;
+import java.nio.file.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class NarakaConfig {
+    private static final Path CONFIG_PATH = Platform.getInstance().getConfigurationPath();
+    private static final Path CONFIG_FILE_PATH = CONFIG_PATH.resolve("naraka-common.json");
+
     public static final NarakaConfig INSTANCE = new NarakaConfig();
 
     private final Map<String, ConfigValue<?>> configuration = new LinkedHashMap<>();
@@ -19,7 +22,29 @@ public final class NarakaConfig {
     public final ConfigValue<Boolean> disableNonShaderLonginusRendering;
 
     static void load() {
+        try {
+            WatchService watchService = FileSystems.getDefault().newWatchService();
+            CONFIG_PATH.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
+            Thread thread = new Thread(() -> updateOnConfigChanges(watchService));
+            thread.start();
+        } catch (IOException ignored) {
 
+        }
+    }
+
+    private static void updateOnConfigChanges(WatchService watchService) {
+        try {
+            WatchKey watchKey;
+            while ((watchKey = watchService.take()) != null) {
+                for (WatchEvent<?> event : watchKey.pollEvents()) {
+                    if (event.context().equals(CONFIG_FILE_PATH.getFileName()))
+                        INSTANCE.loadValues();
+                }
+                watchKey.reset();
+            }
+        } catch (ClosedWatchServiceException | InterruptedException ignored) {
+
+        }
     }
 
     private NarakaConfig() {
@@ -36,15 +61,18 @@ public final class NarakaConfig {
         return value;
     }
 
-    private void loadValues() {
-        Path configPath = Platform.getInstance().getConfigurationPath().resolve("naraka-common.json");
-        try (Reader reader = new FileReader(configPath.toFile())) {
+    private synchronized void loadValues() {
+        try (Reader reader = new FileReader(CONFIG_FILE_PATH.toFile())) {
             JsonObject jsonObject = NarakaJsonUtils.GSON.fromJson(reader, JsonObject.class);
-            jsonObject.keySet().forEach(key -> {
-                JsonElement element = jsonObject.get(key);
-                configuration.get(key).load(element);
-            });
-            if (jsonObject.size() != configuration.size())
+            int validKeys = 0;
+            for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+                if (configuration.containsKey(entry.getKey())) {
+                    configuration.get(entry.getKey())
+                            .load(entry.getValue());
+                    validKeys += 1;
+                }
+            }
+            if (validKeys < configuration.size())
                 saveValues();
         } catch (FileNotFoundException exception) {
             saveValues();
@@ -53,9 +81,8 @@ public final class NarakaConfig {
         }
     }
 
-    private void saveValues() {
-        Path configPath = Platform.getInstance().getConfigurationPath().resolve("naraka-common.json");
-        try (Writer writer = new FileWriter(configPath.toFile())) {
+    private synchronized void saveValues() {
+        try (Writer writer = new FileWriter(CONFIG_FILE_PATH.toFile())) {
             NarakaJsonUtils.GSON.toJson(configuration, writer);
             writer.flush();
         } catch (IOException exception) {
