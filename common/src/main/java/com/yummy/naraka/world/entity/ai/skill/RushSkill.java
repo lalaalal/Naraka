@@ -104,8 +104,7 @@ public class RushSkill extends Skill<SkillUsingMob> {
         target.hurt(source, 3);
         target.knockback(5, mob.getX() - target.getX(), mob.getZ() - target.getZ());
         int stunDuration = 100;
-        if (blockedEntities.contains(target))
-            stunDuration = 30;
-        StunHelper.stunEntity(target, stunDuration);
+        if (!blockedEntities.contains(target))
+            StunHelper.stunEntity(target, stunDuration);
     }
 }
