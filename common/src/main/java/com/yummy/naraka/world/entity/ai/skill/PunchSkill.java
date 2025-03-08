@@ -29,7 +29,7 @@ public class PunchSkill extends Skill<SkillUsingMob> {
         mob.lookAt(target, 360, 0);
         DamageSource fixedAttack = NarakaDamageSources.fixed(mob);
         float damage = target.getMaxHealth() * 0.03f + 6;
-        if (NarakaEntityUtils.disableAndHurtShield(target, 100, 80) || !canUse())
+        if (NarakaEntityUtils.disableAndHurtShield(target, 100, 25) || !canUse())
             return;
 
         StunHelper.stunEntity(target, 100);

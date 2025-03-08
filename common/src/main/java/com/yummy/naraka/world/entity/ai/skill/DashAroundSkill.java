@@ -22,7 +22,7 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
     @Override
     public boolean canUse() {
         LivingEntity target = mob.getTarget();
-        return target != null && mob.distanceToSqr(target) > 3 * 3;
+        return target != null;
     }
 
     @Override
@@ -61,6 +61,7 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
 
         int rotationDegrees = 60 * (mob.getRandom().nextInt(2) * 2 - 1);
         Vector3f vector = NarakaEntityUtils.getDirectionNormalVector(mob, target)
+                .multiply(1, 0, 1)
                 .toVector3f()
                 .mul(Axis.YP.rotationDegrees(rotationDegrees).get(new Matrix3f()));
         this.deltaMovement = new Vec3(vector);

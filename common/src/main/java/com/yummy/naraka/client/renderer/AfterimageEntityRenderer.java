@@ -37,12 +37,12 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
     @Override
     public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
-        for (Afterimage afterimage : entity.getAfterimages())
-            this.renderAfterimage(entity, afterimage, partialTicks, poseStack, buffer, LightTexture.FULL_BRIGHT);
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
+        for (Afterimage afterimage : entity.getAfterimages())
+            this.renderAfterimage(entity, afterimage, partialTicks, poseStack, buffer);
     }
 
-    protected void renderAfterimage(T entity, Afterimage afterimage, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    protected void renderAfterimage(T entity, Afterimage afterimage, float partialTicks, PoseStack poseStack, MultiBufferSource buffer) {
         poseStack.pushPose();
         Vec3 translation = afterimage.translation(entity, partialTicks);
         poseStack.translate(translation.x, translation.y + 1.5, translation.z);
@@ -53,7 +53,7 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
         RenderType renderType = RenderType.entityTranslucent(getAfterimageTexture(entity));
         VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
         int color = Color.of(0xffffff).withAlpha(afterimage.getAlpha()).pack();
-        this.afterimageModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color);
+        this.afterimageModel.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color);
         poseStack.popPose();
     }
 

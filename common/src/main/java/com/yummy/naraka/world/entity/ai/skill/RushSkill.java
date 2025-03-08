@@ -8,10 +8,14 @@ import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RushSkill extends Skill<SkillUsingMob> {
     public static final String NAME = "rush";
@@ -23,6 +27,8 @@ public class RushSkill extends Skill<SkillUsingMob> {
 
     private Vec3 delta = Vec3.ZERO;
 
+    private final List<Entity> blockedEntities = new ArrayList<>();
+
     public RushSkill(SkillUsingMob mob) {
         super(NAME, 85, 160, mob);
     }
@@ -31,6 +37,12 @@ public class RushSkill extends Skill<SkillUsingMob> {
     public boolean canUse() {
         LivingEntity target = mob.getTarget();
         return target != null && mob.distanceToSqr(target) > 4 * 4;
+    }
+
+    @Override
+    public void prepare() {
+        super.prepare();
+        blockedEntities.clear();
     }
 
     @Override
@@ -79,17 +91,21 @@ public class RushSkill extends Skill<SkillUsingMob> {
     }
 
     private void hurtHitEntities() {
-        mob.level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(1))
+        mob.level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(0.5))
                 .forEach(this::hurtHitTarget);
     }
 
     private void hurtHitTarget(LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 20 * 8, 100))
+        if (NarakaEntityUtils.disableAndHurtShield(target, 20 * 8, 30)) {
+            blockedEntities.add(target);
             return;
-
+        }
         DamageSource source = NarakaDamageSources.fixed(mob);
         target.hurt(source, 3);
         target.knockback(5, mob.getX() - target.getX(), mob.getZ() - target.getZ());
-        StunHelper.stunEntity(target, 20 * 5);
+        int stunDuration = 100;
+        if (blockedEntities.contains(target))
+            stunDuration = 30;
+        StunHelper.stunEntity(target, stunDuration);
     }
 }

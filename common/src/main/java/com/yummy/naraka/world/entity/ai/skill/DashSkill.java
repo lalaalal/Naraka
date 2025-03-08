@@ -8,10 +8,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 public class DashSkill<T extends SkillUsingMob & AfterimageEntity> extends Skill<T> {
+    public static final String NAME = "dash";
+
     private Vec3 deltaMovement = Vec3.ZERO;
 
     public DashSkill(T mob) {
-        super("dash", 20, 60, mob);
+        super(NAME, 20, 60, mob);
     }
 
     @Override
@@ -36,7 +38,8 @@ public class DashSkill<T extends SkillUsingMob & AfterimageEntity> extends Skill
         mob.getNavigation().stop();
 
         if (tickCount == 10) {
-            this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob, target);
+            this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob, target)
+                    .multiply(1, 0, 1);
         }
         if (10 <= tickCount && tickCount < 15 && mob.distanceToSqr(target) > 3) {
             mob.setDeltaMovement(deltaMovement);
