@@ -63,6 +63,6 @@ public class SpearOfLonginusModel extends EntityModel<SpearOfLonginus> {
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
-        root.render(poseStack, vertexConsumer, 240, packedOverlay, color);
+        root.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 }

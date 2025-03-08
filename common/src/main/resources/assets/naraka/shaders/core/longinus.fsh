@@ -1,7 +1,7 @@
 #version 150
 
-uniform sampler2D SamplerBackground;
-uniform sampler2D SamplerForeground;
+uniform sampler2D Sampler0;
+uniform sampler2D Sampler1;
 
 uniform float GameTime;
 uniform int LonginusLayers;
@@ -59,8 +59,8 @@ mat4 end_portal_layer(float layer) {
 out vec4 fragColor;
 
 void main() {
-    vec3 color = textureProj(SamplerBackground, textureProjection).rgb * COLORS[0];
+    vec3 color = textureProj(Sampler0, textureProjection).rgb * COLORS[0];
     for (int i = 0; i < LonginusLayers; i++)
-    color += textureProj(SamplerForeground, textureProjection * end_portal_layer(float(i + 1))).rgb * COLORS[i];
+    color += textureProj(Sampler1, textureProjection * end_portal_layer(float(i + 1))).rgb * COLORS[i];
     fragColor = vec4(color, 1.0);
 }

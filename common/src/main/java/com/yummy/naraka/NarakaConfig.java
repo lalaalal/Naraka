@@ -16,6 +16,7 @@ public final class NarakaConfig {
 
     public final ConfigValue<Boolean> generatePillarCaves;
     public final ConfigValue<Boolean> showReinforcementValue;
+    public final ConfigValue<Boolean> disableNonShaderLonginusRendering;
 
     static void load() {
 
@@ -24,6 +25,7 @@ public final class NarakaConfig {
     private NarakaConfig() {
         this.generatePillarCaves = define("generate_pillar_caves", false);
         this.showReinforcementValue = define("show_reinforcement_value", false);
+        this.disableNonShaderLonginusRendering = define("disable_non_shader_longinus_rendering", false);
 
         loadValues();
     }

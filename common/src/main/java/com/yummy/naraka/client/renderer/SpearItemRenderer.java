@@ -7,12 +7,14 @@ import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.SpearModel;
 import com.yummy.naraka.client.model.SpearOfLonginusModel;
+import com.yummy.naraka.world.entity.Spear;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -33,7 +35,8 @@ import java.util.Set;
 public class SpearItemRenderer implements CustomRenderManager.CustomItemRenderer, ResourceManagerReloadListener {
     private static final Map<Item, ResourceLocation> TEXTURE_LOCATIONS = Map.of(
             NarakaItems.SPEAR_ITEM.get(), NarakaTextures.SPEAR,
-            NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), NarakaTextures.MIGHTY_HOLY_SPEAR
+            NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), NarakaTextures.MIGHTY_HOLY_SPEAR,
+            NarakaItems.SPEAR_OF_LONGINUS_ITEM.get(), NarakaTextures.LONGINUS
     );
     private static final Set<ItemDisplayContext> LONGINUS_EXCLUDING_CONTEXTS = Set.of(
             ItemDisplayContext.GUI, ItemDisplayContext.FIXED
@@ -66,7 +69,7 @@ public class SpearItemRenderer implements CustomRenderManager.CustomItemRenderer
     public static final SpearItemRenderer INSTANCE = new SpearItemRenderer();
 
     private final Minecraft minecraft;
-    private Map<Item, EntityModel<?>> models = Map.of();
+    private Map<Item, EntityModel<? extends Spear>> models = Map.of();
 
     private SpearItemRenderer() {
         this.minecraft = Minecraft.getInstance();
@@ -80,20 +83,30 @@ public class SpearItemRenderer implements CustomRenderManager.CustomItemRenderer
     }
 
     @Override
-    public void render(ItemStack stack, ItemDisplayContext context, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+    public void render(ItemStack stack, ItemDisplayContext context, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         Item item = stack.getItem();
         if (models.containsKey(item)) {
             ResourceLocation textureLocation = TEXTURE_LOCATIONS.get(item);
-            EntityModel<?> model = models.get(item);
+            EntityModel<? extends Spear> model = models.get(item);
 
             poseStack.pushPose();
             applyTransform(item, context, poseStack);
 
+            if (item == NarakaItems.SPEAR_OF_LONGINUS_ITEM.get())
+                renderNonShaderLonginus(model, poseStack, bufferSource);
             RenderType renderType = model.renderType(textureLocation);
-            VertexConsumer vertexConsumer = getBuffer(buffer, renderType, stack);
+            VertexConsumer vertexConsumer = getBuffer(bufferSource, renderType, stack);
             model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 0xffffffff);
             poseStack.popPose();
         }
+    }
+
+    private void renderNonShaderLonginus(EntityModel<? extends Spear> model, PoseStack poseStack, MultiBufferSource bufferSource) {
+        if (minecraft.player == null)
+            return;
+        int tickCount = minecraft.player.tickCount;
+        float partialTicks = minecraft.getTimer().getGameTimeDeltaPartialTick(true);
+        SpearRenderer.renderNonShaderLonginus(model, tickCount, partialTicks, poseStack, bufferSource, LightTexture.FULL_BLOCK);
     }
 
     private void applyTransform(Item item, ItemDisplayContext context, PoseStack poseStack) {
