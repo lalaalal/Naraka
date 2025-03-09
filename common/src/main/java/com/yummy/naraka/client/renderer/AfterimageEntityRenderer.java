@@ -39,8 +39,10 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
     @Override
     public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         if (!entity.getAfterimages().isEmpty()) {
-            int light = Mth.clamp(entity.getAfterimages().size() + 1, 0, 15);
-            packedLight = LightTexture.pack(light, light);
+            int blockLight = Mth.clamp(entity.getAfterimages().size(), LightTexture.block(packedLight), 15);
+            int skyLight = Mth.clamp(entity.getAfterimages().size(), LightTexture.sky(packedLight), 15);
+
+            packedLight = Math.max(LightTexture.pack(blockLight, skyLight), packedLight);
         }
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
         renderAfterimages(entity, partialTicks, poseStack, buffer);
