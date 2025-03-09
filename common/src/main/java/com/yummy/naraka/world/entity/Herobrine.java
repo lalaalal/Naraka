@@ -32,17 +32,19 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy {
     private static final float[] HEALTH_BY_PHASE = {106, 210, 350};
 
-    public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.RED, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.BLUE};
+    public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
     public static final int MAX_HURT_DAMAGE_LIMIT = 50;
     public static final int MAX_WEAKNESS_TICK = 40;
 
@@ -64,6 +66,9 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
     private final List<Skill<?>> GENERAL_SKILLS = List.of();
     private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, throwFireballSkill, rushSkill);
 
+    private final List<Projectile> ignoredProjectiles = new ArrayList<>();
+    protected final List<Afterimage> afterimages = new ArrayList<>();
+
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this);
     private int hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
@@ -76,7 +81,7 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
                 .add(Attributes.FOLLOW_RANGE, 128)
                 .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 1)
                 .add(Attributes.STEP_HEIGHT, 2)
-                .add(Attributes.MOVEMENT_SPEED, 0.2f)
+                .add(Attributes.MOVEMENT_SPEED, 0.15f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.MAX_HEALTH, 666);
@@ -129,9 +134,8 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
         if (level() instanceof ServerLevel serverLevel) {
             SyncAfterimagePayload payload = new SyncAfterimagePayload(this, afterimage);
             NetworkManager.sendToPlayers(serverLevel.players(), payload);
-        } else {
-            this.afterimages.add(afterimage);
         }
+        this.afterimages.add(afterimage);
     }
 
     @Override
@@ -140,14 +144,46 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        afterimages.removeIf(Afterimage::tick);
+    }
+
+    @Override
     protected void customServerAiStep() {
         if (weaknessTickCount == MAX_WEAKNESS_TICK)
             stopWeakness();
-        if (weaknessTickCount < MAX_WEAKNESS_TICK)
+        if (weaknessTickCount <= MAX_WEAKNESS_TICK)
             weaknessTickCount += 1;
 
+        tryAvoidProjectile();
         super.customServerAiStep();
         phaseManager.updatePhase(bossEvent);
+    }
+
+    private boolean shouldCheck(Projectile projectile) {
+        return !ignoredProjectiles.contains(projectile);
+    }
+
+    private void tryAvoidProjectile() {
+        List<Projectile> projectiles = level().getEntitiesOfClass(Projectile.class, getBoundingBox().inflate(5), this::shouldCheck);
+        for (Projectile projectile : projectiles) {
+            if (projectile.getOwner() == this)
+                continue;
+            ignoredProjectiles.add(projectile);
+            if (!projectile.position().equals(new Vec3(projectile.xo, projectile.yo, projectile.zo)) && random.nextBoolean()) {
+                lookAt(projectile, 360, 0);
+                dashAroundSkill.preventSecondUse();
+                skillManager.setCurrentSkillIfAbsence(dashAroundSkill);
+                return;
+            }
+        }
+        ignoredProjectiles.removeIf(Projectile::isRemoved);
+    }
+
+    @Override
+    public boolean canBeHitByProjectile() {
+        return getCurrentSkill() != dashAroundSkill && super.canBeHitByProjectile();
     }
 
     @Override
@@ -181,7 +217,10 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
         }
 
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
-            this.skillManager.setCurrentSkillIfAbsence(blockingSkill);
+            if (source.getEntity() instanceof LivingEntity target && !target.isAttackable()) {
+                setTarget(target);
+            }
+            skillManager.setCurrentSkillIfAbsence(blockingSkill);
             return false;
         }
         return super.hurt(source, Math.min(hurtDamageLimit, damage));

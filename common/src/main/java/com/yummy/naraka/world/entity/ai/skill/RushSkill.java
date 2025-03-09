@@ -52,9 +52,9 @@ public class RushSkill extends Skill<SkillUsingMob> {
             return;
 
         mob.getNavigation().stop();
-        updateDeltaMovement(target, START_RUNNING_TICK, STOP_RUNNING_TICK, 0.6, true);
-        updateDeltaMovement(target, STOP_RUNNING_TICK, RUSH_TICK, 0, true);
-        updateDeltaMovement(target, RUSH_TICK, FINALE_TICK, 1.15, false);
+        updateDeltaMovement(target, START_RUNNING_TICK, STOP_RUNNING_TICK, 0.6, true, true);
+        updateDeltaMovement(target, STOP_RUNNING_TICK, RUSH_TICK, 0, true, false);
+        updateDeltaMovement(target, RUSH_TICK, FINALE_TICK, 1.15, false, false);
         if (RUSH_TICK <= tickCount && tickCount <= FINALE_TICK) {
             hurtHitEntities();
 //            updateBlocks(7 - (tickCount - RUSH_TICK));
@@ -63,14 +63,15 @@ public class RushSkill extends Skill<SkillUsingMob> {
             delta = delta.scale(0.5f);
     }
 
-    private void calculateDeltaMovement(LivingEntity target) {
-        this.delta = NarakaEntityUtils.getDirectionNormalVector(mob, target);
+    private void calculateDeltaMovement(LivingEntity target, boolean ignoreDeltaY) {
+        int factor = ignoreDeltaY ? 0 : 1;
+        this.delta = NarakaEntityUtils.getDirectionNormalVector(mob, target).multiply(1, factor, 1);
         mob.lookAt(target, 360, 0);
     }
 
-    private void updateDeltaMovement(LivingEntity target, int startTick, int endTick, double scale, boolean updateDeltaMovement) {
+    private void updateDeltaMovement(LivingEntity target, int startTick, int endTick, double scale, boolean updateDeltaMovement, boolean ignoreDeltaY) {
         if (updateDeltaMovement && tickCount == startTick)
-            calculateDeltaMovement(target);
+            calculateDeltaMovement(target, ignoreDeltaY);
         if (startTick <= tickCount && tickCount < endTick)
             mob.setDeltaMovement(delta.scale(scale));
     }

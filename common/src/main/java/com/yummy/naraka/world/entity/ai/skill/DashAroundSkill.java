@@ -16,7 +16,7 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
     private Vec3 deltaMovement = Vec3.ZERO;
 
     public DashAroundSkill(T mob) {
-        super(NAME, 17, 100, mob);
+        super(NAME, 7, 50, mob);
     }
 
     @Override
@@ -43,27 +43,35 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
     protected void skillTick() {
         mob.getNavigation().stop();
 
-        if (tickCount == 10) {
+        if (tickCount == 0) {
             updateDeltaMovement();
         }
-        if (10 <= tickCount && tickCount < 15) {
+        if (0 <= tickCount && tickCount <= 5) {
             mob.setDeltaMovement(deltaMovement);
-            mob.addAfterimage(Afterimage.of(mob, 15));
+            mob.addAfterimage(Afterimage.of(mob, 13), 2, tickCount < 5);
         }
-        if (tickCount == 15)
+        if (tickCount == 5)
             mob.setDeltaMovement(Vec3.ZERO);
     }
 
     private void updateDeltaMovement() {
         LivingEntity target = mob.getTarget();
-        if (target == null)
-            return;
+        Vec3 targetPosition = mob.position().add(mob.getViewVector(0));
+        if (target != null)
+            targetPosition = target.position();
 
         int rotationDegrees = 60 * (mob.getRandom().nextInt(2) * 2 - 1);
-        Vector3f vector = NarakaEntityUtils.getDirectionNormalVector(mob, target)
+        if (target == null)
+            rotationDegrees *= 4;
+        Vector3f vector = NarakaEntityUtils.getDirectionNormalVector(mob.position(), targetPosition)
                 .multiply(1, 0, 1)
                 .toVector3f()
                 .mul(Axis.YP.rotationDegrees(rotationDegrees).get(new Matrix3f()));
         this.deltaMovement = new Vec3(vector);
+    }
+
+    public void preventSecondUse() {
+        this.secondUse = true;
+        setLinkedSkill(null);
     }
 }

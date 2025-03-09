@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
@@ -37,12 +38,22 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
     @Override
     public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        if (!entity.getAfterimages().isEmpty()) {
+            int light = Mth.clamp(entity.getAfterimages().size() + 1, 0, 15);
+            packedLight = LightTexture.pack(light, light);
+        }
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
+        renderAfterimages(entity, partialTicks, poseStack, buffer);
+    }
+
+    public void renderAfterimages(T entity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer) {
         for (Afterimage afterimage : entity.getAfterimages())
             this.renderAfterimage(entity, afterimage, partialTicks, poseStack, buffer);
     }
 
     protected void renderAfterimage(T entity, Afterimage afterimage, float partialTicks, PoseStack poseStack, MultiBufferSource buffer) {
+        if (afterimage.getAlpha(partialTicks) == 0 && afterimage.getPartialTicks() < partialTicks)
+            return;
         poseStack.pushPose();
         Vec3 translation = afterimage.translation(entity, partialTicks);
         poseStack.translate(translation.x, translation.y + 1.5, translation.z);
@@ -52,8 +63,10 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
         RenderType renderType = RenderType.entityTranslucent(getAfterimageTexture(entity));
         VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
-        int color = Color.of(0xffffff).withAlpha(afterimage.getAlpha()).pack();
-        this.afterimageModel.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color);
+        Color color = Color.of(0xffffff).withAlpha(afterimage.getAlpha(partialTicks));
+        int light = (int) (color.alpha01() * 10) + 5;
+
+        this.afterimageModel.renderToBuffer(poseStack, vertexConsumer, LightTexture.pack(light, light), OverlayTexture.NO_OVERLAY, color.pack());
         poseStack.popPose();
     }
 

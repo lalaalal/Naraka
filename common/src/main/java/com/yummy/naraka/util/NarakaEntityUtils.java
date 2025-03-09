@@ -23,9 +23,11 @@ public class NarakaEntityUtils {
     }
 
     public static Vec3 getDirectionNormalVector(Entity from, Entity to) {
-        return to.position()
-                .subtract(from.position())
-                .normalize();
+        return getDirectionNormalVector(from.position(), to.position());
+    }
+
+    public static Vec3 getDirectionNormalVector(Vec3 from, Vec3 to) {
+        return to.subtract(from).normalize();
     }
 
     public static boolean disableAndHurtShield(LivingEntity livingEntity, int cooldown, int damage) {

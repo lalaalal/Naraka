@@ -14,15 +14,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class SkillUsingMob extends PathfinderMob {
     protected final SkillManager skillManager = new SkillManager(random);
     protected final Map<String, AnimationController> animationStates = new HashMap<>();
-    protected final List<Afterimage> afterimages = new ArrayList<>();
 
     protected SkillUsingMob(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -43,12 +40,6 @@ public abstract class SkillUsingMob extends PathfinderMob {
     public void registerSkill(Skill<?> skill, AnimationState... animationStates) {
         this.skillManager.addSkill(skill);
         this.animationStates.put(skill.name, AnimationController.of(random, animationStates));
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        afterimages.removeIf(Afterimage::tick);
     }
 
     public double getAttackDamage() {

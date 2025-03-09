@@ -75,7 +75,7 @@ public class SpearRenderer extends EntityRenderer<Spear> {
         poseStack.translate(0, yOffset, 0);
 
         if (spear.getType() == NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.get()) {
-            packedLight = LightTexture.FULL_BLOCK;
+            packedLight = LightTexture.FULL_BRIGHT;
             renderNonShaderLonginus(model, spear.tickCount, partialTicks, poseStack, buffer, packedLight);
         }
         RenderType renderType = model.renderType(getTextureLocation(spear));
