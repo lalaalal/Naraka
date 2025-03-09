@@ -10,6 +10,10 @@ public record Color(int alpha, int red, int green, int blue) {
         return new Color(alpha, red, green, blue);
     }
 
+    public static Color of(String hex) {
+        return of(Integer.parseInt(hex, 16));
+    }
+
     public float alpha01() {
         return alpha / 255f;
     }

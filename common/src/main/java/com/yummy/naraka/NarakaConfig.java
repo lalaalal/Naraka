@@ -20,6 +20,9 @@ public final class NarakaConfig {
     public final ConfigValue<Boolean> generatePillarCaves;
     public final ConfigValue<Boolean> showReinforcementValue;
     public final ConfigValue<Boolean> disableNonShaderLonginusRendering;
+    public final ConfigValue<String> afterimageColor;
+    public final ConfigValue<String> afterimageOutlineColor;
+    public final ConfigValue<Boolean> disableAfterimageOutline;
 
     static void load() {
         try {
@@ -51,6 +54,9 @@ public final class NarakaConfig {
         this.generatePillarCaves = define("generate_pillar_caves", false);
         this.showReinforcementValue = define("show_reinforcement_value", false);
         this.disableNonShaderLonginusRendering = define("disable_non_shader_longinus_rendering", false);
+        this.afterimageColor = define("afterimage_color", "ffffff");
+        this.afterimageOutlineColor = define("afterimage_outline_color", "ffffff");
+        this.disableAfterimageOutline = define("disable_afterimage_outline", false);
 
         loadValues();
     }

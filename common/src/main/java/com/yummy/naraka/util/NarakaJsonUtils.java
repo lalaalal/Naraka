@@ -12,7 +12,8 @@ public class NarakaJsonUtils {
             Integer.class, JsonElement::getAsInt,
             Boolean.class, JsonElement::getAsBoolean,
             Double.class, JsonElement::getAsDouble,
-            Float.class, JsonElement::getAsFloat
+            Float.class, JsonElement::getAsFloat,
+            String.class, JsonElement::getAsString
     );
 
     public static final Gson GSON = new GsonBuilder()

@@ -45,12 +45,12 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
 
         if (tickCount == 0)
             updateDeltaMovement();
-        if (0 <= tickCount && tickCount <= 5) {
+        if (0 <= tickCount && tickCount <= 3) {
             NarakaEntityUtils.updatePositionForUpStep(level(), mob, deltaMovement, 0.4);
             mob.setDeltaMovement(deltaMovement);
-            mob.addAfterimage(Afterimage.of(mob, 13), 2, tickCount < 5);
+            mob.addAfterimage(Afterimage.of(mob, 10), 2, tickCount < 3);
         }
-        if (tickCount == 5)
+        if (tickCount == 3)
             mob.setDeltaMovement(Vec3.ZERO);
     }
 
@@ -64,7 +64,7 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
         if (target == null)
             rotationDegrees *= 4;
         Vector3f vector = NarakaEntityUtils.getDirectionNormalVector(mob.position(), targetPosition)
-                .multiply(1, 0, 1)
+                .multiply(0.8, 0, 0.8)
                 .toVector3f()
                 .mul(Axis.YP.rotationDegrees(rotationDegrees).get(new Matrix3f()));
         this.deltaMovement = new Vec3(vector);
