@@ -1,5 +1,7 @@
 package com.yummy.naraka.util;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -8,7 +10,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -28,6 +33,15 @@ public class NarakaEntityUtils {
 
     public static Vec3 getDirectionNormalVector(Vec3 from, Vec3 to) {
         return to.subtract(from).normalize();
+    }
+
+    public static void updatePositionForUpStep(Level level, Entity entity, Vec3 delta, double stepHeight) {
+        BlockPos pos = NarakaUtils.pos(entity.position().add(delta.normalize().scale(0.5)));
+        BlockState state = level.getBlockState(pos);
+        VoxelShape shape = state.getCollisionShape(level, pos);
+        double height = shape.max(Direction.Axis.Y);
+        if (!shape.isEmpty() && height <= stepHeight && entity.getY() - entity.blockPosition().getY() < height)
+            entity.setPos(entity.getX(), entity.getY() + height, entity.getZ());
     }
 
     public static boolean disableAndHurtShield(LivingEntity livingEntity, int cooldown, int damage) {

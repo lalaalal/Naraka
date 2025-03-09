@@ -80,8 +80,8 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
         return Monster.createMonsterAttributes()
                 .add(Attributes.FOLLOW_RANGE, 128)
                 .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 1)
-                .add(Attributes.STEP_HEIGHT, 2)
-                .add(Attributes.MOVEMENT_SPEED, 0.15f)
+                .add(Attributes.STEP_HEIGHT, 1.7)
+                .add(Attributes.MOVEMENT_SPEED, 0.2f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.MAX_HEALTH, 666);
@@ -217,9 +217,8 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
         }
 
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
-            if (source.getEntity() instanceof LivingEntity target && !target.isAttackable()) {
+            if (source.getEntity() instanceof LivingEntity target && target.isAttackable())
                 setTarget(target);
-            }
             skillManager.setCurrentSkillIfAbsence(blockingSkill);
             return false;
         }

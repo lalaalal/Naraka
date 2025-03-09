@@ -72,8 +72,10 @@ public class RushSkill extends Skill<SkillUsingMob> {
     private void updateDeltaMovement(LivingEntity target, int startTick, int endTick, double scale, boolean updateDeltaMovement, boolean ignoreDeltaY) {
         if (updateDeltaMovement && tickCount == startTick)
             calculateDeltaMovement(target, ignoreDeltaY);
-        if (startTick <= tickCount && tickCount < endTick)
+        if (startTick <= tickCount && tickCount < endTick) {
+            NarakaEntityUtils.updatePositionForUpStep(level(), mob, delta, 0.5);
             mob.setDeltaMovement(delta.scale(scale));
+        }
     }
 
     private void updateBlocks(int power) {

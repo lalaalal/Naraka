@@ -43,10 +43,10 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
     protected void skillTick() {
         mob.getNavigation().stop();
 
-        if (tickCount == 0) {
+        if (tickCount == 0)
             updateDeltaMovement();
-        }
         if (0 <= tickCount && tickCount <= 5) {
+            NarakaEntityUtils.updatePositionForUpStep(level(), mob, deltaMovement, 0.4);
             mob.setDeltaMovement(deltaMovement);
             mob.addAfterimage(Afterimage.of(mob, 13), 2, tickCount < 5);
         }

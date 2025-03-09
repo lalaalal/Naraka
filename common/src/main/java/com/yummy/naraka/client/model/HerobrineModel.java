@@ -61,7 +61,7 @@ public class HerobrineModel<T extends Herobrine> extends HierarchicalModel<T> {
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root.getAllParts().forEach(ModelPart::resetPose);
         applyHeadRotation(netHeadYaw, headPitch);
-        this.animateWalk(HerobrineAnimation.WALKING, limbSwing, limbSwingAmount, 2, 2.5f);
+        this.animateWalk(HerobrineAnimation.WALKING, limbSwing, limbSwingAmount, 2, 2);
         this.animate(entity.punchAnimationState1, HerobrinePunchAnimation.PUNCH_1, ageInTicks);
         this.animate(entity.punchAnimationState2, HerobrinePunchAnimation.PUNCH_2, ageInTicks);
         this.animate(entity.punchAnimationState3, HerobrinePunchAnimation.PUNCH_3, ageInTicks);
