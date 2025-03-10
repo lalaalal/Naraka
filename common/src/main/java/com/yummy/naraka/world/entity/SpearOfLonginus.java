@@ -34,6 +34,8 @@ public class SpearOfLonginus extends Spear {
 
     @Override
     public void tick() {
+        if (getOwner() != null && distanceTo(getOwner()) > 64)
+            dealtDamage = true;
         super.tick();
     }
 

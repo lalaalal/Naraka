@@ -16,9 +16,11 @@ public class NarakaFireballItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+        Vec3 viewVector = player.getViewVector(0);
         NarakaFireball fireball = new NarakaFireball(player, player, Vec3.ZERO, level);
+        fireball.setPos(player.position().add(viewVector.x, 0, viewVector.z));
         level.addFreshEntity(fireball);
-        fireball.shoot(1, 0, 0, 5, 0);
+        fireball.shoot(viewVector.x, viewVector.y, viewVector.z, 4, 0);
         return super.use(level, player, usedHand);
     }
 }

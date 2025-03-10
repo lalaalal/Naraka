@@ -2,6 +2,9 @@ package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -19,7 +22,9 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class NarakaFireball extends Fireball implements ItemSupplier {
-    private @Nullable Entity target;
+    protected static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(NarakaFireball.class, EntityDataSerializers.INT);
+
+    private @Nullable Entity cachedTarget;
 
     public NarakaFireball(EntityType<? extends NarakaFireball> entityType, Level level) {
         super(entityType, level);
@@ -27,19 +32,41 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     }
 
     public NarakaFireball(Mob owner, Vec3 movement, Level level) {
+        this(owner, owner.getTarget(), movement, level);
+    }
+
+    public NarakaFireball(LivingEntity owner, @Nullable Entity target, Vec3 movement, Level level) {
         super(NarakaEntityTypes.NARAKA_FIREBALL.get(), owner, movement, level);
-        this.target = owner.getTarget();
+        setTarget(target);
         setItem(NarakaItems.NARAKA_FIREBALL.get().getDefaultInstance());
     }
 
-    public NarakaFireball(LivingEntity owner, Entity target, Vec3 movement, Level level) {
-        super(NarakaEntityTypes.NARAKA_FIREBALL.get(), owner, movement, level);
-        this.target = target;
-        setItem(NarakaItems.NARAKA_FIREBALL.get().getDefaultInstance());
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(TARGET_ID, -1);
     }
 
     public boolean hasTarget() {
-        return target != null;
+        return entityData.get(TARGET_ID) != -1;
+    }
+
+    public void setTarget(@Nullable Entity target) {
+        if (target != null) {
+            this.cachedTarget = target;
+            entityData.set(TARGET_ID, target.getId());
+        }
+    }
+
+    @Nullable
+    protected Entity getTarget() {
+        if (cachedTarget == null) {
+            int targetId = entityData.get(TARGET_ID);
+            if (targetId == -1)
+                return null;
+            return this.cachedTarget = level().getEntity(targetId);
+        }
+        return cachedTarget;
     }
 
     @Override
@@ -55,9 +82,12 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     }
 
     private void traceTarget() {
+        Entity target = getTarget();
         if (target != null) {
             Vec3 targetVector = target.getEyePosition().subtract(position());
             Vec3 movingVector = getDeltaMovement().normalize();
+            if (movingVector.equals(Vec3.ZERO))
+                return;
             Vec3 projectionVector = movingVector.scale(targetVector.dot(movingVector) / movingVector.length());
             Vec3 tracingVector = targetVector.subtract(projectionVector);
             double tracingVectorLength = tracingVector.length();
@@ -76,7 +106,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     @Override
     protected void onDeflection(@Nullable Entity entity, boolean deflectedByPlayer) {
         super.onDeflection(entity, deflectedByPlayer);
-        target = null;
+        cachedTarget = null;
     }
 
     @Override
@@ -99,14 +129,15 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        if (target != null)
-            compound.putUUID("Target", target.getUUID());
+        if (cachedTarget != null)
+            compound.putUUID("Target", cachedTarget.getUUID());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        if (compound.contains("Target") && level() instanceof ServerLevel serverLevel)
-            target = serverLevel.getEntity(compound.getUUID("Target"));
+        if (compound.contains("Target") && level() instanceof ServerLevel serverLevel) {
+            setTarget(serverLevel.getEntity(compound.getUUID("Target")));
+        }
     }
 }

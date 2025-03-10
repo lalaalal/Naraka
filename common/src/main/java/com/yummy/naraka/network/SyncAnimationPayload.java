@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public record SyncAnimationPayload(int entityId, String animationName) implements CustomPacketPayload {
-    public static final Type<SyncAnimationPayload> TYPE = new Type<>(NarakaMod.location("sync_skill"));
+    public static final Type<SyncAnimationPayload> TYPE = new Type<>(NarakaMod.location("sync_animation"));
 
     public static final StreamCodec<ByteBuf, SyncAnimationPayload> CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT,
