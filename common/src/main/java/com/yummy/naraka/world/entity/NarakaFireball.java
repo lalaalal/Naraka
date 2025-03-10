@@ -7,8 +7,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -52,10 +50,9 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     }
 
     public void setTarget(@Nullable Entity target) {
-        if (target != null) {
-            this.cachedTarget = target;
-            entityData.set(TARGET_ID, target.getId());
-        }
+        this.cachedTarget = target;
+        int targetId = target == null ? -1 : target.getId();
+        entityData.set(TARGET_ID, targetId);
     }
 
     @Nullable
@@ -67,12 +64,6 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
             return this.cachedTarget = level().getEntity(targetId);
         }
         return cachedTarget;
-    }
-
-    @Override
-    public void setOwner(@Nullable Entity owner) {
-        if (this.getOwner() == null)
-            super.setOwner(owner);
     }
 
     @Override
@@ -96,7 +87,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
             double length = deltaMovement.length();
             if (tracingVectorLength > 8 && length > 0.7)
                 setDeltaMovement(deltaMovement.scale(0.9));
-            if (tracingVectorLength < 8 && length < 1.3)
+            if (tracingVectorLength < 8 && length < 1)
                 setDeltaMovement(deltaMovement.scale(1.1));
             double scale = Mth.clamp(tracingVectorLength, 0, 0.08);
             addDeltaMovement(tracingVector.scale(scale));
@@ -106,7 +97,9 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     @Override
     protected void onDeflection(@Nullable Entity entity, boolean deflectedByPlayer) {
         super.onDeflection(entity, deflectedByPlayer);
-        cachedTarget = null;
+        setTarget(null);
+        if (level().isClientSide)
+            setDeltaMovement(Vec3.ZERO);
     }
 
     @Override
@@ -123,7 +116,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         super.onHitEntity(result);
         Entity hitEntity = result.getEntity();
         if (hitEntity == getOwner() && hitEntity instanceof LivingEntity livingEntity)
-            livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40));
+            livingEntity.hurt(damageSources().fireball(this, getOwner()), 10);
     }
 
     @Override

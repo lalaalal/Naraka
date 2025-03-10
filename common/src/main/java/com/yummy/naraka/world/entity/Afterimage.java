@@ -41,7 +41,7 @@ public class Afterimage {
     }
 
     public Afterimage(Vec3 position, float yRot, int maxTickCount) {
-        this(position, yRot, maxTickCount, -4.7f);
+        this(position, yRot, maxTickCount, -5f);
     }
 
     protected Afterimage(Vec3 position, float yRot, int maxTickCount, float tickCount) {

@@ -27,10 +27,12 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -113,6 +115,7 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
     @Override
     protected void registerGoals() {
         targetSelector.addGoal(1, new HurtByTargetGoal(this, Herobrine.class));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
 
         goalSelector.addGoal(1, new FloatGoal(this));
         goalSelector.addGoal(2, new MoveToTargetGoal(this, 1, 64));
@@ -206,7 +209,26 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
 
         float actualDamage = getActualDamage(source, damage);
         updateHurtDamageLimit(actualDamage);
+        if (updateHibernateMode(source, actualDamage))
+            return true;
 
+        if (source.is(DamageTypeTags.IS_PROJECTILE)) {
+            if (source.getDirectEntity() != null)
+                lookAt(source.getDirectEntity(), 360, 0);
+            skillManager.setCurrentSkillIfAbsence(blockingSkill);
+            return false;
+        }
+        return super.hurt(source, Math.min(hurtDamageLimit, damage));
+    }
+
+    private boolean updateHibernateMode(DamageSource source, float actualDamage) {
+        if (hibernateMode && source.getDirectEntity() instanceof NarakaFireball fireball && !fireball.hasTarget()) {
+            stopHibernateMode();
+            startWeakness();
+            if (phaseManager.getCurrentPhaseHealth() == 1)
+                setHealth(getHealth() - 1);
+            return true;
+        }
         if (phaseManager.getCurrentPhase() == 1) {
             float healthAfterHurt = phaseManager.getCurrentPhaseHealth() + getAbsorptionAmount() - actualDamage;
             if (healthAfterHurt < 1) {
@@ -215,20 +237,7 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
                 return true;
             }
         }
-
-        if (source.is(DamageTypeTags.IS_PROJECTILE)) {
-            if (hibernateMode && source.getDirectEntity() instanceof NarakaFireball fireball && !fireball.hasTarget()) {
-                stopHibernateMode();
-                startWeakness();
-                if (phaseManager.getCurrentPhaseHealth() == 1)
-                    setHealth(getHealth() - 1);
-            }
-            if (source.getDirectEntity() != null)
-                lookAt(source.getDirectEntity(), 360, 0);
-            skillManager.setCurrentSkillIfAbsence(blockingSkill);
-            return false;
-        }
-        return super.hurt(source, Math.min(hurtDamageLimit, damage));
+        return false;
     }
 
     private float getActualDamage(DamageSource source, float damage) {
@@ -265,7 +274,6 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
     }
 
     private void startWeakness() {
-
         weaknessAnimationState.start(tickCount);
         weaknessTickCount = 0;
         skillManager.pause(true);
@@ -330,9 +338,7 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        if (source.is(DamageTypes.IN_WALL))
-            return true;
-        return super.isInvulnerableTo(source);
+        return source.is(DamageTypes.IN_WALL) || source.is(DamageTypes.LIGHTNING_BOLT) || super.isInvulnerableTo(source);
     }
 
     @Override

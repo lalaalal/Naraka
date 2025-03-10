@@ -23,7 +23,7 @@ public class HerobrineEyeLayer<T extends Herobrine> extends RenderLayer<T, Herob
     }
 
     private RenderType getRenderType() {
-        return RenderType.entityCutout(NarakaTextures.HEROBRINE_EYE);
+        return RenderType.entityTranslucent(NarakaTextures.HEROBRINE_EYE);
     }
 
     @Override

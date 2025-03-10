@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
 public abstract class AfterimageEntityRenderer<T extends LivingEntity & AfterimageEntity, M extends HierarchicalModel<T>> extends LivingEntityRenderer<T, M> {
-    private final M afterimageModel;
+    protected final M afterimageModel;
 
     public AfterimageEntityRenderer(EntityRendererProvider.Context context, Supplier<M> model, float shadowRadius) {
         super(context, model.get(), shadowRadius);
@@ -45,13 +45,13 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
             packedLight = Math.max(LightTexture.pack(blockLight, skyLight), packedLight);
         }
-        super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
         renderAfterimages(entity, partialTicks, poseStack, buffer);
+        super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
     }
 
-    public void renderAfterimages(T entity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer) {
+    protected void renderAfterimages(T entity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer) {
         for (Afterimage afterimage : entity.getAfterimages()) {
-            if (NarakaMod.config().disableAfterimageOutline.getValue())
+            if (!NarakaMod.config().disableAfterimageOutline.getValue())
                 this.renderAfterimage(entity, afterimage, partialTicks, poseStack, buffer, true);
             this.renderAfterimage(entity, afterimage, partialTicks, poseStack, buffer, false);
         }
@@ -60,8 +60,10 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
     protected void renderAfterimage(T entity, Afterimage afterimage, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, boolean outline) {
         if (afterimage.getAlpha(partialTicks) == 0 && afterimage.getPartialTicks() < partialTicks)
             return;
-        poseStack.pushPose();
+
         Vec3 translation = afterimage.translation(entity, partialTicks);
+
+        poseStack.pushPose();
         poseStack.translate(translation.x, translation.y + 1.5, translation.z);
         poseStack.scale(1, -1, 1);
 
@@ -70,10 +72,17 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
         RenderType renderType = RenderType.entityTranslucent(getAfterimageTexture(entity, outline));
         VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
         Color color = getAfterimageColor(afterimage, partialTicks, outline);
-        int light = (int) (afterimage.getAlpha01(partialTicks) * 10) + 5;
+        int light = (int) (color.alpha01() * 10) + 5;
+        int packedLight = LightTexture.pack(light, light);
 
-        this.afterimageModel.renderToBuffer(poseStack, vertexConsumer, LightTexture.pack(light, light), OverlayTexture.NO_OVERLAY, color.pack());
+        this.afterimageModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color.pack());
+        renderAfterimageLayer(entity, afterimage, partialTicks, poseStack, buffer, packedLight, color.alpha());
+
         poseStack.popPose();
+    }
+
+    protected void renderAfterimageLayer(T entity, Afterimage afterimage, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int alpha) {
+
     }
 
     protected Color getAfterimageColor(Afterimage afterimage, float partialTicks, boolean outline) {

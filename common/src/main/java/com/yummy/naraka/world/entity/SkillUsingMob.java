@@ -54,7 +54,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
         return damageSources().mobAttack(this);
     }
 
-    protected void setAnimation(String name) {
+    public void setAnimation(String name) {
         if (level() instanceof ServerLevel serverLevel) {
             SyncAnimationPayload payload = new SyncAnimationPayload(this, name);
             NetworkManager.sendToPlayers(serverLevel.players(), payload);

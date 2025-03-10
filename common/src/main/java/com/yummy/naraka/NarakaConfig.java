@@ -56,7 +56,7 @@ public final class NarakaConfig {
         this.disableNonShaderLonginusRendering = define("disable_non_shader_longinus_rendering", false);
         this.afterimageColor = define("afterimage_color", "ffffff");
         this.afterimageOutlineColor = define("afterimage_outline_color", "ffffff");
-        this.disableAfterimageOutline = define("disable_afterimage_outline", false);
+        this.disableAfterimageOutline = define("disable_afterimage_outline", true);
 
         loadValues();
     }
