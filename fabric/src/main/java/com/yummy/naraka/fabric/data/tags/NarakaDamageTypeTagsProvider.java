@@ -39,8 +39,11 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
                 DamageTypeTags.BYPASSES_COOLDOWN
         );
         addTags(NarakaDamageTypes.MOB_ATTACK_FIXED,
+                DamageTypeTags.BYPASSES_ARMOR,
+                DamageTypeTags.BYPASSES_WOLF_ARMOR,
                 DamageTypeTags.BYPASSES_EFFECTS,
-                DamageTypeTags.BYPASSES_RESISTANCE
+                DamageTypeTags.BYPASSES_RESISTANCE,
+                DamageTypeTags.BYPASSES_ENCHANTMENTS
         );
         tag(NarakaDamageTypeTags.DEATH_COUNTING_ATTACK)
                 .add(NarakaDamageTypes.STIGMA);

@@ -6,6 +6,7 @@ import com.yummy.naraka.world.entity.ai.skill.SkillManager;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -42,11 +43,15 @@ public abstract class SkillUsingMob extends PathfinderMob {
         this.animationStates.put(skill.name, AnimationController.of(random, animationStates));
     }
 
-    public double getAttackDamage() {
+    public float getAttackDamage() {
         AttributeInstance instance = getAttribute(Attributes.ATTACK_DAMAGE);
         if (instance == null)
             return 1;
-        return instance.getValue();
+        return (float) instance.getValue();
+    }
+
+    public DamageSource getDefaultDamageSource() {
+        return damageSources().mobAttack(this);
     }
 
     protected void setAnimation(String name) {

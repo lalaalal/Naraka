@@ -3,6 +3,7 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -37,6 +38,10 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         setItem(NarakaItems.NARAKA_FIREBALL.get().getDefaultInstance());
     }
 
+    public boolean hasTarget() {
+        return target != null;
+    }
+
     @Override
     public void setOwner(@Nullable Entity owner) {
         if (this.getOwner() == null)
@@ -51,9 +56,20 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
 
     private void traceTarget() {
         if (target != null) {
-            double length = getDeltaMovement().length();
-            Vec3 delta = target.getEyePosition().subtract(position());
-            setDeltaMovement(getDeltaMovement().scale(2).add(delta).normalize().scale(length));
+            Vec3 targetVector = target.getEyePosition().subtract(position());
+            Vec3 movingVector = getDeltaMovement().normalize();
+            Vec3 projectionVector = movingVector.scale(targetVector.dot(movingVector) / movingVector.length());
+            Vec3 tracingVector = targetVector.subtract(projectionVector);
+            double tracingVectorLength = tracingVector.length();
+
+            Vec3 deltaMovement = getDeltaMovement();
+            double length = deltaMovement.length();
+            if (tracingVectorLength > 8 && length > 0.7)
+                setDeltaMovement(deltaMovement.scale(0.9));
+            if (tracingVectorLength < 8 && length < 1.3)
+                setDeltaMovement(deltaMovement.scale(1.1));
+            double scale = Mth.clamp(tracingVectorLength, 0, 0.08);
+            addDeltaMovement(tracingVector.scale(scale));
         }
     }
 
@@ -67,7 +83,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     protected void onHit(HitResult result) {
         super.onHit(result);
         if (!level().isClientSide) {
-            level().explode(this, damageSources().fireball(this, getOwner()), null, position(), 3, false, Level.ExplosionInteraction.NONE);
+            level().explode(this, damageSources().fireball(this, getOwner()), null, position(), 1, false, Level.ExplosionInteraction.NONE);
             discard();
         }
     }

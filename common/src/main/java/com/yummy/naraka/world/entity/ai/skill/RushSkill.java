@@ -2,7 +2,6 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.block.UnstableBlock;
-import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.core.BlockPos;
@@ -103,8 +102,9 @@ public class RushSkill extends Skill<SkillUsingMob> {
             blockedEntities.add(target);
             return;
         }
-        DamageSource source = NarakaDamageSources.fixed(mob);
-        target.hurt(source, 3);
+        DamageSource source = mob.getDefaultDamageSource();
+        float damage = mob.getAttackDamage();
+        target.hurt(source, damage);
         target.knockback(5, mob.getX() - target.getX(), mob.getZ() - target.getZ());
         int stunDuration = 100;
         if (!blockedEntities.contains(target))

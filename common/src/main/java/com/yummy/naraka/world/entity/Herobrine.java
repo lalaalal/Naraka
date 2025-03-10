@@ -19,7 +19,6 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -78,6 +77,7 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
+                .add(Attributes.ATTACK_DAMAGE, 10)
                 .add(Attributes.FOLLOW_RANGE, 128)
                 .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 1)
                 .add(Attributes.STEP_HEIGHT, 1.7)
@@ -217,8 +217,14 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
         }
 
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
-            if (source.getEntity() instanceof LivingEntity target && target.isAttackable())
-                setTarget(target);
+            if (hibernateMode && source.getDirectEntity() instanceof NarakaFireball fireball && !fireball.hasTarget()) {
+                stopHibernateMode();
+                startWeakness();
+                if (phaseManager.getCurrentPhaseHealth() == 1)
+                    setHealth(getHealth() - 1);
+            }
+            if (source.getDirectEntity() != null)
+                lookAt(source.getDirectEntity(), 360, 0);
             skillManager.setCurrentSkillIfAbsence(blockingSkill);
             return false;
         }
@@ -299,12 +305,6 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
 
     @Override
     public boolean addEffect(MobEffectInstance effectInstance, @Nullable Entity entity) {
-        if (hibernateMode && effectInstance.is(MobEffects.WEAKNESS)) {
-            stopHibernateMode();
-            startWeakness();
-            if (phaseManager.getCurrentPhaseHealth() == 1)
-                setHealth(getHealth() - 1);
-        }
         return false;
     }
 

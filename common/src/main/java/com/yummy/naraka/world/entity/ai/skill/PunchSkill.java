@@ -1,7 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.world.damagesource.DamageSource;
@@ -27,13 +26,13 @@ public class PunchSkill extends Skill<SkillUsingMob> {
             return;
 
         mob.lookAt(target, 360, 0);
-        DamageSource fixedAttack = NarakaDamageSources.fixed(mob);
-        float damage = target.getMaxHealth() * 0.03f + 6;
+        DamageSource damageSource = mob.getDefaultDamageSource();
+        float damage = mob.getAttackDamage();
         if (NarakaEntityUtils.disableAndHurtShield(target, 100, 25) || !canUse())
             return;
 
         StunHelper.stunEntity(target, 100);
-        target.hurt(fixedAttack, damage);
+        target.hurt(damageSource, damage);
         target.knockback(2f, mob.getX() - target.getX(), mob.getZ() - target.getZ());
     }
 }
