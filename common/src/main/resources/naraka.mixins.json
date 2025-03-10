@@ -15,6 +15,7 @@
     "client.MouseHandlerMixin"
   ],
   "mixins": [
+    "EnchantmentMixin",
     "FeatureMixin",
     "LivingEntityMixin",
     "OverworldBiomeBuilderMixin",

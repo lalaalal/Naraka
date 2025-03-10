@@ -23,6 +23,7 @@ public final class NarakaConfig {
     public final ConfigValue<String> afterimageColor;
     public final ConfigValue<String> afterimageOutlineColor;
     public final ConfigValue<Boolean> disableAfterimageOutline;
+    public final ConfigValue<Boolean> showTestCreativeModeTab;
 
     static void load() {
         try {
@@ -57,6 +58,7 @@ public final class NarakaConfig {
         this.afterimageColor = define("afterimage_color", "ffffff");
         this.afterimageOutlineColor = define("afterimage_outline_color", "ffffff");
         this.disableAfterimageOutline = define("disable_afterimage_outline", true);
+        this.showTestCreativeModeTab = define("show_test_creative_mode_tab", false);
 
         loadValues();
     }

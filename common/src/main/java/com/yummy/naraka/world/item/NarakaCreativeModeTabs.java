@@ -22,21 +22,21 @@ import net.minecraft.world.level.block.Blocks;
 import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
-public class NarakaCreativeModTabs {
+public class NarakaCreativeModeTabs {
     public static final LazyHolder<CreativeModeTab, CreativeModeTab> NARAKA_TAB = register("naraka", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
             .title(Component.translatable(LanguageKey.ITEM_GROUP_NARAKA))
             .icon(() -> NarakaItems.STIGMA_ROD.get().getDefaultInstance())
-            .displayItems(NarakaCreativeModTabs::createNarakaTab)
+            .displayItems(NarakaCreativeModeTabs::createNarakaTab)
     );
     public static final LazyHolder<CreativeModeTab, CreativeModeTab> SOUL_MATERIALS_TAB = register("soul_materials", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
             .title(Component.translatable(LanguageKey.ITEM_GROUP_SOUL_MATERIALS))
             .icon(() -> NarakaItems.EBONY_SWORD.get().getDefaultInstance())
-            .displayItems(NarakaCreativeModTabs::createSoulMaterialsTab)
+            .displayItems(NarakaCreativeModeTabs::createSoulMaterialsTab)
     );
     public static final LazyHolder<CreativeModeTab, CreativeModeTab> NARAKA_TEST_TAB = registerOnlyDev("naraka_test", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
             .title(Component.translatable(LanguageKey.ITEM_GROUP_TEST))
             .icon(() -> NarakaItems.SPEAR_ITEM.get().getDefaultInstance())
-            .displayItems(NarakaCreativeModTabs::createNarakaTestTab)
+            .displayItems(NarakaCreativeModeTabs::createNarakaTestTab)
     );
 
     private static LazyHolder<CreativeModeTab, CreativeModeTab> register(String name, CreativeModeTab.Builder builder) {
@@ -44,18 +44,18 @@ public class NarakaCreativeModTabs {
     }
 
     private static LazyHolder<CreativeModeTab, CreativeModeTab> registerOnlyDev(String name, CreativeModeTab.Builder builder) {
-        if (Platform.getInstance().isDevelopmentEnvironment())
+        if (Platform.getInstance().isDevelopmentEnvironment() || NarakaMod.config().showTestCreativeModeTab.getValue())
             return RegistryProxy.register(Registries.CREATIVE_MODE_TAB, name, builder::build);
         return new LazyHolder<>(BuiltInRegistries.CREATIVE_MODE_TAB, NarakaMod.location(name));
     }
 
     public static void initialize(NarakaInitializer initializer) {
         CreativeModeTabModifier modifier = initializer.getCreativeModeTabModifier();
-        modifier.modify(CreativeModeTabs.BUILDING_BLOCKS, NarakaCreativeModTabs::modifyBuildingBlocksTab);
-        modifier.modify(CreativeModeTabs.NATURAL_BLOCKS, NarakaCreativeModTabs::modifyNaturalBlocksTab);
-        modifier.modify(CreativeModeTabs.FOOD_AND_DRINKS, NarakaCreativeModTabs::modifyFoodAndDrinksTab);
-        modifier.modify(CreativeModeTabs.INGREDIENTS, NarakaCreativeModTabs::modifyIngredientsTab);
-        modifier.modify(CreativeModeTabs.SPAWN_EGGS, NarakaCreativeModTabs::modifySpawnEggsTab);
+        modifier.modify(CreativeModeTabs.BUILDING_BLOCKS, NarakaCreativeModeTabs::modifyBuildingBlocksTab);
+        modifier.modify(CreativeModeTabs.NATURAL_BLOCKS, NarakaCreativeModeTabs::modifyNaturalBlocksTab);
+        modifier.modify(CreativeModeTabs.FOOD_AND_DRINKS, NarakaCreativeModeTabs::modifyFoodAndDrinksTab);
+        modifier.modify(CreativeModeTabs.INGREDIENTS, NarakaCreativeModeTabs::modifyIngredientsTab);
+        modifier.modify(CreativeModeTabs.SPAWN_EGGS, NarakaCreativeModeTabs::modifySpawnEggsTab);
 
         RegistryInitializer.get(Registries.CREATIVE_MODE_TAB)
                 .onRegistrationFinished();
@@ -169,6 +169,8 @@ public class NarakaCreativeModTabs {
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get()));
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_LEGGINGS.get()));
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_BOOTS.get()));
+
+        output.accept(NarakaItems.HEROBRINE_SPAWN_EGG.get());
 
         output.accept(reinforced(NarakaItems.PURIFIED_SOUL_HELMET.get()));
         output.accept(reinforced(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get()));

@@ -9,7 +9,7 @@ import com.yummy.naraka.fabric.init.FabricRegistryInitializer;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.world.NarakaBiomes;
-import com.yummy.naraka.world.item.NarakaCreativeModTabs;
+import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -45,7 +45,7 @@ public final class NarakaModFabric implements ModInitializer, NarakaInitializer 
     }
 
     @Override
-    public NarakaCreativeModTabs.CreativeModeTabModifier getCreativeModeTabModifier() {
+    public NarakaCreativeModeTabs.CreativeModeTabModifier getCreativeModeTabModifier() {
         return (tabKey, entries) -> ItemGroupEvents.modifyEntriesEvent(tabKey)
                 .register(wrap(entries));
     }
@@ -55,11 +55,11 @@ public final class NarakaModFabric implements ModInitializer, NarakaInitializer 
         return FabricBiomeModifier.INSTANCE;
     }
 
-    private static ItemGroupEvents.ModifyEntries wrap(Consumer<NarakaCreativeModTabs.TabEntries> consumer) {
+    private static ItemGroupEvents.ModifyEntries wrap(Consumer<NarakaCreativeModeTabs.TabEntries> consumer) {
         return entries -> consumer.accept(new FabricTabEntries(entries));
     }
 
-    private record FabricTabEntries(FabricItemGroupEntries entries) implements NarakaCreativeModTabs.TabEntries {
+    private record FabricTabEntries(FabricItemGroupEntries entries) implements NarakaCreativeModeTabs.TabEntries {
         @Override
         public void addBefore(ItemLike pivot, ItemLike... items) {
             entries.addBefore(pivot, items);

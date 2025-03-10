@@ -16,6 +16,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
 public abstract class AttributeModifyingEffect implements ReinforcementEffect {
     protected final Holder<Attribute> attribute;
@@ -33,6 +34,10 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
     }
 
     public static AttributeModifyingEffect simple(Holder<Attribute> attribute, EquipmentSlotGroup slotGroup) {
+        return simple(attribute, slotGroup, reinforcement -> reinforcement);
+    }
+
+    public static AttributeModifyingEffect simple(Holder<Attribute> attribute, EquipmentSlotGroup slotGroup, Function<Integer, Integer> modifyingValueByReinforcement) {
         final String modifierName = attribute.unwrapKey()
                 .map(ResourceKey::location)
                 .map(ResourceLocation::getPath)
@@ -44,7 +49,7 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
             protected AttributeModifier createModifier(int reinforcement) {
                 return new AttributeModifier(
                         modifierId(modifierName),
-                        reinforcement,
+                        modifyingValueByReinforcement.apply(reinforcement),
                         AttributeModifier.Operation.ADD_VALUE
                 );
             }

@@ -8,7 +8,7 @@ import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.neoforge.init.NeoForgeBiomeModifier;
 import com.yummy.naraka.neoforge.init.NeoForgeRegistryInitializer;
 import com.yummy.naraka.world.NarakaBiomes;
-import com.yummy.naraka.world.item.NarakaCreativeModTabs;
+import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
@@ -68,7 +68,7 @@ public final class NarakaModNeoForge implements NarakaInitializer {
     }
 
     @Override
-    public NarakaCreativeModTabs.CreativeModeTabModifier getCreativeModeTabModifier() {
+    public NarakaCreativeModeTabs.CreativeModeTabModifier getCreativeModeTabModifier() {
         return creativeModeTabModifier;
     }
 
@@ -78,9 +78,9 @@ public final class NarakaModNeoForge implements NarakaInitializer {
             runnable.run();
     }
 
-    private class NeoForgeCreativeModeTabModifier implements NarakaCreativeModTabs.CreativeModeTabModifier {
+    private class NeoForgeCreativeModeTabModifier implements NarakaCreativeModeTabs.CreativeModeTabModifier {
         @Override
-        public void modify(ResourceKey<CreativeModeTab> tabKey, Consumer<NarakaCreativeModTabs.TabEntries> entries) {
+        public void modify(ResourceKey<CreativeModeTab> tabKey, Consumer<NarakaCreativeModeTabs.TabEntries> entries) {
             bus.addListener((Consumer<BuildCreativeModeTabContentsEvent>) event -> {
                 if (tabKey.equals(event.getTabKey()))
                     entries.accept(new NeoForgeTabEntries(event));
@@ -103,7 +103,7 @@ public final class NarakaModNeoForge implements NarakaInitializer {
     }
 
     private record NeoForgeTabEntries(BuildCreativeModeTabContentsEvent event)
-            implements NarakaCreativeModTabs.TabEntries {
+            implements NarakaCreativeModeTabs.TabEntries {
 
         @Override
         public void addBefore(ItemLike pivot, ItemLike... items) {

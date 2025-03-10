@@ -137,18 +137,20 @@ public class NarakaItems {
             )
     );
 
-    public static final LazyHolder<Item, ArmorItem> PURIFIED_SOUL_HELMET = registerArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.HELMET, 0);
-    public static final LazyHolder<Item, ArmorItem> PURIFIED_SOUL_CHESTPLATE = registerArmorItem("purified_soul_chestplate", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.CHESTPLATE, 0);
-    public static final LazyHolder<Item, ArmorItem> PURIFIED_SOUL_LEGGINGS = registerArmorItem("purified_soul_leggings", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.LEGGINGS, 0);
-    public static final LazyHolder<Item, ArmorItem> PURIFIED_SOUL_BOOTS = registerArmorItem("purified_soul_boots", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.BOOTS, 0);
+    public static final LazyHolder<Item, ArmorItem> PURIFIED_SOUL_HELMET = registerPurifiedSoulArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.HELMET, 0);
+    public static final LazyHolder<Item, ArmorItem> PURIFIED_SOUL_CHESTPLATE = registerPurifiedSoulArmorItem("purified_soul_chestplate", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.CHESTPLATE, 0);
+    public static final LazyHolder<Item, ArmorItem> PURIFIED_SOUL_LEGGINGS = registerPurifiedSoulArmorItem("purified_soul_leggings", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.LEGGINGS, 0);
+    public static final LazyHolder<Item, ArmorItem> PURIFIED_SOUL_BOOTS = registerPurifiedSoulArmorItem("purified_soul_boots", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.BOOTS, 0);
 
-    public static final LazyHolder<Item, ArmorItem> EBONY_METAL_HELMET = registerArmorItem("ebony_metal_helmet", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.HELMET, 7);
-    public static final LazyHolder<Item, ArmorItem> EBONY_METAL_CHESTPLATE = registerArmorItem("ebony_metal_chestplate", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.CHESTPLATE, 7);
-    public static final LazyHolder<Item, ArmorItem> EBONY_METAL_LEGGINGS = registerArmorItem("ebony_metal_leggings", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.LEGGINGS, 7);
-    public static final LazyHolder<Item, ArmorItem> EBONY_METAL_BOOTS = registerArmorItem("ebony_metal_boots", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.BOOTS, 7);
+    public static final LazyHolder<Item, ArmorItem> EBONY_METAL_HELMET = registerPurifiedSoulArmorItem("ebony_metal_helmet", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.HELMET, 7);
+    public static final LazyHolder<Item, ArmorItem> EBONY_METAL_CHESTPLATE = registerPurifiedSoulArmorItem("ebony_metal_chestplate", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.CHESTPLATE, 7);
+    public static final LazyHolder<Item, ArmorItem> EBONY_METAL_LEGGINGS = registerPurifiedSoulArmorItem("ebony_metal_leggings", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.LEGGINGS, 7);
+    public static final LazyHolder<Item, ArmorItem> EBONY_METAL_BOOTS = registerPurifiedSoulArmorItem("ebony_metal_boots", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.BOOTS, 7);
 
-    public static LazyHolder<Item, ArmorItem> registerArmorItem(String name, Holder<ArmorMaterial> armorMaterial, ArmorItem.Type armorType, int durability) {
-        return registerItem(name, properties -> new ArmorItem(armorMaterial, armorType, properties.durability(durability)
+    public static final LazyHolder<Item, Item> HEROBRINE_SPAWN_EGG = registerItem("herobrine_spawn_egg", properties -> new SpawnEggItem(NarakaEntityTypes.HEROBRINE.get(), 0x000000, 0xff0000, properties));
+
+    public static LazyHolder<Item, ArmorItem> registerPurifiedSoulArmorItem(String name, Holder<ArmorMaterial> armorMaterial, ArmorItem.Type armorType, int durability) {
+        return registerItem(name, properties -> new PurifiedSoulArmorItem(armorMaterial, armorType, properties.durability(durability)
                 .component(DataComponents.UNBREAKABLE, new Unbreakable(true))));
     }
 
