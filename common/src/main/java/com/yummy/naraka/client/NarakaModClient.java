@@ -9,7 +9,14 @@ import com.yummy.naraka.client.gui.screen.SoulCraftingScreen;
 import com.yummy.naraka.client.particle.EbonyParticle;
 import com.yummy.naraka.client.particle.NectariumParticle;
 import com.yummy.naraka.client.particle.SoulParticle;
-import com.yummy.naraka.client.renderer.*;
+import com.yummy.naraka.client.renderer.BlockTransparentRenderer;
+import com.yummy.naraka.client.renderer.CustomRenderManager;
+import com.yummy.naraka.client.renderer.SpearItemRenderer;
+import com.yummy.naraka.client.renderer.blockentity.*;
+import com.yummy.naraka.client.renderer.entity.HerobrineRenderer;
+import com.yummy.naraka.client.renderer.entity.NarakaFireballRenderer;
+import com.yummy.naraka.client.renderer.entity.SpearRenderer;
+import com.yummy.naraka.client.renderer.entity.StardustRenderer;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.init.NarakaClientInitializer;
 import com.yummy.naraka.network.NarakaNetworks;
@@ -28,7 +35,6 @@ import dev.architectury.registry.menu.MenuRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 
 @Environment(EnvType.CLIENT)
@@ -108,7 +114,7 @@ public final class NarakaModClient {
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR, SpearRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, SpearRenderer::longinus);
         EntityRendererRegistry.register(NarakaEntityTypes.STARDUST, StardustRenderer::new);
-        EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_FIREBALL, ThrownItemRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_FIREBALL, NarakaFireballRenderer::new);
     }
 
     private static void registerHudRenders() {

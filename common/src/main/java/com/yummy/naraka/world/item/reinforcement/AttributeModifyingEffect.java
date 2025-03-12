@@ -34,10 +34,10 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
     }
 
     public static AttributeModifyingEffect simple(Holder<Attribute> attribute, EquipmentSlotGroup slotGroup) {
-        return simple(attribute, slotGroup, reinforcement -> reinforcement);
+        return simple(attribute, slotGroup, reinforcement -> reinforcement, true);
     }
 
-    public static AttributeModifyingEffect simple(Holder<Attribute> attribute, EquipmentSlotGroup slotGroup, Function<Integer, Integer> modifyingValueByReinforcement) {
+    public static AttributeModifyingEffect simple(Holder<Attribute> attribute, EquipmentSlotGroup slotGroup, Function<Integer, Integer> modifyingValueByReinforcement, boolean showInTooltip) {
         final String modifierName = attribute.unwrapKey()
                 .map(ResourceKey::location)
                 .map(ResourceLocation::getPath)
@@ -57,6 +57,11 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
             @Override
             public boolean canApply(LivingEntity entity, EquipmentSlot equipmentSlot, ItemStack itemStack, int reinforcement) {
                 return slotGroup.test(equipmentSlot);
+            }
+
+            @Override
+            public boolean showInTooltip(int reinforcement) {
+                return showInTooltip;
             }
         };
     }

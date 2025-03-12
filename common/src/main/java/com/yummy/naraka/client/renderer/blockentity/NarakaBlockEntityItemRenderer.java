@@ -1,6 +1,7 @@
-package com.yummy.naraka.client.renderer;
+package com.yummy.naraka.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.yummy.naraka.client.renderer.CustomRenderManager;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.ForgingBlockEntity;
 import com.yummy.naraka.world.block.entity.SoulSmithingBlockEntity;

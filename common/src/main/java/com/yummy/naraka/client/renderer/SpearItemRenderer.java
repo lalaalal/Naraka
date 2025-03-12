@@ -7,6 +7,7 @@ import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.SpearModel;
 import com.yummy.naraka.client.model.SpearOfLonginusModel;
+import com.yummy.naraka.client.renderer.entity.SpearRenderer;
 import com.yummy.naraka.world.entity.Spear;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;

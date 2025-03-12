@@ -19,7 +19,7 @@ public class KnockbackResistance extends AttributeModifyingEffect {
 
     @Override
     public boolean showInTooltip(int reinforcement) {
-        return reinforcement >= 10;
+        return false;
     }
 
     @Override

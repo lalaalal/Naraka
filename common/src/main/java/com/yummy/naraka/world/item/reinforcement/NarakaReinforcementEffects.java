@@ -26,11 +26,11 @@ public class NarakaReinforcementEffects {
     );
 
     public static final Holder<ReinforcementEffect> INCREASE_ARMOR = register(
-            "increase_armor", AttributeModifyingEffect.simple(Attributes.ARMOR, EquipmentSlotGroup.ARMOR, reinforcement -> 8)
+            "increase_armor", AttributeModifyingEffect.simple(Attributes.ARMOR, EquipmentSlotGroup.ARMOR, reinforcement -> 8, false)
     );
 
     public static final Holder<ReinforcementEffect> INCREASE_ARMOR_TOUGHNESS = register(
-            "increase_armor_toughness", AttributeModifyingEffect.simple(Attributes.ARMOR_TOUGHNESS, EquipmentSlotGroup.ARMOR, reinforcement -> 3)
+            "increase_armor_toughness", AttributeModifyingEffect.simple(Attributes.ARMOR_TOUGHNESS, EquipmentSlotGroup.ARMOR, reinforcement -> 3, false)
     );
 
     public static final Holder<ReinforcementEffect> KNOCKBACK_RESISTANCE = register(
@@ -118,8 +118,8 @@ public class NarakaReinforcementEffects {
         addEffectsByItem(ItemTags.ARMOR_ENCHANTABLE, INCREASE_ARMOR, INCREASE_ARMOR_TOUGHNESS);
         addEffectsByItem(and(isBlessed(), is(ItemTags.HEAD_ARMOR_ENCHANTABLE)), ORE_SEE_THROUGH, LAVA_VISION, EFFICIENT_MINING_IN_WATER, WATER_BREATHING);
         addEffectsByItem(and(isBlessed(), is(ItemTags.CHEST_ARMOR_ENCHANTABLE)), FLYING, FIRE_RESISTANCE);
-        addEffectsByItem(and(isBlessed(), is(ItemTags.LEG_ARMOR_ENCHANTABLE)), KNOCKBACK_RESISTANCE);
-        addEffectsByItem(and(isBlessed(), is(ItemTags.FOOT_ARMOR_ENCHANTABLE)), FASTER_LIQUID_SWIMMING, IGNORE_LIQUID_PUSHING, EFFICIENT_MINING_IN_AIR);
+        addEffectsByItem(and(isBlessed(), is(ItemTags.LEG_ARMOR_ENCHANTABLE)), KNOCKBACK_RESISTANCE, IGNORE_LIQUID_PUSHING);
+        addEffectsByItem(and(isBlessed(), is(ItemTags.FOOT_ARMOR_ENCHANTABLE)), FASTER_LIQUID_SWIMMING, EFFICIENT_MINING_IN_AIR);
     }
 
     private static Predicate<ItemStack> isBlessed() {

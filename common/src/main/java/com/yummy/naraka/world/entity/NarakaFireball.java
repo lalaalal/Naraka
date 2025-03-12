@@ -67,6 +67,13 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     }
 
     @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> dataAccessor) {
+        super.onSyncedDataUpdated(dataAccessor);
+        if (dataAccessor == TARGET_ID)
+            cachedTarget = null;
+    }
+
+    @Override
     public void tick() {
         traceTarget();
         super.tick();
@@ -98,15 +105,13 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     protected void onDeflection(@Nullable Entity entity, boolean deflectedByPlayer) {
         super.onDeflection(entity, deflectedByPlayer);
         setTarget(null);
-        if (level().isClientSide)
-            setDeltaMovement(Vec3.ZERO);
     }
 
     @Override
     protected void onHit(HitResult result) {
         super.onHit(result);
         if (!level().isClientSide) {
-            level().explode(this, damageSources().fireball(this, getOwner()), null, position(), 1, false, Level.ExplosionInteraction.NONE);
+            level().explode(this, damageSources().fireball(this, getOwner()), null, position(), 2, false, Level.ExplosionInteraction.NONE);
             discard();
         }
     }

@@ -1,4 +1,4 @@
-package com.yummy.naraka.client.renderer;
+package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

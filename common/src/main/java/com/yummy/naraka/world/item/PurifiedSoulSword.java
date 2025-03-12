@@ -4,6 +4,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.context.UseOnContext;
@@ -26,5 +27,10 @@ public class PurifiedSoulSword extends SwordItem {
             return InteractionResult.SUCCESS;
         }
         return super.useOn(context);
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
     }
 }
