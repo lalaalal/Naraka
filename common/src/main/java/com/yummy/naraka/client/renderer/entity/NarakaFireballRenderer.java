@@ -36,7 +36,7 @@ public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball> {
 
         float rotation = (entity.tickCount + partialTick) * 5;
         poseStack.scale(1.25f, 1.25f, 1.25f);
-        poseStack.translate(0, 0.375f, 0);
+        poseStack.translate(0, 0.3125, 0);
         poseStack.mulPose(new Quaternionf().setAngleAxis((float) (Math.PI / 3), SIN_45, 0.0F, SIN_45));
         poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
         poseStack.mulPose(Axis.ZP.rotationDegrees(rotation * 2));

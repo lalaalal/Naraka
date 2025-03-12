@@ -186,6 +186,8 @@ public class NarakaLanguageProviders {
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_4, "Herobrine Phase 4", "히로빈 4 페이즈");
 
         addItem(NarakaItems.STIGMA_ROD, "Stigma Rod", "낙인 막대기");
+        addItem(NarakaItems.STARDUST_STAFF, "Stardust Staff");
+        addItem(NarakaItems.NARAKA_FIREBALL, "Naraka Fireball", "나락 화염구");
         addItem(NarakaItems.RAINBOW_SWORD, "Rainbow Sword", "무지개 검");
         addItem(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard", "정화된 영혼 조각");
         addItem(NarakaItems.NECTARIUM, "Nectarium", "넥타륨");
@@ -236,6 +238,7 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.HEROBRINE_PHASE_2_DISC, "Herobrine Phase 2 Disc", "히로빈 2 페이즈 음반");
         addItem(NarakaItems.HEROBRINE_PHASE_3_DISC, "Herobrine Phase 3 Disc", "히로빈 3 페이즈 음반");
         addItem(NarakaItems.HEROBRINE_PHASE_4_DISC, "Herobrine Phase 4 Disc", "히로빈 4 페이즈 음반");
+        addItem(NarakaItems.HEROBRINE_SPAWN_EGG, "Herobrine Spawn Egg", "히로빈 생성 알");
 
         addBlock(NarakaBlocks.AMETHYST_ORE, "Amethyst Ore", "자수정 광석");
         addBlock(NarakaBlocks.DEEPSLATE_AMETHYST_ORE, "Deepslate Amethyst Ore", "심층암 자수정 광석");
@@ -285,6 +288,8 @@ public class NarakaLanguageProviders {
         addEntityType(NarakaEntityTypes.THROWN_SPEAR, "Spear", "창");
         addEntityType(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, "Mighty Holy Spear", "강력한 성스러운 창");
         addEntityType(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, "Spear of Longinus", "롱기누스의 창");
+        addEntityType(NarakaEntityTypes.NARAKA_FIREBALL, "Naraka Fireball", "나락 화염구");
+        addEntityType(NarakaEntityTypes.STARDUST, "Stardust");
 
         addDamageType(NarakaDamageTypes.SPEAR_OF_LONGINUS,
                 List.of("%1$s's AT Field was torn by %2$s", "%1$s의 AT 필드가 %2$s에 찢어졌습니다."),
