@@ -26,6 +26,10 @@ public class StigmaHelper {
         set(target, increased);
     }
 
+    public static void removeStigma(LivingEntity livingEntity) {
+        set(livingEntity, Stigma.ZERO);
+    }
+    
     public static void tick() {
         List<LivingEntity> liberatedEntities = new ArrayList<>();
         for (LivingEntity markedEntity : MARKED_ENTITIES) {

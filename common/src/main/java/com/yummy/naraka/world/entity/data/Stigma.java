@@ -2,13 +2,10 @@ package com.yummy.naraka.world.entity.data;
 
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.StunHelper;
-import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public record Stigma(int value, long lastMarkedTime) {
     public static final Stigma ZERO = new Stigma(0, 0);
@@ -51,9 +48,7 @@ public record Stigma(int value, long lastMarkedTime) {
             DamageSource source = NarakaDamageSources.stigma(cause);
             livingEntity.hurt(source, Float.MAX_VALUE);
         } else {
-            AttributeModifier maxHealthModifier = NarakaAttributeModifiers.reduceMaxHealth(lockedHealth);
-            NarakaAttributeModifiers.addPermanentModifier(livingEntity, Attributes.MAX_HEALTH, maxHealthModifier);
-            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.LOCKED_HEALTH.get(), lockedHealth);
+            LockedHealthHelper.lock(livingEntity, lockedHealth);
         }
     }
 

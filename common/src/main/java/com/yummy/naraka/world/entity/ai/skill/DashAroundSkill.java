@@ -26,10 +26,8 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
     }
 
     @Override
-    protected void onFirstTick() {
-        LivingEntity target = mob.getTarget();
-        if (target != null)
-            mob.lookAt(target, 360, 0);
+    public void prepare() {
+        super.prepare();
         if (secondUse) {
             secondUse = false;
             setLinkedSkill(null);
@@ -37,6 +35,13 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
             setLinkedSkill(this);
             secondUse = true;
         }
+    }
+
+    @Override
+    protected void onFirstTick() {
+        LivingEntity target = mob.getTarget();
+        if (target != null)
+            mob.lookAt(target, 360, 0);
     }
 
     @Override

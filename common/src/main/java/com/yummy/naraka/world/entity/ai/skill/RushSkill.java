@@ -3,6 +3,7 @@ package com.yummy.naraka.world.entity.ai.skill;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.block.UnstableBlock;
 import com.yummy.naraka.world.entity.SkillUsingMob;
+import com.yummy.naraka.world.entity.StigmatizingEntity;
 import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -16,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RushSkill extends Skill<SkillUsingMob> {
+public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Skill<T> {
     public static final String NAME = "rush";
 
     private static final int START_RUNNING_TICK = 25;
@@ -28,7 +29,7 @@ public class RushSkill extends Skill<SkillUsingMob> {
 
     private final List<Entity> blockedEntities = new ArrayList<>();
 
-    public RushSkill(SkillUsingMob mob) {
+    public RushSkill(T mob) {
         super(NAME, 85, 160, mob);
     }
 
@@ -103,11 +104,12 @@ public class RushSkill extends Skill<SkillUsingMob> {
             return;
         }
         DamageSource source = mob.getDefaultDamageSource();
-        float damage = mob.getAttackDamage();
+        float damage = mob.getAttackDamage() + target.getMaxHealth() * 0.08f;
+        if (!blockedEntities.contains(target) && target.invulnerableTime < 10) {
+            StunHelper.stunEntity(target, 100);
+            mob.stigmatizeEntity(target);
+        }
         target.hurt(source, damage);
         target.knockback(5, mob.getX() - target.getX(), mob.getZ() - target.getZ());
-        int stunDuration = 100;
-        if (!blockedEntities.contains(target))
-            StunHelper.stunEntity(target, stunDuration);
     }
 }

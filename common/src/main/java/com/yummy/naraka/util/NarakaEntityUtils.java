@@ -16,12 +16,25 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class NarakaEntityUtils {
+    private static final Map<UUID, Entity> CACHED_ENTITIES = new HashMap<>();
+
+    @Nullable
+    public static Entity findEntityBuUUID(ServerLevel serverLevel, UUID uuid) {
+        if (CACHED_ENTITIES.containsKey(uuid))
+            return CACHED_ENTITIES.get(uuid);
+        return serverLevel.getEntity(uuid);
+    }
+
     @Nullable
     public static <T> T findEntityByUUID(ServerLevel serverLevel, UUID uuid, Class<T> type) {
-        Entity entity = serverLevel.getEntity(uuid);
+        Entity entity = findEntityBuUUID(serverLevel, uuid);
+        if (entity != null)
+            CACHED_ENTITIES.put(uuid, entity);
         if (type.isInstance(entity))
             return type.cast(entity);
         return null;

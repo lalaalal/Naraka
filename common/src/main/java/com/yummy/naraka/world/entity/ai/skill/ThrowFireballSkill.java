@@ -1,17 +1,21 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
-import com.yummy.naraka.world.entity.NarakaFireball;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.function.Supplier;
 
 public class ThrowFireballSkill extends Skill<SkillUsingMob> {
     public static final String NAME = "throw_fireball";
+    private final Supplier<Fireball> fireballCreator;
 
-    public ThrowFireballSkill(SkillUsingMob mob) {
+    public ThrowFireballSkill(SkillUsingMob mob, Supplier<Fireball> fireballCreator) {
         super(NAME, 30, 160, mob);
+        this.fireballCreator = fireballCreator;
     }
 
     private boolean canMove() {
@@ -34,7 +38,7 @@ public class ThrowFireballSkill extends Skill<SkillUsingMob> {
     @Override
     protected void skillTick() {
         if (tickCount == 18) {
-            NarakaFireball fireball = new NarakaFireball(mob, Vec3.ZERO, level());
+            Fireball fireball = fireballCreator.get();
             fireball.setPos(mob.getEyePosition());
             level().addFreshEntity(fireball);
             Vec3 view = mob.getViewVector(0);

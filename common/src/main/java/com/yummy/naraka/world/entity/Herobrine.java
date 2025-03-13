@@ -1,11 +1,15 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.network.SyncAfterimagePayload;
+import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.*;
+import com.yummy.naraka.world.entity.data.LockedHealthHelper;
+import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.nbt.CompoundTag;
@@ -39,10 +43,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy {
+public class Herobrine extends SkillUsingMob implements StigmatizingEntity, AfterimageEntity, Enemy {
     private static final float[] HEALTH_BY_PHASE = {106, 210, 350};
 
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
@@ -57,11 +60,11 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
     public final AnimationState blockingSkillAnimationState = new AnimationState();
     public final AnimationState weaknessAnimationState = new AnimationState();
 
-    private final PunchSkill punchSkill = new PunchSkill(this);
+    private final PunchSkill<Herobrine> punchSkill = new PunchSkill<>(this);
     private final DashSkill<Herobrine> dashSkill = new DashSkill<>(this);
     private final DashAroundSkill<Herobrine> dashAroundSkill = new DashAroundSkill<>(this);
-    private final RushSkill rushSkill = new RushSkill(this);
-    private final ThrowFireballSkill throwFireballSkill = new ThrowFireballSkill(this);
+    private final RushSkill<Herobrine> rushSkill = new RushSkill<>(this);
+    private final ThrowFireballSkill throwFireballSkill = new ThrowFireballSkill(this, this::createFireball);
     private final BlockingSkill blockingSkill = new BlockingSkill(this);
 
     private final List<Skill<?>> GENERAL_SKILLS = List.of();
@@ -69,6 +72,7 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
 
     private final List<Projectile> ignoredProjectiles = new ArrayList<>();
     protected final List<Afterimage> afterimages = new ArrayList<>();
+    private final Set<UUID> stigmatizedEntities = new HashSet<>();
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this);
@@ -130,6 +134,25 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
         registerSkill(dashAroundSkill);
         registerSkill(rushSkill, rushAnimationState);
         registerSkill(throwFireballSkill, throwFireballAnimationState);
+    }
+
+    public int getPhase() {
+        return phaseManager.getCurrentPhase();
+    }
+
+    @Override
+    public void stigmatizeEntity(LivingEntity target) {
+        if (getPhase() > 1) {
+            StigmaHelper.increaseStigma(target, this);
+            stigmatizedEntities.add(target.getUUID());
+        }
+    }
+
+    @Override
+    public void heal(float healAmount) {
+        float maxHealth = phaseManager.getActualCurrentPhaseMaxHealth();
+        float healthAfterHeal = Mth.clamp(getHealth() + healAmount, getHealth(), maxHealth);
+        setHealth(healthAfterHeal);
     }
 
     @Override
@@ -287,10 +310,49 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
     }
 
+    public NarakaFireball createFireball() {
+        NarakaFireball fireball = new NarakaFireball(this, Vec3.ZERO, level());
+        fireball.setDamageCalculator(this::calculateFireballDamage);
+        fireball.addHurtTargetListener((target, damage) -> stigmatizeEntity(target));
+        fireball.addHurtTargetListener(this::updateHibernateModeOnTargetSurvivedFromFireball);
+
+        return fireball;
+    }
+
+    private float calculateFireballDamage(NarakaFireball fireball) {
+        if (!hibernateMode) {
+            if (getTarget() != null)
+                return getAttackDamage() + getTarget().getMaxHealth() * 0.05f;
+            return getAttackDamage();
+        }
+        float distance = distanceTo(fireball);
+        if (distance <= 1)
+            return 66;
+        return Mth.clamp(66f / (distance - 0.9f) + 9, 10, 66);
+    }
+
+    private void updateHibernateModeOnTargetSurvivedFromFireball(LivingEntity target, float damage) {
+        if (getPhase() == 1 && hibernateMode && damage >= 66 && target.isAlive()) {
+            stopHibernateMode();
+            startWeakness();
+            if (phaseManager.getCurrentPhaseHealth() == 1)
+                setHealth(getHealth() - 1);
+        }
+    }
+
     @Override
     public void die(DamageSource damageSource) {
         if (damageSource.getEntity() instanceof LivingEntity livingEntity)
             rewardChallenger(livingEntity);
+        if (level() instanceof ServerLevel serverLevel) {
+            for (UUID uuid : stigmatizedEntities) {
+                LivingEntity livingEntity = NarakaEntityUtils.findEntityByUUID(serverLevel, uuid, LivingEntity.class);
+                if (livingEntity != null) {
+                    LockedHealthHelper.release(livingEntity);
+                    StigmaHelper.removeStigma(livingEntity);
+                }
+            }
+        }
         super.die(damageSource);
     }
 
@@ -356,6 +418,10 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
         super.addAdditionalSaveData(compound);
         compound.putBoolean("HibernateMode", hibernateMode);
         compound.putInt("HibernateModeTickCount", hibernateModeTickCount);
+        NarakaNbtUtils.writeCollection(compound, "StigmatizedEntities", stigmatizedEntities, (value, tag, provider) -> {
+            tag.putUUID("UUID", value);
+            return tag;
+        }, registryAccess());
     }
 
     @Override
@@ -365,5 +431,6 @@ public class Herobrine extends SkillUsingMob implements AfterimageEntity, Enemy 
             hibernateMode = compound.getBoolean("HibernatedMode");
         if (compound.contains("HibernateModeTickCount"))
             hibernateModeTickCount = compound.getInt("HibernateModeTickCount");
+        NarakaNbtUtils.readCollection(compound, "StigmatizedEntities", () -> stigmatizedEntities, (tag, provider) -> tag.getUUID("UUID"), registryAccess());
     }
 }

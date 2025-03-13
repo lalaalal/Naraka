@@ -17,12 +17,17 @@ public abstract class Skill<T extends SkillUsingMob> {
     @Nullable
     protected Skill<?> linkedSkill;
 
-    public Skill(String name, int duration, int cooldown, T mob) {
+    protected Skill(String name, int duration, int cooldown, T mob, @Nullable Skill<?> linkedSkill) {
         this.name = name;
         this.mob = mob;
         this.duration = duration;
         this.cooldown = cooldown;
         this.cooldownTick = cooldown;
+        this.linkedSkill = linkedSkill;
+    }
+
+    protected Skill(String name, int duration, int cooldown, T mob) {
+        this(name, duration, cooldown, mob, null);
     }
 
     protected Level level() {

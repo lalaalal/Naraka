@@ -2,15 +2,19 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.SkillUsingMob;
+import com.yummy.naraka.world.entity.StigmatizingEntity;
 import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 
-public class PunchSkill extends Skill<SkillUsingMob> {
+public class PunchSkill<T extends SkillUsingMob & StigmatizingEntity> extends Skill<T> {
     public static final String NAME = "punch";
 
-    public PunchSkill(SkillUsingMob mob) {
-        super(NAME, 30, 110, mob);
+    private int linkedCount = 1;
+
+    public PunchSkill(T mob) {
+        super(NAME, 20, 110, mob);
     }
 
     @Override
@@ -20,19 +24,58 @@ public class PunchSkill extends Skill<SkillUsingMob> {
     }
 
     @Override
+    public void prepare() {
+        super.prepare();
+    }
+
+    @Override
+    protected void onLastTick() {
+        if (linkedCount < 5 && level().random.nextFloat() < 0.8f) {
+            setLinkedSkill(this);
+            linkedCount += 1;
+        } else {
+            setLinkedSkill(null);
+            linkedCount = 1;
+        }
+    }
+
+    @Override
     protected void skillTick() {
         LivingEntity target = mob.getTarget();
-        if (target == null || tickCount != 8)
+        if (target == null)
             return;
 
+        if (linkedCount > 1)
+            moveToTarget(target);
+
+        if (tickCount == 8)
+            hurtTarget(target);
+    }
+
+    private void moveToTarget(LivingEntity target) {
+        if (tickCount == 5)
+            mob.setDeltaMovement(Vec3.ZERO);
+        if (tickCount >= 5)
+            return;
         mob.lookAt(target, 360, 0);
+        Vec3 deltaMovement = target.position().subtract(mob.position())
+                .normalize()
+                .scale(0.7);
+        if (mob.distanceToSqr(target) > 3)
+            mob.setDeltaMovement(deltaMovement);
+    }
+
+    private void hurtTarget(LivingEntity target) {
         DamageSource damageSource = mob.getDefaultDamageSource();
-        float damage = mob.getAttackDamage();
-        if (NarakaEntityUtils.disableAndHurtShield(target, 100, 25) || !canUse())
+        float damage = mob.getAttackDamage() + target.getMaxHealth() * 0.03f;
+        int shieldCooldown = linkedCount == 1 ? 0 : 100;
+        if (NarakaEntityUtils.disableAndHurtShield(target, shieldCooldown, 25) || !canUse())
             return;
 
-        StunHelper.stunEntity(target, 100);
+        if (linkedCount == 1)
+            StunHelper.stunEntity(target, 100);
         target.hurt(damageSource, damage);
         target.knockback(2f, mob.getX() - target.getX(), mob.getZ() - target.getZ());
+        mob.stigmatizeEntity(target);
     }
 }

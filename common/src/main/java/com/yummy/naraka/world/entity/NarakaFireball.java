@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -19,10 +20,15 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NarakaFireball extends Fireball implements ItemSupplier {
     protected static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(NarakaFireball.class, EntityDataSerializers.INT);
 
     private @Nullable Entity cachedTarget;
+    private DamageCalculator damageCalculator = fireball -> 10;
+    private final List<HurtTargetListener> listeners = new ArrayList<>();
 
     public NarakaFireball(EntityType<? extends NarakaFireball> entityType, Level level) {
         super(entityType, level);
@@ -43,6 +49,19 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(TARGET_ID, -1);
+    }
+
+    public void setDamageCalculator(DamageCalculator damageCalculator) {
+        this.damageCalculator = damageCalculator;
+    }
+
+    public void addHurtTargetListener(HurtTargetListener listener) {
+        this.listeners.add(listener);
+    }
+
+    public NarakaFireball withStigma(LivingEntity stigmatizingEntity) {
+        addHurtTargetListener((target, damage) -> StigmaHelper.increaseStigma(target, stigmatizingEntity));
+        return this;
     }
 
     public boolean hasTarget() {
@@ -120,8 +139,13 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
         Entity hitEntity = result.getEntity();
-        if (hitEntity == getOwner() && hitEntity instanceof LivingEntity livingEntity)
-            livingEntity.hurt(damageSources().fireball(this, getOwner()), 10);
+        Entity owner = getOwner();
+        if (hitEntity != owner && hitEntity instanceof LivingEntity livingEntity) {
+            float damage = damageCalculator.calculateDamage(this);
+            livingEntity.hurt(damageSources().fireball(this, owner), damage);
+            for (HurtTargetListener listener : listeners)
+                listener.onHurtTarget(livingEntity, damage);
+        }
     }
 
     @Override
@@ -137,5 +161,15 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         if (compound.contains("Target") && level() instanceof ServerLevel serverLevel) {
             setTarget(serverLevel.getEntity(compound.getUUID("Target")));
         }
+    }
+
+    @FunctionalInterface
+    public interface DamageCalculator {
+        float calculateDamage(NarakaFireball fireball);
+    }
+
+    @FunctionalInterface
+    public interface HurtTargetListener {
+        void onHurtTarget(LivingEntity target, float damage);
     }
 }

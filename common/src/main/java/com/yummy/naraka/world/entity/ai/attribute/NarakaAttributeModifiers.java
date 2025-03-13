@@ -52,10 +52,21 @@ public class NarakaAttributeModifiers {
      * @param modifier     Attribute modifier
      */
     public static void removeAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, AttributeModifier modifier) {
+        removeAttributeModifier(livingEntity, attribute, modifier.id());
+    }
+
+    /**
+     * Remove {@linkplain AttributeModifier} of given entity
+     *
+     * @param livingEntity Entity to remove modifier
+     * @param attribute    Attribute to remove modifier
+     * @param modifierId   ID of attribute modifier
+     */
+    public static void removeAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, ResourceLocation modifierId) {
         AttributeInstance instance = livingEntity.getAttribute(attribute);
         if (instance == null)
             return;
-        instance.removeModifier(modifier);
+        instance.removeModifier(modifierId);
     }
 
     public static boolean hasAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, AttributeModifier modifier) {
