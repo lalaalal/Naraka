@@ -216,6 +216,7 @@ public class Herobrine extends SkillUsingMob implements StigmatizingEntity, Afte
     public void startSeenByPlayer(ServerPlayer serverPlayer) {
         bossEvent.addPlayer(serverPlayer);
         phaseManager.updatePhase(bossEvent);
+        phaseManager.updatePhaseValueOnly(bossEvent);
     }
 
     @Override
@@ -311,7 +312,7 @@ public class Herobrine extends SkillUsingMob implements StigmatizingEntity, Afte
     }
 
     public NarakaFireball createFireball() {
-        NarakaFireball fireball = new NarakaFireball(this, Vec3.ZERO, level());
+        NarakaFireball fireball = new NarakaFireball(this, Vec3.ZERO, level(), hibernateMode);
         fireball.setDamageCalculator(this::calculateFireballDamage);
         fireball.addHurtTargetListener((target, damage) -> stigmatizeEntity(target));
         fireball.addHurtTargetListener(this::updateHibernateModeOnTargetSurvivedFromFireball);

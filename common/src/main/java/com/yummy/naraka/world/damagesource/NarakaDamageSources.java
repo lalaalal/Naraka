@@ -11,6 +11,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Projectile;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -49,6 +50,10 @@ public class NarakaDamageSources {
 
     public static DamageSource fixed(Entity causingEntity) {
         return source(NarakaDamageTypes.MOB_ATTACK_FIXED, causingEntity);
+    }
+
+    public static DamageSource projectileFixed(Projectile projectile, @Nullable Entity cause) {
+        return source(NarakaDamageTypes.PROJECTILE_FIXED, projectile, cause);
     }
 
     public static DamageSource stigma(Entity causingEntity) {

@@ -12,6 +12,7 @@ public class NarakaDamageTypes {
     public static final ResourceKey<DamageType> SPEAR = create("spear");
     public static final ResourceKey<DamageType> SPEAR_OF_LONGINUS = create("spear_of_longinus");
     public static final ResourceKey<DamageType> MOB_ATTACK_FIXED = create("mob_attack_fixed");
+    public static final ResourceKey<DamageType> PROJECTILE_FIXED = create("projectile_fixed");
     public static final ResourceKey<DamageType> STARDUST = create("stardust");
 
     public static void bootstrap(BootstrapContext<DamageType> context) {
@@ -19,6 +20,7 @@ public class NarakaDamageTypes {
         context.register(SPEAR, new DamageType("spear", 0.1f));
         context.register(SPEAR_OF_LONGINUS, new DamageType("spear_of_longinus", 1));
         context.register(MOB_ATTACK_FIXED, new DamageType("mob_attack_fixed", DamageScaling.ALWAYS, 0.1f));
+        context.register(PROJECTILE_FIXED, new DamageType("projectile_fixed", DamageScaling.ALWAYS, 0.1f));
         context.register(STARDUST, new DamageType("stardust", 1));
     }
 

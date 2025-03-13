@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.nbt.CompoundTag;
@@ -8,6 +9,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,6 +29,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     protected static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(NarakaFireball.class, EntityDataSerializers.INT);
 
     private @Nullable Entity cachedTarget;
+    private boolean fixedDamage = false;
     private DamageCalculator damageCalculator = fireball -> 10;
     private final List<HurtTargetListener> listeners = new ArrayList<>();
 
@@ -37,6 +40,11 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
 
     public NarakaFireball(Mob owner, Vec3 movement, Level level) {
         this(owner, owner.getTarget(), movement, level);
+    }
+
+    public NarakaFireball(Mob owner, Vec3 movement, Level level, boolean fixedDamage) {
+        this(owner, owner.getTarget(), movement, level);
+        this.fixedDamage = fixedDamage;
     }
 
     public NarakaFireball(LivingEntity owner, @Nullable Entity target, Vec3 movement, Level level) {
@@ -61,6 +69,11 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
 
     public NarakaFireball withStigma(LivingEntity stigmatizingEntity) {
         addHurtTargetListener((target, damage) -> StigmaHelper.increaseStigma(target, stigmatizingEntity));
+        return this;
+    }
+
+    public NarakaFireball withFixedDamage() {
+        fixedDamage = true;
         return this;
     }
 
@@ -116,6 +129,8 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
             if (tracingVectorLength < 8 && length < 1)
                 setDeltaMovement(deltaMovement.scale(1.1));
             double scale = Mth.clamp(tracingVectorLength, 0, 0.08);
+            if (fixedDamage)
+                scale = scale * 0.3;
             addDeltaMovement(tracingVector.scale(scale));
         }
     }
@@ -142,10 +157,16 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         Entity owner = getOwner();
         if (hitEntity != owner && hitEntity instanceof LivingEntity livingEntity) {
             float damage = damageCalculator.calculateDamage(this);
-            livingEntity.hurt(damageSources().fireball(this, owner), damage);
+            livingEntity.hurt(getDamageSource(owner), damage);
             for (HurtTargetListener listener : listeners)
                 listener.onHurtTarget(livingEntity, damage);
         }
+    }
+
+    protected DamageSource getDamageSource(@Nullable Entity owner) {
+        if (fixedDamage)
+            return NarakaDamageSources.projectileFixed(this, owner);
+        return damageSources().fireball(this, owner);
     }
 
     @Override

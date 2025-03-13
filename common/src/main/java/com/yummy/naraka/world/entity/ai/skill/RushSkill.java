@@ -36,7 +36,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Ski
     @Override
     public boolean canUse() {
         LivingEntity target = mob.getTarget();
-        return target != null && mob.distanceToSqr(target) > 4 * 4;
+        return target != null;
     }
 
     @Override
