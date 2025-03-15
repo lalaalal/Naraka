@@ -10,7 +10,6 @@ import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
-import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
@@ -101,7 +100,6 @@ public final class NarakaGameEvents {
 
     private static void onServerStarting(MinecraftServer server) {
         EntityDataHelper.clear();
-        StigmaHelper.clear();
     }
 
     private static void onServerStarted(MinecraftServer server) {
@@ -114,7 +112,6 @@ public final class NarakaGameEvents {
     }
 
     private static void onEndTick(MinecraftServer server) {
-        StigmaHelper.tick();
         TickSchedule.tick(server.overworld());
     }
 

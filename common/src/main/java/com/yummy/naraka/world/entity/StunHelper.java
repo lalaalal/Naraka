@@ -68,6 +68,12 @@ public final class StunHelper {
         return TickSchedule.executeAfter(gameTime, tickAfter, () -> releaseEntity(livingEntity));
     }
 
+    /**
+     * Block entity moving, jumping, using item, attacking for duration
+     *
+     * @param livingEntity Target entity to stun
+     * @param duration     Stun duration
+     */
     public static void stunEntity(LivingEntity livingEntity, int duration) {
         holdEntity(livingEntity);
         long gameTime = livingEntity.level().getGameTime();

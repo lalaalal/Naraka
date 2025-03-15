@@ -70,6 +70,7 @@ public class EntityDataHelper {
 
     public static void removeEntityData(LivingEntity entity) {
         ENTITY_DATA_MAP.remove(entity.getUUID());
+        syncEntityData(entity);
     }
 
     public static void saveEntityData(LivingEntity livingEntity, CompoundTag compoundTag) {

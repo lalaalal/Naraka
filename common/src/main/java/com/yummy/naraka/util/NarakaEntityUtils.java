@@ -3,7 +3,6 @@ package com.yummy.naraka.util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,8 +24,11 @@ public class NarakaEntityUtils {
 
     @Nullable
     public static Entity findEntityBuUUID(ServerLevel serverLevel, UUID uuid) {
-        if (CACHED_ENTITIES.containsKey(uuid))
-            return CACHED_ENTITIES.get(uuid);
+        if (CACHED_ENTITIES.containsKey(uuid)) {
+            Entity entity = CACHED_ENTITIES.get(uuid);
+            if (!entity.isRemoved())
+                return entity;
+        }
         return serverLevel.getEntity(uuid);
     }
 
@@ -63,14 +65,23 @@ public class NarakaEntityUtils {
             player.stopUsingItem();
             player.level().broadcastEntityEvent(livingEntity, (byte) 30);
 
-            InteractionHand hand = player.getUsedItemHand();
-            ItemStack shield = player.getItemInHand(hand);
-            EquipmentSlot slot = player.getEquipmentSlotForItem(shield);
-            shield.hurtAndBreak(damage, player, slot);
+            ItemStack usedItem = player.getUseItem();
+            EquipmentSlot slot = player.getEquipmentSlotForItem(usedItem);
+            usedItem.hurtAndBreak(damage, player, slot);
 
             return true;
         }
 
         return false;
+    }
+
+    public static boolean isDamageable(LivingEntity livingEntity) {
+        if (livingEntity instanceof Player player)
+            return isDamageablePlayer(player);
+        return !livingEntity.isInvulnerable();
+    }
+
+    public static boolean isDamageablePlayer(Player player) {
+        return !(player.isCreative() || player.isSpectator());
     }
 }

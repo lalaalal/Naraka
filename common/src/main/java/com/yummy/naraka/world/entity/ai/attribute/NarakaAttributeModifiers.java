@@ -22,7 +22,7 @@ public class NarakaAttributeModifiers {
     public static final ResourceLocation REDUCE_MAX_HEALTH_ID = NarakaMod.location("reduce_max_health");
 
     public static AttributeModifier reduceMaxHealth(double value) {
-        return new AttributeModifier(NarakaMod.location("reduce_max_health"), -value, AttributeModifier.Operation.ADD_VALUE);
+        return new AttributeModifier(REDUCE_MAX_HEALTH_ID, -value, AttributeModifier.Operation.ADD_VALUE);
     }
 
     /**

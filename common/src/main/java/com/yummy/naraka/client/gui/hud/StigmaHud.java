@@ -1,5 +1,6 @@
 package com.yummy.naraka.client.gui.hud;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaSprites;
 import com.yummy.naraka.world.entity.data.*;
 import dev.architectury.event.events.client.ClientGuiEvent;
@@ -61,7 +62,10 @@ public class StigmaHud implements ClientGuiEvent.RenderHud {
         if (player == null)
             return;
 
-        int stigma = StigmaHelper.get(player).value();
+        final int herobrineTakingStigmaTick = NarakaMod.config().herobrineTakingStigmaTick.getValue();
+
+        Stigma stigma = StigmaHelper.get(player);
+        long stigmatizedTime = player.level().getGameTime() - stigma.lastMarkedTime();
 
         int baseX = DeathCountHud.BASE_X + DeathCountHud.BACKGROUND_WIDTH + 8;
         int baseY = DeathCountHud.BASE_Y + (DeathCountHud.BACKGROUND_HEIGHT - BACKGROUND_HEIGHT) / 2;
@@ -73,13 +77,16 @@ public class StigmaHud implements ClientGuiEvent.RenderHud {
             consumeIconDisplayTick -= 1;
         }
 
-        if (deathCount <= 0 && stigma < 1)
+        if (deathCount <= 0 && stigma.value() < 1)
             return;
         if (deathCount <= 0)
             baseX = DeathCountHud.BASE_X;
 
+        if (stigma.lastMarkedTime() != 0 && stigmatizedTime > herobrineTakingStigmaTick / 6 * 5)
+            baseX += (int) (stigmatizedTime % 4 / 2) * 2 - 1;
+
         guiGraphics.blitSprite(NarakaSprites.STIGMA_BACKGROUND, baseX, baseY, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
-        for (int i = 0; i < stigma; i++) {
+        for (int i = 0; i < stigma.value(); i++) {
             int x = baseX + STIGMA_START_X + i * (STIGMA_OFFSET_BORDER + STIGMA_SIZE);
             int y = baseY + STIGMA_START_Y;
             guiGraphics.blitSprite(NarakaSprites.STIGMA, x, y, STIGMA_SIZE, STIGMA_SIZE);

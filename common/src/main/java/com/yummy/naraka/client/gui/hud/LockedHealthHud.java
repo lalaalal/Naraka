@@ -1,6 +1,7 @@
 package com.yummy.naraka.client.gui.hud;
 
 import com.yummy.naraka.client.NarakaSprites;
+import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
@@ -22,7 +23,7 @@ public class LockedHealthHud implements ClientGuiEvent.RenderHud {
     @Override
     public void renderHud(GuiGraphics graphics, DeltaTracker deltaTracker) {
         Player player = Minecraft.getInstance().player;
-        if (player == null || player.isSpectator() || player.isCreative())
+        if (player == null || !NarakaEntityUtils.isDamageablePlayer(player))
             return;
 
         int heartBaseX = graphics.guiWidth() / 2 - 91;

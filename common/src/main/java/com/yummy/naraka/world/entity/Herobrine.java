@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.network.SyncAfterimagePayload;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaNbtUtils;
@@ -9,6 +10,7 @@ import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.*;
 import com.yummy.naraka.world.entity.data.LockedHealthHelper;
+import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import dev.architectury.networking.NetworkManager;
@@ -75,7 +77,7 @@ public class Herobrine extends SkillUsingMob implements StigmatizingEntity, Afte
     private final Set<UUID> stigmatizedEntities = new HashSet<>();
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
-    private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this);
+    private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this, bossEvent);
     private int hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
     private boolean hibernateMode = false;
     private int hibernateModeTickCount = 0;
@@ -142,10 +144,15 @@ public class Herobrine extends SkillUsingMob implements StigmatizingEntity, Afte
 
     @Override
     public void stigmatizeEntity(LivingEntity target) {
-        if (getPhase() > 1) {
-            StigmaHelper.increaseStigma(target, this);
+        if (target != this && getPhase() > 1) {
+            StigmaHelper.increaseStigma(target, this, true);
             stigmatizedEntities.add(target.getUUID());
         }
+    }
+
+    @Override
+    public void collectStigma(Stigma stigma) {
+        this.heal(stigma.value() * 22);
     }
 
     @Override
@@ -183,8 +190,22 @@ public class Herobrine extends SkillUsingMob implements StigmatizingEntity, Afte
             weaknessTickCount += 1;
 
         tryAvoidProjectile();
-        super.customServerAiStep();
+        takeStigma();
         phaseManager.updatePhase(bossEvent);
+
+        super.customServerAiStep();
+    }
+
+    private void takeStigma() {
+        final int waitingTick = NarakaMod.config().herobrineTakingStigmaTick.getValue();
+        if (level() instanceof ServerLevel serverLevel) {
+            stigmatizedEntities.removeIf(uuid -> {
+                LivingEntity entity = NarakaEntityUtils.findEntityByUUID(serverLevel, uuid, LivingEntity.class);
+                if (entity == null || entity.isRemoved())
+                    return true;
+                return StigmaHelper.collectStigmaAfter(entity, this, waitingTick);
+            });
+        }
     }
 
     private boolean shouldCheck(Projectile projectile) {
@@ -215,8 +236,6 @@ public class Herobrine extends SkillUsingMob implements StigmatizingEntity, Afte
     @Override
     public void startSeenByPlayer(ServerPlayer serverPlayer) {
         bossEvent.addPlayer(serverPlayer);
-        phaseManager.updatePhase(bossEvent);
-        phaseManager.updatePhaseValueOnly(bossEvent);
     }
 
     @Override
