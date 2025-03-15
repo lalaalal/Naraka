@@ -7,22 +7,15 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.entity.Entity;
 
-public record NarakaClientboundEntityEventPacket(Event event, int entityId) implements CustomPacketPayload {
-    public static final Type<NarakaClientboundEntityEventPacket> TYPE = new Type<>(NarakaMod.location("clientbound_entity_event_packet"));
+public record NarakaClientboundEventPacket(Event event) implements CustomPacketPayload {
+    public static final Type<NarakaClientboundEventPacket> TYPE = new Type<>(NarakaMod.location("clientbound_event_packet"));
 
-    public static final StreamCodec<ByteBuf, NarakaClientboundEntityEventPacket> CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, NarakaClientboundEventPacket> CODEC = StreamCodec.composite(
             Event.STREAM_CODEC,
-            NarakaClientboundEntityEventPacket::event,
-            ByteBufCodecs.INT,
-            NarakaClientboundEntityEventPacket::entityId,
-            NarakaClientboundEntityEventPacket::new
+            NarakaClientboundEventPacket::event,
+            NarakaClientboundEventPacket::new
     );
-
-    public NarakaClientboundEntityEventPacket(Event event, Entity entity) {
-        this(event, entity.getId());
-    }
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
@@ -30,11 +23,15 @@ public record NarakaClientboundEntityEventPacket(Event event, int entityId) impl
     }
 
     public interface EventHandler {
-        void handle(Entity entity);
+        void handle();
     }
 
     public enum Event implements StringRepresentable {
-        ;
+        PLAY_HEROBRINE_PHASE_1(() -> NarakaClientboundEventHandler.updateHerobrineMusic(1)),
+        PLAY_HEROBRINE_PHASE_2(() -> NarakaClientboundEventHandler.updateHerobrineMusic(2)),
+        PLAY_HEROBRINE_PHASE_3(() -> NarakaClientboundEventHandler.updateHerobrineMusic(3)),
+        PLAY_HEROBRINE_PHASE_4(() -> NarakaClientboundEventHandler.updateHerobrineMusic(4)),
+        STOP_MUSIC(NarakaClientboundEventHandler::stopHerobrineMusic);
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
         public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.idMapper(Event::byId, Event::getId);
@@ -59,8 +56,8 @@ public record NarakaClientboundEntityEventPacket(Event event, int entityId) impl
             return id;
         }
 
-        public void handle(Entity entity) {
-            this.handler.handle(entity);
+        public void handle() {
+            this.handler.handle();
         }
 
         @Override

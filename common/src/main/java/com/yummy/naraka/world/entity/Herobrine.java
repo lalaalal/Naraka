@@ -1,6 +1,8 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.network.NarakaClientboundEventHandler;
+import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.SyncAfterimagePayload;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaNbtUtils;
@@ -15,6 +17,7 @@ import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -102,11 +105,18 @@ public class Herobrine extends SkillUsingMob implements StigmatizingEntity, Afte
                 .setPlayBossMusic(true);
         setPersistenceRequired();
         registerSkills();
+        phaseManager.addPhaseChangeListener(this::updateMusic);
     }
 
     public Herobrine(Level level, Vec3 pos) {
         this(NarakaEntityTypes.HEROBRINE.get(), level);
         setPos(pos);
+    }
+
+    private void updateMusic(int prevPhase, int currentPhase) {
+        NarakaClientboundEventPacket.Event event = NarakaClientboundEventHandler.getEventByPhase(currentPhase);
+        CustomPacketPayload packet = new NarakaClientboundEventPacket(event);
+        NetworkManager.sendToPlayers(bossEvent.getPlayers(), packet);
     }
 
     @Override
@@ -236,11 +246,16 @@ public class Herobrine extends SkillUsingMob implements StigmatizingEntity, Afte
     @Override
     public void startSeenByPlayer(ServerPlayer serverPlayer) {
         bossEvent.addPlayer(serverPlayer);
+        NarakaClientboundEventPacket.Event event = NarakaClientboundEventHandler.getEventByPhase(getPhase());
+        CustomPacketPayload packet = new NarakaClientboundEventPacket(event);
+        NetworkManager.sendToPlayer(serverPlayer, packet);
     }
 
     @Override
     public void stopSeenByPlayer(ServerPlayer serverPlayer) {
         bossEvent.removePlayer(serverPlayer);
+        CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.STOP_MUSIC);
+        NetworkManager.sendToPlayer(serverPlayer, packet);
     }
 
     @Override

@@ -14,6 +14,7 @@ public class NarakaNetworks {
         NetworkManager.registerS2CPayloadType(SyncAnimationPayload.TYPE, SyncAnimationPayload.CODEC);
         NetworkManager.registerS2CPayloadType(SyncAfterimagePayload.TYPE, SyncAfterimagePayload.CODEC);
         NetworkManager.registerS2CPayloadType(NarakaClientboundEntityEventPacket.TYPE, NarakaClientboundEntityEventPacket.CODEC);
+        NetworkManager.registerS2CPayloadType(NarakaClientboundEventPacket.TYPE, NarakaClientboundEventPacket.CODEC);
     }
 
     @Environment(EnvType.CLIENT)
@@ -21,6 +22,7 @@ public class NarakaNetworks {
         NetworkManager.registerReceiver(NetworkManager.s2c(), SyncEntityDataPayload.TYPE, SyncEntityDataPayload.CODEC, SyncEntityDataPayload::handle);
         NetworkManager.registerReceiver(NetworkManager.s2c(), SyncAnimationPayload.TYPE, SyncAnimationPayload.CODEC, SyncAnimationPayload::handle);
         NetworkManager.registerReceiver(NetworkManager.s2c(), SyncAfterimagePayload.TYPE, SyncAfterimagePayload.CODEC, SyncAfterimagePayload::handle);
-        NetworkManager.registerReceiver(NetworkManager.s2c(), NarakaClientboundEntityEventPacket.TYPE, NarakaClientboundEntityEventPacket.CODEC, NarakaClientboundEventHandler::handle);
+        NetworkManager.registerReceiver(NetworkManager.s2c(), NarakaClientboundEntityEventPacket.TYPE, NarakaClientboundEntityEventPacket.CODEC, NarakaClientboundEventHandler::handleEntityEvent);
+        NetworkManager.registerReceiver(NetworkManager.s2c(), NarakaClientboundEventPacket.TYPE, NarakaClientboundEventPacket.CODEC, NarakaClientboundEventHandler::handleEvent);
     }
 }
