@@ -50,14 +50,11 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
     }
 
     protected void renderAfterimages(T entity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer) {
-        for (Afterimage afterimage : entity.getAfterimages()) {
-            if (!NarakaMod.config().disableAfterimageOutline.getValue())
-                this.renderAfterimage(entity, afterimage, partialTicks, poseStack, buffer, true);
-            this.renderAfterimage(entity, afterimage, partialTicks, poseStack, buffer, false);
-        }
+        for (Afterimage afterimage : entity.getAfterimages())
+            this.renderAfterimage(entity, afterimage, partialTicks, poseStack, buffer);
     }
 
-    protected void renderAfterimage(T entity, Afterimage afterimage, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, boolean outline) {
+    protected void renderAfterimage(T entity, Afterimage afterimage, float partialTicks, PoseStack poseStack, MultiBufferSource buffer) {
         if (afterimage.getAlpha(partialTicks) == 0 && afterimage.getPartialTicks() < partialTicks)
             return;
 
@@ -69,9 +66,9 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
         this.setupRotations(entity, poseStack, getBob(entity, partialTicks), afterimage.getYRot(), partialTicks, entity.getScale());
 
-        RenderType renderType = RenderType.entityTranslucent(getAfterimageTexture(entity, outline));
+        RenderType renderType = RenderType.entityTranslucent(getAfterimageTexture(entity));
         VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
-        Color color = getAfterimageColor(afterimage, partialTicks, outline);
+        Color color = getAfterimageColor(afterimage, partialTicks);
         int light = (int) (color.alpha01() * 10) + 5;
         int packedLight = LightTexture.pack(light, light);
 
@@ -85,12 +82,10 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
     }
 
-    protected Color getAfterimageColor(Afterimage afterimage, float partialTicks, boolean outline) {
+    protected Color getAfterimageColor(Afterimage afterimage, float partialTicks) {
         int alpha = afterimage.getAlpha(partialTicks);
-        if (outline)
-            return Color.of(NarakaMod.config().afterimageOutlineColor.getValue()).withAlpha(alpha);
         return Color.of(NarakaMod.config().afterimageColor.getValue()).withAlpha(alpha);
     }
 
-    protected abstract ResourceLocation getAfterimageTexture(T entity, boolean outline);
+    protected abstract ResourceLocation getAfterimageTexture(T entity);
 }

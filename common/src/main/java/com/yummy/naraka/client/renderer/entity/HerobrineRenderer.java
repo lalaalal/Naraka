@@ -47,7 +47,7 @@ public class HerobrineRenderer extends AfterimageEntityRenderer<Herobrine, Herob
     }
 
     @Override
-    protected ResourceLocation getAfterimageTexture(Herobrine entity, boolean outline) {
-        return outline ? NarakaTextures.HEROBRINE_AFTERIMAGE_OUTLINE : NarakaTextures.HEROBRINE_AFTERIMAGE;
+    protected ResourceLocation getAfterimageTexture(Herobrine entity) {
+        return NarakaTextures.HEROBRINE_AFTERIMAGE;
     }
 }

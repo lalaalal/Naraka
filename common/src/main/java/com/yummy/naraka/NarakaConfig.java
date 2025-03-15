@@ -21,8 +21,6 @@ public final class NarakaConfig {
     public final ConfigValue<Boolean> showReinforcementValue;
     public final ConfigValue<Boolean> disableNonShaderLonginusRendering;
     public final ConfigValue<String> afterimageColor;
-    public final ConfigValue<String> afterimageOutlineColor;
-    public final ConfigValue<Boolean> disableAfterimageOutline;
     public final ConfigValue<Boolean> showTestCreativeModeTab;
     public final ConfigValue<Integer> herobrineTakingStigmaTick;
 
@@ -56,9 +54,7 @@ public final class NarakaConfig {
         this.generatePillarCaves = define("generate_pillar_caves", false);
         this.showReinforcementValue = define("show_reinforcement_value", false);
         this.disableNonShaderLonginusRendering = define("disable_non_shader_longinus_rendering", false);
-        this.afterimageColor = define("afterimage_color", "ffffff");
-        this.afterimageOutlineColor = define("afterimage_outline_color", "ffffff");
-        this.disableAfterimageOutline = define("disable_afterimage_outline", true);
+        this.afterimageColor = define("afterimage_color", "7e00ff");
         this.showTestCreativeModeTab = define("show_test_creative_mode_tab", false);
         this.herobrineTakingStigmaTick = define("herobrine_taking_stigma_tick", 1200);
 
