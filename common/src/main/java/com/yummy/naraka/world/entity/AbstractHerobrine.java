@@ -38,6 +38,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     public final AnimationState punchAnimationState3 = animationState(HerobrinePunchAnimation.PUNCH_3);
     public final AnimationState rushAnimationState = animationState(HerobrineSkillAnimation.RUSH);
     public final AnimationState throwFireballAnimationState = animationState(HerobrineSkillAnimation.THROW_NARAKA_FIREBALL);
+    public final AnimationState stigmatizeEntitiesAnimationState = new AnimationState();
     public final AnimationState blockingSkillAnimationState = animationState(HerobrineAnimation.BLOCKING);
     public final AnimationState weaknessAnimationState = new AnimationState();
 
@@ -45,6 +46,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     protected final DashSkill<AbstractHerobrine> dashSkill = registerSkill(this, DashSkill::new);
     protected final DashAroundSkill<AbstractHerobrine> dashAroundSkill = registerSkill(this, DashAroundSkill::new);
     protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(new RushSkill<>(this, AbstractHerobrine::isNotHerobrine), rushAnimationState);
+    protected final StigmatizeEntitiesSkill<AbstractHerobrine> stigmatizeEntitiesSkill = registerSkill(this, StigmatizeEntitiesSkill::new, stigmatizeEntitiesAnimationState);
     protected final ThrowFireballSkill throwFireballSkill = registerSkill(new ThrowFireballSkill(this, this::createFireball), throwFireballAnimationState);
     protected final BlockingSkill blockingSkill = registerSkill(this, BlockingSkill::new, blockingSkillAnimationState);
 

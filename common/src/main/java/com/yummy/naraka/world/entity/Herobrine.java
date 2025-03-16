@@ -44,7 +44,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 public class Herobrine extends AbstractHerobrine {
     private static final float[] HEALTH_BY_PHASE = {106, 210, 350};
@@ -57,9 +56,17 @@ public class Herobrine extends AbstractHerobrine {
 
     protected final SummonShadowSkill summonShadowSkill = registerSkill(this, SummonShadowSkill::new, summonShadowAnimationState);
 
-    private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill);
+    private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
+    private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill);
     private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, throwFireballSkill, rushSkill);
     private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, throwFireballSkill, rushSkill, summonShadowSkill);
+
+    private final List<List<Skill<?>>> HIBERNATED_MODE_SKILL_BY_PHASE = List.of(
+            List.of(), HIBERNATED_MODE_PHASE_1_SKILLS, HIBERNATED_MODE_PHASE_2_SKILLS, List.of()
+    );
+    private final List<List<Skill<?>>> SKILLS_BY_PHASE = List.of(
+            List.of(), PHASE_1_SKILLS, PHASE_2_SKILLS, List.of()
+    );
 
     private final List<Projectile> ignoredProjectiles = new ArrayList<>();
     private final Set<UUID> stigmatizedEntities = new HashSet<>();
@@ -69,7 +76,9 @@ public class Herobrine extends AbstractHerobrine {
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this, bossEvent);
-    private int hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
+    private float hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
+    private int hurtCount = 0;
+
     private boolean hibernateMode = false;
     private int hibernateModeTickCount = 0;
 
@@ -82,8 +91,7 @@ public class Herobrine extends AbstractHerobrine {
         bossEvent.setDarkenScreen(true)
                 .setPlayBossMusic(true);
         phaseManager.addPhaseChangeListener(this::updateMusic);
-        phaseManager.addPhaseChangeListener(updateUsingSkills(PHASE_1_SKILLS), 1);
-        phaseManager.addPhaseChangeListener(updateUsingSkills(PHASE_2_SKILLS), 2);
+        phaseManager.addPhaseChangeListener(this::updateUsingSkills);
 
         skillManager.enableOnly(PHASE_1_SKILLS);
     }
@@ -99,8 +107,8 @@ public class Herobrine extends AbstractHerobrine {
         NetworkManager.sendToPlayers(bossEvent.getPlayers(), packet);
     }
 
-    private Consumer<Integer> updateUsingSkills(final List<Skill<?>> usingSkills) {
-        return phase -> skillManager.enableOnly(usingSkills);
+    private void updateUsingSkills(int prevPhase, int currentPhase) {
+        skillManager.enableOnly(SKILLS_BY_PHASE.get(currentPhase));
     }
 
     private <T> Collection<T> getEntities(Collection<UUID> uuids, Class<T> type) {
@@ -113,7 +121,7 @@ public class Herobrine extends AbstractHerobrine {
         return phaseManager.getCurrentPhase();
     }
 
-    public int getHurtDamageLimit() {
+    public float getHurtDamageLimit() {
         return hurtDamageLimit;
     }
 
@@ -165,6 +173,8 @@ public class Herobrine extends AbstractHerobrine {
             shadowHerobrines.clear();
             skillManager.interrupt();
             startWeakness();
+            if (hibernateMode)
+                stopHibernateMode();
         }
     }
 
@@ -266,11 +276,14 @@ public class Herobrine extends AbstractHerobrine {
     public boolean hurt(DamageSource source, float damage) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             return super.hurt(source, damage);
+        if (hibernateMode)
+            return true;
         if (source.getEntity() == this)
             return false;
 
         float actualDamage = getActualDamage(source, damage);
         updateHurtDamageLimit(actualDamage);
+        actualDamage = Math.min(actualDamage, hurtDamageLimit);
         if (updateHibernateMode(source, actualDamage))
             return true;
 
@@ -312,14 +325,18 @@ public class Herobrine extends AbstractHerobrine {
                 stopHibernateMode();
             return true;
         }
-        if (phaseManager.getCurrentPhase() == 1) {
-            float healthAfterHurt = phaseManager.getCurrentPhaseHealth() + getAbsorptionAmount() - actualDamage;
-            if (healthAfterHurt < 1) {
-                setHealth(phaseManager.getActualPhaseMaxHealth(2) + 1);
-                startHibernateMode();
-                return true;
-            }
+
+        return preserveCurrentPhaseMinimumHealth(actualDamage);
+    }
+
+    private boolean preserveCurrentPhaseMinimumHealth(float actualDamage) {
+        float healthAfterHurt = phaseManager.getCurrentPhaseHealth() + getAbsorptionAmount() - actualDamage;
+        if (healthAfterHurt < 1) {
+            setHealth(phaseManager.getActualPhaseMaxHealth(getPhase() + 1) + 1);
+            startHibernateMode();
+            return true;
         }
+
         return false;
     }
 
@@ -329,27 +346,33 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void updateHurtDamageLimit(float actualDamage) {
-        if (actualDamage >= 50 || level().isClientSide)
+        if (level().isClientSide)
             return;
+        if (phaseManager.getCurrentPhase() < 3 && hurtDamageLimit > 1) {
+            double factor = NarakaMod.config().herobrineHurtLimitReduceFactor.getValue();
+            double base = Math.max(NarakaUtils.log(factor, actualDamage), 1.5);
+            base = (3 / -base) + 4;
+            int maxHurtCountReducer = (int) Math.max(NarakaUtils.log(10, (base - 2) / NarakaMod.config().herobrineMaxHurtCountReduceFactor.getValue()), 0);
+            int maxHurtCount = NarakaMod.config().hurtCountHerobrineEnterHibernatedMode.getValue() - 1 - maxHurtCountReducer;
+            this.hurtDamageLimit = (float) Math.max(Math.pow(base, maxHurtCount - hurtCount), 1);
 
-        if (phaseManager.getCurrentPhase() == 1 && hurtDamageLimit > 1) {
-            int reduce = Mth.clamp(1, Math.round(actualDamage) - 1, 20);
-            hurtDamageLimit = Math.max(1, hurtDamageLimit - reduce);
-            if (hurtDamageLimit == 1)
+            hurtCount += 1;
+            if (hurtDamageLimit <= 1)
                 startHibernateMode();
         }
     }
 
     private void startHibernateMode() {
         hibernateMode = true;
-        skillManager.enableOnly(HIBERNATED_MODE_PHASE_1_SKILLS);
+        skillManager.enableOnly(HIBERNATED_MODE_SKILL_BY_PHASE.get(getPhase()));
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
     }
 
     private void stopHibernateMode() {
+        hurtCount = 0;
         hibernateMode = false;
         hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
-        skillManager.enableOnly(PHASE_1_SKILLS);
+        skillManager.enableOnly(SKILLS_BY_PHASE.get(getPhase()));
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
 
         setHealth(getHealth() - 1);

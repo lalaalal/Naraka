@@ -105,4 +105,8 @@ public class NarakaUtils {
 
         return new BlockPos(x, y, z);
     }
+
+    public static double log(double base, double value) {
+        return Math.log(value) / Math.log(base);
+    }
 }
