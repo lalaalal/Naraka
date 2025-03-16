@@ -285,6 +285,7 @@ public class NarakaLanguageProviders {
         addTooltip(NarakaBlocks.SOUL_SMITHING_BLOCK, "Smash item with a hammer...?", "아이템을 망치로 부수기..?");
 
         addEntityType(NarakaEntityTypes.HEROBRINE, "Naraka: Herobrine", "히로빈");
+        addEntityType(NarakaEntityTypes.SHADOW_HEROBRINE, "Shadow Herobrine", "그림자 히로빈");
         addEntityType(NarakaEntityTypes.THROWN_SPEAR, "Spear", "창");
         addEntityType(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, "Mighty Holy Spear", "강력한 성스러운 창");
         addEntityType(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, "Spear of Longinus", "롱기누스의 창");

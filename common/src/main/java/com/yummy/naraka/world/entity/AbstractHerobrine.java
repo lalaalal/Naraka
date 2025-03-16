@@ -72,6 +72,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         super(entityType, level);
         this.isShadow = isShadow;
         registerAnimation(WEAKNESS_ANIMATION, weaknessAnimationState);
+        setPersistenceRequired();
     }
 
     private void updateWeakness() {

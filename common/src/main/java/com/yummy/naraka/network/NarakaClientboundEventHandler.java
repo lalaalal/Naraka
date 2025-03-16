@@ -4,6 +4,7 @@ import com.yummy.naraka.sounds.NarakaMusics;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.MusicManager;
+import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -46,9 +47,11 @@ public class NarakaClientboundEventHandler {
 
     static void updateHerobrineMusic(final int phase) {
         Minecraft minecraft = Minecraft.getInstance();
+        SoundManager soundManager = minecraft.getSoundManager();
         MusicManager musicManager = minecraft.getMusicManager();
 
         if (0 < phase && phase <= 4) {
+            soundManager.stop();
             musicManager.stopPlaying();
             musicManager.startPlaying(HEROBRINE_MUSIC[phase]);
         }

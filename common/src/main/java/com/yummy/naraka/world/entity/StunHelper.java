@@ -75,12 +75,16 @@ public final class StunHelper {
      * @param duration     Stun duration
      */
     public static void stunEntity(LivingEntity livingEntity, int duration) {
+        stunEntity(livingEntity, duration, false);
+    }
+
+    public static void stunEntity(LivingEntity livingEntity, int duration, boolean update) {
         holdEntity(livingEntity);
         long gameTime = livingEntity.level().getGameTime();
         TickSchedule schedule = STUN_RELEASE_SCHEDULES.computeIfAbsent(livingEntity, key -> createReleaseSchedule(key, duration));
         if (schedule.isExpired(gameTime)) {
             schedule = createReleaseSchedule(livingEntity, duration);
-        } else if (schedule.getTimeToRun() < gameTime + duration) {
+        } else if (update && schedule.getTimeToRun() < gameTime + duration) {
             schedule.update(gameTime + duration);
         }
         STUN_RELEASE_SCHEDULES.put(livingEntity, schedule);

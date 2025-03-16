@@ -5,12 +5,15 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.layer.HerobrineEyeLayer;
+import com.yummy.naraka.client.layer.ShadowHerobrineArmorLayer;
 import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Afterimage;
+import com.yummy.naraka.world.entity.ShadowHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.Util;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -25,6 +28,13 @@ public class HerobrineRenderer<T extends AbstractHerobrine> extends AfterimageEn
         this(context, NarakaModelLayers.HEROBRINE);
     }
 
+    public static HerobrineRenderer<ShadowHerobrine> shadow(EntityRendererProvider.Context context) {
+        return Util.make(
+                new HerobrineRenderer<>(context, NarakaModelLayers.HEROBRINE),
+                renderer -> renderer.addLayer(new ShadowHerobrineArmorLayer(renderer))
+        );
+    }
+
     protected HerobrineRenderer(EntityRendererProvider.Context context, ModelLayerLocation layerLocation) {
         super(context, () -> new HerobrineModel<>(context.bakeLayer(layerLocation)), 0.5f);
         addLayer(new HerobrineEyeLayer<>(this));
@@ -37,8 +47,9 @@ public class HerobrineRenderer<T extends AbstractHerobrine> extends AfterimageEn
 
     @Override
     public void render(T herobrine, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
-        if (herobrine.isShadow)
+        if (herobrine.isShadow) {
             model.renderShadow();
+        }
         super.render(herobrine, entityYaw, partialTicks, poseStack, buffer, packedLight);
     }
 

@@ -81,7 +81,6 @@ public class Herobrine extends AbstractHerobrine {
 
         bossEvent.setDarkenScreen(true)
                 .setPlayBossMusic(true);
-        setPersistenceRequired();
         phaseManager.addPhaseChangeListener(this::updateMusic);
         phaseManager.addPhaseChangeListener(updateUsingSkills(PHASE_1_SKILLS), 1);
         phaseManager.addPhaseChangeListener(updateUsingSkills(PHASE_2_SKILLS), 2);
