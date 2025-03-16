@@ -15,19 +15,18 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class NarakaEntityUtils {
     private static final Map<UUID, Entity> CACHED_ENTITIES = new HashMap<>();
 
     @Nullable
-    public static Entity findEntityBuUUID(ServerLevel serverLevel, UUID uuid) {
+    private static Entity findEntityBuUUID(ServerLevel serverLevel, UUID uuid) {
         if (CACHED_ENTITIES.containsKey(uuid)) {
             Entity entity = CACHED_ENTITIES.get(uuid);
             if (!entity.isRemoved())
                 return entity;
+            CACHED_ENTITIES.remove(uuid);
         }
         return serverLevel.getEntity(uuid);
     }
@@ -40,6 +39,13 @@ public class NarakaEntityUtils {
         if (type.isInstance(entity))
             return type.cast(entity);
         return null;
+    }
+
+    public static <T> Collection<T> findEntitiesByUUID(ServerLevel serverLevel, Collection<UUID> uuids, Class<T> type) {
+        return uuids.stream()
+                .map(uuid -> findEntityByUUID(serverLevel, uuid, type))
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     public static Vec3 getDirectionNormalVector(Entity from, Entity to) {

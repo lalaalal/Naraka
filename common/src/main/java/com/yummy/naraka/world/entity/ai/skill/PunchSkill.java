@@ -12,9 +12,18 @@ public class PunchSkill<T extends SkillUsingMob & StigmatizingEntity> extends Sk
     public static final String NAME = "punch";
 
     private int linkedCount = 1;
+    private int maxLinkCount = 5;
 
     public PunchSkill(T mob) {
         super(NAME, 20, 110, mob);
+    }
+
+    public void setMaxLinkCount(int maxLinkCount) {
+        this.maxLinkCount = maxLinkCount;
+    }
+
+    public int getLinkedCount() {
+        return linkedCount;
     }
 
     @Override
@@ -30,7 +39,7 @@ public class PunchSkill<T extends SkillUsingMob & StigmatizingEntity> extends Sk
 
     @Override
     protected void onLastTick() {
-        if (linkedCount < 5 && level().random.nextFloat() < 0.8f) {
+        if (linkedCount < maxLinkCount && level().random.nextFloat() < 0.8f) {
             setLinkedSkill(this);
             linkedCount += 1;
         } else {
@@ -73,7 +82,7 @@ public class PunchSkill<T extends SkillUsingMob & StigmatizingEntity> extends Sk
             return;
 
         if (linkedCount == 1)
-            StunHelper.stunEntity(target, 100);
+            StunHelper.stunEntity(target, 40);
         target.hurt(damageSource, damage);
         target.knockback(2f, mob.getX() - target.getX(), mob.getZ() - target.getZ());
         mob.stigmatizeEntity(target);

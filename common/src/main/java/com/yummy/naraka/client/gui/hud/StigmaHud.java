@@ -42,7 +42,7 @@ public class StigmaHud implements ClientGuiEvent.RenderHud {
 
     private void onStigmaConsumed(LivingEntity livingEntity, EntityDataType<Stigma> entityDataType, Stigma from, Stigma to) {
         if (isCurrentPlayer(livingEntity)) {
-            if (from.value() == Stigma.MAX_STIGMA && to.value() == 0)
+            if (0 < from.value() && to.value() == 0 && to.lastMarkedTime() != 0)
                 consumeIconDisplayTick = CONSUME_ICON_DISPLAYING_TIME;
         }
     }

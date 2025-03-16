@@ -3,6 +3,7 @@ package com.yummy.naraka.util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -95,5 +96,13 @@ public class NarakaUtils {
         if (state.isCollisionShapeFullBlock(level, findingPos))
             return findAir(level, findingPos, findingDirection);
         return findingPos;
+    }
+
+    public static BlockPos randomBlockPos(RandomSource random, BlockPos pos, int offset) {
+        int x = pos.getX() + random.nextIntBetweenInclusive(-offset, offset);
+        int z = pos.getZ() + random.nextIntBetweenInclusive(-offset, offset);
+        int y = pos.getY();
+
+        return new BlockPos(x, y, z);
     }
 }

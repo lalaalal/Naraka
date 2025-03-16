@@ -17,7 +17,6 @@ public record Stigma(int value, long lastMarkedTime) {
     public static final Stigma ZERO = new Stigma(0, 0);
     public static final int MAX_STIGMA = 2;
     public static final int HOLD_ENTITY_DURATION = 20 * 5;
-    public static final int STIGMA_DECREASE_COOLDOWN = 20 * 60;
 
     /**
      * Increase value of stigma.
@@ -83,12 +82,5 @@ public record Stigma(int value, long lastMarkedTime) {
         } else {
             LockedHealthHelper.lock(livingEntity, lockedHealth);
         }
-    }
-
-    public Stigma tryDecrease(LivingEntity livingEntity) {
-        long now = livingEntity.level().getGameTime();
-        if (now - lastMarkedTime >= STIGMA_DECREASE_COOLDOWN)
-            return decrease(now);
-        return this;
     }
 }

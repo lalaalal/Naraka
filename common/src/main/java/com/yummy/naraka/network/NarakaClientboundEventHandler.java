@@ -1,19 +1,14 @@
 package com.yummy.naraka.network;
 
 import com.yummy.naraka.sounds.NarakaMusics;
-import com.yummy.naraka.sounds.NarakaSoundEvents;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.client.sounds.SoundManager;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.client.sounds.MusicManager;
+import net.minecraft.sounds.Music;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 public class NarakaClientboundEventHandler {
-    private static @Nullable SoundInstance currentPlayingMusic = null;
-
     private static final NarakaClientboundEventPacket.Event[] HEROBRINE_MUSIC_EVENT = new NarakaClientboundEventPacket.Event[]{
             null,
             NarakaClientboundEventPacket.Event.PLAY_HEROBRINE_PHASE_1,
@@ -22,15 +17,15 @@ public class NarakaClientboundEventHandler {
             NarakaClientboundEventPacket.Event.PLAY_HEROBRINE_PHASE_4
     };
 
-    private static final SoundEvent[] HEROBRINE_MUSIC = new SoundEvent[]{
+    private static final Music[] HEROBRINE_MUSIC = new Music[]{
             null,
-            NarakaSoundEvents.HEROBRINE_PHASE_1.value(),
-            NarakaSoundEvents.HEROBRINE_PHASE_2.value(),
-            NarakaSoundEvents.HEROBRINE_PHASE_3.value(),
-            NarakaSoundEvents.HEROBRINE_PHASE_4.value()
+            NarakaMusics.HEROBRINE_PHASE_1,
+            NarakaMusics.HEROBRINE_PHASE_2,
+            NarakaMusics.HEROBRINE_PHASE_3,
+            NarakaMusics.HEROBRINE_PHASE_4
     };
 
-    public static NarakaClientboundEventPacket.Event getEventByPhase(int phase) {
+    public static NarakaClientboundEventPacket.Event musicEventByPhase(int phase) {
         if (0 < phase && phase <= 4)
             return HEROBRINE_MUSIC_EVENT[phase];
         return NarakaClientboundEventPacket.Event.STOP_MUSIC;
@@ -51,23 +46,18 @@ public class NarakaClientboundEventHandler {
 
     static void updateHerobrineMusic(final int phase) {
         Minecraft minecraft = Minecraft.getInstance();
-        SoundManager soundManager = minecraft.getSoundManager();
+        MusicManager musicManager = minecraft.getMusicManager();
 
         if (0 < phase && phase <= 4) {
-            if (currentPlayingMusic != null)
-                soundManager.stop(currentPlayingMusic);
-            currentPlayingMusic = NarakaMusics.bossMusic(HEROBRINE_MUSIC[phase]);
-            soundManager.play(currentPlayingMusic);
+            musicManager.stopPlaying();
+            musicManager.startPlaying(HEROBRINE_MUSIC[phase]);
         }
     }
 
     static void stopHerobrineMusic() {
         Minecraft minecraft = Minecraft.getInstance();
-        SoundManager soundManager = minecraft.getSoundManager();
+        MusicManager musicManager = minecraft.getMusicManager();
 
-        if (currentPlayingMusic != null) {
-            soundManager.stop(currentPlayingMusic);
-            currentPlayingMusic = null;
-        }
+        musicManager.stopPlaying();
     }
 }

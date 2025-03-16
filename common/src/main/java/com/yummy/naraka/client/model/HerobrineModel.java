@@ -1,9 +1,11 @@
 package com.yummy.naraka.client.model;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
-import com.yummy.naraka.client.animation.herobrine.HerobrinePunchAnimation;
-import com.yummy.naraka.client.animation.herobrine.HerobrineSkillAnimation;
-import com.yummy.naraka.world.entity.Herobrine;
+import com.yummy.naraka.util.Color;
+import com.yummy.naraka.world.entity.AbstractHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HierarchicalModel;
@@ -13,9 +15,10 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
 @Environment(EnvType.CLIENT)
-public class HerobrineModel<T extends Herobrine> extends HierarchicalModel<T> {
+public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalModel<T> {
     private final ModelPart root;
     private final ModelPart head;
+    private boolean renderShadow = false;
 
     public HerobrineModel(ModelPart root) {
         this.root = root;
@@ -57,17 +60,26 @@ public class HerobrineModel<T extends Herobrine> extends HierarchicalModel<T> {
         return root;
     }
 
+    public void renderShadow() {
+        this.renderShadow = true;
+    }
+
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+        if (renderShadow)
+            color = Color.of(NarakaMod.config().shadowHerobrineColor.getValue()).withAlpha(0x88).pack();
+        super.renderToBuffer(poseStack, buffer, packedLight, packedOverlay, color);
+        renderShadow = false;
+    }
+
+    @Override
+    public void setupAnim(T herobrine, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root.getAllParts().forEach(ModelPart::resetPose);
         applyHeadRotation(netHeadYaw, headPitch);
         this.animateWalk(HerobrineAnimation.WALKING, limbSwing, limbSwingAmount, 2, 2);
-        this.animate(entity.punchAnimationState1, HerobrinePunchAnimation.PUNCH_1, ageInTicks);
-        this.animate(entity.punchAnimationState2, HerobrinePunchAnimation.PUNCH_2, ageInTicks);
-        this.animate(entity.punchAnimationState3, HerobrinePunchAnimation.PUNCH_3, ageInTicks);
-        this.animate(entity.rushAnimationState, HerobrineSkillAnimation.RUSH, ageInTicks);
-        this.animate(entity.throwFireballAnimationState, HerobrineSkillAnimation.THROW_NARAKA_FIREBALL, ageInTicks);
-        this.animate(entity.blockingSkillAnimationState, HerobrineAnimation.BLOCKING, ageInTicks);
+        herobrine.forEachAnimations((animationState, animationDefinition) -> {
+            this.animate(animationState, animationDefinition, ageInTicks);
+        });
     }
 
     private void applyHeadRotation(float netHeadYaw, float headPitch) {

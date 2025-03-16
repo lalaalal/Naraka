@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 
 public class SkillManager {
     private final RandomSource random;
-    private final Map<String, Skill<?>> skills = new HashMap<>();
+    private final Set<Skill<?>> skills = new HashSet<>();
     private final List<Consumer<Skill<?>>> skillStartListeners = new ArrayList<>();
     private final List<Consumer<Skill<?>>> skillEndListeners = new ArrayList<>();
     private boolean paused = false;
@@ -21,11 +21,12 @@ public class SkillManager {
     private Skill<?> currentSkill = null;
 
     public void addSkill(Skill<?> skill) {
-        this.skills.put(skill.name, skill);
+        this.skills.add(skill);
     }
 
-    public Collection<Skill<?>> getSkills() {
-        return skills.values();
+    public void enableOnly(Collection<Skill<?>> skillsToEnable) {
+        for (Skill<?> skill : this.skills)
+            skill.setEnabled(skillsToEnable.contains(skill));
     }
 
     public void runOnSkillStart(Consumer<Skill<?>> listener) {
@@ -39,7 +40,7 @@ public class SkillManager {
     private List<Skill<?>> getUsableSkills() {
         if (paused)
             return List.of();
-        return skills.values().stream()
+        return skills.stream()
                 .filter(skill -> skill.readyToUse() && skill.canUse())
                 .toList();
     }
@@ -97,7 +98,7 @@ public class SkillManager {
             }
         }
 
-        for (Skill<?> skill : skills.values()) {
+        for (Skill<?> skill : skills) {
             if (!skill.readyToUse())
                 skill.reduceCooldown();
         }

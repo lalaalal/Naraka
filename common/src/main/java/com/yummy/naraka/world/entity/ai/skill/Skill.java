@@ -8,7 +8,7 @@ public abstract class Skill<T extends SkillUsingMob> {
     public final String name;
     protected final T mob;
     protected final int duration;
-    protected final int cooldown;
+    protected int cooldown;
 
     protected int tickCount = 0;
     protected int cooldownTick;
@@ -35,6 +35,10 @@ public abstract class Skill<T extends SkillUsingMob> {
     }
 
     public abstract boolean canUse();
+
+    public void setEnabled(boolean value) {
+        disabled = !value;
+    }
 
     public void disable() {
         disabled = true;
@@ -81,6 +85,10 @@ public abstract class Skill<T extends SkillUsingMob> {
         if (tickCount == duration - 1)
             onLastTick();
         tickCount += 1;
+    }
+
+    public void changeCooldown(int cooldown) {
+        this.cooldown = cooldown;
     }
 
     public void setCooldown() {

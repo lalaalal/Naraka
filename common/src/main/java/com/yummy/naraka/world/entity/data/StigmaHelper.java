@@ -25,6 +25,14 @@ public class StigmaHelper {
         increaseStigma(target, cause, false);
     }
 
+    public static void decreaseStigma(LivingEntity livingEntity) {
+        long currentGameTime = livingEntity.level().getGameTime();
+        Stigma stigma = get(livingEntity);
+        Stigma decreased = stigma.decrease(currentGameTime);
+
+        set(livingEntity, decreased);
+    }
+
     public static void removeStigma(LivingEntity livingEntity) {
         set(livingEntity, Stigma.ZERO);
     }
@@ -41,7 +49,7 @@ public class StigmaHelper {
     public static boolean collectStigmaAfter(LivingEntity livingEntity, Entity cause, int tickAfter) {
         Stigma stigma = get(livingEntity);
         long currentGameTime = livingEntity.level().getGameTime();
-        if (stigma.value() > 0 && currentGameTime > stigma.lastMarkedTime() + tickAfter) {
+        if (stigma.value() > 0 && stigma.lastMarkedTime() != 0 && currentGameTime > stigma.lastMarkedTime() + tickAfter) {
             Stigma consumed = stigma.consume(livingEntity, cause);
             set(livingEntity, consumed);
             return true;

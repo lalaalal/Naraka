@@ -21,8 +21,10 @@ public final class NarakaConfig {
     public final ConfigValue<Boolean> showReinforcementValue;
     public final ConfigValue<Boolean> disableNonShaderLonginusRendering;
     public final ConfigValue<String> afterimageColor;
+    public final ConfigValue<String> shadowHerobrineColor;
     public final ConfigValue<Boolean> showTestCreativeModeTab;
     public final ConfigValue<Integer> herobrineTakingStigmaTick;
+    public final ConfigValue<Integer> maxShadowHerobrineSpawn;
 
     static void load() {
         try {
@@ -55,8 +57,10 @@ public final class NarakaConfig {
         this.showReinforcementValue = define("show_reinforcement_value", false);
         this.disableNonShaderLonginusRendering = define("disable_non_shader_longinus_rendering", false);
         this.afterimageColor = define("afterimage_color", "7e00ff");
+        this.shadowHerobrineColor = define("shadow_herobrine_color", "0000ff");
         this.showTestCreativeModeTab = define("show_test_creative_mode_tab", false);
         this.herobrineTakingStigmaTick = define("herobrine_taking_stigma_tick", 1200);
+        this.maxShadowHerobrineSpawn = define("max_shadow_herobrine_spawn", 3);
 
         loadValues();
     }

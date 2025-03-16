@@ -16,6 +16,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Skill<T> {
     public static final String NAME = "rush";
@@ -28,9 +29,15 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Ski
     private Vec3 delta = Vec3.ZERO;
 
     private final List<Entity> blockedEntities = new ArrayList<>();
+    private Predicate<LivingEntity> targetPredicate = livingEntity -> true;
 
     public RushSkill(T mob) {
         super(NAME, 85, 160, mob);
+    }
+
+    public RushSkill(T mob, Predicate<LivingEntity> targetPredicate) {
+        super(NAME, 85, 160, mob);
+        this.targetPredicate = targetPredicate;
     }
 
     @Override
@@ -95,6 +102,8 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Ski
 
     private void hurtHitEntities() {
         mob.level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(0.5))
+                .stream()
+                .filter(targetPredicate)
                 .forEach(this::hurtHitTarget);
     }
 

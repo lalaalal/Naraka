@@ -21,6 +21,16 @@ public class NarakaEntityTypes {
                     .sized(0.6f, 2.0f)
     );
 
+    public static final LazyHolder<EntityType<?>, EntityType<ShadowHerobrine>> SHADOW_HEROBRINE = register(
+            "shadow_herobrine",
+            EntityType.Builder.<ShadowHerobrine>of(
+                            ShadowHerobrine::new,
+                            MobCategory.MONSTER
+                    )
+                    .fireImmune()
+                    .sized(0.6f, 2.0f)
+    );
+
     public static final LazyHolder<EntityType<?>, EntityType<Spear>> THROWN_SPEAR = register(
             "spear",
             EntityType.Builder.<Spear>of(Spear::new, MobCategory.MISC)
@@ -60,6 +70,7 @@ public class NarakaEntityTypes {
     public static void initialize() {
         RegistryInitializer.get(Registries.ENTITY_TYPE)
                 .onRegistrationFinished();
-        EntityAttributeRegistry.register(HEROBRINE, Herobrine::getAttributeSupplier);
+        EntityAttributeRegistry.register(HEROBRINE, AbstractHerobrine::getAttributeSupplier);
+        EntityAttributeRegistry.register(SHADOW_HEROBRINE, ShadowHerobrine::getAttributeSupplier);
     }
 }

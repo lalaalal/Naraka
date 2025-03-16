@@ -4,6 +4,7 @@ import com.yummy.naraka.network.SyncAnimationPayload;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
 import dev.architectury.networking.NetworkManager;
+import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -17,10 +18,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public abstract class SkillUsingMob extends PathfinderMob {
     protected final SkillManager skillManager = new SkillManager(random);
     protected final Map<String, AnimationController> animationStates = new HashMap<>();
+    protected final Map<AnimationState, AnimationDefinition> animationDefinitions = new HashMap<>();
 
     protected SkillUsingMob(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -33,14 +37,34 @@ public abstract class SkillUsingMob extends PathfinderMob {
         return skillManager.getCurrentSkill() != null;
     }
 
+    protected AnimationState animationState(AnimationDefinition animation) {
+        AnimationState animationState = new AnimationState();
+        animationDefinitions.put(animationState, animation);
+        return animationState;
+    }
+
+    public void forEachAnimations(BiConsumer<AnimationState, AnimationDefinition> consumer) {
+        animationDefinitions.forEach(consumer);
+    }
+
     @Nullable
     public Skill<?> getCurrentSkill() {
         return skillManager.getCurrentSkill();
     }
 
-    public void registerSkill(Skill<?> skill, AnimationState... animationStates) {
+    public void registerAnimation(String name, AnimationState... animationStates) {
+        this.animationStates.put(name, AnimationController.of(random, animationStates));
+    }
+
+    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(S skill, AnimationState... animationStates) {
         this.skillManager.addSkill(skill);
-        this.animationStates.put(skill.name, AnimationController.of(random, animationStates));
+        registerAnimation(skill.name, animationStates);
+
+        return skill;
+    }
+
+    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(T mob, Function<T, S> factory, AnimationState... animationStates) {
+        return registerSkill(factory.apply(mob), animationStates);
     }
 
     public float getAttackDamage() {

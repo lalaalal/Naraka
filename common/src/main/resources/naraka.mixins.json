@@ -12,7 +12,8 @@
     "client.ItemRendererMixin",
     "client.ItemStackMixin",
     "client.LocalPlayerMixin",
-    "client.MouseHandlerMixin"
+    "client.MouseHandlerMixin",
+    "client.SimpleSoundInstanceMixin"
   ],
   "mixins": [
     "EnchantmentMixin",
