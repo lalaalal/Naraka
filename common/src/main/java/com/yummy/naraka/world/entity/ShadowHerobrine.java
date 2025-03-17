@@ -113,12 +113,21 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
             herobrine.collectStigma(stigma);
     }
 
+    public float getHurtDamageLimit() {
+        if ((herobrine = getHerobrine()) == null)
+            return Float.MAX_VALUE;
+        float herobrineHurtDamageLimit = herobrine.getHurtDamageLimit();
+        if (herobrineHurtDamageLimit <= 1)
+            return Float.MAX_VALUE;
+        return herobrineHurtDamageLimit;
+    }
+
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             return super.hurt(source, amount);
         if ((herobrine = getHerobrine()) != null)
-            amount = Math.min(amount, herobrine.getHurtDamageLimit());
+            amount = Math.min(amount, getHurtDamageLimit());
         if (weaknessTickCount < MAX_WEAKNESS_TICK)
             return false;
         return super.hurt(source, amount);

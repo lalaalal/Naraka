@@ -49,7 +49,7 @@ public class Herobrine extends AbstractHerobrine {
     private static final float[] HEALTH_BY_PHASE = {106, 210, 350};
 
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
-    public static final int MAX_HURT_DAMAGE_LIMIT = 50;
+    public static final int MAX_HURT_DAMAGE_LIMIT = Integer.MAX_VALUE;
     public static final int MAX_ACCUMULATED_DAMAGE_TICK_COUNT = 40;
 
     public final AnimationState summonShadowAnimationState = new AnimationState();
@@ -77,6 +77,7 @@ public class Herobrine extends AbstractHerobrine {
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this, bossEvent);
     private float hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
+    private float averageHurtDamage;
     private int hurtCount = 0;
 
     private boolean hibernateMode = false;
@@ -284,7 +285,7 @@ public class Herobrine extends AbstractHerobrine {
         float actualDamage = getActualDamage(source, damage);
         updateHurtDamageLimit(actualDamage);
         actualDamage = Math.min(actualDamage, hurtDamageLimit);
-        if (updateHibernateMode(source, actualDamage))
+        if (updateHibernateMode(source, getActualDamage(source, actualDamage)))
             return true;
 
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
@@ -330,6 +331,8 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private boolean preserveCurrentPhaseMinimumHealth(float actualDamage) {
+        if (getPhase() == phaseManager.getMaxPhase())
+            return false;
         float healthAfterHurt = phaseManager.getCurrentPhaseHealth() + getAbsorptionAmount() - actualDamage;
         if (healthAfterHurt < 1) {
             setHealth(phaseManager.getActualPhaseMaxHealth(getPhase() + 1) + 1);
@@ -345,16 +348,40 @@ public class Herobrine extends AbstractHerobrine {
         return getDamageAfterMagicAbsorb(source, damage);
     }
 
-    private void updateHurtDamageLimit(float actualDamage) {
+    private double correctRatio(double ratio) {
+        final double scale = NarakaMod.config().herobrineHurtLimitDecreaseRatioModifier.getValue();
+        if (ratio > 5)
+            ratio = NarakaUtils.log(4, ratio - 4) + 5;
+        return Math.max(ratio * scale, 1.5);
+    }
+
+    private int calculateMaxHurtCount(double ratio) {
+        final double scale = NarakaMod.config().herobrineMaxHurtCountCalculationModifier.getValue();
+        return (int) Math.floor(6 * Math.pow(0.5, (ratio * scale) - 3) + 4);
+    }
+
+    private float calculateHurtDamageLimit(double ratio, int maxHurtCount) {
+        int power = Math.max(maxHurtCount - hurtCount - 1, 0);
+        return (float) Mth.clamp(Math.pow(ratio, power), 1, MAX_HURT_DAMAGE_LIMIT);
+    }
+
+    private float calculateAverageHurtDamage(float damage) {
+        if (hurtCount == 0)
+            return damage;
+        return (averageHurtDamage + damage) / 2f;
+    }
+
+    private void updateHurtDamageLimit(float damage) {
         if (level().isClientSide)
             return;
         if (phaseManager.getCurrentPhase() < 3 && hurtDamageLimit > 1) {
-            double factor = NarakaMod.config().herobrineHurtLimitReduceFactor.getValue();
-            double base = Math.max(NarakaUtils.log(factor, actualDamage), 1.5);
-            base = (3 / -base) + 4;
-            int maxHurtCountReducer = (int) Math.max(NarakaUtils.log(10, (base - 2) / NarakaMod.config().herobrineMaxHurtCountReduceFactor.getValue()), 0);
-            int maxHurtCount = NarakaMod.config().hurtCountHerobrineEnterHibernatedMode.getValue() - 1 - maxHurtCountReducer;
-            this.hurtDamageLimit = (float) Math.max(Math.pow(base, maxHurtCount - hurtCount), 1);
+            averageHurtDamage = calculateAverageHurtDamage(damage);
+
+            double ratio = NarakaUtils.log(2, averageHurtDamage);
+            int maxHurtCount = calculateMaxHurtCount(ratio);
+            ratio = correctRatio(ratio);
+
+            hurtDamageLimit = calculateHurtDamageLimit(ratio, maxHurtCount);
 
             hurtCount += 1;
             if (hurtDamageLimit <= 1)
@@ -370,6 +397,7 @@ public class Herobrine extends AbstractHerobrine {
 
     private void stopHibernateMode() {
         hurtCount = 0;
+        averageHurtDamage = 0;
         hibernateMode = false;
         hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
         skillManager.enableOnly(SKILLS_BY_PHASE.get(getPhase()));

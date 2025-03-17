@@ -2,7 +2,6 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
-import com.yummy.naraka.world.entity.data.StigmaHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 
@@ -33,7 +32,7 @@ public class StigmatizeEntitiesSkill<T extends SkillUsingMob & StigmatizingEntit
                 mob,
                 mob.getBoundingBox().inflate(20)
         );
-        for (LivingEntity entity : entities)
-            StigmaHelper.increaseStigma(entity, mob);
+        for (LivingEntity target : entities)
+            mob.stigmatizeEntity(target);
     }
 }

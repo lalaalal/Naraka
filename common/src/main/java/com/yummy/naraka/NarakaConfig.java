@@ -24,9 +24,8 @@ public final class NarakaConfig {
     public final ConfigValue<String> shadowHerobrineColor;
     public final ConfigValue<Boolean> showTestCreativeModeTab;
     public final ConfigValue<Integer> herobrineTakingStigmaTick;
-    public final ConfigValue<Integer> hurtCountHerobrineEnterHibernatedMode;
-    public final ConfigValue<Double> herobrineHurtLimitReduceFactor;
-    public final ConfigValue<Double> herobrineMaxHurtCountReduceFactor;
+    public final ConfigValue<Double> herobrineHurtLimitDecreaseRatioModifier;
+    public final ConfigValue<Double> herobrineMaxHurtCountCalculationModifier;
     public final ConfigValue<Integer> maxShadowHerobrineSpawn;
 
     static void load() {
@@ -63,9 +62,8 @@ public final class NarakaConfig {
         this.shadowHerobrineColor = define("shadow_herobrine_color", "0000ff");
         this.showTestCreativeModeTab = define("show_test_creative_mode_tab", false);
         this.herobrineTakingStigmaTick = define("herobrine_taking_stigma_tick", 1200);
-        this.hurtCountHerobrineEnterHibernatedMode = define("hurt_count_herobrine_enter_hibernated_mode", 7);
-        this.herobrineHurtLimitReduceFactor = define("herobrine_hurt_limit_reduce_factor", 13.0);
-        this.herobrineMaxHurtCountReduceFactor = define("herobrine_max_hurt_count_reduce_factor", 0.01);
+        this.herobrineHurtLimitDecreaseRatioModifier = define("herobrine_hurt_limit_decrease_ratio_modifier", 1.0);
+        this.herobrineMaxHurtCountCalculationModifier = define("herobrine_max_hurt_count_calculation_modifier", 1.0);
         this.maxShadowHerobrineSpawn = define("max_shadow_herobrine_spawn", 3);
 
         loadValues();
