@@ -3,6 +3,9 @@
   "package": "com.yummy.naraka.mixin",
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
+  "server": [
+    "server.DedicatedServerMixin"
+  ],
   "client": [
     "client.DripParticleMixin",
     "client.FogRendererMixin",
@@ -12,6 +15,7 @@
     "client.ItemRendererMixin",
     "client.ItemStackMixin",
     "client.LocalPlayerMixin",
+    "client.MinecraftMixin",
     "client.MouseHandlerMixin",
     "client.SimpleSoundInstanceMixin"
   ],

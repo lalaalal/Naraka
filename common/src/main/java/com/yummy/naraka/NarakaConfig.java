@@ -3,6 +3,7 @@ package com.yummy.naraka;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.yummy.naraka.util.NarakaJsonUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.nio.file.*;
@@ -14,6 +15,7 @@ public final class NarakaConfig {
     private static final Path CONFIG_FILE_PATH = CONFIG_PATH.resolve("naraka-common.json");
 
     public static final NarakaConfig INSTANCE = new NarakaConfig();
+    private static @Nullable WatchService WATCH_SERVICE;
 
     private final Map<String, ConfigValue<?>> configuration = new LinkedHashMap<>();
 
@@ -30,19 +32,30 @@ public final class NarakaConfig {
 
     static void load() {
         try {
-            WatchService watchService = FileSystems.getDefault().newWatchService();
-            CONFIG_PATH.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
-            Thread thread = new Thread(() -> updateOnConfigChanges(watchService));
+            WATCH_SERVICE = FileSystems.getDefault().newWatchService();
+            CONFIG_PATH.register(WATCH_SERVICE, StandardWatchEventKinds.ENTRY_MODIFY);
+            Thread thread = new Thread(NarakaConfig::updateOnConfigChanges);
             thread.start();
         } catch (IOException ignored) {
 
         }
     }
 
-    private static void updateOnConfigChanges(WatchService watchService) {
+    public static void stop() {
         try {
+            if (WATCH_SERVICE != null)
+                WATCH_SERVICE.close();
+        } catch (IOException ignored) {
+
+        }
+    }
+
+    private static void updateOnConfigChanges() {
+        try {
+            if (WATCH_SERVICE == null)
+                return;
             WatchKey watchKey;
-            while ((watchKey = watchService.take()) != null) {
+            while ((watchKey = WATCH_SERVICE.take()) != null) {
                 for (WatchEvent<?> event : watchKey.pollEvents()) {
                     if (event.context().equals(CONFIG_FILE_PATH.getFileName()))
                         INSTANCE.loadValues();
