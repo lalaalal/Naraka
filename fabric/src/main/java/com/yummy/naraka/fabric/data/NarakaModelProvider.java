@@ -202,6 +202,8 @@ public class NarakaModelProvider extends FabricModelProvider {
                 NarakaItems.EBONY_METAL_HELMET.get(), NarakaItems.EBONY_METAL_CHESTPLATE.get(), NarakaItems.EBONY_METAL_LEGGINGS.get(), NarakaItems.EBONY_METAL_BOOTS.get()
         );
 
+        generator.generateFlatItem(NarakaItems.STARDUST_STAFF.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        generator.generateFlatItem(NarakaItems.NARAKA_FIREBALL.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.SPEAR_ITEM.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get(), ModelTemplates.FLAT_ITEM);

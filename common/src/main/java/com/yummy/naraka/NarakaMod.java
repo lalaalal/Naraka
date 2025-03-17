@@ -19,7 +19,7 @@ import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.features.NarakaFeatures;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import com.yummy.naraka.world.item.NarakaArmorMaterials;
-import com.yummy.naraka.world.item.NarakaCreativeModTabs;
+import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeSerializers;
@@ -61,6 +61,8 @@ public final class NarakaMod {
         NarakaBlocks.initialize();
         NarakaTreeGrowers.initialize();
 
+        NarakaBlockEntityTypes.initialize();
+
         NarakaReinforcementEffects.initialize();
         NarakaArmorMaterials.initialize();
         NarakaDataComponentTypes.initialize();
@@ -68,10 +70,7 @@ public final class NarakaMod {
         NarakaRecipeTypes.initialize();
         NarakaRecipeSerializers.initialize();
         NarakaEquipmentSets.initialize();
-
-        NarakaCreativeModTabs.initialize(initializer);
-
-        NarakaBlockEntityTypes.initialize();
+        NarakaCreativeModeTabs.initialize(initializer);
 
         NarakaMenuTypes.initialize();
 

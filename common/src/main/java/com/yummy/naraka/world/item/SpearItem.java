@@ -109,8 +109,4 @@ public class SpearItem extends TieredItem implements ProjectileItem {
     public Projectile asProjectile(Level level, Position position, ItemStack stack, Direction direction) {
         return new Spear(spearType.get(), level, position, stack);
     }
-
-    public interface SpearProvider {
-        Spear createSpear(Level level, LivingEntity owner, ItemStack stack);
-    }
 }

@@ -9,9 +9,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
+@Deprecated
 public class ArmorIncrease extends AttributeModifyingEffect {
     private static final int[] DEFENCE_POINTS = {
-            1, 1, 2, 2, 2, 3, 3, 6, 12, 50
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 3
     };
 
     public ArmorIncrease() {

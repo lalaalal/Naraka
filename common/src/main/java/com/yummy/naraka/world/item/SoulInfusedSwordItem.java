@@ -19,4 +19,9 @@ public class SoulInfusedSwordItem extends SwordItem {
                 .copy()
                 .withColor(color);
     }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
+    }
 }

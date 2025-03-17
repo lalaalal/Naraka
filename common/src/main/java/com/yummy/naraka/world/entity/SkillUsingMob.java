@@ -1,46 +1,101 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.network.SyncAnimationPayload;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.SynchedEntityData;
+import dev.architectury.networking.NetworkManager;
+import net.minecraft.client.animation.AnimationDefinition;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
-public abstract class SkillUsingMob extends PathfinderMob implements AfterimageEntity {
-    public static final EntityDataAccessor<List<Afterimage>> AFTERIMAGES = SynchedEntityData.defineId(SkillUsingMob.class, NarakaEntityDataSerializers.AFTERIMAGES);
-
-    protected final SkillManager skillManager = new SkillManager();
+public abstract class SkillUsingMob extends PathfinderMob {
+    protected final SkillManager skillManager = new SkillManager(random);
+    protected final Map<String, AnimationController> animationStates = new HashMap<>();
+    protected final Map<AnimationState, AnimationDefinition> animationDefinitions = new HashMap<>();
 
     protected SkillUsingMob(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
-        registerSkills();
-    }
 
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(AFTERIMAGES, new ArrayList<>());
+        skillManager.runOnSkillStart(this::setAnimation);
+        skillManager.runOnSkillEnd(skill -> setAnimation("idle"));
     }
 
     public boolean isUsingSkill() {
         return skillManager.getCurrentSkill() != null;
     }
 
+    protected AnimationState animationState(AnimationDefinition animation) {
+        AnimationState animationState = new AnimationState();
+        animationDefinitions.put(animationState, animation);
+        return animationState;
+    }
+
+    public void forEachAnimations(BiConsumer<AnimationState, AnimationDefinition> consumer) {
+        animationDefinitions.forEach(consumer);
+    }
+
     @Nullable
-    public Skill getCurrentSkill() {
+    public Skill<?> getCurrentSkill() {
         return skillManager.getCurrentSkill();
     }
 
-    protected abstract void registerSkills();
+    public void registerAnimation(String name, AnimationState... animationStates) {
+        this.animationStates.put(name, AnimationController.of(random, animationStates));
+    }
 
-    public void registerSkill(Skill skill) {
-        skillManager.addSkill(skill);
+    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(S skill, AnimationState... animationStates) {
+        this.skillManager.addSkill(skill);
+        registerAnimation(skill.name, animationStates);
+
+        return skill;
+    }
+
+    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(T mob, Function<T, S> factory, AnimationState... animationStates) {
+        return registerSkill(factory.apply(mob), animationStates);
+    }
+
+    public float getAttackDamage() {
+        AttributeInstance instance = getAttribute(Attributes.ATTACK_DAMAGE);
+        if (instance == null)
+            return 1;
+        return (float) instance.getValue();
+    }
+
+    public DamageSource getDefaultDamageSource() {
+        return damageSources().mobAttack(this);
+    }
+
+    public void setAnimation(String name) {
+        if (level() instanceof ServerLevel serverLevel) {
+            SyncAnimationPayload payload = new SyncAnimationPayload(this, name);
+            NetworkManager.sendToPlayers(serverLevel.players(), payload);
+        }
+    }
+
+    private void setAnimation(Skill<?> skill) {
+        this.setAnimation(skill.name);
+    }
+
+    public void updateAnimation(String animationName) {
+        animationStates.forEach((name, animationController) -> {
+            if (animationName.equals(name))
+                animationController.start(tickCount);
+            else
+                animationController.stop();
+        });
     }
 
     @Override
@@ -48,25 +103,64 @@ public abstract class SkillUsingMob extends PathfinderMob implements AfterimageE
         skillManager.tick();
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-        List<Afterimage> afterimages = new ArrayList<>(getAfterimages());
-        afterimages.removeIf(Afterimage::tick);
-        this.entityData.set(AFTERIMAGES, afterimages);
-    }
-
-    @Override
-    public void createAfterimage() {
-        List<Afterimage> afterimages = new ArrayList<>(getAfterimages());
-        if (!level().isClientSide) {
-            afterimages.add(new Afterimage(this.position(), 12));
-            this.entityData.set(AFTERIMAGES, afterimages, true);
+    public interface AnimationController {
+        static AnimationController of(final RandomSource random, final AnimationState... animationStates) {
+            if (animationStates.length == 0)
+                return empty();
+            if (animationStates.length == 1)
+                return simple(animationStates[0]);
+            return random(random, animationStates);
         }
-    }
 
-    @Override
-    public List<Afterimage> getAfterimages() {
-        return this.entityData.get(AFTERIMAGES);
+        static AnimationController empty() {
+            return new AnimationController() {
+                @Override
+                public void start(int tickCount) {
+                }
+
+                @Override
+                public void stop() {
+                }
+            };
+        }
+
+        static AnimationController simple(final AnimationState animationState) {
+            return new AnimationController() {
+                @Override
+                public void start(int tickCount) {
+                    animationState.start(tickCount);
+                }
+
+                @Override
+                public void stop() {
+                    animationState.stop();
+                }
+            };
+        }
+
+        static AnimationController random(final RandomSource random, final AnimationState... animationStates) {
+            return new AnimationController() {
+                @Override
+                public void start(int tickCount) {
+                    int selected = random.nextInt(animationStates.length);
+                    for (int index = 0; index < animationStates.length; index++) {
+                        if (index == selected)
+                            animationStates[index].start(tickCount);
+                        else
+                            animationStates[index].stop();
+                    }
+                }
+
+                @Override
+                public void stop() {
+                    for (AnimationState animationState : animationStates)
+                        animationState.stop();
+                }
+            };
+        }
+
+        void start(int tickCount);
+
+        void stop();
     }
 }

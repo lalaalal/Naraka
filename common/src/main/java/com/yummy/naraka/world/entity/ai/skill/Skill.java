@@ -1,28 +1,55 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.world.entity.SkillUsingMob;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class Skill {
+public abstract class Skill<T extends SkillUsingMob> {
     public final String name;
-    protected final SkillUsingMob mob;
+    protected final T mob;
     protected final int duration;
-    protected final int cooldown;
+    protected int cooldown;
 
     protected int tickCount = 0;
     protected int cooldownTick;
+    protected boolean disabled = false;
 
-    public Skill(String name, int duration, int cooldown, SkillUsingMob mob) {
+    @Nullable
+    protected Skill<?> linkedSkill;
+
+    protected Skill(String name, int duration, int cooldown, T mob, @Nullable Skill<?> linkedSkill) {
         this.name = name;
         this.mob = mob;
         this.duration = duration;
         this.cooldown = cooldown;
         this.cooldownTick = cooldown;
+        this.linkedSkill = linkedSkill;
+    }
+
+    protected Skill(String name, int duration, int cooldown, T mob) {
+        this(name, duration, cooldown, mob, null);
+    }
+
+    protected Level level() {
+        return mob.level();
     }
 
     public abstract boolean canUse();
 
+    public void setEnabled(boolean value) {
+        disabled = !value;
+    }
+
+    public void disable() {
+        disabled = true;
+    }
+
+    public void enable() {
+        disabled = false;
+    }
+
     public boolean readyToUse() {
-        return cooldownTick >= cooldown;
+        return !disabled && cooldownTick >= cooldown;
     }
 
     public void prepare() {
@@ -37,6 +64,19 @@ public abstract class Skill {
         return tickCount >= duration;
     }
 
+    public boolean hasLinkedSkill() {
+        return linkedSkill != null;
+    }
+
+    public void setLinkedSkill(@Nullable Skill<?> skill) {
+        this.linkedSkill = skill;
+    }
+
+    @Nullable
+    public Skill<?> getLinkedSkill() {
+        return linkedSkill;
+    }
+
     public final void tick() {
         if (tickCount == 0)
             onFirstTick();
@@ -45,6 +85,10 @@ public abstract class Skill {
         if (tickCount == duration - 1)
             onLastTick();
         tickCount += 1;
+    }
+
+    public void changeCooldown(int cooldown) {
+        this.cooldown = cooldown;
     }
 
     public void setCooldown() {
@@ -64,4 +108,8 @@ public abstract class Skill {
     }
 
     protected abstract void skillTick();
+
+    public void interrupt() {
+        setCooldown();
+    }
 }

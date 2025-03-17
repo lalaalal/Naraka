@@ -3,11 +3,7 @@ package com.yummy.naraka.init;
 import com.yummy.naraka.Platform;
 import com.yummy.naraka.core.registries.RegistryFactory;
 import com.yummy.naraka.world.NarakaBiomes;
-import com.yummy.naraka.world.item.NarakaCreativeModTabs;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.CreativeModeTab;
-
-import java.util.function.Consumer;
+import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 
 public interface NarakaInitializer extends RegistryLoadedListener {
     Platform getPlatform();
@@ -16,7 +12,7 @@ public interface NarakaInitializer extends RegistryLoadedListener {
 
     RegistryFactory getRegistryFactory();
 
-    void modifyCreativeModeTab(ResourceKey<CreativeModeTab> tabKey, Consumer<NarakaCreativeModTabs.TabEntries> entries);
+    NarakaCreativeModeTabs.CreativeModeTabModifier getCreativeModeTabModifier();
 
     NarakaBiomes.Modifier getBiomeModifier();
 }

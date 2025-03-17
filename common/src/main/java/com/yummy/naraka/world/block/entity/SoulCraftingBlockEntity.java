@@ -203,8 +203,10 @@ public class SoulCraftingBlockEntity extends BaseContainerBlockEntity implements
     }
 
     public void award(ServerPlayer serverPlayer) {
-        serverPlayer.triggerRecipeCrafted(recipeUsed, items);
-        serverPlayer.giveExperienceLevels(5);
+        if (recipeUsed != null) {
+            serverPlayer.triggerRecipeCrafted(recipeUsed, items);
+            serverPlayer.giveExperienceLevels(5);
+        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,6 +44,11 @@ public interface DeathCountingEntity {
 
     class DeathCountingInstance {
         private final Set<UUID> countedEntities = new HashSet<>();
+        private final RegistryAccess registryAccess;
+
+        public DeathCountingInstance(RegistryAccess registryAccess) {
+            this.registryAccess = registryAccess;
+        }
 
         private CompoundTag write(UUID value, CompoundTag tag, HolderLookup.Provider provider) {
             tag.putUUID("UUID", value);
@@ -77,11 +83,11 @@ public interface DeathCountingEntity {
         }
 
         public void save(CompoundTag compoundTag) {
-            NarakaNbtUtils.writeCollection(compoundTag, "DeathCountedEntities", countedEntities, this::write, null);
+            NarakaNbtUtils.writeCollection(compoundTag, "DeathCountedEntities", countedEntities, this::write, registryAccess);
         }
 
         public void load(CompoundTag compoundTag) {
-            NarakaNbtUtils.readCollection(compoundTag, "DeathCountedEntities", () -> countedEntities, this::read, null);
+            NarakaNbtUtils.readCollection(compoundTag, "DeathCountedEntities", () -> countedEntities, this::read, registryAccess);
         }
     }
 }

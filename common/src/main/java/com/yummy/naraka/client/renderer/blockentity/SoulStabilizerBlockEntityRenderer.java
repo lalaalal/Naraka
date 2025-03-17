@@ -1,4 +1,4 @@
-package com.yummy.naraka.client.renderer;
+package com.yummy.naraka.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -7,6 +7,7 @@ import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.block.entity.SoulStabilizerBlockEntity;
+import com.yummy.naraka.world.item.SoulType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
@@ -20,7 +21,6 @@ import net.minecraft.resources.ResourceLocation;
 
 @Environment(EnvType.CLIENT)
 public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<SoulStabilizerBlockEntity> {
-    private static final ResourceLocation WATER_STILL = NarakaMod.mcLocation("textures/block/water_still.png");
     private static final ResourceLocation WATER_OVERLAY = NarakaMod.mcLocation("textures/block/water_overlay.png");
 
     private final ModelPart bottle;
@@ -66,7 +66,7 @@ public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<So
         bottle.render(poseStack, bottleBuffer, packedLight, packedOverlay);
         poseStack.popPose();
 
-        if (blockEntity.getSoulType() == null)
+        if (blockEntity.getSoulType() == SoulType.NONE)
             return;
 
         float soulsRatio = (float) blockEntity.getSouls() / SoulStabilizerBlockEntity.CAPACITY;
@@ -78,9 +78,5 @@ public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<So
         VertexConsumer liquidBuffer = bufferSource.getBuffer(RenderType.entityTranslucent(WATER_OVERLAY));
         liquid.render(poseStack, liquidBuffer, packedLight, packedOverlay, color);
         poseStack.popPose();
-    }
-
-    private void vertex(VertexConsumer buffer, float x, float y, float z, float red, float green, float blue, float u, float v, int packedLight) {
-        buffer.addVertex(x, y, z).setColor(red, green, blue, 1).setUv(u, v).setLight(packedLight).setNormal(0, 1, 0);
     }
 }

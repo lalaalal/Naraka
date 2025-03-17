@@ -3,11 +3,11 @@ package com.yummy.naraka.world.entity.ai.skill;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.world.entity.LivingEntity;
 
-public class BlockingSkill extends Skill {
+public class BlockingSkill extends Skill<SkillUsingMob> {
     public static final String NAME = "blocking";
 
     public BlockingSkill(SkillUsingMob mob) {
-        super(NAME, 20, 0, mob);
+        super(NAME, 30, 0, mob);
     }
 
     @Override

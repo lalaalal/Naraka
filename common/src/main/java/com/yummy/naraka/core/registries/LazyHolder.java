@@ -81,9 +81,9 @@ public class LazyHolder<T, V extends T> extends Holder.Reference<T> implements S
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean is(Holder<T> holder) {
+    public boolean is(Holder<T> other) {
         bind(false);
-        return holder != null && holder.is(holder);
+        return this.holder != null && this.holder.is(other);
     }
 
     @Override

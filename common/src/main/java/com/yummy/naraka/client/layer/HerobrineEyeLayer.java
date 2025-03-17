@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.HerobrineModel;
-import com.yummy.naraka.world.entity.Herobrine;
+import com.yummy.naraka.world.entity.AbstractHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.LightTexture;
@@ -17,13 +17,13 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
 @Environment(EnvType.CLIENT)
-public class HerobrineEyeLayer<T extends Herobrine> extends RenderLayer<T, HerobrineModel<T>> {
+public class HerobrineEyeLayer<T extends AbstractHerobrine> extends RenderLayer<T, HerobrineModel<T>> {
     public HerobrineEyeLayer(RenderLayerParent<T, HerobrineModel<T>> renderer) {
         super(renderer);
     }
 
     private RenderType getRenderType() {
-        return RenderType.entityCutout(NarakaTextures.HEROBRINE_EYE);
+        return RenderType.entityTranslucent(NarakaTextures.HEROBRINE_EYE);
     }
 
     @Override

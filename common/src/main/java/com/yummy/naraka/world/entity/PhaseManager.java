@@ -19,12 +19,12 @@ public class PhaseManager {
     private float maxAbsorption = 0;
     private float prevAbsorption = 0;
 
-    public PhaseManager(float[] phaseHealthArray, BossEvent.BossBarColor[] bossBarColors, LivingEntity entity) {
+    public PhaseManager(float[] phaseHealthArray, BossEvent.BossBarColor[] bossBarColors, LivingEntity entity, BossEvent bossEvent) {
         this.entity = entity;
         this.phaseHealthArray = phaseHealthArray;
         this.bossBarColors = bossBarColors;
         this.prevHealth = entity.getHealth();
-        this.prevPhase = getCurrentPhase();
+        updatePhaseValueOnly(bossEvent);
     }
 
     public void setAbsorptionDisappearAction(Runnable runnable) {

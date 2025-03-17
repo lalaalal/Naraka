@@ -5,6 +5,7 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.Herobrine;
+import com.yummy.naraka.world.entity.ai.skill.BlockingSkill;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.BlockPos;
@@ -15,6 +16,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -50,19 +53,27 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         if (isSleeping(state))
             return;
 
-        if (tickCount % 10 == 0) {
+        if (tickCount % 5 == 0 && level.random.nextFloat() < 0.25f) {
             if (state.getValue(CRACK) == MAX_CRACK) {
-                summonHerobrine(level, pos);
                 breakTotemStructure(level, pos);
+                summonHerobrine(level, pos);
             } else
                 HerobrineTotem.crack(level, pos, state);
-            if (level.random.nextFloat() < 0.8f) {
+            if (level.random.nextFloat() < 0.9f) {
                 level.sendParticles(ParticleTypes.CLOUD,
-                        pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 25,
+                        pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 10,
                         0.5, 0.5, 0.5, 0.01
+                );
+                level.sendParticles(ParticleTypes.FLAME,
+                        pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 20,
+                        1, 1, 1, 0.05
                 );
                 level.playSound(null, pos, SoundEvents.NETHER_BRICKS_BREAK, SoundSource.BLOCKS);
             }
+            level.sendParticles(ParticleTypes.ENCHANT,
+                    pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 25,
+                    0.5, 0.5, 0.5, 0.01
+            );
         }
         tickCount += 1;
     }
@@ -95,14 +106,23 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     }
 
     private void summonHerobrine(ServerLevel level, BlockPos pos) {
-        Herobrine herobrine = new Herobrine(level, new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5));
+        BlockPos floorPos = NarakaUtils.findFloor(level, pos);
+        Herobrine herobrine = new Herobrine(level, new Vec3(floorPos.getX() + 0.5, floorPos.getY() + 1, floorPos.getZ() + 0.5));
         level.addFreshEntity(herobrine);
         level.sendParticles(ParticleTypes.CLOUD,
-                pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 40,
+                pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 15,
                 1, 1, 1, 0.01
         );
+        level.sendParticles(ParticleTypes.FLAME,
+                pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 30,
+                1, 1, 1, 0.05
+        );
+        herobrine.setAnimation(BlockingSkill.NAME);
+        LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
+        lightningBolt.setPos(herobrine.position());
+        level.addFreshEntity(lightningBolt);
 
-        List<ServerPlayer> players = level.getEntities(EntityTypeTest.forExactClass(ServerPlayer.class), AABB.ofSize(NarakaUtils.vec3(pos), 8, 8, 8), entity -> true);
+        List<ServerPlayer> players = level.getEntities(EntityTypeTest.forExactClass(ServerPlayer.class), AABB.ofSize(NarakaUtils.vec3(pos), 16, 16, 16), entity -> true);
         for (ServerPlayer player : players)
             CriteriaTriggers.SUMMONED_ENTITY.trigger(player, herobrine);
     }

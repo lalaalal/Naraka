@@ -53,7 +53,8 @@ public class NeoForgeBiomeModifier implements NarakaBiomes.Modifier {
         return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, NarakaMod.location(name));
     }
 
-    public interface BiomeModifierRecord {
+    @FunctionalInterface
+    private interface BiomeModifierRecord {
         void register(BootstrapContext<BiomeModifier> context);
     }
 }

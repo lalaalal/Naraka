@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
+import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
 import net.minecraft.core.Position;
 import net.minecraft.core.component.DataComponents;
@@ -20,7 +21,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -30,7 +30,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.Map;
+import java.util.function.Supplier;
+
 public class Spear extends AbstractArrow {
+    private static final Map<EntityType<?>, Supplier<ItemStack>> ITEM_BY_TYPE = Map.of(
+            NarakaEntityTypes.THROWN_SPEAR.get(), () -> new ItemStack(NarakaItems.SPEAR_ITEM.get()),
+            NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR.get(), () -> new ItemStack(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()),
+            NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.get(), () -> new ItemStack(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get())
+    );
+
     private static final EntityDataAccessor<Integer> ID_LOYALTY = SynchedEntityData.defineId(Spear.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(Spear.class, EntityDataSerializers.BOOLEAN);
     protected boolean dealtDamage = false;
@@ -91,7 +100,7 @@ public class Spear extends AbstractArrow {
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        return new ItemStack(Items.AIR);
+        return ITEM_BY_TYPE.get(getType()).get();
     }
 
     @Override

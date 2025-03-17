@@ -49,7 +49,7 @@ public class MoveToTargetGoal extends Goal {
     public void start() {
         if (target != null)
             this.mob.getNavigation().moveTo(target, speedModifier);
-        updateTime = 5;
+        updateTime = 1;
     }
 
     @Override

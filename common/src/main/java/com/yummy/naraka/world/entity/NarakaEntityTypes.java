@@ -21,6 +21,16 @@ public class NarakaEntityTypes {
                     .sized(0.6f, 2.0f)
     );
 
+    public static final LazyHolder<EntityType<?>, EntityType<ShadowHerobrine>> SHADOW_HEROBRINE = register(
+            "shadow_herobrine",
+            EntityType.Builder.<ShadowHerobrine>of(
+                            ShadowHerobrine::new,
+                            MobCategory.MONSTER
+                    )
+                    .fireImmune()
+                    .sized(0.6f, 2.0f)
+    );
+
     public static final LazyHolder<EntityType<?>, EntityType<Spear>> THROWN_SPEAR = register(
             "spear",
             EntityType.Builder.<Spear>of(Spear::new, MobCategory.MISC)
@@ -30,6 +40,18 @@ public class NarakaEntityTypes {
     public static final LazyHolder<EntityType<?>, EntityType<Spear>> THROWN_MIGHTY_HOLY_SPEAR = register(
             "mighty_holy_spear",
             EntityType.Builder.<Spear>of(Spear::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+    );
+
+    public static final LazyHolder<EntityType<?>, EntityType<Stardust>> STARDUST = register(
+            "stardust",
+            EntityType.Builder.<Stardust>of(Stardust::new, MobCategory.MISC)
+                    .sized(1, 1)
+    );
+
+    public static final LazyHolder<EntityType<?>, EntityType<NarakaFireball>> NARAKA_FIREBALL = register(
+            "naraka_fireball",
+            EntityType.Builder.<NarakaFireball>of(NarakaFireball::new, MobCategory.MISC)
                     .sized(0.5f, 0.5f)
     );
 
@@ -48,8 +70,7 @@ public class NarakaEntityTypes {
     public static void initialize() {
         RegistryInitializer.get(Registries.ENTITY_TYPE)
                 .onRegistrationFinished();
-        EntityAttributeRegistry.register(HEROBRINE, Herobrine::getAttributeSupplier);
-
-        NarakaEntityDataSerializers.initialize();
+        EntityAttributeRegistry.register(HEROBRINE, AbstractHerobrine::getAttributeSupplier);
+        EntityAttributeRegistry.register(SHADOW_HEROBRINE, ShadowHerobrine::getAttributeSupplier);
     }
 }

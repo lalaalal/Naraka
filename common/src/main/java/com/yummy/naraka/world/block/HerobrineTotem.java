@@ -4,6 +4,8 @@ import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.world.block.entity.HerobrineTotemBlockEntity;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -30,18 +32,20 @@ public class HerobrineTotem extends BaseEntityBlock {
         return state.getValue(CRACK);
     }
 
+    public static void crack(Level level, BlockPos pos, BlockState state) {
+        int crack = state.getValue(CRACK);
+        if (crack == 0)
+            level.playSound(null, pos, SoundEvents.END_PORTAL_SPAWN, SoundSource.BLOCKS);
+        if (crack < MAX_CRACK)
+            level.setBlock(pos, state.setValue(CRACK, crack + 1), UPDATE_ALL_IMMEDIATE);
+    }
+
     public HerobrineTotem(Properties properties) {
         super(properties);
         this.registerDefaultState(
                 getStateDefinition().any()
                         .setValue(CRACK, 0)
         );
-    }
-
-    public static void crack(Level level, BlockPos pos, BlockState state) {
-        int crack = state.getValue(CRACK);
-        if (crack < MAX_CRACK)
-            level.setBlock(pos, state.setValue(CRACK, crack + 1), UPDATE_ALL_IMMEDIATE);
     }
 
     @Override

@@ -11,12 +11,18 @@ import java.util.Map;
 
 public final class NarakaTextures {
     public static final ResourceLocation HEROBRINE = entity("herobrine.png");
+    public static final ResourceLocation SHADOW_HEROBRINE = entity("shadow_herobrine.png");
     public static final ResourceLocation HEROBRINE_EYE = entity("herobrine_eye.png");
+    public static final ResourceLocation HEROBRINE_AFTERIMAGE = entity("herobrine_afterimage.png");
 
     public static final ResourceLocation LONGINUS = entity("longinus.png");
 
     public static final ResourceLocation SPEAR = entity("spear.png");
     public static final ResourceLocation MIGHTY_HOLY_SPEAR = entity("mighty_holy_spear.png");
+
+    public static final ResourceLocation NARAKA_FIREBALL = entity("naraka_fireball.png");
+
+    public static final ResourceLocation STARDUST = entity("stardust_core.png");
 
     public static final ResourceLocation FORGING_BLOCK = entity("forging_block.png");
     public static final ResourceLocation SOUL_STABILIZER = entity("soul_stabilizer.png");

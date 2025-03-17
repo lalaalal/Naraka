@@ -1,8 +1,9 @@
-package com.yummy.naraka.client.renderer;
+package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.SpearModel;
@@ -72,11 +73,34 @@ public class SpearRenderer extends EntityRenderer<Spear> {
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, spear.yRotO, spear.getYRot()) - 90.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, spear.xRotO, spear.getXRot()) + 90.0F));
         poseStack.translate(0, yOffset, 0);
-        if (spear.getType() == NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.get())
+
+        if (spear.getType() == NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.get()) {
             packedLight = LightTexture.FULL_BRIGHT;
+            renderNonShaderLonginus(model, spear.tickCount, partialTicks, poseStack, buffer, packedLight);
+        }
         RenderType renderType = model.renderType(getTextureLocation(spear));
         VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, renderType, false, spear.hasFoil());
         model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 0xffffffff);
+
         poseStack.popPose();
+    }
+
+    public static void renderNonShaderLonginus(EntityModel<? extends Spear> model, int tickCount, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        VertexConsumer background = buffer.getBuffer(RenderType.entityCutout(NarakaTextures.LONGINUS));
+        model.renderToBuffer(poseStack, background, packedLight, OverlayTexture.NO_OVERLAY, 0xff000000);
+        if (NarakaMod.config().disableNonShaderLonginusRendering.getValue())
+            return;
+
+        float tick = tickCount + partialTicks;
+
+        renderLonginus(model, tick, 0.001f, 0.01f, poseStack, buffer, packedLight);
+        renderLonginus(model, tick, 0.002f, 0.005f, poseStack, buffer, packedLight);
+        renderLonginus(model, tick, 0.0015f, 0.0025f, poseStack, buffer, packedLight);
+    }
+
+    private static void renderLonginus(EntityModel<? extends Spear> model, float tick, float uMultiplier, float vMultiplier, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        RenderType renderType = RenderType.energySwirl(NarakaTextures.LONGINUS, (tick * uMultiplier) % 1, (tick * vMultiplier) % 1);
+        VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
+        model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 0xaa888888);
     }
 }

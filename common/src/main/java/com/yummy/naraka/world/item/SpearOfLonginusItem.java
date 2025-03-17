@@ -16,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class SpearOfLonginusItem extends SpearItem {
-
     public SpearOfLonginusItem(Properties properties) {
         super(NarakaTiers.LONGINUS, properties, NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS);
     }
@@ -44,5 +43,10 @@ public class SpearOfLonginusItem extends SpearItem {
         return super.getName(stack).copy()
                 .withStyle(ChatFormatting.BOLD)
                 .withStyle(ComponentStyles.LONGINUS_COLOR);
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
     }
 }
