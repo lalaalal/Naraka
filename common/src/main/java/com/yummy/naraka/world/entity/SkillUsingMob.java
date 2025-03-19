@@ -103,7 +103,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
         skillManager.tick();
     }
 
-    public interface AnimationController {
+    protected interface AnimationController {
         static AnimationController of(final RandomSource random, final AnimationState... animationStates) {
             if (animationStates.length == 0)
                 return empty();

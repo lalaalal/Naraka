@@ -218,13 +218,12 @@ public class Herobrine extends AbstractHerobrine {
         accumulatedDamageTickCount += 1;
     }
 
-
     private void collectStigma() {
         final int waitingTick = NarakaMod.config().herobrineTakingStigmaTick.getValue();
         if (level() instanceof ServerLevel serverLevel) {
             watchingEntities.removeIf(uuid -> {
                 LivingEntity entity = NarakaEntityUtils.findEntityByUUID(serverLevel, uuid, LivingEntity.class);
-                if (entity == null || entity.isRemoved()) {
+                if (entity == null || entity.isDeadOrDying()) {
                     stigmatizedEntities.remove(uuid);
                     return true;
                 }
@@ -372,8 +371,6 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void updateHurtDamageLimit(float damage) {
-        if (level().isClientSide)
-            return;
         if (phaseManager.getCurrentPhase() < 3 && hurtDamageLimit > 1) {
             averageHurtDamage = calculateAverageHurtDamage(damage);
 

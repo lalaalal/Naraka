@@ -119,6 +119,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         );
         herobrine.setAnimation(BlockingSkill.NAME);
         LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
+        lightningBolt.setVisualOnly(true);
         lightningBolt.setPos(herobrine.position());
         level.addFreshEntity(lightningBolt);
 

@@ -27,6 +27,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractHerobrine extends SkillUsingMob implements StigmatizingEntity, AfterimageEntity, Enemy {
@@ -149,6 +150,16 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
     @Override
     public boolean isPushable() {
+        return false;
+    }
+
+    @Override
+    public boolean canStandOnFluid(FluidState fluidState) {
+        return !fluidState.isEmpty();
+    }
+
+    @Override
+    public boolean isPushedByFluid() {
         return false;
     }
 

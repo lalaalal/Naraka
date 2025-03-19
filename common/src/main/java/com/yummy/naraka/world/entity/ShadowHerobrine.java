@@ -123,6 +123,11 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     @Override
+    public boolean canChangeDimensions(Level oldLevel, Level newLevel) {
+        return false;
+    }
+
+    @Override
     public boolean hurt(DamageSource source, float amount) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             return super.hurt(source, amount);
