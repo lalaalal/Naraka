@@ -181,9 +181,9 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void addAfterimage(Afterimage afterimage) {
-        if (level() instanceof ServerLevel serverLevel) {
+        if (!level().isClientSide) {
             SyncAfterimagePayload payload = new SyncAfterimagePayload(this, afterimage);
-            NetworkManager.sendToPlayers(serverLevel.players(), payload);
+            NetworkManager.sendToPlayers(bossEvent.getPlayers(), payload);
         }
         this.afterimages.add(afterimage);
     }
@@ -223,7 +223,9 @@ public class Herobrine extends AbstractHerobrine {
         if (level() instanceof ServerLevel serverLevel) {
             watchingEntities.removeIf(uuid -> {
                 LivingEntity entity = NarakaEntityUtils.findEntityByUUID(serverLevel, uuid, LivingEntity.class);
-                if (entity == null || entity.isDeadOrDying()) {
+                if (entity == null)
+                    return false;
+                if (entity.isDeadOrDying()) {
                     stigmatizedEntities.remove(uuid);
                     return true;
                 }

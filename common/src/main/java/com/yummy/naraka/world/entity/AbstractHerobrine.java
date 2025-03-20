@@ -129,6 +129,11 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     protected abstract Fireball createFireball();
 
     @Override
+    public boolean canBeAffected(MobEffectInstance effectInstance) {
+        return false;
+    }
+
+    @Override
     public boolean addEffect(MobEffectInstance effectInstance, @Nullable Entity entity) {
         return false;
     }
