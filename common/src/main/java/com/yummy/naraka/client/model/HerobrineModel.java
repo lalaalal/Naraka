@@ -64,6 +64,10 @@ public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalMod
         this.renderShadow = true;
     }
 
+    public ModelPart head() {
+        return head;
+    }
+
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         if (renderShadow)

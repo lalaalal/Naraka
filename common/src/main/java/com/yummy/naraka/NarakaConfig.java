@@ -29,6 +29,8 @@ public final class NarakaConfig {
     public final ConfigValue<Double> herobrineHurtLimitDecreaseRatioModifier;
     public final ConfigValue<Double> herobrineMaxHurtCountCalculationModifier;
     public final ConfigValue<Integer> maxShadowHerobrineSpawn;
+    public final ConfigValue<Float> herobrineScarfWaveSpeed;
+    public final ConfigValue<Float> herobrineScarfWaveMaxAngle;
 
     static void load() {
         try {
@@ -78,6 +80,8 @@ public final class NarakaConfig {
         this.herobrineHurtLimitDecreaseRatioModifier = define("herobrine_hurt_limit_decrease_ratio_modifier", 1.0);
         this.herobrineMaxHurtCountCalculationModifier = define("herobrine_max_hurt_count_calculation_modifier", 1.0);
         this.maxShadowHerobrineSpawn = define("max_shadow_herobrine_spawn", 3);
+        this.herobrineScarfWaveSpeed = define("herobrine_scarf_wave_speed", 0.3f);
+        this.herobrineScarfWaveMaxAngle = define("herobrine_scarf_wave_max_angle", 22.5f);
 
         loadValues();
     }

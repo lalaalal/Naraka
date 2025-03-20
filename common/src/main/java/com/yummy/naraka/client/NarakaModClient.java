@@ -109,7 +109,7 @@ public final class NarakaModClient {
     }
 
     private static void registerEntityRenderers() {
-        EntityRendererRegistry.register(NarakaEntityTypes.HEROBRINE, HerobrineRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.HEROBRINE, HerobrineRenderer::herobrine);
         EntityRendererRegistry.register(NarakaEntityTypes.SHADOW_HEROBRINE, HerobrineRenderer::shadow);
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, SpearRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR, SpearRenderer::new);
