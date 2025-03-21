@@ -118,7 +118,7 @@ public final class NarakaGameEvents {
     private static void modifyLootTable(ResourceKey<LootTable> key, LootEvent.LootTableModificationContext context, boolean builtin) {
         if (key.location().getPath().contains("chests")) {
             context.addPool(LootPool.lootPool()
-                    .when(LootItemRandomChanceCondition.randomChance(0.05f))
+                    .when(LootItemRandomChanceCondition.randomChance(0.01f))
                     .setRolls(ConstantValue.exactly(1))
                     .add(LootItem.lootTableItem(NarakaItems.SANCTUARY_COMPASS.get()).setWeight(1))
             );

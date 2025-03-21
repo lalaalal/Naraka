@@ -14,6 +14,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 public final class NarakaModelLayers {
     public static final ModelLayerLocation HEROBRINE = location("herobrine");
     public static final ModelLayerLocation HEROBRINE_SCARF = location("herobrine_scarf");
+    public static final ModelLayerLocation SHADOW_HEROBRINE_ARMOR = location("shadow_herobrine_armor");
     public static final ModelLayerLocation SPEAR = location("spear");
     public static final ModelLayerLocation SPEAR_OF_LONGINUS = location("spear_of_longinus");
 
@@ -29,8 +30,9 @@ public final class NarakaModelLayers {
     }
 
     public static void initialize() {
-        EntityModelLayerRegistry.register(NarakaModelLayers.HEROBRINE, HerobrineModel::createBodyLayer);
+        EntityModelLayerRegistry.register(NarakaModelLayers.HEROBRINE, HerobrineModel::createForHerobrine);
         EntityModelLayerRegistry.register(NarakaModelLayers.HEROBRINE_SCARF, HerobrineScarfModel::createBodyLayer);
+        EntityModelLayerRegistry.register(NarakaModelLayers.SHADOW_HEROBRINE_ARMOR, HerobrineModel::createForShadowArmor);
 
         EntityModelLayerRegistry.register(NarakaModelLayers.SPEAR, SpearModel::createBodyLayer);
         EntityModelLayerRegistry.register(NarakaModelLayers.SPEAR_OF_LONGINUS, SpearOfLonginusModel::createBodyLayer);

@@ -36,7 +36,7 @@ public class HerobrineRenderer<T extends AbstractHerobrine> extends AfterimageEn
     public static HerobrineRenderer<ShadowHerobrine> shadow(EntityRendererProvider.Context context) {
         return Util.make(
                 new HerobrineRenderer<>(context, NarakaModelLayers.HEROBRINE),
-                renderer -> renderer.addLayer(new ShadowHerobrineArmorLayer(renderer, context, NarakaModelLayers.HEROBRINE))
+                renderer -> renderer.addLayer(new ShadowHerobrineArmorLayer(renderer, context))
         );
     }
 
