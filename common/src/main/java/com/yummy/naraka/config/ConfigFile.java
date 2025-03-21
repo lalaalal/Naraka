@@ -30,7 +30,7 @@ public abstract class ConfigFile implements ConfigReader, ConfigWriter {
         return new FileWriter(configFile);
     }
 
-    public interface Parser<T, R> {
+    protected interface Parser<T, R> {
         R parse(T value);
     }
 }

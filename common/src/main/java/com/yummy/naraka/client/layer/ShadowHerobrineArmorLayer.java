@@ -31,7 +31,7 @@ public class ShadowHerobrineArmorLayer extends RenderLayer<ShadowHerobrine, Hero
         layerModel.setupAnim(shadowHerobrine, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
         poseStack.pushPose();
-        poseStack.scale(1.01f, 1.01f, 1.01f);
+        poseStack.scale(1.05f, 1.05f, 1.05f);
         float offset = ((shadowHerobrine.tickCount + partialTick) * 0.01f) % 1;
         RenderType renderType = RenderType.energySwirl(TEXTURE_LOCATION, offset, offset);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);

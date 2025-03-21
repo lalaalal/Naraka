@@ -1,6 +1,7 @@
 package com.yummy.naraka.config;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.util.Color;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
@@ -23,15 +24,17 @@ public final class NarakaConfig {
     public final ConfigValue<Boolean> generatePillarCaves;
     public final ConfigValue<Boolean> showReinforcementValue;
     public final ConfigValue<Boolean> disableNonShaderLonginusRendering;
-    public final ConfigValue<String> afterimageColor;
-    public final ConfigValue<String> shadowHerobrineColor;
+    public final ConfigValue<Color> afterimageColor;
+    public final ConfigValue<Color> shadowHerobrineColor;
     public final ConfigValue<Boolean> showTestCreativeModeTab;
     public final ConfigValue<Integer> herobrineTakingStigmaTick;
     public final ConfigValue<Double> herobrineHurtLimitCalculationRatioModifier;
     public final ConfigValue<Double> herobrineMaxHurtCountCalculationModifier;
     public final ConfigValue<Integer> maxShadowHerobrineSpawn;
+    public final ConfigValue<Integer> herobrineScarfPartitionNumber;
     public final ConfigValue<Float> herobrineScarfWaveSpeed;
     public final ConfigValue<Float> herobrineScarfWaveMaxAngle;
+    public final ConfigValue<Float> herobrineScarfWaveCycleModifier;
 
     private boolean watchChange = true;
 
@@ -78,8 +81,8 @@ public final class NarakaConfig {
         this.generatePillarCaves = define("generate_pillar_caves", false);
         this.showReinforcementValue = define("show_reinforcement_value", false);
         this.disableNonShaderLonginusRendering = define("disable_non_shader_longinus_rendering", false);
-        this.afterimageColor = define("afterimage_color", "7e00ff");
-        this.shadowHerobrineColor = define("shadow_herobrine_color", "0000ff");
+        this.afterimageColor = define("afterimage_color", Color.of(0x7e00ff));
+        this.shadowHerobrineColor = define("shadow_herobrine_color", Color.of(0x0000ff));
         this.showTestCreativeModeTab = define("show_test_creative_mode_tab", false);
         this.herobrineTakingStigmaTick = define("herobrine_taking_stigma_tick", 1200);
         this.herobrineHurtLimitCalculationRatioModifier = define("herobrine_hurt_limit_calculation_ratio_modifier", 1.0)
@@ -87,8 +90,11 @@ public final class NarakaConfig {
         this.herobrineMaxHurtCountCalculationModifier = define("herobrine_max_hurt_count_calculation_modifier", 1.0)
                 .append("Bigger value, bigger max hurt count");
         this.maxShadowHerobrineSpawn = define("max_shadow_herobrine_spawn", 3);
+        this.herobrineScarfPartitionNumber = define("herobrine_scarf_partition_number", 16);
         this.herobrineScarfWaveSpeed = define("herobrine_scarf_wave_speed", 0.3f);
         this.herobrineScarfWaveMaxAngle = define("herobrine_scarf_wave_max_angle", 22.5f);
+        this.herobrineScarfWaveCycleModifier = define("herobrine_scarf_wave_cycle_modifier", 1.0f)
+                .append("Bigger value, short wave cycle");
 
         loadValues();
     }
@@ -165,10 +171,6 @@ public final class NarakaConfig {
 
         public List<String> getComments() {
             return comments;
-        }
-
-        public <I> void load(ConfigFile.Parser<I, T> parser, I value) {
-            set(parser.parse(value));
         }
 
         public T getDefaultValue() {

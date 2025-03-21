@@ -11,7 +11,7 @@ public record Color(int alpha, int red, int green, int blue) {
     }
 
     public static Color of(String hex) {
-        return of(Integer.parseInt(hex, 16));
+        return of(Integer.parseInt(hex.replaceAll("^(0x|#)", ""), 16));
     }
 
     public float alpha01() {
@@ -31,10 +31,24 @@ public record Color(int alpha, int red, int green, int blue) {
     }
 
     public int pack() {
-        return alpha << 24 | red << 16 | green << 8 | blue;
+        return pack(true);
+    }
+
+    public int pack(boolean withAlpha) {
+        int packed = red << 16 | green << 8 | blue;
+        if (withAlpha)
+            return packed | alpha << 24;
+        return packed;
     }
 
     public Color withAlpha(int alpha) {
         return new Color(alpha, red, green, blue);
+    }
+
+    @Override
+    public String toString() {
+        if (alpha == 0)
+            return "#%06x".formatted(pack(false));
+        return "#%08x".formatted(pack());
     }
 }

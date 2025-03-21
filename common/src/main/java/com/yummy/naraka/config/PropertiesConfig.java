@@ -1,6 +1,7 @@
 package com.yummy.naraka.config;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.util.Color;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -15,7 +16,8 @@ public class PropertiesConfig extends ConfigFile {
             Long.class, Long::parseLong,
             Float.class, Float::parseFloat,
             Double.class, Double::parseDouble,
-            String.class, value -> value
+            String.class, value -> value,
+            Color.class, Color::of
     );
 
     private final Properties cached = new Properties();
@@ -59,7 +61,7 @@ public class PropertiesConfig extends ConfigFile {
             NarakaMod.LOGGER.warn("Cannot load config value for key ({}), using default {}", key, value.getDefaultValue());
             return;
         }
-        value.load(parser, property);
+        value.set(parser.parse(property));
     }
 
     @Override
