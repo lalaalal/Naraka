@@ -350,7 +350,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private double correctRatio(double ratio) {
-        final double scale = NarakaMod.config().herobrineHurtLimitDecreaseRatioModifier.getValue();
+        final double scale = NarakaMod.config().herobrineHurtLimitCalculationRatioModifier.getValue();
         if (ratio > 5)
             ratio = NarakaUtils.log(4, ratio - 4) + 5;
         return Math.max(ratio * scale, 1.5);

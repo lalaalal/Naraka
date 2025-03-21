@@ -1,6 +1,6 @@
 package com.yummy.naraka.mixin.client;
 
-import com.yummy.naraka.NarakaConfig;
+import com.yummy.naraka.NarakaMod;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -14,6 +14,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MinecraftMixin {
     @Inject(method = "destroy", at = @At("HEAD"))
     public void closeConfigChangeListener(CallbackInfo ci) {
-        NarakaConfig.stop();
+        NarakaMod.config().stop();
     }
 }
