@@ -1,5 +1,7 @@
 package com.yummy.naraka.client.animation.herobrine;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
@@ -12,6 +14,7 @@ import net.minecraft.util.RandomSource;
  *
  * @author joachimbeen
  */
+@Environment(EnvType.CLIENT)
 public class HerobrinePunchAnimation {
     public static AnimationDefinition random(RandomSource randomSource) {
         int index = randomSource.nextInt(PUNCH_ANIMATIONS.length);

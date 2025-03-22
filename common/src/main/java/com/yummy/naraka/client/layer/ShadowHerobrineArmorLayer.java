@@ -7,6 +7,8 @@ import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.client.renderer.entity.HerobrineRenderer;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -14,6 +16,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
+@Environment(EnvType.CLIENT)
 public class ShadowHerobrineArmorLayer extends RenderLayer<ShadowHerobrine, HerobrineModel<ShadowHerobrine>> {
     private static final ResourceLocation TEXTURE_LOCATION = NarakaMod.mcLocation("textures/entity/creeper/creeper_armor.png");
 

@@ -1,5 +1,7 @@
 package com.yummy.naraka.client.animation.herobrine;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
@@ -11,6 +13,7 @@ import net.minecraft.client.animation.KeyframeAnimations;
  *
  * @author joachimbeen
  */
+@Environment(EnvType.CLIENT)
 public class HerobrineSkillAnimation {
     public static final AnimationDefinition RUSH = AnimationDefinition.Builder.withLength(4.0F)
             .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,

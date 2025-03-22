@@ -10,6 +10,8 @@ import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.client.model.HerobrineScarfModel;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.Herobrine;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -26,6 +28,7 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public class HerobrineScarfLayer extends RenderLayer<Herobrine, HerobrineModel<Herobrine>> {
     private final HerobrineScarfModel scarfModel;
 
@@ -95,21 +98,21 @@ public class HerobrineScarfLayer extends RenderLayer<Herobrine, HerobrineModel<H
         float partWidth = widthInRatio / divisionValue;
         float partHeight = heightInRatio / divisionValue;
 
-        for (int i = 0; i < divisionValue; i++) {
+        for (int vertical = 0; vertical < divisionValue; vertical++) {
             poseStack.pushPose();
-            float theta = (ageInTicks - i * waveCycleModifier) * speed;
-            float sex = theta * verticalSpeed.get(i);
-            float offset = theta - theta / verticalSpeed.get(i);
-            float xRot = (Mth.cos(sex - offset) + 1) * (float) Math.toRadians(degree) / 2 * verticalSpeed.get(i);
+            float theta = (ageInTicks - vertical * waveCycleModifier) * speed;
+            float scaledTheta = theta * verticalSpeed.get(vertical);
+            float offset = theta - theta / verticalSpeed.get(vertical);
+            float xRot = (Mth.cos(scaledTheta - offset) + 1) * (float) Math.toRadians(degree) / 2 * verticalSpeed.get(vertical);
             poseStack.translate(offsetX, xRot_offsetY, xRot_offsetZ);
 
             float part_yOffset = Mth.sin(xRot) * partHeight;
             float zRot_OffsetY = 0;
             float zRot_OffsetX = 0;
-            for (int j = 0; j < divisionValue; j++) {
+            for (int horizontal = 0; horizontal < divisionValue; horizontal++) {
                 poseStack.pushPose();
 
-                float zRot = (Mth.cos((ageInTicks - j * waveCycleModifier * horizontalSpeed) * speed) + 1) * (float) Math.toRadians(degree) / 4;
+                float zRot = (Mth.cos((ageInTicks - horizontal * waveCycleModifier * horizontalSpeed) * speed) + 1) * (float) Math.toRadians(degree) / 4;
                 poseStack.translate(zRot_OffsetX, zRot_OffsetY, 0);
 
                 float zRot_yOffset = Mth.sin(zRot) * partWidth;
@@ -124,8 +127,8 @@ public class HerobrineScarfLayer extends RenderLayer<Herobrine, HerobrineModel<H
                         new Vector3f(partWidth + horizontalShift, part_yOffset + zRot_yOffset, partHeight)
                 );
 
-                float currentU = u + partWidth * j;
-                float currentV = v + partHeight * i;
+                float currentU = u + partWidth * horizontal;
+                float currentV = v + partHeight * vertical;
                 vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.UP);
                 vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.DOWN);
 

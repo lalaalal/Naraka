@@ -7,6 +7,8 @@ import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.NarakaFireballModel;
 import com.yummy.naraka.world.entity.NarakaFireball;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -15,6 +17,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Quaternionf;
 
+@Environment(EnvType.CLIENT)
 public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball> {
     private static final float SIN_45 = (float) Math.sin(Math.PI / 4);
 
