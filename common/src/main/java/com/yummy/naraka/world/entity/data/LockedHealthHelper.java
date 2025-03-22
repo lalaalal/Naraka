@@ -15,7 +15,7 @@ public class LockedHealthHelper {
      */
     public static void lock(LivingEntity target, double amount) {
         if (NarakaEntityUtils.isDamageable(target)) {
-            AttributeModifier maxHealthModifier = NarakaAttributeModifiers.reduceMaxHealth(amount);
+            AttributeModifier maxHealthModifier = NarakaAttributeModifiers.reduceMaxHealth(NarakaAttributeModifiers.REDUCE_MAX_HEALTH_ID, amount);
             NarakaAttributeModifiers.addPermanentModifier(target, Attributes.MAX_HEALTH, maxHealthModifier);
             EntityDataHelper.setEntityData(target, NarakaEntityDataTypes.LOCKED_HEALTH.get(), amount);
         }

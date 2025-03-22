@@ -90,14 +90,14 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         setAnimation(WEAKNESS_ANIMATION);
         weaknessTickCount = 0;
         skillManager.pause(true);
-        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
+        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.WEAKNESS_PREVENT_MOVING);
     }
 
     protected void stopWeakness() {
         setAnimation("idle");
         weaknessTickCount = Integer.MAX_VALUE;
         skillManager.resume();
-        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
+        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.WEAKNESS_PREVENT_MOVING);
     }
 
     @Override

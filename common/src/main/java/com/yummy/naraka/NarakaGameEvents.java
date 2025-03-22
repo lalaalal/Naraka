@@ -68,13 +68,13 @@ public final class NarakaGameEvents {
     }
 
     private static CompoundEventResult<ItemStack> preventItemUseDuringStun(Player player, InteractionHand interactionHand) {
-        if (NarakaAttributeModifiers.hasAttributeModifier(player, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING))
+        if (NarakaAttributeModifiers.hasAttributeModifier(player, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STUN_PREVENT_MOVING))
             return CompoundEventResult.interruptTrue(player.getItemInHand(interactionHand));
         return CompoundEventResult.pass();
     }
 
     private static EventResult preventAttackEntityDuringStun(Player player, Level level, Entity target, InteractionHand hand, @Nullable EntityHitResult result) {
-        if (NarakaAttributeModifiers.hasAttributeModifier(player, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING))
+        if (NarakaAttributeModifiers.hasAttributeModifier(player, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STUN_PREVENT_MOVING))
             return EventResult.interruptTrue();
         return EventResult.pass();
     }

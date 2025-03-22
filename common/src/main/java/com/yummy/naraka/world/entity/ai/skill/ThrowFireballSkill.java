@@ -1,7 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.world.entity.SkillUsingMob;
-import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Fireball;
@@ -19,7 +18,7 @@ public class ThrowFireballSkill extends Skill<SkillUsingMob> {
     }
 
     private boolean canMove() {
-        return !NarakaAttributeModifiers.hasAttributeModifier(mob, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
+        return mob.getAttributeValue(Attributes.MOVEMENT_SPEED) > 0;
     }
 
     @Override

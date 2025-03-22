@@ -343,15 +343,15 @@ public class Herobrine extends AbstractHerobrine {
     public boolean hurt(DamageSource source, float damage) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             return super.hurt(source, damage);
-        if (checkMovementIfHibernated())
+        if (hibernateMode)
             return true;
         if (source.getEntity() == this)
             return false;
 
         float actualDamage = getActualDamage(source, damage);
         updateHurtDamageLimit(actualDamage);
-        actualDamage = Math.min(actualDamage, hurtDamageLimit);
-        if (updateHibernateMode(source, getActualDamage(source, actualDamage)))
+        float limitedDamage = Math.min(damage, hurtDamageLimit);
+        if (updateHibernateMode(source, getActualDamage(source, limitedDamage)))
             return true;
 
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
@@ -360,13 +360,7 @@ public class Herobrine extends AbstractHerobrine {
             skillManager.setCurrentSkillIfAbsence(blockingSkill);
             return false;
         }
-        return super.hurt(source, Math.min(hurtDamageLimit, damage));
-    }
-
-    private boolean checkMovementIfHibernated() {
-        if (hibernateMode && !NarakaAttributeModifiers.hasAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING))
-            NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
-        return hibernateMode;
+        return super.hurt(source, limitedDamage);
     }
 
     @Override
@@ -378,6 +372,8 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void switchWithShadowHerobrine() {
+        if (isDeadOrDying())
+            return;
         accumulatedHurtDamage = 0;
         accumulatedDamageTickCount = 0;
         getEntities(shadowHerobrines, ShadowHerobrine.class)
@@ -444,8 +440,6 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void updateHurtDamageLimit(float damage) {
-        if (level().isClientSide)
-            return;
         if (phaseManager.getCurrentPhase() < 3 && hurtDamageLimit > 1) {
             averageHurtDamage = calculateAverageHurtDamage(damage);
 
@@ -469,18 +463,18 @@ public class Herobrine extends AbstractHerobrine {
         if (spawnPosition != null)
             moveTo(spawnPosition.south(54), 0, 0);
         hibernateMode = true;
+        skillManager.interrupt();
         skillManager.enableOnly(HIBERNATED_MODE_SKILL_BY_PHASE.get(getPhase()));
-        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
+        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
     }
 
     private void stopHibernateMode() {
         hurtCount = 0;
         averageHurtDamage = 0;
-        invulnerableTime = 20;
         hibernateMode = false;
         hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
         skillManager.enableOnly(SKILLS_BY_PHASE.get(getPhase()));
-        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
+        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
 
         setHealth(getHealth() - 1);
     }
@@ -532,6 +526,11 @@ public class Herobrine extends AbstractHerobrine {
         for (ShadowHerobrine shadowHerobrine : getEntities(shadowHerobrines, ShadowHerobrine.class))
             shadowHerobrine.kill();
         super.die(damageSource);
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
     }
 
     @Override

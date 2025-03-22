@@ -61,12 +61,6 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     @Override
-    protected void customServerAiStep() {
-        if (herobrine == null || !herobrine.isHibernateMode())
-            super.customServerAiStep();
-    }
-
-    @Override
     public boolean canBeHitByProjectile() {
         return false;
     }

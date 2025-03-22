@@ -14,15 +14,54 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
  * @author lalaalal
  */
 public class NarakaAttributeModifiers {
-    public static final AttributeModifier PREVENT_MOVING = new AttributeModifier(NarakaMod.location("prevent_moving"), -0.15f * 256, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
-    public static final AttributeModifier PREVENT_JUMPING = new AttributeModifier(NarakaMod.location("prevent_jumping"), -256f, AttributeModifier.Operation.ADD_VALUE);
-    public static final AttributeModifier PREVENT_BLOCK_ATTACKING = new AttributeModifier(NarakaMod.location("prevent_attack_block"), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
-    public static final AttributeModifier PREVENT_ENTITY_ATTACKING = new AttributeModifier(NarakaMod.location("prevent_attack_entity"), -4.0 * 256, AttributeModifier.Operation.ADD_VALUE);
+    public static final AttributeModifier STUN_PREVENT_MOVING = preventMoving("stun");
+    public static final AttributeModifier STUN_PREVENT_JUMPING = preventJumping("stun");
+    public static final AttributeModifier STUN_PREVENT_BLOCK_ATTACK = preventBlockAttack("stun");
+    public static final AttributeModifier STUN_PREVENT_ENTITY_ATTACK = preventEntityAttack("stun");
 
-    public static final ResourceLocation REDUCE_MAX_HEALTH_ID = NarakaMod.location("reduce_max_health");
+    public static final AttributeModifier HIBERNATE_PREVENT_MOVING = preventMoving("hibernate");
+    public static final AttributeModifier WEAKNESS_PREVENT_MOVING = preventMoving("weakness");
 
-    public static AttributeModifier reduceMaxHealth(double value) {
-        return new AttributeModifier(REDUCE_MAX_HEALTH_ID, -value, AttributeModifier.Operation.ADD_VALUE);
+    public static final ResourceLocation REDUCE_MAX_HEALTH_ID = reduceMaxHealthId("locked_health");
+
+    public static AttributeModifier reduceMaxHealth(ResourceLocation id, double value) {
+        return new AttributeModifier(id, -value, AttributeModifier.Operation.ADD_VALUE);
+    }
+
+    public static ResourceLocation reduceMaxHealthId(String identifier) {
+        return NarakaMod.location(identifier + ".reduce_max_health");
+    }
+
+    public static AttributeModifier preventMoving(String identifier) {
+        return new AttributeModifier(preventMovingId(identifier), -0.15f * 256, AttributeModifier.Operation.ADD_VALUE);
+    }
+
+    public static ResourceLocation preventMovingId(String identifier) {
+        return NarakaMod.location(identifier + ".prevent_moving");
+    }
+
+    public static AttributeModifier preventJumping(String identifier) {
+        return new AttributeModifier(preventJumpingId(identifier), -256f, AttributeModifier.Operation.ADD_VALUE);
+    }
+
+    public static ResourceLocation preventJumpingId(String identifier) {
+        return NarakaMod.location(identifier + ".prevent_jumping");
+    }
+
+    public static AttributeModifier preventBlockAttack(String identifier) {
+        return new AttributeModifier(preventBlockAttackId(identifier), -1, AttributeModifier.Operation.ADD_VALUE);
+    }
+
+    public static ResourceLocation preventBlockAttackId(String identifier) {
+        return NarakaMod.location(identifier + ".prevent_block_attack");
+    }
+
+    public static AttributeModifier preventEntityAttack(String identifier) {
+        return new AttributeModifier(preventEntityAttackId(identifier), -4.0 * 256, AttributeModifier.Operation.ADD_VALUE);
+    }
+
+    public static ResourceLocation preventEntityAttackId(String identifier) {
+        return NarakaMod.location(identifier + ".prevent_entity_attack");
     }
 
     /**
