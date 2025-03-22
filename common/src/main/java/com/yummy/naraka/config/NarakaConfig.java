@@ -95,7 +95,7 @@ public final class NarakaConfig {
         this.herobrineScarfPartitionNumber = define("herobrine_scarf_partition_number", 16)
                 .append("Divide scarf with given number")
                 .append("Bigger value, short wave cycle");
-        this.herobrineScarfWaveSpeed = define("herobrine_scarf_wave_speed", 0.3f);
+        this.herobrineScarfWaveSpeed = define("herobrine_scarf_wave_speed", 0.2f);
         this.herobrineScarfWaveMaxAngle = define("herobrine_scarf_wave_max_angle", 22.5f);
         this.herobrineScarfWaveCycleModifier = define("herobrine_scarf_wave_cycle_modifier", 1.0f)
                 .append("Bigger value, short wave cycle");

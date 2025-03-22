@@ -57,8 +57,6 @@ public class HerobrineScarfLayer extends RenderLayer<Herobrine, HerobrineModel<H
     }
 
     /**
-     * I think y, z axis is flipped...
-     *
      * @param poseStack      Pose stack
      * @param vertexConsumer Vertex consumer
      * @param packedLight    Light value
@@ -88,6 +86,8 @@ public class HerobrineScarfLayer extends RenderLayer<Herobrine, HerobrineModel<H
         float widthInRatio = width / (float) textureWidth;
         float heightInRatio = height / (float) textureHeight;
         int divisionValue = NarakaMod.config().herobrineScarfPartitionNumber.getValue();
+        if (verticalSpeed.size() < divisionValue)
+            return;
 
         float partWidth = widthInRatio / divisionValue;
         float partHeight = heightInRatio / divisionValue;
@@ -139,7 +139,7 @@ public class HerobrineScarfLayer extends RenderLayer<Herobrine, HerobrineModel<H
     }
 
     /**
-     * Add 4 vertices in anti-clockwise from left-top
+     * Add 4 vertices in anti-clockwise from left-top based on positive direction
      *
      * @param positions Positions, size must be 4
      */

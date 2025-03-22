@@ -86,7 +86,6 @@ public class Herobrine extends AbstractHerobrine {
     private int hurtCount = 0;
 
     private boolean hibernateMode = false;
-    private int hibernateModeTickCount = 0;
 
     private int accumulatedDamageTickCount;
     private float accumulatedHurtDamage;
@@ -105,7 +104,7 @@ public class Herobrine extends AbstractHerobrine {
         phaseManager.addPhaseChangeListener(this::updateUsingSkills);
 
         skillManager.enableOnly(PHASE_1_SKILLS);
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < NarakaMod.config().herobrineScarfPartitionNumber.getValue(); i++)
             scarfWaveSpeedList.add(1f);
     }
 
@@ -220,14 +219,8 @@ public class Herobrine extends AbstractHerobrine {
         super.tick();
         afterimages.removeIf(Afterimage::tick);
         prevScarfRotation = entityData.get(SCARF_ROTATION_DEGREE);
-        if (tickCount % 10 == 0) {
-            float speed = Mth.lerp(prevScarfRotation / 70, 1, 3);
-            scarfWaveSpeedList.addFirst(speed);
-            scarfWaveSpeedList.removeLast();
-        } else {
-            scarfWaveSpeedList.addFirst(scarfWaveSpeedList.getFirst());
-            scarfWaveSpeedList.removeLast();
-        }
+
+        updateScarfWaveSpeeds();
     }
 
     public float getScarfRotationDegree(float partialTick) {
@@ -238,7 +231,24 @@ public class Herobrine extends AbstractHerobrine {
         return scarfWaveSpeedList;
     }
 
-    private void updateScarf() {
+    private void updateScarfWaveSpeeds() {
+        int partitionNumber = NarakaMod.config().herobrineScarfPartitionNumber.getValue();
+        if (scarfWaveSpeedList.size() < partitionNumber) {
+            for (int i = 0; i < partitionNumber - scarfWaveSpeedList.size(); i++)
+                scarfWaveSpeedList.add(scarfWaveSpeedList.getLast());
+        }
+        if (tickCount % 10 == 0) {
+            float maxRotation = NarakaMod.config().herobrineScarfDefaultRotation.getValue();
+            float speed = Mth.lerp(prevScarfRotation / maxRotation, 1, 3);
+            scarfWaveSpeedList.addFirst(speed);
+            scarfWaveSpeedList.removeLast();
+        } else {
+            scarfWaveSpeedList.addFirst(scarfWaveSpeedList.getFirst());
+            scarfWaveSpeedList.removeLast();
+        }
+    }
+
+    private void updateScarfRotation() {
         float scarfRotationDegree = entityData.get(SCARF_ROTATION_DEGREE);
         Vec3 delta = getDeltaMovement();
         float z = Mth.sin(getYRot());
@@ -249,13 +259,14 @@ public class Herobrine extends AbstractHerobrine {
             scarfRotationDegree += 5;
         if (scarfRotationDegree > targetRotation)
             scarfRotationDegree -= 3;
-        entityData.set(SCARF_ROTATION_DEGREE, Mth.clamp(scarfRotationDegree, 0, 70));
+        float maxRotation = NarakaMod.config().herobrineScarfDefaultRotation.getValue();
+        entityData.set(SCARF_ROTATION_DEGREE, Mth.clamp(scarfRotationDegree, 0, maxRotation));
     }
 
     @Override
     protected void customServerAiStep() {
         updateAccumulatedDamage();
-        updateScarf();
+        updateScarfRotation();
 
         tryAvoidProjectile();
         collectStigma();
@@ -549,7 +560,6 @@ public class Herobrine extends AbstractHerobrine {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("HibernateMode", hibernateMode);
-        compound.putInt("HibernateModeTickCount", hibernateModeTickCount);
         if (spawnPosition != null)
             compound.put("SpawnPosition", NbtUtils.writeBlockPos(spawnPosition));
         NarakaNbtUtils.writeCollection(compound, "StigmatizedEntities", stigmatizedEntities, this::writeUUID, registryAccess());
@@ -566,8 +576,6 @@ public class Herobrine extends AbstractHerobrine {
         super.readAdditionalSaveData(compound);
         if (compound.contains("HibernatedMode"))
             hibernateMode = compound.getBoolean("HibernatedMode");
-        if (compound.contains("HibernateModeTickCount"))
-            hibernateModeTickCount = compound.getInt("HibernateModeTickCount");
         NbtUtils.readBlockPos(compound, "SpawnPosition").ifPresent(pos -> spawnPosition = pos);
         NarakaNbtUtils.readCollection(compound, "StigmatizedEntities", () -> stigmatizedEntities, this::readUUID, registryAccess());
         NarakaNbtUtils.readCollection(compound, "WatchingEntities", () -> watchingEntities, this::readUUID, registryAccess());
