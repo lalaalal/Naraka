@@ -5,23 +5,27 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.world.entity.Herobrine;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 
 public class HerobrineScarfModel extends EntityModel<Herobrine> {
     private final ModelPart root;
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
-        return LayerDefinition.create(meshdefinition, 16, 16);
+        PartDefinition partdefinition = meshdefinition.getRoot();
+        partdefinition.addOrReplaceChild("bb_main",
+                CubeListBuilder.create()
+                        .texOffs(0, 0).addBox(-2.0F, -2.0F, 0.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
+                        .texOffs(0, 16).addBox(-7.0F, -24.0F, -2.0F, 14.0F, 6.0F, 4.0F, new CubeDeformation(0.51F))
+                        .texOffs(0, 0).addBox(-4.0F, -30.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)),
+                PartPose.offset(0.0F, 24.0F, 0.0F));
+
+        return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
     public HerobrineScarfModel(ModelPart root) {
         this.root = root;
-    }
-
-    public void copyModelFrom(HerobrineModel<Herobrine> herobrineModel) {
-        root.copyFrom(herobrineModel.head());
     }
 
     @Override

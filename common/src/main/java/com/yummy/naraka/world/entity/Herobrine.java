@@ -21,6 +21,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
@@ -86,6 +87,8 @@ public class Herobrine extends AbstractHerobrine {
     private int accumulatedDamageTickCount;
     private float accumulatedHurtDamage;
 
+    private @Nullable BlockPos spawnPosition;
+
     public Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
         super(entityType, level, false);
 
@@ -100,6 +103,10 @@ public class Herobrine extends AbstractHerobrine {
     public Herobrine(Level level, Vec3 pos) {
         this(NarakaEntityTypes.HEROBRINE.get(), level);
         setPos(pos);
+    }
+
+    public void setSpawnPosition(BlockPos pos) {
+        this.spawnPosition = pos;
     }
 
     private void updateMusic(int prevPhase, int currentPhase) {
@@ -278,7 +285,7 @@ public class Herobrine extends AbstractHerobrine {
     public boolean hurt(DamageSource source, float damage) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             return super.hurt(source, damage);
-        if (hibernateMode)
+        if (checkMovementIfHibernated())
             return true;
         if (source.getEntity() == this)
             return false;
@@ -296,6 +303,12 @@ public class Herobrine extends AbstractHerobrine {
             return false;
         }
         return super.hurt(source, Math.min(hurtDamageLimit, damage));
+    }
+
+    private boolean checkMovementIfHibernated() {
+        if (hibernateMode && !NarakaAttributeModifiers.hasAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING))
+            NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
+        return hibernateMode;
     }
 
     @Override
@@ -388,7 +401,13 @@ public class Herobrine extends AbstractHerobrine {
         }
     }
 
+    public boolean isHibernateMode() {
+        return hibernateMode;
+    }
+
     private void startHibernateMode() {
+        if (spawnPosition != null)
+            moveTo(spawnPosition.south(54), 0, 0);
         hibernateMode = true;
         skillManager.enableOnly(HIBERNATED_MODE_SKILL_BY_PHASE.get(getPhase()));
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
@@ -397,6 +416,7 @@ public class Herobrine extends AbstractHerobrine {
     private void stopHibernateMode() {
         hurtCount = 0;
         averageHurtDamage = 0;
+        invulnerableTime = 20;
         hibernateMode = false;
         hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
         skillManager.enableOnly(SKILLS_BY_PHASE.get(getPhase()));
@@ -431,8 +451,6 @@ public class Herobrine extends AbstractHerobrine {
         if (getPhase() == 1 && hibernateMode && damage >= 66 && target.isAlive()) {
             stopHibernateMode();
             startWeakness();
-            if (phaseManager.getCurrentPhaseHealth() == 1)
-                setHealth(getHealth() - 1);
         }
     }
 
@@ -483,6 +501,8 @@ public class Herobrine extends AbstractHerobrine {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("HibernateMode", hibernateMode);
         compound.putInt("HibernateModeTickCount", hibernateModeTickCount);
+        if (spawnPosition != null)
+            compound.put("SpawnPosition", NbtUtils.writeBlockPos(spawnPosition));
         NarakaNbtUtils.writeCollection(compound, "StigmatizedEntities", stigmatizedEntities, this::writeUUID, registryAccess());
         NarakaNbtUtils.writeCollection(compound, "WatchingEntities", watchingEntities, this::writeUUID, registryAccess());
         NarakaNbtUtils.writeCollection(compound, "ShadowHerobrines", shadowHerobrines, this::writeUUID, registryAccess());
@@ -499,6 +519,7 @@ public class Herobrine extends AbstractHerobrine {
             hibernateMode = compound.getBoolean("HibernatedMode");
         if (compound.contains("HibernateModeTickCount"))
             hibernateModeTickCount = compound.getInt("HibernateModeTickCount");
+        NbtUtils.readBlockPos(compound, "SpawnPosition").ifPresent(pos -> spawnPosition = pos);
         NarakaNbtUtils.readCollection(compound, "StigmatizedEntities", () -> stigmatizedEntities, this::readUUID, registryAccess());
         NarakaNbtUtils.readCollection(compound, "WatchingEntities", () -> watchingEntities, this::readUUID, registryAccess());
         NarakaNbtUtils.readCollection(compound, "ShadowHerobrines", () -> shadowHerobrines, this::readUUID, registryAccess());

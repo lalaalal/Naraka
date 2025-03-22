@@ -24,7 +24,6 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
@@ -113,7 +112,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     @Override
     protected void registerGoals() {
         targetSelector.addGoal(1, new HurtByTargetGoal(this, Herobrine.class));
-        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, false, target -> !target.getType().is(NarakaEntityTypeTags.HEROBRINE)));
 
         goalSelector.addGoal(1, new FloatGoal(this));
         goalSelector.addGoal(2, new MoveToTargetGoal(this, 1, 64));

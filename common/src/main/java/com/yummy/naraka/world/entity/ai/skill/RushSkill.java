@@ -112,13 +112,14 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Ski
             blockedEntities.add(target);
             return;
         }
-        DamageSource source = mob.getDefaultDamageSource();
-        float damage = mob.getAttackDamage() + target.getMaxHealth() * 0.08f;
         if (!blockedEntities.contains(target) && target.invulnerableTime < 10) {
+            DamageSource source = mob.getDefaultDamageSource();
+            float damage = mob.getAttackDamage() + target.getMaxHealth() * 0.08f;
+
             StunHelper.stunEntity(target, 100);
             mob.stigmatizeEntity(target);
+            target.hurt(source, damage);
+            target.knockback(5, mob.getX() - target.getX(), mob.getZ() - target.getZ());
         }
-        target.hurt(source, damage);
-        target.knockback(5, mob.getX() - target.getX(), mob.getZ() - target.getZ());
     }
 }

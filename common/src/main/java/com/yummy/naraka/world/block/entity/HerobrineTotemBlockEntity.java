@@ -108,6 +108,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     private void summonHerobrine(ServerLevel level, BlockPos pos) {
         BlockPos floorPos = NarakaUtils.findFloor(level, pos);
         Herobrine herobrine = new Herobrine(level, new Vec3(floorPos.getX() + 0.5, floorPos.getY() + 1, floorPos.getZ() + 0.5));
+        herobrine.setSpawnPosition(pos);
         level.addFreshEntity(herobrine);
         level.sendParticles(ParticleTypes.CLOUD,
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 15,

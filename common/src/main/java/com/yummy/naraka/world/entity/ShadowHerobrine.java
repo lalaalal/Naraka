@@ -35,7 +35,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return AbstractHerobrine.getAttributeSupplier()
-                .add(Attributes.MOVEMENT_SPEED, 0.25f)
+                .add(Attributes.MOVEMENT_SPEED, 0.15f)
                 .add(Attributes.ATTACK_DAMAGE, 6)
                 .add(Attributes.MAX_HEALTH, 150);
     }
@@ -45,6 +45,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         skillManager.enableOnly(List.of(punchSkill));
         punchSkill.setMaxLinkCount(3);
         punchSkill.changeCooldown(60);
+        punchSkill.setStunTarget(false);
     }
 
     public ShadowHerobrine(Level level, Herobrine herobrine) {
@@ -57,6 +58,12 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new FollowOwnerGoal<>(this));
+    }
+
+    @Override
+    protected void customServerAiStep() {
+        if (herobrine == null || !herobrine.isHibernateMode())
+            super.customServerAiStep();
     }
 
     @Override

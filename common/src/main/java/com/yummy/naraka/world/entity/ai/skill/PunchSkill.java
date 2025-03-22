@@ -13,6 +13,7 @@ public class PunchSkill<T extends SkillUsingMob & StigmatizingEntity> extends Sk
 
     private int linkedCount = 1;
     private int maxLinkCount = 5;
+    private boolean stunTarget = true;
 
     public PunchSkill(T mob) {
         super(NAME, 20, 110, mob);
@@ -24,6 +25,10 @@ public class PunchSkill<T extends SkillUsingMob & StigmatizingEntity> extends Sk
 
     public int getLinkedCount() {
         return linkedCount;
+    }
+
+    public void setStunTarget(boolean stunTarget) {
+        this.stunTarget = stunTarget;
     }
 
     @Override
@@ -81,7 +86,7 @@ public class PunchSkill<T extends SkillUsingMob & StigmatizingEntity> extends Sk
         if (NarakaEntityUtils.disableAndHurtShield(target, shieldCooldown, 25) || !canUse())
             return;
 
-        if (linkedCount == 1)
+        if (linkedCount == 1 && stunTarget)
             StunHelper.stunEntity(target, 40);
         target.hurt(damageSource, damage);
         target.knockback(2f, mob.getX() - target.getX(), mob.getZ() - target.getZ());

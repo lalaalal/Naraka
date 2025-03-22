@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -85,7 +86,8 @@ public class NarakaEntityUtils {
             player.stopUsingItem();
             player.level().broadcastEntityEvent(livingEntity, (byte) 30);
 
-            ItemStack usedItem = player.getUseItem();
+            InteractionHand hand = player.getUsedItemHand();
+            ItemStack usedItem = player.getItemInHand(hand);
             EquipmentSlot slot = player.getEquipmentSlotForItem(usedItem);
             usedItem.hurtAndBreak(damage, player, slot);
 
