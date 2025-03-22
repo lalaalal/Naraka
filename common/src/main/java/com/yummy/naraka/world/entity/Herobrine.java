@@ -23,6 +23,9 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -47,6 +50,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class Herobrine extends AbstractHerobrine {
+    protected static final EntityDataAccessor<Float> SCARF_ROTATION_DEGREE = SynchedEntityData.defineId(Herobrine.class, EntityDataSerializers.FLOAT);
     private static final float[] HEALTH_BY_PHASE = {106, 210, 350};
 
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
@@ -89,6 +93,9 @@ public class Herobrine extends AbstractHerobrine {
 
     private @Nullable BlockPos spawnPosition;
 
+    private float prevScarfRotation = 0;
+    private final List<Float> scarfWaveSpeedList = new ArrayList<>();
+
     public Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
         super(entityType, level, false);
 
@@ -98,11 +105,19 @@ public class Herobrine extends AbstractHerobrine {
         phaseManager.addPhaseChangeListener(this::updateUsingSkills);
 
         skillManager.enableOnly(PHASE_1_SKILLS);
+        for (int i = 0; i < 16; i++)
+            scarfWaveSpeedList.add(1f);
     }
 
     public Herobrine(Level level, Vec3 pos) {
         this(NarakaEntityTypes.HEROBRINE.get(), level);
         setPos(pos);
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SCARF_ROTATION_DEGREE, 0f);
     }
 
     public void setSpawnPosition(BlockPos pos) {
@@ -204,11 +219,43 @@ public class Herobrine extends AbstractHerobrine {
     public void tick() {
         super.tick();
         afterimages.removeIf(Afterimage::tick);
+        prevScarfRotation = entityData.get(SCARF_ROTATION_DEGREE);
+        if (tickCount % 10 == 0) {
+            float speed = Mth.lerp(prevScarfRotation / 70, 1, 3);
+            scarfWaveSpeedList.addFirst(speed);
+            scarfWaveSpeedList.removeLast();
+        } else {
+            scarfWaveSpeedList.addFirst(scarfWaveSpeedList.getFirst());
+            scarfWaveSpeedList.removeLast();
+        }
+    }
+
+    public float getScarfRotationDegree(float partialTick) {
+        return Mth.lerp(partialTick, prevScarfRotation, entityData.get(SCARF_ROTATION_DEGREE));
+    }
+
+    public List<Float> getScarfWaveSpeedList() {
+        return scarfWaveSpeedList;
+    }
+
+    private void updateScarf() {
+        float scarfRotationDegree = entityData.get(SCARF_ROTATION_DEGREE);
+        Vec3 delta = getDeltaMovement();
+        float z = Mth.sin(getYRot());
+        float x = Mth.cos(getYRot());
+        Vec3 projection = NarakaUtils.projection(delta, new Vec3(x, 0, z));
+        float targetRotation = (float) projection.length() * 100 * 10;
+        if (scarfRotationDegree < targetRotation)
+            scarfRotationDegree += 5;
+        if (scarfRotationDegree > targetRotation)
+            scarfRotationDegree -= 3;
+        entityData.set(SCARF_ROTATION_DEGREE, Mth.clamp(scarfRotationDegree, 0, 70));
     }
 
     @Override
     protected void customServerAiStep() {
         updateAccumulatedDamage();
+        updateScarf();
 
         tryAvoidProjectile();
         collectStigma();
@@ -386,6 +433,8 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void updateHurtDamageLimit(float damage) {
+        if (level().isClientSide)
+            return;
         if (phaseManager.getCurrentPhase() < 3 && hurtDamageLimit > 1) {
             averageHurtDamage = calculateAverageHurtDamage(damage);
 

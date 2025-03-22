@@ -17,12 +17,14 @@ import net.minecraft.util.Mth;
 @Environment(EnvType.CLIENT)
 public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalModel<T> {
     private final ModelPart root;
+    private final ModelPart body;
     private final ModelPart head;
     private boolean renderShadow = false;
 
     public HerobrineModel(ModelPart root) {
         this.root = root;
-        this.head = root.getChild("body").getChild("head");
+        this.body = root.getChild("body");
+        this.head = body.getChild("head");
     }
 
     public static LayerDefinition createForHerobrine() {
@@ -85,8 +87,8 @@ public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalMod
         this.renderShadow = true;
     }
 
-    public ModelPart head() {
-        return head;
+    public ModelPart body() {
+        return body;
     }
 
     @Override

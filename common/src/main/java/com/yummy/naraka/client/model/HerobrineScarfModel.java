@@ -28,6 +28,12 @@ public class HerobrineScarfModel extends EntityModel<Herobrine> {
         this.root = root;
     }
 
+    public void copyModelFrom(HerobrineModel<Herobrine> herobrineModel) {
+        ModelPart herobrineBody = herobrineModel.body();
+        root.copyFrom(herobrineBody);
+        root.y -= 1;
+    }
+
     @Override
     public void setupAnim(Herobrine entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
