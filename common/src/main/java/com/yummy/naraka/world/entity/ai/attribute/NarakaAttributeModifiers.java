@@ -9,7 +9,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 /**
- * Mod {@linkplain AttributeModifier}s and helping methods
+ * Mod {@linkplain AttributeModifier}s and helping methods<br>
+ * To prevent overflow use {@link AttributeModifier.Operation#ADD_VALUE}
  *
  * @author lalaalal
  */
@@ -33,7 +34,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static AttributeModifier preventMoving(String identifier) {
-        return new AttributeModifier(preventMovingId(identifier), -0.15f * 256, AttributeModifier.Operation.ADD_VALUE);
+        return new AttributeModifier(preventMovingId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 
     public static ResourceLocation preventMovingId(String identifier) {
@@ -41,7 +42,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static AttributeModifier preventJumping(String identifier) {
-        return new AttributeModifier(preventJumpingId(identifier), -256f, AttributeModifier.Operation.ADD_VALUE);
+        return new AttributeModifier(preventJumpingId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 
     public static ResourceLocation preventJumpingId(String identifier) {
@@ -49,7 +50,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static AttributeModifier preventBlockAttack(String identifier) {
-        return new AttributeModifier(preventBlockAttackId(identifier), -1, AttributeModifier.Operation.ADD_VALUE);
+        return new AttributeModifier(preventBlockAttackId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 
     public static ResourceLocation preventBlockAttackId(String identifier) {
@@ -57,7 +58,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static AttributeModifier preventEntityAttack(String identifier) {
-        return new AttributeModifier(preventEntityAttackId(identifier), -4.0 * 256, AttributeModifier.Operation.ADD_VALUE);
+        return new AttributeModifier(preventEntityAttackId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 
     public static ResourceLocation preventEntityAttackId(String identifier) {
