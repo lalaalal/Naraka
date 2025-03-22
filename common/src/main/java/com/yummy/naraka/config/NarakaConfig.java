@@ -31,6 +31,7 @@ public final class NarakaConfig {
     public final ConfigValue<Double> herobrineHurtLimitCalculationRatioModifier;
     public final ConfigValue<Double> herobrineMaxHurtCountCalculationModifier;
     public final ConfigValue<Integer> maxShadowHerobrineSpawn;
+    public final ConfigValue<Boolean> alwaysDisplayHerobrineScarf;
     public final ConfigValue<Float> herobrineScarfDefaultRotation;
     public final ConfigValue<Integer> herobrineScarfPartitionNumber;
     public final ConfigValue<Float> herobrineScarfWaveSpeed;
@@ -90,6 +91,7 @@ public final class NarakaConfig {
                 .append("Bigger value, bigger hurt limit");
         this.herobrineMaxHurtCountCalculationModifier = define("herobrine_max_hurt_count_calculation_modifier", 1.0)
                 .append("Bigger value, bigger max hurt count");
+        this.alwaysDisplayHerobrineScarf = define("always_display_herobrine_scarf", false);
         this.herobrineScarfDefaultRotation = define("herobrine_scarf_default_rotation", 70.0f);
         this.maxShadowHerobrineSpawn = define("max_shadow_herobrine_spawn", 3);
         this.herobrineScarfPartitionNumber = define("herobrine_scarf_partition_number", 16)

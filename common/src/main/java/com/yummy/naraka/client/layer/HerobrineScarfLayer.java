@@ -10,6 +10,7 @@ import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.client.model.HerobrineScarfModel;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.Herobrine;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -35,7 +36,7 @@ public class HerobrineScarfLayer extends RenderLayer<Herobrine, HerobrineModel<H
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Herobrine herobrine, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (herobrine.getPhase() != 2)
+        if (herobrine.getPhase() != 2 && !NarakaMod.config().alwaysDisplayHerobrineScarf.getValue())
             return;
         poseStack.pushPose();
 
@@ -46,7 +47,9 @@ public class HerobrineScarfLayer extends RenderLayer<Herobrine, HerobrineModel<H
 
         RenderType waveRenderType = RenderType.entityCutout(getTextureLocation(herobrine));
         vertexConsumer = bufferSource.getBuffer(waveRenderType);
-        poseStack.translate(0.25, 0.125, 0.25);
+        ModelPart body = getParentModel().body();
+        poseStack.rotateAround(Axis.XP.rotation(body.xRot), 0, 0.3f, 0);
+        poseStack.translate(0.25 + body.x / 16, 0.125, 0.25 + body.z / 16);
         poseStack.scale(-3, 3, 3);
 
         float rotationDegree = herobrine.getScarfRotationDegree(partialTick) - NarakaMod.config().herobrineScarfDefaultRotation.getValue();
