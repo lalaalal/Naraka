@@ -33,6 +33,16 @@ public final class StunHelper {
                 Attributes.BLOCK_BREAK_SPEED,
                 NarakaAttributeModifiers.STUN_PREVENT_BLOCK_ATTACK
         );
+        NarakaAttributeModifiers.addAttributeModifier(
+                livingEntity,
+                Attributes.ENTITY_INTERACTION_RANGE,
+                NarakaAttributeModifiers.STUN_PREVENT_ENTITY_INTERACTION
+        );
+        NarakaAttributeModifiers.addAttributeModifier(
+                livingEntity,
+                Attributes.BLOCK_INTERACTION_RANGE,
+                NarakaAttributeModifiers.STUN_PREVENT_BLOCK_INTERACTION
+        );
         if (livingEntity instanceof Mob mob)
             mob.setNoAi(true);
     }
@@ -57,6 +67,16 @@ public final class StunHelper {
                 livingEntity,
                 Attributes.BLOCK_BREAK_SPEED,
                 NarakaAttributeModifiers.STUN_PREVENT_BLOCK_ATTACK
+        );
+        NarakaAttributeModifiers.removeAttributeModifier(
+                livingEntity,
+                Attributes.ENTITY_INTERACTION_RANGE,
+                NarakaAttributeModifiers.STUN_PREVENT_ENTITY_INTERACTION
+        );
+        NarakaAttributeModifiers.removeAttributeModifier(
+                livingEntity,
+                Attributes.BLOCK_INTERACTION_RANGE,
+                NarakaAttributeModifiers.STUN_PREVENT_BLOCK_INTERACTION
         );
         if (livingEntity instanceof Mob mob)
             mob.setNoAi(false);

@@ -19,6 +19,8 @@ public class NarakaAttributeModifiers {
     public static final AttributeModifier STUN_PREVENT_JUMPING = preventJumping("stun");
     public static final AttributeModifier STUN_PREVENT_BLOCK_ATTACK = preventBlockAttack("stun");
     public static final AttributeModifier STUN_PREVENT_ENTITY_ATTACK = preventEntityAttack("stun");
+    public static final AttributeModifier STUN_PREVENT_BLOCK_INTERACTION = preventBlockInteraction("stun");
+    public static final AttributeModifier STUN_PREVENT_ENTITY_INTERACTION = preventEntityInteraction("stun");
 
     public static final AttributeModifier HIBERNATE_PREVENT_MOVING = preventMoving("hibernate");
     public static final AttributeModifier WEAKNESS_PREVENT_MOVING = preventMoving("weakness");
@@ -59,6 +61,22 @@ public class NarakaAttributeModifiers {
 
     public static AttributeModifier preventEntityAttack(String identifier) {
         return new AttributeModifier(preventEntityAttackId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+    }
+
+    public static ResourceLocation preventEntityInteractionId(String identifier) {
+        return NarakaMod.location(identifier + ".prevent_entity_interaction");
+    }
+
+    public static AttributeModifier preventEntityInteraction(String identifier) {
+        return new AttributeModifier(preventEntityInteractionId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+    }
+
+    public static ResourceLocation preventBlockInteractionId(String identifier) {
+        return NarakaMod.location(identifier + ".prevent_block_interaction");
+    }
+
+    public static AttributeModifier preventBlockInteraction(String identifier) {
+        return new AttributeModifier(preventBlockInteractionId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 
     public static ResourceLocation preventEntityAttackId(String identifier) {
