@@ -3,11 +3,13 @@ package com.yummy.naraka.fabric;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.Platform;
 import com.yummy.naraka.core.registries.RegistryFactory;
+import com.yummy.naraka.core.registries.RegistryInitializer;
+import com.yummy.naraka.event.EventHandler;
 import com.yummy.naraka.fabric.init.FabricBiomeModifier;
+import com.yummy.naraka.fabric.init.FabricEventHandler;
 import com.yummy.naraka.fabric.init.FabricRegistryFactory;
 import com.yummy.naraka.fabric.init.FabricRegistryInitializer;
 import com.yummy.naraka.init.NarakaInitializer;
-import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.world.NarakaBiomes;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import net.fabricmc.api.ModInitializer;
@@ -45,9 +47,8 @@ public final class NarakaModFabric implements ModInitializer, NarakaInitializer 
     }
 
     @Override
-    public NarakaCreativeModeTabs.CreativeModeTabModifier getCreativeModeTabModifier() {
-        return (tabKey, entries) -> ItemGroupEvents.modifyEntriesEvent(tabKey)
-                .register(wrap(entries));
+    public EventHandler getEventHandler() {
+        return FabricEventHandler.INSTANCE;
     }
 
     @Override

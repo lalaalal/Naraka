@@ -1,8 +1,8 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.core.registries.LazyHolder;
+import com.yummy.naraka.core.registries.RegistryInitializer;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.init.RegistryInitializer;
 import dev.architectury.registry.level.entity.EntityAttributeRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;

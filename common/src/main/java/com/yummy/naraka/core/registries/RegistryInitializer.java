@@ -1,6 +1,6 @@
-package com.yummy.naraka.init;
+package com.yummy.naraka.core.registries;
 
-import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.init.NarakaInitializer;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import org.jetbrains.annotations.Nullable;

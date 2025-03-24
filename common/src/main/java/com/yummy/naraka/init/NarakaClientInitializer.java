@@ -3,6 +3,7 @@ package com.yummy.naraka.init;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.yummy.naraka.client.particle.ParticleFactory;
 import com.yummy.naraka.client.renderer.CustomRenderManager;
+import com.yummy.naraka.core.registries.RegistryLoadedListener;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleProvider;

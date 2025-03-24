@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Enchantment.class)
-public class EnchantmentMixin {
+public abstract class EnchantmentMixin {
     @Inject(method = "canEnchant", at = @At("HEAD"), cancellable = true)
     public void preventSoulInfusedArmorEnchanting(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         if (stack.is(NarakaItemTags.PURIFIED_SOUL_ARMOR)) {

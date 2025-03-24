@@ -3,9 +3,6 @@
   "package": "com.yummy.naraka.mixin",
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
-  "server": [
-    "server.DedicatedServerMixin"
-  ],
   "client": [
     "client.DripParticleMixin",
     "client.FogRendererMixin",
@@ -22,8 +19,10 @@
   "mixins": [
     "EnchantmentMixin",
     "FeatureMixin",
+    "LivingDeathInvoker",
     "LivingEntityMixin",
     "OverworldBiomeBuilderMixin",
+    "PlayerListMixin",
     "PlayerMixin",
     "ServerEntityMixin",
     "ServerPlayerGameModeMixin",

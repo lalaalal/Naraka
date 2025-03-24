@@ -6,8 +6,9 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryFactory;
+import com.yummy.naraka.core.registries.RegistryInitializer;
+import com.yummy.naraka.event.EventHandler;
 import com.yummy.naraka.init.NarakaInitializer;
-import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.world.NarakaBiomes;
@@ -46,6 +47,7 @@ public final class NarakaMod {
 
     public static void initialize(NarakaInitializer initializer) {
         Platform.initialize(initializer);
+        EventHandler.initialize(initializer);
         RegistryInitializer.initialize(initializer);
 
         NarakaConfig.load();
@@ -74,7 +76,7 @@ public final class NarakaMod {
         NarakaRecipeTypes.initialize();
         NarakaRecipeSerializers.initialize();
         NarakaEquipmentSets.initialize();
-        NarakaCreativeModeTabs.initialize(initializer);
+        NarakaCreativeModeTabs.initialize();
 
         NarakaMenuTypes.initialize();
 

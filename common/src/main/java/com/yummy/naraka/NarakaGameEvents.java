@@ -1,7 +1,9 @@
 package com.yummy.naraka;
 
+import com.yummy.naraka.event.EntityEvents;
+import com.yummy.naraka.event.LootEvents;
+import com.yummy.naraka.event.ServerEvents;
 import com.yummy.naraka.network.NarakaNetworks;
-import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.util.TickSchedule;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
@@ -15,7 +17,8 @@ import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
 import dev.architectury.event.CompoundEventResult;
 import dev.architectury.event.EventResult;
-import dev.architectury.event.events.common.*;
+import dev.architectury.event.events.common.InteractionEvent;
+import dev.architectury.event.events.common.PlayerEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.RegistryAccess;
@@ -47,10 +50,12 @@ import org.jetbrains.annotations.Nullable;
 
 public final class NarakaGameEvents {
     public static void initialize() {
-        LifecycleEvent.SERVER_STARTING.register(NarakaGameEvents::onServerStarting);
-        LifecycleEvent.SERVER_STARTED.register(NarakaGameEvents::onServerStarted);
-        LifecycleEvent.SERVER_LEVEL_LOAD.register(NarakaGameEvents::onWorldLoad);
-        PlayerEvent.PLAYER_JOIN.register(NarakaGameEvents::syncPlayerEntityData);
+        ServerEvents.SERVER_STARTING.register(NarakaGameEvents::onServerStarting);
+        ServerEvents.SERVER_STARTED.register(NarakaGameEvents::onServerStarted);
+        ServerEvents.SERVER_LEVEL_LOAD.register(NarakaGameEvents::onWorldLoad);
+        ServerEvents.SERVER_STOPPING.register(NarakaGameEvents::onServerStopping);
+
+        EntityEvents.PLAYER_JOIN.register(NarakaGameEvents::syncPlayerEntityData);
 
         InteractionEvent.RIGHT_CLICK_BLOCK.register(NarakaGameEvents::checkHerobrineTotemTrigger);
         InteractionEvent.RIGHT_CLICK_BLOCK.register(NarakaGameEvents::ironNuggetUse);
@@ -58,13 +63,11 @@ public final class NarakaGameEvents {
         InteractionEvent.RIGHT_CLICK_ITEM.register(NarakaGameEvents::preventItemUseDuringStun);
         PlayerEvent.ATTACK_ENTITY.register(NarakaGameEvents::preventAttackEntityDuringStun);
 
-        TickEvent.SERVER_POST.register(NarakaGameEvents::onEndTick);
+        ServerEvents.SERVER_TICK_POST.register(NarakaGameEvents::onEndTick);
 
-        EntityEvent.LIVING_DEATH.register(NarakaGameEvents::useDeathCount);
+        EntityEvents.LIVING_DEATH.register(NarakaGameEvents::useDeathCount);
 
-        EntityEvent.ADD.register(NarakaGameEvents::updateReinforcementEffect);
-
-        LootEvent.MODIFY_LOOT_TABLE.register(NarakaGameEvents::modifyLootTable);
+        LootEvents.MODIFY_LOOT_TABLE.register(NarakaGameEvents::modifyLootTable);
     }
 
     private static CompoundEventResult<ItemStack> preventItemUseDuringStun(Player player, InteractionHand interactionHand) {
@@ -73,6 +76,8 @@ public final class NarakaGameEvents {
         return CompoundEventResult.pass();
     }
 
+    // Move to mixin
+    @Deprecated
     private static EventResult preventAttackEntityDuringStun(Player player, Level level, Entity target, InteractionHand hand, @Nullable EntityHitResult result) {
         if (NarakaAttributeModifiers.hasAttributeModifier(player, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STUN_PREVENT_MOVING))
             return EventResult.interruptTrue();
@@ -83,15 +88,8 @@ public final class NarakaGameEvents {
         EntityDataHelper.syncEntityData(player);
     }
 
-    private static EventResult updateReinforcementEffect(Entity entity, Level level) {
-        if (!level.isClientSide && entity instanceof LivingEntity livingEntity)
-            NarakaItemUtils.updateAllReinforcementEffects(livingEntity);
-        return EventResult.pass();
-    }
-
-    private static EventResult useDeathCount(LivingEntity livingEntity, DamageSource source) {
-        boolean result = source.is(DamageTypes.GENERIC_KILL) || !DeathCountHelper.useDeathCount(livingEntity);
-        return EventResult.interrupt(result);
+    private static boolean useDeathCount(LivingEntity livingEntity, DamageSource source) {
+        return source.is(DamageTypes.GENERIC_KILL) || !DeathCountHelper.useDeathCount(livingEntity);
     }
 
     private static void onWorldLoad(ServerLevel level) {
@@ -111,11 +109,16 @@ public final class NarakaGameEvents {
             NarakaNetworks.initializeServer();
     }
 
+    private static void onServerStopping(MinecraftServer server) {
+        if (server.isDedicatedServer())
+            NarakaMod.config().stop();
+    }
+
     private static void onEndTick(MinecraftServer server) {
         TickSchedule.tick(server.overworld());
     }
 
-    private static void modifyLootTable(ResourceKey<LootTable> key, LootEvent.LootTableModificationContext context, boolean builtin) {
+    private static void modifyLootTable(ResourceKey<LootTable> key, LootEvents.Context context) {
         if (key.location().getPath().contains("chests")) {
             context.addPool(LootPool.lootPool()
                     .when(LootItemRandomChanceCondition.randomChance(0.01f))
@@ -125,6 +128,8 @@ public final class NarakaGameEvents {
         }
     }
 
+    // Move to mixin
+    @Deprecated
     private static EventResult boneMealUse(Player player, InteractionHand hand, BlockPos pos, Direction direction) {
         Level level = player.level();
         ItemStack stack = player.getItemInHand(hand);
@@ -135,6 +140,8 @@ public final class NarakaGameEvents {
         return EventResult.pass();
     }
 
+    // Move to mixin
+    @Deprecated
     private static EventResult ironNuggetUse(Player player, InteractionHand hand, BlockPos pos, Direction direction) {
         Level level = player.level();
         ItemStack stack = player.getItemInHand(hand);
@@ -148,6 +155,8 @@ public final class NarakaGameEvents {
         return EventResult.pass();
     }
 
+    // Move to mixin
+    @Deprecated
     private static boolean growEbony(ItemStack itemStack, Player player, Level level, BlockPos blockPos) {
         BlockState blockState = level.getBlockState(blockPos);
         if (blockState.is(NarakaBlocks.EBONY_SAPLING.get())) {
@@ -162,6 +171,8 @@ public final class NarakaGameEvents {
         return false;
     }
 
+    // Move to mixin
+    @Deprecated
     private static EventResult checkHerobrineTotemTrigger(Player player, InteractionHand hand, BlockPos pos, Direction direction) {
         Level level = player.level();
         ItemStack item = player.getItemInHand(hand);
