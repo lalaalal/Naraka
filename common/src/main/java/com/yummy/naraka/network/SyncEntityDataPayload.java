@@ -4,8 +4,6 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.EntityDataType;
-import dev.architectury.networking.NetworkManager;
-import dev.architectury.utils.Env;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.nbt.CompoundTag;
@@ -44,10 +42,8 @@ public record SyncEntityDataPayload(int entityId, HolderSet<EntityDataType<?>> e
         return TYPE;
     }
 
-    public static void handle(SyncEntityDataPayload payload, NetworkManager.PacketContext context) {
-        if (context.getEnvironment() == Env.SERVER)
-            return;
-        Player player = context.getPlayer();
+    public static void handle(SyncEntityDataPayload payload, NetworkManager.Context context) {
+        Player player = context.player();
         Entity entity = player.level().getEntity(payload.entityId);
         CompoundTag data = payload.data;
         for (Holder<EntityDataType<?>> holder : payload.entityDataTypes) {

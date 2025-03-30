@@ -11,7 +11,7 @@ public final class CreativeModeTabEvents {
     private static final Map<ResourceKey<CreativeModeTab>, Event<ModifyEntries>> EVENT_MAP = new HashMap<>();
 
     public static Event<ModifyEntries> modifyEntriesEvent(ResourceKey<CreativeModeTab> key) {
-        return EVENT_MAP.computeIfAbsent(key, EventHandler.getInstance()::createModifyTabEntries);
+        return EVENT_MAP.computeIfAbsent(key, EventHandler::createModifyTabEntries);
     }
 
     public static void modifyEntries(ResourceKey<CreativeModeTab> key, ModifyEntries modifier) {

@@ -3,6 +3,7 @@ package com.yummy.naraka.world.block;
 import com.yummy.naraka.core.registries.LazyHolder;
 import com.yummy.naraka.core.registries.RegistryInitializer;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.mixin.invoker.MangroveRootsBlockInvoker;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
@@ -170,7 +171,7 @@ public class NarakaBlocks {
     );
     public static final LazyHolder<Block, Block> EBONY_METAL_BLOCK = registerSimpleBlockWithItem("ebony_metal_block", Blocks.NETHERITE_BLOCK);
     public static final LazyHolder<Block, EbonyLeavesBlock> EBONY_LEAVES = registerBlockWithItem("ebony_leaves", EbonyLeavesBlock::new, Blocks.DARK_OAK_LEAVES);
-    public static final LazyHolder<Block, MangroveRootsBlock> EBONY_ROOTS = registerBlockWithItem("ebony_roots", MangroveRootsBlock::new, Blocks.MANGROVE_ROOTS);
+    public static final LazyHolder<Block, MangroveRootsBlock> EBONY_ROOTS = registerBlockWithItem("ebony_roots", MangroveRootsBlockInvoker::create, Blocks.MANGROVE_ROOTS);
 
     public static final LazyHolder<Block, EbonySaplingBlock> EBONY_SAPLING = registerBlockWithItem("ebony_sapling", EbonySaplingBlock::new, Blocks.DARK_OAK_SAPLING);
     public static final LazyHolder<Block, FlowerPotBlock> POTTED_EBONY_SAPLING = registerBlockWithItem("potted_ebony_sapling", properties -> new FlowerPotBlock(EBONY_SAPLING.get(), properties), Blocks.POTTED_DARK_OAK_SAPLING);

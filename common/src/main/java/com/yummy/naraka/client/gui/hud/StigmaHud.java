@@ -3,18 +3,18 @@ package com.yummy.naraka.client.gui.hud;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaSprites;
 import com.yummy.naraka.world.entity.data.*;
-import dev.architectury.event.events.client.ClientGuiEvent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 @Environment(EnvType.CLIENT)
-public class StigmaHud implements ClientGuiEvent.RenderHud {
+public class StigmaHud implements LayeredDraw.Layer {
     public static final int BACKGROUND_WIDTH = 16;
     public static final int BACKGROUND_HEIGHT = 21;
     public static final int STIGMA_SIZE = 2;
@@ -57,7 +57,7 @@ public class StigmaHud implements ClientGuiEvent.RenderHud {
     }
 
     @Override
-    public void renderHud(GuiGraphics guiGraphics, DeltaTracker tickCounter) {
+    public void render(GuiGraphics guiGraphics, DeltaTracker tickCounter) {
         Player player = Minecraft.getInstance().player;
         if (player == null)
             return;

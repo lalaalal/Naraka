@@ -3,7 +3,6 @@ package com.yummy.naraka;
 import com.yummy.naraka.event.EntityEvents;
 import com.yummy.naraka.event.LootEvents;
 import com.yummy.naraka.event.ServerEvents;
-import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.util.TickSchedule;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
@@ -61,9 +60,6 @@ public final class NarakaGameEvents {
         RegistryAccess registryAccess = server.registryAccess();
         NarakaDamageSources.initialize(registryAccess);
         NarakaEnchantments.initialize(registryAccess);
-
-        if (server.isDedicatedServer())
-            NarakaNetworks.initializeServer();
     }
 
     private static void onServerStopping(MinecraftServer server) {

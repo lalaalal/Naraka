@@ -1,19 +1,21 @@
 package com.yummy.naraka.client.gui.hud;
 
 import com.yummy.naraka.client.NarakaSprites;
-import com.yummy.naraka.world.entity.data.*;
-import dev.architectury.event.events.client.ClientGuiEvent;
+import com.yummy.naraka.world.entity.data.DeathCountHelper;
+import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import com.yummy.naraka.world.entity.data.EntityDataType;
+import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 @Environment(EnvType.CLIENT)
-public class DeathCountHud implements ClientGuiEvent.RenderHud {
+public class DeathCountHud implements LayeredDraw.Layer {
     public static final int HEART_WIDTH = 14;
     public static final int HEART_HEIGHT = 7;
     public static final int BACKGROUND_WIDTH = 75;
@@ -26,17 +28,12 @@ public class DeathCountHud implements ClientGuiEvent.RenderHud {
     public static final int HEART_START_Y = 8;
     public static final int HEART_OFFSET_BORDER = 2;
 
-    public static final int DEATH_WIDTH = 150;
-    public static final int DEATH_HEIGHT = 150;
-
     public static final int BASE_X = HEART_SIZE_SINGLE;
     public static final int BASE_Y = HEART_SIZE_SINGLE;
 
     public static final int BLINKING_TIME = 60;
-    public static final int STIGMA_DISPLAYING_TIME = 60;
 
     private int blinkTime;
-    private int stigmaDisplayTick;
 
     private static boolean isCurrentPlayer(LivingEntity livingEntity) {
         Player player = Minecraft.getInstance().player;
@@ -65,24 +62,8 @@ public class DeathCountHud implements ClientGuiEvent.RenderHud {
         }
     }
 
-    private void onStigmaConsumed(LivingEntity livingEntity, EntityDataType<Stigma> entityDataType, Stigma from, Stigma to) {
-        if (isCurrentPlayer(livingEntity)) {
-            if (from.value() == Stigma.MAX_STIGMA && to.value() == 0)
-                stigmaDisplayTick = STIGMA_DISPLAYING_TIME;
-        }
-    }
-
-    private void renderStigmaIcon(GuiGraphics guiGraphics) {
-        int x = guiGraphics.guiWidth() / 2 - DEATH_WIDTH / 2;
-        int y = guiGraphics.guiHeight() / 2 - DEATH_HEIGHT / 2;
-
-        float alpha = blinkTime / (float) BLINKING_TIME;
-        TextureAtlasSprite sprite = Minecraft.getInstance().getGuiSprites().getSprite(NarakaSprites.STIGMA_CONSUME);
-        guiGraphics.blit(x, y, 0, DEATH_WIDTH, DEATH_HEIGHT, sprite, 1, 1, 1, alpha);
-    }
-
     @Override
-    public void renderHud(GuiGraphics guiGraphics, DeltaTracker tickCounter) {
+    public void render(GuiGraphics guiGraphics, DeltaTracker tickCounter) {
         Player player = Minecraft.getInstance().player;
         if (player == null)
             return;
@@ -102,10 +83,5 @@ public class DeathCountHud implements ClientGuiEvent.RenderHud {
 
         if (blinkTime > 0)
             blinkTime--;
-
-        if (stigmaDisplayTick > 0) {
-            renderStigmaIcon(guiGraphics);
-            stigmaDisplayTick--;
-        }
     }
 }

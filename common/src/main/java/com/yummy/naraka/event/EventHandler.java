@@ -1,26 +1,16 @@
 package com.yummy.naraka.event;
 
-import com.yummy.naraka.init.NarakaInitializer;
+import com.yummy.naraka.proxy.MethodInvoker;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class EventHandler {
-    @Nullable
-    private static EventHandler INSTANCE;
-
-    public static void initialize(NarakaInitializer initializer) {
-        INSTANCE = initializer.getEventHandler();
-        INSTANCE.prepare();
+    public static void prepare() {
+        MethodInvoker.invoke(EventHandler.class, "prepare");
     }
 
-    public static EventHandler getInstance() {
-        if (INSTANCE == null)
-            throw new IllegalStateException("Event handler is not initialized");
-        return INSTANCE;
+    @SuppressWarnings("unchecked")
+    public static Event<CreativeModeTabEvents.ModifyEntries> createModifyTabEntries(ResourceKey<CreativeModeTab> key) {
+        return MethodInvoker.invoke(EventHandler.class, "createModifyTabEntries", Event.class, key);
     }
-
-    protected abstract void prepare();
-
-    public abstract Event<CreativeModeTabEvents.ModifyEntries> createModifyTabEntries(ResourceKey<CreativeModeTab> key);
 }

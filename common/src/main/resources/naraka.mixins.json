@@ -18,6 +18,7 @@
   ],
   "mixins": [
     "EnchantmentMixin",
+    "EntityTypeBuilderMixin",
     "FeatureMixin",
     "FlintAndSteelItemMixin",
     "LivingDeathInvoker",
@@ -28,6 +29,8 @@
     "ServerEntityMixin",
     "ServerPlayerGameModeMixin",
     "WanderingTraderMixin",
+    "accessor.CreativeModeTabsAccessor",
+    "invoker.MangroveRootsBlockInvoker",
     "invoker.MobEffectInvoker",
     "invoker.OverworldBiomesInvoker",
     "invoker.RootPlacerTypeInvoker"

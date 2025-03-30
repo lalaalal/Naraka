@@ -1,7 +1,6 @@
 package com.yummy.naraka.network;
 
 import com.yummy.naraka.sounds.NarakaMusics;
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.MusicManager;
 import net.minecraft.client.sounds.SoundManager;
@@ -32,16 +31,16 @@ public class NarakaClientboundEventHandler {
         return NarakaClientboundEventPacket.Event.STOP_MUSIC;
     }
 
-    public static void handleEntityEvent(NarakaClientboundEntityEventPacket packet, NetworkManager.PacketContext context) {
+    public static void handleEntityEvent(NarakaClientboundEntityEventPacket packet, NetworkManager.Context context) {
         Minecraft.getInstance().execute(() -> {
-            Level level = context.getPlayer().level();
+            Level level = context.level();
             Entity entity = level.getEntity(packet.entityId());
             if (entity != null)
                 packet.event().handle(entity);
         });
     }
 
-    public static void handleEvent(NarakaClientboundEventPacket packet, NetworkManager.PacketContext context) {
+    public static void handleEvent(NarakaClientboundEventPacket packet, NetworkManager.Context context) {
         Minecraft.getInstance().execute(() -> packet.event().handle());
     }
 

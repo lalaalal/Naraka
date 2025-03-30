@@ -4,7 +4,6 @@ import com.yummy.naraka.Platform;
 import com.yummy.naraka.core.registries.RegistryFactory;
 import com.yummy.naraka.core.registries.RegistryInitializer;
 import com.yummy.naraka.core.registries.RegistryLoadedListener;
-import com.yummy.naraka.event.EventHandler;
 import com.yummy.naraka.world.NarakaBiomes;
 
 public interface NarakaInitializer extends RegistryLoadedListener {
@@ -15,6 +14,4 @@ public interface NarakaInitializer extends RegistryLoadedListener {
     RegistryFactory getRegistryFactory();
 
     NarakaBiomes.Modifier getBiomeModifier();
-
-    EventHandler getEventHandler();
 }

@@ -3,7 +3,6 @@ package com.yummy.naraka.network;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.entity.AfterimageEntity;
-import dev.architectury.networking.NetworkManager;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -31,8 +30,8 @@ public record SyncAfterimagePayload(int entityId, Afterimage afterimage) impleme
         return TYPE;
     }
 
-    public void handle(NetworkManager.PacketContext context) {
-        Level level = context.getPlayer().level();
+    public void handle(NetworkManager.Context context) {
+        Level level = context.level();
         Entity entity = level.getEntity(entityId);
 
         if (entity instanceof AfterimageEntity afterimageEntity)

@@ -1,9 +1,9 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAnimationPayload;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -81,7 +81,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
     public void setAnimation(String name) {
         if (level() instanceof ServerLevel serverLevel) {
             SyncAnimationPayload payload = new SyncAnimationPayload(this, name);
-            NetworkManager.sendToPlayers(serverLevel.players(), payload);
+            NetworkManager.sendToClient(serverLevel.players(), payload);
         }
     }
 

@@ -2,6 +2,7 @@ package com.yummy.naraka.client;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.client.event.ClientEventHandler;
 import com.yummy.naraka.client.gui.hud.DeathCountHud;
 import com.yummy.naraka.client.gui.hud.LockedHealthHud;
 import com.yummy.naraka.client.gui.hud.StigmaHud;
@@ -27,11 +28,6 @@ import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.component.SanctuaryTracker;
-import dev.architectury.event.events.client.ClientGuiEvent;
-import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
-import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
-import dev.architectury.registry.item.ItemPropertiesRegistry;
-import dev.architectury.registry.menu.MenuRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;
@@ -41,7 +37,7 @@ import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 public final class NarakaModClient {
     public static void initialize(NarakaClientInitializer initializer) {
         NarakaModelLayers.initialize();
-        registerEntityRenderers();
+        ClientEventHandler.prepare();
         registerParticles(initializer);
         registerShaders(initializer);
 
@@ -53,29 +49,30 @@ public final class NarakaModClient {
         initializer.registerResourceReloadListener("custom_renderer", () -> NarakaBlockEntityItemRenderer.INSTANCE);
         initializer.registerResourceReloadListener("block_transparent_renderer", () -> BlockTransparentRenderer.INSTANCE);
 
-        initializer.runAfterRegistryLoaded(NarakaModClient::onRegistryLoaded);
+        initializer.runAfterRegistryLoaded(() -> onRegistryLoaded(initializer));
     }
 
-    private static void onRegistryLoaded() {
-        initializeItems();
+    private static void onRegistryLoaded(NarakaClientInitializer initializer) {
+        initializeItems(initializer);
         initializeBlocks();
 
-        registerBlockEntityRenderers();
-        registerHudRenders();
-        registerMenus();
+        registerEntityRenderers(initializer);
+        registerBlockEntityRenderers(initializer);
+        registerHudRenders(initializer);
+        registerMenus(initializer);
 
         NarakaNetworks.initializeClient();
         NarakaClientEvents.initialize();
     }
 
-    private static void initializeItems() {
+    private static void initializeItems(NarakaClientInitializer initializer) {
         CustomRenderManager.register(NarakaItems.SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
         CustomRenderManager.register(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
         CustomRenderManager.register(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get(), SpearItemRenderer.INSTANCE);
 
         CustomRenderManager.renderRainbow(NarakaItems.RAINBOW_SWORD.get());
 
-        ItemPropertiesRegistry.register(NarakaItems.SANCTUARY_COMPASS.get(), NarakaMod.location("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) -> {
+        initializer.registerItemProperties(NarakaItems.SANCTUARY_COMPASS.get(), NarakaMod.location("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) -> {
             SanctuaryTracker tracker = itemStack.get(NarakaDataComponentTypes.SANCTUARY_TRACKER.get());
             if (tracker == null)
                 return null;
@@ -101,31 +98,31 @@ public final class NarakaModClient {
         );
     }
 
-    private static void registerBlockEntityRenderers() {
-        BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.FORGING.get(), ForgingBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.SOUL_STABILIZER.get(), SoulStabilizerBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.SOUL_SMITHING.get(), SoulSmithingBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.UNSTABLE_BLOCK.get(), UnstableBlockEntityRenderer::new);
+    private static void registerBlockEntityRenderers(NarakaClientInitializer initializer) {
+        initializer.registerBlockEntity(NarakaBlockEntityTypes.FORGING, ForgingBlockEntityRenderer::new);
+        initializer.registerBlockEntity(NarakaBlockEntityTypes.SOUL_STABILIZER, SoulStabilizerBlockEntityRenderer::new);
+        initializer.registerBlockEntity(NarakaBlockEntityTypes.SOUL_SMITHING, SoulSmithingBlockEntityRenderer::new);
+        initializer.registerBlockEntity(NarakaBlockEntityTypes.UNSTABLE_BLOCK, UnstableBlockEntityRenderer::new);
     }
 
-    private static void registerEntityRenderers() {
-        EntityRendererRegistry.register(NarakaEntityTypes.HEROBRINE, HerobrineRenderer::herobrine);
-        EntityRendererRegistry.register(NarakaEntityTypes.SHADOW_HEROBRINE, HerobrineRenderer::shadow);
-        EntityRendererRegistry.register(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, SpearRenderer::new);
-        EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR, SpearRenderer::new);
-        EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, SpearRenderer::longinus);
-        EntityRendererRegistry.register(NarakaEntityTypes.STARDUST, StardustRenderer::new);
-        EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_FIREBALL, NarakaFireballRenderer::new);
+    private static void registerEntityRenderers(NarakaClientInitializer initializer) {
+        initializer.registerEntity(NarakaEntityTypes.HEROBRINE, HerobrineRenderer::herobrine);
+        initializer.registerEntity(NarakaEntityTypes.SHADOW_HEROBRINE, HerobrineRenderer::shadow);
+        initializer.registerEntity(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, SpearRenderer::new);
+        initializer.registerEntity(NarakaEntityTypes.THROWN_SPEAR, SpearRenderer::new);
+        initializer.registerEntity(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, SpearRenderer::longinus);
+        initializer.registerEntity(NarakaEntityTypes.STARDUST, StardustRenderer::new);
+        initializer.registerEntity(NarakaEntityTypes.NARAKA_FIREBALL, NarakaFireballRenderer::new);
     }
 
-    private static void registerHudRenders() {
-        ClientGuiEvent.RENDER_HUD.register(new DeathCountHud());
-        ClientGuiEvent.RENDER_HUD.register(new StigmaHud());
-        ClientGuiEvent.RENDER_HUD.register(new LockedHealthHud());
+    private static void registerHudRenders(NarakaClientInitializer initializer) {
+        initializer.registerHud(DeathCountHud::new);
+        initializer.registerHud(StigmaHud::new);
+        initializer.registerHud(LockedHealthHud::new);
     }
 
-    private static void registerMenus() {
-        MenuRegistry.registerScreenFactory(NarakaMenuTypes.SOUL_CRAFTING.get(), SoulCraftingScreen::new);
+    private static void registerMenus(NarakaClientInitializer initializer) {
+        initializer.registerScreenFactory(NarakaMenuTypes.SOUL_CRAFTING, SoulCraftingScreen::new);
     }
 
     private static void registerParticles(NarakaClientInitializer initializer) {

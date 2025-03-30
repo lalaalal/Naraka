@@ -1,6 +1,7 @@
 package com.yummy.naraka.fabric.init;
 
 import com.yummy.naraka.event.*;
+import com.yummy.naraka.proxy.MethodProxy;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -12,11 +13,10 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.ItemLike;
 
-public class FabricEventHandler extends EventHandler {
-    public static final FabricEventHandler INSTANCE = new FabricEventHandler();
-
-    @Override
-    public void prepare() {
+@SuppressWarnings("unused")
+public class FabricEventHandler {
+    @MethodProxy(EventHandler.class)
+    public static void prepare() {
         ServerLifecycleEvents.SERVER_STARTING.register(server -> ServerEvents.SERVER_STARTING.invoker().run(server));
         ServerLifecycleEvents.SERVER_STARTED.register(server -> ServerEvents.SERVER_STARTED.invoker().run(server));
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> ServerEvents.SERVER_STOPPING.invoker().run(server));
@@ -30,8 +30,8 @@ public class FabricEventHandler extends EventHandler {
         });
     }
 
-    @Override
-    public Event<CreativeModeTabEvents.ModifyEntries> createModifyTabEntries(ResourceKey<CreativeModeTab> key) {
+    @MethodProxy(EventHandler.class)
+    public static Event<CreativeModeTabEvents.ModifyEntries> createModifyTabEntries(ResourceKey<CreativeModeTab> key) {
         return new ModifyTabEntriesEvent(key);
     }
 

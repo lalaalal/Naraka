@@ -1,9 +1,10 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.LazyHolder;
 import com.yummy.naraka.core.registries.RegistryInitializer;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import dev.architectury.registry.level.entity.EntityAttributeRegistry;
+import com.yummy.naraka.init.EntityAttributeRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -64,7 +65,7 @@ public class NarakaEntityTypes {
     );
 
     private static <T extends Entity> LazyHolder<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {
-        return RegistryProxy.register(Registries.ENTITY_TYPE, name, () -> builder.build(null));
+        return RegistryProxy.register(Registries.ENTITY_TYPE, name, () -> builder.build(NarakaMod.MOD_ID + ":" + name));
     }
 
     public static void initialize() {

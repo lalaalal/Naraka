@@ -3,6 +3,7 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.network.NarakaClientboundEventHandler;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
+import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAfterimagePayload;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
@@ -16,7 +17,6 @@ import com.yummy.naraka.world.entity.data.LockedHealthHelper;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -126,7 +126,7 @@ public class Herobrine extends AbstractHerobrine {
     private void updateMusic(int prevPhase, int currentPhase) {
         NarakaClientboundEventPacket.Event event = NarakaClientboundEventHandler.musicEventByPhase(currentPhase);
         CustomPacketPayload packet = new NarakaClientboundEventPacket(event);
-        NetworkManager.sendToPlayers(bossEvent.getPlayers(), packet);
+        NetworkManager.sendToClient(bossEvent.getPlayers(), packet);
     }
 
     private void updateUsingSkills(int prevPhase, int currentPhase) {
@@ -204,7 +204,7 @@ public class Herobrine extends AbstractHerobrine {
     public void addAfterimage(Afterimage afterimage) {
         if (!level().isClientSide) {
             SyncAfterimagePayload payload = new SyncAfterimagePayload(this, afterimage);
-            NetworkManager.sendToPlayers(bossEvent.getPlayers(), payload);
+            NetworkManager.sendToClient(bossEvent.getPlayers(), payload);
         }
         this.afterimages.add(afterimage);
     }
@@ -329,14 +329,14 @@ public class Herobrine extends AbstractHerobrine {
         bossEvent.addPlayer(serverPlayer);
         NarakaClientboundEventPacket.Event event = NarakaClientboundEventHandler.musicEventByPhase(getPhase());
         CustomPacketPayload packet = new NarakaClientboundEventPacket(event);
-        NetworkManager.sendToPlayer(serverPlayer, packet);
+        NetworkManager.sendToClient(serverPlayer, packet);
     }
 
     @Override
     public void stopSeenByPlayer(ServerPlayer serverPlayer) {
         bossEvent.removePlayer(serverPlayer);
         CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.STOP_MUSIC);
-        NetworkManager.sendToPlayer(serverPlayer, packet);
+        NetworkManager.sendToClient(serverPlayer, packet);
     }
 
     @Override

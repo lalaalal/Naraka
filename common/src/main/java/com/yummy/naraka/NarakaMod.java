@@ -47,7 +47,7 @@ public final class NarakaMod {
 
     public static void initialize(NarakaInitializer initializer) {
         Platform.initialize(initializer);
-        EventHandler.initialize(initializer);
+        EventHandler.prepare();
         RegistryInitializer.initialize(initializer);
 
         NarakaConfig.load();
