@@ -3,10 +3,11 @@ package com.yummy.naraka.world.item;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.Platform;
 import com.yummy.naraka.core.registries.LazyHolder;
+import com.yummy.naraka.core.registries.RegistryInitializer;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.data.lang.LanguageKey;
-import com.yummy.naraka.init.NarakaInitializer;
-import com.yummy.naraka.init.RegistryInitializer;
+import com.yummy.naraka.event.CreativeModeTabEvents;
+import com.yummy.naraka.mixin.accessor.CreativeModeTabsAccessor;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
@@ -49,13 +50,12 @@ public class NarakaCreativeModeTabs {
         return new LazyHolder<>(BuiltInRegistries.CREATIVE_MODE_TAB, NarakaMod.location(name));
     }
 
-    public static void initialize(NarakaInitializer initializer) {
-        CreativeModeTabModifier modifier = initializer.getCreativeModeTabModifier();
-        modifier.modify(CreativeModeTabs.BUILDING_BLOCKS, NarakaCreativeModeTabs::modifyBuildingBlocksTab);
-        modifier.modify(CreativeModeTabs.NATURAL_BLOCKS, NarakaCreativeModeTabs::modifyNaturalBlocksTab);
-        modifier.modify(CreativeModeTabs.FOOD_AND_DRINKS, NarakaCreativeModeTabs::modifyFoodAndDrinksTab);
-        modifier.modify(CreativeModeTabs.INGREDIENTS, NarakaCreativeModeTabs::modifyIngredientsTab);
-        modifier.modify(CreativeModeTabs.SPAWN_EGGS, NarakaCreativeModeTabs::modifySpawnEggsTab);
+    public static void initialize() {
+        CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.buildingBlocks(), NarakaCreativeModeTabs::modifyBuildingBlocksTab);
+        CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.naturalBlocks(), NarakaCreativeModeTabs::modifyNaturalBlocksTab);
+        CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.foodAndDrinks(), NarakaCreativeModeTabs::modifyFoodAndDrinksTab);
+        CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.ingredients(), NarakaCreativeModeTabs::modifyIngredientsTab);
+        CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.spawnEggs(), NarakaCreativeModeTabs::modifySpawnEggsTab);
 
         RegistryInitializer.get(Registries.CREATIVE_MODE_TAB)
                 .onRegistrationFinished();

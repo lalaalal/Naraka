@@ -2,7 +2,6 @@ package com.yummy.naraka.network;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.SkillUsingMob;
-import dev.architectury.networking.NetworkManager;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -31,8 +30,8 @@ public record SyncAnimationPayload(int entityId, String animationName) implement
         return TYPE;
     }
 
-    public void handle(NetworkManager.PacketContext context) {
-        Player player = context.getPlayer();
+    public void handle(NetworkManager.Context context) {
+        Player player = context.player();
         Level level = player.level();
         Entity entity = level.getEntity(entityId);
         if (entity instanceof SkillUsingMob mob)

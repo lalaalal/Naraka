@@ -3,11 +3,14 @@ package com.yummy.naraka.client.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.world.entity.NarakaFireball;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
+@Environment(EnvType.CLIENT)
 public class NarakaFireballModel extends EntityModel<NarakaFireball> {
     private final ModelPart root;
 

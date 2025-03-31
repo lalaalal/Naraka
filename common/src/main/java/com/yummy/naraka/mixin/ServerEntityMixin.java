@@ -1,10 +1,10 @@
 package com.yummy.naraka.mixin;
 
 import com.yummy.naraka.core.registries.NarakaRegistries;
+import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncEntityDataPayload;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.EntityDataType;
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.HolderSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerEntity;
@@ -36,7 +36,7 @@ public abstract class ServerEntityMixin {
             );
             CompoundTag data = new CompoundTag();
             EntityDataHelper.saveEntityData(livingEntity, data);
-            NetworkManager.sendToPlayer(serverPlayer, new SyncEntityDataPayload(livingEntity, entityDataTypes, data));
+            NetworkManager.sendToClient(serverPlayer, new SyncEntityDataPayload(livingEntity, entityDataTypes, data));
         }
     }
 }

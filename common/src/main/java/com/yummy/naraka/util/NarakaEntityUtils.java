@@ -2,7 +2,9 @@ package com.yummy.naraka.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,19 +23,32 @@ public class NarakaEntityUtils {
     private static final Map<UUID, Entity> CACHED_ENTITIES = new HashMap<>();
 
     @Nullable
-    private static Entity findEntityBuUUID(ServerLevel serverLevel, UUID uuid) {
+    private static Entity findEntityByUUID(ServerLevel serverLevel, UUID uuid) {
         if (CACHED_ENTITIES.containsKey(uuid)) {
             Entity entity = CACHED_ENTITIES.get(uuid);
             if (!entity.isRemoved())
                 return entity;
             CACHED_ENTITIES.remove(uuid);
         }
-        return serverLevel.getEntity(uuid);
+        Entity entity = serverLevel.getEntity(uuid);
+        if (entity != null)
+            return entity;
+        return findEntityFromAllLevels(serverLevel.getServer(), uuid);
+    }
+
+    @Nullable
+    private static Entity findEntityFromAllLevels(MinecraftServer server, UUID uuid) {
+        Entity entity;
+        for (ServerLevel level : server.getAllLevels()) {
+            if ((entity = level.getEntity(uuid)) != null)
+                return entity;
+        }
+        return null;
     }
 
     @Nullable
     public static <T> T findEntityByUUID(ServerLevel serverLevel, UUID uuid, Class<T> type) {
-        Entity entity = findEntityBuUUID(serverLevel, uuid);
+        Entity entity = findEntityByUUID(serverLevel, uuid);
         if (entity != null)
             CACHED_ENTITIES.put(uuid, entity);
         if (type.isInstance(entity))
@@ -71,7 +86,8 @@ public class NarakaEntityUtils {
             player.stopUsingItem();
             player.level().broadcastEntityEvent(livingEntity, (byte) 30);
 
-            ItemStack usedItem = player.getUseItem();
+            InteractionHand hand = player.getUsedItemHand();
+            ItemStack usedItem = player.getItemInHand(hand);
             EquipmentSlot slot = player.getEquipmentSlotForItem(usedItem);
             usedItem.hurtAndBreak(damage, player, slot);
 

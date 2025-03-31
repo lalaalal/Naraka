@@ -3,9 +3,6 @@
   "package": "com.yummy.naraka.mixin",
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
-  "server": [
-    "server.DedicatedServerMixin"
-  ],
   "client": [
     "client.DripParticleMixin",
     "client.FogRendererMixin",
@@ -21,13 +18,19 @@
   ],
   "mixins": [
     "EnchantmentMixin",
+    "EntityTypeBuilderMixin",
     "FeatureMixin",
+    "FlintAndSteelItemMixin",
+    "LivingDeathInvoker",
     "LivingEntityMixin",
     "OverworldBiomeBuilderMixin",
+    "PlayerListMixin",
     "PlayerMixin",
     "ServerEntityMixin",
     "ServerPlayerGameModeMixin",
     "WanderingTraderMixin",
+    "accessor.CreativeModeTabsAccessor",
+    "invoker.MangroveRootsBlockInvoker",
     "invoker.MobEffectInvoker",
     "invoker.OverworldBiomesInvoker",
     "invoker.RootPlacerTypeInvoker"

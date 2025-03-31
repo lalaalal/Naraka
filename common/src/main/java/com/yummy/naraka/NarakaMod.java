@@ -1,11 +1,14 @@
 package com.yummy.naraka;
 
+import com.mojang.logging.LogUtils;
 import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryFactory;
+import com.yummy.naraka.core.registries.RegistryInitializer;
+import com.yummy.naraka.event.EventHandler;
 import com.yummy.naraka.init.NarakaInitializer;
-import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.world.NarakaBiomes;
@@ -34,14 +37,18 @@ import com.yummy.naraka.world.structure.piece.NarakaStructurePieceTypes;
 import com.yummy.naraka.world.structure.placement.NarakaStructurePlacementTypes;
 import com.yummy.naraka.world.structure.protection.NarakaProtectionPredicates;
 import net.minecraft.resources.ResourceLocation;
+import org.slf4j.Logger;
 
 public final class NarakaMod {
     public static final String MOD_ID = "naraka";
     public static boolean isDataGeneration = false;
     public static boolean isRegistryLoaded = false;
+    public static boolean isModLoaded = false;
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public static void initialize(NarakaInitializer initializer) {
         Platform.initialize(initializer);
+        EventHandler.prepare();
         RegistryInitializer.initialize(initializer);
 
         NarakaConfig.load();
@@ -70,7 +77,7 @@ public final class NarakaMod {
         NarakaRecipeTypes.initialize();
         NarakaRecipeSerializers.initialize();
         NarakaEquipmentSets.initialize();
-        NarakaCreativeModeTabs.initialize(initializer);
+        NarakaCreativeModeTabs.initialize();
 
         NarakaMenuTypes.initialize();
 

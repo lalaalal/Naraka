@@ -9,6 +9,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class NarakaUtils {
@@ -108,5 +110,24 @@ public class NarakaUtils {
 
     public static double log(double base, double value) {
         return Math.log(value) / Math.log(base);
+    }
+
+    public static <T, U> void iterate(List<T> list1, List<U> list2, BiConsumer<T, U> consumer) {
+        if (list1.size() != list2.size())
+            throw new IllegalArgumentException("Length of array1, array2 does not match");
+        for (int index = 0; index < list1.size(); index++)
+            consumer.accept(list1.get(index), list2.get(index));
+    }
+
+    public static <T, U> void iterate(List<T> list1, List<U> list2, BiConsumer<T, U> consumer, boolean reversed) {
+        if (reversed)
+            iterate(list1.reversed(), list2.reversed(), consumer);
+        else
+            iterate(list1, list2, consumer);
+    }
+
+    public static Vec3 projection(Vec3 target, Vec3 base) {
+        base = base.normalize();
+        return base.scale(target.dot(base) / base.length());
     }
 }

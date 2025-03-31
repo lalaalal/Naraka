@@ -49,6 +49,12 @@ public class DeathCountHelper {
         EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT.get(), NOT_APPLIED);
     }
 
+    /**
+     * Use death count
+     *
+     * @param livingEntity Entity using death count
+     * @return True if entity should be alive
+     */
     public static boolean useDeathCount(LivingEntity livingEntity) {
         int deathCount = get(livingEntity);
         if (deathCount > 1) {

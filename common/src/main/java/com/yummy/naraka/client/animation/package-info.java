@@ -2,7 +2,7 @@
 @FieldsAreNonnullByDefault
 @ParametersAreNonnullByDefault
 
-package com.yummy.naraka.mixin.server;
+package com.yummy.naraka.client.animation;
 
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;

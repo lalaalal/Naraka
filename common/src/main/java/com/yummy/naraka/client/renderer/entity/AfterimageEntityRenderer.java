@@ -84,7 +84,7 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
     protected Color getAfterimageColor(Afterimage afterimage, float partialTicks) {
         int alpha = afterimage.getAlpha(partialTicks);
-        return Color.of(NarakaMod.config().afterimageColor.getValue()).withAlpha(alpha);
+        return NarakaMod.config().afterimageColor.getValue().withAlpha(alpha);
     }
 
     protected abstract ResourceLocation getAfterimageTexture(T entity);

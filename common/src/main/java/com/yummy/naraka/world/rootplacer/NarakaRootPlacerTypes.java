@@ -2,8 +2,8 @@ package com.yummy.naraka.world.rootplacer;
 
 import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.core.registries.LazyHolder;
+import com.yummy.naraka.core.registries.RegistryInitializer;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.init.RegistryInitializer;
 import com.yummy.naraka.mixin.invoker.RootPlacerTypeInvoker;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.rootplacers.RootPlacer;

@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.NarakaItems;
@@ -118,7 +119,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
             Vec3 movingVector = getDeltaMovement().normalize();
             if (movingVector.equals(Vec3.ZERO))
                 return;
-            Vec3 projectionVector = movingVector.scale(targetVector.dot(movingVector) / movingVector.length());
+            Vec3 projectionVector = NarakaUtils.projection(targetVector, movingVector);
             Vec3 tracingVector = targetVector.subtract(projectionVector);
             double tracingVectorLength = tracingVector.length();
 

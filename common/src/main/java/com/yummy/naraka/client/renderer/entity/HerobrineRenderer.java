@@ -5,11 +5,13 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.layer.HerobrineEyeLayer;
+import com.yummy.naraka.client.layer.HerobrineScarfLayer;
 import com.yummy.naraka.client.layer.ShadowHerobrineArmorLayer;
 import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Afterimage;
+import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -24,14 +26,17 @@ import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
 public class HerobrineRenderer<T extends AbstractHerobrine> extends AfterimageEntityRenderer<T, HerobrineModel<T>> {
-    public HerobrineRenderer(EntityRendererProvider.Context context) {
-        this(context, NarakaModelLayers.HEROBRINE);
+    public static HerobrineRenderer<Herobrine> herobrine(EntityRendererProvider.Context context) {
+        return Util.make(
+                new HerobrineRenderer<>(context, NarakaModelLayers.HEROBRINE),
+                renderer -> renderer.addLayer(new HerobrineScarfLayer(renderer, context))
+        );
     }
 
     public static HerobrineRenderer<ShadowHerobrine> shadow(EntityRendererProvider.Context context) {
         return Util.make(
                 new HerobrineRenderer<>(context, NarakaModelLayers.HEROBRINE),
-                renderer -> renderer.addLayer(new ShadowHerobrineArmorLayer(renderer))
+                renderer -> renderer.addLayer(new ShadowHerobrineArmorLayer(renderer, context))
         );
     }
 
@@ -47,9 +52,8 @@ public class HerobrineRenderer<T extends AbstractHerobrine> extends AfterimageEn
 
     @Override
     public void render(T herobrine, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
-        if (herobrine.isShadow) {
+        if (herobrine.isShadow)
             model.renderShadow();
-        }
         super.render(herobrine, entityYaw, partialTicks, poseStack, buffer, packedLight);
     }
 

@@ -3,6 +3,7 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.network.NarakaClientboundEventHandler;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
+import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAfterimagePayload;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
@@ -16,12 +17,15 @@ import com.yummy.naraka.world.entity.data.LockedHealthHelper;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -46,6 +50,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class Herobrine extends AbstractHerobrine {
+    protected static final EntityDataAccessor<Float> SCARF_ROTATION_DEGREE = SynchedEntityData.defineId(Herobrine.class, EntityDataSerializers.FLOAT);
     private static final float[] HEALTH_BY_PHASE = {106, 210, 350};
 
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
@@ -81,10 +86,14 @@ public class Herobrine extends AbstractHerobrine {
     private int hurtCount = 0;
 
     private boolean hibernateMode = false;
-    private int hibernateModeTickCount = 0;
 
     private int accumulatedDamageTickCount;
     private float accumulatedHurtDamage;
+
+    private @Nullable BlockPos spawnPosition;
+
+    private float prevScarfRotation = 0;
+    private final List<Float> scarfWaveSpeedList = new ArrayList<>();
 
     public Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
         super(entityType, level, false);
@@ -95,6 +104,8 @@ public class Herobrine extends AbstractHerobrine {
         phaseManager.addPhaseChangeListener(this::updateUsingSkills);
 
         skillManager.enableOnly(PHASE_1_SKILLS);
+        for (int i = 0; i < NarakaMod.config().herobrineScarfPartitionNumber.getValue(); i++)
+            scarfWaveSpeedList.add(1f);
     }
 
     public Herobrine(Level level, Vec3 pos) {
@@ -102,10 +113,20 @@ public class Herobrine extends AbstractHerobrine {
         setPos(pos);
     }
 
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SCARF_ROTATION_DEGREE, 0f);
+    }
+
+    public void setSpawnPosition(BlockPos pos) {
+        this.spawnPosition = pos;
+    }
+
     private void updateMusic(int prevPhase, int currentPhase) {
         NarakaClientboundEventPacket.Event event = NarakaClientboundEventHandler.musicEventByPhase(currentPhase);
         CustomPacketPayload packet = new NarakaClientboundEventPacket(event);
-        NetworkManager.sendToPlayers(bossEvent.getPlayers(), packet);
+        NetworkManager.sendToClient(bossEvent.getPlayers(), packet);
     }
 
     private void updateUsingSkills(int prevPhase, int currentPhase) {
@@ -181,9 +202,9 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void addAfterimage(Afterimage afterimage) {
-        if (level() instanceof ServerLevel serverLevel) {
+        if (!level().isClientSide) {
             SyncAfterimagePayload payload = new SyncAfterimagePayload(this, afterimage);
-            NetworkManager.sendToPlayers(serverLevel.players(), payload);
+            NetworkManager.sendToClient(bossEvent.getPlayers(), payload);
         }
         this.afterimages.add(afterimage);
     }
@@ -197,11 +218,55 @@ public class Herobrine extends AbstractHerobrine {
     public void tick() {
         super.tick();
         afterimages.removeIf(Afterimage::tick);
+        prevScarfRotation = entityData.get(SCARF_ROTATION_DEGREE);
+
+        updateScarfWaveSpeeds();
+    }
+
+    public float getScarfRotationDegree(float partialTick) {
+        return Mth.lerp(partialTick, prevScarfRotation, entityData.get(SCARF_ROTATION_DEGREE));
+    }
+
+    public List<Float> getScarfWaveSpeedList() {
+        return scarfWaveSpeedList;
+    }
+
+    private void updateScarfWaveSpeeds() {
+        int partitionNumber = NarakaMod.config().herobrineScarfPartitionNumber.getValue();
+        if (scarfWaveSpeedList.size() < partitionNumber) {
+            for (int i = 0; i < partitionNumber - scarfWaveSpeedList.size(); i++)
+                scarfWaveSpeedList.add(scarfWaveSpeedList.getLast());
+        }
+        if (tickCount % 10 == 0) {
+            float maxRotation = NarakaMod.config().herobrineScarfDefaultRotation.getValue();
+            float speed = Mth.lerp(prevScarfRotation / maxRotation, 1, 3);
+            scarfWaveSpeedList.addFirst(speed);
+            scarfWaveSpeedList.removeLast();
+        } else {
+            scarfWaveSpeedList.addFirst(scarfWaveSpeedList.getFirst());
+            scarfWaveSpeedList.removeLast();
+        }
+    }
+
+    private void updateScarfRotation() {
+        float scarfRotationDegree = entityData.get(SCARF_ROTATION_DEGREE);
+        Vec3 delta = getDeltaMovement();
+        float z = Mth.sin(getYRot());
+        float x = Mth.cos(getYRot());
+        Vec3 projection = NarakaUtils.projection(delta, new Vec3(x, 0, z));
+        float targetRotation = (float) projection.length() * 100 * 10;
+        if (scarfRotationDegree < targetRotation)
+            scarfRotationDegree += 5;
+        if (scarfRotationDegree > targetRotation)
+            scarfRotationDegree -= 3;
+        float maxRotation = NarakaMod.config().herobrineScarfDefaultRotation.getValue();
+        entityData.set(SCARF_ROTATION_DEGREE, Mth.clamp(scarfRotationDegree, 0, maxRotation));
     }
 
     @Override
     protected void customServerAiStep() {
         updateAccumulatedDamage();
+        updateScarfRotation();
 
         tryAvoidProjectile();
         collectStigma();
@@ -218,13 +283,14 @@ public class Herobrine extends AbstractHerobrine {
         accumulatedDamageTickCount += 1;
     }
 
-
     private void collectStigma() {
         final int waitingTick = NarakaMod.config().herobrineTakingStigmaTick.getValue();
         if (level() instanceof ServerLevel serverLevel) {
             watchingEntities.removeIf(uuid -> {
                 LivingEntity entity = NarakaEntityUtils.findEntityByUUID(serverLevel, uuid, LivingEntity.class);
-                if (entity == null || entity.isRemoved()) {
+                if (entity == null)
+                    return false;
+                if (entity.isDeadOrDying()) {
                     stigmatizedEntities.remove(uuid);
                     return true;
                 }
@@ -263,14 +329,14 @@ public class Herobrine extends AbstractHerobrine {
         bossEvent.addPlayer(serverPlayer);
         NarakaClientboundEventPacket.Event event = NarakaClientboundEventHandler.musicEventByPhase(getPhase());
         CustomPacketPayload packet = new NarakaClientboundEventPacket(event);
-        NetworkManager.sendToPlayer(serverPlayer, packet);
+        NetworkManager.sendToClient(serverPlayer, packet);
     }
 
     @Override
     public void stopSeenByPlayer(ServerPlayer serverPlayer) {
         bossEvent.removePlayer(serverPlayer);
         CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.STOP_MUSIC);
-        NetworkManager.sendToPlayer(serverPlayer, packet);
+        NetworkManager.sendToClient(serverPlayer, packet);
     }
 
     @Override
@@ -284,8 +350,8 @@ public class Herobrine extends AbstractHerobrine {
 
         float actualDamage = getActualDamage(source, damage);
         updateHurtDamageLimit(actualDamage);
-        actualDamage = Math.min(actualDamage, hurtDamageLimit);
-        if (updateHibernateMode(source, getActualDamage(source, actualDamage)))
+        float limitedDamage = Math.min(damage, hurtDamageLimit);
+        if (updateHibernateMode(source, getActualDamage(source, limitedDamage)))
             return true;
 
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
@@ -294,7 +360,7 @@ public class Herobrine extends AbstractHerobrine {
             skillManager.setCurrentSkillIfAbsence(blockingSkill);
             return false;
         }
-        return super.hurt(source, Math.min(hurtDamageLimit, damage));
+        return super.hurt(source, limitedDamage);
     }
 
     @Override
@@ -306,6 +372,8 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void switchWithShadowHerobrine() {
+        if (isDeadOrDying())
+            return;
         accumulatedHurtDamage = 0;
         accumulatedDamageTickCount = 0;
         getEntities(shadowHerobrines, ShadowHerobrine.class)
@@ -349,7 +417,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private double correctRatio(double ratio) {
-        final double scale = NarakaMod.config().herobrineHurtLimitDecreaseRatioModifier.getValue();
+        final double scale = NarakaMod.config().herobrineHurtLimitCalculationRatioModifier.getValue();
         if (ratio > 5)
             ratio = NarakaUtils.log(4, ratio - 4) + 5;
         return Math.max(ratio * scale, 1.5);
@@ -372,8 +440,6 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void updateHurtDamageLimit(float damage) {
-        if (level().isClientSide)
-            return;
         if (phaseManager.getCurrentPhase() < 3 && hurtDamageLimit > 1) {
             averageHurtDamage = calculateAverageHurtDamage(damage);
 
@@ -389,10 +455,17 @@ public class Herobrine extends AbstractHerobrine {
         }
     }
 
+    public boolean isHibernateMode() {
+        return hibernateMode;
+    }
+
     private void startHibernateMode() {
+        if (spawnPosition != null)
+            moveTo(spawnPosition.south(54), 0, 0);
         hibernateMode = true;
+        skillManager.interrupt();
         skillManager.enableOnly(HIBERNATED_MODE_SKILL_BY_PHASE.get(getPhase()));
-        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
+        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
     }
 
     private void stopHibernateMode() {
@@ -401,7 +474,7 @@ public class Herobrine extends AbstractHerobrine {
         hibernateMode = false;
         hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
         skillManager.enableOnly(SKILLS_BY_PHASE.get(getPhase()));
-        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PREVENT_MOVING);
+        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
 
         setHealth(getHealth() - 1);
     }
@@ -432,8 +505,6 @@ public class Herobrine extends AbstractHerobrine {
         if (getPhase() == 1 && hibernateMode && damage >= 66 && target.isAlive()) {
             stopHibernateMode();
             startWeakness();
-            if (phaseManager.getCurrentPhaseHealth() == 1)
-                setHealth(getHealth() - 1);
         }
     }
 
@@ -455,6 +526,11 @@ public class Herobrine extends AbstractHerobrine {
         for (ShadowHerobrine shadowHerobrine : getEntities(shadowHerobrines, ShadowHerobrine.class))
             shadowHerobrine.kill();
         super.die(damageSource);
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
     }
 
     @Override
@@ -483,7 +559,8 @@ public class Herobrine extends AbstractHerobrine {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("HibernateMode", hibernateMode);
-        compound.putInt("HibernateModeTickCount", hibernateModeTickCount);
+        if (spawnPosition != null)
+            compound.put("SpawnPosition", NbtUtils.writeBlockPos(spawnPosition));
         NarakaNbtUtils.writeCollection(compound, "StigmatizedEntities", stigmatizedEntities, this::writeUUID, registryAccess());
         NarakaNbtUtils.writeCollection(compound, "WatchingEntities", watchingEntities, this::writeUUID, registryAccess());
         NarakaNbtUtils.writeCollection(compound, "ShadowHerobrines", shadowHerobrines, this::writeUUID, registryAccess());
@@ -498,8 +575,7 @@ public class Herobrine extends AbstractHerobrine {
         super.readAdditionalSaveData(compound);
         if (compound.contains("HibernatedMode"))
             hibernateMode = compound.getBoolean("HibernatedMode");
-        if (compound.contains("HibernateModeTickCount"))
-            hibernateModeTickCount = compound.getInt("HibernateModeTickCount");
+        NbtUtils.readBlockPos(compound, "SpawnPosition").ifPresent(pos -> spawnPosition = pos);
         NarakaNbtUtils.readCollection(compound, "StigmatizedEntities", () -> stigmatizedEntities, this::readUUID, registryAccess());
         NarakaNbtUtils.readCollection(compound, "WatchingEntities", () -> watchingEntities, this::readUUID, registryAccess());
         NarakaNbtUtils.readCollection(compound, "ShadowHerobrines", () -> shadowHerobrines, this::readUUID, registryAccess());

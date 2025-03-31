@@ -5,23 +5,26 @@ import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
-import dev.architectury.event.events.client.ClientGuiEvent;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 
-public class LockedHealthHud implements ClientGuiEvent.RenderHud {
+@Environment(EnvType.CLIENT)
+public class LockedHealthHud implements LayeredDraw.Layer {
     public static final int HEARTS_PER_LINE = 10;
     public static final int HEART_WIDTH = 8;
     public static final int HEART_HEIGHT = 9;
 
     @Override
-    public void renderHud(GuiGraphics graphics, DeltaTracker deltaTracker) {
+    public void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
         Player player = Minecraft.getInstance().player;
         if (player == null || !NarakaEntityUtils.isDamageablePlayer(player))
             return;

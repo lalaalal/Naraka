@@ -1,14 +1,11 @@
 package com.yummy.naraka.client;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.client.model.HerobrineModel;
-import com.yummy.naraka.client.model.NarakaFireballModel;
-import com.yummy.naraka.client.model.SpearModel;
-import com.yummy.naraka.client.model.SpearOfLonginusModel;
+import com.yummy.naraka.client.init.ModelLayerRegistry;
+import com.yummy.naraka.client.model.*;
 import com.yummy.naraka.client.renderer.blockentity.ForgingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulStabilizerBlockEntityRenderer;
-import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -16,6 +13,8 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 @Environment(EnvType.CLIENT)
 public final class NarakaModelLayers {
     public static final ModelLayerLocation HEROBRINE = location("herobrine");
+    public static final ModelLayerLocation HEROBRINE_SCARF = location("herobrine_scarf");
+    public static final ModelLayerLocation SHADOW_HEROBRINE_ARMOR = location("shadow_herobrine_armor");
     public static final ModelLayerLocation SPEAR = location("spear");
     public static final ModelLayerLocation SPEAR_OF_LONGINUS = location("spear_of_longinus");
 
@@ -31,15 +30,18 @@ public final class NarakaModelLayers {
     }
 
     public static void initialize() {
-        EntityModelLayerRegistry.register(NarakaModelLayers.HEROBRINE, HerobrineModel::createBodyLayer);
-        EntityModelLayerRegistry.register(NarakaModelLayers.SPEAR, SpearModel::createBodyLayer);
-        EntityModelLayerRegistry.register(NarakaModelLayers.SPEAR_OF_LONGINUS, SpearOfLonginusModel::createBodyLayer);
+        ModelLayerRegistry.register(NarakaModelLayers.HEROBRINE, HerobrineModel::createForHerobrine);
+        ModelLayerRegistry.register(NarakaModelLayers.HEROBRINE_SCARF, HerobrineScarfModel::createBodyLayer);
+        ModelLayerRegistry.register(NarakaModelLayers.SHADOW_HEROBRINE_ARMOR, HerobrineModel::createForShadowArmor);
 
-        EntityModelLayerRegistry.register(NarakaModelLayers.NARAKA_FIREBALL, NarakaFireballModel::createBodyLayer);
+        ModelLayerRegistry.register(NarakaModelLayers.SPEAR, SpearModel::createBodyLayer);
+        ModelLayerRegistry.register(NarakaModelLayers.SPEAR_OF_LONGINUS, SpearOfLonginusModel::createBodyLayer);
 
-        EntityModelLayerRegistry.register(NarakaModelLayers.FORGING_BLOCK, ForgingBlockEntityRenderer::createBodyLayer);
-        EntityModelLayerRegistry.register(NarakaModelLayers.SOUL_SMITHING_BLOCK, SoulSmithingBlockEntityRenderer::createMainLayer);
-        EntityModelLayerRegistry.register(NarakaModelLayers.SOUL_STABILIZER, SoulStabilizerBlockEntityRenderer::createBodyLayer);
-        EntityModelLayerRegistry.register(NarakaModelLayers.TRIM_TEMPLATE, SoulSmithingBlockEntityRenderer::createTrimTemplateLayer);
+        ModelLayerRegistry.register(NarakaModelLayers.NARAKA_FIREBALL, NarakaFireballModel::createBodyLayer);
+
+        ModelLayerRegistry.register(NarakaModelLayers.FORGING_BLOCK, ForgingBlockEntityRenderer::createBodyLayer);
+        ModelLayerRegistry.register(NarakaModelLayers.SOUL_SMITHING_BLOCK, SoulSmithingBlockEntityRenderer::createMainLayer);
+        ModelLayerRegistry.register(NarakaModelLayers.SOUL_STABILIZER, SoulStabilizerBlockEntityRenderer::createBodyLayer);
+        ModelLayerRegistry.register(NarakaModelLayers.TRIM_TEMPLATE, SoulSmithingBlockEntityRenderer::createTrimTemplateLayer);
     }
 }

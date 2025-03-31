@@ -1,10 +1,10 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAnimationPayload;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
-import dev.architectury.networking.NetworkManager;
-import net.minecraft.client.animation.AnimationDefinition;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,7 +24,7 @@ import java.util.function.Function;
 public abstract class SkillUsingMob extends PathfinderMob {
     protected final SkillManager skillManager = new SkillManager(random);
     protected final Map<String, AnimationController> animationStates = new HashMap<>();
-    protected final Map<AnimationState, AnimationDefinition> animationDefinitions = new HashMap<>();
+    protected final Map<AnimationState, ResourceLocation> animationDefinitions = new HashMap<>();
 
     protected SkillUsingMob(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -37,13 +37,13 @@ public abstract class SkillUsingMob extends PathfinderMob {
         return skillManager.getCurrentSkill() != null;
     }
 
-    protected AnimationState animationState(AnimationDefinition animation) {
+    protected AnimationState animationState(ResourceLocation animation) {
         AnimationState animationState = new AnimationState();
         animationDefinitions.put(animationState, animation);
         return animationState;
     }
 
-    public void forEachAnimations(BiConsumer<AnimationState, AnimationDefinition> consumer) {
+    public void forEachAnimations(BiConsumer<AnimationState, ResourceLocation> consumer) {
         animationDefinitions.forEach(consumer);
     }
 
@@ -81,7 +81,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
     public void setAnimation(String name) {
         if (level() instanceof ServerLevel serverLevel) {
             SyncAnimationPayload payload = new SyncAnimationPayload(this, name);
-            NetworkManager.sendToPlayers(serverLevel.players(), payload);
+            NetworkManager.sendToClient(serverLevel.players(), payload);
         }
     }
 
@@ -103,7 +103,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
         skillManager.tick();
     }
 
-    public interface AnimationController {
+    protected interface AnimationController {
         static AnimationController of(final RandomSource random, final AnimationState... animationStates) {
             if (animationStates.length == 0)
                 return empty();

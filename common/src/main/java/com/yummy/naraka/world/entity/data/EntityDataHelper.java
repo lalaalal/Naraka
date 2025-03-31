@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.entity.data;
 
+import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncEntityDataPayload;
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryAccess;
@@ -38,7 +38,7 @@ public class EntityDataHelper {
             CompoundTag data = new CompoundTag();
             saveEntityData(livingEntity, data);
             for (ServerPlayer player : serverLevel.players())
-                NetworkManager.sendToPlayer(player, new SyncEntityDataPayload(livingEntity, holder, data));
+                NetworkManager.sendToClient(player, new SyncEntityDataPayload(livingEntity, holder, data));
         }
     }
 
@@ -48,7 +48,7 @@ public class EntityDataHelper {
             CompoundTag data = new CompoundTag();
             saveEntityData(livingEntity, data, holders);
             for (ServerPlayer player : serverLevel.players())
-                NetworkManager.sendToPlayer(player, new SyncEntityDataPayload(livingEntity, holders, data));
+                NetworkManager.sendToClient(player, new SyncEntityDataPayload(livingEntity, holders, data));
         }
     }
 

@@ -3,8 +3,8 @@ package com.yummy.naraka.advancements;
 import com.yummy.naraka.advancements.criterion.FillSoulStabilizerTrigger;
 import com.yummy.naraka.advancements.criterion.SimpleTrigger;
 import com.yummy.naraka.core.registries.LazyHolder;
+import com.yummy.naraka.core.registries.RegistryInitializer;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.init.RegistryInitializer;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.core.registries.Registries;
 
