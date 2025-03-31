@@ -3,6 +3,7 @@ package com.yummy.naraka.client.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import net.fabricmc.api.EnvType;
@@ -104,8 +105,8 @@ public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalMod
         this.root.getAllParts().forEach(ModelPart::resetPose);
         applyHeadRotation(netHeadYaw, headPitch);
         this.animateWalk(HerobrineAnimation.WALKING, limbSwing, limbSwingAmount, 2, 2);
-        herobrine.forEachAnimations((animationState, animationDefinition) -> {
-            this.animate(animationState, animationDefinition, ageInTicks);
+        herobrine.forEachAnimations((animationState, animationLocation) -> {
+            this.animate(animationState, AnimationMapper.get(animationLocation), ageInTicks);
         });
     }
 

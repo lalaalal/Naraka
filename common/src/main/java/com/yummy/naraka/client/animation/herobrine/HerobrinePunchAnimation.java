@@ -1,12 +1,13 @@
 package com.yummy.naraka.client.animation.herobrine;
 
+import com.yummy.naraka.client.animation.AnimationMapper;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
-import net.minecraft.util.RandomSource;
 
 /**
  * Made with Blockbench 4.12.2
@@ -16,9 +17,10 @@ import net.minecraft.util.RandomSource;
  */
 @Environment(EnvType.CLIENT)
 public class HerobrinePunchAnimation {
-    public static AnimationDefinition random(RandomSource randomSource) {
-        int index = randomSource.nextInt(PUNCH_ANIMATIONS.length);
-        return PUNCH_ANIMATIONS[index];
+        public static void initialize() {
+                AnimationMapper.register(AnimationLocations.PUNCH_1, PUNCH_1);
+                AnimationMapper.register(AnimationLocations.PUNCH_2, PUNCH_2);
+                AnimationMapper.register(AnimationLocations.PUNCH_3, PUNCH_3);
     }
 
     public static final AnimationDefinition PUNCH_1 = AnimationDefinition.Builder.withLength(1.375F)

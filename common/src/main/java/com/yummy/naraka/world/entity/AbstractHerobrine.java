@@ -1,13 +1,11 @@
 package com.yummy.naraka.world.entity;
 
-import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
-import com.yummy.naraka.client.animation.herobrine.HerobrinePunchAnimation;
-import com.yummy.naraka.client.animation.herobrine.HerobrineSkillAnimation;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.*;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -33,13 +31,13 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     public static final int MAX_WEAKNESS_TICK = 40;
     public static final String WEAKNESS_ANIMATION = "weakness";
 
-    public final AnimationState punchAnimationState1 = animationState(HerobrinePunchAnimation.PUNCH_1);
-    public final AnimationState punchAnimationState2 = animationState(HerobrinePunchAnimation.PUNCH_2);
-    public final AnimationState punchAnimationState3 = animationState(HerobrinePunchAnimation.PUNCH_3);
-    public final AnimationState rushAnimationState = animationState(HerobrineSkillAnimation.RUSH);
-    public final AnimationState throwFireballAnimationState = animationState(HerobrineSkillAnimation.THROW_NARAKA_FIREBALL);
+    public final AnimationState punchAnimationState1 = animationState(AnimationLocations.PUNCH_1);
+    public final AnimationState punchAnimationState2 = animationState(AnimationLocations.PUNCH_2);
+    public final AnimationState punchAnimationState3 = animationState(AnimationLocations.PUNCH_3);
+    public final AnimationState rushAnimationState = animationState(AnimationLocations.RUSH);
+    public final AnimationState throwFireballAnimationState = animationState(AnimationLocations.THROW_NARAKA_FIREBALL);
     public final AnimationState stigmatizeEntitiesAnimationState = new AnimationState();
-    public final AnimationState blockingSkillAnimationState = animationState(HerobrineAnimation.BLOCKING);
+    public final AnimationState blockingSkillAnimationState = animationState(AnimationLocations.BLOCKING);
     public final AnimationState weaknessAnimationState = new AnimationState();
 
     protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(this, PunchSkill::new, punchAnimationState1, punchAnimationState2, punchAnimationState3);

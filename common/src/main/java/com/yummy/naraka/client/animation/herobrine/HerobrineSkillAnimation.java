@@ -1,5 +1,7 @@
 package com.yummy.naraka.client.animation.herobrine;
 
+import com.yummy.naraka.client.animation.AnimationMapper;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
@@ -15,6 +17,11 @@ import net.minecraft.client.animation.KeyframeAnimations;
  */
 @Environment(EnvType.CLIENT)
 public class HerobrineSkillAnimation {
+        public static void initialize() {
+                AnimationMapper.register(AnimationLocations.RUSH, RUSH);
+                AnimationMapper.register(AnimationLocations.THROW_NARAKA_FIREBALL, THROW_NARAKA_FIREBALL);
+        }
+
     public static final AnimationDefinition RUSH = AnimationDefinition.Builder.withLength(4.0F)
             .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),

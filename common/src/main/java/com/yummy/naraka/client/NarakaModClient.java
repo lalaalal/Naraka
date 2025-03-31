@@ -2,6 +2,7 @@ package com.yummy.naraka.client;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.event.ClientEventHandler;
 import com.yummy.naraka.client.gui.hud.DeathCountHud;
 import com.yummy.naraka.client.gui.hud.LockedHealthHud;
@@ -49,6 +50,8 @@ public final class NarakaModClient {
         registerBlockEntityRenderers();
         registerHudRenders();
         registerMenus();
+
+        AnimationMapper.initialize();
 
         initializer.runAfterRegistryLoaded(NarakaModClient::onRegistryLoaded);
     }
