@@ -11,6 +11,9 @@ public abstract class EventHandler {
 
     @SuppressWarnings("unchecked")
     public static Event<CreativeModeTabEvents.ModifyEntries> createModifyTabEntries(ResourceKey<CreativeModeTab> key) {
-        return MethodInvoker.invoke(EventHandler.class, "createModifyTabEntries", Event.class, key);
+        return MethodInvoker.of(EventHandler.class, "createModifyTabEntries")
+                .withParameterTypes(ResourceKey.class)
+                .invoke(key)
+                .result(Event.class);
     }
 }

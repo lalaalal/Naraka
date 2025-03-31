@@ -18,6 +18,14 @@ public final class FabricPlatform extends Platform {
     }
 
     @Override
+    public Side getSide() {
+        return switch (FabricLoader.getInstance().getEnvironmentType()) {
+            case SERVER -> Side.SERVER;
+            case CLIENT -> Side.CLIENT;
+        };
+    }
+
+    @Override
     public Path getConfigurationPath() {
         return FabricLoader.getInstance().getConfigDir();
     }

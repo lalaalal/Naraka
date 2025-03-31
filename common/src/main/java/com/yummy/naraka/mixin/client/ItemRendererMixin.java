@@ -24,14 +24,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-@Mixin(value = ItemRenderer.class, priority = 990)
+@Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    public void renderCustom(ItemStack itemStack, ItemDisplayContext itemDisplayContext, boolean bl, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, int overlay, BakedModel bakedModel, CallbackInfo ci) {
+    public void renderCustom(ItemStack itemStack, ItemDisplayContext itemDisplayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, int overlay, BakedModel bakedModel, CallbackInfo ci) {
         if (CustomRenderManager.hasCustomRenderer(itemStack)) {
             CustomRenderManager.CustomItemRenderer itemRenderer = CustomRenderManager.getCustomRenderer(itemStack);
             if (itemRenderer.shouldRenderCustom(itemStack, itemDisplayContext)) {
+                poseStack.pushPose();
+                if (itemRenderer.applyTransform()) {
+                    bakedModel.getTransforms().getTransform(itemDisplayContext).apply(leftHand, poseStack);
+                    poseStack.translate(-0.5F, -0.5F, -0.5F);
+                }
                 itemRenderer.render(itemStack, itemDisplayContext, poseStack, multiBufferSource, light, overlay);
+                poseStack.popPose();
                 ci.cancel();
             }
         }

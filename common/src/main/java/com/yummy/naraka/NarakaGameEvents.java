@@ -60,6 +60,9 @@ public final class NarakaGameEvents {
         RegistryAccess registryAccess = server.registryAccess();
         NarakaDamageSources.initialize(registryAccess);
         NarakaEnchantments.initialize(registryAccess);
+
+        if (server.isDedicatedServer())
+            NarakaMod.isModLoaded = true;
     }
 
     private static void onServerStopping(MinecraftServer server) {

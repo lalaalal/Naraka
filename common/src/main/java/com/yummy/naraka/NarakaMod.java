@@ -43,6 +43,7 @@ public final class NarakaMod {
     public static final String MOD_ID = "naraka";
     public static boolean isDataGeneration = false;
     public static boolean isRegistryLoaded = false;
+    public static boolean isModLoaded = false;
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static void initialize(NarakaInitializer initializer) {

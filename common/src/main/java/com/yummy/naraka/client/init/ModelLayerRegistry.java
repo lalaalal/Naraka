@@ -9,7 +9,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
-public class ModelLayerRegistry {
+public abstract class ModelLayerRegistry {
     public static void register(ModelLayerLocation location, Supplier<LayerDefinition> factory) {
         MethodInvoker.invoke(ModelLayerRegistry.class, "register", location, factory);
     }

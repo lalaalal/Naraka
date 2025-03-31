@@ -73,6 +73,10 @@ public class CustomRenderManager {
     }
 
     public interface CustomItemRenderer {
+        default boolean applyTransform() {
+            return true;
+        }
+
         boolean shouldRenderCustom(ItemStack stack, ItemDisplayContext context);
 
         void render(ItemStack stack, ItemDisplayContext context, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay);

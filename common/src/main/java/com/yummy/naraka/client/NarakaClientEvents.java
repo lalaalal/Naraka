@@ -1,5 +1,6 @@
 package com.yummy.naraka.client;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.event.ClientEvents;
 import com.yummy.naraka.util.ComponentStyles;
 import net.fabricmc.api.EnvType;
@@ -10,9 +11,14 @@ import net.minecraft.client.Minecraft;
 public class NarakaClientEvents {
     public static void initialize() {
         ClientEvents.TICK_PRE.register(NarakaClientEvents::onClientTick);
+        ClientEvents.CLIENT_STOPPING.register(NarakaClientEvents::onClientStopping);
     }
 
     private static void onClientTick(Minecraft minecraft) {
         ComponentStyles.tick();
+    }
+
+    private static void onClientStopping(Minecraft minecraft) {
+        NarakaMod.config().stop();
     }
 }

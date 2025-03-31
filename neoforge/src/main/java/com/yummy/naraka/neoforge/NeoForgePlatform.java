@@ -19,6 +19,14 @@ public final class NeoForgePlatform extends Platform {
     }
 
     @Override
+    public Side getSide() {
+        return switch (FMLLoader.getDist()) {
+            case DEDICATED_SERVER -> Side.SERVER;
+            case CLIENT -> Side.CLIENT;
+        };
+    }
+
+    @Override
     public Path getConfigurationPath() {
         return FMLPaths.CONFIGDIR.get();
     }

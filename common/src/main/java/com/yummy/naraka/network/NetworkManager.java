@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.Collection;
 
-public class NetworkManager {
+public abstract class NetworkManager {
     public static <T extends CustomPacketPayload> void registerS2C(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
         MethodInvoker.invoke(NetworkManager.class, "registerS2C", type, codec);
     }

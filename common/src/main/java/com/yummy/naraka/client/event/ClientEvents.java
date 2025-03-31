@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 public class ClientEvents {
     public static final Event<ClientState<Minecraft>> TICK_PRE = create();
     public static final Event<ClientState<Minecraft>> TICK_POST = create();
+    public static final Event<ClientState<Minecraft>> CLIENT_STOPPING = create();
 
     static <T> Event<ClientState<T>> create() {
         return Event.create(listeners -> instance -> {

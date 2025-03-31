@@ -77,6 +77,11 @@ public class SpearItemRenderer implements CustomRenderManager.CustomItemRenderer
     }
 
     @Override
+    public boolean applyTransform() {
+        return false;
+    }
+
+    @Override
     public boolean shouldRenderCustom(ItemStack stack, ItemDisplayContext context) {
         if (stack.is(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get()))
             return !LONGINUS_EXCLUDING_CONTEXTS.contains(context);

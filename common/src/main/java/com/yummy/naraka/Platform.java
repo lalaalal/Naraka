@@ -31,9 +31,15 @@ public abstract class Platform {
         return modLoader;
     }
 
+    public abstract Side getSide();
+
     public abstract boolean isDevelopmentEnvironment();
 
     public abstract Path getConfigurationPath();
+
+    public enum Side {
+        CLIENT, SERVER
+    }
 
     public enum ModLoader {
         FABRIC, NEO_FORGE
