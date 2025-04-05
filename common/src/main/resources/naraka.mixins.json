@@ -21,7 +21,6 @@
     "EntityTypeBuilderMixin",
     "FeatureMixin",
     "FlintAndSteelItemMixin",
-    "LivingDeathInvoker",
     "LivingEntityMixin",
     "OverworldBiomeBuilderMixin",
     "PlayerListMixin",

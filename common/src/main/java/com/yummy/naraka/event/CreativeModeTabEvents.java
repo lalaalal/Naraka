@@ -1,5 +1,6 @@
 package com.yummy.naraka.event;
 
+import com.yummy.naraka.proxy.MethodInvoker;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
@@ -10,8 +11,16 @@ import java.util.Map;
 public final class CreativeModeTabEvents {
     private static final Map<ResourceKey<CreativeModeTab>, Event<ModifyEntries>> EVENT_MAP = new HashMap<>();
 
+    @SuppressWarnings("unchecked")
+    private static Event<ModifyEntries> createModifyTabEntries(ResourceKey<CreativeModeTab> key) {
+        return MethodInvoker.of(CreativeModeTabEvents.class, "createModifyTabEntries")
+                .withParameterTypes(ResourceKey.class)
+                .invoke(key)
+                .result(Event.class);
+    }
+
     public static Event<ModifyEntries> modifyEntriesEvent(ResourceKey<CreativeModeTab> key) {
-        return EVENT_MAP.computeIfAbsent(key, EventHandler::createModifyTabEntries);
+        return EVENT_MAP.computeIfAbsent(key, CreativeModeTabEvents::createModifyTabEntries);
     }
 
     public static void modifyEntries(ResourceKey<CreativeModeTab> key, ModifyEntries modifier) {
@@ -21,5 +30,23 @@ public final class CreativeModeTabEvents {
     @FunctionalInterface
     public interface ModifyEntries {
         void modify(NarakaCreativeModeTabs.TabEntries entries);
+    }
+
+    public static class ModifyTabEntriesEvent extends Event<ModifyEntries> {
+        public final ResourceKey<CreativeModeTab> key;
+
+        public ModifyTabEntriesEvent(ResourceKey<CreativeModeTab> key) {
+            this.key = key;
+        }
+
+        @Override
+        public ModifyEntries invoker() {
+            if (listeners.size() == 1)
+                return listeners.getFirst();
+            return entries -> {
+                for (ModifyEntries listener : listeners)
+                    listener.modify(entries);
+            };
+        }
     }
 }

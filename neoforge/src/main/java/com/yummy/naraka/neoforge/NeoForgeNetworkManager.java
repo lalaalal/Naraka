@@ -1,7 +1,6 @@
-package com.yummy.naraka.neoforge.init;
+package com.yummy.naraka.neoforge;
 
 import com.yummy.naraka.Platform;
-import com.yummy.naraka.neoforge.NarakaEventBus;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.proxy.MethodProxy;
 import net.minecraft.network.RegistryFriendlyByteBuf;

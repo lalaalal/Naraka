@@ -30,11 +30,9 @@ public final class NarakaGameEvents {
         ServerEvents.SERVER_STARTED.register(NarakaGameEvents::onServerStarted);
         ServerEvents.SERVER_LEVEL_LOAD.register(NarakaGameEvents::onWorldLoad);
         ServerEvents.SERVER_STOPPING.register(NarakaGameEvents::onServerStopping);
-
-        EntityEvents.PLAYER_JOIN.register(NarakaGameEvents::syncPlayerEntityData);
-
         ServerEvents.SERVER_TICK_POST.register(NarakaGameEvents::onEndTick);
 
+        EntityEvents.PLAYER_JOIN.register(NarakaGameEvents::syncPlayerEntityData);
         EntityEvents.LIVING_DEATH.register(NarakaGameEvents::useDeathCount);
 
         LootEvents.MODIFY_LOOT_TABLE.register(NarakaGameEvents::modifyLootTable);

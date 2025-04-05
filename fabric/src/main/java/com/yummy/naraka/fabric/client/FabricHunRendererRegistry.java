@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 @Environment(EnvType.CLIENT)
-public class FabricHunRendererRegistry {
+public final class FabricHunRendererRegistry {
     @MethodProxy(HudRendererRegistry.class)
     public static void register(ResourceLocation id, Supplier<LayeredDraw.Layer> factory) {
         LayeredDraw.Layer layer = factory.get();
