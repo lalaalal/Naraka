@@ -6,23 +6,24 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public record SyncAnimationPayload(int entityId, String animationName) implements CustomPacketPayload {
+public record SyncAnimationPayload(int entityId, ResourceLocation animationLocation) implements CustomPacketPayload {
     public static final Type<SyncAnimationPayload> TYPE = new Type<>(NarakaMod.location("sync_animation"));
 
     public static final StreamCodec<ByteBuf, SyncAnimationPayload> CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT,
             SyncAnimationPayload::entityId,
-            ByteBufCodecs.STRING_UTF8,
-            SyncAnimationPayload::animationName,
+            ResourceLocation.STREAM_CODEC,
+            SyncAnimationPayload::animationLocation,
             SyncAnimationPayload::new
     );
 
-    public SyncAnimationPayload(Entity entity, String animationName) {
-        this(entity.getId(), animationName);
+    public SyncAnimationPayload(Entity entity, ResourceLocation animationLocation) {
+        this(entity.getId(), animationLocation);
     }
 
     @Override
@@ -35,6 +36,6 @@ public record SyncAnimationPayload(int entityId, String animationName) implement
         Level level = player.level();
         Entity entity = level.getEntity(entityId);
         if (entity instanceof SkillUsingMob mob)
-            mob.updateAnimation(animationName);
+            mob.updateAnimation(animationLocation);
     }
 }

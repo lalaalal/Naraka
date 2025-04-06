@@ -1,11 +1,13 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.SkillUsingMob;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class Skill<T extends SkillUsingMob> {
-    public final String name;
+    public final ResourceLocation location;
     protected final T mob;
     protected final int duration;
     protected int cooldown;
@@ -14,11 +16,15 @@ public abstract class Skill<T extends SkillUsingMob> {
     protected int cooldownTick;
     protected boolean disabled = false;
 
+    protected static ResourceLocation createLocation(String name) {
+        return NarakaMod.location("skill", name);
+    }
+
     @Nullable
     protected Skill<?> linkedSkill;
 
     protected Skill(String name, int duration, int cooldown, T mob, @Nullable Skill<?> linkedSkill) {
-        this.name = name;
+        this.location = createLocation(name);
         this.mob = mob;
         this.duration = duration;
         this.cooldown = cooldown;

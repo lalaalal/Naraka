@@ -1,9 +1,11 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAnimationPayload;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -17,34 +19,30 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public abstract class SkillUsingMob extends PathfinderMob {
     protected final SkillManager skillManager = new SkillManager(random);
-    protected final Map<String, AnimationController> animationStates = new HashMap<>();
-    protected final Map<AnimationState, ResourceLocation> animationDefinitions = new HashMap<>();
+    protected final Map<ResourceLocation, AnimationController> animationStates = new HashMap<>();
 
     protected SkillUsingMob(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
 
         skillManager.runOnSkillStart(this::setAnimation);
-        skillManager.runOnSkillEnd(skill -> setAnimation("idle"));
+        skillManager.runOnSkillEnd(skill -> setAnimation(AnimationLocations.IDLE));
     }
 
     public boolean isUsingSkill() {
         return skillManager.getCurrentSkill() != null;
     }
 
-    protected AnimationState animationState(ResourceLocation animation) {
-        AnimationState animationState = new AnimationState();
-        animationDefinitions.put(animationState, animation);
-        return animationState;
-    }
 
-    public void forEachAnimations(BiConsumer<AnimationState, ResourceLocation> consumer) {
-        animationDefinitions.forEach(consumer);
+    public void forEachAnimations(BiConsumer<ResourceLocation, AnimationState> consumer) {
+        for (AnimationController controller : animationStates.values())
+            controller.update(consumer);
     }
 
     @Nullable
@@ -52,19 +50,23 @@ public abstract class SkillUsingMob extends PathfinderMob {
         return skillManager.getCurrentSkill();
     }
 
-    public void registerAnimation(String name, AnimationState... animationStates) {
-        this.animationStates.put(name, AnimationController.of(random, animationStates));
+    public void registerAnimation(ResourceLocation animationSetLocation, List<ResourceLocation> animationLocations) {
+        this.animationStates.put(animationSetLocation, AnimationController.of(random, animationLocations));
     }
 
-    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(S skill, AnimationState... animationStates) {
+    public void registerAnimation(ResourceLocation animationLocation) {
+        this.animationStates.put(animationLocation, AnimationController.simple(animationLocation));
+    }
+
+    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(S skill, ResourceLocation... animationLocations) {
         this.skillManager.addSkill(skill);
-        registerAnimation(skill.name, animationStates);
+        registerAnimation(skill.location, List.of(animationLocations));
 
         return skill;
     }
 
-    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(T mob, Function<T, S> factory, AnimationState... animationStates) {
-        return registerSkill(factory.apply(mob), animationStates);
+    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(T mob, Function<T, S> factory, ResourceLocation... animationLocations) {
+        return registerSkill(factory.apply(mob), animationLocations);
     }
 
     public float getAttackDamage() {
@@ -78,20 +80,20 @@ public abstract class SkillUsingMob extends PathfinderMob {
         return damageSources().mobAttack(this);
     }
 
-    public void setAnimation(String name) {
+    public void setAnimation(ResourceLocation animationLocation) {
         if (level() instanceof ServerLevel serverLevel) {
-            SyncAnimationPayload payload = new SyncAnimationPayload(this, name);
+            SyncAnimationPayload payload = new SyncAnimationPayload(this, animationLocation);
             NetworkManager.sendToClient(serverLevel.players(), payload);
         }
     }
 
     private void setAnimation(Skill<?> skill) {
-        this.setAnimation(skill.name);
+        this.setAnimation(skill.location);
     }
 
-    public void updateAnimation(String animationName) {
-        animationStates.forEach((name, animationController) -> {
-            if (animationName.equals(name))
+    public void updateAnimation(ResourceLocation animationLocation) {
+        animationStates.forEach((location, animationController) -> {
+            if (animationLocation.equals(location))
                 animationController.start(tickCount);
             else
                 animationController.stop();
@@ -103,64 +105,68 @@ public abstract class SkillUsingMob extends PathfinderMob {
         skillManager.tick();
     }
 
-    protected interface AnimationController {
-        static AnimationController of(final RandomSource random, final AnimationState... animationStates) {
-            if (animationStates.length == 0)
-                return empty();
-            if (animationStates.length == 1)
-                return simple(animationStates[0]);
-            return random(random, animationStates);
+    protected static abstract class AnimationController {
+        private static final AnimationController EMPTY = new AnimationController(List.of()) {
+            @Override
+            protected ResourceLocation select() {
+                return NarakaMod.location("empty");
+            }
+        };
+
+        static AnimationController of(final RandomSource random, final List<ResourceLocation> animationLocations) {
+            if (animationLocations.isEmpty())
+                return EMPTY;
+            if (animationLocations.size() == 1)
+                return simple(animationLocations.getFirst());
+            return random(random, animationLocations);
         }
 
-        static AnimationController empty() {
-            return new AnimationController() {
+        static AnimationController simple(final ResourceLocation animationLocation) {
+            return new AnimationController(List.of(animationLocation)) {
                 @Override
-                public void start(int tickCount) {
-                }
-
-                @Override
-                public void stop() {
+                protected ResourceLocation select() {
+                    return animationLocation;
                 }
             };
         }
 
-        static AnimationController simple(final AnimationState animationState) {
-            return new AnimationController() {
+        static AnimationController random(final RandomSource random, final List<ResourceLocation> animationLocations) {
+            return new AnimationController(animationLocations) {
                 @Override
-                public void start(int tickCount) {
+                protected ResourceLocation select() {
+                    int randomIndex = random.nextInt(animationLocations.size());
+                    return animationLocations.get(randomIndex);
+                }
+            };
+        }
+
+        protected final Map<ResourceLocation, AnimationState> animationStates;
+
+        public AnimationController(List<ResourceLocation> animationLocations) {
+            this.animationStates = new HashMap<>();
+            for (ResourceLocation animationLocation : animationLocations)
+                animationStates.put(animationLocation, new AnimationState());
+        }
+
+        protected abstract ResourceLocation select();
+
+        public void start(int tickCount) {
+            final ResourceLocation selected = select();
+            animationStates.forEach((animationLocation, animationState) -> {
+                if (animationLocation.equals(selected))
                     animationState.start(tickCount);
-                }
-
-                @Override
-                public void stop() {
+                else
                     animationState.stop();
-                }
-            };
+            });
         }
 
-        static AnimationController random(final RandomSource random, final AnimationState... animationStates) {
-            return new AnimationController() {
-                @Override
-                public void start(int tickCount) {
-                    int selected = random.nextInt(animationStates.length);
-                    for (int index = 0; index < animationStates.length; index++) {
-                        if (index == selected)
-                            animationStates[index].start(tickCount);
-                        else
-                            animationStates[index].stop();
-                    }
-                }
-
-                @Override
-                public void stop() {
-                    for (AnimationState animationState : animationStates)
-                        animationState.stop();
-                }
-            };
+        public void stop() {
+            for (AnimationState animationState : animationStates.values())
+                animationState.stop();
         }
 
-        void start(int tickCount);
-
-        void stop();
+        public void update(BiConsumer<ResourceLocation, AnimationState> consumer) {
+            animationStates.forEach(consumer);
+        }
     }
 }

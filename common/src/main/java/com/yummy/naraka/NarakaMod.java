@@ -107,7 +107,7 @@ public final class NarakaMod {
     }
 
     /**
-     * Returns mod's resource location
+     * Returns mod's resource animationLocation
      *
      * @param path Resource path
      * @return {@linkplain ResourceLocation} with namespace {@linkplain #MOD_ID}

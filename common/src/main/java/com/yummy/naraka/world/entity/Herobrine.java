@@ -34,7 +34,6 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -57,9 +56,7 @@ public class Herobrine extends AbstractHerobrine {
     public static final int MAX_HURT_DAMAGE_LIMIT = Integer.MAX_VALUE;
     public static final int MAX_ACCUMULATED_DAMAGE_TICK_COUNT = 40;
 
-    public final AnimationState summonShadowAnimationState = new AnimationState();
-
-    protected final SummonShadowSkill summonShadowSkill = registerSkill(this, SummonShadowSkill::new, summonShadowAnimationState);
+    protected final SummonShadowSkill summonShadowSkill = registerSkill(this, SummonShadowSkill::new);
 
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill);
@@ -194,7 +191,7 @@ public class Herobrine extends AbstractHerobrine {
         if (shadowHerobrine.isDeadOrDying()) {
             shadowHerobrines.clear();
             skillManager.interrupt();
-            startWeakness();
+            startStaggering();
             if (hibernateMode)
                 stopHibernateMode();
         }
@@ -383,13 +380,13 @@ public class Herobrine extends AbstractHerobrine {
                     Vec3 originalHerobrinePosition = position();
                     this.setPos(shadowHerobrine.position());
                     shadowHerobrine.setPos(originalHerobrinePosition);
-                    shadowHerobrine.startWeakness();
+                    shadowHerobrine.startStaggering();
                 });
     }
 
     private boolean updateHibernateMode(DamageSource source, float actualDamage) {
         if (source.getDirectEntity() instanceof NarakaFireball fireball && !fireball.hasTarget()) {
-            startWeakness();
+            startStaggering();
             if (hibernateMode)
                 stopHibernateMode();
             return true;
@@ -504,7 +501,7 @@ public class Herobrine extends AbstractHerobrine {
     private void updateHibernateModeOnTargetSurvivedFromFireball(LivingEntity target, float damage) {
         if (getPhase() == 1 && hibernateMode && damage >= 66 && target.isAlive()) {
             stopHibernateMode();
-            startWeakness();
+            startStaggering();
         }
     }
 

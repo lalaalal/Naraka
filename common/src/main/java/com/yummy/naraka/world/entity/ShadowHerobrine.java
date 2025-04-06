@@ -96,16 +96,19 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
     @Override
     public void stigmatizeEntity(LivingEntity target) {
-        if (punchSkill.getLinkedCount() == 1) {
-            Stigma stigma = StigmaHelper.get(target);
-            if (stigma.value() < 1)
-                return;
-            StigmaHelper.removeStigma(target);
-            level().playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.HOSTILE);
-            target.hurt(NarakaDamageSources.stigma(this), 6 * stigma.value());
-            if ((herobrine = getHerobrine()) != null)
-                herobrine.summonShadowHerobrine();
-        }
+        Stigma stigma = StigmaHelper.get(target);
+        if (stigma.value() < 1)
+            return;
+        StigmaHelper.removeStigma(target);
+        level().playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.HOSTILE);
+        target.hurt(NarakaDamageSources.stigma(this), 6 * stigma.value());
+        if ((herobrine = getHerobrine()) != null)
+            herobrine.summonShadowHerobrine();
+    }
+
+    @Override
+    public float getAttackDamage() {
+        return super.getAttackDamage();
     }
 
     @Override
@@ -134,7 +137,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
             return super.hurt(source, amount);
         if ((herobrine = getHerobrine()) != null)
             amount = Math.min(amount, getHurtDamageLimit());
-        if (weaknessTickCount < MAX_WEAKNESS_TICK)
+        if (staggeringTickCount < MAX_STAGGERING_TICK)
             return false;
         return super.hurt(source, amount);
     }
