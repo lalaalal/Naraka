@@ -27,6 +27,7 @@ import java.util.function.Function;
 public abstract class SkillUsingMob extends PathfinderMob {
     protected final SkillManager skillManager = new SkillManager(random);
     protected final Map<ResourceLocation, AnimationController> animationStates = new HashMap<>();
+    protected ResourceLocation currentAnimation = NarakaMod.location("empty");
 
     protected SkillUsingMob(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -81,6 +82,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
     }
 
     public void setAnimation(ResourceLocation animationLocation) {
+        currentAnimation = animationLocation;
         if (level() instanceof ServerLevel serverLevel) {
             SyncAnimationPayload payload = new SyncAnimationPayload(this, animationLocation);
             NetworkManager.sendToClient(serverLevel.players(), payload);
@@ -98,6 +100,11 @@ public abstract class SkillUsingMob extends PathfinderMob {
             else
                 animationController.stop();
         });
+        currentAnimation = animationLocation;
+    }
+
+    public ResourceLocation getCurrentAnimation() {
+        return currentAnimation;
     }
 
     @Override

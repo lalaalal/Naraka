@@ -12,6 +12,7 @@ public class SkillManager {
     private final List<Consumer<Skill<?>>> skillStartListeners = new ArrayList<>();
     private final List<Consumer<Skill<?>>> skillEndListeners = new ArrayList<>();
     private boolean paused = false;
+    private int waitingTick = 0;
 
     public SkillManager(RandomSource random) {
         this.random = random;
@@ -38,7 +39,7 @@ public class SkillManager {
     }
 
     private List<Skill<?>> getUsableSkills() {
-        if (paused)
+        if (paused || waitingTick > 0)
             return List.of();
         return skills.stream()
                 .filter(skill -> skill.readyToUse() && skill.canUse())
@@ -78,6 +79,10 @@ public class SkillManager {
         currentSkill = null;
     }
 
+    public void waitNextSkill(int waitingTick) {
+        this.waitingTick = waitingTick;
+    }
+
     public void tick() {
         if (currentSkill != null) {
             currentSkill.tick();
@@ -102,6 +107,8 @@ public class SkillManager {
             if (!skill.readyToUse())
                 skill.reduceCooldown();
         }
+        if (waitingTick > 0)
+            waitingTick -= 1;
     }
 
     @Nullable

@@ -11,8 +11,8 @@ import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
-import com.yummy.naraka.world.entity.ai.skill.Skill;
-import com.yummy.naraka.world.entity.ai.skill.SummonShadowSkill;
+import com.yummy.naraka.world.entity.ai.skill.*;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import com.yummy.naraka.world.entity.data.LockedHealthHelper;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
@@ -56,6 +56,12 @@ public class Herobrine extends AbstractHerobrine {
     public static final int MAX_HURT_DAMAGE_LIMIT = Integer.MAX_VALUE;
     public static final int MAX_ACCUMULATED_DAMAGE_TICK_COUNT = 40;
 
+    protected final DashSkill<AbstractHerobrine> dashSkill = registerSkill(this, DashSkill::new);
+    protected final DashAroundSkill<AbstractHerobrine> dashAroundSkill = registerSkill(this, DashAroundSkill::new);
+    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(new RushSkill<>(this, AbstractHerobrine::isNotHerobrine), AnimationLocations.RUSH);
+    protected final StigmatizeEntitiesSkill<AbstractHerobrine> stigmatizeEntitiesSkill = registerSkill(this, StigmatizeEntitiesSkill::new);
+    protected final ThrowFireballSkill throwFireballSkill = registerSkill(new ThrowFireballSkill(this, this::createFireball), AnimationLocations.THROW_NARAKA_FIREBALL);
+    protected final BlockingSkill blockingSkill = registerSkill(this, BlockingSkill::new, AnimationLocations.BLOCKING);
     protected final SummonShadowSkill summonShadowSkill = registerSkill(this, SummonShadowSkill::new);
 
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
@@ -340,8 +346,6 @@ public class Herobrine extends AbstractHerobrine {
     public boolean hurt(DamageSource source, float damage) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             return super.hurt(source, damage);
-        if (hibernateMode)
-            return true;
         if (source.getEntity() == this)
             return false;
 
@@ -349,6 +353,8 @@ public class Herobrine extends AbstractHerobrine {
         updateHurtDamageLimit(actualDamage);
         float limitedDamage = Math.min(damage, hurtDamageLimit);
         if (updateHibernateMode(source, getActualDamage(source, limitedDamage)))
+            return true;
+        if (hibernateMode)
             return true;
 
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
@@ -499,7 +505,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void updateHibernateModeOnTargetSurvivedFromFireball(LivingEntity target, float damage) {
-        if (getPhase() == 1 && hibernateMode && damage >= 66 && target.isAlive()) {
+        if (target != this && getPhase() == 1 && hibernateMode && damage >= 66 && target.isAlive()) {
             stopHibernateMode();
             startStaggering();
         }

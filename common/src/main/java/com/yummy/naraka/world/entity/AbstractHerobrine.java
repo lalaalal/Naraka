@@ -4,7 +4,7 @@ import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
-import com.yummy.naraka.world.entity.ai.skill.*;
+import com.yummy.naraka.world.entity.ai.skill.PunchSkill;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -30,12 +30,6 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     public static final int MAX_STAGGERING_TICK = 90;
 
     protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(this, PunchSkill::new, AnimationLocations.COMBO_ATTACK_1, AnimationLocations.COMBO_ATTACK_2, AnimationLocations.COMBO_ATTACK_3);
-    protected final DashSkill<AbstractHerobrine> dashSkill = registerSkill(this, DashSkill::new);
-    protected final DashAroundSkill<AbstractHerobrine> dashAroundSkill = registerSkill(this, DashAroundSkill::new);
-    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(new RushSkill<>(this, AbstractHerobrine::isNotHerobrine), AnimationLocations.RUSH);
-    protected final StigmatizeEntitiesSkill<AbstractHerobrine> stigmatizeEntitiesSkill = registerSkill(this, StigmatizeEntitiesSkill::new);
-    protected final ThrowFireballSkill throwFireballSkill = registerSkill(new ThrowFireballSkill(this, this::createFireball), AnimationLocations.THROW_NARAKA_FIREBALL);
-    protected final BlockingSkill blockingSkill = registerSkill(this, BlockingSkill::new, AnimationLocations.BLOCKING);
 
     public final boolean isShadow;
 
@@ -74,11 +68,11 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     protected void startStaggering() {
-        if (staggeringTickCount >= MAX_STAGGERING_TICK)
+        if (staggeringTickCount < MAX_STAGGERING_TICK)
             return;
-        setAnimation(AnimationLocations.STAGGERING);
         staggeringTickCount = 0;
         skillManager.pause(true);
+        setAnimation(AnimationLocations.STAGGERING);
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STAGGERING_PREVENT_MOVING);
     }
 
@@ -87,6 +81,10 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         staggeringTickCount = Integer.MAX_VALUE;
         skillManager.resume();
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STAGGERING_PREVENT_MOVING);
+    }
+
+    public boolean isStaggering() {
+        return staggeringTickCount < MAX_STAGGERING_TICK;
     }
 
     @Override

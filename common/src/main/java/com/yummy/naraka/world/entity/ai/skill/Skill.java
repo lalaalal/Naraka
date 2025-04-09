@@ -78,6 +78,10 @@ public abstract class Skill<T extends SkillUsingMob> {
         this.linkedSkill = skill;
     }
 
+    public int getCurrentTickCount() {
+        return tickCount;
+    }
+
     @Nullable
     public Skill<?> getLinkedSkill() {
         return linkedSkill;

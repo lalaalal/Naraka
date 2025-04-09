@@ -1,7 +1,6 @@
 package com.yummy.naraka.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.yummy.naraka.event.EntityEvents;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
@@ -9,7 +8,6 @@ import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -57,10 +55,14 @@ public abstract class LivingEntityMixin extends Entity {
             EntityDataHelper.removeEntityData(naraka$living());
     }
 
-    @Inject(method = "die", at = @At("HEAD"), cancellable = true)
-    public void invokeLivingDeathEvents(DamageSource damageSource, CallbackInfo ci) {
-        if (!EntityEvents.LIVING_DEATH.invoker().die(naraka$living(), damageSource))
-            ci.cancel();
+    /**
+     * Using {@linkplain Float#MAX_VALUE} for damage may occur setting health as Nan!
+     */
+    @ModifyArg(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setHealth(F)V"))
+    public float fixNanHealth(float original) {
+        if (Float.isNaN(original))
+            return 0;
+        return original;
     }
 
     @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V"))

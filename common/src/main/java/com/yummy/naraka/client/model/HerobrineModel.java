@@ -6,6 +6,7 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.Util;
@@ -102,7 +103,8 @@ public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalMod
     @Override
     public void setupAnim(T herobrine, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root.getAllParts().forEach(ModelPart::resetPose);
-        applyHeadRotation(netHeadYaw, headPitch);
+        if (!herobrine.getCurrentAnimation().equals(AnimationLocations.STAGGERING))
+            applyHeadRotation(netHeadYaw, headPitch);
         this.animateWalk(HerobrineAnimation.WALKING, limbSwing, limbSwingAmount, 2, 2);
         herobrine.forEachAnimations((animationLocation, animationState) -> {
             this.animate(animationState, AnimationMapper.get(animationLocation), ageInTicks);

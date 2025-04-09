@@ -14,6 +14,7 @@ public class PunchSkill<T extends SkillUsingMob & StigmatizingEntity> extends Sk
     private int linkedCount = 1;
     private int maxLinkCount = 5;
     private boolean stunTarget = true;
+    private boolean traceTarget = true;
 
     public PunchSkill(T mob) {
         super(NAME, 20, 110, mob);
@@ -29,6 +30,10 @@ public class PunchSkill<T extends SkillUsingMob & StigmatizingEntity> extends Sk
 
     public void setStunTarget(boolean stunTarget) {
         this.stunTarget = stunTarget;
+    }
+
+    public void setTraceTarget(boolean traceTarget) {
+        this.traceTarget = traceTarget;
     }
 
     @Override
@@ -59,7 +64,7 @@ public class PunchSkill<T extends SkillUsingMob & StigmatizingEntity> extends Sk
         if (target == null)
             return;
 
-        if (linkedCount > 1)
+        if (traceTarget && linkedCount > 1)
             moveToTarget(target);
 
         if (tickCount == 8)
@@ -71,7 +76,7 @@ public class PunchSkill<T extends SkillUsingMob & StigmatizingEntity> extends Sk
             mob.setDeltaMovement(Vec3.ZERO);
         if (tickCount >= 5)
             return;
-        mob.lookAt(target, 360, 0);
+        mob.lookAt(target, 180, 0);
         Vec3 deltaMovement = target.position().subtract(mob.position())
                 .normalize()
                 .scale(0.7);

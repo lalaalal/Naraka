@@ -42,10 +42,10 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
     protected ShadowHerobrine(EntityType<? extends AbstractHerobrine> entityType, Level level) {
         super(entityType, level, true);
-        skillManager.enableOnly(List.of(punchSkill));
         punchSkill.setMaxLinkCount(3);
         punchSkill.changeCooldown(60);
         punchSkill.setStunTarget(false);
+        punchSkill.setTraceTarget(false);
     }
 
     public ShadowHerobrine(Level level, Herobrine herobrine) {
@@ -61,11 +61,21 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     @Override
+    protected void customServerAiStep() {
+        super.customServerAiStep();
+        if ((herobrine = getHerobrine()) != null && herobrine.isUsingSkill())
+            skillManager.pause(false);
+        else
+            skillManager.resume();
+    }
+
+    @Override
     public boolean canBeHitByProjectile() {
         return false;
     }
 
-    private @Nullable Herobrine getHerobrine() {
+    @Nullable
+    private Herobrine getHerobrine() {
         if (herobrineUUID == null)
             return null;
         if (herobrine == null && level() instanceof ServerLevel serverLevel)
