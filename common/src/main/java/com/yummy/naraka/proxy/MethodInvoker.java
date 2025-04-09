@@ -1,5 +1,6 @@
 package com.yummy.naraka.proxy;
 
+import com.yummy.naraka.NarakaMod;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -138,6 +139,8 @@ public class MethodInvoker {
 
     private static Object invokeMethod(Method method, Object... parameters) {
         try {
+            if (NarakaMod.isModLoaded)
+                NarakaMod.LOGGER.warn("Using method invoker after mod loaded");
             return method.invoke(null, parameters);
         } catch (IllegalAccessException exception) {
             throw new RuntimeException(exception);

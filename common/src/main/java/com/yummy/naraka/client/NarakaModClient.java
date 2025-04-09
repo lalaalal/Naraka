@@ -21,7 +21,6 @@ import com.yummy.naraka.client.renderer.entity.NarakaFireballRenderer;
 import com.yummy.naraka.client.renderer.entity.SpearRenderer;
 import com.yummy.naraka.client.renderer.entity.StardustRenderer;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
-import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
@@ -60,7 +59,6 @@ public final class NarakaModClient {
         initializeItems();
         initializeBlocks();
 
-        NarakaNetworks.initializeClient();
         NarakaClientEvents.initialize();
 
         NarakaMod.isModLoaded = true;

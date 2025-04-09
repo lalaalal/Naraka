@@ -3,6 +3,7 @@ package com.yummy.naraka.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,8 +16,9 @@ public abstract class EntityTypeBuilderMixin<T extends Entity> {
     private boolean naraka$isNaraka = false;
 
     @Inject(method = "build", at = @At("HEAD"))
-    public void check(String key, CallbackInfoReturnable<EntityType<T>> cir) {
-        naraka$isNaraka = key.startsWith("naraka:");
+    public void check(@Nullable String key, CallbackInfoReturnable<EntityType<T>> cir) {
+        if (key != null)
+            naraka$isNaraka = key.startsWith("naraka:");
     }
 
     @ModifyExpressionValue(method = "build", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/EntityType$Builder;serialize:Z"))

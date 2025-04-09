@@ -2,43 +2,46 @@ package com.yummy.naraka.network;
 
 import com.yummy.naraka.proxy.MethodInvoker;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
 public abstract class NetworkManager {
-    public static <T extends CustomPacketPayload> void registerS2C(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
-        MethodInvoker.invoke(NetworkManager.class, "registerS2C", type, codec);
+    @Nullable
+    private static ServerboundNetworkManager SERVERBOUND;
+    @Nullable
+    private static ClientboundNetworkManager CLIENTBOUND;
+
+    public static ServerboundNetworkManager serverbound() {
+        if (SERVERBOUND == null)
+            SERVERBOUND = MethodInvoker.of(NetworkManager.class, "serverbound")
+                    .invoke()
+                    .result(ServerboundNetworkManager.class);
+        return SERVERBOUND;
     }
 
-    public static <T extends CustomPacketPayload> void registerC2S(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
-        MethodInvoker.invoke(NetworkManager.class, "registerC2S", type, codec);
-    }
-
-    public static <T extends CustomPacketPayload> void registerServerHandler(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, PacketHandler<T> handler) {
-        MethodInvoker.invoke(NetworkManager.class, "registerServerHandler", type, codec, handler);
-    }
-
-    public static <T extends CustomPacketPayload> void registerClientHandler(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, PacketHandler<T> handler) {
-        MethodInvoker.invoke(NetworkManager.class, "registerClientHandler", type, codec, handler);
+    public static ClientboundNetworkManager clientbound() {
+        if (CLIENTBOUND == null)
+            CLIENTBOUND = MethodInvoker.of(NetworkManager.class, "clientbound")
+                    .invoke()
+                    .result(ClientboundNetworkManager.class);
+        return CLIENTBOUND;
     }
 
     public static void sendToClient(ServerPlayer player, CustomPacketPayload packet) {
-        MethodInvoker.invoke(NetworkManager.class, "sendToClient", player, packet);
+        clientbound().send(player, packet);
     }
 
-    public static void sendToClient(Collection<ServerPlayer> players, CustomPacketPayload packet) {
-        for (ServerPlayer player : players)
-            sendToClient(player, packet);
+    public static void sendToClient(Collection<ServerPlayer> players, CustomPacketPayload payload) {
+        clientbound().send(players, payload);
     }
 
     public static void sendToServer(CustomPacketPayload payload) {
-        MethodInvoker.invoke(NetworkManager.class, "sendToServer", payload);
+        serverbound().send(payload);
     }
 
     @FunctionalInterface

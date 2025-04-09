@@ -1,6 +1,9 @@
 package com.yummy.naraka.fabric;
 
+import com.yummy.naraka.Platform;
+import com.yummy.naraka.network.ClientboundNetworkManager;
 import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.ServerboundNetworkManager;
 import com.yummy.naraka.proxy.MethodProxy;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -12,37 +15,47 @@ import net.minecraft.server.level.ServerPlayer;
 
 @SuppressWarnings("unused")
 public class FabricNetworkManager {
+    private static final ClientboundNetworkManager CLIENTBOUND = new FabricClientboundNetworkManager();
+    private static final ServerboundNetworkManager SERVERBOUND = new FabricServerboundNetworkManager();
+
     @MethodProxy(NetworkManager.class)
-    public static <T extends CustomPacketPayload> void registerS2C(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
-        PayloadTypeRegistry.playS2C().register(type, codec);
+    public static ClientboundNetworkManager clientbound() {
+        return CLIENTBOUND;
     }
 
     @MethodProxy(NetworkManager.class)
-    public static <T extends CustomPacketPayload> void registerC2S(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
-        PayloadTypeRegistry.playC2S().register(type, codec);
+    public static ServerboundNetworkManager serverbound() {
+        return SERVERBOUND;
     }
 
-    @MethodProxy(NetworkManager.class)
-    public static <T extends CustomPacketPayload> void registerServerHandler(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.PacketHandler<T> handler) {
-        ServerPlayNetworking.registerGlobalReceiver(type, (payload, context) -> {
-            handler.handle(payload, context::player);
-        });
+    private static class FabricServerboundNetworkManager implements ServerboundNetworkManager {
+        @Override
+        public <T extends CustomPacketPayload> void register(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.PacketHandler<T> handler) {
+            PayloadTypeRegistry.playC2S().register(type, codec);
+            ServerPlayNetworking.registerGlobalReceiver(type, (payload, context) -> {
+                handler.handle(payload, context::player);
+            });
+        }
+
+        @Override
+        public void send(CustomPacketPayload payload) {
+            ClientPlayNetworking.send(payload);
+        }
     }
 
-    @MethodProxy(NetworkManager.class)
-    public static <T extends CustomPacketPayload> void registerClientHandler(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.PacketHandler<T> handler) {
-        ClientPlayNetworking.registerGlobalReceiver(type, (payload, context) -> {
-            handler.handle(payload, context::player);
-        });
-    }
+    private static class FabricClientboundNetworkManager implements ClientboundNetworkManager {
+        @Override
+        public <T extends CustomPacketPayload> void register(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.PacketHandler<T> handler) {
+            PayloadTypeRegistry.playS2C().register(type, codec);
+            if (Platform.getInstance().getSide() == Platform.Side.CLIENT)
+                ClientPlayNetworking.registerGlobalReceiver(type, (payload, context) -> {
+                    handler.handle(payload, context::player);
+                });
+        }
 
-    @MethodProxy(NetworkManager.class)
-    public static void sendToClient(ServerPlayer player, CustomPacketPayload packet) {
-        ServerPlayNetworking.send(player, packet);
-    }
-
-    @MethodProxy(NetworkManager.class)
-    public static void sendToServer(CustomPacketPayload payload) {
-        ClientPlayNetworking.send(payload);
+        @Override
+        public void send(ServerPlayer player, CustomPacketPayload payload) {
+            ServerPlayNetworking.send(player, payload);
+        }
     }
 }
