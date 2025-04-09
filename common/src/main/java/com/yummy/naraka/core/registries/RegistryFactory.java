@@ -1,6 +1,6 @@
 package com.yummy.naraka.core.registries;
 
-import com.yummy.naraka.init.NarakaInitializer;
+import com.yummy.naraka.proxy.MethodInvoker;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import org.jetbrains.annotations.Nullable;
@@ -9,14 +9,20 @@ public abstract class RegistryFactory {
     @Nullable
     private static RegistryFactory instance = null;
 
-    @Nullable
-    public static RegistryFactory getInstance() {
+    private static RegistryFactory getInstance() {
+        if (instance == null)
+            instance = MethodInvoker.of(RegistryFactory.class, "getInstance")
+                    .invoke().result(RegistryFactory.class);
         return instance;
     }
 
-    public static void initialize(NarakaInitializer initializer) {
-        instance = initializer.getRegistryFactory();
+    public static void initialize() {
+        getInstance();
     }
 
-    public abstract <T> Registry<T> createSimple(ResourceKey<Registry<T>> key);
+    public static <T> Registry<T> create(ResourceKey<Registry<T>> key) {
+        return getInstance().createSimple(key);
+    }
+
+    protected abstract <T> Registry<T> createSimple(ResourceKey<Registry<T>> key);
 }

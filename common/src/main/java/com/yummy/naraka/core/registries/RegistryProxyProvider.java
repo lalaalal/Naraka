@@ -1,6 +1,6 @@
 package com.yummy.naraka.core.registries;
 
-import com.yummy.naraka.init.NarakaInitializer;
+import com.yummy.naraka.proxy.MethodInvoker;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import org.jetbrains.annotations.Nullable;
@@ -10,31 +10,30 @@ import java.util.Map;
 
 /**
  * Singleton class provides {@link RegistryProxy}<br>
- * Override {@link RegistryInitializer#create(ResourceKey)} to create {@linkplain RegistryProxy} by default<br>
+ * Override {@link RegistryProxyProvider#create(ResourceKey)} to create {@linkplain RegistryProxy} by default<br>
  */
-public class RegistryInitializer {
+public abstract class RegistryProxyProvider {
     @Nullable
-    private static RegistryInitializer INSTANCE;
+    private static RegistryProxyProvider instance;
 
     private final Map<ResourceKey<? extends Registry<?>>, RegistryProxy<?>> registryProxyMap = new HashMap<>();
 
-    public static void initialize(NarakaInitializer initializer) {
-        if (INSTANCE != null)
-            throw new IllegalStateException("RegistryInitializer instance is already allocated");
-        INSTANCE = initializer.getRegistryInitializer();
+    protected static RegistryProxyProvider getInstance() {
+        if (instance == null)
+            instance = MethodInvoker.of(RegistryProxyProvider.class, "getInstance")
+                    .invoke().result(RegistryProxyProvider.class);
+        return instance;
     }
 
-    protected static RegistryInitializer getInstance() {
-        if (INSTANCE == null)
-            INSTANCE = new RegistryInitializer();
-        return INSTANCE;
+    public static void initialize() {
+        getInstance();
     }
 
     public static <T> RegistryProxy<T> get(ResourceKey<Registry<T>> key) {
         return getInstance().getProxy(key);
     }
 
-    protected RegistryInitializer() {
+    protected RegistryProxyProvider() {
     }
 
     /**
@@ -44,9 +43,7 @@ public class RegistryInitializer {
      * @param <T> Registry type
      * @return throws exception in this class
      */
-    protected <T> RegistryProxy<T> create(ResourceKey<Registry<T>> key) {
-        throw new IllegalStateException("Creating RegistryProxy is not supported for default RegistryInitializer");
-    }
+    protected abstract <T> RegistryProxy<T> create(ResourceKey<Registry<T>> key);
 
     /**
      * Add {@link RegistryProxy}
@@ -55,7 +52,7 @@ public class RegistryInitializer {
      * @param <T>   Registry type
      * @return Self
      */
-    public <T> RegistryInitializer add(RegistryProxy<T> proxy) {
+    public <T> RegistryProxyProvider add(RegistryProxy<T> proxy) {
         registryProxyMap.put(proxy.getRegistryKey(), proxy);
         return this;
     }

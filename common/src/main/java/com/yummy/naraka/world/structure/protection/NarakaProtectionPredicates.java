@@ -1,8 +1,8 @@
 package com.yummy.naraka.world.structure.protection;
 
 import com.yummy.naraka.core.registries.NarakaRegistries;
-import com.yummy.naraka.core.registries.RegistryInitializer;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.structure.piece.HerobrineSanctuaryOutline;
 import net.minecraft.core.Holder;
@@ -21,7 +21,7 @@ public class NarakaProtectionPredicates {
     }
 
     public static void initialize() {
-        RegistryInitializer.get(NarakaRegistries.Keys.PROTECTION_PREDICATE)
+        RegistryProxyProvider.get(NarakaRegistries.Keys.PROTECTION_PREDICATE)
                 .onRegistrationFinished();
     }
 }

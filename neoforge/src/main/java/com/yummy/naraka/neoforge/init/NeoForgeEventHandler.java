@@ -1,6 +1,9 @@
 package com.yummy.naraka.neoforge.init;
 
-import com.yummy.naraka.event.*;
+import com.yummy.naraka.event.CreativeModeTabEvents;
+import com.yummy.naraka.event.EventHandler;
+import com.yummy.naraka.event.LootEvents;
+import com.yummy.naraka.event.ServerEvents;
 import com.yummy.naraka.neoforge.NarakaEventBus;
 import com.yummy.naraka.proxy.MethodProxy;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
@@ -46,8 +49,8 @@ public final class NeoForgeEventHandler implements NarakaEventBus {
     }
 
     @MethodProxy(CreativeModeTabEvents.class)
-    public static Event<CreativeModeTabEvents.ModifyEntries> createModifyTabEntries(ResourceKey<CreativeModeTab> key) {
-        return Util.make(new CreativeModeTabEvents.ModifyTabEntriesEvent(key), NeoForgeEventHandler::registerNeoForgeBuildCreativeModeTabEvent);
+    public static CreativeModeTabEvents.ModifyEntriesEventFactory getModifyEntriesEventFactory() {
+        return key -> Util.make(new CreativeModeTabEvents.ModifyTabEntriesEvent(key), NeoForgeEventHandler::registerNeoForgeBuildCreativeModeTabEvent);
     }
 
     private static void registerNeoForgeBuildCreativeModeTabEvent(CreativeModeTabEvents.ModifyTabEntriesEvent modifyTabEntriesEvent) {

@@ -1,8 +1,8 @@
 package com.yummy.naraka.world.item.reinforcement;
 
 import com.yummy.naraka.core.registries.NarakaRegistries;
-import com.yummy.naraka.core.registries.RegistryInitializer;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.advancements.critereon.TagPredicate;
@@ -109,7 +109,7 @@ public class NarakaReinforcementEffects {
     }
 
     public static void initialize() {
-        RegistryInitializer.get(NarakaRegistries.Keys.REINFORCEMENT_EFFECT)
+        RegistryProxyProvider.get(NarakaRegistries.Keys.REINFORCEMENT_EFFECT)
                 .onRegistrationFinished();
 
         addEffectsByItem(ItemTags.SWORDS, INCREASE_ATTACK_DAMAGE);

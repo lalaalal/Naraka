@@ -11,18 +11,12 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 
 public class NarakaRegistries {
-    public static final Registry<StructurePieceFactory> STRUCTURE_PIECE_FACTORY = create(Keys.STRUCTURE_PIECE_FACTORY);
-    public static final Registry<HeightProviderType> HEIGHT_PROVIDER_TYPE = create(Keys.HEIGHT_PROVIDER_TYPE);
-    public static final Registry<ProtectionPredicate> PROTECTION_PREDICATE = create(Keys.PROTECTION_PREDICATE);
-    public static final Registry<EntityDataType<?>> ENTITY_DATA_TYPE = create(Keys.ENTITY_DATA_TYPE);
-    public static final Registry<ReinforcementEffect> REINFORCEMENT_EFFECT = create(Keys.REINFORCEMENT_EFFECT);
-    public static final Registry<EquipmentSet> EQUIPMENT_SET = create(Keys.EQUIPMENT_SET);
-
-    private static <T> Registry<T> create(ResourceKey<Registry<T>> key) {
-        if (RegistryFactory.getInstance() == null)
-            throw new IllegalStateException("Naraka registry factory has not been initialized");
-        return RegistryFactory.getInstance().createSimple(key);
-    }
+    public static final Registry<StructurePieceFactory> STRUCTURE_PIECE_FACTORY = RegistryFactory.create(Keys.STRUCTURE_PIECE_FACTORY);
+    public static final Registry<HeightProviderType> HEIGHT_PROVIDER_TYPE = RegistryFactory.create(Keys.HEIGHT_PROVIDER_TYPE);
+    public static final Registry<ProtectionPredicate> PROTECTION_PREDICATE = RegistryFactory.create(Keys.PROTECTION_PREDICATE);
+    public static final Registry<EntityDataType<?>> ENTITY_DATA_TYPE = RegistryFactory.create(Keys.ENTITY_DATA_TYPE);
+    public static final Registry<ReinforcementEffect> REINFORCEMENT_EFFECT = RegistryFactory.create(Keys.REINFORCEMENT_EFFECT);
+    public static final Registry<EquipmentSet> EQUIPMENT_SET = RegistryFactory.create(Keys.EQUIPMENT_SET);
 
     public static void initialize() {
 

@@ -1,8 +1,8 @@
 package com.yummy.naraka.world.structure.height;
 
 import com.yummy.naraka.core.registries.NarakaRegistries;
-import com.yummy.naraka.core.registries.RegistryInitializer;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import net.minecraft.core.Holder;
 
 public class NarakaHeightProviders {
@@ -15,7 +15,7 @@ public class NarakaHeightProviders {
     }
 
     public static void initialize() {
-        RegistryInitializer.get(NarakaRegistries.Keys.HEIGHT_PROVIDER_TYPE)
+        RegistryProxyProvider.get(NarakaRegistries.Keys.HEIGHT_PROVIDER_TYPE)
                 .onRegistrationFinished();
     }
 }

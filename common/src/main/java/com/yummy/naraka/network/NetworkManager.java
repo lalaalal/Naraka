@@ -19,16 +19,14 @@ public abstract class NetworkManager {
     public static ServerboundNetworkManager serverbound() {
         if (SERVERBOUND == null)
             SERVERBOUND = MethodInvoker.of(NetworkManager.class, "serverbound")
-                    .invoke()
-                    .result(ServerboundNetworkManager.class);
+                    .invoke().result(ServerboundNetworkManager.class);
         return SERVERBOUND;
     }
 
     public static ClientboundNetworkManager clientbound() {
         if (CLIENTBOUND == null)
             CLIENTBOUND = MethodInvoker.of(NetworkManager.class, "clientbound")
-                    .invoke()
-                    .result(ClientboundNetworkManager.class);
+                    .invoke().result(ClientboundNetworkManager.class);
         return CLIENTBOUND;
     }
 

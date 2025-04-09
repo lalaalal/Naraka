@@ -6,7 +6,7 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryFactory;
-import com.yummy.naraka.core.registries.RegistryInitializer;
+import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.event.EventHandler;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.network.NarakaNetworks;
@@ -47,13 +47,13 @@ public final class NarakaMod {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static void initialize(NarakaInitializer initializer) {
-        Platform.initialize(initializer);
+        Platform.getInstance();
         EventHandler.prepare();
-        RegistryInitializer.initialize(initializer);
+        RegistryProxyProvider.initialize();
 
         NarakaConfig.load();
 
-        RegistryFactory.initialize(initializer);
+        RegistryFactory.initialize();
         NarakaRegistries.initialize();
 
         NarakaCriteriaTriggers.initialize();

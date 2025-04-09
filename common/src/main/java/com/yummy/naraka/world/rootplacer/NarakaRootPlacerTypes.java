@@ -1,23 +1,23 @@
 package com.yummy.naraka.world.rootplacer;
 
 import com.mojang.serialization.MapCodec;
-import com.yummy.naraka.core.registries.LazyHolder;
-import com.yummy.naraka.core.registries.RegistryInitializer;
+import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.mixin.invoker.RootPlacerTypeInvoker;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.rootplacers.RootPlacer;
 import net.minecraft.world.level.levelgen.feature.rootplacers.RootPlacerType;
 
 public class NarakaRootPlacerTypes {
-    public static final LazyHolder<RootPlacerType<?>, RootPlacerType<EbonyRootPlacer>> EBONY_ROOT = register("ebony_root", EbonyRootPlacer.CODEC);
+    public static final HolderProxy<RootPlacerType<?>, RootPlacerType<EbonyRootPlacer>> EBONY_ROOT = register("ebony_root", EbonyRootPlacer.CODEC);
 
-    private static <P extends RootPlacer> LazyHolder<RootPlacerType<?>, RootPlacerType<P>> register(String name, MapCodec<P> codec) {
+    private static <P extends RootPlacer> HolderProxy<RootPlacerType<?>, RootPlacerType<P>> register(String name, MapCodec<P> codec) {
         return RegistryProxy.register(Registries.ROOT_PLACER_TYPE, name, () -> RootPlacerTypeInvoker.create(codec));
     }
 
     public static void initialize() {
-        RegistryInitializer.get(Registries.ROOT_PLACER_TYPE)
+        RegistryProxyProvider.get(Registries.ROOT_PLACER_TYPE)
                 .onRegistrationFinished();
     }
 }
