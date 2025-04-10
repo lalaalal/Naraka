@@ -2,9 +2,9 @@ package com.yummy.naraka.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.fabricmc.api.EnvType;
@@ -95,7 +95,7 @@ public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalMod
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         if (renderShadow)
-            color = NarakaMod.config().shadowHerobrineColor.getValue().withAlpha(0x88).pack();
+            color = NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(0x88).pack();
         super.renderToBuffer(poseStack, buffer, packedLight, packedOverlay, color);
         renderShadow = false;
     }

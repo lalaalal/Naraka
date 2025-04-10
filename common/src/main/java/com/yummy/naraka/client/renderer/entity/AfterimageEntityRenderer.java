@@ -2,7 +2,7 @@ package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.entity.AfterimageEntity;
@@ -84,7 +84,7 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
     protected Color getAfterimageColor(Afterimage afterimage, float partialTicks) {
         int alpha = afterimage.getAlpha(partialTicks);
-        return NarakaMod.config().afterimageColor.getValue().withAlpha(alpha);
+        return NarakaConfig.CLIENT.afterimageColor.getValue().withAlpha(alpha);
     }
 
     protected abstract ResourceLocation getAfterimageTexture(T entity);

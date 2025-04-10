@@ -1,5 +1,6 @@
 package com.yummy.naraka;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.event.EntityEvents;
 import com.yummy.naraka.event.LootEvents;
 import com.yummy.naraka.event.ServerEvents;
@@ -65,7 +66,7 @@ public final class NarakaGameEvents {
 
     private static void onServerStopping(MinecraftServer server) {
         if (server.isDedicatedServer())
-            NarakaMod.config().stop();
+            NarakaConfig.stop();
     }
 
     private static void onEndTick(MinecraftServer server) {

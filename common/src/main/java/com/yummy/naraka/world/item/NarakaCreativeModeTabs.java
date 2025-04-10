@@ -2,6 +2,7 @@ package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.Platform;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.core.registries.RegistryProxyProvider;
@@ -45,7 +46,7 @@ public class NarakaCreativeModeTabs {
     }
 
     private static HolderProxy<CreativeModeTab, CreativeModeTab> registerOnlyDev(String name, CreativeModeTab.Builder builder) {
-        if (Platform.getInstance().isDevelopmentEnvironment() || NarakaMod.config().showTestCreativeModeTab.getValue())
+        if (Platform.getInstance().isDevelopmentEnvironment() || NarakaConfig.COMMON.showTestCreativeModeTab.getValue())
             return RegistryProxy.register(Registries.CREATIVE_MODE_TAB, name, builder::build);
         return new HolderProxy<>(BuiltInRegistries.CREATIVE_MODE_TAB, NarakaMod.location(name));
     }

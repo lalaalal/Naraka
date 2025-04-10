@@ -52,9 +52,8 @@ public record Stigma(int value, long lastMarkedTime) {
      * Call {@link StigmatizingEntity#collectStigma(Stigma)} if caused entity is {@linkplain StigmatizingEntity}
      *
      * @param livingEntity Target entity to consume stigma
-     * @param cause Entity that causes the stigma to be consumed
+     * @param cause        Entity that causes the stigma to be consumed
      * @return Stigma with value 0 and current time
-     *
      * @see StunHelper#stunEntity(LivingEntity, int)
      * @see LockedHealthHelper#lock(LivingEntity, double)
      * @see StigmatizingEntity#collectStigma(Stigma)

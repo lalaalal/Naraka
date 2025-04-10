@@ -9,7 +9,7 @@ import java.io.Writer;
 import java.util.Map;
 import java.util.Properties;
 
-public class PropertiesConfig extends ConfigFile {
+public class PropertiesConfigFile extends ConfigFile {
     private static final Map<Class<?>, Parser<String, ?>> PARSERS = Map.of(
             Boolean.class, Boolean::parseBoolean,
             Integer.class, Integer::parseInt,
@@ -22,7 +22,7 @@ public class PropertiesConfig extends ConfigFile {
 
     private final Properties cached = new Properties();
 
-    public PropertiesConfig(String configFileName) {
+    public PropertiesConfigFile(String configFileName) {
         super(configFileName);
     }
 
@@ -52,7 +52,7 @@ public class PropertiesConfig extends ConfigFile {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> void read(Reader reader, String key, NarakaConfig.ConfigValue<T> value) throws IOException {
+    public <T> void read(Reader reader, String key, Configuration.ConfigValue<T> value) throws IOException {
         if (cached.isEmpty())
             this.cached.load(reader);
         String property = cached.getProperty(key);
@@ -65,7 +65,7 @@ public class PropertiesConfig extends ConfigFile {
     }
 
     @Override
-    public <T> void write(Writer writer, String key, NarakaConfig.ConfigValue<T> value) throws IOException {
+    public <T> void write(Writer writer, String key, Configuration.ConfigValue<T> value) throws IOException {
         for (String comment : value.getComments())
             writer.write("# " + comment + "\n");
         writer.write("# default : " + value.getDefaultValue() + "\n");

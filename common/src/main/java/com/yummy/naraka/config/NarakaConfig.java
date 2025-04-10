@@ -1,67 +1,52 @@
 package com.yummy.naraka.config;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.util.Color;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Supplier;
 
-public final class NarakaConfig {
-    public static final NarakaConfig INSTANCE = new NarakaConfig();
+public class NarakaConfig {
+    private static @Nullable WatchService watchService;
 
-    private @Nullable WatchService watchService;
-    private final ConfigFile file = new PropertiesConfig("naraka-common");
-    private final Map<String, ConfigValue<?>> configuration = new LinkedHashMap<>();
+    private static final Set<Configuration> configurations = new HashSet<>();
+    public static final NarakaCommonConfig COMMON = register(NarakaCommonConfig::new);
+    public static final NarakaClientConfig CLIENT = register(NarakaClientConfig::new);
 
-    public final ConfigValue<Boolean> generatePillarCaves;
-    public final ConfigValue<Boolean> showReinforcementValue;
-    public final ConfigValue<Boolean> disableNonShaderLonginusRendering;
-    public final ConfigValue<Color> afterimageColor;
-    public final ConfigValue<Color> shadowHerobrineColor;
-    public final ConfigValue<Boolean> showTestCreativeModeTab;
-    public final ConfigValue<Integer> herobrineTakingStigmaTick;
-    public final ConfigValue<Double> herobrineHurtLimitCalculationRatioModifier;
-    public final ConfigValue<Double> herobrineMaxHurtCountCalculationModifier;
-    public final ConfigValue<Integer> maxShadowHerobrineSpawn;
-    public final ConfigValue<Boolean> alwaysDisplayHerobrineScarf;
-    public final ConfigValue<Float> herobrineScarfDefaultRotation;
-    public final ConfigValue<Integer> herobrineScarfPartitionNumber;
-    public final ConfigValue<Float> herobrineScarfWaveSpeed;
-    public final ConfigValue<Float> herobrineScarfWaveMaxAngle;
-    public final ConfigValue<Float> herobrineScarfWaveCycleModifier;
+    private static <T extends Configuration> T register(Supplier<T> provider) {
+        T configuration = provider.get();
+        configuration.loadValues();
 
-    private boolean watchChange = true;
-
-    public static void load() {
-
+        configurations.add(configuration);
+        return configuration;
     }
 
-    public void stop() {
+    public static void initialize() {
         try {
-            if (watchService != null)
-                watchService.close();
-        } catch (IOException ignored) {
-
+            watchService = FileSystems.getDefault().newWatchService();
+            ConfigFile.CONFIG_PATH.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
+            Thread thread = new Thread(NarakaConfig::updateOnConfigChanges);
+            thread.start();
+        } catch (IOException e) {
+            NarakaMod.LOGGER.warn("Cannot watch config directory ({})", ConfigFile.CONFIG_PATH);
         }
     }
 
-    private void updateOnConfigChanges() {
+    private static void updateOnConfigChanges() {
         if (watchService == null)
             return;
         try {
             WatchKey watchKey;
             while ((watchKey = watchService.take()) != null) {
                 for (WatchEvent<?> event : watchKey.pollEvents()) {
-                    if (watchChange && event.context().toString().equals(INSTANCE.file.getFileName()))
-                        INSTANCE.loadValues();
+                    String changedFileName = event.context().toString();
+                    configurations.stream()
+                            .filter(configuration -> configuration.canUpdateOnFileChange(changedFileName))
+                            .findFirst()
+                            .ifPresent(Configuration::loadValues);
                 }
                 watchKey.reset();
             }
@@ -70,126 +55,12 @@ public final class NarakaConfig {
         }
     }
 
-    private NarakaConfig() {
+    public static void stop() {
         try {
-            watchService = FileSystems.getDefault().newWatchService();
-            ConfigFile.CONFIG_PATH.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
-            Thread thread = new Thread(this::updateOnConfigChanges);
-            thread.start();
-        } catch (IOException e) {
-            NarakaMod.LOGGER.warn("Cannot watch config directory ({})", ConfigFile.CONFIG_PATH);
-        }
+            if (watchService != null)
+                watchService.close();
+        } catch (IOException ignored) {
 
-        this.generatePillarCaves = define("generate_pillar_caves", false);
-        this.showReinforcementValue = define("show_reinforcement_value", false);
-        this.disableNonShaderLonginusRendering = define("disable_non_shader_longinus_rendering", false);
-        this.afterimageColor = define("afterimage_color", Color.of(0x7e00ff));
-        this.shadowHerobrineColor = define("shadow_herobrine_color", Color.of(0x0000ff));
-        this.showTestCreativeModeTab = define("show_test_creative_mode_tab", false);
-        this.herobrineTakingStigmaTick = define("herobrine_taking_stigma_tick", 1200);
-        this.herobrineHurtLimitCalculationRatioModifier = define("herobrine_hurt_limit_calculation_ratio_modifier", 1.0)
-                .append("Bigger value, bigger hurt limit");
-        this.herobrineMaxHurtCountCalculationModifier = define("herobrine_max_hurt_count_calculation_modifier", 1.0)
-                .append("Bigger value, bigger max hurt count");
-        this.alwaysDisplayHerobrineScarf = define("always_display_herobrine_scarf", false);
-        this.herobrineScarfDefaultRotation = define("herobrine_scarf_default_rotation", 70.0f);
-        this.maxShadowHerobrineSpawn = define("max_shadow_herobrine_spawn", 3);
-        this.herobrineScarfPartitionNumber = define("herobrine_scarf_partition_number", 16)
-                .append("Divide scarf with given number")
-                .append("Bigger value, short wave cycle")
-                .append("!! Editing while playing game may cause crash");
-        this.herobrineScarfWaveSpeed = define("herobrine_scarf_wave_speed", 0.2f);
-        this.herobrineScarfWaveMaxAngle = define("herobrine_scarf_wave_max_angle", 22.5f);
-        this.herobrineScarfWaveCycleModifier = define("herobrine_scarf_wave_cycle_modifier", 1.0f)
-                .append("Bigger value, short wave cycle");
-
-        loadValues();
-    }
-
-    private <T> ConfigValue<T> define(String key, T defaultValue) {
-        ConfigValue<T> value = new ConfigValue<>(defaultValue);
-        configuration.put(key, value);
-        return value;
-    }
-
-    private synchronized void loadValues() {
-        try (Reader reader = file.createReader()) {
-            boolean hasMissing = false;
-            for (Map.Entry<String, ConfigValue<?>> entry : configuration.entrySet()) {
-                String key = entry.getKey();
-                ConfigValue<?> value = entry.getValue();
-                if (!file.contains(reader, key))
-                    hasMissing = true;
-                file.read(reader, key, value);
-            }
-            if (hasMissing)
-                saveValues();
-        } catch (FileNotFoundException exception) {
-            saveValues();
-        } catch (IOException exception) {
-            NarakaMod.LOGGER.error("An error occurred while loading config values");
-            throw new RuntimeException(exception);
-        }
-    }
-
-    private synchronized void saveValues() {
-        watchChange = false;
-        try (Writer writer = file.createWriter()) {
-            for (Map.Entry<String, ConfigValue<?>> entry : configuration.entrySet()) {
-                String key = entry.getKey();
-                ConfigValue<?> value = entry.getValue();
-                file.write(writer, key, value);
-            }
-            writer.flush();
-        } catch (IOException exception) {
-            watchChange = true;
-            NarakaMod.LOGGER.error("An error occurred while saving config values");
-            throw new RuntimeException(exception);
-        }
-        watchChange = true;
-    }
-
-    public static class ConfigValue<T> {
-        private final Class<T> type;
-        private final List<String> comments = new ArrayList<>();
-        private final T defaultValue;
-        private T value;
-
-        public ConfigValue(T defaultValue) {
-            this(defaultValue, defaultValue);
-        }
-
-        @SuppressWarnings("unchecked")
-        public ConfigValue(T defaultValue, T value) {
-            this.type = (Class<T>) defaultValue.getClass();
-            this.defaultValue = defaultValue;
-            this.value = value;
-        }
-
-        public ConfigValue<T> set(T value) {
-            this.value = value;
-            return this;
-        }
-
-        public ConfigValue<T> append(String comment) {
-            this.comments.add(comment);
-            return this;
-        }
-
-        public List<String> getComments() {
-            return comments;
-        }
-
-        public T getDefaultValue() {
-            return defaultValue;
-        }
-
-        public T getValue() {
-            return value;
-        }
-
-        public Class<T> getType() {
-            return type;
         }
     }
 }

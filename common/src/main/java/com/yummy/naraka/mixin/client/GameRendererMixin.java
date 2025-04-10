@@ -15,13 +15,11 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.OutlineBufferSource;
 import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.Vec3;
@@ -63,34 +61,21 @@ public abstract class GameRendererMixin {
             return;
         Vec3 cameraPosition = mainCamera.getPosition();
         BlockPos cameraBlockPos = NarakaUtils.pos(cameraPosition).offset(0, 0, -1);
-        Direction xAxisDirection = Direction.getFacingAxis(mainCamera.getEntity(), Direction.Axis.X);
-        Direction yAxisDirection = Direction.getFacingAxis(mainCamera.getEntity(), Direction.Axis.Y);
-        Direction zAxisDirection = Direction.getFacingAxis(mainCamera.getEntity(), Direction.Axis.Z);
-        MultiBufferSource.BufferSource bufferSource = this.renderBuffers.bufferSource();
+        OutlineBufferSource bufferSource = this.renderBuffers.outlineBufferSource();
 
         Vec3i cornerOffset = new Vec3i(15, 15, 15);
         BoundingBox box = BoundingBox.fromCorners(cameraBlockPos.offset(cornerOffset), cameraBlockPos.offset(cornerOffset.multiply(-1)));
 
         NarakaUtils.sphere(box, 1, pos -> {
             BlockState state = level.getBlockState(pos);
-            if (state.is(ConventionalTags.Blocks.ORES)
-                    && (cameraPosition.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) > 24
-                    || naraka$isSideOccluded(level, state, pos, xAxisDirection.getOpposite())
-                    && naraka$isSideOccluded(level, state, pos, yAxisDirection.getOpposite())
-                    && naraka$isSideOccluded(level, state, pos, zAxisDirection.getOpposite()))
-            ) {
+            if (state.is(ConventionalTags.Blocks.ORES)) {
                 naraka$poseStack.pushPose();
                 naraka$poseStack.translate(pos.getX() - cameraPosition.x, pos.getY() - cameraPosition.y, pos.getZ() - cameraPosition.z);
                 BlockTransparentRenderer.INSTANCE.renderTransparentBlock(state, naraka$poseStack, bufferSource, 0.3f, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY);
                 naraka$poseStack.popPose();
             }
         });
-    }
 
-    @Unique
-    private static boolean naraka$isSideOccluded(Level level, BlockState state, BlockPos pos, Direction direction) {
-        BlockPos checkingPos = pos.relative(direction);
-        BlockState checkingState = level.getBlockState(checkingPos);
-        return state.canOcclude() && checkingState.isFaceSturdy(level, checkingPos, direction.getOpposite());
+        renderBuffers.outlineBufferSource().endOutlineBatch();
     }
 }

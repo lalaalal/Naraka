@@ -1,6 +1,6 @@
 package com.yummy.naraka.world.entity;
 
-import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.network.NarakaClientboundEventHandler;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
@@ -107,7 +107,7 @@ public class Herobrine extends AbstractHerobrine {
         phaseManager.addPhaseChangeListener(this::updateUsingSkills);
 
         skillManager.enableOnly(PHASE_1_SKILLS);
-        for (int i = 0; i < NarakaMod.config().herobrineScarfPartitionNumber.getValue(); i++)
+        for (int i = 0; i < NarakaConfig.CLIENT.herobrineScarfPartitionNumber.getValue(); i++)
             scarfWaveSpeedList.add(1f);
     }
 
@@ -176,7 +176,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     public void summonShadowHerobrine() {
-        if (shadowHerobrines.size() >= NarakaMod.config().maxShadowHerobrineSpawn.getValue())
+        if (shadowHerobrines.size() >= NarakaConfig.COMMON.maxShadowHerobrineSpawn.getValue())
             return;
         ShadowHerobrine shadowHerobrine = new ShadowHerobrine(level(), this);
         BlockPos randomPos = NarakaUtils.randomBlockPos(random, blockPosition(), 4);
@@ -235,13 +235,13 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void updateScarfWaveSpeeds() {
-        int partitionNumber = NarakaMod.config().herobrineScarfPartitionNumber.getValue();
+        int partitionNumber = NarakaConfig.CLIENT.herobrineScarfPartitionNumber.getValue();
         if (scarfWaveSpeedList.size() < partitionNumber) {
             for (int i = 0; i < partitionNumber - scarfWaveSpeedList.size(); i++)
                 scarfWaveSpeedList.add(scarfWaveSpeedList.getLast());
         }
         if (tickCount % 10 == 0) {
-            float maxRotation = NarakaMod.config().herobrineScarfDefaultRotation.getValue();
+            float maxRotation = NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
             float speed = Mth.lerp(prevScarfRotation / maxRotation, 1, 3);
             scarfWaveSpeedList.addFirst(speed);
             scarfWaveSpeedList.removeLast();
@@ -262,7 +262,7 @@ public class Herobrine extends AbstractHerobrine {
             scarfRotationDegree += 5;
         if (scarfRotationDegree > targetRotation)
             scarfRotationDegree -= 3;
-        float maxRotation = NarakaMod.config().herobrineScarfDefaultRotation.getValue();
+        float maxRotation = NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
         entityData.set(SCARF_ROTATION_DEGREE, Mth.clamp(scarfRotationDegree, 0, maxRotation));
     }
 
@@ -287,7 +287,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void collectStigma() {
-        final int waitingTick = NarakaMod.config().herobrineTakingStigmaTick.getValue();
+        final int waitingTick = NarakaConfig.COMMON.herobrineTakingStigmaTick.getValue();
         if (level() instanceof ServerLevel serverLevel) {
             watchingEntities.removeIf(uuid -> {
                 LivingEntity entity = NarakaEntityUtils.findEntityByUUID(serverLevel, uuid, LivingEntity.class);
@@ -420,14 +420,14 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private double correctRatio(double ratio) {
-        final double scale = NarakaMod.config().herobrineHurtLimitCalculationRatioModifier.getValue();
+        final double scale = NarakaConfig.COMMON.herobrineHurtLimitCalculationRatioModifier.getValue();
         if (ratio > 5)
             ratio = NarakaUtils.log(4, ratio - 4) + 5;
         return Math.max(ratio * scale, 1.5);
     }
 
     private int calculateMaxHurtCount(double ratio) {
-        final double scale = NarakaMod.config().herobrineMaxHurtCountCalculationModifier.getValue();
+        final double scale = NarakaConfig.COMMON.herobrineMaxHurtCountCalculationModifier.getValue();
         return (int) Math.floor(6 * Math.pow(0.5, (ratio * scale) - 3) + 4);
     }
 

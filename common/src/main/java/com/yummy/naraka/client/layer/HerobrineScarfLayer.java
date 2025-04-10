@@ -3,11 +3,11 @@ package com.yummy.naraka.client.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.client.model.HerobrineScarfModel;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.Herobrine;
 import net.fabricmc.api.EnvType;
@@ -43,7 +43,7 @@ public class HerobrineScarfLayer extends RenderLayer<Herobrine, HerobrineModel<H
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Herobrine herobrine, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (herobrine.getPhase() != 2 && !NarakaMod.config().alwaysDisplayHerobrineScarf.getValue())
+        if (herobrine.getPhase() != 2 && !NarakaConfig.CLIENT.alwaysDisplayHerobrineScarf.getValue())
             return;
         poseStack.pushPose();
 
@@ -57,7 +57,7 @@ public class HerobrineScarfLayer extends RenderLayer<Herobrine, HerobrineModel<H
         poseStack.translate(0.25, -0.625, 0.375);
         poseStack.scale(-3, 3, 3);
 
-        float rotationDegree = herobrine.getScarfRotationDegree(partialTick) - NarakaMod.config().herobrineScarfDefaultRotation.getValue();
+        float rotationDegree = herobrine.getScarfRotationDegree(partialTick) - NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
         List<Float> speedList = herobrine.getScarfWaveSpeedList();
         renderScarf(poseStack, vertexConsumer, packedLight, ageInTicks, rotationDegree, 9, 27, 7, 15, 64, 64, 0, speedList);
 
@@ -85,15 +85,15 @@ public class HerobrineScarfLayer extends RenderLayer<Herobrine, HerobrineModel<H
         float offsetX = 0;
         float xRot_offsetY = 0;
         float xRot_offsetZ = 0;
-        float degree = NarakaMod.config().herobrineScarfWaveMaxAngle.getValue();
-        float speed = NarakaMod.config().herobrineScarfWaveSpeed.getValue();
-        float waveCycleModifier = NarakaMod.config().herobrineScarfWaveCycleModifier.getValue();
+        float degree = NarakaConfig.CLIENT.herobrineScarfWaveMaxAngle.getValue();
+        float speed = NarakaConfig.CLIENT.herobrineScarfWaveSpeed.getValue();
+        float waveCycleModifier = NarakaConfig.CLIENT.herobrineScarfWaveCycleModifier.getValue();
 
         float u = textureX / (float) textureWidth;
         float v = textureY / (float) textureHeight;
         float widthInRatio = width / (float) textureWidth;
         float heightInRatio = height / (float) textureHeight;
-        int divisionValue = NarakaMod.config().herobrineScarfPartitionNumber.getValue();
+        int divisionValue = NarakaConfig.CLIENT.herobrineScarfPartitionNumber.getValue();
         if (verticalSpeed.size() < divisionValue)
             return;
 

@@ -1,7 +1,7 @@
 package com.yummy.naraka.client.gui.hud;
 
-import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaSprites;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.entity.data.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -62,7 +62,7 @@ public class StigmaHud implements LayeredDraw.Layer {
         if (player == null)
             return;
 
-        final int herobrineTakingStigmaTick = NarakaMod.config().herobrineTakingStigmaTick.getValue();
+        final int herobrineTakingStigmaTick = NarakaConfig.COMMON.herobrineTakingStigmaTick.getValue();
 
         Stigma stigma = StigmaHelper.get(player);
         long stigmatizedTime = player.level().getGameTime() - stigma.lastMarkedTime();

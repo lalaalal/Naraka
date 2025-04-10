@@ -50,8 +50,7 @@ public final class NarakaMod {
         Platform.getInstance();
         EventHandler.prepare();
         RegistryProxyProvider.initialize();
-
-        NarakaConfig.load();
+        NarakaConfig.initialize();
 
         RegistryFactory.initialize();
         NarakaRegistries.initialize();
@@ -96,10 +95,6 @@ public final class NarakaMod {
 
         NarakaGameEvents.initialize();
         NarakaNetworks.initialize();
-    }
-
-    public static NarakaConfig config() {
-        return NarakaConfig.INSTANCE;
     }
 
     public static ResourceLocation mcLocation(String path) {
