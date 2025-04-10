@@ -12,7 +12,6 @@ import com.yummy.naraka.client.init.*;
 import com.yummy.naraka.client.particle.EbonyParticle;
 import com.yummy.naraka.client.particle.NectariumParticle;
 import com.yummy.naraka.client.particle.SoulParticle;
-import com.yummy.naraka.client.renderer.BlockTransparentRenderer;
 import com.yummy.naraka.client.renderer.CustomRenderManager;
 import com.yummy.naraka.client.renderer.SpearItemRenderer;
 import com.yummy.naraka.client.renderer.blockentity.*;
@@ -43,7 +42,6 @@ public final class NarakaModClient {
 
         initializer.registerResourceReloadListener("spear_item_renderer", () -> SpearItemRenderer.INSTANCE);
         initializer.registerResourceReloadListener("custom_renderer", () -> NarakaBlockEntityItemRenderer.INSTANCE);
-        initializer.registerResourceReloadListener("block_transparent_renderer", () -> BlockTransparentRenderer.INSTANCE);
 
         registerEntityRenderers();
         registerBlockEntityRenderers();

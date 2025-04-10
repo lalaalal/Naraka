@@ -11,7 +11,13 @@ public record Color(int alpha, int red, int green, int blue) {
     }
 
     public static Color of(String hex) {
-        return of(Integer.parseInt(hex.replaceAll("^(0x|#)", ""), 16));
+        String pure = hex.replaceAll("^(0x|#)", "");
+        String rgb = pure.substring(pure.length() - 6);
+        String alpha = pure.substring(0, pure.length() - 6);
+        if (alpha.length() < 2)
+            alpha = "00";
+        return of(Integer.parseInt(rgb, 16))
+                .withAlpha(Integer.parseInt(alpha, 16));
     }
 
     public float alpha01() {

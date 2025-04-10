@@ -6,11 +6,11 @@
   "client": [
     "client.DripParticleMixin",
     "client.FogRendererMixin",
-    "client.GameRendererMixin",
     "client.ItemBlockRenderTypesMixin",
     "client.ItemEntityRendererMixin",
     "client.ItemRendererMixin",
     "client.ItemStackMixin",
+    "client.LevelRendererMixin",
     "client.LocalPlayerMixin",
     "client.MinecraftMixin",
     "client.MouseHandlerMixin",
