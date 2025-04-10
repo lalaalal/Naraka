@@ -19,10 +19,13 @@ public class OreOutlineColorConfiguration extends DynamicConfiguration<Color> {
 
     public OreOutlineColorConfiguration() {
         super("naraka-ore-outline-color", JsonConfigFile::new);
-        addDefaultValue("#minecraft:diamond_ores", new ConfigValue<>(Color.of(0xff0000ff)));
-        addDefaultValue("#minecraft:redstone_ores", new ConfigValue<>(Color.of(0xfff0000)));
-        addDefaultValue("#minecraft:emerald_ores", new ConfigValue<>(Color.of(0xff00ff00)));
-        addDefaultValue("#naraka:nectarium_ores", new ConfigValue<>(Color.of(0xffff00ff)));
+        addDefaultValue("#minecraft:diamond_ores", new ConfigValue<>(Color.of(0xFF49EDD9)));
+        addDefaultValue("#minecraft:redstone_ores", new ConfigValue<>(Color.of(0xFFFF0000)));
+        addDefaultValue("#minecraft:emerald_ores", new ConfigValue<>(Color.of(0xFF16DD63)));
+        addDefaultValue("#minecraft:gold_ores", new ConfigValue<>(Color.of(0xFFFEF55F)));
+        addDefaultValue("#minecraft:iron_ores", new ConfigValue<>(Color.of(0xFFFFFFFF)));
+        addDefaultValue("minecraft:ancient_debris", new ConfigValue<>(Color.of(0xFF644740)));
+        addDefaultValue("#naraka:nectarium_ores", new ConfigValue<>(Color.of(0xFFE494DF)));
     }
 
     @Override
