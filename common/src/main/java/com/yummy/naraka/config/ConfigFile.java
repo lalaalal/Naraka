@@ -23,11 +23,13 @@ public abstract class ConfigFile implements ConfigReader, ConfigWriter {
     }
 
     public Reader createReader() throws IOException {
-        return new FileReader(configFile);
+        Reader reader = new BufferedReader(new FileReader(configFile));
+        reader.mark(0);
+        return reader;
     }
 
     public Writer createWriter() throws IOException {
-        return new FileWriter(configFile);
+        return new BufferedWriter(new FileWriter(configFile));
     }
 
     protected interface Parser<T, R> {

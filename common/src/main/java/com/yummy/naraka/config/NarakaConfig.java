@@ -15,6 +15,7 @@ public class NarakaConfig {
     private static final Set<Configuration> configurations = new HashSet<>();
     public static final NarakaCommonConfig COMMON = register(NarakaCommonConfig::new);
     public static final NarakaClientConfig CLIENT = register(NarakaClientConfig::new);
+    public static final OreOutlineColorConfiguration ORE_COLORS = register(OreOutlineColorConfiguration::new);
 
     private static <T extends Configuration> T register(Supplier<T> provider) {
         T configuration = provider.get();

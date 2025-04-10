@@ -2,7 +2,7 @@ package com.yummy.naraka.config;
 
 import com.yummy.naraka.util.Color;
 
-public class NarakaClientConfig extends Configuration {
+public class NarakaClientConfig extends StaticConfiguration {
     public final ConfigValue<Boolean> showReinforcementValue;
     public final ConfigValue<Boolean> disableNonShaderLonginusRendering;
     public final ConfigValue<Color> afterimageColor;
@@ -13,6 +13,7 @@ public class NarakaClientConfig extends Configuration {
     public final ConfigValue<Float> herobrineScarfWaveSpeed;
     public final ConfigValue<Float> herobrineScarfWaveMaxAngle;
     public final ConfigValue<Float> herobrineScarfWaveCycleModifier;
+    public final ConfigValue<Integer> oreSeeThroughRange;
 
     public NarakaClientConfig() {
         super("naraka-client", PropertiesConfigFile::new);
@@ -26,12 +27,14 @@ public class NarakaClientConfig extends Configuration {
         this.herobrineScarfDefaultRotation = define("herobrine_scarf_default_rotation", 70.0f);
 
         this.herobrineScarfPartitionNumber = define("herobrine_scarf_partition_number", 16)
-                .append("Divide scarf with given number")
-                .append("Bigger value, short wave cycle")
-                .append("!! Editing while playing game may cause crash");
+                .comment("Divide scarf with given number")
+                .comment("Bigger value, short wave cycle")
+                .comment("!! Editing while playing game may cause crash");
         this.herobrineScarfWaveSpeed = define("herobrine_scarf_wave_speed", 0.2f);
         this.herobrineScarfWaveMaxAngle = define("herobrine_scarf_wave_max_angle", 22.5f);
         this.herobrineScarfWaveCycleModifier = define("herobrine_scarf_wave_cycle_modifier", 1.0f)
-                .append("Bigger value, short wave cycle");
+                .comment("Bigger value, short wave cycle");
+
+        this.oreSeeThroughRange = define("ore_see_through_range", 20);
     }
 }
