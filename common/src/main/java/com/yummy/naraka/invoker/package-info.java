@@ -2,7 +2,7 @@
 @FieldsAreNonnullByDefault
 @ParametersAreNonnullByDefault
 
-package com.yummy.naraka.proxy;
+package com.yummy.naraka.invoker;
 
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;

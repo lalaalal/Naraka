@@ -1,10 +1,10 @@
 package com.yummy.naraka.fabric;
 
 import com.yummy.naraka.Platform;
+import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.network.ClientboundNetworkManager;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.ServerboundNetworkManager;
-import com.yummy.naraka.proxy.MethodProxy;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;

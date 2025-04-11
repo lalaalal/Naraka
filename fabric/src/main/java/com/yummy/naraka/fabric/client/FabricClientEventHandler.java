@@ -2,7 +2,7 @@ package com.yummy.naraka.fabric.client;
 
 import com.yummy.naraka.client.event.ClientEventHandler;
 import com.yummy.naraka.client.event.ClientEvents;
-import com.yummy.naraka.proxy.MethodProxy;
+import com.yummy.naraka.invoker.MethodProxy;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;

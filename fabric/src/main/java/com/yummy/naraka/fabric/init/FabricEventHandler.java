@@ -4,7 +4,7 @@ import com.yummy.naraka.event.CreativeModeTabEvents;
 import com.yummy.naraka.event.EventHandler;
 import com.yummy.naraka.event.LootEvents;
 import com.yummy.naraka.event.ServerEvents;
-import com.yummy.naraka.proxy.MethodProxy;
+import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;

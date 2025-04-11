@@ -2,8 +2,8 @@ package com.yummy.naraka.neoforge.init;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.RegistryFactory;
+import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.neoforge.NarakaEventBus;
-import com.yummy.naraka.proxy.MethodProxy;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.neoforge.registries.NewRegistryEvent;

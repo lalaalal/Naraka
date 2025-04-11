@@ -2,7 +2,7 @@ package com.yummy.naraka.fabric.client;
 
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.yummy.naraka.client.init.ShaderRegistry;
-import com.yummy.naraka.proxy.MethodProxy;
+import com.yummy.naraka.invoker.MethodProxy;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.CoreShaderRegistrationCallback;

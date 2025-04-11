@@ -1,9 +1,9 @@
 package com.yummy.naraka.neoforge;
 
+import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.network.ClientboundNetworkManager;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.ServerboundNetworkManager;
-import com.yummy.naraka.proxy.MethodProxy;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;

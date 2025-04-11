@@ -1,6 +1,6 @@
 package com.yummy.naraka.core.registries;
 
-import com.yummy.naraka.proxy.MethodInvoker;
+import com.yummy.naraka.invoker.MethodInvoker;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +10,6 @@ import java.util.Map;
 
 /**
  * Singleton class provides {@link RegistryProxy}<br>
- * Override {@link RegistryProxyProvider#create(ResourceKey)} to create {@linkplain RegistryProxy} by default<br>
  */
 public abstract class RegistryProxyProvider {
     @Nullable
@@ -41,7 +40,6 @@ public abstract class RegistryProxyProvider {
      *
      * @param key Registry key
      * @param <T> Registry type
-     * @return throws exception in this class
      */
     protected abstract <T> RegistryProxy<T> create(ResourceKey<Registry<T>> key);
 

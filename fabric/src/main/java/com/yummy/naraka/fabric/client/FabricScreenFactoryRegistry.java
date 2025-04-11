@@ -1,7 +1,7 @@
 package com.yummy.naraka.fabric.client;
 
 import com.yummy.naraka.client.init.ScreenFactoryRegistry;
-import com.yummy.naraka.proxy.MethodProxy;
+import com.yummy.naraka.invoker.MethodProxy;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screens.MenuScreens;

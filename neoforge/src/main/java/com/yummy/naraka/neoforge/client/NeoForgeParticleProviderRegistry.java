@@ -2,8 +2,8 @@ package com.yummy.naraka.neoforge.client;
 
 import com.yummy.naraka.client.init.ParticleProviderRegistry;
 import com.yummy.naraka.client.particle.ParticleFactory;
+import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.neoforge.NarakaEventBus;
-import com.yummy.naraka.proxy.MethodProxy;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;

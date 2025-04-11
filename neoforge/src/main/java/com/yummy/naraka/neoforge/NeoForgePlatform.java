@@ -1,7 +1,7 @@
 package com.yummy.naraka.neoforge;
 
 import com.yummy.naraka.Platform;
-import com.yummy.naraka.proxy.MethodProxy;
+import com.yummy.naraka.invoker.MethodProxy;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 

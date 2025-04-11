@@ -1,7 +1,7 @@
 package com.yummy.naraka.fabric;
 
 import com.yummy.naraka.Platform;
-import com.yummy.naraka.proxy.MethodProxy;
+import com.yummy.naraka.invoker.MethodProxy;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;

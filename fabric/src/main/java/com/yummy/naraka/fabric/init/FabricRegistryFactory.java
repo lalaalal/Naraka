@@ -1,7 +1,7 @@
 package com.yummy.naraka.fabric.init;
 
 import com.yummy.naraka.core.registries.RegistryFactory;
-import com.yummy.naraka.proxy.MethodProxy;
+import com.yummy.naraka.invoker.MethodProxy;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.minecraft.core.Registry;

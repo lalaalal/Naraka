@@ -1,6 +1,6 @@
 package com.yummy.naraka;
 
-import com.yummy.naraka.proxy.MethodInvoker;
+import com.yummy.naraka.invoker.MethodInvoker;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;

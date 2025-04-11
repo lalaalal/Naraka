@@ -1,7 +1,7 @@
 package com.yummy.naraka.fabric.init;
 
 import com.yummy.naraka.init.EntityAttributeRegistry;
-import com.yummy.naraka.proxy.MethodProxy;
+import com.yummy.naraka.invoker.MethodProxy;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;

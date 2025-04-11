@@ -1,7 +1,7 @@
 package com.yummy.naraka.neoforge.client;
 
 import com.yummy.naraka.client.init.ItemPropertyRegistry;
-import com.yummy.naraka.proxy.MethodProxy;
+import com.yummy.naraka.invoker.MethodProxy;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;

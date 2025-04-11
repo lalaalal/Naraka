@@ -2,7 +2,7 @@ package com.yummy.naraka.fabric.client;
 
 import com.yummy.naraka.client.init.ParticleProviderRegistry;
 import com.yummy.naraka.client.particle.ParticleFactory;
-import com.yummy.naraka.proxy.MethodProxy;
+import com.yummy.naraka.invoker.MethodProxy;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;

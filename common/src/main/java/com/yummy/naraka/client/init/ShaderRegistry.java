@@ -1,7 +1,7 @@
 package com.yummy.naraka.client.init;
 
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.yummy.naraka.proxy.MethodInvoker;
+import com.yummy.naraka.invoker.MethodInvoker;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.ShaderInstance;

@@ -1,4 +1,4 @@
-package com.yummy.naraka.proxy;
+package com.yummy.naraka.invoker;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

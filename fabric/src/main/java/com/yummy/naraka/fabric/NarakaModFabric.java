@@ -3,7 +3,7 @@ package com.yummy.naraka.fabric;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.fabric.init.*;
 import com.yummy.naraka.init.NarakaInitializer;
-import com.yummy.naraka.proxy.MethodInvoker;
+import com.yummy.naraka.invoker.MethodInvoker;
 import com.yummy.naraka.world.NarakaBiomes;
 import net.fabricmc.api.ModInitializer;
 

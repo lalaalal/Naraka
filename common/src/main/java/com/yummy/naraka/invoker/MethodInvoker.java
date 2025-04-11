@@ -1,4 +1,4 @@
-package com.yummy.naraka.proxy;
+package com.yummy.naraka.invoker;
 
 import com.yummy.naraka.NarakaMod;
 import org.jetbrains.annotations.Nullable;
