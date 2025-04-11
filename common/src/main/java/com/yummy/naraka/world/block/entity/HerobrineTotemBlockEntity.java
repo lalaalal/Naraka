@@ -109,7 +109,14 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         BlockPos floorPos = NarakaUtils.findFloor(level, pos);
         Herobrine herobrine = new Herobrine(level, new Vec3(floorPos.getX() + 0.5, floorPos.getY() + 1, floorPos.getZ() + 0.5));
         herobrine.setSpawnPosition(pos);
+        herobrine.setAnimation(AnimationLocations.BLOCKING);
         level.addFreshEntity(herobrine);
+
+        LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
+        lightningBolt.setVisualOnly(true);
+        lightningBolt.setPos(herobrine.position());
+        level.addFreshEntity(lightningBolt);
+
         level.sendParticles(ParticleTypes.CLOUD,
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 15,
                 1, 1, 1, 0.01
@@ -118,11 +125,6 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 30,
                 1, 1, 1, 0.05
         );
-        herobrine.setAnimation(AnimationLocations.BLOCKING);
-        LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
-        lightningBolt.setVisualOnly(true);
-        lightningBolt.setPos(herobrine.position());
-        level.addFreshEntity(lightningBolt);
 
         List<ServerPlayer> players = level.getEntities(EntityTypeTest.forExactClass(ServerPlayer.class), AABB.ofSize(NarakaUtils.vec3(pos), 16, 16, 16), entity -> true);
         for (ServerPlayer player : players)

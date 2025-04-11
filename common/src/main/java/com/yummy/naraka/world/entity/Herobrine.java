@@ -576,8 +576,11 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        if (compound.contains("HibernatedMode"))
+        if (compound.contains("HibernatedMode")) {
             hibernateMode = compound.getBoolean("HibernatedMode");
+            if (hibernateMode)
+                startHibernateMode();
+        }
         NbtUtils.readBlockPos(compound, "SpawnPosition").ifPresent(pos -> spawnPosition = pos);
         NarakaNbtUtils.readCollection(compound, "StigmatizedEntities", () -> stigmatizedEntities, this::readUUID, registryAccess());
         NarakaNbtUtils.readCollection(compound, "WatchingEntities", () -> watchingEntities, this::readUUID, registryAccess());
