@@ -1,18 +1,25 @@
 package com.yummy.naraka.fabric.init;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.core.registries.LazyHolder;
-import com.yummy.naraka.core.registries.RegistryInitializer;
+import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryProxyProvider;
+import com.yummy.naraka.proxy.MethodProxy;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 
 import java.util.function.Supplier;
 
-public final class FabricRegistryInitializer extends RegistryInitializer {
-    public static final FabricRegistryInitializer INSTANCE = new FabricRegistryInitializer();
+public final class FabricRegistryProxyProvider extends RegistryProxyProvider {
+    private static final FabricRegistryProxyProvider INSTANCE = new FabricRegistryProxyProvider();
 
-    private FabricRegistryInitializer() {
+    @SuppressWarnings("unused")
+    @MethodProxy(RegistryProxyProvider.class)
+    public static RegistryProxyProvider getInstance() {
+        return INSTANCE;
+    }
+
+    private FabricRegistryProxyProvider() {
 
     }
 
@@ -34,7 +41,7 @@ public final class FabricRegistryInitializer extends RegistryInitializer {
         }
 
         @Override
-        public <V extends T> LazyHolder<T, V> register(String name, Supplier<V> value) {
+        public <V extends T> HolderProxy<T, V> register(String name, Supplier<V> value) {
             Registry.register(getRegistryOrThrow(), NarakaMod.location(name), value.get());
             return createHolder(name);
         }

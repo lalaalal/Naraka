@@ -8,8 +8,10 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-public class PropertiesConfig extends ConfigFile {
+public class PropertiesConfigFile extends ConfigFile {
     private static final Map<Class<?>, Parser<String, ?>> PARSERS = Map.of(
             Boolean.class, Boolean::parseBoolean,
             Integer.class, Integer::parseInt,
@@ -20,9 +22,9 @@ public class PropertiesConfig extends ConfigFile {
             Color.class, Color::of
     );
 
-    private final Properties cached = new Properties();
+    private final Properties cache = new Properties();
 
-    public PropertiesConfig(String configFileName) {
+    public PropertiesConfigFile(String configFileName) {
         super(configFileName);
     }
 
@@ -33,29 +35,38 @@ public class PropertiesConfig extends ConfigFile {
 
     @Override
     public Reader createReader() throws IOException {
-        cached.clear();
+        cache.clear();
         return super.createReader();
     }
 
     @Override
     public Writer createWriter() throws IOException {
-        cached.clear();
+        cache.clear();
         return super.createWriter();
     }
 
     @Override
+    public Set<String> load(Reader reader) throws IOException {
+        if (cache.isEmpty()) {
+            reader.reset();
+            this.cache.load(reader);
+        }
+        return cache.keySet().stream()
+                .map(Object::toString)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
     public boolean contains(Reader reader, String key) throws IOException {
-        if (cached.isEmpty())
-            this.cached.load(reader);
-        return cached.containsKey(key);
+        load(reader);
+        return cache.containsKey(key);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> void read(Reader reader, String key, NarakaConfig.ConfigValue<T> value) throws IOException {
-        if (cached.isEmpty())
-            this.cached.load(reader);
-        String property = cached.getProperty(key);
+    public <T> void read(Reader reader, String key, StaticConfiguration.ConfigValue<T> value) throws IOException {
+        load(reader);
+        String property = cache.getProperty(key);
         Parser<String, T> parser = (Parser<String, T>) PARSERS.get(value.getType());
         if (property == null || parser == null) {
             NarakaMod.LOGGER.warn("Cannot load config value for key ({}), using default {}", key, value.getDefaultValue());
@@ -65,10 +76,15 @@ public class PropertiesConfig extends ConfigFile {
     }
 
     @Override
-    public <T> void write(Writer writer, String key, NarakaConfig.ConfigValue<T> value) throws IOException {
+    public <T> void write(Writer writer, String key, StaticConfiguration.ConfigValue<T> value) throws IOException {
         for (String comment : value.getComments())
             writer.write("# " + comment + "\n");
         writer.write("# default : " + value.getDefaultValue() + "\n");
         writer.write(key + "=" + value.getValue() + "\n");
+    }
+
+    @Override
+    public void commit(Writer writer) throws IOException {
+        writer.flush();
     }
 }

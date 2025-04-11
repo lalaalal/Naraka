@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  *
  * @param <T> Registry value type
  * @see RegistryProxy#register(ResourceKey, String, Supplier)
- * @see LazyHolder
+ * @see HolderProxy
  */
 public interface RegistryProxy<T> {
     /**
@@ -25,10 +25,10 @@ public interface RegistryProxy<T> {
      * @param <T>   Registry value type
      * @param <V>   Derived registry value type
      * @return Holder for given value
-     * @see LazyHolder
+     * @see HolderProxy
      */
-    static <T, V extends T> LazyHolder<T, V> register(ResourceKey<Registry<T>> key, String name, Supplier<V> value) {
-        return RegistryInitializer.get(key)
+    static <T, V extends T> HolderProxy<T, V> register(ResourceKey<Registry<T>> key, String name, Supplier<V> value) {
+        return RegistryProxyProvider.get(key)
                 .register(name, value);
     }
 
@@ -47,10 +47,10 @@ public interface RegistryProxy<T> {
 
     ResourceKey<Registry<T>> getRegistryKey();
 
-    <V extends T> LazyHolder<T, V> register(String name, Supplier<V> value);
+    <V extends T> HolderProxy<T, V> register(String name, Supplier<V> value);
 
-    default <V extends T> LazyHolder<T, V> createHolder(String name) {
-        return new LazyHolder<>(getRegistryOrThrow(), NarakaMod.location(name));
+    default <V extends T> HolderProxy<T, V> createHolder(String name) {
+        return new HolderProxy<>(getRegistryOrThrow(), NarakaMod.location(name));
     }
 
     default void onRegistrationFinished() {

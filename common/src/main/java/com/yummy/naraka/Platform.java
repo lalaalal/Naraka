@@ -1,26 +1,21 @@
 package com.yummy.naraka;
 
-import com.yummy.naraka.init.NarakaInitializer;
+import com.yummy.naraka.proxy.MethodInvoker;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 
 public abstract class Platform {
     @Nullable
-    private static Platform INSTANCE = null;
+    private static Platform instance = null;
 
     private final ModLoader modLoader;
 
     public static Platform getInstance() {
-        if (INSTANCE == null)
-            throw new IllegalStateException("Platform is not loaded");
-        return INSTANCE;
-    }
-
-    public static void initialize(NarakaInitializer initializer) {
-        if (INSTANCE != null)
-            throw new IllegalStateException("Platform is already loaded");
-        INSTANCE = initializer.getPlatform();
+        if (instance == null)
+            instance = MethodInvoker.of(Platform.class, "getInstance")
+                    .invoke().result(Platform.class);
+        return instance;
     }
 
     protected Platform(ModLoader modLoader) {

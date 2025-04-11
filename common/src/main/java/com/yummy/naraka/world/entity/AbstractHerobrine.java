@@ -4,12 +4,11 @@ import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
-import com.yummy.naraka.world.entity.ai.skill.*;
+import com.yummy.naraka.world.entity.ai.skill.PunchSkill;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,29 +27,13 @@ import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractHerobrine extends SkillUsingMob implements StigmatizingEntity, AfterimageEntity, Enemy {
-    public static final int MAX_WEAKNESS_TICK = 40;
-    public static final String WEAKNESS_ANIMATION = "weakness";
+    public static final int MAX_STAGGERING_TICK = 90;
 
-    public final AnimationState punchAnimationState1 = animationState(AnimationLocations.PUNCH_1);
-    public final AnimationState punchAnimationState2 = animationState(AnimationLocations.PUNCH_2);
-    public final AnimationState punchAnimationState3 = animationState(AnimationLocations.PUNCH_3);
-    public final AnimationState rushAnimationState = animationState(AnimationLocations.RUSH);
-    public final AnimationState throwFireballAnimationState = animationState(AnimationLocations.THROW_NARAKA_FIREBALL);
-    public final AnimationState stigmatizeEntitiesAnimationState = new AnimationState();
-    public final AnimationState blockingSkillAnimationState = animationState(AnimationLocations.BLOCKING);
-    public final AnimationState weaknessAnimationState = new AnimationState();
-
-    protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(this, PunchSkill::new, punchAnimationState1, punchAnimationState2, punchAnimationState3);
-    protected final DashSkill<AbstractHerobrine> dashSkill = registerSkill(this, DashSkill::new);
-    protected final DashAroundSkill<AbstractHerobrine> dashAroundSkill = registerSkill(this, DashAroundSkill::new);
-    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(new RushSkill<>(this, AbstractHerobrine::isNotHerobrine), rushAnimationState);
-    protected final StigmatizeEntitiesSkill<AbstractHerobrine> stigmatizeEntitiesSkill = registerSkill(this, StigmatizeEntitiesSkill::new, stigmatizeEntitiesAnimationState);
-    protected final ThrowFireballSkill throwFireballSkill = registerSkill(new ThrowFireballSkill(this, this::createFireball), throwFireballAnimationState);
-    protected final BlockingSkill blockingSkill = registerSkill(this, BlockingSkill::new, blockingSkillAnimationState);
+    protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(this, PunchSkill::new, AnimationLocations.COMBO_ATTACK_1, AnimationLocations.COMBO_ATTACK_2, AnimationLocations.COMBO_ATTACK_3);
 
     public final boolean isShadow;
 
-    protected int weaknessTickCount = Integer.MAX_VALUE;
+    protected int staggeringTickCount = Integer.MAX_VALUE;
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
@@ -73,29 +56,35 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     protected AbstractHerobrine(EntityType<? extends AbstractHerobrine> entityType, Level level, boolean isShadow) {
         super(entityType, level);
         this.isShadow = isShadow;
-        registerAnimation(WEAKNESS_ANIMATION, weaknessAnimationState);
+        registerAnimation(AnimationLocations.STAGGERING);
         setPersistenceRequired();
     }
 
-    private void updateWeakness() {
-        if (weaknessTickCount == MAX_WEAKNESS_TICK)
-            stopWeakness();
-        if (weaknessTickCount <= MAX_WEAKNESS_TICK)
-            weaknessTickCount += 1;
+    private void updateStaggering() {
+        if (staggeringTickCount == MAX_STAGGERING_TICK)
+            stopStaggering();
+        if (staggeringTickCount <= MAX_STAGGERING_TICK)
+            staggeringTickCount += 1;
     }
 
-    protected void startWeakness() {
-        setAnimation(WEAKNESS_ANIMATION);
-        weaknessTickCount = 0;
+    protected void startStaggering() {
+        if (staggeringTickCount < MAX_STAGGERING_TICK)
+            return;
+        staggeringTickCount = 0;
         skillManager.pause(true);
-        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.WEAKNESS_PREVENT_MOVING);
+        setAnimation(AnimationLocations.STAGGERING);
+        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STAGGERING_PREVENT_MOVING);
     }
 
-    protected void stopWeakness() {
-        setAnimation("idle");
-        weaknessTickCount = Integer.MAX_VALUE;
+    protected void stopStaggering() {
+        setAnimation(AnimationLocations.IDLE);
+        staggeringTickCount = Integer.MAX_VALUE;
         skillManager.resume();
-        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.WEAKNESS_PREVENT_MOVING);
+        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STAGGERING_PREVENT_MOVING);
+    }
+
+    public boolean isStaggering() {
+        return staggeringTickCount < MAX_STAGGERING_TICK;
     }
 
     @Override
@@ -119,7 +108,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
     @Override
     protected void customServerAiStep() {
-        updateWeakness();
+        updateStaggering();
         super.customServerAiStep();
     }
 

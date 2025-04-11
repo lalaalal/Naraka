@@ -3,11 +3,11 @@ package com.yummy.naraka.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.SpearModel;
 import com.yummy.naraka.client.model.SpearOfLonginusModel;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.Spear;
 import net.fabricmc.api.EnvType;
@@ -88,7 +88,7 @@ public class SpearRenderer extends EntityRenderer<Spear> {
     public static void renderNonShaderLonginus(EntityModel<? extends Spear> model, int tickCount, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         VertexConsumer background = buffer.getBuffer(RenderType.entityCutout(NarakaTextures.LONGINUS));
         model.renderToBuffer(poseStack, background, packedLight, OverlayTexture.NO_OVERLAY, 0xff000000);
-        if (NarakaMod.config().disableNonShaderLonginusRendering.getValue())
+        if (NarakaConfig.CLIENT.disableNonShaderLonginusRendering.getValue())
             return;
 
         float tick = tickCount + partialTicks;

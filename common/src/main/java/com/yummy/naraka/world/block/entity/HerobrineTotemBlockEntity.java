@@ -5,7 +5,7 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.Herobrine;
-import com.yummy.naraka.world.entity.ai.skill.BlockingSkill;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.BlockPos;
@@ -118,7 +118,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 30,
                 1, 1, 1, 0.05
         );
-        herobrine.setAnimation(BlockingSkill.NAME);
+        herobrine.setAnimation(AnimationLocations.BLOCKING);
         LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
         lightningBolt.setVisualOnly(true);
         lightningBolt.setPos(herobrine.position());

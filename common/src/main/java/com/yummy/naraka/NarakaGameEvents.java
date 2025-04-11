@@ -1,5 +1,6 @@
 package com.yummy.naraka;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.event.EntityEvents;
 import com.yummy.naraka.event.LootEvents;
 import com.yummy.naraka.event.ServerEvents;
@@ -30,11 +31,9 @@ public final class NarakaGameEvents {
         ServerEvents.SERVER_STARTED.register(NarakaGameEvents::onServerStarted);
         ServerEvents.SERVER_LEVEL_LOAD.register(NarakaGameEvents::onWorldLoad);
         ServerEvents.SERVER_STOPPING.register(NarakaGameEvents::onServerStopping);
-
-        EntityEvents.PLAYER_JOIN.register(NarakaGameEvents::syncPlayerEntityData);
-
         ServerEvents.SERVER_TICK_POST.register(NarakaGameEvents::onEndTick);
 
+        EntityEvents.PLAYER_JOIN.register(NarakaGameEvents::syncPlayerEntityData);
         EntityEvents.LIVING_DEATH.register(NarakaGameEvents::useDeathCount);
 
         LootEvents.MODIFY_LOOT_TABLE.register(NarakaGameEvents::modifyLootTable);
@@ -67,7 +66,7 @@ public final class NarakaGameEvents {
 
     private static void onServerStopping(MinecraftServer server) {
         if (server.isDedicatedServer())
-            NarakaMod.config().stop();
+            NarakaConfig.stop();
     }
 
     private static void onEndTick(MinecraftServer server) {

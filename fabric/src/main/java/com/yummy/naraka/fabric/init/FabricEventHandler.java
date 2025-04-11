@@ -1,6 +1,9 @@
 package com.yummy.naraka.fabric.init;
 
-import com.yummy.naraka.event.*;
+import com.yummy.naraka.event.CreativeModeTabEvents;
+import com.yummy.naraka.event.EventHandler;
+import com.yummy.naraka.event.LootEvents;
+import com.yummy.naraka.event.ServerEvents;
 import com.yummy.naraka.proxy.MethodProxy;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -9,12 +12,11 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.Util;
 import net.minecraft.world.level.ItemLike;
 
 @SuppressWarnings("unused")
-public class FabricEventHandler {
+public final class FabricEventHandler {
     @MethodProxy(EventHandler.class)
     public static void prepare() {
         ServerLifecycleEvents.SERVER_STARTING.register(server -> ServerEvents.SERVER_STARTING.invoker().run(server));
@@ -30,25 +32,15 @@ public class FabricEventHandler {
         });
     }
 
-    @MethodProxy(EventHandler.class)
-    public static Event<CreativeModeTabEvents.ModifyEntries> createModifyTabEntries(ResourceKey<CreativeModeTab> key) {
-        return new ModifyTabEntriesEvent(key);
+    @MethodProxy(CreativeModeTabEvents.class)
+    public static CreativeModeTabEvents.ModifyEntriesEventFactory getModifyEntriesEventFactory() {
+        return key -> Util.make(new CreativeModeTabEvents.ModifyTabEntriesEvent(key), FabricEventHandler::registerFabricModifyEntriesEvent);
     }
 
-    private static class ModifyTabEntriesEvent extends Event<CreativeModeTabEvents.ModifyEntries> {
-        private ModifyTabEntriesEvent(ResourceKey<CreativeModeTab> key) {
-            ItemGroupEvents.modifyEntriesEvent(key).register(entries -> {
-                invoker().modify(new FabricTabEntries(entries));
-            });
-        }
-
-        @Override
-        public CreativeModeTabEvents.ModifyEntries invoker() {
-            return entries -> {
-                for (CreativeModeTabEvents.ModifyEntries listener : listeners)
-                    listener.modify(entries);
-            };
-        }
+    private static void registerFabricModifyEntriesEvent(CreativeModeTabEvents.ModifyTabEntriesEvent modifyTabEntriesEvent) {
+        ItemGroupEvents.modifyEntriesEvent(modifyTabEntriesEvent.key).register(entries -> {
+            modifyTabEntriesEvent.invoker().modify(new FabricTabEntries(entries));
+        });
     }
 
     private record FabricTabEntries(FabricItemGroupEntries entries) implements NarakaCreativeModeTabs.TabEntries {

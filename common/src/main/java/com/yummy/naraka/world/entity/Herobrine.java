@@ -1,6 +1,6 @@
 package com.yummy.naraka.world.entity;
 
-import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.network.NarakaClientboundEventHandler;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
@@ -11,8 +11,8 @@ import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
-import com.yummy.naraka.world.entity.ai.skill.Skill;
-import com.yummy.naraka.world.entity.ai.skill.SummonShadowSkill;
+import com.yummy.naraka.world.entity.ai.skill.*;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import com.yummy.naraka.world.entity.data.LockedHealthHelper;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
@@ -34,7 +34,6 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -57,9 +56,13 @@ public class Herobrine extends AbstractHerobrine {
     public static final int MAX_HURT_DAMAGE_LIMIT = Integer.MAX_VALUE;
     public static final int MAX_ACCUMULATED_DAMAGE_TICK_COUNT = 40;
 
-    public final AnimationState summonShadowAnimationState = new AnimationState();
-
-    protected final SummonShadowSkill summonShadowSkill = registerSkill(this, SummonShadowSkill::new, summonShadowAnimationState);
+    protected final DashSkill<AbstractHerobrine> dashSkill = registerSkill(this, DashSkill::new);
+    protected final DashAroundSkill<AbstractHerobrine> dashAroundSkill = registerSkill(this, DashAroundSkill::new);
+    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(new RushSkill<>(this, AbstractHerobrine::isNotHerobrine), AnimationLocations.RUSH);
+    protected final StigmatizeEntitiesSkill<AbstractHerobrine> stigmatizeEntitiesSkill = registerSkill(this, StigmatizeEntitiesSkill::new);
+    protected final ThrowFireballSkill throwFireballSkill = registerSkill(new ThrowFireballSkill(this, this::createFireball), AnimationLocations.THROW_NARAKA_FIREBALL);
+    protected final BlockingSkill blockingSkill = registerSkill(this, BlockingSkill::new, AnimationLocations.BLOCKING);
+    protected final SummonShadowSkill summonShadowSkill = registerSkill(this, SummonShadowSkill::new);
 
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill);
@@ -104,7 +107,7 @@ public class Herobrine extends AbstractHerobrine {
         phaseManager.addPhaseChangeListener(this::updateUsingSkills);
 
         skillManager.enableOnly(PHASE_1_SKILLS);
-        for (int i = 0; i < NarakaMod.config().herobrineScarfPartitionNumber.getValue(); i++)
+        for (int i = 0; i < NarakaConfig.CLIENT.herobrineScarfPartitionNumber.getValue(); i++)
             scarfWaveSpeedList.add(1f);
     }
 
@@ -173,7 +176,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     public void summonShadowHerobrine() {
-        if (shadowHerobrines.size() >= NarakaMod.config().maxShadowHerobrineSpawn.getValue())
+        if (shadowHerobrines.size() >= NarakaConfig.COMMON.maxShadowHerobrineSpawn.getValue())
             return;
         ShadowHerobrine shadowHerobrine = new ShadowHerobrine(level(), this);
         BlockPos randomPos = NarakaUtils.randomBlockPos(random, blockPosition(), 4);
@@ -194,7 +197,7 @@ public class Herobrine extends AbstractHerobrine {
         if (shadowHerobrine.isDeadOrDying()) {
             shadowHerobrines.clear();
             skillManager.interrupt();
-            startWeakness();
+            startStaggering();
             if (hibernateMode)
                 stopHibernateMode();
         }
@@ -232,13 +235,13 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void updateScarfWaveSpeeds() {
-        int partitionNumber = NarakaMod.config().herobrineScarfPartitionNumber.getValue();
+        int partitionNumber = NarakaConfig.CLIENT.herobrineScarfPartitionNumber.getValue();
         if (scarfWaveSpeedList.size() < partitionNumber) {
             for (int i = 0; i < partitionNumber - scarfWaveSpeedList.size(); i++)
                 scarfWaveSpeedList.add(scarfWaveSpeedList.getLast());
         }
         if (tickCount % 10 == 0) {
-            float maxRotation = NarakaMod.config().herobrineScarfDefaultRotation.getValue();
+            float maxRotation = NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
             float speed = Mth.lerp(prevScarfRotation / maxRotation, 1, 3);
             scarfWaveSpeedList.addFirst(speed);
             scarfWaveSpeedList.removeLast();
@@ -259,7 +262,7 @@ public class Herobrine extends AbstractHerobrine {
             scarfRotationDegree += 5;
         if (scarfRotationDegree > targetRotation)
             scarfRotationDegree -= 3;
-        float maxRotation = NarakaMod.config().herobrineScarfDefaultRotation.getValue();
+        float maxRotation = NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
         entityData.set(SCARF_ROTATION_DEGREE, Mth.clamp(scarfRotationDegree, 0, maxRotation));
     }
 
@@ -284,7 +287,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void collectStigma() {
-        final int waitingTick = NarakaMod.config().herobrineTakingStigmaTick.getValue();
+        final int waitingTick = NarakaConfig.COMMON.herobrineTakingStigmaTick.getValue();
         if (level() instanceof ServerLevel serverLevel) {
             watchingEntities.removeIf(uuid -> {
                 LivingEntity entity = NarakaEntityUtils.findEntityByUUID(serverLevel, uuid, LivingEntity.class);
@@ -343,8 +346,6 @@ public class Herobrine extends AbstractHerobrine {
     public boolean hurt(DamageSource source, float damage) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             return super.hurt(source, damage);
-        if (hibernateMode)
-            return true;
         if (source.getEntity() == this)
             return false;
 
@@ -352,6 +353,8 @@ public class Herobrine extends AbstractHerobrine {
         updateHurtDamageLimit(actualDamage);
         float limitedDamage = Math.min(damage, hurtDamageLimit);
         if (updateHibernateMode(source, getActualDamage(source, limitedDamage)))
+            return true;
+        if (hibernateMode)
             return true;
 
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
@@ -383,13 +386,13 @@ public class Herobrine extends AbstractHerobrine {
                     Vec3 originalHerobrinePosition = position();
                     this.setPos(shadowHerobrine.position());
                     shadowHerobrine.setPos(originalHerobrinePosition);
-                    shadowHerobrine.startWeakness();
+                    shadowHerobrine.startStaggering();
                 });
     }
 
     private boolean updateHibernateMode(DamageSource source, float actualDamage) {
         if (source.getDirectEntity() instanceof NarakaFireball fireball && !fireball.hasTarget()) {
-            startWeakness();
+            startStaggering();
             if (hibernateMode)
                 stopHibernateMode();
             return true;
@@ -417,14 +420,14 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private double correctRatio(double ratio) {
-        final double scale = NarakaMod.config().herobrineHurtLimitCalculationRatioModifier.getValue();
+        final double scale = NarakaConfig.COMMON.herobrineHurtLimitCalculationRatioModifier.getValue();
         if (ratio > 5)
             ratio = NarakaUtils.log(4, ratio - 4) + 5;
         return Math.max(ratio * scale, 1.5);
     }
 
     private int calculateMaxHurtCount(double ratio) {
-        final double scale = NarakaMod.config().herobrineMaxHurtCountCalculationModifier.getValue();
+        final double scale = NarakaConfig.COMMON.herobrineMaxHurtCountCalculationModifier.getValue();
         return (int) Math.floor(6 * Math.pow(0.5, (ratio * scale) - 3) + 4);
     }
 
@@ -502,9 +505,9 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void updateHibernateModeOnTargetSurvivedFromFireball(LivingEntity target, float damage) {
-        if (getPhase() == 1 && hibernateMode && damage >= 66 && target.isAlive()) {
+        if (target != this && getPhase() == 1 && hibernateMode && damage >= 66 && target.isAlive()) {
             stopHibernateMode();
-            startWeakness();
+            startStaggering();
         }
     }
 

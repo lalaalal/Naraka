@@ -1,9 +1,13 @@
 package com.yummy.naraka.neoforge.init;
 
-import com.yummy.naraka.event.*;
+import com.yummy.naraka.event.CreativeModeTabEvents;
+import com.yummy.naraka.event.EventHandler;
+import com.yummy.naraka.event.LootEvents;
+import com.yummy.naraka.event.ServerEvents;
 import com.yummy.naraka.neoforge.NarakaEventBus;
 import com.yummy.naraka.proxy.MethodProxy;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
+import net.minecraft.Util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -44,27 +48,17 @@ public final class NeoForgeEventHandler implements NarakaEventBus {
         });
     }
 
-    @MethodProxy(EventHandler.class)
-    public static Event<CreativeModeTabEvents.ModifyEntries> createModifyTabEntries(ResourceKey<CreativeModeTab> key) {
-        return new ModifyTabEntriesEvent(key);
+    @MethodProxy(CreativeModeTabEvents.class)
+    public static CreativeModeTabEvents.ModifyEntriesEventFactory getModifyEntriesEventFactory() {
+        return key -> Util.make(new CreativeModeTabEvents.ModifyTabEntriesEvent(key), NeoForgeEventHandler::registerNeoForgeBuildCreativeModeTabEvent);
     }
 
-    public static class ModifyTabEntriesEvent extends Event<CreativeModeTabEvents.ModifyEntries> {
-        public ModifyTabEntriesEvent(ResourceKey<CreativeModeTab> key) {
-            NARAKA_BUS.addListener(BuildCreativeModeTabContentsEvent.class, event -> {
-                if (event.getTabKey().equals(key)) {
-                    invoker().modify(new NeoForgeTabEntries(event));
-                }
-            });
-        }
-
-        @Override
-        public CreativeModeTabEvents.ModifyEntries invoker() {
-            return entries -> {
-                for (CreativeModeTabEvents.ModifyEntries listener : listeners)
-                    listener.modify(entries);
-            };
-        }
+    private static void registerNeoForgeBuildCreativeModeTabEvent(CreativeModeTabEvents.ModifyTabEntriesEvent modifyTabEntriesEvent) {
+        NARAKA_BUS.addListener(BuildCreativeModeTabContentsEvent.class, event -> {
+            if (event.getTabKey().equals(modifyTabEntriesEvent.key)) {
+                modifyTabEntriesEvent.invoker().modify(new NeoForgeTabEntries(event));
+            }
+        });
     }
 
     private record NeoForgeTabEntries(BuildCreativeModeTabContentsEvent event)

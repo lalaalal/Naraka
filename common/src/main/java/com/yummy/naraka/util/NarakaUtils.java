@@ -21,7 +21,7 @@ public class NarakaUtils {
     public static void sphere(BoundingBox box, float size, PositionConsumer consumer) {
         float xRadius = (float) (box.maxX() - box.minX() + 1) / 2;
         float zRadius = (float) (box.maxZ() - box.minZ() + 1) / 2;
-        float yRadius = (float) (box.maxY() - box.minZ() + 1) / 2;
+        float yRadius = (float) (box.maxY() - box.minY() + 1) / 2;
         float centerX = box.minX() + xRadius;
         float centerZ = box.minZ() + zRadius;
         float centerY = box.minY() + yRadius;

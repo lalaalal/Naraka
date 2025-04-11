@@ -6,7 +6,7 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryFactory;
-import com.yummy.naraka.core.registries.RegistryInitializer;
+import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.event.EventHandler;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.network.NarakaNetworks;
@@ -47,13 +47,12 @@ public final class NarakaMod {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static void initialize(NarakaInitializer initializer) {
-        Platform.initialize(initializer);
+        Platform.getInstance();
         EventHandler.prepare();
-        RegistryInitializer.initialize(initializer);
+        RegistryProxyProvider.initialize();
+        NarakaConfig.initialize();
 
-        NarakaConfig.load();
-
-        RegistryFactory.initialize(initializer);
+        RegistryFactory.initialize();
         NarakaRegistries.initialize();
 
         NarakaCriteriaTriggers.initialize();
@@ -98,16 +97,12 @@ public final class NarakaMod {
         NarakaNetworks.initialize();
     }
 
-    public static NarakaConfig config() {
-        return NarakaConfig.INSTANCE;
-    }
-
     public static ResourceLocation mcLocation(String path) {
         return ResourceLocation.withDefaultNamespace(path);
     }
 
     /**
-     * Returns mod's resource location
+     * Returns mod's resource animationLocation
      *
      * @param path Resource path
      * @return {@linkplain ResourceLocation} with namespace {@linkplain #MOD_ID}

@@ -1,8 +1,8 @@
 package com.yummy.naraka.world.structure.piece;
 
 import com.yummy.naraka.core.registries.NarakaRegistries;
-import com.yummy.naraka.core.registries.RegistryInitializer;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import net.minecraft.core.Holder;
 
 public class NarakaStructurePieceFactories {
@@ -16,7 +16,7 @@ public class NarakaStructurePieceFactories {
     }
 
     public static void initialize() {
-        RegistryInitializer.get(NarakaRegistries.Keys.STRUCTURE_PIECE_FACTORY)
+        RegistryProxyProvider.get(NarakaRegistries.Keys.STRUCTURE_PIECE_FACTORY)
                 .onRegistrationFinished();
     }
 }

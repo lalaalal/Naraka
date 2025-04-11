@@ -1,8 +1,8 @@
 package com.yummy.naraka.sounds;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.core.registries.RegistryInitializer;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -20,7 +20,7 @@ public class NarakaSoundEvents {
     }
 
     public static void initialize() {
-        RegistryInitializer.get(Registries.SOUND_EVENT)
+        RegistryProxyProvider.get(Registries.SOUND_EVENT)
                 .onRegistrationFinished();
     }
 }

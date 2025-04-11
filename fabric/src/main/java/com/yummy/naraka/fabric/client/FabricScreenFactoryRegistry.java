@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 @Environment(EnvType.CLIENT)
-public class FabricScreenFactoryRegistry {
+public final class FabricScreenFactoryRegistry {
     @MethodProxy(ScreenFactoryRegistry.class)
     public static <M extends AbstractContainerMenu, S extends AbstractContainerScreen<M>> void register(Supplier<MenuType<M>> menu, MenuScreens.ScreenConstructor<M, S> constructor) {
         MenuScreens.register(menu.get(), constructor);

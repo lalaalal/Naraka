@@ -1,5 +1,6 @@
 package com.yummy.naraka.proxy;
 
+import com.yummy.naraka.NarakaMod;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -78,33 +79,34 @@ public class MethodInvoker {
         return builder.toString();
     }
 
-    private static Method getProxyMethod(Class<?> testType, String methodName) {
-        String identifier = getKey(testType, methodName);
+    private static Method getProxyMethod(Class<?> invokerType, String methodName) {
+        String identifier = getKey(invokerType, methodName);
         if (CACHE.containsKey(identifier))
             return CACHE.get(identifier);
 
         for (Class<?> type : SEARCHING_CLASSES) {
-            final Method method = searchTargetMethod(type.getMethods(), testType, methodName);
+            final Method method = searchTargetMethod(type.getMethods(), invokerType, methodName);
             if (method != null)
                 return CACHE.computeIfAbsent(identifier, key -> method);
         }
-        throw new IllegalStateException("Cannot find any proxy method for type " + testType.getName());
+        throw new IllegalStateException("Cannot find any proxy method for type " + invokerType.getName());
     }
 
-    private static Method getProxyMethod(Class<?> testType, String methodName, Class<?>[] parameterTypes) {
-        String identifier = getKey(testType, methodName, parameterTypes);
+    private static Method getProxyMethod(Class<?> invokerType, String methodName, Class<?>[] parameterTypes) {
+        String identifier = getKey(invokerType, methodName, parameterTypes);
         if (CACHE.containsKey(identifier))
             return CACHE.get(identifier);
 
         for (Class<?> type : SEARCHING_CLASSES) {
             try {
                 final Method method = type.getMethod(methodName, parameterTypes);
-                return CACHE.computeIfAbsent(identifier, key -> method);
+                if (checkAnnotation(method, invokerType))
+                    return CACHE.computeIfAbsent(identifier, key -> method);
             } catch (NoSuchMethodException ignored) {
 
             }
         }
-        throw new IllegalStateException("Cannot find any proxy method for type " + testType.getName());
+        throw new IllegalStateException("Cannot find any proxy method for type " + invokerType.getName());
     }
 
     @Nullable
@@ -137,6 +139,8 @@ public class MethodInvoker {
 
     private static Object invokeMethod(Method method, Object... parameters) {
         try {
+            if (NarakaMod.isModLoaded)
+                NarakaMod.LOGGER.warn("Using method invoker after mod loaded");
             return method.invoke(null, parameters);
         } catch (IllegalAccessException exception) {
             throw new RuntimeException(exception);

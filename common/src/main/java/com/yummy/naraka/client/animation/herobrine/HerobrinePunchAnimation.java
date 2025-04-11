@@ -18,9 +18,9 @@ import net.minecraft.client.animation.KeyframeAnimations;
 @Environment(EnvType.CLIENT)
 public class HerobrinePunchAnimation {
         public static void initialize() {
-                AnimationMapper.register(AnimationLocations.PUNCH_1, PUNCH_1);
-                AnimationMapper.register(AnimationLocations.PUNCH_2, PUNCH_2);
-                AnimationMapper.register(AnimationLocations.PUNCH_3, PUNCH_3);
+                AnimationMapper.register(AnimationLocations.COMBO_ATTACK_1, PUNCH_1);
+                AnimationMapper.register(AnimationLocations.COMBO_ATTACK_2, PUNCH_2);
+                AnimationMapper.register(AnimationLocations.COMBO_ATTACK_3, PUNCH_3);
     }
 
     public static final AnimationDefinition PUNCH_1 = AnimationDefinition.Builder.withLength(1.375F)

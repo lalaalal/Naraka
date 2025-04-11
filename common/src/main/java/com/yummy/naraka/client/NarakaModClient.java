@@ -12,7 +12,6 @@ import com.yummy.naraka.client.init.*;
 import com.yummy.naraka.client.particle.EbonyParticle;
 import com.yummy.naraka.client.particle.NectariumParticle;
 import com.yummy.naraka.client.particle.SoulParticle;
-import com.yummy.naraka.client.renderer.BlockTransparentRenderer;
 import com.yummy.naraka.client.renderer.CustomRenderManager;
 import com.yummy.naraka.client.renderer.SpearItemRenderer;
 import com.yummy.naraka.client.renderer.blockentity.*;
@@ -21,7 +20,6 @@ import com.yummy.naraka.client.renderer.entity.NarakaFireballRenderer;
 import com.yummy.naraka.client.renderer.entity.SpearRenderer;
 import com.yummy.naraka.client.renderer.entity.StardustRenderer;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
-import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
@@ -44,7 +42,6 @@ public final class NarakaModClient {
 
         initializer.registerResourceReloadListener("spear_item_renderer", () -> SpearItemRenderer.INSTANCE);
         initializer.registerResourceReloadListener("custom_renderer", () -> NarakaBlockEntityItemRenderer.INSTANCE);
-        initializer.registerResourceReloadListener("block_transparent_renderer", () -> BlockTransparentRenderer.INSTANCE);
 
         registerEntityRenderers();
         registerBlockEntityRenderers();
@@ -60,7 +57,6 @@ public final class NarakaModClient {
         initializeItems();
         initializeBlocks();
 
-        NarakaNetworks.initializeClient();
         NarakaClientEvents.initialize();
 
         NarakaMod.isModLoaded = true;

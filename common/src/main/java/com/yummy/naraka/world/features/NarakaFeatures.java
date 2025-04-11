@@ -1,8 +1,8 @@
 package com.yummy.naraka.world.features;
 
-import com.yummy.naraka.core.registries.LazyHolder;
-import com.yummy.naraka.core.registries.RegistryInitializer;
+import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
@@ -10,14 +10,14 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import java.util.function.Supplier;
 
 public class NarakaFeatures {
-    public static final LazyHolder<Feature<?>, OrePillarFeature> ORE_PILLAR = register("ore_pillar", OrePillarFeature::new);
+    public static final HolderProxy<Feature<?>, OrePillarFeature> ORE_PILLAR = register("ore_pillar", OrePillarFeature::new);
 
-    private static <C extends FeatureConfiguration, F extends Feature<C>> LazyHolder<Feature<?>, F> register(String name, Supplier<F> feature) {
+    private static <C extends FeatureConfiguration, F extends Feature<C>> HolderProxy<Feature<?>, F> register(String name, Supplier<F> feature) {
         return RegistryProxy.register(Registries.FEATURE, name, feature);
     }
 
     public static void initialize() {
-        RegistryInitializer.get(Registries.FEATURE)
+        RegistryProxyProvider.get(Registries.FEATURE)
                 .onRegistrationFinished();
     }
 }

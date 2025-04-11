@@ -31,8 +31,12 @@ public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider 
         getOrCreateTagBuilder(NarakaBlockTags.NECTARIUM_ORES)
                 .add(NarakaBlocks.NECTARIUM_ORE.get())
                 .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
+        getOrCreateTagBuilder(NarakaBlockTags.AMETHYST_ORES)
+                .add(NarakaBlocks.AMETHYST_ORE.get())
+                .add(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
         getOrCreateTagBuilder(ConventionalTags.Blocks.ORES)
-                .addTag(NarakaBlockTags.NECTARIUM_ORES);
+                .addTag(NarakaBlockTags.NECTARIUM_ORES)
+                .addTag(NarakaBlockTags.AMETHYST_ORES);
 
         getOrCreateTagBuilder(BlockTags.FIRE)
                 .add(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get());

@@ -1,34 +1,36 @@
 package com.yummy.naraka.neoforge.init;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.core.registries.LazyHolder;
-import com.yummy.naraka.core.registries.RegistryInitializer;
+import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryProxyProvider;
+import com.yummy.naraka.neoforge.NarakaEventBus;
+import com.yummy.naraka.proxy.MethodProxy;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Function;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
-public final class NeoForgeRegistryInitializer extends RegistryInitializer {
-    @Nullable
-    private static NeoForgeRegistryInitializer INSTANCE;
+public final class NeoForgeRegistryProxyProvider extends RegistryProxyProvider implements NarakaEventBus {
+    private static final NeoForgeRegistryProxyProvider INSTANCE = new NeoForgeRegistryProxyProvider();
 
-    private final IEventBus bus;
-    private final Function<ResourceKey<? extends Registry<?>>, Registry<?>> narakaRegistryProvider;
+    private final Map<ResourceKey<? extends Registry<?>>, Registry<?>> registries = new HashMap<>();
 
-    public static NeoForgeRegistryInitializer getInstance(IEventBus bus, Function<ResourceKey<? extends Registry<?>>, Registry<?>> narakaRegistryProvider) {
-        if (INSTANCE == null)
-            INSTANCE = new NeoForgeRegistryInitializer(bus, narakaRegistryProvider);
+    @SuppressWarnings("unused")
+    @MethodProxy(RegistryProxyProvider.class)
+    public static NeoForgeRegistryProxyProvider getInstance() {
         return INSTANCE;
     }
 
-    public NeoForgeRegistryInitializer(IEventBus bus, Function<ResourceKey<? extends Registry<?>>, Registry<?>> narakaRegistryProvider) {
-        this.bus = bus;
-        this.narakaRegistryProvider = narakaRegistryProvider;
+    public static <T> void addNarakaRegistry(ResourceKey<Registry<T>> key, Registry<T> registry) {
+        INSTANCE.registries.put(key, registry);
+    }
+
+    private NeoForgeRegistryProxyProvider() {
+
     }
 
     @Override
@@ -48,7 +50,7 @@ public final class NeoForgeRegistryInitializer extends RegistryInitializer {
         public Registry<T> getRegistry() {
             Registry<T> result = RegistryProxy.super.getRegistry();
             if (result == null)
-                return (Registry<T>) narakaRegistryProvider.apply(registry.getRegistryKey());
+                return (Registry<T>) registries.get(getRegistryKey());
             return result;
         }
 
@@ -59,14 +61,14 @@ public final class NeoForgeRegistryInitializer extends RegistryInitializer {
         }
 
         @Override
-        public <V extends T> LazyHolder<T, V> register(String name, Supplier<V> value) {
+        public <V extends T> HolderProxy<T, V> register(String name, Supplier<V> value) {
             registry.register(name, value);
             return createHolder(name);
         }
 
         @Override
         public void onRegistrationFinished() {
-            registry.register(bus);
+            registry.register(NARAKA_BUS);
         }
     }
 }

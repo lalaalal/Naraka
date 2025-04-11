@@ -2,7 +2,7 @@ package com.yummy.naraka.world.item.reinforcement;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.util.NarakaItemUtils;
@@ -117,7 +117,7 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
         if (value > 0) {
             Component reinforcementComponent = Component.translatable(LanguageKey.REINFORCEMENT_KEY, value)
                     .withStyle(ChatFormatting.YELLOW);
-            if (NarakaMod.config().showReinforcementValue.getValue())
+            if (NarakaConfig.CLIENT.showReinforcementValue.getValue())
                 appender.accept(reinforcementComponent);
 
             for (Holder<ReinforcementEffect> effect : effects) {
@@ -134,8 +134,8 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Reinforcement that)) return false;
-        return value == that.value && Objects.equals(effects, that.effects);
+        if (!(o instanceof Reinforcement(int value1, HolderSet<ReinforcementEffect> effects1))) return false;
+        return value == value1 && Objects.equals(effects, effects1);
     }
 
     @Override

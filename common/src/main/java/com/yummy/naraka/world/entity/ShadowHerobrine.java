@@ -42,10 +42,10 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
     protected ShadowHerobrine(EntityType<? extends AbstractHerobrine> entityType, Level level) {
         super(entityType, level, true);
-        skillManager.enableOnly(List.of(punchSkill));
         punchSkill.setMaxLinkCount(3);
         punchSkill.changeCooldown(60);
         punchSkill.setStunTarget(false);
+        punchSkill.setTraceTarget(false);
     }
 
     public ShadowHerobrine(Level level, Herobrine herobrine) {
@@ -61,11 +61,21 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     @Override
+    protected void customServerAiStep() {
+        super.customServerAiStep();
+        if ((herobrine = getHerobrine()) != null && herobrine.isUsingSkill())
+            skillManager.pause(false);
+        else
+            skillManager.resume();
+    }
+
+    @Override
     public boolean canBeHitByProjectile() {
         return false;
     }
 
-    private @Nullable Herobrine getHerobrine() {
+    @Nullable
+    private Herobrine getHerobrine() {
         if (herobrineUUID == null)
             return null;
         if (herobrine == null && level() instanceof ServerLevel serverLevel)
@@ -96,16 +106,19 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
     @Override
     public void stigmatizeEntity(LivingEntity target) {
-        if (punchSkill.getLinkedCount() == 1) {
-            Stigma stigma = StigmaHelper.get(target);
-            if (stigma.value() < 1)
-                return;
-            StigmaHelper.removeStigma(target);
-            level().playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.HOSTILE);
-            target.hurt(NarakaDamageSources.stigma(this), 6 * stigma.value());
-            if ((herobrine = getHerobrine()) != null)
-                herobrine.summonShadowHerobrine();
-        }
+        Stigma stigma = StigmaHelper.get(target);
+        if (stigma.value() < 1)
+            return;
+        StigmaHelper.removeStigma(target);
+        level().playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.HOSTILE);
+        target.hurt(NarakaDamageSources.stigma(this), 6 * stigma.value());
+        if ((herobrine = getHerobrine()) != null)
+            herobrine.summonShadowHerobrine();
+    }
+
+    @Override
+    public float getAttackDamage() {
+        return super.getAttackDamage();
     }
 
     @Override
@@ -134,7 +147,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
             return super.hurt(source, amount);
         if ((herobrine = getHerobrine()) != null)
             amount = Math.min(amount, getHurtDamageLimit());
-        if (weaknessTickCount < MAX_WEAKNESS_TICK)
+        if (staggeringTickCount < MAX_STAGGERING_TICK)
             return false;
         return super.hurt(source, amount);
     }

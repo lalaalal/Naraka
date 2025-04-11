@@ -2,9 +2,10 @@ package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.Platform;
-import com.yummy.naraka.core.registries.LazyHolder;
-import com.yummy.naraka.core.registries.RegistryInitializer;
+import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.CreativeModeTabEvents;
 import com.yummy.naraka.mixin.accessor.CreativeModeTabsAccessor;
@@ -24,30 +25,30 @@ import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
 public class NarakaCreativeModeTabs {
-    public static final LazyHolder<CreativeModeTab, CreativeModeTab> NARAKA_TAB = register("naraka", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
+    public static final HolderProxy<CreativeModeTab, CreativeModeTab> NARAKA_TAB = register("naraka", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
             .title(Component.translatable(LanguageKey.ITEM_GROUP_NARAKA))
             .icon(() -> NarakaItems.STIGMA_ROD.get().getDefaultInstance())
             .displayItems(NarakaCreativeModeTabs::createNarakaTab)
     );
-    public static final LazyHolder<CreativeModeTab, CreativeModeTab> SOUL_MATERIALS_TAB = register("soul_materials", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
+    public static final HolderProxy<CreativeModeTab, CreativeModeTab> SOUL_MATERIALS_TAB = register("soul_materials", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
             .title(Component.translatable(LanguageKey.ITEM_GROUP_SOUL_MATERIALS))
             .icon(() -> NarakaItems.EBONY_SWORD.get().getDefaultInstance())
             .displayItems(NarakaCreativeModeTabs::createSoulMaterialsTab)
     );
-    public static final LazyHolder<CreativeModeTab, CreativeModeTab> NARAKA_TEST_TAB = registerOnlyDev("naraka_test", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
+    public static final HolderProxy<CreativeModeTab, CreativeModeTab> NARAKA_TEST_TAB = registerOnlyDev("naraka_test", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
             .title(Component.translatable(LanguageKey.ITEM_GROUP_TEST))
             .icon(() -> NarakaItems.SPEAR_ITEM.get().getDefaultInstance())
             .displayItems(NarakaCreativeModeTabs::createNarakaTestTab)
     );
 
-    private static LazyHolder<CreativeModeTab, CreativeModeTab> register(String name, CreativeModeTab.Builder builder) {
+    private static HolderProxy<CreativeModeTab, CreativeModeTab> register(String name, CreativeModeTab.Builder builder) {
         return RegistryProxy.register(Registries.CREATIVE_MODE_TAB, name, builder::build);
     }
 
-    private static LazyHolder<CreativeModeTab, CreativeModeTab> registerOnlyDev(String name, CreativeModeTab.Builder builder) {
-        if (Platform.getInstance().isDevelopmentEnvironment() || NarakaMod.config().showTestCreativeModeTab.getValue())
+    private static HolderProxy<CreativeModeTab, CreativeModeTab> registerOnlyDev(String name, CreativeModeTab.Builder builder) {
+        if (Platform.getInstance().isDevelopmentEnvironment() || NarakaConfig.COMMON.showTestCreativeModeTab.getValue())
             return RegistryProxy.register(Registries.CREATIVE_MODE_TAB, name, builder::build);
-        return new LazyHolder<>(BuiltInRegistries.CREATIVE_MODE_TAB, NarakaMod.location(name));
+        return new HolderProxy<>(BuiltInRegistries.CREATIVE_MODE_TAB, NarakaMod.location(name));
     }
 
     public static void initialize() {
@@ -57,7 +58,7 @@ public class NarakaCreativeModeTabs {
         CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.ingredients(), NarakaCreativeModeTabs::modifyIngredientsTab);
         CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.spawnEggs(), NarakaCreativeModeTabs::modifySpawnEggsTab);
 
-        RegistryInitializer.get(Registries.CREATIVE_MODE_TAB)
+        RegistryProxyProvider.get(Registries.CREATIVE_MODE_TAB)
                 .onRegistrationFinished();
     }
 

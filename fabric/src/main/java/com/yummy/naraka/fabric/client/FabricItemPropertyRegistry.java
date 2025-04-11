@@ -11,7 +11,7 @@ import net.minecraft.world.level.ItemLike;
 
 @SuppressWarnings("unused")
 @Environment(EnvType.CLIENT)
-public class FabricItemPropertyRegistry {
+public final class FabricItemPropertyRegistry {
     @MethodProxy(ItemPropertyRegistry.class)
     public static void register(ItemLike item, ResourceLocation id, ClampedItemPropertyFunction function) {
         ItemProperties.register(item.asItem(), id, function);

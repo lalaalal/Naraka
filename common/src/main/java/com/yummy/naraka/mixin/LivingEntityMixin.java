@@ -55,6 +55,16 @@ public abstract class LivingEntityMixin extends Entity {
             EntityDataHelper.removeEntityData(naraka$living());
     }
 
+    /**
+     * Using {@linkplain Float#MAX_VALUE} for damage may occur setting health as Nan!
+     */
+    @ModifyArg(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setHealth(F)V"))
+    public float fixNanHealth(float original) {
+        if (Float.isNaN(original))
+            return 0;
+        return original;
+    }
+
     @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V"))
     public float increaseSpeedInLiquid(float scale) {
         if (NarakaItemUtils.canApplyFasterLiquidSwimming(naraka$living())) {

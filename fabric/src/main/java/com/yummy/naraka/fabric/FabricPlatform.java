@@ -1,12 +1,19 @@
 package com.yummy.naraka.fabric;
 
 import com.yummy.naraka.Platform;
+import com.yummy.naraka.proxy.MethodProxy;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;
 
 public final class FabricPlatform extends Platform {
-    public static final FabricPlatform INSTANCE = new FabricPlatform();
+    private static final FabricPlatform INSTANCE = new FabricPlatform();
+
+    @SuppressWarnings("unused")
+    @MethodProxy(Platform.class)
+    public static Platform getInstance() {
+        return INSTANCE;
+    }
 
     private FabricPlatform() {
         super(ModLoader.FABRIC);
