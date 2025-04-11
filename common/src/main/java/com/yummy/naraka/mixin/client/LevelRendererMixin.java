@@ -59,11 +59,14 @@ public abstract class LevelRendererMixin {
         NarakaUtils.sphere(box, 1, pos -> {
             BlockState state = level.getBlockState(pos);
             if (state.is(ConventionalTags.Blocks.ORES)) {
+                Color color = NarakaConfig.ORE_COLORS.getColor(state);
+                if (color.alpha() == 0)
+                    return;
+                outlineBufferSource.setColor(color.red(), color.green(), color.blue(), color.alpha());
+
                 poseStack.pushPose();
                 poseStack.translate(pos.getX() - cameraPosition.x, pos.getY() - cameraPosition.y, pos.getZ() - cameraPosition.z);
 
-                Color color = NarakaConfig.ORE_COLORS.getColor(state);
-                outlineBufferSource.setColor(color.red(), color.green(), color.blue(), color.alpha());
 
                 RenderType renderType = RenderType.outline(InventoryMenu.BLOCK_ATLAS);
                 VertexConsumer vertexConsumer = outlineBufferSource.getBuffer(renderType);

@@ -16,9 +16,11 @@ public class OreOutlineColorConfiguration extends DynamicConfiguration<Color> {
 
     private final Map<TagKey<Block>, Color> tagMappings = new HashMap<>();
     private final Map<ResourceKey<Block>, Color> blockMappings = new HashMap<>();
+    private Color defaultColor = DEFAULT_COLOR;
 
     public OreOutlineColorConfiguration() {
         super("naraka-ore-outline-color", JsonConfigFile::new);
+        addDefaultValue("default_color", new ConfigValue<>(DEFAULT_COLOR));
         addDefaultValue("#minecraft:diamond_ores", new ConfigValue<>(Color.of(0xFF49EDD9)));
         addDefaultValue("#minecraft:redstone_ores", new ConfigValue<>(Color.of(0xFFFF0000)));
         addDefaultValue("#minecraft:emerald_ores", new ConfigValue<>(Color.of(0xFF16DD63)));
@@ -39,7 +41,9 @@ public class OreOutlineColorConfiguration extends DynamicConfiguration<Color> {
         tagMappings.clear();
         blockMappings.clear();
         configurations.forEach((key, configValue) -> {
-            if (key.startsWith("#")) {
+            if (key.equals("default_color")) {
+                defaultColor = configValue.getValue();
+            } else if (key.startsWith("#")) {
                 TagKey<Block> tag = TagKey.create(Registries.BLOCK, ResourceLocation.parse(key.substring(1)));
                 tagMappings.put(tag, configValue.getValue());
             } else {
@@ -58,6 +62,6 @@ public class OreOutlineColorConfiguration extends DynamicConfiguration<Color> {
             if (blockState.is(blockKey))
                 return blockMappings.get(blockKey);
         }
-        return DEFAULT_COLOR;
+        return defaultColor;
     }
 }
