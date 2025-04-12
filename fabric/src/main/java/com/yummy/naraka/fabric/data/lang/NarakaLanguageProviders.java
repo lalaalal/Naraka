@@ -51,6 +51,10 @@ public class NarakaLanguageProviders {
         add(LanguageKey.ITEM_GROUP_NARAKA, "Naraka", "Naraka");
         add(LanguageKey.ITEM_GROUP_SOUL_MATERIALS, "Soul Materials", "영혼 재료");
         add(LanguageKey.ITEM_GROUP_TEST, "Naraka Test", "나락! 테스트");
+
+        add(LanguageKey.KEY_CATEGORIES_NARAKA, "Naraka", "Naraka");
+        add(LanguageKey.KEY_TOGGLE_ORE_SEE_THROUGH, "Toggle Ore See Through", "광물 투시 켜기/끄기");
+
         add("container.soul_crafting", "Soul Crafter", "영혼 세공기");
         add(LanguageKey.REINFORCEMENT_KEY, "Reinforcement: %d", "강화: %d");
         add(LanguageKey.BLESSED_KEY, "Blessed", "축복받음");
@@ -323,7 +327,7 @@ public class NarakaLanguageProviders {
     }
 
     public void addTooltip(Supplier<? extends Block> block, String... translations) {
-        add(LanguageKey.tooltipKey(block.get()), translations);
+        add(LanguageKey.tooltip(block.get()), translations);
     }
 
     public void addEntityType(Supplier<? extends EntityType<?>> entityType, String... translations) {
@@ -358,7 +362,7 @@ public class NarakaLanguageProviders {
     }
 
     public void addReinforcementEffect(Holder<ReinforcementEffect> effect, String... translations) {
-        add(LanguageKey.reinforcementEffectKey(effect), translations);
+        add(LanguageKey.reinforcementEffect(effect), translations);
     }
 
     private class LanguageProvider extends FabricLanguageProvider {

@@ -15,6 +15,10 @@ public final class LanguageKey {
     public static final String ITEM_GROUP_TEST = itemGroup("naraka.test");
     public static final String ITEM_GROUP_SOUL_MATERIALS = itemGroup("naraka.soul_materials");
 
+    public static final String KEY_CATEGORIES_NARAKA = keyMapping("naraka");
+
+    public static final String KEY_TOGGLE_ORE_SEE_THROUGH = keyMapping("naraka.toggle_ore_see_through");
+
     public static final String PURIFIED_SOUL_UPGRADE_KEY = Util.makeDescriptionId("upgrade", NarakaMod.location("purified_soul_upgrade"));
     public static final String PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.applies_to"));
     public static final String PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.ingredients"));
@@ -29,7 +33,7 @@ public final class LanguageKey {
 
     public static final String CHALLENGERS_BLESSING = Util.makeDescriptionId("effect", NarakaMod.location("challengers_blessing"));
 
-    public static String reinforcementEffectKey(Holder<ReinforcementEffect> reinforcementEffect) {
+    public static String reinforcementEffect(Holder<ReinforcementEffect> reinforcementEffect) {
         Optional<ResourceKey<ReinforcementEffect>> key = reinforcementEffect.unwrapKey();
         if (key.isEmpty())
             throw new IllegalStateException("Resource key doesn't exists : " + reinforcementEffect);
@@ -37,11 +41,19 @@ public final class LanguageKey {
         return Util.makeDescriptionId("reinforcement_effect", id);
     }
 
-    public static String tooltipKey(Block block) {
+    public static String tooltip(Block block) {
         return block.getDescriptionId() + ".tooltip";
     }
 
     public static String itemGroup(String path) {
         return "itemGroup." + path;
+    }
+
+    public static String keyMapping(String path) {
+        return "key." + path;
+    }
+
+    public static String keyMappingCategory(String path) {
+        return "key.categories." + path;
     }
 }

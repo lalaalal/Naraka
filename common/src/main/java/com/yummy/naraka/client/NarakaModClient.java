@@ -19,6 +19,7 @@ import com.yummy.naraka.client.renderer.entity.HerobrineRenderer;
 import com.yummy.naraka.client.renderer.entity.NarakaFireballRenderer;
 import com.yummy.naraka.client.renderer.entity.SpearRenderer;
 import com.yummy.naraka.client.renderer.entity.StardustRenderer;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
@@ -47,6 +48,7 @@ public final class NarakaModClient {
         registerBlockEntityRenderers();
         registerHudRenders();
         registerMenus();
+        registerKeyMappings();
 
         AnimationMapper.initialize();
 
@@ -132,5 +134,15 @@ public final class NarakaModClient {
         ParticleProviderRegistry.register(NarakaParticleTypes.FALLING_NECTARIUM, NectariumParticle::createNectariumFallParticle);
         ParticleProviderRegistry.register(NarakaParticleTypes.LANDING_NECTARIUM, NectariumParticle::createNectariumLandParticle);
         ParticleProviderRegistry.register(NarakaParticleTypes.SOUL, SoulParticle::create);
+    }
+
+    private static void registerKeyMappings() {
+        KeyMappingRegistry.register(NarakaKeyMappings.TOGGLE_ORE_SEE_THROUGH, keyMapping -> {
+            if (keyMapping.consumeClick()) {
+                boolean disabled = NarakaConfig.CLIENT.disableOreSeeThrough.getValue();
+                NarakaConfig.CLIENT.disableOreSeeThrough.set(!disabled);
+                NarakaConfig.CLIENT.saveValues();
+            }
+        });
     }
 }

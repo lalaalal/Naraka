@@ -36,6 +36,7 @@ public final class NarakaModNeoForgeClient implements NarakaClientInitializer, I
         MethodInvoker.register(NeoForgeScreenFactoryRegistry.class);
         MethodInvoker.register(NeoForgeHudRendererRegistry.class);
         MethodInvoker.register(NeoForgeItemPropertiesRegistry.class);
+        MethodInvoker.register(NeoForgeKeyMappingRegistry.class);
 
         NarakaModClient.initialize(this);
 

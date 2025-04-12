@@ -46,7 +46,7 @@ public abstract class LevelRendererMixin {
     private void renderHiddenOres(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo ci, @Local PoseStack poseStack) {
         LocalPlayer player = minecraft.player;
         ClientLevel level = minecraft.level;
-        if (player == null || level == null || !NarakaItemUtils.canApplyOreSeeThrough(player))
+        if (player == null || level == null || !NarakaItemUtils.canApplyOreSeeThrough(player) || NarakaConfig.CLIENT.disableOreSeeThrough.getValue())
             return;
         Vec3 cameraPosition = camera.getPosition();
         BlockPos cameraBlockPos = NarakaUtils.pos(cameraPosition).offset(0, 0, -1);

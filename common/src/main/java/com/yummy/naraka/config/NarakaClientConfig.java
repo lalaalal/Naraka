@@ -14,6 +14,7 @@ public class NarakaClientConfig extends StaticConfiguration {
     public final ConfigValue<Float> herobrineScarfWaveMaxAngle;
     public final ConfigValue<Float> herobrineScarfWaveCycleModifier;
     public final ConfigValue<Integer> oreSeeThroughRange;
+    public final ConfigValue<Boolean> disableOreSeeThrough;
 
     public NarakaClientConfig() {
         super("naraka-client", PropertiesConfigFile::new);
@@ -36,5 +37,6 @@ public class NarakaClientConfig extends StaticConfiguration {
                 .comment("Bigger value, short wave cycle");
 
         this.oreSeeThroughRange = define("ore_see_through_range", 20);
+        this.disableOreSeeThrough = define("disable_ore_see_through", false);
     }
 }

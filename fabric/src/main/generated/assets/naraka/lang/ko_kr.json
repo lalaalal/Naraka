@@ -157,6 +157,8 @@
   "jukebox_song.naraka.herobrine_phase_2": "히로빈 2 페이즈",
   "jukebox_song.naraka.herobrine_phase_3": "히로빈 3 페이즈",
   "jukebox_song.naraka.herobrine_phase_4": "히로빈 4 페이즈",
+  "key.naraka": "Naraka",
+  "key.naraka.toggle_ore_see_through": "광물 투시 켜기/끄기",
   "reinforcement_effect.naraka.efficient_mining_in_air": "공중 채굴 효율",
   "reinforcement_effect.naraka.efficient_mining_in_water": "수중 채쿨 효율",
   "reinforcement_effect.naraka.faster_liquid_swimming": "액체 수영 속도 증가",

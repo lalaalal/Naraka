@@ -122,7 +122,7 @@ public class NectariumCoreBlock extends Block {
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(
-                Component.translatable(LanguageKey.tooltipKey(this))
+                Component.translatable(LanguageKey.tooltip(this))
                         .withStyle(ChatFormatting.GRAY)
         );
     }
