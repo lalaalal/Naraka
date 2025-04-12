@@ -48,7 +48,7 @@
       "spawns": []
     }
   },
-  "step": "vegetal_decoration",
+  "step": "surface_structures",
   "structure_offset": [
     -4,
     -6,

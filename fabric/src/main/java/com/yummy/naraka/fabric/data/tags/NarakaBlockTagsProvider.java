@@ -60,10 +60,13 @@ public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider 
         getOrCreateTagBuilder(BlockTags.PLANKS)
                 .add(NarakaBlocks.HARD_EBONY_PLANKS.get());
 
-        getOrCreateTagBuilder(NarakaBlockTags.HEROBRINE_SANCTUARY_WRAP_TARGETS)
+        getOrCreateTagBuilder(NarakaBlockTags.HEROBRINE_SANCTUARY_AIR_WRAP_TARGETS)
                 .add(Blocks.WATER)
                 .add(Blocks.GRAVEL)
                 .forceAddTag(BlockTags.SAND);
+        getOrCreateTagBuilder(NarakaBlockTags.HEROBRINE_SANCTUARY_LAVA_WRAP_TARGETS)
+                .forceAddTag(BlockTags.AIR)
+                .add(Blocks.WATER);
 
         getOrCreateTagBuilder(BlockTags.NEEDS_STONE_TOOL)
                 .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get())

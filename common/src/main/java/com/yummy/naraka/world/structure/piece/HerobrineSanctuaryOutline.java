@@ -1,12 +1,13 @@
 package com.yummy.naraka.world.structure.piece;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.tags.NarakaBlockTags;
 import com.yummy.naraka.util.NarakaUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -21,16 +22,16 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 
 public class HerobrineSanctuaryOutline extends StructurePiece {
-    public static final float SPHERE_SIZE = 1.6f;
+    public static final float SPHERE_SIZE = 0.75f;
     private static final int STRUCTURE_WIDTH = 48 * 2 + 39;
     private static final int STRUCTURE_HEIGHT = 48 * 4;
-    private static final int WIDTH = 48 * 6;
-    private static final int HEIGHT = 48 * 6;
-    private static final int DEPTH = 24;
-    private static final int AIR_DEPTH = 48 * 4;
+    private static final int WIDTH = 48 * 6 + 1;
+    private static final int HEIGHT = 48 * 6 + 1;
+    private static final int DEPTH = 48 * 2 + 24 + 1;
+    private static final int AIR_DEPTH = 48 * 3 + 24;
 
     private static final BlockPos OFFSET = new BlockPos(
-            ((WIDTH - STRUCTURE_WIDTH) / -2) + 1, -DEPTH - 1, ((HEIGHT - STRUCTURE_HEIGHT) / -2) + 1
+            ((WIDTH - STRUCTURE_WIDTH) / -2) - 1, -DEPTH, ((HEIGHT - STRUCTURE_HEIGHT) / -2) - 1
     ).offset(NarakaStructures.HEROBRINE_SANCTUARY_MAIN_OFFSET);
 
     private final BlockPos pos;
@@ -38,7 +39,7 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
     private BoundingBox airBox;
 
     private static BoundingBox createLavaBox(BlockPos pos) {
-        return BoundingBox.fromCorners(pos, pos.offset(WIDTH, DEPTH, HEIGHT));
+        return BoundingBox.fromCorners(pos, pos.offset(WIDTH, DEPTH - 1, HEIGHT));
     }
 
     private static BoundingBox createAirBox(BlockPos pos) {
@@ -77,32 +78,45 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
     }
 
     @Override
-    public void postProcess(WorldGenLevel pLevel, StructureManager pStructureManager, ChunkGenerator generator, RandomSource pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
+    public void postProcess(WorldGenLevel pLevel, StructureManager pStructureManager, ChunkGenerator generator, RandomSource pRandom, BoundingBox processingBox, ChunkPos pChunkPos, BlockPos pPos) {
         int seaLevel = generator.getSeaLevel();
-        generateSphere(pLevel, pBox, boundingBox, airBox.minY(), airBox.maxY(), seaLevel, Blocks.AIR.defaultBlockState(), NarakaBlockTags.HEROBRINE_SANCTUARY_WRAP_TARGETS, Blocks.DIRT);
-        generateSphere(pLevel, pBox, boundingBox, lavaBox.minY(), lavaBox.maxY(), seaLevel, Blocks.LAVA.defaultBlockState(), BlockTags.AIR, Blocks.STONE);
+        generateSphere(pLevel, processingBox, boundingBox, airBox.minY(), airBox.maxY(), seaLevel, Blocks.AIR.defaultBlockState(), NarakaBlockTags.HEROBRINE_SANCTUARY_AIR_WRAP_TARGETS, Blocks.DIRT);
+        generateSphere(pLevel, processingBox, boundingBox, lavaBox.minY(), lavaBox.maxY(), seaLevel, Blocks.LAVA.defaultBlockState(), NarakaBlockTags.HEROBRINE_SANCTUARY_LAVA_WRAP_TARGETS, Blocks.STONE);
     }
 
-    protected void generateSphere(WorldGenLevel level, BoundingBox boundingBox, BoundingBox box, int yStart, int yEnd, int seaLevel, BlockState state, TagKey<Block> wrapTarget, Block defaultReplace) {
-        NarakaUtils.sphere(box, SPHERE_SIZE, (x, y, z) -> {
-            if (yStart <= y && y <= yEnd) {
-                wrap(level, boundingBox, box, x, y, z, seaLevel, wrapTarget, defaultReplace);
-                placeBlock(level, state, x, y, z, boundingBox);
+    protected void generateSphere(WorldGenLevel level, BoundingBox processingBox, BoundingBox box, int yStart, int yEnd, int seaLevel, BlockState state, TagKey<Block> wrapTarget, Block defaultReplace) {
+        BoundingBox targetBox = BoundingBox.fromCorners(new Vec3i(processingBox.minX(), yStart, processingBox.minZ()), new Vec3i(processingBox.maxX(), yEnd, processingBox.maxZ()));
+        NarakaUtils.sphere(box, targetBox, SPHERE_SIZE * 1.02f, (length, x, y, z) -> {
+            if (length <= SPHERE_SIZE)
+                placeBlock(level, state, x, y, z, processingBox);
+            else {
+                BlockState outlineState = getBlock(level, x, y, z, processingBox);
+                if (outlineState.is(wrapTarget)) {
+                    BlockState replace = findAppropriateState(y, seaLevel, defaultReplace);
+                    placeBlock(level, replace, x, y, z, processingBox);
+                }
             }
+//            wrap(level, processingBox, box, x, y, z, seaLevel, wrapTarget, defaultReplace);
         });
     }
 
-    protected void wrap(WorldGenLevel level, BoundingBox boundingBox, BoundingBox box, int x, int y, int z, int seaLevel, TagKey<Block> target, Block defaultReplace) {
-        int[] xOffsets = {0, 1, 0, -1};
-        int[] zOffsets = {1, 0, -1, 0};
+    protected void wrap(WorldGenLevel level, BoundingBox processingBox, BoundingBox box, int x, int y, int z, int seaLevel, TagKey<Block> target, Block defaultReplace) {
+        int[] xOffsets = {0, 1, 0, -1, 0};
+        int[] zOffsets = {1, 0, -1, 0, 0};
+        int[] yOffsets = {0, 0, 0, 0, -1};
+        if (x == 9530 && z == 3247 && y == 58)
+            NarakaMod.LOGGER.info("mm");
         for (int i = 0; i < xOffsets.length; i++) {
             int targetX = x + xOffsets[i];
             int targetZ = z + zOffsets[i];
-            if (!NarakaUtils.isInSphere(box, SPHERE_SIZE, targetX, y, targetZ)) {
-                BlockState state = getBlock(level, targetX, y, targetZ, boundingBox);
-                if (state.is(target)) {
-                    BlockState replace = findAppropriateState(y, seaLevel, defaultReplace);
-                    placeBlock(level, replace, targetX, y, targetZ, boundingBox);
+            int targetY = y + yOffsets[i];
+            if (!NarakaUtils.isInSphere(box, SPHERE_SIZE, targetX, targetY, targetZ)) {
+                if (targetX == 9530 && targetZ == 3247 && targetY < seaLevel)
+                    NarakaMod.LOGGER.info("mm");
+                BlockState state = getBlock(level, targetX, targetY, targetZ, processingBox);
+                if (state.is(target) || (targetY < seaLevel) && state.isAir()) {
+                    BlockState replace = findAppropriateState(targetY, seaLevel, defaultReplace);
+                    placeBlock(level, replace, targetX, targetY, targetZ, processingBox);
                 }
             }
         }
