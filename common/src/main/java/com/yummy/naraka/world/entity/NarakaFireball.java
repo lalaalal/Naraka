@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
@@ -28,9 +29,9 @@ import java.util.List;
 
 public class NarakaFireball extends Fireball implements ItemSupplier {
     protected static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(NarakaFireball.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Boolean> FIXED_DAMAGE = SynchedEntityData.defineId(NarakaFireball.class, EntityDataSerializers.BOOLEAN);
 
     private @Nullable Entity cachedTarget;
-    private boolean fixedDamage = false;
     private DamageCalculator damageCalculator = fireball -> 10;
     private final List<HurtTargetListener> listeners = new ArrayList<>();
 
@@ -45,7 +46,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
 
     public NarakaFireball(Mob owner, Vec3 movement, Level level, boolean fixedDamage) {
         this(owner, owner.getTarget(), movement, level);
-        this.fixedDamage = fixedDamage;
+        entityData.set(FIXED_DAMAGE, fixedDamage);
     }
 
     public NarakaFireball(LivingEntity owner, @Nullable Entity target, Vec3 movement, Level level) {
@@ -57,7 +58,8 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(TARGET_ID, -1);
+        builder.define(TARGET_ID, -1)
+                .define(FIXED_DAMAGE, false);
     }
 
     public void setDamageCalculator(DamageCalculator damageCalculator) {
@@ -74,7 +76,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     }
 
     public NarakaFireball withFixedDamage() {
-        fixedDamage = true;
+        entityData.set(FIXED_DAMAGE, true);
         return this;
     }
 
@@ -114,7 +116,9 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
 
     private void traceTarget() {
         Entity target = getTarget();
-        if (target != null) {
+        int tracingLevel = NarakaConfig.COMMON.narakaFireballTargetTracingLevel.getValue();
+        if (canRotateMovement(tracingLevel) && target != null) {
+            boolean canReduceSpeed = canReduceSpeed(tracingLevel);
             Vec3 targetVector = target.getEyePosition().subtract(position());
             Vec3 movingVector = getDeltaMovement().normalize();
             if (movingVector.equals(Vec3.ZERO))
@@ -125,15 +129,31 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
 
             Vec3 deltaMovement = getDeltaMovement();
             double length = deltaMovement.length();
-            if (tracingVectorLength > 8 && length > 0.7)
+            if (canReduceSpeed && tracingVectorLength > 8 && length > 0.7)
                 setDeltaMovement(deltaMovement.scale(0.9));
-            if (tracingVectorLength < 8 && length < 1)
+            if (canReduceSpeed && tracingVectorLength < 8 && length < 1)
                 setDeltaMovement(deltaMovement.scale(1.1));
-            double scale = Mth.clamp(tracingVectorLength, 0, 0.08);
-            if (fixedDamage)
-                scale = scale * 0.3;
-            addDeltaMovement(tracingVector.scale(scale));
+            double scale = Mth.clamp(tracingVectorLength, 0, 0.03);
+            if (!canReduceSpeed && deltaMovement.y < 0) {
+                tracingVector.multiply(1, 0, 1);
+                scale *= 0.5;
+            }
+
+            setDeltaMovement(
+                    deltaMovement.add(tracingVector.scale(scale))
+                            .normalize()
+                            .scale(length)
+            );
+
         }
+    }
+
+    private boolean canReduceSpeed(int tracingLevel) {
+        return tracingLevel >= 2;
+    }
+
+    private boolean canRotateMovement(int tracingLevel) {
+        return tracingLevel >= 1;
     }
 
     @Override
@@ -165,7 +185,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     }
 
     protected DamageSource getDamageSource(@Nullable Entity owner) {
-        if (fixedDamage)
+        if (entityData.get(FIXED_DAMAGE))
             return NarakaDamageSources.projectileFixed(this, owner);
         return damageSources().fireball(this, owner);
     }
