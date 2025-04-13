@@ -3,6 +3,8 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.ai.goal.FollowOwnerGoal;
+import com.yummy.naraka.world.entity.ai.skill.ComboAttackSkill;
+import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -27,6 +29,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntity {
@@ -42,10 +45,30 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
     protected ShadowHerobrine(EntityType<? extends AbstractHerobrine> entityType, Level level) {
         super(entityType, level, true);
-        punchSkill.setMaxLinkCount(3);
-        punchSkill.changeCooldown(60);
-        punchSkill.setStunTarget(false);
-        punchSkill.setTraceTarget(false);
+        comboAttackSkill.setMaxLinkCount(3);
+        comboAttackSkill.setStunTarget(false);
+        comboAttackSkill.setTraceTarget(false);
+        skillManager.runOnSkillEnd(this::setComboAttackCooldown);
+        skillManager.runOnSkillSelect(this::preventUseSkillWithHerobrineInSameTime);
+    }
+
+    private void setComboAttackCooldown(Skill<?> skill) {
+        if (skill.location.equals(ComboAttackSkill.LOCATION))
+            skill.changeCooldown(skill.getCooldown() * 3 / 2);
+    }
+
+    private void preventUseSkillWithHerobrineInSameTime(Optional<Skill<?>> skill) {
+        if (skill.isPresent() && herobrineJustUsedSkill())
+            skillManager.interrupt();
+    }
+
+    private boolean herobrineJustUsedSkill() {
+        if (herobrine == null)
+            return false;
+        Skill<?> skill = herobrine.getCurrentSkill();
+        if (skill == null)
+            return false;
+        return skill.getCurrentTickCount() < 20;
     }
 
     public ShadowHerobrine(Level level, Herobrine herobrine) {
