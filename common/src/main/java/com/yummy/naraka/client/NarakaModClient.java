@@ -21,6 +21,7 @@ import com.yummy.naraka.client.renderer.entity.SpearRenderer;
 import com.yummy.naraka.client.renderer.entity.StardustRenderer;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
@@ -32,6 +33,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
+import net.minecraft.network.chat.Component;
 
 @Environment(EnvType.CLIENT)
 public final class NarakaModClient {
@@ -137,11 +139,13 @@ public final class NarakaModClient {
     }
 
     private static void registerKeyMappings() {
-        KeyMappingRegistry.register(NarakaKeyMappings.TOGGLE_ORE_SEE_THROUGH, keyMapping -> {
+        KeyMappingRegistry.register(NarakaKeyMappings.TOGGLE_ORE_SEE_THROUGH, (minecraft, keyMapping) -> {
             if (keyMapping.consumeClick()) {
-                boolean disabled = NarakaConfig.CLIENT.disableOreSeeThrough.getValue();
-                NarakaConfig.CLIENT.disableOreSeeThrough.set(!disabled);
+                boolean disabled = !NarakaConfig.CLIENT.disableOreSeeThrough.getValue();
+                NarakaConfig.CLIENT.disableOreSeeThrough.set(disabled);
                 NarakaConfig.CLIENT.saveValues();
+                if (minecraft.player != null)
+                    minecraft.player.displayClientMessage(Component.translatable(LanguageKey.toggleOreSeeThroughMessage(disabled)), false);
             }
         });
     }

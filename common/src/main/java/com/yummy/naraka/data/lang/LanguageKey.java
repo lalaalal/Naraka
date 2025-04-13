@@ -15,7 +15,7 @@ public final class LanguageKey {
     public static final String ITEM_GROUP_TEST = itemGroup("naraka.test");
     public static final String ITEM_GROUP_SOUL_MATERIALS = itemGroup("naraka.soul_materials");
 
-    public static final String KEY_CATEGORIES_NARAKA = keyMapping("naraka");
+    public static final String KEY_CATEGORIES_NARAKA = keyMappingCategory("naraka");
 
     public static final String KEY_TOGGLE_ORE_SEE_THROUGH = keyMapping("naraka.toggle_ore_see_through");
 
@@ -55,5 +55,10 @@ public final class LanguageKey {
 
     public static String keyMappingCategory(String path) {
         return "key.categories." + path;
+    }
+
+    public static String toggleOreSeeThroughMessage(boolean disabled) {
+        String state = disabled ? "disable" : "enable";
+        return "message.naraka.ore_see_through." + state;
     }
 }

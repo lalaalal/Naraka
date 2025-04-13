@@ -55,6 +55,9 @@ public class NarakaLanguageProviders {
         add(LanguageKey.KEY_CATEGORIES_NARAKA, "Naraka", "Naraka");
         add(LanguageKey.KEY_TOGGLE_ORE_SEE_THROUGH, "Toggle Ore See Through", "광물 투시 켜기/끄기");
 
+        add(LanguageKey.toggleOreSeeThroughMessage(false), "Ore See Through is now enabled", "광물 투시 활성화됨");
+        add(LanguageKey.toggleOreSeeThroughMessage(true), "Ore See Through is now disabled", "광물 투시 비활성화됨");
+
         add("container.soul_crafting", "Soul Crafter", "영혼 세공기");
         add(LanguageKey.REINFORCEMENT_KEY, "Reinforcement: %d", "강화: %d");
         add(LanguageKey.BLESSED_KEY, "Blessed", "축복받음");
