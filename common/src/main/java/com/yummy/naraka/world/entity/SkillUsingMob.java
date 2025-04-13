@@ -34,6 +34,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
 
         skillManager.runOnSkillStart(this::setAnimation);
         skillManager.runOnSkillEnd(skill -> setAnimation(AnimationLocations.IDLE));
+        updateAnimation(AnimationLocations.IDLE);
     }
 
     public boolean isUsingSkill() {

@@ -10,6 +10,7 @@ import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.Util;
+import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -22,6 +23,8 @@ public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalMod
     private final ModelPart main;
     private final ModelPart upperBody;
     private final ModelPart head;
+    private final ModelPart leftArm;
+    private final ModelPart rightArm;
     private boolean renderShadow = false;
 
     public HerobrineModel(ModelPart root) {
@@ -29,6 +32,8 @@ public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalMod
         this.main = root.getChild("main");
         this.upperBody = main.getChild("upper_body");
         this.head = upperBody.getChild("head");
+        this.leftArm = upperBody.getChild("left_arm");
+        this.rightArm = upperBody.getChild("right_arm");
     }
 
     public static LayerDefinition createForHerobrine() {
@@ -105,6 +110,8 @@ public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalMod
         this.root.getAllParts().forEach(ModelPart::resetPose);
         if (!herobrine.getCurrentAnimation().equals(AnimationLocations.STAGGERING))
             applyHeadRotation(netHeadYaw, headPitch);
+        if (herobrine.getCurrentAnimation().equals(AnimationLocations.IDLE))
+            AnimationUtils.bobArms(rightArm, leftArm, ageInTicks);
         this.animateWalk(HerobrineAnimation.WALKING, limbSwing, limbSwingAmount, 2, 2);
         herobrine.forEachAnimations((animationLocation, animationState) -> {
             this.animate(animationState, AnimationMapper.get(animationLocation), ageInTicks);
