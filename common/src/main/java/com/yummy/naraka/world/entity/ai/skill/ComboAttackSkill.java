@@ -4,20 +4,22 @@ import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
 import com.yummy.naraka.world.entity.StunHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
-public class PunchSkill<T extends SkillUsingMob & StigmatizingEntity> extends Skill<T> {
-    public static final String NAME = "punch";
+public class ComboAttackSkill<T extends SkillUsingMob & StigmatizingEntity> extends Skill<T> {
+    public static final ResourceLocation LOCATION = createLocation("combo_attack");
+    public static final int DEFAULT_COOLDOWN = 20;
 
     private int linkedCount = 1;
     private int maxLinkCount = 5;
     private boolean stunTarget = true;
     private boolean traceTarget = true;
 
-    public PunchSkill(T mob) {
-        super(NAME, 20, 110, mob);
+    public ComboAttackSkill(T mob) {
+        super(LOCATION, 20, DEFAULT_COOLDOWN, mob);
     }
 
     public void setMaxLinkCount(int maxLinkCount) {
@@ -43,7 +45,16 @@ public class PunchSkill<T extends SkillUsingMob & StigmatizingEntity> extends Sk
     }
 
     @Override
+    public boolean readyToUse() {
+        return super.readyToUse();
+    }
+
+    @Override
     public void prepare() {
+        if (getLinkedCount() == 1)
+            cooldown = DEFAULT_COOLDOWN;
+        else
+            cooldown += DEFAULT_COOLDOWN;
         super.prepare();
     }
 

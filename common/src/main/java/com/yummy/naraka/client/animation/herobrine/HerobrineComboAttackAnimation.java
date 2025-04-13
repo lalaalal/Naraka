@@ -16,14 +16,14 @@ import net.minecraft.client.animation.KeyframeAnimations;
  * @author joachimbeen
  */
 @Environment(EnvType.CLIENT)
-public class HerobrinePunchAnimation {
+public class HerobrineComboAttackAnimation {
         public static void initialize() {
-                AnimationMapper.register(AnimationLocations.COMBO_ATTACK_1, PUNCH_1);
-                AnimationMapper.register(AnimationLocations.COMBO_ATTACK_2, PUNCH_2);
-                AnimationMapper.register(AnimationLocations.COMBO_ATTACK_3, PUNCH_3);
+                AnimationMapper.register(AnimationLocations.COMBO_ATTACK_1, COMBO_ATTACK_1);
+                AnimationMapper.register(AnimationLocations.COMBO_ATTACK_2, COMBO_ATTACK_2);
+                AnimationMapper.register(AnimationLocations.COMBO_ATTACK_3, COMBO_ATTACK_3);
     }
 
-    public static final AnimationDefinition PUNCH_1 = AnimationDefinition.Builder.withLength(1.375F)
+        public static final AnimationDefinition COMBO_ATTACK_1 = AnimationDefinition.Builder.withLength(1.375F)
             .addAnimation("left_arm", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(0.0417F, KeyframeAnimations.degreeVec(-6.29F, -1.4F, -0.91F), AnimationChannel.Interpolations.LINEAR),
@@ -392,7 +392,7 @@ public class HerobrinePunchAnimation {
             ))
             .build();
 
-    public static final AnimationDefinition PUNCH_2 = AnimationDefinition.Builder.withLength(1.375F)
+        public static final AnimationDefinition COMBO_ATTACK_2 = AnimationDefinition.Builder.withLength(1.375F)
             .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(0.375F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -515,7 +515,7 @@ public class HerobrinePunchAnimation {
             ))
             .build();
 
-    public static final AnimationDefinition PUNCH_3 = AnimationDefinition.Builder.withLength(1.375F)
+        public static final AnimationDefinition COMBO_ATTACK_3 = AnimationDefinition.Builder.withLength(1.375F)
             .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(0.375F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -639,5 +639,5 @@ public class HerobrinePunchAnimation {
             ))
             .build();
 
-    private static final AnimationDefinition[] PUNCH_ANIMATIONS = {PUNCH_1, PUNCH_2, PUNCH_3};
+        private static final AnimationDefinition[] PUNCH_ANIMATIONS = {COMBO_ATTACK_1, COMBO_ATTACK_2, COMBO_ATTACK_3};
 }

@@ -35,8 +35,6 @@ public abstract class LivingEntityMixin extends Entity {
     @Shadow
     protected abstract ItemStack getLastArmorItem(EquipmentSlot slot);
 
-    @Shadow private float speed;
-
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }

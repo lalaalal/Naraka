@@ -12,6 +12,7 @@ public class SkillManager {
     private final Set<Entry> skills = new HashSet<>();
     private final List<Consumer<Skill<?>>> skillStartListeners = new ArrayList<>();
     private final List<Consumer<Skill<?>>> skillEndListeners = new ArrayList<>();
+    private final List<Consumer<Optional<Skill<?>>>> skillSelectListeners = new ArrayList<>();
     private boolean paused = false;
     private int waitingTick = 0;
 
@@ -37,6 +38,10 @@ public class SkillManager {
 
     public void runOnSkillEnd(Consumer<Skill<?>> listener) {
         this.skillEndListeners.add(listener);
+    }
+
+    public void runOnSkillSelect(Consumer<Optional<Skill<?>>> listener) {
+        this.skillSelectListeners.add(listener);
     }
 
     private Optional<Skill<?>> selectSkill() {
@@ -99,17 +104,22 @@ public class SkillManager {
         if (currentSkill != null) {
             currentSkill.tick();
             if (currentSkill.isEnded()) {
+                currentSkill.setCooldown();
                 for (Consumer<Skill<?>> listener : skillEndListeners)
                     listener.accept(currentSkill);
-                currentSkill.setCooldown();
-                if (currentSkill.hasLinkedSkill())
+                if (currentSkill.hasLinkedSkill()) {
+                    Skill<?> previousSkill = currentSkill;
                     setCurrentSkill(currentSkill.getLinkedSkill());
+                    previousSkill.setLinkedSkill(null);
+                }
                 else
                     currentSkill = null;
             }
         } else {
             Optional<Skill<?>> usable = selectSkill();
             usable.ifPresent(this::setCurrentSkill);
+            for (Consumer<Optional<Skill<?>>> listener : skillSelectListeners)
+                listener.accept(usable);
         }
 
         for (Entry entry : skills)

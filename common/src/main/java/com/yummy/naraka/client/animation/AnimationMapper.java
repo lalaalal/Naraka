@@ -1,7 +1,7 @@
 package com.yummy.naraka.client.animation;
 
 import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
-import com.yummy.naraka.client.animation.herobrine.HerobrinePunchAnimation;
+import com.yummy.naraka.client.animation.herobrine.HerobrineComboAttackAnimation;
 import com.yummy.naraka.client.animation.herobrine.HerobrineSkillAnimation;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.fabricmc.api.EnvType;
@@ -27,7 +27,7 @@ public class AnimationMapper {
     public static void initialize() {
         HerobrineAnimation.initialize();
         HerobrineSkillAnimation.initialize();
-        HerobrinePunchAnimation.initialize();
+        HerobrineComboAttackAnimation.initialize();
 
         AnimationLocations.checkMappings(MAPPER.keySet());
     }

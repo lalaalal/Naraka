@@ -5,7 +5,7 @@ import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
-import com.yummy.naraka.world.entity.ai.skill.PunchSkill;
+import com.yummy.naraka.world.entity.ai.skill.ComboAttackSkill;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -28,9 +28,7 @@ import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractHerobrine extends SkillUsingMob implements StigmatizingEntity, AfterimageEntity, Enemy {
-    public static final int DEFAULT_STAGGERING_TICK_DURATION = 90;
-
-    protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(this, PunchSkill::new, AnimationLocations.COMBO_ATTACK_1, AnimationLocations.COMBO_ATTACK_2, AnimationLocations.COMBO_ATTACK_3);
+    protected final ComboAttackSkill<AbstractHerobrine> comboAttackSkill = registerSkill(this, ComboAttackSkill::new, AnimationLocations.COMBO_ATTACK_1, AnimationLocations.COMBO_ATTACK_2, AnimationLocations.COMBO_ATTACK_3);
 
     public final boolean isShadow;
 

@@ -23,8 +23,8 @@ public abstract class Skill<T extends SkillUsingMob> {
     @Nullable
     protected Skill<?> linkedSkill;
 
-    protected Skill(String name, int duration, int cooldown, T mob, @Nullable Skill<?> linkedSkill) {
-        this.location = createLocation(name);
+    protected Skill(ResourceLocation location, int duration, int cooldown, T mob, @Nullable Skill<?> linkedSkill) {
+        this.location = location;
         this.mob = mob;
         this.duration = duration;
         this.cooldown = cooldown;
@@ -33,7 +33,11 @@ public abstract class Skill<T extends SkillUsingMob> {
     }
 
     protected Skill(String name, int duration, int cooldown, T mob) {
-        this(name, duration, cooldown, mob, null);
+        this(createLocation(name), duration, cooldown, mob, null);
+    }
+
+    protected Skill(ResourceLocation location, int duration, int cooldown, T mob) {
+        this(location, duration, cooldown, mob, null);
     }
 
     protected Level level() {
@@ -80,6 +84,10 @@ public abstract class Skill<T extends SkillUsingMob> {
 
     public int getCurrentTickCount() {
         return tickCount;
+    }
+
+    public int getCooldown() {
+        return cooldown;
     }
 
     @Nullable

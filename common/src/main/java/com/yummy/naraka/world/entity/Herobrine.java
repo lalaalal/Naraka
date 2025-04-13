@@ -66,8 +66,8 @@ public class Herobrine extends AbstractHerobrine {
 
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill);
-    private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, throwFireballSkill, rushSkill);
-    private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, throwFireballSkill, rushSkill, summonShadowSkill);
+    private final List<Skill<?>> PHASE_1_SKILLS = List.of(comboAttackSkill, dashSkill, dashAroundSkill, throwFireballSkill, rushSkill);
+    private final List<Skill<?>> PHASE_2_SKILLS = List.of(comboAttackSkill, dashSkill, dashAroundSkill, throwFireballSkill, rushSkill, summonShadowSkill);
 
     private final List<List<Skill<?>>> HIBERNATED_MODE_SKILL_BY_PHASE = List.of(
             List.of(), HIBERNATED_MODE_PHASE_1_SKILLS, HIBERNATED_MODE_PHASE_2_SKILLS, List.of()
@@ -109,11 +109,25 @@ public class Herobrine extends AbstractHerobrine {
         skillManager.enableOnly(PHASE_1_SKILLS);
         for (int i = 0; i < NarakaConfig.CLIENT.herobrineScarfPartitionNumber.getValue(); i++)
             scarfWaveSpeedList.add(1f);
+        skillManager.runOnSkillStart(this::replaceThrowFireball);
+        skillManager.runOnSkillSelect(this::useComboAttackOnIdle);
     }
 
     public Herobrine(Level level, Vec3 pos) {
         this(NarakaEntityTypes.HEROBRINE.get(), level);
         setPos(pos);
+    }
+
+    private void replaceThrowFireball(Skill<?> skill) {
+        if (!isHibernateMode() && skill.location.equals(ThrowFireballSkill.LOCATION) && random.nextFloat() < 0.4f) {
+            dashSkill.setLinkedSkill(comboAttackSkill);
+            skillManager.setCurrentSkill(dashSkill);
+        }
+    }
+
+    private void useComboAttackOnIdle(Optional<Skill<?>> skill) {
+        if (getTarget() != null && !isStaggering() && !isHibernateMode() && skill.isEmpty())
+            skillManager.setCurrentSkill(comboAttackSkill);
     }
 
     @Override
@@ -480,6 +494,14 @@ public class Herobrine extends AbstractHerobrine {
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
 
         setHealth(getHealth() - 1);
+    }
+
+    @Override
+    protected void stopStaggering() {
+        super.stopStaggering();
+        hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
+        averageHurtDamage = 0;
+        hurtCount = 0;
     }
 
     @Override
