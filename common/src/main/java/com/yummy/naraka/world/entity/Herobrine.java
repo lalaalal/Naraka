@@ -126,7 +126,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void useComboAttackOnIdle(Optional<Skill<?>> skill) {
-        if (getTarget() != null && !isStaggering() && !isHibernateMode() && skill.isEmpty())
+        if (getTarget() != null && !isStaggering() && !isHibernateMode() && skill.isEmpty() && comboAttackSkill.isEnabled())
             skillManager.setCurrentSkill(comboAttackSkill);
     }
 
@@ -477,6 +477,8 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void startHibernateMode() {
+        if (hibernateMode)
+            return;
         if (spawnPosition != null)
             moveTo(spawnPosition.south(54), 0, 0);
         hibernateMode = true;
