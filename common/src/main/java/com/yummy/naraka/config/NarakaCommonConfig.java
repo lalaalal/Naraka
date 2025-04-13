@@ -8,6 +8,7 @@ public class NarakaCommonConfig extends StaticConfiguration {
     public final ConfigValue<Double> herobrineHurtLimitCalculationRatioModifier;
     public final ConfigValue<Double> herobrineMaxHurtCountCalculationModifier;
     public final ConfigValue<Integer> maxShadowHerobrineSpawn;
+    public final ConfigValue<Float> fasterLiquidSwimmingSpeed;
 
     public NarakaCommonConfig() {
         super("naraka-common", PropertiesConfigFile::new);
@@ -23,5 +24,6 @@ public class NarakaCommonConfig extends StaticConfiguration {
         this.herobrineMaxHurtCountCalculationModifier = define("herobrine_max_hurt_count_calculation_modifier", 1.0)
                 .comment("Bigger value, bigger max hurt count");
         this.maxShadowHerobrineSpawn = define("max_shadow_herobrine_spawn", 3);
+        this.fasterLiquidSwimmingSpeed = define("faster_liquid_swimming_speed", 5f);
     }
 }

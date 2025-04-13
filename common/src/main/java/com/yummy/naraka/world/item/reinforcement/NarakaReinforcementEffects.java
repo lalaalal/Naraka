@@ -42,7 +42,7 @@ public class NarakaReinforcementEffects {
     );
 
     public static final Holder<ReinforcementEffect> IGNORE_LIQUID_PUSHING = register(
-            "ignore_liquid_pushing", new SimpleReinforcementEffect(10, EquipmentSlot.FEET)
+            "ignore_liquid_pushing", new SimpleReinforcementEffect(10, EquipmentSlot.LEGS)
     );
 
     public static final Holder<ReinforcementEffect> FLYING = register(
