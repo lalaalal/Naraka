@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
@@ -27,13 +28,13 @@ import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractHerobrine extends SkillUsingMob implements StigmatizingEntity, AfterimageEntity, Enemy {
-    public static final int MAX_STAGGERING_TICK = 90;
+    public static final int DEFAULT_STAGGERING_TICK_DURATION = 90;
 
     protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(this, PunchSkill::new, AnimationLocations.COMBO_ATTACK_1, AnimationLocations.COMBO_ATTACK_2, AnimationLocations.COMBO_ATTACK_3);
 
     public final boolean isShadow;
 
-    protected int staggeringTickCount = Integer.MAX_VALUE;
+    protected int staggeringTickCount = Integer.MIN_VALUE;
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
@@ -59,30 +60,36 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     private void updateStaggering() {
-        if (staggeringTickCount == MAX_STAGGERING_TICK)
+        if (staggeringTickCount == 0)
             stopStaggering();
-        if (staggeringTickCount <= MAX_STAGGERING_TICK)
-            staggeringTickCount += 1;
+        if (staggeringTickCount >= 0)
+            staggeringTickCount -= 1;
     }
 
     protected void startStaggering() {
-        if (staggeringTickCount < MAX_STAGGERING_TICK)
+        int duration = NarakaConfig.COMMON.herobrineStaggeringDuration.getValue();
+        this.startStaggering(true, duration);
+    }
+
+    protected void startStaggering(boolean playAnimation, int duration) {
+        if (staggeringTickCount > 0)
             return;
-        staggeringTickCount = 0;
+        staggeringTickCount = Math.max(1, duration);
         skillManager.pause(true);
-        setAnimation(AnimationLocations.STAGGERING);
+        if (playAnimation)
+            setAnimation(AnimationLocations.STAGGERING);
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STAGGERING_PREVENT_MOVING);
     }
 
     protected void stopStaggering() {
         setAnimation(AnimationLocations.IDLE);
-        staggeringTickCount = Integer.MAX_VALUE;
+        staggeringTickCount = Integer.MIN_VALUE;
         skillManager.resume();
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STAGGERING_PREVENT_MOVING);
     }
 
     public boolean isStaggering() {
-        return staggeringTickCount < MAX_STAGGERING_TICK;
+        return staggeringTickCount > 0;
     }
 
     @Override

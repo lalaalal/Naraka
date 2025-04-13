@@ -386,7 +386,7 @@ public class Herobrine extends AbstractHerobrine {
                     Vec3 originalHerobrinePosition = position();
                     this.setPos(shadowHerobrine.position());
                     shadowHerobrine.setPos(originalHerobrinePosition);
-                    shadowHerobrine.startStaggering();
+                    shadowHerobrine.startStaggering(false, 40);
                 });
     }
 
