@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Singleton class provides {@link RegistryProxy}<br>
@@ -30,6 +31,10 @@ public abstract class RegistryProxyProvider {
 
     public static <T> RegistryProxy<T> get(ResourceKey<Registry<T>> key) {
         return getInstance().getProxy(key);
+    }
+
+    public static void forEach(Consumer<RegistryProxy<?>> consumer) {
+        getInstance().registryProxyMap.values().forEach(consumer);
     }
 
     protected RegistryProxyProvider() {

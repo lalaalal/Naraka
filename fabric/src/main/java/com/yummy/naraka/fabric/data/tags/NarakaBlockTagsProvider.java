@@ -17,7 +17,7 @@ public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider 
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider pProvider) {
+    protected void addTags(HolderLookup.Provider provider) {
         getOrCreateTagBuilder(BlockTags.INCORRECT_FOR_DIAMOND_TOOL)
                 .addTag(NarakaBlockTags.NEEDS_NETHERITE_TOOL);
         getOrCreateTagBuilder(BlockTags.INCORRECT_FOR_IRON_TOOL)

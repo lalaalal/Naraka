@@ -54,10 +54,9 @@ public final class NeoForgeRegistryProxyProvider extends RegistryProxyProvider i
             return result;
         }
 
-        @SuppressWarnings("unchecked")
         @Override
-        public ResourceKey<Registry<T>> getRegistryKey() {
-            return (ResourceKey<Registry<T>>) registry.getRegistryKey();
+        public ResourceKey<? extends Registry<T>> getRegistryKey() {
+            return registry.getRegistryKey();
         }
 
         @Override

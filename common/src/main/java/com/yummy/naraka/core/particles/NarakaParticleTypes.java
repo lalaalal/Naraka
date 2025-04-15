@@ -2,7 +2,6 @@ package com.yummy.naraka.core.particles;
 
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
@@ -26,8 +25,7 @@ public class NarakaParticleTypes {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(Registries.PARTICLE_TYPE)
-                .onRegistrationFinished();
+
     }
 
     private static class NarakaSimpleParticleType extends SimpleParticleType {
@@ -35,7 +33,5 @@ public class NarakaParticleTypes {
             super(force);
         }
     }
-
-
 }
 

@@ -4,7 +4,6 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.Platform;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.init.EntityAttributeRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
@@ -76,8 +75,6 @@ public class NarakaEntityTypes {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(Registries.ENTITY_TYPE)
-                .onRegistrationFinished();
         EntityAttributeRegistry.register(HEROBRINE, AbstractHerobrine::getAttributeSupplier);
         EntityAttributeRegistry.register(SHADOW_HEROBRINE, ShadowHerobrine::getAttributeSupplier);
     }

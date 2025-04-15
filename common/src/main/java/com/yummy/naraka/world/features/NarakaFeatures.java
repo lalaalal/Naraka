@@ -2,7 +2,6 @@ package com.yummy.naraka.world.features;
 
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
@@ -17,7 +16,6 @@ public class NarakaFeatures {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(Registries.FEATURE)
-                .onRegistrationFinished();
+
     }
 }

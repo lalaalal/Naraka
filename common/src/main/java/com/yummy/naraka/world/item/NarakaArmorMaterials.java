@@ -2,7 +2,6 @@ package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
@@ -53,7 +52,6 @@ public class NarakaArmorMaterials {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(Registries.ARMOR_MATERIAL)
-                .onRegistrationFinished();
+
     }
 }

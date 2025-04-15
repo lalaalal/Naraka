@@ -5,7 +5,6 @@ import com.yummy.naraka.Platform;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.CreativeModeTabEvents;
 import com.yummy.naraka.mixin.accessor.CreativeModeTabsAccessor;
@@ -57,9 +56,6 @@ public class NarakaCreativeModeTabs {
         CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.foodAndDrinks(), NarakaCreativeModeTabs::modifyFoodAndDrinksTab);
         CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.ingredients(), NarakaCreativeModeTabs::modifyIngredientsTab);
         CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.spawnEggs(), NarakaCreativeModeTabs::modifySpawnEggsTab);
-
-        RegistryProxyProvider.get(Registries.CREATIVE_MODE_TAB)
-                .onRegistrationFinished();
     }
 
     private static void createNarakaTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {

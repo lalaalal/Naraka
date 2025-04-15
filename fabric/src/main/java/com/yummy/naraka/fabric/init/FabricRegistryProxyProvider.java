@@ -36,7 +36,7 @@ public final class FabricRegistryProxyProvider extends RegistryProxyProvider {
         }
 
         @Override
-        public ResourceKey<Registry<T>> getRegistryKey() {
+        public ResourceKey<? extends Registry<T>> getRegistryKey() {
             return key;
         }
 

@@ -4,7 +4,6 @@ import com.yummy.naraka.advancements.criterion.FillSoulStabilizerTrigger;
 import com.yummy.naraka.advancements.criterion.SimpleTrigger;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.core.registries.Registries;
 
@@ -19,7 +18,6 @@ public class NarakaCriteriaTriggers {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(Registries.TRIGGER_TYPE)
-                .onRegistrationFinished();
+
     }
 }

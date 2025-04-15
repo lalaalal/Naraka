@@ -2,7 +2,6 @@ package com.yummy.naraka.world.block;
 
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.mixin.invoker.MangroveRootsBlockInvoker;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -272,7 +271,6 @@ public class NarakaBlocks {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(Registries.BLOCK)
-                .onRegistrationFinished();
+
     }
 }

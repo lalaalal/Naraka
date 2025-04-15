@@ -2,7 +2,6 @@ package com.yummy.naraka.world.structure.protection;
 
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.util.NarakaUtils;
 import net.minecraft.core.Holder;
 
@@ -20,7 +19,6 @@ public class NarakaProtectionPredicates {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(NarakaRegistries.Keys.PROTECTION_PREDICATE)
-                .onRegistrationFinished();
+
     }
 }

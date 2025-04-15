@@ -8,7 +8,6 @@ import com.yummy.naraka.fabric.data.loot.NarakaEntityLootProvider;
 import com.yummy.naraka.fabric.data.tags.*;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataProvider;
 import org.jetbrains.annotations.Nullable;
@@ -43,22 +42,11 @@ public class NarakaDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(patched(NarakaStructureSetsTagProvider::new));
     }
 
-    private class PatchedRegistryFactory<T extends DataProvider> implements FabricDataGenerator.Pack.Factory<T> {
-        private final FabricDataGenerator.Pack.RegistryDependentFactory<T> factory;
-
-        private PatchedRegistryFactory(FabricDataGenerator.Pack.RegistryDependentFactory<T> factory) {
-            this.factory = factory;
-        }
-
-        @Override
-        public T create(FabricDataOutput output) {
+    private <T extends DataProvider> FabricDataGenerator.Pack.Factory<T> patched(FabricDataGenerator.Pack.RegistryDependentFactory<T> factory) {
+        return output -> {
             if (patched == null)
                 throw new IllegalStateException();
             return factory.create(output, patched);
-        }
-    }
-
-    private <T extends DataProvider> FabricDataGenerator.Pack.Factory<T> patched(FabricDataGenerator.Pack.RegistryDependentFactory<T> factory) {
-        return new PatchedRegistryFactory<>(factory);
+        };
     }
 }

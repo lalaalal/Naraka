@@ -45,7 +45,7 @@ public interface RegistryProxy<T> {
         return registry;
     }
 
-    ResourceKey<Registry<T>> getRegistryKey();
+    ResourceKey<? extends Registry<T>> getRegistryKey();
 
     <V extends T> HolderProxy<T, V> register(String name, Supplier<V> value);
 

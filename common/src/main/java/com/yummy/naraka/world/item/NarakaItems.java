@@ -2,7 +2,6 @@ package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.armortrim.NarakaTrimPatterns;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
@@ -239,7 +238,6 @@ public class NarakaItems {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(Registries.ITEM)
-                .onRegistrationFinished();
+
     }
 }

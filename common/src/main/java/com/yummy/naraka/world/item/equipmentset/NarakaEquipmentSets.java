@@ -3,7 +3,6 @@ package com.yummy.naraka.world.item.equipmentset;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import net.minecraft.world.entity.LivingEntity;
 
 public class NarakaEquipmentSets {
@@ -21,7 +20,6 @@ public class NarakaEquipmentSets {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(NarakaRegistries.Keys.EQUIPMENT_SET)
-                .onRegistrationFinished();
+
     }
 }

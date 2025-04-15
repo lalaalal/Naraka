@@ -2,7 +2,6 @@ package com.yummy.naraka.world.inventory;
 
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -18,7 +17,6 @@ public class NarakaMenuTypes {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(Registries.MENU)
-                .onRegistrationFinished();
+
     }
 }

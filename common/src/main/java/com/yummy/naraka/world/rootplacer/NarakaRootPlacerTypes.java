@@ -3,7 +3,6 @@ package com.yummy.naraka.world.rootplacer;
 import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.mixin.invoker.RootPlacerTypeInvoker;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.rootplacers.RootPlacer;
@@ -17,7 +16,6 @@ public class NarakaRootPlacerTypes {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(Registries.ROOT_PLACER_TYPE)
-                .onRegistrationFinished();
+
     }
 }

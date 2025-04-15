@@ -2,7 +2,6 @@ package com.yummy.naraka.world.block.entity;
 
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
@@ -53,7 +52,6 @@ public class NarakaBlockEntityTypes {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(Registries.BLOCK_ENTITY_TYPE)
-                .onRegistrationFinished();
+
     }
 }
