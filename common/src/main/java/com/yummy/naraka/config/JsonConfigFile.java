@@ -1,8 +1,11 @@
 package com.yummy.naraka.config;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonWriter;
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.util.NarakaGsonUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,13 +45,27 @@ public class JsonConfigFile extends ConfigFile {
 
     @Override
     public Set<String> load(Reader reader) throws IOException {
-        if (cache.isEmpty()) {
-            reader.reset();
-            cache = NarakaGsonUtils.GSON.fromJson(reader, JsonObject.class);
-        }
-        if (cache == null)
-            cache = EMPTY;
+        if (cache.isEmpty())
+            this.cache = readJsonObject(reader);
         return cache.keySet();
+    }
+
+    private JsonObject readJsonObject(Reader reader) throws IOException {
+        try {
+            reader.reset();
+            JsonObject result = NarakaGsonUtils.GSON.fromJson(reader, JsonObject.class);
+            if (result == null)
+                return EMPTY;
+            return result;
+        } catch (JsonIOException exception) {
+            NarakaMod.LOGGER.error("An error occurred while reading config file \"{}\"", configFile.getAbsolutePath());
+            NarakaMod.LOGGER.error(exception.getMessage());
+        } catch (JsonSyntaxException exception) {
+            NarakaMod.LOGGER.error("Json syntax error found in \"{}\"", configFile.getAbsolutePath());
+            NarakaMod.LOGGER.error(exception.getMessage());
+            NarakaMod.LOGGER.warn("Ignore all config values in \"{}\"", configFile.getAbsolutePath());
+        }
+        return EMPTY;
     }
 
     @Override

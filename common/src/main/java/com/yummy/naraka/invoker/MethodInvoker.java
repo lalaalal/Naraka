@@ -208,6 +208,7 @@ public class MethodInvoker {
         } catch (IllegalAccessException exception) {
             throw new RuntimeException(exception);
         } catch (InvocationTargetException exception) {
+            NarakaMod.LOGGER.error("An exception occurred during invoking method {}", method.getName());
             throw new RuntimeException(exception.getTargetException());
         }
     }
