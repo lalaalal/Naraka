@@ -34,6 +34,13 @@ public class PropertiesConfigFile extends ConfigFile {
     }
 
     @Override
+    public Set<String> getKeySet() {
+        return cache.keySet().stream()
+                .map(Object::toString)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
     public Reader createReader() throws IOException {
         cache.clear();
         return super.createReader();
@@ -41,31 +48,24 @@ public class PropertiesConfigFile extends ConfigFile {
 
     @Override
     public Writer createWriter() throws IOException {
-        cache.clear();
         return super.createWriter();
     }
 
     @Override
     public Set<String> load(Reader reader) throws IOException {
-        if (cache.isEmpty()) {
-            reader.reset();
-            this.cache.load(reader);
-        }
-        return cache.keySet().stream()
-                .map(Object::toString)
-                .collect(Collectors.toSet());
+        checkReader(reader);
+        this.cache.load(reader);
+        return getKeySet();
     }
 
     @Override
-    public boolean contains(Reader reader, String key) throws IOException {
-        load(reader);
+    public boolean contains(String key) {
         return cache.containsKey(key);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> void read(Reader reader, String key, StaticConfiguration.ConfigValue<T> value) throws IOException {
-        load(reader);
+    public <T> void read(String key, StaticConfiguration.ConfigValue<T> value) {
         String property = cache.getProperty(key);
         Parser<String, T> parser = (Parser<String, T>) PARSERS.get(value.getType());
         if (property == null || parser == null) {
@@ -85,6 +85,7 @@ public class PropertiesConfigFile extends ConfigFile {
 
     @Override
     public void commit(Writer writer) throws IOException {
+        checkWriter(writer);
         writer.flush();
     }
 }

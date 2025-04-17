@@ -66,7 +66,7 @@ public final class NarakaGameEvents {
 
     private static void onServerStopping(MinecraftServer server) {
         if (server.isDedicatedServer())
-            NarakaConfig.stop();
+            NarakaConfig.stopWatching();
     }
 
     private static void onEndTick(MinecraftServer server) {

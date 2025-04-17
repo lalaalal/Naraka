@@ -4,10 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.stream.JsonWriter;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.util.NarakaGsonUtils;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -15,10 +13,7 @@ import java.io.Writer;
 import java.util.Set;
 
 public class JsonConfigFile extends ConfigFile {
-    private static final JsonObject EMPTY = new JsonObject();
-    private JsonObject cache = EMPTY;
-    @Nullable
-    private JsonWriter jsonWriter;
+    private JsonObject cache = new JsonObject();
 
     public JsonConfigFile(String configFileName) {
         super(configFileName);
@@ -37,65 +32,61 @@ public class JsonConfigFile extends ConfigFile {
 
     @Override
     public Writer createWriter() throws IOException {
-        Writer writer = super.createWriter();
-        this.jsonWriter = NarakaGsonUtils.GSON.newJsonWriter(writer);
-        this.jsonWriter.beginObject();
-        return writer;
+        this.cache = new JsonObject();
+        return super.createWriter();
     }
 
     @Override
-    public Set<String> load(Reader reader) throws IOException {
-        if (cache.isEmpty())
-            this.cache = readJsonObject(reader);
+    public Set<String> getKeySet() {
         return cache.keySet();
     }
 
-    private JsonObject readJsonObject(Reader reader) throws IOException {
+    @Override
+    public Set<String> load(Reader reader) {
+        checkReader(reader);
+        this.cache = readJsonObject(reader);
+        return cache.keySet();
+    }
+
+    private JsonObject readJsonObject(Reader reader) {
         try {
-            reader.reset();
             JsonObject result = NarakaGsonUtils.GSON.fromJson(reader, JsonObject.class);
             if (result == null)
-                return EMPTY;
+                return new JsonObject();
             return result;
         } catch (JsonIOException exception) {
-            NarakaMod.LOGGER.error("An error occurred while reading config file \"{}\"", configFile.getAbsolutePath());
+            NarakaMod.LOGGER.error("An error occurred while reading config \"{}\"", getConfigName());
             NarakaMod.LOGGER.error(exception.getMessage());
         } catch (JsonSyntaxException exception) {
-            NarakaMod.LOGGER.error("Json syntax error found in \"{}\"", configFile.getAbsolutePath());
+            NarakaMod.LOGGER.error("Json syntax error found in \"{}\"", getConfigName());
             NarakaMod.LOGGER.error(exception.getMessage());
-            NarakaMod.LOGGER.warn("Ignore all config values in \"{}\"", configFile.getAbsolutePath());
+            NarakaMod.LOGGER.warn("Ignore all config values in \"{}\"", getConfigName());
         }
-        return EMPTY;
+        return new JsonObject();
     }
 
     @Override
-    public boolean contains(Reader reader, String key) throws IOException {
-        load(reader);
+    public boolean contains(String key) {
         return cache.has(key);
     }
 
     @Override
-    public <T> void read(Reader reader, String key, Configuration.ConfigValue<T> configValue) throws IOException {
-        load(reader);
+    public <T> void read(String key, Configuration.ConfigValue<T> configValue) {
         JsonElement element = cache.get(key);
         T value = NarakaGsonUtils.GSON.fromJson(element, configValue.getType());
         configValue.set(value);
     }
 
     @Override
-    public <T> void write(Writer writer, String key, Configuration.ConfigValue<T> value) throws IOException {
-        if (jsonWriter == null)
-            return;
+    public <T> void write(Writer writer, String key, Configuration.ConfigValue<T> value) {
         JsonElement element = NarakaGsonUtils.GSON.toJsonTree(value.getValue());
-        jsonWriter.name(key);
-        NarakaGsonUtils.GSON.toJson(element, jsonWriter);
+        cache.add(key, element);
     }
 
     @Override
     public void commit(Writer writer) throws IOException {
-        if (jsonWriter == null)
-            return;
-        jsonWriter.endObject();
-        jsonWriter.flush();
+        checkWriter(writer);
+        NarakaGsonUtils.GSON.toJson(cache, writer);
+        writer.flush();
     }
 }

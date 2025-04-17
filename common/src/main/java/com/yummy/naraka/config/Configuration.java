@@ -4,20 +4,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+/**
+ * An abstract class provides interface to load, save values
+ */
 public abstract class Configuration {
+    public final String name;
     protected final ConfigFile file;
     protected boolean watchChange = true;
 
     public Configuration(String name, Function<String, ConfigFile> configFileFactory) {
+        this.name = name;
         this.file = configFileFactory.apply(name);
     }
 
-    public abstract boolean canUpdateOnFileChange(String fileName);
+    public boolean canUpdateOnFileChange(String fileName) {
+        return watchChange && file.getFileName().equals(fileName);
+    }
 
     public abstract void loadValues();
 
     public abstract void saveValues();
 
+    /**
+     * Configuration value instance which contains value, default value and comments.
+     *
+     * @param <T> Type of configuration value
+     */
     public static class ConfigValue<T> {
         private final Class<T> type;
         private final List<String> comments = new ArrayList<>();
