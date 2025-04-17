@@ -10,6 +10,28 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Invoke method in registered class using {@link MethodInvoker#register(Class)}.
+ * <pre><code>
+ * public class InvokerClass {
+ *     ...
+ *     MethodInvoker.of(InvokerClass.class, "targetMethod")
+ *             .invoke("Parameter");
+ *     ...
+ * }
+ * </code></pre>
+ *
+ * <pre><code>  @MethodInvoker(InvokerClass.class)
+ * public static void targetMethod(String parameter) {
+ *     // implementation
+ * }
+ * </code></pre>
+ * <p>
+ * Class of targetMethod <b>MUST</b> be registered by {@link MethodInvoker#register(Class)} to search targetMethod.
+ *
+ * @see MethodInvoker#of(Class, String)
+ * @see MethodInvoker#invoke(Object...)
+ */
 public class MethodInvoker {
     private static final Set<Class<?>> SEARCHING_CLASSES = new HashSet<>();
     private static final Map<String, Method> CACHE = new HashMap<>();
@@ -21,6 +43,19 @@ public class MethodInvoker {
     @Nullable
     private Object result;
 
+    /**
+     * Prepare {@link MethodInvoker} for invoker type, target method name.
+     * {@linkplain MethodInvoker} searches target method from <b>name only</b> by default.
+     * To specify parameter types call {@link MethodInvoker#withParameterTypes(Class[])}.
+     * Call {@link MethodInvoker#invoke(Object...)} to invoke.
+     *
+     * @param invokerType Class invoking method
+     * @param name        Target method name
+     * @return Returns new invoker
+     * @see MethodInvoker#withParameterTypes(Class[])
+     * @see MethodInvoker#invoke(Object...)
+     * @see MethodInvoker#invoke(Class, String, Object...)
+     */
     public static MethodInvoker of(Class<?> invokerType, String name) {
         return new MethodInvoker(invokerType, name);
     }
@@ -30,6 +65,12 @@ public class MethodInvoker {
         this.name = name;
     }
 
+    /**
+     * Specify parameter types for target method. Be careful using generic class for parameter type.
+     *
+     * @param parameterTypes Parameter types
+     * @return Returns self
+     */
     public MethodInvoker withParameterTypes(Class<?>... parameterTypes) {
         this.withParameterTypes = true;
         this.parameterTypes = parameterTypes;
@@ -42,12 +83,29 @@ public class MethodInvoker {
         return getProxyMethod(invokerType, name);
     }
 
+    /**
+     * Search method targeting invoker type and having name
+     *
+     * @param parameters Parameters for target method
+     * @return Returns self to be able to get result
+     * @see MethodInvoker#withParameterTypes(Class[])
+     * @see MethodInvoker#result(Class)
+     */
     public MethodInvoker invoke(Object... parameters) {
         Method method = getMethod();
         this.result = invokeMethod(method, parameters);
         return this;
     }
 
+    /**
+     * Return result from invoked method. Call after {@link MethodInvoker#invoke(Object...)}.
+     * Be careful using generic class for return type.
+     *
+     * @param returnType Type of return value
+     * @param <T>        Type of return value
+     * @return Return value from invoked method
+     * @throws IllegalStateException If method is not invoked yet or has no return type or return type doesn't match.
+     */
     public <T> T result(Class<T> returnType) {
         if (result == null)
             throw new IllegalStateException("Not invoked yet or has no return type");
@@ -56,6 +114,11 @@ public class MethodInvoker {
         throw new IllegalStateException("Return type of target method doesn't match");
     }
 
+    /**
+     * Register class search static methods to invoke.
+     *
+     * @param type Implementing class.
+     */
     public static void register(Class<?> type) {
         SEARCHING_CLASSES.add(type);
     }
@@ -140,7 +203,7 @@ public class MethodInvoker {
     private static Object invokeMethod(Method method, Object... parameters) {
         try {
             if (NarakaMod.isModLoaded)
-                NarakaMod.LOGGER.warn("Using method invoker after mod loaded");
+                NarakaMod.LOGGER.warn("Using method invoker after mod loaded ({})", method.getName());
             return method.invoke(null, parameters);
         } catch (IllegalAccessException exception) {
             throw new RuntimeException(exception);
