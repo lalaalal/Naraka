@@ -1,39 +1,49 @@
 package com.yummy.naraka.client.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
-import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.world.entity.AbstractHerobrine;
-import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.Util;
 import net.minecraft.client.model.AnimationUtils;
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
 @Environment(EnvType.CLIENT)
-public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalModel<T> {
+public class HerobrineModel<S extends AbstractHerobrineRenderState> extends EntityModel<S> {
     private final ModelPart root;
     private final ModelPart main;
     private final ModelPart upperBody;
     private final ModelPart head;
     private final ModelPart leftArm;
     private final ModelPart rightArm;
-    private boolean renderShadow = false;
+    private final ModelPart leftArmLower;
+    private final ModelPart rightArmLower;
+    private final ModelPart legs;
+    private final ModelPart leftLeg;
+    private final ModelPart leftLegLower;
+    private final ModelPart rightLeg;
+    private final ModelPart rightlegLower;
 
     public HerobrineModel(ModelPart root) {
+        super(root);
         this.root = root;
         this.main = root.getChild("main");
         this.upperBody = main.getChild("upper_body");
         this.head = upperBody.getChild("head");
         this.leftArm = upperBody.getChild("left_arm");
+        this.leftArmLower = leftArm.getChild("left_arm_lower");
         this.rightArm = upperBody.getChild("right_arm");
+        this.rightArmLower = rightArm.getChild("right_arm_lower");
+        this.legs = main.getChild("legs");
+        this.leftLeg = legs.getChild("left_leg");
+        this.leftLegLower = leftLeg.getChild("left_leg_lower");
+        this.rightLeg = legs.getChild("right_leg");
+        this.rightlegLower = rightLeg.getChild("right_leg_lower");
     }
 
     public static LayerDefinition createForHerobrine() {
@@ -80,15 +90,6 @@ public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalMod
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
-    @Override
-    public ModelPart root() {
-        return root;
-    }
-
-    public void renderShadow() {
-        this.renderShadow = true;
-    }
-
     public ModelPart body() {
         return main;
     }
@@ -98,31 +99,24 @@ public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalMod
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        if (renderShadow)
-            color = NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(0x88).pack();
-        super.renderToBuffer(poseStack, buffer, packedLight, packedOverlay, color);
-        renderShadow = false;
-    }
-
-    @Override
-    public void setupAnim(T herobrine, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(S renderState) {
+        super.setupAnim(renderState);
         this.root.getAllParts().forEach(ModelPart::resetPose);
-        if (!herobrine.getCurrentAnimation().equals(AnimationLocations.STAGGERING))
-            applyHeadRotation(netHeadYaw, headPitch);
-        if (herobrine.getCurrentAnimation().equals(AnimationLocations.IDLE))
-            AnimationUtils.bobArms(rightArm, leftArm, ageInTicks);
-        this.animateWalk(HerobrineAnimation.WALKING, limbSwing, limbSwingAmount, 2, 2);
-        herobrine.forEachAnimations((animationLocation, animationState) -> {
-            this.animate(animationState, AnimationMapper.get(animationLocation), ageInTicks);
+        if (!renderState.isStaggering)
+            applyHeadRotation(renderState);
+        if (renderState.isIdle)
+            AnimationUtils.bobArms(rightArm, leftArm, renderState.ageInTicks);
+        this.animateWalk(HerobrineAnimation.WALKING, renderState.walkAnimationPos, renderState.walkAnimationSpeed, 2, 2);
+        renderState.animations((animationLocation, animationState) -> {
+            this.animate(animationState, AnimationMapper.get(animationLocation), renderState.ageInTicks);
         });
     }
 
-    private void applyHeadRotation(float netHeadYaw, float headPitch) {
-        netHeadYaw = Mth.clamp(netHeadYaw, -30, 30);
-        headPitch = Mth.clamp(headPitch, -25, 45);
+    private void applyHeadRotation(AbstractHerobrineRenderState renderState) {
+        float yRot = Mth.clamp(renderState.yRot, -30, 30);
+        float xRot = Mth.clamp(renderState.xRot, -25, 45);
 
-        this.head.yRot = netHeadYaw * (Mth.PI / 180f);
-        this.head.xRot = headPitch * (Mth.PI / 180f);
+        this.head.yRot = yRot * (Mth.PI / 180f);
+        this.head.xRot = xRot * (Mth.PI / 180f);
     }
 }

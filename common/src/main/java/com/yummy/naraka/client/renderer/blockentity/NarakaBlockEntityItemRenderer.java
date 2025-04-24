@@ -45,7 +45,8 @@ public class NarakaBlockEntityItemRenderer implements CustomRenderManager.Custom
     public void render(ItemStack stack, ItemDisplayContext mode, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay) {
         if (entityByItem.containsKey(stack.getItem())) {
             BlockEntity blockEntity = entityByItem.get(stack.getItem());
-            blockEntityRenderDispatcher.renderItem(blockEntity, poseStack, bufferSource, light, overlay);
+            float partialTicks = minecraft.getDeltaTracker().getGameTimeDeltaTicks();
+            blockEntityRenderDispatcher.render(blockEntity, partialTicks, poseStack, bufferSource);
         }
     }
 

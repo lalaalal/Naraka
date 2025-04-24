@@ -2,29 +2,31 @@ package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.client.renderer.entity.state.AfterimageRenderState;
 import com.yummy.naraka.util.Color;
-import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.entity.AfterimageEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.Collection;
 import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
-public abstract class AfterimageEntityRenderer<T extends LivingEntity & AfterimageEntity, M extends HierarchicalModel<T>> extends LivingEntityRenderer<T, M> {
+public abstract class AfterimageEntityRenderer<T extends LivingEntity & AfterimageEntity, S extends LivingEntityRenderState & AfterimageRenderState.Provider, M extends EntityModel<S>>
+        extends LivingEntityRenderer<T, S, M> {
     protected final M afterimageModel;
 
     public AfterimageEntityRenderer(EntityRendererProvider.Context context, Supplier<M> model, float shadowRadius) {
@@ -38,54 +40,50 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
     }
 
     @Override
-    public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
-        if (!entity.getAfterimages().isEmpty()) {
-            int blockLight = Mth.clamp(entity.getAfterimages().size(), LightTexture.block(packedLight), 15);
-            int skyLight = Mth.clamp(entity.getAfterimages().size(), LightTexture.sky(packedLight), 15);
+    public void render(S renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        Collection<AfterimageRenderState> afterimages = renderState.afterimages();
+        if (!afterimages.isEmpty()) {
+            int blockLight = Mth.clamp(afterimages.size(), LightTexture.block(packedLight), 15);
+            int skyLight = Mth.clamp(afterimages.size(), LightTexture.sky(packedLight), 15);
 
             packedLight = Math.max(LightTexture.pack(blockLight, skyLight), packedLight);
         }
-        renderAfterimages(entity, partialTicks, poseStack, buffer);
-        super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
+        renderAfterimages(renderState, poseStack, buffer);
+        super.render(renderState, poseStack, buffer, packedLight);
     }
 
-    protected void renderAfterimages(T entity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer) {
-        for (Afterimage afterimage : entity.getAfterimages())
-            this.renderAfterimage(entity, afterimage, partialTicks, poseStack, buffer);
+    protected void renderAfterimages(S renderState, PoseStack poseStack, MultiBufferSource buffer) {
+        for (AfterimageRenderState afterimage : renderState.afterimages())
+            this.renderAfterimage(renderState, afterimage, poseStack, buffer);
     }
 
-    protected void renderAfterimage(T entity, Afterimage afterimage, float partialTicks, PoseStack poseStack, MultiBufferSource buffer) {
-        if (afterimage.getAlpha(partialTicks) == 0 && afterimage.getPartialTicks() < partialTicks)
+    protected void renderAfterimage(S renderState, AfterimageRenderState afterimage, PoseStack poseStack, MultiBufferSource buffer) {
+        if (!afterimage.canRender)
             return;
 
-        Vec3 translation = afterimage.translation(entity, partialTicks);
+        Vec3 translation = afterimage.translation;
 
         poseStack.pushPose();
         poseStack.translate(translation.x, translation.y + 1.5, translation.z);
         poseStack.scale(1, -1, 1);
 
-        this.setupRotations(entity, poseStack, getBob(entity, partialTicks), afterimage.getYRot(), partialTicks, entity.getScale());
+        this.setupRotations(renderState, poseStack, afterimage.bodyRot, renderState.scale);
 
-        RenderType renderType = RenderType.entityTranslucentEmissive(getAfterimageTexture(entity));
+        RenderType renderType = RenderType.entityTranslucentEmissive(getAfterimageTexture(renderState));
         VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
-        Color color = getAfterimageColor(afterimage, partialTicks);
+        Color color = afterimage.color;
         int light = (int) (color.alpha01() * 10) + 5;
         int packedLight = LightTexture.pack(light, light);
 
         this.afterimageModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color.pack());
-        renderAfterimageLayer(entity, afterimage, partialTicks, poseStack, buffer, packedLight, color.alpha());
+        renderAfterimageLayer(renderState, afterimage, poseStack, buffer, packedLight, color.alpha());
 
         poseStack.popPose();
     }
 
-    protected void renderAfterimageLayer(T entity, Afterimage afterimage, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int alpha) {
+    protected void renderAfterimageLayer(S renderState, AfterimageRenderState afterimage, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int alpha) {
 
     }
 
-    protected Color getAfterimageColor(Afterimage afterimage, float partialTicks) {
-        int alpha = afterimage.getAlpha(partialTicks);
-        return NarakaConfig.CLIENT.afterimageColor.getValue().withAlpha(alpha);
-    }
-
-    protected abstract ResourceLocation getAfterimageTexture(T entity);
+    protected abstract ResourceLocation getAfterimageTexture(S afterimage);
 }

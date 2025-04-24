@@ -18,7 +18,7 @@ public final class NarakaRenderTypes {
             false,
             false,
             RenderType.CompositeState.builder()
-                    .setShaderState(new RenderStateShard.ShaderStateShard(NarakaShaders::longinus))
+                    .setShaderState(new RenderStateShard.ShaderStateShard(NarakaShaders.longinus()))
                     .setTextureState(
                             RenderStateShard.MultiTextureStateShard.builder()
                                     .add(TheEndPortalRenderer.END_SKY_LOCATION, false, false)

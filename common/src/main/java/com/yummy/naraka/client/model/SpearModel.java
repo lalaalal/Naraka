@@ -1,8 +1,6 @@
 package com.yummy.naraka.client.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.yummy.naraka.world.entity.Spear;
+import com.yummy.naraka.client.renderer.entity.state.SpearRenderState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
@@ -11,11 +9,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
 @Environment(EnvType.CLIENT)
-public class SpearModel extends EntityModel<Spear> {
-    private final ModelPart root;
-
+public class SpearModel extends EntityModel<SpearRenderState> {
     public SpearModel(ModelPart root) {
-        this.root = root;
+        super(root);
     }
 
     @SuppressWarnings("unused")
@@ -51,15 +47,5 @@ public class SpearModel extends EntityModel<Spear> {
                 .texOffs(8, 8).addBox(0.0F, -35.0F, -1.0F, 1.0F, 8.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 32, 32);
-    }
-
-    @Override
-    public void setupAnim(Spear spear, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
-        root.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 }

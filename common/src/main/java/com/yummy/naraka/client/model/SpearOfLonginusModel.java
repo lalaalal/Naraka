@@ -1,9 +1,7 @@
 package com.yummy.naraka.client.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaRenderTypes;
-import com.yummy.naraka.world.entity.SpearOfLonginus;
+import com.yummy.naraka.client.renderer.entity.state.SpearRenderState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
@@ -12,12 +10,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
 @Environment(EnvType.CLIENT)
-public class SpearOfLonginusModel extends EntityModel<SpearOfLonginus> {
-    private final ModelPart root;
-
+public class SpearOfLonginusModel extends EntityModel<SpearRenderState> {
     public SpearOfLonginusModel(ModelPart root) {
-        super((resourceLocation) -> NarakaRenderTypes.LONGINUS);
-        this.root = root;
+        super(root, (resourceLocation) -> NarakaRenderTypes.LONGINUS);
     }
 
     @SuppressWarnings("unused")
@@ -54,15 +49,5 @@ public class SpearOfLonginusModel extends EntityModel<SpearOfLonginus> {
         PartDefinition bb_main = partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, -63.0F, -1.0F, 1.0F, 63.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 128, 128);
-    }
-
-    @Override
-    public void setupAnim(SpearOfLonginus entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
-        root.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 }

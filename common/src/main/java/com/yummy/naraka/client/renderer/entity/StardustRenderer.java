@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaTextures;
+import com.yummy.naraka.client.renderer.entity.state.StardustRenderState;
 import com.yummy.naraka.world.entity.Stardust;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -14,30 +15,29 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 
 @Environment(EnvType.CLIENT)
-public class StardustRenderer extends EntityRenderer<Stardust> {
+public class StardustRenderer extends EntityRenderer<Stardust, StardustRenderState> {
     public StardustRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Stardust entity) {
-        return NarakaTextures.STARDUST;
+    public StardustRenderState createRenderState() {
+        return new StardustRenderState();
     }
 
     @Override
-    public void render(Stardust entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void render(StardustRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         Player player = Minecraft.getInstance().player;
         if (player != null) {
-            float yHeadRot = Mth.rotLerp(partialTick, player.yHeadRotO, player.yHeadRot);
+            float yHeadRot = Mth.rotLerp(renderState.ageInTicks, player.yHeadRotO, player.yHeadRot);
             poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - yHeadRot));
         }
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutout(getTextureLocation(entity)));
+        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(NarakaTextures.STARDUST));
         PoseStack.Pose pose = poseStack.last();
         vertexConsumer.addVertex(pose, -1, 1, 0)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
@@ -65,6 +65,6 @@ public class StardustRenderer extends EntityRenderer<Stardust> {
                 .setNormal(pose, 0, 0, 1);
 
         poseStack.popPose();
-        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+        super.render(renderState, poseStack, buffer, packedLight);
     }
 }

@@ -7,9 +7,9 @@ import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.client.model.HerobrineScarfModel;
+import com.yummy.naraka.client.renderer.entity.state.HerobrineRenderState;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.NarakaUtils;
-import com.yummy.naraka.world.entity.Herobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -28,38 +28,38 @@ import org.joml.Vector3f;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class HerobrineScarfLayer extends RenderLayer<Herobrine, HerobrineModel<Herobrine>> {
+public class HerobrineScarfLayer extends RenderLayer<HerobrineRenderState, HerobrineModel<HerobrineRenderState>> {
     private final HerobrineScarfModel scarfModel;
 
-    public HerobrineScarfLayer(RenderLayerParent<Herobrine, HerobrineModel<Herobrine>> renderer, EntityRendererProvider.Context context) {
+    public HerobrineScarfLayer(RenderLayerParent<HerobrineRenderState, HerobrineModel<HerobrineRenderState>> renderer, EntityRendererProvider.Context context) {
         super(renderer);
         this.scarfModel = new HerobrineScarfModel(context.bakeLayer(NarakaModelLayers.HEROBRINE_SCARF));
     }
 
-    private static void applyTranslateAndRotate(PoseStack poseStack, HerobrineModel<Herobrine> herobrineModel) {
+    private static void applyTranslateAndRotate(PoseStack poseStack, HerobrineModel herobrineModel) {
         herobrineModel.body().translateAndRotate(poseStack);
         herobrineModel.upperBody().translateAndRotate(poseStack);
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Herobrine herobrine, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (herobrine.getPhase() != 2 && !NarakaConfig.CLIENT.alwaysDisplayHerobrineScarf.getValue())
+    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, HerobrineRenderState renderState, float yRot, float xRot) {
+        if (!renderState.renderScarf)
             return;
         poseStack.pushPose();
 
-        RenderType renderType = RenderType.entitySmoothCutout(getTextureLocation(herobrine));
+        RenderType renderType = RenderType.entitySmoothCutout(getTextureLocation());
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
         applyTranslateAndRotate(poseStack, getParentModel());
         scarfModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
 
-        RenderType waveRenderType = RenderType.entityCutout(getTextureLocation(herobrine));
+        RenderType waveRenderType = RenderType.entityCutout(getTextureLocation());
         vertexConsumer = bufferSource.getBuffer(waveRenderType);
         poseStack.translate(0.25, -0.625, 0.375);
         poseStack.scale(-3, 3, 3);
 
-        float rotationDegree = herobrine.getScarfRotationDegree(partialTick) - NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
-        List<Float> speedList = herobrine.getScarfWaveSpeedList();
-        renderScarf(poseStack, vertexConsumer, packedLight, ageInTicks, rotationDegree, 9, 27, 7, 15, 64, 64, 0, speedList);
+        float rotationDegree = renderState.scarfRotationDegree;
+        List<Float> speedList = renderState.scarfWaveSpeedList;
+        renderScarf(poseStack, vertexConsumer, packedLight, renderState.ageInTicks, rotationDegree, 9, 27, 7, 15, 64, 64, 0, speedList);
 
         poseStack.popPose();
     }
@@ -147,12 +147,12 @@ public class HerobrineScarfLayer extends RenderLayer<Herobrine, HerobrineModel<H
     }
 
     /**
-     * Add 4 vertices in anti-clockwise from left-top based on positive direction
+     * Add 4 vertices in anti-clockwise from left-top based on a positive direction
      *
      * @param positions Positions, size must be 4
      */
     private static void vertices(VertexConsumer vertexConsumer, PoseStack.Pose pose, List<Vector3f> positions, float u, float v, float width, float height, int packedLight, int packedOverlay, int color, Direction direction) {
-        Vec3i normal = direction.getNormal();
+        Vec3i normal = direction.getUnitVec3i();
         List<Vector2f> uvs = List.of(
                 new Vector2f(u, v + height),
                 new Vector2f(u, v),
@@ -169,8 +169,7 @@ public class HerobrineScarfLayer extends RenderLayer<Herobrine, HerobrineModel<H
         }, normal.getX() < 0 || normal.getY() < 0 || normal.getZ() < 0);
     }
 
-    @Override
-    protected ResourceLocation getTextureLocation(Herobrine entity) {
+    protected ResourceLocation getTextureLocation() {
         return NarakaTextures.HEROBRINE_SCARF;
     }
 }
