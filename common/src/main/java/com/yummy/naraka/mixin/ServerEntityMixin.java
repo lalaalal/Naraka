@@ -30,7 +30,8 @@ public abstract class ServerEntityMixin {
     public void addParingEntityData(ServerPlayer serverPlayer, CallbackInfo ci) {
         if (entity instanceof LivingEntity livingEntity) {
             HolderSet<EntityDataType<?>> entityDataTypes = HolderSet.direct(
-                    NarakaRegistries.ENTITY_DATA_TYPE.holders()
+                    NarakaRegistries.ENTITY_DATA_TYPE.stream()
+                            .map(NarakaRegistries.ENTITY_DATA_TYPE::wrapAsHolder)
                             .filter(holder -> EntityDataHelper.hasEntityData(livingEntity, holder.value()))
                             .toList()
             );

@@ -66,7 +66,7 @@ public abstract class LivingEntityMixin extends Entity {
         return original;
     }
 
-    @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V"))
+    @ModifyArg(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V"))
     public float increaseSpeedInLiquid(float scale) {
         if (NarakaItemUtils.canApplyFasterLiquidSwimming(naraka$living())) {
             float speedModifier = NarakaConfig.COMMON.fasterLiquidSwimmingSpeed.getValue();
@@ -77,7 +77,7 @@ public abstract class LivingEntityMixin extends Entity {
         return scale;
     }
 
-    @ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInWater()Z"))
+    @ModifyExpressionValue(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInWater()Z"))
     public boolean considerLiquidAsWater(boolean original) {
         if (NarakaItemUtils.canApplyFasterLiquidSwimming(naraka$living()))
             return isInLiquid();
