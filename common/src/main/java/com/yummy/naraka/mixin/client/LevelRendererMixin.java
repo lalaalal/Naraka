@@ -1,6 +1,5 @@
 package com.yummy.naraka.mixin.client;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.config.NarakaConfig;
@@ -16,19 +15,21 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.List;
 
 @Environment(EnvType.CLIENT)
 @Mixin(value = LevelRenderer.class)
@@ -39,11 +40,12 @@ public abstract class LevelRendererMixin {
     @Shadow @Final
     private Minecraft minecraft;
 
-    @Shadow
-    private PostChain entityEffect;
+    // TODO : Check hidden ore rendering
+//    @Shadow
+//    private PostChain entityEffect;
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;entitiesForRendering()Ljava/lang/Iterable;"))
-    private void renderHiddenOres(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo ci, @Local PoseStack poseStack) {
+    @Inject(method = "renderEntities", at = @At(value = "HEAD"))
+    private void renderHiddenOres(PoseStack poseStack, MultiBufferSource.BufferSource bufferSource, Camera camera, DeltaTracker deltaTracker, List<Entity> entities, CallbackInfo ci) {
         LocalPlayer player = minecraft.player;
         ClientLevel level = minecraft.level;
         if (player == null || level == null || !NarakaItemUtils.canApplyOreSeeThrough(player) || NarakaConfig.CLIENT.disableOreSeeThrough.getValue())
@@ -68,15 +70,16 @@ public abstract class LevelRendererMixin {
                 poseStack.translate(pos.getX() - cameraPosition.x, pos.getY() - cameraPosition.y, pos.getZ() - cameraPosition.z);
 
 
-                RenderType renderType = RenderType.outline(InventoryMenu.BLOCK_ATLAS);
+                @SuppressWarnings("deprecation")
+                RenderType renderType = RenderType.outline(TextureAtlas.LOCATION_BLOCKS);
                 VertexConsumer vertexConsumer = outlineBufferSource.getBuffer(renderType);
                 minecraft.getBlockRenderer().renderBatched(state, pos, level, poseStack, vertexConsumer, false, level.random);
                 poseStack.popPose();
             }
         });
-
-        renderBuffers.outlineBufferSource().endOutlineBatch();
-        this.entityEffect.process(deltaTracker.getGameTimeDeltaTicks());
-        this.minecraft.getMainRenderTarget().bindWrite(false);
+//
+//        renderBuffers.outlineBufferSource().endOutlineBatch();
+//        this.entityEffect.process(deltaTracker.getGameTimeDeltaTicks());
+//        this.minecraft.getMainRenderTarget().bindWrite(false);
     }
 }

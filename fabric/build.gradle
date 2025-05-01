@@ -40,10 +40,6 @@ dependencies {
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 }
 
-loom {
-    accessWidenerPath = file("src/main/resources/naraka.accesswidener")
-}
-
 processResources {
     inputs.property 'version', project.version
 

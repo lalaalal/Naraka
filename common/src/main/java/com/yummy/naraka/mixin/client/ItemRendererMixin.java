@@ -10,33 +10,51 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
-    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    public void renderCustom(ItemStack itemStack, ItemDisplayContext itemDisplayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, int overlay, BakedModel bakedModel, CallbackInfo ci) {
+    @Shadow @Final private ItemStackRenderState scratchItemStackRenderState;
+
+    @Shadow @Final private ItemModelResolver resolver;
+
+    @Unique
+    @Nullable
+    private static ItemStack naraka$currentItem;
+
+    // TODO : Refactor custom item render
+    @Inject(method = "renderStatic(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/level/Level;III)V", at = @At("HEAD"), cancellable = true)
+    public void renderCustom(LivingEntity entity, ItemStack itemStack, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, Level level, int combinedLight, int combinedOverlay, int seed, CallbackInfo ci) {
+        naraka$currentItem = itemStack;
         if (CustomRenderManager.hasCustomRenderer(itemStack)) {
             CustomRenderManager.CustomItemRenderer itemRenderer = CustomRenderManager.getCustomRenderer(itemStack);
-            if (itemRenderer.shouldRenderCustom(itemStack, itemDisplayContext)) {
+            if (itemRenderer.shouldRenderCustom(itemStack, displayContext)) {
+                this.resolver.updateForTopItem(this.scratchItemStackRenderState, itemStack, displayContext, leftHand, level, entity, seed);
                 poseStack.pushPose();
                 if (itemRenderer.applyTransform()) {
-                    bakedModel.getTransforms().getTransform(itemDisplayContext).apply(leftHand, poseStack);
+                    scratchItemStackRenderState.transform().apply(leftHand, poseStack);
                     poseStack.translate(-0.5F, -0.5F, -0.5F);
                 }
-                itemRenderer.render(itemStack, itemDisplayContext, poseStack, multiBufferSource, light, overlay);
+                itemRenderer.render(itemStack, displayContext, poseStack, bufferSource, combinedLight, combinedOverlay);
                 poseStack.popPose();
                 ci.cancel();
             }
@@ -44,47 +62,47 @@ public abstract class ItemRendererMixin {
     }
 
     @Inject(method = "renderModelLists", at = @At("HEAD"), cancellable = true)
-    public void renderCustom(BakedModel model, ItemStack itemStack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer buffer, CallbackInfo ci) {
-        if (CustomRenderManager.shouldRenderRainbow(itemStack)) {
+    private static void renderCustom(BakedModel model, int[] tintLayers, int packedLight, int packedOverlay, PoseStack poseStack, VertexConsumer buffer, CallbackInfo ci) {
+        if (naraka$currentItem == null)
+            return;
+        if (CustomRenderManager.shouldRenderRainbow(naraka$currentItem)) {
+            naraka$renderRainbowModelLists(model, packedLight, packedOverlay, poseStack, buffer);
             ci.cancel();
-            naraka$renderRainbowModelLists(model, itemStack, combinedLight, combinedOverlay, poseStack, buffer);
         }
 
-        if (CustomRenderManager.shouldRenderColored(itemStack)) {
+        if (CustomRenderManager.shouldRenderColored(naraka$currentItem)) {
+            Color color = CustomRenderManager.getItemColor(naraka$currentItem);
+            naraka$renderColoredModelLists(model, packedLight, packedOverlay, poseStack, buffer, color);
             ci.cancel();
-            naraka$renderColoredModelLists(model, itemStack, combinedLight, combinedOverlay, poseStack, buffer);
         }
     }
 
     @Unique
-    private void naraka$renderRainbowModelLists(BakedModel model, ItemStack stack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer buffer) {
+    private static void naraka$renderRainbowModelLists(BakedModel model, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer buffer) {
         Color color = ComponentStyles.LONGINUS_COLOR.getCurrentColor().withAlpha(0xff);
-        naraka$renderModelLists(model, stack, combinedLight, combinedOverlay, poseStack, buffer, color);
+        naraka$renderModelLists(model, combinedLight, combinedOverlay, poseStack, buffer, color);
     }
 
     @Unique
-    private void naraka$renderColoredModelLists(BakedModel model, ItemStack stack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer buffer) {
-        Color color = CustomRenderManager.getItemColor(stack);
-        naraka$renderModelLists(model, stack, combinedLight, combinedOverlay, poseStack, buffer, color);
+    private static void naraka$renderColoredModelLists(BakedModel model, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer buffer, Color color) {
+        naraka$renderModelLists(model, combinedLight, combinedOverlay, poseStack, buffer, color);
     }
 
     @Unique
-    private void naraka$renderModelLists(BakedModel model, ItemStack stack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer buffer, Color color) {
+    private static void naraka$renderModelLists(BakedModel model, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer buffer, Color color) {
         RandomSource randomSource = RandomSource.create();
 
         for (Direction direction : Direction.values()) {
             randomSource.setSeed(42L);
-            this.naraka$renderColoredQuadList(poseStack, buffer, model.getQuads(null, direction, randomSource), stack, combinedLight, combinedOverlay, color);
+            naraka$renderColoredQuadList(poseStack, buffer, model.getQuads(null, direction, randomSource), combinedLight, combinedOverlay, color);
         }
 
         randomSource.setSeed(42L);
-        this.naraka$renderColoredQuadList(poseStack, buffer, model.getQuads(null, null, randomSource), stack, combinedLight, combinedOverlay, color);
+        naraka$renderColoredQuadList(poseStack, buffer, model.getQuads(null, null, randomSource), combinedLight, combinedOverlay, color);
     }
 
     @Unique
-    private void naraka$renderColoredQuadList(PoseStack poseStack, VertexConsumer buffer, List<BakedQuad> quads, ItemStack itemStack, int combinedLight, int combinedOverlay, Color color) {
-        if (itemStack.isEmpty())
-            return;
+    private static void naraka$renderColoredQuadList(PoseStack poseStack, VertexConsumer buffer, List<BakedQuad> quads, int combinedLight, int combinedOverlay, Color color) {
         PoseStack.Pose pose = poseStack.last();
 
         for (BakedQuad bakedQuad : quads)
