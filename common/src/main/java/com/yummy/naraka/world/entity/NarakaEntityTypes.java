@@ -1,11 +1,11 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.Platform;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.init.EntityAttributeRegistry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -64,14 +64,12 @@ public class NarakaEntityTypes {
                     .immuneTo(Blocks.CACTUS)
     );
 
-    private static String getKeyByModLoader(String name) {
-        if (Platform.getInstance().getModLoader() == Platform.ModLoader.NEO_FORGE)
-            return NarakaMod.MOD_ID + ":" + name;
-        return null;
+    private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {
+        return RegistryProxy.register(Registries.ENTITY_TYPE, name, () -> builder.build(createKey(name)));
     }
 
-    private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {
-        return RegistryProxy.register(Registries.ENTITY_TYPE, name, () -> builder.build(getKeyByModLoader(name)));
+    private static ResourceKey<EntityType<?>> createKey(String name) {
+        return ResourceKey.create(Registries.ENTITY_TYPE, NarakaMod.location(name));
     }
 
     public static void initialize() {

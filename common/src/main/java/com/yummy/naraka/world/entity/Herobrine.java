@@ -42,7 +42,7 @@ import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -357,9 +357,9 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     @Override
-    public boolean hurt(DamageSource source, float damage) {
+    public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
-            return super.hurt(source, damage);
+            return super.hurtServer(level, source, damage);
         if (source.getEntity() == this)
             return false;
 
@@ -377,12 +377,12 @@ public class Herobrine extends AbstractHerobrine {
             skillManager.setCurrentSkillIfAbsence(blockingSkill);
             return false;
         }
-        return super.hurt(source, limitedDamage);
+        return super.hurtServer(level, source, limitedDamage);
     }
 
     @Override
-    protected void actuallyHurt(DamageSource damageSource, float damageAmount) {
-        super.actuallyHurt(damageSource, damageAmount);
+    protected void actuallyHurt(ServerLevel level, DamageSource damageSource, float damageAmount) {
+        super.actuallyHurt(level, damageSource, damageAmount);
         accumulatedHurtDamage += damageAmount;
         if (accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f)
             switchWithShadowHerobrine();
@@ -536,10 +536,13 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     @Override
-    public @Nullable Entity changeDimension(DimensionTransition transition) {
-        for (ShadowHerobrine shadowHerobrine : getEntities(shadowHerobrines, ShadowHerobrine.class))
-            shadowHerobrine.changeDimension(transition);
-        return super.changeDimension(transition);
+    @Nullable
+    public Entity teleport(TeleportTransition teleportTransition) {
+        if (!level().dimension().equals(teleportTransition.newLevel().dimension())) {
+            for (ShadowHerobrine shadowHerobrine : getEntities(shadowHerobrines, ShadowHerobrine.class))
+                shadowHerobrine.teleport(teleportTransition);
+        }
+        return super.teleport(teleportTransition);
     }
 
     @Override
@@ -550,8 +553,10 @@ public class Herobrine extends AbstractHerobrine {
             LockedHealthHelper.release(livingEntity);
             StigmaHelper.removeStigma(livingEntity);
         }
-        for (ShadowHerobrine shadowHerobrine : getEntities(shadowHerobrines, ShadowHerobrine.class))
-            shadowHerobrine.kill();
+        if (level() instanceof ServerLevel serverLevel) {
+            for (ShadowHerobrine shadowHerobrine : getEntities(shadowHerobrines, ShadowHerobrine.class))
+                shadowHerobrine.hurtServer(serverLevel, damageSource, Float.MAX_VALUE);
+        }
         super.die(damageSource);
     }
 

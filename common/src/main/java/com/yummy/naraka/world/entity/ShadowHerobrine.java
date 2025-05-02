@@ -125,7 +125,8 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
             return;
         StigmaHelper.removeStigma(target);
         level().playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.HOSTILE);
-        target.hurt(NarakaDamageSources.stigma(this), 6 * stigma.value());
+        if (level() instanceof ServerLevel serverLevel)
+            target.hurtServer(serverLevel, NarakaDamageSources.stigma(this), 6 * stigma.value());
         if ((herobrine = getHerobrine()) != null)
             herobrine.summonShadowHerobrine();
     }
@@ -151,24 +152,19 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     @Override
-    public boolean canChangeDimensions(Level oldLevel, Level newLevel) {
-        return false;
-    }
-
-    @Override
-    public boolean hurt(DamageSource source, float amount) {
+    public boolean hurtServer(ServerLevel serverLevel, DamageSource source, float amount) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
-            return super.hurt(source, amount);
+            return super.hurtServer(serverLevel, source, amount);
         if ((herobrine = getHerobrine()) != null)
             amount = Math.min(amount, getHurtDamageLimit());
         if (staggeringTickCount > 0)
             return false;
-        return super.hurt(source, amount);
+        return super.hurtServer(serverLevel, source, amount);
     }
 
     @Override
-    protected void actuallyHurt(DamageSource damageSource, float damageAmount) {
-        super.actuallyHurt(damageSource, damageAmount);
+    protected void actuallyHurt(ServerLevel serverLevel, DamageSource damageSource, float damageAmount) {
+        super.actuallyHurt(serverLevel, damageSource, damageAmount);
         if (herobrine != null)
             herobrine.broadcastShadowHerobrineHurt(this);
     }

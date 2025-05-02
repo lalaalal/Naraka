@@ -36,7 +36,11 @@ public class NarakaEntityDataTypes {
     }
 
     public static HolderSet<EntityDataType<?>> full() {
-        return HolderSet.direct(NarakaRegistries.ENTITY_DATA_TYPE.holders().toList());
+        return HolderSet.direct(
+                NarakaRegistries.ENTITY_DATA_TYPE.stream()
+                        .map(NarakaRegistries.ENTITY_DATA_TYPE::wrapAsHolder)
+                        .toList()
+        );
     }
 
     public static void initialize(NarakaInitializer initializer) {

@@ -21,7 +21,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -113,8 +112,8 @@ public class Spear extends AbstractArrow {
         int loyaltyLevel = getLoyalty();
         if (loyaltyLevel > 0 && (this.dealtDamage || this.isNoPhysics()) && owner != null) {
             if (!this.isAcceptibleReturnOwner()) {
-                if (!level().isClientSide && this.pickup == Pickup.ALLOWED) {
-                    this.spawnAtLocation(this.getPickupItem(), 0.1f);
+                if (level() instanceof ServerLevel serverLevel && this.pickup == Pickup.ALLOWED) {
+                    this.spawnAtLocation(serverLevel, this.getPickupItem(), 0.1f);
                 }
 
                 this.discard();
@@ -144,8 +143,8 @@ public class Spear extends AbstractArrow {
         SoundEvent soundevent = SoundEvents.TRIDENT_HIT;
         Entity entity = result.getEntity();
 
-        if (canHurtEntity(entity))
-            hurtHitEntity(entity);
+        if (canHurtEntity(entity) && level() instanceof ServerLevel serverLevel)
+            hurtHitEntity(serverLevel, entity);
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
         this.playSound(soundevent, 1.0F, 1.0F);
@@ -155,16 +154,14 @@ public class Spear extends AbstractArrow {
         return entity.getType() != EntityType.ENDERMAN;
     }
 
-    protected void hurtHitEntity(Entity entity) {
+    protected void hurtHitEntity(ServerLevel serverLevel, Entity entity) {
         DamageSource damageSource = NarakaDamageSources.spear(this);
-        entity.hurt(damageSource, getAttackDamage());
+        entity.hurtServer(serverLevel, damageSource, getAttackDamage());
     }
 
     protected float getAttackDamage() {
         ItemStack spearItem = getPickupItem();
         float baseDamage = 1;
-        if (spearItem.getItem() instanceof TieredItem tieredItem)
-            baseDamage = tieredItem.getTier().getAttackDamageBonus();
         ItemAttributeModifiers attributeModifiers = spearItem.get(DataComponents.ATTRIBUTE_MODIFIERS);
         ItemEnchantments enchantments = spearItem.get(DataComponents.ENCHANTMENTS);
         if (attributeModifiers == null)
