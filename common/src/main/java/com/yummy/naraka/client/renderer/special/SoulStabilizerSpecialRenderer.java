@@ -25,6 +25,7 @@ import net.minecraft.util.ARGB;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
+@Environment(EnvType.CLIENT)
 public class SoulStabilizerSpecialRenderer implements NoDataSpecialModelRenderer {
     private final SoulStabilizerBlockEntity blockEntity = new SoulStabilizerBlockEntity(BlockPos.ZERO, NarakaBlocks.SOUL_STABILIZER.get().defaultBlockState());
     private final ModelPart bottle;

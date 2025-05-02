@@ -11,9 +11,12 @@ import com.yummy.naraka.client.particle.EbonyProvider;
 import com.yummy.naraka.client.particle.NectariumParticle;
 import com.yummy.naraka.client.particle.SoulParticle;
 import com.yummy.naraka.client.renderer.CustomRenderManager;
-import com.yummy.naraka.client.renderer.blockentity.*;
+import com.yummy.naraka.client.renderer.blockentity.ForgingBlockEntityRenderer;
+import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
+import com.yummy.naraka.client.renderer.blockentity.SoulStabilizerBlockEntityRenderer;
+import com.yummy.naraka.client.renderer.blockentity.UnstableBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.entity.*;
-import com.yummy.naraka.client.renderer.item.SpearItemRenderer;
+import com.yummy.naraka.client.renderer.special.SoulSmithingBlockSpecialRenderer;
 import com.yummy.naraka.client.renderer.special.SoulStabilizerSpecialRenderer;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
@@ -21,7 +24,6 @@ import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
-import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;
@@ -34,9 +36,6 @@ public final class NarakaModClient {
         NarakaModelLayers.initialize();
         registerParticles();
         registerSpecialRenderers();
-
-        initializer.registerResourceReloadListener("spear_item_renderer", () -> SpearItemRenderer.INSTANCE);
-        initializer.registerResourceReloadListener("custom_renderer", () -> NarakaBlockEntityItemRenderer.INSTANCE);
 
         registerEntityRenderers();
         registerBlockEntityRenderers();
@@ -51,7 +50,10 @@ public final class NarakaModClient {
 
     private static void registerSpecialRenderers() {
         SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("soul_stabilizer"), SoulStabilizerSpecialRenderer.Unbaked.CODEC);
-        SpecialModelRendererRegistry.register(NarakaBlocks.SOUL_SMITHING_BLOCK.get(), new SoulStabilizerSpecialRenderer.Unbaked());
+        SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("soul_smithing_block"), SoulSmithingBlockSpecialRenderer.Unbaked.CODEC);
+
+        SpecialModelRendererRegistry.registerBlock(NarakaBlocks.SOUL_STABILIZER, new SoulStabilizerSpecialRenderer.Unbaked());
+        SpecialModelRendererRegistry.registerBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, new SoulSmithingBlockSpecialRenderer.Unbaked());
     }
 
     private static void onRegistryLoaded() {
@@ -64,18 +66,10 @@ public final class NarakaModClient {
     }
 
     private static void initializeItems() {
-        CustomRenderManager.register(NarakaItems.SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
-        CustomRenderManager.register(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
-        CustomRenderManager.register(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get(), SpearItemRenderer.INSTANCE);
 
-        CustomRenderManager.renderRainbow(NarakaItems.RAINBOW_SWORD.get());
     }
 
     private static void initializeBlocks() {
-//        CustomRenderManager.register(NarakaBlocks.FORGING_BLOCK.get(), NarakaBlockEntityItemRenderer.INSTANCE);
-//        CustomRenderManager.register(NarakaBlocks.SOUL_STABILIZER.get(), NarakaBlockEntityItemRenderer.INSTANCE);
-//        CustomRenderManager.register(NarakaBlocks.SOUL_SMITHING_BLOCK.get(), NarakaBlockEntityItemRenderer.INSTANCE);
-
         CustomRenderManager.register(RenderType.cutout(),
                 NarakaBlocks.EBONY_SAPLING.get(),
                 NarakaBlocks.POTTED_EBONY_SAPLING.get(),

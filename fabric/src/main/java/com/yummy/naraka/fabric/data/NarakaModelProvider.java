@@ -1,6 +1,7 @@
 package com.yummy.naraka.fabric.data;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.client.renderer.special.SoulSmithingBlockSpecialRenderer;
 import com.yummy.naraka.client.renderer.special.SoulStabilizerSpecialRenderer;
 import com.yummy.naraka.fabric.mixin.client.CompassAngleStateMixin;
 import com.yummy.naraka.world.block.EbonyLogBlock;
@@ -21,6 +22,7 @@ import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.client.renderer.item.properties.numeric.CompassAngle;
 import net.minecraft.client.renderer.item.properties.numeric.CompassAngleState;
 import net.minecraft.client.renderer.item.properties.select.TrimMaterialProperty;
+import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -77,25 +79,20 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createPlant(NarakaBlocks.EBONY_SAPLING.get(), NarakaBlocks.POTTED_EBONY_SAPLING.get(), BlockModelGenerators.PlantType.NOT_TINTED);
         NarakaBlocks.forEachSoulInfusedBlock(generator::createTrivialCube);
         generator.createTrivialCube(NarakaBlocks.EBONY_METAL_BLOCK.get());
-        createBlockEntityModels(generator, Blocks.ANVIL, NarakaBlocks.FORGING_BLOCK.get(), NarakaBlocks.SOUL_SMITHING_BLOCK.get());
-        createSoulStabilizer(generator, Blocks.GLASS, NarakaBlocks.SOUL_STABILIZER.get());
+        createBlockEntity(generator, Blocks.ANVIL, NarakaBlocks.SOUL_SMITHING_BLOCK.get(), new SoulSmithingBlockSpecialRenderer.Unbaked());
+        createBlockEntity(generator, Blocks.GLASS, NarakaBlocks.SOUL_STABILIZER.get(), new SoulStabilizerSpecialRenderer.Unbaked());
         createNectariumCrystal(generator);
         generator.createTrivialCube(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
         generator.createTrivialCube(NarakaBlocks.AMETHYST_ORE.get());
         generator.createTrivialCube(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
     }
 
-    private static void createBlockEntityModels(BlockModelGenerators generator, Block particle, Block... blocks) {
-        for (Block block : blocks)
-            generator.createParticleOnlyBlock(block, particle);
-    }
-
-    private static void createSoulStabilizer(BlockModelGenerators generator, Block particle, Block block) {
+    private static void createBlockEntity(BlockModelGenerators generator, Block particle, Block block, SpecialModelRenderer.Unbaked unbaked) {
         generator.createParticleOnlyBlock(block, particle);
         Item item = block.asItem();
         ResourceLocation blockModel = BLOCK_ENTITY.create(item, TextureMapping.particle(particle), generator.modelOutput);
-        ItemModel.Unbaked unbaked = ItemModelUtils.specialModel(blockModel, new SoulStabilizerSpecialRenderer.Unbaked());
-        generator.itemModelOutput.accept(item, unbaked);
+        ItemModel.Unbaked unbakedItemModel = ItemModelUtils.specialModel(blockModel, unbaked);
+        generator.itemModelOutput.accept(item, unbakedItemModel);
     }
 
     private static void createNectariumCrystal(BlockModelGenerators generator) {
@@ -267,6 +264,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         NarakaItems.forEachSoulInfusedSword(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM));
 
         generateSanctuaryCompassItem(generator, NarakaItems.SANCTUARY_COMPASS.get());
+        generator.declareCustomModelItem(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get().asItem());
     }
 
     public static void generateTrimmableItem(ItemModelGenerators generator, Item item, ResourceKey<EquipmentAsset> key, String name) {
