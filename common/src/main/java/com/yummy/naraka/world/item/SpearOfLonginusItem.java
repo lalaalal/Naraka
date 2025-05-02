@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 
 public class SpearOfLonginusItem extends SpearItem {
     public SpearOfLonginusItem(Properties properties) {
-        super(NarakaTiers.LONGINUS, properties, NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS);
+        super(NarakaToolMaterials.LONGINUS, Float.MAX_VALUE - 1, -3, 6, properties, NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS);
     }
 
     @Override
@@ -31,11 +31,8 @@ public class SpearOfLonginusItem extends SpearItem {
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        DamageSource source = NarakaDamageSources.longinus(attacker);
-        target.hurt(source, Float.MAX_VALUE);
-
-        return true;
+    public DamageSource getDamageSource(LivingEntity entity) {
+        return NarakaDamageSources.longinus(entity);
     }
 
     @Override
@@ -43,10 +40,5 @@ public class SpearOfLonginusItem extends SpearItem {
         return super.getName(stack).copy()
                 .withStyle(ChatFormatting.BOLD)
                 .withStyle(ComponentStyles.LONGINUS_COLOR);
-    }
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return false;
     }
 }

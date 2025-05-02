@@ -22,7 +22,6 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.features.NarakaFeatures;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
-import com.yummy.naraka.world.item.NarakaArmorMaterials;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
@@ -71,7 +70,6 @@ public final class NarakaMod {
         NarakaBlockEntityTypes.initialize();
 
         NarakaReinforcementEffects.initialize();
-        NarakaArmorMaterials.initialize();
         NarakaDataComponentTypes.initialize();
         NarakaItems.initialize();
         NarakaRecipeTypes.initialize();

@@ -24,7 +24,7 @@ public class NarakaEnchantments {
     private static Registry<Enchantment> registry;
 
     public static void initialize(RegistryAccess registryAccess) {
-        registry = registryAccess.registryOrThrow(Registries.ENCHANTMENT);
+        registry = registryAccess.lookupOrThrow(Registries.ENCHANTMENT);
     }
 
     public static void bootstrap(BootstrapContext<Enchantment> context) {
@@ -73,6 +73,6 @@ public class NarakaEnchantments {
     public static Holder<Enchantment> get(ResourceKey<Enchantment> key) {
         if (registry == null)
             throw new IllegalStateException("NarakaEnchantments is not initialized");
-        return registry.getHolderOrThrow(key);
+        return registry.getOrThrow(key);
     }
 }

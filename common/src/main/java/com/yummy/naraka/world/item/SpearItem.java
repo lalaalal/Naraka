@@ -7,7 +7,7 @@ import net.minecraft.core.Position;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -24,9 +24,10 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.Supplier;
 
-public class SpearItem extends TieredItem implements ProjectileItem {
+public class SpearItem extends Item implements ProjectileItem {
     protected final Supplier<? extends EntityType<? extends Spear>> spearType;
 
+    @Deprecated
     public static ItemAttributeModifiers createAttributes(double attackDamage, double attackSpeed) {
         return ItemAttributeModifiers.builder()
                 .add(Attributes.ATTACK_DAMAGE,
@@ -38,8 +39,8 @@ public class SpearItem extends TieredItem implements ProjectileItem {
                 ).build();
     }
 
-    public SpearItem(Tier tier, Properties properties, Supplier<? extends EntityType<? extends Spear>> spearType) {
-        super(tier, properties);
+    public SpearItem(ToolMaterial material, float attackDamage, float attackSpeed, float interactionRange, Properties properties, Supplier<? extends EntityType<? extends Spear>> spearType) {
+        super(NarakaToolMaterials.applySpearProperties(properties, material, attackDamage, attackSpeed, interactionRange));
         this.spearType = spearType;
     }
 
@@ -49,8 +50,8 @@ public class SpearItem extends TieredItem implements ProjectileItem {
     }
 
     @Override
-    public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.SPEAR;
+    public ItemUseAnimation getUseAnimation(ItemStack stack) {
+        return ItemUseAnimation.SPEAR;
     }
 
     @Override
@@ -59,9 +60,12 @@ public class SpearItem extends TieredItem implements ProjectileItem {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeCharged) {
-        if (getUseDuration(stack, livingEntity) - timeCharged >= TridentItem.THROW_THRESHOLD_TIME)
+    public boolean releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeCharged) {
+        if (getUseDuration(stack, livingEntity) - timeCharged >= TridentItem.THROW_THRESHOLD_TIME) {
             throwSpear(level, livingEntity, stack);
+            return true;
+        }
+        return false;
     }
 
     protected void throwSpear(Level level, LivingEntity livingEntity, ItemStack stack) {
@@ -86,10 +90,9 @@ public class SpearItem extends TieredItem implements ProjectileItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         player.startUsingItem(hand);
-        return InteractionResultHolder.consume(itemstack);
+        return InteractionResult.CONSUME;
     }
 
     @Override
