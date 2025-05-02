@@ -3,7 +3,6 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
-import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -68,16 +67,6 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
 
     public void addHurtTargetListener(HurtTargetListener listener) {
         this.listeners.add(listener);
-    }
-
-    public NarakaFireball withStigma(LivingEntity stigmatizingEntity) {
-        addHurtTargetListener((target, damage) -> StigmaHelper.increaseStigma(target, stigmatizingEntity));
-        return this;
-    }
-
-    public NarakaFireball withFixedDamage() {
-        entityData.set(FIXED_DAMAGE, true);
-        return this;
     }
 
     public boolean hasTarget() {

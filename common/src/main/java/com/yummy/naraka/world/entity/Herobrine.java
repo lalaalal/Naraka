@@ -281,15 +281,15 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     @Override
-    protected void customServerAiStep() {
+    protected void customServerAiStep(ServerLevel serverLevel) {
         updateAccumulatedDamage();
         updateScarfRotation();
 
         tryAvoidProjectile();
-        collectStigma();
+        collectStigma(serverLevel);
         phaseManager.updatePhase(bossEvent);
 
-        super.customServerAiStep();
+        super.customServerAiStep(serverLevel);
     }
 
     private void updateAccumulatedDamage() {
@@ -300,20 +300,18 @@ public class Herobrine extends AbstractHerobrine {
         accumulatedDamageTickCount += 1;
     }
 
-    private void collectStigma() {
+    private void collectStigma(ServerLevel serverLevel) {
         final int waitingTick = NarakaConfig.COMMON.herobrineTakingStigmaTick.getValue();
-        if (level() instanceof ServerLevel serverLevel) {
-            watchingEntities.removeIf(uuid -> {
-                LivingEntity entity = NarakaEntityUtils.findEntityByUUID(serverLevel, uuid, LivingEntity.class);
-                if (entity == null)
-                    return false;
-                if (entity.isDeadOrDying()) {
-                    stigmatizedEntities.remove(uuid);
-                    return true;
-                }
-                return StigmaHelper.collectStigmaAfter(entity, this, waitingTick);
-            });
-        }
+        watchingEntities.removeIf(uuid -> {
+            LivingEntity entity = NarakaEntityUtils.findEntityByUUID(serverLevel, uuid, LivingEntity.class);
+            if (entity == null)
+                return false;
+            if (entity.isDeadOrDying()) {
+                stigmatizedEntities.remove(uuid);
+                return true;
+            }
+            return StigmaHelper.collectStigmaAfter(serverLevel, entity, this, waitingTick);
+        });
     }
 
     private boolean shouldCheckProjectile(Projectile projectile) {
