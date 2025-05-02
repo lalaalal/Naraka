@@ -11,6 +11,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -53,7 +54,7 @@ public class LockedHealthHud implements LayeredDraw.Layer {
     }
 
     public void renderLockedHeart(GuiGraphics graphics, int x, int y) {
-        graphics.blitSprite(NarakaSprites.HEART_CONTAINER, x, y, 9, 9);
-        graphics.blitSprite(NarakaSprites.DEATH_COUNT_HEART, 14, 7, 0, 0, x + 1, y + 1, 7, 7);
+        graphics.blitSprite(RenderType::guiTextured, NarakaSprites.HEART_CONTAINER, x, y, 9, 9);
+        graphics.blitSprite(RenderType::guiTextured, NarakaSprites.DEATH_COUNT_HEART, 14, 7, 0, 0, x + 1, y + 1, 7, 7);
     }
 }
