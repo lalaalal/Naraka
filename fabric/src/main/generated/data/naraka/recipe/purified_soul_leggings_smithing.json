@@ -1,16 +1,10 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "item": "naraka:purified_soul_metal"
-  },
-  "base": {
-    "item": "minecraft:chainmail_leggings"
-  },
+  "addition": "naraka:purified_soul_metal",
+  "base": "minecraft:chainmail_leggings",
   "result": {
     "count": 1,
     "id": "naraka:purified_soul_leggings"
   },
-  "template": {
-    "item": "naraka:purified_soul_upgrade_smithing_template"
-  }
+  "template": "naraka:purified_soul_upgrade_smithing_template"
 }

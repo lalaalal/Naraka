@@ -5,6 +5,7 @@ import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.ItemTags;
@@ -26,7 +27,8 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import java.util.concurrent.CompletableFuture;
 
 public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
-    private static final LootItemCondition.Builder NECTARIUM_CRYSTAL_TOOLS = MatchTool.toolMatches(ItemPredicate.Builder.item().of(ItemTags.PICKAXES));
+    private final HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
+    private final LootItemCondition.Builder NECTARIUM_CRYSTAL_TOOLS = MatchTool.toolMatches(ItemPredicate.Builder.item().of(items, ItemTags.PICKAXES));
 
     public NarakaBlockLootProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(dataOutput, registryLookup);
@@ -39,7 +41,6 @@ public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
         dropSelf(NarakaBlocks.NECTARIUM_BLOCK.get());
         dropOre(NarakaBlocks.NECTARIUM_ORE.get(), NarakaItems.NECTARIUM.get());
         dropOre(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get(), NarakaItems.NECTARIUM.get());
-        dropSelf(NarakaBlocks.SOUL_CRAFTING_BLOCK.get());
         dropSelf(NarakaBlocks.FORGING_BLOCK.get());
         dropSelf(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
         dropSelf(NarakaBlocks.IMITATION_GOLD_BLOCK.get());

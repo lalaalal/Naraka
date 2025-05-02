@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "naraka:purified_soul_metal"
-    }
+    "#": "naraka:purified_soul_metal"
   },
   "pattern": [
     "###",

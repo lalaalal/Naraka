@@ -23,7 +23,7 @@ public class HolderProxy<T, V extends T> extends Holder.Reference<T> implements 
     private Holder<T> holder;
 
     public HolderProxy(Registry<T> registry, ResourceLocation name) {
-        super(Type.STAND_ALONE, registry.holderOwner(), ResourceKey.create(registry.key(), name), null);
+        super(Type.STAND_ALONE, registry, ResourceKey.create(registry.key(), name), null);
     }
 
     protected void bind(boolean throwOnMissing) {
@@ -48,7 +48,7 @@ public class HolderProxy<T, V extends T> extends Holder.Reference<T> implements 
     }
 
     private Optional<Reference<T>> findReference(Registry<T> registry, boolean throwOnMissing) {
-        Optional<Reference<T>> found = registry.getHolder(key());
+        Optional<Reference<T>> found = registry.get(key());
         if (found.isEmpty() && throwOnMissing)
             throw new IllegalStateException(key() + " is not registered");
         return found;

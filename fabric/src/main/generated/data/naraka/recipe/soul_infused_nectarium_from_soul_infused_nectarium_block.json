@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "naraka:soul_infused_nectarium"
-    }
+    "#": "naraka:soul_infused_nectarium"
   },
   "pattern": [
     "###",

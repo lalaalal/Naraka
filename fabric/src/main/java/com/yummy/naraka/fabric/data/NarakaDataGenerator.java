@@ -27,7 +27,7 @@ public class NarakaDataGenerator implements DataGeneratorEntrypoint {
         patched = datapackProvider.getRegistryProvider();
 
         NarakaLanguageProviders.add(pack::addProvider, "en_us", "ko_kr");
-        pack.addProvider(NarakaRecipeProvider::new);
+        pack.addProvider(NarakaFabricRecipeProvider::new);
         pack.addProvider(NarakaModelProvider::new);
 
         pack.addProvider(NarakaBlockLootProvider::new);

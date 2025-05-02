@@ -7,6 +7,10 @@ architectury {
     fabric()
 }
 
+loom {
+    accessWidenerPath = file("src/main/resources/naraka.fabric.accesswidener")
+}
+
 configurations {
     common {
         canBeResolved = true
@@ -25,7 +29,9 @@ configurations {
 }
 
 fabricApi {
-    configureDataGeneration()
+    configureDataGeneration() {
+        client = true
+    }
 }
 
 dependencies {

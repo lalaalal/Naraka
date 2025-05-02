@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "front": "naraka:block/soul_crafting_block_front_on",
-    "side": "naraka:block/soul_crafting_block_side",
-    "top": "naraka:block/soul_crafting_block_top"
-  }
-}

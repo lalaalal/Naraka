@@ -10,7 +10,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -82,14 +81,14 @@ public class NarakaEntityUtils {
 
     public static boolean disableAndHurtShield(LivingEntity livingEntity, int cooldown, int damage) {
         if (livingEntity instanceof Player player && livingEntity.isBlocking()) {
-            player.getCooldowns().addCooldown(Items.SHIELD, cooldown);
-            player.stopUsingItem();
-            player.level().broadcastEntityEvent(livingEntity, (byte) 30);
-
             InteractionHand hand = player.getUsedItemHand();
             ItemStack usedItem = player.getItemInHand(hand);
             EquipmentSlot slot = player.getEquipmentSlotForItem(usedItem);
             usedItem.hurtAndBreak(damage, player, slot);
+
+            player.getCooldowns().addCooldown(usedItem, cooldown);
+            player.stopUsingItem();
+            player.level().broadcastEntityEvent(livingEntity, (byte) 30);
 
             return true;
         }

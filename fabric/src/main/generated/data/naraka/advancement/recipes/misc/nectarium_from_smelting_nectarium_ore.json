@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:nectarium_from_smelting_nectarium_ore"
+        "recipe": "minecraft:nectarium_from_smelting_nectarium_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "naraka:nectarium_from_smelting_nectarium_ore"
+      "minecraft:nectarium_from_smelting_nectarium_ore"
     ]
   }
 }

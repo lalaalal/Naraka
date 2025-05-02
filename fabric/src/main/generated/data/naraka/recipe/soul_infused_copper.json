@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "M": {
-      "item": "minecraft:copper_ingot"
-    },
-    "P": {
-      "item": "naraka:purified_soul_shard"
-    }
+    "M": "minecraft:copper_ingot",
+    "P": "naraka:purified_soul_shard"
   },
   "pattern": [
     "MMM",

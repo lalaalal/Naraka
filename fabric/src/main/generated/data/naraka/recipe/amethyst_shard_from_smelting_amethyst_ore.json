@@ -4,9 +4,7 @@
   "cookingtime": 200,
   "experience": 0.7,
   "group": "amethyst",
-  "ingredient": {
-    "item": "naraka:amethyst_ore"
-  },
+  "ingredient": "naraka:amethyst_ore",
   "result": {
     "id": "minecraft:amethyst_shard"
   }

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "naraka:compressed_iron_ingot"
-    }
+    "#": "naraka:compressed_iron_ingot"
   },
   "pattern": [
     "###",

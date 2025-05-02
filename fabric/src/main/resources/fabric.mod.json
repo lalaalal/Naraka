@@ -29,6 +29,7 @@
             "com.yummy.naraka.jade.NarakaJadePlugin"
         ]
     },
+  "accessWidener": "naraka.fabric.accesswidener",
     "mixins": [
         "naraka.mixins.json",
         "naraka.mixins.fabric.json"

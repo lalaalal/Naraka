@@ -2,6 +2,7 @@ package com.yummy.naraka.network;
 
 import com.yummy.naraka.sounds.NarakaMusics;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.sounds.MusicInfo;
 import net.minecraft.client.sounds.MusicManager;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.sounds.Music;
@@ -52,7 +53,7 @@ public class NarakaClientboundEventHandler {
         if (0 < phase && phase <= 4) {
             soundManager.stop();
             musicManager.stopPlaying();
-            musicManager.startPlaying(HEROBRINE_MUSIC[phase]);
+            musicManager.startPlaying(new MusicInfo(HEROBRINE_MUSIC[phase]));
         }
     }
 

@@ -183,6 +183,8 @@ public class MethodInvoker {
 
     private static boolean checkAnnotation(Method method, Class<?> type) {
         MethodProxy methodProxy = method.getAnnotation(MethodProxy.class);
+        if (methodProxy == null)
+            return false;
         return methodProxy.value().equals(type);
     }
 
@@ -208,7 +210,7 @@ public class MethodInvoker {
         } catch (IllegalAccessException exception) {
             throw new RuntimeException(exception);
         } catch (InvocationTargetException exception) {
-            NarakaMod.LOGGER.error("An exception occurred during invoking method {}", method.getName());
+            NarakaMod.LOGGER.error("An exception occurred during invoking method {}.{}", method.getDeclaringClass().getName(), method.getName());
             throw new RuntimeException(exception.getTargetException());
         }
     }

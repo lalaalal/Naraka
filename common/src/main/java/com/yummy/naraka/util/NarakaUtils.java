@@ -87,7 +87,7 @@ public class NarakaUtils {
 
     public static BlockPos findFaceSturdy(LevelAccessor level, BlockPos from, Direction faceDirection) {
         BlockPos.MutableBlockPos current = from.mutable();
-        while (-60 < current.getY() && current.getY() < 200) {
+        while (level.isInsideBuildHeight(from.getY())) {
             BlockPos pos = current.immutable();
             BlockState state = level.getBlockState(pos);
             if (state.isFaceSturdy(level, pos, faceDirection))
@@ -107,7 +107,7 @@ public class NarakaUtils {
     }
 
     public static BlockPos findAir(LevelAccessor level, BlockPos from, Direction findingDirection) {
-        if (level.getMaxBuildHeight() < from.getY())
+        if (level.isInsideBuildHeight(from.getY()))
             return from;
         BlockPos findingPos = from.relative(findingDirection);
         BlockState state = level.getBlockState(findingPos);

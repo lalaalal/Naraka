@@ -16,10 +16,15 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
@@ -54,6 +59,10 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         return NarakaMod.MOD_ID + ':' + path;
     }
 
+    public ResourceKey<Recipe<?>> recipe(ResourceLocation location) {
+        return ResourceKey.create(Registries.RECIPE, location);
+    }
+
     public NarakaAdvancementProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(output, registryLookup);
     }
@@ -78,7 +87,9 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
     public void generateAdvancement(HolderLookup.Provider registries, Consumer<AdvancementHolder> generator) {
         this.generator = generator;
 
-        HolderLookup.RegistryLookup<Structure> structures = registries.lookupOrThrow(Registries.STRUCTURE);
+        HolderGetter<Structure> structures = registries.lookupOrThrow(Registries.STRUCTURE);
+        HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
+        HolderGetter<EntityType<?>> entities = registries.lookupOrThrow(Registries.ENTITY_TYPE);
 
         Holder<Structure> herobrineSanctuaryStructure = structures.getOrThrow(NarakaStructures.HEROBRINE_SANCTUARY);
 
@@ -111,13 +122,13 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder summonHerobrine = goal(findHerobrineSanctuary, NarakaBlocks.HEROBRINE_TOTEM.get(), AdvancementNarakaComponents.SUMMON_HEROBRINE,
                 builder -> builder.addCriterion(
                         "summon_herobrine",
-                        SummonedEntityTrigger.TriggerInstance.summonedEntity(EntityPredicate.Builder.entity().of(NarakaEntityTypes.HEROBRINE.get()))
+                        SummonedEntityTrigger.TriggerInstance.summonedEntity(EntityPredicate.Builder.entity().of(entities, NarakaEntityTypes.HEROBRINE.get()))
                 ).rewards(AdvancementRewards.Builder.experience(6))
         );
         AdvancementHolder killHerobrine = challenge(summonHerobrine, NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get(), AdvancementNarakaComponents.KILL_HEROBRINE,
                 builder -> builder.addCriterion(
                         "kill_herobrine",
-                        KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(NarakaEntityTypes.HEROBRINE.get()))
+                        KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(entities, NarakaEntityTypes.HEROBRINE.get()))
                 ).rewards(AdvancementRewards.Builder.experience(66))
         );
         AdvancementHolder godBlood = challenge(killHerobrine, NarakaItems.GOD_BLOOD.get(), AdvancementNarakaComponents.GOD_BLOOD,
@@ -129,7 +140,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder purifiedSoulMetal = task(killHerobrine, NarakaItems.PURIFIED_SOUL_METAL.get(), AdvancementNarakaComponents.PURIFIED_SOUL_METAL,
                 builder -> builder.addCriterion(
                         "decompose_purified_soul_metal",
-                        RecipeCraftedTrigger.TriggerInstance.craftedItem(NarakaMod.location("purified_soul_metal_from_purified_soul_metal_block"))
+                        RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(NarakaMod.location("purified_soul_metal_from_purified_soul_metal_block")))
                 ).rewards(AdvancementRewards.Builder.experience(6))
         );
         AdvancementHolder purifiedSoulSword = task(purifiedSoulMetal, NarakaItems.PURIFIED_SOUL_SWORD.get(), AdvancementNarakaComponents.PURIFIED_SOUL_SWORD,
@@ -141,8 +152,10 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder soulInfusedMaterials = task(purifiedSoulMetal, NarakaItems.PURIFIED_SOUL_SHARD.get(), AdvancementNarakaComponents.SOUL_INFUSED_MATERIALS,
                 builder -> {
                     NarakaItems.forEachSoulInfusedItemHolder(item -> {
-                        ResourceLocation recipe = item.unwrapKey().orElseThrow().location();
-                        builder.addCriterion("craft_" + recipe.getPath(), RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe));
+                        ResourceLocation recipeLocation = item.unwrapKey().orElseThrow().location();
+                        builder.addCriterion("craft_" + recipeLocation.getPath(),
+                                RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(recipeLocation))
+                        );
                     });
                     return builder.requirements(AdvancementRequirements.Strategy.OR);
                 }
@@ -150,7 +163,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder stabilizer = task(soulInfusedMaterials, NarakaBlocks.SOUL_STABILIZER.get(), AdvancementNarakaComponents.STABILIZER,
                 builder -> builder.addCriterion(
                         "craft_soul_stabilizer",
-                        RecipeCraftedTrigger.TriggerInstance.craftedItem(NarakaMod.location("soul_stabilizer"))
+                        RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(NarakaMod.location("soul_stabilizer")))
                 ).rewards(AdvancementRewards.Builder.experience(6))
         );
         AdvancementHolder fillSoulStabilizer = task(stabilizer, NarakaBlocks.SOUL_STABILIZER.get(), AdvancementNarakaComponents.FILL_SOUL_STABILIZER,
@@ -200,13 +213,13 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder eatNectarium = task(activateNectariumCore, NarakaItems.NECTARIUM.get(), AdvancementExtraComponents.EAT_NECTARIUM,
                 builder -> builder.addCriterion(
                         "eat_nectarium",
-                        ConsumeItemTrigger.TriggerInstance.usedItem(NarakaItems.NECTARIUM.get())
+                        ConsumeItemTrigger.TriggerInstance.usedItem(items, NarakaItems.NECTARIUM.get())
                 )
         );
         AdvancementHolder craftSoulInfusedNectarium = task(eatNectarium, NarakaItems.SOUL_INFUSED_NECTARIUM.get(), AdvancementExtraComponents.CRAFT_SOUL_INFUSED_NECTARIUM,
                 builder -> builder.addCriterion(
                         "craft_soul_infused_nectarium",
-                        RecipeCraftedTrigger.TriggerInstance.craftedItem(NarakaMod.location("soul_infused_nectarium"))
+                        RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(NarakaMod.location("soul_infused_nectarium")))
                 )
         );
     }

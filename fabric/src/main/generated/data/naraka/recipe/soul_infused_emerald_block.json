@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "naraka:soul_infused_emerald_block"
-    }
+    "naraka:soul_infused_emerald_block"
   ],
   "result": {
     "count": 9,
