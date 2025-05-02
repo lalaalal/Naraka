@@ -9,11 +9,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.equipment.EquipmentAsset;
-import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
-import net.minecraft.world.item.equipment.trim.TrimMaterials;
 
 import java.util.Map;
 
@@ -29,16 +26,6 @@ public class NarakaTrimMaterials {
     public static final ResourceKey<TrimMaterial> GOD_BLOOD = create("god_blood");
 
     public static void bootstrap(BootstrapContext<TrimMaterial> context) {
-        register(context, TrimMaterials.QUARTZ, Items.QUARTZ, 14931140);
-        register(context, TrimMaterials.IRON, Items.IRON_INGOT, 15527148, Map.of(EquipmentAssets.IRON, "iron_darker"));
-        register(context, TrimMaterials.NETHERITE, Items.NETHERITE_INGOT, 6445145, Map.of(EquipmentAssets.NETHERITE, "netherite_darker"));
-        register(context, TrimMaterials.REDSTONE, Items.REDSTONE, 9901575);
-        register(context, TrimMaterials.COPPER, Items.COPPER_INGOT, 11823181);
-        register(context, TrimMaterials.GOLD, Items.GOLD_INGOT, 14594349, Map.of(EquipmentAssets.GOLD, "gold_darker"));
-        register(context, TrimMaterials.EMERALD, Items.EMERALD, 1155126);
-        register(context, TrimMaterials.DIAMOND, Items.DIAMOND, 7269586, Map.of(EquipmentAssets.DIAMOND, "diamond_darker"));
-        register(context, TrimMaterials.LAPIS, Items.LAPIS_LAZULI, 4288151);
-        register(context, TrimMaterials.AMETHYST, Items.AMETHYST_SHARD, 10116294);
         register(context, SOUL_INFUSED_REDSTONE, SoulType.REDSTONE);
         register(context, SOUL_INFUSED_COPPER, SoulType.COPPER);
         register(context, SOUL_INFUSED_GOLD, SoulType.GOLD);

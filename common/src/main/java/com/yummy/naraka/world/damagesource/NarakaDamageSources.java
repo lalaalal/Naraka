@@ -25,7 +25,7 @@ public class NarakaDamageSources {
     private static Registry<DamageType> registry;
 
     public static void initialize(RegistryAccess registryAccess) {
-        registry = registryAccess.registryOrThrow(Registries.DAMAGE_TYPE);
+        registry = registryAccess.lookupOrThrow(Registries.DAMAGE_TYPE);
     }
 
     private static void ensureInitialized(@Nullable Registry<DamageType> registry) {
@@ -35,17 +35,17 @@ public class NarakaDamageSources {
 
     public static DamageSource source(ResourceKey<DamageType> key) {
         ensureInitialized(registry);
-        return new DamageSource(registry.getHolderOrThrow(key));
+        return new DamageSource(registry.getOrThrow(key));
     }
 
     public static DamageSource source(ResourceKey<DamageType> key, Entity causingEntity) {
         ensureInitialized(registry);
-        return new DamageSource(registry.getHolderOrThrow(key), causingEntity);
+        return new DamageSource(registry.getOrThrow(key), causingEntity);
     }
 
     public static DamageSource source(ResourceKey<DamageType> key, Entity directEntity, @Nullable Entity causingEntity) {
         ensureInitialized(registry);
-        return new DamageSource(registry.getHolderOrThrow(key), directEntity, causingEntity);
+        return new DamageSource(registry.getOrThrow(key), directEntity, causingEntity);
     }
 
     public static DamageSource fixed(Entity causingEntity) {

@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.item;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
@@ -224,24 +225,30 @@ public class NarakaItems {
         );
     }
 
+    public static ResourceKey<Item> key(String name) {
+        return ResourceKey.create(Registries.ITEM, NarakaMod.location(name));
+    }
+
+    private static Item.Properties properties(String name) {
+        return new Item.Properties()
+                .setId(key(name));
+    }
+
     private static <I extends Item> HolderProxy<Item, I> registerItem(String name, Function<Item.Properties, I> factory, Item.Properties properties) {
+        properties.setId(key(name));
         return RegistryProxy.register(Registries.ITEM, name, () -> factory.apply(properties));
     }
 
-    private static <I extends Item> HolderProxy<Item, I> registerItemDirect(String name, I item) {
-        return RegistryProxy.register(Registries.ITEM, name, () -> item);
-    }
-
     private static <I extends Item> HolderProxy<Item, I> registerItem(String name, Function<Item.Properties, I> factory) {
-        return registerItem(name, factory, new Item.Properties());
+        return registerItem(name, factory, properties(name));
     }
 
     private static HolderProxy<Item, Item> registerSimpleItem(String name, Item.Properties properties) {
-        return registerItem(name, Item::new, properties);
+        return registerItem(name, Item::new, properties.setId(key(name)));
     }
 
     private static HolderProxy<Item, Item> registerSimpleItem(String name) {
-        return registerSimpleItem(name, new Item.Properties());
+        return registerSimpleItem(name, properties(name));
     }
 
     public static void initialize() {
