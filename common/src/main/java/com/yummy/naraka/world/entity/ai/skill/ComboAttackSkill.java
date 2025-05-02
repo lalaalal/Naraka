@@ -5,6 +5,7 @@ import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
 import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
@@ -59,8 +60,8 @@ public class ComboAttackSkill<T extends SkillUsingMob & StigmatizingEntity> exte
     }
 
     @Override
-    protected void onLastTick() {
-        if (linkedCount < maxLinkCount && level().random.nextFloat() < 0.8f) {
+    protected void onLastTick(ServerLevel level) {
+        if (linkedCount < maxLinkCount && level.random.nextFloat() < 0.8f) {
             setLinkedSkill(this);
             linkedCount += 1;
         } else {
@@ -70,7 +71,7 @@ public class ComboAttackSkill<T extends SkillUsingMob & StigmatizingEntity> exte
     }
 
     @Override
-    protected void skillTick() {
+    protected void skillTick(ServerLevel level) {
         LivingEntity target = mob.getTarget();
         if (target == null)
             return;
@@ -79,7 +80,7 @@ public class ComboAttackSkill<T extends SkillUsingMob & StigmatizingEntity> exte
             moveToTarget(target);
 
         if (tickCount == 8)
-            hurtTarget(target);
+            hurtTarget(level, target);
     }
 
     private void moveToTarget(LivingEntity target) {
@@ -95,7 +96,7 @@ public class ComboAttackSkill<T extends SkillUsingMob & StigmatizingEntity> exte
             mob.setDeltaMovement(deltaMovement);
     }
 
-    private void hurtTarget(LivingEntity target) {
+    private void hurtTarget(ServerLevel level, LivingEntity target) {
         DamageSource damageSource = mob.getDefaultDamageSource();
         float damage = mob.getAttackDamage() + target.getMaxHealth() * 0.03f;
         int shieldCooldown = linkedCount == 1 ? 0 : 100;
@@ -104,7 +105,7 @@ public class ComboAttackSkill<T extends SkillUsingMob & StigmatizingEntity> exte
 
         if (linkedCount == 1 && stunTarget)
             StunHelper.stunEntity(target, 40);
-        target.hurt(damageSource, damage);
+        target.hurtServer(level, damageSource, damage);
         target.knockback(2f, mob.getX() - target.getX(), mob.getZ() - target.getZ());
         mob.stigmatizeEntity(target);
     }

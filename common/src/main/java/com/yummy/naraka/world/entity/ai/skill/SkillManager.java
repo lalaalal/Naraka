@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
@@ -100,9 +101,9 @@ public class SkillManager {
         this.waitingTick = waitingTick;
     }
 
-    public void tick() {
+    public void tick(ServerLevel level) {
         if (currentSkill != null) {
-            currentSkill.tick();
+            currentSkill.tick(level);
             if (currentSkill.isEnded()) {
                 currentSkill.setCooldown();
                 for (Consumer<Skill<?>> listener : skillEndListeners)

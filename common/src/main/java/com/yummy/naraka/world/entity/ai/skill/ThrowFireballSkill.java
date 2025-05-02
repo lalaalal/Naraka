@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Fireball;
@@ -36,11 +37,11 @@ public class ThrowFireballSkill extends Skill<SkillUsingMob> {
     }
 
     @Override
-    protected void skillTick() {
+    protected void skillTick(ServerLevel level) {
         if (tickCount == 18) {
             Fireball fireball = fireballCreator.get();
             fireball.setPos(mob.getX(), mob.getEyeY() + 0.5, mob.getZ());
-            level().addFreshEntity(fireball);
+            level.addFreshEntity(fireball);
             Vec3 view = mob.getViewVector(0);
             fireball.shoot(view.x, view.y, view.z, 1, 0);
         }
