@@ -1,6 +1,7 @@
 package com.yummy.naraka.fabric.data;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.client.renderer.special.SoulStabilizerSpecialRenderer;
 import com.yummy.naraka.fabric.mixin.client.CompassAngleStateMixin;
 import com.yummy.naraka.world.block.EbonyLogBlock;
 import com.yummy.naraka.world.block.HerobrineTotem;
@@ -41,7 +42,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class NarakaModelProvider extends FabricModelProvider {
-    private static final ModelTemplate BLOCK_ENTITY_ITEM = new ModelTemplate(
+    private static final ModelTemplate BLOCK_ENTITY = new ModelTemplate(
             Optional.of(NarakaMod.location("item", "template_block_entity")),
             Optional.empty(),
             TextureSlot.PARTICLE
@@ -77,7 +78,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         NarakaBlocks.forEachSoulInfusedBlock(generator::createTrivialCube);
         generator.createTrivialCube(NarakaBlocks.EBONY_METAL_BLOCK.get());
         createBlockEntityModels(generator, Blocks.ANVIL, NarakaBlocks.FORGING_BLOCK.get(), NarakaBlocks.SOUL_SMITHING_BLOCK.get());
-        createBlockEntityModels(generator, Blocks.GLASS, NarakaBlocks.SOUL_STABILIZER.get());
+        createSoulStabilizer(generator, Blocks.GLASS, NarakaBlocks.SOUL_STABILIZER.get());
         createNectariumCrystal(generator);
         generator.createTrivialCube(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
         generator.createTrivialCube(NarakaBlocks.AMETHYST_ORE.get());
@@ -87,6 +88,14 @@ public class NarakaModelProvider extends FabricModelProvider {
     private static void createBlockEntityModels(BlockModelGenerators generator, Block particle, Block... blocks) {
         for (Block block : blocks)
             generator.createParticleOnlyBlock(block, particle);
+    }
+
+    private static void createSoulStabilizer(BlockModelGenerators generator, Block particle, Block block) {
+        generator.createParticleOnlyBlock(block, particle);
+        Item item = block.asItem();
+        ResourceLocation blockModel = BLOCK_ENTITY.create(item, TextureMapping.particle(particle), generator.modelOutput);
+        ItemModel.Unbaked unbaked = ItemModelUtils.specialModel(blockModel, new SoulStabilizerSpecialRenderer.Unbaked());
+        generator.itemModelOutput.accept(item, unbaked);
     }
 
     private static void createNectariumCrystal(BlockModelGenerators generator) {

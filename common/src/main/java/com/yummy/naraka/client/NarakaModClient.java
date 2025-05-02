@@ -14,6 +14,7 @@ import com.yummy.naraka.client.renderer.CustomRenderManager;
 import com.yummy.naraka.client.renderer.blockentity.*;
 import com.yummy.naraka.client.renderer.entity.*;
 import com.yummy.naraka.client.renderer.item.SpearItemRenderer;
+import com.yummy.naraka.client.renderer.special.SoulStabilizerSpecialRenderer;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
@@ -32,6 +33,7 @@ public final class NarakaModClient {
         ClientEventHandler.prepare();
         NarakaModelLayers.initialize();
         registerParticles();
+        registerSpecialRenderers();
 
         initializer.registerResourceReloadListener("spear_item_renderer", () -> SpearItemRenderer.INSTANCE);
         initializer.registerResourceReloadListener("custom_renderer", () -> NarakaBlockEntityItemRenderer.INSTANCE);
@@ -45,6 +47,11 @@ public final class NarakaModClient {
         AnimationMapper.initialize();
 
         initializer.runAfterRegistryLoaded(NarakaModClient::onRegistryLoaded);
+    }
+
+    private static void registerSpecialRenderers() {
+        SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("soul_stabilizer"), SoulStabilizerSpecialRenderer.Unbaked.CODEC);
+        SpecialModelRendererRegistry.register(NarakaBlocks.SOUL_SMITHING_BLOCK.get(), new SoulStabilizerSpecialRenderer.Unbaked());
     }
 
     private static void onRegistryLoaded() {
@@ -65,9 +72,9 @@ public final class NarakaModClient {
     }
 
     private static void initializeBlocks() {
-        CustomRenderManager.register(NarakaBlocks.FORGING_BLOCK.get(), NarakaBlockEntityItemRenderer.INSTANCE);
-        CustomRenderManager.register(NarakaBlocks.SOUL_STABILIZER.get(), NarakaBlockEntityItemRenderer.INSTANCE);
-        CustomRenderManager.register(NarakaBlocks.SOUL_SMITHING_BLOCK.get(), NarakaBlockEntityItemRenderer.INSTANCE);
+//        CustomRenderManager.register(NarakaBlocks.FORGING_BLOCK.get(), NarakaBlockEntityItemRenderer.INSTANCE);
+//        CustomRenderManager.register(NarakaBlocks.SOUL_STABILIZER.get(), NarakaBlockEntityItemRenderer.INSTANCE);
+//        CustomRenderManager.register(NarakaBlocks.SOUL_SMITHING_BLOCK.get(), NarakaBlockEntityItemRenderer.INSTANCE);
 
         CustomRenderManager.register(RenderType.cutout(),
                 NarakaBlocks.EBONY_SAPLING.get(),
@@ -77,14 +84,6 @@ public final class NarakaModClient {
                 NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get()
         );
     }
-//
-//    private static void registerShaders() {
-//        ShaderRegistry.register(
-//                NarakaMod.location("longinus"),
-//                DefaultVertexFormat.POSITION,
-//                shaderInstance -> NarakaShaders.LONGINUS = shaderInstance
-//        );
-//    }
 
     private static void registerBlockEntityRenderers() {
         BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.FORGING, ForgingBlockEntityRenderer::new);
