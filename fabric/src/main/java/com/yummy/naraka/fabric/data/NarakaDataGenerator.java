@@ -30,6 +30,7 @@ public class NarakaDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(NarakaFabricRecipeProvider::new);
         pack.addProvider(NarakaModelProvider::new);
 
+        pack.addProvider(NarakaEquipmentAssetProvider::new);
         pack.addProvider(NarakaBlockLootProvider::new);
         pack.addProvider(NarakaEntityLootProvider::new);
         pack.addProvider(NarakaBlockTagsProvider::new);
