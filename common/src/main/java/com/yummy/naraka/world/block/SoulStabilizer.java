@@ -2,17 +2,17 @@ package com.yummy.naraka.world.block;
 
 import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.core.particles.SoulParticleOption;
+import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.block.entity.SoulStabilizerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -31,11 +31,6 @@ public class SoulStabilizer extends BaseEntityBlock {
     }
 
     @Override
-    protected RenderShape getRenderShape(BlockState state) {
-        return RenderShape.ENTITYBLOCK_ANIMATED;
-    }
-
-    @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return box(5.5f, 0, 5.5f, 10.5f, 5, 10.5f);
     }
@@ -51,7 +46,7 @@ public class SoulStabilizer extends BaseEntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof SoulStabilizerBlockEntity soulStabilizerBlockEntity
                 && soulStabilizerBlockEntity.canInject(stack)) {
@@ -65,9 +60,9 @@ public class SoulStabilizer extends BaseEntityBlock {
                         1
                 );
             }
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ItemInteractionResult.CONSUME;
+        return InteractionResult.CONSUME;
     }
 
     @Override
@@ -77,7 +72,7 @@ public class SoulStabilizer extends BaseEntityBlock {
         if (blockEntity instanceof SoulStabilizerBlockEntity soulStabilizerBlockEntity) {
             return super.getDrops(state, params)
                     .stream().peek(
-                            itemStack -> soulStabilizerBlockEntity.saveToItem(itemStack, level.registryAccess())
+                            itemStack -> NarakaItemUtils.saveBlockEntity(itemStack, soulStabilizerBlockEntity, level.registryAccess())
                     ).toList();
         }
         return super.getDrops(state, params);

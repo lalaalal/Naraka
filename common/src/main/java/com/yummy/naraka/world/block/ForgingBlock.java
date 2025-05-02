@@ -8,7 +8,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -17,7 +17,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -40,28 +39,23 @@ public class ForgingBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected RenderShape getRenderShape(BlockState blockState) {
-        return RenderShape.ENTITYBLOCK_ANIMATED;
-    }
-
-    @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         if (blockEntity instanceof ForgingBlockEntity forgingBlockEntity) {
             if (itemStack.is(Items.MACE)) {
                 if (forgingBlockEntity.tryReinforce())
                     itemStack.hurtAndBreak(5, player, EquipmentSlot.MAINHAND);
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             } else if (!forgingBlockEntity.getForgingItem().isEmpty()) {
                 forgingBlockEntity.dropForgingItem();
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             } else if (forgingBlockEntity.canReinforce(itemStack)) {
                 forgingBlockEntity.setForgingItem(itemStack);
                 itemStack.consume(1, player);
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
-        return ItemInteractionResult.CONSUME;
+        return InteractionResult.CONSUME;
     }
 
     @Override

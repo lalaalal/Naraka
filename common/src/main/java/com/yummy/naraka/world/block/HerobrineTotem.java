@@ -10,7 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -75,11 +74,6 @@ public class HerobrineTotem extends BaseEntityBlock {
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         super.onRemove(state, level, pos, newState, movedByPiston);
         placed = false;
-    }
-
-    @Override
-    protected RenderShape getRenderShape(BlockState pState) {
-        return RenderShape.MODEL;
     }
 
     @Nullable

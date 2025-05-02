@@ -2,7 +2,7 @@ package com.yummy.naraka.world.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -48,10 +48,10 @@ public class TransparentBlock extends Block {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level pLevel, BlockPos pos, Player player, InteractionHand pHand, BlockHitResult pHitResult) {
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level pLevel, BlockPos pos, Player player, InteractionHand pHand, BlockHitResult pHitResult) {
         if (player.isCreative() && itemStack.is(NarakaBlocks.TRANSPARENT_BLOCK.get().asItem())) {
             pLevel.setBlock(pos, blockState.cycle(VISIBLE), 10);
-            return ItemInteractionResult.sidedSuccess(pLevel.isClientSide);
+            return InteractionResult.SUCCESS;
         }
         return super.useItemOn(itemStack, blockState, pLevel, pos, player, pHand, pHitResult);
     }
