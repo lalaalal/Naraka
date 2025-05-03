@@ -9,5 +9,5 @@ import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
 public interface NarakaClientInitializer extends RegistryLoadedListener {
-    void registerResourceReloadListener(String name, Supplier<PreparableReloadListener> listener);
+    void registerClientReloadListener(String name, Supplier<PreparableReloadListener> listener);
 }

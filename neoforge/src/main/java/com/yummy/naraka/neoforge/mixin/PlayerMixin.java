@@ -1,7 +1,7 @@
 package com.yummy.naraka.neoforge.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.world.item.reinforcement.ReinforcementEffectHelper;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -15,17 +15,13 @@ public abstract class PlayerMixin extends LivingEntity {
         super(entityType, level);
     }
 
-    @ModifyExpressionValue(method = "getDigSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isEyeInFluid(Lnet/minecraft/tags/TagKey;)Z"))
+    @ModifyExpressionValue(method = "getDestroySpeed(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)F", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isEyeInFluid(Lnet/minecraft/tags/TagKey;)Z"))
     public boolean ignoreEyeInWaterWithEfficientMiningInWater(boolean original) {
-        if (NarakaItemUtils.canApplyEfficientMiningInWater(this))
-            return false;
-        return original;
+        return ReinforcementEffectHelper.ignoreEyeInWaterWithEfficientMiningInWater(this, original);
     }
 
-    @ModifyExpressionValue(method = "getDigSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;onGround()Z"))
+    @ModifyExpressionValue(method = "getDestroySpeed(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)F", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;onGround()Z"))
     public boolean considerOnGroundWithEfficientMimingInAir(boolean original) {
-        if (NarakaItemUtils.canApplyEfficientMiningInAir(this))
-            return true;
-        return original;
+        return ReinforcementEffectHelper.considerOnGroundWithEfficientMimingInAir(this, original);
     }
 }

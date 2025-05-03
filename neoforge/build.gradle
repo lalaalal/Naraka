@@ -42,8 +42,8 @@ dependencies {
 
 loom {
     runs {
-        data {
-            data()
+        clientData {
+            clientData()
             programArgs "--all", "--mod", "$project.mod_id"
             programArgs "--output", file("src/main/generated.neoforge").absolutePath
             programArgs "--existing", file("src/main/resources").absolutePath

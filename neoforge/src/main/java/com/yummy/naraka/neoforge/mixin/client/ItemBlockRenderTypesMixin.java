@@ -1,6 +1,6 @@
 package com.yummy.naraka.neoforge.mixin.client;
 
-import com.yummy.naraka.client.renderer.CustomRenderManager;
+import com.yummy.naraka.client.init.BlockRenderTypeRegistry;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
@@ -23,7 +23,7 @@ public abstract class ItemBlockRenderTypesMixin {
 
     @Inject(method = "<clinit>", at = @At("RETURN"))
     private static void afterInitializeClass(CallbackInfo ci) {
-        CustomRenderManager.getCustomBlockRenderTypes().forEach((block, renderType) -> {
+        BlockRenderTypeRegistry.getCustomBlockRenderTypes().forEach((block, renderType) -> {
             BLOCK_RENDER_TYPES.put(block, ChunkRenderTypeSet.of(renderType));
         });
     }

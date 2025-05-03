@@ -4,7 +4,6 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
-    "accessor.SpecialModelRenderersAccessor",
     "client.DripParticleMixin",
     "client.FogRendererMixin",
     "client.ItemBlockRenderTypesMixin",
@@ -15,8 +14,7 @@
     "client.LocalPlayerMixin",
     "client.MinecraftMixin",
     "client.MouseHandlerMixin",
-    "client.SimpleSoundInstanceMixin",
-    "client.SpecialModelRenderersMixin"
+    "client.SimpleSoundInstanceMixin"
   ],
   "mixins": [
     "EnchantmentMixin",

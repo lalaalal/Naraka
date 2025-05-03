@@ -37,4 +37,10 @@ public final class NeoForgePlatform extends Platform {
     public Path getConfigurationPath() {
         return FMLPaths.CONFIGDIR.get();
     }
+
+    @Override
+    public boolean modExists(String id) {
+        return FMLLoader.getLoadingModList().getMods().stream()
+                .anyMatch(modInfo -> modInfo.getModId().equals(id));
+    }
 }

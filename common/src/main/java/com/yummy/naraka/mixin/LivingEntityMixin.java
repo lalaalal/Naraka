@@ -1,7 +1,5 @@
 package com.yummy.naraka.mixin;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
@@ -63,24 +61,6 @@ public abstract class LivingEntityMixin extends Entity {
     public float fixNanHealth(float original) {
         if (Float.isNaN(original))
             return 0;
-        return original;
-    }
-
-    @ModifyArg(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V"))
-    public float increaseSpeedInLiquid(float scale) {
-        if (NarakaItemUtils.canApplyFasterLiquidSwimming(naraka$living())) {
-            float speedModifier = NarakaConfig.COMMON.fasterLiquidSwimmingSpeed.getValue();
-            if (isInLava() && isSwimming())
-                return scale * speedModifier * 3;
-            return scale * speedModifier;
-        }
-        return scale;
-    }
-
-    @ModifyExpressionValue(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInWater()Z"))
-    public boolean considerLiquidAsWater(boolean original) {
-        if (NarakaItemUtils.canApplyFasterLiquidSwimming(naraka$living()))
-            return isInLiquid();
         return original;
     }
 

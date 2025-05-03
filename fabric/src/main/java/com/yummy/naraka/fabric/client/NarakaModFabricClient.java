@@ -40,7 +40,7 @@ public final class NarakaModFabricClient implements ClientModInitializer, Naraka
     }
 
     @Override
-    public void registerResourceReloadListener(String name, Supplier<PreparableReloadListener> listener) {
+    public void registerClientReloadListener(String name, Supplier<PreparableReloadListener> listener) {
         ResourceManagerHelper helper = ResourceManagerHelper.get(PackType.CLIENT_RESOURCES);
         helper.registerReloadListener(new FabricResourceReloadListener(name, listener));
     }

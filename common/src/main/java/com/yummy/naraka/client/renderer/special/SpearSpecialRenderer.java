@@ -13,13 +13,15 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
-public class SpearSpecialRenderer implements NoDataSpecialModelRenderer {
+public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
     private final Model model;
     private final ResourceLocation texture;
 
@@ -29,11 +31,16 @@ public class SpearSpecialRenderer implements NoDataSpecialModelRenderer {
     }
 
     @Override
-    public void render(ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean hasFoilType) {
+    public Boolean extractArgument(ItemStack itemStack) {
+        return itemStack.hasFoil();
+    }
+
+    @Override
+    public void render(@Nullable Boolean hasFoil, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean hasFoilType) {
         poseStack.pushPose();
         poseStack.scale(1, -1, 1);
         RenderType renderType = model.renderType(texture);
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
+        VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferSource, renderType, false, Boolean.TRUE.equals(hasFoil));
         model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
         poseStack.popPose();
     }
