@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "naraka:purified_soul"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "naraka:purified_soul"
+      }
+    ]
+  }
+}

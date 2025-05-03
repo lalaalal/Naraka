@@ -1,0 +1,6 @@
+{
+  "parent": "naraka:item/template_block_entity",
+  "textures": {
+    "particle": "minecraft:block/anvil"
+  }
+}

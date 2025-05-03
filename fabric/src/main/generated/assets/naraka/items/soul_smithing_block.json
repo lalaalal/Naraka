@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "naraka:item/soul_smithing_block",
+    "model": {
+      "type": "naraka:soul_smithing_block"
+    }
+  }
+}
