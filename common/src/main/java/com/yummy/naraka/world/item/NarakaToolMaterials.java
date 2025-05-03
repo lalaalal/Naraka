@@ -15,7 +15,7 @@ public class NarakaToolMaterials {
     private static final ResourceLocation ENTITY_INTERACTION_RANGE_ID = NarakaMod.location("entity_interaction_range");
     private static final ResourceLocation BLOCK_INTERACTION_RANGE_ID = NarakaMod.location("block_interaction_range");
 
-    public static final ToolMaterial LONGINUS = new ToolMaterial(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 0, 6, 66, 6, NarakaItemTags.LONGINUS_TOOL_MATERIALS);
+    public static final ToolMaterial LONGINUS = new ToolMaterial(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 0, 6, 65, 6, NarakaItemTags.LONGINUS_TOOL_MATERIALS);
 
     public static Item.Properties applyCommonProperties(Item.Properties properties, ToolMaterial material) {
         return properties.durability(material.durability())
