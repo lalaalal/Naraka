@@ -1,6 +1,6 @@
 package com.yummy.naraka.mixin.client;
 
-import com.yummy.naraka.client.renderer.CustomRenderManager;
+import com.yummy.naraka.client.init.BlockRenderTypeRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -23,6 +23,6 @@ public abstract class ItemBlockRenderTypesMixin {
 
     @Inject(method = "<clinit>", at = @At("RETURN"))
     private static void afterInitializeClass(CallbackInfo ci) {
-        TYPE_BY_BLOCK.putAll(CustomRenderManager.getCustomBlockRenderTypes());
+        TYPE_BY_BLOCK.putAll(BlockRenderTypeRegistry.getCustomBlockRenderTypes());
     }
 }

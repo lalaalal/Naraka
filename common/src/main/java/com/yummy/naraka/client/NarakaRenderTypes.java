@@ -27,4 +27,8 @@ public final class NarakaRenderTypes {
                     )
                     .createCompositeState(false)
     );
+
+    public static RenderType longinus() {
+        return LONGINUS;
+    }
 }

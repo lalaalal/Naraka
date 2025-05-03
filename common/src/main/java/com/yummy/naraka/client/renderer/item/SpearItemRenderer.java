@@ -5,9 +5,9 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
+import com.yummy.naraka.client.init.BlockRenderTypeRegistry;
 import com.yummy.naraka.client.model.SpearModel;
 import com.yummy.naraka.client.model.SpearOfLonginusModel;
-import com.yummy.naraka.client.renderer.CustomRenderManager;
 import com.yummy.naraka.client.renderer.entity.SpearRenderer;
 import com.yummy.naraka.client.renderer.entity.state.SpearRenderState;
 import com.yummy.naraka.world.item.NarakaItems;
@@ -33,8 +33,9 @@ import org.joml.Quaternionf;
 import java.util.Map;
 import java.util.Set;
 
+@Deprecated
 @Environment(EnvType.CLIENT)
-public class SpearItemRenderer implements CustomRenderManager.CustomItemRenderer, ResourceManagerReloadListener {
+public class SpearItemRenderer implements BlockRenderTypeRegistry.CustomItemRenderer, ResourceManagerReloadListener {
     private static final Map<Item, ResourceLocation> TEXTURE_LOCATIONS = Map.of(
             NarakaItems.SPEAR_ITEM.get(), NarakaTextures.SPEAR,
             NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), NarakaTextures.MIGHTY_HOLY_SPEAR,

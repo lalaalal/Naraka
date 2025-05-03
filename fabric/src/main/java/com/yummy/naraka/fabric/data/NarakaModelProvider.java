@@ -1,13 +1,17 @@
 package com.yummy.naraka.fabric.data;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.client.NarakaModelLayers;
+import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.renderer.special.SoulSmithingBlockSpecialRenderer;
 import com.yummy.naraka.client.renderer.special.SoulStabilizerSpecialRenderer;
+import com.yummy.naraka.client.renderer.special.SpearSpecialRenderer;
 import com.yummy.naraka.fabric.mixin.client.CompassAngleStateMixin;
 import com.yummy.naraka.world.block.EbonyLogBlock;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.SpearItem;
 import com.yummy.naraka.world.item.equipment.NarakaEquipmentAssets;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
@@ -16,6 +20,7 @@ import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.RangeSelectItemModel;
 import net.minecraft.client.renderer.item.SelectItemModel;
@@ -208,9 +213,11 @@ public class NarakaModelProvider extends FabricModelProvider {
     public void generateItemModels(ItemModelGenerators generator) {
         generator.generateFlatItem(NarakaItems.STARDUST_STAFF.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         generator.generateFlatItem(NarakaItems.NARAKA_FIREBALL.get(), ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.SPEAR_ITEM.get(), ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), ModelTemplates.FLAT_ITEM);
+
+        generateSpearItem(generator, NarakaItems.SPEAR_ITEM.get(), NarakaModelLayers.SPEAR, NarakaTextures.SPEAR);
+        generateSpearItem(generator, NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), NarakaModelLayers.SPEAR, NarakaTextures.MIGHTY_HOLY_SPEAR);
         generator.generateFlatItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get(), ModelTemplates.FLAT_ITEM);
+
         generator.generateFlatItem(NarakaItems.GOD_BLOOD.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.NECTARIUM.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.EBONY_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
@@ -265,6 +272,18 @@ public class NarakaModelProvider extends FabricModelProvider {
 
         generateSanctuaryCompassItem(generator, NarakaItems.SANCTUARY_COMPASS.get());
         generator.declareCustomModelItem(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get().asItem());
+    }
+
+    public static void generateSpearItem(ItemModelGenerators generator, SpearItem spearItem, ModelLayerLocation modelLayer, ResourceLocation texture) {
+        ItemModel.Unbaked plainModel = ItemModelUtils.plainModel(generator.createFlatItemModel(spearItem, ModelTemplates.FLAT_ITEM));
+        ItemModel.Unbaked inHandModel = ItemModelUtils.specialModel(
+                ModelLocationUtils.getModelLocation(Items.TRIDENT, "_in_hand"), new SpearSpecialRenderer.Unbaked(modelLayer, texture)
+        );
+        ItemModel.Unbaked throwingModel = ItemModelUtils.specialModel(
+                ModelLocationUtils.getModelLocation(Items.TRIDENT, "_throwing"), new SpearSpecialRenderer.Unbaked(modelLayer, texture)
+        );
+        ItemModel.Unbaked entityModel = ItemModelUtils.conditional(ItemModelUtils.isUsingItem(), throwingModel, inHandModel);
+        generator.itemModelOutput.accept(spearItem, ItemModelGenerators.createFlatModelDispatch(plainModel, entityModel));
     }
 
     public static void generateTrimmableItem(ItemModelGenerators generator, Item item, ResourceKey<EquipmentAsset> key, String name) {

@@ -1,7 +1,7 @@
 package com.yummy.naraka.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.yummy.naraka.client.renderer.CustomRenderManager;
+import com.yummy.naraka.client.init.BlockRenderTypeRegistry;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.ForgingBlockEntity;
 import com.yummy.naraka.world.block.entity.SoulSmithingBlockEntity;
@@ -21,8 +21,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.Map;
 
+@Deprecated
 @Environment(EnvType.CLIENT)
-public class NarakaBlockEntityItemRenderer implements CustomRenderManager.CustomItemRenderer, ResourceManagerReloadListener {
+public class NarakaBlockEntityItemRenderer implements BlockRenderTypeRegistry.CustomItemRenderer, ResourceManagerReloadListener {
     public static final NarakaBlockEntityItemRenderer INSTANCE = new NarakaBlockEntityItemRenderer();
 
     private final Minecraft minecraft;

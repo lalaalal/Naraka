@@ -20,7 +20,7 @@ public class SpearRenderState extends EntityRenderState {
 
     public void setRotation(Spear spear, float partialTicks) {
         yRotation = Axis.YP.rotationDegrees(Mth.lerp(partialTicks, spear.yRotO, spear.getYRot()) - 90.0F);
-        xRotation = Axis.XP.rotationDegrees(Mth.lerp(partialTicks, spear.xRotO, spear.getXRot()) + 90.0F);
+        xRotation = Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, spear.xRotO, spear.getXRot()) + 90.0F);
     }
 
     public void setType(Spear spear) {
