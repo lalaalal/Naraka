@@ -36,4 +36,9 @@ public final class FabricPlatform extends Platform {
     public Path getConfigurationPath() {
         return FabricLoader.getInstance().getConfigDir();
     }
+
+    @Override
+    public boolean modExists(String id) {
+        return FabricLoader.getInstance().isModLoaded(id);
+    }
 }

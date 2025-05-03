@@ -32,6 +32,8 @@ public abstract class Platform {
 
     public abstract Path getConfigurationPath();
 
+    public abstract boolean modExists(String id);
+
     public enum Side {
         CLIENT, SERVER
     }

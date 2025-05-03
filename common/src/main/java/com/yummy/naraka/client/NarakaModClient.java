@@ -1,6 +1,7 @@
 package com.yummy.naraka.client;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.Platform;
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.event.ClientEventHandler;
 import com.yummy.naraka.client.gui.hud.DeathCountHud;
@@ -17,6 +18,7 @@ import com.yummy.naraka.client.renderer.blockentity.UnstableBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.entity.*;
 import com.yummy.naraka.client.renderer.special.SoulSmithingBlockSpecialRenderer;
 import com.yummy.naraka.client.renderer.special.SoulStabilizerSpecialRenderer;
+import com.yummy.naraka.client.renderer.special.SpearOfLonginusSpecialRenderer;
 import com.yummy.naraka.client.renderer.special.SpearSpecialRenderer;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
@@ -46,12 +48,14 @@ public final class NarakaModClient {
         AnimationMapper.initialize();
 
         initializer.runAfterRegistryLoaded(NarakaModClient::onRegistryLoaded);
+        initializer.runAfterRegistryLoaded(NarakaModClient::checkIris);
     }
 
     private static void registerSpecialRenderers() {
         SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("soul_stabilizer"), SoulStabilizerSpecialRenderer.Unbaked.CODEC);
         SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("soul_smithing_block"), SoulSmithingBlockSpecialRenderer.Unbaked.CODEC);
         SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("spear"), SpearSpecialRenderer.Unbaked.CODEC);
+        SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("spear_of_longinus"), SpearOfLonginusSpecialRenderer.Unbaked.CODEC);
 
         SpecialModelRendererRegistry.registerBlock(NarakaBlocks.SOUL_STABILIZER, new SoulStabilizerSpecialRenderer.Unbaked());
         SpecialModelRendererRegistry.registerBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, new SoulSmithingBlockSpecialRenderer.Unbaked());
@@ -64,6 +68,12 @@ public final class NarakaModClient {
         NarakaClientEvents.initialize();
 
         NarakaMod.isModLoaded = true;
+    }
+
+    private static void checkIris() {
+        boolean irisLoaded = Platform.getInstance().modExists("iris");
+        if (NarakaConfig.CLIENT.enableNonShaderLonginusRendering.getValue())
+            NarakaConfig.CLIENT.enableNonShaderLonginusRendering.set(irisLoaded);
     }
 
     private static void initializeItems() {

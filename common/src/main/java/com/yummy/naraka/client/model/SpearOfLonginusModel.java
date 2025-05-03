@@ -12,7 +12,7 @@ import net.minecraft.client.model.geom.builders.*;
 @Environment(EnvType.CLIENT)
 public class SpearOfLonginusModel extends EntityModel<SpearRenderState> {
     public SpearOfLonginusModel(ModelPart root) {
-        super(root, (resourceLocation) -> NarakaRenderTypes.LONGINUS);
+        super(root, (resourceLocation) -> NarakaRenderTypes.longinus());
     }
 
     @SuppressWarnings("unused")

@@ -38,6 +38,7 @@ public class SpearSpecialRenderer implements NoDataSpecialModelRenderer {
         poseStack.popPose();
     }
 
+    @Environment(EnvType.CLIENT)
     public record Unbaked(ModelLayerLocation modelLayer,
                           ResourceLocation texture) implements SpecialModelRenderer.Unbaked {
         public static final MapCodec<Unbaked> CODEC = RecordCodecBuilder.mapCodec(
