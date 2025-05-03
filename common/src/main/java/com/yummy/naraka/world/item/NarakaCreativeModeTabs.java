@@ -5,7 +5,6 @@ import com.yummy.naraka.Platform;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.CreativeModeTabEvents;
 import com.yummy.naraka.mixin.accessor.CreativeModeTabsAccessor;
@@ -17,7 +16,10 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 
@@ -57,9 +59,6 @@ public class NarakaCreativeModeTabs {
         CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.foodAndDrinks(), NarakaCreativeModeTabs::modifyFoodAndDrinksTab);
         CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.ingredients(), NarakaCreativeModeTabs::modifyIngredientsTab);
         CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.spawnEggs(), NarakaCreativeModeTabs::modifySpawnEggsTab);
-
-        RegistryProxyProvider.get(Registries.CREATIVE_MODE_TAB)
-                .onRegistrationFinished();
     }
 
     private static void createNarakaTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
@@ -164,7 +163,6 @@ public class NarakaCreativeModeTabs {
         output.accept(NarakaItems.NARAKA_FIREBALL.get());
 
         output.accept(NarakaBlocks.FORGING_BLOCK.get());
-        output.accept(NarakaBlocks.SOUL_CRAFTING_BLOCK.get());
 
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_HELMET.get()));
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get()));
@@ -185,7 +183,7 @@ public class NarakaCreativeModeTabs {
         return itemStack;
     }
 
-    private static ItemStack reinforced(ArmorItem item) {
+    private static ItemStack reinforced(PurifiedSoulArmorItem item) {
         ItemStack itemStack = blessed(item);
         while (Reinforcement.canReinforce(itemStack))
             Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack));

@@ -1,11 +1,15 @@
 package com.yummy.naraka.util;
 
 public record Color(int alpha, int red, int green, int blue) {
+    public static Color of(float alpha, float red, float green, float blue) {
+        return new Color((int) (alpha * 0xff), (int) (red * 0xff), (int) (green * 0xff), (int) (blue * 0xff));
+    }
+
     public static Color of(int color) {
-        int alpha = (color >> 24) & 0xFF;
-        int red = (color >> 16) & 0xFF;
-        int green = (color >> 8) & 0xFF;
-        int blue = (color) & 0xFF;
+        int alpha = (color >> 24) & 0xff;
+        int red = (color >> 16) & 0xff;
+        int green = (color >> 8) & 0xff;
+        int blue = (color) & 0xff;
 
         return new Color(alpha, red, green, blue);
     }

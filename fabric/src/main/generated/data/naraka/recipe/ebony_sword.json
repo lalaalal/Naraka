@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "/": {
-      "item": "minecraft:stick"
-    },
-    "M": {
-      "item": "naraka:hard_ebony_planks"
-    }
+    "/": "minecraft:stick",
+    "M": "naraka:hard_ebony_planks"
   },
   "pattern": [
     " M ",

@@ -5,7 +5,7 @@ import com.yummy.naraka.world.item.component.SanctuaryTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -24,7 +24,7 @@ public class SanctuaryCompassItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+    public InteractionResult use(Level level, Player player, InteractionHand interactionHand) {
         BlockPos userPos = player.blockPosition();
         ItemStack itemStack = player.getItemInHand(interactionHand);
         updateTracker(itemStack, level, userPos, true);

@@ -4,8 +4,8 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.core.registries.RegistryProxyProvider;
+import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.neoforge.NarakaEventBus;
-import com.yummy.naraka.proxy.MethodProxy;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -54,10 +54,9 @@ public final class NeoForgeRegistryProxyProvider extends RegistryProxyProvider i
             return result;
         }
 
-        @SuppressWarnings("unchecked")
         @Override
-        public ResourceKey<Registry<T>> getRegistryKey() {
-            return (ResourceKey<Registry<T>>) registry.getRegistryKey();
+        public ResourceKey<? extends Registry<T>> getRegistryKey() {
+            return registry.getRegistryKey();
         }
 
         @Override

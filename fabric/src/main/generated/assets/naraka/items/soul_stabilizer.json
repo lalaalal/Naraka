@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "naraka:item/soul_stabilizer",
+    "model": {
+      "type": "naraka:soul_stabilizer"
+    }
+  }
+}

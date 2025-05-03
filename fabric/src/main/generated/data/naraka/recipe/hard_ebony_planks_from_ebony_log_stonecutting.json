@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "naraka:ebony_log"
-  },
+  "ingredient": "naraka:ebony_log",
   "result": {
     "count": 1,
     "id": "naraka:hard_ebony_planks"

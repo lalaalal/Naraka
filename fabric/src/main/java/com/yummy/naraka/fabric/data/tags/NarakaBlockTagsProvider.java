@@ -17,7 +17,7 @@ public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider 
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider pProvider) {
+    protected void addTags(HolderLookup.Provider provider) {
         getOrCreateTagBuilder(BlockTags.INCORRECT_FOR_DIAMOND_TOOL)
                 .addTag(NarakaBlockTags.NEEDS_NETHERITE_TOOL);
         getOrCreateTagBuilder(BlockTags.INCORRECT_FOR_IRON_TOOL)
@@ -60,10 +60,13 @@ public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider 
         getOrCreateTagBuilder(BlockTags.PLANKS)
                 .add(NarakaBlocks.HARD_EBONY_PLANKS.get());
 
-        getOrCreateTagBuilder(NarakaBlockTags.HEROBRINE_SANCTUARY_WRAP_TARGETS)
+        getOrCreateTagBuilder(NarakaBlockTags.HEROBRINE_SANCTUARY_AIR_WRAP_TARGETS)
                 .add(Blocks.WATER)
                 .add(Blocks.GRAVEL)
                 .forceAddTag(BlockTags.SAND);
+        getOrCreateTagBuilder(NarakaBlockTags.HEROBRINE_SANCTUARY_LAVA_WRAP_TARGETS)
+                .forceAddTag(BlockTags.AIR)
+                .add(Blocks.WATER);
 
         getOrCreateTagBuilder(BlockTags.NEEDS_STONE_TOOL)
                 .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get())

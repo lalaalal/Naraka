@@ -1,6 +1,6 @@
 package com.yummy.naraka.init;
 
-import com.yummy.naraka.proxy.MethodInvoker;
+import com.yummy.naraka.invoker.MethodInvoker;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;

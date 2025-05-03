@@ -6,6 +6,7 @@ import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
 import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -53,17 +54,17 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Ski
     }
 
     @Override
-    protected void skillTick() {
+    protected void skillTick(ServerLevel level) {
         LivingEntity target = mob.getTarget();
         if (target == null)
             return;
 
         mob.getNavigation().stop();
-        updateDeltaMovement(target, START_RUNNING_TICK, STOP_RUNNING_TICK, 0.6, true, true);
-        updateDeltaMovement(target, STOP_RUNNING_TICK, RUSH_TICK, 0, true, false);
-        updateDeltaMovement(target, RUSH_TICK, FINALE_TICK, 1.15, false, false);
+        updateDeltaMovement(level, target, START_RUNNING_TICK, STOP_RUNNING_TICK, 0.6, true, true);
+        updateDeltaMovement(level, target, STOP_RUNNING_TICK, RUSH_TICK, 0, true, false);
+        updateDeltaMovement(level, target, RUSH_TICK, FINALE_TICK, 1.15, false, false);
         if (RUSH_TICK <= tickCount && tickCount <= FINALE_TICK) {
-            hurtHitEntities();
+            hurtHitEntities(level);
 //            updateBlocks(7 - (tickCount - RUSH_TICK));
         }
         if (tickCount >= FINALE_TICK)
@@ -76,11 +77,11 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Ski
         mob.lookAt(target, 360, 0);
     }
 
-    private void updateDeltaMovement(LivingEntity target, int startTick, int endTick, double scale, boolean updateDeltaMovement, boolean ignoreDeltaY) {
+    private void updateDeltaMovement(ServerLevel level, LivingEntity target, int startTick, int endTick, double scale, boolean updateDeltaMovement, boolean ignoreDeltaY) {
         if (updateDeltaMovement && tickCount == startTick)
             calculateDeltaMovement(target, ignoreDeltaY);
         if (startTick <= tickCount && tickCount < endTick) {
-            NarakaEntityUtils.updatePositionForUpStep(level(), mob, delta, 0.5);
+            NarakaEntityUtils.updatePositionForUpStep(level, mob, delta, 0.5);
             mob.setDeltaMovement(delta.scale(scale));
         }
     }
@@ -100,14 +101,14 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Ski
         }
     }
 
-    private void hurtHitEntities() {
-        mob.level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(0.5))
+    private void hurtHitEntities(ServerLevel level) {
+        level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(0.5))
                 .stream()
                 .filter(targetPredicate)
-                .forEach(this::hurtHitTarget);
+                .forEach(entity -> hurtHitTarget(level, entity));
     }
 
-    private void hurtHitTarget(LivingEntity target) {
+    private void hurtHitTarget(ServerLevel level, LivingEntity target) {
         if (NarakaEntityUtils.disableAndHurtShield(target, 20 * 8, 30)) {
             blockedEntities.add(target);
             return;
@@ -118,7 +119,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Ski
 
             StunHelper.stunEntity(target, 100);
             mob.stigmatizeEntity(target);
-            target.hurt(source, damage);
+            target.hurtServer(level, source, damage);
             target.knockback(5, mob.getX() - target.getX(), mob.getZ() - target.getZ());
         }
     }

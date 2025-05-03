@@ -4,7 +4,7 @@ import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -17,10 +17,11 @@ public class StigmaRodItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+    public InteractionResult use(Level level, Player player, InteractionHand interactionHand) {
         if (!level.isClientSide())
             StigmaHelper.increaseStigma(player, player);
-        return InteractionResultHolder.consume(player.getItemInHand(interactionHand));
+
+        return InteractionResult.CONSUME;
     }
 
     @Override

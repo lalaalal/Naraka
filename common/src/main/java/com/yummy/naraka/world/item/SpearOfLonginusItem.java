@@ -9,6 +9,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -17,7 +18,7 @@ import net.minecraft.world.level.Level;
 
 public class SpearOfLonginusItem extends SpearItem {
     public SpearOfLonginusItem(Properties properties) {
-        super(NarakaTiers.LONGINUS, properties, NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS);
+        super(NarakaToolMaterials.LONGINUS, false, 600, -3, 6, properties, NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS);
     }
 
     @Override
@@ -31,11 +32,14 @@ public class SpearOfLonginusItem extends SpearItem {
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        DamageSource source = NarakaDamageSources.longinus(attacker);
-        target.hurt(source, Float.MAX_VALUE);
+    public DamageSource getDamageSource(LivingEntity entity) {
+        return NarakaDamageSources.longinus(entity);
+    }
 
-        return true;
+    @Override
+    public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (target.level() instanceof ServerLevel serverLevel)
+            target.hurtServer(serverLevel, getDamageSource(attacker), Float.MAX_VALUE);
     }
 
     @Override
@@ -43,10 +47,5 @@ public class SpearOfLonginusItem extends SpearItem {
         return super.getName(stack).copy()
                 .withStyle(ChatFormatting.BOLD)
                 .withStyle(ComponentStyles.LONGINUS_COLOR);
-    }
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return false;
     }
 }

@@ -7,8 +7,8 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.SoulType;
-import com.yummy.naraka.world.item.armortrim.NarakaTrimMaterials;
-import com.yummy.naraka.world.item.armortrim.NarakaTrimPatterns;
+import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
+import com.yummy.naraka.world.item.equipment.trim.NarakaTrimPatterns;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -22,8 +22,8 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.JukeboxSong;
-import net.minecraft.world.item.armortrim.TrimMaterial;
-import net.minecraft.world.item.armortrim.TrimPattern;
+import net.minecraft.world.item.equipment.trim.TrimMaterial;
+import net.minecraft.world.item.equipment.trim.TrimPattern;
 import net.minecraft.world.level.block.Block;
 
 import java.util.HashMap;
@@ -51,6 +51,13 @@ public class NarakaLanguageProviders {
         add(LanguageKey.ITEM_GROUP_NARAKA, "Naraka", "Naraka");
         add(LanguageKey.ITEM_GROUP_SOUL_MATERIALS, "Soul Materials", "영혼 재료");
         add(LanguageKey.ITEM_GROUP_TEST, "Naraka Test", "나락! 테스트");
+
+        add(LanguageKey.KEY_CATEGORIES_NARAKA, "Naraka", "Naraka");
+        add(LanguageKey.KEY_TOGGLE_ORE_SEE_THROUGH, "Toggle Ore See Through", "광물 투시 켜기/끄기");
+
+        add(LanguageKey.toggleOreSeeThroughMessage(false), "Ore See Through is now enabled", "광물 투시 활성화됨");
+        add(LanguageKey.toggleOreSeeThroughMessage(true), "Ore See Through is now disabled", "광물 투시 비활성화됨");
+
         add("container.soul_crafting", "Soul Crafter", "영혼 세공기");
         add(LanguageKey.REINFORCEMENT_KEY, "Reinforcement: %d", "강화: %d");
         add(LanguageKey.BLESSED_KEY, "Blessed", "축복받음");
@@ -249,7 +256,6 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.COMPRESSED_IRON_BLOCK, "Block of Compressed Iron", "압축된 철 블록");
         addBlock(NarakaBlocks.IMITATION_GOLD_BLOCK, "Block of Imitation Gold", "거짓된 금 블록");
         addBlock(NarakaBlocks.AMETHYST_SHARD_BLOCK, "Block of Amethyst Shard", "자수정 조각 블록");
-        addBlock(NarakaBlocks.SOUL_CRAFTING_BLOCK, "Block of Soul Crafting", "영혼 세공기");
 
         addBlock(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK, "Block of Soul Infused Redstone", "영혼이 주입된 레드스톤 블록");
         addBlock(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK, "Block of Soul Infused Copper", "영혼이 주입된 구리 블록");
@@ -319,11 +325,11 @@ public class NarakaLanguageProviders {
     }
 
     public void addBlock(Supplier<? extends Block> block, String... translations) {
-        add(block.get().getDescriptionId(), translations);
+        add(block.get().asItem().getDescriptionId(), translations);
     }
 
     public void addTooltip(Supplier<? extends Block> block, String... translations) {
-        add(LanguageKey.tooltipKey(block.get()), translations);
+        add(LanguageKey.tooltip(block.get()), translations);
     }
 
     public void addEntityType(Supplier<? extends EntityType<?>> entityType, String... translations) {
@@ -358,7 +364,7 @@ public class NarakaLanguageProviders {
     }
 
     public void addReinforcementEffect(Holder<ReinforcementEffect> effect, String... translations) {
-        add(LanguageKey.reinforcementEffectKey(effect), translations);
+        add(LanguageKey.reinforcementEffect(effect), translations);
     }
 
     private class LanguageProvider extends FabricLanguageProvider {

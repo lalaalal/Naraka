@@ -1,6 +1,6 @@
 package com.yummy.naraka.core.registries;
 
-import com.yummy.naraka.proxy.MethodInvoker;
+import com.yummy.naraka.invoker.MethodInvoker;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import org.jetbrains.annotations.Nullable;

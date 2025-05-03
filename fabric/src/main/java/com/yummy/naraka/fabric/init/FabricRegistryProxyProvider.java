@@ -4,7 +4,7 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.core.registries.RegistryProxyProvider;
-import com.yummy.naraka.proxy.MethodProxy;
+import com.yummy.naraka.invoker.MethodProxy;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 
@@ -36,7 +36,7 @@ public final class FabricRegistryProxyProvider extends RegistryProxyProvider {
         }
 
         @Override
-        public ResourceKey<Registry<T>> getRegistryKey() {
+        public ResourceKey<? extends Registry<T>> getRegistryKey() {
             return key;
         }
 

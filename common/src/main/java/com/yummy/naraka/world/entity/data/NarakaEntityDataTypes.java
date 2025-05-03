@@ -4,7 +4,6 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.init.NarakaInitializer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -37,12 +36,14 @@ public class NarakaEntityDataTypes {
     }
 
     public static HolderSet<EntityDataType<?>> full() {
-        return HolderSet.direct(NarakaRegistries.ENTITY_DATA_TYPE.holders().toList());
+        return HolderSet.direct(
+                NarakaRegistries.ENTITY_DATA_TYPE.stream()
+                        .map(NarakaRegistries.ENTITY_DATA_TYPE::wrapAsHolder)
+                        .toList()
+        );
     }
 
     public static void initialize(NarakaInitializer initializer) {
-        RegistryProxyProvider.get(NarakaRegistries.Keys.ENTITY_DATA_TYPE)
-                .onRegistrationFinished();
         initializer.runAfterRegistryLoaded(StigmaHelper::initialize);
     }
 }

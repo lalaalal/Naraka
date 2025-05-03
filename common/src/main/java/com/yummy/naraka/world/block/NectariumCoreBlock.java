@@ -12,7 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -76,7 +76,7 @@ public class NectariumCoreBlock extends Block {
 
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (stack.is(Items.HONEY_BOTTLE)) {
             BlockState activatedState = state.setValue(HONEY, MAX_HONEY);
             level.setBlock(pos, activatedState, UPDATE_ALL_IMMEDIATE);
@@ -84,7 +84,7 @@ public class NectariumCoreBlock extends Block {
                 player.setItemInHand(hand, new ItemStack(Items.GLASS_BOTTLE));
             if (player instanceof ServerPlayer serverPlayer)
                 NarakaCriteriaTriggers.SIMPLE_TRIGGER.get().trigger(serverPlayer, SimpleTrigger.ACTIVATE_NECTARIUM_CORE);
-            return ItemInteractionResult.CONSUME;
+            return InteractionResult.CONSUME;
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
@@ -122,7 +122,7 @@ public class NectariumCoreBlock extends Block {
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(
-                Component.translatable(LanguageKey.tooltipKey(this))
+                Component.translatable(LanguageKey.tooltip(this))
                         .withStyle(ChatFormatting.GRAY)
         );
     }

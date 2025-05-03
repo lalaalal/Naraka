@@ -1,6 +1,6 @@
 package com.yummy.naraka.event;
 
-import com.yummy.naraka.proxy.MethodInvoker;
+import com.yummy.naraka.invoker.MethodInvoker;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;

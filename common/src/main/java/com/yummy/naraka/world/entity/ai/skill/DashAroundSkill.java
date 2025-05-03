@@ -5,6 +5,7 @@ import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.entity.AfterimageEntity;
 import com.yummy.naraka.world.entity.SkillUsingMob;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix3f;
@@ -38,20 +39,20 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
     }
 
     @Override
-    protected void onFirstTick() {
+    protected void onFirstTick(ServerLevel level) {
         LivingEntity target = mob.getTarget();
         if (target != null)
             mob.lookAt(target, 360, 0);
     }
 
     @Override
-    protected void skillTick() {
+    protected void skillTick(ServerLevel level) {
         mob.getNavigation().stop();
 
         if (tickCount == 0)
             updateDeltaMovement();
         if (0 <= tickCount && tickCount <= 3) {
-            NarakaEntityUtils.updatePositionForUpStep(level(), mob, deltaMovement, 0.4);
+            NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, 0.4);
             mob.setDeltaMovement(deltaMovement);
             mob.addAfterimage(Afterimage.of(mob, 10), 2, tickCount < 3);
         }

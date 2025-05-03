@@ -2,7 +2,6 @@ package com.yummy.naraka.world.carver;
 
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
@@ -17,7 +16,6 @@ public class NarakaWorldCarvers {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(Registries.CARVER)
-                .onRegistrationFinished();
+
     }
 }

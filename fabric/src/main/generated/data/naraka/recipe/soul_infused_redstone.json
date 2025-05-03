@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "M": {
-      "item": "minecraft:redstone"
-    },
-    "P": {
-      "item": "naraka:purified_soul_shard"
-    }
+    "M": "minecraft:redstone",
+    "P": "naraka:purified_soul_shard"
   },
   "pattern": [
     "MMM",

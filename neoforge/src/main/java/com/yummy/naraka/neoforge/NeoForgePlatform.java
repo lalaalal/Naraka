@@ -1,7 +1,7 @@
 package com.yummy.naraka.neoforge;
 
 import com.yummy.naraka.Platform;
-import com.yummy.naraka.proxy.MethodProxy;
+import com.yummy.naraka.invoker.MethodProxy;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 
@@ -36,5 +36,11 @@ public final class NeoForgePlatform extends Platform {
     @Override
     public Path getConfigurationPath() {
         return FMLPaths.CONFIGDIR.get();
+    }
+
+    @Override
+    public boolean modExists(String id) {
+        return FMLLoader.getLoadingModList().getMods().stream()
+                .anyMatch(modInfo -> modInfo.getModId().equals(id));
     }
 }

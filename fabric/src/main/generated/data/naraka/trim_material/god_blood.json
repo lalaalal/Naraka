@@ -4,6 +4,5 @@
     "color": "#625859",
     "translate": "trim_material.naraka.god_blood"
   },
-  "ingredient": "naraka:god_blood",
-  "item_model_index": 1.0
+  "ingredient": "naraka:god_blood"
 }

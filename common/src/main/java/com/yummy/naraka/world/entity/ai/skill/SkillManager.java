@@ -1,16 +1,19 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class SkillManager {
     private final RandomSource random;
-    private final Set<Skill<?>> skills = new HashSet<>();
+    private final Set<Entry> skills = new HashSet<>();
     private final List<Consumer<Skill<?>>> skillStartListeners = new ArrayList<>();
     private final List<Consumer<Skill<?>>> skillEndListeners = new ArrayList<>();
+    private final List<Consumer<Optional<Skill<?>>>> skillSelectListeners = new ArrayList<>();
     private boolean paused = false;
     private int waitingTick = 0;
 
@@ -21,13 +24,13 @@ public class SkillManager {
     @Nullable
     private Skill<?> currentSkill = null;
 
-    public void addSkill(Skill<?> skill) {
-        this.skills.add(skill);
+    public void addSkill(int priority, Skill<?> skill) {
+        this.skills.add(new Entry(priority, skill));
     }
 
     public void enableOnly(Collection<Skill<?>> skillsToEnable) {
-        for (Skill<?> skill : this.skills)
-            skill.setEnabled(skillsToEnable.contains(skill));
+        for (Entry entry : skills)
+            entry.setEnabled(skillsToEnable.contains(entry.skill));
     }
 
     public void runOnSkillStart(Consumer<Skill<?>> listener) {
@@ -38,12 +41,27 @@ public class SkillManager {
         this.skillEndListeners.add(listener);
     }
 
-    private List<Skill<?>> getUsableSkills() {
+    public void runOnSkillSelect(Consumer<Optional<Skill<?>>> listener) {
+        this.skillSelectListeners.add(listener);
+    }
+
+    private Optional<Skill<?>> selectSkill() {
         if (paused || waitingTick > 0)
-            return List.of();
-        return skills.stream()
-                .filter(skill -> skill.readyToUse() && skill.canUse())
-                .toList();
+            return Optional.empty();
+
+        Optional<Entry> minimum = this.skills.stream()
+                .filter(Entry::prepared)
+                .min(Comparator.comparingInt(Entry::priority));
+
+        if (minimum.isEmpty())
+            return Optional.empty();
+        List<Skill<?>> usableSkills = this.skills.stream()
+                .filter(Entry::prepared)
+                .filter(entry -> entry.priority == minimum.get().priority())
+                .map(Entry::skill)
+                .collect(Collectors.toUnmodifiableList());
+        int randomIndex = random.nextInt(usableSkills.size());
+        return Optional.of(usableSkills.get(randomIndex));
     }
 
     public void setCurrentSkillIfAbsence(Skill<?> skill) {
@@ -83,30 +101,30 @@ public class SkillManager {
         this.waitingTick = waitingTick;
     }
 
-    public void tick() {
+    public void tick(ServerLevel level) {
         if (currentSkill != null) {
-            currentSkill.tick();
+            currentSkill.tick(level);
             if (currentSkill.isEnded()) {
+                currentSkill.setCooldown();
                 for (Consumer<Skill<?>> listener : skillEndListeners)
                     listener.accept(currentSkill);
-                currentSkill.setCooldown();
-                if (currentSkill.hasLinkedSkill())
+                if (currentSkill.hasLinkedSkill()) {
+                    Skill<?> previousSkill = currentSkill;
                     setCurrentSkill(currentSkill.getLinkedSkill());
+                    previousSkill.setLinkedSkill(null);
+                }
                 else
                     currentSkill = null;
             }
         } else {
-            List<Skill<?>> usable = getUsableSkills();
-            if (!usable.isEmpty()) {
-                Skill<?> skill = usable.get(random.nextInt(usable.size()));
-                setCurrentSkillIfAbsence(skill);
-            }
+            Optional<Skill<?>> usable = selectSkill();
+            usable.ifPresent(this::setCurrentSkill);
+            for (Consumer<Optional<Skill<?>>> listener : skillSelectListeners)
+                listener.accept(usable);
         }
 
-        for (Skill<?> skill : skills) {
-            if (!skill.readyToUse())
-                skill.reduceCooldown();
-        }
+        for (Entry entry : skills)
+            entry.tryReduceCooldown();
         if (waitingTick > 0)
             waitingTick -= 1;
     }
@@ -114,5 +132,20 @@ public class SkillManager {
     @Nullable
     public Skill<?> getCurrentSkill() {
         return currentSkill;
+    }
+
+    private record Entry(int priority, Skill<?> skill) {
+        void tryReduceCooldown() {
+            if (!skill.readyToUse())
+                skill.reduceCooldown();
+        }
+
+        void setEnabled(boolean value) {
+            skill.setEnabled(value);
+        }
+
+        boolean prepared() {
+            return skill.readyToUse() && skill.canUse();
+        }
     }
 }

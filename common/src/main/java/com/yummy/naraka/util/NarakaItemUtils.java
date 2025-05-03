@@ -6,6 +6,7 @@ import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,11 +21,18 @@ public class NarakaItemUtils {
     /**
      * @return Get item attribute modifiers, item's default modifier if null or empty
      */
-    @SuppressWarnings("deprecation")
     public static ItemAttributeModifiers getAttributeModifiers(ItemStack itemStack) {
         ItemAttributeModifiers modifiers = itemStack.get(DataComponents.ATTRIBUTE_MODIFIERS);
+        DataComponentMap components = itemStack.getItem().components();
         if (modifiers == null || modifiers.modifiers().isEmpty())
-            return itemStack.getItem().getDefaultAttributeModifiers();
+            return getAttributeModifiers(components);
+        return modifiers;
+    }
+
+    private static ItemAttributeModifiers getAttributeModifiers(DataComponentMap components) {
+        ItemAttributeModifiers modifiers = components.get(DataComponents.ATTRIBUTE_MODIFIERS);
+        if (modifiers == null)
+            return ItemAttributeModifiers.EMPTY;
         return modifiers;
     }
 
@@ -38,6 +46,10 @@ public class NarakaItemUtils {
                     itemStack
             ));
         }
+    }
+
+    public static void saveBlockEntity(ItemStack itemStack, BlockEntity blockEntity, HolderLookup.Provider provider) {
+        itemStack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(blockEntity.saveWithId(provider)));
     }
 
     public static void loadBlockEntity(ItemStack itemStack, BlockEntity blockEntity, HolderLookup.Provider provider) {

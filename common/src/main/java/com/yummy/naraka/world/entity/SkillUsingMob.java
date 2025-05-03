@@ -34,6 +34,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
 
         skillManager.runOnSkillStart(this::setAnimation);
         skillManager.runOnSkillEnd(skill -> setAnimation(AnimationLocations.IDLE));
+        updateAnimation(AnimationLocations.IDLE);
     }
 
     public boolean isUsingSkill() {
@@ -59,15 +60,23 @@ public abstract class SkillUsingMob extends PathfinderMob {
         this.animationStates.put(animationLocation, AnimationController.simple(animationLocation));
     }
 
-    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(S skill, ResourceLocation... animationLocations) {
-        this.skillManager.addSkill(skill);
+    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(int priority, S skill, ResourceLocation... animationLocations) {
+        this.skillManager.addSkill(priority, skill);
         registerAnimation(skill.location, List.of(animationLocations));
 
         return skill;
     }
 
+    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(S skill, ResourceLocation... animationLocations) {
+        return registerSkill(Integer.MAX_VALUE, skill, animationLocations);
+    }
+
+    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(int priority, T mob, Function<T, S> factory, ResourceLocation... animationLocations) {
+        return registerSkill(priority, factory.apply(mob), animationLocations);
+    }
+
     public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(T mob, Function<T, S> factory, ResourceLocation... animationLocations) {
-        return registerSkill(factory.apply(mob), animationLocations);
+        return registerSkill(Integer.MAX_VALUE, factory.apply(mob), animationLocations);
     }
 
     public float getAttackDamage() {
@@ -108,8 +117,8 @@ public abstract class SkillUsingMob extends PathfinderMob {
     }
 
     @Override
-    protected void customServerAiStep() {
-        skillManager.tick();
+    protected void customServerAiStep(ServerLevel level) {
+        skillManager.tick(level);
     }
 
     protected static abstract class AnimationController {

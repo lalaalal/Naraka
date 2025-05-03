@@ -15,10 +15,11 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.armortrim.*;
+import net.minecraft.world.item.SmithingTemplateItem;
+import net.minecraft.world.item.enchantment.Enchantable;
+import net.minecraft.world.item.equipment.trim.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -77,7 +78,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     public void detachSoulStabilizer() {
         if (isStabilizerAttached && level != null) {
             ItemStack itemStack = new ItemStack(NarakaBlocks.SOUL_STABILIZER.get());
-            soulStabilizer.saveToItem(itemStack, level.registryAccess());
+            NarakaItemUtils.saveBlockEntity(itemStack, this, level.registryAccess());
             NarakaItemUtils.summonItemEntity(level, itemStack, getBlockPos());
             soulStabilizer.clear();
             isStabilizerAttached = false;
@@ -90,7 +91,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     }
 
     public boolean tryAttachTemplate(ItemStack template) {
-        if (templateItem.isEmpty() && (template.is(ItemTags.TRIM_TEMPLATES) || template.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get()))) {
+        if (templateItem.isEmpty() && (template.getItem() instanceof SmithingTemplateItem || template.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get()))) {
             this.templateItem = template.copyWithCount(1);
             setChanged();
             return true;
@@ -144,8 +145,10 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     private boolean reinforceArmor(SoulType soulType, int requiredSoul) {
         if (!forgingItem.is(NarakaItemTags.PURIFIED_SOUL_ARMOR) || level == null)
             return false;
-        if (soulType == SoulType.GOD_BLOOD)
+        if (soulType == SoulType.GOD_BLOOD) {
             forgingItem.set(NarakaDataComponentTypes.BLESSED.get(), true);
+            forgingItem.set(DataComponents.ENCHANTABLE, new Enchantable(9));
+        }
 
         soulStabilizer.consumeSoul(requiredSoul);
         while (Reinforcement.canReinforce(forgingItem))
@@ -172,8 +175,6 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
                 && cooldownTick <= 0
                 && isStabilizerAttached && soulStabilizer.getSouls() >= requiredSoul) {
             SoulType soulType = soulStabilizer.getSoulType();
-            if (soulType == null)
-                return false;
 
             if (templateItem.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get()))
                 return reinforceSword(soulType, requiredSoul);

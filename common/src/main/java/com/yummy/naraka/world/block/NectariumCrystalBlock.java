@@ -7,13 +7,12 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.DripstoneThickness;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -21,7 +20,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class NectariumCrystalBlock extends Block {
-    public static final DirectionProperty TIP_DIRECTION = BlockStateProperties.VERTICAL_DIRECTION;
+    public static final EnumProperty<Direction> TIP_DIRECTION = BlockStateProperties.VERTICAL_DIRECTION;
     public static final EnumProperty<DripstoneThickness> THICKNESS = BlockStateProperties.DRIPSTONE_THICKNESS;
 
     private static final VoxelShape TIP_MERGE_SHAPE = Block.box(5.0, 0.0, 5.0, 11.0, 16.0, 11.0);
@@ -58,11 +57,11 @@ public class NectariumCrystalBlock extends Block {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
         if (state.is(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get())
                 && !canSurvive(state, level, pos)
-                && !level.getBlockTicks().hasScheduledTick(pos, this))
-            level.scheduleTick(pos, this, 1);
+                && !scheduledTickAccess.getBlockTicks().hasScheduledTick(pos, this))
+            scheduledTickAccess.scheduleTick(pos, this, 1);
         Direction tipDirection = state.getValue(TIP_DIRECTION);
         if (direction == tipDirection) {
             DripstoneThickness thickness = calculateThickness(level, state, neighborState, pos);
@@ -71,7 +70,7 @@ public class NectariumCrystalBlock extends Block {
         return state;
     }
 
-    protected DripstoneThickness calculateThickness(LevelAccessor level, BlockState state, BlockState neighborState, BlockPos pos) {
+    protected DripstoneThickness calculateThickness(LevelReader level, BlockState state, BlockState neighborState, BlockPos pos) {
         Direction tipDirection = state.getValue(TIP_DIRECTION);
         BlockPos basePos = pos.relative(tipDirection.getOpposite());
         BlockState baseState = level.getBlockState(basePos);
@@ -89,7 +88,7 @@ public class NectariumCrystalBlock extends Block {
         return thickness;
     }
 
-    protected boolean canMerge(LevelAccessor level, BlockPos pos, Direction tipDirection) {
+    protected boolean canMerge(LevelReader level, BlockPos pos, Direction tipDirection) {
         BlockPos headPos = pos.relative(tipDirection);
         BlockState headState = level.getBlockState(headPos);
         return headState.is(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get())

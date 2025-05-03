@@ -2,7 +2,6 @@ package com.yummy.naraka.world.item.reinforcement;
 
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.advancements.critereon.TagPredicate;
@@ -42,7 +41,7 @@ public class NarakaReinforcementEffects {
     );
 
     public static final Holder<ReinforcementEffect> IGNORE_LIQUID_PUSHING = register(
-            "ignore_liquid_pushing", new SimpleReinforcementEffect(10, EquipmentSlot.FEET)
+            "ignore_liquid_pushing", new SimpleReinforcementEffect(10, EquipmentSlot.LEGS)
     );
 
     public static final Holder<ReinforcementEffect> FLYING = register(
@@ -109,9 +108,6 @@ public class NarakaReinforcementEffects {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(NarakaRegistries.Keys.REINFORCEMENT_EFFECT)
-                .onRegistrationFinished();
-
         addEffectsByItem(ItemTags.SWORDS, INCREASE_ATTACK_DAMAGE);
         addEffectsByItem(ItemTags.TRIDENT_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
         addEffectsByItem(NarakaItemTags.SPEAR_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);

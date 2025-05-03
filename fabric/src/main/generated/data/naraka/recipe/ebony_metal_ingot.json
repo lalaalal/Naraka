@@ -2,30 +2,14 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "naraka:ebony_roots_scrap"
-    },
-    {
-      "item": "naraka:ebony_roots_scrap"
-    },
-    {
-      "item": "naraka:ebony_roots_scrap"
-    },
-    {
-      "item": "naraka:ebony_roots_scrap"
-    },
-    {
-      "item": "minecraft:netherite_scrap"
-    },
-    {
-      "item": "minecraft:netherite_scrap"
-    },
-    {
-      "item": "minecraft:netherite_scrap"
-    },
-    {
-      "item": "minecraft:netherite_scrap"
-    }
+    "naraka:ebony_roots_scrap",
+    "naraka:ebony_roots_scrap",
+    "naraka:ebony_roots_scrap",
+    "naraka:ebony_roots_scrap",
+    "minecraft:netherite_scrap",
+    "minecraft:netherite_scrap",
+    "minecraft:netherite_scrap",
+    "minecraft:netherite_scrap"
   ],
   "result": {
     "count": 1,

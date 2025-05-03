@@ -6,6 +6,7 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryFactory;
+import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.event.EventHandler;
 import com.yummy.naraka.init.NarakaInitializer;
@@ -21,7 +22,6 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.features.NarakaFeatures;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
-import com.yummy.naraka.world.item.NarakaArmorMaterials;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
@@ -70,7 +70,6 @@ public final class NarakaMod {
         NarakaBlockEntityTypes.initialize();
 
         NarakaReinforcementEffects.initialize();
-        NarakaArmorMaterials.initialize();
         NarakaDataComponentTypes.initialize();
         NarakaItems.initialize();
         NarakaRecipeTypes.initialize();
@@ -95,6 +94,8 @@ public final class NarakaMod {
 
         NarakaGameEvents.initialize();
         NarakaNetworks.initialize();
+
+        RegistryProxyProvider.forEach(RegistryProxy::onRegistrationFinished);
     }
 
     public static ResourceLocation mcLocation(String path) {

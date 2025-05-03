@@ -4,6 +4,7 @@ import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Position;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -61,11 +62,11 @@ public class SpearOfLonginus extends Spear {
     }
 
     @Override
-    protected void hurtHitEntity(Entity entity) {
+    protected void hurtHitEntity(ServerLevel serverLevel, Entity entity) {
         DamageSource source = NarakaDamageSources.longinus(this);
-        entity.hurt(source, Float.MAX_VALUE);
+        entity.hurtServer(serverLevel, source, Float.MAX_VALUE);
         if (entity.isAlive())
-            entity.kill();
+            entity.kill(serverLevel);
     }
 
     @Override

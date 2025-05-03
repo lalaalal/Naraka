@@ -1,8 +1,8 @@
 package com.yummy.naraka.neoforge.client;
 
 import com.yummy.naraka.client.init.ScreenFactoryRegistry;
+import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.neoforge.NarakaEventBus;
-import com.yummy.naraka.proxy.MethodProxy;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.inventory.AbstractContainerMenu;

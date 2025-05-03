@@ -1,8 +1,8 @@
 package com.yummy.naraka.neoforge.client;
 
 import com.yummy.naraka.client.init.HudRendererRegistry;
+import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.neoforge.NarakaEventBus;
-import com.yummy.naraka.proxy.MethodProxy;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;

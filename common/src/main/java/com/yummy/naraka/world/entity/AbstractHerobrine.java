@@ -1,11 +1,13 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
-import com.yummy.naraka.world.entity.ai.skill.PunchSkill;
+import com.yummy.naraka.world.entity.ai.skill.ComboAttackSkill;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -27,13 +29,11 @@ import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractHerobrine extends SkillUsingMob implements StigmatizingEntity, AfterimageEntity, Enemy {
-    public static final int MAX_STAGGERING_TICK = 90;
-
-    protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(this, PunchSkill::new, AnimationLocations.COMBO_ATTACK_1, AnimationLocations.COMBO_ATTACK_2, AnimationLocations.COMBO_ATTACK_3);
+    protected final ComboAttackSkill<AbstractHerobrine> comboAttackSkill = registerSkill(this, ComboAttackSkill::new, AnimationLocations.COMBO_ATTACK_1, AnimationLocations.COMBO_ATTACK_2, AnimationLocations.COMBO_ATTACK_3);
 
     public final boolean isShadow;
 
-    protected int staggeringTickCount = Integer.MAX_VALUE;
+    protected int staggeringTickCount = Integer.MIN_VALUE;
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
@@ -44,8 +44,6 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
                 .add(Attributes.MOVEMENT_SPEED, 0.2f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, 1)
-                .add(Attributes.ARMOR, 6)
-                .add(Attributes.ARMOR_TOUGHNESS, 6)
                 .add(Attributes.MAX_HEALTH, 666);
     }
 
@@ -61,30 +59,36 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     private void updateStaggering() {
-        if (staggeringTickCount == MAX_STAGGERING_TICK)
+        if (staggeringTickCount == 0)
             stopStaggering();
-        if (staggeringTickCount <= MAX_STAGGERING_TICK)
-            staggeringTickCount += 1;
+        if (staggeringTickCount >= 0)
+            staggeringTickCount -= 1;
     }
 
     protected void startStaggering() {
-        if (staggeringTickCount < MAX_STAGGERING_TICK)
+        int duration = NarakaConfig.COMMON.herobrineStaggeringDuration.getValue();
+        this.startStaggering(true, duration);
+    }
+
+    protected void startStaggering(boolean playAnimation, int duration) {
+        if (staggeringTickCount > 0)
             return;
-        staggeringTickCount = 0;
+        staggeringTickCount = Math.max(1, duration);
         skillManager.pause(true);
-        setAnimation(AnimationLocations.STAGGERING);
+        if (playAnimation)
+            setAnimation(AnimationLocations.STAGGERING);
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STAGGERING_PREVENT_MOVING);
     }
 
     protected void stopStaggering() {
         setAnimation(AnimationLocations.IDLE);
-        staggeringTickCount = Integer.MAX_VALUE;
+        staggeringTickCount = Integer.MIN_VALUE;
         skillManager.resume();
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STAGGERING_PREVENT_MOVING);
     }
 
     public boolean isStaggering() {
-        return staggeringTickCount < MAX_STAGGERING_TICK;
+        return staggeringTickCount > 0;
     }
 
     @Override
@@ -99,7 +103,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     @Override
     protected void registerGoals() {
         targetSelector.addGoal(1, new HurtByTargetGoal(this, Herobrine.class));
-        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, false, target -> !target.getType().is(NarakaEntityTypeTags.HEROBRINE)));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, false, (target, serverLevel) -> !target.getType().is(NarakaEntityTypeTags.HEROBRINE)));
 
         goalSelector.addGoal(1, new FloatGoal(this));
         goalSelector.addGoal(2, new MoveToTargetGoal(this, 1, 64));
@@ -107,9 +111,9 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     @Override
-    protected void customServerAiStep() {
+    protected void customServerAiStep(ServerLevel serverLevel) {
         updateStaggering();
-        super.customServerAiStep();
+        super.customServerAiStep(serverLevel);
     }
 
     protected abstract Fireball createFireball();
@@ -155,8 +159,8 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     @Override
-    public boolean isInvulnerableTo(DamageSource source) {
-        return source.is(DamageTypes.IN_WALL) || source.is(DamageTypes.LIGHTNING_BOLT) || super.isInvulnerableTo(source);
+    public boolean isInvulnerableTo(ServerLevel serverLevel, DamageSource source) {
+        return source.is(DamageTypes.IN_WALL) || source.is(DamageTypes.LIGHTNING_BOLT) || super.isInvulnerableTo(serverLevel, source);
     }
 
     @Override

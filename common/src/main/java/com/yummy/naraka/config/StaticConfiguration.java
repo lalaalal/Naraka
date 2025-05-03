@@ -10,6 +10,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * Configuration whose key set is fixed.
+ */
 public abstract class StaticConfiguration extends Configuration {
     protected final Map<String, ConfigValue<?>> configurations = new LinkedHashMap<>();
 
@@ -17,11 +20,14 @@ public abstract class StaticConfiguration extends Configuration {
         super(name, configFileFactory);
     }
 
-    @Override
-    public boolean canUpdateOnFileChange(String fileName) {
-        return watchChange && file.getFileName().equals(fileName);
-    }
-
+    /**
+     * Defines configuration must be set.
+     *
+     * @param key          Key of configuration
+     * @param defaultValue Default value
+     * @param <T>          Type of configuration value
+     * @return Configuration value instance
+     */
     protected <T> ConfigValue<T> define(String key, T defaultValue) {
         ConfigValue<T> value = new ConfigValue<>(defaultValue);
         configurations.put(key, value);
@@ -30,27 +36,22 @@ public abstract class StaticConfiguration extends Configuration {
 
     @Override
     public synchronized void loadValues() {
+        NarakaMod.LOGGER.info("Loading static configuration \"{}\"", name);
         try (Reader reader = file.createReader()) {
-            boolean hasMissing = false;
-            for (Map.Entry<String, ConfigValue<?>> entry : configurations.entrySet()) {
-                String key = entry.getKey();
-                ConfigValue<?> value = entry.getValue();
-                if (!file.contains(reader, key))
-                    hasMissing = true;
-                file.read(reader, key, value);
-            }
-            if (hasMissing)
-                saveValues();
+            file.load(reader);
+            configurations.forEach(file::read);
         } catch (FileNotFoundException exception) {
+            NarakaMod.LOGGER.warn("Configuration file \"{}\" is not found", file.getFileName());
             saveValues();
         } catch (IOException exception) {
             NarakaMod.LOGGER.error("An error occurred while loading config values");
-            throw new RuntimeException(exception);
+            NarakaMod.LOGGER.warn("Using default values for configuration \"{}\"", name);
         }
     }
 
     @Override
     public synchronized void saveValues() {
+        NarakaMod.LOGGER.info("Saving static configuration \"{}\" to \"{}\"", name, file.getAbsolutePath());
         watchChange = false;
         try (Writer writer = file.createWriter()) {
             for (Map.Entry<String, ConfigValue<?>> entry : configurations.entrySet()) {
@@ -60,11 +61,10 @@ public abstract class StaticConfiguration extends Configuration {
             }
             file.commit(writer);
         } catch (IOException exception) {
-            watchChange = true;
             NarakaMod.LOGGER.error("An error occurred while saving config values");
-            throw new RuntimeException(exception);
+        } finally {
+            watchChange = true;
         }
-        watchChange = true;
     }
 
 }

@@ -23,7 +23,7 @@ public final class NarakaMusics {
 
     public static Music createBossMusic(Holder<SoundEvent> soundEvent) {
         Music music = new Music(soundEvent, 0, 0, true);
-        LOOPING_MUSICS.add(soundEvent.value().getLocation());
+        LOOPING_MUSICS.add(soundEvent.value().location());
         return music;
     }
 }

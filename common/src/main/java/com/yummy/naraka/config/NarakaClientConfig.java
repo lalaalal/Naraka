@@ -4,7 +4,7 @@ import com.yummy.naraka.util.Color;
 
 public class NarakaClientConfig extends StaticConfiguration {
     public final ConfigValue<Boolean> showReinforcementValue;
-    public final ConfigValue<Boolean> disableNonShaderLonginusRendering;
+    public final ConfigValue<Boolean> enableNonShaderLonginusRendering;
     public final ConfigValue<Color> afterimageColor;
     public final ConfigValue<Color> shadowHerobrineColor;
     public final ConfigValue<Boolean> alwaysDisplayHerobrineScarf;
@@ -14,12 +14,15 @@ public class NarakaClientConfig extends StaticConfiguration {
     public final ConfigValue<Float> herobrineScarfWaveMaxAngle;
     public final ConfigValue<Float> herobrineScarfWaveCycleModifier;
     public final ConfigValue<Integer> oreSeeThroughRange;
+    public final ConfigValue<Boolean> disableOreSeeThrough;
 
     public NarakaClientConfig() {
         super("naraka-client", PropertiesConfigFile::new);
 
         this.showReinforcementValue = define("show_reinforcement_value", false);
-        this.disableNonShaderLonginusRendering = define("disable_non_shader_longinus_rendering", false);
+        this.enableNonShaderLonginusRendering = define("enable_non_shader_longinus_rendering", true)
+                .comment("Automatically disabled when launching without iris")
+                .comment("If value is false, always disable");
         this.afterimageColor = define("afterimage_color", Color.of(0x7e00ff));
         this.shadowHerobrineColor = define("shadow_herobrine_color", Color.of(0x0000ff));
 
@@ -36,5 +39,6 @@ public class NarakaClientConfig extends StaticConfiguration {
                 .comment("Bigger value, short wave cycle");
 
         this.oreSeeThroughRange = define("ore_see_through_range", 20);
+        this.disableOreSeeThrough = define("disable_ore_see_through", false);
     }
 }

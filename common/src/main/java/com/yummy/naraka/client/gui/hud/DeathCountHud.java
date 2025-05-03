@@ -11,6 +11,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
@@ -45,7 +46,7 @@ public class DeathCountHud implements LayeredDraw.Layer {
     private static void drawHeart(GuiGraphics guiGraphics, int x, int y, boolean fill, boolean blink) {
         if (fill) {
             int u = blink ? HEART_PURPLE_X : HEART_PINK_X;
-            guiGraphics.blitSprite(NarakaSprites.DEATH_COUNT_HEART, HEART_WIDTH, HEART_HEIGHT,
+            guiGraphics.blitSprite(RenderType::guiTextured, NarakaSprites.DEATH_COUNT_HEART, HEART_WIDTH, HEART_HEIGHT,
                     u, 0, x, y,
                     HEART_SIZE_SINGLE, HEART_SIZE_SINGLE);
         }
@@ -73,7 +74,7 @@ public class DeathCountHud implements LayeredDraw.Layer {
             return;
 
         boolean blink = (blinkTime / 10) % 2 == 0;
-        guiGraphics.blitSprite(NarakaSprites.DEATH_COUNT_BACKGROUND, BASE_X, BASE_Y, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+        guiGraphics.blitSprite(RenderType::guiTextured, NarakaSprites.DEATH_COUNT_BACKGROUND, BASE_X, BASE_Y, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
         for (int i = 0; i < DeathCountHelper.MAX_DEATH_COUNT; i++) {
             int x = HEART_START_X + HEART_OFFSET_BORDER + BASE_X + i * (HEART_SIZE_SINGLE + HEART_GAP + HEART_OFFSET_BORDER);
             int y = BASE_Y + HEART_START_Y + HEART_OFFSET_BORDER;

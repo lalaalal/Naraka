@@ -1,0 +1,145 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_quartz_trim"
+        },
+        "when": "minecraft:quartz"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_iron_trim"
+        },
+        "when": "minecraft:iron"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_netherite_trim"
+        },
+        "when": "minecraft:netherite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_redstone_trim"
+        },
+        "when": "minecraft:redstone"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_copper_trim"
+        },
+        "when": "minecraft:copper"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_gold_trim"
+        },
+        "when": "minecraft:gold"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_emerald_trim"
+        },
+        "when": "minecraft:emerald"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_diamond_trim"
+        },
+        "when": "minecraft:diamond"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_lapis_trim"
+        },
+        "when": "minecraft:lapis"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_amethyst_trim"
+        },
+        "when": "minecraft:amethyst"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_soul_infused_redstone_trim"
+        },
+        "when": "naraka:soul_infused_redstone"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_soul_infused_copper_trim"
+        },
+        "when": "naraka:soul_infused_copper"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_soul_infused_gold_trim"
+        },
+        "when": "naraka:soul_infused_gold"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_soul_infused_emerald_trim"
+        },
+        "when": "naraka:soul_infused_emerald"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_soul_infused_diamond_trim"
+        },
+        "when": "naraka:soul_infused_diamond"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_soul_infused_lapis_trim"
+        },
+        "when": "naraka:soul_infused_lapis"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_soul_infused_amethyst_trim"
+        },
+        "when": "naraka:soul_infused_amethyst"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_soul_infused_nectarium_trim"
+        },
+        "when": "naraka:soul_infused_nectarium"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_boots_god_blood_trim"
+        },
+        "when": "naraka:god_blood"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "minecraft:item/iron_boots"
+    },
+    "property": "minecraft:trim_material"
+  }
+}

@@ -4,9 +4,7 @@
   "cookingtime": 100,
   "experience": 0.7,
   "group": "nectarium",
-  "ingredient": {
-    "item": "naraka:deepslate_nectarium_ore"
-  },
+  "ingredient": "naraka:deepslate_nectarium_ore",
   "result": {
     "id": "naraka:nectarium"
   }

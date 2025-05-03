@@ -3,7 +3,7 @@ package com.yummy.naraka.fabric.client;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModClient;
 import com.yummy.naraka.client.init.NarakaClientInitializer;
-import com.yummy.naraka.proxy.MethodInvoker;
+import com.yummy.naraka.invoker.MethodInvoker;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.util.profiling.ProfilerFiller;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -28,10 +27,9 @@ public final class NarakaModFabricClient implements ClientModInitializer, Naraka
         MethodInvoker.register(FabricParticleProviderRegistry.class);
         MethodInvoker.register(FabricBlockEntityRendererRegistry.class);
         MethodInvoker.register(FabricEntityRendererRegistry.class);
-        MethodInvoker.register(FabricShaderRegistry.class);
         MethodInvoker.register(FabricScreenFactoryRegistry.class);
-        MethodInvoker.register(FabricHunRendererRegistry.class);
-        MethodInvoker.register(FabricItemPropertyRegistry.class);
+        MethodInvoker.register(FabricHudRendererRegistry.class);
+        MethodInvoker.register(FabricKeyMappingRegistry.class);
 
         NarakaModClient.initialize(this);
     }
@@ -42,7 +40,7 @@ public final class NarakaModFabricClient implements ClientModInitializer, Naraka
     }
 
     @Override
-    public void registerResourceReloadListener(String name, Supplier<PreparableReloadListener> listener) {
+    public void registerClientReloadListener(String name, Supplier<PreparableReloadListener> listener) {
         ResourceManagerHelper helper = ResourceManagerHelper.get(PackType.CLIENT_RESOURCES);
         helper.registerReloadListener(new FabricResourceReloadListener(name, listener));
     }
@@ -59,8 +57,8 @@ public final class NarakaModFabricClient implements ClientModInitializer, Naraka
         }
 
         @Override
-        public CompletableFuture<Void> reload(PreparationBarrier preparationBarrier, ResourceManager resourceManager, ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler, Executor backgroundExecutor, Executor gameExecutor) {
-            return listener.reload(preparationBarrier, resourceManager, preparationsProfiler, reloadProfiler, backgroundExecutor, gameExecutor);
+        public CompletableFuture<Void> reload(PreparationBarrier barrier, ResourceManager manager, Executor backgroundExecutor, Executor gameExecutor) {
+            return listener.reload(barrier, manager, backgroundExecutor, gameExecutor);
         }
     }
 }

@@ -7,7 +7,7 @@
     "client.ItemBlockRenderTypesMixin"
   ],
   "mixins": [
-    "EntityTypeBuilderMixin",
+    "LivingEntityMixin",
     "PlayerMixin"
   ],
   "injectors": {

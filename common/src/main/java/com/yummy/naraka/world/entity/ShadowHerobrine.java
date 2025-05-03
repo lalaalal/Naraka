@@ -3,6 +3,8 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.ai.goal.FollowOwnerGoal;
+import com.yummy.naraka.world.entity.ai.skill.ComboAttackSkill;
+import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -27,11 +29,12 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntity {
-    private @Nullable Herobrine herobrine;
-    private @Nullable UUID herobrineUUID;
+    @Nullable private Herobrine herobrine;
+    @Nullable private UUID herobrineUUID;
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return AbstractHerobrine.getAttributeSupplier()
@@ -42,10 +45,30 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
     protected ShadowHerobrine(EntityType<? extends AbstractHerobrine> entityType, Level level) {
         super(entityType, level, true);
-        punchSkill.setMaxLinkCount(3);
-        punchSkill.changeCooldown(60);
-        punchSkill.setStunTarget(false);
-        punchSkill.setTraceTarget(false);
+        comboAttackSkill.setMaxLinkCount(3);
+        comboAttackSkill.setStunTarget(false);
+        comboAttackSkill.setTraceTarget(false);
+        skillManager.runOnSkillEnd(this::setComboAttackCooldown);
+        skillManager.runOnSkillSelect(this::preventUseSkillWithHerobrineInSameTime);
+    }
+
+    private void setComboAttackCooldown(Skill<?> skill) {
+        if (skill.location.equals(ComboAttackSkill.LOCATION))
+            skill.changeCooldown(skill.getCooldown() * 3 / 2);
+    }
+
+    private void preventUseSkillWithHerobrineInSameTime(Optional<Skill<?>> skill) {
+        if (skill.isPresent() && herobrineJustUsedSkill())
+            skillManager.interrupt();
+    }
+
+    private boolean herobrineJustUsedSkill() {
+        if (herobrine == null)
+            return false;
+        Skill<?> skill = herobrine.getCurrentSkill();
+        if (skill == null)
+            return false;
+        return skill.getCurrentTickCount() < 20;
     }
 
     public ShadowHerobrine(Level level, Herobrine herobrine) {
@@ -61,37 +84,27 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     @Override
-    protected void customServerAiStep() {
-        super.customServerAiStep();
-        if ((herobrine = getHerobrine()) != null && herobrine.isUsingSkill())
-            skillManager.pause(false);
-        else
-            skillManager.resume();
-    }
-
-    @Override
     public boolean canBeHitByProjectile() {
         return false;
     }
 
-    @Nullable
-    private Herobrine getHerobrine() {
+    private Optional<Herobrine> getHerobrine() {
         if (herobrineUUID == null)
-            return null;
+            return Optional.empty();
         if (herobrine == null && level() instanceof ServerLevel serverLevel)
-            return NarakaEntityUtils.findEntityByUUID(serverLevel, herobrineUUID, Herobrine.class);
+            return Optional.ofNullable(NarakaEntityUtils.findEntityByUUID(serverLevel, herobrineUUID, Herobrine.class));
         if (herobrine != null && herobrine.isRemoved()) {
             herobrineUUID = null;
-            return null;
+            return Optional.empty();
         }
-        return herobrine;
+        return Optional.ofNullable(herobrine);
     }
 
     @Override
     protected Fireball createFireball() {
-        if ((herobrine = getHerobrine()) != null)
-            return herobrine.createFireball();
-        return new NarakaFireball(this, Vec3.ZERO, level());
+        return getHerobrine()
+                .map(Herobrine::createFireball)
+                .orElseGet(() -> new NarakaFireball(this, Vec3.ZERO, level()));
     }
 
     @Override
@@ -111,9 +124,9 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
             return;
         StigmaHelper.removeStigma(target);
         level().playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.HOSTILE);
-        target.hurt(NarakaDamageSources.stigma(this), 6 * stigma.value());
-        if ((herobrine = getHerobrine()) != null)
-            herobrine.summonShadowHerobrine();
+        if (level() instanceof ServerLevel serverLevel)
+            target.hurtServer(serverLevel, NarakaDamageSources.stigma(this), 6 * stigma.value());
+        getHerobrine().ifPresent(Herobrine::summonShadowHerobrine);
     }
 
     @Override
@@ -123,45 +136,40 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
     @Override
     public void collectStigma(Stigma stigma) {
-        if ((herobrine = getHerobrine()) != null)
-            herobrine.collectStigma(stigma);
+        getHerobrine().ifPresent(herobrine -> herobrine.collectStigma(stigma));
     }
 
     public float getHurtDamageLimit() {
-        if ((herobrine = getHerobrine()) == null)
+        Optional<Herobrine> optional = getHerobrine();
+        if (optional.isEmpty())
             return Float.MAX_VALUE;
-        float herobrineHurtDamageLimit = herobrine.getHurtDamageLimit();
+        float herobrineHurtDamageLimit = optional.get().getHurtDamageLimit();
         if (herobrineHurtDamageLimit <= 1)
             return Float.MAX_VALUE;
         return herobrineHurtDamageLimit;
     }
 
     @Override
-    public boolean canChangeDimensions(Level oldLevel, Level newLevel) {
-        return false;
-    }
-
-    @Override
-    public boolean hurt(DamageSource source, float amount) {
+    public boolean hurtServer(ServerLevel serverLevel, DamageSource source, float amount) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
-            return super.hurt(source, amount);
-        if ((herobrine = getHerobrine()) != null)
+            return super.hurtServer(serverLevel, source, amount);
+        if (getHerobrine().isPresent())
             amount = Math.min(amount, getHurtDamageLimit());
-        if (staggeringTickCount < MAX_STAGGERING_TICK)
+        if (staggeringTickCount > 0)
             return false;
-        return super.hurt(source, amount);
+        return super.hurtServer(serverLevel, source, amount);
     }
 
     @Override
-    protected void actuallyHurt(DamageSource damageSource, float damageAmount) {
-        super.actuallyHurt(damageSource, damageAmount);
+    protected void actuallyHurt(ServerLevel serverLevel, DamageSource damageSource, float damageAmount) {
+        super.actuallyHurt(serverLevel, damageSource, damageAmount);
         if (herobrine != null)
             herobrine.broadcastShadowHerobrineHurt(this);
     }
 
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
-        int data = (herobrine = getHerobrine()) == null ? -1 : herobrine.getId();
+        int data = getHerobrine().map(Herobrine::getId).orElse(-1);
         return new ClientboundAddEntityPacket(this, entity, data);
     }
 
@@ -190,7 +198,9 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     @Override
-    public @Nullable Entity getOwner() {
-        return getHerobrine();
+    @Nullable
+    public Entity getOwner() {
+        getHerobrine();
+        return herobrine;
     }
 }

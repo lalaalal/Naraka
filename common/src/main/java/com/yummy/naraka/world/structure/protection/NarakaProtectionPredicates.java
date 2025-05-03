@@ -2,9 +2,7 @@ package com.yummy.naraka.world.structure.protection;
 
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.util.NarakaUtils;
-import com.yummy.naraka.world.structure.piece.HerobrineSanctuaryOutline;
 import net.minecraft.core.Holder;
 
 public class NarakaProtectionPredicates {
@@ -13,7 +11,7 @@ public class NarakaProtectionPredicates {
     );
 
     public static final Holder<ProtectionPredicate> HEROBRINE_SANCTUARY_PROTECTION = register(
-            "herobrine_sanctuary_protection", (box, pos) -> NarakaUtils.isInSphere(box, HerobrineSanctuaryOutline.SPHERE_SIZE, pos)
+            "herobrine_sanctuary_protection", (box, pos) -> NarakaUtils.isInSphere(box, 0.8f, pos)
     );
 
     private static Holder<ProtectionPredicate> register(String name, ProtectionPredicate predicate) {
@@ -21,7 +19,6 @@ public class NarakaProtectionPredicates {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(NarakaRegistries.Keys.PROTECTION_PREDICATE)
-                .onRegistrationFinished();
+
     }
 }

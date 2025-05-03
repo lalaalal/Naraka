@@ -3,7 +3,7 @@ package com.yummy.naraka.world.entity.ai.skill;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class Skill<T extends SkillUsingMob> {
@@ -23,8 +23,8 @@ public abstract class Skill<T extends SkillUsingMob> {
     @Nullable
     protected Skill<?> linkedSkill;
 
-    protected Skill(String name, int duration, int cooldown, T mob, @Nullable Skill<?> linkedSkill) {
-        this.location = createLocation(name);
+    protected Skill(ResourceLocation location, int duration, int cooldown, T mob, @Nullable Skill<?> linkedSkill) {
+        this.location = location;
         this.mob = mob;
         this.duration = duration;
         this.cooldown = cooldown;
@@ -33,11 +33,11 @@ public abstract class Skill<T extends SkillUsingMob> {
     }
 
     protected Skill(String name, int duration, int cooldown, T mob) {
-        this(name, duration, cooldown, mob, null);
+        this(createLocation(name), duration, cooldown, mob, null);
     }
 
-    protected Level level() {
-        return mob.level();
+    protected Skill(ResourceLocation location, int duration, int cooldown, T mob) {
+        this(location, duration, cooldown, mob, null);
     }
 
     public abstract boolean canUse();
@@ -52,6 +52,10 @@ public abstract class Skill<T extends SkillUsingMob> {
 
     public void enable() {
         disabled = false;
+    }
+
+    public boolean isEnabled() {
+        return !disabled;
     }
 
     public boolean readyToUse() {
@@ -82,18 +86,22 @@ public abstract class Skill<T extends SkillUsingMob> {
         return tickCount;
     }
 
+    public int getCooldown() {
+        return cooldown;
+    }
+
     @Nullable
     public Skill<?> getLinkedSkill() {
         return linkedSkill;
     }
 
-    public final void tick() {
+    public final void tick(ServerLevel level) {
         if (tickCount == 0)
-            onFirstTick();
+            onFirstTick(level);
         if (tickCount < duration)
-            skillTick();
+            skillTick(level);
         if (tickCount == duration - 1)
-            onLastTick();
+            onLastTick(level);
         tickCount += 1;
     }
 
@@ -109,17 +117,17 @@ public abstract class Skill<T extends SkillUsingMob> {
         cooldownTick += 1;
     }
 
-    protected void onFirstTick() {
+    protected void onFirstTick(ServerLevel level) {
 
     }
 
-    protected void onLastTick() {
+    protected void onLastTick(ServerLevel level) {
 
     }
 
-    protected abstract void skillTick();
+    protected abstract void skillTick(ServerLevel level);
 
     public void interrupt() {
-        setCooldown();
+
     }
 }

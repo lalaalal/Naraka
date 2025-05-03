@@ -1,10 +1,9 @@
 package com.yummy.naraka.world.item;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
-import com.yummy.naraka.world.item.armortrim.NarakaTrimPatterns;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -14,7 +13,11 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.item.component.Unbreakable;
+import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -32,7 +35,7 @@ public class NarakaItems {
     private static final Map<SoulType, HolderProxy<Item, SwordItem>> SWORD_BY_SOUL_TYPE = new HashMap<>();
 
     public static final HolderProxy<Item, Item> STIGMA_ROD = registerItem("stigma_rod", StigmaRodItem::new);
-    public static final HolderProxy<Item, Item> STARDUST_STAFF = registerItem("stardust_staff", StardustStaff::new);
+    public static final HolderProxy<Item, Item> STARDUST_STAFF = registerItem("stardust_staff", StardustStaffItem::new);
     public static final HolderProxy<Item, Item> NARAKA_FIREBALL = registerItem("naraka_fireball", NarakaFireballItem::new);
 
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_1_DISC = registerDiscItem("herobrine_phase_1_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_1);
@@ -54,12 +57,17 @@ public class NarakaItems {
 
     public static final HolderProxy<Item, Item> NECTARIUM = registerSimpleItem(
             "nectarium", new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(20)
-                            .saturationModifier(1f)
-                            .alwaysEdible()
-                            .effect(new MobEffectInstance(MobEffects.HEAL, 1, 10), 1f)
-                            .build()
+                    .food(
+                            new FoodProperties.Builder()
+                                    .nutrition(20)
+                                    .saturationModifier(1f)
+                                    .alwaysEdible()
+                                    .build(),
+                            Consumables.defaultFood().onConsume(
+                                    new ApplyStatusEffectsConsumeEffect(
+                                            new MobEffectInstance(MobEffects.HEAL, 1, 10)
+                                    )
+                            ).build()
                     )
     );
 
@@ -78,7 +86,7 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = registerSimpleItem("purified_soul_upgrade_smithing_template");
     public static final HolderProxy<Item, SmithingTemplateItem> PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE = registerItem(
             "purified_soul_silence_armor_trim_smithing_template",
-            properties -> SmithingTemplateItem.createArmorTrimTemplate(NarakaTrimPatterns.PURIFIED_SOUL_SILENCE)
+            SmithingTemplateItem::createArmorTrimTemplate
     );
 
     public static final HolderProxy<Item, Item> SOUL_INFUSED_REDSTONE = registerSoulInfusedItem(SoulType.REDSTONE);
@@ -93,19 +101,17 @@ public class NarakaItems {
     // Spears
     public static final HolderProxy<Item, SpearItem> SPEAR_ITEM = registerItem(
             "spear",
-            properties -> new SpearItem(Tiers.IRON,
-                    properties
-                            .fireResistant()
-                            .attributes(SpearItem.createAttributes(8, -3)),
+            properties -> new SpearItem(ToolMaterial.IRON,
+                    true, 3, -3, 3,
+                    properties.fireResistant(),
                     NarakaEntityTypes.THROWN_SPEAR
             )
     );
     public static final HolderProxy<Item, SpearItem> MIGHTY_HOLY_SPEAR_ITEM = registerItem(
             "mighty_holy_spear",
-            properties -> new SpearItem(Tiers.NETHERITE,
-                    properties
-                            .fireResistant()
-                            .attributes(SpearItem.createAttributes(65, -3)),
+            properties -> new SpearItem(ToolMaterial.NETHERITE,
+                    true, 61, -3, 3,
+                    properties.fireResistant(),
                     NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR
             )
     );
@@ -117,7 +123,7 @@ public class NarakaItems {
             )
     );
     public static final HolderProxy<Item, SwordItem> EBONY_SWORD = registerItem("ebony_sword", properties -> new SwordItem(
-                    Tiers.IRON, properties.attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f))
+            ToolMaterial.IRON, 3, -2.4f, properties
             )
     );
 
@@ -129,27 +135,28 @@ public class NarakaItems {
     public static final HolderProxy<Item, SwordItem> SOUL_INFUSED_LAPIS_SWORD = registerSoulInfusedSword(SoulType.LAPIS);
     public static final HolderProxy<Item, SwordItem> SOUL_INFUSED_AMETHYST_SWORD = registerSoulInfusedSword(SoulType.AMETHYST);
     public static final HolderProxy<Item, SwordItem> SOUL_INFUSED_NECTARIUM_SWORD = registerSoulInfusedSword(SoulType.NECTARIUM);
-    public static final HolderProxy<Item, SwordItem> PURIFIED_SOUL_SWORD = registerItem(
+    public static final HolderProxy<Item, PurifiedSoulSwordItem> PURIFIED_SOUL_SWORD = registerItem(
             "purified_soul_sword",
-            properties -> new PurifiedSoulSword(Tiers.IRON, properties.fireResistant()
-                    .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
-                    .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f))
+            properties -> new PurifiedSoulSwordItem(ToolMaterial.IRON,
+                    3, -2.4f,
+                    properties.fireResistant()
+                            .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
             )
     );
 
-    public static final HolderProxy<Item, ArmorItem> PURIFIED_SOUL_HELMET = registerPurifiedSoulArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.HELMET, 0);
-    public static final HolderProxy<Item, ArmorItem> PURIFIED_SOUL_CHESTPLATE = registerPurifiedSoulArmorItem("purified_soul_chestplate", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.CHESTPLATE, 0);
-    public static final HolderProxy<Item, ArmorItem> PURIFIED_SOUL_LEGGINGS = registerPurifiedSoulArmorItem("purified_soul_leggings", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.LEGGINGS, 0);
-    public static final HolderProxy<Item, ArmorItem> PURIFIED_SOUL_BOOTS = registerPurifiedSoulArmorItem("purified_soul_boots", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.BOOTS, 0);
+    public static final HolderProxy<Item, PurifiedSoulArmorItem> PURIFIED_SOUL_HELMET = registerPurifiedSoulArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.HELMET, 0);
+    public static final HolderProxy<Item, PurifiedSoulArmorItem> PURIFIED_SOUL_CHESTPLATE = registerPurifiedSoulArmorItem("purified_soul_chestplate", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.CHESTPLATE, 0);
+    public static final HolderProxy<Item, PurifiedSoulArmorItem> PURIFIED_SOUL_LEGGINGS = registerPurifiedSoulArmorItem("purified_soul_leggings", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.LEGGINGS, 0);
+    public static final HolderProxy<Item, PurifiedSoulArmorItem> PURIFIED_SOUL_BOOTS = registerPurifiedSoulArmorItem("purified_soul_boots", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.BOOTS, 0);
 
-    public static final HolderProxy<Item, ArmorItem> EBONY_METAL_HELMET = registerPurifiedSoulArmorItem("ebony_metal_helmet", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.HELMET, 7);
-    public static final HolderProxy<Item, ArmorItem> EBONY_METAL_CHESTPLATE = registerPurifiedSoulArmorItem("ebony_metal_chestplate", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.CHESTPLATE, 7);
-    public static final HolderProxy<Item, ArmorItem> EBONY_METAL_LEGGINGS = registerPurifiedSoulArmorItem("ebony_metal_leggings", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.LEGGINGS, 7);
-    public static final HolderProxy<Item, ArmorItem> EBONY_METAL_BOOTS = registerPurifiedSoulArmorItem("ebony_metal_boots", NarakaArmorMaterials.EBONY_METAL, ArmorItem.Type.BOOTS, 7);
+    public static final HolderProxy<Item, PurifiedSoulArmorItem> EBONY_METAL_HELMET = registerPurifiedSoulArmorItem("ebony_metal_helmet", NarakaArmorMaterials.EBONY_METAL, ArmorType.HELMET, 7);
+    public static final HolderProxy<Item, PurifiedSoulArmorItem> EBONY_METAL_CHESTPLATE = registerPurifiedSoulArmorItem("ebony_metal_chestplate", NarakaArmorMaterials.EBONY_METAL, ArmorType.CHESTPLATE, 7);
+    public static final HolderProxy<Item, PurifiedSoulArmorItem> EBONY_METAL_LEGGINGS = registerPurifiedSoulArmorItem("ebony_metal_leggings", NarakaArmorMaterials.EBONY_METAL, ArmorType.LEGGINGS, 7);
+    public static final HolderProxy<Item, PurifiedSoulArmorItem> EBONY_METAL_BOOTS = registerPurifiedSoulArmorItem("ebony_metal_boots", NarakaArmorMaterials.EBONY_METAL, ArmorType.BOOTS, 7);
 
-    public static final HolderProxy<Item, Item> HEROBRINE_SPAWN_EGG = registerItem("herobrine_spawn_egg", properties -> new SpawnEggItem(NarakaEntityTypes.HEROBRINE.get(), 0x000000, 0xff0000, properties));
+    public static final HolderProxy<Item, Item> HEROBRINE_SPAWN_EGG = registerItem("herobrine_spawn_egg", properties -> new SpawnEggItem(NarakaEntityTypes.HEROBRINE.get(), properties));
 
-    public static HolderProxy<Item, ArmorItem> registerPurifiedSoulArmorItem(String name, Holder<ArmorMaterial> armorMaterial, ArmorItem.Type armorType, int durability) {
+    public static HolderProxy<Item, PurifiedSoulArmorItem> registerPurifiedSoulArmorItem(String name, ArmorMaterial armorMaterial, ArmorType armorType, int durability) {
         return registerItem(name, properties -> new PurifiedSoulArmorItem(armorMaterial, armorType, properties.durability(durability)
                 .component(DataComponents.UNBREAKABLE, new Unbreakable(true))));
     }
@@ -196,12 +203,12 @@ public class NarakaItems {
     private static HolderProxy<Item, SwordItem> registerSoulInfusedSword(SoulType type) {
         HolderProxy<Item, SwordItem> item = registerItem(SOUL_INFUSED_PREFIX + type.getSerializedName() + "_sword",
                 properties -> new SoulInfusedSwordItem(
-                        Tiers.IRON,
+                        ToolMaterial.IRON,
+                        3, -2.4f,
                         properties.fireResistant()
                                 .rarity(Rarity.RARE)
                                 .component(NarakaDataComponentTypes.SOUL.get(), type)
-                                .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
-                                .attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.4f)),
+                                .component(DataComponents.UNBREAKABLE, new Unbreakable(true)),
                         type.color
                 )
         );
@@ -218,28 +225,33 @@ public class NarakaItems {
         );
     }
 
+    public static ResourceKey<Item> key(String name) {
+        return ResourceKey.create(Registries.ITEM, NarakaMod.location(name));
+    }
+
+    private static Item.Properties properties(String name) {
+        return new Item.Properties()
+                .setId(key(name));
+    }
+
     private static <I extends Item> HolderProxy<Item, I> registerItem(String name, Function<Item.Properties, I> factory, Item.Properties properties) {
+        properties.setId(key(name));
         return RegistryProxy.register(Registries.ITEM, name, () -> factory.apply(properties));
     }
 
-    private static <I extends Item> HolderProxy<Item, I> registerItemDirect(String name, I item) {
-        return RegistryProxy.register(Registries.ITEM, name, () -> item);
-    }
-
     private static <I extends Item> HolderProxy<Item, I> registerItem(String name, Function<Item.Properties, I> factory) {
-        return registerItem(name, factory, new Item.Properties());
+        return registerItem(name, factory, properties(name));
     }
 
     private static HolderProxy<Item, Item> registerSimpleItem(String name, Item.Properties properties) {
-        return registerItem(name, Item::new, properties);
+        return registerItem(name, Item::new, properties.setId(key(name)));
     }
 
     private static HolderProxy<Item, Item> registerSimpleItem(String name) {
-        return registerSimpleItem(name, new Item.Properties());
+        return registerSimpleItem(name, properties(name));
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(Registries.ITEM)
-                .onRegistrationFinished();
+
     }
 }

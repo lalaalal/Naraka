@@ -19,6 +19,6 @@ public class NarakaClientEvents {
     }
 
     private static void onClientStopping(Minecraft minecraft) {
-        NarakaConfig.stop();
+        NarakaConfig.stopWatching();
     }
 }

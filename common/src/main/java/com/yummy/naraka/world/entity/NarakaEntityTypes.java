@@ -3,9 +3,9 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.init.EntityAttributeRegistry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -65,12 +65,14 @@ public class NarakaEntityTypes {
     );
 
     private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {
-        return RegistryProxy.register(Registries.ENTITY_TYPE, name, () -> builder.build(NarakaMod.MOD_ID + ":" + name));
+        return RegistryProxy.register(Registries.ENTITY_TYPE, name, () -> builder.build(createKey(name)));
+    }
+
+    private static ResourceKey<EntityType<?>> createKey(String name) {
+        return ResourceKey.create(Registries.ENTITY_TYPE, NarakaMod.location(name));
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(Registries.ENTITY_TYPE)
-                .onRegistrationFinished();
         EntityAttributeRegistry.register(HEROBRINE, AbstractHerobrine::getAttributeSupplier);
         EntityAttributeRegistry.register(SHADOW_HEROBRINE, ShadowHerobrine::getAttributeSupplier);
     }

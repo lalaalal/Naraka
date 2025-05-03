@@ -9,7 +9,8 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
@@ -52,8 +53,7 @@ public class StigmaHud implements LayeredDraw.Layer {
         int y = guiGraphics.guiHeight() / 2 - CONSUME_ICON_HEIGHT / 2;
 
         float alpha = consumeIconDisplayTick / (float) CONSUME_ICON_DISPLAYING_TIME;
-        TextureAtlasSprite sprite = Minecraft.getInstance().getGuiSprites().getSprite(NarakaSprites.STIGMA_CONSUME);
-        guiGraphics.blit(x, y, 0, CONSUME_ICON_WIDTH, CONSUME_ICON_HEIGHT, sprite, 1, 1, 1, alpha);
+        guiGraphics.blit(RenderType::guiTextured, NarakaSprites.STIGMA_CONSUME, x, y, 0, 0, CONSUME_ICON_WIDTH, CONSUME_ICON_HEIGHT, CONSUME_ICON_WIDTH, CONSUME_ICON_HEIGHT, ARGB.white(alpha));
     }
 
     @Override
@@ -85,11 +85,11 @@ public class StigmaHud implements LayeredDraw.Layer {
         if (stigma.lastMarkedTime() != 0 && stigmatizedTime > herobrineTakingStigmaTick / 6 * 5)
             baseX += (int) (stigmatizedTime % 4 / 2) * 2 - 1;
 
-        guiGraphics.blitSprite(NarakaSprites.STIGMA_BACKGROUND, baseX, baseY, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+        guiGraphics.blitSprite(RenderType::guiTextured, NarakaSprites.STIGMA_BACKGROUND, baseX, baseY, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
         for (int i = 0; i < stigma.value(); i++) {
             int x = baseX + STIGMA_START_X + i * (STIGMA_OFFSET_BORDER + STIGMA_SIZE);
             int y = baseY + STIGMA_START_Y;
-            guiGraphics.blitSprite(NarakaSprites.STIGMA, x, y, STIGMA_SIZE, STIGMA_SIZE);
+            guiGraphics.blitSprite(RenderType::guiTextured, NarakaSprites.STIGMA, x, y, STIGMA_SIZE, STIGMA_SIZE);
         }
     }
 }

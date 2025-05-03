@@ -1,8 +1,8 @@
 package com.yummy.naraka.neoforge.client;
 
 import com.yummy.naraka.client.init.EntityRendererRegistry;
+import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.neoforge.NarakaEventBus;
-import com.yummy.naraka.proxy.MethodProxy;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

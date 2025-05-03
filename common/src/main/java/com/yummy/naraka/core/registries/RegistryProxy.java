@@ -35,7 +35,7 @@ public interface RegistryProxy<T> {
     @SuppressWarnings("unchecked")
     @Nullable
     default Registry<T> getRegistry() {
-        return (Registry<T>) BuiltInRegistries.REGISTRY.get(getRegistryKey().location());
+        return (Registry<T>) BuiltInRegistries.REGISTRY.getValue(getRegistryKey().location());
     }
 
     default Registry<T> getRegistryOrThrow() {
@@ -45,7 +45,7 @@ public interface RegistryProxy<T> {
         return registry;
     }
 
-    ResourceKey<Registry<T>> getRegistryKey();
+    ResourceKey<? extends Registry<T>> getRegistryKey();
 
     <V extends T> HolderProxy<T, V> register(String name, Supplier<V> value);
 

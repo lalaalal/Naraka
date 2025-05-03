@@ -1,6 +1,6 @@
 package com.yummy.naraka.client.event;
 
-import com.yummy.naraka.proxy.MethodInvoker;
+import com.yummy.naraka.invoker.MethodInvoker;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 

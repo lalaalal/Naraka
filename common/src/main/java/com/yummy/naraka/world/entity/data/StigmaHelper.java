@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.data;
 
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -16,9 +17,11 @@ public class StigmaHelper {
     public static void increaseStigma(LivingEntity target, Entity cause, boolean recordTime) {
         if (target.getType().is(NarakaEntityTypeTags.HEROBRINE))
             return;
-        Stigma stigma = get(target);
-        Stigma increased = stigma.increase(target, cause, recordTime);
-        set(target, increased);
+        if (target.level() instanceof ServerLevel level) {
+            Stigma stigma = get(target);
+            Stigma increased = stigma.increase(level, target, cause, recordTime);
+            set(target, increased);
+        }
     }
 
     public static void increaseStigma(LivingEntity target, Entity cause) {
@@ -44,13 +47,13 @@ public class StigmaHelper {
      * @param cause        Entity collects stigma
      * @param tickAfter    Minimum length required to collect stigma
      * @return True if succeed
-     * @see Stigma#consume(LivingEntity, Entity)
+     * @see Stigma#consume(ServerLevel, LivingEntity, Entity)
      */
-    public static boolean collectStigmaAfter(LivingEntity livingEntity, Entity cause, int tickAfter) {
+    public static boolean collectStigmaAfter(ServerLevel level, LivingEntity livingEntity, Entity cause, int tickAfter) {
         Stigma stigma = get(livingEntity);
         long currentGameTime = livingEntity.level().getGameTime();
         if (stigma.value() > 0 && stigma.lastMarkedTime() != 0 && currentGameTime > stigma.lastMarkedTime() + tickAfter) {
-            Stigma consumed = stigma.consume(livingEntity, cause);
+            Stigma consumed = stigma.consume(level, livingEntity, cause);
             set(livingEntity, consumed);
             return true;
         }

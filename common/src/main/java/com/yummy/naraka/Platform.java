@@ -1,6 +1,6 @@
 package com.yummy.naraka;
 
-import com.yummy.naraka.proxy.MethodInvoker;
+import com.yummy.naraka.invoker.MethodInvoker;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
@@ -31,6 +31,8 @@ public abstract class Platform {
     public abstract boolean isDevelopmentEnvironment();
 
     public abstract Path getConfigurationPath();
+
+    public abstract boolean modExists(String id);
 
     public enum Side {
         CLIENT, SERVER

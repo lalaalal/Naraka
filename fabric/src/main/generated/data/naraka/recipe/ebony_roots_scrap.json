@@ -3,9 +3,7 @@
   "category": "misc",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": {
-    "item": "naraka:ebony_roots"
-  },
+  "ingredient": "naraka:ebony_roots",
   "result": {
     "id": "naraka:ebony_roots_scrap"
   }

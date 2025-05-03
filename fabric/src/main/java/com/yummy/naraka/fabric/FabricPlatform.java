@@ -1,7 +1,7 @@
 package com.yummy.naraka.fabric;
 
 import com.yummy.naraka.Platform;
-import com.yummy.naraka.proxy.MethodProxy;
+import com.yummy.naraka.invoker.MethodProxy;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;
@@ -35,5 +35,10 @@ public final class FabricPlatform extends Platform {
     @Override
     public Path getConfigurationPath() {
         return FabricLoader.getInstance().getConfigDir();
+    }
+
+    @Override
+    public boolean modExists(String id) {
+        return FabricLoader.getInstance().isModLoaded(id);
     }
 }

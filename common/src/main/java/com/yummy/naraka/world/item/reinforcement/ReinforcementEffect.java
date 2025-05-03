@@ -9,9 +9,6 @@ import java.util.Set;
 public interface ReinforcementEffect {
     boolean canApply(LivingEntity entity, EquipmentSlot equipmentSlot, ItemStack itemStack, int reinforcement);
 
-    /**
-     * @return Slots effect can be applied
-     */
     Set<EquipmentSlot> getAvailableSlots();
 
     default boolean showInTooltip(int reinforcement) {

@@ -1,8 +1,6 @@
 package com.yummy.naraka.client.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.yummy.naraka.world.entity.Herobrine;
+import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
@@ -11,9 +9,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
 @Environment(EnvType.CLIENT)
-public class HerobrineScarfModel extends EntityModel<Herobrine> {
-    private final ModelPart root;
-
+public class HerobrineScarfModel extends EntityModel<AbstractHerobrineRenderState> {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
@@ -27,16 +23,6 @@ public class HerobrineScarfModel extends EntityModel<Herobrine> {
     }
 
     public HerobrineScarfModel(ModelPart root) {
-        this.root = root;
-    }
-
-    @Override
-    public void setupAnim(Herobrine entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        root.render(poseStack, buffer, packedLight, packedOverlay, color);
+        super(root);
     }
 }

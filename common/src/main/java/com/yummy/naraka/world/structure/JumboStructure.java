@@ -7,7 +7,6 @@ import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.world.structure.height.HeightProvider;
 import com.yummy.naraka.world.structure.piece.JumboPiece;
 import com.yummy.naraka.world.structure.piece.StructurePieceFactory;
-import com.yummy.naraka.world.structure.protection.NarakaProtectionPredicates;
 import com.yummy.naraka.world.structure.protection.ProtectionPredicate;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
 import net.minecraft.core.BlockPos;
@@ -78,7 +77,7 @@ public class JumboStructure extends Structure {
             }
             for (JumboPart part : parts)
                 addPart(templateManager, builder, part, basePos);
-            StructureProtector.addProtector(NarakaProtectionPredicates.HEROBRINE_SANCTUARY_PROTECTION, builder.getBoundingBox());
+            protectionPredicate.ifPresent(holder -> StructureProtector.addProtector(holder, builder.getBoundingBox()));
         }));
     }
 

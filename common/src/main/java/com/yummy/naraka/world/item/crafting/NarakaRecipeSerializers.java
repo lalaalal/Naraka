@@ -2,7 +2,6 @@ package com.yummy.naraka.world.item.crafting;
 
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
@@ -18,7 +17,6 @@ public class NarakaRecipeSerializers {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(Registries.RECIPE_SERIALIZER)
-                .onRegistrationFinished();
+
     }
 }

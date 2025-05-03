@@ -1,10 +1,12 @@
 package com.yummy.naraka.world.block;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.mixin.invoker.MangroveRootsBlockInvoker;
+import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
@@ -25,8 +27,7 @@ public class NarakaBlocks {
     public static final HolderProxy<Block, TransparentBlock> TRANSPARENT_BLOCK = registerBlockWithItem(
             "transparent_block",
             properties -> new TransparentBlock(
-                    properties
-                            .noCollission()
+                    properties.noCollission()
                             .forceSolidOn()
                             .noLootTable()
             ),
@@ -104,12 +105,6 @@ public class NarakaBlocks {
                     .noLootTable()
                     .lightLevel(state -> 7)
 
-    );
-    public static final HolderProxy<Block, SoulCraftingBlock> SOUL_CRAFTING_BLOCK = registerBlockWithItem(
-            "soul_crafting_block",
-            SoulCraftingBlock::new,
-            from(Blocks.BLAST_FURNACE)
-                    .lightLevel(SoulCraftingBlock::lightLevel)
     );
     public static final HolderProxy<Block, ForgingBlock> FORGING_BLOCK = registerBlockWithItem(
             "forging_block",
@@ -214,6 +209,10 @@ public class NarakaBlocks {
         return BlockBehaviour.Properties.ofFullCopy(block);
     }
 
+    private static BlockBehaviour.Properties from(String name, Block block) {
+        return from(block).setId(NarakaBlocks.key(name));
+    }
+
     private static Item.Properties item() {
         return new Item.Properties();
     }
@@ -226,19 +225,31 @@ public class NarakaBlocks {
         return registerBlockWithItem(SOUL_INFUSED_PREFIX + name, Block::new, baseBlock, item().fireResistant());
     }
 
+    public static ResourceKey<Block> key(String name) {
+        return ResourceKey.create(Registries.BLOCK, NarakaMod.location(name));
+    }
+
     private static <B extends Block> HolderProxy<Block, B> registerBlock(String name, Function<BlockBehaviour.Properties, ? extends B> function, Block propertyBase) {
-        BlockBehaviour.Properties properties = BlockBehaviour.Properties.ofFullCopy(propertyBase);
+        BlockBehaviour.Properties properties = BlockBehaviour.Properties.ofFullCopy(propertyBase)
+                .setId(NarakaBlocks.key(name));
         return RegistryProxy.register(Registries.BLOCK, name, () -> function.apply(properties));
     }
 
     private static <B extends Block> HolderProxy<Block, B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties blockProperties, Item.Properties itemProperties) {
+        blockProperties.setId(NarakaBlocks.key(name));
+        itemProperties.setId(NarakaItems.key(name));
         HolderProxy<Block, B> block = RegistryProxy.register(Registries.BLOCK, name, () -> function.apply(blockProperties));
         RegistryProxy.register(Registries.ITEM, name, () -> new BlockItem(block.get(), itemProperties));
         return block;
     }
 
     private static <B extends Block> HolderProxy<Block, B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, Supplier<Block> blockSupplier, Item.Properties itemProperties) {
-        HolderProxy<Block, B> block = RegistryProxy.register(Registries.BLOCK, name, () -> function.apply(from(blockSupplier.get())));
+        itemProperties.setId(NarakaItems.key(name));
+        HolderProxy<Block, B> block = RegistryProxy.register(Registries.BLOCK, name,
+                () -> function.apply(
+                        from(name, blockSupplier.get())
+                )
+        );
         RegistryProxy.register(Registries.ITEM, name, () -> new BlockItem(block.get(), itemProperties));
         return block;
     }
@@ -268,11 +279,10 @@ public class NarakaBlocks {
     }
 
     private static HolderProxy<Block, Block> registerSimpleBlockWithItem(String name, Block propertyBase) {
-        return registerBlockWithItem(name, Block::new, BlockBehaviour.Properties.ofFullCopy(propertyBase));
+        return registerBlockWithItem(name, Block::new, from(propertyBase));
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(Registries.BLOCK)
-                .onRegistrationFinished();
+
     }
 }

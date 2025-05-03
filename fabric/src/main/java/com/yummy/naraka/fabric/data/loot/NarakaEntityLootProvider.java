@@ -39,7 +39,8 @@ public class NarakaEntityLootProvider extends SimpleFabricLootTableProvider {
         if (registries == null)
             throw new IllegalStateException("Lookup provider not allocated");
         generator.accept(
-                NarakaEntityTypes.HEROBRINE.get().getDefaultLootTable(),
+                NarakaEntityTypes.HEROBRINE.get().getDefaultLootTable()
+                        .orElseThrow(),
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))

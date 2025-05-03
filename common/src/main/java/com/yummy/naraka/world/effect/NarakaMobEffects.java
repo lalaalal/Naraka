@@ -1,7 +1,6 @@
 package com.yummy.naraka.world.effect;
 
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.mixin.invoker.MobEffectInvoker;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -19,7 +18,6 @@ public class NarakaMobEffects {
     }
 
     public static void initialize() {
-        RegistryProxyProvider.get(Registries.MOB_EFFECT)
-                .onRegistrationFinished();
+
     }
 }

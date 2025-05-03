@@ -18,22 +18,38 @@ public class NarakaUtils {
         void accept(int x, int y, int z);
     }
 
-    public static void sphere(BoundingBox box, float size, PositionConsumer consumer) {
-        float xRadius = (float) (box.maxX() - box.minX() + 1) / 2;
-        float zRadius = (float) (box.maxZ() - box.minZ() + 1) / 2;
-        float yRadius = (float) (box.maxY() - box.minY() + 1) / 2;
-        float centerX = box.minX() + xRadius;
-        float centerZ = box.minZ() + zRadius;
-        float centerY = box.minY() + yRadius;
+    public interface SpherePositionConsumer {
+        void accept(double length, int x, int y, int z);
+    }
 
-        for (int y = box.minY(); y <= box.maxY(); y++) {
-            float yRatio = (y - centerY) / yRadius;
-            for (int x = box.minX(); x <= box.maxX(); x++) {
-                float xRatio = (x - centerX) / xRadius;
-                for (int z = box.minZ(); z <= box.maxZ(); z++) {
-                    float zRatio = (z - centerZ) / zRadius;
-                    if (xRatio * xRatio + yRatio * yRatio + zRatio * zRatio <= 1.05f * size)
-                        consumer.accept(x, y, z);
+    public static void sphere(BoundingBox box, float size, PositionConsumer consumer) {
+        sphere(box, box, size, (length, x, y, z) -> consumer.accept(x, y, z));
+    }
+
+    public static void sphere(BoundingBox box, BoundingBox part, float size, SpherePositionConsumer consumer) {
+        double xRadius = (float) (box.maxX() - box.minX() + 1) / 2;
+        double zRadius = (float) (box.maxZ() - box.minZ() + 1) / 2;
+        double yRadius = (float) (box.maxY() - box.minY() + 1) / 2;
+        double centerX = box.minX() + xRadius;
+        double centerZ = box.minZ() + zRadius;
+        double centerY = box.minY() + yRadius;
+
+        int xMin = Math.max(box.minX(), part.minX());
+        int xMax = Math.min(box.maxX(), part.maxX());
+        int yMin = Math.max(box.minY(), part.minY());
+        int yMax = Math.min(box.maxY(), part.maxY());
+        int zMin = Math.max(box.minZ(), part.minZ());
+        int zMax = Math.min(box.maxZ(), part.maxZ());
+
+        for (int y = yMin; y <= yMax; y++) {
+            double yRatio = (y - centerY) / yRadius;
+            for (int x = xMin; x <= xMax; x++) {
+                double xRatio = (x - centerX) / xRadius;
+                for (int z = zMin; z <= zMax; z++) {
+                    double zRatio = (z - centerZ) / zRadius;
+                    double length = xRatio * xRatio + yRatio * yRatio + zRatio * zRatio;
+                    if (length <= size)
+                        consumer.accept(length, x, y, z);
                 }
             }
         }
@@ -48,17 +64,17 @@ public class NarakaUtils {
     }
 
     public static boolean isInSphere(BoundingBox box, float size, Vec3i pos) {
-        float xRadius = (float) (box.maxX() - box.minX() + 1) / 2;
-        float zRadius = (float) (box.maxZ() - box.minZ() + 1) / 2;
-        float yRadius = (float) (box.maxY() - box.minZ() + 1) / 2;
-        float centerX = box.minX() + xRadius;
-        float centerZ = box.minZ() + zRadius;
-        float centerY = box.minY() + yRadius;
-        float xRatio = (pos.getX() - centerX) / xRadius;
-        float zRatio = (pos.getZ() - centerZ) / zRadius;
-        float yRatio = (pos.getY() - centerY) / yRadius;
+        double xRadius = (float) (box.maxX() - box.minX() + 1) / 2;
+        double zRadius = (float) (box.maxZ() - box.minZ() + 1) / 2;
+        double yRadius = (float) (box.maxY() - box.minY() + 1) / 2;
+        double centerX = box.minX() + xRadius;
+        double centerZ = box.minZ() + zRadius;
+        double centerY = box.minY() + yRadius;
+        double xRatio = (pos.getX() - centerX) / xRadius;
+        double zRatio = (pos.getZ() - centerZ) / zRadius;
+        double yRatio = (pos.getY() - centerY) / yRadius;
 
-        return xRatio * xRatio + yRatio * yRatio + zRatio * zRatio <= 1.05f * size;
+        return xRatio * xRatio + yRatio * yRatio + zRatio * zRatio <= size;
     }
 
     public static Vec3 vec3(Vec3i pos) {
@@ -71,7 +87,7 @@ public class NarakaUtils {
 
     public static BlockPos findFaceSturdy(LevelAccessor level, BlockPos from, Direction faceDirection) {
         BlockPos.MutableBlockPos current = from.mutable();
-        while (-60 < current.getY() && current.getY() < 200) {
+        while (level.isInsideBuildHeight(from.getY())) {
             BlockPos pos = current.immutable();
             BlockState state = level.getBlockState(pos);
             if (state.isFaceSturdy(level, pos, faceDirection))
@@ -91,7 +107,7 @@ public class NarakaUtils {
     }
 
     public static BlockPos findAir(LevelAccessor level, BlockPos from, Direction findingDirection) {
-        if (level.getMaxBuildHeight() < from.getY())
+        if (level.isInsideBuildHeight(from.getY()))
             return from;
         BlockPos findingPos = from.relative(findingDirection);
         BlockState state = level.getBlockState(findingPos);

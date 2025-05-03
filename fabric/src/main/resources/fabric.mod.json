@@ -27,20 +27,16 @@
         ],
         "jade": [
             "com.yummy.naraka.jade.NarakaJadePlugin"
-        ],
-        "jei_mod_plugin": [
-            "com.yummy.naraka.jei.NarakaJeiPlugin"
-
         ]
     },
-    "accessWidener": "naraka.accesswidener",
+  "accessWidener": "naraka.fabric.accesswidener",
     "mixins": [
         "naraka.mixins.json",
         "naraka.mixins.fabric.json"
     ],
     "depends": {
-        "fabricloader": ">=0.15.11",
-        "minecraft": "~1.21",
+      "fabricloader": ">=0.16.10",
+      "minecraft": "~1.21.4",
         "java": ">=21",
         "fabric-api": "*"
     },

@@ -52,8 +52,6 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
 
         getOrCreateTagBuilder(ItemTags.COMPASSES)
                 .add(NarakaItems.SANCTUARY_COMPASS.get());
-        getOrCreateTagBuilder(ItemTags.TRIM_TEMPLATES)
-                .add(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get());
 
         getOrCreateTagBuilder(ItemTags.HEAD_ARMOR_ENCHANTABLE)
                 .add(NarakaItems.PURIFIED_SOUL_HELMET.get());
@@ -82,15 +80,16 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
         NarakaItems.forEachSoulInfusedSword(soulSwords::add);
 
         getOrCreateTagBuilder(ItemTags.HEAD_ARMOR)
+                .add(NarakaItems.PURIFIED_SOUL_HELMET.get())
                 .add(NarakaItems.EBONY_METAL_HELMET.get());
         getOrCreateTagBuilder(ItemTags.CHEST_ARMOR)
+                .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get())
                 .add(NarakaItems.EBONY_METAL_CHESTPLATE.get());
         getOrCreateTagBuilder(ItemTags.LEG_ARMOR)
+                .add(NarakaItems.PURIFIED_SOUL_LEGGINGS.get())
                 .add(NarakaItems.EBONY_METAL_LEGGINGS.get());
         getOrCreateTagBuilder(ItemTags.FOOT_ARMOR)
+                .add(NarakaItems.PURIFIED_SOUL_BOOTS.get())
                 .add(NarakaItems.EBONY_METAL_BOOTS.get());
-
-        getOrCreateTagBuilder(ItemTags.TRIM_TEMPLATES)
-                .add(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get());
     }
 }

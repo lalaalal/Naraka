@@ -1,34 +1,42 @@
 package com.yummy.naraka.mixin.client;
 
 import com.mojang.blaze3d.shaders.FogShape;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.yummy.naraka.util.NarakaItemUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
+import net.minecraft.client.renderer.FogParameters;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.material.FogType;
+import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Environment(EnvType.CLIENT)
 @Mixin(FogRenderer.class)
 public abstract class FogRendererMixin {
+    @Shadow private static boolean fogEnabled;
+
     @Inject(method = "setupFog", at = @At("HEAD"), cancellable = true)
-    private static void visibleWithLavaVision(Camera camera, FogRenderer.FogMode fogMode, float farPlaneDistance, boolean shouldCreateFog, float partialTick, CallbackInfo ci) {
+    private static void visibleWithLavaVision(Camera camera, FogRenderer.FogMode fogMode, Vector4f fogColor, float renderDistance, boolean isFoggy, float partialTick, CallbackInfoReturnable<FogParameters> cir) {
+        if (!fogEnabled)
+            return;
         FogType fogType = camera.getFluidInCamera();
         Entity entity = camera.getEntity();
+        FogRenderer.FogData fogData = new FogRenderer.FogData(fogMode);
         if (fogType == FogType.LAVA
                 && entity instanceof LivingEntity livingEntity
                 && NarakaItemUtils.canApplyLavaVision(livingEntity)) {
-            ci.cancel();
-            RenderSystem.setShaderFogStart(-8);
-            RenderSystem.setShaderFogEnd(96);
-            RenderSystem.setShaderFogShape(FogShape.SPHERE);
+            fogData.start = -8;
+            fogData.end = 96;
+            fogData.shape = FogShape.SPHERE;
+            cir.cancel();
+            cir.setReturnValue(new FogParameters(fogData.start, fogData.end, fogData.shape, fogColor.x, fogColor.y, fogColor.z, fogColor.w));
         }
     }
 }
