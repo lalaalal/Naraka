@@ -6,6 +6,7 @@ import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Optional;
@@ -42,7 +43,11 @@ public final class LanguageKey {
     }
 
     public static String tooltip(Block block) {
-        return block.getDescriptionId() + ".tooltip";
+        return tooltip(block.asItem());
+    }
+
+    public static String tooltip(Item item) {
+        return item.getDescriptionId() + ".tooltip";
     }
 
     public static String itemGroup(String path) {

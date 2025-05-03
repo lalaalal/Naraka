@@ -325,7 +325,7 @@ public class NarakaLanguageProviders {
     }
 
     public void addBlock(Supplier<? extends Block> block, String... translations) {
-        add(block.get().getDescriptionId(), translations);
+        add(block.get().asItem().getDescriptionId(), translations);
     }
 
     public void addTooltip(Supplier<? extends Block> block, String... translations) {
