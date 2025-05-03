@@ -39,8 +39,8 @@ public class SpearItem extends Item implements ProjectileItem {
                 ).build();
     }
 
-    public SpearItem(ToolMaterial material, float attackDamage, float attackSpeed, float interactionRange, Properties properties, Supplier<? extends EntityType<? extends Spear>> spearType) {
-        super(NarakaToolMaterials.applySpearProperties(properties, material, attackDamage, attackSpeed, interactionRange));
+    public SpearItem(ToolMaterial material, boolean enchantable, float attackDamage, float attackSpeed, float interactionRange, Properties properties, Supplier<? extends EntityType<? extends Spear>> spearType) {
+        super(NarakaToolMaterials.applySpearProperties(properties, material, enchantable, attackDamage, attackSpeed, interactionRange));
         this.spearType = spearType;
     }
 

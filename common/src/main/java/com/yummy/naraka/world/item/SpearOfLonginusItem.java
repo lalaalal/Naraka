@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 
 public class SpearOfLonginusItem extends SpearItem {
     public SpearOfLonginusItem(Properties properties) {
-        super(NarakaToolMaterials.LONGINUS, Float.MAX_VALUE - 1, -3, 6, properties, NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS);
+        super(NarakaToolMaterials.LONGINUS, false, Float.MAX_VALUE - 1, -3, 6, properties, NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS);
     }
 
     @Override

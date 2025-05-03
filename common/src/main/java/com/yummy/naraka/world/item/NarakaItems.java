@@ -102,7 +102,7 @@ public class NarakaItems {
     public static final HolderProxy<Item, SpearItem> SPEAR_ITEM = registerItem(
             "spear",
             properties -> new SpearItem(ToolMaterial.IRON,
-                    8, -3, 3,
+                    true, 8, -3, 3,
                     properties.fireResistant(),
                     NarakaEntityTypes.THROWN_SPEAR
             )
@@ -110,7 +110,7 @@ public class NarakaItems {
     public static final HolderProxy<Item, SpearItem> MIGHTY_HOLY_SPEAR_ITEM = registerItem(
             "mighty_holy_spear",
             properties -> new SpearItem(ToolMaterial.NETHERITE,
-                    65, -3, 3,
+                    true, 65, -3, 3,
                     properties.fireResistant(),
                     NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR
             )

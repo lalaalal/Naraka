@@ -17,6 +17,12 @@ public class NarakaToolMaterials {
 
     public static final ToolMaterial LONGINUS = new ToolMaterial(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 0, 6, 66, 6, NarakaItemTags.LONGINUS_TOOL_MATERIALS);
 
+    public static Item.Properties applyCommonProperties(Item.Properties properties, ToolMaterial material) {
+        return properties.durability(material.durability())
+                .repairable(material.repairItems())
+                .enchantable(material.enchantmentValue());
+    }
+
     public static Item.Properties applyCommonPropertiesWithoutEnchantable(Item.Properties properties, ToolMaterial material) {
         return properties.durability(material.durability())
                 .repairable(material.repairItems());
@@ -27,9 +33,11 @@ public class NarakaToolMaterials {
                 .attributes(createWeaponAttributes(material, attackDamage, attackSpeed).build());
     }
 
-    public static Item.Properties applySpearProperties(Item.Properties properties, ToolMaterial material, float attackDamage, float attackSpeed, float interactionRange) {
-        return applyCommonPropertiesWithoutEnchantable(properties, material)
-                .attributes(createSpearAttributes(material, attackDamage, attackSpeed, interactionRange).build());
+    public static Item.Properties applySpearProperties(Item.Properties properties, ToolMaterial material, boolean enchantable, float attackDamage, float attackSpeed, float interactionRange) {
+        properties = applyCommonPropertiesWithoutEnchantable(properties, material);
+        if (enchantable)
+            properties.enchantable(material.enchantmentValue());
+        return properties.attributes(createSpearAttributes(material, attackDamage, attackSpeed, interactionRange).build());
     }
 
     public static ItemAttributeModifiers.Builder createWeaponAttributes(ToolMaterial material, float attackDamage, float attackSpeed) {
