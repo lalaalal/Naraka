@@ -11,6 +11,7 @@ import com.yummy.naraka.client.init.*;
 import com.yummy.naraka.client.particle.EbonyProvider;
 import com.yummy.naraka.client.particle.NectariumParticle;
 import com.yummy.naraka.client.particle.SoulParticle;
+import com.yummy.naraka.client.renderer.ColoredItemRenderer;
 import com.yummy.naraka.client.renderer.blockentity.ForgingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulStabilizerBlockEntityRenderer;
@@ -23,9 +24,11 @@ import com.yummy.naraka.client.renderer.special.SpearSpecialRenderer;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
+import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
+import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;
@@ -77,7 +80,7 @@ public final class NarakaModClient {
     }
 
     private static void initializeItems() {
-
+        ColoredItemRenderer.register(NarakaItems.RAINBOW_SWORD, ComponentStyles.LONGINUS_COLOR::getCurrentColor);
     }
 
     private static void initializeBlocks() {

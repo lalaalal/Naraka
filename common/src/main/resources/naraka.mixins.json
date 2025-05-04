@@ -8,6 +8,7 @@
     "client.FogRendererMixin",
     "client.ItemBlockRenderTypesMixin",
     "client.ItemEntityRendererMixin",
+    "client.ItemModelResolverMixin",
     "client.ItemRendererMixin",
     "client.ItemStackMixin",
     "client.LevelRendererMixin",
