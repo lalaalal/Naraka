@@ -57,26 +57,26 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
             this.renderAfterimage(renderState, afterimage, poseStack, buffer);
     }
 
-    protected void renderAfterimage(S renderState, AfterimageRenderState afterimage, PoseStack poseStack, MultiBufferSource buffer) {
-        if (!afterimage.canRender)
+    protected void renderAfterimage(S renderState, AfterimageRenderState afterimageRenderState, PoseStack poseStack, MultiBufferSource buffer) {
+        if (!afterimageRenderState.canRender)
             return;
 
-        Vec3 translation = afterimage.translation;
+        Vec3 translation = afterimageRenderState.translation;
 
         poseStack.pushPose();
         poseStack.translate(translation.x, translation.y + 1.5, translation.z);
         poseStack.scale(1, -1, 1);
 
-        this.setupRotations(renderState, poseStack, afterimage.bodyRot, renderState.scale);
+        this.setupRotations(renderState, poseStack, afterimageRenderState.bodyRot, renderState.scale);
 
         RenderType renderType = RenderType.entityTranslucentEmissive(getAfterimageTexture(renderState));
         VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
-        Color color = afterimage.color;
+        Color color = afterimageRenderState.color;
         int light = (int) (color.alpha01() * 10) + 5;
         int packedLight = LightTexture.pack(light, light);
 
         this.afterimageModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color.pack());
-        renderAfterimageLayer(renderState, afterimage, poseStack, buffer, packedLight, color.alpha());
+        renderAfterimageLayer(renderState, afterimageRenderState, poseStack, buffer, packedLight, color.alpha());
 
         poseStack.popPose();
     }
