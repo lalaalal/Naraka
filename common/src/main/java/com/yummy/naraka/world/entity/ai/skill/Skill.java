@@ -4,12 +4,13 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class Skill<T extends SkillUsingMob> {
     public final ResourceLocation location;
     protected final T mob;
-    protected final int duration;
+    protected int duration;
     protected int cooldown;
 
     protected int tickCount = 0;
@@ -38,6 +39,15 @@ public abstract class Skill<T extends SkillUsingMob> {
 
     protected Skill(ResourceLocation location, int duration, int cooldown, T mob) {
         this(location, duration, cooldown, mob, null);
+    }
+
+    protected final boolean targetInRange(float distanceSquare) {
+        LivingEntity target = mob.getTarget();
+        return target != null && mob.distanceToSqr(target) <= distanceSquare;
+    }
+
+    protected final boolean targetInRange(LivingEntity target, float distanceSquare) {
+        return mob.distanceToSqr(target) <= distanceSquare;
     }
 
     public abstract boolean canUse();

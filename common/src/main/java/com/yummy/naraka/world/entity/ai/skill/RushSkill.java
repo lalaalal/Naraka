@@ -8,10 +8,8 @@ import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -19,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Skill<T> {
+public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends AttackSkill<T> {
     public static final String NAME = "rush";
 
     private static final int START_RUNNING_TICK = 25;
@@ -30,11 +28,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Ski
     private Vec3 delta = Vec3.ZERO;
 
     private final List<Entity> blockedEntities = new ArrayList<>();
-    private Predicate<LivingEntity> targetPredicate = livingEntity -> true;
-
-    public RushSkill(T mob) {
-        super(NAME, 85, 160, mob);
-    }
+    private final Predicate<LivingEntity> targetPredicate;
 
     public RushSkill(T mob, Predicate<LivingEntity> targetPredicate) {
         super(NAME, 85, 160, mob);
@@ -54,17 +48,13 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Ski
     }
 
     @Override
-    protected void skillTick(ServerLevel level) {
-        LivingEntity target = mob.getTarget();
-        if (target == null)
-            return;
-
+    protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         mob.getNavigation().stop();
         updateDeltaMovement(level, target, START_RUNNING_TICK, STOP_RUNNING_TICK, 0.6, true, true);
         updateDeltaMovement(level, target, STOP_RUNNING_TICK, RUSH_TICK, 0, true, false);
         updateDeltaMovement(level, target, RUSH_TICK, FINALE_TICK, 1.15, false, false);
         if (RUSH_TICK <= tickCount && tickCount <= FINALE_TICK) {
-            hurtHitEntities(level);
+            hurtHitEntities(level, targetPredicate, 0.5);
 //            updateBlocks(7 - (tickCount - RUSH_TICK));
         }
         if (tickCount >= FINALE_TICK)
@@ -101,26 +91,22 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Ski
         }
     }
 
-    private void hurtHitEntities(ServerLevel level) {
-        level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(0.5))
-                .stream()
-                .filter(targetPredicate)
-                .forEach(entity -> hurtHitTarget(level, entity));
-    }
-
-    private void hurtHitTarget(ServerLevel level, LivingEntity target) {
+    @Override
+    protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
         if (NarakaEntityUtils.disableAndHurtShield(target, 20 * 8, 30)) {
             blockedEntities.add(target);
             return;
         }
         if (!blockedEntities.contains(target) && target.invulnerableTime < 10) {
-            DamageSource source = mob.getDefaultDamageSource();
-            float damage = mob.getAttackDamage() + target.getMaxHealth() * 0.08f;
-
             StunHelper.stunEntity(target, 100);
             mob.stigmatizeEntity(target);
-            target.hurtServer(level, source, damage);
+            super.hurtHitEntity(level, target);
             target.knockback(5, mob.getX() - target.getX(), mob.getZ() - target.getZ());
         }
+    }
+
+    @Override
+    protected float calculateDamage(LivingEntity target) {
+        return mob.getAttackDamage() + target.getMaxHealth() * 0.08f;
     }
 }

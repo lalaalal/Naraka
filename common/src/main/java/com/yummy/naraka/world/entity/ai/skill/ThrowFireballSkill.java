@@ -38,6 +38,9 @@ public class ThrowFireballSkill extends Skill<SkillUsingMob> {
 
     @Override
     protected void skillTick(ServerLevel level) {
+        LivingEntity target = mob.getTarget();
+        if (target != null)
+            mob.getLookControl().setLookAt(target);
         if (tickCount == 18) {
             Fireball fireball = fireballCreator.get();
             fireball.setPos(mob.getX(), mob.getEyeY() + 0.5, mob.getZ());

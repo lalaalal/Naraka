@@ -3,8 +3,10 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.ai.goal.FollowOwnerGoal;
-import com.yummy.naraka.world.entity.ai.skill.ComboAttackSkill;
+import com.yummy.naraka.world.entity.ai.skill.PunchSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
+import com.yummy.naraka.world.entity.ai.skill.UppercutSkill;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -33,6 +35,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntity {
+    protected final UppercutSkill uppercutSkill = registerSkill(new UppercutSkill(null, this), AnimationLocations.COMBO_ATTACK_2);
+    protected final PunchSkill punchSkill = registerSkill(new PunchSkill(uppercutSkill, this, 90, false), AnimationLocations.COMBO_ATTACK_1);
+
     @Nullable private Herobrine herobrine;
     @Nullable private UUID herobrineUUID;
 
@@ -45,20 +50,12 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
     protected ShadowHerobrine(EntityType<? extends AbstractHerobrine> entityType, Level level) {
         super(entityType, level, true);
-        comboAttackSkill.setMaxLinkCount(3);
-        comboAttackSkill.setStunTarget(false);
-        comboAttackSkill.setTraceTarget(false);
-        skillManager.runOnSkillEnd(this::setComboAttackCooldown);
         skillManager.runOnSkillSelect(this::preventUseSkillWithHerobrineInSameTime);
+        skillManager.enableOnly(List.of(punchSkill));
     }
 
-    private void setComboAttackCooldown(Skill<?> skill) {
-        if (skill.location.equals(ComboAttackSkill.LOCATION))
-            skill.changeCooldown(skill.getCooldown() * 3 / 2);
-    }
-
-    private void preventUseSkillWithHerobrineInSameTime(Optional<Skill<?>> skill) {
-        if (skill.isPresent() && herobrineJustUsedSkill())
+    private void preventUseSkillWithHerobrineInSameTime(@Nullable Skill<?> skill) {
+        if (skill != null && herobrineJustUsedSkill())
             skillManager.interrupt();
     }
 

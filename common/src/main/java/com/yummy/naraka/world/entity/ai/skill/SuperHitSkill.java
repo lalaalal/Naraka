@@ -1,0 +1,45 @@
+package com.yummy.naraka.world.entity.ai.skill;
+
+import com.yummy.naraka.world.entity.AbstractHerobrine;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+
+public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
+    public static final String NAME = "super_hit";
+
+    public SuperHitSkill(ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
+        super(createLocation(NAME), 20, 0, 1, comboSkill, 20, mob);
+    }
+
+    @Override
+    protected void onFirstTick(ServerLevel level) {
+        mob.setNoGravity(false);
+        Vec3 lookVector = mob.getLookAngle().scale(1.2);
+        mob.setDeltaMovement(lookVector.x, -1.2, lookVector.z);
+    }
+
+    @Override
+    protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
+        hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 0.7);
+        if (mob.onGround()) {
+            duration = 0;
+            level.playSound(mob, mob.blockPosition(), SoundEvents.TOTEM_USE, SoundSource.HOSTILE, 1, 1);
+        }
+    }
+
+    @Override
+    protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
+        super.hurtHitEntity(level, target);
+        mob.stigmatizeEntity(target);
+        level.playSound(mob, mob.blockPosition(), SoundEvents.STONE_BREAK, SoundSource.HOSTILE, 1, 1);
+    }
+
+    @Override
+    protected float calculateDamage(LivingEntity target) {
+        return mob.getAttackDamage() + target.getMaxHealth() * 0.03f;
+    }
+}

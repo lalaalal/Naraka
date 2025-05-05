@@ -10,6 +10,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
+@Deprecated
 public class ComboAttackSkill<T extends SkillUsingMob & StigmatizingEntity> extends Skill<T> {
     public static final ResourceLocation LOCATION = createLocation("combo_attack");
     public static final int DEFAULT_COOLDOWN = 20;
