@@ -3,13 +3,14 @@ package com.yummy.naraka.world.entity.ai.skill;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class Skill<T extends SkillUsingMob> {
     public final ResourceLocation location;
     protected final T mob;
-    protected final int duration;
+    protected int duration;
     protected int cooldown;
 
     protected int tickCount = 0;
@@ -40,8 +41,13 @@ public abstract class Skill<T extends SkillUsingMob> {
         this(location, duration, cooldown, mob, null);
     }
 
-    protected Level level() {
-        return mob.level();
+    protected final boolean targetInRange(float distanceSquare) {
+        LivingEntity target = mob.getTarget();
+        return target != null && mob.distanceToSqr(target) <= distanceSquare;
+    }
+
+    protected final boolean targetInRange(LivingEntity target, float distanceSquare) {
+        return mob.distanceToSqr(target) <= distanceSquare;
     }
 
     public abstract boolean canUse();
@@ -99,13 +105,13 @@ public abstract class Skill<T extends SkillUsingMob> {
         return linkedSkill;
     }
 
-    public final void tick() {
+    public final void tick(ServerLevel level) {
         if (tickCount == 0)
-            onFirstTick();
+            onFirstTick(level);
         if (tickCount < duration)
-            skillTick();
+            skillTick(level);
         if (tickCount == duration - 1)
-            onLastTick();
+            onLastTick(level);
         tickCount += 1;
     }
 
@@ -121,15 +127,15 @@ public abstract class Skill<T extends SkillUsingMob> {
         cooldownTick += 1;
     }
 
-    protected void onFirstTick() {
+    protected void onFirstTick(ServerLevel level) {
 
     }
 
-    protected void onLastTick() {
+    protected void onLastTick(ServerLevel level) {
 
     }
 
-    protected abstract void skillTick();
+    protected abstract void skillTick(ServerLevel level);
 
     public void interrupt() {
 

@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 
@@ -20,13 +21,13 @@ public class StigmatizeEntitiesSkill<T extends SkillUsingMob & StigmatizingEntit
     }
 
     @Override
-    protected void skillTick() {
+    protected void skillTick(ServerLevel level) {
 
     }
 
     @Override
-    protected void onLastTick() {
-        Collection<LivingEntity> entities = level().getNearbyEntities(
+    protected void onLastTick(ServerLevel level) {
+        Collection<LivingEntity> entities = level.getNearbyEntities(
                 LivingEntity.class,
                 TargetingConditions.forCombat(),
                 mob,

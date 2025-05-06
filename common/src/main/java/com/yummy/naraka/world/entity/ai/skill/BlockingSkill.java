@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.world.entity.SkillUsingMob;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
 public class BlockingSkill extends Skill<SkillUsingMob> {
@@ -21,12 +22,12 @@ public class BlockingSkill extends Skill<SkillUsingMob> {
     }
 
     @Override
-    protected void skillTick() {
+    protected void skillTick(ServerLevel level) {
 
     }
 
     @Override
-    protected void onLastTick() {
+    protected void onLastTick(ServerLevel level) {
         LivingEntity target = mob.getTarget();
         if (target == null)
             return;

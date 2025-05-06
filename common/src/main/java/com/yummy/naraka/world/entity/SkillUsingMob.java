@@ -118,7 +118,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
 
     @Override
     protected void customServerAiStep() {
-        skillManager.tick();
+        skillManager.tick((ServerLevel) level());
     }
 
     protected static abstract class AnimationController {

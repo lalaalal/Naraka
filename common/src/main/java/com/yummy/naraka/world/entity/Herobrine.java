@@ -58,16 +58,21 @@ public class Herobrine extends AbstractHerobrine {
 
     protected final DashSkill<AbstractHerobrine> dashSkill = registerSkill(this, DashSkill::new);
     protected final DashAroundSkill<AbstractHerobrine> dashAroundSkill = registerSkill(this, DashAroundSkill::new);
-    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(new RushSkill<>(this, AbstractHerobrine::isNotHerobrine), AnimationLocations.RUSH);
     protected final StigmatizeEntitiesSkill<AbstractHerobrine> stigmatizeEntitiesSkill = registerSkill(this, StigmatizeEntitiesSkill::new);
     protected final ThrowFireballSkill throwFireballSkill = registerSkill(new ThrowFireballSkill(this, this::createFireball), AnimationLocations.THROW_NARAKA_FIREBALL);
     protected final BlockingSkill blockingSkill = registerSkill(this, BlockingSkill::new, AnimationLocations.BLOCKING);
     protected final SummonShadowSkill summonShadowSkill = registerSkill(0, this, SummonShadowSkill::new);
 
+    protected final LandingSkill landingSkill = registerSkill(this, LandingSkill::new, AnimationLocations.COMBO_ATTACK_5);
+    protected final SuperHitSkill superHitSkill = registerSkill(new SuperHitSkill(landingSkill, this), AnimationLocations.COMBO_ATTACK_4);
+    protected final SpinningSkill spinningSkill = registerSkill(new SpinningSkill(superHitSkill, this), AnimationLocations.COMBO_ATTACK_3);
+    protected final UppercutSkill uppercutSkill = registerSkill(new UppercutSkill(spinningSkill, this), AnimationLocations.COMBO_ATTACK_2);
+    protected final PunchSkill punchSkill = registerSkill(new PunchSkill(uppercutSkill, this, true), AnimationLocations.COMBO_ATTACK_1);
+
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill);
-    private final List<Skill<?>> PHASE_1_SKILLS = List.of(comboAttackSkill, dashSkill, dashAroundSkill, throwFireballSkill, rushSkill);
-    private final List<Skill<?>> PHASE_2_SKILLS = List.of(comboAttackSkill, dashSkill, dashAroundSkill, throwFireballSkill, rushSkill, summonShadowSkill);
+    private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, throwFireballSkill);
+    private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, throwFireballSkill, summonShadowSkill);
 
     private final List<List<Skill<?>>> HIBERNATED_MODE_SKILL_BY_PHASE = List.of(
             List.of(), HIBERNATED_MODE_PHASE_1_SKILLS, HIBERNATED_MODE_PHASE_2_SKILLS, List.of()
@@ -120,14 +125,14 @@ public class Herobrine extends AbstractHerobrine {
 
     private void replaceThrowFireball(Skill<?> skill) {
         if (!isHibernateMode() && skill.location.equals(ThrowFireballSkill.LOCATION) && random.nextFloat() < 0.4f) {
-            dashSkill.setLinkedSkill(comboAttackSkill);
+            dashSkill.setLinkedSkill(punchSkill);
             skillManager.setCurrentSkill(dashSkill);
         }
     }
 
-    private void useComboAttackOnIdle(Optional<Skill<?>> skill) {
-        if (getTarget() != null && !isStaggering() && !isHibernateMode() && skill.isEmpty() && comboAttackSkill.isEnabled())
-            skillManager.setCurrentSkill(comboAttackSkill);
+    private void useComboAttackOnIdle(@Nullable Skill<?> skill) {
+        if (getTarget() != null && !isStaggering() && !isHibernateMode() && skill == null && punchSkill.isEnabled())
+            skillManager.setCurrentSkill(punchSkill);
     }
 
     @Override
@@ -482,7 +487,6 @@ public class Herobrine extends AbstractHerobrine {
         if (spawnPosition != null)
             moveTo(spawnPosition.south(54), 0, 0);
         hibernateMode = true;
-        skillManager.interrupt();
         skillManager.enableOnly(HIBERNATED_MODE_SKILL_BY_PHASE.get(getPhase()));
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
     }
@@ -523,15 +527,14 @@ public class Herobrine extends AbstractHerobrine {
             return getAttackDamage();
         }
         float distance = distanceTo(fireball);
-        if (distance <= 1)
+        if (distance <= 2)
             return 66;
-        return Mth.clamp(66f / (distance - 0.9f) + 9, 10, 66);
+        return Mth.clamp(66f / (distance - 2), 10, 66);
     }
 
     private void updateHibernateModeOnTargetSurvivedFromFireball(LivingEntity target, float damage) {
         if (target != this && getPhase() == 1 && hibernateMode && damage >= 66 && target.isAlive()) {
             stopHibernateMode();
-            startStaggering();
         }
     }
 

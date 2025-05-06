@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,7 +13,7 @@ public class SkillManager {
     private final Set<Entry> skills = new HashSet<>();
     private final List<Consumer<Skill<?>>> skillStartListeners = new ArrayList<>();
     private final List<Consumer<Skill<?>>> skillEndListeners = new ArrayList<>();
-    private final List<Consumer<Optional<Skill<?>>>> skillSelectListeners = new ArrayList<>();
+    private final List<Consumer<Skill<?>>> skillSelectListeners = new ArrayList<>();
     private boolean paused = false;
     private int waitingTick = 0;
 
@@ -40,27 +41,28 @@ public class SkillManager {
         this.skillEndListeners.add(listener);
     }
 
-    public void runOnSkillSelect(Consumer<Optional<Skill<?>>> listener) {
+    public void runOnSkillSelect(Consumer<Skill<?>> listener) {
         this.skillSelectListeners.add(listener);
     }
 
-    private Optional<Skill<?>> selectSkill() {
+    @Nullable
+    private Skill<?> selectSkill() {
         if (paused || waitingTick > 0)
-            return Optional.empty();
+            return null;
 
         Optional<Entry> minimum = this.skills.stream()
                 .filter(Entry::prepared)
                 .min(Comparator.comparingInt(Entry::priority));
 
         if (minimum.isEmpty())
-            return Optional.empty();
+            return null;
         List<Skill<?>> usableSkills = this.skills.stream()
                 .filter(Entry::prepared)
                 .filter(entry -> entry.priority == minimum.get().priority())
                 .map(Entry::skill)
                 .collect(Collectors.toUnmodifiableList());
         int randomIndex = random.nextInt(usableSkills.size());
-        return Optional.of(usableSkills.get(randomIndex));
+        return usableSkills.get(randomIndex);
     }
 
     public void setCurrentSkillIfAbsence(Skill<?> skill) {
@@ -100,9 +102,9 @@ public class SkillManager {
         this.waitingTick = waitingTick;
     }
 
-    public void tick() {
+    public void tick(ServerLevel level) {
         if (currentSkill != null) {
-            currentSkill.tick();
+            currentSkill.tick(level);
             if (currentSkill.isEnded()) {
                 currentSkill.setCooldown();
                 for (Consumer<Skill<?>> listener : skillEndListeners)
@@ -116,9 +118,10 @@ public class SkillManager {
                     currentSkill = null;
             }
         } else {
-            Optional<Skill<?>> usable = selectSkill();
-            usable.ifPresent(this::setCurrentSkill);
-            for (Consumer<Optional<Skill<?>>> listener : skillSelectListeners)
+            Skill<?> usable = selectSkill();
+            if (usable != null)
+                setCurrentSkill(usable);
+            for (Consumer<Skill<?>> listener : skillSelectListeners)
                 listener.accept(usable);
         }
 

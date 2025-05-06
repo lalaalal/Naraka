@@ -1,13 +1,11 @@
 package com.yummy.naraka.world.entity.ai.goal;
 
 import com.yummy.naraka.world.entity.AbstractHerobrine;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import org.jetbrains.annotations.Nullable;
 
 public class LookAtTargetGoal extends Goal {
     private final AbstractHerobrine herobrine;
-    private @Nullable Entity target;
 
     public LookAtTargetGoal(AbstractHerobrine herobrine) {
         this.herobrine = herobrine;
@@ -15,12 +13,13 @@ public class LookAtTargetGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        this.target = herobrine.getTarget();
-        return !herobrine.isStaggering() && target != null;
+        LivingEntity target = herobrine.getTarget();
+        return !herobrine.isStaggering() && !herobrine.isUsingSkill() && target != null;
     }
 
     @Override
     public void tick() {
+        LivingEntity target = herobrine.getTarget();
         if (target != null)
             herobrine.getLookControl().setLookAt(target);
     }

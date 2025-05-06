@@ -13,6 +13,8 @@ public class AnimationLocations {
     public static final ResourceLocation COMBO_ATTACK_1 = create("herobrine", "combo_attack_1");
     public static final ResourceLocation COMBO_ATTACK_2 = create("herobrine", "combo_attack_2");
     public static final ResourceLocation COMBO_ATTACK_3 = create("herobrine", "combo_attack_3");
+    public static final ResourceLocation COMBO_ATTACK_4 = create("herobrine", "combo_attack_4");
+    public static final ResourceLocation COMBO_ATTACK_5 = create("herobrine", "combo_attack_5");
     public static final ResourceLocation RUSH = create("herobrine", "rush");
     public static final ResourceLocation THROW_NARAKA_FIREBALL = create("herobrine", "throw_naraka_fireball");
     public static final ResourceLocation STIGMATIZE_ENTITIES = create("herobrine", "stigmatize_entities");
