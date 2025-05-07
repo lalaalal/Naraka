@@ -1,33 +1,33 @@
 {
-    "parent": "naraka:purified_soul_sword",
-    "criteria": {
-        "has_challengers_blessing_with_equipments": {
-            "conditions": {
-                "name": "challengers_blessing"
-            },
-            "trigger": "naraka:challengers_blessing"
-        }
+  "parent": "naraka:purified_soul_sword",
+  "criteria": {
+    "has_challengers_blessing_with_equipments": {
+      "conditions": {
+        "name": "challengers_blessing"
+      },
+      "trigger": "naraka:challengers_blessing"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.naraka.challengers_blessing.description"
     },
-    "display": {
-        "description": {
-            "translate": "advancements.naraka.challengers_blessing.description"
-        },
-        "frame": "goal",
-        "icon": {
-            "count": 1,
-            "id": "naraka:stigma_rod"
-        },
-        "title": {
-            "translate": "advancements.naraka.challengers_blessing.title"
-        }
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "naraka:stigma_rod"
     },
-    "requirements": [
-        [
-            "has_challengers_blessing_with_equipments"
-        ]
-    ],
-    "rewards": {
-        "experience": 6
-    },
-    "sends_telemetry_event": true
+    "title": {
+      "translate": "advancements.naraka.challengers_blessing.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_challengers_blessing_with_equipments"
+    ]
+  ],
+  "rewards": {
+    "experience": 6
+  },
+  "sends_telemetry_event": true
 }

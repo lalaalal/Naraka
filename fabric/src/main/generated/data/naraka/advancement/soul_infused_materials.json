@@ -1,5 +1,5 @@
 {
-    "parent": "naraka:purified_soul_metal",
+  "parent": "naraka:purified_soul_metal",
   "criteria": {
     "craft_soul_infused_amethyst": {
       "conditions": {
