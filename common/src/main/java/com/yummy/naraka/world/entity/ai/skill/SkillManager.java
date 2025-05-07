@@ -26,7 +26,7 @@ public class SkillManager {
     private Skill<?> currentSkill = null;
 
     public void addSkill(int priority, Skill<?> skill) {
-        this.skills.values().add(new Entry(priority, skill));
+        this.skills.put(skill.location, new Entry(priority, skill));
     }
 
     public void enableOnly(Collection<Skill<?>> skillsToEnable) {

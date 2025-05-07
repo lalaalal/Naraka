@@ -7,5 +7,7 @@ public class NarakaNetworks {
         NetworkManager.clientbound().register(SyncAfterimagePayload.TYPE, SyncAfterimagePayload.CODEC, SyncAfterimagePayload::handle);
         NetworkManager.clientbound().register(NarakaClientboundEntityEventPacket.TYPE, NarakaClientboundEntityEventPacket.CODEC, NarakaClientboundEventHandler::handleEntityEvent);
         NetworkManager.clientbound().register(NarakaClientboundEventPacket.TYPE, NarakaClientboundEventPacket.CODEC, NarakaClientboundEventHandler::handleEvent);
+
+        NetworkManager.serverbound().register(SkillRequestPayload.TYPE, SkillRequestPayload.CODEC, SkillRequestPayload::handle);
     }
 }
