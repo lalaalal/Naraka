@@ -36,7 +36,8 @@ public class HerobrineScarfLayer extends RenderLayer<HerobrineRenderState, Herob
         this.scarfModel = new HerobrineScarfModel(context.bakeLayer(NarakaModelLayers.HEROBRINE_SCARF));
     }
 
-    private static void applyTranslateAndRotate(PoseStack poseStack, HerobrineModel herobrineModel) {
+    private static void applyTranslateAndRotate(PoseStack poseStack, HerobrineModel<HerobrineRenderState> herobrineModel) {
+        herobrineModel.root().translateAndRotate(poseStack);
         herobrineModel.body().translateAndRotate(poseStack);
         herobrineModel.upperBody().translateAndRotate(poseStack);
     }

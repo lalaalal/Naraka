@@ -21,13 +21,6 @@ public class HerobrineModel<S extends AbstractHerobrineRenderState> extends Enti
     private final ModelPart head;
     private final ModelPart leftArm;
     private final ModelPart rightArm;
-    private final ModelPart leftArmLower;
-    private final ModelPart rightArmLower;
-    private final ModelPart legs;
-    private final ModelPart leftLeg;
-    private final ModelPart leftLegLower;
-    private final ModelPart rightLeg;
-    private final ModelPart rightlegLower;
 
     public HerobrineModel(ModelPart root) {
         super(root);
@@ -36,14 +29,7 @@ public class HerobrineModel<S extends AbstractHerobrineRenderState> extends Enti
         this.upperBody = main.getChild("upper_body");
         this.head = upperBody.getChild("head");
         this.leftArm = upperBody.getChild("left_arm");
-        this.leftArmLower = leftArm.getChild("left_arm_lower");
         this.rightArm = upperBody.getChild("right_arm");
-        this.rightArmLower = rightArm.getChild("right_arm_lower");
-        this.legs = main.getChild("legs");
-        this.leftLeg = legs.getChild("left_leg");
-        this.leftLegLower = leftLeg.getChild("left_leg_lower");
-        this.rightLeg = legs.getChild("right_leg");
-        this.rightlegLower = rightLeg.getChild("right_leg_lower");
     }
 
     public static LayerDefinition createForHerobrine() {
