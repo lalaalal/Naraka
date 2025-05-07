@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -41,6 +42,19 @@ public abstract class SkillUsingMob extends PathfinderMob {
     public void forEachAnimations(BiConsumer<ResourceLocation, AnimationState> consumer) {
         for (AnimationController controller : animationStates.values())
             controller.update(consumer);
+    }
+
+    public Set<ResourceLocation> getAnimations() {
+        return animationStates.keySet();
+    }
+
+    public void useSkill(ResourceLocation location) {
+        Skill<?> skill = skillManager.getSkill(location);
+        skillManager.setCurrentSkillIfAbsence(skill);
+    }
+
+    public Set<ResourceLocation> getSkillNames() {
+        return skillManager.getSkillNames();
     }
 
     @Nullable
@@ -86,6 +100,11 @@ public abstract class SkillUsingMob extends PathfinderMob {
         return damageSources().mobAttack(this);
     }
 
+    /**
+     * For server update
+     *
+     * @param animationLocation Animation
+     */
     public void setAnimation(ResourceLocation animationLocation) {
         currentAnimation = animationLocation;
         if (level() instanceof ServerLevel serverLevel) {
@@ -98,6 +117,11 @@ public abstract class SkillUsingMob extends PathfinderMob {
         this.setAnimation(skill.location);
     }
 
+    /**
+     * For client update
+     *
+     * @param animationLocation Animation
+     */
     public void updateAnimation(ResourceLocation animationLocation) {
         animationStates.forEach((location, animationController) -> {
             if (animationLocation.equals(location))

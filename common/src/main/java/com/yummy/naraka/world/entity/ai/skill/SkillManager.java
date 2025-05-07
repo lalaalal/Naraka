@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class SkillManager {
     private final RandomSource random;
-    private final Set<Entry> skills = new HashSet<>();
+    private final Map<ResourceLocation, Entry> skills = new HashMap<>();
     private final List<Consumer<Skill<?>>> skillStartListeners = new ArrayList<>();
     private final List<Consumer<Skill<?>>> skillEndListeners = new ArrayList<>();
     private final List<Consumer<Skill<?>>> skillSelectListeners = new ArrayList<>();
@@ -25,11 +26,11 @@ public class SkillManager {
     private Skill<?> currentSkill = null;
 
     public void addSkill(int priority, Skill<?> skill) {
-        this.skills.add(new Entry(priority, skill));
+        this.skills.values().add(new Entry(priority, skill));
     }
 
     public void enableOnly(Collection<Skill<?>> skillsToEnable) {
-        for (Entry entry : skills)
+        for (Entry entry : skills.values())
             entry.setEnabled(skillsToEnable.contains(entry.skill));
     }
 
@@ -50,13 +51,13 @@ public class SkillManager {
         if (paused || waitingTick > 0)
             return null;
 
-        Optional<Entry> minimum = this.skills.stream()
+        Optional<Entry> minimum = this.skills.values().stream()
                 .filter(Entry::prepared)
                 .min(Comparator.comparingInt(Entry::priority));
 
         if (minimum.isEmpty())
             return null;
-        List<Skill<?>> usableSkills = this.skills.stream()
+        List<Skill<?>> usableSkills = this.skills.values().stream()
                 .filter(Entry::prepared)
                 .filter(entry -> entry.priority == minimum.get().priority())
                 .map(Entry::skill)
@@ -125,7 +126,7 @@ public class SkillManager {
                 listener.accept(usable);
         }
 
-        for (Entry entry : skills)
+        for (Entry entry : skills.values())
             entry.tryReduceCooldown();
         if (waitingTick > 0)
             waitingTick -= 1;
@@ -134,6 +135,14 @@ public class SkillManager {
     @Nullable
     public Skill<?> getCurrentSkill() {
         return currentSkill;
+    }
+
+    public Skill<?> getSkill(ResourceLocation location) {
+        return skills.get(location).skill;
+    }
+
+    public Set<ResourceLocation> getSkillNames() {
+        return skills.keySet();
     }
 
     private record Entry(int priority, Skill<?> skill) {
