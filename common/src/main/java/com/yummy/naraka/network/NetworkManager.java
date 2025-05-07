@@ -12,22 +12,22 @@ import java.util.Collection;
 
 public abstract class NetworkManager {
     @Nullable
-    private static ServerboundNetworkManager SERVERBOUND;
+    private static ServerboundNetworkManager serverbound;
     @Nullable
-    private static ClientboundNetworkManager CLIENTBOUND;
+    private static ClientboundNetworkManager clientbound;
 
     public static ServerboundNetworkManager serverbound() {
-        if (SERVERBOUND == null)
-            SERVERBOUND = MethodInvoker.of(NetworkManager.class, "serverbound")
+        if (serverbound == null)
+            serverbound = MethodInvoker.of(NetworkManager.class, "serverbound")
                     .invoke().result(ServerboundNetworkManager.class);
-        return SERVERBOUND;
+        return serverbound;
     }
 
     public static ClientboundNetworkManager clientbound() {
-        if (CLIENTBOUND == null)
-            CLIENTBOUND = MethodInvoker.of(NetworkManager.class, "clientbound")
+        if (clientbound == null)
+            clientbound = MethodInvoker.of(NetworkManager.class, "clientbound")
                     .invoke().result(ClientboundNetworkManager.class);
-        return CLIENTBOUND;
+        return clientbound;
     }
 
     public static void sendToClient(ServerPlayer player, CustomPacketPayload packet) {

@@ -37,6 +37,7 @@ public class HerobrineScarfLayer extends RenderLayer<Herobrine, HerobrineModel<H
     }
 
     private static void applyTranslateAndRotate(PoseStack poseStack, HerobrineModel<Herobrine> herobrineModel) {
+        herobrineModel.root().translateAndRotate(poseStack);
         herobrineModel.body().translateAndRotate(poseStack);
         herobrineModel.upperBody().translateAndRotate(poseStack);
     }
