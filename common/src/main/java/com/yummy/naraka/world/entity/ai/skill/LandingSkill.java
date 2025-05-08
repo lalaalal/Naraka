@@ -23,7 +23,7 @@ public class LandingSkill extends ComboSkill<AbstractHerobrine> {
 
     private void land(ServerLevel level) {
         hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 3);
-        level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
+        level.playSound(mob, mob.blockPosition(), SoundEvents.TOTEM_USE, SoundSource.HOSTILE, 1, 1);
     }
 
     @Override

@@ -41,7 +41,7 @@ public class DashSkill<T extends SkillUsingMob & AfterimageEntity> extends Skill
         if (tickCount == 10)
             this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob, target);
         if (10 <= tickCount && tickCount <= 15 && mob.distanceToSqr(target) > 3) {
-            NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, mob.maxUpStep());
+            NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, 0.6);
             mob.setDeltaMovement(deltaMovement);
             mob.addAfterimage(Afterimage.of(mob, 13), 2, tickCount < 15);
         }

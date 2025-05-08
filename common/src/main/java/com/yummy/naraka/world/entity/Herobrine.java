@@ -132,6 +132,7 @@ public class Herobrine extends AbstractHerobrine {
                 && random.nextFloat() < 0.4f && punchSkill.isEnabled() && punchSkill.readyToUse()) {
             dashSkill.setLinkedSkill(punchSkill);
             skillManager.setCurrentSkill(dashSkill);
+            punchSkill.setLinkedFromPrevious(true);
         }
     }
 

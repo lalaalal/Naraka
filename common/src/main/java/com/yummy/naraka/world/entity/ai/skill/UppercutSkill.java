@@ -51,6 +51,7 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runAt(10, this::hurtHitEntity, level, target);
+        mob.getLookControl().setLookAt(target);
     }
 
     @Override
