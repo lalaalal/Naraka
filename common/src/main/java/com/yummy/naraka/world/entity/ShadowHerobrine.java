@@ -27,6 +27,7 @@ import net.minecraft.world.entity.TraceableEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -91,6 +92,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new FollowOwnerGoal<>(this));
+        goalSelector.addGoal(2, new RandomStrollGoal(this, 1));
     }
 
     public void startAvoidTarget() {

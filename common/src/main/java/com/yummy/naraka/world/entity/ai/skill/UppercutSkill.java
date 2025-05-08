@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.world.entity.AbstractHerobrine;
+import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -11,8 +12,15 @@ import org.jetbrains.annotations.Nullable;
 public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
     public static final String NAME = "uppercut";
 
-    public UppercutSkill(@Nullable ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
+    private final boolean stunTarget;
+
+    public UppercutSkill(@Nullable ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob, boolean stunTarget) {
         super(createLocation(NAME), 60, 0, 0.1f, comboSkill, 15, mob);
+        this.stunTarget = stunTarget;
+    }
+
+    public UppercutSkill(@Nullable ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
+        this(comboSkill, mob, true);
     }
 
     @Override
@@ -49,6 +57,8 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
         if (!targetInRange(target, 6))
             return;
         super.hurtHitEntity(level, target);
+        if (stunTarget)
+            StunHelper.stunEntity(target, 20, true);
         target.addDeltaMovement(new Vec3(0, 0.4, 0));
         mob.stigmatizeEntity(level, target);
         level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
