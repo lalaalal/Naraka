@@ -88,6 +88,10 @@ public final class StunHelper {
         return TickSchedule.executeAfter(gameTime, tickAfter, () -> releaseEntity(livingEntity));
     }
 
+    public static boolean isStun(LivingEntity livingEntity) {
+        return NarakaAttributeModifiers.hasAttributeModifier(livingEntity, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STUN_PREVENT_MOVING);
+    }
+
     /**
      * Block entity moving, jumping, using item, attacking for duration
      *

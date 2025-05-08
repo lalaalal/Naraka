@@ -1,6 +1,8 @@
 package com.yummy.naraka.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.yummy.naraka.world.entity.StunHelper;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -17,5 +19,12 @@ public abstract class PlayerMixin extends LivingEntity {
     @ModifyReturnValue(method = "isPushedByFluid", at = @At("RETURN"))
     public boolean isPushedByFluid(boolean original) {
         return original && super.isPushedByFluid();
+    }
+
+    @Override
+    public void startUsingItem(InteractionHand hand) {
+        if (StunHelper.isStun(this))
+            return;
+        super.startUsingItem(hand);
     }
 }

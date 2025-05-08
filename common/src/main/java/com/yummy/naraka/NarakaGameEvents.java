@@ -9,7 +9,6 @@ import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.item.NarakaItems;
-import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
@@ -58,7 +57,6 @@ public final class NarakaGameEvents {
     private static void onServerStarted(MinecraftServer server) {
         RegistryAccess registryAccess = server.registryAccess();
         NarakaDamageSources.initialize(registryAccess);
-        NarakaEnchantments.initialize(registryAccess);
 
         if (server.isDedicatedServer())
             NarakaMod.isModLoaded = true;
