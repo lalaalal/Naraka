@@ -1,13 +1,9 @@
 package com.yummy.naraka.world.item.enchantment;
 
 import com.yummy.naraka.tags.NarakaItemTags;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -17,16 +13,8 @@ import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.AddValue;
-import org.jetbrains.annotations.Nullable;
 
 public class NarakaEnchantments {
-    @Nullable
-    private static Registry<Enchantment> registry;
-
-    public static void initialize(RegistryAccess registryAccess) {
-        registry = registryAccess.lookupOrThrow(Registries.ENCHANTMENT);
-    }
-
     public static void bootstrap(BootstrapContext<Enchantment> context) {
         HolderGetter<Enchantment> enchantmentHolderGetter = context.lookup(Registries.ENCHANTMENT);
         HolderGetter<Item> itemHolderGetter = context.lookup(Registries.ITEM);
@@ -68,11 +56,5 @@ public class NarakaEnchantments {
                         )
                         .build(Enchantments.LOYALTY.location())
         );
-    }
-
-    public static Holder<Enchantment> get(ResourceKey<Enchantment> key) {
-        if (registry == null)
-            throw new IllegalStateException("NarakaEnchantments is not initialized");
-        return registry.getOrThrow(key);
     }
 }
