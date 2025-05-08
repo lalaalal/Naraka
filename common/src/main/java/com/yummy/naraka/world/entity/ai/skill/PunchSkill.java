@@ -12,7 +12,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class PunchSkill extends ComboSkill<AbstractHerobrine> {
     public static final ResourceLocation LOCATION = createLocation("punch");
-    public static final int DEFAULT_COOLDOWN = 120;
+    public static final int DEFAULT_COOLDOWN = 200;
 
     private final boolean stunTarget;
 
@@ -39,7 +39,6 @@ public class PunchSkill extends ComboSkill<AbstractHerobrine> {
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runAt(10, this::hurtHitEntity, level, target);
-        moveToTarget(target);
     }
 
     @Override
@@ -48,7 +47,7 @@ public class PunchSkill extends ComboSkill<AbstractHerobrine> {
             return;
         super.hurtHitEntity(level, target);
         if (stunTarget)
-            StunHelper.stunEntity(target, 100);
+            StunHelper.stunEntity(target, 20, true);
         mob.stigmatizeEntity(level, target);
         level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
     }

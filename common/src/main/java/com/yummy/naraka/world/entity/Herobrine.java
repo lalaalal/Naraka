@@ -129,7 +129,7 @@ public class Herobrine extends AbstractHerobrine {
 
     private void replaceThrowFireball(Skill<?> skill) {
         if (!isHibernateMode() && skill.location.equals(ThrowFireballSkill.LOCATION)
-                && random.nextFloat() < 0.4f && punchSkill.isEnabled()) {
+                && random.nextFloat() < 0.4f && punchSkill.isEnabled() && punchSkill.readyToUse()) {
             dashSkill.setLinkedSkill(punchSkill);
             skillManager.setCurrentSkill(dashSkill);
         }

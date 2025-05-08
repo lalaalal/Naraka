@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.world.entity.AbstractHerobrine;
+import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -27,6 +28,7 @@ public class LandingSkill extends ComboSkill<AbstractHerobrine> {
     @Override
     protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
         super.hurtHitEntity(level, target);
+        StunHelper.stunEntity(target, 20, true);
         mob.stigmatizeEntity(level, target);
     }
 
