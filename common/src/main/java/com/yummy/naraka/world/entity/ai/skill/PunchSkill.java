@@ -48,8 +48,7 @@ public class PunchSkill extends ComboSkill<AbstractHerobrine> {
             return;
         super.hurtHitEntity(level, target);
         if (stunTarget)
-            StunHelper.stunEntity(target, 40);
-        target.knockback(2f, mob.getX() - target.getX(), mob.getZ() - target.getZ());
+            StunHelper.stunEntity(target, 100);
         mob.stigmatizeEntity(level, target);
         level.playSound(null, mob.blockPosition(), SoundEvents.NETHER_BRICKS_BREAK, SoundSource.HOSTILE, 1, 1);
     }
