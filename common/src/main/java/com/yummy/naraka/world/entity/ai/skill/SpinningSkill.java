@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +20,7 @@ public class SpinningSkill extends ComboSkill<AbstractHerobrine> {
     protected void onLastTick(ServerLevel level) {
         LivingEntity target = mob.getTarget();
         if (target != null)
-            mob.getLookControl().setLookAt(target);
+            mob.lookAt(target, 180, 0);
         mob.setNoGravity(false);
     }
 
@@ -34,6 +35,8 @@ public class SpinningSkill extends ComboSkill<AbstractHerobrine> {
 
     @Override
     protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
+        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15))
+            return;
         super.hurtHitEntity(level, target);
         mob.stigmatizeEntity(level, target);
         StunHelper.stunEntity(target, 20, true);
