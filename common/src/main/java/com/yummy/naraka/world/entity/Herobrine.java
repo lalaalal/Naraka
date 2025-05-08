@@ -53,7 +53,8 @@ public class Herobrine extends AbstractHerobrine {
     private static final float[] HEALTH_BY_PHASE = {106, 210, 350};
 
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
-    public static final int MAX_HURT_DAMAGE_LIMIT = Integer.MAX_VALUE;
+    public static final int MAX_HURT_DAMAGE_LIMIT = 25;
+    public static final int MIN_HURT_DAMAGE_LIMIT = 8;
     public static final int MAX_ACCUMULATED_DAMAGE_TICK_COUNT = 40;
 
     protected final DashSkill<AbstractHerobrine> dashSkill = registerSkill(this, DashSkill::new);
@@ -89,9 +90,8 @@ public class Herobrine extends AbstractHerobrine {
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this, bossEvent);
+
     private float hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
-    private float averageHurtDamage;
-    private int hurtCount = 0;
 
     private boolean hibernateMode = false;
 
@@ -110,6 +110,7 @@ public class Herobrine extends AbstractHerobrine {
                 .setPlayBossMusic(true);
         phaseManager.addPhaseChangeListener(this::updateMusic);
         phaseManager.addPhaseChangeListener(this::updateUsingSkills);
+        phaseManager.addPhaseChangeListener((prev, current) -> resetDamageLimit());
 
         skillManager.enableOnly(PHASE_1_SKILLS);
         for (int i = 0; i < NarakaConfig.CLIENT.herobrineScarfPartitionNumber.getValue(); i++)
@@ -143,6 +144,10 @@ public class Herobrine extends AbstractHerobrine {
 
     public void setSpawnPosition(BlockPos pos) {
         this.spawnPosition = pos;
+    }
+
+    private void resetDamageLimit() {
+        this.hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
     }
 
     private void updateMusic(int prevPhase, int currentPhase) {
@@ -407,9 +412,15 @@ public class Herobrine extends AbstractHerobrine {
                 });
     }
 
+    private float getPhaseMinimumHealth() {
+        return phaseManager.getActualPhaseMaxHealth(getPhase() + 1) + 1;
+    }
+
     private boolean updateHibernateMode(DamageSource source, float actualDamage) {
         if (source.getDirectEntity() instanceof NarakaFireball fireball && !fireball.hasTarget()) {
-            startStaggering();
+            if (getHealth() > getPhaseMinimumHealth())
+                startStaggering();
+            resetDamageLimit();
             if (hibernateMode)
                 stopHibernateMode();
             return true;
@@ -423,7 +434,8 @@ public class Herobrine extends AbstractHerobrine {
             return false;
         float healthAfterHurt = phaseManager.getCurrentPhaseHealth() + getAbsorptionAmount() - actualDamage;
         if (healthAfterHurt < 1) {
-            setHealth(phaseManager.getActualPhaseMaxHealth(getPhase() + 1) + 1);
+            setHealth(getPhaseMinimumHealth());
+            startHibernateMode();
             return true;
         }
 
@@ -435,42 +447,20 @@ public class Herobrine extends AbstractHerobrine {
         return getDamageAfterMagicAbsorb(source, damage);
     }
 
-    private double correctRatio(double ratio) {
-        final double scale = NarakaConfig.COMMON.herobrineHurtLimitCalculationRatioModifier.getValue();
-        if (ratio > 5)
-            ratio = NarakaUtils.log(4, ratio - 4) + 5;
-        return Math.max(ratio * scale, 1.5);
-    }
-
-    private int calculateMaxHurtCount(double ratio) {
-        final double scale = NarakaConfig.COMMON.herobrineMaxHurtCountCalculationModifier.getValue();
-        return (int) Math.floor(6 * Math.pow(0.5, (ratio * scale) - 3) + 4);
-    }
-
-    private float calculateHurtDamageLimit(double ratio, int maxHurtCount) {
-        int power = Math.max(maxHurtCount - hurtCount - 1, 0);
-        return (float) Mth.clamp(Math.pow(ratio, power), 1, MAX_HURT_DAMAGE_LIMIT);
-    }
-
-    private float calculateAverageHurtDamage(float damage) {
-        if (hurtCount == 0)
-            return damage;
-        return (averageHurtDamage + damage) / 2f;
+    private float calculateHurtDamageLimitReduce(float damage) {
+        return Math.max(
+                Math.min(damage, hurtDamageLimit) - 8,
+                MIN_HURT_DAMAGE_LIMIT
+        );
     }
 
     private void updateHurtDamageLimit(float damage) {
         if (phaseManager.getCurrentPhase() < 3 && hurtDamageLimit > 1) {
-            averageHurtDamage = calculateAverageHurtDamage(damage);
-
-            double ratio = NarakaUtils.log(2, averageHurtDamage);
-            int maxHurtCount = calculateMaxHurtCount(ratio);
-            ratio = correctRatio(ratio);
-
-            hurtDamageLimit = calculateHurtDamageLimit(ratio, maxHurtCount);
-
-            hurtCount += 1;
-            if (hurtDamageLimit <= 1)
+            hurtDamageLimit = hurtDamageLimit - calculateHurtDamageLimitReduce(damage);
+            if (hurtDamageLimit <= 1) {
+                hurtDamageLimit = 0;
                 startHibernateMode();
+            }
         }
     }
 
@@ -489,10 +479,8 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void stopHibernateMode() {
-        hurtCount = 0;
-        averageHurtDamage = 0;
         hibernateMode = false;
-        hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
+        resetDamageLimit();
         skillManager.enableOnly(SKILLS_BY_PHASE.get(getPhase()));
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
 
@@ -502,9 +490,7 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     protected void stopStaggering() {
         super.stopStaggering();
-        hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
-        averageHurtDamage = 0;
-        hurtCount = 0;
+        resetDamageLimit();
     }
 
     @Override
@@ -590,6 +576,7 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
+        compound.putFloat("HurtDamageLimit", hurtDamageLimit);
         compound.putBoolean("HibernateMode", hibernateMode);
         if (spawnPosition != null)
             compound.put("SpawnPosition", NbtUtils.writeBlockPos(spawnPosition));
@@ -605,6 +592,8 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
+        if (compound.contains("HurtDamageLimit"))
+            hurtDamageLimit = compound.getFloat("HurtDamageLimit");
         if (compound.contains("HibernatedMode")) {
             hibernateMode = compound.getBoolean("HibernatedMode");
             if (hibernateMode)
