@@ -35,7 +35,7 @@ public class SpinningSkill extends ComboSkill<AbstractHerobrine> {
     protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
         super.hurtHitEntity(level, target);
         mob.stigmatizeEntity(level, target);
-        level.playSound(mob, mob.blockPosition(), SoundEvents.ANVIL_DESTROY, SoundSource.HOSTILE, 1, 1);
+        level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
     }
 
     @Override
