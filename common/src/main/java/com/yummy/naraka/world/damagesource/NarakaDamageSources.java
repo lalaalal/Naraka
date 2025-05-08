@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.damagesource;
 
+import com.yummy.naraka.world.entity.NarakaFireball;
 import com.yummy.naraka.world.entity.Spear;
 import com.yummy.naraka.world.entity.SpearOfLonginus;
 import com.yummy.naraka.world.entity.Stardust;
@@ -14,12 +15,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * Provides static methods for creating {@linkplain DamageSource} without level<br>
- * Don't use in client
- *
- * @author lalaalal
- */
 public class NarakaDamageSources {
     @Nullable
     private static Registry<DamageType> registry;
@@ -84,5 +79,9 @@ public class NarakaDamageSources {
 
     public static DamageSource stardust(Stardust stardust) {
         return source(NarakaDamageTypes.STARDUST, stardust, stardust.getOwner());
+    }
+
+    public static DamageSource narakaFireball(NarakaFireball fireball) {
+        return source(NarakaDamageTypes.NARAKA_FIREBALL, fireball, fireball.getOwner());
     }
 }
