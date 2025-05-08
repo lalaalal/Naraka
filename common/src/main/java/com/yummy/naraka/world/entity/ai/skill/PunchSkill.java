@@ -15,6 +15,7 @@ public class PunchSkill extends ComboSkill<AbstractHerobrine> {
     public static final int DEFAULT_COOLDOWN = 200;
 
     private final boolean stunTarget;
+    private boolean linked = false;
 
     public PunchSkill(ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob, boolean withStun) {
         super(LOCATION, 35, DEFAULT_COOLDOWN, 0.8f, comboSkill, 15, mob);
@@ -26,19 +27,32 @@ public class PunchSkill extends ComboSkill<AbstractHerobrine> {
         this.stunTarget = withStun;
     }
 
+    public void setLinkedFromPrevious(boolean linked) {
+        this.linked = linked;
+    }
+
     @Override
     public boolean canUse() {
         return targetInRange(4);
     }
 
     @Override
+    protected float getBonusChance() {
+        if (linked)
+            return -0.4f;
+        return super.getBonusChance();
+    }
+
+    @Override
     protected void onFirstTick(ServerLevel level) {
+        linked = false;
         mob.getNavigation().stop();
     }
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runAt(10, this::hurtHitEntity, level, target);
+        mob.getLookControl().setLookAt(target);
     }
 
     @Override
