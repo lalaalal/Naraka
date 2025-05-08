@@ -10,6 +10,8 @@ public class NarakaCommonConfig extends StaticConfiguration {
     public final ConfigValue<Float> fasterLiquidSwimmingSpeed;
     public final ConfigValue<Integer> narakaFireballTargetTracingLevel;
 
+    public final ConfigValue<Boolean> breakComboWhenSkillDisabled;
+
     public NarakaCommonConfig() {
         super("naraka-common", PropertiesConfigFile::new);
 
@@ -26,5 +28,7 @@ public class NarakaCommonConfig extends StaticConfiguration {
                 .comment("0 : No tracing")
                 .comment("1 : Can rotate movement")
                 .comment("2 : Can reduce speed (can turn back)");
+
+        this.breakComboWhenSkillDisabled = define("break_combo_when_skill_disabled", false);
     }
 }

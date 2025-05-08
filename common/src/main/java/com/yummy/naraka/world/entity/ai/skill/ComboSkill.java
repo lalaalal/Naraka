@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
@@ -29,10 +30,18 @@ public abstract class ComboSkill<T extends SkillUsingMob> extends AttackSkill<T>
         return false;
     }
 
+    private boolean canCombo() {
+        boolean checkDisabled = NarakaConfig.COMMON.breakComboWhenSkillDisabled.getValue();
+        boolean randomResult = mob.getRandom().nextFloat() < Math.clamp(linkChance + getBonusChance(), 0, 1);
+        if (checkDisabled)
+            return randomResult && (comboSkill == null || comboSkill.isEnabled());
+        return randomResult;
+    }
+
     @Override
     public void prepare() {
         super.prepare();
-        if (mob.getRandom().nextFloat() < Math.clamp(linkChance + getBonusChance(), 0, 1)) {
+        if (canCombo()) {
             duration = comboDuration;
             linkedSkill = comboSkill;
         } else {
