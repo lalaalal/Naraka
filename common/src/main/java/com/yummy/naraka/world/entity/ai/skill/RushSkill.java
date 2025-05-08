@@ -99,7 +99,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         }
         if (!blockedEntities.contains(target) && target.invulnerableTime < 10) {
             StunHelper.stunEntity(target, 100);
-            mob.stigmatizeEntity(target);
+            mob.stigmatizeEntity(level, target);
             super.hurtHitEntity(level, target);
             target.knockback(5, mob.getX() - target.getX(), mob.getZ() - target.getZ());
         }

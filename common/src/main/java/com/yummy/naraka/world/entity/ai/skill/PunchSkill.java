@@ -12,11 +12,12 @@ import net.minecraft.world.phys.Vec3;
 
 public class PunchSkill extends ComboSkill<AbstractHerobrine> {
     public static final ResourceLocation LOCATION = createLocation("punch");
+    public static final int DEFAULT_COOLDOWN = 120;
 
     private final boolean stunTarget;
 
     public PunchSkill(ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob, boolean withStun) {
-        super(LOCATION, 35, 120, 0.8f, comboSkill, 15, mob);
+        super(LOCATION, 35, DEFAULT_COOLDOWN, 0.8f, comboSkill, 15, mob);
         this.stunTarget = withStun;
     }
 
@@ -49,7 +50,7 @@ public class PunchSkill extends ComboSkill<AbstractHerobrine> {
         if (stunTarget)
             StunHelper.stunEntity(target, 40);
         target.knockback(2f, mob.getX() - target.getX(), mob.getZ() - target.getZ());
-        mob.stigmatizeEntity(target);
+        mob.stigmatizeEntity(level, target);
         level.playSound(null, mob.blockPosition(), SoundEvents.NETHER_BRICKS_BREAK, SoundSource.HOSTILE, 1, 1);
     }
 

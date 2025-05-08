@@ -9,7 +9,8 @@ import net.minecraft.world.entity.TraceableEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 public class FollowOwnerGoal<T extends Mob & TraceableEntity> extends Goal {
-    public static final double START_FOLLOWING_DISTANCE = 24;
+    public static final double START_FOLLOWING_DISTANCE = 18;
+    public static final double TELEPORT_DISTANCE = 24;
 
     private final T entity;
     private int timeToRecalculatePath;
@@ -43,7 +44,7 @@ public class FollowOwnerGoal<T extends Mob & TraceableEntity> extends Goal {
         entity.getLookControl().setLookAt(owner, 10.0F, (float) entity.getMaxHeadXRot());
         if (--this.timeToRecalculatePath <= 0) {
             this.timeToRecalculatePath = this.adjustedTickDelay(10);
-            if (entity.distanceToSqr(owner) >= (START_FOLLOWING_DISTANCE * START_FOLLOWING_DISTANCE)) {
+            if (entity.distanceToSqr(owner) >= (TELEPORT_DISTANCE * TELEPORT_DISTANCE)) {
                 teleportTo(owner);
             } else {
                 entity.getNavigation().moveTo(owner, 1);

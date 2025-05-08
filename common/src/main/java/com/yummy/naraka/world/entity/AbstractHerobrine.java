@@ -111,8 +111,8 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, false, (target, serverLevel) -> !target.getType().is(NarakaEntityTypeTags.HEROBRINE)));
 
         goalSelector.addGoal(1, new FloatGoal(this));
-        goalSelector.addGoal(2, new MoveToTargetGoal(this, 1, 64));
-        goalSelector.addGoal(3, new LookAtTargetGoal(this));
+        goalSelector.addGoal(2, new LookAtTargetGoal(this));
+        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64));
     }
 
     @Override
@@ -121,7 +121,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         super.customServerAiStep(serverLevel);
     }
 
-    protected abstract Fireball createFireball();
+    protected abstract Fireball createFireball(ServerLevel level);
 
     @Override
     public boolean canBeAffected(MobEffectInstance effectInstance) {

@@ -48,23 +48,24 @@ public record Stigma(int value, long lastMarkedTime) {
     }
 
     /**
-     * Reset stigma of living entity to 0.
+     * Reset the stigma of living entity to 0.
      * Stun and lock health of living entity for {@link #HOLD_ENTITY_DURATION} ticks.<br>
-     * Call {@link StigmatizingEntity#collectStigma(Stigma)} if caused entity is {@linkplain StigmatizingEntity}
+     * Call {@link StigmatizingEntity#collectStigma(ServerLevel, LivingEntity, Stigma)} if caused entity is {@linkplain StigmatizingEntity}
      *
      * @param livingEntity Target entity to consume stigma
      * @param cause        Entity that causes the stigma to be consumed
      * @return Stigma with value 0 and current time
      * @see StunHelper#stunEntity(LivingEntity, int)
      * @see LockedHealthHelper#lock(LivingEntity, double)
-     * @see StigmatizingEntity#collectStigma(Stigma)
+     * @see StigmatizingEntity#collectStigma(ServerLevel, LivingEntity, Stigma)
      */
     public Stigma consume(ServerLevel level, LivingEntity livingEntity, Entity cause) {
-        if (livingEntity != cause && cause instanceof StigmatizingEntity stigmatizingEntity)
-            stigmatizingEntity.collectStigma(this);
         lockHealth(level, livingEntity, cause);
         StunHelper.stunEntity(livingEntity, HOLD_ENTITY_DURATION);
         livingEntity.level().playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.TOTEM_USE, livingEntity.getSoundSource(), 1.0F, 1.0F);
+
+        if (livingEntity != cause && cause instanceof StigmatizingEntity stigmatizingEntity)
+            stigmatizingEntity.collectStigma(level, livingEntity, this);
 
         return new Stigma(0, lastMarkedTime);
     }
