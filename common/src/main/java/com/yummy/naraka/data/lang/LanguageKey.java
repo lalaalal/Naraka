@@ -32,6 +32,8 @@ public final class LanguageKey {
     public static final String REINFORCEMENT_KEY = "item.reinforcement";
     public static final String BLESSED_KEY = "item.blessed";
 
+    public static final String DISABLE_SKILL_USE_KEY = "skill_controller.disable_skill_use";
+
     public static final String CHALLENGERS_BLESSING = Util.makeDescriptionId("effect", NarakaMod.location("challengers_blessing"));
 
     public static String reinforcementEffect(Holder<ReinforcementEffect> reinforcementEffect) {

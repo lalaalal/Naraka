@@ -76,6 +76,8 @@ public class NarakaLanguageProviders {
         add(NarakaJadeProviderComponents.SOUL_SMITHING_BLOCK.translationKey, "Soul Smithing Block", "영혼 대장장이 블록");
         add(NarakaJadeProviderComponents.ENTITY_DATA.translationKey, "Stigma", "낙인");
 
+        add(LanguageKey.DISABLE_SKILL_USE_KEY, "Disable skill using", "스킬 사용 중지");
+
         add(SoulType.REDSTONE.translationKey(), "Redstone", "레드스톤");
         add(SoulType.COPPER.translationKey(), "Copper", "구리");
         add(SoulType.GOLD.translationKey(), "Gold", "금");
