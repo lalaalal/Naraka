@@ -12,6 +12,7 @@ import java.util.Map;
 public final class NarakaTextures {
     public static final ResourceLocation HEROBRINE = entity("herobrine.png");
     public static final ResourceLocation SHADOW_HEROBRINE = entity("shadow_herobrine.png");
+    public static final ResourceLocation SHADOW_HEROBRINE_HEAD = entity("shadow_herobrine_head.png");
     public static final ResourceLocation HEROBRINE_EYE = entity("herobrine_eye.png");
     public static final ResourceLocation HEROBRINE_AFTERIMAGE = entity("herobrine_afterimage.png");
     public static final ResourceLocation HEROBRINE_SCARF = entity("herobrine_scarf.png");
@@ -28,8 +29,6 @@ public final class NarakaTextures {
     public static final ResourceLocation FORGING_BLOCK = entity("forging_block.png");
     public static final ResourceLocation SOUL_STABILIZER = entity("soul_stabilizer.png");
     public static final ResourceLocation SOUL_SMITHING_BLOCK = entity("soul_smithing_block.png");
-
-    public static final ResourceLocation SOUL_CRAFTING = gui("container/soul_crafting.png");
 
     public static final ResourceLocation NARAKA_ADVANCEMENT_ROOT_BACKGROUND = gui("advancements/backgrounds/naraka.png");
 

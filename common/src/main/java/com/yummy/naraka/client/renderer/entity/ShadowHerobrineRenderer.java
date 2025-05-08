@@ -2,6 +2,7 @@ package com.yummy.naraka.client.renderer.entity;
 
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.layer.ShadowHerobrineArmorLayer;
+import com.yummy.naraka.client.layer.ShadowHerobrineHeadLayer;
 import com.yummy.naraka.client.renderer.entity.state.ShadowHerobrineRenderState;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
 import net.fabricmc.api.EnvType;
@@ -13,6 +14,7 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
     public ShadowHerobrineRenderer(EntityRendererProvider.Context context) {
         super(context, NarakaModelLayers.HEROBRINE);
         this.addLayer(new ShadowHerobrineArmorLayer(this, context));
+        this.addLayer(new ShadowHerobrineHeadLayer(this));
     }
 
     @Override
