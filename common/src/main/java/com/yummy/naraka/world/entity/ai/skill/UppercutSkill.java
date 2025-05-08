@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.server.level.ServerLevel;
@@ -54,7 +55,7 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
 
     @Override
     protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (!targetInRange(target, 6))
+        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15) || !targetInRange(target, 6))
             return;
         super.hurtHitEntity(level, target);
         if (stunTarget)

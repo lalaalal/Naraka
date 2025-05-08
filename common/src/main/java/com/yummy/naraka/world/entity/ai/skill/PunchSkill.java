@@ -43,7 +43,7 @@ public class PunchSkill extends ComboSkill<AbstractHerobrine> {
 
     @Override
     protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 100, 25) || !targetInRange(target, 4))
+        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15) || !targetInRange(target, 4))
             return;
         super.hurtHitEntity(level, target);
         if (stunTarget)
