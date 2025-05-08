@@ -4,9 +4,11 @@ import com.yummy.naraka.client.gui.components.SkillList;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SkillRequestPayload;
 import com.yummy.naraka.world.entity.SkillUsingMob;
+import com.yummy.naraka.world.entity.ai.skill.SkillManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
+import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -19,27 +21,35 @@ public class SkillControlScreen extends Screen {
     public SkillControlScreen(SkillUsingMob mob) {
         super(Component.literal("Skill Control"));
         this.mob = mob;
-        this.skillList = new SkillList(Minecraft.getInstance(), this, mob.getSkillNames());
+        SkillManager skillManager = mob.getSkillManager();
+        this.skillList = new SkillList(Minecraft.getInstance(), this, skillManager.getSkillNames());
     }
 
     @Override
     protected void init() {
         layout.visitWidgets(this::addRenderableWidget);
         layout.addToContents(skillList);
-        layout.addToFooter(
-                Button.builder(CommonComponents.GUI_DONE, this::onDone)
-                        .build()
-        );
+        LinearLayout linearLayout = new LinearLayout(layout.getWidth(), layout.getFooterHeight(), LinearLayout.Orientation.HORIZONTAL);
+        linearLayout.addChild(Button.builder(Component.literal("disable skills"), this::disableSkills).build());
+        linearLayout.addChild(Button.builder(CommonComponents.GUI_DONE, this::onDone).build());
+        layout.addToFooter(linearLayout);
         layout.arrangeElements();
         layout.visitWidgets(this::addRenderableWidget);
     }
 
+    private void disableSkills(Button button) {
+        if (minecraft != null)
+            minecraft.setScreen(null);
+        SkillRequestPayload payload = new SkillRequestPayload(SkillRequestPayload.Event.DISABLE, mob);
+        NetworkManager.serverbound().send(payload);
+    }
+
     private void onDone(Button button) {
-        assert minecraft != null;
-        minecraft.setScreen(null);
+        if (minecraft != null)
+            minecraft.setScreen(null);
         SkillList.Entry entry = skillList.getSelected();
         if (entry != null) {
-            SkillRequestPayload payload = new SkillRequestPayload(mob, entry.location);
+            SkillRequestPayload payload = new SkillRequestPayload(SkillRequestPayload.Event.USE, mob, entry.location);
             NetworkManager.serverbound().send(payload);
         }
     }
