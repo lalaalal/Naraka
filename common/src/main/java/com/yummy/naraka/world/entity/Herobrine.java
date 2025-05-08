@@ -424,7 +424,6 @@ public class Herobrine extends AbstractHerobrine {
         float healthAfterHurt = phaseManager.getCurrentPhaseHealth() + getAbsorptionAmount() - actualDamage;
         if (healthAfterHurt < 1) {
             setHealth(phaseManager.getActualPhaseMaxHealth(getPhase() + 1) + 1);
-            startHibernateMode();
             return true;
         }
 
