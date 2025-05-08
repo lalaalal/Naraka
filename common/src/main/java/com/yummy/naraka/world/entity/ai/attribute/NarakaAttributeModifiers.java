@@ -23,7 +23,8 @@ public class NarakaAttributeModifiers {
     public static final AttributeModifier STUN_PREVENT_ENTITY_INTERACTION = preventEntityInteraction("stun");
 
     public static final AttributeModifier HIBERNATE_PREVENT_MOVING = preventMoving("hibernate");
-    public static final AttributeModifier STAGGERING_PREVENT_MOVING = preventMoving("weakness");
+    public static final AttributeModifier STAGGERING_PREVENT_MOVING = preventMoving("staggering");
+    public static final AttributeModifier PAUSE_PREVENT_MOVING = preventMoving("pause");
 
     public static final ResourceLocation REDUCE_MAX_HEALTH_ID = reduceMaxHealthId("locked_health");
 

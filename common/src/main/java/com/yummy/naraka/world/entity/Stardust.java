@@ -120,12 +120,12 @@ public class Stardust extends Entity {
             entityData.set(HIT_BLOCK, true);
             explode(2);
         }
-        if (hitResult instanceof EntityHitResult entityHitResult) {
+        if (hitResult instanceof EntityHitResult entityHitResult && level() instanceof ServerLevel level) {
             Entity source = owner == null ? this : owner;
             explode(2);
             if (entityHitResult.getEntity() instanceof Player livingEntity
                     && !livingEntity.isDamageSourceBlocked(NarakaDamageSources.stardust(this))) {
-                StigmaHelper.increaseStigma(livingEntity, source);
+                StigmaHelper.increaseStigma(level, livingEntity, source);
             }
         }
     }
