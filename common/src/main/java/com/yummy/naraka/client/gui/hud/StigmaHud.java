@@ -53,7 +53,7 @@ public class StigmaHud implements LayeredDraw.Layer {
         int y = guiGraphics.guiHeight() / 2 - CONSUME_ICON_HEIGHT / 2;
 
         float alpha = consumeIconDisplayTick / (float) CONSUME_ICON_DISPLAYING_TIME;
-        guiGraphics.blit(RenderType::guiTextured, NarakaSprites.STIGMA_CONSUME, x, y, 0, 0, CONSUME_ICON_WIDTH, CONSUME_ICON_HEIGHT, CONSUME_ICON_WIDTH, CONSUME_ICON_HEIGHT, ARGB.white(alpha));
+        guiGraphics.blitSprite(RenderType::guiTextured, NarakaSprites.STIGMA_CONSUME, x, y, CONSUME_ICON_WIDTH, CONSUME_ICON_HEIGHT, ARGB.white(alpha));
     }
 
     @Override
