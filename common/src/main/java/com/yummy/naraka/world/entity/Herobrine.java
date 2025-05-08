@@ -51,8 +51,7 @@ public class Herobrine extends AbstractHerobrine {
     private static final float[] HEALTH_BY_PHASE = {106, 210, 350};
 
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
-    public static final int MAX_HURT_DAMAGE_LIMIT = 25;
-    public static final int MIN_HURT_DAMAGE_LIMIT = 8;
+    public static final int MAX_HURT_DAMAGE_LIMIT = 20;
     public static final int MAX_ACCUMULATED_DAMAGE_TICK_COUNT = 40;
 
     protected final DashSkill<AbstractHerobrine> dashSkill = registerSkill(this, DashSkill::new);
@@ -351,8 +350,6 @@ public class Herobrine extends AbstractHerobrine {
         if (source.getEntity() == this)
             return false;
 
-        float actualDamage = getActualDamage(source, damage);
-        updateHurtDamageLimit(level, actualDamage);
         float limitedDamage = Math.min(damage, hurtDamageLimit);
         if (updateHibernateMode(level, source, getActualDamage(source, limitedDamage)))
             return true;
@@ -372,8 +369,10 @@ public class Herobrine extends AbstractHerobrine {
     protected void actuallyHurt(DamageSource damageSource, float damageAmount) {
         super.actuallyHurt(damageSource, damageAmount);
         accumulatedHurtDamage += damageAmount;
-        if ((accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f) && level() instanceof ServerLevel serverLevel)
+        if ((accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f) && level() instanceof ServerLevel serverLevel) {
+            updateHurtDamageLimit(serverLevel);
             shadowController.switchWithShadowHerobrine(serverLevel);
+        }
     }
 
     private float getPhaseMinimumHealth() {
@@ -411,16 +410,10 @@ public class Herobrine extends AbstractHerobrine {
         return getDamageAfterMagicAbsorb(source, damage);
     }
 
-    private float calculateHurtDamageLimitReduce(float damage) {
-        return Math.max(
-                Math.min(damage, hurtDamageLimit) - 8,
-                MIN_HURT_DAMAGE_LIMIT
-        );
-    }
-
-    private void updateHurtDamageLimit(ServerLevel level, float damage) {
+    private void updateHurtDamageLimit(ServerLevel level) {
         if (phaseManager.getCurrentPhase() < 3 && hurtDamageLimit > 1) {
-            hurtDamageLimit = hurtDamageLimit - calculateHurtDamageLimitReduce(damage);
+            float damageLimitReduce = NarakaConfig.COMMON.herobrineHurtLimitReduce.getValue();
+            hurtDamageLimit = hurtDamageLimit - damageLimitReduce;
             if (hurtDamageLimit <= 1) {
                 hurtDamageLimit = 0;
                 startHibernateMode(level);
