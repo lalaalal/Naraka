@@ -3,6 +3,7 @@ package com.yummy.naraka.world.entity.data;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
 import com.yummy.naraka.world.entity.StunHelper;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -27,13 +28,13 @@ public record Stigma(int value, long lastMarkedTime) {
      * @param cause        Entity that causes the stigma to be increased
      * @param recordTime   Update {@link #lastMarkedTime} if value is true
      * @return Updated value of stigma
-     * @see Stigma#consume(LivingEntity, Entity)
+     * @see Stigma#consume(ServerLevel, LivingEntity, Entity)
      */
-    public Stigma increase(LivingEntity livingEntity, Entity cause, boolean recordTime) {
+    public Stigma increase(ServerLevel level, LivingEntity livingEntity, Entity cause, boolean recordTime) {
         long time = recordTime ? livingEntity.level().getGameTime() : lastMarkedTime;
         if (value < MAX_STIGMA)
             return increased(time);
-        return increased(time).consume(livingEntity, cause);
+        return increased(time).consume(level, livingEntity, cause);
     }
 
     private Stigma increased(long time) {
@@ -47,23 +48,24 @@ public record Stigma(int value, long lastMarkedTime) {
     }
 
     /**
-     * Reset stigma of living entity to 0.
+     * Reset the stigma of living entity to 0.
      * Stun and lock health of living entity for {@link #HOLD_ENTITY_DURATION} ticks.<br>
-     * Call {@link StigmatizingEntity#collectStigma(Stigma)} if caused entity is {@linkplain StigmatizingEntity}
+     * Call {@link StigmatizingEntity#collectStigma(ServerLevel, LivingEntity, Stigma)} if caused entity is {@linkplain StigmatizingEntity}
      *
      * @param livingEntity Target entity to consume stigma
      * @param cause        Entity that causes the stigma to be consumed
      * @return Stigma with value 0 and current time
      * @see StunHelper#stunEntity(LivingEntity, int)
      * @see LockedHealthHelper#lock(LivingEntity, double)
-     * @see StigmatizingEntity#collectStigma(Stigma)
+     * @see StigmatizingEntity#collectStigma(ServerLevel, LivingEntity, Stigma)
      */
-    public Stigma consume(LivingEntity livingEntity, Entity cause) {
-        if (livingEntity != cause && cause instanceof StigmatizingEntity stigmatizingEntity)
-            stigmatizingEntity.collectStigma(this);
+    public Stigma consume(ServerLevel level, LivingEntity livingEntity, Entity cause) {
         lockHealth(livingEntity, cause);
         StunHelper.stunEntity(livingEntity, HOLD_ENTITY_DURATION);
         livingEntity.level().playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.TOTEM_USE, livingEntity.getSoundSource(), 1.0F, 1.0F);
+
+        if (livingEntity != cause && cause instanceof StigmatizingEntity stigmatizingEntity)
+            stigmatizingEntity.collectStigma(level, livingEntity, this);
 
         return new Stigma(0, lastMarkedTime);
     }

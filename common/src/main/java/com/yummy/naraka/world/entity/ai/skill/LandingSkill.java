@@ -27,7 +27,7 @@ public class LandingSkill extends ComboSkill<AbstractHerobrine> {
     @Override
     protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
         super.hurtHitEntity(level, target);
-        mob.stigmatizeEntity(target);
+        mob.stigmatizeEntity(level, target);
     }
 
     @Override

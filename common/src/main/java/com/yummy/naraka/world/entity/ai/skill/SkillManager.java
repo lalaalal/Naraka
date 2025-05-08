@@ -137,6 +137,7 @@ public class SkillManager {
         return currentSkill;
     }
 
+    @Nullable
     public Skill<?> getSkill(ResourceLocation location) {
         return skills.get(location).skill;
     }

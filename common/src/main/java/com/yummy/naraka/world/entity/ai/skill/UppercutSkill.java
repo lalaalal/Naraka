@@ -50,7 +50,7 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
             return;
         super.hurtHitEntity(level, target);
         target.addDeltaMovement(new Vec3(0, 0.4, 0));
-        mob.stigmatizeEntity(target);
+        mob.stigmatizeEntity(level, target);
         level.playSound(mob, mob.blockPosition(), SoundEvents.ANVIL_PLACE, SoundSource.HOSTILE, 1, 1);
     }
 

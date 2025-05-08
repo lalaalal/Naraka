@@ -44,15 +44,22 @@ public abstract class SkillUsingMob extends PathfinderMob {
             controller.update(consumer);
     }
 
+    public SkillManager getSkillManager() {
+        return skillManager;
+    }
+
+    @Deprecated
     public Set<ResourceLocation> getAnimations() {
         return animationStates.keySet();
     }
 
+    @Deprecated
     public void useSkill(ResourceLocation location) {
         Skill<?> skill = skillManager.getSkill(location);
         skillManager.setCurrentSkillIfAbsence(skill);
     }
 
+    @Deprecated
     public Set<ResourceLocation> getSkillNames() {
         return skillManager.getSkillNames();
     }

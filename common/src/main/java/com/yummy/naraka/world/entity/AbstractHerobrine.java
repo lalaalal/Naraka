@@ -7,6 +7,7 @@ import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -110,8 +111,8 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, false, target -> !target.getType().is(NarakaEntityTypeTags.HEROBRINE)));
 
         goalSelector.addGoal(1, new FloatGoal(this));
-        goalSelector.addGoal(2, new MoveToTargetGoal(this, 1, 64));
-        goalSelector.addGoal(3, new LookAtTargetGoal(this));
+        goalSelector.addGoal(2, new LookAtTargetGoal(this));
+        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64));
     }
 
     @Override
@@ -120,7 +121,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         super.customServerAiStep();
     }
 
-    protected abstract Fireball createFireball();
+    protected abstract Fireball createFireball(ServerLevel level);
 
     @Override
     public boolean canBeAffected(MobEffectInstance effectInstance) {
