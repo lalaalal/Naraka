@@ -219,7 +219,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         generateSpear(generator, NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), NarakaModelLayers.SPEAR, NarakaTextures.MIGHTY_HOLY_SPEAR);
         generateSpearOfLonginus(generator, NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
 
-        generator.generateFlatItem(NarakaItems.SKILL_CONTROLLER.get(), NarakaItems.STIGMA_ROD.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.SKILL_CONTROLLER.get(), NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.GOD_BLOOD.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.NECTARIUM.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.EBONY_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
