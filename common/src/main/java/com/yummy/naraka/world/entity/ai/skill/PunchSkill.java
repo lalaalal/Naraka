@@ -50,7 +50,7 @@ public class PunchSkill extends ComboSkill<AbstractHerobrine> {
         if (stunTarget)
             StunHelper.stunEntity(target, 100);
         mob.stigmatizeEntity(level, target);
-        level.playSound(null, mob.blockPosition(), SoundEvents.NETHER_BRICKS_BREAK, SoundSource.HOSTILE, 1, 1);
+        level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
     }
 
     @Override
