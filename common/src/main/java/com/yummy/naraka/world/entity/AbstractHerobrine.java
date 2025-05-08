@@ -86,7 +86,8 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     protected void stopStaggering() {
-        setAnimation(AnimationLocations.IDLE);
+        if (getCurrentAnimation().equals(AnimationLocations.STAGGERING))
+            setAnimation(AnimationLocations.IDLE);
         staggeringTickCount = Integer.MIN_VALUE;
         skillManager.resume();
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STAGGERING_PREVENT_MOVING);
