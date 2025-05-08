@@ -129,7 +129,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
             double scale = Mth.clamp(tracingVectorLength, 0, 0.03);
             if (!canReduceSpeed && deltaMovement.y < 0) {
                 tracingVector.multiply(1, 0, 1);
-                scale *= 0.5;
+                scale *= 0.3;
             }
 
             setDeltaMovement(
@@ -137,7 +137,6 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
                             .normalize()
                             .scale(length)
             );
-
         }
     }
 
@@ -159,7 +158,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     protected void onHit(HitResult result) {
         super.onHit(result);
         if (!level().isClientSide) {
-            level().explode(this, damageSources().fireball(this, getOwner()), null, position(), 2, false, Level.ExplosionInteraction.MOB);
+            level().explode(this, NarakaDamageSources.narakaFireball(this), null, position(), 1.5f, false, Level.ExplosionInteraction.TRIGGER);
             discard();
         }
     }
@@ -185,7 +184,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     protected DamageSource getDamageSource(@Nullable Entity owner) {
         if (entityData.get(FIXED_DAMAGE))
             return NarakaDamageSources.projectileFixed(this, owner);
-        return damageSources().fireball(this, owner);
+        return NarakaDamageSources.narakaFireball(this);
     }
 
     @Override
