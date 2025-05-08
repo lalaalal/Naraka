@@ -12,6 +12,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -101,6 +102,11 @@ public class Stardust extends Entity {
         }
     }
 
+    @Override
+    public boolean hurt(DamageSource damageSource, float amount) {
+        return false;
+    }
+
     @Nullable
     private LivingEntity getTarget() {
         if (owner instanceof Mob mob)
@@ -114,12 +120,12 @@ public class Stardust extends Entity {
             entityData.set(HIT_BLOCK, true);
             explode(2);
         }
-        if (hitResult instanceof EntityHitResult entityHitResult && level() instanceof ServerLevel serverLevel) {
+        if (hitResult instanceof EntityHitResult entityHitResult && level() instanceof ServerLevel level) {
             Entity source = owner == null ? this : owner;
             explode(2);
             if (entityHitResult.getEntity() instanceof Player livingEntity
                     && !livingEntity.isDamageSourceBlocked(NarakaDamageSources.stardust(this))) {
-                StigmaHelper.increaseStigma(serverLevel, livingEntity, source);
+                StigmaHelper.increaseStigma(level, livingEntity, source);
             }
         }
     }

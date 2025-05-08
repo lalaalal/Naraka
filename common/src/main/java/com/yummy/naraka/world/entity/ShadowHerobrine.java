@@ -181,7 +181,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     public boolean hurt(DamageSource source, float amount) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             return super.hurt(source, amount);
-        if ((getHerobrine().isPresent()))
+        if (getHerobrine().isPresent())
             amount = Math.min(amount, getHurtDamageLimit());
         if (staggeringTickCount > 0)
             return false;

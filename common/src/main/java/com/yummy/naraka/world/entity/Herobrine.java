@@ -128,14 +128,17 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void replaceThrowFireball(Skill<?> skill) {
-        if (!isHibernateMode() && skill.location.equals(ThrowFireballSkill.LOCATION) && random.nextFloat() < 0.4f) {
+        if (!isHibernateMode() && skill.location.equals(ThrowFireballSkill.LOCATION)
+                && random.nextFloat() < 0.4f && punchSkill.isEnabled()) {
             dashSkill.setLinkedSkill(punchSkill);
             skillManager.setCurrentSkill(dashSkill);
         }
     }
 
     private void useComboAttackOnIdle(@Nullable Skill<?> skill) {
-        if (getTarget() != null && !isStaggering() && !isHibernateMode() && skill == null && punchSkill.isEnabled())
+        if (getTarget() != null
+                && !isStaggering() && !isHibernateMode()
+                && skill == null && punchSkill.isEnabled())
             skillManager.setCurrentSkill(punchSkill);
     }
 

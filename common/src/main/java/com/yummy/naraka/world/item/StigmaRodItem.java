@@ -26,8 +26,8 @@ public class StigmaRodItem extends Item {
 
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity user) {
-        if (target.level() instanceof ServerLevel serverLevel) {
-            StigmaHelper.increaseStigma(serverLevel, target, user);
+        if (target.level() instanceof ServerLevel level) {
+            StigmaHelper.increaseStigma(level, target, user);
             Reinforcement.increase(itemStack, NarakaReinforcementEffects.INCREASE_ATTACK_DAMAGE);
         }
         return super.hurtEnemy(itemStack, target, user);
