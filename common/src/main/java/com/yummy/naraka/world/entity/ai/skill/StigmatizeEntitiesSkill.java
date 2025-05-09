@@ -16,7 +16,7 @@ public class StigmatizeEntitiesSkill<T extends SkillUsingMob & StigmatizingEntit
     }
 
     @Override
-    public boolean canUse() {
+    public boolean canUse(ServerLevel level) {
         return true;
     }
 

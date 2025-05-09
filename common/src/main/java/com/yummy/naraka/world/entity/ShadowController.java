@@ -105,8 +105,20 @@ public class ShadowController {
     private void updateShadowsSkill(ServerLevel level) {
         for (ShadowHerobrine shadowHerobrine : getShadows(level)) {
             Skill<?> punchSkill = shadowHerobrine.getSkillManager().getSkill(PunchSkill.LOCATION);
-            if (punchSkill != null)
+            if (punchSkill != null) {
                 punchSkill.changeCooldown(getSkillCooldown(shadowHerobrine));
+                punchSkill.setEnabled(shadowHerobrine == mainShadow);
+            }
+        }
+    }
+
+    private void resetShadowsSkill(ServerLevel level) {
+        for (ShadowHerobrine shadowHerobrine : getShadows(level)) {
+            Skill<?> punchSkill = shadowHerobrine.getSkillManager().getSkill(PunchSkill.LOCATION);
+            if (punchSkill != null) {
+                punchSkill.changeCooldown(PunchSkill.DEFAULT_COOLDOWN);
+                punchSkill.setEnabled(true);
+            }
         }
     }
 
@@ -123,6 +135,15 @@ public class ShadowController {
                 .ifPresent(shadowHerobrine -> mainShadow = shadowHerobrine);
     }
 
+    public boolean someoneJustUsedSkill(ServerLevel level) {
+        for (ShadowHerobrine shadowHerobrine : getShadows(level)) {
+            Skill<?> skill = shadowHerobrine.getCurrentSkill();
+            if (skill != null && skill.getCurrentTickCount() < 20)
+                return true;
+        }
+        return false;
+    }
+
     public void updateRolePlaying(ServerLevel level) {
         switchMainShadow(level);
         updateShadowsSkill(level);
@@ -131,7 +152,7 @@ public class ShadowController {
 
     public void stopRolePlaying(ServerLevel level) {
         mainShadow = null;
-        updateShadowsSkill(level);
+        resetShadowsSkill(level);
         for (ShadowHerobrine shadowHerobrine : getShadows(level))
             shadowHerobrine.stopAvoidTarget();
     }

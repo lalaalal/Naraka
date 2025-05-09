@@ -12,7 +12,7 @@ public class RolePlayShadowSkill extends Skill<Herobrine> {
     }
 
     @Override
-    public boolean canUse() {
+    public boolean canUse(ServerLevel level) {
         return true;
     }
 

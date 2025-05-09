@@ -17,13 +17,12 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
     private Vec3 deltaMovement = Vec3.ZERO;
 
     public DashAroundSkill(T mob) {
-        super(NAME, 7, 50, mob);
+        super(NAME, 7, 20, mob);
     }
 
     @Override
-    public boolean canUse() {
-        LivingEntity target = mob.getTarget();
-        return target != null;
+    public boolean canUse(ServerLevel level) {
+        return targetInRange(25);
     }
 
     @Override
@@ -66,7 +65,7 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
         if (target != null)
             targetPosition = target.position();
 
-        int rotationDegrees = 60 * (mob.getRandom().nextInt(2) * 2 - 1);
+        int rotationDegrees = -150 * (mob.getRandom().nextInt(2) * 2 - 1);
         if (target == null)
             rotationDegrees *= 4;
         Vector3f vector = NarakaEntityUtils.getDirectionNormalVector(mob.position(), targetPosition)

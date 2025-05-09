@@ -17,7 +17,7 @@ public class BlockingSkill extends Skill<SkillUsingMob> {
     }
 
     @Override
-    public boolean canUse() {
+    public boolean canUse(ServerLevel level) {
         return true;
     }
 

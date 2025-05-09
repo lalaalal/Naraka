@@ -109,7 +109,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     @Override
     protected void registerGoals() {
         targetSelector.addGoal(1, new HurtByTargetGoal(this, Herobrine.class));
-        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, false, target -> !target.getType().is(NarakaEntityTypeTags.HEROBRINE)));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, false, AbstractHerobrine::isNotHerobrine));
 
         goalSelector.addGoal(1, new FloatGoal(this));
         goalSelector.addGoal(2, new LookAtTargetGoal(this));

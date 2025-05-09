@@ -32,6 +32,11 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     @Override
+    protected void onFirstTick(ServerLevel level) {
+        mob.getNavigation().stop();
+    }
+
+    @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAt(10, this::jump);
         runAt(12, this::floating);
@@ -51,7 +56,6 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runAt(10, this::hurtHitEntity, level, target);
-        mob.getLookControl().setLookAt(target);
     }
 
     @Override

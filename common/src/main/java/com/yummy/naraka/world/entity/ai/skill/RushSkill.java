@@ -36,7 +36,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     }
 
     @Override
-    public boolean canUse() {
+    public boolean canUse(ServerLevel level) {
         LivingEntity target = mob.getTarget();
         return target != null;
     }
