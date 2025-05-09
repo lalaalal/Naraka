@@ -163,13 +163,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     public float getHurtDamageLimit() {
-        Optional<Herobrine> optional = getHerobrine();
-        if (optional.isEmpty())
-            return Float.MAX_VALUE;
-        float herobrineHurtDamageLimit = optional.get().getHurtDamageLimit();
-        if (herobrineHurtDamageLimit <= 1)
-            return Float.MAX_VALUE;
-        return herobrineHurtDamageLimit;
+        return 15;
     }
 
     @Override
