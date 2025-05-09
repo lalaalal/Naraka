@@ -24,7 +24,7 @@ public class ThrowFireballSkill extends Skill<SkillUsingMob> {
     }
 
     @Override
-    public boolean canUse() {
+    public boolean canUse(ServerLevel level) {
         LivingEntity target = mob.getTarget();
         return target != null && (!canMove() || mob.distanceToSqr(target) > 5 * 5);
     }

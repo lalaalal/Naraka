@@ -18,7 +18,7 @@ public class DashSkill<T extends SkillUsingMob & AfterimageEntity> extends Skill
     }
 
     @Override
-    public boolean canUse() {
+    public boolean canUse(ServerLevel level) {
         LivingEntity target = mob.getTarget();
         return target != null;
     }

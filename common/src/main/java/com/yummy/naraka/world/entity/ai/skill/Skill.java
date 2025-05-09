@@ -50,7 +50,7 @@ public abstract class Skill<T extends SkillUsingMob> {
         return mob.distanceToSqr(target) <= distanceSquare;
     }
 
-    public abstract boolean canUse();
+    public abstract boolean canUse(ServerLevel level);
 
     public void setEnabled(boolean value) {
         disabled = !value;

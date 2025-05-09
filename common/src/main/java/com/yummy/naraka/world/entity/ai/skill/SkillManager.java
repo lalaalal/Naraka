@@ -47,18 +47,18 @@ public class SkillManager {
     }
 
     @Nullable
-    private Skill<?> selectSkill() {
+    private Skill<?> selectSkill(ServerLevel level) {
         if (paused || waitingTick > 0)
             return null;
 
         Optional<Entry> minimum = this.skills.values().stream()
-                .filter(Entry::prepared)
+                .filter(entry -> entry.prepared(level))
                 .min(Comparator.comparingInt(Entry::priority));
 
         if (minimum.isEmpty())
             return null;
         List<Skill<?>> usableSkills = this.skills.values().stream()
-                .filter(Entry::prepared)
+                .filter(entry -> entry.prepared(level))
                 .filter(entry -> entry.priority == minimum.get().priority())
                 .map(Entry::skill)
                 .collect(Collectors.toUnmodifiableList());
@@ -119,7 +119,7 @@ public class SkillManager {
                     currentSkill = null;
             }
         } else {
-            Skill<?> usable = selectSkill();
+            Skill<?> usable = selectSkill(level);
             if (usable != null)
                 setCurrentSkill(usable);
             for (Consumer<Skill<?>> listener : skillSelectListeners)
@@ -156,8 +156,8 @@ public class SkillManager {
             skill.setEnabled(value);
         }
 
-        boolean prepared() {
-            return skill.readyToUse() && skill.canUse();
+        boolean prepared(ServerLevel level) {
+            return skill.readyToUse() && skill.canUse(level);
         }
     }
 }

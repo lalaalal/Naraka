@@ -5,6 +5,7 @@ import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.ai.goal.FollowOwnerGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.PunchSkill;
+import com.yummy.naraka.world.entity.ai.skill.ShadowPunchSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.UppercutSkill;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
@@ -27,7 +28,6 @@ import net.minecraft.world.entity.TraceableEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -39,17 +39,18 @@ import java.util.UUID;
 
 public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntity {
     protected final UppercutSkill uppercutSkill = registerSkill(new UppercutSkill(null, this), AnimationLocations.COMBO_ATTACK_2);
-    protected final PunchSkill punchSkill = registerSkill(new PunchSkill(uppercutSkill, this, 90, false), AnimationLocations.COMBO_ATTACK_1);
+    protected final ShadowPunchSkill punchSkill = registerSkill(new ShadowPunchSkill(uppercutSkill, this), AnimationLocations.COMBO_ATTACK_1);
 
     @Nullable
     private Herobrine herobrine;
     @Nullable
     private UUID herobrineUUID;
 
-    private final MoveToTargetGoal moveToTargetGoal = new MoveToTargetGoal(this, 1, 64);
-    private final AvoidEntityGoal<LivingEntity> avoidTargetGoal = new AvoidEntityGoal<>(this,
-            LivingEntity.class,
-            8, 1.4, 2,
+    private final MoveToTargetGoal moveToTargetGoal = new MoveToTargetGoal(this, 1, 64, 40, 0.4f);
+    private final AvoidEntityGoal<LivingEntity> avoidTargetGoal = new AvoidEntityGoal<>(
+            this, LivingEntity.class,
+            entity -> !this.isUsingSkill(),
+            4, 1.4, 1.6,
             entity -> getHerobrine()
                     .map(herobrine -> herobrine.getTarget() == entity)
                     .orElse(this.getTarget() == entity)
@@ -64,22 +65,12 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
     protected ShadowHerobrine(EntityType<? extends AbstractHerobrine> entityType, Level level) {
         super(entityType, level, true);
-        skillManager.runOnSkillSelect(this::preventUseSkillWithHerobrineInSameTime);
         skillManager.enableOnly(List.of(punchSkill));
-    }
 
-    private void preventUseSkillWithHerobrineInSameTime(@Nullable Skill<?> skill) {
-        if (skill != null && herobrineJustUsedSkill())
-            skillManager.interrupt();
-    }
+        skillManager.runOnSkillStart(this::resetPunchCooldown);
+        skillManager.runOnSkillEnd(this::increasePunchCooldown);
 
-    private boolean herobrineJustUsedSkill() {
-        if (herobrine == null)
-            return false;
-        Skill<?> skill = herobrine.getCurrentSkill();
-        if (skill == null)
-            return false;
-        return skill.getCurrentTickCount() < 20;
+        goalSelector.addGoal(3, moveToTargetGoal);
     }
 
     public ShadowHerobrine(Level level, Herobrine herobrine) {
@@ -88,21 +79,28 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         this.herobrineUUID = herobrine.getUUID();
     }
 
+    private void resetPunchCooldown(Skill<?> skill) {
+        if (skill == punchSkill)
+            punchSkill.changeCooldown(PunchSkill.DEFAULT_COOLDOWN);
+    }
+
+    private void increasePunchCooldown(Skill<?> skill) {
+        punchSkill.changeCooldown(punchSkill.getCooldown() + 20);
+    }
+
     @Override
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new FollowOwnerGoal<>(this));
-        goalSelector.addGoal(2, new RandomStrollGoal(this, 1));
     }
 
     public void startAvoidTarget() {
-        goalSelector.removeGoal(moveToTargetGoal);
         goalSelector.addGoal(2, avoidTargetGoal);
     }
 
     public void stopAvoidTarget() {
         goalSelector.removeGoal(avoidTargetGoal);
-        goalSelector.addGoal(2, moveToTargetGoal);
+        moveToTargetGoal.start();
     }
 
     @Override
@@ -110,7 +108,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         return false;
     }
 
-    private Optional<Herobrine> getHerobrine() {
+    public Optional<Herobrine> getHerobrine() {
         if (herobrineUUID == null)
             return Optional.empty();
         if (herobrine == null && level() instanceof ServerLevel serverLevel)

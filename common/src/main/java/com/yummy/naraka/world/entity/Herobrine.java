@@ -11,6 +11,7 @@ import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
+import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.*;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import com.yummy.naraka.world.entity.data.LockedHealthHelper;
@@ -61,17 +62,18 @@ public class Herobrine extends AbstractHerobrine {
     protected final BlockingSkill blockingSkill = registerSkill(this, BlockingSkill::new, AnimationLocations.BLOCKING);
     protected final SummonShadowSkill summonShadowSkill = registerSkill(0, this, SummonShadowSkill::new);
     protected final RolePlayShadowSkill rolePlayShadowSkill = registerSkill(1, this, RolePlayShadowSkill::new);
+    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(new RushSkill<>(this, AbstractHerobrine::isNotHerobrine), AnimationLocations.RUSH);
 
     protected final LandingSkill landingSkill = registerSkill(this, LandingSkill::new, AnimationLocations.COMBO_ATTACK_5);
     protected final SuperHitSkill superHitSkill = registerSkill(new SuperHitSkill(landingSkill, this), AnimationLocations.COMBO_ATTACK_4);
     protected final SpinningSkill spinningSkill = registerSkill(new SpinningSkill(superHitSkill, this), AnimationLocations.COMBO_ATTACK_3);
     protected final UppercutSkill uppercutSkill = registerSkill(new UppercutSkill(spinningSkill, this), AnimationLocations.COMBO_ATTACK_2);
-    protected final PunchSkill punchSkill = registerSkill(new PunchSkill(uppercutSkill, this, true), AnimationLocations.COMBO_ATTACK_1);
+    protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(2, new PunchSkill<>(uppercutSkill, this, true), AnimationLocations.COMBO_ATTACK_1);
 
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill, rolePlayShadowSkill);
-    private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, throwFireballSkill);
-    private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, throwFireballSkill, summonShadowSkill);
+    private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, rushSkill, throwFireballSkill);
+    private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, rushSkill, throwFireballSkill, summonShadowSkill);
 
     private final List<List<Skill<?>>> HIBERNATED_MODE_SKILL_BY_PHASE = List.of(
             List.of(), HIBERNATED_MODE_PHASE_1_SKILLS, HIBERNATED_MODE_PHASE_2_SKILLS, List.of()
@@ -92,6 +94,8 @@ public class Herobrine extends AbstractHerobrine {
     private float hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
 
     private boolean hibernateMode = false;
+
+    protected int idleTickCount = 0;
 
     protected int accumulatedDamageTickCount;
     protected float accumulatedHurtDamage;
@@ -139,8 +143,14 @@ public class Herobrine extends AbstractHerobrine {
     private void useComboAttackOnIdle(@Nullable Skill<?> skill) {
         if (getTarget() != null
                 && !isStaggering() && !isHibernateMode()
-                && skill == null && punchSkill.isEnabled())
+                && skill == null && punchSkill.isEnabled() && idleTickCount > 40)
             skillManager.setCurrentSkill(punchSkill);
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64));
     }
 
     @Override
@@ -267,6 +277,7 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     protected void customServerAiStep(ServerLevel serverLevel) {
+        updateIdleTick();
         updateAccumulatedDamage();
         updateScarfRotation();
 
@@ -275,6 +286,14 @@ public class Herobrine extends AbstractHerobrine {
         phaseManager.updatePhase(bossEvent);
 
         super.customServerAiStep(serverLevel);
+    }
+
+    private void updateIdleTick() {
+        if (getCurrentAnimation().equals(AnimationLocations.IDLE)) {
+            idleTickCount += 1;
+        } else {
+            idleTickCount = 0;
+        }
     }
 
     private void updateAccumulatedDamage() {

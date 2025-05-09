@@ -10,19 +10,19 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
-public class PunchSkill extends ComboSkill<AbstractHerobrine> {
+public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
     public static final ResourceLocation LOCATION = createLocation("punch");
     public static final int DEFAULT_COOLDOWN = 200;
 
     private final boolean stunTarget;
     private boolean linked = false;
 
-    public PunchSkill(ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob, boolean withStun) {
+    public PunchSkill(ComboSkill<?> comboSkill, T mob, boolean withStun) {
         super(LOCATION, 35, DEFAULT_COOLDOWN, 0.8f, comboSkill, 15, mob);
         this.stunTarget = withStun;
     }
 
-    public PunchSkill(ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob, int cooldown, boolean withStun) {
+    public PunchSkill(ComboSkill<?> comboSkill, T mob, int cooldown, boolean withStun) {
         super(LOCATION, 35, cooldown, 0.8f, comboSkill, 15, mob);
         this.stunTarget = withStun;
     }
@@ -32,7 +32,7 @@ public class PunchSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     @Override
-    public boolean canUse() {
+    public boolean canUse(ServerLevel level) {
         return targetInRange(4);
     }
 

@@ -33,7 +33,7 @@ public class StigmaHud implements LayeredDraw.Layer {
     private static boolean isCurrentPlayer(LivingEntity livingEntity) {
         Player player = Minecraft.getInstance().player;
         if (player == null)
-            throw new IllegalStateException("Player is not set");
+            return false;
         return player.getUUID().equals(livingEntity.getUUID());
     }
 
