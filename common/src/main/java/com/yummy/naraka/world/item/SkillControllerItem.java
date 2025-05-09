@@ -26,7 +26,8 @@ public class SkillControllerItem extends Item {
     }
 
     public SkillControllerItem(Properties properties) {
-        super(properties.component(DataComponents.ATTRIBUTE_MODIFIERS, createModifiers()));
+        super(properties.component(DataComponents.ATTRIBUTE_MODIFIERS, createModifiers())
+                .stacksTo(1));
     }
 
     @Override
