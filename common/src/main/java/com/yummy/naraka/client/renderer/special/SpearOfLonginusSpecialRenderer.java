@@ -40,6 +40,8 @@ public class SpearOfLonginusSpecialRenderer implements NoDataSpecialModelRendere
     public void render(ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean hasFoilType) {
         poseStack.pushPose();
         poseStack.scale(1, -1, 1);
+        if (displayContext == ItemDisplayContext.GROUND)
+            poseStack.scale(4, 4, 4);
 
         if (NarakaConfig.CLIENT.enableNonShaderLonginusRendering.getValue())
             SpearRenderer.renderNonShaderLonginus(model, getAgeInTicks(), poseStack, bufferSource);

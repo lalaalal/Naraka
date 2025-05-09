@@ -9,7 +9,6 @@
         },
         "when": [
           "gui",
-          "ground",
           "fixed"
         ]
       }
