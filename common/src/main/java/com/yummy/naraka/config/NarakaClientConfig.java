@@ -23,8 +23,8 @@ public class NarakaClientConfig extends StaticConfiguration {
         this.enableNonShaderLonginusRendering = define("enable_non_shader_longinus_rendering", true)
                 .comment("Automatically disabled when launching without iris")
                 .comment("If value is false, always disable");
-        this.afterimageColor = define("afterimage_color", Color.of(0x7e00ff));
-        this.shadowHerobrineColor = define("shadow_herobrine_color", Color.of(0x0000ff));
+        this.afterimageColor = define("afterimage_color", Color.of(0x000000));
+        this.shadowHerobrineColor = define("shadow_herobrine_color", Color.of(0x000000));
 
         this.alwaysDisplayHerobrineScarf = define("always_display_herobrine_scarf", false);
         this.herobrineScarfDefaultRotation = define("herobrine_scarf_default_rotation", 70.0f);
