@@ -88,7 +88,7 @@ public class SpearRenderer extends EntityRenderer<Spear> {
     public static void renderNonShaderLonginus(EntityModel<? extends Spear> model, int tickCount, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         VertexConsumer background = buffer.getBuffer(RenderType.entityCutout(NarakaTextures.LONGINUS));
         model.renderToBuffer(poseStack, background, packedLight, OverlayTexture.NO_OVERLAY, 0xff000000);
-        if (NarakaConfig.CLIENT.disableNonShaderLonginusRendering.getValue())
+        if (!NarakaConfig.CLIENT.enableNonShaderLonginusRendering.getValue())
             return;
 
         float tick = tickCount + partialTicks;

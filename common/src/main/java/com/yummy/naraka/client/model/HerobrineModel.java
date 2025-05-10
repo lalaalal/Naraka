@@ -15,6 +15,7 @@ import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.util.Mth;
 
 @Environment(EnvType.CLIENT)
@@ -99,8 +100,10 @@ public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalMod
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        if (renderShadow)
+        if (renderShadow) {
             color = NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(0x88).pack();
+            packedLight = LightTexture.FULL_BRIGHT;
+        }
         super.renderToBuffer(poseStack, buffer, packedLight, packedOverlay, color);
         renderShadow = false;
     }

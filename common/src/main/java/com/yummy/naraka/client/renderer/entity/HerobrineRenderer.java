@@ -6,7 +6,6 @@ import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.layer.HerobrineEyeLayer;
 import com.yummy.naraka.client.layer.HerobrineScarfLayer;
-import com.yummy.naraka.client.layer.ShadowHerobrineArmorLayer;
 import com.yummy.naraka.client.layer.ShadowHerobrineHeadLayer;
 import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.util.Color;
@@ -38,7 +37,6 @@ public class HerobrineRenderer<T extends AbstractHerobrine> extends AfterimageEn
         return Util.make(
                 new HerobrineRenderer<>(context, NarakaModelLayers.HEROBRINE),
                 renderer -> {
-                    renderer.addLayer(new ShadowHerobrineArmorLayer(renderer, context));
                     renderer.addLayer(new ShadowHerobrineHeadLayer(renderer));
                 }
         );
