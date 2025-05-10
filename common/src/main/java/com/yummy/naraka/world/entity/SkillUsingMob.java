@@ -14,6 +14,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,6 +34,16 @@ public abstract class SkillUsingMob extends PathfinderMob {
         super(entityType, level);
 
         skillManager.runOnSkillStart(this::setAnimation);
+        skillManager.runOnSkillStart(this::disableMovingGoals);
+        skillManager.runOnSkillEnd(this::enableMovingGoals);
+    }
+
+    protected void disableMovingGoals(Skill<?> skill) {
+        goalSelector.disableControlFlag(Goal.Flag.MOVE);
+    }
+
+    protected void enableMovingGoals(Skill<?> skill) {
+        goalSelector.enableControlFlag(Goal.Flag.MOVE);
     }
 
     public boolean isUsingSkill() {

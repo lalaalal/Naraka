@@ -122,8 +122,8 @@ public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalMod
     }
 
     private void applyHeadRotation(float netHeadYaw, float headPitch) {
-        netHeadYaw = Mth.clamp(netHeadYaw, -30, 30);
-        headPitch = Mth.clamp(headPitch, -25, 45);
+        netHeadYaw = Mth.clamp(netHeadYaw, -45, 45);
+        headPitch = Mth.clamp(headPitch, -80, 45);
 
         this.head.yRot = netHeadYaw * (Mth.PI / 180f);
         this.head.xRot = headPitch * (Mth.PI / 180f);

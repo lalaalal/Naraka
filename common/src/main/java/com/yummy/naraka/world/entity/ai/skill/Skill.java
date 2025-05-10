@@ -45,11 +45,16 @@ public abstract class Skill<T extends SkillUsingMob> {
 
     protected final boolean targetInRange(float distanceSquare) {
         LivingEntity target = mob.getTarget();
-        return target != null && mob.distanceToSqr(target) <= distanceSquare;
+        return target != null && targetInRange(target, distanceSquare);
     }
 
     protected final boolean targetInRange(LivingEntity target, float distanceSquare) {
         return mob.distanceToSqr(target) <= distanceSquare;
+    }
+
+    protected final boolean targetOutOfRange(float distanceSquare) {
+        LivingEntity target = mob.getTarget();
+        return target != null && !targetInRange(distanceSquare);
     }
 
     public abstract boolean canUse(ServerLevel level);

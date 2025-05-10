@@ -38,7 +38,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return !targetInRange(25);
+        return targetOutOfRange(25);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
 
     @Override
     protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 20 * 8, 30)) {
+        if (NarakaEntityUtils.disableAndHurtShield(target, 20 * 5, 15)) {
             blockedEntities.add(target);
             return;
         }

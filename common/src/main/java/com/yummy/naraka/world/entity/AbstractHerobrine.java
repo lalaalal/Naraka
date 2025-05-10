@@ -4,7 +4,6 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
-import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.server.level.ServerLevel;
@@ -113,7 +112,6 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
         goalSelector.addGoal(1, new FloatGoal(this));
         goalSelector.addGoal(2, new LookAtTargetGoal(this));
-        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64));
     }
 
     @Override
