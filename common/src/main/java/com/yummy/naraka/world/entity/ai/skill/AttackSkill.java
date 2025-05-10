@@ -19,7 +19,7 @@ import java.util.function.Predicate;
  * @see AttackSkill#hurtHitEntity(ServerLevel, LivingEntity)
  * @see AttackSkill#hurtHitEntities(ServerLevel, Predicate, double)
  */
-public abstract class AttackSkill<T extends SkillUsingMob> extends Skill<T> {
+public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T> {
     protected AttackSkill(ResourceLocation location, int duration, int cooldown, T mob, @Nullable Skill<?> linkedSkill) {
         super(location, duration, cooldown, mob, linkedSkill);
     }
@@ -30,25 +30,6 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends Skill<T> {
 
     protected AttackSkill(ResourceLocation location, int duration, int cooldown, T mob) {
         super(location, duration, cooldown, mob);
-    }
-
-    @Override
-    protected final void skillTick(ServerLevel level) {
-        LivingEntity target = mob.getTarget();
-        tickAlways(level, target);
-        if (target != null)
-            tickWithTarget(level, target);
-    }
-
-    protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-
-    }
-
-    /**
-     * Called only when target entity is not null.
-     */
-    protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-
     }
 
     /**

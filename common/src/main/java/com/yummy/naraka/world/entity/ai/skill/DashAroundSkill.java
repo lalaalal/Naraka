@@ -1,15 +1,13 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
-import com.mojang.math.Axis;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.entity.AfterimageEntity;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Matrix3f;
-import org.joml.Vector3f;
 
 public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends Skill<T> {
     public static final String NAME = "dash_around";
@@ -65,14 +63,13 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
         if (target != null)
             targetPosition = target.position();
 
-        int rotationDegrees = -150 * (mob.getRandom().nextInt(2) * 2 - 1);
-        if (target == null)
-            rotationDegrees *= 4;
-        Vector3f vector = NarakaEntityUtils.getDirectionNormalVector(mob.position(), targetPosition)
+        float rotation = -150 * (mob.getRandom().nextInt(2) * 2 - 1);
+        if (mob.getRandom().nextBoolean())
+            rotation += Mth.PI;
+
+        this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob.position(), targetPosition)
                 .multiply(0.8, 0, 0.8)
-                .toVector3f()
-                .mul(Axis.YP.rotationDegrees(rotationDegrees).get(new Matrix3f()));
-        this.deltaMovement = new Vec3(vector);
+                .yRot(rotation);
     }
 
     public void preventSecondUse() {
