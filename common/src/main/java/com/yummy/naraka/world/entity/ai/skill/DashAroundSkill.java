@@ -5,7 +5,6 @@ import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.entity.AfterimageEntity;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
@@ -63,9 +62,9 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
         if (target != null)
             targetPosition = target.position();
 
-        float rotation = -150 * (mob.getRandom().nextInt(2) * 2 - 1);
+        float rotation = 150 * (mob.getRandom().nextInt(2) * 2 - 1);
         if (mob.getRandom().nextBoolean())
-            rotation += Mth.PI;
+            rotation += 60 * (mob.getRandom().nextInt(2) * 2 - 1);
 
         this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob.position(), targetPosition)
                 .multiply(0.8, 0, 0.8)
