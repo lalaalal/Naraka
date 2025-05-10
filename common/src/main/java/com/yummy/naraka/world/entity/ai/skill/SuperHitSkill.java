@@ -19,7 +19,7 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        runAt(10, this::superHit);
+        runAt(8, this::superHit);
         if (tickCount > 10)
             hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 1.5);
         if (tickCount > 10 && mob.onGround()) {

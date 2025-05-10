@@ -55,6 +55,7 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
+        moveToTarget(target);
         runAt(10, this::hurtHitEntity, level, target);
     }
 
@@ -73,6 +74,21 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
     @Override
     protected float calculateDamage(LivingEntity target) {
         return mob.getAttackDamage() + target.getMaxHealth() * 0.03f;
+    }
+
+    private void moveToTarget(LivingEntity target) {
+        if (tickCount < 7)
+            mob.getLookControl().setLookAt(target);
+        if (tickCount == 10)
+            mob.setDeltaMovement(0, mob.getDeltaMovement().y, 0);
+        if (tickCount >= 10)
+            return;
+
+        Vec3 deltaMovement = target.position().subtract(mob.position())
+                .normalize()
+                .scale(0.4);
+        if (mob.distanceToSqr(target) > 3)
+            mob.setDeltaMovement(deltaMovement);
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
 import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends AttackSkill<T> {
-    public static final String NAME = "rush";
+    public static final ResourceLocation LOCATION = createLocation("rush");
 
     private static final int START_RUNNING_TICK = 25;
     private static final int STOP_RUNNING_TICK = 35;
@@ -31,14 +32,13 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     private final Predicate<LivingEntity> targetPredicate;
 
     public RushSkill(T mob, Predicate<LivingEntity> targetPredicate) {
-        super(NAME, 85, 160, mob);
+        super(LOCATION, 85, 200, mob);
         this.targetPredicate = targetPredicate;
     }
 
     @Override
     public boolean canUse(ServerLevel level) {
-        LivingEntity target = mob.getTarget();
-        return target != null;
+        return !targetInRange(25);
     }
 
     @Override

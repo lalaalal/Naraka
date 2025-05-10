@@ -114,7 +114,7 @@ public class Herobrine extends AbstractHerobrine {
         phaseManager.addPhaseChangeListener((prev, current) -> resetDamageLimit());
 
         skillManager.enableOnly(PHASE_1_SKILLS);
-        skillManager.runOnSkillStart(this::replaceThrowFireball);
+        skillManager.runOnSkillStart(this::replaceRush);
         skillManager.runOnSkillSelect(this::useComboAttackOnIdle);
 
         for (int i = 0; i < NarakaConfig.CLIENT.herobrineScarfPartitionNumber.getValue(); i++)
@@ -130,8 +130,8 @@ public class Herobrine extends AbstractHerobrine {
         return shadowController;
     }
 
-    private void replaceThrowFireball(Skill<?> skill) {
-        if (!isHibernateMode() && skill.location.equals(ThrowFireballSkill.LOCATION)
+    private void replaceRush(Skill<?> skill) {
+        if (!isHibernateMode() && skill.location.equals(RushSkill.LOCATION)
                 && random.nextFloat() < 0.4f && punchSkill.isEnabled() && punchSkill.readyToUse()) {
             dashAndPunch();
         }
