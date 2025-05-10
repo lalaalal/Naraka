@@ -11,6 +11,7 @@ public class NarakaCommonConfig extends StaticConfiguration {
     public final ConfigValue<Integer> narakaFireballTargetTracingLevel;
 
     public final ConfigValue<Boolean> breakComboWhenSkillDisabled;
+    public final ConfigValue<Boolean> alwaysCombo;
 
     public NarakaCommonConfig() {
         super("naraka-common", PropertiesConfigFile::new);
@@ -19,7 +20,7 @@ public class NarakaCommonConfig extends StaticConfiguration {
         this.showTestCreativeModeTab = define("show_test_creative_mode_tab", false)
                 .comment("Need to restart game");
         this.herobrineTakingStigmaTick = define("herobrine_taking_stigma_tick", 1200);
-        this.herobrineStaggeringDuration = define("herobrine_staggering_duration", 90)
+        this.herobrineStaggeringDuration = define("herobrine_staggering_duration", 70)
                 .comment("In tick");
         this.herobrineHurtLimitReduce = define("herobrine_hurt_limit_reduce", 2.0f);
         this.maxShadowHerobrineSpawn = define("max_shadow_herobrine_spawn", 3);
@@ -30,5 +31,6 @@ public class NarakaCommonConfig extends StaticConfiguration {
                 .comment("2 : Can reduce speed (can turn back)");
 
         this.breakComboWhenSkillDisabled = define("break_combo_when_skill_disabled", false);
+        this.alwaysCombo = define("always_combo", false);
     }
 }

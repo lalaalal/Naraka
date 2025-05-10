@@ -28,7 +28,7 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
     protected float getBonusChance() {
         if (targetInRange(9))
             return 0.6f;
-        return 0;
+        return super.getBonusChance();
     }
 
     @Override

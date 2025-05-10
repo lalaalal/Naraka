@@ -52,6 +52,8 @@ public abstract class ComboSkill<T extends SkillUsingMob> extends AttackSkill<T>
     }
 
     protected float getBonusChance() {
+        if (NarakaConfig.COMMON.alwaysCombo.getValue())
+            return 1;
         return 0;
     }
 }

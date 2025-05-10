@@ -14,7 +14,7 @@ public class DashSkill<T extends SkillUsingMob & AfterimageEntity> extends Skill
     private Vec3 deltaMovement = Vec3.ZERO;
 
     public DashSkill(T mob) {
-        super(NAME, 20, 60, mob);
+        super(NAME, 20, 40, mob);
     }
 
     @Override

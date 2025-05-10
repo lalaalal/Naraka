@@ -67,7 +67,7 @@ public class Herobrine extends AbstractHerobrine {
     protected final SuperHitSkill superHitSkill = registerSkill(new SuperHitSkill(landingSkill, this), AnimationLocations.COMBO_ATTACK_4);
     protected final SpinningSkill spinningSkill = registerSkill(new SpinningSkill(superHitSkill, this), AnimationLocations.COMBO_ATTACK_3);
     protected final UppercutSkill uppercutSkill = registerSkill(new UppercutSkill(spinningSkill, this), AnimationLocations.COMBO_ATTACK_2);
-    protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(2, new PunchSkill<>(uppercutSkill, this, true), AnimationLocations.COMBO_ATTACK_1);
+    protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(2, new PunchSkill<>(uppercutSkill, this, 140, true), AnimationLocations.COMBO_ATTACK_1);
 
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill, rolePlayShadowSkill);
@@ -93,6 +93,8 @@ public class Herobrine extends AbstractHerobrine {
     private float hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
 
     private boolean hibernateMode = false;
+
+    protected int idleTickCount = 0;
 
     protected int accumulatedDamageTickCount;
     protected float accumulatedHurtDamage;
@@ -131,17 +133,22 @@ public class Herobrine extends AbstractHerobrine {
     private void replaceThrowFireball(Skill<?> skill) {
         if (!isHibernateMode() && skill.location.equals(ThrowFireballSkill.LOCATION)
                 && random.nextFloat() < 0.4f && punchSkill.isEnabled() && punchSkill.readyToUse()) {
-            dashSkill.setLinkedSkill(punchSkill);
-            skillManager.setCurrentSkill(dashSkill);
-            punchSkill.setLinkedFromPrevious(true);
+            dashAndPunch();
         }
     }
 
     private void useComboAttackOnIdle(@Nullable Skill<?> skill) {
         if (getTarget() != null
                 && !isStaggering() && !isHibernateMode()
-                && skill == null && punchSkill.isEnabled())
-            skillManager.setCurrentSkill(punchSkill);
+                && skill == null && punchSkill.isEnabled() && idleTickCount > 20) {
+            dashAndPunch();
+        }
+    }
+
+    private void dashAndPunch() {
+        dashSkill.setLinkedSkill(punchSkill);
+        skillManager.setCurrentSkill(dashSkill);
+        punchSkill.setLinkedFromPrevious(true);
     }
 
     @Override
@@ -268,6 +275,7 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     protected void customServerAiStep() {
+        updateIdleTick();
         updateAccumulatedDamage();
         updateScarfRotation();
 
@@ -277,6 +285,14 @@ public class Herobrine extends AbstractHerobrine {
         phaseManager.updatePhase(bossEvent);
 
         super.customServerAiStep();
+    }
+
+    private void updateIdleTick() {
+        if (getCurrentAnimation().equals(AnimationLocations.IDLE)) {
+            idleTickCount += 1;
+        } else {
+            idleTickCount = 0;
+        }
     }
 
     private void updateAccumulatedDamage() {

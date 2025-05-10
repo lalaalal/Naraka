@@ -13,7 +13,7 @@ public class SpinningSkill extends ComboSkill<AbstractHerobrine> {
     public static final String NAME = "spinning";
 
     public SpinningSkill(ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
-        super(createLocation(NAME), 30, 0, 1, comboSkill, 30, mob);
+        super(createLocation(NAME), 25, 0, 1, comboSkill, 20, mob);
     }
 
     @Override
