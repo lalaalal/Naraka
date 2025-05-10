@@ -8,7 +8,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.Vec3;
 
 public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
     public static final ResourceLocation LOCATION = createLocation("punch");
@@ -69,20 +68,5 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
     @Override
     protected float calculateDamage(LivingEntity target) {
         return mob.getAttackDamage() + target.getMaxHealth() * 0.03f;
-    }
-
-    private void moveToTarget(LivingEntity target) {
-        if (tickCount < 7)
-            mob.getLookControl().setLookAt(target);
-        if (tickCount == 10)
-            mob.setDeltaMovement(Vec3.ZERO);
-        if (tickCount >= 10)
-            return;
-
-        Vec3 deltaMovement = target.position().subtract(mob.position())
-                .normalize()
-                .scale(0.7);
-        if (mob.distanceToSqr(target) > 3)
-            mob.setDeltaMovement(deltaMovement);
     }
 }
