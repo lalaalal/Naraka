@@ -11,6 +11,7 @@ public abstract class Skill<T extends SkillUsingMob> {
     public final ResourceLocation location;
     protected final T mob;
     protected int duration;
+    protected final int defaultCooldown;
     protected int cooldown;
 
     protected int tickCount = 0;
@@ -28,6 +29,7 @@ public abstract class Skill<T extends SkillUsingMob> {
         this.location = location;
         this.mob = mob;
         this.duration = duration;
+        this.defaultCooldown = cooldown;
         this.cooldown = cooldown;
         this.cooldownTick = cooldown;
         this.linkedSkill = linkedSkill;
@@ -117,6 +119,10 @@ public abstract class Skill<T extends SkillUsingMob> {
 
     public void changeCooldown(int cooldown) {
         this.cooldown = cooldown;
+    }
+
+    public void restoreCooldown() {
+        this.cooldown = defaultCooldown;
     }
 
     public void setCooldown() {

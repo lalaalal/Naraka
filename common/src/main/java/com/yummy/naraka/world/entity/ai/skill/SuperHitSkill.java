@@ -18,19 +18,20 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     @Override
-    protected void onFirstTick(ServerLevel level) {
-        mob.setNoGravity(false);
-        Vec3 lookVector = mob.getLookAngle().scale(1.2);
-        mob.setDeltaMovement(lookVector.x, -1.2, lookVector.z);
-    }
-
-    @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 1.5);
-        if (mob.onGround()) {
+        runAt(10, this::superHit);
+        if (tickCount > 10)
+            hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 1.5);
+        if (tickCount > 10 && mob.onGround()) {
             duration = 0;
             level.playSound(mob, mob.blockPosition(), SoundEvents.TOTEM_USE, SoundSource.HOSTILE, 1, 1);
         }
+    }
+
+    private void superHit() {
+        mob.setNoGravity(false);
+        Vec3 lookVector = mob.getLookAngle().scale(1.2);
+        mob.setDeltaMovement(lookVector.x, -1.2, lookVector.z);
     }
 
     @Override
