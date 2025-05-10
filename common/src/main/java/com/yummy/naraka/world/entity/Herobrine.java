@@ -398,9 +398,11 @@ public class Herobrine extends AbstractHerobrine {
     protected void actuallyHurt(DamageSource damageSource, float damageAmount) {
         super.actuallyHurt(damageSource, damageAmount);
         accumulatedHurtDamage += damageAmount;
-        if ((accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f) && level() instanceof ServerLevel serverLevel) {
+        if (level() instanceof ServerLevel serverLevel) {
+            if (accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f) {
+                shadowController.switchWithShadowHerobrine(serverLevel);
+            }
             updateHurtDamageLimit(serverLevel);
-            shadowController.switchWithShadowHerobrine(serverLevel);
         }
     }
 

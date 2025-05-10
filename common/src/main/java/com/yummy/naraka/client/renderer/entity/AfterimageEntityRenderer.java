@@ -45,8 +45,8 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
             packedLight = Math.max(LightTexture.pack(blockLight, skyLight), packedLight);
         }
-        renderAfterimages(entity, partialTicks, poseStack, buffer);
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
+        renderAfterimages(entity, partialTicks, poseStack, buffer);
     }
 
     protected void renderAfterimages(T entity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer) {
@@ -66,7 +66,7 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
         this.setupRotations(entity, poseStack, getBob(entity, partialTicks), afterimage.getYRot(), partialTicks, entity.getScale());
 
-        RenderType renderType = RenderType.entityTranslucentEmissive(getAfterimageTexture(entity));
+        RenderType renderType = RenderType.entityTranslucent(getAfterimageTexture(entity));
         VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
         Color color = getAfterimageColor(afterimage, partialTicks);
         int light = (int) (color.alpha01() * 10) + 5;

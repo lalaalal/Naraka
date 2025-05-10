@@ -163,7 +163,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     public float getHurtDamageLimit() {
-        return 15;
+        return 20;
     }
 
     @Override
