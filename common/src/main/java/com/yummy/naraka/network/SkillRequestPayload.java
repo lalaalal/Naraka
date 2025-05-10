@@ -2,14 +2,12 @@ package com.yummy.naraka.network;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.SkillUsingMob;
-import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
@@ -56,7 +54,6 @@ public record SkillRequestPayload(Event event, int entityId, ResourceLocation lo
         DISABLE((payload, context) -> {
             payload.getEntity(context.level()).ifPresent(mob -> {
                 mob.getSkillManager().enableOnly(List.of());
-                NarakaAttributeModifiers.addAttributeModifier(mob, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.PAUSE_PREVENT_MOVING);
             });
         }),
         USE((payload, context) -> {

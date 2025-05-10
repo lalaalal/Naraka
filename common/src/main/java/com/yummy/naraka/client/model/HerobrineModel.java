@@ -99,8 +99,8 @@ public class HerobrineModel<S extends AbstractHerobrineRenderState> extends Enti
     }
 
     private void applyHeadRotation(AbstractHerobrineRenderState renderState) {
-        float yRot = Mth.clamp(renderState.yRot, -30, 30);
-        float xRot = Mth.clamp(renderState.xRot, -25, 45);
+        float yRot = Mth.clamp(renderState.yRot, -45, 45);
+        float xRot = Mth.clamp(renderState.xRot, -80, 45);
 
         this.head.yRot = yRot * (Mth.PI / 180f);
         this.head.xRot = xRot * (Mth.PI / 180f);

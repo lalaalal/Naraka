@@ -12,6 +12,7 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
+import com.yummy.naraka.world.entity.ai.goal.WalkAroundTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.*;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import com.yummy.naraka.world.entity.data.LockedHealthHelper;
@@ -155,7 +156,8 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64));
+        goalSelector.addGoal(4, new MoveToTargetGoal(this, 1, 64, 7, 1, 0));
+        goalSelector.addGoal(3, new WalkAroundTargetGoal(this, 8, 1, 0.8f));
     }
 
     @Override

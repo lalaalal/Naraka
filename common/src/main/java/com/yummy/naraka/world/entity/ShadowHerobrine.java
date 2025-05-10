@@ -38,7 +38,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntity {
-    protected final UppercutSkill uppercutSkill = registerSkill(new UppercutSkill(null, this), AnimationLocations.COMBO_ATTACK_2);
+    protected final UppercutSkill uppercutSkill = registerSkill(new UppercutSkill(null, this, false), AnimationLocations.COMBO_ATTACK_2);
     protected final ShadowPunchSkill punchSkill = registerSkill(new ShadowPunchSkill(uppercutSkill, this), AnimationLocations.COMBO_ATTACK_1);
 
     @Nullable
@@ -46,7 +46,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     @Nullable
     private UUID herobrineUUID;
 
-    private final MoveToTargetGoal moveToTargetGoal = new MoveToTargetGoal(this, 1, 64, 40, 0.4f);
+    private final MoveToTargetGoal moveToTargetGoal = new MoveToTargetGoal(this, 1, 64, 1, 40, 0.6f);
     private final AvoidEntityGoal<LivingEntity> avoidTargetGoal = new AvoidEntityGoal<>(
             this, LivingEntity.class,
             entity -> !this.isUsingSkill(),
