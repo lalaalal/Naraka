@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
-public class DashSkill<T extends SkillUsingMob & AfterimageEntity> extends Skill<T> {
+public class DashSkill<T extends SkillUsingMob & AfterimageEntity> extends TargetSkill<T> {
     public static final String NAME = "dash";
 
     private Vec3 deltaMovement = Vec3.ZERO;
@@ -24,19 +24,9 @@ public class DashSkill<T extends SkillUsingMob & AfterimageEntity> extends Skill
     }
 
     @Override
-    protected void onFirstTick(ServerLevel level) {
-        LivingEntity target = mob.getTarget();
-        if (target != null)
-            mob.lookAt(target, 360, 0);
-    }
-
-    @Override
-    protected void skillTick(ServerLevel level) {
-        LivingEntity target = mob.getTarget();
-        if (target == null)
-            return;
-
+    protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         mob.getNavigation().stop();
+        mob.lookAt(target, 360, 0);
 
         if (tickCount == 10 || hasLinkedSkill())
             this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob, target);

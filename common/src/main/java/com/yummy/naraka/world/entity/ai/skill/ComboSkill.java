@@ -14,14 +14,14 @@ import org.jetbrains.annotations.Nullable;
 public abstract class ComboSkill<T extends SkillUsingMob> extends AttackSkill<T> {
     protected final float linkChance;
     @Nullable
-    protected final ComboSkill<?> comboSkill;
+    protected final Skill<?> comboSkill;
     protected final int comboDuration;
     protected final int nonComboDuration;
 
-    protected ComboSkill(ResourceLocation location, int duration, int cooldown, float linkChance, @Nullable ComboSkill<?> comboSkill, int comboDuration, T mob) {
+    protected ComboSkill(ResourceLocation location, int duration, int cooldown, float linkChance, @Nullable Skill<?> nextSkill, int comboDuration, T mob) {
         super(location, duration, cooldown, mob);
         this.linkChance = linkChance;
-        this.comboSkill = comboSkill;
+        this.comboSkill = nextSkill;
         this.comboDuration = comboDuration;
         this.nonComboDuration = duration;
     }
