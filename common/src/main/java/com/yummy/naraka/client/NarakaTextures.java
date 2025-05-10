@@ -17,6 +17,8 @@ public final class NarakaTextures {
     public static final ResourceLocation HEROBRINE_AFTERIMAGE = entity("herobrine_afterimage.png");
     public static final ResourceLocation HEROBRINE_SCARF = entity("herobrine_scarf.png");
 
+    public static final ResourceLocation SHADOW_ARMOR = entity("shadow_armor.png");
+
     public static final ResourceLocation LONGINUS = entity("longinus.png");
 
     public static final ResourceLocation SPEAR = entity("spear.png");
