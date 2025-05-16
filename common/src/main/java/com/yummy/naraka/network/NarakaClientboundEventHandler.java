@@ -1,6 +1,9 @@
 package com.yummy.naraka.network;
 
+import com.yummy.naraka.client.gui.screen.AnimationControlScreen;
+import com.yummy.naraka.client.gui.screen.SkillControlScreen;
 import com.yummy.naraka.sounds.NarakaMusics;
+import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.MusicInfo;
 import net.minecraft.client.sounds.MusicManager;
@@ -62,5 +65,15 @@ public class NarakaClientboundEventHandler {
         MusicManager musicManager = minecraft.getMusicManager();
 
         musicManager.stopPlaying();
+    }
+
+    static void showSkillControlScreen(Entity entity) {
+        if (entity instanceof SkillUsingMob mob)
+            Minecraft.getInstance().setScreen(new SkillControlScreen(mob));
+    }
+
+    static void showAnimationControlScreen(Entity entity) {
+        if (entity instanceof SkillUsingMob mob)
+            Minecraft.getInstance().setScreen(new AnimationControlScreen(mob));
     }
 }

@@ -130,6 +130,7 @@ public class NarakaCreativeModeTabs {
 
     private static void createNarakaTestTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
         output.accept(NarakaItems.SKILL_CONTROLLER.get());
+        output.accept(NarakaItems.ANIMATION_CONTROLLER.get());
         output.accept(NarakaItems.EBONY_SWORD.get());
         output.accept(NarakaItems.EBONY_METAL_HELMET.get());
         output.accept(NarakaItems.EBONY_METAL_CHESTPLATE.get());

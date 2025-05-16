@@ -1,9 +1,9 @@
 package com.yummy.naraka.world.item;
 
-import com.yummy.naraka.client.gui.screen.SkillControlScreen;
-import com.yummy.naraka.world.entity.SkillUsingMob;
-import net.minecraft.client.Minecraft;
+import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
+import com.yummy.naraka.network.NetworkManager;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -15,7 +15,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 
-public class SkillControllerItem extends Item {
+public class SkillUsingMobControllerItem extends Item {
     private static ItemAttributeModifiers createModifiers() {
         return ItemAttributeModifiers.builder()
                 .add(
@@ -25,17 +25,20 @@ public class SkillControllerItem extends Item {
                 ).build();
     }
 
-    public SkillControllerItem(Properties properties) {
+    private final NarakaClientboundEntityEventPacket.Event event;
+
+    public SkillUsingMobControllerItem(Properties properties, NarakaClientboundEntityEventPacket.Event event) {
         super(properties.component(DataComponents.ATTRIBUTE_MODIFIERS, createModifiers())
                 .stacksTo(1));
+        this.event = event;
     }
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity interactionTarget, InteractionHand usedHand) {
-        if (player.level().isClientSide && interactionTarget instanceof SkillUsingMob skillUsingMob) {
-            Minecraft.getInstance().setScreen(new SkillControlScreen(skillUsingMob));
+        if (player instanceof ServerPlayer serverPlayer) {
+            NetworkManager.clientbound().send(serverPlayer, new NarakaClientboundEntityEventPacket(event, interactionTarget));
             return InteractionResult.SUCCESS;
         }
-        return super.interactLivingEntity(stack, player, interactionTarget, usedHand);
+        return InteractionResult.SUCCESS;
     }
 }

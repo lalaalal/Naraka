@@ -3,6 +3,7 @@ package com.yummy.naraka.world.item;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.core.Holder;
@@ -44,7 +45,18 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_4_DISC = registerDiscItem("herobrine_phase_4_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_4);
 
     public static final HolderProxy<Item, Item> SKILL_CONTROLLER = registerItem(
-            "skill_controller", SkillControllerItem::new
+            "skill_controller",
+            properties -> new SkillUsingMobControllerItem(
+                    properties,
+                    NarakaClientboundEntityEventPacket.Event.SHOW_SKILL_CONTROL_SCREEN
+            )
+    );
+    public static final HolderProxy<Item, Item> ANIMATION_CONTROLLER = registerItem(
+            "animation_controller",
+            properties -> new SkillUsingMobControllerItem(
+                    properties,
+                    NarakaClientboundEntityEventPacket.Event.SHOW_ANIMATION_CONTROL_SCREEN
+            )
     );
 
     // Ingredients
