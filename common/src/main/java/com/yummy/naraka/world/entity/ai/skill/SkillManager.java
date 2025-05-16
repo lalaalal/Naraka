@@ -114,8 +114,7 @@ public class SkillManager {
                     Skill<?> previousSkill = currentSkill;
                     setCurrentSkill(currentSkill.getLinkedSkill());
                     previousSkill.setLinkedSkill(null);
-                }
-                else
+                } else
                     currentSkill = null;
             }
         } else {

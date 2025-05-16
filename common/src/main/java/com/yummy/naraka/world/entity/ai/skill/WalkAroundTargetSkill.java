@@ -30,12 +30,16 @@ public class WalkAroundTargetSkill extends ComboSkill<SkillUsingMob> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
+        runBefore(duration - 2, () -> moveAndLook(target));
+    }
+
+    private void moveAndLook(LivingEntity target) {
         Vec3 delta = mob.position().subtract(target.position());
         Vec3 wanted = delta.yRot(Mth.PI / 6 * direction).add(target.position());
 
         Path path = mob.getNavigation().createPath(wanted.x, wanted.y, wanted.z, 1);
         mob.getNavigation().moveTo(path, 0.8f);
-        mob.getLookControl().setLookAt(target);
+        lookTarget(target);
     }
 
     @Override

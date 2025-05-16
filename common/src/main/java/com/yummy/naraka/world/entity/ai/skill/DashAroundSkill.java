@@ -7,8 +7,9 @@ import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends Skill<T> {
+public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends TargetSkill<T> {
     public static final String NAME = "dash_around";
     private boolean secondUse;
     private Vec3 deltaMovement = Vec3.ZERO;
@@ -35,29 +36,25 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
     }
 
     @Override
-    protected void onFirstTick(ServerLevel level) {
-        LivingEntity target = mob.getTarget();
-        if (target != null)
-            mob.lookAt(target, 360, 0);
+    protected void tickWithTarget(ServerLevel level, LivingEntity target) {
+        lookTarget(target);
+        rotateTowardTarget(target);
     }
 
     @Override
-    protected void skillTick(ServerLevel level) {
-        mob.getNavigation().stop();
-
-        if (tickCount == 0)
-            updateDeltaMovement();
-        if (0 <= tickCount && tickCount <= 3) {
-            NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, 0.4);
-            mob.setDeltaMovement(deltaMovement);
-            mob.addAfterimage(Afterimage.of(mob, 10), 2, tickCount < 3);
-        }
-        if (tickCount == 3)
-            mob.setDeltaMovement(Vec3.ZERO);
+    protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
+        runAt(0, () -> this.updateDeltaMovement(target));
+        runBetween(0, 4, () -> move(level));
+        runAt(4, () -> mob.setDeltaMovement(Vec3.ZERO));
     }
 
-    private void updateDeltaMovement() {
-        LivingEntity target = mob.getTarget();
+    private void move(ServerLevel level) {
+        NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, 0.4);
+        mob.setDeltaMovement(deltaMovement);
+        mob.addAfterimage(Afterimage.of(mob, 10), 2, tickCount < 3);
+    }
+
+    private void updateDeltaMovement(@Nullable LivingEntity target) {
         Vec3 targetPosition = mob.position().add(mob.getViewVector(0));
         if (target != null)
             targetPosition = target.position();

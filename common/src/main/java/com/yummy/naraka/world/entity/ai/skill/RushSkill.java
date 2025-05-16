@@ -48,8 +48,14 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     }
 
     @Override
-    protected void tickWithTarget(ServerLevel level, LivingEntity target) {
+    protected void onFirstTick(ServerLevel level) {
         mob.getNavigation().stop();
+    }
+
+    @Override
+    protected void tickWithTarget(ServerLevel level, LivingEntity target) {
+        runBefore(START_RUNNING_TICK, () -> lookTarget(target));
+        runAt(START_RUNNING_TICK - 2, () -> rotateTowardTarget(target));
         updateDeltaMovement(level, target, START_RUNNING_TICK, STOP_RUNNING_TICK, 0.6, true, true);
         updateDeltaMovement(level, target, STOP_RUNNING_TICK, RUSH_TICK, 0, true, false);
         updateDeltaMovement(level, target, RUSH_TICK, FINALE_TICK, 1.15, false, false);
@@ -64,7 +70,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     private void calculateDeltaMovement(LivingEntity target, boolean ignoreDeltaY) {
         int factor = ignoreDeltaY ? 0 : 1;
         this.delta = NarakaEntityUtils.getDirectionNormalVector(mob, target).multiply(1, factor, 1);
-        mob.lookAt(target, 360, 0);
+        lookTarget(target);
     }
 
     private void updateDeltaMovement(ServerLevel level, LivingEntity target, int startTick, int endTick, double scale, boolean updateDeltaMovement, boolean ignoreDeltaY) {

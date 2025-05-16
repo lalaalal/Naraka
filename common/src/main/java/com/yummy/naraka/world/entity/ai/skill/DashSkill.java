@@ -24,20 +24,25 @@ public class DashSkill<T extends SkillUsingMob & AfterimageEntity> extends Targe
     }
 
     @Override
-    protected void tickWithTarget(ServerLevel level, LivingEntity target) {
+    protected void onFirstTick(ServerLevel level) {
         mob.getNavigation().stop();
-        mob.lookAt(target, 360, 0);
+    }
 
-        if (tickCount == 10)
-            this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob, target);
+    @Override
+    protected void tickWithTarget(ServerLevel level, LivingEntity target) {
+        lookTarget(target);
+        rotateTowardTarget(target);
+
+        runAt(10, () -> this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob, target).multiply(1, 0, 1));
         if (hasLinkedSkill())
             this.deltaMovement = deltaMovement.scale(1.2);
-        if (10 <= tickCount && tickCount <= 15 && mob.distanceToSqr(target) > 3) {
-            NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, 0.6);
-            mob.setDeltaMovement(deltaMovement);
-            mob.addAfterimage(Afterimage.of(mob, 13), 2, tickCount < 15);
-        }
-        if (tickCount == 15 || mob.distanceToSqr(target) < 3)
-            mob.setDeltaMovement(Vec3.ZERO);
+        run(and(between(10, 15), t -> mob.distanceToSqr(target) > 3), () -> move(level));
+        run(or(at(15), t -> mob.distanceToSqr(target) < 3), () -> mob.setDeltaMovement(Vec3.ZERO));
+    }
+
+    private void move(ServerLevel level) {
+        NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, 0.6);
+        mob.setDeltaMovement(deltaMovement);
+        mob.addAfterimage(Afterimage.of(mob, 13), 2, tickCount < 15);
     }
 }

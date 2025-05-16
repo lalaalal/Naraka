@@ -81,6 +81,7 @@ public class PropertiesConfigFile extends ConfigFile {
             writer.write("# " + comment + "\n");
         writer.write("# default : " + value.getDefaultValue() + "\n");
         writer.write(key + "=" + value.getValue() + "\n");
+        writer.write("\n");
     }
 
     @Override

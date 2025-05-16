@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
-public class ThrowFireballSkill extends Skill<SkillUsingMob> {
+public class ThrowFireballSkill extends TargetSkill<SkillUsingMob> {
     public static final ResourceLocation LOCATION = createLocation("throw_fireball");
     private final Function<ServerLevel, Fireball> fireballCreator;
     @Nullable
@@ -40,18 +41,39 @@ public class ThrowFireballSkill extends Skill<SkillUsingMob> {
     }
 
     @Override
-    protected void skillTick(ServerLevel level) {
-        LivingEntity target = mob.getTarget();
+    protected void onFirstTick(ServerLevel level) {
+        mob.getNavigation().stop();
+    }
+
+    @Override
+    protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
+        runAt(5, () -> this.summonFireball(level));
+    }
+
+    @Override
+    protected void tickWithTarget(ServerLevel level, LivingEntity target) {
+        super.tickWithTarget(level, target);
+        rotateTowardTarget(target);
+        runAt(15, () -> this.throwFireball(target));
+    }
+
+    private void summonFireball(ServerLevel level) {
+        float yRot = (float) Math.toRadians(-mob.getYRot());
+        Vec3 relativePosition = new Vec3(0.5, 0.5, -0.7);
+        Vec3 fireballPosition = mob.getEyePosition()
+                .add(relativePosition.yRot(yRot));
+
+        fireball = fireballCreator.apply(level);
+        fireball.setPos(fireballPosition);
+        level.addFreshEntity(fireball);
+    }
+
+    private void throwFireball(@Nullable LivingEntity target) {
+        if (fireball == null)
+            return;
+        Vec3 vec = mob.getLookAngle();
         if (target != null)
-            mob.getLookControl().setLookAt(target);
-        if (tickCount == 5) {
-            fireball = fireballCreator.apply(level);
-            fireball.setPos(mob.getX() + 0.3, mob.getEyeY() + 0.5, mob.getZ());
-            level.addFreshEntity(fireball);
-        }
-        if (tickCount == 15 && fireball != null) {
-            Vec3 view = mob.getViewVector(0);
-            fireball.shoot(view.x, view.y, view.z, 1, 0);
-        }
+            vec = NarakaEntityUtils.getDirectionNormalVector(fireball.position(), target.getEyePosition());
+        fireball.shoot(vec.x, vec.y, vec.z, 1.5f, 0);
     }
 }

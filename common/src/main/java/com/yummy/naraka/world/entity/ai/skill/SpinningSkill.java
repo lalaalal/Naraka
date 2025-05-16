@@ -17,15 +17,13 @@ public class SpinningSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     @Override
-    protected void onLastTick(ServerLevel level) {
-        LivingEntity target = mob.getTarget();
-        if (target != null)
-            mob.lookAt(target, 180, 0);
+    protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
+        runAt(10, () -> this.spinAttack(level));
     }
 
     @Override
-    protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        runAt(10, this::spinAttack, level);
+    protected void tickWithTarget(ServerLevel level, LivingEntity target) {
+        runAt(duration - 1, () -> rotateTowardTarget(target));
     }
 
     private void spinAttack(ServerLevel level) {
