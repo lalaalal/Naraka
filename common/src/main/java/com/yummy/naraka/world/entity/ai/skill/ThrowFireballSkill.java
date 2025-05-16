@@ -7,15 +7,18 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
 public class ThrowFireballSkill extends Skill<SkillUsingMob> {
     public static final ResourceLocation LOCATION = createLocation("throw_fireball");
     private final Function<ServerLevel, Fireball> fireballCreator;
+    @Nullable
+    private Fireball fireball;
 
     public ThrowFireballSkill(SkillUsingMob mob, Function<ServerLevel, Fireball> fireballCreator) {
-        super(LOCATION, 30, 100, mob);
+        super(LOCATION, 35, 100, mob);
         this.fireballCreator = fireballCreator;
     }
 
@@ -41,10 +44,12 @@ public class ThrowFireballSkill extends Skill<SkillUsingMob> {
         LivingEntity target = mob.getTarget();
         if (target != null)
             mob.getLookControl().setLookAt(target);
-        if (tickCount == 18) {
-            Fireball fireball = fireballCreator.apply(level);
-            fireball.setPos(mob.getX(), mob.getEyeY() + 0.5, mob.getZ());
+        if (tickCount == 5) {
+            fireball = fireballCreator.apply(level);
+            fireball.setPos(mob.getX() + 0.3, mob.getEyeY() + 0.5, mob.getZ());
             level.addFreshEntity(fireball);
+        }
+        if (tickCount == 15 && fireball != null) {
             Vec3 view = mob.getViewVector(0);
             fireball.shoot(view.x, view.y, view.z, 1, 0);
         }
