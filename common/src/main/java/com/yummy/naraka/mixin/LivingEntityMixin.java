@@ -7,6 +7,8 @@ import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -14,12 +16,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -27,11 +29,17 @@ import java.util.Map;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
+    @Shadow @Final
+    private static EntityDataAccessor<Float> DATA_HEALTH_ID;
+
     @Shadow
     protected abstract ItemStack getLastHandItem(EquipmentSlot slot);
 
     @Shadow
     protected abstract ItemStack getLastArmorItem(EquipmentSlot slot);
+
+    @Shadow
+    public abstract float getMaxHealth();
 
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -57,11 +65,12 @@ public abstract class LivingEntityMixin extends Entity {
     /**
      * Using {@linkplain Float#MAX_VALUE} for damage may occur setting health as Nan!
      */
-    @ModifyArg(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setHealth(F)V"))
-    public float fixNanHealth(float original) {
-        if (Float.isNaN(original))
-            return 0;
-        return original;
+    @Inject(method = "setHealth", at = @At("HEAD"), cancellable = true)
+    public void fixNanHealth(float health, CallbackInfo ci) {
+        if (Float.isNaN(health))
+            health = 0;
+        this.entityData.set(DATA_HEALTH_ID, Mth.clamp(health, 0.0F, this.getMaxHealth()));
+        ci.cancel();
     }
 
     @Unique
