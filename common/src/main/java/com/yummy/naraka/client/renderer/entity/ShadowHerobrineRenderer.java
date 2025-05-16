@@ -24,6 +24,12 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
     }
 
     @Override
+    public void extractRenderState(ShadowHerobrine entity, ShadowHerobrineRenderState renderState, float partialTicks) {
+        super.extractRenderState(entity, renderState, partialTicks);
+        renderState.hasRedOverlay = false;
+    }
+
+    @Override
     public void render(ShadowHerobrineRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         super.render(renderState, poseStack, buffer, LightTexture.FULL_BRIGHT);
     }

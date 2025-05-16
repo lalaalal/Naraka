@@ -13,12 +13,12 @@ public class LandingSkill extends ComboSkill<AbstractHerobrine> {
     public static final String NAME = "landing";
 
     public LandingSkill(AbstractHerobrine mob) {
-        super(createLocation(NAME), 40, 0, 0, null, 20, mob);
+        super(createLocation(NAME), 50, 0, 0, null, 50, mob);
     }
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        runAt(2, this::land, level);
+        runAt(15, () -> this.land(level));
     }
 
     private void land(ServerLevel level) {

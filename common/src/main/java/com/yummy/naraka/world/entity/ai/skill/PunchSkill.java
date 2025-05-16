@@ -17,12 +17,12 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
     private boolean linked = false;
 
     public PunchSkill(ComboSkill<?> comboSkill, T mob, boolean withStun) {
-        super(LOCATION, 35, DEFAULT_COOLDOWN, 0.8f, comboSkill, 15, mob);
+        super(LOCATION, 22, DEFAULT_COOLDOWN, 0.8f, comboSkill, 11, mob);
         this.stunTarget = withStun;
     }
 
     public PunchSkill(ComboSkill<?> comboSkill, T mob, int cooldown, boolean withStun) {
-        super(LOCATION, 35, cooldown, 0.8f, comboSkill, 15, mob);
+        super(LOCATION, 22, cooldown, 0.8f, comboSkill, 11, mob);
         this.stunTarget = withStun;
     }
 
@@ -50,7 +50,7 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        runAt(10, this::hurtHitEntity, level, target);
+        runAt(10, () -> this.hurtHitEntity(level, target));
         mob.getLookControl().setLookAt(target);
     }
 

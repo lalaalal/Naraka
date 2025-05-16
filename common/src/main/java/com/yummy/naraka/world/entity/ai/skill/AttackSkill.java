@@ -8,8 +8,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -60,19 +58,4 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T
     }
 
     protected abstract float calculateDamage(LivingEntity target);
-
-    protected final void runAt(int tick, Runnable action) {
-        if (tickCount == tick)
-            action.run();
-    }
-
-    protected final void runAt(int tick, Consumer<ServerLevel> action, ServerLevel level) {
-        if (tickCount == tick)
-            action.accept(level);
-    }
-
-    protected final void runAt(int tick, BiConsumer<ServerLevel, LivingEntity> action, ServerLevel level, LivingEntity target) {
-        if (tickCount == tick)
-            action.accept(level, target);
-    }
 }

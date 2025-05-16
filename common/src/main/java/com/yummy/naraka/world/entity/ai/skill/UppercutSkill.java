@@ -16,7 +16,7 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
     private final boolean stunTarget;
 
     public UppercutSkill(@Nullable ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob, boolean stunTarget) {
-        super(createLocation(NAME), 60, 0, 0.1f, comboSkill, 15, mob);
+        super(createLocation(NAME), 35, 0, 0.1f, comboSkill, 15, mob);
         this.stunTarget = stunTarget;
     }
 
@@ -56,7 +56,7 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         moveToTarget(target);
-        runAt(10, this::hurtHitEntity, level, target);
+        runAt(10, () -> this.hurtHitEntity(level, target));
     }
 
     @Override
@@ -77,8 +77,6 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     private void moveToTarget(LivingEntity target) {
-        if (tickCount < 7)
-            mob.getLookControl().setLookAt(target);
         if (tickCount == 10)
             mob.setDeltaMovement(0, mob.getDeltaMovement().y, 0);
         if (tickCount >= 10)

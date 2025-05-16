@@ -17,7 +17,9 @@ public class LookAtTargetGoal extends Goal {
     @Override
     public boolean canUse() {
         LivingEntity target = herobrine.getTarget();
-        return !herobrine.isStaggering() && !herobrine.isUsingSkill() && target != null;
+        if (target == null)
+            return false;
+        return !herobrine.isStaggering() && !herobrine.isUsingSkill();
     }
 
     @Override
