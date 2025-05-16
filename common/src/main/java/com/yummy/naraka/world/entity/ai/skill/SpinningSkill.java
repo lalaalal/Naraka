@@ -13,7 +13,7 @@ public class SpinningSkill extends ComboSkill<AbstractHerobrine> {
     public static final String NAME = "spinning";
 
     public SpinningSkill(ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
-        super(createLocation(NAME), 25, 0, 1, comboSkill, 20, mob);
+        super(createLocation(NAME), 20, 0, 1, comboSkill, 20, mob);
     }
 
     @Override
@@ -21,7 +21,6 @@ public class SpinningSkill extends ComboSkill<AbstractHerobrine> {
         LivingEntity target = mob.getTarget();
         if (target != null)
             mob.lookAt(target, 180, 0);
-        mob.setNoGravity(false);
     }
 
     @Override
