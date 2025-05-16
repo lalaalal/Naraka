@@ -57,6 +57,10 @@ public abstract class Skill<T extends SkillUsingMob> {
         return target != null && !targetInRange(distanceSquare);
     }
 
+    protected final boolean targetOutOfRange(LivingEntity target, float distanceSquare) {
+        return !targetInRange(target, distanceSquare);
+    }
+
     public abstract boolean canUse(ServerLevel level);
 
     public void setEnabled(boolean value) {

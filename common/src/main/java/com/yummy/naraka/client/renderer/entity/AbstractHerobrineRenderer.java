@@ -13,6 +13,7 @@ import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -39,7 +40,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
         super.extractRenderState(entity, renderState, partialTicks);
         renderState.isShadow = entity.isShadow;
         renderState.isStaggering = entity.getCurrentAnimation().equals(AnimationLocations.STAGGERING);
-        renderState.isIdle = entity.getCurrentAnimation().equals(AnimationLocations.IDLE);
+        renderState.isIdle = true;
         renderState.setAfterimages(entity, partialTicks);
         renderState.setAnimationVisitor(entity);
     }
@@ -48,7 +49,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
     protected void renderAfterimageLayer(S renderState, AfterimageRenderState afterimage, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int alpha) {
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(NarakaTextures.HEROBRINE_EYE));
         int color = ARGB.white(alpha);
-        afterimageModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color);
+        afterimageModel.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color);
     }
 
     @Override

@@ -37,6 +37,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     private @Nullable Entity cachedTarget;
     private DamageCalculator damageCalculator = fireball -> 10;
     private final List<HurtTargetListener> listeners = new ArrayList<>();
+    private int timeToLive = Integer.MAX_VALUE;
 
     public NarakaFireball(EntityType<? extends NarakaFireball> entityType, Level level) {
         super(entityType, level);
@@ -56,6 +57,10 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         super(NarakaEntityTypes.NARAKA_FIREBALL.get(), owner, movement, level);
         setTarget(target);
         setItem(NarakaItems.NARAKA_FIREBALL.get().getDefaultInstance());
+    }
+
+    public void setTimeToLive(int timeToLive) {
+        this.timeToLive = timeToLive;
     }
 
     @Override
@@ -103,6 +108,10 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
 
     @Override
     public void tick() {
+        if (timeToLive < tickCount) {
+            level().explode(this, NarakaDamageSources.narakaFireball(this), null, position(), 1.5f, false, Level.ExplosionInteraction.TRIGGER);
+            discard();
+        }
         traceTarget();
         super.tick();
     }
@@ -111,6 +120,9 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         Entity target = getTarget();
         int tracingLevel = NarakaConfig.COMMON.narakaFireballTargetTracingLevel.getValue();
         if (canRotateMovement(tracingLevel) && target != null) {
+            if (this.distanceToSqr(target) > 12 * 12)
+                return;
+
             boolean canReduceSpeed = canReduceSpeed(tracingLevel);
             Vec3 targetVector = target.getEyePosition().subtract(position());
             Vec3 movingVector = getDeltaMovement().normalize();
@@ -127,10 +139,6 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
             if (canReduceSpeed && tracingVectorLength < 8 && length < 1)
                 setDeltaMovement(deltaMovement.scale(1.1));
             double scale = Mth.clamp(tracingVectorLength, 0, 0.03);
-            if (!canReduceSpeed && deltaMovement.y < 0) {
-                tracingVector.multiply(1, 0, 1);
-                scale *= 0.3;
-            }
 
             setDeltaMovement(
                     deltaMovement.add(tracingVector.scale(scale))

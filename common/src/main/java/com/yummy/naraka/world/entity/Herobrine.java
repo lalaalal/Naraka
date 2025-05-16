@@ -55,15 +55,14 @@ public class Herobrine extends AbstractHerobrine {
     public static final int MAX_HURT_DAMAGE_LIMIT = 20;
     public static final int MAX_ACCUMULATED_DAMAGE_TICK_COUNT = 40;
 
-    protected final DashSkill<AbstractHerobrine> dashSkill = registerSkill(this, DashSkill::new);
-    protected final DashAroundSkill<AbstractHerobrine> dashAroundSkill = registerSkill(this, DashAroundSkill::new);
-    protected final StigmatizeEntitiesSkill<AbstractHerobrine> stigmatizeEntitiesSkill = registerSkill(this, StigmatizeEntitiesSkill::new);
-    protected final ThrowFireballSkill throwFireballSkill = registerSkill(new ThrowFireballSkill(this, this::createFireball), AnimationLocations.THROW_NARAKA_FIREBALL);
-    protected final BlockingSkill blockingSkill = registerSkill(this, BlockingSkill::new, AnimationLocations.BLOCKING);
+    protected final DashSkill<AbstractHerobrine> dashSkill = registerSkill(10, this, DashSkill::new);
+    protected final DashAroundSkill<AbstractHerobrine> dashAroundSkill = registerSkill(10, this, DashAroundSkill::new);
+    protected final StigmatizeEntitiesSkill<AbstractHerobrine> stigmatizeEntitiesSkill = registerSkill(10, this, StigmatizeEntitiesSkill::new);
+    protected final ThrowFireballSkill throwFireballSkill = registerSkill(10, new ThrowFireballSkill(this, this::createFireball), AnimationLocations.THROW_NARAKA_FIREBALL);
+    protected final BlockingSkill blockingSkill = registerSkill(10, this, BlockingSkill::new, AnimationLocations.BLOCKING);
     protected final SummonShadowSkill summonShadowSkill = registerSkill(0, this, SummonShadowSkill::new);
     protected final RolePlayShadowSkill rolePlayShadowSkill = registerSkill(1, this, RolePlayShadowSkill::new);
-    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(new RushSkill<>(this, AbstractHerobrine::isNotHerobrine), AnimationLocations.RUSH);
-    protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, dashSkill));
+    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(10, new RushSkill<>(this, AbstractHerobrine::isNotHerobrine), AnimationLocations.RUSH);
 
     protected final LandingSkill landingSkill = registerSkill(this, LandingSkill::new, AnimationLocations.COMBO_ATTACK_5);
     protected final SuperHitSkill superHitSkill = registerSkill(new SuperHitSkill(landingSkill, this), AnimationLocations.COMBO_ATTACK_4);
@@ -71,10 +70,14 @@ public class Herobrine extends AbstractHerobrine {
     protected final UppercutSkill uppercutSkill = registerSkill(new UppercutSkill(spinningSkill, this), AnimationLocations.COMBO_ATTACK_2);
     protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(2, new PunchSkill<>(uppercutSkill, this, 140, true), AnimationLocations.COMBO_ATTACK_1);
 
+    protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, dashSkill));
+
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill, rolePlayShadowSkill);
     private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, rushSkill, throwFireballSkill, walkAroundTargetSkill);
     private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, rushSkill, throwFireballSkill, summonShadowSkill, walkAroundTargetSkill);
+
+    private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashSkill, walkAroundTargetSkill);
 
     private final List<List<Skill<?>>> HIBERNATED_MODE_SKILL_BY_PHASE = List.of(
             List.of(), HIBERNATED_MODE_PHASE_1_SKILLS, HIBERNATED_MODE_PHASE_2_SKILLS, List.of()
@@ -142,7 +145,7 @@ public class Herobrine extends AbstractHerobrine {
     private void useComboAttackOnIdle(@Nullable Skill<?> skill) {
         if (getTarget() != null
                 && !isStaggering() && !isHibernateMode()
-                && skill == null && punchSkill.isEnabled() && idleTickCount > 20) {
+                && skill == null && punchSkill.isEnabled()) {
             dashAndPunch();
         }
     }
@@ -364,11 +367,16 @@ public class Herobrine extends AbstractHerobrine {
         NetworkManager.sendToClient(serverPlayer, packet);
     }
 
+    private boolean isUsingInvulnerableSkill() {
+        Skill<?> currentSkill = skillManager.getCurrentSkill();
+        return currentSkill != null && INVULNERABLE_SKILLS.contains(currentSkill);
+    }
+
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             return super.hurtServer(level, source, damage);
-        if (source.getEntity() == this)
+        if (source.getEntity() == this || isUsingInvulnerableSkill())
             return false;
 
         float limitedDamage = Math.min(damage, hurtDamageLimit);
@@ -476,6 +484,7 @@ public class Herobrine extends AbstractHerobrine {
     public Fireball createFireball(ServerLevel level) {
         NarakaFireball fireball = new NarakaFireball(this, Vec3.ZERO, level(), hibernateMode);
         fireball.setDamageCalculator(this::calculateFireballDamage);
+        fireball.setTimeToLive(50);
         fireball.addHurtTargetListener((target, damage) -> stigmatizeEntity(level, target));
         fireball.addHurtTargetListener((target, damage) -> updateHibernateModeOnTargetSurvivedFromFireball(level, target, damage));
 

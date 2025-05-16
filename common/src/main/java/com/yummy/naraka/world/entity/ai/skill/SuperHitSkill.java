@@ -2,7 +2,6 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
-import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -56,7 +55,6 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
         if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15))
             return;
         super.hurtHitEntity(level, target);
-        StunHelper.stunEntity(target, 20, true);
         mob.stigmatizeEntity(level, target);
         level.playSound(mob, mob.blockPosition(), SoundEvents.STONE_BREAK, SoundSource.HOSTILE, 1, 1);
     }

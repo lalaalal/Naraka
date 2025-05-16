@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -8,18 +9,24 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
-public class WalkAroundTargetSkill extends ComboSkill<SkillUsingMob> {
+public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
     public static final ResourceLocation LOCATION = createLocation("walk_around");
 
+    private static final int DEFAULT_DURATION = 80;
     private int direction;
+    private final PunchSkill<AbstractHerobrine> punchSKill;
+    private final Skill<?> dashSkill;
 
-    public WalkAroundTargetSkill(SkillUsingMob mob, Skill<?> nextSkill) {
-        super(LOCATION, 80, 300, 0.8f, nextSkill, 60, mob);
+    public WalkAroundTargetSkill(SkillUsingMob mob, PunchSkill<AbstractHerobrine> punchSKill, Skill<?> dashSkill) {
+        super(LOCATION, 40, 300, mob);
+        this.punchSKill = punchSKill;
+        this.dashSkill = dashSkill;
     }
 
     @Override
     public void prepare() {
         super.prepare();
+        duration = DEFAULT_DURATION;
         direction = mob.getRandom().nextBoolean() ? 1 : -1;
     }
 
@@ -30,7 +37,21 @@ public class WalkAroundTargetSkill extends ComboSkill<SkillUsingMob> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        runBefore(duration - 2, () -> moveAndLook(target));
+        moveAndLook(target);
+        if (targetInRange(target, 4)) {
+            setLinkedSkill(punchSKill);
+            duration = 0;
+        }
+
+        runAt(duration - 1, this::determineNextSkill);
+    }
+
+    private void determineNextSkill() {
+        if (mob.getRandom().nextBoolean()) {
+            dashSkill.setLinkedSkill(punchSKill);
+            punchSKill.setLinkedFromPrevious(true);
+        }
+        this.setLinkedSkill(dashSkill);
     }
 
     private void moveAndLook(LivingEntity target) {
@@ -40,10 +61,5 @@ public class WalkAroundTargetSkill extends ComboSkill<SkillUsingMob> {
         Path path = mob.getNavigation().createPath(wanted.x, wanted.y, wanted.z, 1);
         mob.getNavigation().moveTo(path, 0.8f);
         lookTarget(target);
-    }
-
-    @Override
-    protected float calculateDamage(LivingEntity target) {
-        return 0;
     }
 }

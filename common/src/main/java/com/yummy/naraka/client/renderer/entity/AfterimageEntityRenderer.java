@@ -69,10 +69,10 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
         this.setupRotations(renderState, poseStack, afterimageRenderState.bodyRot, renderState.scale);
 
-        RenderType renderType = RenderType.entityTranslucent(getAfterimageTexture(renderState));
+        RenderType renderType = RenderType.entityTranslucentEmissive(getAfterimageTexture(renderState), true);
         VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
         Color color = afterimageRenderState.color;
-        int light = (int) (color.alpha01() * 10) + 5;
+        int light = (int) (color.alpha01() * 5);
         int packedLight = LightTexture.pack(light, light);
 
         this.afterimageModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color.pack());

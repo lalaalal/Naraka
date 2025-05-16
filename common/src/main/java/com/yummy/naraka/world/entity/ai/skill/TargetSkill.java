@@ -48,32 +48,37 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
         mob.getLookControl().setLookAt(target);
     }
 
-    protected static Predicate<Integer> at(int tick) {
-        return tickCount -> tickCount == tick;
+    protected boolean at(int tick) {
+        return tickCount == tick;
     }
 
-    protected static Predicate<Integer> after(int tick) {
-        return tickCount -> tickCount > tick;
+    protected boolean after(int tick) {
+        return tickCount > tick;
     }
 
-    protected static Predicate<Integer> before(int tick) {
-        return tickCount -> tickCount < tick;
+    protected boolean before(int tick) {
+        return tickCount < tick;
     }
 
-    protected static Predicate<Integer> between(int from, int to) {
-        return tickCount -> from <= tickCount && tickCount < to;
+    protected boolean between(int from, int to) {
+        return from <= tickCount && tickCount < to;
     }
 
-    protected static Predicate<Integer> and(Predicate<Integer> p1, Predicate<Integer> p2) {
-        return tickCount -> p1.test(tickCount) && p2.test(tickCount);
+    protected boolean and(Predicate<Integer> p1, Predicate<Integer> p2) {
+        return p1.test(tickCount) && p2.test(tickCount);
     }
 
-    protected static Predicate<Integer> or(Predicate<Integer> p1, Predicate<Integer> p2) {
-        return tickCount -> p1.test(tickCount) || p2.test(tickCount);
+    protected boolean or(Predicate<Integer> p1, Predicate<Integer> p2) {
+        return p1.test(tickCount) || p2.test(tickCount);
     }
 
     protected final void run(Predicate<Integer> predicate, Runnable action) {
         if (predicate.test(tickCount))
+            action.run();
+    }
+
+    protected final void run(boolean predicate, Runnable action) {
+        if (predicate)
             action.run();
     }
 
