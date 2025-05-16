@@ -14,12 +14,12 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
     public static final String NAME = "super_hit";
 
     public SuperHitSkill(ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
-        super(createLocation(NAME), 20, 0, 1, comboSkill, 20, mob);
+        super(createLocation(NAME), 40, 0, 1, comboSkill, 40, mob);
     }
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        runAt(8, this::superHit);
+        runAt(12, this::superHit);
         if (tickCount > 10)
             hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 1.5);
         if (tickCount > 10 && mob.onGround()) {
@@ -30,7 +30,7 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
 
     private void superHit() {
         mob.setNoGravity(false);
-        Vec3 lookVector = mob.getLookAngle().scale(1.2);
+        Vec3 lookVector = mob.getLookAngle().scale(0.8f);
         mob.setDeltaMovement(lookVector.x, -1.2, lookVector.z);
     }
 

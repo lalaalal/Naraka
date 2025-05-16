@@ -13,7 +13,7 @@ public class LandingSkill extends ComboSkill<AbstractHerobrine> {
     public static final String NAME = "landing";
 
     public LandingSkill(AbstractHerobrine mob) {
-        super(createLocation(NAME), 20, 0, 0, null, 20, mob);
+        super(createLocation(NAME), 40, 0, 0, null, 20, mob);
     }
 
     @Override
