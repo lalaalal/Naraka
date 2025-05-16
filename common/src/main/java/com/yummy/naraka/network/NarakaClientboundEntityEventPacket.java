@@ -34,7 +34,8 @@ public record NarakaClientboundEntityEventPacket(Event event, int entityId) impl
     }
 
     public enum Event implements StringRepresentable {
-        ;
+        SHOW_SKILL_CONTROL_SCREEN(NarakaClientboundEventHandler::showSkillControlScreen),
+        SHOW_ANIMATION_CONTROL_SCREEN(NarakaClientboundEventHandler::showAnimationControlScreen);
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
         public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.idMapper(Event::byId, Event::getId);

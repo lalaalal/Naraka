@@ -11,8 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class StardustStaff extends Item {
-    public StardustStaff(Properties properties) {
+public class StardustStaffItem extends Item {
+    public StardustStaffItem(Properties properties) {
         super(properties);
     }
 

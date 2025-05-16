@@ -2,6 +2,7 @@ package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.armortrim.NarakaTrimPatterns;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
@@ -30,18 +31,29 @@ public class NarakaItems {
     private static final Set<HolderProxy<Item, SwordItem>> SOUL_INFUSED_SWORDS = new LinkedHashSet<>();
     private static final Map<SoulType, HolderProxy<Item, SwordItem>> SWORD_BY_SOUL_TYPE = new HashMap<>();
 
-    public static final HolderProxy<Item, Item> SKILL_CONTROLLER = registerItem(
-            "skill_controller", SkillControllerItem::new
-    );
-
     public static final HolderProxy<Item, Item> STIGMA_ROD = registerItem("stigma_rod", StigmaRodItem::new);
-    public static final HolderProxy<Item, Item> STARDUST_STAFF = registerItem("stardust_staff", StardustStaff::new);
+    public static final HolderProxy<Item, Item> STARDUST_STAFF = registerItem("stardust_staff", StardustStaffItem::new);
     public static final HolderProxy<Item, Item> NARAKA_FIREBALL = registerItem("naraka_fireball", NarakaFireballItem::new);
 
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_1_DISC = registerDiscItem("herobrine_phase_1_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_1);
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_2_DISC = registerDiscItem("herobrine_phase_2_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_2);
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_3_DISC = registerDiscItem("herobrine_phase_3_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_3);
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_4_DISC = registerDiscItem("herobrine_phase_4_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_4);
+
+    public static final HolderProxy<Item, Item> SKILL_CONTROLLER = registerItem(
+            "skill_controller",
+            properties -> new SkillUsingMobControllerItem(
+                    properties,
+                    NarakaClientboundEntityEventPacket.Event.SHOW_SKILL_CONTROL_SCREEN
+            )
+    );
+    public static final HolderProxy<Item, Item> ANIMATION_CONTROLLER = registerItem(
+            "animation_controller",
+            properties -> new SkillUsingMobControllerItem(
+                    properties,
+                    NarakaClientboundEntityEventPacket.Event.SHOW_ANIMATION_CONTROL_SCREEN
+            )
+    );
 
     // Ingredients
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_METAL = registerSimpleItem(

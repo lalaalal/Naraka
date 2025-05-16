@@ -10,14 +10,14 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.Set;
 
-public class SkillList extends ObjectSelectionList<SkillList.Entry> {
+public class LocationList extends ObjectSelectionList<LocationList.Entry> {
     private final Screen screen;
 
-    public SkillList(Minecraft minecraft, Screen screen, Set<ResourceLocation> skills) {
+    public LocationList(Minecraft minecraft, Screen screen, Set<ResourceLocation> locations) {
         super(minecraft, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight() - 50, 38, 18);
         this.screen = screen;
-        for (ResourceLocation skill : skills) {
-            Entry entry = new Entry(skill);
+        for (ResourceLocation location : locations) {
+            Entry entry = new Entry(location);
             addEntry(entry);
             setSelected(entry);
         }
