@@ -2,7 +2,6 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
-import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -36,7 +35,6 @@ public class SpinningSkill extends ComboSkill<AbstractHerobrine> {
             return;
         super.hurtHitEntity(level, target);
         mob.stigmatizeEntity(level, target);
-        StunHelper.stunEntity(target, 20, true);
         level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
     }
 

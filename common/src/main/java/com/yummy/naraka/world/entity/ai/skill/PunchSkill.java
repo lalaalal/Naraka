@@ -15,6 +15,7 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
 
     private final boolean stunTarget;
     private boolean linked = false;
+    private boolean hurtSucceed = false;
 
     public PunchSkill(ComboSkill<?> comboSkill, T mob, boolean withStun) {
         super(LOCATION, 22, DEFAULT_COOLDOWN, 0.8f, comboSkill, 11, mob);
@@ -36,6 +37,12 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
     }
 
     @Override
+    public void prepare() {
+        super.prepare();
+        hurtSucceed = false;
+    }
+
+    @Override
     protected float getBonusChance() {
         if (linked)
             return -0.4f;
@@ -44,7 +51,6 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
 
     @Override
     protected void onFirstTick(ServerLevel level) {
-        linked = false;
         mob.getNavigation().stop();
     }
 
@@ -56,13 +62,31 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
 
     @Override
     protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15) || !targetInRange(target, 4))
+        if (targetOutOfRange(target, 4))
+            return;
+        hurtSucceed = true;
+        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15))
             return;
         super.hurtHitEntity(level, target);
         if (stunTarget)
-            StunHelper.stunEntity(target, 20, true);
+            StunHelper.stunEntity(target, 100, true);
         mob.stigmatizeEntity(level, target);
         level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
+    }
+
+    @Override
+    protected void onLastTick(ServerLevel level) {
+        if (((!hurtSucceed && !hasLinkedSkill()) || !hasLinkedSkill()) && linked) {
+            Skill<?> dash = mob.getSkillManager().getSkill(DashSkill.LOCATION);
+            Skill<?> walkAroundSkill = mob.getSkillManager().getSkill(WalkAroundTargetSkill.LOCATION);
+
+            if (dash instanceof DashSkill<?> dashSkill && walkAroundSkill != null) {
+                dashSkill.setLinkedSkill(walkAroundSkill);
+                dashSkill.setScale(-0.5f);
+                this.setLinkedSkill(dashSkill);
+            }
+        }
+        linked = false;
     }
 
     @Override

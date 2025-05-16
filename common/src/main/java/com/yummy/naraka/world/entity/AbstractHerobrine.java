@@ -38,7 +38,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
                 .add(Attributes.FOLLOW_RANGE, 128)
                 .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 1)
                 .add(Attributes.STEP_HEIGHT, 1.7)
-                .add(Attributes.MOVEMENT_SPEED, 0.2f)
+                .add(Attributes.MOVEMENT_SPEED, 0.1f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.MAX_HEALTH, 666);
@@ -52,6 +52,8 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         super(entityType, level);
         this.isShadow = isShadow;
         registerAnimation(AnimationLocations.STAGGERING);
+        registerAnimation(AnimationLocations.IDLE);
+
         setPersistenceRequired();
         updateAnimation(AnimationLocations.IDLE);
         skillManager.runOnSkillEnd(this::updateAnimationOnSkillEnd);

@@ -138,7 +138,9 @@ public class SkillManager {
 
     @Nullable
     public Skill<?> getSkill(ResourceLocation location) {
-        return skills.get(location).skill;
+        if (skills.containsKey(location))
+            return skills.get(location).skill;
+        return null;
     }
 
     public Set<ResourceLocation> getSkillNames() {
