@@ -16,10 +16,14 @@ public class AnimationLocations {
     public static final ResourceLocation COMBO_ATTACK_4 = create("herobrine", "combo_attack_4");
     public static final ResourceLocation COMBO_ATTACK_5 = create("herobrine", "combo_attack_5");
     public static final ResourceLocation RUSH = create("herobrine", "rush");
+    public static final ResourceLocation RUSH_SUCCEED = create("herobrine", "rush.succeed");
+    public static final ResourceLocation RUSH_FAILED = create("herobrine", "rush.failed");
     public static final ResourceLocation THROW_NARAKA_FIREBALL = create("herobrine", "throw_naraka_fireball");
     public static final ResourceLocation STIGMATIZE_ENTITIES = create("herobrine", "stigmatize_entities");
     public static final ResourceLocation BLOCKING = create("herobrine", "blocking");
     public static final ResourceLocation STAGGERING = create("herobrine", "staggering");
+    public static final ResourceLocation STAGGERING_PHASE_2 = create("herobrine", "staggering.phase2");
+    public static final ResourceLocation PHASE_2 = create("herobrine", "phase_2");
     public static final ResourceLocation IDLE = create("herobrine", "idle");
 
     private static ResourceLocation create(String entity, String name) {
