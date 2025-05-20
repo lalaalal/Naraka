@@ -1,11 +1,11 @@
 package com.yummy.naraka.world.entity;
 
-import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -27,10 +27,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+
 public abstract class AbstractHerobrine extends SkillUsingMob implements StigmatizingEntity, AfterimageEntity, Enemy {
     public final boolean isShadow;
+    private static final Set<ResourceLocation> STAGGERING_ANIMATIONS = Set.of(AnimationLocations.STAGGERING, AnimationLocations.STAGGERING_PHASE_2);
 
-    protected int staggeringTickCount = Integer.MIN_VALUE;
+    protected int animationTickCount = Integer.MIN_VALUE;
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
@@ -38,7 +41,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
                 .add(Attributes.FOLLOW_RANGE, 128)
                 .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 1)
                 .add(Attributes.STEP_HEIGHT, 1.7)
-                .add(Attributes.MOVEMENT_SPEED, 0.1f)
+                .add(Attributes.MOVEMENT_SPEED, 0.16f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.MAX_HEALTH, 666);
@@ -65,37 +68,31 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     private void updateStaggering() {
-        if (staggeringTickCount == 0)
-            stopStaggering();
-        if (staggeringTickCount >= 0)
-            staggeringTickCount -= 1;
+        if (animationTickCount == 0)
+            stopAnimation();
+        if (animationTickCount >= 0)
+            animationTickCount -= 1;
     }
 
-    protected void startStaggering() {
-        int duration = NarakaConfig.COMMON.herobrineStaggeringDuration.getValue();
-        this.startStaggering(true, duration);
-    }
-
-    protected void startStaggering(boolean playAnimation, int duration) {
-        if (staggeringTickCount > 0)
+    protected void playAnimation(ResourceLocation animation, int duration) {
+        if (animationTickCount > 0)
             return;
-        staggeringTickCount = Math.max(1, duration);
+        animationTickCount = Math.max(1, duration);
         skillManager.pause(true);
-        if (playAnimation)
-            setAnimation(AnimationLocations.STAGGERING);
-        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STAGGERING_PREVENT_MOVING);
+        setAnimation(animation);
+        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
     }
 
-    protected void stopStaggering() {
-        if (getCurrentAnimation().equals(AnimationLocations.STAGGERING))
-            setAnimation(AnimationLocations.IDLE);
-        staggeringTickCount = Integer.MIN_VALUE;
+    protected void stopAnimation() {
+        if (animationTickCount < 0)
+            return;
+        animationTickCount = Integer.MIN_VALUE;
         skillManager.resume();
-        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STAGGERING_PREVENT_MOVING);
+        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
     }
 
     public boolean isStaggering() {
-        return staggeringTickCount > 0;
+        return STAGGERING_ANIMATIONS.contains(getCurrentAnimation());
     }
 
     @Override

@@ -177,7 +177,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
             return super.hurt(source, amount);
         if (getHerobrine().isPresent())
             amount = Math.min(amount, getHurtDamageLimit());
-        if (staggeringTickCount > 0)
+        if (animationTickCount > 0)
             return false;
         return super.hurt(source, amount);
     }
