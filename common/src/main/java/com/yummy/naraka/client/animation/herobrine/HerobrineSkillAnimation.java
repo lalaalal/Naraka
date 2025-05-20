@@ -361,7 +361,7 @@ public class HerobrineSkillAnimation {
                         new Keyframe(0.5F, KeyframeAnimations.degreeVec(-141.8087F, -1.377F, 173.9468F), AnimationChannel.Interpolations.LINEAR),
                         new Keyframe(0.875F, KeyframeAnimations.degreeVec(-141.81F, -1.38F, 173.95F), AnimationChannel.Interpolations.LINEAR),
                         new Keyframe(1.25F, KeyframeAnimations.degreeVec(-141.81F, -1.38F, 173.95F), AnimationChannel.Interpolations.LINEAR),
-                        new Keyframe(1.75F, KeyframeAnimations.degreeVec(-180.0F, 0.0F, 180.0F), AnimationChannel.Interpolations.LINEAR)
+                        new Keyframe(1.75F, KeyframeAnimations.degreeVec(-180.0F, 180.0F, 180.0F), AnimationChannel.Interpolations.LINEAR)
                 ))
                 .addAnimation("main", new AnimationChannel(AnimationChannel.Targets.POSITION,
                         new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, -2.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),

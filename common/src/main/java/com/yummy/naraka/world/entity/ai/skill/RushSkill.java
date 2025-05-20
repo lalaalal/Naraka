@@ -1,50 +1,62 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.world.block.UnstableBlock;
+import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
 import com.yummy.naraka.world.entity.StunHelper;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends AttackSkill<T> {
     public static final ResourceLocation LOCATION = createLocation("rush");
 
-    private static final int START_RUNNING_TICK = 25;
-    private static final int STOP_RUNNING_TICK = 35;
-    private static final int RUSH_TICK = 40;
-    private static final int FINALE_TICK = 55;
+    private static final int START_RUNNING_TICK = 20;
+    private static final int RUSH_TICK = 25;
+    private static final int FINALE_TICK = 50;
 
-    private Vec3 delta = Vec3.ZERO;
+    private Vec3 deltaMovement = Vec3.ZERO;
+    private boolean hit = false;
+    private boolean failed = false;
 
     private final List<Entity> blockedEntities = new ArrayList<>();
     private final Predicate<LivingEntity> targetPredicate;
 
     public RushSkill(T mob, Predicate<LivingEntity> targetPredicate) {
-        super(LOCATION, 85, 200, mob);
+        super(LOCATION, 200, 200, mob);
         this.targetPredicate = targetPredicate;
     }
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return targetOutOfRange(25);
+        return targetOutOfRange(36);
     }
 
     @Override
     public void prepare() {
         super.prepare();
+        duration = 200;
         blockedEntities.clear();
+        hit = false;
+        failed = false;
     }
 
     @Override
@@ -55,46 +67,64 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runBefore(START_RUNNING_TICK, () -> lookTarget(target));
-        runAt(START_RUNNING_TICK - 2, () -> rotateTowardTarget(target));
-        updateDeltaMovement(level, target, START_RUNNING_TICK, STOP_RUNNING_TICK, 0.6, true, true);
-        updateDeltaMovement(level, target, STOP_RUNNING_TICK, RUSH_TICK, 0, true, false);
-        updateDeltaMovement(level, target, RUSH_TICK, FINALE_TICK, 1.15, false, false);
-        if (RUSH_TICK <= tickCount && tickCount <= FINALE_TICK) {
-            hurtHitEntities(level, targetPredicate, 0.5);
-//            updateBlocks(7 - (tickCount - RUSH_TICK));
-        }
-        if (tickCount >= FINALE_TICK)
-            delta = delta.scale(0.5f);
+        runBefore(START_RUNNING_TICK, () -> rotateTowardTarget(target));
+
+        runBefore(RUSH_TICK, () -> calculateDeltaMovement(level, target, true, 1));
+        runAfter(RUSH_TICK, () -> calculateDeltaMovement(level, target, false, 3));
+
+        runBetween(RUSH_TICK, FINALE_TICK, () -> hurtHitEntities(level, targetPredicate, 0.5));
     }
 
-    private void calculateDeltaMovement(LivingEntity target, boolean ignoreDeltaY) {
-        int factor = ignoreDeltaY ? 0 : 1;
-        this.delta = NarakaEntityUtils.getDirectionNormalVector(mob, target).multiply(1, factor, 1);
-        lookTarget(target);
+    @Override
+    protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
+        runAfter(START_RUNNING_TICK - 5, () -> moving(level));
+        runAt(FINALE_TICK, this::failed);
     }
 
-    private void updateDeltaMovement(ServerLevel level, LivingEntity target, int startTick, int endTick, double scale, boolean updateDeltaMovement, boolean ignoreDeltaY) {
-        if (updateDeltaMovement && tickCount == startTick)
-            calculateDeltaMovement(target, ignoreDeltaY);
-        if (startTick <= tickCount && tickCount < endTick) {
-            NarakaEntityUtils.updatePositionForUpStep(level, mob, delta, 0.5);
-            mob.setDeltaMovement(delta.scale(scale));
+    private void moving(ServerLevel level) {
+        NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, 0.5);
+        mob.setDeltaMovement(deltaMovement);
+    }
+
+    private void failed() {
+        if (this.hit)
+            return;
+        this.duration = tickCount + 40;
+        this.failed = true;
+        mob.setAnimation(AnimationLocations.RUSH_FAILED);
+    }
+
+    private void calculateDeltaMovement(ServerLevel level, LivingEntity target, boolean trace, double scale) {
+        Collection<LivingEntity> entities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(0.5));
+        Optional<LivingEntity> hitEntity = entities.stream()
+                .filter(AbstractHerobrine::isNotHerobrine)
+                .findAny();
+        Vec3 view = mob.getLookAngle();
+        BlockPos toward = NarakaUtils.pos(mob.position().add(view.normalize()));
+        if (this.failed) {
+            this.deltaMovement = deltaMovement.scale(0.8);
+        } else if (this.hit) {
+            this.deltaMovement = deltaMovement.add(0, -0.098, 0);
+            if (mob.onGround())
+                this.deltaMovement = deltaMovement.multiply(0, 1, 0);
+        } else if (hitEntity.isPresent() || isWall(level, toward)) {
+            this.duration = tickCount + 50;
+            this.deltaMovement = view.yRot(Mth.PI)
+                    .multiply(1, 0, 1)
+                    .add(0, 1, 0);
+            this.hit = true;
+            this.failed = false;
+            hitEntity.ifPresent(entity -> hurtHitEntity(level, entity));
+            mob.setAnimation(AnimationLocations.RUSH_SUCCEED);
+        } else if (trace) {
+            this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob, target)
+                    .multiply(1, 0, 1)
+                    .scale(scale);
         }
     }
 
-    private void updateBlocks(int power) {
-        Level level = mob.level();
-        RandomSource random = mob.getRandom();
-        for (int i = 0; i < power; i++) {
-            double distance = random.nextDouble() * power;
-            double angle = random.nextDouble() * Math.PI * 2;
-
-            int x = mob.blockPosition().getX() + (int) Math.round(Math.cos(angle) * distance);
-            int z = mob.blockPosition().getZ() + (int) Math.round(Math.sin(angle) * distance);
-
-            BlockPos pos = new BlockPos(x, mob.getBlockY() - 1, z);
-            UnstableBlock.makeUnstable(level, pos);
-        }
+    private boolean isWall(Level level, BlockPos pos) {
+        return level.getBlockState(pos).canOcclude() || level.getBlockState(pos.above()).canOcclude();
     }
 
     @Override
@@ -107,7 +137,9 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
             StunHelper.stunEntity(target, 100);
             mob.stigmatizeEntity(level, target);
             super.hurtHitEntity(level, target);
-            target.knockback(5, mob.getX() - target.getX(), mob.getZ() - target.getZ());
+            Vec3 view = mob.getLookAngle();
+            target.knockback(5, -view.x, -view.z);
+            level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 2, 1);
         }
     }
 

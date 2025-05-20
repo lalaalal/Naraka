@@ -80,9 +80,11 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
             Skill<?> dash = mob.getSkillManager().getSkill(DashSkill.LOCATION);
             Skill<?> walkAroundSkill = mob.getSkillManager().getSkill(WalkAroundTargetSkill.LOCATION);
 
-            if (dash instanceof DashSkill<?> dashSkill && walkAroundSkill != null) {
+            if (targetOutOfRange(16)) {
+                this.setLinkedSkill(dash);
+            } else if (dash instanceof DashSkill<?> dashSkill && walkAroundSkill != null) {
                 dashSkill.setLinkedSkill(walkAroundSkill);
-                dashSkill.setScale(-0.5f);
+                dashSkill.setScale(-1.5f);
                 this.setLinkedSkill(dashSkill);
             }
         }

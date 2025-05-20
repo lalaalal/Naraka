@@ -15,12 +15,14 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
     private static final int DEFAULT_DURATION = 80;
     private int direction;
     private final PunchSkill<AbstractHerobrine> punchSKill;
-    private final Skill<?> dashSkill;
+    private final DashSkill<?> dashSkill;
+    private final Skill<?> rushSKill;
 
-    public WalkAroundTargetSkill(SkillUsingMob mob, PunchSkill<AbstractHerobrine> punchSKill, Skill<?> dashSkill) {
+    public WalkAroundTargetSkill(SkillUsingMob mob, PunchSkill<AbstractHerobrine> punchSKill, DashSkill<?> dashSkill, Skill<?> rushSkill) {
         super(LOCATION, 40, 300, mob);
         this.punchSKill = punchSKill;
         this.dashSkill = dashSkill;
+        this.rushSKill = rushSkill;
     }
 
     @Override
@@ -48,10 +50,16 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
 
     private void determineNextSkill() {
         if (mob.getRandom().nextBoolean()) {
-            dashSkill.setLinkedSkill(punchSKill);
-            punchSKill.setLinkedFromPrevious(true);
+            dashSkill.setLinkedSkill(rushSKill);
+            dashSkill.setScale(-0.5f);
+            this.setLinkedSkill(dashSkill);
+        } else {
+            if (mob.getRandom().nextBoolean()) {
+                dashSkill.setLinkedSkill(punchSKill);
+                punchSKill.setLinkedFromPrevious(true);
+            }
+            this.setLinkedSkill(dashSkill);
         }
-        this.setLinkedSkill(dashSkill);
     }
 
     private void moveAndLook(LivingEntity target) {
