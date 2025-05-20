@@ -71,7 +71,7 @@ public class Herobrine extends AbstractHerobrine {
     protected final UppercutSkill uppercutSkill = registerSkill(new UppercutSkill(spinningSkill, this), AnimationLocations.COMBO_ATTACK_2);
     protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(2, new PunchSkill<>(uppercutSkill, this, 140, true), AnimationLocations.COMBO_ATTACK_1);
 
-    protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, dashSkill));
+    protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, dashSkill, rushSkill));
 
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill, rolePlayShadowSkill);
@@ -79,6 +79,7 @@ public class Herobrine extends AbstractHerobrine {
     private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, rushSkill, throwFireballSkill, summonShadowSkill, walkAroundTargetSkill);
 
     private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashSkill, walkAroundTargetSkill);
+    private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(AnimationLocations.PHASE_2, AnimationLocations.STAGGERING_PHASE_2);
 
     private final List<List<Skill<?>>> HIBERNATED_MODE_SKILL_BY_PHASE = List.of(
             List.of(), HIBERNATED_MODE_PHASE_1_SKILLS, HIBERNATED_MODE_PHASE_2_SKILLS, List.of()
@@ -115,15 +116,16 @@ public class Herobrine extends AbstractHerobrine {
 
         bossEvent.setDarkenScreen(true)
                 .setPlayBossMusic(true);
-        phaseManager.addPhaseChangeListener(this::startStaggering);
         phaseManager.addPhaseChangeListener(this::updateMusic);
         phaseManager.addPhaseChangeListener(this::updateUsingSkills);
         phaseManager.addPhaseChangeListener((prev, current) -> resetDamageLimit());
+        phaseManager.addPhaseChangeListener(this::startStaggering);
 
         skillManager.enableOnly(PHASE_1_SKILLS);
         skillManager.runOnSkillStart(this::replaceRush);
         skillManager.runOnSkillSelect(this::useComboAttackOnIdle);
 
+        registerAnimation(AnimationLocations.PHASE_2);
         registerAnimation(AnimationLocations.STAGGERING_PHASE_2);
         registerAnimation(AnimationLocations.RUSH_SUCCEED);
         registerAnimation(AnimationLocations.RUSH_FAILED);
@@ -379,7 +381,7 @@ public class Herobrine extends AbstractHerobrine {
 
     private boolean isUsingInvulnerableSkill() {
         Skill<?> currentSkill = skillManager.getCurrentSkill();
-        return currentSkill != null && INVULNERABLE_SKILLS.contains(currentSkill);
+        return currentSkill != null && INVULNERABLE_SKILLS.contains(currentSkill) || INVULNERABLE_ANIMATIONS.contains(getCurrentAnimation());
     }
 
     @Override
@@ -471,6 +473,7 @@ public class Herobrine extends AbstractHerobrine {
         if (spawnPosition != null)
             moveTo(spawnPosition.south(54), 0, 0);
         hibernateMode = true;
+        skillManager.interrupt();
         skillManager.enableOnly(HIBERNATED_MODE_SKILL_BY_PHASE.get(getPhase()));
         shadowController.updateRolePlaying(level);
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);

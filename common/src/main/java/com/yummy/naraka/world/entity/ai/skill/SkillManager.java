@@ -121,8 +121,10 @@ public class SkillManager {
             Skill<?> usable = selectSkill(level);
             if (usable != null)
                 setCurrentSkill(usable);
-            for (Consumer<Skill<?>> listener : skillSelectListeners)
-                listener.accept(usable);
+            if (!paused) {
+                for (Consumer<Skill<?>> listener : skillSelectListeners)
+                    listener.accept(usable);
+            }
         }
 
         for (Entry entry : skills.values())

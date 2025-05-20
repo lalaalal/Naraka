@@ -69,7 +69,7 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
         this.setupRotations(renderState, poseStack, afterimageRenderState.bodyRot, renderState.scale);
 
-        RenderType renderType = RenderType.entityTranslucentEmissive(getAfterimageTexture(renderState), true);
+        RenderType renderType = RenderType.entityTranslucent(getAfterimageTexture(renderState), true);
         VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
         Color color = afterimageRenderState.color;
         int light = (int) (color.alpha01() * 5);
