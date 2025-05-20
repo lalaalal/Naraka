@@ -18,9 +18,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.ItemSupplier;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -165,10 +163,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     @Override
     protected void onHit(HitResult result) {
         super.onHit(result);
-        if (!level().isClientSide) {
-            level().explode(this, NarakaDamageSources.narakaFireball(this), null, position(), 1.5f, false, Level.ExplosionInteraction.TRIGGER);
-            discard();
-        }
+        discard();
     }
 
     @Override
@@ -181,9 +176,15 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         super.onHitEntity(result);
         Entity hitEntity = result.getEntity();
         Entity owner = getOwner();
-        if (hitEntity != owner && hitEntity instanceof LivingEntity livingEntity && level() instanceof ServerLevel serverLevel) {
+        if (hitEntity != owner && hitEntity instanceof LivingEntity livingEntity) {
             float damage = damageCalculator.calculateDamage(this);
-            livingEntity.hurtServer(serverLevel, getDamageSource(owner), damage);
+            ExplosionDamageCalculator explosionDamageCalculator = new EntityBasedExplosionDamageCalculator(this) {
+                @Override
+                public float getEntityDamageAmount(Explosion explosion, Entity entity, float seenPercent) {
+                    return damage;
+                }
+            };
+            level().explode(this, getDamageSource(owner), explosionDamageCalculator, position(), 1.5f, false, Level.ExplosionInteraction.TRIGGER);
             for (HurtTargetListener listener : listeners)
                 listener.onHurtTarget(livingEntity, damage);
         }

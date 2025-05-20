@@ -25,6 +25,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -114,6 +115,7 @@ public class Herobrine extends AbstractHerobrine {
 
         bossEvent.setDarkenScreen(true)
                 .setPlayBossMusic(true);
+        phaseManager.addPhaseChangeListener(this::startStaggering);
         phaseManager.addPhaseChangeListener(this::updateMusic);
         phaseManager.addPhaseChangeListener(this::updateUsingSkills);
         phaseManager.addPhaseChangeListener((prev, current) -> resetDamageLimit());
@@ -121,6 +123,10 @@ public class Herobrine extends AbstractHerobrine {
         skillManager.enableOnly(PHASE_1_SKILLS);
         skillManager.runOnSkillStart(this::replaceRush);
         skillManager.runOnSkillSelect(this::useComboAttackOnIdle);
+
+        registerAnimation(AnimationLocations.STAGGERING_PHASE_2);
+        registerAnimation(AnimationLocations.RUSH_SUCCEED);
+        registerAnimation(AnimationLocations.RUSH_FAILED);
 
         for (int i = 0; i < NarakaConfig.CLIENT.herobrineScarfPartitionNumber.getValue(); i++)
             scarfWaveSpeedList.add(1f);
@@ -174,6 +180,10 @@ public class Herobrine extends AbstractHerobrine {
 
     private void resetDamageLimit() {
         this.hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
+    }
+
+    private void startStaggering(int prevPhase, int currentPhase) {
+        startStaggering(AnimationLocations.PHASE_2, 55);
     }
 
     private void updateMusic(int prevPhase, int currentPhase) {
@@ -411,6 +421,8 @@ public class Herobrine extends AbstractHerobrine {
         if (source.getDirectEntity() instanceof NarakaFireball fireball && !fireball.hasTarget()) {
             if (getHealth() > getPhaseMinimumHealth())
                 startStaggering();
+            if (getHealth() == getPhaseMinimumHealth())
+                startStaggering(AnimationLocations.STAGGERING_PHASE_2, 125);
             resetDamageLimit();
             if (hibernateMode)
                 stopHibernateMode(level);
@@ -474,10 +486,14 @@ public class Herobrine extends AbstractHerobrine {
         setHealth(getHealth() - 1);
     }
 
-    @Override
-    protected void stopStaggering() {
-        super.stopStaggering();
+
+    protected void startStaggering(ResourceLocation animation, int duration) {
+        playAnimation(animation, duration);
         resetDamageLimit();
+    }
+
+    protected void startStaggering() {
+        startStaggering(AnimationLocations.STAGGERING, 70);
     }
 
     @Override

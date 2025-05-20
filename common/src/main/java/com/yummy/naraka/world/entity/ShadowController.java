@@ -7,6 +7,7 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.ai.skill.PunchSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -79,7 +80,7 @@ public class ShadowController {
                     Vec3 originalHerobrinePosition = herobrine.position();
                     herobrine.setPos(shadowHerobrine.position());
                     shadowHerobrine.setPos(originalHerobrinePosition);
-                    shadowHerobrine.startStaggering(false, 40);
+                    shadowHerobrine.playAnimation(AnimationLocations.IDLE, 40);
                 });
     }
 
