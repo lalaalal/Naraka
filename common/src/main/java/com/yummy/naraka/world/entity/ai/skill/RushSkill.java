@@ -119,11 +119,14 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         } else if (trace) {
             this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob, target)
                     .multiply(1, 0, 1)
+                    .add(0, -0.098, 0)
                     .scale(scale);
         }
     }
 
     private boolean isWall(Level level, BlockPos pos) {
+        if (tickCount < RUSH_TICK)
+            return false;
         return level.getBlockState(pos).canOcclude() || level.getBlockState(pos.above()).canOcclude();
     }
 
