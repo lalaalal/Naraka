@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.block.entity;
 
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.block.HerobrineTotem;
@@ -53,27 +54,35 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         if (isSleeping(state))
             return;
 
-        if (tickCount % 5 == 0 && level.random.nextFloat() < 0.25f) {
-            if (state.getValue(CRACK) == MAX_CRACK) {
+        int crack = state.getValue(CRACK);
+        float chance = crack == MAX_CRACK - 1 ? 1 : 0.25f;
+        int wait = crack == MAX_CRACK - 1 ? 20 : 5;
+
+        if (tickCount % wait == 0 && level.random.nextFloat() < chance) {
+            if (crack == MAX_CRACK) {
                 breakTotemStructure(level, pos);
                 summonHerobrine(level, pos);
-            } else
+            } else {
                 HerobrineTotem.crack(level, pos, state);
+            }
             if (level.random.nextFloat() < 0.9f) {
-                level.sendParticles(ParticleTypes.CLOUD,
+                level.sendParticles(ParticleTypes.SMOKE,
                         pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 10,
-                        0.5, 0.5, 0.5, 0.01
+                        0.5, 0.5, 0.5, 0
                 );
                 level.sendParticles(ParticleTypes.FLAME,
                         pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 20,
-                        1, 1, 1, 0.05
+                        1, 1, 1, 0
                 );
                 level.playSound(null, pos, SoundEvents.NETHER_BRICKS_BREAK, SoundSource.BLOCKS);
             }
-            level.sendParticles(ParticleTypes.ENCHANT,
-                    pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 25,
-                    0.5, 0.5, 0.5, 0.01
-            );
+            if (crack == MAX_CRACK - 1) {
+                level.sendParticles(NarakaParticleTypes.HEROBRINE_SPAWN.get(),
+                        pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 15,
+                        0.5, 0.5, 0.5, 0.01
+                );
+                level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS);
+            }
         }
         tickCount += 1;
     }
