@@ -94,6 +94,8 @@ public class NarakaCreativeModeTabs {
 
         output.accept(NarakaBlocks.SOUL_SMITHING_BLOCK.get());
         output.accept(NarakaBlocks.SOUL_STABILIZER.get());
+        output.accept(NarakaBlocks.PURIFIED_SOUL_LAMP.get());
+        output.accept(NarakaBlocks.PURIFIED_SOUL_LANTERN.get());
     }
 
     private static void createSoulMaterialsTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {

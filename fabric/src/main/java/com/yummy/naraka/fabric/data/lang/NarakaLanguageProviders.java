@@ -272,6 +272,8 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.PURIFIED_SOUL_BLOCK, "Block of Purified Soul", "정화된 영혼 블록");
 
         addBlock(NarakaBlocks.HEROBRINE_TOTEM, "Herobrine Totem", "히로빈 토템");
+        addBlock(NarakaBlocks.PURIFIED_SOUL_LANTERN, "Purified Soul Lantern", "정화된 영혼 랜턴");
+        addBlock(NarakaBlocks.PURIFIED_SOUL_LAMP, "Purified Soul Lamp", "정화된 영혼 조명");
         addBlock(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK, "Purified Soul Fire", "정화된 영혼 불");
         addBlock(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK, "Block of Purified Soul Metal", "정화된 영혼 금속 블록");
         addBlock(NarakaBlocks.EBONY_LOG, "Ebony Log", "흑단나무 원목");
