@@ -92,7 +92,7 @@ public class HerobrineModel<S extends AbstractHerobrineRenderState> extends Enti
             applyHeadRotation(renderState);
         if (renderState.isIdle)
             AnimationUtils.bobArms(rightArm, leftArm, renderState.ageInTicks);
-        this.animateWalk(HerobrineAnimation.WALKING, renderState.walkAnimationPos, renderState.walkAnimationSpeed, 2, 2);
+        this.animateWalk(HerobrineAnimation.WALKING, renderState.walkAnimationPos, renderState.walkAnimationSpeed, 5, 6);
         renderState.animations((animationLocation, animationState) -> {
             this.animate(animationState, AnimationMapper.get(animationLocation), renderState.ageInTicks);
         });

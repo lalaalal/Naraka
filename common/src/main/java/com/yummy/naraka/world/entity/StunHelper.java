@@ -104,6 +104,7 @@ public final class StunHelper {
 
     public static void stunEntity(LivingEntity livingEntity, int duration, boolean update) {
         holdEntity(livingEntity);
+        livingEntity.stopUsingItem();
         long gameTime = livingEntity.level().getGameTime();
         TickSchedule schedule = STUN_RELEASE_SCHEDULES.computeIfAbsent(livingEntity, key -> createReleaseSchedule(key, duration));
         if (schedule.isExpired(gameTime)) {

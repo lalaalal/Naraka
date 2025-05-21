@@ -59,11 +59,11 @@ public class Herobrine extends AbstractHerobrine {
     protected final DashSkill<AbstractHerobrine> dashSkill = registerSkill(10, this, DashSkill::new);
     protected final DashAroundSkill<AbstractHerobrine> dashAroundSkill = registerSkill(10, this, DashAroundSkill::new);
     protected final StigmatizeEntitiesSkill<AbstractHerobrine> stigmatizeEntitiesSkill = registerSkill(10, this, StigmatizeEntitiesSkill::new);
-    protected final ThrowFireballSkill throwFireballSkill = registerSkill(10, new ThrowFireballSkill(this, this::createFireball), AnimationLocations.THROW_NARAKA_FIREBALL);
+    protected final ThrowFireballSkill throwFireballSkill = registerSkill(9, new ThrowFireballSkill(this, this::createFireball), AnimationLocations.THROW_NARAKA_FIREBALL);
     protected final BlockingSkill blockingSkill = registerSkill(10, this, BlockingSkill::new, AnimationLocations.BLOCKING);
     protected final SummonShadowSkill summonShadowSkill = registerSkill(0, this, SummonShadowSkill::new);
     protected final RolePlayShadowSkill rolePlayShadowSkill = registerSkill(1, this, RolePlayShadowSkill::new);
-    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(10, new RushSkill<>(this, AbstractHerobrine::isNotHerobrine), AnimationLocations.RUSH);
+    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(9, new RushSkill<>(this, AbstractHerobrine::isNotHerobrine), AnimationLocations.RUSH);
     protected final DestroyStructureSkill destroyStructureSkill = registerSkill(this, DestroyStructureSkill::new);
 
     protected final LandingSkill landingSkill = registerSkill(this, LandingSkill::new, AnimationLocations.COMBO_ATTACK_5);
@@ -169,7 +169,7 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64, 1, 1, 0));
+        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64, 1, 5, 0));
     }
 
     @Override
