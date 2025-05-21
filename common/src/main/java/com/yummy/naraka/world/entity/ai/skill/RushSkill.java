@@ -8,6 +8,7 @@ import com.yummy.naraka.world.entity.StigmatizingEntity;
 import com.yummy.naraka.world.entity.StunHelper;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -105,16 +106,18 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
             this.deltaMovement = deltaMovement.scale(0.8);
         } else if (this.hit) {
             this.deltaMovement = deltaMovement.add(0, -0.098, 0);
-            if (mob.onGround())
+            if (mob.onGround() && deltaMovement.y < 0)
                 this.deltaMovement = deltaMovement.multiply(0, 1, 0);
         } else if (hitEntity.isPresent() || isWall(level, toward)) {
             this.duration = tickCount + 50;
-            this.deltaMovement = view.yRot(Mth.PI)
-                    .multiply(1, 0, 1)
+            this.deltaMovement = deltaMovement.yRot(Mth.PI)
+                    .normalize()
+                    .multiply(0.8, 0, 0.8)
                     .add(0, 1, 0);
             this.hit = true;
             this.failed = false;
             hitEntity.ifPresent(entity -> hurtHitEntity(level, entity));
+            level.sendParticles(ParticleTypes.SONIC_BOOM, mob.getX(), mob.getY() + 1, mob.getZ(), 1, 0, 0, 0, 1);
             mob.setAnimation(AnimationLocations.RUSH_SUCCEED);
         } else if (trace) {
             this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob, target)

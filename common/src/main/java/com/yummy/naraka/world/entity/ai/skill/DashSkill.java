@@ -61,6 +61,7 @@ public class DashSkill<T extends SkillUsingMob & AfterimageEntity> extends Targe
     private void move(ServerLevel level) {
         NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, 0.6);
         mob.setDeltaMovement(deltaMovement);
-        mob.addAfterimage(Afterimage.of(mob, 13), 2, tickCount < 15);
+        if (tickCount % 2 == 0)
+            mob.addAfterimage(Afterimage.of(mob, 13), 1, true);
     }
 }
