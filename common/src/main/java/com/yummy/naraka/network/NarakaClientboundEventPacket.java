@@ -8,14 +8,20 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.util.StringRepresentable;
 
-public record NarakaClientboundEventPacket(Event event) implements CustomPacketPayload {
+import java.util.List;
+
+public record NarakaClientboundEventPacket(List<Event> events) implements CustomPacketPayload {
     public static final Type<NarakaClientboundEventPacket> TYPE = new Type<>(NarakaMod.location("clientbound_event_packet"));
 
     public static final StreamCodec<ByteBuf, NarakaClientboundEventPacket> CODEC = StreamCodec.composite(
-            Event.STREAM_CODEC,
-            NarakaClientboundEventPacket::event,
+            ByteBufCodecs.<ByteBuf, Event>list().apply(Event.STREAM_CODEC),
+            NarakaClientboundEventPacket::events,
             NarakaClientboundEventPacket::new
     );
+
+    public NarakaClientboundEventPacket(Event... events) {
+        this(List.of(events));
+    }
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
@@ -31,7 +37,9 @@ public record NarakaClientboundEventPacket(Event event) implements CustomPacketP
         PLAY_HEROBRINE_PHASE_2(() -> NarakaClientboundEventHandler.updateHerobrineMusic(2)),
         PLAY_HEROBRINE_PHASE_3(() -> NarakaClientboundEventHandler.updateHerobrineMusic(3)),
         PLAY_HEROBRINE_PHASE_4(() -> NarakaClientboundEventHandler.updateHerobrineMusic(4)),
-        STOP_MUSIC(NarakaClientboundEventHandler::stopHerobrineMusic);
+        STOP_MUSIC(NarakaClientboundEventHandler::stopHerobrineMusic),
+        START_HEROBRINE_SKY(NarakaClientboundEventHandler::startHerobrineSky),
+        STOP_HEROBRINE_SKY(NarakaClientboundEventHandler::stopHerobrineSky);
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
         public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.idMapper(Event::byId, Event::getId);

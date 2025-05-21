@@ -32,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
 @Mixin(value = LevelRenderer.class)
-public abstract class LevelRendererMixin {
+public abstract class HiddenOreRendererMixin {
     @Shadow @Final
     private RenderBuffers renderBuffers;
 
