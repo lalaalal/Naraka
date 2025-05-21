@@ -1,23 +1,34 @@
 package com.yummy.naraka.client.particle;
 
+import com.yummy.naraka.world.entity.Herobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.world.level.entity.EntityTypeTest;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.Collection;
 
 @Environment(EnvType.CLIENT)
 public class HerobrineSpawnParticle extends TextureSheetParticle {
     private final double radius;
     private final double speed;
-    private static final int SPREAD_TICK = 80;
+    private boolean spread = false;
+    private final double startX;
+    private final double startZ;
+    private final double startAngle;
 
     public HerobrineSpawnParticle(ClientLevel clientLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
         super(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed);
-        lifetime = 200;
-        speed = Math.PI / random.nextInt(10, 15);
-        radius = random.nextFloat() * 0.5f + 1.2f;
-        setPos(x + radius, y, z);
+        lifetime = 200 + random.nextInt(0, 20);
+        speed = Math.PI / random.nextInt(5, 10);
+        radius = random.nextFloat() * 1.5 + 1;
+        startAngle = random.nextDouble() * Math.PI * 2;
+        this.startX = x;
+        this.startZ = z;
     }
 
     @Override
@@ -28,14 +39,22 @@ public class HerobrineSpawnParticle extends TextureSheetParticle {
         if (age >= lifetime)
             remove();
 
-        if (age < SPREAD_TICK) {
-            double t = age * speed;
+        if (!spread) {
+            Collection<Herobrine> entities = level.getEntities(EntityTypeTest.forClass(Herobrine.class), AABB.ofSize(new Vec3(x, y, z), 5, 5, 5), entity -> true);
+            if (!entities.isEmpty()) {
+                spread = true;
+                this.xd = xd * 5;
+                this.zd = zd * 5;
+            }
+            double t = age * speed + startAngle;
             this.xd = -speed * Math.sin(t) * radius;
             this.zd = speed * Math.cos(t) * radius;
+            this.x = Math.cos(t) * radius + startX;
+            this.z = Math.sin(t) * radius + startZ;
+        } else {
+            this.x += xd;
+            this.z += zd;
         }
-
-        this.x += xd;
-        this.z += zd;
 
         this.age += 1;
     }
