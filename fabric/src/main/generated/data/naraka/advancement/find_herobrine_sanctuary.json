@@ -1,42 +1,42 @@
 {
-    "parent": "naraka:sanctuary_compass",
-    "criteria": {
-        "find_herobrine_sanctuary": {
-            "conditions": {
-                "player": [
-                    {
-                        "condition": "minecraft:entity_properties",
-                        "entity": "this",
-                        "predicate": {
-                            "location": {
-                                "structures": "naraka:herobrine_sanctuary"
-                            }
-                        }
-                    }
-                ]
-            },
-            "trigger": "minecraft:location"
-        }
-    },
-    "display": {
-        "description": {
-            "translate": "advancements.naraka.find_herobrine_sanctuary.description"
-        },
-        "icon": {
-            "count": 1,
-            "id": "naraka:sanctuary_compass"
-        },
-        "title": {
-            "translate": "advancements.naraka.find_herobrine_sanctuary.title"
-        }
-    },
-    "requirements": [
-        [
-            "find_herobrine_sanctuary"
+  "parent": "naraka:sanctuary_compass",
+  "criteria": {
+    "find_herobrine_sanctuary": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "structures": "naraka:herobrine_sanctuary"
+              }
+            }
+          }
         ]
-    ],
-    "rewards": {
-        "experience": 3
+      },
+      "trigger": "minecraft:location"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.naraka.find_herobrine_sanctuary.description"
     },
-    "sends_telemetry_event": true
+    "icon": {
+      "count": 1,
+      "id": "naraka:sanctuary_compass"
+    },
+    "title": {
+      "translate": "advancements.naraka.find_herobrine_sanctuary.title"
+    }
+  },
+  "requirements": [
+    [
+      "find_herobrine_sanctuary"
+    ]
+  ],
+  "rewards": {
+    "experience": 3
+  },
+  "sends_telemetry_event": true
 }

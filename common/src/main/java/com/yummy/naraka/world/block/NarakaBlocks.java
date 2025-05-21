@@ -3,13 +3,16 @@ package com.yummy.naraka.world.block;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.mixin.invoker.MangroveRootsBlockInvoker;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
@@ -78,6 +81,20 @@ public class NarakaBlocks {
             properties -> new NectariumCrystalBlock(properties
                     .requiresCorrectToolForDrops()),
             Blocks.AMETHYST_BLOCK
+    );
+
+    public static final HolderProxy<Block, Block> PURIFIED_SOUL_LAMP = registerSimpleBlockWithItem(
+            "purified_soul_lamp",
+            from(Blocks.REDSTONE_LAMP)
+                    .lightLevel(state -> 15)
+                    .emissiveRendering(NarakaBlocks::always)
+    );
+
+    public static final HolderProxy<Block, Block> PURIFIED_SOUL_LANTERN = registerSimpleBlockWithItem(
+            "purified_soul_lantern",
+            from(Blocks.SEA_LANTERN)
+                    .lightLevel(state -> 15)
+                    .emissiveRendering(NarakaBlocks::always)
     );
 
     public static final HolderProxy<Block, PurifiedSoulBlock> PURIFIED_SOUL_BLOCK = registerBlockWithItem(
@@ -268,6 +285,10 @@ public class NarakaBlocks {
 
     private static HolderProxy<Block, Block> registerSimpleBlockWithItem(String name, Block propertyBase) {
         return registerBlockWithItem(name, Block::new, BlockBehaviour.Properties.ofFullCopy(propertyBase));
+    }
+
+    private static boolean always(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+        return true;
     }
 
     public static void initialize() {

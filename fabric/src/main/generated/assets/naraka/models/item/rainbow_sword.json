@@ -1,6 +1,6 @@
 {
-    "parent": "minecraft:item/handheld",
-    "textures": {
-        "layer0": "naraka:item/rainbow_sword"
-    }
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "naraka:item/rainbow_sword"
+  }
 }

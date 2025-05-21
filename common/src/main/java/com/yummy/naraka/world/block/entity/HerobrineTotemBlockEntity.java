@@ -131,7 +131,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         lightningBolt.setPos(herobrine.position());
         level.addFreshEntity(lightningBolt);
 
-        level.sendParticles(ParticleTypes.CLOUD,
+        level.sendParticles(ParticleTypes.POOF,
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 15,
                 1, 1, 1, 0.01
         );

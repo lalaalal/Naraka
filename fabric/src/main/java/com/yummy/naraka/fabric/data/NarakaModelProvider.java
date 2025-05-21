@@ -71,6 +71,8 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
         generator.createTrivialCube(NarakaBlocks.AMETHYST_ORE.get());
         generator.createTrivialCube(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
+        generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_LAMP.get());
+        generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_LANTERN.get());
     }
 
     private static void createBlockEntityModels(BlockModelGenerators generator, Block particle, Block... blocks) {
