@@ -37,6 +37,8 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     private static final int MAX_CRACK = HerobrineTotem.MAX_CRACK;
 
     private int tickCount = 1;
+    private int waitCount = 6;
+    private int particleCount = 0;
 
     public HerobrineTotemBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -55,10 +57,20 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
             return;
 
         int crack = state.getValue(CRACK);
-        float chance = crack == MAX_CRACK - 1 ? 1 : 0.25f;
-        int wait = crack == MAX_CRACK - 1 ? 20 : 5;
+        if (crack == MAX_CRACK - 1 && tickCount % 5 == 0) {
+            waitCount -= 1;
+        }
+        boolean shouldWait = crack == MAX_CRACK - 1 && waitCount > 0;
 
-        if (tickCount % wait == 0 && level.random.nextFloat() < chance) {
+        if (crack >= MAX_CRACK - 2 && particleCount < 35) {
+            particleCount += 1;
+            level.sendParticles(NarakaParticleTypes.HEROBRINE_SPAWN.get(),
+                    pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 1,
+                    0, 0.2, 0, 0.01
+            );
+            level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS);
+        }
+        if (tickCount % 5 == 0 && level.random.nextFloat() < 0.25f && !shouldWait) {
             if (crack == MAX_CRACK) {
                 breakTotemStructure(level, pos);
                 summonHerobrine(level, pos);
@@ -75,13 +87,6 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
                         1, 1, 1, 0
                 );
                 level.playSound(null, pos, SoundEvents.NETHER_BRICKS_BREAK, SoundSource.BLOCKS);
-            }
-            if (crack == MAX_CRACK - 1) {
-                level.sendParticles(NarakaParticleTypes.HEROBRINE_SPAWN.get(),
-                        pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 15,
-                        0.5, 0.5, 0.5, 0.01
-                );
-                level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS);
             }
         }
         tickCount += 1;
