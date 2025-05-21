@@ -51,7 +51,8 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
     private void move(ServerLevel level) {
         NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, 0.4);
         mob.setDeltaMovement(deltaMovement);
-        mob.addAfterimage(Afterimage.of(mob, 10), 2, tickCount < 3);
+        if (tickCount % 2 == 0)
+            mob.addAfterimage(Afterimage.of(mob, 10), 1, tickCount < 5);
     }
 
     private void updateDeltaMovement(@Nullable LivingEntity target) {

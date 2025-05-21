@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -26,6 +27,7 @@ public class SpinningSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     private void spinAttack(ServerLevel level) {
+        level.sendParticles(ParticleTypes.SWEEP_ATTACK, mob.getX(), mob.getY(), mob.getZ(), 1, 0, 0, 0, 1);
         hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 4);
     }
 
