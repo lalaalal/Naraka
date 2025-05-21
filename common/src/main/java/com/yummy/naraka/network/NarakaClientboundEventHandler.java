@@ -2,6 +2,7 @@ package com.yummy.naraka.network;
 
 import com.yummy.naraka.client.gui.screen.AnimationControlScreen;
 import com.yummy.naraka.client.gui.screen.SkillControlScreen;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.client.Minecraft;
@@ -45,7 +46,10 @@ public class NarakaClientboundEventHandler {
     }
 
     public static void handleEvent(NarakaClientboundEventPacket packet, NetworkManager.Context context) {
-        Minecraft.getInstance().execute(() -> packet.event().handle());
+        Minecraft.getInstance().execute(() -> {
+            for (NarakaClientboundEventPacket.Event event : packet.events())
+                event.handle();
+        });
     }
 
     static void updateHerobrineMusic(final int phase) {
@@ -75,5 +79,13 @@ public class NarakaClientboundEventHandler {
     static void showAnimationControlScreen(Entity entity) {
         if (entity instanceof SkillUsingMob mob)
             Minecraft.getInstance().setScreen(new AnimationControlScreen(mob));
+    }
+
+    static void startHerobrineSky() {
+        NarakaConfig.CLIENT.renderHerobrineSky.set(true);
+    }
+
+    static void stopHerobrineSky() {
+        NarakaConfig.CLIENT.renderHerobrineSky.set(false);
     }
 }

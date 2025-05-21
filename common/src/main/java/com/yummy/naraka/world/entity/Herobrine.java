@@ -64,6 +64,7 @@ public class Herobrine extends AbstractHerobrine {
     protected final SummonShadowSkill summonShadowSkill = registerSkill(0, this, SummonShadowSkill::new);
     protected final RolePlayShadowSkill rolePlayShadowSkill = registerSkill(1, this, RolePlayShadowSkill::new);
     protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(10, new RushSkill<>(this, AbstractHerobrine::isNotHerobrine), AnimationLocations.RUSH);
+    protected final DestroyStructureSkill destroyStructureSkill = registerSkill(this, DestroyStructureSkill::new);
 
     protected final LandingSkill landingSkill = registerSkill(this, LandingSkill::new, AnimationLocations.COMBO_ATTACK_5);
     protected final SuperHitSkill superHitSkill = registerSkill(new SuperHitSkill(landingSkill, this), AnimationLocations.COMBO_ATTACK_4);
@@ -120,6 +121,7 @@ public class Herobrine extends AbstractHerobrine {
         phaseManager.addPhaseChangeListener(this::updateUsingSkills);
         phaseManager.addPhaseChangeListener((prev, current) -> resetDamageLimit());
         phaseManager.addPhaseChangeListener(this::startStaggering);
+        phaseManager.addPhaseChangeListener(this::onPhase3, 3);
 
         skillManager.enableOnly(PHASE_1_SKILLS);
         skillManager.runOnSkillStart(this::replaceRush);
@@ -182,6 +184,12 @@ public class Herobrine extends AbstractHerobrine {
 
     private void resetDamageLimit() {
         this.hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
+    }
+
+    private void onPhase3(int phase) {
+        if (spawnPosition != null)
+            moveTo(spawnPosition.south(54), 0, 0);
+        skillManager.setCurrentSkill(destroyStructureSkill);
     }
 
     private void startStaggering(int prevPhase, int currentPhase) {
@@ -367,15 +375,28 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     public void startSeenByPlayer(ServerPlayer serverPlayer) {
         bossEvent.addPlayer(serverPlayer);
-        NarakaClientboundEventPacket.Event event = NarakaClientboundEventHandler.musicEventByPhase(getPhase());
-        CustomPacketPayload packet = new NarakaClientboundEventPacket(event);
+        List<NarakaClientboundEventPacket.Event> events = new ArrayList<>();
+        events.add(NarakaClientboundEventHandler.musicEventByPhase(getPhase()));
+        if (getPhase() == 3)
+            events.add(NarakaClientboundEventPacket.Event.START_HEROBRINE_SKY);
+        CustomPacketPayload packet = new NarakaClientboundEventPacket(events);
         NetworkManager.sendToClient(serverPlayer, packet);
+    }
+
+    public void startHerobrineSky() {
+        NarakaClientboundEventPacket packet = new NarakaClientboundEventPacket(
+                NarakaClientboundEventPacket.Event.START_HEROBRINE_SKY
+        );
+        NetworkManager.clientbound().send(bossEvent.getPlayers(), packet);
     }
 
     @Override
     public void stopSeenByPlayer(ServerPlayer serverPlayer) {
         bossEvent.removePlayer(serverPlayer);
-        CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.STOP_MUSIC);
+        CustomPacketPayload packet = new NarakaClientboundEventPacket(
+                NarakaClientboundEventPacket.Event.STOP_MUSIC,
+                NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY
+        );
         NetworkManager.sendToClient(serverPlayer, packet);
     }
 
