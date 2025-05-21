@@ -9,6 +9,7 @@ import com.yummy.naraka.client.gui.hud.LockedHealthHud;
 import com.yummy.naraka.client.gui.hud.StigmaHud;
 import com.yummy.naraka.client.init.*;
 import com.yummy.naraka.client.particle.EbonyProvider;
+import com.yummy.naraka.client.particle.HerobrineSpawnParticle;
 import com.yummy.naraka.client.particle.NectariumParticle;
 import com.yummy.naraka.client.particle.SoulParticle;
 import com.yummy.naraka.client.renderer.ColoredItemRenderer;
@@ -31,6 +32,7 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 
@@ -126,6 +128,8 @@ public final class NarakaModClient {
         ParticleProviderRegistry.register(NarakaParticleTypes.FALLING_NECTARIUM, NectariumParticle::createNectariumFallParticle);
         ParticleProviderRegistry.register(NarakaParticleTypes.LANDING_NECTARIUM, NectariumParticle::createNectariumLandParticle);
         ParticleProviderRegistry.register(NarakaParticleTypes.SOUL, SoulParticle::create);
+        ParticleProviderRegistry.register(NarakaParticleTypes.HEROBRINE_SPAWN, HerobrineSpawnParticle.Provider::new);
+        ParticleProviderRegistry.register(NarakaParticleTypes.GOLDEN_FLAME, FlameParticle.Provider::new);
     }
 
     private static void registerKeyMappings() {
