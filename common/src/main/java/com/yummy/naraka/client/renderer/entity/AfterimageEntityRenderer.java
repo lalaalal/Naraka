@@ -44,8 +44,8 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
             packedLight = Math.max(LightTexture.pack(blockLight, skyLight), packedLight);
         }
-        renderAfterimages(renderState, poseStack, buffer);
         super.render(renderState, poseStack, buffer, packedLight);
+        renderAfterimages(renderState, poseStack, buffer);
     }
 
     protected void renderAfterimages(S renderState, PoseStack poseStack, MultiBufferSource buffer) {

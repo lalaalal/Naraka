@@ -52,7 +52,7 @@ public class ThrowFireballSkill extends TargetSkill<SkillUsingMob> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        super.tickWithTarget(level, target);
+        lookTarget(target);
         rotateTowardTarget(target);
         runAt(15, () -> this.throwFireball(target));
     }

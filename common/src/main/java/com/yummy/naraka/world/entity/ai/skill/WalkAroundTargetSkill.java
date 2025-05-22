@@ -67,7 +67,7 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
         Vec3 wanted = delta.yRot(Mth.PI / 6 * direction).add(target.position());
 
         Path path = mob.getNavigation().createPath(wanted.x, wanted.y, wanted.z, 1);
-        mob.getNavigation().moveTo(path, 0.8f);
+        mob.getNavigation().moveTo(path, 1);
         lookTarget(target);
     }
 }

@@ -7,8 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 
 @Environment(EnvType.CLIENT)
 public record WavingScarfTexture(ResourceLocation texture,
-                                 int textureX, int textureY,
-                                 int width, int height,
+                                 int scarfX, int scarfY,
+                                 int scarfWidth, int scarfHeight,
                                  int textureWidth, int textureHeight) {
     public static final WavingScarfTexture PHASE_2_BACK = new WavingScarfTexture(
             NarakaTextures.HEROBRINE_SCARF, 9, 27, 7, 15, 64, 64
@@ -17,22 +17,22 @@ public record WavingScarfTexture(ResourceLocation texture,
             NarakaTextures.HEROBRINE_SCARF, 9, 27, 7, 15, 64, 64
     );
     public static final WavingScarfTexture PHASE_3 = new WavingScarfTexture(
-            NarakaTextures.HEROBRINE_FINAL_SCARF, 9, 27, 7, 15, 64, 64
+            NarakaTextures.HEROBRINE_FINAL_SCARF, 0, 0, 30, 40, 128, 128
     );
 
     public float u() {
-        return textureX / (float) textureWidth;
+        return scarfX / (float) textureWidth;
     }
 
     public float v() {
-        return textureY / (float) textureHeight;
+        return scarfY / (float) textureHeight;
     }
 
     public float widthInRatio() {
-        return width / (float) textureWidth;
+        return scarfWidth / (float) textureWidth;
     }
 
     public float heightInRatio() {
-        return height / (float) textureHeight;
+        return scarfHeight / (float) textureHeight;
     }
 }

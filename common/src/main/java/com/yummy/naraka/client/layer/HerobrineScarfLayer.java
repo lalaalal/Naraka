@@ -10,7 +10,6 @@ import com.yummy.naraka.client.model.HerobrineScarfModel;
 import com.yummy.naraka.client.renderer.entity.state.HerobrineRenderState;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfRenderState;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfTexture;
-import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import net.fabricmc.api.EnvType;
@@ -23,8 +22,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -40,7 +38,6 @@ public class HerobrineScarfLayer extends RenderLayer<HerobrineRenderState, Abstr
     }
 
     private static void applyTranslateAndRotate(PoseStack poseStack, AbstractHerobrineModel<HerobrineRenderState> herobrineModel) {
-        herobrineModel.root().translateAndRotate(poseStack);
         herobrineModel.main().translateAndRotate(poseStack);
         herobrineModel.upperBody().translateAndRotate(poseStack);
     }
@@ -50,16 +47,20 @@ public class HerobrineScarfLayer extends RenderLayer<HerobrineRenderState, Abstr
         if (!renderState.renderScarf)
             return;
         poseStack.pushPose();
+        if (renderState.phase < 3) {
+            RenderType renderType = RenderType.entitySmoothCutout(NarakaTextures.HEROBRINE_SCARF);
+            VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
+            applyTranslateAndRotate(poseStack, getParentModel());
 
-        RenderType renderType = RenderType.entitySmoothCutout(getTextureLocation());
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-        applyTranslateAndRotate(poseStack, getParentModel());
-        scarfModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+            scarfModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+        }
 
-        RenderType waveRenderType = RenderType.entityCutout(getTextureLocation());
-        vertexConsumer = bufferSource.getBuffer(waveRenderType);
-        poseStack.translate(0.25, -0.625, 0.375);
-        poseStack.scale(-3, 3, 3);
+        RenderType waveRenderType = RenderType.entityCutout(renderState.scarfRenderState.textureInfo.texture());
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(waveRenderType);
+        float scale = renderState.scarfRenderState.scale;
+        Vec3 translation = renderState.scarfRenderState.translation;
+        poseStack.scale(-scale, scale, scale);
+        poseStack.translate(translation);
 
         renderScarf(poseStack, vertexConsumer, packedLight, renderState.scarfRenderState);
 
@@ -68,15 +69,15 @@ public class HerobrineScarfLayer extends RenderLayer<HerobrineRenderState, Abstr
 
     public void renderScarf(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, WavingScarfRenderState renderState) {
         WavingScarfTexture textureInfo = renderState.textureInfo;
-        ScarfWavingData waveDate = renderState.waveData;
+        ScarfWavingData waveData = renderState.waveData;
 
         poseStack.pushPose();
         poseStack.rotateAround(Axis.XP.rotationDegrees(renderState.rotationDegree), 0, 0, 0);
 
         float partialTick = renderState.partialTick;
 
-        int verticalSize = waveDate.getVerticalSize();
-        int horizontalSize = waveDate.getHorizontalSize();
+        int verticalSize = waveData.getVerticalSize();
+        int horizontalSize = waveData.getHorizontalSize();
 
         float partWidth = textureInfo.widthInRatio() / horizontalSize;
         float partHeight = textureInfo.heightInRatio() / verticalSize;
@@ -84,26 +85,28 @@ public class HerobrineScarfLayer extends RenderLayer<HerobrineRenderState, Abstr
         float u = textureInfo.u();
         float v = textureInfo.v();
 
-        float baseY = waveDate.getVerticalPosition(0, partialTick);
-
+        float baseY = waveData.getVerticalPosition(-1, partialTick);
+        float shift = 0;
         for (int vertical = 0; vertical < verticalSize; vertical++) {
             poseStack.pushPose();
-            poseStack.translate(0, -baseY, partHeight * vertical);
+            float partShift = waveData.getVerticalShift(vertical, partialTick);
+            shift += partShift;
+            poseStack.translate(shift, -baseY, partHeight * vertical);
 
             for (int horizontal = 0; horizontal < horizontalSize; horizontal++) {
                 poseStack.pushPose();
                 poseStack.translate(partWidth * horizontal, 0, 0);
 
-                float topLeft_y = waveDate.getVerticalPosition(vertical - 1, partialTick);
-                float topRight_y = waveDate.getVerticalPosition(vertical - 1, partialTick);
-                float bottomLeft_y = waveDate.getVerticalPosition(vertical, partialTick);
-                float bottomRight_y = waveDate.getVerticalPosition(vertical, partialTick);
+                float topLeft_y = waveData.getVerticalPosition(vertical - 1, partialTick);
+                float topRight_y = waveData.getVerticalPosition(vertical - 1, partialTick);
+                float bottomLeft_y = waveData.getVerticalPosition(vertical, partialTick);
+                float bottomRight_y = waveData.getVerticalPosition(vertical, partialTick);
 
                 List<Vector3f> vertices = List.of(
-                        new Vector3f(0, bottomLeft_y, partHeight),
+                        new Vector3f(partShift, bottomLeft_y, partHeight),
                         new Vector3f(0, topLeft_y, 0),
                         new Vector3f(partWidth, topRight_y, 0),
-                        new Vector3f(partWidth, bottomRight_y, partHeight)
+                        new Vector3f(partWidth + partShift, bottomRight_y, partHeight)
                 );
 
                 float currentU = u + partWidth * horizontal;
@@ -113,87 +116,6 @@ public class HerobrineScarfLayer extends RenderLayer<HerobrineRenderState, Abstr
                 vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.DOWN);
                 poseStack.popPose();
             }
-            poseStack.popPose();
-        }
-        poseStack.popPose();
-    }
-
-    /**
-     * @param poseStack      Pose stack
-     * @param vertexConsumer Vertex consumer
-     * @param packedLight    Light value
-     * @param ageInTicks     Tick count with partial ticks
-     * @param rotationDegree Rotation for scarf start point
-     * @param textureX       Texture start horizontal position in pixel
-     * @param textureY       Texture start vertical position in pixel
-     * @param width          Wanted width from actual texture in pixel
-     * @param height         Wanted height from actual texture in pixel
-     * @param textureWidth   Entire texture width in pixel
-     * @param textureHeight  Entire texture height in pixel
-     */
-    @Deprecated
-    public void renderScarf(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, float ageInTicks, float rotationDegree, int textureX, int textureY, int width, int height, int textureWidth, int textureHeight, float horizontalSpeed, float verticalSpeed) {
-        poseStack.pushPose();
-        poseStack.rotateAround(Axis.XP.rotationDegrees(rotationDegree), 0, 0, 0);
-
-        float horizontalShift = horizontalSpeed * 0.01f;
-        float offsetX = 0;
-        float xRot_offsetY = 0;
-        float xRot_offsetZ = 0;
-        float degree = NarakaConfig.CLIENT.herobrineScarfWaveMaxAngle.getValue();
-        float speed = NarakaConfig.CLIENT.herobrineScarfWaveSpeed.getValue();
-        float waveCycleModifier = NarakaConfig.CLIENT.herobrineScarfWaveCycleModifier.getValue();
-
-        float u = textureX / (float) textureWidth;
-        float v = textureY / (float) textureHeight;
-        float widthInRatio = width / (float) textureWidth;
-        float heightInRatio = height / (float) textureHeight;
-        int divisionValue = NarakaConfig.CLIENT.herobrineScarfPartitionNumber.getValue();
-
-        float partWidth = widthInRatio / divisionValue;
-        float partHeight = heightInRatio / divisionValue;
-
-        for (int vertical = 0; vertical < divisionValue; vertical++) {
-            poseStack.pushPose();
-            float theta = (ageInTicks - vertical * waveCycleModifier) * speed;
-            float scaledTheta = theta * verticalSpeed;
-            float offset = theta - theta / verticalSpeed;
-            float xRot = (Mth.cos(scaledTheta - offset) + 1) * (float) Math.toRadians(degree) / 2 * verticalSpeed;
-            poseStack.translate(offsetX, xRot_offsetY, xRot_offsetZ);
-
-            float part_yOffset = Mth.sin(xRot) * partHeight;
-            float zRot_OffsetY = 0;
-            float zRot_OffsetX = 0;
-            for (int horizontal = 0; horizontal < divisionValue; horizontal++) {
-                poseStack.pushPose();
-
-                float zRot = (Mth.cos((ageInTicks - horizontal * waveCycleModifier * horizontalSpeed) * speed) + 1) * (float) Math.toRadians(degree) / 4;
-                poseStack.translate(zRot_OffsetX, zRot_OffsetY, 0);
-
-                float zRot_yOffset = Mth.sin(zRot) * partWidth;
-
-                zRot_OffsetY += zRot_yOffset;
-                zRot_OffsetX += Mth.cos(zRot) * partWidth;
-
-                List<Vector3f> vertices = List.of(
-                        new Vector3f(horizontalShift, part_yOffset, partHeight),
-                        new Vector3f(0, 0, 0),
-                        new Vector3f(partWidth, zRot_yOffset, 0),
-                        new Vector3f(partWidth + horizontalShift, part_yOffset + zRot_yOffset, partHeight)
-                );
-
-                float currentU = u + partWidth * horizontal;
-                float currentV = v + partHeight * vertical;
-                vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.UP);
-                vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.DOWN);
-
-                poseStack.popPose();
-            }
-
-            offsetX += horizontalShift;
-            xRot_offsetY += Mth.sin(xRot) * partHeight;
-            xRot_offsetZ += Mth.cos(xRot) * partHeight;
-
             poseStack.popPose();
         }
         poseStack.popPose();
@@ -220,9 +142,5 @@ public class HerobrineScarfLayer extends RenderLayer<HerobrineRenderState, Abstr
                     .setUv(uv.x, uv.y)
                     .setNormal(pose, normal.getX(), normal.getY(), normal.getZ());
         }, normal.getX() < 0 || normal.getY() < 0 || normal.getZ() < 0);
-    }
-
-    protected ResourceLocation getTextureLocation() {
-        return NarakaTextures.HEROBRINE_SCARF;
     }
 }

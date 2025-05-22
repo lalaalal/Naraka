@@ -115,8 +115,7 @@ public class Herobrine extends AbstractHerobrine {
     public Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
         super(entityType, level, false);
 
-        bossEvent.setDarkenScreen(true)
-                .setPlayBossMusic(true);
+        bossEvent.setPlayBossMusic(true);
         phaseManager.addPhaseChangeListener(this::updateMusic);
         phaseManager.addPhaseChangeListener(this::updateUsingSkills);
         phaseManager.addPhaseChangeListener((prev, current) -> resetDamageLimit());
@@ -177,6 +176,10 @@ public class Herobrine extends AbstractHerobrine {
 
     public void setSpawnPosition(BlockPos pos) {
         this.spawnPosition = pos;
+    }
+
+    public boolean hasSpawnPosition() {
+        return spawnPosition != null;
     }
 
     private void resetDamageLimit() {
@@ -258,7 +261,7 @@ public class Herobrine extends AbstractHerobrine {
         afterimages.removeIf(Afterimage::tick);
         prevScarfRotation = entityData.get(SCARF_ROTATION_DEGREE);
 
-        scarfWavingData.update(tickCount, Mth.lerp(prevScarfRotation / NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue(), 0, 0.1f));
+        scarfWavingData.update(Mth.lerp(prevScarfRotation / NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue(), 0, 1), yBodyRot - yBodyRotO);
     }
 
     public ScarfWavingData getScarfWavingData() {
@@ -280,7 +283,7 @@ public class Herobrine extends AbstractHerobrine {
             scarfRotationDegree -= 1;
         float maxRotation = NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
         float newRotation = Mth.clamp(scarfRotationDegree, 0, maxRotation);
-        entityData.set(SCARF_ROTATION_DEGREE, Mth.lerp(0.75f, prevScarfRotation, newRotation));
+        entityData.set(SCARF_ROTATION_DEGREE, newRotation);
     }
 
     @Override
@@ -473,7 +476,6 @@ public class Herobrine extends AbstractHerobrine {
         if (spawnPosition != null)
             moveTo(spawnPosition.south(54), 0, 0);
         hibernateMode = true;
-        skillManager.interrupt();
         skillManager.enableOnly(HIBERNATED_MODE_SKILL_BY_PHASE.get(getPhase()));
         shadowController.updateRolePlaying(level);
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);

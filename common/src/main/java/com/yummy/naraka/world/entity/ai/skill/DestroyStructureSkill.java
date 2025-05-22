@@ -40,6 +40,9 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
     @Override
     protected void onFirstTick(ServerLevel level) {
         mob.startHerobrineSky();
+        if (!mob.hasSpawnPosition()) {
+            tickCount = duration;
+        }
     }
 
     @Override

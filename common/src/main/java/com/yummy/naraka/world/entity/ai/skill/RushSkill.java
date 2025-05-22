@@ -67,7 +67,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        runBefore(START_RUNNING_TICK, () -> lookTarget(target));
+        lookTarget(target);
         runBefore(START_RUNNING_TICK, () -> rotateTowardTarget(target));
 
         runBefore(RUSH_TICK, () -> calculateDeltaMovement(level, target, true, 1));

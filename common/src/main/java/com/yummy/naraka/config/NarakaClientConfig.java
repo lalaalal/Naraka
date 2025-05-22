@@ -29,8 +29,7 @@ public class NarakaClientConfig extends StaticConfiguration {
 
         this.alwaysDisplayHerobrineScarf = define("always_display_herobrine_scarf", false);
         this.herobrineScarfDefaultRotation = define("herobrine_scarf_default_rotation", 70.0f);
-
-        this.herobrineScarfPartitionNumber = define("herobrine_scarf_partition_number", 16)
+        this.herobrineScarfPartitionNumber = define("herobrine_scarf_partition_number", 32)
                 .comment("Divide scarf with given number")
                 .comment("Bigger value, short wave cycle")
                 .comment("!! Editing while playing game may cause crash");

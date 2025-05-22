@@ -37,7 +37,8 @@ public abstract class AbstractHerobrineRenderState extends LivingEntityRenderSta
         Color color = NarakaConfig.CLIENT.afterimageColor.getValue();
         this.afterimages = herobrine.getAfterimages().stream()
                 .map(afterimage -> createAfterimageRenderState(herobrine, afterimage, color, partialTicks))
-                .toList();
+                .toList()
+                .reversed();
     }
 
     private static AfterimageRenderState createAfterimageRenderState(AbstractHerobrine herobrine, Afterimage afterimage, Color color, float partialTicks) {
