@@ -3,7 +3,7 @@ package com.yummy.naraka.client.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaTextures;
-import com.yummy.naraka.client.model.HerobrineModel;
+import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -15,8 +15,8 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 
 @Environment(EnvType.CLIENT)
-public class HerobrineEyeLayer<T extends AbstractHerobrineRenderState> extends RenderLayer<T, HerobrineModel<T>> {
-    public HerobrineEyeLayer(RenderLayerParent<T, HerobrineModel<T>> renderer) {
+public class HerobrineEyeLayer<S extends AbstractHerobrineRenderState, M extends AbstractHerobrineModel<S>> extends RenderLayer<S, M> {
+    public HerobrineEyeLayer(RenderLayerParent<S, M> renderer) {
         super(renderer);
     }
 
@@ -25,9 +25,9 @@ public class HerobrineEyeLayer<T extends AbstractHerobrineRenderState> extends R
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T renderState, float yRot, float xRot) {
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, S renderState, float yRot, float xRot) {
         VertexConsumer vertexConsumer = buffer.getBuffer(getRenderType());
-        HerobrineModel<T> model = getParentModel();
+        M model = getParentModel();
         model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xffffffff);
     }
 }

@@ -8,7 +8,6 @@ import com.yummy.naraka.network.SyncAfterimagePayload;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaNbtUtils;
-import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
@@ -64,7 +63,7 @@ public class Herobrine extends AbstractHerobrine {
     protected final SummonShadowSkill summonShadowSkill = registerSkill(0, this, SummonShadowSkill::new);
     protected final RolePlayShadowSkill rolePlayShadowSkill = registerSkill(1, this, RolePlayShadowSkill::new);
     protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(9, new RushSkill<>(this, AbstractHerobrine::isNotHerobrine), AnimationLocations.RUSH);
-    protected final DestroyStructureSkill destroyStructureSkill = registerSkill(this, DestroyStructureSkill::new);
+    protected final DestroyStructureSkill destroyStructureSkill = registerSkill(this, DestroyStructureSkill::new, AnimationLocations.PHASE_3);
 
     protected final LandingSkill landingSkill = registerSkill(this, LandingSkill::new, AnimationLocations.COMBO_ATTACK_5);
     protected final SuperHitSkill superHitSkill = registerSkill(new SuperHitSkill(landingSkill, this), AnimationLocations.COMBO_ATTACK_4);
@@ -98,6 +97,8 @@ public class Herobrine extends AbstractHerobrine {
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this, bossEvent);
     private final ShadowController shadowController = new ShadowController(this);
 
+    private final ScarfWavingData scarfWavingData = new ScarfWavingData();
+
     private float hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
 
     private boolean hibernateMode = false;
@@ -110,7 +111,6 @@ public class Herobrine extends AbstractHerobrine {
     private @Nullable BlockPos spawnPosition;
 
     private float prevScarfRotation = 0;
-    private final List<Float> scarfWaveSpeedList = new ArrayList<>();
 
     public Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
         super(entityType, level, false);
@@ -131,9 +131,6 @@ public class Herobrine extends AbstractHerobrine {
         registerAnimation(AnimationLocations.STAGGERING_PHASE_2);
         registerAnimation(AnimationLocations.RUSH_SUCCEED);
         registerAnimation(AnimationLocations.RUSH_FAILED);
-
-        for (int i = 0; i < NarakaConfig.CLIENT.herobrineScarfPartitionNumber.getValue(); i++)
-            scarfWaveSpeedList.add(1f);
     }
 
     public Herobrine(Level level, Vec3 pos) {
@@ -261,47 +258,29 @@ public class Herobrine extends AbstractHerobrine {
         afterimages.removeIf(Afterimage::tick);
         prevScarfRotation = entityData.get(SCARF_ROTATION_DEGREE);
 
-        updateScarfWaveSpeeds();
+        scarfWavingData.update(tickCount, Mth.lerp(prevScarfRotation / NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue(), 0, 0.1f));
+    }
+
+    public ScarfWavingData getScarfWavingData() {
+        return scarfWavingData;
     }
 
     public float getScarfRotationDegree(float partialTick) {
         return Mth.lerp(partialTick, prevScarfRotation, entityData.get(SCARF_ROTATION_DEGREE));
     }
 
-    public List<Float> getScarfWaveSpeedList() {
-        return scarfWaveSpeedList;
-    }
-
-    private void updateScarfWaveSpeeds() {
-        int partitionNumber = NarakaConfig.CLIENT.herobrineScarfPartitionNumber.getValue();
-        if (scarfWaveSpeedList.size() < partitionNumber) {
-            for (int i = 0; i < partitionNumber - scarfWaveSpeedList.size(); i++)
-                scarfWaveSpeedList.add(scarfWaveSpeedList.getLast());
-        }
-        if (tickCount % 10 == 0) {
-            float maxRotation = NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
-            float speed = Mth.lerp(prevScarfRotation / maxRotation, 1, 3);
-            scarfWaveSpeedList.addFirst(speed);
-            scarfWaveSpeedList.removeLast();
-        } else {
-            scarfWaveSpeedList.addFirst(scarfWaveSpeedList.getFirst());
-            scarfWaveSpeedList.removeLast();
-        }
-    }
-
     private void updateScarfRotation() {
         float scarfRotationDegree = entityData.get(SCARF_ROTATION_DEGREE);
         Vec3 delta = getDeltaMovement();
-        float z = Mth.sin(getYRot());
-        float x = Mth.cos(getYRot());
-        Vec3 projection = NarakaUtils.projection(delta, new Vec3(x, 0, z));
+        Vec3 projection = delta.multiply(1, 0, 1);
         float targetRotation = (float) projection.length() * 100 * 10;
         if (scarfRotationDegree < targetRotation)
-            scarfRotationDegree += 5;
+            scarfRotationDegree += 1;
         if (scarfRotationDegree > targetRotation)
-            scarfRotationDegree -= 3;
+            scarfRotationDegree -= 1;
         float maxRotation = NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
-        entityData.set(SCARF_ROTATION_DEGREE, Mth.clamp(scarfRotationDegree, 0, maxRotation));
+        float newRotation = Mth.clamp(scarfRotationDegree, 0, maxRotation);
+        entityData.set(SCARF_ROTATION_DEGREE, Mth.lerp(0.75f, prevScarfRotation, newRotation));
     }
 
     @Override

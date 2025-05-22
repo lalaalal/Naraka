@@ -1,21 +1,15 @@
 package com.yummy.naraka.client.model;
 
-import com.yummy.naraka.client.animation.AnimationMapper;
-import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.Util;
-import net.minecraft.client.model.AnimationUtils;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.util.Mth;
 
 @Environment(EnvType.CLIENT)
-public class HerobrineModel<S extends AbstractHerobrineRenderState> extends EntityModel<S> {
-    private final ModelPart root;
+public class HerobrineModel<S extends AbstractHerobrineRenderState> extends AbstractHerobrineModel<S> {
     private final ModelPart main;
     private final ModelPart upperBody;
     private final ModelPart head;
@@ -24,7 +18,6 @@ public class HerobrineModel<S extends AbstractHerobrineRenderState> extends Enti
 
     public HerobrineModel(ModelPart root) {
         super(root);
-        this.root = root;
         this.main = root.getChild("main");
         this.upperBody = main.getChild("upper_body");
         this.head = upperBody.getChild("head");
@@ -76,33 +69,28 @@ public class HerobrineModel<S extends AbstractHerobrineRenderState> extends Enti
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
-    public ModelPart body() {
+    @Override
+    public ModelPart main() {
         return main;
     }
 
+    @Override
+    public ModelPart head() {
+        return head;
+    }
+
+    @Override
     public ModelPart upperBody() {
         return upperBody;
     }
 
     @Override
-    public void setupAnim(S renderState) {
-        super.setupAnim(renderState);
-        this.root.getAllParts().forEach(ModelPart::resetPose);
-        if (!renderState.isStaggering)
-            applyHeadRotation(renderState);
-        if (renderState.isIdle)
-            AnimationUtils.bobArms(rightArm, leftArm, renderState.ageInTicks);
-        this.animateWalk(HerobrineAnimation.WALKING, renderState.walkAnimationPos, renderState.walkAnimationSpeed, 5, 6);
-        renderState.animations((animationLocation, animationState) -> {
-            this.animate(animationState, AnimationMapper.get(animationLocation), renderState.ageInTicks);
-        });
+    public ModelPart leftArm() {
+        return leftArm;
     }
 
-    private void applyHeadRotation(AbstractHerobrineRenderState renderState) {
-        float yRot = Mth.clamp(renderState.yRot, -45, 45);
-        float xRot = Mth.clamp(renderState.xRot, -80, 45);
-
-        this.head.yRot = yRot * (Mth.PI / 180f);
-        this.head.xRot = xRot * (Mth.PI / 180f);
+    @Override
+    public ModelPart rightArm() {
+        return rightArm;
     }
 }

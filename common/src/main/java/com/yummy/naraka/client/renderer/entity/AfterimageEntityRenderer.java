@@ -22,16 +22,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Collection;
-import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
 public abstract class AfterimageEntityRenderer<T extends LivingEntity & AfterimageEntity, S extends LivingEntityRenderState & AfterimageRenderState.Provider, M extends EntityModel<S>>
         extends LivingEntityRenderer<T, S, M> {
-    protected final M afterimageModel;
-
-    public AfterimageEntityRenderer(EntityRendererProvider.Context context, Supplier<M> model, float shadowRadius) {
-        super(context, model.get(), shadowRadius);
-        this.afterimageModel = model.get();
+    protected AfterimageEntityRenderer(EntityRendererProvider.Context context, M model, float shadowRadius) {
+        super(context, model, shadowRadius);
     }
 
     @Override
@@ -75,7 +71,7 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
         int light = (int) (color.alpha01() * 5);
         int packedLight = LightTexture.pack(light, light);
 
-        this.afterimageModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color.pack());
+        getAfterimageModel(renderState).renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color.pack());
         renderAfterimageLayer(renderState, afterimageRenderState, poseStack, buffer, packedLight, color.alpha());
 
         poseStack.popPose();
@@ -85,5 +81,7 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
     }
 
-    protected abstract ResourceLocation getAfterimageTexture(S afterimage);
+    protected abstract M getAfterimageModel(S renderState);
+
+    protected abstract ResourceLocation getAfterimageTexture(S renderState);
 }

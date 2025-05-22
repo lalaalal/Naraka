@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.layer.HerobrineEyeLayer;
-import com.yummy.naraka.client.model.HerobrineModel;
+import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import com.yummy.naraka.client.renderer.entity.state.AfterimageRenderState;
 import com.yummy.naraka.config.NarakaConfig;
@@ -12,7 +12,6 @@ import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -23,10 +22,11 @@ import net.minecraft.util.ARGB;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
-public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S extends AbstractHerobrineRenderState>
-        extends AfterimageEntityRenderer<T, S, HerobrineModel<S>> {
-    protected AbstractHerobrineRenderer(EntityRendererProvider.Context context, ModelLayerLocation layerLocation) {
-        super(context, () -> new HerobrineModel<>(context.bakeLayer(layerLocation)), 0.5f);
+public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S extends AbstractHerobrineRenderState, M extends AbstractHerobrineModel<S>>
+        extends AfterimageEntityRenderer<T, S, M> {
+
+    protected AbstractHerobrineRenderer(EntityRendererProvider.Context context, M model, float shadowRadius) {
+        super(context, model, shadowRadius);
         addLayer(new HerobrineEyeLayer<>(this));
     }
 
@@ -49,7 +49,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
     protected void renderAfterimageLayer(S renderState, AfterimageRenderState afterimage, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int alpha) {
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(NarakaTextures.HEROBRINE_EYE));
         int color = ARGB.white(alpha);
-        afterimageModel.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color);
+        getAfterimageModel(renderState).renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color);
     }
 
     @Override
@@ -68,8 +68,13 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
     }
 
     @Override
-    protected ResourceLocation getAfterimageTexture(S afterimage) {
+    protected ResourceLocation getAfterimageTexture(S renderState) {
         return NarakaTextures.HEROBRINE_AFTERIMAGE;
+    }
+
+    @Override
+    protected M getAfterimageModel(S renderState) {
+        return model;
     }
 
     @Override
