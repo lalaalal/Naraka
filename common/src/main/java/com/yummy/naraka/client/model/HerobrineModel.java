@@ -2,39 +2,37 @@ package com.yummy.naraka.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.yummy.naraka.client.animation.AnimationMapper;
-import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
-import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.Util;
-import net.minecraft.client.model.AnimationUtils;
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.util.Mth;
 
 @Environment(EnvType.CLIENT)
-public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalModel<T> {
-    private final ModelPart root;
+public class HerobrineModel<T extends AbstractHerobrine> extends AbstractHerobrineModel<T> {
     private final ModelPart main;
     private final ModelPart upperBody;
     private final ModelPart head;
     private final ModelPart leftArm;
     private final ModelPart rightArm;
-    private boolean renderShadow = false;
+    private final boolean renderShadow;
 
-    public HerobrineModel(ModelPart root) {
-        this.root = root;
+    public HerobrineModel(ModelPart root, boolean isShadow) {
+        super(root);
         this.main = root.getChild("main");
         this.upperBody = main.getChild("upper_body");
         this.head = upperBody.getChild("head");
         this.leftArm = upperBody.getChild("left_arm");
         this.rightArm = upperBody.getChild("right_arm");
+        this.renderShadow = isShadow;
+    }
+
+    public HerobrineModel(ModelPart root) {
+        this(root, false);
     }
 
     public static LayerDefinition createForHerobrine() {
@@ -82,50 +80,36 @@ public class HerobrineModel<T extends AbstractHerobrine> extends HierarchicalMod
     }
 
     @Override
-    public ModelPart root() {
-        return root;
-    }
-
-    public void renderShadow() {
-        this.renderShadow = true;
-    }
-
-    public ModelPart body() {
-        return main;
-    }
-
-    public ModelPart upperBody() {
-        return upperBody;
-    }
-
-    @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         if (renderShadow) {
             color = NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(0x88).pack();
             packedLight = LightTexture.FULL_BRIGHT;
         }
         super.renderToBuffer(poseStack, buffer, packedLight, packedOverlay, color);
-        renderShadow = false;
     }
 
     @Override
-    public void setupAnim(T herobrine, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.root.getAllParts().forEach(ModelPart::resetPose);
-        if (!herobrine.getCurrentAnimation().equals(AnimationLocations.STAGGERING))
-            applyHeadRotation(netHeadYaw, headPitch);
-        if (herobrine.getCurrentAnimation().equals(AnimationLocations.IDLE))
-            AnimationUtils.bobArms(rightArm, leftArm, ageInTicks);
-        this.animateWalk(HerobrineAnimation.WALKING, limbSwing, limbSwingAmount, 2, 2);
-        herobrine.forEachAnimations((animationLocation, animationState) -> {
-            this.animate(animationState, AnimationMapper.get(animationLocation), ageInTicks);
-        });
+    public ModelPart main() {
+        return main;
     }
 
-    private void applyHeadRotation(float netHeadYaw, float headPitch) {
-        netHeadYaw = Mth.clamp(netHeadYaw, -45, 45);
-        headPitch = Mth.clamp(headPitch, -80, 45);
+    @Override
+    public ModelPart head() {
+        return head;
+    }
 
-        this.head.yRot = netHeadYaw * (Mth.PI / 180f);
-        this.head.xRot = headPitch * (Mth.PI / 180f);
+    @Override
+    public ModelPart upperBody() {
+        return upperBody;
+    }
+
+    @Override
+    public ModelPart leftArm() {
+        return leftArm;
+    }
+
+    @Override
+    public ModelPart rightArm() {
+        return rightArm;
     }
 }

@@ -21,15 +21,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.function.Supplier;
-
 @Environment(EnvType.CLIENT)
 public abstract class AfterimageEntityRenderer<T extends LivingEntity & AfterimageEntity, M extends HierarchicalModel<T>> extends LivingEntityRenderer<T, M> {
-    protected final M afterimageModel;
-
-    public AfterimageEntityRenderer(EntityRendererProvider.Context context, Supplier<M> model, float shadowRadius) {
-        super(context, model.get(), shadowRadius);
-        this.afterimageModel = model.get();
+    public AfterimageEntityRenderer(EntityRendererProvider.Context context, M model, float shadowRadius) {
+        super(context, model, shadowRadius);
     }
 
     @Override
@@ -72,7 +67,7 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
         int light = (int) (color.alpha01() * 5);
         int packedLight = LightTexture.pack(light, light);
 
-        this.afterimageModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color.pack());
+        getAfterimageModel(entity).renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color.pack());
         renderAfterimageLayer(entity, afterimage, partialTicks, poseStack, buffer, packedLight, color.alpha());
 
         poseStack.popPose();
@@ -86,6 +81,8 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
         int alpha = afterimage.getAlpha(partialTicks);
         return NarakaConfig.CLIENT.afterimageColor.getValue().withAlpha(alpha);
     }
+
+    protected abstract M getAfterimageModel(T entity);
 
     protected abstract ResourceLocation getAfterimageTexture(T entity);
 }

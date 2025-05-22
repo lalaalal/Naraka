@@ -16,10 +16,7 @@ import com.yummy.naraka.client.particle.SoulParticle;
 import com.yummy.naraka.client.renderer.CustomRenderManager;
 import com.yummy.naraka.client.renderer.SpearItemRenderer;
 import com.yummy.naraka.client.renderer.blockentity.*;
-import com.yummy.naraka.client.renderer.entity.HerobrineRenderer;
-import com.yummy.naraka.client.renderer.entity.NarakaFireballRenderer;
-import com.yummy.naraka.client.renderer.entity.SpearRenderer;
-import com.yummy.naraka.client.renderer.entity.StardustRenderer;
+import com.yummy.naraka.client.renderer.entity.*;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
@@ -113,8 +110,8 @@ public final class NarakaModClient {
     }
 
     private static void registerEntityRenderers() {
-        EntityRendererRegistry.register(NarakaEntityTypes.HEROBRINE, HerobrineRenderer::herobrine);
-        EntityRendererRegistry.register(NarakaEntityTypes.SHADOW_HEROBRINE, HerobrineRenderer::shadow);
+        EntityRendererRegistry.register(NarakaEntityTypes.HEROBRINE, HerobrineRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.SHADOW_HEROBRINE, ShadowHerobrineRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, SpearRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR, SpearRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, SpearRenderer::longinus);

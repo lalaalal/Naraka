@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.model.HerobrineModel;
-import com.yummy.naraka.client.renderer.entity.HerobrineRenderer;
+import com.yummy.naraka.client.renderer.entity.ShadowHerobrineRenderer;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -22,7 +22,7 @@ public class ShadowHerobrineArmorLayer extends RenderLayer<ShadowHerobrine, Hero
 
     private final HerobrineModel<ShadowHerobrine> layerModel;
 
-    public ShadowHerobrineArmorLayer(HerobrineRenderer<ShadowHerobrine> renderer, EntityRendererProvider.Context context) {
+    public ShadowHerobrineArmorLayer(ShadowHerobrineRenderer renderer, EntityRendererProvider.Context context) {
         super(renderer);
         layerModel = new HerobrineModel<>(context.bakeLayer(NarakaModelLayers.SHADOW_HEROBRINE_ARMOR));
     }
