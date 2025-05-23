@@ -1,7 +1,5 @@
 package com.yummy.naraka.client;
 
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderStateShard;
@@ -12,13 +10,11 @@ import net.minecraft.client.renderer.blockentity.TheEndPortalRenderer;
 public final class NarakaRenderTypes {
     public static final RenderType LONGINUS = RenderType.create(
             "longinus",
-            DefaultVertexFormat.POSITION,
-            VertexFormat.Mode.QUADS,
             1536,
             false,
             false,
+            NarakaRenderPipelines.LONGINUS,
             RenderType.CompositeState.builder()
-                    .setShaderState(new RenderStateShard.ShaderStateShard(NarakaShaders.longinus()))
                     .setTextureState(
                             RenderStateShard.MultiTextureStateShard.builder()
                                     .add(TheEndPortalRenderer.END_SKY_LOCATION, false, false)
