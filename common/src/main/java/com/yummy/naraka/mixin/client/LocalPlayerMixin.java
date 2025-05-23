@@ -21,16 +21,6 @@ public abstract class LocalPlayerMixin extends LivingEntityMixin {
     public LocalPlayerMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
-//
-//    /**
-//     * Needed to avoid setting sprinting false with lava swimming
-//     */
-//    @ModifyExpressionValue(method = "canStartSprinting", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isInWater()Z"))
-//    public boolean isInLiquid(boolean original) {
-//        if (NarakaItemUtils.canApplyFasterLiquidSwimming(naraka$living()))
-//            return original || isInLiquid();
-//        return original;
-//    }
 
     @ModifyReturnValue(method = "isUnderWater", at = @At(value = "RETURN"))
     public boolean isUnderLiquid(boolean original) {
