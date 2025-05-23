@@ -26,6 +26,11 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
         super(NarakaBlockEntityTypes.SOUL_STABILIZER.get(), pos, blockState);
     }
 
+    public void reset() {
+        soulType = SoulType.NONE;
+        souls = 0;
+    }
+
     public boolean canInject(ItemStack itemStack) {
         if (soulType == SoulType.NONE)
             return SoulType.fromItem(itemStack) != SoulType.NONE;
@@ -123,7 +128,7 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        soulType = SoulType.valueOf(tag.getString("SoulType"));
-        souls = tag.getInt("Souls");
+        soulType = SoulType.valueOf(tag.getStringOr("SoulType", "NONE"));
+        souls = tag.getIntOr("Souls", 0);
     }
 }

@@ -6,6 +6,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
+import com.yummy.naraka.world.item.equipment.trim.NarakaTrimPatterns;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.BlockPos;
@@ -19,7 +20,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SmithingTemplateItem;
 import net.minecraft.world.item.enchantment.Enchantable;
-import net.minecraft.world.item.equipment.trim.*;
+import net.minecraft.world.item.equipment.trim.ArmorTrim;
+import net.minecraft.world.item.equipment.trim.TrimMaterial;
+import net.minecraft.world.item.equipment.trim.TrimMaterials;
+import net.minecraft.world.item.equipment.trim.TrimPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -78,7 +82,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     public void detachSoulStabilizer() {
         if (isStabilizerAttached && level != null) {
             ItemStack itemStack = new ItemStack(NarakaBlocks.SOUL_STABILIZER.get());
-            NarakaItemUtils.saveBlockEntity(itemStack, this, level.registryAccess());
+            NarakaItemUtils.saveBlockEntity(itemStack, soulStabilizer, level.registryAccess());
             NarakaItemUtils.summonItemEntity(level, itemStack, getBlockPos());
             soulStabilizer.clear();
             isStabilizerAttached = false;
@@ -157,8 +161,8 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
         cooldownTick = COOLDOWN;
 
-        Optional<Holder.Reference<TrimMaterial>> material = TrimMaterials.getFromIngredient(level.registryAccess(), soulType.getItem().getDefaultInstance());
-        Optional<Holder.Reference<TrimPattern>> pattern = TrimPatterns.getFromTemplate(level.registryAccess(), templateItem);
+        Optional<Holder<TrimMaterial>> material = TrimMaterials.getFromIngredient(level.registryAccess(), soulType.getItem().getDefaultInstance());
+        Optional<Holder.Reference<TrimPattern>> pattern = NarakaTrimPatterns.fromItem(level.registryAccess(), templateItem);
         if (material.isPresent() && pattern.isPresent()) {
             ArmorTrim armorTrim = new ArmorTrim(material.get(), pattern.get());
             forgingItem.set(DataComponents.TRIM, armorTrim);
@@ -215,13 +219,15 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     @Override
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
         super.loadAdditional(compoundTag, provider);
-        isStabilizerAttached = compoundTag.getBoolean("IsStabilizerAttached");
+        isStabilizerAttached = compoundTag.getBooleanOr("IsStabilizerAttached", false);
         if (isStabilizerAttached) {
-            soulStabilizer.loadAdditional(compoundTag.getCompound("StabilizerData"), provider);
+            soulStabilizer.loadAdditional(compoundTag.getCompoundOrEmpty("StabilizerData"), provider);
             if (level != null)
                 soulStabilizer.setLevel(level);
         }
-        if (compoundTag.contains("TemplateItem"))
-            templateItem = ItemStack.parseOptional(provider, compoundTag.getCompound("TemplateItem"));
+        Optional<CompoundTag> templateItemTag = compoundTag.getCompound("TemplateItem");
+        templateItemTag.flatMap(tag -> ItemStack.parse(provider, tag))
+                .ifPresent(item -> this.templateItem = item);
+
     }
 }

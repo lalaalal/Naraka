@@ -1,21 +1,17 @@
 package com.yummy.naraka.world.block;
 
 import com.mojang.serialization.MapCodec;
-import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.world.block.entity.ForgingBlockEntity;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -23,8 +19,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class ForgingBlock extends BaseEntityBlock {
     public static final MapCodec<ForgingBlock> CODEC = simpleCodec(ForgingBlock::new);
@@ -59,19 +53,11 @@ public class ForgingBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
-        BlockEntity blockEntity = level.getBlockEntity(blockPos);
+    public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof ForgingBlockEntity forgingBlockEntity)
             forgingBlockEntity.dropItems();
-        super.onRemove(blockState, level, blockPos, blockState2, bl);
-    }
-
-    @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(
-                Component.translatable(LanguageKey.tooltip(this))
-                        .withStyle(ChatFormatting.GRAY)
-        );
+        super.destroy(level, pos, state);
     }
 
     @Override

@@ -182,7 +182,7 @@ public class NarakaBlocks {
                     .requiresCorrectToolForDrops()
     );
     public static final HolderProxy<Block, Block> EBONY_METAL_BLOCK = registerSimpleBlockWithItem("ebony_metal_block", Blocks.NETHERITE_BLOCK);
-    public static final HolderProxy<Block, EbonyLeavesBlock> EBONY_LEAVES = registerBlockWithItem("ebony_leaves", EbonyLeavesBlock::new, Blocks.DARK_OAK_LEAVES);
+    public static final HolderProxy<Block, EbonyLeavesBlock> EBONY_LEAVES = registerBlockWithItem("ebony_leaves", properties -> new EbonyLeavesBlock(0.5f, properties), Blocks.DARK_OAK_LEAVES);
     public static final HolderProxy<Block, MangroveRootsBlock> EBONY_ROOTS = registerBlockWithItem("ebony_roots", MangroveRootsBlockInvoker::create, Blocks.MANGROVE_ROOTS);
 
     public static final HolderProxy<Block, EbonySaplingBlock> EBONY_SAPLING = registerBlockWithItem("ebony_sapling", EbonySaplingBlock::new, Blocks.DARK_OAK_SAPLING);

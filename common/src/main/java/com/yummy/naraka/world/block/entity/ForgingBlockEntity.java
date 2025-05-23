@@ -99,7 +99,10 @@ public class ForgingBlockEntity extends BlockEntity {
     @Override
     protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
         super.loadAdditional(compoundTag, provider);
-        forgingItem = ItemStack.parseOptional(provider, compoundTag.getCompound("ForgingItem"));
+        if (compoundTag.contains("ForgingItem")) {
+            ItemStack.parse(provider, compoundTag.getCompoundOrEmpty("ForgingItem"))
+                    .ifPresent(item -> forgingItem = item);
+        }
     }
 
     @Override
