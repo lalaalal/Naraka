@@ -3,6 +3,5 @@
   "description": {
     "color": "#EB4747",
     "translate": "trim_material.naraka.soul_infused_redstone"
-  },
-  "ingredient": "naraka:soul_infused_redstone"
+  }
 }
