@@ -33,13 +33,9 @@ public abstract class LivingEntityMixin extends Entity {
     private static EntityDataAccessor<Float> DATA_HEALTH_ID;
 
     @Shadow
-    protected abstract ItemStack getLastHandItem(EquipmentSlot slot);
-
-    @Shadow
-    protected abstract ItemStack getLastArmorItem(EquipmentSlot slot);
-
-    @Shadow
     public abstract float getMaxHealth();
+
+    @Shadow @Final private Map<EquipmentSlot, ItemStack> lastEquipmentItems;
 
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -120,12 +116,7 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Unique
     private ItemStack naraka$getPreviousStack(EquipmentSlot slot) {
-        EquipmentSlot.Type type = slot.getType();
-        if (type == EquipmentSlot.Type.HAND)
-            return getLastHandItem(slot);
-        if (type == EquipmentSlot.Type.HUMANOID_ARMOR)
-            return getLastArmorItem(slot);
-        return ItemStack.EMPTY;
+        return lastEquipmentItems.getOrDefault(slot, ItemStack.EMPTY);
     }
 
     @Unique

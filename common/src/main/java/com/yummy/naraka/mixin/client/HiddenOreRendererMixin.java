@@ -6,6 +6,8 @@ import com.mojang.blaze3d.framegraph.FramePass;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
 import com.mojang.blaze3d.resource.ResourceHandle;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.textures.GpuTexture;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.config.NarakaConfig;
@@ -21,6 +23,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -35,6 +39,9 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Environment(EnvType.CLIENT)
 @Mixin(value = LevelRenderer.class)
@@ -61,7 +68,7 @@ public abstract class HiddenOreRendererMixin {
         naraka$addHiddenOresPass(frameGraphBuilder, camera);
         PostChain postChain = this.minecraft.getShaderManager().getPostChain(LevelTargetBundle.ENTITY_OUTLINE_TARGET_ID, LevelTargetBundle.OUTLINE_TARGETS);
         if (postChain != null) {
-            postChain.addToFrame(frameGraphBuilder, width, height, this.targets);
+            postChain.addToFrame(frameGraphBuilder, width, height, this.targets, null);
         }
         doEntityOutline();
     }
@@ -79,9 +86,14 @@ public abstract class HiddenOreRendererMixin {
 
         framePass.executes(() -> {
             if (outlineHandler != null) {
-                outlineHandler.get().setClearColor(0.0F, 0.0F, 0.0F, 0.0F);
-                outlineHandler.get().clear();
-                mainHandler.get().bindWrite(false);
+                RenderTarget renderTarget = outlineHandler.get();
+                GpuTexture colorTexture = renderTarget.getColorTexture();
+                GpuTexture depthTexture = renderTarget.getDepthTexture();
+                if (colorTexture != null && depthTexture != null) {
+                    RenderSystem.getDevice()
+                            .createCommandEncoder()
+                            .clearColorAndDepthTextures(colorTexture, 0, depthTexture, 1.0);
+                }
             }
 
             PoseStack poseStack = new PoseStack();
@@ -122,7 +134,10 @@ public abstract class HiddenOreRendererMixin {
                 RenderType renderType = RenderType.outline(TextureAtlas.LOCATION_BLOCKS);
                 VertexConsumer vertexConsumer = outlineBufferSource.getBuffer(renderType);
 
-                minecraft.getBlockRenderer().renderBatched(state, pos, level, poseStack, vertexConsumer, false, level.random);
+                List<BlockModelPart> blockModelParts = new ArrayList<>();
+                BlockRenderDispatcher blockRenderer = minecraft.getBlockRenderer();
+                blockRenderer.getBlockModel(state).collectParts(level.random, blockModelParts);
+                blockRenderer.renderBatched(state, pos, level, poseStack, vertexConsumer, false, blockModelParts);
 
                 poseStack.popPose();
             }

@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ItemModelResolver.class)
 public abstract class ItemModelResolverMixin {
     @Inject(method = "updateForTopItem", at = @At("HEAD"))
-    public void storeItemRenderContext(ItemStackRenderState renderState, ItemStack stack, ItemDisplayContext displayContext, boolean leftHand, Level level, LivingEntity entity, int seed, CallbackInfo ci) {
+    public void storeItemRenderContext(ItemStackRenderState renderState, ItemStack stack, ItemDisplayContext displayContext, Level level, LivingEntity entity, int seed, CallbackInfo ci) {
         ColoredItemRenderer.setCurrentRenderingItem(stack);
     }
 }

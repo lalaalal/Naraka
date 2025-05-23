@@ -45,14 +45,13 @@ public abstract class WanderingTraderMixin extends AbstractVillager {
         super(entityType, level);
     }
 
-    @Inject(method = "updateTrades", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/trading/MerchantOffers;add(Ljava/lang/Object;)Z"), cancellable = true)
+    @Inject(method = "updateTrades", at = @At(value = "RETURN"))
     protected void addNarakaItemsToTrades(CallbackInfo ci) {
         if (random.nextFloat() < 0.1) {
             MerchantOffers merchantOffers = getOffers();
             int index = random.nextInt(naraka$TRADES.length);
             MerchantOffer merchantOffer = naraka$TRADES[index].getOffer(this, random);
             merchantOffers.add(merchantOffer);
-            ci.cancel();
         }
     }
 }
