@@ -3,7 +3,6 @@ package com.yummy.naraka.world.structure;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.world.structure.height.StructureGenerationPointProvider;
 import com.yummy.naraka.world.structure.piece.JumboPiece;
@@ -87,7 +86,6 @@ public class JumboStructure extends Structure {
     }
 
     private void addPart(StructureTemplateManager templateManager, StructurePiecesBuilder builder, JumboPart part, BlockPos basePos) {
-        NarakaMod.LOGGER.info("{}", basePos);
         for (Vec3i piecePosition : part.getPositions()) {
             ResourceLocation location = part.getPieceLocation(name, piecePosition);
             BlockPos actualPosition = basePos.offset(part.getPiecePosition(piecePosition));
