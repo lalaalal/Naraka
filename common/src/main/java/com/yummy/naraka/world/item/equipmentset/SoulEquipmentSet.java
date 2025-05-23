@@ -25,6 +25,8 @@ public class SoulEquipmentSet extends EquipmentSet {
             return false;
 
         for (EquipmentSlot slot : EquipmentSlotGroup.ARMOR.slots()) {
+            if (slot.getType() != EquipmentSlot.Type.HUMANOID_ARMOR)
+                continue;
             ItemStack armorItemStack = livingEntity.getItemBySlot(slot);
             ArmorTrim armorTrim = armorItemStack.get(DataComponents.TRIM);
             if (armorTrim == null)
