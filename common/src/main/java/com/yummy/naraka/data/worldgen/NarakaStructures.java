@@ -4,7 +4,7 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.tags.ConventionalTags;
 import com.yummy.naraka.world.structure.JumboPart;
 import com.yummy.naraka.world.structure.JumboStructure;
-import com.yummy.naraka.world.structure.height.SeaLevelBasedHeightProvider;
+import com.yummy.naraka.world.structure.height.NarakaStructureGenerationPointProviders;
 import com.yummy.naraka.world.structure.piece.NarakaStructurePieceFactories;
 import com.yummy.naraka.world.structure.protection.NarakaProtectionPredicates;
 import net.minecraft.core.BlockPos;
@@ -23,12 +23,11 @@ import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class NarakaStructures {
     public static final ResourceKey<Structure> HEROBRINE_SANCTUARY = create("herobrine_sanctuary");
-    public static final BlockPos HEROBRINE_SANCTUARY_OFFSET = new BlockPos(-4, -6, 48 * 2);
-    public static final BlockPos HEROBRINE_SANCTUARY_MAIN_OFFSET = new BlockPos(-63, 0, -48 * 4);
+    public static final BlockPos HEROBRINE_SANCTUARY_OFFSET = new BlockPos(-8, -17, -48 * 2);
+    public static final BlockPos HEROBRINE_SANCTUARY_MAIN_OFFSET = new BlockPos(-44, 0, 48);
 
     public static void bootstrap(BootstrapContext<Structure> context) {
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
@@ -49,10 +48,10 @@ public class NarakaStructures {
                                 .terrainAdapation(TerrainAdjustment.NONE)
                                 .build(),
                         "herobrine_sanctuary",
-                        Optional.of(NarakaProtectionPredicates.HEROBRINE_SANCTUARY_PROTECTION),
-                        SeaLevelBasedHeightProvider.EXACT,
+                        NarakaProtectionPredicates.HEROBRINE_SANCTUARY_PROTECTION,
+                        NarakaStructureGenerationPointProviders.HEROBRINE_SANCTUARY,
                         List.of(
-                                new JumboPart("main", 3, 3, 4, HEROBRINE_SANCTUARY_MAIN_OFFSET),
+                                new JumboPart("main", 3, 3, 3, HEROBRINE_SANCTUARY_MAIN_OFFSET),
                                 new JumboPart("bridge", 1, 1, 1, BlockPos.ZERO)
                         ),
                         List.of(

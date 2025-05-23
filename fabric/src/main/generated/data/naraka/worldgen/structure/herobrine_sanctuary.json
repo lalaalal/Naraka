@@ -4,23 +4,20 @@
   "custom_pieces": [
     "naraka:herobrine_sanctuary_outline"
   ],
-  "height_provider": {
-    "type": "naraka:sea_level_based",
-    "sampler": 0
-  },
+  "generation_point_provider": "naraka:herobrine_sanctuary",
   "name": "herobrine_sanctuary",
   "parts": [
     {
       "offset": [
-        -63,
+        -44,
         0,
-        -192
+        48
       ],
       "part_name": "main",
       "piece_count": [
         3,
         3,
-        4
+        3
       ]
     },
     {
@@ -50,8 +47,8 @@
   },
   "step": "surface_structures",
   "structure_offset": [
-    -4,
-    -6,
-    96
+    -8,
+    -17,
+    -96
   ]
 }
