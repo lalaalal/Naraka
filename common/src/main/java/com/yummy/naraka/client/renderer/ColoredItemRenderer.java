@@ -9,9 +9,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.Direction;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -26,7 +23,7 @@ import java.util.function.Supplier;
 
 /**
  * @see ItemRendererMixin
- * @see ItemModelResolverMixin#storeItemRenderContext(ItemStackRenderState, ItemStack, ItemDisplayContext, boolean, Level, LivingEntity, int, CallbackInfo)
+ * @see ItemModelResolverMixin#storeItemRenderContext(ItemStackRenderState, ItemStack, ItemDisplayContext, Level, LivingEntity, int, CallbackInfo)
  */
 @Environment(EnvType.CLIENT)
 public class ColoredItemRenderer {
@@ -45,22 +42,10 @@ public class ColoredItemRenderer {
         return ITEM_COLORS.containsKey(currentRenderingItem.getItem());
     }
 
-    public static void renderColored(BakedModel model, int packedLight, int packedOverlay, PoseStack poseStack, VertexConsumer vertexConsumer) {
+    public static void renderColored(List<BakedQuad> quads, int packedLight, int packedOverlay, PoseStack poseStack, VertexConsumer vertexConsumer) {
         Color color = ITEM_COLORS.get(currentRenderingItem.getItem())
                 .get().withAlpha(0xff);
-        renderModelLists(model, packedLight, packedOverlay, poseStack, vertexConsumer, color);
-    }
-
-    private static void renderModelLists(BakedModel model, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer vertexConsumer, Color color) {
-        RandomSource randomSource = RandomSource.create();
-
-        for (Direction direction : Direction.values()) {
-            randomSource.setSeed(42L);
-            renderColoredQuadList(poseStack, vertexConsumer, model.getQuads(null, direction, randomSource), combinedLight, combinedOverlay, color);
-        }
-
-        randomSource.setSeed(42L);
-        renderColoredQuadList(poseStack, vertexConsumer, model.getQuads(null, null, randomSource), combinedLight, combinedOverlay, color);
+        renderColoredQuadList(poseStack, vertexConsumer, quads, packedLight, packedOverlay, color);
     }
 
     private static void renderColoredQuadList(PoseStack poseStack, VertexConsumer buffer, List<BakedQuad> quads, int combinedLight, int combinedOverlay, Color color) {

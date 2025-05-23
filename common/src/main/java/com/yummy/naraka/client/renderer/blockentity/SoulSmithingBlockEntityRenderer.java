@@ -22,6 +22,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
@@ -79,19 +80,19 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
     }
 
     @Override
-    public void render(SoulSmithingBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay) {
+    public void render(SoulSmithingBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 cameraPos) {
         poseStack.pushPose();
         Direction direction = blockEntity.getBlockState().getValue(SoulSmithingBlock.FACING);
         Quaternionf rotation = Axis.YN.rotationDegrees(direction.toYRot());
         poseStack.rotateAround(rotation, 0.5f, 0.5f, 0.5f);
         poseStack.rotateAround(Axis.ZP.rotation(Mth.PI), 0.5f, 0.5f, 0.5f);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutout(NarakaTextures.SOUL_SMITHING_BLOCK));
-        main.render(poseStack, vertexConsumer, light, overlay);
+        main.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         poseStack.popPose();
 
-        renderTrim(blockEntity, poseStack, bufferSource, light, overlay, rotation);
+        renderTrim(blockEntity, poseStack, bufferSource, packedLight, packedOverlay, rotation);
         renderSoulStabilizer(blockEntity, partialTick, poseStack, bufferSource, rotation);
-        renderItem(blockEntity, poseStack, bufferSource, light, overlay, rotation);
+        renderItem(blockEntity, poseStack, bufferSource, packedLight, packedOverlay, rotation);
     }
 
     private void renderSoulStabilizer(SoulSmithingBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, Quaternionf rotation) {
