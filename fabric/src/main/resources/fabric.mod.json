@@ -1,47 +1,47 @@
 {
-    "schemaVersion": 1,
-    "id": "naraka",
-    "version": "${version}",
-    "name": "Naraka",
-    "description": "",
-    "authors": [
-        "lalaalal",
-        "joachimbeen",
-      "noon414",
-        "GuEunso"
+  "schemaVersion": 1,
+  "id": "naraka",
+  "version": "${version}",
+  "name": "Naraka",
+  "description": "",
+  "authors": [
+    "lalaalal",
+    "joachimbeen",
+    "noon414",
+    "GuEunso"
+  ],
+  "contact": {
+    "homepage": "https://github.com/lalaalal/Naraka"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "naraka.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.yummy.naraka.fabric.NarakaModFabric"
     ],
-    "contact": {
-        "homepage": "https://github.com/lalaalal/Naraka"
-    },
-    "license": "All-Rights-Reserved",
-    "icon": "naraka.png",
-    "environment": "*",
-    "entrypoints": {
-        "main": [
-            "com.yummy.naraka.fabric.NarakaModFabric"
-        ],
-        "fabric-datagen": [
-            "com.yummy.naraka.fabric.data.NarakaDataGenerator"
-        ],
-        "client": [
-            "com.yummy.naraka.fabric.client.NarakaModFabricClient"
-        ],
-        "jade": [
-            "com.yummy.naraka.jade.NarakaJadePlugin"
-        ]
-    },
+    "fabric-datagen": [
+      "com.yummy.naraka.fabric.data.NarakaDataGenerator"
+    ],
+    "client": [
+      "com.yummy.naraka.fabric.client.NarakaModFabricClient"
+    ],
+    "jade": [
+      "com.yummy.naraka.jade.NarakaJadePlugin"
+    ]
+  },
   "accessWidener": "naraka.fabric.accesswidener",
-    "mixins": [
-        "naraka.mixins.json",
-        "naraka.mixins.fabric.json"
-    ],
-    "depends": {
-      "fabricloader": ">=0.16.10",
-      "minecraft": "~1.21.4",
-        "java": ">=21",
-        "fabric-api": "*"
-    },
-    "suggests": {
-        "another-mod": "*"
-    }
+  "mixins": [
+    "naraka.mixins.json",
+    "naraka.mixins.fabric.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.10",
+    "minecraft": "~1.21.5",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
 }

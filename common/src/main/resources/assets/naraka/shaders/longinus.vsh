@@ -4,7 +4,7 @@ uniform mat4 ModelViewMat;
 uniform mat4 ProjMat;
 
 in vec3 Position;
-out vec4 textureProjection;
+out vec4 texProj0;
 
 vec4 projection_from_position(vec4 position) {
     vec4 projection = position * 0.5;
@@ -16,5 +16,5 @@ vec4 projection_from_position(vec4 position) {
 void main() {
     gl_Position = ProjMat * ModelViewMat * vec4(Position, 1.0);
 
-    textureProjection = projection_from_position(gl_Position);
+    texProj0 = projection_from_position(gl_Position);
 }

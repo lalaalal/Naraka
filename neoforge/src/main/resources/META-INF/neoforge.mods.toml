@@ -16,14 +16,14 @@ logoFile = "naraka.png"
 [[dependencies.naraka]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.4,)"
+versionRange = "[21.5,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.naraka]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.4,)"
+versionRange = "[1.21.5,)"
 ordering = "NONE"
 side = "BOTH"
 
