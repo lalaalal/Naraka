@@ -3,8 +3,6 @@ package com.yummy.naraka.util;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -63,15 +61,6 @@ public class NarakaEntityUtils {
                 .map(uuid -> findEntityByUUID(serverLevel, uuid, type))
                 .filter(Objects::nonNull)
                 .toList();
-    }
-
-    public static CompoundTag writeUUID(UUID uuid, CompoundTag compoundTag, HolderLookup.Provider provider) {
-        compoundTag.putUUID("UUID", uuid);
-        return compoundTag;
-    }
-
-    public static UUID readUUID(CompoundTag tag, HolderLookup.Provider provider) {
-        return tag.getUUID("UUID");
     }
 
     public static Vec3 getDirectionNormalVector(Entity from, Entity to) {
