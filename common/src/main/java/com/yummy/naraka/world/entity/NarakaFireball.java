@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class NarakaFireball extends Fireball implements ItemSupplier {
     protected static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(NarakaFireball.class, EntityDataSerializers.INT);
@@ -200,14 +201,15 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         if (cachedTarget != null)
-            compound.putUUID("Target", cachedTarget.getUUID());
+            compound.putString("Target", cachedTarget.getStringUUID());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         if (compound.contains("Target") && level() instanceof ServerLevel serverLevel) {
-            setTarget(serverLevel.getEntity(compound.getUUID("Target")));
+            UUID uuid = UUID.fromString(compound.getStringOr("Target", ""));
+            setTarget(serverLevel.getEntity(uuid));
         }
     }
 

@@ -31,12 +31,12 @@ public class ShadowController {
     }
 
     public void save(CompoundTag tag) {
-        NarakaNbtUtils.writeCollection(tag, "ShadowHerobrines", shadowHerobrines, NarakaEntityUtils::writeUUID, herobrine.registryAccess());
+        NarakaNbtUtils.writeCollection(tag, "ShadowHerobrines", shadowHerobrines, NarakaNbtUtils::writeUUID, herobrine.registryAccess());
     }
 
     public void load(CompoundTag tag) {
         shadowHerobrines.clear();
-        NarakaNbtUtils.readCollection(tag, "ShadowHerobrines", () -> shadowHerobrines, NarakaEntityUtils::readUUID, herobrine.registryAccess());
+        NarakaNbtUtils.readCollection(tag, "ShadowHerobrines", () -> shadowHerobrines, NarakaNbtUtils::readUUID, herobrine.registryAccess());
     }
 
     public void summonShadowHerobrine(ServerLevel level) {

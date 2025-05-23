@@ -79,7 +79,7 @@ public record Stigma(int value, long lastMarkedTime) {
 
         if (lockedHealth >= originalMaxHealth) {
             DamageSource source = NarakaDamageSources.stigma(cause);
-            livingEntity.hurtServer(level, source, Float.MAX_VALUE);
+            livingEntity.hurtServer(level, source, 6.66e6f);
         } else {
             LockedHealthHelper.lock(livingEntity, lockedHealth);
         }

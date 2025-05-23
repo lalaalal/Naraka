@@ -17,7 +17,7 @@ public class DoubleEntityDataType extends EntityDataType<Double> {
     @Override
     public Double read(CompoundTag tag, HolderLookup.Provider provider) {
         if (tag.contains(name()))
-            return tag.getDouble(name());
+            return tag.getDoubleOr(name(), 0);
         return getDefaultValue();
     }
 

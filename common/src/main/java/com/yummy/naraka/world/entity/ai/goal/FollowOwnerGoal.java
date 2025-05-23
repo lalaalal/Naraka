@@ -55,7 +55,7 @@ public class FollowOwnerGoal<T extends Mob & TraceableEntity> extends Goal {
     private void teleportTo(Entity owner) {
         BlockPos blockpos = owner.blockPosition();
         BlockPos teleportPos = NarakaUtils.randomBlockPos(entity.getRandom(), blockpos, 5);
-
-        entity.moveTo(NarakaUtils.findAir(entity.level(), teleportPos, Direction.UP), 0, 0);
+        teleportPos = NarakaUtils.findAir(entity.level(), teleportPos, Direction.UP);
+        entity.teleportTo(teleportPos.getX(), teleportPos.getY(), teleportPos.getZ());
     }
 }

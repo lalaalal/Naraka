@@ -80,7 +80,7 @@ public class Spear extends AbstractArrow {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        dealtDamage = compound.getBoolean("DealtDamage");
+        dealtDamage = compound.getBooleanOr("DealtDamage", true);
         entityData.set(ID_LOYALTY, getLoyaltyFromItem(getPickupItem()));
         entityData.set(ID_FOIL, getPickupItem().hasFoil());
     }

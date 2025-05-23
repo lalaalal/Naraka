@@ -27,6 +27,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 public class Stardust extends Entity {
     public static final int EXPLOSION_WAITING_TICK = 120;
     public static final EntityDataAccessor<Integer> WAITING_TICK = SynchedEntityData.defineId(Stardust.class, EntityDataSerializers.INT);
@@ -124,7 +126,7 @@ public class Stardust extends Entity {
             Entity source = owner == null ? this : owner;
             explode(2);
             if (entityHitResult.getEntity() instanceof Player livingEntity
-                    && !livingEntity.isDamageSourceBlocked(NarakaDamageSources.stardust(this))) {
+                    && !livingEntity.isInvulnerableTo(level, NarakaDamageSources.stardust(this))) {
                 StigmaHelper.increaseStigma(level, livingEntity, source);
             }
         }
@@ -148,17 +150,17 @@ public class Stardust extends Entity {
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         if (level() instanceof ServerLevel serverLevel && compound.contains("Owner"))
-            this.owner = serverLevel.getEntity(compound.getUUID("Owner"));
-        entityData.set(HIT_BLOCK, compound.getBoolean("HitBlock"));
-        entityData.set(WAITING_TICK, compound.getInt("WaitingTick"));
-        waitingTickCount = compound.getInt("WaitingTickCount");
-        explosionWaitingTickCount = compound.getInt("ExplosionWaitingTickCount");
+            this.owner = serverLevel.getEntity(UUID.fromString(compound.getStringOr("Owner", "")));
+        entityData.set(HIT_BLOCK, compound.getBooleanOr("HitBlock", true));
+        entityData.set(WAITING_TICK, compound.getIntOr("WaitingTick", 0));
+        waitingTickCount = compound.getIntOr("WaitingTickCount", 0);
+        explosionWaitingTickCount = compound.getIntOr("ExplosionWaitingTickCount", 0);
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
         if (owner != null)
-            compound.putUUID("Owner", owner.getUUID());
+            compound.putString("Owner", owner.getUUID().toString());
         compound.putBoolean("HitBlock", entityData.get(HIT_BLOCK));
         compound.putInt("WaitingTick", entityData.get(WAITING_TICK));
         compound.putInt("WaitingTickCount", waitingTickCount);

@@ -19,7 +19,6 @@ import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -28,14 +27,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -188,7 +184,7 @@ public class Herobrine extends AbstractHerobrine {
 
     private void onPhase3(int phase) {
         if (spawnPosition != null)
-            moveTo(spawnPosition.south(54), 0, 0);
+            teleportTo(spawnPosition.getX(), spawnPosition.getY(), spawnPosition.getZ());
         skillManager.setCurrentSkill(destroyStructureSkill);
     }
 
@@ -474,7 +470,7 @@ public class Herobrine extends AbstractHerobrine {
         if (hibernateMode)
             return;
         if (spawnPosition != null)
-            moveTo(spawnPosition.south(54), 0, 0);
+            teleportTo(spawnPosition.getX(), spawnPosition.getY(), spawnPosition.getZ());
         hibernateMode = true;
         skillManager.enableOnly(HIBERNATED_MODE_SKILL_BY_PHASE.get(getPhase()));
         shadowController.updateRolePlaying(level);
@@ -559,17 +555,12 @@ public class Herobrine extends AbstractHerobrine {
         super.remove(reason);
     }
 
-    @Override
-    public boolean canDisableShield() {
-        return true;
-    }
-
     private void rewardChallenger(LivingEntity livingEntity) {
         if (livingEntity.hasEffect(NarakaMobEffects.CHALLENGERS_BLESSING)) {
             livingEntity.removeEffect(NarakaMobEffects.CHALLENGERS_BLESSING);
-            for (ItemStack stack : livingEntity.getArmorSlots()) {
+            for (EquipmentSlot slot : EquipmentSlotGroup.ARMOR.slots()) {
+                ItemStack stack = livingEntity.getItemBySlot(slot);
                 stack.consume(1, livingEntity);
-                level().playSound(null, livingEntity.getOnPos(), stack.getBreakingSound(), SoundSource.PLAYERS);
             }
             ItemStack weaponStack = livingEntity.getMainHandItem();
             weaponStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
@@ -582,9 +573,9 @@ public class Herobrine extends AbstractHerobrine {
         compound.putFloat("HurtDamageLimit", hurtDamageLimit);
         compound.putBoolean("HibernateMode", hibernateMode);
         if (spawnPosition != null)
-            compound.put("SpawnPosition", NbtUtils.writeBlockPos(spawnPosition));
-        NarakaNbtUtils.writeCollection(compound, "StigmatizedEntities", stigmatizedEntities, NarakaEntityUtils::writeUUID, registryAccess());
-        NarakaNbtUtils.writeCollection(compound, "WatchingEntities", watchingEntities, NarakaEntityUtils::writeUUID, registryAccess());
+            compound.put("SpawnPosition", NarakaNbtUtils.writeBlockPos(spawnPosition));
+        NarakaNbtUtils.writeCollection(compound, "StigmatizedEntities", stigmatizedEntities, NarakaNbtUtils::writeUUID, registryAccess());
+        NarakaNbtUtils.writeCollection(compound, "WatchingEntities", watchingEntities, NarakaNbtUtils::writeUUID, registryAccess());
         shadowController.save(compound);
     }
 
@@ -592,15 +583,16 @@ public class Herobrine extends AbstractHerobrine {
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         if (compound.contains("HurtDamageLimit"))
-            hurtDamageLimit = compound.getFloat("HurtDamageLimit");
+            hurtDamageLimit = compound.getFloatOr("HurtDamageLimit", 0);
         if (compound.contains("HibernatedMode")) {
-            hibernateMode = compound.getBoolean("HibernatedMode");
+            hibernateMode = compound.getBooleanOr("HibernatedMode", false);
             if (hibernateMode && level() instanceof ServerLevel level)
                 startHibernateMode(level);
         }
-        NbtUtils.readBlockPos(compound, "SpawnPosition").ifPresent(pos -> spawnPosition = pos);
-        NarakaNbtUtils.readCollection(compound, "StigmatizedEntities", () -> stigmatizedEntities, NarakaEntityUtils::readUUID, registryAccess());
-        NarakaNbtUtils.readCollection(compound, "WatchingEntities", () -> watchingEntities, NarakaEntityUtils::readUUID, registryAccess());
+        NarakaNbtUtils.readBlockPos(compound, "SpawnPosition")
+                .ifPresent(pos -> spawnPosition = pos);
+        NarakaNbtUtils.readCollection(compound, "StigmatizedEntities", () -> stigmatizedEntities, NarakaNbtUtils::readUUID, registryAccess());
+        NarakaNbtUtils.readCollection(compound, "WatchingEntities", () -> watchingEntities, NarakaNbtUtils::readUUID, registryAccess());
         shadowController.load(compound);
     }
 }

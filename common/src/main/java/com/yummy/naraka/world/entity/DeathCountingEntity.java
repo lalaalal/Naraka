@@ -51,12 +51,12 @@ public interface DeathCountingEntity {
         }
 
         private CompoundTag write(UUID value, CompoundTag tag, HolderLookup.Provider provider) {
-            tag.putUUID("UUID", value);
+            tag.putString("UUID", value.toString());
             return tag;
         }
 
         private UUID read(CompoundTag tag, HolderLookup.Provider provider) {
-            return tag.getUUID("UUID");
+            return UUID.fromString(tag.getStringOr("UUID", ""));
         }
 
         public void add(LivingEntity livingEntity) {
