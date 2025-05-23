@@ -6,6 +6,10 @@ import com.yummy.naraka.util.NarakaUtils;
 import net.minecraft.core.Holder;
 
 public class NarakaProtectionPredicates {
+    public static final Holder<ProtectionPredicate> NOTHING = register(
+            "nothing", (box, pos) -> false
+    );
+
     public static final Holder<ProtectionPredicate> BOX = register(
             "box", (box, pos) -> true
     );
