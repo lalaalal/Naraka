@@ -53,7 +53,7 @@ public final class NarakaModNeoForge implements NarakaInitializer {
         return NeoForgeBiomeModifier.INSTANCE;
     }
 
-    public void commonSetup(FMLCommonSetupEvent event) {
+    private void commonSetup(FMLCommonSetupEvent event) {
         NarakaMod.isRegistryLoaded = true;
         for (Runnable runnable : runAfterRegistryLoaded)
             runnable.run();
