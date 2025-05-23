@@ -19,7 +19,10 @@ import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
-import net.minecraft.client.data.models.blockstates.*;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.item.ItemModel;
@@ -38,6 +41,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.EquipmentAssets;
+import net.minecraft.world.item.equipment.trim.MaterialAssetGroup;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.item.equipment.trim.TrimMaterials;
 import net.minecraft.world.level.block.Block;
@@ -48,7 +52,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class NarakaModelProvider extends FabricModelProvider {
@@ -106,7 +109,7 @@ public class NarakaModelProvider extends FabricModelProvider {
     }
 
     private static void createNectariumCrystal(BlockModelGenerators generator) {
-        PropertyDispatch.C2<Direction, DripstoneThickness> properties = PropertyDispatch.properties(
+        PropertyDispatch.C2<MultiVariant, Direction, DripstoneThickness> properties = PropertyDispatch.initial(
                 BlockStateProperties.VERTICAL_DIRECTION, BlockStateProperties.DRIPSTONE_THICKNESS
         );
 
@@ -116,22 +119,22 @@ public class NarakaModelProvider extends FabricModelProvider {
         for (DripstoneThickness dripstoneThickness : DripstoneThickness.values())
             properties.select(Direction.DOWN, dripstoneThickness, createNectariumCrystalVariant(generator, Direction.DOWN, dripstoneThickness));
 
-        generator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get()).with(properties));
+        generator.blockStateOutput.accept(MultiVariantGenerator.dispatch(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get()).with(properties));
     }
 
-    private static Variant createNectariumCrystalVariant(BlockModelGenerators generator, Direction direction, DripstoneThickness dripstoneThickness) {
+    private static MultiVariant createNectariumCrystalVariant(BlockModelGenerators generator, Direction direction, DripstoneThickness dripstoneThickness) {
         String model_name = "_" + direction.getSerializedName() + "_" + dripstoneThickness.getSerializedName();
         TextureMapping textureMapping = TextureMapping.cross(TextureMapping.getBlockTexture(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get(), model_name));
-        return Variant.variant()
-                .with(VariantProperties.MODEL, ModelTemplates.POINTED_DRIPSTONE.createWithSuffix(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get(), model_name, textureMapping, generator.modelOutput));
+        ResourceLocation model = ModelTemplates.POINTED_DRIPSTONE.createWithSuffix(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get(), model_name, textureMapping, generator.modelOutput);
+        return BlockModelGenerators.plainVariant(model);
     }
 
     private static void createEbonyLog(BlockModelGenerators generator, Block block) {
         ResourceLocation model = ModelTemplates.CUBE_COLUMN.create(block, TextureMapping.logColumn(block), generator.modelOutput);
+        MultiVariant plainVariant = BlockModelGenerators.plainVariant(model);
         generator.blockStateOutput.accept(MultiVariantGenerator
-                .multiVariant(block, Variant.variant()
-                        .with(VariantProperties.MODEL, model))
-                .with(createEbonyLog(createEbonyBranchModel(generator, block)))
+                .dispatch(block)
+                .with(createEbonyLog(plainVariant, createEbonyBranchModel(generator, block)))
         );
     }
 
@@ -139,27 +142,25 @@ public class NarakaModelProvider extends FabricModelProvider {
         return TexturedModel.CUBE.createWithSuffix(block, "_branch", generator.modelOutput);
     }
 
-    private static PropertyDispatch createEbonyLog(ResourceLocation branchModel) {
-        return PropertyDispatch.properties(BlockStateProperties.AXIS, EbonyLogBlock.BRANCH)
+    private static PropertyDispatch<MultiVariant> createEbonyLog(MultiVariant plainVariant, ResourceLocation branchModel) {
+        return PropertyDispatch.initial(BlockStateProperties.AXIS, EbonyLogBlock.BRANCH)
                 .generate((axis, branch) -> {
                     if (branch) {
-                        return Variant.variant().with(VariantProperties.MODEL, branchModel);
+                        return BlockModelGenerators.plainVariant(branchModel);
                     } else {
                         return switch (axis) {
-                            case Y -> Variant.variant();
-                            case Z -> Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R90);
-                            case X -> Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
-                                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90);
+                            case Y -> plainVariant;
+                            case Z -> plainVariant.with(BlockModelGenerators.X_ROT_90);
+                            case X ->
+                                    plainVariant.with(BlockModelGenerators.X_ROT_90).with(BlockModelGenerators.Y_ROT_90);
                         };
                     }
                 });
     }
 
-    private static PropertyDispatch createIntegerModelDispatch(IntegerProperty property, ResourceLocation[] models) {
-        return PropertyDispatch.property(property)
-                .generate(crack -> Variant.variant()
-                        .with(VariantProperties.MODEL, models[crack])
-                );
+    private static PropertyDispatch<MultiVariant> createIntegerModelDispatch(IntegerProperty property, ResourceLocation[] models) {
+        return PropertyDispatch.initial(property)
+                .generate(crack -> BlockModelGenerators.plainVariant(models[crack]));
     }
 
     private static ResourceLocation[] createTotemModels(BlockModelGenerators generator) {
@@ -175,43 +176,43 @@ public class NarakaModelProvider extends FabricModelProvider {
     }
 
     private void createHerobrineTotem(BlockModelGenerators generator) {
-        generator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(NarakaBlocks.HEROBRINE_TOTEM.get())
+        generator.blockStateOutput.accept(MultiVariantGenerator.dispatch(NarakaBlocks.HEROBRINE_TOTEM.get())
                 .with(createIntegerModelDispatch(HerobrineTotem.CRACK, createTotemModels(generator)))
         );
     }
 
     private void createPurifiedSoulFire(BlockModelGenerators generator) {
-        List<ResourceLocation> floorModels = generator.createFloorFireModels(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get());
-        List<ResourceLocation> sideModels = generator.createSideFireModels(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get());
+        MultiVariant floorModels = generator.createFloorFireModels(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get());
+        MultiVariant sideModels = generator.createSideFireModels(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get());
         generator.blockStateOutput.accept(MultiPartGenerator.multiPart(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get())
-                .with(BlockModelGenerators.wrapModels(floorModels, (variant) -> variant))
-                .with(BlockModelGenerators.wrapModels(sideModels, (variant) -> variant))
-                .with(BlockModelGenerators.wrapModels(sideModels, (variant) -> variant.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)))
-                .with(BlockModelGenerators.wrapModels(sideModels, (variant) -> variant.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)))
-                .with(BlockModelGenerators.wrapModels(sideModels, (variant) -> variant.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)))
+                .with(floorModels)
+                .with(sideModels)
+                .with(sideModels.with(BlockModelGenerators.Y_ROT_90))
+                .with(sideModels.with(BlockModelGenerators.Y_ROT_180))
+                .with(sideModels.with(BlockModelGenerators.Y_ROT_270))
         );
     }
 
     private static final List<ItemModelGenerators.TrimMaterialData> TRIM_MATERIAL_MODELS = List.of(
-            new ItemModelGenerators.TrimMaterialData("quartz", TrimMaterials.QUARTZ, Map.of()),
-            new ItemModelGenerators.TrimMaterialData("iron", TrimMaterials.IRON, Map.of(EquipmentAssets.IRON, "iron_darker")),
-            new ItemModelGenerators.TrimMaterialData("netherite", TrimMaterials.NETHERITE, Map.of(EquipmentAssets.NETHERITE, "netherite_darker")),
-            new ItemModelGenerators.TrimMaterialData("redstone", TrimMaterials.REDSTONE, Map.of()),
-            new ItemModelGenerators.TrimMaterialData("copper", TrimMaterials.COPPER, Map.of()),
-            new ItemModelGenerators.TrimMaterialData("gold", TrimMaterials.GOLD, Map.of(EquipmentAssets.GOLD, "gold_darker")),
-            new ItemModelGenerators.TrimMaterialData("emerald", TrimMaterials.EMERALD, Map.of()),
-            new ItemModelGenerators.TrimMaterialData("diamond", TrimMaterials.DIAMOND, Map.of(EquipmentAssets.DIAMOND, "diamond_darker")),
-            new ItemModelGenerators.TrimMaterialData("lapis", TrimMaterials.LAPIS, Map.of()),
-            new ItemModelGenerators.TrimMaterialData("amethyst", TrimMaterials.AMETHYST, Map.of()),
-            new ItemModelGenerators.TrimMaterialData("soul_infused_redstone", NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, Map.of()),
-            new ItemModelGenerators.TrimMaterialData("soul_infused_copper", NarakaTrimMaterials.SOUL_INFUSED_COPPER, Map.of()),
-            new ItemModelGenerators.TrimMaterialData("soul_infused_gold", NarakaTrimMaterials.SOUL_INFUSED_GOLD, Map.of()),
-            new ItemModelGenerators.TrimMaterialData("soul_infused_emerald", NarakaTrimMaterials.SOUL_INFUSED_EMERALD, Map.of()),
-            new ItemModelGenerators.TrimMaterialData("soul_infused_diamond", NarakaTrimMaterials.SOUL_INFUSED_DIAMOND, Map.of()),
-            new ItemModelGenerators.TrimMaterialData("soul_infused_lapis", NarakaTrimMaterials.SOUL_INFUSED_LAPIS, Map.of()),
-            new ItemModelGenerators.TrimMaterialData("soul_infused_amethyst", NarakaTrimMaterials.SOUL_INFUSED_AMETHYST, Map.of()),
-            new ItemModelGenerators.TrimMaterialData("soul_infused_nectarium", NarakaTrimMaterials.SOUL_INFUSED_NECTARIUM, Map.of()),
-            new ItemModelGenerators.TrimMaterialData("god_blood", NarakaTrimMaterials.GOD_BLOOD, Map.of())
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.QUARTZ, TrimMaterials.QUARTZ),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.IRON, TrimMaterials.IRON),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.NETHERITE, TrimMaterials.NETHERITE),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.REDSTONE, TrimMaterials.REDSTONE),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.COPPER, TrimMaterials.COPPER),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.GOLD, TrimMaterials.GOLD),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.EMERALD, TrimMaterials.EMERALD),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.DIAMOND, TrimMaterials.DIAMOND),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.LAPIS, TrimMaterials.LAPIS),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.AMETHYST, TrimMaterials.AMETHYST),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("soul_infused_redstone"), NarakaTrimMaterials.SOUL_INFUSED_REDSTONE),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("soul_infused_copper"), NarakaTrimMaterials.SOUL_INFUSED_COPPER),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("soul_infused_gold"), NarakaTrimMaterials.SOUL_INFUSED_GOLD),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("soul_infused_emerald"), NarakaTrimMaterials.SOUL_INFUSED_EMERALD),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("soul_infused_diamond"), NarakaTrimMaterials.SOUL_INFUSED_DIAMOND),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("soul_infused_lapis"), NarakaTrimMaterials.SOUL_INFUSED_LAPIS),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("soul_infused_amethyst"), NarakaTrimMaterials.SOUL_INFUSED_AMETHYST),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("soul_infused_nectarium"), NarakaTrimMaterials.SOUL_INFUSED_NECTARIUM),
+            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("god_blood"), NarakaTrimMaterials.GOD_BLOOD)
     );
 
     @Override
@@ -317,8 +318,8 @@ public class NarakaModelProvider extends FabricModelProvider {
 
         List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> list = new ArrayList<>(TRIM_MATERIAL_MODELS.size());
         for (ItemModelGenerators.TrimMaterialData data : TRIM_MATERIAL_MODELS) {
-            ResourceLocation trimmedArmorModelLocation = modelLocation.withSuffix("_" + data.name() + "_trim");
-            ResourceLocation trimTexture = NarakaMod.mcLocation("trims/items/" + name + "_trim_" + data.textureName(key));
+            ResourceLocation trimmedArmorModelLocation = modelLocation.withSuffix("_" + data.assets().base().suffix() + "_trim");
+            ResourceLocation trimTexture = NarakaMod.mcLocation("trims/items/" + name + "_trim_" + data.assets().assetId(key).suffix());
             generator.generateLayeredItem(trimmedArmorModelLocation, texture, trimTexture);
             ItemModel.Unbaked unbaked = ItemModelUtils.plainModel(trimmedArmorModelLocation);
 
