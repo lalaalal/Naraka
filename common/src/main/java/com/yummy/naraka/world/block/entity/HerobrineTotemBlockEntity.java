@@ -62,11 +62,11 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         }
         boolean shouldWait = crack == MAX_CRACK - 1 && waitCount > 0;
 
-        if (crack >= MAX_CRACK - 2 && particleCount < 35) {
+        if (crack >= MAX_CRACK - 2 && particleCount < 80) {
             particleCount += 1;
             level.sendParticles(NarakaParticleTypes.HEROBRINE_SPAWN.get(),
-                    pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 1,
-                    0, 0.2, 0, 0.01
+                    pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 2,
+                    0, 0, 0, 0.01
             );
             level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS);
         }
@@ -82,7 +82,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
                         pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 10,
                         0.5, 0.5, 0.5, 0
                 );
-                level.sendParticles(ParticleTypes.FLAME,
+                level.sendParticles(NarakaParticleTypes.GOLDEN_FLAME.get(),
                         pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 20,
                         1, 1, 1, 0
                 );

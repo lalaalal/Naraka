@@ -60,7 +60,10 @@ public class HerobrineTotem extends BaseEntityBlock {
 
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        return !placed || placedPos.equals(pos);
+        if (placed && level.getBlockState(placedPos).is(this))
+            return false;
+        placed = false;
+        return true;
     }
 
     @Override
