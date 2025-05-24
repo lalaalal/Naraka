@@ -6,6 +6,12 @@
     "crack=1": {
       "model": "naraka:block/herobrine_totem_1"
     },
+    "crack=10": {
+      "model": "naraka:block/herobrine_totem_10"
+    },
+    "crack=11": {
+      "model": "naraka:block/herobrine_totem_11"
+    },
     "crack=2": {
       "model": "naraka:block/herobrine_totem_2"
     },
