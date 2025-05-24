@@ -19,7 +19,7 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
     private final Skill<?> rushSKill;
 
     public WalkAroundTargetSkill(SkillUsingMob mob, PunchSkill<AbstractHerobrine> punchSKill, DashSkill<?> dashSkill, Skill<?> rushSkill) {
-        super(LOCATION, 40, 300, mob);
+        super(LOCATION, 40, 0, mob);
         this.punchSKill = punchSKill;
         this.dashSkill = dashSkill;
         this.rushSKill = rushSkill;
@@ -39,7 +39,9 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        moveAndLook(target);
+        lookTarget(target);
+        if (tickCount % 5 == 0)
+            moveAndLook(target);
         if (targetInRange(target, 4)) {
             setLinkedSkill(punchSKill);
             duration = 0;
@@ -68,6 +70,5 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
 
         Path path = mob.getNavigation().createPath(wanted.x, wanted.y, wanted.z, 1);
         mob.getNavigation().moveTo(path, 1);
-        lookTarget(target);
     }
 }

@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
-import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.Afterimage;
@@ -61,7 +60,6 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
             deltaMovement = base.yRot(Mth.PI * direction);
         } else {
             Vec3 projection = NarakaUtils.projection(compare, base);
-            NarakaMod.LOGGER.info("{}", projection);
             deltaMovement = projection.normalize()
                     .scale(-1);
         }

@@ -48,6 +48,8 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         moveToTarget(target);
+        lookTarget(target);
+        rotateTowardTarget(target);
         runAt(10, () -> this.hurtHitEntity(level, target));
     }
 

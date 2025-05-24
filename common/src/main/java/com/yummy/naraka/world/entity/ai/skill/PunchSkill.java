@@ -50,7 +50,8 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runAt(10, () -> this.hurtHitEntity(level, target));
-        mob.getLookControl().setLookAt(target);
+        lookTarget(target);
+        rotateTowardTarget(target);
     }
 
     @Override
