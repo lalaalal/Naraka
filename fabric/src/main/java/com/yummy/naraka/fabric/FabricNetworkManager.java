@@ -1,6 +1,5 @@
 package com.yummy.naraka.fabric;
 
-import com.yummy.naraka.Platform;
 import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.network.ClientboundNetworkManager;
 import com.yummy.naraka.network.NetworkManager;
@@ -30,8 +29,12 @@ public class FabricNetworkManager {
 
     private static class FabricServerboundNetworkManager implements ServerboundNetworkManager {
         @Override
-        public <T extends CustomPacketPayload> void register(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.PacketHandler<T> handler) {
+        public <T extends CustomPacketPayload> void define(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
             PayloadTypeRegistry.playC2S().register(type, codec);
+        }
+
+        @Override
+        public <T extends CustomPacketPayload> void register(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.PacketHandler<T> handler) {
             ServerPlayNetworking.registerGlobalReceiver(type, (payload, context) -> {
                 handler.handle(payload, context::player);
             });
@@ -45,12 +48,15 @@ public class FabricNetworkManager {
 
     private static class FabricClientboundNetworkManager implements ClientboundNetworkManager {
         @Override
-        public <T extends CustomPacketPayload> void register(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.PacketHandler<T> handler) {
+        public <T extends CustomPacketPayload> void define(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
             PayloadTypeRegistry.playS2C().register(type, codec);
-            if (Platform.getInstance().getSide() == Platform.Side.CLIENT)
-                ClientPlayNetworking.registerGlobalReceiver(type, (payload, context) -> {
-                    handler.handle(payload, context::player);
-                });
+        }
+
+        @Override
+        public <T extends CustomPacketPayload> void register(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.PacketHandler<T> handler) {
+            ClientPlayNetworking.registerGlobalReceiver(type, (payload, context) -> {
+                handler.handle(payload, context::player);
+            });
         }
 
         @Override

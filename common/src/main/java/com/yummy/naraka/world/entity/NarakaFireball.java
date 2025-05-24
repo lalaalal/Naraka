@@ -177,7 +177,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         super.onHitEntity(result);
         Entity hitEntity = result.getEntity();
         Entity owner = getOwner();
-        if (hitEntity != owner && hitEntity instanceof LivingEntity livingEntity) {
+        if (hitEntity != owner && hitEntity instanceof LivingEntity livingEntity && !level().isClientSide) {
             float damage = damageCalculator.calculateDamage(this);
             ExplosionDamageCalculator explosionDamageCalculator = new EntityBasedExplosionDamageCalculator(this) {
                 @Override

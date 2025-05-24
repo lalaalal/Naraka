@@ -1,10 +1,10 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.network.NarakaClientboundEventHandler;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAfterimagePayload;
+import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaNbtUtils;
@@ -119,8 +119,6 @@ public class Herobrine extends AbstractHerobrine {
         phaseManager.addPhaseChangeListener(this::onPhase3, 3);
 
         skillManager.enableOnly(PHASE_1_SKILLS);
-        skillManager.runOnSkillStart(this::replaceRush);
-        skillManager.runOnSkillSelect(this::useComboAttackOnIdle);
 
         registerAnimation(AnimationLocations.PHASE_2);
         registerAnimation(AnimationLocations.STAGGERING_PHASE_2);
@@ -135,21 +133,6 @@ public class Herobrine extends AbstractHerobrine {
 
     public ShadowController getShadowController() {
         return shadowController;
-    }
-
-    private void replaceRush(Skill<?> skill) {
-        if (!isHibernateMode() && skill.location.equals(RushSkill.LOCATION)
-                && random.nextFloat() < 0.4f && punchSkill.isEnabled() && punchSkill.readyToUse()) {
-            dashAndPunch();
-        }
-    }
-
-    private void useComboAttackOnIdle(@Nullable Skill<?> skill) {
-        if (getTarget() != null
-                && !isStaggering() && !isHibernateMode()
-                && skill == null && punchSkill.isEnabled()) {
-            dashAndPunch();
-        }
     }
 
     private void dashAndPunch() {
@@ -193,7 +176,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void updateMusic(int prevPhase, int currentPhase) {
-        NarakaClientboundEventPacket.Event event = NarakaClientboundEventHandler.musicEventByPhase(currentPhase);
+        NarakaClientboundEventPacket.Event event = NarakaMusics.musicEventByPhase(currentPhase);
         CustomPacketPayload packet = new NarakaClientboundEventPacket(event);
         NetworkManager.sendToClient(bossEvent.getPlayers(), packet);
     }
@@ -337,7 +320,6 @@ public class Herobrine extends AbstractHerobrine {
             ignoredProjectiles.add(projectile);
             if (!projectile.position().equals(new Vec3(projectile.xo, projectile.yo, projectile.zo)) && random.nextBoolean()) {
                 lookAt(projectile, 360, 0);
-                dashAroundSkill.preventSecondUse();
                 skillManager.setCurrentSkillIfAbsence(dashAroundSkill);
                 return;
             }
@@ -354,7 +336,7 @@ public class Herobrine extends AbstractHerobrine {
     public void startSeenByPlayer(ServerPlayer serverPlayer) {
         bossEvent.addPlayer(serverPlayer);
         List<NarakaClientboundEventPacket.Event> events = new ArrayList<>();
-        events.add(NarakaClientboundEventHandler.musicEventByPhase(getPhase()));
+        events.add(NarakaMusics.musicEventByPhase(getPhase()));
         if (getPhase() == 3)
             events.add(NarakaClientboundEventPacket.Event.START_HEROBRINE_SKY);
         CustomPacketPayload packet = new NarakaClientboundEventPacket(events);

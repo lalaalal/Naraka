@@ -11,7 +11,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends TargetSkill<T> {
     public static final String NAME = "dash_around";
-    private boolean secondUse;
     private Vec3 deltaMovement = Vec3.ZERO;
 
     public DashAroundSkill(T mob) {
@@ -21,18 +20,6 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
     @Override
     public boolean canUse(ServerLevel level) {
         return targetInRange(25);
-    }
-
-    @Override
-    public void prepare() {
-        super.prepare();
-        if (secondUse) {
-            secondUse = false;
-            setLinkedSkill(null);
-        } else if (mob.getRandom().nextBoolean()) {
-            setLinkedSkill(this);
-            secondUse = true;
-        }
     }
 
     @Override
@@ -67,10 +54,5 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
         this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob.position(), targetPosition)
                 .multiply(0.8, 0, 0.8)
                 .yRot(rotation);
-    }
-
-    public void preventSecondUse() {
-        this.secondUse = true;
-        setLinkedSkill(null);
     }
 }

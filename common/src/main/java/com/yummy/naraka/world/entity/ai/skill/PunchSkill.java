@@ -15,7 +15,6 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
 
     private final boolean stunTarget;
     private boolean linked = false;
-    private boolean hurtSucceed = false;
 
     public PunchSkill(ComboSkill<?> comboSkill, T mob, boolean withStun) {
         super(LOCATION, 22, DEFAULT_COOLDOWN, 0.8f, comboSkill, 11, mob);
@@ -34,12 +33,6 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
     @Override
     public boolean canUse(ServerLevel level) {
         return targetInRange(4);
-    }
-
-    @Override
-    public void prepare() {
-        super.prepare();
-        hurtSucceed = false;
     }
 
     @Override
@@ -64,7 +57,6 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
     protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
         if (targetOutOfRange(target, 4))
             return;
-        hurtSucceed = true;
         if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15))
             return;
         super.hurtHitEntity(level, target);
@@ -76,18 +68,6 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
 
     @Override
     protected void onLastTick(ServerLevel level) {
-        if (((!hurtSucceed && !hasLinkedSkill()) || !hasLinkedSkill()) && linked) {
-            Skill<?> dash = mob.getSkillManager().getSkill(DashSkill.LOCATION);
-            Skill<?> walkAroundSkill = mob.getSkillManager().getSkill(WalkAroundTargetSkill.LOCATION);
-
-            if (targetOutOfRange(16)) {
-                this.setLinkedSkill(dash);
-            } else if (dash instanceof DashSkill<?> dashSkill && walkAroundSkill != null) {
-                dashSkill.setLinkedSkill(walkAroundSkill);
-                dashSkill.setScale(-1.5f);
-                this.setLinkedSkill(dashSkill);
-            }
-        }
         linked = false;
     }
 
