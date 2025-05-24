@@ -5,32 +5,41 @@ import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
+import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class WavingScarfRenderState {
-    private static final Vec3 PHASE_3_TRANSLATION = new Vec3(-0.12, -0.05, 0.035);
-    private static final Vec3 PHASE_2_TRANSLATION = new Vec3(-0.08, -0.12, 0.08);
+    private static final List<ModelData> PHASE_2_MODEL_DATA = List.of(
+            ModelData.of(WavingScarfTexture.PHASE_2_BACK, WavingScarfPose.PHASE_2_BACK),
+            ModelData.of(WavingScarfTexture.PHASE_2_FRONT, WavingScarfPose.PHASE_2_FRONT)
+    );
+
+    private static final List<ModelData> PHASE_3_MODEL_DATA = List.of(
+            ModelData.of(WavingScarfTexture.PHASE_3, WavingScarfPose.PHASE_3)
+    );
+
+    private static final Map<Integer, List<ModelData>> PHASE_SCARF_MODEL_DATA = Map.of(
+            2, PHASE_2_MODEL_DATA,
+            3, PHASE_3_MODEL_DATA
+    );
 
     public float rotationDegree;
     public float partialTick;
-    public float scale = 3;
-    public Vec3 translation = Vec3.ZERO;
-    public WavingScarfTexture textureInfo = WavingScarfTexture.PHASE_2_FRONT;
+    public List<ModelData> modelDataList = PHASE_2_MODEL_DATA;
     public ScarfWavingData waveData = new ScarfWavingData();
 
     public void extract(Herobrine herobrine, float partialTick) {
         this.rotationDegree = herobrine.getScarfRotationDegree(partialTick) - NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
-        if (herobrine.getPhase() < 3) {
-            this.textureInfo = WavingScarfTexture.PHASE_2_FRONT;
-            this.translation = PHASE_2_TRANSLATION;
-            this.scale = 5;
-        } else {
-            this.textureInfo = WavingScarfTexture.PHASE_3;
-            this.translation = PHASE_3_TRANSLATION;
-            this.scale = 7;
-        }
+        this.modelDataList = PHASE_SCARF_MODEL_DATA.getOrDefault(herobrine.getPhase(), PHASE_2_MODEL_DATA);
         this.waveData = herobrine.getScarfWavingData();
         this.partialTick = partialTick;
+    }
+
+    public record ModelData(WavingScarfTexture textureInfo, WavingScarfPose pose) {
+        public static ModelData of(WavingScarfTexture textureInfo, WavingScarfPose pose) {
+            return new ModelData(textureInfo, pose);
+        }
     }
 }

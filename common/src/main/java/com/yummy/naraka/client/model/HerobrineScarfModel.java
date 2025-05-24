@@ -12,12 +12,13 @@ import net.minecraft.client.model.geom.builders.*;
 public class HerobrineScarfModel extends EntityModel<AbstractHerobrineRenderState> {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
-        partdefinition.addOrReplaceChild("bb_main",
-                CubeListBuilder.create()
-                        .texOffs(0, 16).addBox(-7.0F, -24.0F, -2.0F, 14.0F, 6.0F, 4.0F, new CubeDeformation(0.51F))
+        PartDefinition root = meshdefinition.getRoot();
+
+        root.addOrReplaceChild("bb_main", CubeListBuilder.create()
+                        .texOffs(0, 16).addBox(-7.0F, -24.0F, -2.0F, 14.0F, 6.0F, 4.0F, new CubeDeformation(0.5F))
                         .texOffs(0, 0).addBox(-4.0F, -30.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)),
-                PartPose.offset(0.0F, 12, 2.0F));
+                PartPose.offset(0.0F, 12, 2.0F)
+        );
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }

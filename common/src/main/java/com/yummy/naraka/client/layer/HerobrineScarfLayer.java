@@ -8,6 +8,7 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.model.HerobrineScarfModel;
 import com.yummy.naraka.client.renderer.entity.state.HerobrineRenderState;
+import com.yummy.naraka.client.renderer.entity.state.WavingScarfPose;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfRenderState;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfTexture;
 import com.yummy.naraka.util.NarakaUtils;
@@ -55,20 +56,27 @@ public class HerobrineScarfLayer extends RenderLayer<HerobrineRenderState, Abstr
             scarfModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
         }
 
-        RenderType waveRenderType = RenderType.entityCutout(renderState.scarfRenderState.textureInfo.texture());
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(waveRenderType);
-        float scale = renderState.scarfRenderState.scale;
-        Vec3 translation = renderState.scarfRenderState.translation;
-        poseStack.scale(-scale, scale, scale);
-        poseStack.translate(translation);
+        for (WavingScarfRenderState.ModelData modelData : renderState.scarfRenderState.modelDataList) {
+            poseStack.pushPose();
+            WavingScarfPose scarfPose = modelData.pose();
+            WavingScarfTexture textureInfo = modelData.textureInfo();
+            RenderType waveRenderType = RenderType.entityCutout(textureInfo.texture());
+            VertexConsumer vertexConsumer = bufferSource.getBuffer(waveRenderType);
+            float scale = scarfPose.scale();
+            Vec3 translation = scarfPose.translation();
+            poseStack.scale(-scale, scale, scale);
+            poseStack.translate(translation);
 
-        renderScarf(poseStack, vertexConsumer, packedLight, renderState.scarfRenderState);
+            renderScarf(poseStack, vertexConsumer, packedLight, renderState.scarfRenderState, modelData);
+            poseStack.popPose();
+        }
 
         poseStack.popPose();
     }
 
-    public void renderScarf(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, WavingScarfRenderState renderState) {
-        WavingScarfTexture textureInfo = renderState.textureInfo;
+    public void renderScarf(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, WavingScarfRenderState renderState, WavingScarfRenderState.ModelData modelData) {
+        WavingScarfTexture textureInfo = modelData.textureInfo();
+        WavingScarfPose scarfPose = modelData.pose();
         ScarfWavingData waveData = renderState.waveData;
 
         poseStack.pushPose();
@@ -85,11 +93,12 @@ public class HerobrineScarfLayer extends RenderLayer<HerobrineRenderState, Abstr
         float u = textureInfo.u();
         float v = textureInfo.v();
 
-        float baseY = waveData.getVerticalPosition(-1, partialTick);
+        float baseY = waveData.getVerticalPosition(scarfPose.waveOffset() - 1, partialTick);
         float shift = 0;
         for (int vertical = 0; vertical < verticalSize; vertical++) {
+            int verticalIndex = vertical + scarfPose.waveOffset();
             poseStack.pushPose();
-            float partShift = waveData.getVerticalShift(vertical, partialTick);
+            float partShift = waveData.getVerticalShift(verticalIndex, partialTick);
             shift += partShift;
             poseStack.translate(shift, -baseY, partHeight * vertical);
 
@@ -97,10 +106,10 @@ public class HerobrineScarfLayer extends RenderLayer<HerobrineRenderState, Abstr
                 poseStack.pushPose();
                 poseStack.translate(partWidth * horizontal, 0, 0);
 
-                float topLeft_y = waveData.getVerticalPosition(vertical - 1, partialTick);
-                float topRight_y = waveData.getVerticalPosition(vertical - 1, partialTick);
-                float bottomLeft_y = waveData.getVerticalPosition(vertical, partialTick);
-                float bottomRight_y = waveData.getVerticalPosition(vertical, partialTick);
+                float topLeft_y = waveData.getVerticalPosition(verticalIndex - 1, partialTick);
+                float topRight_y = waveData.getVerticalPosition(verticalIndex - 1, partialTick);
+                float bottomLeft_y = waveData.getVerticalPosition(verticalIndex, partialTick);
+                float bottomRight_y = waveData.getVerticalPosition(verticalIndex, partialTick);
 
                 List<Vector3f> vertices = List.of(
                         new Vector3f(partShift, bottomLeft_y, partHeight),

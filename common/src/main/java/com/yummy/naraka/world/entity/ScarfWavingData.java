@@ -17,7 +17,7 @@ public class ScarfWavingData {
         partitionNumber = NarakaConfig.CLIENT.herobrineScarfPartitionNumber.getValue();
         verticalPositions = new LinkedList<>();
         verticalShifts = new LinkedList<>();
-        for (int i = 0; i < partitionNumber + 2; i++) {
+        for (int i = 0; i < partitionNumber * 2; i++) {
             verticalPositions.add(0f);
             verticalShifts.add(0f);
         }
