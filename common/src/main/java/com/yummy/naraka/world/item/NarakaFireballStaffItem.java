@@ -8,8 +8,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class NarakaFireballItem extends Item {
-    public NarakaFireballItem(Properties properties) {
+public class NarakaFireballStaffItem extends Item {
+    public NarakaFireballStaffItem(Properties properties) {
         super(properties);
     }
 

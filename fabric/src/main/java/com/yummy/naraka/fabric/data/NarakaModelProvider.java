@@ -219,7 +219,7 @@ public class NarakaModelProvider extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerators generator) {
         generator.generateFlatItem(NarakaItems.STARDUST_STAFF.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-        generator.generateFlatItem(NarakaItems.NARAKA_FIREBALL.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.NARAKA_FIREBALL_STAFF.get(), ModelTemplates.FLAT_ITEM);
 
         generateSpear(generator, NarakaItems.SPEAR_ITEM.get(), NarakaModelLayers.SPEAR, NarakaTextures.SPEAR);
         generateSpear(generator, NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), NarakaModelLayers.SPEAR, NarakaTextures.MIGHTY_HOLY_SPEAR);
@@ -239,6 +239,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.generateFlatItem(NarakaItems.EBONY_ROOTS_SCRAP.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.RAINBOW_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        generator.generateFlatItem(NarakaItems.HEROBRINE_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
 
         generateTrimmableItem(generator, Items.LEATHER_HELMET, EquipmentAssets.LEATHER, "helmet", true);
         generateTrimmableItem(generator, Items.LEATHER_CHESTPLATE, EquipmentAssets.LEATHER, "chestplate", true);

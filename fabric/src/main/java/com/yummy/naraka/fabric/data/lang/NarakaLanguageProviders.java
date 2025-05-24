@@ -196,7 +196,7 @@ public class NarakaLanguageProviders {
 
         addItem(NarakaItems.STIGMA_ROD, "Stigma Rod", "낙인 막대기");
         addItem(NarakaItems.STARDUST_STAFF, "Stardust Staff");
-        addItem(NarakaItems.NARAKA_FIREBALL, "Naraka Fireball", "나락 화염구");
+        addItem(NarakaItems.NARAKA_FIREBALL_STAFF, "Naraka Fireball Staff");
         addItem(NarakaItems.RAINBOW_SWORD, "Rainbow Sword", "무지개 검");
         addItem(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard", "정화된 영혼 조각");
         addItem(NarakaItems.NECTARIUM, "Nectarium", "넥타륨");

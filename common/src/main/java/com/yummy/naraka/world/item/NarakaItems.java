@@ -38,7 +38,7 @@ public class NarakaItems {
 
     public static final HolderProxy<Item, Item> STIGMA_ROD = registerItem("stigma_rod", StigmaRodItem::new);
     public static final HolderProxy<Item, Item> STARDUST_STAFF = registerItem("stardust_staff", StardustStaffItem::new);
-    public static final HolderProxy<Item, Item> NARAKA_FIREBALL = registerItem("naraka_fireball", NarakaFireballItem::new);
+    public static final HolderProxy<Item, Item> NARAKA_FIREBALL_STAFF = registerItem("naraka_fireball_staff", NarakaFireballStaffItem::new);
 
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_1_DISC = registerDiscItem("herobrine_phase_1_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_1);
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_2_DISC = registerDiscItem("herobrine_phase_2_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_2);
