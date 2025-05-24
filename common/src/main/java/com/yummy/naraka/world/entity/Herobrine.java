@@ -75,10 +75,10 @@ public class Herobrine extends AbstractHerobrine {
 
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill, rolePlayShadowSkill);
-    private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, rushSkill, throwFireballSkill, walkAroundTargetSkill);
-    private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashSkill, dashAroundSkill, rushSkill, throwFireballSkill, summonShadowSkill, walkAroundTargetSkill);
+    private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, walkAroundTargetSkill);
+    private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, summonShadowSkill, walkAroundTargetSkill);
 
-    private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashSkill, walkAroundTargetSkill);
+    private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashAroundSkill, walkAroundTargetSkill);
     private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(AnimationLocations.PHASE_2, AnimationLocations.STAGGERING_PHASE_2);
 
     private final List<List<Skill<?>>> HIBERNATED_MODE_SKILL_BY_PHASE = List.of(
@@ -140,12 +140,6 @@ public class Herobrine extends AbstractHerobrine {
         return shadowController;
     }
 
-    private void dashAndPunch() {
-        dashSkill.setLinkedSkill(punchSkill);
-        skillManager.setCurrentSkill(dashSkill);
-        punchSkill.setLinkedFromPrevious(true);
-    }
-
     @Override
     protected void registerGoals() {
         super.registerGoals();
@@ -205,7 +199,7 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void collectStigma(ServerLevel level, LivingEntity target, Stigma original) {
-        this.heal(original.value() * 22);
+        this.heal(21);
         if (getPhase() == 2 && target.isDeadOrDying())
             stopHibernateMode(level);
     }
