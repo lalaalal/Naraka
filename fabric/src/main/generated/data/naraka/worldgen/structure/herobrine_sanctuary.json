@@ -36,7 +36,15 @@
   ],
   "protection_predicate": "naraka:herobrine_sanctuary_protection",
   "spawn_overrides": {
+    "ambient": {
+      "bounding_box": "full",
+      "spawns": []
+    },
     "creature": {
+      "bounding_box": "full",
+      "spawns": []
+    },
+    "misc": {
       "bounding_box": "full",
       "spawns": []
     },
