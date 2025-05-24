@@ -28,28 +28,22 @@ public record NarakaClientboundEventPacket(List<Event> events) implements Custom
         return TYPE;
     }
 
-    public interface EventHandler {
-        void handle();
-    }
-
     public enum Event implements StringRepresentable {
-        PLAY_HEROBRINE_PHASE_1(() -> NarakaClientboundEventHandler.updateHerobrineMusic(1)),
-        PLAY_HEROBRINE_PHASE_2(() -> NarakaClientboundEventHandler.updateHerobrineMusic(2)),
-        PLAY_HEROBRINE_PHASE_3(() -> NarakaClientboundEventHandler.updateHerobrineMusic(3)),
-        PLAY_HEROBRINE_PHASE_4(() -> NarakaClientboundEventHandler.updateHerobrineMusic(4)),
-        STOP_MUSIC(NarakaClientboundEventHandler::stopHerobrineMusic),
-        START_HEROBRINE_SKY(NarakaClientboundEventHandler::startHerobrineSky),
-        STOP_HEROBRINE_SKY(NarakaClientboundEventHandler::stopHerobrineSky);
+        PLAY_HEROBRINE_PHASE_1,
+        PLAY_HEROBRINE_PHASE_2,
+        PLAY_HEROBRINE_PHASE_3,
+        PLAY_HEROBRINE_PHASE_4,
+        STOP_MUSIC,
+        START_HEROBRINE_SKY,
+        STOP_HEROBRINE_SKY;
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
         public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.idMapper(Event::byId, Event::getId);
 
         public final int id;
-        public final EventHandler handler;
 
-        Event(EventHandler handler) {
+        Event() {
             this.id = ordinal();
-            this.handler = handler;
         }
 
         public static Event byId(int id) {
@@ -62,10 +56,6 @@ public record NarakaClientboundEventPacket(List<Event> events) implements Custom
 
         public int getId() {
             return id;
-        }
-
-        public void handle() {
-            this.handler.handle();
         }
 
         @Override

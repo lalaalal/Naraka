@@ -29,23 +29,17 @@ public record NarakaClientboundEntityEventPacket(Event event, int entityId) impl
         return TYPE;
     }
 
-    public interface EventHandler {
-        void handle(Entity entity);
-    }
-
     public enum Event implements StringRepresentable {
-        SHOW_SKILL_CONTROL_SCREEN(NarakaClientboundEventHandler::showSkillControlScreen),
-        SHOW_ANIMATION_CONTROL_SCREEN(NarakaClientboundEventHandler::showAnimationControlScreen);
+        SHOW_SKILL_CONTROL_SCREEN,
+        SHOW_ANIMATION_CONTROL_SCREEN;
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
         public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.idMapper(Event::byId, Event::getId);
 
         public final int id;
-        public final EventHandler handler;
 
-        Event(EventHandler handler) {
+        Event() {
             this.id = ordinal();
-            this.handler = handler;
         }
 
         public static Event byId(int id) {
@@ -58,10 +52,6 @@ public record NarakaClientboundEntityEventPacket(Event event, int entityId) impl
 
         public int getId() {
             return id;
-        }
-
-        public void handle(Entity entity) {
-            this.handler.handle(entity);
         }
 
         @Override

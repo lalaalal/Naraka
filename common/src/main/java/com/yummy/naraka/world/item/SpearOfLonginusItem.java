@@ -44,9 +44,4 @@ public class SpearOfLonginusItem extends SpearItem {
                 .withStyle(ChatFormatting.BOLD)
                 .withStyle(ComponentStyles.LONGINUS_COLOR);
     }
-
-    @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return false;
-    }
 }
