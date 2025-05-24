@@ -21,7 +21,7 @@ public class HerobrineEyeLayer<S extends AbstractHerobrineRenderState, M extends
     }
 
     private RenderType getRenderType() {
-        return RenderType.entityTranslucent(NarakaTextures.HEROBRINE_EYE);
+        return RenderType.entityTranslucentEmissive(NarakaTextures.HEROBRINE_EYE);
     }
 
     @Override
