@@ -117,7 +117,8 @@ public class NarakaItems {
             "spear",
             properties -> new SpearItem(ToolMaterial.IRON,
                     true, 3, -3, 3,
-                    properties.fireResistant(),
+                    properties.fireResistant()
+                            .component(DataComponents.TOOL, TridentItem.createToolProperties()),
                     NarakaEntityTypes.THROWN_SPEAR
             )
     );
@@ -125,7 +126,8 @@ public class NarakaItems {
             "mighty_holy_spear",
             properties -> new SpearItem(ToolMaterial.NETHERITE,
                     true, 61, -3, 3,
-                    properties.fireResistant(),
+                    properties.fireResistant()
+                            .component(DataComponents.TOOL, TridentItem.createToolProperties()),
                     NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR
             )
     );
@@ -134,6 +136,7 @@ public class NarakaItems {
             properties -> new SpearOfLonginusItem(properties
                     .fireResistant()
                     .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
+                    .component(DataComponents.TOOL, TridentItem.createToolProperties())
             )
     );
 

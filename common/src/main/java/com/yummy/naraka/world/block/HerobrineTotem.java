@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 public class HerobrineTotem extends BaseEntityBlock {
     private static final MapCodec<HerobrineTotem> CODEC = simpleCodec(HerobrineTotem::new);
 
-    public static final int MAX_CRACK = 9;
+    public static final int MAX_CRACK = 11;
     public static final IntegerProperty CRACK = IntegerProperty.create("crack", 0, MAX_CRACK);
 
     private boolean placed = false;

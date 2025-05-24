@@ -90,12 +90,11 @@ public class NarakaEntityUtils {
             if (usedItem != null) {
                 EquipmentSlot slot = player.getEquipmentSlotForItem(usedItem);
                 usedItem.hurtAndBreak(damage, player, slot);
-                player.getCooldowns().addCooldown(usedItem, cooldown);
-                player.stopUsingItem();
-                player.level().broadcastEntityEvent(livingEntity, (byte) 30);
+//                player.level().broadcastEntityEvent(livingEntity, (byte) 30);
                 BlocksAttacks blocksAttacks = usedItem.get(DataComponents.BLOCKS_ATTACKS);
-                if (blocksAttacks != null)
-                    blocksAttacks.onBlocked(level, livingEntity);
+                if (blocksAttacks != null) {
+                    blocksAttacks.disable(level, player, cooldown / 20f, usedItem);
+                }
                 return true;
             }
         }
