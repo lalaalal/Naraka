@@ -112,7 +112,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
             this.duration = tickCount + 50;
             this.deltaMovement = deltaMovement.yRot(Mth.PI)
                     .normalize()
-                    .multiply(0.8, 0, 0.8)
+                    .multiply(0.5, 0, 0.5)
                     .add(0, 1, 0);
             this.hit = true;
             this.failed = false;
@@ -130,10 +130,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     private boolean isWall(Level level, BlockPos pos) {
         if (tickCount < RUSH_TICK)
             return false;
-        return level.getBlockState(pos)
-                .canOcclude()
-                || level.getBlockState(pos.above())
-                .canOcclude();
+        return level.getBlockState(pos).canOcclude() || level.getBlockState(pos.above()).canOcclude();
     }
 
     @Override
