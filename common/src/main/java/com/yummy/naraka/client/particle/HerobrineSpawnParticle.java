@@ -25,7 +25,8 @@ public class HerobrineSpawnParticle extends TextureSheetParticle {
         super(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed);
         lifetime = 200 + random.nextInt(0, 20);
         speed = Math.PI / random.nextInt(5, 10);
-        radius = random.nextFloat() * 1.5 + 1;
+        int randomNumber = random.nextInt(2, 5);
+        radius = 1 + (randomNumber * randomNumber) / 5.0;
         startAngle = random.nextDouble() * Math.PI * 2;
         this.startX = x;
         this.startZ = z;
@@ -40,7 +41,7 @@ public class HerobrineSpawnParticle extends TextureSheetParticle {
             remove();
 
         if (!spread) {
-            Collection<Herobrine> entities = level.getEntities(EntityTypeTest.forClass(Herobrine.class), AABB.ofSize(new Vec3(x, y, z), 5, 5, 5), entity -> true);
+            Collection<Herobrine> entities = level.getEntities(EntityTypeTest.forClass(Herobrine.class), AABB.ofSize(new Vec3(x, y, z), 10, 10, 10), entity -> true);
             if (!entities.isEmpty()) {
                 spread = true;
                 this.xd = xd * 5;
