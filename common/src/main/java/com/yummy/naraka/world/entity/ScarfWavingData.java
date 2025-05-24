@@ -34,7 +34,7 @@ public class ScarfWavingData {
 
         float prevShift = verticalShifts.getFirst();
         rotationSpeed = Mth.clamp(rotationSpeed, -45, 45);
-        float shift = Mth.lerp(0.5f, prevShift, (rotationSpeed / 180) * 0.2f);
+        float shift = Mth.lerp(0.3f, prevShift, (rotationSpeed / 180) * 0.2f);
         verticalShifts.removeLast();
         verticalShifts.addFirst(shift);
     }
