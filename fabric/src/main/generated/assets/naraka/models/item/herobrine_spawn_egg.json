@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "naraka:item/herobrine_spawn_egg"
+  }
+}

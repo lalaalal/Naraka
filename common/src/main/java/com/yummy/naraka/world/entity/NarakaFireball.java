@@ -39,7 +39,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
 
     public NarakaFireball(EntityType<? extends NarakaFireball> entityType, Level level) {
         super(entityType, level);
-        setItem(NarakaItems.NARAKA_FIREBALL.get().getDefaultInstance());
+        setItem(NarakaItems.NARAKA_FIREBALL_STAFF.get().getDefaultInstance());
     }
 
     public NarakaFireball(Mob owner, Vec3 movement, Level level) {
@@ -54,7 +54,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     public NarakaFireball(LivingEntity owner, @Nullable Entity target, Vec3 movement, Level level) {
         super(NarakaEntityTypes.NARAKA_FIREBALL.get(), owner, movement, level);
         setTarget(target);
-        setItem(NarakaItems.NARAKA_FIREBALL.get().getDefaultInstance());
+        setItem(NarakaItems.NARAKA_FIREBALL_STAFF.get().getDefaultInstance());
     }
 
     public void setTimeToLive(int timeToLive) {

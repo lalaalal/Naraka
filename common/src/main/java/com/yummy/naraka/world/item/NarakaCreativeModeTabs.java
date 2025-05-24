@@ -161,7 +161,7 @@ public class NarakaCreativeModeTabs {
 
         output.accept(NarakaItems.STIGMA_ROD.get());
         output.accept(NarakaItems.STARDUST_STAFF.get());
-        output.accept(NarakaItems.NARAKA_FIREBALL.get());
+        output.accept(NarakaItems.NARAKA_FIREBALL_STAFF.get());
 
         output.accept(NarakaBlocks.FORGING_BLOCK.get());
         output.accept(NarakaBlocks.SOUL_CRAFTING_BLOCK.get());
