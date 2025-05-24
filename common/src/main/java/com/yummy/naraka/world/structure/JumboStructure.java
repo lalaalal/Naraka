@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.core.registries.NarakaRegistries;
-import com.yummy.naraka.world.structure.height.StructureGenerationPointProvider;
+import com.yummy.naraka.world.structure.generation.StructureGenerationPointProvider;
 import com.yummy.naraka.world.structure.piece.JumboPiece;
 import com.yummy.naraka.world.structure.piece.StructurePieceFactory;
 import com.yummy.naraka.world.structure.protection.ProtectionPredicate;

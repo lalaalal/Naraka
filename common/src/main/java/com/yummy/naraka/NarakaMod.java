@@ -31,7 +31,7 @@ import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.rootplacer.NarakaRootPlacerTypes;
 import com.yummy.naraka.world.structure.NarakaStructureTypes;
-import com.yummy.naraka.world.structure.height.NarakaStructureGenerationPointProviders;
+import com.yummy.naraka.world.structure.generation.NarakaStructureGenerationPointProviders;
 import com.yummy.naraka.world.structure.piece.NarakaStructurePieceFactories;
 import com.yummy.naraka.world.structure.piece.NarakaStructurePieceTypes;
 import com.yummy.naraka.world.structure.placement.NarakaStructurePlacementTypes;

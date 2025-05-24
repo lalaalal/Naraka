@@ -101,7 +101,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
                 .filter(AbstractHerobrine::isNotHerobrine)
                 .findAny();
         Vec3 view = mob.getLookAngle();
-        BlockPos toward = NarakaUtils.pos(mob.position().add(view.normalize()));
+        BlockPos toward = NarakaUtils.pos(mob.position().add(view.multiply(1, 0, 1).normalize()));
         if (this.failed) {
             this.deltaMovement = deltaMovement.scale(0.8);
         } else if (this.hit) {
@@ -130,7 +130,10 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     private boolean isWall(Level level, BlockPos pos) {
         if (tickCount < RUSH_TICK)
             return false;
-        return level.getBlockState(pos).canOcclude() || level.getBlockState(pos.above()).canOcclude();
+        return level.getBlockState(pos)
+                .canOcclude()
+                || level.getBlockState(pos.above())
+                .canOcclude();
     }
 
     @Override

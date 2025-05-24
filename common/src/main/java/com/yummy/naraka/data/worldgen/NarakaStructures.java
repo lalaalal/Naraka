@@ -4,7 +4,7 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.tags.ConventionalTags;
 import com.yummy.naraka.world.structure.JumboPart;
 import com.yummy.naraka.world.structure.JumboStructure;
-import com.yummy.naraka.world.structure.height.NarakaStructureGenerationPointProviders;
+import com.yummy.naraka.world.structure.generation.NarakaStructureGenerationPointProviders;
 import com.yummy.naraka.world.structure.piece.NarakaStructurePieceFactories;
 import com.yummy.naraka.world.structure.protection.NarakaProtectionPredicates;
 import net.minecraft.core.BlockPos;

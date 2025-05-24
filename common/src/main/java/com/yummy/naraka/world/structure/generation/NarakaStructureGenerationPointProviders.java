@@ -1,4 +1,4 @@
-package com.yummy.naraka.world.structure.height;
+package com.yummy.naraka.world.structure.generation;
 
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;

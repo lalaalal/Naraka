@@ -4,7 +4,7 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.data.EntityDataType;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
-import com.yummy.naraka.world.structure.height.StructureGenerationPointProvider;
+import com.yummy.naraka.world.structure.generation.StructureGenerationPointProvider;
 import com.yummy.naraka.world.structure.piece.StructurePieceFactory;
 import com.yummy.naraka.world.structure.protection.ProtectionPredicate;
 import net.minecraft.core.Registry;
