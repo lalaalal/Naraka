@@ -5,140 +5,260 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_quartz_trim"
+          "model": "minecraft:item/leather_helmet_quartz_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "minecraft:quartz"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_iron_trim"
+          "model": "minecraft:item/leather_helmet_iron_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "minecraft:iron"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_netherite_trim"
+          "model": "minecraft:item/leather_helmet_netherite_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "minecraft:netherite"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_redstone_trim"
+          "model": "minecraft:item/leather_helmet_redstone_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "minecraft:redstone"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_copper_trim"
+          "model": "minecraft:item/leather_helmet_copper_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "minecraft:copper"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_gold_trim"
+          "model": "minecraft:item/leather_helmet_gold_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "minecraft:gold"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_emerald_trim"
+          "model": "minecraft:item/leather_helmet_emerald_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "minecraft:emerald"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_diamond_trim"
+          "model": "minecraft:item/leather_helmet_diamond_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "minecraft:diamond"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_lapis_trim"
+          "model": "minecraft:item/leather_helmet_lapis_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "minecraft:lapis"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_amethyst_trim"
+          "model": "minecraft:item/leather_helmet_amethyst_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "minecraft:amethyst"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_soul_infused_redstone_trim"
+          "model": "minecraft:item/leather_helmet_soul_infused_redstone_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "naraka:soul_infused_redstone"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_soul_infused_copper_trim"
+          "model": "minecraft:item/leather_helmet_soul_infused_copper_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "naraka:soul_infused_copper"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_soul_infused_gold_trim"
+          "model": "minecraft:item/leather_helmet_soul_infused_gold_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "naraka:soul_infused_gold"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_soul_infused_emerald_trim"
+          "model": "minecraft:item/leather_helmet_soul_infused_emerald_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "naraka:soul_infused_emerald"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_soul_infused_diamond_trim"
+          "model": "minecraft:item/leather_helmet_soul_infused_diamond_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "naraka:soul_infused_diamond"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_soul_infused_lapis_trim"
+          "model": "minecraft:item/leather_helmet_soul_infused_lapis_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "naraka:soul_infused_lapis"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_soul_infused_amethyst_trim"
+          "model": "minecraft:item/leather_helmet_soul_infused_amethyst_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "naraka:soul_infused_amethyst"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_soul_infused_nectarium_trim"
+          "model": "minecraft:item/leather_helmet_soul_infused_nectarium_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "naraka:soul_infused_nectarium"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "minecraft:item/leather_helmet_god_blood_trim"
+          "model": "minecraft:item/leather_helmet_god_blood_trim",
+          "tints": [
+            {
+              "type": "minecraft:dye",
+              "default": -6265536
+            }
+          ]
         },
         "when": "naraka:god_blood"
       }
     ],
     "fallback": {
       "type": "minecraft:model",
-      "model": "minecraft:item/leather_helmet"
+      "model": "minecraft:item/leather_helmet",
+      "tints": [
+        {
+          "type": "minecraft:dye",
+          "default": -6265536
+        }
+      ]
     },
     "property": "minecraft:trim_material"
   }

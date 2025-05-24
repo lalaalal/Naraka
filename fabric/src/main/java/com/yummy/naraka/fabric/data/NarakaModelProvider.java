@@ -17,6 +17,7 @@ import com.yummy.naraka.world.item.equipment.NarakaEquipmentAssets;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.minecraft.client.color.item.Dye;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.MultiVariant;
@@ -239,10 +240,10 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.RAINBOW_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 
-        generateTrimmableItem(generator, Items.LEATHER_HELMET, EquipmentAssets.LEATHER, "helmet");
-        generateTrimmableItem(generator, Items.LEATHER_CHESTPLATE, EquipmentAssets.LEATHER, "chestplate");
-        generateTrimmableItem(generator, Items.LEATHER_LEGGINGS, EquipmentAssets.LEATHER, "leggings");
-        generateTrimmableItem(generator, Items.LEATHER_BOOTS, EquipmentAssets.LEATHER, "boots");
+        generateTrimmableItem(generator, Items.LEATHER_HELMET, EquipmentAssets.LEATHER, "helmet", true);
+        generateTrimmableItem(generator, Items.LEATHER_CHESTPLATE, EquipmentAssets.LEATHER, "chestplate", true);
+        generateTrimmableItem(generator, Items.LEATHER_LEGGINGS, EquipmentAssets.LEATHER, "leggings", true);
+        generateTrimmableItem(generator, Items.LEATHER_BOOTS, EquipmentAssets.LEATHER, "boots", true);
         generateTrimmableItem(generator, Items.CHAINMAIL_HELMET, EquipmentAssets.CHAINMAIL, "helmet");
         generateTrimmableItem(generator, Items.CHAINMAIL_CHESTPLATE, EquipmentAssets.CHAINMAIL, "chestplate");
         generateTrimmableItem(generator, Items.CHAINMAIL_LEGGINGS, EquipmentAssets.CHAINMAIL, "leggings");
@@ -311,24 +312,44 @@ public class NarakaModelProvider extends FabricModelProvider {
                 new DisplayContext(), holdingModel, ItemModelUtils.when(List.of(ItemDisplayContext.GUI, ItemDisplayContext.FIXED), itemModel)
         );
     }
-
     public static void generateTrimmableItem(ItemModelGenerators generator, Item item, ResourceKey<EquipmentAsset> key, String name) {
+        generateTrimmableItem(generator, item, key, name, false);
+    }
+
+    public static void generateTrimmableItem(ItemModelGenerators generator, Item item, ResourceKey<EquipmentAsset> key, String name, boolean withDye) {
         ResourceLocation modelLocation = ModelLocationUtils.getModelLocation(item);
         ResourceLocation texture = TextureMapping.getItemTexture(item);
+        ResourceLocation overlayTexture = TextureMapping.getItemTexture(item, "_overlay");
 
         List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> list = new ArrayList<>(TRIM_MATERIAL_MODELS.size());
         for (ItemModelGenerators.TrimMaterialData data : TRIM_MATERIAL_MODELS) {
             ResourceLocation trimmedArmorModelLocation = modelLocation.withSuffix("_" + data.assets().base().suffix() + "_trim");
             ResourceLocation trimTexture = NarakaMod.mcLocation("trims/items/" + name + "_trim_" + data.assets().assetId(key).suffix());
-            generator.generateLayeredItem(trimmedArmorModelLocation, texture, trimTexture);
-            ItemModel.Unbaked unbaked = ItemModelUtils.plainModel(trimmedArmorModelLocation);
+            ItemModel.Unbaked unbaked = generateLayer(generator, trimmedArmorModelLocation, texture, overlayTexture, trimTexture, withDye);
 
             list.add(ItemModelUtils.when(data.materialKey(), unbaked));
         }
 
-        ModelTemplates.FLAT_ITEM.create(modelLocation, TextureMapping.layer0(texture), generator.modelOutput);
-        ItemModel.Unbaked unbaked = ItemModelUtils.plainModel(modelLocation);
+        ItemModel.Unbaked unbaked = generateModel(generator, modelLocation, texture, overlayTexture, withDye);
         generator.itemModelOutput.accept(item, ItemModelUtils.select(new TrimMaterialProperty(), unbaked, list));
+    }
+
+    private static ItemModel.Unbaked generateLayer(ItemModelGenerators generator, ResourceLocation trimmedArmorModelLocation, ResourceLocation texture, ResourceLocation overlayTexture, ResourceLocation trimTexture, boolean secondLayer) {
+        if (secondLayer) {
+            generator.generateLayeredItem(trimmedArmorModelLocation, texture, overlayTexture, trimTexture);
+            return ItemModelUtils.tintedModel(trimmedArmorModelLocation, new Dye(-6265536));
+        }
+        generator.generateLayeredItem(trimmedArmorModelLocation, texture, trimTexture);
+        return ItemModelUtils.plainModel(trimmedArmorModelLocation);
+    }
+
+    private static ItemModel.Unbaked generateModel(ItemModelGenerators generator, ResourceLocation modelLocation, ResourceLocation texture, ResourceLocation overlayTexture, boolean secondLayer) {
+        if (secondLayer) {
+            ModelTemplates.TWO_LAYERED_ITEM.create(modelLocation, TextureMapping.layered(texture, overlayTexture), generator.modelOutput);
+            return ItemModelUtils.tintedModel(modelLocation, new Dye(-6265536));
+        }
+        ModelTemplates.FLAT_ITEM.create(modelLocation, TextureMapping.layer0(texture), generator.modelOutput);
+        return ItemModelUtils.plainModel(modelLocation);
     }
 
     /**
