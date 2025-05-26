@@ -37,8 +37,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     private static final int MAX_CRACK = HerobrineTotem.MAX_CRACK;
 
     private int tickCount = 1;
-    private int waitCount = 6;
-    private int particleCount = 0;
+    private int waitCount = 8;
 
     public HerobrineTotemBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -53,7 +52,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     }
 
     public void serverTick(ServerLevel level, BlockPos pos, BlockState state) {
-        if (isSleeping(state))
+        if (isSleeping(state) || tickCount++ < 80)
             return;
 
         int crack = state.getValue(CRACK);
@@ -62,15 +61,14 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         }
         boolean shouldWait = crack == MAX_CRACK - 1 && waitCount > 0;
 
-        if (crack >= MAX_CRACK - 2 && particleCount < 80) {
-            particleCount += 1;
+        if (crack >= MAX_CRACK - 3) {
             level.sendParticles(NarakaParticleTypes.HEROBRINE_SPAWN.get(),
                     pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 2,
                     0, 0, 0, 0.01
             );
             level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS);
         }
-        if (tickCount % 5 == 0 && level.random.nextFloat() < 0.25f && !shouldWait) {
+        if (tickCount % 15 == 0 && !shouldWait) {
             if (crack == MAX_CRACK) {
                 breakTotemStructure(level, pos);
                 summonHerobrine(level, pos);
@@ -89,7 +87,6 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
                 level.playSound(null, pos, SoundEvents.NETHER_BRICKS_BREAK, SoundSource.BLOCKS);
             }
         }
-        tickCount += 1;
     }
 
     public static boolean isActivated(BlockState state) {
@@ -135,7 +132,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 15,
                 1, 1, 1, 0.01
         );
-        level.sendParticles(ParticleTypes.FLAME,
+        level.sendParticles(NarakaParticleTypes.GOLDEN_FLAME.get(),
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 30,
                 1, 1, 1, 0.05
         );

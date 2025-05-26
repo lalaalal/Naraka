@@ -117,6 +117,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
             this.hit = true;
             this.failed = false;
             hitEntity.ifPresent(entity -> hurtHitEntity(level, entity));
+            level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 2, 1);
             level.sendParticles(ParticleTypes.SONIC_BOOM, mob.getX(), mob.getY() + 1, mob.getZ(), 1, 0, 0, 0, 1);
             mob.setAnimation(AnimationLocations.RUSH_SUCCEED);
         } else if (trace) {
@@ -145,7 +146,6 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
             super.hurtHitEntity(level, target);
             Vec3 view = mob.getLookAngle();
             target.knockback(5, -view.x, -view.z);
-            level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 2, 1);
         }
     }
 

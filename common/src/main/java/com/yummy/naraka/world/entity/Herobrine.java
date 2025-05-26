@@ -8,6 +8,7 @@ import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaNbtUtils;
+import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
@@ -160,9 +161,15 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void onPhase3(int phase) {
-        if (spawnPosition != null)
-            teleportTo(spawnPosition.getX(), spawnPosition.getY(), spawnPosition.getZ());
+        teleportToSpawnedPosition();
         skillManager.setCurrentSkill(destroyStructureSkill);
+    }
+
+    private void teleportToSpawnedPosition() {
+        if (spawnPosition != null) {
+            int floor = NarakaUtils.findFloor(level(), spawnPosition).getY() + 1;
+            teleportTo(spawnPosition.getX() + 0.5, floor, spawnPosition.getZ() + 0.5);
+        }
     }
 
     private void startStaggering(int prevPhase, int currentPhase) {
@@ -445,8 +452,7 @@ public class Herobrine extends AbstractHerobrine {
     protected void startHibernateMode(ServerLevel level) {
         if (hibernateMode)
             return;
-        if (spawnPosition != null)
-            teleportTo(spawnPosition.getX(), spawnPosition.getY(), spawnPosition.getZ());
+        teleportToSpawnedPosition();
         hibernateMode = true;
         skillManager.enableOnly(HIBERNATED_MODE_SKILL_BY_PHASE.get(getPhase()));
         shadowController.updateRolePlaying(level);
