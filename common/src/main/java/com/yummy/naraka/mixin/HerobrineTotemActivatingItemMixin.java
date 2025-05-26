@@ -13,6 +13,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -35,7 +36,8 @@ public abstract class HerobrineTotemActivatingItemMixin {
             level.playSound(player, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1, level.getRandom().nextFloat() * 0.4F + 0.8F);
             level.setBlockAndUpdate(pos.above(), Blocks.FIRE.defaultBlockState());
             HerobrineTotem.crack(level, pos.below(), totem);
-            cir.setReturnValue(InteractionResult.SUCCESS);
+            level.gameEvent(player, GameEvent.BLOCK_PLACE, pos);
+            cir.setReturnValue(InteractionResult.SUCCESS_SERVER);
             cir.cancel();
         }
     }
