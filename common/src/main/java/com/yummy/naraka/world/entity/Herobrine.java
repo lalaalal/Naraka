@@ -8,6 +8,7 @@ import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaNbtUtils;
+import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
@@ -115,8 +116,7 @@ public class Herobrine extends AbstractHerobrine {
     public Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
         super(entityType, level, false);
 
-        bossEvent.setDarkenScreen(true)
-                .setPlayBossMusic(true);
+        bossEvent.setPlayBossMusic(true);
         phaseManager.addPhaseChangeListener(this::updateMusic);
         phaseManager.addPhaseChangeListener(this::updateUsingSkills);
         phaseManager.addPhaseChangeListener((prev, current) -> resetDamageLimit());
@@ -156,14 +156,24 @@ public class Herobrine extends AbstractHerobrine {
         this.spawnPosition = pos;
     }
 
+    public boolean hasSpawnPosition() {
+        return spawnPosition != null;
+    }
+
     private void resetDamageLimit() {
         this.hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
     }
 
     private void onPhase3(int phase) {
-        if (spawnPosition != null)
-            moveTo(spawnPosition.south(54), 0, 0);
+        teleportToSpawnedPosition();
         skillManager.setCurrentSkill(destroyStructureSkill);
+    }
+
+    private void teleportToSpawnedPosition() {
+        if (spawnPosition != null) {
+            int floor = NarakaUtils.findFloor(level(), spawnPosition).getY() + 1;
+            teleportTo(spawnPosition.getX() + 0.5, floor, spawnPosition.getZ() + 0.5);
+        }
     }
 
     private void startStaggering(int prevPhase, int currentPhase) {
@@ -241,8 +251,6 @@ public class Herobrine extends AbstractHerobrine {
     public ScarfWavingData getScarfWavingData() {
         return scarfWavingData;
     }
-
-
 
     public float getScarfRotationDegree(float partialTick) {
         return Mth.lerp(partialTick, prevScarfRotation, entityData.get(SCARF_ROTATION_DEGREE));
@@ -459,10 +467,8 @@ public class Herobrine extends AbstractHerobrine {
     protected void startHibernateMode(ServerLevel level) {
         if (hibernateMode)
             return;
-        if (spawnPosition != null)
-            moveTo(spawnPosition.south(54), 0, 0);
+        teleportToSpawnedPosition();
         hibernateMode = true;
-        skillManager.interrupt();
         skillManager.enableOnly(HIBERNATED_MODE_SKILL_BY_PHASE.get(getPhase()));
         shadowController.updateRolePlaying(level);
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
