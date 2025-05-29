@@ -44,7 +44,7 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
             moveAndLook(target);
         if (targetInRange(target, 4)) {
             setLinkedSkill(punchSKill);
-            duration = 0;
+            tickCount = duration;
         }
 
         runAt(duration - 1, this::determineNextSkill);

@@ -85,6 +85,10 @@ public class Herobrine extends AbstractHerobrine {
             List.of(), PHASE_1_SKILLS, PHASE_2_SKILLS, List.of()
     );
 
+    private final Map<Skill<?>, Float> STEPPABLE_SKILLS = Map.of(
+            walkAroundTargetSkill, 0.5f
+    );
+
     private final List<Projectile> ignoredProjectiles = new ArrayList<>();
     private final Set<UUID> stigmatizedEntities = new HashSet<>();
     private final Set<UUID> watchingEntities = new HashSet<>();
@@ -168,7 +172,7 @@ public class Herobrine extends AbstractHerobrine {
     private void teleportToSpawnedPosition() {
         if (spawnPosition != null) {
             int floor = NarakaUtils.findFloor(level(), spawnPosition).getY() + 1;
-            teleportTo(spawnPosition.getX() + 0.5, floor, spawnPosition.getZ() + 0.5);
+            setPos(spawnPosition.getX() + 0.5, floor, spawnPosition.getZ() + 0.5);
         }
     }
 
@@ -279,6 +283,16 @@ public class Herobrine extends AbstractHerobrine {
         super.customServerAiStep(serverLevel);
     }
 
+    @Override
+    public float maxUpStep() {
+        Optional<Skill<?>> current = getCurrentSkill();
+        if (current.isPresent() && STEPPABLE_SKILLS.containsKey(current.get()))
+            return STEPPABLE_SKILLS.get(current.get());
+        if (isUsingSkill())
+            return 0;
+        return super.maxUpStep();
+    }
+
     private void updateIdleTick() {
         if (getCurrentAnimation().equals(AnimationLocations.IDLE)) {
             idleTickCount += 1;
@@ -330,7 +344,9 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public boolean canBeHitByProjectile() {
-        return getCurrentSkill() != dashAroundSkill && super.canBeHitByProjectile();
+        return getCurrentSkill()
+                .filter(skill -> skill != dashAroundSkill && super.canBeHitByProjectile())
+                .isPresent();
     }
 
     @Override

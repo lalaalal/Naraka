@@ -74,7 +74,9 @@ public class NarakaEntityUtils {
     }
 
     public static void updatePositionForUpStep(Level level, Entity entity, Vec3 delta, double stepHeight) {
-        BlockPos pos = NarakaUtils.pos(entity.position().add(delta.normalize().scale(0.5)));
+        delta = delta.multiply(1, 0, 1)
+                .normalize();
+        BlockPos pos = BlockPos.containing(entity.position().add(delta));
         BlockState state = level.getBlockState(pos);
         VoxelShape shape = state.getCollisionShape(level, pos);
         double height = shape.max(Direction.Axis.Y);
@@ -90,7 +92,6 @@ public class NarakaEntityUtils {
             if (usedItem != null) {
                 EquipmentSlot slot = player.getEquipmentSlotForItem(usedItem);
                 usedItem.hurtAndBreak(damage, player, slot);
-//                player.level().broadcastEntityEvent(livingEntity, (byte) 30);
                 BlocksAttacks blocksAttacks = usedItem.get(DataComponents.BLOCKS_ATTACKS);
                 if (blocksAttacks != null) {
                     blocksAttacks.disable(level, player, cooldown / 20f, usedItem);

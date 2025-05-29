@@ -5,9 +5,12 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.entity.AfterimageEntity;
 import com.yummy.naraka.world.entity.SkillUsingMob;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,10 +45,23 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
     }
 
     private void move(ServerLevel level) {
-        NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, 0.4);
+        Vec3 xzMovement = deltaMovement.multiply(1, 0, 1).normalize();
+        Vec3 targetPosition = mob.position().add(xzMovement);
+        BlockPos blockPos = BlockPos.containing(targetPosition);
+        while (isWall(level, blockPos) || isWall(level, mob.blockPosition())) {
+            mob.setPos(targetPosition);
+            targetPosition = mob.position().add(xzMovement);
+            blockPos = BlockPos.containing(targetPosition).above();
+        }
         mob.setDeltaMovement(deltaMovement);
         if (!deltaMovement.equals(Vec3.ZERO))
             mob.addAfterimage(Afterimage.of(mob, 10), 1, tickCount < 11);
+    }
+
+    private boolean isWall(Level level, BlockPos pos) {
+        BlockState state = level.getBlockState(pos);
+        BlockState aboveState = level.getBlockState(pos.above());
+        return state.canOcclude() || aboveState.canOcclude();
     }
 
     private void updateDeltaMovement(LivingEntity target) {
@@ -63,8 +79,7 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
             deltaMovement = projection.normalize()
                     .scale(-1);
         }
-        deltaMovement = deltaMovement.add(0, -0.9, 0)
-                .add(delta.scale(1.5))
+        deltaMovement = deltaMovement.add(delta.scale(1.5))
                 .scale(0.6);
     }
 }
