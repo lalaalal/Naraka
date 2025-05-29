@@ -22,7 +22,7 @@ public final class NarakaTextures {
     public static final ResourceLocation HEROBRINE_SCARF = entity("herobrine_scarf.png");
     public static final ResourceLocation HEROBRINE_FINAL_SCARF = entity("herobrine_final.png");
 
-    public static final ResourceLocation HEROBRINE_SUN = texture("environment", "herobrine_sun.png");
+    public static final ResourceLocation ECLIPSE = texture("environment", "eclipse.png");
 
     public static final ResourceLocation SHADOW_ARMOR = entity("shadow_armor.png");
 
