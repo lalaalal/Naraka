@@ -28,7 +28,7 @@ public class NarakaStructureSets {
                                 20,
                                 RandomSpreadType.TRIANGULAR,
                                 structureSets.getOrThrow(NarakaStructureSetTags.HEROBRINE_SANCTUARY_EXCLUSIVE),
-                                32,
+                                12,
                                 8927916
                         )
                 )
