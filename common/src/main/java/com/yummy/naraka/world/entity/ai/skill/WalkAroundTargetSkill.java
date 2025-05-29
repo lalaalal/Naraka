@@ -19,7 +19,7 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
     private final Skill<?> rushSKill;
 
     public WalkAroundTargetSkill(SkillUsingMob mob, PunchSkill<AbstractHerobrine> punchSKill, DashSkill<?> dashSkill, Skill<?> rushSkill) {
-        super(LOCATION, 40, 0, mob);
+        super(LOCATION, DEFAULT_DURATION, 0, mob);
         this.punchSKill = punchSKill;
         this.dashSkill = dashSkill;
         this.rushSKill = rushSkill;
@@ -34,7 +34,7 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return targetInRange(50);
+        return targetInRange(25);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
@@ -9,6 +10,7 @@ import com.yummy.naraka.world.entity.StunHelper;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.protocol.game.ClientboundEntityPositionSyncPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -85,6 +87,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     private void moving(ServerLevel level) {
         NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, 0.5);
         mob.setDeltaMovement(deltaMovement);
+        NetworkManager.clientbound().send(level.players(), ClientboundEntityPositionSyncPacket.of(mob));
     }
 
     private void failed() {
@@ -103,11 +106,12 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         Vec3 view = mob.getLookAngle();
         BlockPos toward = NarakaUtils.pos(mob.position().add(view.multiply(1, 0, 1).normalize()));
         if (this.failed) {
-            this.deltaMovement = deltaMovement.scale(0.8);
+            this.deltaMovement = deltaMovement.scale(0.8)
+                    .add(0, -0.098, 0);
         } else if (this.hit) {
-            this.deltaMovement = deltaMovement.add(0, -0.098, 0);
             if (mob.onGround() && deltaMovement.y < 0)
                 this.deltaMovement = deltaMovement.multiply(0, 1, 0);
+            this.deltaMovement = deltaMovement.add(0, -0.098, 0);
         } else if (hitEntity.isPresent() || isWall(level, toward)) {
             this.duration = tickCount + 50;
             this.deltaMovement = deltaMovement.yRot(Mth.PI)
