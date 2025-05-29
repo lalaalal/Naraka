@@ -7,10 +7,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 public class SanctuaryCompassItem extends Item {
     public SanctuaryCompassItem(Properties properties) {
@@ -18,9 +20,9 @@ public class SanctuaryCompassItem extends Item {
     }
 
     @Override
-    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean inHand) {
+    public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity, @Nullable EquipmentSlot slot) {
         BlockPos userPos = entity.blockPosition();
-        updateTracker(itemStack, level, userPos, false);
+        updateTracker(stack, level, userPos, false);
     }
 
     @Override

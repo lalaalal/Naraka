@@ -38,7 +38,9 @@ public class SoulStabilizerSpecialRenderer implements NoDataSpecialModelRenderer
 
     @Override
     public Void extractArgument(ItemStack stack) {
+        blockEntity.reset();
         NarakaItemUtils.loadBlockEntity(stack, blockEntity, RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY));
+
         return null;
     }
 

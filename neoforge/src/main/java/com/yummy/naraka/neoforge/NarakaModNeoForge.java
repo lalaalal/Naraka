@@ -3,7 +3,6 @@ package com.yummy.naraka.neoforge;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.invoker.MethodInvoker;
-import com.yummy.naraka.neoforge.client.NeoForgeSpecialModelRendererRegistry;
 import com.yummy.naraka.neoforge.init.*;
 import com.yummy.naraka.world.NarakaBiomes;
 import net.neoforged.bus.api.IEventBus;
@@ -36,7 +35,6 @@ public final class NarakaModNeoForge implements NarakaInitializer {
         MethodInvoker.register(NeoForgeEntityAttributeRegistry.class);
         MethodInvoker.register(NeoForgeRegistryFactory.class);
         MethodInvoker.register(NeoForgeRegistryProxyProvider.class);
-        MethodInvoker.register(NeoForgeSpecialModelRendererRegistry.class);
 
         NarakaMod.initialize(this);
 
@@ -53,7 +51,7 @@ public final class NarakaModNeoForge implements NarakaInitializer {
         return NeoForgeBiomeModifier.INSTANCE;
     }
 
-    public void commonSetup(FMLCommonSetupEvent event) {
+    private void commonSetup(FMLCommonSetupEvent event) {
         NarakaMod.isRegistryLoaded = true;
         for (Runnable runnable : runAfterRegistryLoaded)
             runnable.run();

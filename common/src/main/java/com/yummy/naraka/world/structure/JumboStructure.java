@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.core.registries.NarakaRegistries;
-import com.yummy.naraka.world.structure.height.HeightProvider;
+import com.yummy.naraka.world.structure.generation.StructureGenerationPointProvider;
 import com.yummy.naraka.world.structure.piece.JumboPiece;
 import com.yummy.naraka.world.structure.piece.StructurePieceFactory;
 import com.yummy.naraka.world.structure.protection.ProtectionPredicate;
@@ -31,9 +31,11 @@ public class JumboStructure extends Structure {
                     settingsCodec(instance),
                     Codec.STRING.fieldOf("name").forGetter(structure -> structure.name),
                     RegistryFixedCodec.create(NarakaRegistries.Keys.PROTECTION_PREDICATE)
-                            .optionalFieldOf("protection_predicate")
+                            .fieldOf("protection_predicate")
                             .forGetter(structure -> structure.protectionPredicate),
-                    HeightProvider.CODEC.fieldOf("height_provider").forGetter(structure -> structure.heightProvider),
+                    RegistryFixedCodec.create(NarakaRegistries.Keys.STRUCTURE_GENERATION_POINT_PROVIDER)
+                            .fieldOf("generation_point_provider")
+                            .forGetter(structure -> structure.generationPointProvider),
                     JumboPart.CODEC.codec().listOf().fieldOf("parts").forGetter(structure -> structure.parts),
                     StructurePieceFactory.CODEC.listOf()
                             .fieldOf("custom_pieces")
@@ -42,29 +44,31 @@ public class JumboStructure extends Structure {
             ).apply(instance, JumboStructure::new)
     );
 
-    private final String name;
-    private final Optional<Holder<ProtectionPredicate>> protectionPredicate;
-    private final HeightProvider heightProvider;
-    private final List<JumboPart> parts;
-    private final List<Holder<StructurePieceFactory>> customPieces;
-    private final BlockPos structureOffset;
+    protected final String name;
+    protected final Holder<ProtectionPredicate> protectionPredicate;
+    protected final Holder<StructureGenerationPointProvider> generationPointProvider;
+    protected final List<JumboPart> parts;
+    protected final List<Holder<StructurePieceFactory>> customPieces;
+    protected final BlockPos structureOffset;
 
-    public JumboStructure(StructureSettings settings, String name, Optional<Holder<ProtectionPredicate>> protectionPredicate, HeightProvider heightProvider, List<JumboPart> parts, List<Holder<StructurePieceFactory>> customPieces, BlockPos structureOffset) {
+    public JumboStructure(StructureSettings settings, String name, Holder<ProtectionPredicate> protectionPredicate, Holder<StructureGenerationPointProvider> generationPointProvider, List<JumboPart> parts, List<Holder<StructurePieceFactory>> customPieces, BlockPos structureOffset) {
         super(settings);
         this.name = name;
         this.protectionPredicate = protectionPredicate;
-        this.heightProvider = heightProvider;
+        this.generationPointProvider = generationPointProvider;
         this.parts = parts;
         this.customPieces = customPieces;
         this.structureOffset = structureOffset;
     }
 
     @Override
-    protected @NotNull Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
+    protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
         ChunkPos chunkPos = context.chunkPos();
-        int height = heightProvider.getHeight(context);
-        BlockPos base = new BlockPos(chunkPos.getMinBlockX(), height, chunkPos.getMinBlockZ());
-        return addPieces(context, base.offset(structureOffset));
+        BlockPos base = new BlockPos(chunkPos.getMinBlockX(), 0, chunkPos.getMinBlockZ())
+                .offset(structureOffset);
+
+        Optional<BlockPos> optionalPoint = generationPointProvider.value().getPoint(context, base);
+        return optionalPoint.flatMap(blockPos -> addPieces(context, blockPos));
     }
 
     protected Optional<GenerationStub> addPieces(GenerationContext context, BlockPos basePos) {
@@ -77,7 +81,7 @@ public class JumboStructure extends Structure {
             }
             for (JumboPart part : parts)
                 addPart(templateManager, builder, part, basePos);
-            protectionPredicate.ifPresent(holder -> StructureProtector.addProtector(holder, builder.getBoundingBox()));
+            StructureProtector.addProtector(protectionPredicate, builder.getBoundingBox());
         }));
     }
 

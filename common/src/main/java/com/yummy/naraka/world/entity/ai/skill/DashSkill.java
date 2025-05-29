@@ -4,48 +4,63 @@ import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.entity.AfterimageEntity;
 import com.yummy.naraka.world.entity.SkillUsingMob;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
-public class DashSkill<T extends SkillUsingMob & AfterimageEntity> extends Skill<T> {
-    public static final String NAME = "dash";
+public class DashSkill<T extends SkillUsingMob & AfterimageEntity> extends TargetSkill<T> {
+    public static final ResourceLocation LOCATION = createLocation("dash");
 
     private Vec3 deltaMovement = Vec3.ZERO;
+    private float scale = 1;
 
     public DashSkill(T mob) {
-        super(NAME, 20, 60, mob);
+        super(LOCATION, 10, 40, mob);
+    }
+
+    public void setScale(float scale) {
+        this.scale = scale;
     }
 
     @Override
-    public boolean canUse() {
+    public boolean canUse(ServerLevel level) {
         LivingEntity target = mob.getTarget();
         return target != null;
     }
 
     @Override
     protected void onFirstTick(ServerLevel level) {
-        LivingEntity target = mob.getTarget();
-        if (target != null)
-            mob.lookAt(target, 360, 0);
+        mob.getNavigation().stop();
     }
 
     @Override
-    protected void skillTick(ServerLevel level) {
-        LivingEntity target = mob.getTarget();
-        if (target == null)
-            return;
+    protected void tickWithTarget(ServerLevel level, LivingEntity target) {
+        lookTarget(target);
+        rotateTowardTarget(target);
 
-        mob.getNavigation().stop();
+        runAt(0, () -> updateDeltaMovement(target));
+        run(between(0, 5) && mob.distanceToSqr(target) > 3, () -> move(level));
+        run(after(4) && hasLinkedSkill(), () -> move(level));
+        run((at(5) && !hasLinkedSkill() && scale > 0) || at(duration - 1) || (mob.distanceToSqr(target) < 3 && scale > 0), () -> mob.setDeltaMovement(Vec3.ZERO));
+    }
 
-        if (tickCount == 10)
-            this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob, target);
-        if (10 <= tickCount && tickCount <= 15 && mob.distanceToSqr(target) > 3) {
-            NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, mob.maxUpStep());
-            mob.setDeltaMovement(deltaMovement);
-            mob.addAfterimage(Afterimage.of(mob, 13), 2, tickCount < 15);
-        }
-        if (tickCount == 15 || mob.distanceToSqr(target) < 3)
-            mob.setDeltaMovement(Vec3.ZERO);
+    @Override
+    protected void onLastTick(ServerLevel level) {
+        scale = 1;
+    }
+
+    private void updateDeltaMovement(LivingEntity target) {
+        this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob, target)
+                .multiply(1, 0, 1)
+                .scale(scale);
+        if (hasLinkedSkill())
+            this.deltaMovement = deltaMovement.scale(1.5);
+    }
+
+    private void move(ServerLevel level) {
+        NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, 0.6);
+        mob.setDeltaMovement(deltaMovement);
+        mob.addAfterimage(Afterimage.of(mob, 13), 1, true);
     }
 }

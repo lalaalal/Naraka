@@ -3,6 +3,7 @@ package com.yummy.naraka.fabric.client;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModClient;
 import com.yummy.naraka.client.init.NarakaClientInitializer;
+import com.yummy.naraka.fabric.init.FabricSpecialModelRendererRegistry;
 import com.yummy.naraka.invoker.MethodInvoker;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -30,6 +31,8 @@ public final class NarakaModFabricClient implements ClientModInitializer, Naraka
         MethodInvoker.register(FabricScreenFactoryRegistry.class);
         MethodInvoker.register(FabricHudRendererRegistry.class);
         MethodInvoker.register(FabricKeyMappingRegistry.class);
+        MethodInvoker.register(FabricRenderPipelineRegistry.class);
+        MethodInvoker.register(FabricSpecialModelRendererRegistry.class);
 
         NarakaModClient.initialize(this);
     }

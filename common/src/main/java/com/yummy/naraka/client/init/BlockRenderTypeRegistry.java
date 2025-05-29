@@ -1,12 +1,8 @@
 package com.yummy.naraka.client.init;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 
 import java.util.HashMap;
@@ -23,16 +19,5 @@ public abstract class BlockRenderTypeRegistry {
 
     public static Map<Block, RenderType> getCustomBlockRenderTypes() {
         return Map.copyOf(CUSTOM_BLOCK_RENDER_TYPES);
-    }
-
-    @Deprecated
-    public interface CustomItemRenderer {
-        default boolean applyTransform() {
-            return true;
-        }
-
-        boolean shouldRenderCustom(ItemStack stack, ItemDisplayContext context);
-
-        void render(ItemStack stack, ItemDisplayContext context, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay);
     }
 }

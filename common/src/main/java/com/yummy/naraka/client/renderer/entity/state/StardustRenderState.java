@@ -6,5 +6,5 @@ import net.minecraft.client.renderer.entity.state.EntityRenderState;
 
 @Environment(EnvType.CLIENT)
 public class StardustRenderState extends EntityRenderState {
-
+    public float partialTick;
 }

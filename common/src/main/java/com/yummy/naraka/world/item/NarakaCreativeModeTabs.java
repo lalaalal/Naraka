@@ -94,6 +94,8 @@ public class NarakaCreativeModeTabs {
 
         output.accept(NarakaBlocks.SOUL_SMITHING_BLOCK.get());
         output.accept(NarakaBlocks.SOUL_STABILIZER.get());
+        output.accept(NarakaBlocks.PURIFIED_SOUL_LAMP.get());
+        output.accept(NarakaBlocks.PURIFIED_SOUL_LANTERN.get());
     }
 
     private static void createSoulMaterialsTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
@@ -129,6 +131,8 @@ public class NarakaCreativeModeTabs {
     }
 
     private static void createNarakaTestTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
+        output.accept(NarakaItems.SKILL_CONTROLLER.get());
+        output.accept(NarakaItems.ANIMATION_CONTROLLER.get());
         output.accept(NarakaItems.EBONY_SWORD.get());
         output.accept(NarakaItems.EBONY_METAL_HELMET.get());
         output.accept(NarakaItems.EBONY_METAL_CHESTPLATE.get());
@@ -160,7 +164,7 @@ public class NarakaCreativeModeTabs {
 
         output.accept(NarakaItems.STIGMA_ROD.get());
         output.accept(NarakaItems.STARDUST_STAFF.get());
-        output.accept(NarakaItems.NARAKA_FIREBALL.get());
+        output.accept(NarakaItems.NARAKA_FIREBALL_STAFF.get());
 
         output.accept(NarakaBlocks.FORGING_BLOCK.get());
 

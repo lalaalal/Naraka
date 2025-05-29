@@ -1,51 +1,39 @@
 package com.yummy.naraka.world.structure.protection;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.core.registries.NarakaRegistries;
-import com.yummy.naraka.util.NarakaNbtUtils;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StructureProtector {
+    public static final Codec<StructureProtector> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                    RegistryFixedCodec.create(NarakaRegistries.Keys.PROTECTION_PREDICATE)
+                            .fieldOf("protection_predicate")
+                            .forGetter(protector -> protector.predicate),
+                    BoundingBox.CODEC
+                            .fieldOf("box")
+                            .forGetter(protector -> protector.box)
+            ).apply(instance, StructureProtector::new)
+    );
+
     private final Holder<ProtectionPredicate> predicate;
     private final BoundingBox box;
 
     public StructureProtector(Holder<ProtectionPredicate> predicate, BoundingBox box) {
         this.predicate = predicate;
         this.box = box;
-    }
-
-    public StructureProtector(CompoundTag tag, HolderLookup.Provider provider) {
-        String keyName = tag.getString("predicate");
-        ResourceKey<ProtectionPredicate> key = ResourceKey.create(NarakaRegistries.Keys.PROTECTION_PREDICATE, ResourceLocation.parse(keyName));
-        HolderLookup.RegistryLookup<ProtectionPredicate> predicates = provider.lookupOrThrow(NarakaRegistries.Keys.PROTECTION_PREDICATE);
-        this.predicate = predicates.getOrThrow(key);
-        Optional<BoundingBox> box = NarakaNbtUtils.readBoundingBox(tag, "box");
-        if (box.isEmpty())
-            throw new IllegalStateException();
-        this.box = box.get();
-    }
-
-    public CompoundTag save(CompoundTag tag, HolderLookup.Provider provider) {
-        Optional<ResourceKey<ProtectionPredicate>> key = predicate.unwrapKey();
-        key.ifPresent(resourceKey -> tag.putString("predicate", resourceKey.location().toString()));
-        Tag boxTag = NarakaNbtUtils.writeBoundingBox(box);
-        tag.put("box", boxTag);
-
-        return tag;
     }
 
     public boolean isProtected(Vec3i pos) {
@@ -71,37 +59,28 @@ public class StructureProtector {
 
     public static void initialize(ServerLevel level) {
         DimensionDataStorage storage = level.getDataStorage();
-        Container.instance = storage.computeIfAbsent(Container.factory, "structure_protectors");
+        Container.instance = storage.computeIfAbsent(Container.factory);
     }
 
     private static class Container extends SavedData {
-        private static final Factory<Container> factory = new Factory<>(
-                Container::new, Container::create, DataFixTypes.LEVEL
+        public static final Codec<Container> CODEC = RecordCodecBuilder.create(
+                instance -> instance.group(
+                        StructureProtector.CODEC.listOf().fieldOf("protectors").forGetter(container -> container.protectors)
+                ).apply(instance, Container::new)
+        );
+        private static final SavedDataType<Container> factory = new SavedDataType<>(
+                "structure_protectors", Container::new, CODEC, DataFixTypes.LEVEL
         );
         private static Container instance = new Container();
 
-        private final Set<StructureProtector> protectors;
+        private final List<StructureProtector> protectors;
 
         private Container() {
-            protectors = new HashSet<>();
+            protectors = new ArrayList<>();
         }
 
-        private Container(Set<StructureProtector> protectors) {
-            this.protectors = protectors;
-        }
-
-        private static Container create(CompoundTag compoundTag, HolderLookup.Provider provider) {
-            try {
-                return new Container(NarakaNbtUtils.readCollection(compoundTag, "structure_protectors", HashSet::new, StructureProtector::new, provider));
-            } catch (RuntimeException exception) {
-                return new Container();
-            }
-        }
-
-        @Override
-        public CompoundTag save(CompoundTag compoundTag, HolderLookup.Provider provider) {
-            NarakaNbtUtils.writeCollection(compoundTag, "structure_protectors", protectors, StructureProtector::save, provider);
-            return compoundTag;
+        private Container(List<StructureProtector> protectors) {
+            this.protectors = new ArrayList<>(protectors);
         }
     }
 }

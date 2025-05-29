@@ -11,6 +11,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryCodecs;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -113,7 +114,7 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
     }
 
     @Override
-    public void addToTooltip(Item.TooltipContext tooltipContext, Consumer<Component> appender, TooltipFlag tooltipFlag) {
+    public void addToTooltip(Item.TooltipContext context, Consumer<Component> appender, TooltipFlag flag, DataComponentGetter componentGetter) {
         if (value > 0) {
             Component reinforcementComponent = Component.translatable(LanguageKey.REINFORCEMENT_KEY, value)
                     .withStyle(ChatFormatting.YELLOW);

@@ -3,6 +3,5 @@
   "description": {
     "color": "#33CCCC",
     "translate": "trim_material.naraka.soul_infused_diamond"
-  },
-  "ingredient": "naraka:soul_infused_diamond"
+  }
 }

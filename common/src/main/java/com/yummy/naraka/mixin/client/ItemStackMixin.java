@@ -1,6 +1,5 @@
 package com.yummy.naraka.mixin.client;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
@@ -8,32 +7,38 @@ import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.component.DataComponentHolder;
+import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.component.TooltipProvider;
-import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin implements DataComponentHolder {
-    @Inject(method = "getTooltipLines", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;addToTooltip(Lnet/minecraft/core/component/DataComponentType;Lnet/minecraft/world/item/Item$TooltipContext;Ljava/util/function/Consumer;Lnet/minecraft/world/item/TooltipFlag;)V", ordinal = 0))
-    public void addReinforcementTooltip(Item.TooltipContext tooltipContext, @Nullable Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
+    @Shadow @Final
+    PatchedDataComponentMap components;
+
+    @Inject(method = "addDetailsToTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item;appendHoverText(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/Item$TooltipContext;Lnet/minecraft/world/item/component/TooltipDisplay;Ljava/util/function/Consumer;Lnet/minecraft/world/item/TooltipFlag;)V", shift = At.Shift.AFTER))
+    public void addReinforcementTooltip(Item.TooltipContext context, TooltipDisplay tooltipDisplay, Player player, TooltipFlag tooltipFlag, Consumer<Component> tooltipAdder, CallbackInfo ci) {
         TooltipProvider tooltipProvider = Reinforcement.get(this);
-        tooltipProvider.addToTooltip(tooltipContext, list::add, tooltipFlag);
+        tooltipProvider.addToTooltip(context, tooltipAdder, tooltipFlag, components);
     }
 
-    @Inject(method = "getTooltipLines", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;addToTooltip(Lnet/minecraft/core/component/DataComponentType;Lnet/minecraft/world/item/Item$TooltipContext;Ljava/util/function/Consumer;Lnet/minecraft/world/item/TooltipFlag;)V", ordinal = 6, shift = At.Shift.AFTER))
-    public void addBlessedTooltip(Item.TooltipContext tooltipContext, @Nullable Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
+    @Inject(method = "addDetailsToTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;has(Lnet/minecraft/core/component/DataComponentType;)Z"))
+    public void addBlessedTooltip(Item.TooltipContext context, TooltipDisplay tooltipDisplay, Player player, TooltipFlag tooltipFlag, Consumer<Component> tooltipAdder, CallbackInfo ci) {
         if (getOrDefault(NarakaDataComponentTypes.BLESSED.get(), false))
-            list.add(Component.translatable(LanguageKey.BLESSED_KEY).withStyle(ComponentStyles.LONGINUS_COLOR));
+            tooltipAdder.accept(Component.translatable(LanguageKey.BLESSED_KEY).withStyle(ComponentStyles.LONGINUS_COLOR));
     }
 }

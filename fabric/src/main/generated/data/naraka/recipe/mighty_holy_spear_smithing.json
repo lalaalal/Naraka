@@ -3,7 +3,6 @@
   "addition": "naraka:god_blood",
   "base": "naraka:spear",
   "result": {
-    "count": 1,
     "id": "naraka:mighty_holy_spear"
   },
   "template": "naraka:purified_soul_upgrade_smithing_template"

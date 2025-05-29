@@ -4,6 +4,7 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.item.NarakaItems;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -17,7 +18,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.ItemSupplier;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -25,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class NarakaFireball extends Fireball implements ItemSupplier {
     protected static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(NarakaFireball.class, EntityDataSerializers.INT);
@@ -33,10 +36,11 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     private @Nullable Entity cachedTarget;
     private DamageCalculator damageCalculator = fireball -> 10;
     private final List<HurtTargetListener> listeners = new ArrayList<>();
+    private int timeToLive = Integer.MAX_VALUE;
 
     public NarakaFireball(EntityType<? extends NarakaFireball> entityType, Level level) {
         super(entityType, level);
-        setItem(NarakaItems.NARAKA_FIREBALL.get().getDefaultInstance());
+        setItem(NarakaItems.NARAKA_FIREBALL_STAFF.get().getDefaultInstance());
     }
 
     public NarakaFireball(Mob owner, Vec3 movement, Level level) {
@@ -51,7 +55,11 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     public NarakaFireball(LivingEntity owner, @Nullable Entity target, Vec3 movement, Level level) {
         super(NarakaEntityTypes.NARAKA_FIREBALL.get(), owner, movement, level);
         setTarget(target);
-        setItem(NarakaItems.NARAKA_FIREBALL.get().getDefaultInstance());
+        setItem(NarakaItems.NARAKA_FIREBALL_STAFF.get().getDefaultInstance());
+    }
+
+    public void setTimeToLive(int timeToLive) {
+        this.timeToLive = timeToLive;
     }
 
     @Override
@@ -99,6 +107,10 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
 
     @Override
     public void tick() {
+        if (timeToLive < tickCount) {
+            level().explode(this, NarakaDamageSources.narakaFireball(this), null, position(), 1.5f, false, Level.ExplosionInteraction.TRIGGER);
+            discard();
+        }
         traceTarget();
         super.tick();
     }
@@ -107,6 +119,9 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         Entity target = getTarget();
         int tracingLevel = NarakaConfig.COMMON.narakaFireballTargetTracingLevel.getValue();
         if (canRotateMovement(tracingLevel) && target != null) {
+            if (this.distanceToSqr(target) > 12 * 12)
+                return;
+
             boolean canReduceSpeed = canReduceSpeed(tracingLevel);
             Vec3 targetVector = target.getEyePosition().subtract(position());
             Vec3 movingVector = getDeltaMovement().normalize();
@@ -123,17 +138,12 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
             if (canReduceSpeed && tracingVectorLength < 8 && length < 1)
                 setDeltaMovement(deltaMovement.scale(1.1));
             double scale = Mth.clamp(tracingVectorLength, 0, 0.03);
-            if (!canReduceSpeed && deltaMovement.y < 0) {
-                tracingVector.multiply(1, 0, 1);
-                scale *= 0.5;
-            }
 
             setDeltaMovement(
                     deltaMovement.add(tracingVector.scale(scale))
                             .normalize()
                             .scale(length)
             );
-
         }
     }
 
@@ -154,10 +164,12 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     @Override
     protected void onHit(HitResult result) {
         super.onHit(result);
-        if (!level().isClientSide) {
-            level().explode(this, damageSources().fireball(this, getOwner()), null, position(), 2, false, Level.ExplosionInteraction.NONE);
-            discard();
-        }
+        discard();
+    }
+
+    @Override
+    public boolean shouldBlockExplode(Explosion explosion, BlockGetter level, BlockPos pos, BlockState blockState, float explosionPower) {
+        return false;
     }
 
     @Override
@@ -165,9 +177,15 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         super.onHitEntity(result);
         Entity hitEntity = result.getEntity();
         Entity owner = getOwner();
-        if (hitEntity != owner && hitEntity instanceof LivingEntity livingEntity && level() instanceof ServerLevel serverLevel) {
+        if (hitEntity != owner && hitEntity instanceof LivingEntity livingEntity && !level().isClientSide) {
             float damage = damageCalculator.calculateDamage(this);
-            livingEntity.hurtServer(serverLevel, getDamageSource(owner), damage);
+            ExplosionDamageCalculator explosionDamageCalculator = new EntityBasedExplosionDamageCalculator(this) {
+                @Override
+                public float getEntityDamageAmount(Explosion explosion, Entity entity, float seenPercent) {
+                    return damage;
+                }
+            };
+            level().explode(this, getDamageSource(owner), explosionDamageCalculator, position(), 1.5f, false, Level.ExplosionInteraction.TRIGGER);
             for (HurtTargetListener listener : listeners)
                 listener.onHurtTarget(livingEntity, damage);
         }
@@ -176,21 +194,22 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     protected DamageSource getDamageSource(@Nullable Entity owner) {
         if (entityData.get(FIXED_DAMAGE))
             return NarakaDamageSources.projectileFixed(this, owner);
-        return damageSources().fireball(this, owner);
+        return NarakaDamageSources.narakaFireball(this);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         if (cachedTarget != null)
-            compound.putUUID("Target", cachedTarget.getUUID());
+            compound.putString("Target", cachedTarget.getStringUUID());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         if (compound.contains("Target") && level() instanceof ServerLevel serverLevel) {
-            setTarget(serverLevel.getEntity(compound.getUUID("Target")));
+            UUID uuid = UUID.fromString(compound.getStringOr("Target", ""));
+            setTarget(serverLevel.getEntity(uuid));
         }
     }
 

@@ -1,5 +1,6 @@
 package com.yummy.naraka.sounds;
 
+import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -25,5 +26,19 @@ public final class NarakaMusics {
         Music music = new Music(soundEvent, 0, 0, true);
         LOOPING_MUSICS.add(soundEvent.value().location());
         return music;
+    }
+
+    private static final NarakaClientboundEventPacket.Event[] HEROBRINE_MUSIC_EVENT = new NarakaClientboundEventPacket.Event[]{
+            null,
+            NarakaClientboundEventPacket.Event.PLAY_HEROBRINE_PHASE_1,
+            NarakaClientboundEventPacket.Event.PLAY_HEROBRINE_PHASE_2,
+            NarakaClientboundEventPacket.Event.PLAY_HEROBRINE_PHASE_3,
+            NarakaClientboundEventPacket.Event.PLAY_HEROBRINE_PHASE_4
+    };
+
+    public static NarakaClientboundEventPacket.Event musicEventByPhase(int phase) {
+        if (0 < phase && phase <= 4)
+            return HEROBRINE_MUSIC_EVENT[phase];
+        return NarakaClientboundEventPacket.Event.STOP_MUSIC;
     }
 }

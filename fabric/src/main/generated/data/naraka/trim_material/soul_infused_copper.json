@@ -3,6 +3,5 @@
   "description": {
     "color": "#FF8000",
     "translate": "trim_material.naraka.soul_infused_copper"
-  },
-  "ingredient": "naraka:soul_infused_copper"
+  }
 }

@@ -1,15 +1,14 @@
 package com.yummy.naraka.world.item;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.ToolMaterial;
 
-public class SoulInfusedSwordItem extends SwordItem {
+public class SoulInfusedSwordItem extends Item {
     private final int color;
 
-    public SoulInfusedSwordItem(ToolMaterial material, float attackDamage, float attackSpeed, Properties properties, int color) {
-        super(material, attackDamage, attackSpeed, properties);
+    public SoulInfusedSwordItem(Item.Properties properties, int color) {
+        super(properties);
         this.color = color;
     }
 

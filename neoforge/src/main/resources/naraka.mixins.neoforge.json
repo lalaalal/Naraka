@@ -4,7 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
-    "client.ItemBlockRenderTypesMixin"
+    "client.HerobrineSkyRendererMixin"
   ],
   "mixins": [
     "LivingEntityMixin",

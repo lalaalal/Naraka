@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.block.entity;
 
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.block.HerobrineTotem;
@@ -36,6 +37,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     private static final int MAX_CRACK = HerobrineTotem.MAX_CRACK;
 
     private int tickCount = 1;
+    private int waitCount = 8;
 
     public HerobrineTotemBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -50,32 +52,41 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     }
 
     public void serverTick(ServerLevel level, BlockPos pos, BlockState state) {
-        if (isSleeping(state))
+        if (isSleeping(state) || tickCount++ < 80)
             return;
 
-        if (tickCount % 5 == 0 && level.random.nextFloat() < 0.25f) {
-            if (state.getValue(CRACK) == MAX_CRACK) {
+        int crack = state.getValue(CRACK);
+        if (crack == MAX_CRACK - 1 && tickCount % 5 == 0) {
+            waitCount -= 1;
+        }
+        boolean shouldWait = crack == MAX_CRACK - 1 && waitCount > 0;
+
+        if (crack >= MAX_CRACK - 3) {
+            level.sendParticles(NarakaParticleTypes.HEROBRINE_SPAWN.get(),
+                    pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 2,
+                    0, 0, 0, 0.01
+            );
+            level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS);
+        }
+        if (tickCount % 15 == 0 && !shouldWait) {
+            if (crack == MAX_CRACK) {
                 breakTotemStructure(level, pos);
                 summonHerobrine(level, pos);
-            } else
+            } else {
                 HerobrineTotem.crack(level, pos, state);
+            }
             if (level.random.nextFloat() < 0.9f) {
-                level.sendParticles(ParticleTypes.CLOUD,
+                level.sendParticles(ParticleTypes.SMOKE,
                         pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 10,
-                        0.5, 0.5, 0.5, 0.01
+                        0.5, 0.5, 0.5, 0
                 );
-                level.sendParticles(ParticleTypes.FLAME,
+                level.sendParticles(NarakaParticleTypes.GOLDEN_FLAME.get(),
                         pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 20,
-                        1, 1, 1, 0.05
+                        1, 1, 1, 0
                 );
                 level.playSound(null, pos, SoundEvents.NETHER_BRICKS_BREAK, SoundSource.BLOCKS);
             }
-            level.sendParticles(ParticleTypes.ENCHANT,
-                    pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 25,
-                    0.5, 0.5, 0.5, 0.01
-            );
         }
-        tickCount += 1;
     }
 
     public static boolean isActivated(BlockState state) {
@@ -117,11 +128,11 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         lightningBolt.setPos(herobrine.position());
         level.addFreshEntity(lightningBolt);
 
-        level.sendParticles(ParticleTypes.CLOUD,
+        level.sendParticles(ParticleTypes.POOF,
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 15,
                 1, 1, 1, 0.01
         );
-        level.sendParticles(ParticleTypes.FLAME,
+        level.sendParticles(NarakaParticleTypes.GOLDEN_FLAME.get(),
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 30,
                 1, 1, 1, 0.05
         );

@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 public class HerobrineTotem extends BaseEntityBlock {
     private static final MapCodec<HerobrineTotem> CODEC = simpleCodec(HerobrineTotem::new);
 
-    public static final int MAX_CRACK = 9;
+    public static final int MAX_CRACK = 11;
     public static final IntegerProperty CRACK = IntegerProperty.create("crack", 0, MAX_CRACK);
 
     private boolean placed = false;
@@ -60,7 +60,10 @@ public class HerobrineTotem extends BaseEntityBlock {
 
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        return !placed || placedPos.equals(pos);
+        if (placed && level.getBlockState(placedPos).is(this))
+            return false;
+        placed = false;
+        return true;
     }
 
     @Override
@@ -68,12 +71,6 @@ public class HerobrineTotem extends BaseEntityBlock {
         super.onPlace(state, level, pos, oldState, movedByPiston);
         placed = true;
         placedPos = pos;
-    }
-
-    @Override
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        super.onRemove(state, level, pos, newState, movedByPiston);
-        placed = false;
     }
 
     @Nullable

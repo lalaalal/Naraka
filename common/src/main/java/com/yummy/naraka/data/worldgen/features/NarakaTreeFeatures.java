@@ -5,7 +5,7 @@ import com.yummy.naraka.world.rootplacer.EbonyRootPlacer;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -47,7 +47,7 @@ public class NarakaTreeFeatures {
                 BlockStateProvider.simple(NarakaBlocks.EBONY_LOG.get().branchBlockState()),
                 new CherryTrunkPlacer(
                         7, 1, 0,
-                        new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder()
+                        new WeightedListInt(WeightedList.<IntProvider>builder()
                                 .add(ConstantInt.of(1), 1)
                                 .add(ConstantInt.of(2), 1)
                                 .add(ConstantInt.of(3), 1)

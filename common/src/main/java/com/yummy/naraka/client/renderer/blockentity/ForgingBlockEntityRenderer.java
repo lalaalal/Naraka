@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 
 @Environment(EnvType.CLIENT)
 public class ForgingBlockEntityRenderer implements BlockEntityRenderer<ForgingBlockEntity> {
@@ -43,16 +44,16 @@ public class ForgingBlockEntityRenderer implements BlockEntityRenderer<ForgingBl
     }
 
     @Override
-    public void render(ForgingBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, int overlay) {
+    public void render(ForgingBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 cameraPos) {
         poseStack.pushPose();
-        VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entityCutout(NarakaTextures.FORGING_BLOCK));
-        root.render(poseStack, vertexConsumer, light, overlay);
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutout(NarakaTextures.FORGING_BLOCK));
+        root.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         poseStack.popPose();
 
         poseStack.pushPose();
         poseStack.translate(0.5, 0.7, 0.5);
         ItemStack itemStack = blockEntity.getForgingItem();
-        itemRenderer.renderStatic(itemStack, ItemDisplayContext.FIXED, light, overlay, poseStack, multiBufferSource, blockEntity.getLevel(), 1);
+        itemRenderer.renderStatic(itemStack, ItemDisplayContext.FIXED, packedLight, packedOverlay, poseStack, bufferSource, blockEntity.getLevel(), 1);
         poseStack.popPose();
     }
 }

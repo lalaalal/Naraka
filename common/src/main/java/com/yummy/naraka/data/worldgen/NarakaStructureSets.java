@@ -7,7 +7,6 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
@@ -18,7 +17,6 @@ public class NarakaStructureSets {
     public static void bootstrap(BootstrapContext<StructureSet> context) {
         HolderGetter<StructureSet> structureSets = context.lookup(Registries.STRUCTURE_SET);
         HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
-        HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 
         context.register(
                 HEROBRINE_SANCTUARY,

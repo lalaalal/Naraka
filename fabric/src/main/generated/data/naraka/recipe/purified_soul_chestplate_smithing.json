@@ -3,7 +3,6 @@
   "addition": "naraka:purified_soul_metal",
   "base": "minecraft:chainmail_chestplate",
   "result": {
-    "count": 1,
     "id": "naraka:purified_soul_chestplate"
   },
   "template": "naraka:purified_soul_upgrade_smithing_template"

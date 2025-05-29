@@ -8,8 +8,8 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.EquipmentAsset;
+import net.minecraft.world.item.equipment.trim.MaterialAssetGroup;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 
 import java.util.Map;
@@ -38,32 +38,27 @@ public class NarakaTrimMaterials {
     }
 
     private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> key, SoulType type) {
-        register(context, key, type.getItem(), type.getColor());
+        register(context, key, type.getColor());
     }
 
-    private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> key, Item item, int color) {
-        register(context, key, item, color, Map.of());
+    private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> key, int color) {
+        register(context, key, Style.EMPTY.withColor(color), Map.of());
     }
 
     private static void register(
             BootstrapContext<TrimMaterial> bootstrapContext,
             ResourceKey<TrimMaterial> resourceKey,
-            Item item,
-            int color,
-            Map<ResourceKey<EquipmentAsset>, String> map
+            Style style,
+            Map<ResourceKey<EquipmentAsset>, String> overrides
     ) {
-        TrimMaterial trimMaterial = TrimMaterial.create(
-                resourceKey.location().getPath(),
-                item,
-                Component.translatable(
-                        Util.makeDescriptionId("trim_material", resourceKey.location())
-                ).withStyle(Style.EMPTY.withColor(color)),
-                map
-        );
+        MaterialAssetGroup assets = MaterialAssetGroup.create(resourceKey.location().getPath(), overrides);
+        Component component = Component.translatable(Util.makeDescriptionId("trim_material", resourceKey.location()))
+                .withStyle(style);
+        TrimMaterial trimMaterial = new TrimMaterial(assets, component);
         bootstrapContext.register(resourceKey, trimMaterial);
     }
 
-    private static ResourceKey<TrimMaterial> create(String name) {
+    public static ResourceKey<TrimMaterial> create(String name) {
         return ResourceKey.create(Registries.TRIM_MATERIAL, NarakaMod.location(name));
     }
 }

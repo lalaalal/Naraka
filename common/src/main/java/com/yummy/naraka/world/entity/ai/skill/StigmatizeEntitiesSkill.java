@@ -16,7 +16,7 @@ public class StigmatizeEntitiesSkill<T extends SkillUsingMob & StigmatizingEntit
     }
 
     @Override
-    public boolean canUse() {
+    public boolean canUse(ServerLevel level) {
         return true;
     }
 
@@ -34,6 +34,6 @@ public class StigmatizeEntitiesSkill<T extends SkillUsingMob & StigmatizingEntit
                 mob.getBoundingBox().inflate(20)
         );
         for (LivingEntity target : entities)
-            mob.stigmatizeEntity(target);
+            mob.stigmatizeEntity(level, target);
     }
 }

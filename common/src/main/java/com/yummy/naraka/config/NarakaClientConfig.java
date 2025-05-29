@@ -15,6 +15,7 @@ public class NarakaClientConfig extends StaticConfiguration {
     public final ConfigValue<Float> herobrineScarfWaveCycleModifier;
     public final ConfigValue<Integer> oreSeeThroughRange;
     public final ConfigValue<Boolean> disableOreSeeThrough;
+    public final ConfigValue<Boolean> renderHerobrineSky;
 
     public NarakaClientConfig() {
         super("naraka-client", PropertiesConfigFile::new);
@@ -23,13 +24,12 @@ public class NarakaClientConfig extends StaticConfiguration {
         this.enableNonShaderLonginusRendering = define("enable_non_shader_longinus_rendering", true)
                 .comment("Automatically disabled when launching without iris")
                 .comment("If value is false, always disable");
-        this.afterimageColor = define("afterimage_color", Color.of(0x7e00ff));
-        this.shadowHerobrineColor = define("shadow_herobrine_color", Color.of(0x0000ff));
+        this.afterimageColor = define("afterimage_color", Color.of(0x000000));
+        this.shadowHerobrineColor = define("shadow_herobrine_color", Color.of(0x000000));
 
         this.alwaysDisplayHerobrineScarf = define("always_display_herobrine_scarf", false);
         this.herobrineScarfDefaultRotation = define("herobrine_scarf_default_rotation", 70.0f);
-
-        this.herobrineScarfPartitionNumber = define("herobrine_scarf_partition_number", 16)
+        this.herobrineScarfPartitionNumber = define("herobrine_scarf_partition_number", 32)
                 .comment("Divide scarf with given number")
                 .comment("Bigger value, short wave cycle")
                 .comment("!! Editing while playing game may cause crash");
@@ -40,5 +40,6 @@ public class NarakaClientConfig extends StaticConfiguration {
 
         this.oreSeeThroughRange = define("ore_see_through_range", 20);
         this.disableOreSeeThrough = define("disable_ore_see_through", false);
+        this.renderHerobrineSky = define("render_herobrine_sky", false);
     }
 }

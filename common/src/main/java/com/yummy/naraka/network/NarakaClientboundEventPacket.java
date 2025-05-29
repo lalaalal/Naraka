@@ -8,40 +8,42 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.util.StringRepresentable;
 
-public record NarakaClientboundEventPacket(Event event) implements CustomPacketPayload {
+import java.util.List;
+
+public record NarakaClientboundEventPacket(List<Event> events) implements CustomPacketPayload {
     public static final Type<NarakaClientboundEventPacket> TYPE = new Type<>(NarakaMod.location("clientbound_event_packet"));
 
     public static final StreamCodec<ByteBuf, NarakaClientboundEventPacket> CODEC = StreamCodec.composite(
-            Event.STREAM_CODEC,
-            NarakaClientboundEventPacket::event,
+            ByteBufCodecs.<ByteBuf, Event>list().apply(Event.STREAM_CODEC),
+            NarakaClientboundEventPacket::events,
             NarakaClientboundEventPacket::new
     );
+
+    public NarakaClientboundEventPacket(Event... events) {
+        this(List.of(events));
+    }
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 
-    public interface EventHandler {
-        void handle();
-    }
-
     public enum Event implements StringRepresentable {
-        PLAY_HEROBRINE_PHASE_1(() -> NarakaClientboundEventHandler.updateHerobrineMusic(1)),
-        PLAY_HEROBRINE_PHASE_2(() -> NarakaClientboundEventHandler.updateHerobrineMusic(2)),
-        PLAY_HEROBRINE_PHASE_3(() -> NarakaClientboundEventHandler.updateHerobrineMusic(3)),
-        PLAY_HEROBRINE_PHASE_4(() -> NarakaClientboundEventHandler.updateHerobrineMusic(4)),
-        STOP_MUSIC(NarakaClientboundEventHandler::stopHerobrineMusic);
+        PLAY_HEROBRINE_PHASE_1,
+        PLAY_HEROBRINE_PHASE_2,
+        PLAY_HEROBRINE_PHASE_3,
+        PLAY_HEROBRINE_PHASE_4,
+        STOP_MUSIC,
+        START_HEROBRINE_SKY,
+        STOP_HEROBRINE_SKY;
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
         public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.idMapper(Event::byId, Event::getId);
 
         public final int id;
-        public final EventHandler handler;
 
-        Event(EventHandler handler) {
+        Event() {
             this.id = ordinal();
-            this.handler = handler;
         }
 
         public static Event byId(int id) {
@@ -54,10 +56,6 @@ public record NarakaClientboundEventPacket(Event event) implements CustomPacketP
 
         public int getId() {
             return id;
-        }
-
-        public void handle() {
-            this.handler.handle();
         }
 
         @Override

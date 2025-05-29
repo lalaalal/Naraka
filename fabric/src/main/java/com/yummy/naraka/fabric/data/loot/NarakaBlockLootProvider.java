@@ -36,6 +36,8 @@ public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
+        dropSelf(NarakaBlocks.PURIFIED_SOUL_LAMP.get());
+        dropSelf(NarakaBlocks.PURIFIED_SOUL_LANTERN.get());
         dropOre(NarakaBlocks.AMETHYST_ORE.get(), Items.AMETHYST_SHARD);
         dropOre(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get(), Items.AMETHYST_SHARD);
         dropSelf(NarakaBlocks.NECTARIUM_BLOCK.get());

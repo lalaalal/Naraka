@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
+import net.minecraft.world.phys.Vec3;
 
 @Environment(EnvType.CLIENT)
 public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<SoulStabilizerBlockEntity> {
@@ -60,7 +61,7 @@ public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<So
     }
 
     @Override
-    public void render(SoulStabilizerBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(SoulStabilizerBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 cameraPos) {
         poseStack.pushPose();
         VertexConsumer bottleBuffer = bufferSource.getBuffer(RenderType.entityCutout(NarakaTextures.SOUL_STABILIZER));
         bottle.render(poseStack, bottleBuffer, packedLight, packedOverlay);

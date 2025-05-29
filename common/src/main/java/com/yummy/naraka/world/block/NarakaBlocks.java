@@ -5,14 +5,17 @@ import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.mixin.invoker.MangroveRootsBlockInvoker;
 import com.yummy.naraka.world.item.NarakaItems;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
@@ -80,6 +83,20 @@ public class NarakaBlocks {
             properties -> new NectariumCrystalBlock(properties
                     .requiresCorrectToolForDrops()),
             Blocks.AMETHYST_BLOCK
+    );
+
+    public static final HolderProxy<Block, Block> PURIFIED_SOUL_LAMP = registerSimpleBlockWithItem(
+            "purified_soul_lamp",
+            from(Blocks.REDSTONE_LAMP)
+                    .lightLevel(state -> 15)
+                    .emissiveRendering(NarakaBlocks::always)
+    );
+
+    public static final HolderProxy<Block, Block> PURIFIED_SOUL_LANTERN = registerSimpleBlockWithItem(
+            "purified_soul_lantern",
+            from(Blocks.SEA_LANTERN)
+                    .lightLevel(state -> 15)
+                    .emissiveRendering(NarakaBlocks::always)
     );
 
     public static final HolderProxy<Block, PurifiedSoulBlock> PURIFIED_SOUL_BLOCK = registerBlockWithItem(
@@ -165,7 +182,7 @@ public class NarakaBlocks {
                     .requiresCorrectToolForDrops()
     );
     public static final HolderProxy<Block, Block> EBONY_METAL_BLOCK = registerSimpleBlockWithItem("ebony_metal_block", Blocks.NETHERITE_BLOCK);
-    public static final HolderProxy<Block, EbonyLeavesBlock> EBONY_LEAVES = registerBlockWithItem("ebony_leaves", EbonyLeavesBlock::new, Blocks.DARK_OAK_LEAVES);
+    public static final HolderProxy<Block, EbonyLeavesBlock> EBONY_LEAVES = registerBlockWithItem("ebony_leaves", properties -> new EbonyLeavesBlock(0.5f, properties), Blocks.DARK_OAK_LEAVES);
     public static final HolderProxy<Block, MangroveRootsBlock> EBONY_ROOTS = registerBlockWithItem("ebony_roots", MangroveRootsBlockInvoker::create, Blocks.MANGROVE_ROOTS);
 
     public static final HolderProxy<Block, EbonySaplingBlock> EBONY_SAPLING = registerBlockWithItem("ebony_sapling", EbonySaplingBlock::new, Blocks.DARK_OAK_SAPLING);
@@ -280,6 +297,10 @@ public class NarakaBlocks {
 
     private static HolderProxy<Block, Block> registerSimpleBlockWithItem(String name, Block propertyBase) {
         return registerBlockWithItem(name, Block::new, from(propertyBase));
+    }
+
+    private static boolean always(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+        return true;
     }
 
     public static void initialize() {

@@ -76,6 +76,8 @@ public class NarakaLanguageProviders {
         add(NarakaJadeProviderComponents.SOUL_SMITHING_BLOCK.translationKey, "Soul Smithing Block", "영혼 대장장이 블록");
         add(NarakaJadeProviderComponents.ENTITY_DATA.translationKey, "Stigma", "낙인");
 
+        add(LanguageKey.DISABLE_SKILL_USE_KEY, "Disable skill using", "스킬 사용 중지");
+
         add(SoulType.REDSTONE.translationKey(), "Redstone", "레드스톤");
         add(SoulType.COPPER.translationKey(), "Copper", "구리");
         add(SoulType.GOLD.translationKey(), "Gold", "금");
@@ -194,7 +196,7 @@ public class NarakaLanguageProviders {
 
         addItem(NarakaItems.STIGMA_ROD, "Stigma Rod", "낙인 막대기");
         addItem(NarakaItems.STARDUST_STAFF, "Stardust Staff");
-        addItem(NarakaItems.NARAKA_FIREBALL, "Naraka Fireball", "나락 화염구");
+        addItem(NarakaItems.NARAKA_FIREBALL_STAFF, "Naraka Fireball Staff");
         addItem(NarakaItems.RAINBOW_SWORD, "Rainbow Sword", "무지개 검");
         addItem(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard", "정화된 영혼 조각");
         addItem(NarakaItems.NECTARIUM, "Nectarium", "넥타륨");
@@ -246,6 +248,8 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.HEROBRINE_PHASE_3_DISC, "Herobrine Phase 3 Disc", "히로빈 3 페이즈 음반");
         addItem(NarakaItems.HEROBRINE_PHASE_4_DISC, "Herobrine Phase 4 Disc", "히로빈 4 페이즈 음반");
         addItem(NarakaItems.HEROBRINE_SPAWN_EGG, "Herobrine Spawn Egg", "히로빈 생성 알");
+        addItem(NarakaItems.SKILL_CONTROLLER, "Skill Controller", "스킬 컨트롤러");
+        addItem(NarakaItems.ANIMATION_CONTROLLER, "Animation Controller", "애니메이션 컨트롤러");
 
         addBlock(NarakaBlocks.AMETHYST_ORE, "Amethyst Ore", "자수정 광석");
         addBlock(NarakaBlocks.DEEPSLATE_AMETHYST_ORE, "Deepslate Amethyst Ore", "심층암 자수정 광석");
@@ -268,6 +272,8 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.PURIFIED_SOUL_BLOCK, "Block of Purified Soul", "정화된 영혼 블록");
 
         addBlock(NarakaBlocks.HEROBRINE_TOTEM, "Herobrine Totem", "히로빈 토템");
+        addBlock(NarakaBlocks.PURIFIED_SOUL_LANTERN, "Purified Soul Lantern", "정화된 영혼 랜턴");
+        addBlock(NarakaBlocks.PURIFIED_SOUL_LAMP, "Purified Soul Lamp", "정화된 영혼 조명");
         addBlock(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK, "Purified Soul Fire", "정화된 영혼 불");
         addBlock(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK, "Block of Purified Soul Metal", "정화된 영혼 금속 블록");
         addBlock(NarakaBlocks.EBONY_LOG, "Ebony Log", "흑단나무 원목");

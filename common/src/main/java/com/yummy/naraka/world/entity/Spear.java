@@ -2,9 +2,10 @@ package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.item.NarakaItems;
-import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Position;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -22,6 +23,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
@@ -78,7 +80,7 @@ public class Spear extends AbstractArrow {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        dealtDamage = compound.getBoolean("DealtDamage");
+        dealtDamage = compound.getBooleanOr("DealtDamage", true);
         entityData.set(ID_LOYALTY, getLoyaltyFromItem(getPickupItem()));
         entityData.set(ID_FOIL, getPickupItem().hasFoil());
     }
@@ -168,7 +170,10 @@ public class Spear extends AbstractArrow {
             return 1;
         if (enchantments == null)
             return (float) attributeModifiers.compute(baseDamage, EquipmentSlot.MAINHAND);
-        int sharpness = enchantments.getLevel(NarakaEnchantments.get(Enchantments.SHARPNESS));
+        Holder<Enchantment> sharpnessEnchantment = registryAccess()
+                .lookupOrThrow(Registries.ENCHANTMENT)
+                .getOrThrow(Enchantments.SHARPNESS);
+        int sharpness = enchantments.getLevel(sharpnessEnchantment);
         return (float) attributeModifiers.compute(baseDamage + sharpness, EquipmentSlot.MAINHAND);
     }
 

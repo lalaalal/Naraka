@@ -1,5 +1,6 @@
 package com.yummy.naraka.network;
 
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -11,5 +12,14 @@ public interface ClientboundNetworkManager extends PacketHandlerRegistrar {
     default void send(Collection<ServerPlayer> players, CustomPacketPayload payload) {
         for (ServerPlayer player : players)
             send(player, payload);
+    }
+
+    default void send(ServerPlayer player, Packet<?> packet) {
+        player.connection.send(packet);
+    }
+
+    default void send(Collection<ServerPlayer> players, Packet<?> packet) {
+        for (ServerPlayer player : players)
+            send(player, packet);
     }
 }

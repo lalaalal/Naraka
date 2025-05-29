@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 /**
@@ -39,7 +40,14 @@ public abstract class StaticConfiguration extends Configuration {
         NarakaMod.LOGGER.info("Loading static configuration \"{}\"", name);
         try (Reader reader = file.createReader()) {
             file.load(reader);
-            configurations.forEach(file::read);
+            AtomicInteger counter = new AtomicInteger(0);
+            configurations.forEach((key, configValue) -> {
+                file.read(key, configValue);
+                if (file.contains(key))
+                    counter.addAndGet(1);
+            });
+            if (counter.get() < configurations.size())
+                saveValues();
         } catch (FileNotFoundException exception) {
             NarakaMod.LOGGER.warn("Configuration file \"{}\" is not found", file.getFileName());
             saveValues();

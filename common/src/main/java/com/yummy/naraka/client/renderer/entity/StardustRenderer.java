@@ -30,11 +30,18 @@ public class StardustRenderer extends EntityRenderer<Stardust, StardustRenderSta
     }
 
     @Override
+    public void extractRenderState(Stardust entity, StardustRenderState reusedState, float partialTick) {
+        super.extractRenderState(entity, reusedState, partialTick);
+        reusedState.partialTick = partialTick;
+    }
+
+    @Override
     public void render(StardustRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         Player player = Minecraft.getInstance().player;
+
         if (player != null) {
-            float yHeadRot = Mth.rotLerp(renderState.ageInTicks, player.yHeadRotO, player.yHeadRot);
+            float yHeadRot = Mth.rotLerp(renderState.partialTick, player.yHeadRotO, player.yHeadRot);
             poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - yHeadRot));
         }
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(NarakaTextures.STARDUST));

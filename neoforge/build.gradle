@@ -34,7 +34,7 @@ repositories {
 dependencies {
     neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
 
-    modRuntimeOnly "curse.maven:jade-324717:6170888"
+    modRuntimeOnly "curse.maven:jade-324717:6524708"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')

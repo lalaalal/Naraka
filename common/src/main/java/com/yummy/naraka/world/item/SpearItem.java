@@ -45,11 +45,6 @@ public class SpearItem extends Item implements ProjectileItem {
     }
 
     @Override
-    public boolean canAttackBlock(BlockState blockState, Level level, BlockPos pos, Player player) {
-        return !player.isCreative();
-    }
-
-    @Override
     public ItemUseAnimation getUseAnimation(ItemStack stack) {
         return ItemUseAnimation.SPEAR;
     }
@@ -96,9 +91,8 @@ public class SpearItem extends Item implements ProjectileItem {
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         stack.hurtAndBreak(1, attacker, EquipmentSlot.MAINHAND);
-        return true;
     }
 
     @Override

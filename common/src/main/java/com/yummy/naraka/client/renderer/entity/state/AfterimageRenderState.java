@@ -21,7 +21,9 @@ public class AfterimageRenderState extends LivingEntityRenderState {
         int alpha = afterimage.getAlpha(partialTicks);
 
         this.color = color.withAlpha(alpha);
-        this.canRender = afterimage.getAlpha(partialTicks) == 0 && afterimage.getPartialTicks() < partialTicks;
+        this.canRender = !(alpha == 0 && afterimage.getPartialTicks() < partialTicks);
+        this.bodyRot = afterimage.getYRot();
+        this.yRot = afterimage.getYRot();
     }
 
     public interface Provider {

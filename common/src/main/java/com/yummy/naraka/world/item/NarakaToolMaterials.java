@@ -12,8 +12,8 @@ import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 
 public class NarakaToolMaterials {
-    private static final ResourceLocation ENTITY_INTERACTION_RANGE_ID = NarakaMod.location("entity_interaction_range");
-    private static final ResourceLocation BLOCK_INTERACTION_RANGE_ID = NarakaMod.location("block_interaction_range");
+    public static final ResourceLocation ENTITY_INTERACTION_RANGE_ID = NarakaMod.location("entity_interaction_range");
+    public static final ResourceLocation BLOCK_INTERACTION_RANGE_ID = NarakaMod.location("block_interaction_range");
 
     public static final ToolMaterial LONGINUS = new ToolMaterial(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 0, 6, 65, 6, NarakaItemTags.LONGINUS_TOOL_MATERIALS);
 

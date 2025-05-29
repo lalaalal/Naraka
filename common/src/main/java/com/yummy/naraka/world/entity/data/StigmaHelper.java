@@ -14,18 +14,16 @@ public class StigmaHelper {
         EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.get(), stigma);
     }
 
-    public static void increaseStigma(LivingEntity target, Entity cause, boolean recordTime) {
+    public static void increaseStigma(ServerLevel level, LivingEntity target, Entity cause, boolean recordTime) {
         if (target.getType().is(NarakaEntityTypeTags.HEROBRINE))
             return;
-        if (target.level() instanceof ServerLevel level) {
-            Stigma stigma = get(target);
-            Stigma increased = stigma.increase(level, target, cause, recordTime);
-            set(target, increased);
-        }
+        Stigma stigma = get(target);
+        Stigma increased = stigma.increase(level, target, cause, recordTime);
+        set(target, increased);
     }
 
-    public static void increaseStigma(LivingEntity target, Entity cause) {
-        increaseStigma(target, cause, false);
+    public static void increaseStigma(ServerLevel level, LivingEntity target, Entity cause) {
+        increaseStigma(level, target, cause, false);
     }
 
     public static void decreaseStigma(LivingEntity livingEntity) {

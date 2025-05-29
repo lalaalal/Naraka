@@ -16,6 +16,9 @@ public class NarakaParticleTypes {
 
     public static final HolderProxy<ParticleType<?>, ParticleType<SoulParticleOption>> SOUL = register("soul", false, SoulParticleOption::type);
 
+    public static final HolderProxy<ParticleType<?>, SimpleParticleType> GOLDEN_FLAME = register("golden_flame", false);
+    public static final HolderProxy<ParticleType<?>, SimpleParticleType> HEROBRINE_SPAWN = register("herobrine_spawn", false);
+
     private static <T extends ParticleType<?>> HolderProxy<ParticleType<?>, T> register(String name, boolean force, Function<Boolean, T> factory) {
         return RegistryProxy.register(Registries.PARTICLE_TYPE, name, () -> factory.apply(force));
     }

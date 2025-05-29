@@ -2,63 +2,32 @@ package com.yummy.naraka.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 public class NarakaNbtUtils {
-    /**
-     * Create a new compound tag with {@link ItemStack}
-     *
-     * @param registries Registry access
-     * @param item       Item to save
-     * @return New {@link Tag}
-     */
-    public static Tag writeItem(RegistryAccess registries, ItemStack item) {
+    public static CompoundTag writeBlockPos(BlockPos pos) {
         CompoundTag tag = new CompoundTag();
-        return item.save(registries, tag);
+        tag.putInt("x", pos.getX());
+        tag.putInt("y", pos.getY());
+        tag.putInt("z", pos.getZ());
+
+        return tag;
     }
 
-    /**
-     * Read item from given {@link CompoundTag}
-     *
-     * @param registries RegistryAccess
-     * @param tag        Tag of item
-     * @return Item
-     */
-    public static ItemStack readItem(RegistryAccess registries, CompoundTag tag) {
-        return ItemStack.parseOptional(registries, tag);
-    }
-
-    public static Tag writeBoundingBox(BoundingBox box) {
-        CompoundTag boxTag = new CompoundTag();
-        BlockPos min = new BlockPos(box.minX(), box.minY(), box.minZ());
-        BlockPos max = new BlockPos(box.maxX(), box.maxY(), box.maxZ());
-        Tag minTag = NbtUtils.writeBlockPos(min);
-        Tag maxTag = NbtUtils.writeBlockPos(max);
-        boxTag.put("min", minTag);
-        boxTag.put("max", maxTag);
-
-        return boxTag;
-    }
-
-    public static Optional<BoundingBox> readBoundingBox(CompoundTag compoundTag, String key) {
-        if (!compoundTag.contains(key))
-            return Optional.empty();
-        CompoundTag boxTag = compoundTag.getCompound(key);
-        Optional<BlockPos> min = NbtUtils.readBlockPos(boxTag, "min");
-        Optional<BlockPos> max = NbtUtils.readBlockPos(boxTag, "max");
-        if (min.isEmpty() || max.isEmpty())
-            return Optional.empty();
-        return Optional.of(BoundingBox.fromCorners(min.get(), max.get()));
+    public static Optional<BlockPos> readBlockPos(CompoundTag tag, String name) {
+        Optional<CompoundTag> optional = tag.getCompound(name);
+        return optional.map(compoundTag -> {
+            int x = compoundTag.getIntOr("x", 0);
+            int y = compoundTag.getIntOr("y", 0);
+            int z = compoundTag.getIntOr("z", 0);
+            return new BlockPos(x, y, z);
+        });
     }
 
     public static <T> void writeCollection(CompoundTag compoundTag, String name, Collection<T> collection, TagWriter<T> factory, HolderLookup.Provider provider) {
@@ -69,14 +38,27 @@ public class NarakaNbtUtils {
     }
 
     public static <T, C extends Collection<T>> C readCollection(CompoundTag compoundTag, String name, Supplier<C> supplier, TagReader<T> tagReader, HolderLookup.Provider provider) {
-        ListTag listTag = compoundTag.getList(name, 10);
+        ListTag listTag = compoundTag.getListOrEmpty(name);
         C list = supplier.get();
         for (int index = 0; index < listTag.size(); index++) {
-            CompoundTag valueTag = listTag.getCompound(index);
-            T value = tagReader.read(valueTag, provider);
-            list.add(value);
+            Optional<CompoundTag> valueTag = listTag.getCompound(index);
+            if (valueTag.isPresent()) {
+                T value = tagReader.read(valueTag.get(), provider);
+                list.add(value);
+            }
         }
         return list;
+    }
+
+    public static CompoundTag writeUUID(UUID uuid, CompoundTag compoundTag, HolderLookup.Provider provider) {
+        compoundTag.putString("UUID", uuid.toString());
+        return compoundTag;
+    }
+
+    public static UUID readUUID(CompoundTag tag, HolderLookup.Provider provider) {
+        Optional<String> uuid = tag.getString("UUID");
+        return uuid.map(UUID::fromString)
+                .orElseGet(UUID::randomUUID);
     }
 
     public interface TagReader<T> {

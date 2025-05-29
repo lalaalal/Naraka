@@ -117,8 +117,8 @@ public class NarakaItemUtils {
     }
 
     public static void updateAllReinforcementEffects(LivingEntity livingEntity) {
-        for (ItemStack itemStack : livingEntity.getAllSlots()) {
-            EquipmentSlot slot = livingEntity.getEquipmentSlotForItem(itemStack);
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            ItemStack itemStack = livingEntity.getItemBySlot(slot);
             checkAndUpdateReinforcementEffects(livingEntity, slot, itemStack, ReinforcementEffect::onEquipped);
         }
     }

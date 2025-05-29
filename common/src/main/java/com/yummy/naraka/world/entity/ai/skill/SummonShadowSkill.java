@@ -11,7 +11,7 @@ public class SummonShadowSkill extends Skill<Herobrine> {
     }
 
     @Override
-    public boolean canUse() {
+    public boolean canUse(ServerLevel level) {
         return mob.getShadowCount() == 0;
     }
 
@@ -22,6 +22,6 @@ public class SummonShadowSkill extends Skill<Herobrine> {
 
     @Override
     protected void onLastTick(ServerLevel level) {
-        mob.summonShadowHerobrine();
+        mob.getShadowController().summonShadowHerobrine(level);
     }
 }

@@ -6,25 +6,34 @@ import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 
+import java.util.Optional;
+
 public class SoulEquipmentSet extends EquipmentSet {
     private static boolean test(LivingEntity livingEntity) {
         ItemStack handItem = livingEntity.getMainHandItem();
-        SoulType soulType = handItem.get(NarakaDataComponentTypes.SOUL.get());
-        if (soulType == null)
+        SoulType soulType = handItem.getOrDefault(NarakaDataComponentTypes.SOUL.get(), SoulType.NONE);
+        if (soulType == SoulType.NONE)
             return false;
 
-        for (ItemStack armorItemStack : livingEntity.getArmorSlots()) {
+        for (EquipmentSlot slot : EquipmentSlotGroup.ARMOR.slots()) {
+            if (slot.getType() != EquipmentSlot.Type.HUMANOID_ARMOR)
+                continue;
+            ItemStack armorItemStack = livingEntity.getItemBySlot(slot);
             ArmorTrim armorTrim = armorItemStack.get(DataComponents.TRIM);
             if (armorTrim == null)
                 return false;
-            TrimMaterial material = armorTrim.material().value();
-            if (material.ingredient().value() != soulType.getItem())
+
+            Optional<ResourceKey<TrimMaterial>> material = armorTrim.material().unwrapKey();
+            if (material.isPresent() && !soulType.material.equals(material.get()))
                 return false;
         }
 

@@ -1,13 +1,12 @@
 package com.yummy.naraka.world.structure.piece;
 
-import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.tags.NarakaBlockTags;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -22,16 +21,16 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 
 public class HerobrineSanctuaryOutline extends StructurePiece {
-    public static final float SPHERE_SIZE = 0.75f;
-    private static final int STRUCTURE_WIDTH = 48 * 2 + 39;
-    private static final int STRUCTURE_HEIGHT = 48 * 4;
+    public static final float SPHERE_SIZE = 0.6f;
+    private static final int STRUCTURE_WIDTH = 48 * 2 + 9;
+    private static final int STRUCTURE_HEIGHT = 48 * 2 + 29;
     private static final int WIDTH = 48 * 6 + 1;
     private static final int HEIGHT = 48 * 6 + 1;
     private static final int DEPTH = 48 * 2 + 24 + 1;
     private static final int AIR_DEPTH = 48 * 3 + 24;
 
     private static final BlockPos OFFSET = new BlockPos(
-            ((WIDTH - STRUCTURE_WIDTH) / -2) - 1, -DEPTH, ((HEIGHT - STRUCTURE_HEIGHT) / -2) - 1
+            ((WIDTH - STRUCTURE_WIDTH) / -2) - 1, -DEPTH + 7, ((HEIGHT - STRUCTURE_HEIGHT) / -2)
     ).offset(NarakaStructures.HEROBRINE_SANCTUARY_MAIN_OFFSET);
 
     private final BlockPos pos;
@@ -60,14 +59,14 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
 
     public HerobrineSanctuaryOutline(StructurePieceSerializationContext context, CompoundTag tag) {
         super(NarakaStructurePieceTypes.HEROBRINE_SANCTUARY_OUTLINE.get(), tag);
-        this.pos = NbtUtils.readBlockPos(tag, "pos").orElse(BlockPos.ZERO);
+        this.pos = NarakaNbtUtils.readBlockPos(tag, "pos").orElse(BlockPos.ZERO);
         this.lavaBox = createLavaBox(pos);
         this.airBox = createAirBox(pos);
     }
 
     @Override
     protected void addAdditionalSaveData(StructurePieceSerializationContext pContext, CompoundTag tag) {
-        tag.put("pos", NbtUtils.writeBlockPos(pos));
+        tag.put("pos", NarakaNbtUtils.writeBlockPos(pos));
     }
 
     @Override
@@ -96,30 +95,7 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
                     placeBlock(level, replace, x, y, z, processingBox);
                 }
             }
-//            wrap(level, processingBox, box, x, y, z, seaLevel, wrapTarget, defaultReplace);
         });
-    }
-
-    protected void wrap(WorldGenLevel level, BoundingBox processingBox, BoundingBox box, int x, int y, int z, int seaLevel, TagKey<Block> target, Block defaultReplace) {
-        int[] xOffsets = {0, 1, 0, -1, 0};
-        int[] zOffsets = {1, 0, -1, 0, 0};
-        int[] yOffsets = {0, 0, 0, 0, -1};
-        if (x == 9530 && z == 3247 && y == 58)
-            NarakaMod.LOGGER.info("mm");
-        for (int i = 0; i < xOffsets.length; i++) {
-            int targetX = x + xOffsets[i];
-            int targetZ = z + zOffsets[i];
-            int targetY = y + yOffsets[i];
-            if (!NarakaUtils.isInSphere(box, SPHERE_SIZE, targetX, targetY, targetZ)) {
-                if (targetX == 9530 && targetZ == 3247 && targetY < seaLevel)
-                    NarakaMod.LOGGER.info("mm");
-                BlockState state = getBlock(level, targetX, targetY, targetZ, processingBox);
-                if (state.is(target) || (targetY < seaLevel) && state.isAir()) {
-                    BlockState replace = findAppropriateState(targetY, seaLevel, defaultReplace);
-                    placeBlock(level, replace, targetX, targetY, targetZ, processingBox);
-                }
-            }
-        }
     }
 
     protected BlockState refineReplaceable(BlockState state, int y, int seaLevel) {

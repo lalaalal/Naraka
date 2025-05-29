@@ -22,16 +22,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Collection;
-import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
 public abstract class AfterimageEntityRenderer<T extends LivingEntity & AfterimageEntity, S extends LivingEntityRenderState & AfterimageRenderState.Provider, M extends EntityModel<S>>
         extends LivingEntityRenderer<T, S, M> {
-    protected final M afterimageModel;
-
-    public AfterimageEntityRenderer(EntityRendererProvider.Context context, Supplier<M> model, float shadowRadius) {
-        super(context, model.get(), shadowRadius);
-        this.afterimageModel = model.get();
+    protected AfterimageEntityRenderer(EntityRendererProvider.Context context, M model, float shadowRadius) {
+        super(context, model, shadowRadius);
     }
 
     @Override
@@ -48,8 +44,8 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
             packedLight = Math.max(LightTexture.pack(blockLight, skyLight), packedLight);
         }
-        renderAfterimages(renderState, poseStack, buffer);
         super.render(renderState, poseStack, buffer, packedLight);
+        renderAfterimages(renderState, poseStack, buffer);
     }
 
     protected void renderAfterimages(S renderState, PoseStack poseStack, MultiBufferSource buffer) {
@@ -57,26 +53,26 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
             this.renderAfterimage(renderState, afterimage, poseStack, buffer);
     }
 
-    protected void renderAfterimage(S renderState, AfterimageRenderState afterimage, PoseStack poseStack, MultiBufferSource buffer) {
-        if (!afterimage.canRender)
+    protected void renderAfterimage(S renderState, AfterimageRenderState afterimageRenderState, PoseStack poseStack, MultiBufferSource buffer) {
+        if (!afterimageRenderState.canRender)
             return;
 
-        Vec3 translation = afterimage.translation;
+        Vec3 translation = afterimageRenderState.translation;
 
         poseStack.pushPose();
         poseStack.translate(translation.x, translation.y + 1.5, translation.z);
         poseStack.scale(1, -1, 1);
 
-        this.setupRotations(renderState, poseStack, afterimage.bodyRot, renderState.scale);
+        this.setupRotations(renderState, poseStack, afterimageRenderState.bodyRot, renderState.scale);
 
-        RenderType renderType = RenderType.entityTranslucentEmissive(getAfterimageTexture(renderState));
+        RenderType renderType = RenderType.entityTranslucent(getAfterimageTexture(renderState), true);
         VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
-        Color color = afterimage.color;
-        int light = (int) (color.alpha01() * 10) + 5;
+        Color color = afterimageRenderState.color;
+        int light = (int) (color.alpha01() * 5);
         int packedLight = LightTexture.pack(light, light);
 
-        this.afterimageModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color.pack());
-        renderAfterimageLayer(renderState, afterimage, poseStack, buffer, packedLight, color.alpha());
+        getAfterimageModel(renderState).renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color.pack());
+        renderAfterimageLayer(renderState, afterimageRenderState, poseStack, buffer, packedLight, color.alpha());
 
         poseStack.popPose();
     }
@@ -85,5 +81,7 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
     }
 
-    protected abstract ResourceLocation getAfterimageTexture(S afterimage);
+    protected abstract M getAfterimageModel(S renderState);
+
+    protected abstract ResourceLocation getAfterimageTexture(S renderState);
 }

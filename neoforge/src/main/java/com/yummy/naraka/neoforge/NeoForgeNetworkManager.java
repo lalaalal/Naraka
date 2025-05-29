@@ -1,5 +1,6 @@
 package com.yummy.naraka.neoforge;
 
+import com.yummy.naraka.Platform;
 import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.network.ClientboundNetworkManager;
 import com.yummy.naraka.network.NetworkManager;
@@ -35,12 +36,28 @@ public final class NeoForgeNetworkManager implements NarakaEventBus {
         };
     }
 
+    private static <T extends CustomPacketPayload> IPayloadHandler<T> empty() {
+        return (payload, context) -> {
+        };
+    }
+
     private static class NeoForgeServerboundNetworkManager implements ServerboundNetworkManager {
         @Override
+        public <T extends CustomPacketPayload> void define(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
+            if (Platform.getInstance().getSide() == Platform.Side.CLIENT) {
+                NARAKA_BUS.addListener(RegisterPayloadHandlersEvent.class, event -> {
+                    event.registrar(VERSION).playToServer(type, codec, empty());
+                });
+            }
+        }
+
+        @Override
         public <T extends CustomPacketPayload> void register(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.PacketHandler<T> handler) {
-            NARAKA_BUS.addListener(RegisterPayloadHandlersEvent.class, event -> {
-                event.registrar(VERSION).playToServer(type, codec, wrap(handler));
-            });
+            if (Platform.getInstance().getSide() == Platform.Side.SERVER) {
+                NARAKA_BUS.addListener(RegisterPayloadHandlersEvent.class, event -> {
+                    event.registrar(VERSION).playToServer(type, codec, wrap(handler));
+                });
+            }
         }
 
         @Override
@@ -51,10 +68,21 @@ public final class NeoForgeNetworkManager implements NarakaEventBus {
 
     private static class NeoForgeClientboundNetworkManager implements ClientboundNetworkManager {
         @Override
+        public <T extends CustomPacketPayload> void define(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
+            if (Platform.getInstance().getSide() == Platform.Side.SERVER) {
+                NARAKA_BUS.addListener(RegisterPayloadHandlersEvent.class, event -> {
+                    event.registrar(VERSION).playToClient(type, codec, empty());
+                });
+            }
+        }
+
+        @Override
         public <T extends CustomPacketPayload> void register(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.PacketHandler<T> handler) {
-            NARAKA_BUS.addListener(RegisterPayloadHandlersEvent.class, event -> {
-                event.registrar(VERSION).playToClient(type, codec, wrap(handler));
-            });
+            if (Platform.getInstance().getSide() == Platform.Side.CLIENT) {
+                NARAKA_BUS.addListener(RegisterPayloadHandlersEvent.class, event -> {
+                    event.registrar(VERSION).playToClient(type, codec, wrap(handler));
+                });
+            }
         }
 
         @Override

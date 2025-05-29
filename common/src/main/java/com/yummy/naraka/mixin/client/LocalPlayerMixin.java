@@ -1,6 +1,6 @@
 package com.yummy.naraka.mixin.client;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.yummy.naraka.mixin.LivingEntityMixin;
 import com.yummy.naraka.util.NarakaItemUtils;
 import net.fabricmc.api.EnvType;
@@ -22,17 +22,7 @@ public abstract class LocalPlayerMixin extends LivingEntityMixin {
         super(entityType, level);
     }
 
-    /**
-     * Needed to avoid setting sprinting false with lava swimming
-     */
-    @ModifyExpressionValue(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isInWater()Z"))
-    public boolean isInLiquid(boolean original) {
-        if (NarakaItemUtils.canApplyFasterLiquidSwimming(naraka$living()))
-            return original || isInLiquid();
-        return original;
-    }
-
-    @ModifyExpressionValue(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isUnderWater()Z"))
+    @ModifyReturnValue(method = "isUnderWater", at = @At(value = "RETURN"))
     public boolean isUnderLiquid(boolean original) {
         if (NarakaItemUtils.canApplyFasterLiquidSwimming(naraka$living()))
             return original || naraka$isUnderLiquid();

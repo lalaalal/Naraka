@@ -5,17 +5,14 @@ import com.yummy.naraka.world.entity.Herobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import java.util.List;
-
 @Environment(EnvType.CLIENT)
 public class HerobrineRenderState extends AbstractHerobrineRenderState {
+    public int phase;
     public boolean renderScarf = false;
-    public float scarfRotationDegree = 90;
-    public List<Float> scarfWaveSpeedList = List.of();
+    public WavingScarfRenderState scarfRenderState = new WavingScarfRenderState();
 
     public void updateScarfRenderState(Herobrine herobrine, float partialTick) {
-        renderScarf = herobrine.getPhase() == 2 || NarakaConfig.CLIENT.alwaysDisplayHerobrineScarf.getValue();
-        scarfRotationDegree = herobrine.getScarfRotationDegree(partialTick) - NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
-        scarfWaveSpeedList = herobrine.getScarfWaveSpeedList();
+        renderScarf = herobrine.getPhase() >= 2 || NarakaConfig.CLIENT.alwaysDisplayHerobrineScarf.getValue();
+        scarfRenderState.extract(herobrine, partialTick);
     }
 }
