@@ -47,6 +47,14 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
     }
 
     @Override
+    public void render(S renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        poseStack.pushPose();
+        poseStack.scale(0.935f, 0.935f, 0.935f);
+        super.render(renderState, poseStack, buffer, packedLight);
+        poseStack.popPose();
+    }
+
+    @Override
     protected void renderAfterimageLayer(S renderState, AfterimageRenderState afterimage, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int alpha) {
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(NarakaTextures.HEROBRINE_EYE));
         int color = ARGB.white(Mth.clamp(alpha - 25, 0, 255));

@@ -19,7 +19,8 @@ public class NarakaEntityTypes {
                             MobCategory.MONSTER
                     )
                     .fireImmune()
-                    .sized(0.6f, 2.0f)
+                    .sized(0.6f, 1.8f)
+                    .eyeHeight(1.62f)
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<ShadowHerobrine>> SHADOW_HEROBRINE = register(
