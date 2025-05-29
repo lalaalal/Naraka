@@ -23,12 +23,12 @@ public class NarakaStructureSets {
                 new StructureSet(
                         structures.getOrThrow(NarakaStructures.HEROBRINE_SANCTUARY),
                         new ExclusiveRandomSpreadStructurePlacement(
-                                48,
+                                32,
                                 80,
                                 20,
                                 RandomSpreadType.TRIANGULAR,
                                 structureSets.getOrThrow(NarakaStructureSetTags.HEROBRINE_SANCTUARY_EXCLUSIVE),
-                                10,
+                                32,
                                 8927916
                         )
                 )
