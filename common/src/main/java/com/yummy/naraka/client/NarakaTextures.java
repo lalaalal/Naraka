@@ -1,6 +1,8 @@
 package com.yummy.naraka.client;
 
 import com.yummy.naraka.NarakaMod;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -9,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 
+@Environment(EnvType.CLIENT)
 public final class NarakaTextures {
     public static final ResourceLocation HEROBRINE = entity("herobrine.png");
     public static final ResourceLocation HEROBRINE_FINAL = entity("herobrine_final.png");

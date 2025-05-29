@@ -40,7 +40,7 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
         if (onGroundTick > 1) {
             duration = 0;
             level.playSound(mob, mob.blockPosition(), SoundEvents.TOTEM_USE, SoundSource.HOSTILE, 1, 1);
-            mob.setDeltaMovement(Vec3.ZERO);
+            mob.setDeltaMovement(mob.getDeltaMovement().multiply(0, 1, 0));
         }
         onGroundTick += 1;
     }

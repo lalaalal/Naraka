@@ -1,5 +1,7 @@
 package com.yummy.naraka.client.gui.components;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -10,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.Set;
 
+@Environment(EnvType.CLIENT)
 public class LocationList extends ObjectSelectionList<LocationList.Entry> {
     private final Screen screen;
 

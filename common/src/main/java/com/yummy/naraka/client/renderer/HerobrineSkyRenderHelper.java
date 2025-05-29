@@ -5,10 +5,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaTextures;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.*;
 import net.minecraft.util.ARGB;
 import org.joml.Matrix4f;
 
+@Environment(EnvType.CLIENT)
 public class HerobrineSkyRenderHelper {
     private static final float TIME_OF_DAY = 0;
     private static final int SKY_COLOR = 0x000000;

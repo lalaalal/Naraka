@@ -18,6 +18,7 @@ public class ClientEvents {
         });
     }
 
+    @Environment(EnvType.CLIENT)
     public interface ClientState<T> {
         void run(T instance);
     }

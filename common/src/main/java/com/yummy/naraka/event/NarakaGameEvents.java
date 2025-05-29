@@ -1,9 +1,7 @@
-package com.yummy.naraka;
+package com.yummy.naraka.event;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.event.EntityEvents;
-import com.yummy.naraka.event.LootEvents;
-import com.yummy.naraka.event.ServerEvents;
 import com.yummy.naraka.util.TickSchedule;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
