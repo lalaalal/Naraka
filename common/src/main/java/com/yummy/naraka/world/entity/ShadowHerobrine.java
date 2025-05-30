@@ -71,6 +71,8 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         skillManager.runOnSkillEnd(this::increasePunchCooldown);
 
         goalSelector.addGoal(3, moveToTargetGoal);
+
+        entityData.set(DISPLAY_SCARF, true);
     }
 
     public ShadowHerobrine(Level level, Herobrine herobrine) {

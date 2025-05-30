@@ -20,6 +20,9 @@ public abstract class AbstractHerobrineRenderState extends LivingEntityRenderSta
     public boolean isShadow = false;
     public boolean isStaggering = false;
     public boolean isIdle = false;
+    public boolean renderScarf = false;
+    public WavingScarfRenderState scarfRenderState = new WavingScarfRenderState();
+
     private Collection<AfterimageRenderState> afterimages = List.of();
     private Consumer<BiConsumer<ResourceLocation, AnimationState>> animationVisitor = consumer -> {
 
@@ -28,6 +31,13 @@ public abstract class AbstractHerobrineRenderState extends LivingEntityRenderSta
     protected AbstractHerobrineRenderState() {
 
     }
+
+    public void updateScarfRenderState(AbstractHerobrine herobrine, float partialTick) {
+        renderScarf = herobrine.shouldRenderScarf() || NarakaConfig.CLIENT.alwaysDisplayHerobrineScarf.getValue();
+        scarfRenderState.extract(herobrine, getModelType(), partialTick);
+    }
+
+    public abstract WavingScarfRenderState.ModelType getModelType();
 
     public void setAnimationVisitor(AbstractHerobrine herobrine) {
         animationVisitor = herobrine::forEachAnimations;

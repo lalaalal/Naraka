@@ -25,7 +25,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
         this.afterimageModel = new HerobrineModel<>(context.bakeLayer(NarakaModelLayers.HEROBRINE));
         this.herobrineFinalModel = new HerobrineFinalModel(context.bakeLayer(NarakaModelLayers.HEROBRINE_FINAL));
 
-        addLayer(new HerobrineScarfLayer(this, context));
+        addLayer(new HerobrineScarfLayer<>(this, context));
     }
 
     @Override
@@ -35,9 +35,8 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
 
     @Override
     public void extractRenderState(Herobrine herobrine, HerobrineRenderState renderState, float partialTicks) {
-        super.extractRenderState(herobrine, renderState, partialTicks);
-        renderState.updateScarfRenderState(herobrine, partialTicks);
         renderState.phase = herobrine.getPhase();
+        super.extractRenderState(herobrine, renderState, partialTicks);
 
         if (renderState.phase == 3) {
             this.model = herobrineFinalModel;

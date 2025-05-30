@@ -22,9 +22,6 @@ import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
@@ -46,8 +43,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class Herobrine extends AbstractHerobrine {
-    protected static final EntityDataAccessor<Float> SCARF_ROTATION_DEGREE = SynchedEntityData.defineId(Herobrine.class, EntityDataSerializers.FLOAT);
-    protected static final EntityDataAccessor<Boolean> DISPLAY_SCARF = SynchedEntityData.defineId(Herobrine.class, EntityDataSerializers.BOOLEAN);
+
     private static final float[] HEALTH_BY_PHASE = {106, 210, 350};
 
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
@@ -100,8 +96,6 @@ public class Herobrine extends AbstractHerobrine {
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this, bossEvent);
     private final ShadowController shadowController = new ShadowController(this);
 
-    private final ScarfWavingData scarfWavingData = new ScarfWavingData();
-
     private float hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
 
     private boolean hibernateMode = false;
@@ -112,8 +106,6 @@ public class Herobrine extends AbstractHerobrine {
     protected float accumulatedHurtDamage;
 
     private @Nullable BlockPos spawnPosition;
-
-    private float prevScarfRotation = 0;
 
     public Herobrine(EntityType<? extends Herobrine> entityType, Level level) {
         super(entityType, level, false);
@@ -148,13 +140,6 @@ public class Herobrine extends AbstractHerobrine {
         goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64, 1, 5, 0));
     }
 
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(SCARF_ROTATION_DEGREE, 0f)
-                .define(DISPLAY_SCARF, false);
-    }
-
     public void setSpawnPosition(BlockPos pos) {
         this.spawnPosition = pos;
     }
@@ -170,6 +155,7 @@ public class Herobrine extends AbstractHerobrine {
     private void onPhase3(int phase) {
         teleportToSpawnedPosition();
         skillManager.setCurrentSkill(destroyStructureSkill);
+        entityData.set(DISPLAY_SCARF, true);
     }
 
     private void teleportToSpawnedPosition() {
@@ -247,31 +233,6 @@ public class Herobrine extends AbstractHerobrine {
     public void tick() {
         super.tick();
         afterimages.removeIf(Afterimage::tick);
-        prevScarfRotation = entityData.get(SCARF_ROTATION_DEGREE);
-
-        scarfWavingData.update(Mth.lerp(prevScarfRotation / NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue(), 0, 1), yBodyRot - yBodyRotO);
-    }
-
-    public ScarfWavingData getScarfWavingData() {
-        return scarfWavingData;
-    }
-
-    public float getScarfRotationDegree(float partialTick) {
-        return Mth.lerp(partialTick, prevScarfRotation, entityData.get(SCARF_ROTATION_DEGREE));
-    }
-
-    private void updateScarfRotation() {
-        float scarfRotationDegree = entityData.get(SCARF_ROTATION_DEGREE);
-        Vec3 delta = getDeltaMovement();
-        Vec3 projection = delta.multiply(1, 0, 1);
-        float targetRotation = (float) projection.length() * 100 * 10;
-        if (scarfRotationDegree < targetRotation)
-            scarfRotationDegree += 1;
-        if (scarfRotationDegree > targetRotation)
-            scarfRotationDegree -= 1;
-        float maxRotation = NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
-        float newRotation = Mth.clamp(scarfRotationDegree, 0, maxRotation);
-        entityData.set(SCARF_ROTATION_DEGREE, newRotation);
     }
 
     private void showPhaseChangeParticle(ServerLevel level) {
@@ -292,7 +253,6 @@ public class Herobrine extends AbstractHerobrine {
     protected void customServerAiStep(ServerLevel serverLevel) {
         updateIdleTick();
         updateAccumulatedDamage();
-        updateScarfRotation();
 
         tryAvoidProjectile();
         collectStigma(serverLevel);
@@ -501,10 +461,6 @@ public class Herobrine extends AbstractHerobrine {
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
 
         setHealth(getHealth() - 1);
-    }
-
-    public boolean shouldRenderScarf() {
-        return entityData.get(DISPLAY_SCARF);
     }
 
     protected void startStaggering(ResourceLocation animation, int duration, int showParticleTick) {

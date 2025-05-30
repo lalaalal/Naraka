@@ -35,9 +35,9 @@ public class ScarfWavingData {
         verticalPositions.removeLast();
         verticalPositions.addFirst(verticalY);
 
-//        float horizontalY = Mth.sin(verticalAngle) * 0.001f;
-//        horizontalPositions.removeLast();
-//        horizontalPositions.addFirst(horizontalY);
+        float horizontalY = Mth.sin(verticalAngle) * 0.005f;
+        horizontalPositions.removeFirst();
+        horizontalPositions.addLast(horizontalY);
 
         float prevShift = verticalShifts.getFirst();
         rotationSpeed = Mth.clamp(rotationSpeed, -45, 45);
@@ -67,7 +67,7 @@ public class ScarfWavingData {
         if (index < 0 || horizontalPositions.size() - 1 <= index)
             return 0;
 
-        return Mth.lerp(partialTick, horizontalPositions.get(index + 1), horizontalPositions.get(index));
+        return Mth.lerp(partialTick, horizontalPositions.get(index), horizontalPositions.get(index + 1));
     }
 
     public float getVerticalShift(int index, float partialTick) {
