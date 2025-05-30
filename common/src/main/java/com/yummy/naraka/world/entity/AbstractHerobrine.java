@@ -34,18 +34,21 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     private static final Set<ResourceLocation> STAGGERING_ANIMATIONS = Set.of(AnimationLocations.STAGGERING, AnimationLocations.STAGGERING_PHASE_2);
 
     protected int animationTickCount = Integer.MIN_VALUE;
+    protected Runnable animationTickListener = () -> {
+    };
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.ATTACK_DAMAGE, 10)
                 .add(Attributes.FOLLOW_RANGE, 128)
                 .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 1)
-                .add(Attributes.STEP_HEIGHT, 1)
+                .add(Attributes.STEP_HEIGHT, 1.75)
                 .add(Attributes.MOVEMENT_SPEED, 0.17f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.SAFE_FALL_DISTANCE, 256)
                 .add(Attributes.FALL_DAMAGE_MULTIPLIER, 0)
+                .add(Attributes.JUMP_STRENGTH, 0)
                 .add(Attributes.MAX_HEALTH, 666);
     }
 
@@ -69,14 +72,16 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
             setAnimation(AnimationLocations.IDLE);
     }
 
-    private void updateStaggering() {
+    private void updateAnimationTick() {
         if (animationTickCount == 0)
             stopAnimation();
-        if (animationTickCount >= 0)
+        if (animationTickCount >= 0) {
+            animationTickListener.run();
             animationTickCount -= 1;
+        }
     }
 
-    protected void playAnimation(ResourceLocation animation, int duration) {
+    protected void playStaticAnimation(ResourceLocation animation, int duration) {
         if (animationTickCount > 0)
             return;
         animationTickCount = Math.max(1, duration);
@@ -117,7 +122,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
     @Override
     protected void customServerAiStep() {
-        updateStaggering();
+        updateAnimationTick();
         super.customServerAiStep();
     }
 

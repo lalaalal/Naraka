@@ -37,7 +37,7 @@ public abstract class HerobrineTotemActivatingItemMixin {
             level.setBlockAndUpdate(pos.above(), Blocks.FIRE.defaultBlockState());
             HerobrineTotem.crack(level, pos.below(), totem);
             level.gameEvent(player, GameEvent.BLOCK_PLACE, pos);
-            cir.setReturnValue(InteractionResult.SUCCESS_SERVER);
+            cir.setReturnValue(InteractionResult.sidedSuccess(!level.isClientSide));
             cir.cancel();
         }
     }
