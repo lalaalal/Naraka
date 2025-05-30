@@ -36,6 +36,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
     @Override
     public void extractRenderState(Herobrine herobrine, HerobrineRenderState renderState, float partialTicks) {
         renderState.phase = herobrine.getPhase();
+        renderState.doWalkAnimation = herobrine.getPhase() != 3;
         super.extractRenderState(herobrine, renderState, partialTicks);
 
         if (renderState.phase == 3) {

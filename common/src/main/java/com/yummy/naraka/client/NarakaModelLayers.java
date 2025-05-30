@@ -32,7 +32,7 @@ public final class NarakaModelLayers {
 
     public static void initialize() {
         ModelLayerRegistry.register(NarakaModelLayers.HEROBRINE, HerobrineModel::createForHerobrine);
-        ModelLayerRegistry.register(NarakaModelLayers.HEROBRINE_FINAL, HerobrineFinalModel::createForHerobrineFinal);
+        ModelLayerRegistry.register(NarakaModelLayers.HEROBRINE_FINAL, HerobrineFinalModel::createBodyLayer);
         ModelLayerRegistry.register(NarakaModelLayers.HEROBRINE_SCARF, HerobrineScarfModel::createBodyLayer);
         ModelLayerRegistry.register(NarakaModelLayers.SHADOW_HEROBRINE_ARMOR, HerobrineModel::createForShadowArmor);
 

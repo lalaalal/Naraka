@@ -21,6 +21,7 @@ public abstract class AbstractHerobrineRenderState extends LivingEntityRenderSta
     public boolean isStaggering = false;
     public boolean isIdle = false;
     public boolean renderScarf = false;
+    public boolean doWalkAnimation = true;
     public WavingScarfRenderState scarfRenderState = new WavingScarfRenderState();
 
     private Collection<AfterimageRenderState> afterimages = List.of();

@@ -29,7 +29,7 @@ public class AnimationLocations {
     public static final ResourceLocation IDLE = create("herobrine", "idle");
     public static final ResourceLocation SHADOW_SUMMONED = create("shadow_herobrine", "summoned");
 
-    public static final ResourceLocation PHASE_3 = create("herobrine", "phase_3");
+    public static final ResourceLocation PHASE_3_IDLE = create("herobrine", "idle.phase_3");
 
     private static ResourceLocation create(String entity, String name) {
         ResourceLocation location = NarakaMod.location("animation/" + entity, name);

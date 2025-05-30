@@ -61,6 +61,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
                 .add(Attributes.SAFE_FALL_DISTANCE, 256)
                 .add(Attributes.FALL_DAMAGE_MULTIPLIER, 0)
                 .add(Attributes.JUMP_STRENGTH, 0)
+                .add(Attributes.FLYING_SPEED, 0.3f)
                 .add(Attributes.MAX_HEALTH, 666);
     }
 
@@ -112,7 +113,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         return entityData.get(DISPLAY_SCARF);
     }
 
-    private void updateAnimationOnSkillEnd(Skill<?> skill) {
+    protected void updateAnimationOnSkillEnd(Skill<?> skill) {
         if (!skill.hasLinkedSkill())
             setAnimation(AnimationLocations.IDLE);
     }

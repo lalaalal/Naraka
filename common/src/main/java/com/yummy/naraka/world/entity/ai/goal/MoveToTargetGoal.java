@@ -36,7 +36,7 @@ public class MoveToTargetGoal extends Goal {
         this.target = this.mob.getTarget();
         if (this.target == null || mob.isUsingSkill())
             return false;
-        return this.target.distanceToSqr(this.mob) < (this.within * this.within);
+        return this.target.distanceToSqr(this.mob) < (this.within * this.within) && this.target.distanceToSqr(this.mob) > 9;
     }
 
     @Override
@@ -47,7 +47,8 @@ public class MoveToTargetGoal extends Goal {
                 && !mob.isStaggering()
                 && this.target != null
                 && this.target.isAlive()
-                && this.target.distanceToSqr(this.mob) < (this.within * this.within);
+                && this.target.distanceToSqr(this.mob) < (this.within * this.within)
+                && this.target.distanceToSqr(this.mob) > 9;
     }
 
     @Override

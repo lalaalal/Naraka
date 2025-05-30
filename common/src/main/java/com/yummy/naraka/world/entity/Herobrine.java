@@ -12,6 +12,7 @@ import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
+import com.yummy.naraka.world.entity.ai.control.HerobrineMoveControl;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.*;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
@@ -32,6 +33,7 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -58,7 +60,7 @@ public class Herobrine extends AbstractHerobrine {
     protected final SummonShadowSkill summonShadowSkill = registerSkill(0, this, SummonShadowSkill::new);
     protected final RolePlayShadowSkill rolePlayShadowSkill = registerSkill(1, this, RolePlayShadowSkill::new);
     protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(9, new RushSkill<>(this, dashSkill), AnimationLocations.RUSH);
-    protected final DestroyStructureSkill destroyStructureSkill = registerSkill(this, DestroyStructureSkill::new, AnimationLocations.PHASE_3);
+    protected final DestroyStructureSkill destroyStructureSkill = registerSkill(this, DestroyStructureSkill::new);
 
     protected final LandingSkill landingSkill = registerSkill(this, LandingSkill::new, AnimationLocations.COMBO_ATTACK_5);
     protected final SuperHitSkill superHitSkill = registerSkill(new SuperHitSkill(landingSkill, this), AnimationLocations.COMBO_ATTACK_4);
@@ -126,6 +128,8 @@ public class Herobrine extends AbstractHerobrine {
 
         registerAnimation(AnimationLocations.STIGMATIZE_ENTITIES);
         registerAnimation(AnimationLocations.STIGMATIZE_ENTITIES_END);
+
+        registerAnimation(AnimationLocations.PHASE_3_IDLE);
     }
 
     public Herobrine(Level level, Vec3 pos) {
@@ -159,6 +163,20 @@ public class Herobrine extends AbstractHerobrine {
         teleportToSpawnedPosition();
         skillManager.setCurrentSkill(destroyStructureSkill);
         entityData.set(DISPLAY_SCARF, true);
+        navigation = new FlyingPathNavigation(this, level());
+        moveControl = new HerobrineMoveControl(this, 0.75, 1);
+        setNoGravity(true);
+        setAnimation(AnimationLocations.PHASE_3_IDLE);
+    }
+
+    @Override
+    protected void updateAnimationOnSkillEnd(Skill<?> skill) {
+        if (!skill.hasLinkedSkill()) {
+            if (getPhase() == 3)
+                setAnimation(AnimationLocations.PHASE_3_IDLE);
+            else
+                setAnimation(AnimationLocations.IDLE);
+        }
     }
 
     private void teleportToSpawnedPosition() {
@@ -239,16 +257,18 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void showPhaseChangeParticle(ServerLevel level) {
-        for (int xRot = 0; xRot < 360; xRot += 10) {
-            for (int yRot = 0; yRot < 360; yRot += 10) {
-                double ySpeed = Math.sin(Math.toRadians(xRot));
-                double base = Math.cos(Math.toRadians(xRot));
+        for (int count = 0; count < 1500; count++) {
+            double xRot = random.nextDouble() * Math.PI * 2;
+            double yRot = random.nextDouble() * Math.PI * 2;
+            double ySpeed = Math.sin(xRot);
+            double base = Math.cos(xRot);
 
-                double xSpeed = Math.cos(Math.toRadians(yRot)) * base;
-                double zSpeed = Math.sin(Math.toRadians(yRot)) * base;
+            double xSpeed = Math.cos(yRot) * base;
+            double zSpeed = Math.sin(yRot) * base;
 
-                level.sendParticles(NarakaParticleTypes.GOLDEN_FLAME.get(), getX(), getY() + 0.5, getZ(), 0, xSpeed, ySpeed, zSpeed, 0.4);
-            }
+            double speed = 0.6;
+
+            level.sendParticles(NarakaParticleTypes.GOLDEN_FLAME.get(), getX(), getEyeY(), getZ(), 0, xSpeed, ySpeed, zSpeed, speed);
         }
     }
 
@@ -468,8 +488,10 @@ public class Herobrine extends AbstractHerobrine {
 
     protected void startStaggering(ResourceLocation animation, int duration, int showParticleTick) {
         playStaticAnimation(animation, duration);
+        resetDamageLimit();
+        List<Integer> particleTicks = List.of(showParticleTick, showParticleTick - 5, showParticleTick - 10);
         animationTickListener = () -> {
-            if (animationTickCount == showParticleTick && level() instanceof ServerLevel serverLevel) {
+            if (particleTicks.contains(animationTickCount) && level() instanceof ServerLevel serverLevel) {
                 showPhaseChangeParticle(serverLevel);
                 if (phaseManager.getCurrentPhase() == 2)
                     entityData.set(DISPLAY_SCARF, true);
