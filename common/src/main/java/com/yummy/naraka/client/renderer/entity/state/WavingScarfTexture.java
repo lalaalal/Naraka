@@ -11,10 +11,10 @@ public record WavingScarfTexture(ResourceLocation texture,
                                  int scarfWidth, int scarfHeight,
                                  int textureWidth, int textureHeight) {
     public static final WavingScarfTexture PHASE_2_BACK = new WavingScarfTexture(
-            NarakaTextures.HEROBRINE_SCARF, 8, 27, 3, 19, 64, 64
+            NarakaTextures.HEROBRINE_SCARF, 8, 27, 5, 20, 64, 64
     );
     public static final WavingScarfTexture PHASE_2_FRONT = new WavingScarfTexture(
-            NarakaTextures.HEROBRINE_SCARF, 20, 27, 3, 20, 64, 64
+            NarakaTextures.HEROBRINE_SCARF, 19, 27, 5, 21, 64, 64
     );
     public static final WavingScarfTexture PHASE_3 = new WavingScarfTexture(
             NarakaTextures.HEROBRINE_FINAL_SCARF, 0, 0, 30, 40, 128, 128

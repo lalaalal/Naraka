@@ -93,12 +93,12 @@ public class HerobrineScarfLayer extends RenderLayer<HerobrineRenderState, Abstr
         float u = textureInfo.u();
         float v = textureInfo.v();
 
-        float baseY = waveData.getVerticalPosition(scarfPose.waveOffset() - 1, partialTick);
+        float baseY = waveData.getVerticalPosition(scarfPose.waveOffset() - 1, partialTick) + waveData.getHorizontalPosition(-1, partialTick);
         float shift = 0;
         for (int vertical = 0; vertical < verticalSize; vertical++) {
             int verticalIndex = vertical + scarfPose.waveOffset();
             poseStack.pushPose();
-            float partShift = waveData.getVerticalShift(verticalIndex, partialTick);
+            float partShift = waveData.getVerticalShift(vertical, partialTick);
             shift += partShift;
             poseStack.translate(shift, -baseY, partHeight * vertical);
 
@@ -106,10 +106,10 @@ public class HerobrineScarfLayer extends RenderLayer<HerobrineRenderState, Abstr
                 poseStack.pushPose();
                 poseStack.translate(partWidth * horizontal, 0, 0);
 
-                float topLeft_y = waveData.getVerticalPosition(verticalIndex - 1, partialTick);
-                float topRight_y = waveData.getVerticalPosition(verticalIndex - 1, partialTick);
-                float bottomLeft_y = waveData.getVerticalPosition(verticalIndex, partialTick);
-                float bottomRight_y = waveData.getVerticalPosition(verticalIndex, partialTick);
+                float topLeft_y = waveData.getVerticalPosition(verticalIndex - 1, partialTick) + waveData.getHorizontalPosition(horizontal - 1, partialTick);
+                float topRight_y = waveData.getVerticalPosition(verticalIndex - 1, partialTick) + waveData.getHorizontalPosition(horizontal, partialTick);
+                float bottomLeft_y = waveData.getVerticalPosition(verticalIndex, partialTick) + waveData.getHorizontalPosition(horizontal - 1, partialTick);
+                float bottomRight_y = waveData.getVerticalPosition(verticalIndex, partialTick) + waveData.getHorizontalPosition(horizontal, partialTick);
 
                 List<Vector3f> vertices = List.of(
                         new Vector3f(partShift, bottomLeft_y, partHeight),

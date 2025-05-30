@@ -12,7 +12,7 @@ public class HerobrineRenderState extends AbstractHerobrineRenderState {
     public WavingScarfRenderState scarfRenderState = new WavingScarfRenderState();
 
     public void updateScarfRenderState(Herobrine herobrine, float partialTick) {
-        renderScarf = herobrine.getPhase() >= 2 || NarakaConfig.CLIENT.alwaysDisplayHerobrineScarf.getValue();
+        renderScarf = herobrine.shouldRenderScarf() || NarakaConfig.CLIENT.alwaysDisplayHerobrineScarf.getValue();
         scarfRenderState.extract(herobrine, partialTick);
     }
 }
