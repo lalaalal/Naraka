@@ -172,6 +172,7 @@ public class Herobrine extends AbstractHerobrine {
     private void teleportToSpawnedPosition() {
         if (spawnPosition != null) {
             int floor = NarakaUtils.findFloor(level(), spawnPosition).getY() + 1;
+            setDeltaMovement(Vec3.ZERO);
             setPos(spawnPosition.getX() + 0.5, floor, spawnPosition.getZ() + 0.5);
         }
     }
@@ -436,7 +437,7 @@ public class Herobrine extends AbstractHerobrine {
         if (getPhase() == phaseManager.getMaxPhase())
             return false;
         float healthAfterHurt = phaseManager.getCurrentPhaseHealth() + getAbsorptionAmount() - actualDamage;
-        if (healthAfterHurt < 1) {
+        if (healthAfterHurt < 2) {
             setHealth(getPhaseMinimumHealth());
             startHibernateMode(level);
             return true;

@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
-import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
@@ -10,7 +9,6 @@ import com.yummy.naraka.world.entity.StunHelper;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.protocol.game.ClientboundEntityPositionSyncPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -87,7 +85,6 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     private void moving(ServerLevel level) {
         NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, 0.5);
         mob.setDeltaMovement(deltaMovement);
-        NetworkManager.clientbound().send(level.players(), ClientboundEntityPositionSyncPacket.of(mob));
     }
 
     private void failed() {
