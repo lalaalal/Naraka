@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends AttackSkill<T> {
     public static final ResourceLocation LOCATION = createLocation("rush");
@@ -39,16 +38,16 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     private boolean failed = false;
 
     private final List<Entity> blockedEntities = new ArrayList<>();
-    private final Predicate<LivingEntity> targetPredicate;
+    private final DashSkill<?> dashSkill;
 
-    public RushSkill(T mob, Predicate<LivingEntity> targetPredicate) {
+    public RushSkill(T mob, DashSkill<?> dashSkill) {
         super(LOCATION, 200, 200, mob);
-        this.targetPredicate = targetPredicate;
+        this.dashSkill = dashSkill;
     }
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return targetOutOfRange(36);
+        return mob.getTarget() != null;
     }
 
     @Override
@@ -63,17 +62,21 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     @Override
     protected void onFirstTick(ServerLevel level) {
         mob.getNavigation().stop();
+        if (targetInRange(25)) {
+            DashSkill.setupDashBack(dashSkill, this);
+            mob.getSkillManager().setCurrentSkill(dashSkill);
+        }
     }
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         lookTarget(target);
-        runBefore(START_RUNNING_TICK, () -> rotateTowardTarget(target));
+        runBefore(RUSH_TICK, () -> rotateTowardTarget(target));
 
         runBefore(RUSH_TICK, () -> calculateDeltaMovement(level, target, true, 1));
         runAfter(RUSH_TICK, () -> calculateDeltaMovement(level, target, false, 3));
 
-        runBetween(RUSH_TICK, FINALE_TICK, () -> hurtHitEntities(level, targetPredicate, 0.5));
+        runBetween(RUSH_TICK, FINALE_TICK, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 0.5));
     }
 
     @Override
