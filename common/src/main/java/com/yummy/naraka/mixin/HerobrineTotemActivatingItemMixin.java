@@ -33,7 +33,7 @@ public abstract class HerobrineTotemActivatingItemMixin {
                 && HerobrineTotemBlockEntity.isSanctuaryExists(level, pos)
                 && HerobrineTotemBlockEntity.isSleeping(totem)
         ) {
-            level.playSound(player, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1, level.getRandom().nextFloat() * 0.4F + 0.8F);
+            level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1, level.getRandom().nextFloat() * 0.4F + 0.8F);
             level.setBlockAndUpdate(pos.above(), Blocks.FIRE.defaultBlockState());
             HerobrineTotem.crack(level, pos.below(), totem);
             level.gameEvent(player, GameEvent.BLOCK_PLACE, pos);
