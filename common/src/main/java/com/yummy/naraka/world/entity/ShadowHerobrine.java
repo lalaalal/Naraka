@@ -66,9 +66,10 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     protected ShadowHerobrine(EntityType<? extends AbstractHerobrine> entityType, Level level) {
         super(entityType, level, true);
         skillManager.enableOnly(List.of(punchSkill));
-
         skillManager.runOnSkillStart(this::resetPunchCooldown);
         skillManager.runOnSkillEnd(this::increasePunchCooldown);
+        punchSkill.setCanDisableShield(false);
+        uppercutSkill.setCanDisableShield(false);
 
         goalSelector.addGoal(3, moveToTargetGoal);
 

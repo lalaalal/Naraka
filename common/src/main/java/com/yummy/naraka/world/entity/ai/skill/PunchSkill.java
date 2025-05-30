@@ -15,6 +15,7 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
 
     private final boolean stunTarget;
     private boolean linked = false;
+    private boolean canDisableShield;
 
     public PunchSkill(ComboSkill<?> comboSkill, T mob, boolean withStun) {
         super(LOCATION, 22, DEFAULT_COOLDOWN, 0.8f, comboSkill, 11, mob);
@@ -24,6 +25,10 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
     public PunchSkill(ComboSkill<?> comboSkill, T mob, int cooldown, boolean withStun) {
         super(LOCATION, 22, cooldown, 0.8f, comboSkill, 11, mob);
         this.stunTarget = withStun;
+    }
+
+    public void setCanDisableShield(boolean canDisableShield) {
+        this.canDisableShield = canDisableShield;
     }
 
     public void setLinkedFromPrevious(boolean linked) {
@@ -58,7 +63,8 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
     protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
         if (targetOutOfRange(target, 4))
             return;
-        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15))
+
+        if (canDisableShield && NarakaEntityUtils.disableAndHurtShield(target, 60, 15))
             return;
         super.hurtHitEntity(level, target);
         if (stunTarget)
