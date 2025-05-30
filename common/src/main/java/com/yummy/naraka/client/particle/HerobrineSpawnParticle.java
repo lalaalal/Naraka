@@ -24,7 +24,7 @@ public class HerobrineSpawnParticle extends TextureSheetParticle {
 
     public HerobrineSpawnParticle(ClientLevel clientLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
         super(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed);
-        lifetime = 200 + random.nextInt(0, 20);
+        lifetime = 100 + random.nextInt(0, 20);
         speed = Math.PI / random.nextInt(5, 10);
         int randomNumber = random.nextInt(2, 5);
         radius = 1 + (randomNumber * randomNumber) / 5.0;
