@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAfterimagePayload;
@@ -46,6 +47,7 @@ import java.util.*;
 
 public class Herobrine extends AbstractHerobrine {
     protected static final EntityDataAccessor<Float> SCARF_ROTATION_DEGREE = SynchedEntityData.defineId(Herobrine.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Boolean> DISPLAY_SCARF = SynchedEntityData.defineId(Herobrine.class, EntityDataSerializers.BOOLEAN);
     private static final float[] HEALTH_BY_PHASE = {106, 210, 350};
 
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
@@ -59,7 +61,7 @@ public class Herobrine extends AbstractHerobrine {
     protected final BlockingSkill blockingSkill = registerSkill(10, this, BlockingSkill::new, AnimationLocations.BLOCKING);
     protected final SummonShadowSkill summonShadowSkill = registerSkill(0, this, SummonShadowSkill::new);
     protected final RolePlayShadowSkill rolePlayShadowSkill = registerSkill(1, this, RolePlayShadowSkill::new);
-    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(9, new RushSkill<>(this, AbstractHerobrine::isNotHerobrine), AnimationLocations.RUSH);
+    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(9, new RushSkill<>(this, dashSkill), AnimationLocations.RUSH);
     protected final DestroyStructureSkill destroyStructureSkill = registerSkill(this, DestroyStructureSkill::new, AnimationLocations.PHASE_3);
 
     protected final LandingSkill landingSkill = registerSkill(this, LandingSkill::new, AnimationLocations.COMBO_ATTACK_5);
@@ -149,7 +151,8 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(SCARF_ROTATION_DEGREE, 0f);
+        builder.define(SCARF_ROTATION_DEGREE, 0f)
+                .define(DISPLAY_SCARF, false);
     }
 
     public void setSpawnPosition(BlockPos pos) {
@@ -178,7 +181,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void startStaggering(int prevPhase, int currentPhase) {
-        startStaggering(AnimationLocations.PHASE_2, 55);
+        startStaggering(AnimationLocations.PHASE_2, 55, 40);
     }
 
     private void updateMusic(int prevPhase, int currentPhase) {
@@ -269,6 +272,20 @@ public class Herobrine extends AbstractHerobrine {
         float maxRotation = NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
         float newRotation = Mth.clamp(scarfRotationDegree, 0, maxRotation);
         entityData.set(SCARF_ROTATION_DEGREE, newRotation);
+    }
+
+    private void showPhaseChangeParticle(ServerLevel level) {
+        for (int xRot = 0; xRot < 360; xRot += 10) {
+            for (int yRot = 0; yRot < 360; yRot += 10) {
+                double ySpeed = Math.sin(Math.toRadians(xRot));
+                double base = Math.cos(Math.toRadians(xRot));
+
+                double xSpeed = Math.cos(Math.toRadians(yRot)) * base;
+                double zSpeed = Math.sin(Math.toRadians(yRot)) * base;
+
+                level.sendParticles(NarakaParticleTypes.GOLDEN_FLAME.get(), getX(), getY() + 0.5, getZ(), 0, xSpeed, ySpeed, zSpeed, 0.4);
+            }
+        }
     }
 
     @Override
@@ -423,7 +440,7 @@ public class Herobrine extends AbstractHerobrine {
             if (getHealth() > getPhaseMinimumHealth())
                 startStaggering();
             if (getHealth() == getPhaseMinimumHealth())
-                startStaggering(AnimationLocations.STAGGERING_PHASE_2, 125);
+                startStaggering(AnimationLocations.STAGGERING_PHASE_2, 125, 100);
             resetDamageLimit();
             if (hibernateMode)
                 stopHibernateMode(level);
@@ -486,14 +503,23 @@ public class Herobrine extends AbstractHerobrine {
         setHealth(getHealth() - 1);
     }
 
+    public boolean shouldRenderScarf() {
+        return entityData.get(DISPLAY_SCARF);
+    }
 
-    protected void startStaggering(ResourceLocation animation, int duration) {
-        playAnimation(animation, duration);
-        resetDamageLimit();
+    protected void startStaggering(ResourceLocation animation, int duration, int showParticleTick) {
+        playStaticAnimation(animation, duration);
+        animationTickListener = () -> {
+            if (animationTickCount == showParticleTick && level() instanceof ServerLevel serverLevel) {
+                showPhaseChangeParticle(serverLevel);
+                if (phaseManager.getCurrentPhase() == 2)
+                    entityData.set(DISPLAY_SCARF, true);
+            }
+        };
     }
 
     protected void startStaggering() {
-        startStaggering(AnimationLocations.STAGGERING, 70);
+        startStaggering(AnimationLocations.STAGGERING, 70, -1);
     }
 
     @Override

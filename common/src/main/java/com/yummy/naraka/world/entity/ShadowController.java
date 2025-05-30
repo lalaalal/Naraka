@@ -77,7 +77,7 @@ public class ShadowController {
                     Vec3 originalHerobrinePosition = herobrine.position();
                     herobrine.setPos(shadowHerobrine.position());
                     shadowHerobrine.setPos(originalHerobrinePosition);
-                    shadowHerobrine.playAnimation(AnimationLocations.IDLE, 40);
+                    shadowHerobrine.playStaticAnimation(AnimationLocations.IDLE, 40);
                 });
     }
 

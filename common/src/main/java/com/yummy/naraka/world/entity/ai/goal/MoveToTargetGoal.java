@@ -1,6 +1,6 @@
 package com.yummy.naraka.world.entity.ai.goal;
 
-import com.yummy.naraka.world.entity.SkillUsingMob;
+import com.yummy.naraka.world.entity.AbstractHerobrine;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 
 public class MoveToTargetGoal extends Goal {
-    private final SkillUsingMob mob;
+    private final AbstractHerobrine mob;
     @Nullable
     private LivingEntity target;
     private final double speedModifier;
@@ -21,7 +21,7 @@ public class MoveToTargetGoal extends Goal {
     private final int interval;
     private int tickCount = 0;
 
-    public MoveToTargetGoal(SkillUsingMob mob, double speedModifier, float within, int accuracy, int interval, float foolChange) {
+    public MoveToTargetGoal(AbstractHerobrine mob, double speedModifier, float within, int accuracy, int interval, float foolChange) {
         this.mob = mob;
         this.speedModifier = speedModifier;
         this.within = within;
@@ -44,6 +44,7 @@ public class MoveToTargetGoal extends Goal {
         return !this.mob.getNavigation().isDone()
                 && tickCount > 0
                 && !mob.isUsingSkill()
+                && !mob.isStaggering()
                 && this.target != null
                 && this.target.isAlive()
                 && this.target.distanceToSqr(this.mob) < (this.within * this.within);

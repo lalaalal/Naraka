@@ -34,6 +34,8 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     private static final Set<ResourceLocation> STAGGERING_ANIMATIONS = Set.of(AnimationLocations.STAGGERING, AnimationLocations.STAGGERING_PHASE_2);
 
     protected int animationTickCount = Integer.MIN_VALUE;
+    protected Runnable animationTickListener = () -> {
+    };
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
@@ -70,14 +72,16 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
             setAnimation(AnimationLocations.IDLE);
     }
 
-    private void updateStaggering() {
+    private void updateAnimationTick() {
         if (animationTickCount == 0)
             stopAnimation();
-        if (animationTickCount >= 0)
+        if (animationTickCount >= 0) {
+            animationTickListener.run();
             animationTickCount -= 1;
+        }
     }
 
-    protected void playAnimation(ResourceLocation animation, int duration) {
+    protected void playStaticAnimation(ResourceLocation animation, int duration) {
         if (animationTickCount > 0)
             return;
         animationTickCount = Math.max(1, duration);
@@ -118,7 +122,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
     @Override
     protected void customServerAiStep(ServerLevel serverLevel) {
-        updateStaggering();
+        updateAnimationTick();
         super.customServerAiStep(serverLevel);
     }
 
