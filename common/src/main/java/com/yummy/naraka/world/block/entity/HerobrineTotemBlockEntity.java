@@ -37,7 +37,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     private static final int MAX_CRACK = HerobrineTotem.MAX_CRACK;
 
     private int tickCount = 1;
-    private int waitCount = 8;
+    private int waitCount = 4;
 
     public HerobrineTotemBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -68,7 +68,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
             );
             level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS);
         }
-        if (tickCount % 15 == 0 && !shouldWait) {
+        if (tickCount % 10 == 0 && !shouldWait) {
             if (crack == MAX_CRACK) {
                 breakTotemStructure(level, pos);
                 summonHerobrine(level, pos);
