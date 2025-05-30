@@ -498,7 +498,7 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public Fireball createFireball(ServerLevel level) {
-        NarakaFireball fireball = new NarakaFireball(this, Vec3.ZERO, level(), hibernateMode);
+        NarakaFireball fireball = new NarakaFireball(this, Vec3.ZERO, level(), false);
         fireball.setDamageCalculator(this::calculateFireballDamage);
         fireball.setTimeToLive(50);
         fireball.addHurtTargetListener((target, damage) -> stigmatizeEntity(level, target));
@@ -508,15 +508,11 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private float calculateFireballDamage(NarakaFireball fireball) {
-        if (!hibernateMode) {
-            if (getTarget() != null)
-                return getAttackDamage() + getTarget().getMaxHealth() * 0.05f;
+        if (getTarget() != null)
             return getAttackDamage();
-        }
-        float distance = distanceTo(fireball);
-        if (distance <= 2)
-            return 66;
-        return Mth.clamp(66f / (distance - 2), 10, 66);
+        if (!hibernateMode)
+            return getAttackDamage() + getTarget().getMaxHealth() * 0.05f;
+        return getTarget().getMaxHealth() * 0.5f;
     }
 
     private void updateHibernateModeOnTargetSurvivedFromFireball(ServerLevel level, LivingEntity target, float damage) {
