@@ -62,8 +62,7 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
         if (rushSKill.canUse(level)) {
             this.setLinkedSkill(rushSKill);
         } else {
-            dashSkill.setLinkedSkill(rushSKill);
-            dashSkill.setScale(-0.5f);
+            DashSkill.setupDashBack(dashSkill, rushSKill);
             this.setLinkedSkill(dashSkill);
         }
     }
