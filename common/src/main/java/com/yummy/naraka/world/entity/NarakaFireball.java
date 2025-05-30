@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class NarakaFireball extends Fireball implements ItemSupplier {
@@ -208,8 +209,10 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         if (compound.contains("Target") && level() instanceof ServerLevel serverLevel) {
-            UUID uuid = UUID.fromString(compound.getStringOr("Target", ""));
-            setTarget(serverLevel.getEntity(uuid));
+            Optional<String> uuid = compound.getString("Target");
+            uuid.ifPresent(string -> {
+                setTarget(serverLevel.getEntity(UUID.fromString(string)));
+            });
         }
     }
 

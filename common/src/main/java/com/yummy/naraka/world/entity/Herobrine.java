@@ -52,7 +52,7 @@ public class Herobrine extends AbstractHerobrine {
 
     protected final DashSkill<AbstractHerobrine> dashSkill = registerSkill(10, this, DashSkill::new);
     protected final DashAroundSkill<AbstractHerobrine> dashAroundSkill = registerSkill(10, this, DashAroundSkill::new);
-    protected final StigmatizeEntitiesSkill<AbstractHerobrine> stigmatizeEntitiesSkill = registerSkill(10, this, StigmatizeEntitiesSkill::new);
+    protected final StigmatizeEntitiesSkill stigmatizeEntitiesSkill = registerSkill(10, this, StigmatizeEntitiesSkill::new, AnimationLocations.STIGMATIZE_ENTITIES_START);
     protected final ThrowFireballSkill throwFireballSkill = registerSkill(9, new ThrowFireballSkill(this, this::createFireball), AnimationLocations.THROW_NARAKA_FIREBALL);
     protected final BlockingSkill blockingSkill = registerSkill(10, this, BlockingSkill::new, AnimationLocations.BLOCKING);
     protected final SummonShadowSkill summonShadowSkill = registerSkill(0, this, SummonShadowSkill::new);
@@ -123,6 +123,9 @@ public class Herobrine extends AbstractHerobrine {
         registerAnimation(AnimationLocations.STAGGERING_PHASE_2);
         registerAnimation(AnimationLocations.RUSH_SUCCEED);
         registerAnimation(AnimationLocations.RUSH_FAILED);
+
+        registerAnimation(AnimationLocations.STIGMATIZE_ENTITIES);
+        registerAnimation(AnimationLocations.STIGMATIZE_ENTITIES_END);
     }
 
     public Herobrine(Level level, Vec3 pos) {

@@ -39,6 +39,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
 
     private final List<Entity> blockedEntities = new ArrayList<>();
     private final DashSkill<?> dashSkill;
+    private int failedTickCount = 0;
 
     public RushSkill(T mob, DashSkill<?> dashSkill) {
         super(LOCATION, 200, 200, mob);
@@ -57,6 +58,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         blockedEntities.clear();
         hit = false;
         failed = false;
+        failedTickCount = 0;
     }
 
     @Override
@@ -83,6 +85,10 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAfter(START_RUNNING_TICK - 5, () -> moving(level));
         runAt(FINALE_TICK, this::failed);
+        if (failed && failedTickCount < 10) {
+            mob.turn(160, 0);
+            failedTickCount += 1;
+        }
     }
 
     private void moving(ServerLevel level) {

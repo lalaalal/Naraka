@@ -73,6 +73,11 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         goalSelector.addGoal(3, moveToTargetGoal);
 
         entityData.set(DISPLAY_SCARF, true);
+
+        registerAnimation(AnimationLocations.SHADOW_SUMMONED);
+
+        updateAnimation(AnimationLocations.SHADOW_SUMMONED);
+        playStaticAnimation(AnimationLocations.SHADOW_SUMMONED, 80);
     }
 
     public ShadowHerobrine(Level level, Herobrine herobrine) {
@@ -213,7 +218,9 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.herobrineUUID = UUID.fromString(compound.getStringOr("Herobrine", ""));
+
+        Optional<String> uuid = compound.getString("Herobrine");
+        uuid.ifPresent(string -> this.herobrineUUID = UUID.fromString(string));
     }
 
     @Override

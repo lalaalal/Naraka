@@ -19,12 +19,15 @@ public class AnimationLocations {
     public static final ResourceLocation RUSH_SUCCEED = create("herobrine", "rush.succeed");
     public static final ResourceLocation RUSH_FAILED = create("herobrine", "rush.failed");
     public static final ResourceLocation THROW_NARAKA_FIREBALL = create("herobrine", "throw_naraka_fireball");
+    public static final ResourceLocation STIGMATIZE_ENTITIES_START = create("herobrine", "stigmatize_entities.start");
     public static final ResourceLocation STIGMATIZE_ENTITIES = create("herobrine", "stigmatize_entities");
+    public static final ResourceLocation STIGMATIZE_ENTITIES_END = create("herobrine", "stigmatize_entities.end");
     public static final ResourceLocation BLOCKING = create("herobrine", "blocking");
     public static final ResourceLocation STAGGERING = create("herobrine", "staggering");
     public static final ResourceLocation STAGGERING_PHASE_2 = create("herobrine", "staggering.phase2");
     public static final ResourceLocation PHASE_2 = create("herobrine", "phase_2");
     public static final ResourceLocation IDLE = create("herobrine", "idle");
+    public static final ResourceLocation SHADOW_SUMMONED = create("shadow_herobrine", "summoned");
 
     public static final ResourceLocation PHASE_3 = create("herobrine", "phase_3");
 

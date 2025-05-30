@@ -60,9 +60,12 @@ public class ShadowController {
         if (shadowHerobrine.isDeadOrDying()) {
             shadowHerobrines.clear();
             skillManager.interrupt();
-            if (herobrine.isHibernateMode())
+            if (herobrine.isHibernateMode()) {
                 herobrine.stopHibernateMode(level);
-            herobrine.startStaggering();
+                herobrine.startStaggering(AnimationLocations.STIGMATIZE_ENTITIES_END, 100, -1);
+            } else {
+                herobrine.startStaggering();
+            }
         }
     }
 
