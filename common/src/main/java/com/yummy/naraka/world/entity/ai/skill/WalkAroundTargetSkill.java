@@ -47,21 +47,33 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
             tickCount = duration;
         }
 
-        runAt(duration - 1, this::determineNextSkill);
+        runAt(duration - 1, () -> determineNextSkill(level));
     }
 
-    private void determineNextSkill() {
+    private void determineNextSkill(ServerLevel level) {
         if (mob.getRandom().nextBoolean()) {
+            setupRush(level);
+        } else {
+            setupDashAndPunch();
+        }
+    }
+
+    private void setupRush(ServerLevel level) {
+        if (rushSKill.canUse(level)) {
+            this.setLinkedSkill(rushSKill);
+        } else {
             dashSkill.setLinkedSkill(rushSKill);
             dashSkill.setScale(-0.5f);
             this.setLinkedSkill(dashSkill);
-        } else {
-            if (mob.getRandom().nextBoolean()) {
-                dashSkill.setLinkedSkill(punchSKill);
-                punchSKill.setLinkedFromPrevious(true);
-            }
-            this.setLinkedSkill(dashSkill);
         }
+    }
+
+    private void setupDashAndPunch() {
+        if (mob.getRandom().nextBoolean()) {
+            dashSkill.setLinkedSkill(punchSKill);
+            punchSKill.setLinkedFromPrevious(true);
+        }
+        this.setLinkedSkill(dashSkill);
     }
 
     private void moveAndLook(LivingEntity target) {
