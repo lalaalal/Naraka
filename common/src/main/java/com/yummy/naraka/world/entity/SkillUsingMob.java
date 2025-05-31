@@ -5,6 +5,7 @@ import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAnimationPayload;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
+import net.minecraft.network.protocol.game.ClientboundEntityPositionSyncPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -146,6 +147,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
     @Override
     protected void customServerAiStep(ServerLevel level) {
         skillManager.tick(level);
+        NetworkManager.clientbound().send(level.players(), ClientboundEntityPositionSyncPacket.of(this));
     }
 
     protected static abstract class AnimationController {

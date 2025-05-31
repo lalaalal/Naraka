@@ -1,13 +1,11 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
 import com.yummy.naraka.world.entity.StunHelper;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -17,7 +15,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,7 +45,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return mob.getTarget() != null;
+        return targetOutOfRange(15);
     }
 
     @Override
@@ -75,8 +72,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         lookTarget(target);
         runBefore(RUSH_TICK, () -> rotateTowardTarget(target));
 
-        runBefore(RUSH_TICK, () -> calculateDeltaMovement(level, target, true, 1));
-        runAfter(RUSH_TICK, () -> calculateDeltaMovement(level, target, false, 3));
+        runBefore(RUSH_TICK, () -> traceTarget(target, 1));
 
         runBetween(RUSH_TICK, FINALE_TICK, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 0.5));
     }
@@ -89,6 +85,8 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
             mob.turn(160, 0);
             failedTickCount += 1;
         }
+        runAfter(RUSH_TICK, () -> calculateDeltaMovement(level));
+        this.deltaMovement = deltaMovement.add(0, -0.098, 0);
     }
 
     private void moving(ServerLevel level) {
@@ -104,21 +102,18 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         mob.setAnimation(AnimationLocations.RUSH_FAILED);
     }
 
-    private void calculateDeltaMovement(ServerLevel level, LivingEntity target, boolean trace, double scale) {
+    private void calculateDeltaMovement(ServerLevel level) {
         Collection<LivingEntity> entities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(0.5));
         Optional<LivingEntity> hitEntity = entities.stream()
                 .filter(AbstractHerobrine::isNotHerobrine)
                 .findAny();
-        Vec3 view = mob.getLookAngle();
-        BlockPos toward = NarakaUtils.pos(mob.position().add(view.multiply(1, 0, 1).normalize()));
+        Vec3 normalMovement = deltaMovement.normalize();
         if (this.failed) {
-            this.deltaMovement = deltaMovement.scale(0.8)
-                    .add(0, -0.098, 0);
+            this.deltaMovement = deltaMovement.scale(0.8);
         } else if (this.hit) {
             if (mob.onGround() && deltaMovement.y < 0)
                 this.deltaMovement = deltaMovement.multiply(0, 1, 0);
-            this.deltaMovement = deltaMovement.add(0, -0.098, 0);
-        } else if (hitEntity.isPresent() || isWall(level, toward)) {
+        } else if (hitEntity.isPresent() || !mob.isFree(normalMovement.x, 0, normalMovement.z)) {
             this.duration = tickCount + 50;
             this.deltaMovement = deltaMovement.yRot(Mth.PI)
                     .normalize()
@@ -130,18 +125,13 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
             level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 2, 1);
             level.sendParticles(ParticleTypes.SONIC_BOOM, mob.getX(), mob.getY() + 1, mob.getZ(), 1, 0, 0, 0, 1);
             mob.setAnimation(AnimationLocations.RUSH_SUCCEED);
-        } else if (trace) {
-            this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob, target)
-                    .multiply(1, 0, 1)
-                    .add(0, -0.098, 0)
-                    .scale(scale);
         }
     }
 
-    private boolean isWall(Level level, BlockPos pos) {
-        if (tickCount < RUSH_TICK)
-            return false;
-        return level.getBlockState(pos).canOcclude() || level.getBlockState(pos.above()).canOcclude();
+    private void traceTarget(LivingEntity target, double scale) {
+        this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob, target)
+                .multiply(1, 0, 1)
+                .scale(scale);
     }
 
     @Override

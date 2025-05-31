@@ -42,7 +42,7 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
         lookTarget(target);
         if (tickCount % 5 == 0)
             moveAndLook(target);
-        if (targetInRange(target, 4)) {
+        if (targetInRange(target, 10)) {
             setLinkedSkill(punchSKill);
             tickCount = duration;
         }

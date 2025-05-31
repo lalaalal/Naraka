@@ -76,6 +76,9 @@ public class Herobrine extends AbstractHerobrine {
 
     protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, dashSkill, rushSkill));
 
+    @Nullable
+    private LivingEntity firstTarget;
+
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill, rolePlayShadowSkill);
     private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, walkAroundTargetSkill);
@@ -199,6 +202,13 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     @Override
+    public void setTarget(@Nullable LivingEntity target) {
+        super.setTarget(target);
+        if (firstTarget == null && target != null)
+            firstTarget = target;
+    }
+
+    @Override
     protected AABB makeBoundingBox(Vec3 position) {
         if (!firstTick && getPhase() == 3)
             return super.makeBoundingBox(position).expandTowards(0, 0.5, 0);
@@ -316,6 +326,11 @@ public class Herobrine extends AbstractHerobrine {
         tryAvoidProjectile();
         collectStigma(serverLevel);
         phaseManager.updatePhase(bossEvent);
+
+        if (firstTarget != null && firstTarget.isDeadOrDying()) {
+            shadowController.killShadows(serverLevel);
+            discard();
+        }
 
         super.customServerAiStep(serverLevel);
     }
@@ -505,11 +520,12 @@ public class Herobrine extends AbstractHerobrine {
     protected void startHibernateMode(ServerLevel level) {
         if (hibernateMode)
             return;
-        teleportToSpawnedPosition();
         hibernateMode = true;
         skillManager.enableOnly(HIBERNATED_MODE_SKILL_BY_PHASE.get(getPhase()));
+        skillManager.interrupt();
         shadowController.updateRolePlaying(level);
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
+        teleportToSpawnedPosition();
     }
 
     protected void stopHibernateMode(ServerLevel level) {

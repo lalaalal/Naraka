@@ -34,7 +34,7 @@ public class MoveToTargetGoal extends Goal {
     @Override
     public boolean canUse() {
         this.target = this.mob.getTarget();
-        if (this.target == null || mob.isUsingSkill())
+        if (this.target == null || mob.isUsingSkill() || mob.isStaggering())
             return false;
         return this.target.distanceToSqr(this.mob) < (this.within * this.within) && this.target.distanceToSqr(this.mob) > 9;
     }

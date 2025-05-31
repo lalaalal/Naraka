@@ -5,12 +5,9 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.entity.AfterimageEntity;
 import com.yummy.naraka.world.entity.SkillUsingMob;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,28 +37,20 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        runBetween(6, 11, () -> move(level));
+        runBetween(6, 11, this::move);
         runAt(11, () -> mob.setDeltaMovement(Vec3.ZERO));
     }
 
-    private void move(ServerLevel level) {
-        Vec3 xzMovement = deltaMovement.multiply(1, 0, 1).normalize();
-        Vec3 targetPosition = mob.position().add(xzMovement);
-        BlockPos blockPos = BlockPos.containing(targetPosition);
-        while (isWall(level, blockPos) || isWall(level, mob.blockPosition())) {
-            mob.setPos(targetPosition);
-            targetPosition = mob.position().add(xzMovement);
-            blockPos = BlockPos.containing(targetPosition).above();
+    private void move() {
+        Vec3 normalMovement = deltaMovement.normalize();
+
+        while (!mob.isFree(normalMovement.x, 0, normalMovement.z)) {
+            mob.setPos(mob.position().add(normalMovement));
+            tickCount += 1;
         }
         mob.setDeltaMovement(deltaMovement);
         if (!deltaMovement.equals(Vec3.ZERO))
             mob.addAfterimage(Afterimage.of(mob, 10), 1, tickCount < 11);
-    }
-
-    private boolean isWall(Level level, BlockPos pos) {
-        BlockState state = level.getBlockState(pos);
-        BlockState aboveState = level.getBlockState(pos.above());
-        return state.canOcclude() || aboveState.canOcclude();
     }
 
     private void updateDeltaMovement(LivingEntity target) {
