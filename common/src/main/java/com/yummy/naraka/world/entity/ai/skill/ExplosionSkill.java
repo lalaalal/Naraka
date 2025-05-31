@@ -24,7 +24,9 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        runAt(20, () -> mob.setDeltaMovement(0, -8, 0));
+        runAt(0, () -> mob.setDeltaMovement(0, 0.2, 0));
+        runBetween(0, 18, () -> mob.setDeltaMovement(mob.getDeltaMovement().scale(0.8)));
+        runAt(19, () -> mob.setDeltaMovement(0, -8, 0));
 
         runAt(58, () -> mob.setDisplayPickaxe(false));
         runAt(60, () -> mob.setDeltaMovement(0, 0.4, 0));
@@ -33,6 +35,11 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
         runAt(62, () -> mob.setDeltaMovement(Vec3.ZERO));
 
         runAt(95, () -> mob.setDisplayPickaxe(true));
+    }
+
+    @Override
+    protected void tickWithTarget(ServerLevel level, LivingEntity target) {
+        runAfter(95, () -> lookTarget(target));
     }
 
     private void sendParticles(ServerLevel level) {

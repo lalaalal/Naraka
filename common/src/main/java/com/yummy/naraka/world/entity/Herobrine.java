@@ -42,6 +42,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.portal.TeleportTransition;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -141,6 +142,11 @@ public class Herobrine extends AbstractHerobrine {
         registerAnimation(AnimationLocations.CARPET_BOMBING);
     }
 
+    @Override
+    protected AABB getAttackBoundingBox() {
+        return super.getAttackBoundingBox();
+    }
+
     public Herobrine(Level level, Vec3 pos) {
         this(NarakaEntityTypes.HEROBRINE.get(), level);
         setPos(pos);
@@ -190,6 +196,13 @@ public class Herobrine extends AbstractHerobrine {
         moveControl = new HerobrineMoveControl(this, 0.75, 1);
         setNoGravity(true);
         setAnimation(AnimationLocations.PHASE_3_IDLE);
+    }
+
+    @Override
+    protected AABB makeBoundingBox(Vec3 position) {
+        if (!firstTick && getPhase() == 3)
+            return super.makeBoundingBox(position).expandTowards(0, 0.5, 0);
+        return super.makeBoundingBox(position);
     }
 
     @Override
