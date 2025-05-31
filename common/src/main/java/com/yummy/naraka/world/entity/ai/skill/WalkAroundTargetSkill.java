@@ -1,5 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
@@ -47,14 +49,14 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
             tickCount = duration;
         }
 
-        runAt(duration - 1, () -> determineNextSkill(level));
+        runAt(duration - 1, () -> determineNextSkill(level, target));
     }
 
-    private void determineNextSkill(ServerLevel level) {
+    private void determineNextSkill(ServerLevel level, LivingEntity target) {
         if (mob.getRandom().nextBoolean()) {
             setupRush(level);
         } else {
-            setupDashAndPunch();
+            setupDashAndPunch(level, target);
         }
     }
 
@@ -67,8 +69,11 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
         }
     }
 
-    private void setupDashAndPunch() {
-        if (mob.getRandom().nextBoolean()) {
+    private void setupDashAndPunch(ServerLevel level, LivingEntity target) {
+        if (mob.getRandom().nextDouble() < 0.8) {
+            Vec3 deltaNormal = NarakaEntityUtils.getDirectionNormalVector(mob, target);
+            Vec3 position = mob.position().add(deltaNormal);
+            level.sendParticles(NarakaParticleTypes.FLICKER.get(), position.x, position.y + mob.getEyeHeight(), position.z, 1, 0, 0, 0, 1);
             dashSkill.setLinkedSkill(punchSKill);
             punchSKill.setLinkedFromPrevious(true);
         }

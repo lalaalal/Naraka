@@ -14,6 +14,7 @@ import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemModelResolver;
@@ -51,13 +52,17 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
         renderState.phase = herobrine.getPhase();
         renderState.doWalkAnimation = herobrine.getPhase() != 3;
         renderState.displayPickaxe = herobrine.displayPickaxe() && herobrine.isAlive();
+        renderState.eyeAlpha = herobrine.getEyeAlpha();
+
         super.extractRenderState(herobrine, renderState, partialTicks);
 
         itemModelResolver.updateForLiving(renderState.pickaxe, pickaxe, ItemDisplayContext.NONE, herobrine);
 
         if (renderState.phase == 3) {
+            renderState.eyeTexture = NarakaTextures.HEROBRINE_FINAL_EYE;
             this.model = herobrineFinalModel;
         } else {
+            renderState.eyeTexture = NarakaTextures.HEROBRINE_EYE;
             this.model = herobrineModel;
         }
     }
@@ -91,7 +96,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
             poseStack.mulPose(Axis.XP.rotationDegrees(90));
             poseStack.mulPose(Axis.ZP.rotationDegrees(225));
             poseStack.scale(4, 4, 1);
-            renderState.pickaxe.render(poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY);
+            renderState.pickaxe.render(poseStack, buffer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
             poseStack.popPose();
         }
         super.render(renderState, poseStack, buffer, packedLight);

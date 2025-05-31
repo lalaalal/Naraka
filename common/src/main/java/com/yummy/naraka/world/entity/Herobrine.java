@@ -129,6 +129,8 @@ public class Herobrine extends AbstractHerobrine {
         phaseManager.addPhaseChangeListener(this::startStaggering);
         phaseManager.addPhaseChangeListener(this::onPhase3, 3);
 
+        skillManager.runOnSkillStart(this::enableEyeOnPhase3);
+        skillManager.runOnSkillEnd(this::disableEyeOnPhase3);
         skillManager.enableOnly(PHASE_1_SKILLS);
 
         registerAnimation(AnimationLocations.PHASE_2);
@@ -145,9 +147,14 @@ public class Herobrine extends AbstractHerobrine {
         registerAnimation(AnimationLocations.CARPET_BOMBING);
     }
 
-    @Override
-    protected AABB getAttackBoundingBox() {
-        return super.getAttackBoundingBox();
+    private void enableEyeOnPhase3(Skill<?> skill) {
+        if (getPhase() == 3)
+            setDisplayEye(true);
+    }
+
+    private void disableEyeOnPhase3(Skill<?> skill) {
+        if (getPhase() == 3)
+            setDisplayEye(false);
     }
 
     public Herobrine(Level level, Vec3 pos) {
@@ -199,6 +206,7 @@ public class Herobrine extends AbstractHerobrine {
         moveControl = new HerobrineMoveControl(this, 0.75, 1);
         setNoGravity(true);
         setAnimation(AnimationLocations.PHASE_3_IDLE);
+        setDisplayEye(false);
     }
 
     @Override

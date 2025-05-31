@@ -38,12 +38,14 @@ import java.util.Set;
 public abstract class AbstractHerobrine extends SkillUsingMob implements StigmatizingEntity, AfterimageEntity, Enemy {
     protected static final EntityDataAccessor<Float> SCARF_ROTATION_DEGREE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Boolean> DISPLAY_SCARF = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> DISPLAY_EYE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
 
     private static final Set<ResourceLocation> STAGGERING_ANIMATIONS = Set.of(AnimationLocations.STAGGERING, AnimationLocations.STAGGERING_PHASE_2);
 
     public final boolean isShadow;
     private final ScarfWavingData scarfWavingData = new ScarfWavingData();
 
+    private float eyeAlpha = 1;
     private float prevScarfRotation = 0;
     protected int animationTickCount = Integer.MIN_VALUE;
     protected Runnable animationTickListener = () -> {
@@ -84,7 +86,20 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(SCARF_ROTATION_DEGREE, 0f)
-                .define(DISPLAY_SCARF, false);
+                .define(DISPLAY_SCARF, false)
+                .define(DISPLAY_EYE, true);
+    }
+
+    public boolean displayEye() {
+        return entityData.get(DISPLAY_EYE);
+    }
+
+    public void setDisplayEye(boolean value) {
+        entityData.set(DISPLAY_EYE, value);
+    }
+
+    public float getEyeAlpha() {
+        return eyeAlpha;
     }
 
     public ScarfWavingData getScarfWavingData() {
@@ -171,6 +186,9 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     @Override
     public void tick() {
         super.tick();
+
+        float alphaAddition = displayEye() ? 0.1f : -0.1f;
+        eyeAlpha = Mth.clamp(eyeAlpha + alphaAddition, 0, 1);
         prevScarfRotation = entityData.get(SCARF_ROTATION_DEGREE);
 
         scarfWavingData.update(Mth.lerp(prevScarfRotation / NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue(), 0, 1), (float) getDeltaMovement().y,yBodyRot - yBodyRotO);

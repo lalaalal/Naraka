@@ -60,7 +60,7 @@ public class StigmatizeEntitiesSkill extends Skill<Herobrine> {
         for (int yRot = 0; yRot < 360; yRot++) {
             double xSpeed = Math.cos(Math.toRadians(yRot));
             double zSpeed = Math.sin(Math.toRadians(yRot));
-            level.sendParticles(NarakaParticleTypes.GOLDEN_FLAME.get(), mob.getX(), mob.getY() + 1.5, mob.getZ(), 0, xSpeed, 0, zSpeed, 1);
+            level.sendParticles(NarakaParticleTypes.CORRUPTED_FIRE_FLAME.get(), mob.getX(), mob.getY() + 1.5, mob.getZ(), 0, xSpeed, 0, zSpeed, 1);
         }
     }
 

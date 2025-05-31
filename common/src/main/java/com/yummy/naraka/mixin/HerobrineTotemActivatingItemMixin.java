@@ -6,9 +6,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.FireChargeItem;
 import net.minecraft.world.item.FlintAndSteelItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -33,6 +35,9 @@ public abstract class HerobrineTotemActivatingItemMixin {
                 && HerobrineTotemBlockEntity.isSanctuaryExists(level, pos)
                 && HerobrineTotemBlockEntity.isSleeping(totem)
         ) {
+            ItemStack itemStack =context.getItemInHand();
+            if (player != null)
+                itemStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
             level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1, level.getRandom().nextFloat() * 0.4F + 0.8F);
             level.setBlockAndUpdate(pos.above(), Blocks.FIRE.defaultBlockState());
             HerobrineTotem.crack(level, pos.below(), totem);

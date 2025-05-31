@@ -1,5 +1,6 @@
 package com.yummy.naraka.client.renderer.entity.state;
 
+import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
@@ -22,6 +23,8 @@ public abstract class AbstractHerobrineRenderState extends LivingEntityRenderSta
     public boolean isIdle = false;
     public boolean renderScarf = false;
     public boolean doWalkAnimation = true;
+    public float eyeAlpha = 1;
+    public ResourceLocation eyeTexture = NarakaTextures.HEROBRINE_EYE;
     public WavingScarfRenderState scarfRenderState = new WavingScarfRenderState();
 
     private Collection<AfterimageRenderState> afterimages = List.of();
