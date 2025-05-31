@@ -105,7 +105,9 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         if (scarfRotationDegree > targetRotation)
             scarfRotationDegree -= 1;
         float maxRotation = NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
-        float newRotation = Mth.clamp(scarfRotationDegree - (float) movement.y * 30, 0, maxRotation);
+        if (!onGround())
+            scarfRotationDegree = scarfRotationDegree - (float) movement.y * 30;
+        float newRotation = Mth.clamp(scarfRotationDegree, 0, maxRotation);
         entityData.set(SCARF_ROTATION_DEGREE, newRotation);
     }
 
