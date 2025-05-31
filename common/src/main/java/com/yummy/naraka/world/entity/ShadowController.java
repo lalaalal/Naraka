@@ -3,13 +3,10 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaNbtUtils;
-import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.ai.skill.PunchSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
@@ -40,9 +37,7 @@ public class ShadowController {
         if (shadowHerobrines.size() >= NarakaConfig.COMMON.maxShadowHerobrineSpawn.getValue())
             return;
         ShadowHerobrine shadowHerobrine = new ShadowHerobrine(level, herobrine);
-        BlockPos randomPos = NarakaUtils.randomBlockPos(herobrine.getRandom(), herobrine.blockPosition(), 4);
-        BlockPos spawnPos = NarakaUtils.findAir(level, randomPos, Direction.UP);
-        shadowHerobrine.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
+        shadowHerobrine.setPos(herobrine.position());
         getShadows(level)
                 .stream().findAny()
                 .ifPresent(existing -> shadowHerobrine.setHealth(existing.getHealth()));

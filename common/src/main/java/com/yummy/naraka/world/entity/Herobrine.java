@@ -567,7 +567,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private float calculateFireballDamage(NarakaFireball fireball) {
-        if (getTarget() != null)
+        if (getTarget() == null)
             return getAttackDamage();
         if (!hibernateMode)
             return getAttackDamage() + getTarget().getMaxHealth() * 0.05f;

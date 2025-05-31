@@ -11,16 +11,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends AttackSkill<T> {
@@ -34,9 +30,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     private boolean hit = false;
     private boolean failed = false;
 
-    private final List<Entity> blockedEntities = new ArrayList<>();
     private final DashSkill<?> dashSkill;
-    private int failedTickCount = 0;
 
     public RushSkill(T mob, DashSkill<?> dashSkill) {
         super(LOCATION, 200, 200, mob);
@@ -52,10 +46,8 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     public void prepare() {
         super.prepare();
         duration = 200;
-        blockedEntities.clear();
         hit = false;
         failed = false;
-        failedTickCount = 0;
     }
 
     @Override
@@ -69,28 +61,22 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        lookTarget(target);
-        runBefore(RUSH_TICK, () -> rotateTowardTarget(target));
-
-        runBefore(RUSH_TICK, () -> traceTarget(target, 1));
-
-        runBetween(RUSH_TICK, FINALE_TICK, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 0.5));
+        runBefore(START_RUNNING_TICK, () -> lookTarget(target));
+        runBefore(START_RUNNING_TICK, () -> rotateTowardTarget(target));
+        runBefore(RUSH_TICK, () -> traceTarget(target));
+        runAfter(duration - 40, () -> lookTarget(target));
+        runAfter(duration - 40, () -> rotateTowardTarget(target));
     }
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        runAfter(START_RUNNING_TICK - 5, () -> moving(level));
+        runAfter(START_RUNNING_TICK - 5, this::moving);
         runAt(FINALE_TICK, this::failed);
-        if (failed && failedTickCount < 10) {
-            mob.turn(160, 0);
-            failedTickCount += 1;
-        }
         runAfter(RUSH_TICK, () -> calculateDeltaMovement(level));
         this.deltaMovement = deltaMovement.add(0, -0.098, 0);
     }
 
-    private void moving(ServerLevel level) {
-        NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, 0.5);
+    private void moving() {
         mob.setDeltaMovement(deltaMovement);
     }
 
@@ -103,7 +89,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     }
 
     private void calculateDeltaMovement(ServerLevel level) {
-        Collection<LivingEntity> entities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(0.5));
+        Collection<LivingEntity> entities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(1));
         Optional<LivingEntity> hitEntity = entities.stream()
                 .filter(AbstractHerobrine::isNotHerobrine)
                 .findAny();
@@ -115,7 +101,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
                 this.deltaMovement = deltaMovement.multiply(0, 1, 0);
         } else if (hitEntity.isPresent() || !mob.isFree(normalMovement.x, 0, normalMovement.z)) {
             this.duration = tickCount + 50;
-            this.deltaMovement = deltaMovement.yRot(Mth.PI)
+            this.deltaMovement = deltaMovement.scale(-1)
                     .normalize()
                     .multiply(0.5, 0, 0.5)
                     .add(0, 1, 0);
@@ -128,25 +114,20 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         }
     }
 
-    private void traceTarget(LivingEntity target, double scale) {
+    private void traceTarget(LivingEntity target) {
         this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob, target)
-                .multiply(1, 0, 1)
-                .scale(scale);
+                .multiply(1, 0, 1);
     }
 
     @Override
     protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 20 * 5, 15)) {
-            blockedEntities.add(target);
+        if (NarakaEntityUtils.disableAndHurtShield(target, 20 * 5, 15))
             return;
-        }
-        if (!blockedEntities.contains(target) && target.invulnerableTime < 10) {
-            StunHelper.stunEntity(target, 100);
-            mob.stigmatizeEntity(level, target);
-            super.hurtHitEntity(level, target);
-            Vec3 view = mob.getLookAngle();
-            target.knockback(5, -view.x, -view.z);
-        }
+        StunHelper.stunEntity(target, 100);
+        mob.stigmatizeEntity(level, target);
+        super.hurtHitEntity(level, target);
+        Vec3 view = mob.getLookAngle();
+        target.knockback(5, -view.x, -view.z);
     }
 
     @Override
