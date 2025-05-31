@@ -1,9 +1,9 @@
 package com.yummy.naraka.world.entity.ai.control;
 
 import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.world.entity.Herobrine;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.phys.Vec3;
@@ -11,7 +11,7 @@ import net.minecraft.world.phys.Vec3;
 public class HerobrineMoveControl extends MoveControl {
     private final double hoverHeight;
 
-    public HerobrineMoveControl(Mob mob, double hoverHeight, double speedModifier) {
+    public HerobrineMoveControl(Herobrine mob, double hoverHeight, double speedModifier) {
         super(mob);
         this.hoverHeight = hoverHeight;
         this.speedModifier = speedModifier;
@@ -19,6 +19,8 @@ public class HerobrineMoveControl extends MoveControl {
 
     @Override
     public void tick() {
+        if (!hasWanted())
+            return;
         BlockPos floor = NarakaUtils.findFloor(mob.level(), mob.blockPosition());
         double height = mob.position().y - floor.getY() - 1;
         double diff = height - hoverHeight;

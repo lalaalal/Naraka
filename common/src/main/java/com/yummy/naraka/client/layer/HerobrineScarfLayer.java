@@ -39,6 +39,7 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
     }
 
     private static <S extends AbstractHerobrineRenderState, M extends AbstractHerobrineModel<S>> void applyTranslateAndRotate(PoseStack poseStack, M herobrineModel) {
+        herobrineModel.root().translateAndRotate(poseStack);
         herobrineModel.main().translateAndRotate(poseStack);
         herobrineModel.upperBody().translateAndRotate(poseStack);
     }
@@ -48,10 +49,10 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
         if (!renderState.renderScarf)
             return;
         poseStack.pushPose();
+        applyTranslateAndRotate(poseStack, getParentModel());
         if (renderState.getModelType() != WavingScarfRenderState.ModelType.BIG) {
             RenderType renderType = RenderType.entitySmoothCutout(NarakaTextures.HEROBRINE_SCARF);
             VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-            applyTranslateAndRotate(poseStack, getParentModel());
 
             scarfModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
         }

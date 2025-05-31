@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.item.ItemStackRenderState;
 @Environment(EnvType.CLIENT)
 public class HerobrineRenderState extends AbstractHerobrineRenderState {
     public int phase;
+    public boolean displayPickaxe = true;
     public ItemStackRenderState pickaxe = new ItemStackRenderState();
 
     @Override

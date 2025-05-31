@@ -50,6 +50,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
     public void extractRenderState(Herobrine herobrine, HerobrineRenderState renderState, float partialTicks) {
         renderState.phase = herobrine.getPhase();
         renderState.doWalkAnimation = herobrine.getPhase() != 3;
+        renderState.displayPickaxe = herobrine.displayPickaxe() && herobrine.isAlive();
         super.extractRenderState(herobrine, renderState, partialTicks);
 
         itemModelResolver.updateForLiving(renderState.pickaxe, pickaxe, ItemDisplayContext.NONE, herobrine);
@@ -77,7 +78,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
 
     @Override
     public void render(HerobrineRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
-        if (renderState.phase == 3) {
+        if (renderState.phase == 3 && renderState.displayPickaxe) {
             poseStack.pushPose();
             poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - renderState.bodyRot));
             poseStack.translate(0, 1.4, 0);

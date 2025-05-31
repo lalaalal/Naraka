@@ -23,6 +23,9 @@ import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
@@ -45,6 +48,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class Herobrine extends AbstractHerobrine {
+    protected static final EntityDataAccessor<Boolean> DISPLAY_PICKAXE = SynchedEntityData.defineId(Herobrine.class, EntityDataSerializers.BOOLEAN);
 
     private static final float[] HEALTH_BY_PHASE = {106, 210, 350};
 
@@ -61,6 +65,7 @@ public class Herobrine extends AbstractHerobrine {
     protected final RolePlayShadowSkill rolePlayShadowSkill = registerSkill(1, this, RolePlayShadowSkill::new);
     protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(9, new RushSkill<>(this, dashSkill), AnimationLocations.RUSH);
     protected final DestroyStructureSkill destroyStructureSkill = registerSkill(this, DestroyStructureSkill::new);
+    protected final ExplosionSkill explosionSkill = registerSkill(this, ExplosionSkill::new, AnimationLocations.EXPLOSION);
 
     protected final LandingSkill landingSkill = registerSkill(this, LandingSkill::new, AnimationLocations.COMBO_ATTACK_5);
     protected final SuperHitSkill superHitSkill = registerSkill(new SuperHitSkill(landingSkill, this), AnimationLocations.COMBO_ATTACK_4);
@@ -74,6 +79,7 @@ public class Herobrine extends AbstractHerobrine {
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill, rolePlayShadowSkill);
     private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, walkAroundTargetSkill);
     private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, summonShadowSkill, walkAroundTargetSkill);
+    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill);
 
     private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashAroundSkill, walkAroundTargetSkill);
     private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(AnimationLocations.PHASE_2, AnimationLocations.STAGGERING_PHASE_2);
@@ -82,7 +88,7 @@ public class Herobrine extends AbstractHerobrine {
             List.of(), HIBERNATED_MODE_PHASE_1_SKILLS, HIBERNATED_MODE_PHASE_2_SKILLS, List.of()
     );
     private final List<List<Skill<?>>> SKILLS_BY_PHASE = List.of(
-            List.of(), PHASE_1_SKILLS, PHASE_2_SKILLS, List.of()
+            List.of(), PHASE_1_SKILLS, PHASE_2_SKILLS, PHASE_3_SKILLS
     );
 
     private final Map<Skill<?>, Float> STEPPABLE_SKILLS = Map.of(
@@ -133,7 +139,6 @@ public class Herobrine extends AbstractHerobrine {
 
         registerAnimation(AnimationLocations.STORM);
         registerAnimation(AnimationLocations.CARPET_BOMBING);
-        registerAnimation(AnimationLocations.EXPLOSION);
     }
 
     public Herobrine(Level level, Vec3 pos) {
@@ -146,9 +151,23 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DISPLAY_PICKAXE, true);
+    }
+
+    @Override
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64, 1, 5, 0));
+    }
+
+    public void setDisplayPickaxe(boolean value) {
+        entityData.set(DISPLAY_PICKAXE, value);
+    }
+
+    public boolean displayPickaxe() {
+        return entityData.get(DISPLAY_PICKAXE);
     }
 
     public void setSpawnPosition(BlockPos pos) {

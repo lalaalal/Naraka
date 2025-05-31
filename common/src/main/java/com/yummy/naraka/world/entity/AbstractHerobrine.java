@@ -97,15 +97,15 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
     private void updateScarfRotation() {
         float scarfRotationDegree = entityData.get(SCARF_ROTATION_DEGREE);
-        Vec3 delta = getDeltaMovement();
-        Vec3 projection = delta.multiply(1, 0, 1);
+        Vec3 movement = getDeltaMovement();
+        Vec3 projection = movement.multiply(1, 0, 1);
         float targetRotation = (float) projection.length() * 100 * 10;
         if (scarfRotationDegree < targetRotation)
             scarfRotationDegree += 1;
         if (scarfRotationDegree > targetRotation)
             scarfRotationDegree -= 1;
         float maxRotation = NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
-        float newRotation = Mth.clamp(scarfRotationDegree, 0, maxRotation);
+        float newRotation = Mth.clamp(scarfRotationDegree - (float) movement.y * 30, 0, maxRotation);
         entityData.set(SCARF_ROTATION_DEGREE, newRotation);
     }
 
@@ -171,7 +171,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         super.tick();
         prevScarfRotation = entityData.get(SCARF_ROTATION_DEGREE);
 
-        scarfWavingData.update(Mth.lerp(prevScarfRotation / NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue(), 0, 1), yBodyRot - yBodyRotO);
+        scarfWavingData.update(Mth.lerp(prevScarfRotation / NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue(), 0, 1), (float) getDeltaMovement().y,yBodyRot - yBodyRotO);
     }
 
     @Override

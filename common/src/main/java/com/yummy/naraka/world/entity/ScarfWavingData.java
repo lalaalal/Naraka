@@ -13,6 +13,7 @@ public class ScarfWavingData {
 
     private final int partitionNumber;
     private float verticalDegree;
+    private float ySpeed;
 
     public ScarfWavingData() {
         partitionNumber = NarakaConfig.CLIENT.herobrineScarfPartitionNumber.getValue();
@@ -26,14 +27,17 @@ public class ScarfWavingData {
         }
     }
 
-    public void update(float verticalSpeed, float rotationSpeed) {
-        float multiplier = 1 + verticalSpeed;
+    public void update(float xzSpeed, float ySpeed, float rotationSpeed) {
+        float multiplier = 1 + xzSpeed;
+        this.ySpeed = Mth.lerp(0.5f, this.ySpeed, Mth.clamp(ySpeed * 2f, -2, 2) * 0.1f);
         verticalDegree = Mth.wrapDegrees(verticalDegree + 9 * multiplier);
         float verticalAngle = (float) Math.toRadians(verticalDegree);
 
         float verticalY = Mth.sin(verticalAngle) * 0.02f;
         verticalPositions.removeLast();
         verticalPositions.addFirst(verticalY);
+        float value = verticalPositions.get(2);
+        verticalPositions.set(2, value + this.ySpeed);
 
         float horizontalY = Mth.sin(verticalAngle) * 0.005f;
         horizontalPositions.removeFirst();
