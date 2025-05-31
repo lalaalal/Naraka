@@ -130,6 +130,10 @@ public class Herobrine extends AbstractHerobrine {
         registerAnimation(AnimationLocations.STIGMATIZE_ENTITIES_END);
 
         registerAnimation(AnimationLocations.PHASE_3_IDLE);
+
+        registerAnimation(AnimationLocations.STORM);
+        registerAnimation(AnimationLocations.CARPET_BOMBING);
+        registerAnimation(AnimationLocations.EXPLOSION);
     }
 
     public Herobrine(Level level, Vec3 pos) {

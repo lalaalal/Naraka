@@ -63,7 +63,7 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
                     break;
             }
         }
-        if (radius > 90) {
+        if (radius > 100) {
             tickCount = duration;
         }
     }

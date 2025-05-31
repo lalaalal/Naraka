@@ -6,5 +6,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public interface PacketHandlerRegistrar {
     <T extends CustomPacketPayload> void define(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec);
+
     <T extends CustomPacketPayload> void register(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.PacketHandler<T> handler);
 }

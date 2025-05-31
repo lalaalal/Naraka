@@ -24,7 +24,11 @@ public abstract class AbstractHerobrineModel<S extends AbstractHerobrineRenderSt
 
     public abstract ModelPart rightArm();
 
+    public abstract ModelPart rightHand();
+
     public abstract ModelPart leftArm();
+
+    public abstract ModelPart leftHand();
 
     @Override
     public void setupAnim(S renderState) {

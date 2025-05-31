@@ -14,6 +14,8 @@ public class HerobrineFinalModel extends AbstractHerobrineModel<HerobrineRenderS
     private final ModelPart head;
     private final ModelPart leftArm;
     private final ModelPart rightArm;
+    private final ModelPart leftHand;
+    private final ModelPart rightHand;
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
@@ -35,10 +37,6 @@ public class HerobrineFinalModel extends AbstractHerobrineModel<HerobrineRenderS
                 .texOffs(32, 70).addBox(-2.0F, 0.0F, -4.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.0F, 8.0F, 2.0F));
 
         PartDefinition pickaxe = right_hand.addOrReplaceChild("pickaxe", CubeListBuilder.create(), PartPose.offset(-0.5F, 3.5F, -2.0F));
-
-        PartDefinition cube_r1 = pickaxe.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(107, 57).addBox(-8.0F, -27.0F, 0.0F, 8.0F, 66.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.5F, -0.5F, -25.0F, 0.0F, -1.5708F, -1.5708F));
-
-        PartDefinition cube_r2 = pickaxe.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(85, 1).addBox(-1.0F, -27.0F, 0.0F, 1.0F, 66.0F, 1.0F, new CubeDeformation(0.25F)), PartPose.offsetAndRotation(0.5F, -0.5F, 2.0F, -1.5708F, 0.0F, 0.0F));
 
         PartDefinition left_arm = chest.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(48, 70).mirror().addBox(1.0F, -2.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.75F)).mirror(false)
                 .texOffs(16, 70).mirror().addBox(1.0F, 2.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(5.0F, -6.5F, 0.0F));
@@ -70,6 +68,8 @@ public class HerobrineFinalModel extends AbstractHerobrineModel<HerobrineRenderS
         this.head = upperBody.getChild("head");
         this.rightArm = upperBody.getChild("right_arm");
         this.leftArm = upperBody.getChild("left_arm");
+        this.rightHand = rightArm.getChild("right_hand");
+        this.leftHand = leftArm.getChild("left_hand");
     }
 
     @Override
@@ -93,7 +93,17 @@ public class HerobrineFinalModel extends AbstractHerobrineModel<HerobrineRenderS
     }
 
     @Override
+    public ModelPart rightHand() {
+        return rightHand;
+    }
+
+    @Override
     public ModelPart leftArm() {
         return this.leftArm;
+    }
+
+    @Override
+    public ModelPart leftHand() {
+        return leftHand;
     }
 }
