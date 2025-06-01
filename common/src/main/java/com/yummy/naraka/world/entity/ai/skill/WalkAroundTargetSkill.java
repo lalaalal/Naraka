@@ -53,7 +53,7 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
     }
 
     private void determineNextSkill(ServerLevel level, LivingEntity target) {
-        if (mob.getRandom().nextBoolean()) {
+        if (mob.getRandom().nextDouble() < 0.25) {
             setupRush(level);
         } else {
             setupDashAndPunch(level, target);
@@ -70,13 +70,11 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
     }
 
     private void setupDashAndPunch(ServerLevel level, LivingEntity target) {
-        if (mob.getRandom().nextDouble() < 0.8) {
-            Vec3 deltaNormal = NarakaEntityUtils.getDirectionNormalVector(mob, target);
-            Vec3 position = mob.position().add(deltaNormal);
-            level.sendParticles(NarakaParticleTypes.FLICKER.get(), position.x, position.y + mob.getEyeHeight(), position.z, 1, 0, 0, 0, 1);
-            dashSkill.setLinkedSkill(punchSKill);
-            punchSKill.setLinkedFromPrevious(true);
-        }
+        Vec3 deltaNormal = NarakaEntityUtils.getDirectionNormalVector(mob, target);
+        Vec3 position = mob.position().add(deltaNormal);
+        level.sendParticles(NarakaParticleTypes.FLICKER.get(), position.x, position.y + mob.getEyeHeight(), position.z, 1, 0, 0, 0, 1);
+        dashSkill.setLinkedSkill(punchSKill);
+        punchSKill.setLinkedFromPrevious(true);
         this.setLinkedSkill(dashSkill);
     }
 

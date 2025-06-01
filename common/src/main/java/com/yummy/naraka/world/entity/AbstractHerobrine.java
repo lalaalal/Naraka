@@ -33,14 +33,10 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Set;
-
 public abstract class AbstractHerobrine extends SkillUsingMob implements StigmatizingEntity, AfterimageEntity, Enemy {
     protected static final EntityDataAccessor<Float> SCARF_ROTATION_DEGREE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Boolean> DISPLAY_SCARF = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> DISPLAY_EYE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
-
-    private static final Set<ResourceLocation> STAGGERING_ANIMATIONS = Set.of(AnimationLocations.STAGGERING, AnimationLocations.STAGGERING_PHASE_2);
 
     public final boolean isShadow;
     private final ScarfWavingData scarfWavingData = new ScarfWavingData();
@@ -163,10 +159,6 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         animationTickCount = Integer.MIN_VALUE;
         skillManager.resume();
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
-    }
-
-    public boolean isStaggering() {
-        return STAGGERING_ANIMATIONS.contains(getCurrentAnimation());
     }
 
     @Override
