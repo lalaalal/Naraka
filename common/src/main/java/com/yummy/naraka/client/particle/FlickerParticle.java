@@ -15,6 +15,7 @@ public class FlickerParticle extends TextureSheetParticle {
         this.setSpriteFromAge(this.sprites);
         this.quadSize = 4;
         this.lifetime = 6;
+        this.oRoll = this.roll = -Mth.PI / 4;
     }
 
     public void tick() {
@@ -22,7 +23,7 @@ public class FlickerParticle extends TextureSheetParticle {
         if (this.age++ >= this.lifetime) {
             this.remove();
         } else {
-            roll += Mth.PI / 32;
+            roll += Mth.PI / 4 / lifetime;
             this.setSpriteFromAge(this.sprites);
         }
     }

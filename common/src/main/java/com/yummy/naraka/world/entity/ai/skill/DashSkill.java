@@ -11,6 +11,7 @@ import net.minecraft.world.phys.Vec3;
 public class DashSkill<T extends AbstractHerobrine> extends TargetSkill<T> {
     public static final ResourceLocation LOCATION = createLocation("dash");
 
+    private Vec3 prevPosition = Vec3.ZERO;
     private Vec3 deltaMovement = Vec3.ZERO;
     private float scale = 1;
     private boolean alwaysMove = false;
@@ -27,6 +28,12 @@ public class DashSkill<T extends AbstractHerobrine> extends TargetSkill<T> {
 
     public void setScale(float scale) {
         this.scale = scale;
+    }
+
+    @Override
+    public void prepare() {
+        super.prepare();
+        prevPosition = mob.position();
     }
 
     @Override
@@ -65,14 +72,10 @@ public class DashSkill<T extends AbstractHerobrine> extends TargetSkill<T> {
     }
 
     private void move() {
-        Vec3 normalMovement = deltaMovement.normalize();
-
-        while (!mob.isFree(normalMovement.x, 0, normalMovement.z)) {
-            mob.setPos(mob.position().add(normalMovement));
-            tickCount += 1;
-        }
         mob.setDeltaMovement(deltaMovement);
-        if (!deltaMovement.equals(Vec3.ZERO))
+        double movedDistance = prevPosition.subtract(mob.position()).length();
+        if (!deltaMovement.equals(Vec3.ZERO) && movedDistance >= deltaMovement.length() * 0.9)
             mob.addAfterimage(Afterimage.of(mob, 10), 1, tickCount < 9);
+        prevPosition = mob.position();
     }
 }

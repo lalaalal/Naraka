@@ -52,6 +52,11 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
         runAt(duration - 1, () -> determineNextSkill(level, target));
     }
 
+    @Override
+    protected void onLastTick(ServerLevel level) {
+        mob.getNavigation().stop();
+    }
+
     private void determineNextSkill(ServerLevel level, LivingEntity target) {
         if (mob.getRandom().nextDouble() < 0.25) {
             setupRush(level);

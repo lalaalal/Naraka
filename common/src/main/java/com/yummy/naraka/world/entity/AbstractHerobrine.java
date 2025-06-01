@@ -52,7 +52,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
                 .add(Attributes.ATTACK_DAMAGE, 10)
                 .add(Attributes.FOLLOW_RANGE, 128)
                 .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 1)
-                .add(Attributes.STEP_HEIGHT, 1.75)
+                .add(Attributes.STEP_HEIGHT, 1.25)
                 .add(Attributes.MOVEMENT_SPEED, 0.17f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, 1)

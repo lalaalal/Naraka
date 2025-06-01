@@ -602,18 +602,18 @@ public class Herobrine extends AbstractHerobrine {
     public void die(DamageSource damageSource) {
         if (damageSource.getEntity() instanceof LivingEntity livingEntity)
             rewardChallenger(livingEntity);
-        if (level() instanceof ServerLevel serverLevel) {
+        super.die(damageSource);
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        if (reason.shouldDestroy() && level() instanceof ServerLevel serverLevel) {
             for (LivingEntity livingEntity : NarakaEntityUtils.findEntitiesByUUID(serverLevel, stigmatizedEntities, LivingEntity.class)) {
                 LockedHealthHelper.release(livingEntity);
                 StigmaHelper.removeStigma(livingEntity);
             }
             shadowController.killShadows(serverLevel);
         }
-        super.die(damageSource);
-    }
-
-    @Override
-    public void remove(RemovalReason reason) {
         super.remove(reason);
     }
 

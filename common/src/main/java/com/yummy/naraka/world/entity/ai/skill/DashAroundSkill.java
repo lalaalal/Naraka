@@ -13,11 +13,18 @@ import org.jetbrains.annotations.Nullable;
 
 public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends TargetSkill<T> {
     public static final String NAME = "dash_around";
+    private Vec3 prevPosition = Vec3.ZERO;
     private Vec3 deltaMovement = Vec3.ZERO;
     private Vec3 previousTargetPosition = Vec3.ZERO;
 
     public DashAroundSkill(T mob) {
         super(NAME, 15, 40, mob);
+    }
+
+    @Override
+    public void prepare() {
+        super.prepare();
+        prevPosition = mob.position();
     }
 
     @Override
@@ -42,14 +49,9 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
     }
 
     private void move() {
-        Vec3 normalMovement = deltaMovement.normalize();
-
-        while (!mob.isFree(normalMovement.x, 0, normalMovement.z)) {
-            mob.setPos(mob.position().add(normalMovement));
-            tickCount += 1;
-        }
         mob.setDeltaMovement(deltaMovement);
-        if (!deltaMovement.equals(Vec3.ZERO))
+        double movedDistance = prevPosition.subtract(mob.position()).length();
+        if (!deltaMovement.equals(Vec3.ZERO) && movedDistance >= deltaMovement.length() * 0.9)
             mob.addAfterimage(Afterimage.of(mob, 10), 1, tickCount < 11);
     }
 
