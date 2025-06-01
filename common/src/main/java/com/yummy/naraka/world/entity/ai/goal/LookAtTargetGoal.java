@@ -19,7 +19,7 @@ public class LookAtTargetGoal extends Goal {
         LivingEntity target = herobrine.getTarget();
         if (target == null)
             return false;
-        return !herobrine.isStaggering() && !herobrine.isUsingSkill();
+        return !herobrine.isPlayingStaticAnimation() && !herobrine.isUsingSkill();
     }
 
     @Override

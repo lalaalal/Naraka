@@ -34,21 +34,15 @@ public class MoveToTargetGoal extends Goal {
     @Override
     public boolean canUse() {
         this.target = this.mob.getTarget();
-        if (this.target == null || mob.isUsingSkill() || mob.isStaggering())
+        if (this.target == null || mob.isUsingSkill() || mob.isPlayingStaticAnimation())
             return false;
         return this.target.distanceToSqr(this.mob) < (this.within * this.within) && this.target.distanceToSqr(this.mob) > 9;
     }
 
     @Override
     public boolean canContinueToUse() {
-        return !this.mob.getNavigation().isDone()
-                && tickCount > 0
-                && !mob.isUsingSkill()
-                && !mob.isStaggering()
-                && this.target != null
-                && this.target.isAlive()
-                && this.target.distanceToSqr(this.mob) < (this.within * this.within)
-                && this.target.distanceToSqr(this.mob) > 9;
+        return this.canUse() && !this.mob.getNavigation().isDone()
+                && tickCount > 0;
     }
 
     @Override

@@ -144,6 +144,10 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         }
     }
 
+    public boolean isPlayingStaticAnimation() {
+        return animationTickCount > 0;
+    }
+
     protected void playStaticAnimation(ResourceLocation animation, int duration) {
         if (animationTickCount > 0)
             return;

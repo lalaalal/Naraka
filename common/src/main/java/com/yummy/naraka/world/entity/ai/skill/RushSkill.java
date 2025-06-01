@@ -12,21 +12,17 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.Optional;
 
 public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends AttackSkill<T> {
     public static final ResourceLocation LOCATION = createLocation("rush");
 
-    private static final int START_RUNNING_TICK = 20;
-    private static final int RUSH_TICK = 25;
+    private static final int START_RUNNING_TICK = 15;
+    private static final int RUSH_TICK = 20;
     private static final int FINALE_TICK = 50;
 
-    private Vec3 deltaMovement = Vec3.ZERO;
+    private Vec3 movement = Vec3.ZERO;
     private boolean hit = false;
     private boolean failed = false;
 
@@ -48,15 +44,15 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         duration = 200;
         hit = false;
         failed = false;
+        if (targetInRange(42)) {
+            DashSkill.setupDashBack(dashSkill, this);
+            mob.getSkillManager().setCurrentSkill(dashSkill);
+        }
     }
 
     @Override
     protected void onFirstTick(ServerLevel level) {
         mob.getNavigation().stop();
-        if (targetInRange(25)) {
-            DashSkill.setupDashBack(dashSkill, this);
-            mob.getSkillManager().setCurrentSkill(dashSkill);
-        }
     }
 
     @Override
@@ -65,19 +61,24 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         runBefore(START_RUNNING_TICK, () -> rotateTowardTarget(target));
         runBefore(RUSH_TICK, () -> traceTarget(target));
         runAfter(duration - 40, () -> lookTarget(target));
-        runAfter(duration - 40, () -> rotateTowardTarget(target));
+        run(after(duration - 40) && failed, () -> rotateTowardTarget(target));
     }
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        runAfter(START_RUNNING_TICK - 5, this::moving);
+        runAfter(START_RUNNING_TICK, this::moving);
+        runAfter(RUSH_TICK, () -> calculateDeltaMovement(level, target));
+        run(after(RUSH_TICK) && !hit && !failed, () -> hurtHitEntities(level, this::entityPredicate, 3));
         runAt(FINALE_TICK, this::failed);
-        runAfter(RUSH_TICK, () -> calculateDeltaMovement(level));
-        this.deltaMovement = deltaMovement.add(0, -0.098, 0);
+        this.movement = movement.add(0, -0.098, 0);
+    }
+
+    private boolean entityPredicate(LivingEntity entity) {
+        return AbstractHerobrine.isNotHerobrine(entity) && entity != mob.getTarget();
     }
 
     private void moving() {
-        mob.setDeltaMovement(deltaMovement);
+        mob.setDeltaMovement(movement);
     }
 
     private void failed() {
@@ -88,26 +89,31 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         mob.setAnimation(AnimationLocations.RUSH_FAILED);
     }
 
-    private void calculateDeltaMovement(ServerLevel level) {
-        Collection<LivingEntity> entities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(1));
-        Optional<LivingEntity> hitEntity = entities.stream()
-                .filter(AbstractHerobrine::isNotHerobrine)
-                .findAny();
-        Vec3 normalMovement = deltaMovement.normalize();
+    private boolean isTargetInFront(@Nullable LivingEntity target) {
+        if (target == null)
+            return false;
+        Vec3 delta = NarakaEntityUtils.getDirectionNormalVector(mob, target);
+        return movement.dot(delta) > 0;
+    }
+
+    private void calculateDeltaMovement(ServerLevel level, @Nullable LivingEntity target) {
+        boolean hitEntity = targetInRange(4) && isTargetInFront(target);
+        Vec3 normalMovement = movement.normalize();
         if (this.failed) {
-            this.deltaMovement = deltaMovement.scale(0.8);
+            this.movement = movement.scale(0.8);
         } else if (this.hit) {
-            if (mob.onGround() && deltaMovement.y < 0)
-                this.deltaMovement = deltaMovement.multiply(0, 1, 0);
-        } else if (hitEntity.isPresent() || !mob.isFree(normalMovement.x, 0, normalMovement.z)) {
+            if (mob.onGround() && movement.y < 0)
+                this.movement = movement.multiply(0, 1, 0);
+        } else if (hitEntity || !mob.isFree(normalMovement.x, 0, normalMovement.z)) {
             this.duration = tickCount + 50;
-            this.deltaMovement = deltaMovement.scale(-1)
+            this.movement = movement.scale(-1)
                     .normalize()
                     .multiply(0.5, 0, 0.5)
                     .add(0, 1, 0);
             this.hit = true;
             this.failed = false;
-            hitEntity.ifPresent(entity -> hurtHitEntity(level, entity));
+            if (hitEntity)
+                hurtHitEntity(level, target);
             level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 2, 1);
             level.sendParticles(ParticleTypes.SONIC_BOOM, mob.getX(), mob.getY() + 1, mob.getZ(), 1, 0, 0, 0, 1);
             mob.setAnimation(AnimationLocations.RUSH_SUCCEED);
@@ -115,8 +121,10 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     }
 
     private void traceTarget(LivingEntity target) {
-        this.deltaMovement = NarakaEntityUtils.getDirectionNormalVector(mob, target)
-                .multiply(1, 0, 1);
+        if (before(START_RUNNING_TICK) || isTargetInFront(target)) {
+            this.movement = NarakaEntityUtils.getDirectionNormalVector(mob, target)
+                    .multiply(1, 0, 1);
+        }
     }
 
     @Override
@@ -126,8 +134,8 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         StunHelper.stunEntity(target, 100);
         mob.stigmatizeEntity(level, target);
         super.hurtHitEntity(level, target);
-        Vec3 view = mob.getLookAngle();
-        target.knockback(5, -view.x, -view.z);
+        Vec3 delta = NarakaEntityUtils.getDirectionNormalVector(mob, target);
+        target.knockback(5, -delta.x, -delta.z);
     }
 
     @Override
