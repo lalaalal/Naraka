@@ -13,11 +13,18 @@ import org.jetbrains.annotations.Nullable;
 
 public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends TargetSkill<T> {
     public static final String NAME = "dash_around";
+    private Vec3 prevPosition = Vec3.ZERO;
     private Vec3 deltaMovement = Vec3.ZERO;
     private Vec3 previousTargetPosition = Vec3.ZERO;
 
     public DashAroundSkill(T mob) {
         super(NAME, 15, 40, mob);
+    }
+
+    @Override
+    public void prepare() {
+        super.prepare();
+        prevPosition = mob.position();
     }
 
     @Override
@@ -37,14 +44,14 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        runBetween(6, 11, () -> move(level));
+        runBetween(6, 11, this::move);
         runAt(11, () -> mob.setDeltaMovement(Vec3.ZERO));
     }
 
-    private void move(ServerLevel level) {
-        NarakaEntityUtils.updatePositionForUpStep(level, mob, deltaMovement, 0.4);
+    private void move() {
         mob.setDeltaMovement(deltaMovement);
-        if (!deltaMovement.equals(Vec3.ZERO))
+        double movedDistance = prevPosition.subtract(mob.position()).length();
+        if (!deltaMovement.equals(Vec3.ZERO) && movedDistance >= deltaMovement.length() * 0.9)
             mob.addAfterimage(Afterimage.of(mob, 10), 1, tickCount < 11);
     }
 
@@ -63,8 +70,7 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
             deltaMovement = projection.normalize()
                     .scale(-1);
         }
-        deltaMovement = deltaMovement.add(0, -0.9, 0)
-                .add(delta.scale(1.5))
+        deltaMovement = deltaMovement.add(delta.scale(1.5))
                 .scale(0.6);
     }
 }

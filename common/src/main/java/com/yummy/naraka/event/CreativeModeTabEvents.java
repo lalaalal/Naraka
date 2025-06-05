@@ -9,37 +9,40 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @see #modifyEntries(ResourceKey, EntryModifier)
+ */
 public final class CreativeModeTabEvents {
-    private static final Map<ResourceKey<CreativeModeTab>, Event<ModifyEntries>> EVENT_MAP = new HashMap<>();
+    private static final Map<ResourceKey<CreativeModeTab>, Event<EntryModifier>> EVENT_MAP = new HashMap<>();
     @Nullable
     private static ModifyEntriesEventFactory modifyEntriesEventFactory;
 
-    private static Event<ModifyEntries> create(ResourceKey<CreativeModeTab> key) {
+    private static Event<EntryModifier> create(ResourceKey<CreativeModeTab> key) {
         if (modifyEntriesEventFactory == null)
             modifyEntriesEventFactory = MethodInvoker.of(CreativeModeTabEvents.class, "getModifyEntriesEventFactory")
                     .invoke().result(ModifyEntriesEventFactory.class);
         return modifyEntriesEventFactory.create(key);
     }
 
-    public static Event<ModifyEntries> modifyEntriesEvent(ResourceKey<CreativeModeTab> key) {
+    public static Event<EntryModifier> modifyEntriesEvent(ResourceKey<CreativeModeTab> key) {
         return EVENT_MAP.computeIfAbsent(key, CreativeModeTabEvents::create);
     }
 
-    public static void modifyEntries(ResourceKey<CreativeModeTab> key, ModifyEntries modifier) {
+    public static void modifyEntries(ResourceKey<CreativeModeTab> key, EntryModifier modifier) {
         modifyEntriesEvent(key).register(modifier);
     }
 
     @FunctionalInterface
     public interface ModifyEntriesEventFactory {
-        Event<ModifyEntries> create(ResourceKey<CreativeModeTab> key);
+        Event<EntryModifier> create(ResourceKey<CreativeModeTab> key);
     }
 
     @FunctionalInterface
-    public interface ModifyEntries {
+    public interface EntryModifier {
         void modify(NarakaCreativeModeTabs.TabEntries entries);
     }
 
-    public static class ModifyTabEntriesEvent extends Event<ModifyEntries> {
+    public static class ModifyTabEntriesEvent extends Event<EntryModifier> {
         public final ResourceKey<CreativeModeTab> key;
 
         public ModifyTabEntriesEvent(ResourceKey<CreativeModeTab> key) {
@@ -47,11 +50,11 @@ public final class CreativeModeTabEvents {
         }
 
         @Override
-        public ModifyEntries invoker() {
+        public EntryModifier invoker() {
             if (listeners.size() == 1)
                 return listeners.getFirst();
             return entries -> {
-                for (ModifyEntries listener : listeners)
+                for (EntryModifier listener : listeners)
                     listener.modify(entries);
             };
         }

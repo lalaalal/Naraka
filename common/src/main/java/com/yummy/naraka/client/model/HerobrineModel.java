@@ -15,6 +15,8 @@ public class HerobrineModel<S extends AbstractHerobrineRenderState> extends Abst
     private final ModelPart head;
     private final ModelPart leftArm;
     private final ModelPart rightArm;
+    private final ModelPart leftHand;
+    private final ModelPart rightHand;
 
     public HerobrineModel(ModelPart root) {
         super(root);
@@ -23,6 +25,8 @@ public class HerobrineModel<S extends AbstractHerobrineRenderState> extends Abst
         this.head = upperBody.getChild("head");
         this.leftArm = upperBody.getChild("left_arm");
         this.rightArm = upperBody.getChild("right_arm");
+        this.leftHand = leftArm.getChild("left_arm_lower");
+        this.rightHand = rightArm.getChild("right_arm_lower");
     }
 
     public static LayerDefinition createForHerobrine() {
@@ -90,7 +94,17 @@ public class HerobrineModel<S extends AbstractHerobrineRenderState> extends Abst
     }
 
     @Override
+    public ModelPart leftHand() {
+        return leftHand;
+    }
+
+    @Override
     public ModelPart rightArm() {
         return rightArm;
+    }
+
+    @Override
+    public ModelPart rightHand() {
+        return rightHand;
     }
 }

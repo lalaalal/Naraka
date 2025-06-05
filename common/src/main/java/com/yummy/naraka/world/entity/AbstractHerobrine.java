@@ -1,12 +1,17 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -25,27 +30,36 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Set;
-
 public abstract class AbstractHerobrine extends SkillUsingMob implements StigmatizingEntity, AfterimageEntity, Enemy {
-    public final boolean isShadow;
-    private static final Set<ResourceLocation> STAGGERING_ANIMATIONS = Set.of(AnimationLocations.STAGGERING, AnimationLocations.STAGGERING_PHASE_2);
+    protected static final EntityDataAccessor<Float> SCARF_ROTATION_DEGREE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Boolean> DISPLAY_SCARF = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> DISPLAY_EYE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
 
+    public final boolean isShadow;
+    private final ScarfWavingData scarfWavingData = new ScarfWavingData();
+
+    private float eyeAlpha = 1;
+    private float prevScarfRotation = 0;
     protected int animationTickCount = Integer.MIN_VALUE;
+    protected Runnable animationTickListener = () -> {
+    };
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.ATTACK_DAMAGE, 10)
                 .add(Attributes.FOLLOW_RANGE, 128)
                 .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 1)
-                .add(Attributes.STEP_HEIGHT, 1)
+                .add(Attributes.STEP_HEIGHT, 1.25)
                 .add(Attributes.MOVEMENT_SPEED, 0.17f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.SAFE_FALL_DISTANCE, 256)
                 .add(Attributes.FALL_DAMAGE_MULTIPLIER, 0)
+                .add(Attributes.JUMP_STRENGTH, 0)
+                .add(Attributes.FLYING_SPEED, 0.3f)
                 .add(Attributes.MAX_HEALTH, 666);
     }
 
@@ -64,19 +78,73 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         skillManager.runOnSkillEnd(this::updateAnimationOnSkillEnd);
     }
 
-    private void updateAnimationOnSkillEnd(Skill<?> skill) {
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SCARF_ROTATION_DEGREE, 0f)
+                .define(DISPLAY_SCARF, false)
+                .define(DISPLAY_EYE, true);
+    }
+
+    public boolean displayEye() {
+        return entityData.get(DISPLAY_EYE);
+    }
+
+    public void setDisplayEye(boolean value) {
+        entityData.set(DISPLAY_EYE, value);
+    }
+
+    public float getEyeAlpha() {
+        return eyeAlpha;
+    }
+
+    public ScarfWavingData getScarfWavingData() {
+        return scarfWavingData;
+    }
+
+    public float getScarfRotationDegree(float partialTick) {
+        return Mth.lerp(partialTick, prevScarfRotation, entityData.get(SCARF_ROTATION_DEGREE));
+    }
+
+    private void updateScarfRotation() {
+        float scarfRotationDegree = entityData.get(SCARF_ROTATION_DEGREE);
+        Vec3 movement = getDeltaMovement();
+        Vec3 projection = movement.multiply(1, 0, 1);
+        float targetRotation = (float) projection.length() * 100 * 10;
+        if (scarfRotationDegree < targetRotation)
+            scarfRotationDegree += 1;
+        if (scarfRotationDegree > targetRotation)
+            scarfRotationDegree -= 1;
+        float maxRotation = NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
+        if (!onGround())
+            scarfRotationDegree = scarfRotationDegree - (float) movement.y * 30;
+        float newRotation = Mth.clamp(scarfRotationDegree, 0, maxRotation);
+        entityData.set(SCARF_ROTATION_DEGREE, newRotation);
+    }
+
+    public boolean shouldRenderScarf() {
+        return entityData.get(DISPLAY_SCARF);
+    }
+
+    protected void updateAnimationOnSkillEnd(Skill<?> skill) {
         if (!skill.hasLinkedSkill())
             setAnimation(AnimationLocations.IDLE);
     }
 
-    private void updateStaggering() {
+    private void updateAnimationTick() {
         if (animationTickCount == 0)
             stopAnimation();
-        if (animationTickCount >= 0)
+        if (animationTickCount >= 0) {
+            animationTickListener.run();
             animationTickCount -= 1;
+        }
     }
 
-    protected void playAnimation(ResourceLocation animation, int duration) {
+    public boolean isPlayingStaticAnimation() {
+        return animationTickCount > 0;
+    }
+
+    protected void playStaticAnimation(ResourceLocation animation, int duration) {
         if (animationTickCount > 0)
             return;
         animationTickCount = Math.max(1, duration);
@@ -91,10 +159,6 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         animationTickCount = Integer.MIN_VALUE;
         skillManager.resume();
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
-    }
-
-    public boolean isStaggering() {
-        return STAGGERING_ANIMATIONS.contains(getCurrentAnimation());
     }
 
     @Override
@@ -116,8 +180,20 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     @Override
+    public void tick() {
+        super.tick();
+
+        float alphaAddition = displayEye() ? 0.1f : -0.1f;
+        eyeAlpha = Mth.clamp(eyeAlpha + alphaAddition, 0, 1);
+        prevScarfRotation = entityData.get(SCARF_ROTATION_DEGREE);
+
+        scarfWavingData.update(Mth.lerp(prevScarfRotation / NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue(), 0, 1), (float) getDeltaMovement().y,yBodyRot - yBodyRotO);
+    }
+
+    @Override
     protected void customServerAiStep(ServerLevel serverLevel) {
-        updateStaggering();
+        updateAnimationTick();
+        updateScarfRotation();
         super.customServerAiStep(serverLevel);
     }
 

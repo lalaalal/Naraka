@@ -44,6 +44,15 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
         renderState.isIdle = true;
         renderState.setAfterimages(entity, partialTicks);
         renderState.setAnimationVisitor(entity);
+        renderState.updateScarfRenderState(entity, partialTicks);
+    }
+
+    @Override
+    public void render(S renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        poseStack.pushPose();
+        poseStack.scale(0.935f, 0.935f, 0.935f);
+        super.render(renderState, poseStack, buffer, packedLight);
+        poseStack.popPose();
     }
 
     @Override
@@ -81,7 +90,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
     @Override
     protected int getModelTint(S renderState) {
         if (renderState.isShadow)
-            return NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(0x88).pack();
+            return NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(0xbb).pack();
         return super.getModelTint(renderState);
     }
 }

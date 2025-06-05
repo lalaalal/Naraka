@@ -24,7 +24,11 @@ public abstract class AbstractHerobrineModel<S extends AbstractHerobrineRenderSt
 
     public abstract ModelPart rightArm();
 
+    public abstract ModelPart rightHand();
+
     public abstract ModelPart leftArm();
+
+    public abstract ModelPart leftHand();
 
     @Override
     public void setupAnim(S renderState) {
@@ -34,7 +38,8 @@ public abstract class AbstractHerobrineModel<S extends AbstractHerobrineRenderSt
             applyHeadRotation(renderState);
         if (renderState.isIdle)
             AnimationUtils.bobArms(rightArm(), leftArm(), renderState.ageInTicks);
-        this.animateWalk(HerobrineAnimation.WALKING, renderState.walkAnimationPos, renderState.walkAnimationSpeed, 5, 6);
+        if (renderState.doWalkAnimation)
+            this.animateWalk(HerobrineAnimation.WALKING, renderState.walkAnimationPos, renderState.walkAnimationSpeed, 5, 6);
         renderState.animations((animationLocation, animationState) -> {
             this.animate(animationState, AnimationMapper.get(animationLocation), renderState.ageInTicks);
         });

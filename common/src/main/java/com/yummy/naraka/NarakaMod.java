@@ -2,6 +2,7 @@ package com.yummy.naraka;
 
 import com.mojang.logging.LogUtils;
 import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
+import com.yummy.naraka.client.init.NarakaClientInitializer;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
@@ -9,6 +10,7 @@ import com.yummy.naraka.core.registries.RegistryFactory;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.event.EventHandler;
+import com.yummy.naraka.event.NarakaGameEvents;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
@@ -46,6 +48,9 @@ public final class NarakaMod {
     public static boolean isModLoaded = false;
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    /**
+     * @see com.yummy.naraka.client.NarakaModClient#initialize(NarakaClientInitializer)
+     */
     public static void initialize(NarakaInitializer initializer) {
         Platform.getInstance();
         EventHandler.prepare();

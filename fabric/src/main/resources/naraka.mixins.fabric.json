@@ -5,7 +5,7 @@
   "minVersion": "0.8",
   "client": [
     "client.CompassAngleStateMixin",
-    "client.HerobrineSkyRendererMixin"
+    "client.LevelRendererMixin"
   ],
   "mixins": [
     "LivingEntityMixin",

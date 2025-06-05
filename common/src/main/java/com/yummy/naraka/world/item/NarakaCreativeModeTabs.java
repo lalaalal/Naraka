@@ -15,15 +15,12 @@ import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-
-import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
 public class NarakaCreativeModeTabs {
@@ -222,10 +219,5 @@ public class NarakaCreativeModeTabs {
         void addBefore(ItemLike pivot, ItemLike... items);
 
         void addAfter(ItemLike pivot, ItemLike... items);
-    }
-
-    @FunctionalInterface
-    public interface CreativeModeTabModifier {
-        void modify(ResourceKey<CreativeModeTab> tabKey, Consumer<TabEntries> entries);
     }
 }

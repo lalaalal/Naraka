@@ -1,5 +1,6 @@
 package com.yummy.naraka.client.renderer.entity.state;
 
+import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
@@ -20,6 +21,12 @@ public abstract class AbstractHerobrineRenderState extends LivingEntityRenderSta
     public boolean isShadow = false;
     public boolean isStaggering = false;
     public boolean isIdle = false;
+    public boolean renderScarf = false;
+    public boolean doWalkAnimation = true;
+    public float eyeAlpha = 1;
+    public ResourceLocation eyeTexture = NarakaTextures.HEROBRINE_EYE;
+    public WavingScarfRenderState scarfRenderState = new WavingScarfRenderState();
+
     private Collection<AfterimageRenderState> afterimages = List.of();
     private Consumer<BiConsumer<ResourceLocation, AnimationState>> animationVisitor = consumer -> {
 
@@ -28,6 +35,13 @@ public abstract class AbstractHerobrineRenderState extends LivingEntityRenderSta
     protected AbstractHerobrineRenderState() {
 
     }
+
+    public void updateScarfRenderState(AbstractHerobrine herobrine, float partialTick) {
+        renderScarf = herobrine.shouldRenderScarf() || NarakaConfig.CLIENT.alwaysDisplayHerobrineScarf.getValue();
+        scarfRenderState.extract(herobrine, getModelType(), partialTick);
+    }
+
+    public abstract WavingScarfRenderState.ModelType getModelType();
 
     public void setAnimationVisitor(AbstractHerobrine herobrine) {
         animationVisitor = herobrine::forEachAnimations;

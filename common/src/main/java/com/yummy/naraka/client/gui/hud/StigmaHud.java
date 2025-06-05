@@ -16,12 +16,12 @@ import net.minecraft.world.entity.player.Player;
 
 @Environment(EnvType.CLIENT)
 public class StigmaHud implements LayeredDraw.Layer {
-    public static final int BACKGROUND_WIDTH = 16;
-    public static final int BACKGROUND_HEIGHT = 21;
-    public static final int STIGMA_SIZE = 2;
-    public static final int STIGMA_START_X = 3;
-    public static final int STIGMA_START_Y = 18;
-    public static final int STIGMA_OFFSET_BORDER = 2;
+    public static final int BACKGROUND_WIDTH = 15;
+    public static final int BACKGROUND_HEIGHT = 5;
+    public static final int STIGMA_SIZE = 5;
+    public static final int STIGMA_START_X = 0;
+    public static final int STIGMA_START_Y = 0;
+    public static final int STIGMA_OFFSET_INTERVAL = 5;
 
     public static final int CONSUME_ICON_WIDTH = 150;
     public static final int CONSUME_ICON_HEIGHT = 150;
@@ -67,8 +67,9 @@ public class StigmaHud implements LayeredDraw.Layer {
         Stigma stigma = StigmaHelper.get(player);
         long stigmatizedTime = player.level().getGameTime() - stigma.lastMarkedTime();
 
-        int baseX = DeathCountHud.BASE_X + DeathCountHud.BACKGROUND_WIDTH + 8;
-        int baseY = DeathCountHud.BASE_Y + (DeathCountHud.BACKGROUND_HEIGHT - BACKGROUND_HEIGHT) / 2;
+
+        int baseX = guiGraphics.guiWidth() / 2 - (BACKGROUND_WIDTH / 2);
+        int baseY = 20;
 
         int deathCount = DeathCountHelper.get(player);
 
@@ -79,15 +80,13 @@ public class StigmaHud implements LayeredDraw.Layer {
 
         if (deathCount <= 0 && stigma.value() < 1)
             return;
-        if (deathCount <= 0)
-            baseX = DeathCountHud.BASE_X;
 
         if (stigma.lastMarkedTime() != 0 && stigmatizedTime > herobrineTakingStigmaTick / 6 * 5)
             baseX += (int) (stigmatizedTime % 4 / 2) * 2 - 1;
 
         guiGraphics.blitSprite(RenderType::guiTextured, NarakaSprites.STIGMA_BACKGROUND, baseX, baseY, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
         for (int i = 0; i < stigma.value(); i++) {
-            int x = baseX + STIGMA_START_X + i * (STIGMA_OFFSET_BORDER + STIGMA_SIZE);
+            int x = baseX + STIGMA_START_X + i * (STIGMA_OFFSET_INTERVAL + STIGMA_SIZE);
             int y = baseY + STIGMA_START_Y;
             guiGraphics.blitSprite(RenderType::guiTextured, NarakaSprites.STIGMA, x, y, STIGMA_SIZE, STIGMA_SIZE);
         }

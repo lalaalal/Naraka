@@ -18,17 +18,17 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
     private static final int SPHERE_RADIUS = 10;
 
     private final List<BlockPos> positions = new ArrayList<>();
-    private int maxRadius = 50;
+    private int radius = 40;
     private int destroyCount = 5;
 
     public DestroyStructureSkill(Herobrine mob) {
-        super(LOCATION, 400, Integer.MAX_VALUE, mob);
+        super(LOCATION, 200, Integer.MAX_VALUE, mob);
     }
 
     @Override
     public void prepare() {
         super.prepare();
-        maxRadius = 50;
+        radius = 40;
         destroyCount = 5;
     }
 
@@ -48,7 +48,7 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
     @Override
     protected void skillTick(ServerLevel level) {
         if (positions.isEmpty()) {
-            maxRadius += 5;
+            radius += 5;
             determinePositions();
             destroyCount *= 2;
         } else {
@@ -63,17 +63,17 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
                     break;
             }
         }
-        if (maxRadius > 170) {
+        if (radius > 100) {
             tickCount = duration;
         }
     }
 
     private void determinePositions() {
-        int yCount = maxRadius / SPHERE_RADIUS;
+        int yCount = radius / SPHERE_RADIUS;
         for (int height = 0; height < yCount; height++) {
             double ratio = (1 - height / (double) yCount);
-            int radius = (int) (maxRadius * ratio);
-            int y = height * SPHERE_RADIUS + mob.getBlockY();
+            int radius = (int) (this.radius * ratio);
+            int y = 12 + height * SPHERE_RADIUS + mob.getBlockY();
 
             float circumference = Mth.TWO_PI * radius;
             int n = (int) circumference / SPHERE_RADIUS;
@@ -93,6 +93,6 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
         NarakaUtils.sphere(box, 1, blockPos -> {
             level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 10);
         });
-        level.sendParticles(ParticleTypes.EXPLOSION_EMITTER, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 1, 0, 0, 0, 1);
+        level.sendParticles(ParticleTypes.EXPLOSION_EMITTER, true, true, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 1, 0, 0, 0, 1);
     }
 }

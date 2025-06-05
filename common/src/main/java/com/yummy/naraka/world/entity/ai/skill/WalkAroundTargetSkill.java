@@ -1,5 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +21,7 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
     private final Skill<?> rushSKill;
 
     public WalkAroundTargetSkill(SkillUsingMob mob, PunchSkill<AbstractHerobrine> punchSKill, DashSkill<?> dashSkill, Skill<?> rushSkill) {
-        super(LOCATION, 40, 0, mob);
+        super(LOCATION, DEFAULT_DURATION, 0, mob);
         this.punchSKill = punchSKill;
         this.dashSkill = dashSkill;
         this.rushSKill = rushSkill;
@@ -34,7 +36,7 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return targetInRange(50);
+        return targetInRange(25);
     }
 
     @Override
@@ -42,26 +44,43 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
         lookTarget(target);
         if (tickCount % 5 == 0)
             moveAndLook(target);
-        if (targetInRange(target, 4)) {
+        if (targetInRange(target, 10)) {
             setLinkedSkill(punchSKill);
-            duration = 0;
+            tickCount = duration;
         }
 
-        runAt(duration - 1, this::determineNextSkill);
+        runAt(duration - 1, () -> determineNextSkill(level, target));
     }
 
-    private void determineNextSkill() {
-        if (mob.getRandom().nextBoolean()) {
-            dashSkill.setLinkedSkill(rushSKill);
-            dashSkill.setScale(-0.5f);
-            this.setLinkedSkill(dashSkill);
+    @Override
+    protected void onLastTick(ServerLevel level) {
+        mob.getNavigation().stop();
+    }
+
+    private void determineNextSkill(ServerLevel level, LivingEntity target) {
+        if (mob.getRandom().nextDouble() < 0.25) {
+            setupRush(level);
         } else {
-            if (mob.getRandom().nextBoolean()) {
-                dashSkill.setLinkedSkill(punchSKill);
-                punchSKill.setLinkedFromPrevious(true);
-            }
+            setupDashAndPunch(level, target);
+        }
+    }
+
+    private void setupRush(ServerLevel level) {
+        if (rushSKill.canUse(level)) {
+            this.setLinkedSkill(rushSKill);
+        } else {
+            DashSkill.setupDashBack(dashSkill, rushSKill);
             this.setLinkedSkill(dashSkill);
         }
+    }
+
+    private void setupDashAndPunch(ServerLevel level, LivingEntity target) {
+        Vec3 deltaNormal = NarakaEntityUtils.getDirectionNormalVector(mob, target);
+        Vec3 position = mob.position().add(deltaNormal);
+        level.sendParticles(NarakaParticleTypes.FLICKER.get(), position.x, position.y + mob.getEyeHeight(), position.z, 1, 0, 0, 0, 1);
+        dashSkill.setLinkedSkill(punchSKill);
+        punchSKill.setLinkedFromPrevious(true);
+        this.setLinkedSkill(dashSkill);
     }
 
     private void moveAndLook(LivingEntity target) {

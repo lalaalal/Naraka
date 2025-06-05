@@ -5,6 +5,7 @@ import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAnimationPayload;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
+import net.minecraft.network.protocol.game.ClientboundEntityPositionSyncPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -16,12 +17,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -69,9 +66,8 @@ public abstract class SkillUsingMob extends PathfinderMob {
             skillManager.setCurrentSkillIfAbsence(skill);
     }
 
-    @Nullable
-    public Skill<?> getCurrentSkill() {
-        return skillManager.getCurrentSkill();
+    public Optional<Skill<?>> getCurrentSkill() {
+        return Optional.ofNullable(skillManager.getCurrentSkill());
     }
 
     public void registerAnimation(ResourceLocation animationSetLocation, List<ResourceLocation> animationLocations) {
@@ -151,6 +147,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
     @Override
     protected void customServerAiStep(ServerLevel level) {
         skillManager.tick(level);
+        NetworkManager.clientbound().send(level.players(), ClientboundEntityPositionSyncPacket.of(this));
     }
 
     protected static abstract class AnimationController {

@@ -53,7 +53,7 @@
       "spawns": []
     }
   },
-  "step": "surface_structures",
+  "step": "strongholds",
   "structure_offset": [
     -8,
     -17,

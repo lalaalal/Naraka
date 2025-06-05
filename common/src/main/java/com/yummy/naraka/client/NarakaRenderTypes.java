@@ -27,4 +27,8 @@ public final class NarakaRenderTypes {
     public static RenderType longinus() {
         return LONGINUS;
     }
+
+    public static void initialize() {
+
+    }
 }

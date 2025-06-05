@@ -8,10 +8,7 @@ import com.yummy.naraka.client.gui.hud.DeathCountHud;
 import com.yummy.naraka.client.gui.hud.LockedHealthHud;
 import com.yummy.naraka.client.gui.hud.StigmaHud;
 import com.yummy.naraka.client.init.*;
-import com.yummy.naraka.client.particle.EbonyProvider;
-import com.yummy.naraka.client.particle.HerobrineSpawnParticle;
-import com.yummy.naraka.client.particle.NectariumParticle;
-import com.yummy.naraka.client.particle.SoulParticle;
+import com.yummy.naraka.client.particle.*;
 import com.yummy.naraka.client.renderer.ColoredItemRenderer;
 import com.yummy.naraka.client.renderer.blockentity.ForgingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
@@ -42,7 +39,10 @@ public final class NarakaModClient {
     public static void initialize(NarakaClientInitializer initializer) {
         ClientEventHandler.prepare();
         NarakaModelLayers.initialize();
+        NarakaRenderPipelines.initialize();
+        NarakaRenderTypes.initialize();
         NarakaNetworks.initializeClient();
+
         registerParticles();
         registerSpecialRenderers();
 
@@ -132,6 +132,9 @@ public final class NarakaModClient {
         ParticleProviderRegistry.register(NarakaParticleTypes.SOUL, SoulParticle::create);
         ParticleProviderRegistry.register(NarakaParticleTypes.HEROBRINE_SPAWN, HerobrineSpawnParticle.Provider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.GOLDEN_FLAME, FlameParticle.Provider::new);
+        ParticleProviderRegistry.register(NarakaParticleTypes.CORRUPTED_FIRE_FLAME, FlameParticle.Provider::new);
+        ParticleProviderRegistry.register(NarakaParticleTypes.CORRUPTED_SOUL_FIRE_FLAME, FlameParticle.Provider::new);
+        ParticleProviderRegistry.register(NarakaParticleTypes.FLICKER, FlickerParticle.Provider::new);
     }
 
     private static void registerKeyMappings() {

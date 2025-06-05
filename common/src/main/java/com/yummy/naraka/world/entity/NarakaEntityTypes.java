@@ -14,22 +14,22 @@ import net.minecraft.world.level.block.Blocks;
 public class NarakaEntityTypes {
     public static final HolderProxy<EntityType<?>, EntityType<Herobrine>> HEROBRINE = register(
             "herobrine",
-            EntityType.Builder.<Herobrine>of(
-                            Herobrine::new,
-                            MobCategory.MONSTER
-                    )
+            EntityType.Builder.<Herobrine>of(Herobrine::new, MobCategory.MONSTER)
                     .fireImmune()
-                    .sized(0.6f, 2.0f)
+                    .sized(0.6f, 1.8f)
+                    .eyeHeight(1.62f)
+                    .updateInterval(1)
+                    .clientTrackingRange(32)
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<ShadowHerobrine>> SHADOW_HEROBRINE = register(
             "shadow_herobrine",
-            EntityType.Builder.<ShadowHerobrine>of(
-                            ShadowHerobrine::new,
-                            MobCategory.MONSTER
-                    )
+            EntityType.Builder.<ShadowHerobrine>of(ShadowHerobrine::new, MobCategory.MONSTER)
                     .fireImmune()
-                    .sized(0.6f, 2.0f)
+                    .sized(0.6f, 1.8f)
+                    .eyeHeight(1.62f)
+                    .updateInterval(1)
+                    .clientTrackingRange(32)
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<Spear>> THROWN_SPEAR = register(

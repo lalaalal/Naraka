@@ -64,14 +64,6 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
         return from <= tickCount && tickCount < to;
     }
 
-    protected boolean and(Predicate<Integer> p1, Predicate<Integer> p2) {
-        return p1.test(tickCount) && p2.test(tickCount);
-    }
-
-    protected boolean or(Predicate<Integer> p1, Predicate<Integer> p2) {
-        return p1.test(tickCount) || p2.test(tickCount);
-    }
-
     protected final void run(Predicate<Integer> predicate, Runnable action) {
         if (predicate.test(tickCount))
             action.run();

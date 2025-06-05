@@ -46,7 +46,7 @@ public class NarakaStructures {
                 new JumboStructure(
                         new Structure.StructureSettings.Builder(herobrineSanctuaryBiomes)
                                 .spawnOverrides(herobrineSanctuarySpawnOverrides)
-                                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
+                                .generationStep(GenerationStep.Decoration.STRONGHOLDS)
                                 .terrainAdapation(TerrainAdjustment.NONE)
                                 .build(),
                         "herobrine_sanctuary",

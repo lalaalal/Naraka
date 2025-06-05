@@ -12,8 +12,14 @@ import org.jetbrains.annotations.Nullable;
 public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
     public static final String NAME = "uppercut";
 
+    private boolean canDisableShield;
+
     public UppercutSkill(@Nullable ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
         super(createLocation(NAME), 35, 0, 0.1f, comboSkill, 15, mob);
+    }
+
+    public void setCanDisableShield(boolean canDisableShield) {
+        this.canDisableShield = canDisableShield;
     }
 
     @Override
@@ -47,7 +53,7 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        moveToTarget(target);
+        runBefore(10, () -> moveToTarget(target));
         lookTarget(target);
         rotateTowardTarget(target);
         runAt(10, () -> this.hurtHitEntity(level, target));
@@ -55,7 +61,7 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
 
     @Override
     protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15) || !targetInRange(target, 6))
+        if (canDisableShield && NarakaEntityUtils.disableAndHurtShield(target, 60, 15) || !targetInRange(target, 6))
             return;
         super.hurtHitEntity(level, target);
         target.addDeltaMovement(new Vec3(0, 0.4, 0));

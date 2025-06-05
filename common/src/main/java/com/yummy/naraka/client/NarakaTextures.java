@@ -1,6 +1,8 @@
 package com.yummy.naraka.client;
 
 import com.yummy.naraka.NarakaMod;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -9,17 +11,19 @@ import net.minecraft.world.item.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 
+@Environment(EnvType.CLIENT)
 public final class NarakaTextures {
     public static final ResourceLocation HEROBRINE = entity("herobrine.png");
     public static final ResourceLocation HEROBRINE_FINAL = entity("herobrine_final.png");
     public static final ResourceLocation SHADOW_HEROBRINE = entity("shadow_herobrine.png");
     public static final ResourceLocation SHADOW_HEROBRINE_HEAD = entity("shadow_herobrine_head.png");
     public static final ResourceLocation HEROBRINE_EYE = entity("herobrine_eye.png");
+    public static final ResourceLocation HEROBRINE_FINAL_EYE = entity("herobrine_final_eye.png");
     public static final ResourceLocation HEROBRINE_AFTERIMAGE = entity("herobrine_afterimage.png");
     public static final ResourceLocation HEROBRINE_SCARF = entity("herobrine_scarf.png");
     public static final ResourceLocation HEROBRINE_FINAL_SCARF = entity("herobrine_final.png");
 
-    public static final ResourceLocation HEROBRINE_SUN = texture("environment", "herobrine_sun.png");
+    public static final ResourceLocation ECLIPSE = texture("environment", "eclipse.png");
 
     public static final ResourceLocation SHADOW_ARMOR = entity("shadow_armor.png");
 
@@ -36,7 +40,7 @@ public final class NarakaTextures {
     public static final ResourceLocation SOUL_STABILIZER = entity("soul_stabilizer.png");
     public static final ResourceLocation SOUL_SMITHING_BLOCK = entity("soul_smithing_block.png");
 
-    public static final ResourceLocation NARAKA_ADVANCEMENT_ROOT_BACKGROUND = gui("advancements/backgrounds/naraka.png");
+    public static final ResourceLocation NARAKA_ADVANCEMENT_ROOT_BACKGROUND = advancements("backgrounds/naraka");
 
     private static ResourceLocation texture(String parent, String path) {
         return NarakaMod.location("textures/%s".formatted(parent), path);
@@ -46,8 +50,8 @@ public final class NarakaTextures {
         return texture("entity", path);
     }
 
-    private static ResourceLocation gui(String path) {
-        return texture("gui", path);
+    private static ResourceLocation advancements(String path) {
+        return NarakaMod.location("gui/advancements", path);
     }
 
     private static final Map<Item, ResourceLocation> TRIM_TEMPLATE_TEXTURES = new HashMap<>();

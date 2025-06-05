@@ -1,7 +1,6 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.ai.goal.FollowOwnerGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.PunchSkill;
@@ -66,11 +65,19 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     protected ShadowHerobrine(EntityType<? extends AbstractHerobrine> entityType, Level level) {
         super(entityType, level, true);
         skillManager.enableOnly(List.of(punchSkill));
-
         skillManager.runOnSkillStart(this::resetPunchCooldown);
         skillManager.runOnSkillEnd(this::increasePunchCooldown);
+        punchSkill.setCanDisableShield(false);
+        uppercutSkill.setCanDisableShield(false);
 
         goalSelector.addGoal(3, moveToTargetGoal);
+
+        entityData.set(DISPLAY_SCARF, true);
+
+        registerAnimation(AnimationLocations.SHADOW_SUMMONED);
+
+        updateAnimation(AnimationLocations.SHADOW_SUMMONED);
+        playStaticAnimation(AnimationLocations.SHADOW_SUMMONED, 80);
     }
 
     public ShadowHerobrine(Level level, Herobrine herobrine) {
@@ -142,19 +149,11 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         Stigma stigma = StigmaHelper.get(target);
         if (stigma.value() < 1)
             return;
-        Optional<Herobrine> optional = getHerobrine();
-        if (optional.isPresent() && optional.get().isHibernateMode())
-            return;
 
         StigmaHelper.removeStigma(target);
         level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.HOSTILE);
-        target.hurtServer(level, NarakaDamageSources.stigma(this), 6 * stigma.value());
-        optional.ifPresent(herobrine -> herobrine.getShadowController().summonShadowHerobrine(level));
-    }
-
-    @Override
-    public float getAttackDamage() {
-        return super.getAttackDamage();
+        target.hurtServer(level, damageSources().mobAttack(this), 6 * stigma.value());
+        getHerobrine().ifPresent(herobrine -> herobrine.getShadowController().summonShadowHerobrine(level));
     }
 
     @Override
@@ -211,7 +210,9 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.herobrineUUID = UUID.fromString(compound.getStringOr("Herobrine", ""));
+
+        Optional<String> uuid = compound.getString("Herobrine");
+        uuid.ifPresent(string -> this.herobrineUUID = UUID.fromString(string));
     }
 
     @Override

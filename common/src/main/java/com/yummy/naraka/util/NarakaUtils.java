@@ -11,6 +11,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
 public class NarakaUtils {
@@ -18,15 +19,27 @@ public class NarakaUtils {
         void accept(int x, int y, int z);
     }
 
-    public interface SpherePositionConsumer {
+    public interface LengthPositionConsumer {
         void accept(double length, int x, int y, int z);
+    }
+
+    public static final BiPredicate<Integer, Integer> OUTLINE = (xz, radius) -> (radius - 0.75) * (radius - 0.75) <= xz && xz <= (radius + 0.25) * (radius + 0.25);
+
+    public static void circle(BlockPos center, int radius, BiPredicate<Integer, Integer> predicate, Consumer<BlockPos> consumer) {
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                if (predicate.test(x * x + z * z, radius)) {
+                    consumer.accept(center.offset(x, 0, z));
+                }
+            }
+        }
     }
 
     public static void sphere(BoundingBox box, float size, PositionConsumer consumer) {
         sphere(box, box, size, (length, x, y, z) -> consumer.accept(x, y, z));
     }
 
-    public static void sphere(BoundingBox box, BoundingBox part, float size, SpherePositionConsumer consumer) {
+    public static void sphere(BoundingBox box, BoundingBox part, float size, LengthPositionConsumer consumer) {
         double xRadius = (float) (box.maxX() - box.minX() + 1) / 2;
         double zRadius = (float) (box.maxZ() - box.minZ() + 1) / 2;
         double yRadius = (float) (box.maxY() - box.minY() + 1) / 2;
@@ -122,10 +135,6 @@ public class NarakaUtils {
         int y = pos.getY();
 
         return new BlockPos(x, y, z);
-    }
-
-    public static double log(double base, double value) {
-        return Math.log(value) / Math.log(base);
     }
 
     public static <T, U> void iterate(List<T> list1, List<U> list2, BiConsumer<T, U> consumer) {

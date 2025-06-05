@@ -3,22 +3,16 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaNbtUtils;
-import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.ai.skill.PunchSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ShadowController {
     private final Herobrine herobrine;
@@ -43,9 +37,7 @@ public class ShadowController {
         if (shadowHerobrines.size() >= NarakaConfig.COMMON.maxShadowHerobrineSpawn.getValue())
             return;
         ShadowHerobrine shadowHerobrine = new ShadowHerobrine(level, herobrine);
-        BlockPos randomPos = NarakaUtils.randomBlockPos(herobrine.getRandom(), herobrine.blockPosition(), 4);
-        BlockPos spawnPos = NarakaUtils.findAir(level, randomPos, Direction.UP);
-        shadowHerobrine.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
+        shadowHerobrine.setPos(herobrine.position());
         getShadows(level)
                 .stream().findAny()
                 .ifPresent(existing -> shadowHerobrine.setHealth(existing.getHealth()));
@@ -63,9 +55,12 @@ public class ShadowController {
         if (shadowHerobrine.isDeadOrDying()) {
             shadowHerobrines.clear();
             skillManager.interrupt();
-            if (herobrine.isHibernateMode())
+            if (herobrine.isHibernateMode()) {
                 herobrine.stopHibernateMode(level);
-            herobrine.startStaggering();
+                herobrine.startStaggering(AnimationLocations.STIGMATIZE_ENTITIES_END, 100, -1);
+            } else {
+                herobrine.startStaggering();
+            }
         }
     }
 
@@ -80,7 +75,7 @@ public class ShadowController {
                     Vec3 originalHerobrinePosition = herobrine.position();
                     herobrine.setPos(shadowHerobrine.position());
                     shadowHerobrine.setPos(originalHerobrinePosition);
-                    shadowHerobrine.playAnimation(AnimationLocations.IDLE, 40);
+                    shadowHerobrine.playStaticAnimation(AnimationLocations.IDLE, 40);
                 });
     }
 
@@ -137,8 +132,8 @@ public class ShadowController {
 
     public boolean someoneJustUsedSkill(ServerLevel level) {
         for (ShadowHerobrine shadowHerobrine : getShadows(level)) {
-            Skill<?> skill = shadowHerobrine.getCurrentSkill();
-            if (skill != null && skill.getCurrentTickCount() < 20)
+            Optional<Skill<?>> skill = shadowHerobrine.getCurrentSkill();
+            if (skill.isPresent() && skill.get().getCurrentTickCount() < 20)
                 return true;
         }
         return false;
