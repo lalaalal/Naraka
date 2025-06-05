@@ -12,6 +12,7 @@ description = '''
 
 '''
 logoFile = "naraka.png"
+displayURL = "https://github.com/lalaalal/Naraka"
 
 [[dependencies.naraka]]
 modId = "neoforge"

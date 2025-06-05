@@ -1,8 +1,5 @@
 {
   "values": [
-    "minecraft:ruined_portals",
-    "minecraft:pillager_outposts",
-    "minecraft:villages",
     "minecraft:strongholds"
   ]
 }
