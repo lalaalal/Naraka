@@ -18,13 +18,11 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
     private int direction;
     private final PunchSkill<AbstractHerobrine> punchSKill;
     private final DashSkill<?> dashSkill;
-    private final Skill<?> rushSKill;
 
-    public WalkAroundTargetSkill(SkillUsingMob mob, PunchSkill<AbstractHerobrine> punchSKill, DashSkill<?> dashSkill, Skill<?> rushSkill) {
+    public WalkAroundTargetSkill(SkillUsingMob mob, PunchSkill<AbstractHerobrine> punchSKill, DashSkill<?> dashSkill) {
         super(LOCATION, DEFAULT_DURATION, 0, mob);
         this.punchSKill = punchSKill;
         this.dashSkill = dashSkill;
-        this.rushSKill = rushSkill;
     }
 
     @Override
@@ -55,12 +53,6 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
     @Override
     protected void onLastTick(ServerLevel level) {
         mob.getNavigation().stop();
-    }
-
-    private void setupRush(ServerLevel level) {
-        if (rushSKill.canUse(level)) {
-            this.setLinkedSkill(rushSKill);
-        }
     }
 
     private void setupDashAndPunch(ServerLevel level, LivingEntity target) {

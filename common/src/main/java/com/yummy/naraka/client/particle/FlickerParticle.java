@@ -18,11 +18,12 @@ public class FlickerParticle extends TextureSheetParticle {
 
     public void tick() {
         this.oRoll = this.roll;
-        if (this.age++ >= this.lifetime) {
-            this.remove();
-        } else {
+        if (this.age < this.lifetime) {
             this.setSpriteFromAge(this.sprites);
+        } else {
+            this.remove();
         }
+        age += 1;
     }
 
     @Override
