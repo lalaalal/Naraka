@@ -52,7 +52,7 @@ public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
                 instance -> instance.group(
                         ResourceLocation.CODEC.fieldOf("model_location").forGetter(unbaked -> unbaked.modelLayer.model()),
                         PrimitiveCodec.STRING.fieldOf("layer").forGetter(unbaked -> unbaked.modelLayer.layer()),
-                        ResourceLocation.CODEC.fieldOf("herobrineTexture").forGetter(unbaked -> unbaked.texture)
+                        ResourceLocation.CODEC.fieldOf("texture").forGetter(unbaked -> unbaked.texture)
                 ).apply(instance, Unbaked::new)
         );
 

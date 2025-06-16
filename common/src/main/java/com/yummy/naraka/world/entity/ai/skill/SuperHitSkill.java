@@ -14,9 +14,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
     public static final String NAME = "super_hit";
     private int onGroundTick = 0;
+    private final Set<LivingEntity> hitEntities = new HashSet<>();
 
     public SuperHitSkill(ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
         super(createLocation(NAME), 40, 0, 1, comboSkill, 40, mob);
@@ -26,6 +30,7 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
     public void prepare() {
         super.prepare();
         onGroundTick = 0;
+        hitEntities.clear();
     }
 
     @Override
@@ -66,8 +71,9 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
 
     @Override
     protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15))
+        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15) || hitEntities.contains(target))
             return;
+        hitEntities.add(target);
         super.hurtHitEntity(level, target);
         mob.stigmatizeEntity(level, target);
         level.playSound(mob, mob.blockPosition(), SoundEvents.STONE_BREAK, SoundSource.HOSTILE, 1, 1);
