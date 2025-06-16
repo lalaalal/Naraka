@@ -7,6 +7,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Predicate;
+
 public abstract class Skill<T extends SkillUsingMob> {
     public final ResourceLocation location;
     protected final T mob;
@@ -151,6 +153,52 @@ public abstract class Skill<T extends SkillUsingMob> {
     }
 
     protected abstract void skillTick(ServerLevel level);
+
+    protected void lookTarget(LivingEntity target) {
+        mob.getLookControl().setLookAt(target);
+    }
+
+    protected boolean at(int tick) {
+        return tickCount == tick;
+    }
+
+    protected boolean after(int tick) {
+        return tickCount > tick;
+    }
+
+    protected boolean before(int tick) {
+        return tickCount < tick;
+    }
+
+    protected boolean between(int from, int to) {
+        return from <= tickCount && tickCount < to;
+    }
+
+    protected final void run(Predicate<Integer> predicate, Runnable action) {
+        if (predicate.test(tickCount))
+            action.run();
+    }
+
+    protected final void run(boolean predicate, Runnable action) {
+        if (predicate)
+            action.run();
+    }
+
+    protected final void runAt(int tick, Runnable action) {
+        run(at(tick), action);
+    }
+
+    protected final void runAfter(int tick, Runnable action) {
+        run(after(tick), action);
+    }
+
+    protected final void runBefore(int tick, Runnable action) {
+        run(before(tick), action);
+    }
+
+    protected final void runBetween(int from, int to, Runnable action) {
+        run(between(from, to), action);
+    }
 
     public void interrupt() {
 

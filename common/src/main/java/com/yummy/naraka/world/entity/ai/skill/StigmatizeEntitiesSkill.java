@@ -31,16 +31,9 @@ public class StigmatizeEntitiesSkill extends Skill<Herobrine> {
 
     @Override
     protected void skillTick(ServerLevel level) {
-        if (tickCount == 20)
-            mob.setDeltaMovement(0, 0.3, 0);
-        if (tickCount == 30)
-            stigmatize(level);
-
-        if (tickCount < 40)
-            mob.setDeltaMovement(mob.getDeltaMovement().scale(0.8));
-        else
-            mob.setDeltaMovement(Vec3.ZERO);
-
+        runAt(20, () -> mob.setDeltaMovement(0, 0.3, 0));
+        runBefore(40, () -> mob.setDeltaMovement(mob.getDeltaMovement().scale(0.8)));
+        runAfter(39, () -> mob.setDeltaMovement(Vec3.ZERO));
         if ((tickCount - 40) % 60 == 0)
             mob.setAnimation(AnimationLocations.STIGMATIZE_ENTITIES);
         if ((tickCount - 57) % 60 == 0)
