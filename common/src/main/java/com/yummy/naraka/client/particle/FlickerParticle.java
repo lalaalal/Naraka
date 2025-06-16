@@ -4,7 +4,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.util.Mth;
 
 public class FlickerParticle extends TextureSheetParticle {
     private final SpriteSet sprites;
@@ -14,8 +13,7 @@ public class FlickerParticle extends TextureSheetParticle {
         this.sprites = sprites;
         this.setSpriteFromAge(this.sprites);
         this.quadSize = 4;
-        this.lifetime = 6;
-        this.oRoll = this.roll = -Mth.PI / 4;
+        this.lifetime = 5;
     }
 
     public void tick() {
@@ -23,7 +21,6 @@ public class FlickerParticle extends TextureSheetParticle {
         if (this.age++ >= this.lifetime) {
             this.remove();
         } else {
-            roll += Mth.PI / 4 / lifetime;
             this.setSpriteFromAge(this.sprites);
         }
     }
