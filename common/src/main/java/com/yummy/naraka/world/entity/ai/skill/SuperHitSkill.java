@@ -52,7 +52,7 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
             BlockPos floor = NarakaUtils.findFloor(level, mob.blockPosition());
             NarakaUtils.circle(floor, 5 + onGroundTick, NarakaUtils.OUTLINE, blockPos -> {
                 BlockState state = level.getBlockState(blockPos);
-                FallingBlockEntity fallingBlockEntity = FallingBlockEntity.fall(level, blockPos, state);
+                FallingBlockEntity fallingBlockEntity = NarakaEntityUtils.createFloatingBlock(level, blockPos, state);
                 fallingBlockEntity.setDeltaMovement(0, 0.5, 0);
             });
             onGroundTick += 1;

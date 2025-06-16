@@ -28,8 +28,8 @@ public class LandingSkill extends ComboSkill<AbstractHerobrine> {
             BlockPos floor = NarakaUtils.findFloor(level, mob.blockPosition());
             NarakaUtils.circle(floor, (tickCount - 9) / 2, NarakaUtils.OUTLINE, blockPos -> {
                 BlockState state = level.getBlockState(blockPos);
-                FallingBlockEntity fallingBlockEntity = FallingBlockEntity.fall(level, blockPos, state);
-                fallingBlockEntity.setDeltaMovement(0, 0.3, 0);
+                FallingBlockEntity fallingBlockEntity = NarakaEntityUtils.createFloatingBlock(level, blockPos, state);
+                fallingBlockEntity.setDeltaMovement(0, 0.4, 0);
             });
         });
     }

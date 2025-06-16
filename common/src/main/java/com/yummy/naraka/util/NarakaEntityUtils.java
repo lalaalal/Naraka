@@ -1,5 +1,7 @@
 package com.yummy.naraka.util;
 
+import com.yummy.naraka.mixin.accessor.FallingBlockEntityAccessor;
+import com.yummy.naraka.mixin.invoker.FallingBlockEntityInvoker;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -10,11 +12,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -110,5 +114,18 @@ public class NarakaEntityUtils {
 
     public static boolean isDamageablePlayer(Player player) {
         return !(player.isCreative() || player.isSpectator());
+    }
+
+    public static FallingBlockEntity createFloatingBlock(Level level, BlockPos pos, BlockState state) {
+        FallingBlockEntity fallingBlockEntity = FallingBlockEntityInvoker.create(
+                level,
+                pos.getX() + 0.5,
+                pos.getY(),
+                pos.getZ() + 0.5,
+                state.hasProperty(BlockStateProperties.WATERLOGGED) ? state.setValue(BlockStateProperties.WATERLOGGED, false) : state
+        );
+        ((FallingBlockEntityAccessor) fallingBlockEntity).setCancelDrop(true);
+        level.addFreshEntity(fallingBlockEntity);
+        return fallingBlockEntity;
     }
 }
