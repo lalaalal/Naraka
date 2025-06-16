@@ -31,12 +31,22 @@ public abstract class SkillUsingMobControlScreen extends Screen {
 
     @Override
     protected void init() {
-        layout.visitWidgets(this::addRenderableWidget);
         layout.addToContents(locationList);
-        LinearLayout linearLayout = new LinearLayout(layout.getWidth(), layout.getFooterHeight(), LinearLayout.Orientation.HORIZONTAL);
-        linearLayout.addChild(Button.builder(Component.literal("disable skills"), this::disableSkills).build());
-        linearLayout.addChild(Button.builder(CommonComponents.GUI_DONE, this::onDone).build());
-        layout.addToFooter(linearLayout);
+        layout.setHeaderHeight(10);
+        layout.setFooterHeight(45);
+
+        LinearLayout footerLayout = new LinearLayout(layout.getWidth(), layout.getFooterHeight(), LinearLayout.Orientation.VERTICAL);
+        LinearLayout firstLayout = new LinearLayout(layout.getWidth(), layout.getFooterHeight(), LinearLayout.Orientation.HORIZONTAL);
+        firstLayout.addChild(Button.builder(Component.literal("enable selected only"), action(SkillRequestPayload.Event.ENABLE_ONLY)).build());
+        firstLayout.addChild(Button.builder(Component.literal("stop current skill"), action(SkillRequestPayload.Event.STOP)).build());
+
+        LinearLayout secondLayout = new LinearLayout(layout.getWidth(), layout.getFooterHeight(), LinearLayout.Orientation.HORIZONTAL);
+        secondLayout.addChild(Button.builder(Component.literal("disable skills"), this::disableSkills).build());
+        secondLayout.addChild(Button.builder(CommonComponents.GUI_DONE, this::onDone).build());
+
+        footerLayout.addChild(firstLayout);
+        footerLayout.addChild(secondLayout);
+        layout.addToFooter(footerLayout);
         layout.arrangeElements();
         layout.visitWidgets(this::addRenderableWidget);
     }
@@ -54,6 +64,17 @@ public abstract class SkillUsingMobControlScreen extends Screen {
         LocationList.Entry entry = locationList.getSelected();
         if (entry != null)
             select(entry);
+    }
+
+    private Button.OnPress action(SkillRequestPayload.Event event) {
+        return button -> {
+            if (minecraft != null)
+                minecraft.setScreen(null);
+            if (locationList.getSelected() == null)
+                return;
+            SkillRequestPayload payload = new SkillRequestPayload(event, mob, locationList.getSelected().location);
+            NetworkManager.serverbound().send(payload);
+        };
     }
 
     protected abstract void select(LocationList.Entry selected);

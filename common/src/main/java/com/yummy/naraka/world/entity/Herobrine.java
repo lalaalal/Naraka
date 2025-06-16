@@ -12,7 +12,7 @@ import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
-import com.yummy.naraka.world.entity.ai.control.HerobrineMoveControl;
+import com.yummy.naraka.world.entity.ai.control.HerobrineFlyMoveControl;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.*;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
@@ -203,7 +203,7 @@ public class Herobrine extends AbstractHerobrine {
         skillManager.setCurrentSkill(destroyStructureSkill);
         entityData.set(DISPLAY_SCARF, true);
         navigation = new FlyingPathNavigation(this, level());
-        moveControl = new HerobrineMoveControl(this, 0.75, 1);
+        moveControl = new HerobrineFlyMoveControl(this, 0.75, 1);
         setNoGravity(true);
         setAnimation(AnimationLocations.PHASE_3_IDLE);
         setDisplayEye(false);

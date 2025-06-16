@@ -123,8 +123,8 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
             this.duration = tickCount + 50;
             this.movement = movement.scale(-1)
                     .normalize()
-                    .multiply(0.5, 0, 0.5)
-                    .add(0, 1, 0);
+                    .multiply(0.6, 0, 0.6)
+                    .add(0, 1.1, 0);
             this.hit = true;
             this.failed = false;
             if (hitEntity)

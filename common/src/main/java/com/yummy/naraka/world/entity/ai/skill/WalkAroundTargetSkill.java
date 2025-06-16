@@ -36,7 +36,7 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return targetInRange(64);
+        return targetInRange(81);
     }
 
     @Override
@@ -49,20 +49,12 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
             tickCount = duration;
         }
 
-        runAt(duration - 1, () -> determineNextSkill(level, target));
+        runAt(duration - 1, () -> setupDashAndPunch(level, target));
     }
 
     @Override
     protected void onLastTick(ServerLevel level) {
         mob.getNavigation().stop();
-    }
-
-    private void determineNextSkill(ServerLevel level, LivingEntity target) {
-        if (mob.getRandom().nextDouble() < 0.25) {
-            setupRush(level);
-        } else {
-            setupDashAndPunch(level, target);
-        }
     }
 
     private void setupRush(ServerLevel level) {

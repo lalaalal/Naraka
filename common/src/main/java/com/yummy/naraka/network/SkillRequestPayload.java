@@ -2,6 +2,7 @@ package com.yummy.naraka.network;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.SkillUsingMob;
+import com.yummy.naraka.world.entity.ai.skill.Skill;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -54,6 +55,18 @@ public record SkillRequestPayload(Event event, int entityId, ResourceLocation lo
         DISABLE((payload, context) -> {
             payload.getEntity(context.level()).ifPresent(mob -> {
                 mob.getSkillManager().enableOnly(List.of());
+            });
+        }),
+        STOP((payload, context) -> {
+            payload.getEntity(context.level()).ifPresent(mob -> {
+                mob.getSkillManager().interrupt();
+            });
+        }),
+        ENABLE_ONLY((payload, context) -> {
+            payload.getEntity(context.level()).ifPresent(mob -> {
+                Skill<?> skill = mob.getSkillManager().getSkill(payload.location);
+                if (skill != null)
+                    mob.getSkillManager().enableOnly(List.of(skill));
             });
         }),
         USE((payload, context) -> {

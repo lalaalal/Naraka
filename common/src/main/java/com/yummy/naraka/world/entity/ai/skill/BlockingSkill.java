@@ -31,7 +31,7 @@ public class BlockingSkill extends Skill<SkillUsingMob> {
         LivingEntity target = mob.getTarget();
         if (target == null)
             return;
-        if (mob.distanceToSqr(target) <= 2 * 2)
+        if (mob.distanceToSqr(target) <= 9)
             target.hurtServer(level, mob.damageSources().mobAttack(mob), 4);
     }
 }
