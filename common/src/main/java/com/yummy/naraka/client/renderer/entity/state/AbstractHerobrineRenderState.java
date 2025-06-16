@@ -41,6 +41,12 @@ public abstract class AbstractHerobrineRenderState extends LivingEntityRenderSta
         scarfRenderState.extract(herobrine, getModelType(), partialTick);
     }
 
+    public ResourceLocation getFixedModelTexture() {
+        if (isShadow)
+            return NarakaTextures.SHADOW_HEROBRINE_SCARF;
+        return NarakaTextures.HEROBRINE_SCARF;
+    }
+
     public abstract WavingScarfRenderState.ModelType getModelType();
 
     public void setAnimationVisitor(AbstractHerobrine herobrine) {

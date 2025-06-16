@@ -35,9 +35,7 @@ public class ScarfWavingData {
 
         float verticalY = Mth.sin(verticalAngle) * 0.02f;
         verticalPositions.removeLast();
-        verticalPositions.addFirst(verticalY);
-        float value = verticalPositions.get(2);
-        verticalPositions.set(2, value + this.ySpeed);
+        verticalPositions.addFirst(verticalY + this.ySpeed);
 
         float horizontalY = Mth.sin(verticalAngle) * 0.005f;
         horizontalPositions.removeFirst();

@@ -4,14 +4,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
-import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.model.HerobrineScarfModel;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfPose;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfRenderState;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfTexture;
-import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -22,9 +21,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import java.util.List;
@@ -51,7 +48,7 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
         poseStack.pushPose();
         applyTranslateAndRotate(poseStack, getParentModel());
         if (renderState.getModelType() != WavingScarfRenderState.ModelType.BIG) {
-            RenderType renderType = RenderType.entitySmoothCutout(NarakaTextures.HEROBRINE_SCARF);
+            RenderType renderType = RenderType.entitySmoothCutout(renderState.getFixedModelTexture());
             VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
             scarfModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
@@ -61,7 +58,7 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
             poseStack.pushPose();
             WavingScarfPose scarfPose = modelData.pose();
             WavingScarfTexture textureInfo = modelData.textureInfo();
-            RenderType waveRenderType = RenderType.entityCutout(textureInfo.texture());
+            RenderType waveRenderType = RenderType.entityCutout(textureInfo.texture(renderState.isShadow));
             VertexConsumer vertexConsumer = bufferSource.getBuffer(waveRenderType);
             float scale = scarfPose.scale();
             Vec3 translation = scarfPose.translation();
@@ -122,35 +119,12 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
                 float currentU = u + partWidth * horizontal;
                 float currentV = v + partHeight * vertical;
 
-                vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.UP);
-                vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.DOWN);
+                NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.UP);
+                NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.DOWN);
                 poseStack.popPose();
             }
             poseStack.popPose();
         }
         poseStack.popPose();
-    }
-
-    /**
-     * Add 4 vertices in anti-clockwise from left-top based on a positive direction
-     *
-     * @param positions Positions, size must be 4
-     */
-    private static void vertices(VertexConsumer vertexConsumer, PoseStack.Pose pose, List<Vector3f> positions, float u, float v, float width, float height, int packedLight, int packedOverlay, int color, Direction direction) {
-        Vec3i normal = direction.getUnitVec3i();
-        List<Vector2f> uvs = List.of(
-                new Vector2f(u, v + height),
-                new Vector2f(u, v),
-                new Vector2f(u + width, v),
-                new Vector2f(u + width, v + height)
-        );
-        NarakaUtils.iterate(positions, uvs, (position, uv) -> {
-            vertexConsumer.addVertex(pose, position)
-                    .setColor(color)
-                    .setLight(packedLight)
-                    .setOverlay(packedOverlay)
-                    .setUv(uv.x, uv.y)
-                    .setNormal(pose, normal.getX(), normal.getY(), normal.getZ());
-        }, normal.getX() < 0 || normal.getY() < 0 || normal.getZ() < 0);
     }
 }
