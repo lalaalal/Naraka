@@ -11,6 +11,7 @@ import com.yummy.naraka.client.renderer.entity.state.WavingScarfPose;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfRenderState;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfTexture;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -47,11 +48,12 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
             return;
         poseStack.pushPose();
         applyTranslateAndRotate(poseStack, getParentModel());
+        int color = selectColor(renderState);
         if (renderState.getModelType() != WavingScarfRenderState.ModelType.BIG) {
             RenderType renderType = RenderType.entitySmoothCutout(renderState.getFixedModelTexture());
             VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
-            scarfModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+            scarfModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color);
         }
 
         for (WavingScarfRenderState.ModelData modelData : renderState.scarfRenderState.modelDataList) {
@@ -65,14 +67,20 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
             poseStack.scale(-scale, scale, scale);
             poseStack.translate(translation);
 
-            renderScarf(poseStack, vertexConsumer, packedLight, renderState.scarfRenderState, modelData);
+            renderScarf(poseStack, vertexConsumer, packedLight, color, renderState.scarfRenderState, modelData);
             poseStack.popPose();
         }
 
         poseStack.popPose();
     }
 
-    public void renderScarf(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, WavingScarfRenderState renderState, WavingScarfRenderState.ModelData modelData) {
+    private int selectColor(S renderState) {
+        if (renderState.isShadow)
+            return NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(0xbb).pack();
+        return -1;
+    }
+
+    public void renderScarf(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int color, WavingScarfRenderState renderState, WavingScarfRenderState.ModelData modelData) {
         WavingScarfTexture textureInfo = modelData.textureInfo();
         WavingScarfPose scarfPose = modelData.pose();
         ScarfWavingData waveData = renderState.waveData;
@@ -119,8 +127,8 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
                 float currentU = u + partWidth * horizontal;
                 float currentV = v + partHeight * vertical;
 
-                NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.UP);
-                NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.DOWN);
+                NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, color, Direction.UP);
+                NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, color, Direction.DOWN);
                 poseStack.popPose();
             }
             poseStack.popPose();
