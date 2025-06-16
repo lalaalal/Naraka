@@ -567,6 +567,7 @@ public class Herobrine extends AbstractHerobrine {
     public Fireball createFireball(ServerLevel level) {
         NarakaFireball fireball = new NarakaFireball(this, Vec3.ZERO, level(), false);
         fireball.setDamageCalculator(this::calculateFireballDamage);
+        fireball.setCanDeflect(false);
         fireball.setTimeToLive(50);
         fireball.addHurtTargetListener((target, damage) -> stigmatizeEntity(level, target));
         fireball.addHurtTargetListener((target, damage) -> updateHibernateModeOnTargetSurvivedFromFireball(level, target, damage));
