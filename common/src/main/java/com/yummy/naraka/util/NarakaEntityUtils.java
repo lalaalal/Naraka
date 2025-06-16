@@ -1,5 +1,6 @@
 package com.yummy.naraka.util;
 
+import com.yummy.naraka.Platform;
 import com.yummy.naraka.mixin.accessor.FallingBlockEntityAccessor;
 import com.yummy.naraka.mixin.invoker.FallingBlockEntityInvoker;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
@@ -117,6 +118,8 @@ public class NarakaEntityUtils {
     }
 
     public static FallingBlockEntity createFloatingBlock(Level level, BlockPos pos, BlockState state) {
+        if (Platform.getInstance().isDevelopmentEnvironment())
+            return FallingBlockEntity.fall(level, pos, state);
         FallingBlockEntity fallingBlockEntity = FallingBlockEntityInvoker.create(
                 level,
                 pos.getX() + 0.5,

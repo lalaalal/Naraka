@@ -36,7 +36,7 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return targetInRange(25);
+        return targetInRange(64);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
         lookTarget(target);
         if (tickCount % 5 == 0)
             moveAndLook(target);
-        if (targetInRange(target, 10)) {
+        if (targetInRange(target, 25)) {
             setLinkedSkill(punchSKill);
             tickCount = duration;
         }
@@ -68,9 +68,6 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
     private void setupRush(ServerLevel level) {
         if (rushSKill.canUse(level)) {
             this.setLinkedSkill(rushSKill);
-        } else {
-            DashSkill.setupDashBack(dashSkill, rushSKill);
-            this.setLinkedSkill(dashSkill);
         }
     }
 

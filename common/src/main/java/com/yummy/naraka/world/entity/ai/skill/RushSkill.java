@@ -6,12 +6,15 @@ import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
 import com.yummy.naraka.world.entity.StunHelper;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,16 +29,32 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     private boolean hit = false;
     private boolean failed = false;
 
-    private final DashSkill<?> dashSkill;
-
-    public RushSkill(T mob, DashSkill<?> dashSkill) {
+    public RushSkill(T mob) {
         super(LOCATION, 200, 200, mob);
-        this.dashSkill = dashSkill;
     }
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return targetOutOfRange(15);
+        LivingEntity target = mob.getTarget();
+        if (target == null || target.getY() > mob.getY())
+            return false;
+
+        return targetOutOfRange(target, 15) && noObstacle(target);
+    }
+
+    private boolean noObstacle(LivingEntity target) {
+        Level level = target.level();
+        Vec3 delta = target.position().subtract(mob.position());
+        Vec3 normalDelta = delta.normalize();
+        int blocks = Mth.ceil(delta.length());
+        Vec3 current = mob.position();
+        for (int i = 0; i < blocks; i++) {
+            BlockPos blockPos = BlockPos.containing(current);
+            if (level.getBlockState(blockPos).canOcclude() || level.getBlockState(blockPos.above()).canOcclude())
+                return false;
+            current = current.add(normalDelta);
+        }
+        return true;
     }
 
     @Override
@@ -44,10 +63,6 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         duration = 200;
         hit = false;
         failed = false;
-        if (targetInRange(42)) {
-            DashSkill.setupDashBack(dashSkill, this);
-            mob.getSkillManager().setCurrentSkill(dashSkill);
-        }
     }
 
     @Override
