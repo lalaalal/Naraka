@@ -1,8 +1,5 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
-import com.yummy.naraka.core.particles.NarakaParticleTypes;
-import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -16,13 +13,13 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
 
     private static final int DEFAULT_DURATION = 80;
     private int direction;
-    private final PunchSkill<AbstractHerobrine> punchSKill;
-    private final DashSkill<?> dashSkill;
+    private final PunchSkill<?> punchSkill;
+    private final FlickerSkill flickerSkill;
 
-    public WalkAroundTargetSkill(SkillUsingMob mob, PunchSkill<AbstractHerobrine> punchSKill, DashSkill<?> dashSkill) {
+    public WalkAroundTargetSkill(SkillUsingMob mob, PunchSkill<?> punchSkill, FlickerSkill flickerSkill) {
         super(LOCATION, DEFAULT_DURATION, 0, mob);
-        this.punchSKill = punchSKill;
-        this.dashSkill = dashSkill;
+        this.punchSkill = punchSkill;
+        this.flickerSkill = flickerSkill;
     }
 
     @Override
@@ -43,25 +40,16 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
         if (tickCount % 5 == 0)
             moveAndLook(target);
         if (targetInRange(target, 25)) {
-            setLinkedSkill(punchSKill);
+            setLinkedSkill(punchSkill);
             tickCount = duration;
         }
 
-        runAt(duration - 1, () -> setupDashAndPunch(level, target));
+        runAt(duration - 1, () -> setLinkedSkill(flickerSkill));
     }
 
     @Override
     protected void onLastTick(ServerLevel level) {
         mob.getNavigation().stop();
-    }
-
-    private void setupDashAndPunch(ServerLevel level, LivingEntity target) {
-        Vec3 deltaNormal = NarakaEntityUtils.getDirectionNormalVector(mob, target);
-        Vec3 position = mob.position().add(deltaNormal);
-        level.sendParticles(NarakaParticleTypes.FLICKER.get(), position.x, position.y + mob.getEyeHeight(), position.z, 1, 0, 0, 0, 1);
-        dashSkill.setLinkedSkill(punchSKill);
-        punchSKill.setLinkedFromPrevious(true);
-        this.setLinkedSkill(dashSkill);
     }
 
     private void moveAndLook(LivingEntity target) {

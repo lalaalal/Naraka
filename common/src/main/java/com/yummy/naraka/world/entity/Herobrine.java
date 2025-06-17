@@ -63,7 +63,6 @@ public class Herobrine extends AbstractHerobrine {
     protected final ThrowFireballSkill throwFireballSkill = registerSkill(9, new ThrowFireballSkill(this, this::createFireball), AnimationLocations.THROW_NARAKA_FIREBALL);
     protected final BlockingSkill blockingSkill = registerSkill(10, this, BlockingSkill::new, AnimationLocations.BLOCKING);
     protected final SummonShadowSkill summonShadowSkill = registerSkill(0, this, SummonShadowSkill::new);
-    protected final RolePlayShadowSkill rolePlayShadowSkill = registerSkill(1, this, RolePlayShadowSkill::new);
     protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(9, new RushSkill<>(this), AnimationLocations.RUSH);
     protected final DestroyStructureSkill destroyStructureSkill = registerSkill(this, DestroyStructureSkill::new);
     protected final ExplosionSkill explosionSkill = registerSkill(this, ExplosionSkill::new, AnimationLocations.EXPLOSION);
@@ -74,13 +73,14 @@ public class Herobrine extends AbstractHerobrine {
     protected final UppercutSkill uppercutSkill = registerSkill(new UppercutSkill(spinningSkill, this), AnimationLocations.COMBO_ATTACK_2);
     protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(2, new PunchSkill<>(uppercutSkill, this, 140, true), AnimationLocations.COMBO_ATTACK_1);
 
-    protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, dashSkill));
+    protected final FlickerSkill<Herobrine> flickerSkill = registerSkill(new FlickerSkill<>(this, dashSkill, punchSkill));
+    protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, flickerSkill));
 
     @Nullable
     private LivingEntity firstTarget;
 
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
-    private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill, rolePlayShadowSkill);
+    private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill);
     private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, walkAroundTargetSkill);
     private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, summonShadowSkill, walkAroundTargetSkill);
     private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill);
@@ -131,6 +131,7 @@ public class Herobrine extends AbstractHerobrine {
 
         skillManager.runOnSkillStart(this::enableEyeOnPhase3);
         skillManager.runOnSkillEnd(this::disableEyeOnPhase3);
+        skillManager.runOnSkillEnd(this::useShadowFlicker);
         skillManager.enableOnly(PHASE_1_SKILLS);
 
         registerAnimation(AnimationLocations.PHASE_2);
@@ -145,6 +146,12 @@ public class Herobrine extends AbstractHerobrine {
 
         registerAnimation(AnimationLocations.STORM);
         registerAnimation(AnimationLocations.CARPET_BOMBING);
+    }
+
+    private void useShadowFlicker(Skill<?> skill) {
+        if (getPhase() > 1 && level() instanceof ServerLevel serverLevel) {
+            shadowController.consumeFlickerStack(serverLevel);
+        }
     }
 
     private void enableEyeOnPhase3(Skill<?> skill) {
@@ -339,6 +346,9 @@ public class Herobrine extends AbstractHerobrine {
             shadowController.killShadows(serverLevel);
             discard();
         }
+        if (getPhase() == 2 && tickCount % 100 == 0) {
+            shadowController.increaseFlickerStack(3);
+        }
 
         super.customServerAiStep(serverLevel);
     }
@@ -362,11 +372,14 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void updateAccumulatedDamage() {
-        if (accumulatedDamageTickCount > MAX_ACCUMULATED_DAMAGE_TICK_COUNT) {
-            accumulatedDamageTickCount = 0;
-            accumulatedHurtDamage = 0;
-        }
+        if (accumulatedDamageTickCount > MAX_ACCUMULATED_DAMAGE_TICK_COUNT)
+            resetAccumulatedDamage();
         accumulatedDamageTickCount += 1;
+    }
+
+    public void resetAccumulatedDamage() {
+        accumulatedDamageTickCount = 0;
+        accumulatedHurtDamage = 0;
     }
 
     private void collectStigma(ServerLevel serverLevel) {
@@ -469,8 +482,8 @@ public class Herobrine extends AbstractHerobrine {
         super.actuallyHurt(level, damageSource, damageAmount);
         updateHurtDamageLimit(level);
         accumulatedHurtDamage += damageAmount;
-        if (accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f)
-            shadowController.switchWithShadowHerobrine(level);
+        if (getPhase() == 2 && (accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f))
+            shadowController.increaseFlickerStack();
     }
 
     private float getPhaseMinimumHealth() {
@@ -531,7 +544,7 @@ public class Herobrine extends AbstractHerobrine {
         hibernateMode = true;
         skillManager.enableOnly(HIBERNATED_MODE_SKILL_BY_PHASE.get(getPhase()));
         skillManager.interrupt();
-        shadowController.updateRolePlaying(level);
+        shadowController.activateFlickerSkill(level);
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
         teleportToSpawnedPosition();
     }
@@ -540,7 +553,7 @@ public class Herobrine extends AbstractHerobrine {
         hibernateMode = false;
         resetDamageLimit();
         skillManager.enableOnly(SKILLS_BY_PHASE.get(getPhase()));
-        shadowController.stopRolePlaying(level);
+        shadowController.deactivateFlickerSkill(level);
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
 
         setHealth(getHealth() - 1);

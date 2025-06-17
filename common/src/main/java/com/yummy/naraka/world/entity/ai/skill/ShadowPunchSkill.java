@@ -3,10 +3,14 @@ package com.yummy.naraka.world.entity.ai.skill;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
+
+import java.util.List;
 
 public class ShadowPunchSkill extends PunchSkill<ShadowHerobrine> {
-    public ShadowPunchSkill(ComboSkill<?> comboSkill, ShadowHerobrine mob) {
-        super(comboSkill, mob, false);
+    public ShadowPunchSkill(ShadowHerobrine mob) {
+        super(null, mob, 30, false);
+        setCanDisableShield(false);
     }
 
     @Override
@@ -18,7 +22,7 @@ public class ShadowPunchSkill extends PunchSkill<ShadowHerobrine> {
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return super.canUse(level) && !otherShadowJustUsedSkill(level);
+        return super.canUse(level) && mob.otherShadowNotUsingSkill(level);
     }
 
     private boolean isHerobrineHibernated() {
@@ -27,9 +31,15 @@ public class ShadowPunchSkill extends PunchSkill<ShadowHerobrine> {
                 .orElse(false);
     }
 
-    private boolean otherShadowJustUsedSkill(ServerLevel level) {
-        return mob.getHerobrine()
-                .map(herobrine -> herobrine.getShadowController().someoneJustUsedSkill(level))
-                .orElse(false);
+    @Override
+    protected void onLastTick(ServerLevel level) {
+        mob.getHerobrine().ifPresent(herobrine -> {
+            herobrine.getShadowController().consumeFlickerStack(level, List.of(mob));
+        });
+    }
+
+    @Override
+    protected float calculateDamage(LivingEntity target) {
+        return mob.getAttackDamage();
     }
 }

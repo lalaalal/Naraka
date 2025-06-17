@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.Nullable;
 
 public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
     public static final ResourceLocation LOCATION = createLocation("punch");
@@ -17,12 +18,12 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
     private boolean linked = false;
     private boolean canDisableShield;
 
-    public PunchSkill(ComboSkill<?> comboSkill, T mob, boolean withStun) {
+    public PunchSkill(@Nullable ComboSkill<?> comboSkill, T mob, boolean withStun) {
         super(LOCATION, 22, DEFAULT_COOLDOWN, 0.8f, comboSkill, 11, mob);
         this.stunTarget = withStun;
     }
 
-    public PunchSkill(ComboSkill<?> comboSkill, T mob, int cooldown, boolean withStun) {
+    public PunchSkill(@Nullable ComboSkill<?> comboSkill, T mob, int cooldown, boolean withStun) {
         super(LOCATION, 22, cooldown, 0.8f, comboSkill, 11, mob);
         this.stunTarget = withStun;
     }
