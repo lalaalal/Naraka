@@ -22,7 +22,15 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
     protected void addTags(HolderLookup.Provider provider) {
         addTags(NarakaDamageTypes.STIGMA,
                 DamageTypeTags.BYPASSES_INVULNERABILITY,
+                DamageTypeTags.BYPASSES_ARMOR,
+                DamageTypeTags.BYPASSES_EFFECTS,
                 DamageTypeTags.BYPASSES_ENCHANTMENTS,
+                DamageTypeTags.BYPASSES_RESISTANCE,
+                DamageTypeTags.BYPASSES_SHIELD,
+                DamageTypeTags.BYPASSES_COOLDOWN
+        );
+        addTags(NarakaDamageTypes.STIGMA_CONSUME,
+                DamageTypeTags.BYPASSES_ARMOR,
                 DamageTypeTags.BYPASSES_SHIELD,
                 DamageTypeTags.BYPASSES_COOLDOWN
         );

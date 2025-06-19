@@ -95,6 +95,7 @@ public class SkillManager {
             for (Consumer<Skill<?>> listener : skillEndListeners)
                 listener.accept(currentSkill);
             this.currentSkill.interrupt();
+            this.currentSkill.setCooldown();
         }
         currentSkill = null;
     }

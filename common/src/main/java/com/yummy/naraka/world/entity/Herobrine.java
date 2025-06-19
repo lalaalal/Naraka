@@ -63,7 +63,7 @@ public class Herobrine extends AbstractHerobrine {
     protected final ThrowFireballSkill throwFireballSkill = registerSkill(9, new ThrowFireballSkill(this, this::createFireball), AnimationLocations.THROW_NARAKA_FIREBALL);
     protected final BlockingSkill blockingSkill = registerSkill(10, this, BlockingSkill::new, AnimationLocations.BLOCKING);
     protected final SummonShadowSkill summonShadowSkill = registerSkill(0, this, SummonShadowSkill::new);
-    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(9, new RushSkill<>(this), AnimationLocations.RUSH);
+    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(8, new RushSkill<>(this), AnimationLocations.RUSH);
     protected final DestroyStructureSkill destroyStructureSkill = registerSkill(this, DestroyStructureSkill::new);
     protected final ExplosionSkill explosionSkill = registerSkill(this, ExplosionSkill::new, AnimationLocations.EXPLOSION);
 

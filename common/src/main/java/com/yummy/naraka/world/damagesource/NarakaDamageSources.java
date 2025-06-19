@@ -55,6 +55,10 @@ public class NarakaDamageSources {
         return source(NarakaDamageTypes.STIGMA, causingEntity);
     }
 
+    public static DamageSource stigmaConsume(Entity causingEntity) {
+        return source(NarakaDamageTypes.STIGMA_CONSUME, causingEntity);
+    }
+
     public static DamageSource spear(Spear spear) {
         Entity owner = spear.getOwner();
         if (owner == null)

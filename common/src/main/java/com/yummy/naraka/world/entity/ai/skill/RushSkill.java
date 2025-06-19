@@ -39,7 +39,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         if (target == null || target.getY() > mob.getY())
             return false;
 
-        return targetOutOfRange(target, 15) && noObstacle(target);
+        return targetOutOfRange(target, 20) && noObstacle(target);
     }
 
     private boolean noObstacle(LivingEntity target) {

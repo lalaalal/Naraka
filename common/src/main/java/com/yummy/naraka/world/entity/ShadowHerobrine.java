@@ -88,7 +88,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new FollowOwnerGoal<>(this));
-        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64, 1, 40, 0.6f));
+        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64, 0, 40, 0.6f));
     }
 
     @Override
@@ -133,7 +133,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
         StigmaHelper.removeStigma(target);
         level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.HOSTILE);
-        target.hurtServer(level, NarakaDamageSources.stigma(this), 6 * stigma.value());
+        target.hurtServer(level, NarakaDamageSources.stigmaConsume(this), 6 * stigma.value());
         getHerobrine().ifPresent(herobrine -> herobrine.getShadowController().summonShadowHerobrine(level));
     }
 
