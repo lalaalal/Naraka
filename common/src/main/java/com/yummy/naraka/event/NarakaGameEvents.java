@@ -2,6 +2,8 @@ package com.yummy.naraka.event;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.network.NarakaClientboundEventPacket;
+import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.util.TickSchedule;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
@@ -9,6 +11,7 @@ import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -38,6 +41,11 @@ public final class NarakaGameEvents {
 
     private static void syncPlayerEntityData(ServerPlayer player) {
         EntityDataHelper.syncEntityData(player);
+        CustomPacketPayload payload = new NarakaClientboundEventPacket(
+                NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY,
+                NarakaClientboundEventPacket.Event.STOP_WHITE_FOG
+        );
+        NetworkManager.clientbound().send(player, payload);
     }
 
     private static boolean useDeathCount(LivingEntity livingEntity, DamageSource source) {
