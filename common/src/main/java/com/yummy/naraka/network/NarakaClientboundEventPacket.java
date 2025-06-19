@@ -35,7 +35,9 @@ public record NarakaClientboundEventPacket(List<Event> events) implements Custom
         PLAY_HEROBRINE_PHASE_4,
         STOP_MUSIC,
         START_HEROBRINE_SKY,
-        STOP_HEROBRINE_SKY;
+        STOP_HEROBRINE_SKY,
+        START_WHITE_SCREEN,
+        STOP_WHITE_FOG;
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
         public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.idMapper(Event::byId, Event::getId);

@@ -1,7 +1,6 @@
 package com.yummy.naraka.config;
 
 public class NarakaCommonConfig extends StaticConfiguration {
-    public final ConfigValue<Boolean> generatePillarCaves;
     public final ConfigValue<Boolean> showTestCreativeModeTab;
     public final ConfigValue<Integer> herobrineTakingStigmaTick;
     public final ConfigValue<Float> herobrineHurtLimitReduce;
@@ -15,7 +14,6 @@ public class NarakaCommonConfig extends StaticConfiguration {
     public NarakaCommonConfig() {
         super("naraka-common", PropertiesConfigFile::new);
 
-        this.generatePillarCaves = define("generate_pillar_caves", false);
         this.showTestCreativeModeTab = define("show_test_creative_mode_tab", false)
                 .comment("Need to restart game");
         this.herobrineTakingStigmaTick = define("herobrine_taking_stigma_tick", 1200);

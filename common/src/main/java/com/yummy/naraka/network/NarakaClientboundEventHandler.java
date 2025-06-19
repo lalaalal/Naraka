@@ -1,8 +1,8 @@
 package com.yummy.naraka.network;
 
+import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.gui.screen.AnimationControlScreen;
 import com.yummy.naraka.client.gui.screen.SkillControlScreen;
-import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.fabricmc.api.EnvType;
@@ -32,7 +32,9 @@ public class NarakaClientboundEventHandler {
             NarakaClientboundEventPacket.Event.PLAY_HEROBRINE_PHASE_4, () -> NarakaClientboundEventHandler.updateHerobrineMusic(4),
             NarakaClientboundEventPacket.Event.STOP_MUSIC, NarakaClientboundEventHandler::stopHerobrineMusic,
             NarakaClientboundEventPacket.Event.START_HEROBRINE_SKY, NarakaClientboundEventHandler::startHerobrineSky,
-            NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY, NarakaClientboundEventHandler::stopHerobrineSky
+            NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY, NarakaClientboundEventHandler::stopHerobrineSky,
+            NarakaClientboundEventPacket.Event.START_WHITE_SCREEN, NarakaClientboundEventHandler::startWhiteScreen,
+            NarakaClientboundEventPacket.Event.STOP_WHITE_FOG, NarakaClientboundEventHandler::stopWhiteScreen
     );
 
     private static final Music[] HEROBRINE_MUSIC = new Music[]{
@@ -61,7 +63,7 @@ public class NarakaClientboundEventHandler {
         });
     }
 
-    static void updateHerobrineMusic(final int phase) {
+    private static void updateHerobrineMusic(final int phase) {
         Minecraft minecraft = Minecraft.getInstance();
         SoundManager soundManager = minecraft.getSoundManager();
         MusicManager musicManager = minecraft.getMusicManager();
@@ -73,28 +75,36 @@ public class NarakaClientboundEventHandler {
         }
     }
 
-    static void stopHerobrineMusic() {
+    private static void stopHerobrineMusic() {
         Minecraft minecraft = Minecraft.getInstance();
         MusicManager musicManager = minecraft.getMusicManager();
 
         musicManager.stopPlaying();
     }
 
-    static void showSkillControlScreen(Entity entity) {
+    private static void showSkillControlScreen(Entity entity) {
         if (entity instanceof SkillUsingMob mob)
             Minecraft.getInstance().setScreen(new SkillControlScreen(mob));
     }
 
-    static void showAnimationControlScreen(Entity entity) {
+    private static void showAnimationControlScreen(Entity entity) {
         if (entity instanceof SkillUsingMob mob)
             Minecraft.getInstance().setScreen(new AnimationControlScreen(mob));
     }
 
-    static void startHerobrineSky() {
-        NarakaConfig.CLIENT.renderHerobrineSky.set(true);
+    private static void startHerobrineSky() {
+        NarakaClientContext.ENABLE_HEROBRINE_SKY.set(true);
     }
 
-    static void stopHerobrineSky() {
-        NarakaConfig.CLIENT.renderHerobrineSky.set(false);
+    private static void stopHerobrineSky() {
+        NarakaClientContext.ENABLE_HEROBRINE_SKY.set(false);
+    }
+
+    private static void startWhiteScreen() {
+        NarakaClientContext.ENABLE_WHITE_SCREEN.set(true);
+    }
+
+    private static void stopWhiteScreen() {
+        NarakaClientContext.ENABLE_WHITE_SCREEN.set(false);
     }
 }

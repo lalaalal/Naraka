@@ -440,12 +440,27 @@ public class Herobrine extends AbstractHerobrine {
         NetworkManager.clientbound().send(bossEvent.getPlayers(), packet);
     }
 
+    public void startWhiteScreen() {
+        NarakaClientboundEventPacket packet = new NarakaClientboundEventPacket(
+                NarakaClientboundEventPacket.Event.START_WHITE_SCREEN
+        );
+        NetworkManager.clientbound().send(bossEvent.getPlayers(), packet);
+    }
+
+    public void stopWhiteScreen() {
+        NarakaClientboundEventPacket packet = new NarakaClientboundEventPacket(
+                NarakaClientboundEventPacket.Event.STOP_WHITE_FOG
+        );
+        NetworkManager.clientbound().send(bossEvent.getPlayers(), packet);
+    }
+
     @Override
     public void stopSeenByPlayer(ServerPlayer serverPlayer) {
         bossEvent.removePlayer(serverPlayer);
         CustomPacketPayload packet = new NarakaClientboundEventPacket(
                 NarakaClientboundEventPacket.Event.STOP_MUSIC,
-                NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY
+                NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY,
+                NarakaClientboundEventPacket.Event.STOP_WHITE_FOG
         );
         NetworkManager.sendToClient(serverPlayer, packet);
     }

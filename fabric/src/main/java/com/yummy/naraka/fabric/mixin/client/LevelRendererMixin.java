@@ -3,6 +3,7 @@ package com.yummy.naraka.fabric.mixin.client;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.framegraph.FrameGraphBuilder;
 import com.mojang.blaze3d.framegraph.FramePass;
+import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.renderer.HerobrineSkyRenderHelper;
 import com.yummy.naraka.config.NarakaConfig;
 import net.minecraft.client.Camera;
@@ -27,7 +28,7 @@ public abstract class LevelRendererMixin {
 
     @Inject(method = "addSkyPass", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/framegraph/FramePass;executes(Ljava/lang/Runnable;)V"), cancellable = true)
     public void replaceHerobrineSkyPass(FrameGraphBuilder frameGraphBuilder, Camera camera, float partialTick, FogParameters fog, CallbackInfo ci, @Local DimensionSpecialEffects.SkyType skyType, @Local FramePass framePass) {
-        if (skyType == DimensionSpecialEffects.SkyType.OVERWORLD && NarakaConfig.CLIENT.renderHerobrineSky.getValue()) {
+        if (skyType == DimensionSpecialEffects.SkyType.OVERWORLD && NarakaClientContext.ENABLE_HEROBRINE_SKY.getValue()) {
             ci.cancel();
             framePass.executes(() -> HerobrineSkyRenderHelper.renderHerobrineSky(skyRenderer, renderBuffers, fog));
         }
@@ -35,7 +36,7 @@ public abstract class LevelRendererMixin {
 
     @Inject(method = "addCloudsPass", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/framegraph/FramePass;executes(Ljava/lang/Runnable;)V"), cancellable = true)
     public void speedUpClouds(FrameGraphBuilder frameGraphBuilder, CloudStatus cloudStatus, Vec3 cameraPosition, float ticks, int cloudColor, float cloudHeight, CallbackInfo ci, @Local FramePass framePass) {
-        if (NarakaConfig.CLIENT.renderHerobrineSky.getValue()) {
+        if (NarakaClientContext.ENABLE_HEROBRINE_SKY.getValue()) {
             int speed = NarakaConfig.CLIENT.herobrineSkyCloudSpeed.getValue();
 
             ci.cancel();

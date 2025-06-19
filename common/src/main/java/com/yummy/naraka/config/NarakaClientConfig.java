@@ -15,7 +15,6 @@ public class NarakaClientConfig extends StaticConfiguration {
     public final ConfigValue<Float> herobrineScarfWaveCycleModifier;
     public final ConfigValue<Integer> oreSeeThroughRange;
     public final ConfigValue<Boolean> disableOreSeeThrough;
-    public final ConfigValue<Boolean> renderHerobrineSky;
     public final ConfigValue<Integer> herobrineSkyCloudSpeed;
 
     public NarakaClientConfig() {
@@ -41,7 +40,6 @@ public class NarakaClientConfig extends StaticConfiguration {
 
         this.oreSeeThroughRange = define("ore_see_through_range", 20);
         this.disableOreSeeThrough = define("disable_ore_see_through", false);
-        this.renderHerobrineSky = define("render_herobrine_sky", false);
         this.herobrineSkyCloudSpeed = define("herobrine_sky_cloud_speed", 500);
     }
 }
