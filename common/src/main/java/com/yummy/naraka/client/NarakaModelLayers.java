@@ -16,6 +16,9 @@ public final class NarakaModelLayers {
     public static final ModelLayerLocation HEROBRINE_FINAL = location("herobrine_final");
     public static final ModelLayerLocation HEROBRINE_SCARF = location("herobrine_scarf");
     public static final ModelLayerLocation SHADOW_HEROBRINE_ARMOR = location("shadow_herobrine_armor");
+
+    public static final ModelLayerLocation DIAMOND_GOLEM = location("diamond_golem");
+
     public static final ModelLayerLocation SPEAR = location("spear");
     public static final ModelLayerLocation SPEAR_OF_LONGINUS = location("spear_of_longinus");
 

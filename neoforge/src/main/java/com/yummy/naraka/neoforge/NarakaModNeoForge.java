@@ -35,6 +35,7 @@ public final class NarakaModNeoForge implements NarakaInitializer {
         MethodInvoker.register(NeoForgeEntityAttributeRegistry.class);
         MethodInvoker.register(NeoForgeRegistryFactory.class);
         MethodInvoker.register(NeoForgeRegistryProxyProvider.class);
+        MethodInvoker.register(NeoForgeSpawnPlacementRegistry.class);
 
         NarakaMod.initialize(this);
 

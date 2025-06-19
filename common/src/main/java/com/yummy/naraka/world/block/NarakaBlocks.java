@@ -37,6 +37,16 @@ public class NarakaBlocks {
             Blocks.BEDROCK
     );
 
+    public static final HolderProxy<Block, DiamondGolemSpawner> DIAMOND_GOLEM_SPAWNER = registerBlockWithItem(
+            "diamond_golem_spawner",
+            properties -> new DiamondGolemSpawner(
+                    properties.noCollission()
+                            .noLootTable()
+                            .noTerrainParticles()
+            ),
+            Blocks.SPAWNER
+    );
+
     public static final HolderProxy<Block, UnstableBlock> UNSTABLE_BLOCK = registerBlockWithItem(
             "unstable_block", properties -> new UnstableBlock(
                     properties.strength(-1, 3600000)

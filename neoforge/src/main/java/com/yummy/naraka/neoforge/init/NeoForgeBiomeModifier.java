@@ -8,7 +8,12 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.random.WeightedList;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.neoforged.neoforge.common.world.BiomeModifier;
@@ -17,6 +22,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class NeoForgeBiomeModifier implements NarakaBiomes.Modifier {
     public static final NeoForgeBiomeModifier INSTANCE = new NeoForgeBiomeModifier();
@@ -32,12 +38,12 @@ public class NeoForgeBiomeModifier implements NarakaBiomes.Modifier {
     }
 
     @Override
-    public void addFeatures(String name, TagKey<Biome> target, GenerationStep.Decoration generationStep, List<ResourceKey<PlacedFeature>> features) {
+    public void addFeatures(String name, TagKey<Biome> biomes, GenerationStep.Decoration generationStep, List<ResourceKey<PlacedFeature>> features) {
         modifiers.add(context -> {
             HolderGetter<Biome> biomeGetter = context.lookup(Registries.BIOME);
             HolderGetter<PlacedFeature> featureGetter = context.lookup(Registries.PLACED_FEATURE);
 
-            HolderSet<Biome> targetBiomes = biomeGetter.getOrThrow(target);
+            HolderSet<Biome> targetBiomes = biomeGetter.getOrThrow(biomes);
 
             context.register(create(name),
                     new BiomeModifiers.AddFeaturesBiomeModifier(
@@ -47,6 +53,20 @@ public class NeoForgeBiomeModifier implements NarakaBiomes.Modifier {
                     )
             );
         });
+    }
+
+    @Override
+    public <T extends Mob> void addSpawns(String name, TagKey<Biome> biomes, MobCategory spawnGroup, Supplier<EntityType<T>> entityType, int weight, int minGroupSize, int maxGroupSize) {
+        modifiers.add(context -> {
+            HolderGetter<Biome> biomeGetter = context.lookup(Registries.BIOME);
+            HolderSet<Biome> targetBiomes = biomeGetter.getOrThrow(biomes);
+
+            WeightedList<MobSpawnSettings.SpawnerData> spawners = WeightedList.<MobSpawnSettings.SpawnerData>builder()
+                    .add(new MobSpawnSettings.SpawnerData(entityType.get(), minGroupSize, maxGroupSize), weight)
+                    .build();
+            context.register(create(name), new BiomeModifiers.AddSpawnsBiomeModifier(targetBiomes, spawners));
+        });
+
     }
 
     private static ResourceKey<BiomeModifier> create(String name) {
