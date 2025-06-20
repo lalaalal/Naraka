@@ -76,6 +76,10 @@ public class Herobrine extends AbstractHerobrine {
     protected final FlickerSkill<Herobrine> flickerSkill = registerSkill(new FlickerSkill<>(this, dashSkill, punchSkill));
     protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, flickerSkill));
 
+    protected final SimpleComboAttackSkill finalComboAttack3 = registerSkill(this, SimpleComboAttackSkill::combo3, AnimationLocations.FINAL_COMBO_ATTACK_3);
+    protected final SimpleComboAttackSkill finalComboAttack2 = registerSkill(SimpleComboAttackSkill.combo2(finalComboAttack3, this), AnimationLocations.FINAL_COMBO_ATTACK_2);
+    protected final SimpleComboAttackSkill finalComboAttack1 = registerSkill(SimpleComboAttackSkill.combo1(finalComboAttack2, this), AnimationLocations.FINAL_COMBO_ATTACK_1);
+
     @Nullable
     private LivingEntity firstTarget;
 
@@ -83,10 +87,10 @@ public class Herobrine extends AbstractHerobrine {
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill);
     private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, walkAroundTargetSkill);
     private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, summonShadowSkill, walkAroundTargetSkill);
-    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill);
+    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, finalComboAttack1);
 
     private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashAroundSkill, walkAroundTargetSkill);
-    private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(AnimationLocations.PHASE_2, AnimationLocations.STAGGERING_PHASE_2);
+    private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(AnimationLocations.ENTER_PHASE_2, AnimationLocations.STAGGERING_PHASE_2);
 
     private final List<List<Skill<?>>> HIBERNATED_MODE_SKILL_BY_PHASE = List.of(
             List.of(), HIBERNATED_MODE_PHASE_1_SKILLS, HIBERNATED_MODE_PHASE_2_SKILLS, List.of()
@@ -134,7 +138,7 @@ public class Herobrine extends AbstractHerobrine {
         skillManager.runOnSkillEnd(this::useShadowFlicker);
         skillManager.enableOnly(PHASE_1_SKILLS);
 
-        registerAnimation(AnimationLocations.PHASE_2);
+        registerAnimation(AnimationLocations.ENTER_PHASE_2);
         registerAnimation(AnimationLocations.STAGGERING_PHASE_2);
         registerAnimation(AnimationLocations.RUSH_SUCCEED);
         registerAnimation(AnimationLocations.RUSH_FAILED);
@@ -146,6 +150,8 @@ public class Herobrine extends AbstractHerobrine {
 
         registerAnimation(AnimationLocations.STORM);
         registerAnimation(AnimationLocations.CARPET_BOMBING);
+        registerAnimation(AnimationLocations.SWORD_AURA_1);
+        registerAnimation(AnimationLocations.SWORD_AURA_2);
     }
 
     private void useShadowFlicker(Skill<?> skill) {
@@ -214,6 +220,8 @@ public class Herobrine extends AbstractHerobrine {
         setNoGravity(true);
         setAnimation(AnimationLocations.PHASE_3_IDLE);
         setDisplayEye(false);
+
+        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR, NarakaAttributeModifiers.FINAL_HEROBRINE_ARMOR);
     }
 
     @Override
@@ -249,7 +257,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void startStaggering(int prevPhase, int currentPhase) {
-        startStaggering(AnimationLocations.PHASE_2, 55, 40);
+        startStaggering(AnimationLocations.ENTER_PHASE_2, 55, 40);
     }
 
     private void updateMusic(int prevPhase, int currentPhase) {

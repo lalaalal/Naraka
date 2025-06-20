@@ -6,7 +6,7 @@ import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.layer.HerobrineScarfLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
-import com.yummy.naraka.client.model.HerobrineFinalModel;
+import com.yummy.naraka.client.model.FinalHerobrineModel;
 import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.client.renderer.entity.state.HerobrineRenderState;
 import com.yummy.naraka.world.entity.Herobrine;
@@ -36,7 +36,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
         super(context, new HerobrineModel<>(context.bakeLayer(NarakaModelLayers.HEROBRINE)), 0.5f);
         this.herobrineModel = model;
         this.afterimageModel = new HerobrineModel<>(context.bakeLayer(NarakaModelLayers.HEROBRINE));
-        this.herobrineFinalModel = new HerobrineFinalModel(context.bakeLayer(NarakaModelLayers.HEROBRINE_FINAL));
+        this.herobrineFinalModel = new FinalHerobrineModel(context.bakeLayer(NarakaModelLayers.HEROBRINE_FINAL));
         this.itemModelResolver = context.getItemModelResolver();
 
         addLayer(new HerobrineScarfLayer<>(this, context));

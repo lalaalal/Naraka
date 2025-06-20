@@ -19,7 +19,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return true;
+        return mob.getTarget() != null;
     }
 
     @Override

@@ -11,7 +11,7 @@ import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
 
 @Environment(EnvType.CLIENT)
-public class HerobrineFinalAnimation {
+public class FinalHerobrineAnimation {
     public static void initialize() {
         AnimationMapper.register(AnimationLocations.PHASE_3_IDLE, IDLE);
         AnimationMapper.register(AnimationLocations.STORM, STORM);

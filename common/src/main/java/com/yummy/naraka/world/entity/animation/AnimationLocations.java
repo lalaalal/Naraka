@@ -24,15 +24,20 @@ public class AnimationLocations {
     public static final ResourceLocation STIGMATIZE_ENTITIES_END = create("herobrine", "stigmatize_entities.end");
     public static final ResourceLocation BLOCKING = create("herobrine", "blocking");
     public static final ResourceLocation STAGGERING = create("herobrine", "staggering");
-    public static final ResourceLocation STAGGERING_PHASE_2 = create("herobrine", "staggering.phase2");
-    public static final ResourceLocation PHASE_2 = create("herobrine", "phase_2");
+    public static final ResourceLocation STAGGERING_PHASE_2 = create("herobrine", "staggering.enter_phase_2");
+    public static final ResourceLocation ENTER_PHASE_2 = create("herobrine", "enter_phase_2");
     public static final ResourceLocation IDLE = create("herobrine", "idle");
     public static final ResourceLocation SHADOW_SUMMONED = create("shadow_herobrine", "summoned");
 
-    public static final ResourceLocation PHASE_3_IDLE = create("herobrine", "idle.phase_3");
-    public static final ResourceLocation STORM = create("herobrine", "storm");
-    public static final ResourceLocation CARPET_BOMBING = create("herobrine", "carpet_bombing");
-    public static final ResourceLocation EXPLOSION = create("herobrine", "explosion");
+    public static final ResourceLocation PHASE_3_IDLE = create("final_herobrine", "idle");
+    public static final ResourceLocation STORM = create("final_herobrine", "storm");
+    public static final ResourceLocation CARPET_BOMBING = create("final_herobrine", "carpet_bombing");
+    public static final ResourceLocation EXPLOSION = create("final_herobrine", "explosion");
+    public static final ResourceLocation FINAL_COMBO_ATTACK_1 = create("final_herobrine", "combo_attack_1");
+    public static final ResourceLocation FINAL_COMBO_ATTACK_2 = create("final_herobrine", "combo_attack_2");
+    public static final ResourceLocation FINAL_COMBO_ATTACK_3 = create("final_herobrine", "combo_attack_3");
+    public static final ResourceLocation SWORD_AURA_1 = create("final_herobrine", "sword_aura_1");
+    public static final ResourceLocation SWORD_AURA_2 = create("final_herobrine", "sword_aura_2");
 
     private static ResourceLocation create(String entity, String name) {
         ResourceLocation location = NarakaMod.location("animation/" + entity, name);

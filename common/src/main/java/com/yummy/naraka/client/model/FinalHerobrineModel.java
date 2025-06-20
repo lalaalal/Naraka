@@ -8,7 +8,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
 @Environment(EnvType.CLIENT)
-public class HerobrineFinalModel extends AbstractHerobrineModel<HerobrineRenderState> {
+public class FinalHerobrineModel extends AbstractHerobrineModel<HerobrineRenderState> {
     private final ModelPart main;
     private final ModelPart upperBody;
     private final ModelPart head;
@@ -61,7 +61,7 @@ public class HerobrineFinalModel extends AbstractHerobrineModel<HerobrineRenderS
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
-    public HerobrineFinalModel(ModelPart root) {
+    public FinalHerobrineModel(ModelPart root) {
         super(root);
         this.main = root.getChild("main");
         this.upperBody = main.getChild("chest");
