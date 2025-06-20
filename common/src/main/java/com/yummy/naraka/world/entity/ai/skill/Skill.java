@@ -154,10 +154,6 @@ public abstract class Skill<T extends SkillUsingMob> {
 
     protected abstract void skillTick(ServerLevel level);
 
-    protected void lookTarget(LivingEntity target) {
-        mob.getLookControl().setLookAt(target);
-    }
-
     protected boolean at(int tick) {
         return tickCount == tick;
     }

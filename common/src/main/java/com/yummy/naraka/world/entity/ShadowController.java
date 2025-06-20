@@ -42,6 +42,7 @@ public class ShadowController {
         shadowHerobrines.add(shadowHerobrine.getUUID());
         if (herobrine.isHibernateMode())
             shadowHerobrine.useFlicker();
+        shadowHerobrine.playStaticAnimation(AnimationLocations.SHADOW_SUMMONED, 80);
     }
 
     public void broadcastShadowHerobrineHurt(ServerLevel level, ShadowHerobrine shadowHerobrine) {

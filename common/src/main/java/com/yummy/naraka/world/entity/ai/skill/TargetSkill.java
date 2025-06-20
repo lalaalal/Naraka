@@ -4,6 +4,7 @@ import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
@@ -38,7 +39,31 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
 
     }
 
-    protected void rotateTowardTarget(LivingEntity target) {
+    protected void lookTarget(LivingEntity target) {
+        mob.getLookControl().setLookAt(target);
+    }
+
+    protected final void rotateTowardTarget(LivingEntity target) {
         mob.lookAt(target, 180, 0);
+    }
+
+    protected final void moveToTarget(LivingEntity target, double speed) {
+        if (mob.distanceToSqr(target) < 6) {
+            mob.setDeltaMovement(Vec3.ZERO);
+            return;
+        }
+        Vec3 deltaMovement = target.position().subtract(mob.position())
+                .normalize()
+                .scale(speed);
+        if (mob.distanceToSqr(target) > 3)
+            mob.setDeltaMovement(deltaMovement);
+    }
+
+    protected final void reduceSpeed(double scale) {
+        mob.setDeltaMovement(mob.getDeltaMovement().scale(scale));
+    }
+
+    protected final void stopMoving() {
+        mob.setDeltaMovement(Vec3.ZERO);
     }
 }

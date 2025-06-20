@@ -9,31 +9,35 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class SimpleComboAttackSkill extends ComboSkill<SkillUsingMob> {
-    private int attackTick;
-    private int attackRange;
-    private int moveStartTick;
-    private int moveEndTick;
-    private boolean lookTarget;
-    private boolean moveToTarget;
+    public static final ResourceLocation FINAL_COMBO_ATTACK_1 = createLocation("final.combo_attack_1");
+    public static final ResourceLocation FINAL_COMBO_ATTACK_2 = createLocation("final.combo_attack_2");
+    public static final ResourceLocation FINAL_COMBO_ATTACK_3 = createLocation("final.combo_attack_3");
 
-    public static SimpleComboAttackSkill combo1(Skill<?> combo2, SkillUsingMob mob) {
-        return builder(createLocation("final.combo_attack_1"), 40, 100, mob)
-                .nextSkill(combo2)
+    protected int attackTick;
+    protected int attackRange;
+    protected int moveStartTick;
+    protected int moveEndTick;
+    protected boolean lookTarget;
+    protected boolean moveToTarget;
+
+    public static SimpleComboAttackSkill combo1(Skill<?> nextSkill, SkillUsingMob mob) {
+        return builder(FINAL_COMBO_ATTACK_1, 40, 100, mob)
+                .nextSkill(nextSkill)
                 .attackTick(22).attackRange(3)
                 .build();
     }
 
-    public static SimpleComboAttackSkill combo2(Skill<?> combo3, SkillUsingMob mob) {
-        return builder(createLocation("final.combo_attack_2"), 40, 0, mob)
-                .nextSkill(combo3)
-                .attackTick(20).attackRange(4)
+    public static SimpleComboAttackSkill combo2(Skill<?> nextSkill, SkillUsingMob mob) {
+        return builder(FINAL_COMBO_ATTACK_2, 40, 0, mob)
+                .nextSkill(nextSkill)
+                .attackTick(22).attackRange(3)
                 .lookTarget()
-                .moveToTarget(12, 19)
+                .moveToTarget(15, 25)
                 .build();
     }
 
     public static SimpleComboAttackSkill combo3(SkillUsingMob mob) {
-        return builder(createLocation("final.combo_attack_3"), 60, 0, mob)
+        return builder(FINAL_COMBO_ATTACK_3, 60, 0, mob)
                 .attackTick(20).attackRange(3)
                 .build();
     }

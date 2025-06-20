@@ -4,9 +4,7 @@ import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.ai.goal.FollowOwnerGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
-import com.yummy.naraka.world.entity.ai.skill.DashSkill;
-import com.yummy.naraka.world.entity.ai.skill.ShadowFlickerSkill;
-import com.yummy.naraka.world.entity.ai.skill.ShadowPunchSkill;
+import com.yummy.naraka.world.entity.ai.skill.*;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
@@ -14,6 +12,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -36,9 +37,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntity {
+    protected static final EntityDataAccessor<Boolean> FINAL_MODEL = SynchedEntityData.defineId(ShadowHerobrine.class, EntityDataSerializers.BOOLEAN);
+
     protected final ShadowPunchSkill punchSkill = registerSkill(1, this, ShadowPunchSkill::new, AnimationLocations.COMBO_ATTACK_1);
     protected final DashSkill<ShadowHerobrine> dashSkill = registerSkill(this, DashSkill::new);
     protected final ShadowFlickerSkill flickerSkill = registerSkill(10, new ShadowFlickerSkill(this, dashSkill, punchSkill));
+
+    protected final SimpleComboAttackSkill finalComboAttack3 = registerSkill(SimpleComboAttackSkill.combo3(this), AnimationLocations.FINAL_COMBO_ATTACK_3);
+    protected final SimpleComboAttackSkill finalComboAttack2 = registerSkill(SimpleComboAttackSkill.combo2(finalComboAttack3, this), AnimationLocations.FINAL_COMBO_ATTACK_2);
+    protected final SimpleComboAttackSkill finalComboAttack1 = registerSkill(SimpleComboAttackSkill.combo1(finalComboAttack2, this), AnimationLocations.FINAL_COMBO_ATTACK_1);
 
     @Nullable
     private Herobrine herobrine;
@@ -55,19 +62,43 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     protected ShadowHerobrine(EntityType<? extends AbstractHerobrine> entityType, Level level) {
         super(entityType, level, true);
         skillManager.enableOnly(List.of(punchSkill));
-
         entityData.set(DISPLAY_SCARF, true);
-
+        entityData.set(DISPLAY_PICKAXE, false);
         registerAnimation(AnimationLocations.SHADOW_SUMMONED);
-
-        updateAnimation(AnimationLocations.SHADOW_SUMMONED);
-        playStaticAnimation(AnimationLocations.SHADOW_SUMMONED, 80);
     }
 
     public ShadowHerobrine(Level level, Herobrine herobrine) {
         this(NarakaEntityTypes.SHADOW_HEROBRINE.get(), level);
         this.herobrine = herobrine;
         this.herobrineUUID = herobrine.getUUID();
+    }
+
+    public ShadowHerobrine(Level level, boolean finalModel, boolean instant) {
+        this(NarakaEntityTypes.SHADOW_HEROBRINE.get(), level);
+        entityData.set(FINAL_MODEL, finalModel);
+        if (instant)
+            skillManager.runOnSkillEnd(skill -> discard());
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FINAL_MODEL, false);
+    }
+
+    @Override
+    protected void updateAnimationOnSkillEnd(Skill<?> skill) {
+        if (!skill.hasLinkedSkill()) {
+            if (isFinalModel()) {
+                setAnimation(AnimationLocations.PHASE_3_IDLE);
+            } else {
+                setAnimation(AnimationLocations.IDLE);
+            }
+        }
+    }
+
+    public boolean isFinalModel() {
+        return entityData.get(FINAL_MODEL);
     }
 
     public void usePunchOnly() {
@@ -178,6 +209,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         if (level().getEntity(herobrineId) instanceof Herobrine entity) {
             this.herobrine = entity;
             this.herobrineUUID = entity.getUUID();
+            updateAnimation(AnimationLocations.SHADOW_SUMMONED);
         }
     }
 

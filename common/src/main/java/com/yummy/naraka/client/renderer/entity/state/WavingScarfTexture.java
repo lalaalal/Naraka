@@ -17,7 +17,7 @@ public record WavingScarfTexture(ResourceLocation herobrineTexture, ResourceLoca
             NarakaTextures.HEROBRINE_SCARF, NarakaTextures.SHADOW_HEROBRINE_SCARF, 19, 27, 5, 21, 64, 64
     );
     public static final WavingScarfTexture PHASE_3 = new WavingScarfTexture(
-            NarakaTextures.HEROBRINE_FINAL_SCARF, NarakaTextures.HEROBRINE_FINAL_SCARF, 0, 0, 30, 40, 128, 128
+            NarakaTextures.FINAL_HEROBRINE_SCARF, NarakaTextures.FINAL_HEROBRINE_SCARF, 0, 0, 30, 40, 128, 128
     );
 
     public ResourceLocation texture(boolean isShadow) {

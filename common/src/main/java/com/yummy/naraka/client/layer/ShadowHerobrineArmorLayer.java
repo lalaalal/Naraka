@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
+import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.client.renderer.entity.ShadowHerobrineRenderer;
 import com.yummy.naraka.client.renderer.entity.state.ShadowHerobrineRenderState;
@@ -16,7 +17,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 
 @Environment(EnvType.CLIENT)
-public class ShadowHerobrineArmorLayer extends RenderLayer<ShadowHerobrineRenderState, HerobrineModel<ShadowHerobrineRenderState>> {
+public class ShadowHerobrineArmorLayer extends RenderLayer<ShadowHerobrineRenderState, AbstractHerobrineModel<ShadowHerobrineRenderState>> {
     private final HerobrineModel<ShadowHerobrineRenderState> layerModel;
 
     public ShadowHerobrineArmorLayer(ShadowHerobrineRenderer renderer, EntityRendererProvider.Context context) {

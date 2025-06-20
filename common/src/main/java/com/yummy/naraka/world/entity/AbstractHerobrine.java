@@ -37,6 +37,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     protected static final EntityDataAccessor<Float> SCARF_ROTATION_DEGREE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Boolean> DISPLAY_SCARF = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> DISPLAY_EYE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> DISPLAY_PICKAXE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
 
     public final boolean isShadow;
     private final ScarfWavingData scarfWavingData = new ScarfWavingData();
@@ -72,6 +73,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         this.isShadow = isShadow;
         registerAnimation(AnimationLocations.STAGGERING);
         registerAnimation(AnimationLocations.IDLE);
+        registerAnimation(AnimationLocations.PHASE_3_IDLE);
 
         setPersistenceRequired();
         updateAnimation(AnimationLocations.IDLE);
@@ -83,7 +85,16 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         super.defineSynchedData(builder);
         builder.define(SCARF_ROTATION_DEGREE, 0f)
                 .define(DISPLAY_SCARF, false)
-                .define(DISPLAY_EYE, true);
+                .define(DISPLAY_EYE, true)
+                .define(DISPLAY_PICKAXE, true);
+    }
+
+    public void setDisplayPickaxe(boolean value) {
+        entityData.set(DISPLAY_PICKAXE, value);
+    }
+
+    public boolean displayPickaxe() {
+        return entityData.get(DISPLAY_PICKAXE);
     }
 
     public boolean displayEye() {
@@ -126,14 +137,11 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         return entityData.get(DISPLAY_SCARF);
     }
 
-    protected void updateAnimationOnSkillEnd(Skill<?> skill) {
-        if (!skill.hasLinkedSkill())
-            setAnimation(AnimationLocations.IDLE);
-    }
+    protected abstract void updateAnimationOnSkillEnd(Skill<?> skill);
 
     private void updateAnimationTick() {
         if (animationTickCount == 0)
-            stopAnimation();
+            stopStaticAnimation();
         if (animationTickCount >= 0) {
             animationTickListener.run();
             animationTickCount -= 1;
@@ -153,7 +161,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
     }
 
-    protected void stopAnimation() {
+    protected void stopStaticAnimation() {
         if (animationTickCount < 0)
             return;
         animationTickCount = Integer.MIN_VALUE;

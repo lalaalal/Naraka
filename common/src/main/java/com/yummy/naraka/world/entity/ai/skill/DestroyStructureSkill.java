@@ -43,6 +43,7 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
             mob.startWhiteScreen();
         } else {
             tickCount = duration;
+            mob.sendMusic(3);
         }
     }
 
@@ -75,6 +76,7 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
     @Override
     protected void onLastTick(ServerLevel level) {
         mob.stopWhiteScreen();
+        mob.sendMusic(3);
     }
 
     private void determinePositions() {

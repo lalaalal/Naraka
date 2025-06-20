@@ -14,12 +14,13 @@ import java.util.Map;
 @Environment(EnvType.CLIENT)
 public final class NarakaTextures {
     public static final ResourceLocation HEROBRINE = entity("herobrine.png");
-    public static final ResourceLocation HEROBRINE_FINAL = entity("herobrine_final.png");
+    public static final ResourceLocation FINAL_HEROBRINE = entity("final_herobrine.png");
     public static final ResourceLocation HEROBRINE_EYE = entity("herobrine_eye.png");
-    public static final ResourceLocation HEROBRINE_FINAL_EYE = entity("herobrine_final_eye.png");
     public static final ResourceLocation HEROBRINE_AFTERIMAGE = entity("herobrine_afterimage.png");
     public static final ResourceLocation HEROBRINE_SCARF = entity("herobrine_scarf.png");
-    public static final ResourceLocation HEROBRINE_FINAL_SCARF = entity("herobrine_final.png");
+
+    public static final ResourceLocation FINAL_HEROBRINE_SCARF = entity("final_herobrine.png");
+    public static final ResourceLocation FINAL_HEROBRINE_EYE = entity("final_herobrine_eye.png");
 
     public static final ResourceLocation DIAMOND_GOLEM = entity("diamond_golem.png");
 
