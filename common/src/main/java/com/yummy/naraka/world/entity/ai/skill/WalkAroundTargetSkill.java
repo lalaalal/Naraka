@@ -14,9 +14,9 @@ public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
     private static final int DEFAULT_DURATION = 80;
     private int direction;
     private final PunchSkill<?> punchSkill;
-    private final FlickerSkill flickerSkill;
+    private final FlickerSkill<?> flickerSkill;
 
-    public WalkAroundTargetSkill(SkillUsingMob mob, PunchSkill<?> punchSkill, FlickerSkill flickerSkill) {
+    public WalkAroundTargetSkill(SkillUsingMob mob, PunchSkill<?> punchSkill, FlickerSkill<?> flickerSkill) {
         super(LOCATION, DEFAULT_DURATION, 0, mob);
         this.punchSkill = punchSkill;
         this.flickerSkill = flickerSkill;

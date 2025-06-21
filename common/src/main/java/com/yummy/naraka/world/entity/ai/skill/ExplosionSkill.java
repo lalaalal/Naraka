@@ -11,7 +11,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class ExplosionSkill extends AttackSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("explosion");
+    public static final ResourceLocation LOCATION = createLocation("final.explosion");
 
     public ExplosionSkill(Herobrine mob) {
         super(LOCATION, 130, 200, mob);

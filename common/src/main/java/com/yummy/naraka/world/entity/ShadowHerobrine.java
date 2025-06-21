@@ -21,10 +21,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.TraceableEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Fireball;
@@ -57,6 +54,17 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
                 .add(Attributes.MOVEMENT_SPEED, 0.15f)
                 .add(Attributes.ATTACK_DAMAGE, 10)
                 .add(Attributes.MAX_HEALTH, 150);
+    }
+
+    public static ShadowHerobrine createInstantFinalShadow(Level level, Mob mob) {
+        ShadowHerobrine shadowHerobrine = new ShadowHerobrine(mob.level(), true, true);
+        shadowHerobrine.setPos(mob.position());
+        shadowHerobrine.forceSetRotation(mob.getYRot(), mob.getXRot());
+        shadowHerobrine.getSkillManager().enableOnly(List.of());
+        shadowHerobrine.setTarget(mob.getTarget());
+        level.addFreshEntity(shadowHerobrine);
+
+        return shadowHerobrine;
     }
 
     protected ShadowHerobrine(EntityType<? extends AbstractHerobrine> entityType, Level level) {

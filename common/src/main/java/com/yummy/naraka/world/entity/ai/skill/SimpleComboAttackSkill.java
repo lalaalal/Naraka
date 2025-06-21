@@ -4,6 +4,8 @@ import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -75,6 +77,12 @@ public class SimpleComboAttackSkill extends ComboSkill<SkillUsingMob> {
         if (moveToTarget)
             runBetween(moveStartTick, moveEndTick, () -> moveToTarget(target));
         runAt(moveEndTick, () -> mob.setDeltaMovement(Vec3.ZERO));
+    }
+
+    @Override
+    protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
+        super.hurtHitEntity(level, target);
+        level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
     }
 
     private void moveToTarget(LivingEntity target) {

@@ -1,16 +1,13 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.FallingBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -54,12 +51,7 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
         }
         if (mob.onGround()) {
             level.sendParticles(ParticleTypes.FIREWORK, mob.getX(), mob.getY(), mob.getZ(), 10, 0.5, 1, 0.5, 0.3);
-            BlockPos floor = NarakaUtils.findFloor(level, mob.blockPosition());
-            NarakaUtils.circle(floor, 5 + onGroundTick, NarakaUtils.OUTLINE, blockPos -> {
-                BlockState state = level.getBlockState(blockPos);
-                FallingBlockEntity fallingBlockEntity = NarakaEntityUtils.createFloatingBlock(level, blockPos, state);
-                fallingBlockEntity.setDeltaMovement(0, 0.5, 0);
-            });
+            NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 5 + onGroundTick);
             onGroundTick += 1;
         }
     }

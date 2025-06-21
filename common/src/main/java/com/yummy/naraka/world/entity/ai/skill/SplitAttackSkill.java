@@ -5,16 +5,14 @@ import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 public class SplitAttackSkill extends ComboSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("split_attack");
+    public static final ResourceLocation LOCATION = createLocation("final.split_attack");
 
-    private Vec3 shadowSpawnPosition = Vec3.ZERO;
     @Nullable
     private ShadowHerobrine shadowHerobrine;
 
@@ -25,7 +23,6 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
     @Override
     public void prepare() {
         super.prepare();
-        shadowSpawnPosition = mob.position();
     }
 
     @Override
@@ -45,26 +42,21 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
         runBetween(15, 20, () -> rotateTowardTarget(target));
         runAt(22, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 3));
         runAt(20, this::stopMoving);
-        runAt(25, this::spawnShadow);
+        runAt(25, () -> shadowHerobrine = ShadowHerobrine.createInstantFinalShadow(level, mob));
         runAt(26, () -> shadowUseSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_1));
 
-        runAt(35, this::spawnShadow);
+        runAt(35, () -> shadowHerobrine = ShadowHerobrine.createInstantFinalShadow(level, mob));
         runAt(36, () -> shadowUseSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_2));
     }
 
-    private void spawnShadow() {
-        shadowHerobrine = new ShadowHerobrine(mob.level(), true, true);
-        shadowHerobrine.setPos(shadowSpawnPosition);
-        shadowHerobrine.forceSetRotation(mob.getYRot(), mob.getXRot());
-        shadowHerobrine.getSkillManager().enableOnly(List.of());
-        mob.level().addFreshEntity(shadowHerobrine);
-
-        shadowSpawnPosition = mob.position();
+    @Override
+    protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
+        super.hurtHitEntity(level, target);
+        level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
     }
 
     private void shadowUseSkill(ResourceLocation skillLocation) {
         if (shadowHerobrine != null && shadowHerobrine.isAlive()) {
-            shadowHerobrine.setTarget(mob.getTarget());
             shadowHerobrine.useSkill(skillLocation);
             shadowHerobrine.setDisplayPickaxe(true);
         }
