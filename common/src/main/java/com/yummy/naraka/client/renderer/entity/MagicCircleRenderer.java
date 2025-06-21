@@ -47,6 +47,7 @@ public class MagicCircleRenderer extends EntityRenderer<MagicCircle, MagicCircle
                 new Vector3f(0.5f, 0, 0.5f)
         );
         NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), vertices, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.UP);
+        NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), vertices, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.DOWN);
         poseStack.popPose();
         super.render(renderState, poseStack, bufferSource, packedLight);
     }

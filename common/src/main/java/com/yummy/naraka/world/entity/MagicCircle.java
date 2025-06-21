@@ -26,13 +26,13 @@ public class MagicCircle extends Entity {
     public static final EntityDataAccessor<Integer> LIFETIME = SynchedEntityData.defineId(MagicCircle.class, EntityDataSerializers.INT);
 
     @Nullable
-    private LivingEntity owner;
+    private Herobrine owner;
 
     public MagicCircle(EntityType<? extends MagicCircle> entityType, Level level) {
         super(entityType, level);
     }
 
-    public MagicCircle(Level level, LivingEntity owner, int lifetime, float scale) {
+    public MagicCircle(Level level, Herobrine owner, int lifetime, float scale) {
         this(NarakaEntityTypes.MAGIC_CIRCLE.get(), level);
         this.owner = owner;
         entityData.set(SCALE, scale);
@@ -54,11 +54,14 @@ public class MagicCircle extends Entity {
 
     private void serverTick(ServerLevel level) {
         int remainTick = getLifetime() - tickCount;
-        if (remainTick <= 20 && remainTick % 5 == 0) {
+        if (remainTick < 20 && remainTick % 5 == 0) {
             Collection<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0, 7, 0), AbstractHerobrine::isNotHerobrine);
             DamageSource damageSource = damageSources().explosion(owner, this);
-            for (LivingEntity entity : entities)
+            for (LivingEntity entity : entities) {
                 entity.hurtServer(level, damageSource, 10);
+                if (owner != null && remainTick % 10 == 0)
+                    owner.stigmatizeEntity(level, entity);
+            }
         }
         if (tickCount >= getLifetime()) {
             discard();
@@ -70,7 +73,7 @@ public class MagicCircle extends Entity {
         double multiplier = 1;
         if (getLifetime() - tickCount < 20) {
             multiplier = 10;
-            level.playSound(null, getX(), getY(), getZ(), SoundEvents.FIRECHARGE_USE, SoundSource.HOSTILE, 1, 1);
+            level.playLocalSound(getX(), getY(), getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.HOSTILE, 2, 1, false);
         }
         for (int i = 0; i < getScale() * 0.5 * multiplier; i++) {
             double x = random.nextDouble() * getScale() - getScale() * 0.5 + getX();
