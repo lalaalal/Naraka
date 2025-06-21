@@ -7,6 +7,7 @@ import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Afterimage;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.resources.ResourceLocation;
@@ -26,6 +27,8 @@ public abstract class AbstractHerobrineRenderState extends LivingEntityRenderSta
     public boolean renderScarf = false;
     public boolean doWalkAnimation = true;
     public float eyeAlpha = 1;
+    public int scarfAlpha = 0xff;
+    public int pickaxeLight = LightTexture.FULL_BRIGHT;
 
     public boolean displayPickaxe = true;
     public ItemStackRenderState pickaxe = new ItemStackRenderState();

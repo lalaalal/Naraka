@@ -118,9 +118,9 @@ public class NarakaEntityUtils {
         return !(player.isCreative() || player.isSpectator());
     }
 
-    public static FallingBlockEntity createFloatingBlock(Level level, BlockPos pos, BlockState state) {
-        if (Platform.getInstance().isDevelopmentEnvironment() && !NarakaConfig.COMMON.alwaysAllowFloatingBlockEntity.getValue())
-            return FallingBlockEntity.fall(level, pos, state);
+    public static void createFloatingBlock(Level level, BlockPos pos, BlockState state, Vec3 movement) {
+        if (Platform.getInstance().isDevelopmentEnvironment() && !NarakaConfig.COMMON.allowFloatingBlockOnDev.getValue())
+            return;
         FallingBlockEntity fallingBlockEntity = FallingBlockEntityInvoker.create(
                 level,
                 pos.getX() + 0.5,
@@ -129,7 +129,7 @@ public class NarakaEntityUtils {
                 state.hasProperty(BlockStateProperties.WATERLOGGED) ? state.setValue(BlockStateProperties.WATERLOGGED, false) : state
         );
         ((FallingBlockEntityAccessor) fallingBlockEntity).setCancelDrop(true);
+        fallingBlockEntity.setDeltaMovement(movement);
         level.addFreshEntity(fallingBlockEntity);
-        return fallingBlockEntity;
     }
 }

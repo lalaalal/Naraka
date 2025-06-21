@@ -40,6 +40,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runAfter(95, () -> lookTarget(target));
+        runAfter(110, () -> rotateTowardTarget(target));
     }
 
     private void sendParticles(ServerLevel level) {

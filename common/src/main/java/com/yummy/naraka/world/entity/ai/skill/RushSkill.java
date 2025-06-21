@@ -143,14 +143,14 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     }
 
     @Override
-    protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
+    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
         if (NarakaEntityUtils.disableAndHurtShield(target, 20 * 5, 15))
-            return;
+            return false;
         StunHelper.stunEntity(target, 100);
         mob.stigmatizeEntity(level, target);
-        super.hurtHitEntity(level, target);
         Vec3 delta = NarakaEntityUtils.getDirectionNormalVector(mob, target);
         target.knockback(5, -delta.x, -delta.z);
+        return super.hurtHitEntity(level, target);
     }
 
     @Override

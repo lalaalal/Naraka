@@ -62,13 +62,13 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     @Override
-    protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
+    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
         if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15) || hitEntities.contains(target))
-            return;
+            return true;
         hitEntities.add(target);
-        super.hurtHitEntity(level, target);
         mob.stigmatizeEntity(level, target);
         level.playSound(mob, mob.blockPosition(), SoundEvents.STONE_BREAK, SoundSource.HOSTILE, 1, 1);
+        return super.hurtHitEntity(level, target);
     }
 
     @Override

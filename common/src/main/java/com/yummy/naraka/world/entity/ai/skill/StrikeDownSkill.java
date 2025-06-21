@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
@@ -9,20 +10,25 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 
-public class StrikeDownSkill extends AttackSkill<Herobrine> {
+import java.util.function.Supplier;
+
+public class StrikeDownSkill extends SpawnInstantShadowSkill {
     public static final ResourceLocation LOCATION = createLocation("final.strike_down");
 
     private int onGroundTick;
+    private Vec3 shadowPosition = Vec3.ZERO;
 
     public StrikeDownSkill(Herobrine mob) {
-        super(LOCATION, 60, 0, mob);
+        super(LOCATION, 60, 0, 0, null, 60, mob);
     }
 
     @Override
     public void prepare() {
         super.prepare();
         onGroundTick = 0;
+        shadowPosition = mob.position();
     }
 
     @Override
@@ -31,19 +37,28 @@ public class StrikeDownSkill extends AttackSkill<Herobrine> {
     }
 
     @Override
-    public boolean canUse(ServerLevel level) {
-        return false;
-    }
-
-    @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        runAt(19, this::strikeDown);
-        runAt(21, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 6));
+        runBefore(15, () -> rotateTowardTarget(target));
+        runBefore(15, () -> lookTarget(target));
+        runBetween(19, 27, () -> strikeDown(target));
+        runAt(21, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 5));
+
+        runAt(20, () -> spawnShadowHerobrine(level, shadowPosition));
+        runAt(21, () -> shadowUseSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_3));
+
         runAt(38, this::floating);
         runAfter(40, () -> lookTarget(target));
         runBetween(40, 48, () -> reduceSpeed(0.5));
         runAt(50, this::stopMoving);
         onGround(level);
+    }
+
+    @Override
+    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
+        if (NarakaEntityUtils.disableAndHurtShield(target, 100, 15))
+            return false;
+        mob.stigmatizeEntity(level, target);
+        return super.hurtHitEntity(level, target);
     }
 
     private void onGround(ServerLevel level) {
@@ -52,13 +67,22 @@ public class StrikeDownSkill extends AttackSkill<Herobrine> {
         }
         if ((mob.onGround() || onGroundTick > 0) && onGroundTick < 3) {
             level.sendParticles(ParticleTypes.FIREWORK, mob.getX(), mob.getY(), mob.getZ(), 10, 0.5, 1, 0.5, 0.3);
-            NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 4 + onGroundTick);
+            Supplier<Vec3> movementSupplier = () -> new Vec3(0, mob.getRandom().nextFloat() * 0.5 + 0.5, 0);
+            NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 4 + onGroundTick, movementSupplier);
             onGroundTick += 1;
         }
     }
 
-    private void strikeDown() {
-        mob.setDeltaMovement(0, -2.5, 0);
+    private void strikeDown(LivingEntity target) {
+        if (targetInRange(target, 9) || mob.onGround()) {
+            mob.setDeltaMovement(0, -2, 0);
+        } else {
+            Vec3 movement = target.position()
+                    .subtract(mob.position())
+                    .scale(0.5)
+                    .add(0, -2, 0);
+            mob.setDeltaMovement(movement);
+        }
     }
 
     private void floating() {

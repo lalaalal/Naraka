@@ -73,7 +73,7 @@ public class Herobrine extends AbstractHerobrine {
 
     protected final StrikeDownSkill strikeDownSkill = registerSkill(this, StrikeDownSkill::new, AnimationLocations.FINAL_COMBO_ATTACK_3);
     protected final SpinUpSkill spinUpSkill = registerSkill(new SpinUpSkill(strikeDownSkill, this), AnimationLocations.FINAL_COMBO_ATTACK_2);
-    protected final SplitAttackSkill splitAttackSkill = registerSkill(new SplitAttackSkill(spinUpSkill, this), AnimationLocations.FINAL_COMBO_ATTACK_1);
+    protected final SplitAttackSkill splitAttackSkill = registerSkill(2, new SplitAttackSkill(spinUpSkill, this), AnimationLocations.FINAL_COMBO_ATTACK_1);
 
     @Nullable
     private LivingEntity firstTarget;
@@ -148,7 +148,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void useShadowFlicker(Skill<?> skill) {
-        if (getPhase() > 1 && level() instanceof ServerLevel serverLevel) {
+        if (getPhase() == 2 && level() instanceof ServerLevel serverLevel) {
             shadowController.consumeFlickerStack(serverLevel);
         }
     }
@@ -175,7 +175,7 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64, 1, 5, 0));
+        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64, 1, 1, 0));
     }
 
     public void setSpawnPosition(BlockPos pos) {

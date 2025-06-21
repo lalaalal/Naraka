@@ -25,7 +25,10 @@ public class LookAtTargetGoal extends Goal {
     @Override
     public void tick() {
         LivingEntity target = herobrine.getTarget();
-        if (target != null)
+        if (target != null) {
+            if (!herobrine.isShadow)
+                herobrine.lookAt(target, 180, 0);
             herobrine.getLookControl().setLookAt(target);
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.yummy.naraka.world.entity.ai.control;
 
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.Herobrine;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -10,9 +9,11 @@ import net.minecraft.world.phys.Vec3;
 
 public class HerobrineFlyMoveControl extends MoveControl {
     private final double hoverHeight;
+    private final Herobrine herobrine;
 
     public HerobrineFlyMoveControl(Herobrine mob, double hoverHeight, double speedModifier) {
         super(mob);
+        this.herobrine = mob;
         this.hoverHeight = hoverHeight;
         this.speedModifier = speedModifier;
     }
@@ -25,7 +26,7 @@ public class HerobrineFlyMoveControl extends MoveControl {
 
     @Override
     public void tick() {
-        if (!hasWanted())
+        if (!hasWanted() || herobrine.isUsingSkill())
             return;
 
         if (this.operation == Operation.MOVE_TO) {
@@ -39,7 +40,6 @@ public class HerobrineFlyMoveControl extends MoveControl {
                     .scale(speed);
 
             mob.setDeltaMovement(delta);
-            mob.lookAt(EntityAnchorArgument.Anchor.EYES, wanted);
         }
     }
 }

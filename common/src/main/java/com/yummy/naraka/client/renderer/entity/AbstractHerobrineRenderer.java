@@ -9,7 +9,6 @@ import com.yummy.naraka.client.layer.HerobrineEyeLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import com.yummy.naraka.client.renderer.entity.state.AfterimageRenderState;
-import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import com.yummy.naraka.world.item.NarakaItems;
@@ -55,7 +54,11 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
         this.finalModel = finalModel;
         this.itemModelResolver = context.getItemModelResolver();
 
-        addLayer(new HerobrineEyeLayer<>(this));
+        this.addLayers(context);
+    }
+
+    protected void addLayers(EntityRendererProvider.Context context) {
+        this.addLayer(new HerobrineEyeLayer<>(this));
     }
 
     @Override
@@ -118,7 +121,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
             poseStack.mulPose(Axis.XP.rotationDegrees(90));
             poseStack.mulPose(Axis.ZP.rotationDegrees(225));
             poseStack.scale(4, 4, 1);
-            renderState.pickaxe.render(poseStack, buffer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
+            renderState.pickaxe.render(poseStack, buffer, renderState.pickaxeLight, OverlayTexture.NO_OVERLAY);
             poseStack.popPose();
         }
     }
@@ -146,12 +149,5 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
     @Override
     protected M getAfterimageModel(S renderState) {
         return model;
-    }
-
-    @Override
-    protected int getModelTint(S renderState) {
-        if (renderState.isShadow)
-            return NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(0xbb).pack();
-        return super.getModelTint(renderState);
     }
 }

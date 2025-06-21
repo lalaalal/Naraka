@@ -20,8 +20,12 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
     public HerobrineRenderer(EntityRendererProvider.Context context) {
         super(context, defaultModel(context, HerobrineModel::new), finalModel(context, FinalHerobrineModel::new), 0.5f);
         this.afterimageModel = new HerobrineModel<>(context.bakeLayer(NarakaModelLayers.HEROBRINE));
+    }
 
-        addLayer(new HerobrineScarfLayer<>(this, context));
+    @Override
+    protected void addLayers(EntityRendererProvider.Context context) {
+        this.addLayer(new HerobrineScarfLayer<>(this, context));
+        super.addLayers(context);
     }
 
     @Override

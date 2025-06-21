@@ -52,9 +52,9 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T
      * @param level  Server level
      * @param target Target entity to hurt
      */
-    protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
+    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
         DamageSource damageSource = mob.getDefaultDamageSource();
-        target.hurtServer(level, damageSource, calculateDamage(target));
+        return target.hurtServer(level, damageSource, calculateDamage(target));
     }
 
     protected abstract float calculateDamage(LivingEntity target);

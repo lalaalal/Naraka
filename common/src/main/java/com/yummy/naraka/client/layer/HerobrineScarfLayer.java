@@ -60,7 +60,7 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
             poseStack.pushPose();
             WavingScarfPose scarfPose = modelData.pose();
             WavingScarfTexture textureInfo = modelData.textureInfo();
-            RenderType waveRenderType = RenderType.entityCutout(textureInfo.texture(renderState.isShadow));
+            RenderType waveRenderType = RenderType.entityTranslucent(textureInfo.texture(renderState.isShadow));
             VertexConsumer vertexConsumer = bufferSource.getBuffer(waveRenderType);
             float scale = scarfPose.scale();
             Vec3 translation = scarfPose.translation();
@@ -76,7 +76,7 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
 
     private int selectColor(S renderState) {
         if (renderState.isShadow)
-            return NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(0xbb).pack();
+            return NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(renderState.scarfAlpha).pack();
         return -1;
     }
 

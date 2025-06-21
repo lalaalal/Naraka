@@ -22,7 +22,7 @@ public class LandingSkill extends ComboSkill<AbstractHerobrine> {
         runAt(15, () -> this.land(level));
         run(between(15, 20) && tickCount % 2 == 0, () -> {
             level.sendParticles(ParticleTypes.FIREWORK, mob.getX(), mob.getY(), mob.getZ(), 10, 0.5, 1, 0.5, 0.3);
-            NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 5 + (tickCount - 9) / 2);
+            NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), (tickCount - 9) / 2);
         });
     }
 
@@ -32,11 +32,11 @@ public class LandingSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     @Override
-    protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
+    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
         if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15))
-            return;
-        super.hurtHitEntity(level, target);
+            return false;
         mob.stigmatizeEntity(level, target);
+        return super.hurtHitEntity(level, target);
     }
 
     @Override

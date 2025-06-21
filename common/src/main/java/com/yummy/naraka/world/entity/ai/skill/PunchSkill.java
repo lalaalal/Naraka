@@ -61,17 +61,18 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
     }
 
     @Override
-    protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
+    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
         if (targetOutOfRange(target, 4))
-            return;
+            return false;
 
         if (canDisableShield && NarakaEntityUtils.disableAndHurtShield(target, 60, 15))
-            return;
-        super.hurtHitEntity(level, target);
+            return false;
+
         if (stunTarget)
             StunHelper.stunEntity(target, 100, true);
         mob.stigmatizeEntity(level, target);
         level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
+        return super.hurtHitEntity(level, target);
     }
 
     @Override

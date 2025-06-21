@@ -12,14 +12,8 @@ import org.jetbrains.annotations.Nullable;
 public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
     public static final String NAME = "uppercut";
 
-    private boolean canDisableShield;
-
     public UppercutSkill(@Nullable ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
         super(createLocation(NAME), 35, 0, 0.1f, comboSkill, 15, mob);
-    }
-
-    public void setCanDisableShield(boolean canDisableShield) {
-        this.canDisableShield = canDisableShield;
     }
 
     @Override
@@ -60,13 +54,13 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     @Override
-    protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (canDisableShield && NarakaEntityUtils.disableAndHurtShield(target, 60, 15) || !targetInRange(target, 6))
-            return;
-        super.hurtHitEntity(level, target);
+    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
+        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15) || !targetInRange(target, 6))
+            return true;
         target.addDeltaMovement(new Vec3(0, 0.4, 0));
         mob.stigmatizeEntity(level, target);
         level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
+        return super.hurtHitEntity(level, target);
     }
 
     @Override

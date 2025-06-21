@@ -21,7 +21,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TraceableEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Fireball;
@@ -35,6 +38,7 @@ import java.util.UUID;
 
 public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntity {
     protected static final EntityDataAccessor<Boolean> FINAL_MODEL = SynchedEntityData.defineId(ShadowHerobrine.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Integer> ALPHA = SynchedEntityData.defineId(ShadowHerobrine.class, EntityDataSerializers.INT);
 
     protected final ShadowPunchSkill punchSkill = registerSkill(1, this, ShadowPunchSkill::new, AnimationLocations.COMBO_ATTACK_1);
     protected final DashSkill<ShadowHerobrine> dashSkill = registerSkill(this, DashSkill::new);
@@ -48,6 +52,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     private Herobrine herobrine;
     @Nullable
     private UUID herobrineUUID;
+    private boolean reduceAlpha = false;
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return AbstractHerobrine.getAttributeSupplier()
@@ -56,15 +61,22 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
                 .add(Attributes.MAX_HEALTH, 150);
     }
 
-    public static ShadowHerobrine createInstantFinalShadow(Level level, Mob mob) {
+    public static ShadowHerobrine createInstantFinalShadow(Level level, Herobrine mob, Vec3 position) {
         ShadowHerobrine shadowHerobrine = new ShadowHerobrine(mob.level(), true, true);
-        shadowHerobrine.setPos(mob.position());
+        shadowHerobrine.setPos(position);
         shadowHerobrine.forceSetRotation(mob.getYRot(), mob.getXRot());
         shadowHerobrine.getSkillManager().enableOnly(List.of());
         shadowHerobrine.setTarget(mob.getTarget());
+        shadowHerobrine.goalSelector.removeAllGoals(goal -> true);
+        shadowHerobrine.setNoGravity(true);
         level.addFreshEntity(shadowHerobrine);
 
         return shadowHerobrine;
+    }
+
+    public static ShadowHerobrine createInstantFinalShadow(Level level, Herobrine mob) {
+        Vec3 position = mob.position().add(mob.getLookAngle());
+        return createInstantFinalShadow(level, mob, position);
     }
 
     protected ShadowHerobrine(EntityType<? extends AbstractHerobrine> entityType, Level level) {
@@ -85,13 +97,18 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         this(NarakaEntityTypes.SHADOW_HEROBRINE.get(), level);
         entityData.set(FINAL_MODEL, finalModel);
         if (instant)
-            skillManager.runOnSkillEnd(skill -> discard());
+            skillManager.runOnSkillEnd(skill -> reduceAlpha = true);
+    }
+
+    public int getAlpha() {
+        return entityData.get(ALPHA);
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(FINAL_MODEL, false);
+        builder.define(FINAL_MODEL, false)
+                .define(ALPHA, 0x01);
     }
 
     @Override
@@ -103,6 +120,18 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
                 setAnimation(AnimationLocations.IDLE);
             }
         }
+    }
+
+    @Override
+    protected void customServerAiStep(ServerLevel serverLevel) {
+        super.customServerAiStep(serverLevel);
+        if (reduceAlpha) {
+            entityData.set(ALPHA, Math.max(0, getAlpha() - 15));
+        } else {
+            entityData.set(ALPHA, Math.min(0xff, getAlpha() + 10));
+        }
+        if (getAlpha() == 0)
+            discard();
     }
 
     public boolean isFinalModel() {
@@ -226,6 +255,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         super.addAdditionalSaveData(compound);
         if (herobrine != null)
             compound.putString("Herobrine", herobrine.getStringUUID());
+        compound.putBoolean("FinalModel", isFinalModel());
     }
 
     @Override
@@ -234,6 +264,10 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
         Optional<String> uuid = compound.getString("Herobrine");
         uuid.ifPresent(string -> this.herobrineUUID = UUID.fromString(string));
+        boolean finalModel = compound.getBooleanOr("FinalModel", false);
+        entityData.set(FINAL_MODEL, finalModel);
+        if (finalModel)
+            reduceAlpha = true;
     }
 
     @Override

@@ -32,12 +32,12 @@ public class SpinningSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     @Override
-    protected void hurtHitEntity(ServerLevel level, LivingEntity target) {
+    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
         if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15))
-            return;
-        super.hurtHitEntity(level, target);
+            return false;
         mob.stigmatizeEntity(level, target);
         level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
+        return super.hurtHitEntity(level, target);
     }
 
     @Override
