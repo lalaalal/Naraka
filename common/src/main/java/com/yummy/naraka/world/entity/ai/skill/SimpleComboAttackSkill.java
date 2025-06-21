@@ -20,10 +20,13 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
     protected int moveEndTick;
     protected boolean lookTarget;
     protected boolean moveToTarget;
+    protected double moveSpeed;
 
     public static SimpleComboAttackSkill combo1(Skill<?> nextSkill, AbstractHerobrine mob) {
         return builder(FINAL_COMBO_ATTACK_1, 40, 100, mob)
                 .nextSkill(nextSkill)
+                .moveToTarget(15, 20)
+                .moveSpeed(0.5)
                 .attackTick(22).attackRange(3)
                 .build();
     }
@@ -34,6 +37,7 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
                 .attackTick(22).attackRange(2)
                 .lookTarget()
                 .moveToTarget(15, 25)
+                .moveSpeed(1.3)
                 .build();
     }
 
@@ -42,6 +46,7 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
                 .attackTick(22).attackRange(3)
                 .lookTarget()
                 .moveToTarget(15, 20)
+                .moveSpeed(1.3)
                 .build();
     }
 
@@ -97,7 +102,7 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
         }
         Vec3 deltaMovement = target.position().subtract(mob.position())
                 .normalize()
-                .scale(1.3)
+                .scale(moveSpeed)
                 .add(0, -0.5, 0);
         if (mob.distanceToSqr(target) > 3)
             mob.setDeltaMovement(deltaMovement);
@@ -114,6 +119,7 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
         private boolean moveToTarget = false;
         private int moveStartTick = 0;
         private int moveEndTick = 0;
+        private double moveSpeed = 1;
         @Nullable
         private Skill<?> nextSkill;
 
@@ -146,6 +152,11 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
             return this;
         }
 
+        public Builder moveSpeed(double moveSpeed) {
+            this.moveSpeed = moveSpeed;
+            return this;
+        }
+
         public Builder nextSkill(@Nullable Skill<?> nextSkill) {
             this.nextSkill = nextSkill;
             return this;
@@ -159,6 +170,7 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
             skill.lookTarget = this.lookTarget;
             skill.moveStartTick = this.moveStartTick;
             skill.moveEndTick = this.moveEndTick;
+            skill.moveSpeed = this.moveSpeed;
 
             return skill;
         }

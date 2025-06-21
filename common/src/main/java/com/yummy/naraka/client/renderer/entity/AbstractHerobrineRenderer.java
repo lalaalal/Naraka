@@ -121,6 +121,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
             applyTransformAndRotate(poseStack, model.rightHand().getChild("pickaxe"));
             poseStack.mulPose(Axis.XP.rotationDegrees(90));
             poseStack.mulPose(Axis.ZP.rotationDegrees(225));
+            poseStack.translate(0.5, 0.5, 0);
             poseStack.scale(4, 4, 1);
             renderState.pickaxe.render(poseStack, buffer, renderState.pickaxeLight, OverlayTexture.NO_OVERLAY);
             poseStack.popPose();
@@ -132,6 +133,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
             applyTransformAndRotate(poseStack, model.root().getChild("independent_pickaxe"));
             poseStack.mulPose(Axis.XP.rotationDegrees(90));
             poseStack.mulPose(Axis.ZP.rotationDegrees(225));
+            poseStack.translate(0.5, 0.5, 0);
             poseStack.scale(4, 4, 1);
             renderState.pickaxe.render(poseStack, buffer, renderState.pickaxeLight, OverlayTexture.NO_OVERLAY);
             poseStack.popPose();
