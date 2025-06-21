@@ -152,21 +152,31 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         return animationTickCount > 0;
     }
 
-    protected void playStaticAnimation(ResourceLocation animation, int duration) {
+    public void playStaticAnimation(ResourceLocation animation, int duration) {
+        playStaticAnimation(animation, duration, true);
+    }
+
+    public void playStaticAnimation(ResourceLocation animation, int duration, boolean interruptSkill) {
         if (animationTickCount > 0)
             return;
-        animationTickCount = Math.max(1, duration);
-        skillManager.pause(true);
         setAnimation(animation);
+        animationTickCount = Math.max(1, duration);
+        skillManager.pause(interruptSkill);
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
     }
 
-    protected void stopStaticAnimation() {
+    public void stopStaticAnimation() {
         if (animationTickCount < 0)
             return;
         animationTickCount = Integer.MIN_VALUE;
         skillManager.resume();
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
+    }
+
+    @Override
+    public void setAnimation(ResourceLocation animationLocation) {
+        if (!isPlayingStaticAnimation())
+            super.setAnimation(animationLocation);
     }
 
     @Override

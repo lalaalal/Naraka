@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.Herobrine;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -77,6 +78,7 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
     protected void onLastTick(ServerLevel level) {
         mob.stopWhiteScreen();
         mob.sendMusic(3);
+        mob.playStaticAnimation(AnimationLocations.ENTER_PHASE_3, 120, false);
     }
 
     private void determinePositions() {

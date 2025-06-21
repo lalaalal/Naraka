@@ -99,6 +99,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
         if (part.xRot != 0 || part.yRot != 0 || part.zRot != 0) {
             poseStack.mulPose(new Quaternionf().rotationZYX(part.zRot, -part.yRot, -part.xRot));
         }
+        poseStack.scale(part.xScale, part.yScale, part.zScale);
     }
 
     @Override
@@ -118,6 +119,17 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
             applyTransformAndRotate(poseStack, model.rightArm());
             applyTransformAndRotate(poseStack, model.rightHand());
             applyTransformAndRotate(poseStack, model.rightHand().getChild("pickaxe"));
+            poseStack.mulPose(Axis.XP.rotationDegrees(90));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(225));
+            poseStack.scale(4, 4, 1);
+            renderState.pickaxe.render(poseStack, buffer, renderState.pickaxeLight, OverlayTexture.NO_OVERLAY);
+            poseStack.popPose();
+
+            poseStack.pushPose();
+            poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - renderState.bodyRot));
+            poseStack.translate(0, 1.4, 0);
+            applyTransformAndRotate(poseStack, model.root());
+            applyTransformAndRotate(poseStack, model.root().getChild("independent_pickaxe"));
             poseStack.mulPose(Axis.XP.rotationDegrees(90));
             poseStack.mulPose(Axis.ZP.rotationDegrees(225));
             poseStack.scale(4, 4, 1);

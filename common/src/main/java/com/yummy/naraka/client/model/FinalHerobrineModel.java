@@ -16,10 +16,14 @@ public class FinalHerobrineModel<S extends AbstractHerobrineRenderState> extends
     private final ModelPart rightArm;
     private final ModelPart leftHand;
     private final ModelPart rightHand;
+    private final ModelPart independentPickaxe;
+    private final ModelPart pickaxe;
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition independent_pickaxe = partdefinition.addOrReplaceChild("independent_pickaxe", CubeListBuilder.create(), PartPose.offset(-8.5F, 5.5F, 0.0F));
 
         PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create(), PartPose.offset(0.0F, -4.0F, 0.0F));
 
@@ -70,6 +74,8 @@ public class FinalHerobrineModel<S extends AbstractHerobrineRenderState> extends
         this.leftArm = upperBody.getChild("left_arm");
         this.rightHand = rightArm.getChild("right_hand");
         this.leftHand = leftArm.getChild("left_hand");
+        this.independentPickaxe = root.getChild("independent_pickaxe");
+        this.pickaxe = rightHand.getChild("pickaxe");
     }
 
     @Override

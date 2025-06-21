@@ -28,13 +28,10 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
         runBetween(0, 18, () -> mob.setDeltaMovement(mob.getDeltaMovement().scale(0.8)));
         runAt(19, () -> mob.setDeltaMovement(0, -8, 0));
 
-        runAt(58, () -> mob.setDisplayPickaxe(false));
         runAt(60, () -> mob.setDeltaMovement(0, 0.4, 0));
         runAt(60, () -> level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE));
         runBetween(60, 70, () -> sendParticles(level));
         runAt(62, () -> mob.setDeltaMovement(Vec3.ZERO));
-
-        runAt(95, () -> mob.setDisplayPickaxe(true));
     }
 
     @Override

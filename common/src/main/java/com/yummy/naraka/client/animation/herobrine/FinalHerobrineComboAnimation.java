@@ -183,6 +183,9 @@ public class FinalHerobrineComboAnimation {
                     new Keyframe(0.375F, KeyframeAnimations.degreeVec(51.3F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(1.0F, KeyframeAnimations.degreeVec(55.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
             ))
+            .addAnimation("independent_pickaxe", new AnimationChannel(AnimationChannel.Targets.SCALE,
+                    new Keyframe(0.0F, KeyframeAnimations.scaleVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+            ))
             .build();
 
     public static final AnimationDefinition FINAL_COMBO_2 = AnimationDefinition.Builder.withLength(2.0F)
@@ -311,6 +314,9 @@ public class FinalHerobrineComboAnimation {
             .addAnimation("left_legdown", new AnimationChannel(AnimationChannel.Targets.POSITION,
                     new Keyframe(2.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
             ))
+            .addAnimation("independent_pickaxe", new AnimationChannel(AnimationChannel.Targets.SCALE,
+                    new Keyframe(0.0F, KeyframeAnimations.scaleVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+            ))
             .build();
 
     public static final AnimationDefinition FINAL_COMBO_3 = AnimationDefinition.Builder.withLength(3.0F)
@@ -431,6 +437,9 @@ public class FinalHerobrineComboAnimation {
                     new Keyframe(1.0833F, KeyframeAnimations.degreeVec(79.3724F, -19.6835F, 3.6164F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(2.0F, KeyframeAnimations.degreeVec(79.3724F, -19.6835F, 3.6164F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(2.25F, KeyframeAnimations.degreeVec(42.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
+            ))
+            .addAnimation("independent_pickaxe", new AnimationChannel(AnimationChannel.Targets.SCALE,
+                    new Keyframe(0.0F, KeyframeAnimations.scaleVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
             ))
             .build();
 
@@ -582,6 +591,9 @@ public class FinalHerobrineComboAnimation {
                     new Keyframe(2.0833F, KeyframeAnimations.degreeVec(64.58F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(2.75F, KeyframeAnimations.degreeVec(67.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(3.25F, KeyframeAnimations.degreeVec(42.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+            ))
+            .addAnimation("independent_pickaxe", new AnimationChannel(AnimationChannel.Targets.SCALE,
+                    new Keyframe(0.0F, KeyframeAnimations.scaleVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
             ))
             .build();
 
@@ -790,6 +802,9 @@ public class FinalHerobrineComboAnimation {
                     new Keyframe(2.8333F, KeyframeAnimations.degreeVec(64.58F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(3.5F, KeyframeAnimations.degreeVec(67.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(4.0F, KeyframeAnimations.degreeVec(42.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+            ))
+            .addAnimation("independent_pickaxe", new AnimationChannel(AnimationChannel.Targets.SCALE,
+                    new Keyframe(0.0F, KeyframeAnimations.scaleVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
             ))
             .build();
 }

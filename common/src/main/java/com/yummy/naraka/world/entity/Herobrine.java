@@ -85,7 +85,7 @@ public class Herobrine extends AbstractHerobrine {
     private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, splitAttackSkill);
 
     private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashAroundSkill, walkAroundTargetSkill);
-    private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(AnimationLocations.ENTER_PHASE_2, AnimationLocations.STAGGERING_PHASE_2);
+    private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(AnimationLocations.ENTER_PHASE_2, AnimationLocations.STAGGERING_PHASE_2, AnimationLocations.ENTER_PHASE_3);
 
     private final List<List<Skill<?>>> HIBERNATED_MODE_SKILL_BY_PHASE = List.of(
             List.of(), HIBERNATED_MODE_PHASE_1_SKILLS, HIBERNATED_MODE_PHASE_2_SKILLS, List.of()
@@ -134,6 +134,7 @@ public class Herobrine extends AbstractHerobrine {
         skillManager.enableOnly(PHASE_1_SKILLS);
 
         registerAnimation(AnimationLocations.ENTER_PHASE_2);
+        registerAnimation(AnimationLocations.ENTER_PHASE_3);
         registerAnimation(AnimationLocations.STAGGERING_PHASE_2);
         registerAnimation(AnimationLocations.RUSH_SUCCEED);
         registerAnimation(AnimationLocations.RUSH_FAILED);
@@ -236,7 +237,8 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void startStaggering(int prevPhase, int currentPhase) {
-        startStaggering(AnimationLocations.ENTER_PHASE_2, 55, 40);
+        if (currentPhase == 2)
+            startStaggering(AnimationLocations.ENTER_PHASE_2, 55, 40);
     }
 
     private void updateMusic(int prevPhase, int currentPhase) {
