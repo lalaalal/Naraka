@@ -59,7 +59,7 @@ public class MagicCircle extends Entity {
             DamageSource damageSource = damageSources().explosion(owner, this);
             for (LivingEntity entity : entities) {
                 entity.hurtServer(level, damageSource, 10);
-                if (owner != null && remainTick % 10 == 0)
+                if (owner != null)
                     owner.stigmatizeEntity(level, entity);
             }
         }

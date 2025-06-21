@@ -145,6 +145,12 @@ public abstract class SkillUsingMob extends PathfinderMob {
     }
 
     @Override
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
+        skillManager.interrupt();
+    }
+
+    @Override
     protected void customServerAiStep(ServerLevel level) {
         skillManager.tick(level);
         NetworkManager.clientbound().send(level.players(), ClientboundEntityPositionSyncPacket.of(this));

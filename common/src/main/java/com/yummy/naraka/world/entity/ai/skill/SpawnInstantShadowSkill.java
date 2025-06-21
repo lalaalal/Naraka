@@ -29,4 +29,12 @@ public abstract class SpawnInstantShadowSkill extends ComboSkill<Herobrine> {
             shadowHerobrine.setDisplayPickaxe(true);
         }
     }
+
+    @Override
+    public void interrupt() {
+        super.interrupt();
+        if (shadowHerobrine != null && shadowHerobrine.isAlive()) {
+            shadowHerobrine.discard();
+        }
+    }
 }
