@@ -195,7 +195,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         eyeAlpha = Mth.clamp(eyeAlpha + alphaAddition, 0, 1);
         prevScarfRotation = entityData.get(SCARF_ROTATION_DEGREE);
 
-        scarfWavingData.update(Mth.lerp(prevScarfRotation / NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue(), 0, 1), (float) getDeltaMovement().y,yBodyRot - yBodyRotO);
+        scarfWavingData.update(Mth.lerp(prevScarfRotation / NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue(), 0, 1), (float) getDeltaMovement().y, yBodyRot - yBodyRotO);
     }
 
     @Override
