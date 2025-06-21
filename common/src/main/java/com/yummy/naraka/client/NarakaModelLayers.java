@@ -45,6 +45,8 @@ public final class NarakaModelLayers {
 
         ModelLayerRegistry.register(NarakaModelLayers.NARAKA_FIREBALL, NarakaFireballModel::createBodyLayer);
 
+        ModelLayerRegistry.register(NarakaModelLayers.DIAMOND_GOLEM, DiamondGolemModel::createBodyLayer);
+
         ModelLayerRegistry.register(NarakaModelLayers.FORGING_BLOCK, ForgingBlockEntityRenderer::createBodyLayer);
         ModelLayerRegistry.register(NarakaModelLayers.SOUL_SMITHING_BLOCK, SoulSmithingBlockEntityRenderer::createMainLayer);
         ModelLayerRegistry.register(NarakaModelLayers.SOUL_STABILIZER, SoulStabilizerBlockEntityRenderer::createBodyLayer);
