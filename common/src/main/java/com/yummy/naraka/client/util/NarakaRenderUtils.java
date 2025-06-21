@@ -34,6 +34,10 @@ public class NarakaRenderUtils {
                     .setOverlay(packedOverlay)
                     .setUv(uv.x, uv.y)
                     .setNormal(pose, normal.getX(), normal.getY(), normal.getZ());
-        }, normal.getX() < 0 || normal.getY() < 0 || normal.getZ() < 0);
+        }, normal.getX() > 0 || normal.getY() > 0 || normal.getZ() > 0);
+    }
+
+    public static void vertices(VertexConsumer vertexConsumer, PoseStack.Pose pose, List<Vector3f> positions, int packedLight, int packedOverlay, int color, Direction direction) {
+        vertices(vertexConsumer, pose, positions, 0, 0, 1, 1, packedLight, packedOverlay, color, direction);
     }
 }

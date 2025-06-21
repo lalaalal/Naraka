@@ -71,6 +71,12 @@ public class NarakaEntityTypes {
                     .fireImmune()
     );
 
+    public static final HolderProxy<EntityType<?>, EntityType<MagicCircle>> MAGIC_CIRCLE = register(
+            "magic_circle",
+            EntityType.Builder.<MagicCircle>of(MagicCircle::new, MobCategory.MISC)
+                    .sized(1, 0.1f)
+    );
+
     private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {
         return RegistryProxy.register(Registries.ENTITY_TYPE, name, () -> builder.build(createKey(name)));
     }

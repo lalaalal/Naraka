@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
@@ -42,6 +43,12 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
         herobrineModel.upperBody().translateAndRotate(poseStack);
     }
 
+    private RenderType getRenderType(S renderState, ResourceLocation texture) {
+        if (renderState.isShadow)
+            return RenderType.entityTranslucent(texture);
+        return RenderType.entityCutout(texture);
+    }
+
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, S renderState, float yRot, float xRot) {
         if (!renderState.renderScarf)
@@ -60,11 +67,11 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
             poseStack.pushPose();
             WavingScarfPose scarfPose = modelData.pose();
             WavingScarfTexture textureInfo = modelData.textureInfo();
-            RenderType waveRenderType = RenderType.entityTranslucent(textureInfo.texture(renderState.isShadow));
+            RenderType waveRenderType = getRenderType(renderState, textureInfo.texture(renderState.isShadow));
             VertexConsumer vertexConsumer = bufferSource.getBuffer(waveRenderType);
             float scale = scarfPose.scale();
             Vec3 translation = scarfPose.translation();
-            poseStack.scale(-scale, scale, scale);
+            poseStack.scale(-scale, -scale, scale);
             poseStack.translate(translation);
 
             renderScarf(poseStack, vertexConsumer, packedLight, color, renderState.scarfRenderState, modelData);
@@ -86,7 +93,7 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
         ScarfWavingData waveData = renderState.waveData;
 
         poseStack.pushPose();
-        poseStack.rotateAround(Axis.XP.rotationDegrees(renderState.rotationDegree), 0, 0, 0);
+        poseStack.rotateAround(Axis.XN.rotationDegrees(renderState.rotationDegree), 0, 0, 0);
 
         float partialTick = renderState.partialTick;
 

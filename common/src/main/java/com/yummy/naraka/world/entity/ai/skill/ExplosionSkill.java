@@ -1,6 +1,9 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.Herobrine;
+import com.yummy.naraka.world.entity.MagicCircle;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -25,13 +28,21 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAt(0, () -> mob.setDeltaMovement(0, 0.2, 0));
-        runBetween(0, 18, () -> mob.setDeltaMovement(mob.getDeltaMovement().scale(0.8)));
-        runAt(19, () -> mob.setDeltaMovement(0, -8, 0));
+        runBetween(0, 18, () -> reduceSpeed(0.8));
+        runAt(19, () -> spawnMagicCircle(level));
 
         runAt(60, () -> mob.setDeltaMovement(0, 0.4, 0));
         runAt(60, () -> level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE));
         runBetween(60, 70, () -> sendParticles(level));
         runAt(62, () -> mob.setDeltaMovement(Vec3.ZERO));
+    }
+
+    private void spawnMagicCircle(ServerLevel level) {
+        mob.setDeltaMovement(0, -8, 0);
+        BlockPos floor = NarakaUtils.findFloor(level, mob.blockPosition());
+        MagicCircle magicCircle = new MagicCircle(level, mob, 80, 30);
+        magicCircle.setPos(mob.getX(), floor.above().getY() + 0.1, mob.getZ());
+        level.addFreshEntity(magicCircle);
     }
 
     @Override
