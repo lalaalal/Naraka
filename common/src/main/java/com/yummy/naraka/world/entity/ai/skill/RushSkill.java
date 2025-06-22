@@ -22,7 +22,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     public static final ResourceLocation LOCATION = createLocation("rush");
 
     private static final int START_RUNNING_TICK = 15;
-    private static final int RUSH_TICK = 20;
+    private static final int RUSH_TICK = 18;
     private static final int FINALE_TICK = 50;
 
     private Vec3 movement = Vec3.ZERO;
@@ -39,7 +39,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         if (target == null || target.getY() > mob.getY())
             return false;
 
-        return targetOutOfRange(target, 20) && noObstacle(target);
+        return targetOutOfRange(target, 36) && noObstacle(target);
     }
 
     private boolean noObstacle(LivingEntity target) {
