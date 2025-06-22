@@ -13,11 +13,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
     public static final String NAME = "super_hit";
     private int onGroundTick = 0;
     private final Set<LivingEntity> hitEntities = new HashSet<>();
+
+    private final Supplier<Vec3> floatingBlockMovement = () -> new Vec3(0, mob.getRandom().nextDouble() * 0.3 + 0.1, 0);
 
     public SuperHitSkill(ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
         super(createLocation(NAME), 40, 0, 1, comboSkill, 40, mob);
@@ -51,7 +54,7 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
         }
         if (mob.onGround()) {
             level.sendParticles(ParticleTypes.FIREWORK, mob.getX(), mob.getY(), mob.getZ(), 10, 0.5, 1, 0.5, 0.3);
-            NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 5 + onGroundTick);
+            NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 5 + onGroundTick, floatingBlockMovement);
             onGroundTick += 1;
         }
     }

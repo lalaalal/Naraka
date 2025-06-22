@@ -8,10 +8,15 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Supplier;
 
 public class LandingSkill extends ComboSkill<AbstractHerobrine> {
     public static final String NAME = "landing";
+
+    private final Supplier<Vec3> floatingBlockMovement = () -> new Vec3(0, mob.getRandom().nextDouble() * 0.3 + 0.3, 0);
 
     public LandingSkill(AbstractHerobrine mob) {
         super(createLocation(NAME), 50, 0, 0, null, 50, mob);
@@ -22,7 +27,7 @@ public class LandingSkill extends ComboSkill<AbstractHerobrine> {
         runAt(15, () -> this.land(level));
         run(between(15, 20) && tickCount % 2 == 0, () -> {
             level.sendParticles(ParticleTypes.FIREWORK, mob.getX(), mob.getY(), mob.getZ(), 10, 0.5, 1, 0.5, 0.3);
-            NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), (tickCount - 9) / 2);
+            NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), (tickCount - 9) / 2, floatingBlockMovement);
         });
     }
 

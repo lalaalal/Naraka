@@ -37,6 +37,8 @@ public class SpinUpSkill extends ComboSkill<Herobrine> {
         runBetween(20, 32, () -> blowBlocks(level, 3, 20));
         runBetween(23, 35, () -> blowBlocks(level, 4, 23));
         runBetween(25, 37, () -> blowBlocks(level, 5, 25));
+        runBetween(24, 37, () -> blowBlocks(level, 3, 24));
+        runBetween(26, 37, () -> blowBlocks(level, 5, 26));
         runBetween(21, 25, () -> reduceSpeed(0.3));
         runAt(23, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 3));
         runAt(27, this::stopMoving);
