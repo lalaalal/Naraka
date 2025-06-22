@@ -188,6 +188,10 @@ public abstract class Skill<T extends SkillUsingMob> {
         run(after(tick), action);
     }
 
+    protected final void runFrom(int tick, Runnable action) {
+        run(at(tick) || after(tick), action);
+    }
+
     protected final void runBefore(int tick, Runnable action) {
         run(before(tick), action);
     }
