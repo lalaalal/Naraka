@@ -2,7 +2,6 @@ package com.yummy.naraka.client.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.particles.SimpleParticleType;
 
 public class FlickerParticle extends TextureSheetParticle {
@@ -24,11 +23,6 @@ public class FlickerParticle extends TextureSheetParticle {
             this.remove();
         }
         age += 1;
-    }
-
-    @Override
-    protected int getLightColor(float partialTick) {
-        return LightTexture.pack(15, 15);
     }
 
     @Override
