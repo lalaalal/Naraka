@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
@@ -50,10 +51,10 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
 
     @Override
     protected void skillTick(ServerLevel level) {
-        if (tickCount < 15)
-            return;
         if (tickCount == 20)
             mob.startHerobrineSky();
+        if (tickCount < 15 || NarakaConfig.COMMON.disableHerobrineDestroyingStructure.getValue())
+            return;
         if (radius < 95) {
             if (positions.isEmpty()) {
                 radius += 5;

@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
@@ -15,6 +16,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -86,6 +88,23 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         run(after(RUSH_TICK) && !hit && !failed, () -> hurtHitEntities(level, this::entityPredicate, 3));
         runAt(FINALE_TICK, this::failed);
         this.movement = movement.add(0, -0.098, 0);
+
+        run(between(RUSH_TICK, FINALE_TICK) && !hit && !failed, () -> blowBlocks(level, Mth.PI * 0.67f, 1, 1));
+        run(between(RUSH_TICK, FINALE_TICK) && !hit && !failed, () -> blowBlocks(level, Mth.PI * 0.87f, 1.5, 1.2));
+    }
+
+    private void blowBlocks(ServerLevel level, float rotation, double distance, double power) {
+        Vec3 lookAngle = mob.getLookAngle();
+        blowBlock(level, lookAngle.yRot(rotation), distance, power);
+        blowBlock(level, lookAngle.yRot(-rotation), distance, power);
+    }
+
+    private void blowBlock(ServerLevel level, Vec3 current, double distance, double power) {
+        BlockPos pos = BlockPos.containing(mob.position().add(current.normalize().scale(distance)));
+        BlockPos floor = NarakaUtils.findFloor(level, pos);
+        BlockState state = level.getBlockState(floor);
+        Vec3 movement = current.add(0, 0.3, 0).scale(power);
+        NarakaEntityUtils.createFloatingBlock(level, floor.above(), state, movement);
     }
 
     private boolean entityPredicate(LivingEntity entity) {
