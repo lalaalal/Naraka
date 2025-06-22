@@ -17,6 +17,7 @@ import java.util.function.Supplier;
 public class StrikeDownSkill extends SpawnInstantShadowSkill {
     public static final ResourceLocation LOCATION = createLocation("final.strike_down");
 
+    private final Supplier<Vec3> movementSupplier = () -> new Vec3(0, mob.getRandom().nextFloat() * 0.4 + 0.3, 0);
     private int onGroundTick;
     private Vec3 shadowPosition = Vec3.ZERO;
 
@@ -40,13 +41,13 @@ public class StrikeDownSkill extends SpawnInstantShadowSkill {
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runBefore(15, () -> rotateTowardTarget(target));
         runBefore(15, () -> lookTarget(target));
-        runBetween(19, 27, () -> strikeDown(target));
+        runBetween(19, 27, () -> NarakaSkillUtils.moveDown(target, mob, 0.5, -2));
         runAt(21, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 5));
 
         runAt(20, () -> spawnShadowHerobrine(level, shadowPosition));
         runAt(21, () -> shadowUseSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_3));
 
-        runAt(38, this::floating);
+        runAt(38, () -> mob.setDeltaMovement(0, 0.4, 0));
         runAfter(40, () -> lookTarget(target));
         runBetween(40, 48, () -> reduceSpeed(0.5));
         runAt(50, this::stopMoving);
@@ -65,27 +66,10 @@ public class StrikeDownSkill extends SpawnInstantShadowSkill {
         if (onGroundTick == 1) {
             level.playSound(mob, mob.blockPosition(), SoundEvents.TOTEM_USE, SoundSource.HOSTILE, 1, 1);
         }
-        if ((mob.onGround() || onGroundTick > 0) && onGroundTick < 3) {
-            level.sendParticles(ParticleTypes.FIREWORK, mob.getX(), mob.getY(), mob.getZ(), 10, 0.5, 1, 0.5, 0.3);
-            Supplier<Vec3> movementSupplier = () -> new Vec3(0, mob.getRandom().nextFloat() * 0.5 + 0.5, 0);
-            NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 4 + onGroundTick, movementSupplier);
+        if ((mob.onGround() || onGroundTick > 0) && onGroundTick < 5) {
+            level.sendParticles(ParticleTypes.FIREWORK, mob.getX(), mob.getY(), mob.getZ(), 15, 0.5, 1, 0.5, 0.3);
+            NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 3 + onGroundTick, movementSupplier);
             onGroundTick += 1;
         }
-    }
-
-    private void strikeDown(LivingEntity target) {
-        if (targetInRange(target, 9) || mob.onGround()) {
-            mob.setDeltaMovement(0, -2, 0);
-        } else {
-            Vec3 movement = target.position()
-                    .subtract(mob.position())
-                    .scale(0.5)
-                    .add(0, -2, 0);
-            mob.setDeltaMovement(movement);
-        }
-    }
-
-    private void floating() {
-        mob.setDeltaMovement(0, 0.4, 0);
     }
 }

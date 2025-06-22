@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -48,6 +49,26 @@ public class NarakaSkillUtils {
             double xSpeed = Math.cos(Math.toRadians(yRot));
             double zSpeed = Math.sin(Math.toRadians(yRot));
             level.sendParticles(particle, position.x(), position.y() + 1.5, position.z(), 0, xSpeed, 0, zSpeed, speed);
+        }
+    }
+
+    public static void sendCircleParticle(ServerLevel level, Vec3 position, ParticleOptions particle, double radius) {
+        for (int yRot = 0; yRot < 360; yRot++) {
+            double x = Math.cos(Math.toRadians(yRot)) * radius;
+            double z = Math.sin(Math.toRadians(yRot)) * radius;
+            level.sendParticles(particle, position.x() + x, position.y() + 1.5, position.z() + z, 1, 0, 0, 0, 1);
+        }
+    }
+
+    public static void moveDown(LivingEntity target, Mob mob, double speed, double yAddition) {
+        if (mob.distanceToSqr(target) < 9 || mob.onGround()) {
+            mob.setDeltaMovement(0, yAddition, 0);
+        } else {
+            Vec3 movement = target.position()
+                    .subtract(mob.position())
+                    .scale(speed)
+                    .add(0, yAddition, 0);
+            mob.setDeltaMovement(movement);
         }
     }
 }

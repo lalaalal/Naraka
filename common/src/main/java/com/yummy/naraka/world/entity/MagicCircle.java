@@ -19,7 +19,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class MagicCircle extends Entity {
     public static final EntityDataAccessor<Float> SCALE = SynchedEntityData.defineId(MagicCircle.class, EntityDataSerializers.FLOAT);
@@ -29,6 +31,7 @@ public class MagicCircle extends Entity {
     private Herobrine owner;
     private float prevScale;
     private float currentScale;
+    private final List<Double> heightList = new ArrayList<>();
 
     public MagicCircle(EntityType<? extends MagicCircle> entityType, Level level) {
         super(entityType, level);
@@ -54,10 +57,15 @@ public class MagicCircle extends Entity {
         return entityData.get(LIFETIME);
     }
 
+    private boolean isValidTarget(LivingEntity livingEntity) {
+        double radius = getScale() - 2;
+        return AbstractHerobrine.isNotHerobrine(livingEntity) && distanceToSqr(livingEntity) < radius * radius;
+    }
+
     private void serverTick(ServerLevel level) {
         int remainTick = getLifetime() - tickCount;
         if (20 < remainTick && remainTick <= 40 && remainTick % 5 == 0) {
-            Collection<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0, 7, 0), AbstractHerobrine::isNotHerobrine);
+            Collection<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0, 7, 0), this::isValidTarget);
             DamageSource damageSource = damageSources().magic();
             for (LivingEntity entity : entities) {
                 entity.hurtServer(level, damageSource, 10);
@@ -70,15 +78,32 @@ public class MagicCircle extends Entity {
         }
     }
 
+    private void updateHeights() {
+        heightList.clear();
+        for (int i = 0; i < 18; i++)
+            heightList.add(random.nextDouble() * 3);
+    }
+
+    private double getHeight(int angle) {
+        int range = 360 / heightList.size();
+        double delta = (angle % range) / (double) range;
+        int from = angle / range;
+        int to = (from + 1) % heightList.size();
+        return Mth.lerp(delta, heightList.get(from), heightList.get(to));
+    }
+
     private void clientTick(Level level) {
         setYRot(getYRot() + Mth.PI * 0.1f);
         float scale = getScale();
         int remainTick = getLifetime() - tickCount;
+        if (remainTick % 7 == 3)
+            updateHeights();
         if (20 < remainTick && remainTick <= 40 && remainTick % 7 < 4) {
             for (int yRot = 0; yRot < 360; yRot++) {
-                double x = Math.cos(Math.toRadians(yRot)) * scale * 0.5 + getX();
-                double z = Math.sin(Math.toRadians(yRot)) * scale * 0.5 + getZ();
-                level.addParticle(NarakaParticleTypes.GOLDEN_FLAME.get(), x, getY() + 0.2, z, 0, 1, 0);
+                double x = Math.cos(Math.toRadians(yRot)) * scale * 0.5 + getX() + random.nextDouble() * 0.4;
+                double z = Math.sin(Math.toRadians(yRot)) * scale * 0.5 + getZ() + random.nextDouble() * 0.4;
+                double y = getHeight(yRot) + getY() + random.nextDouble() * 0.4;
+                level.addParticle(NarakaParticleTypes.GOLDEN_FLAME.get(), x, y, z, 0, 1, 0);
             }
             level.playLocalSound(getX(), getY(), getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.HOSTILE, 2, 1, false);
         } else {
@@ -139,11 +164,13 @@ public class MagicCircle extends Entity {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
-
+        tag.getFloatOr("Scale", 1);
+        tag.getIntOr("Lifetime", 1);
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
-
+        tag.putFloat("Scale", getScale());
+        tag.putInt("Lifetime", getLifetime());
     }
 }

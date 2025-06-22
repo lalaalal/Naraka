@@ -199,7 +199,7 @@ public class Herobrine extends AbstractHerobrine {
         navigation = new FlyingPathNavigation(this, level());
         moveControl = new HerobrineFlyMoveControl(this, 0.75, 1);
         setNoGravity(true);
-        setAnimation(AnimationLocations.PHASE_3_IDLE);
+        setAnimation(AnimationLocations.ENTER_PHASE_3);
         setDisplayEye(false);
 
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR_TOUGHNESS, NarakaAttributeModifiers.FINAL_HEROBRINE_ARMOR_TOUGHNESS);
