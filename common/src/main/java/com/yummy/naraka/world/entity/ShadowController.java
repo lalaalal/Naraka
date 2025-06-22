@@ -42,7 +42,7 @@ public class ShadowController {
         shadowHerobrines.add(shadowHerobrine.getUUID());
         if (herobrine.isHibernateMode())
             shadowHerobrine.useFlicker();
-        shadowHerobrine.playStaticAnimation(AnimationLocations.SHADOW_SUMMONED, 80);
+        shadowHerobrine.playStaticAnimation(AnimationLocations.SHADOW_SUMMONED, 80, true);
     }
 
     public void broadcastShadowHerobrineHurt(ServerLevel level, ShadowHerobrine shadowHerobrine) {
@@ -79,8 +79,10 @@ public class ShadowController {
         if (flickerStack > 0) {
             Optional<ShadowHerobrine> shadowHerobrine = selectShadowHerobrine(level, excludes);
             shadowHerobrine.ifPresent(shadow -> {
-                shadow.useSkill(FlickerSkill.LOCATION);
-                flickerStack -= 1;
+                if (!shadow.isPlayingStaticAnimation()) {
+                    shadow.useSkill(FlickerSkill.LOCATION);
+                    flickerStack -= 1;
+                }
             });
         }
     }
