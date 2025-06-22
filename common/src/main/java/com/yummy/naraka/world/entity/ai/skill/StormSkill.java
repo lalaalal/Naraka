@@ -51,7 +51,7 @@ public class StormSkill extends Skill<Herobrine> {
             NarakaSkillUtils.sendParticleWave(level, mob.position(), NarakaParticleTypes.CORRUPTED_FIRE_FLAME.get(), 1);
             level.playSound(null, mob, SoundEvents.BLAZE_SHOOT, SoundSource.HOSTILE, 2, 1);
         }
-        int inflate = Math.max(waveTick - 3, 0);
+        int inflate = Math.max(waveTick - 4, 0);
         if (waveTick < 20) {
             level.getEntitiesOfClass(
                     LivingEntity.class,

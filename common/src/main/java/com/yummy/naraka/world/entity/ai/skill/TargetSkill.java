@@ -58,12 +58,4 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
         if (mob.distanceToSqr(target) > 3)
             mob.setDeltaMovement(deltaMovement);
     }
-
-    protected final void reduceSpeed(double scale) {
-        mob.setDeltaMovement(mob.getDeltaMovement().scale(scale));
-    }
-
-    protected final void stopMoving() {
-        mob.setDeltaMovement(Vec3.ZERO);
-    }
 }

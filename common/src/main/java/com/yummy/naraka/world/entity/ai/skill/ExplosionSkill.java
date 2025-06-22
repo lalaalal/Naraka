@@ -16,8 +16,17 @@ import org.jetbrains.annotations.Nullable;
 public class ExplosionSkill extends AttackSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final.explosion");
 
+    @Nullable
+    private MagicCircle magicCircle;
+
     public ExplosionSkill(Herobrine mob) {
         super(LOCATION, 130, 200, mob);
+    }
+
+    @Override
+    public void prepare() {
+        super.prepare();
+        magicCircle = null;
     }
 
     @Override
@@ -30,17 +39,30 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
         runAt(0, () -> mob.setDeltaMovement(0, 0.2, 0));
         runBetween(0, 18, () -> reduceSpeed(0.8));
         runAt(19, () -> spawnMagicCircle(level));
+        runBetween(20, 41, () -> scaleMagicCircle(1, 25, 20, 40));
 
         runAt(60, () -> mob.setDeltaMovement(0, 0.4, 0));
         runAt(60, () -> level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE));
         runBetween(60, 70, () -> sendParticles(level));
+        runBetween(85, 90, () -> scaleMagicCircle(25, 0, 85, 89));
+
         runAt(62, () -> mob.setDeltaMovement(Vec3.ZERO));
+    }
+
+    private void scaleMagicCircle(float from, float to, int startTick, int endTick) {
+        if (magicCircle == null)
+            return;
+        int duration = endTick - startTick;
+        int scaleTick = tickCount - startTick;
+        float delta = scaleTick / (float) duration;
+        float scale = NarakaUtils.interpolate(delta, from, to, NarakaUtils::fastStepOut);
+        magicCircle.setScale(scale);
     }
 
     private void spawnMagicCircle(ServerLevel level) {
         mob.setDeltaMovement(0, -8, 0);
         BlockPos floor = NarakaUtils.findFloor(level, mob.blockPosition());
-        MagicCircle magicCircle = new MagicCircle(level, mob, 80, 30);
+        magicCircle = new MagicCircle(level, mob, 80, 1);
         magicCircle.setPos(mob.getX(), floor.above().getY() + 0.1, mob.getZ());
         level.addFreshEntity(magicCircle);
     }

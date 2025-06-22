@@ -5,6 +5,7 @@ import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
@@ -198,6 +199,14 @@ public abstract class Skill<T extends SkillUsingMob> {
 
     protected final void runBetween(int from, int to, Runnable action) {
         run(between(from, to), action);
+    }
+
+    protected final void reduceSpeed(double scale) {
+        mob.setDeltaMovement(mob.getDeltaMovement().scale(scale));
+    }
+
+    protected final void stopMoving() {
+        mob.setDeltaMovement(Vec3.ZERO);
     }
 
     public void interrupt() {

@@ -31,7 +31,7 @@ public class MagicCircleRenderer extends EntityRenderer<MagicCircle, MagicCircle
     public void extractRenderState(MagicCircle entity, MagicCircleRenderState reusedState, float partialTick) {
         super.extractRenderState(entity, reusedState, partialTick);
         reusedState.yRot = entity.getYRot(partialTick);
-        reusedState.scale = entity.getScale();
+        reusedState.scale = entity.getScale(partialTick);
     }
 
     @Override

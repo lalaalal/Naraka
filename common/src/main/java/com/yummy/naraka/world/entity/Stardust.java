@@ -37,18 +37,20 @@ public class Stardust extends Entity {
     private int explosionWaitingTickCount = 0;
     @Nullable
     private Entity owner;
+    private boolean followTarget;
 
     public Stardust(EntityType<? extends Stardust> entityType, Level level) {
         super(entityType, level);
     }
 
-    public Stardust(Level level, LivingEntity owner, Vec3 shootingVector, double power, int waitingTick) {
+    public Stardust(Level level, LivingEntity owner, Vec3 shootingVector, double power, int waitingTick, boolean followTarget) {
         super(NarakaEntityTypes.STARDUST.get(), level);
         setPos(owner.getEyePosition());
         setRot(owner.getYRot(), owner.getXRot());
         setDeltaMovement(shootingVector.normalize().scale(power));
         entityData.set(WAITING_TICK, waitingTick);
         this.owner = owner;
+        this.followTarget = followTarget;
     }
 
     public @Nullable Entity getOwner() {
@@ -88,7 +90,7 @@ public class Stardust extends Entity {
             int waitingTick = entityData.get(WAITING_TICK);
             if (waitingTickCount >= waitingTick) {
                 Entity target = getTarget();
-                if (target != null) {
+                if (followTarget && target != null) {
                     Vec3 delta = target.getEyePosition().subtract(this.position()).normalize().scale(1.3);
                     setDeltaMovement(delta);
                 } else {

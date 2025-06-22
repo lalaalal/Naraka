@@ -1,20 +1,69 @@
 package com.yummy.naraka.util;
 
+import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class NarakaUtils {
+    private static final float A2 = 0.41421f;
+    private static final float A3 = 0.30277f;
+
+    public static AnimationChannel.Interpolation easeInOut(float partition) {
+        return (vector3f, delta, keyframes, start, end, scale) -> {
+            Vector3f vectorStart = keyframes[start].target();
+            Vector3f vectorEnd = keyframes[end].target();
+            return easeInOut(delta, partition, vectorStart, vectorEnd, vector3f);
+        };
+    }
+
+    public static float fastStepIn(float x) {
+        final float a = A3;
+        return ((-1 / (3 * x + a)) + a) / 3 + 1;
+    }
+
+    public static float fastStepOut(float x) {
+        final float a = A3;
+        return ((-1 / (3 * (x - 1) - a)) - a) / 3;
+    }
+
+    public static float easeInOut(float delta, float partition, float start, float end) {
+        float middle = (start + end) * partition;
+        if (delta < partition) {
+            float newDelta = fastStepOut(delta * (1 / partition));
+            return Mth.lerp(Math.clamp(newDelta, 0, 1), start, middle);
+        } else {
+            float newDelta = fastStepIn((delta - partition) * (1 / (1 - partition)));
+            return Mth.lerp(Math.clamp(newDelta, 0, 1), middle, end);
+        }
+    }
+
+    public static Vector3f easeInOut(float delta, float partition, Vector3f start, Vector3f end, Vector3f dest) {
+        return dest.set(
+                easeInOut(delta, partition, start.x, end.x),
+                easeInOut(delta, partition, start.y, end.y),
+                easeInOut(delta, partition, start.z, end.z)
+        );
+    }
+
+    public static float interpolate(float delta, float start, float end, Function<Float, Float> function) {
+        float newDelta = function.apply(delta);
+        return Mth.lerp(Math.clamp(newDelta, 0, 1), start, end);
+    }
+
     public interface PositionConsumer {
         void accept(int x, int y, int z);
     }
