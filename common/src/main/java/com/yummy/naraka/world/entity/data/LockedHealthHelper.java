@@ -7,6 +7,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class LockedHealthHelper {
+    public static double get(LivingEntity livingEntity) {
+        return EntityDataHelper.getEntityData(livingEntity, NarakaEntityDataTypes.LOCKED_HEALTH.get());
+    }
+
     /**
      * Reduce max health
      *

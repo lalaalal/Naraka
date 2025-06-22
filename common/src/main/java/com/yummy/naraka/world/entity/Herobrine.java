@@ -267,6 +267,20 @@ public class Herobrine extends AbstractHerobrine {
         return hurtDamageLimit;
     }
 
+    private float calculateLockedHealth(ServerLevel level) {
+        double sum = 0;
+        for (LivingEntity livingEntity : NarakaEntityUtils.findEntitiesByUUID(level, watchingEntities, LivingEntity.class))
+            sum += LockedHealthHelper.get(livingEntity);
+        return (float) sum;
+    }
+
+    @Override
+    public float getAttackDamage() {
+        if (level() instanceof ServerLevel serverLevel && getPhase() == 3)
+            return super.getAttackDamage() + calculateLockedHealth(serverLevel) * 3;
+        return super.getAttackDamage();
+    }
+
     @Override
     public void stigmatizeEntity(ServerLevel level, LivingEntity target) {
         if (!target.getType().is(NarakaEntityTypeTags.HEROBRINE) && getPhase() > 1) {
@@ -543,6 +557,9 @@ public class Herobrine extends AbstractHerobrine {
                 hurtDamageLimit = 0;
                 startHibernateMode(level);
             }
+        }
+        if (getPhase() == 3) {
+            hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT - calculateLockedHealth(level);
         }
     }
 
