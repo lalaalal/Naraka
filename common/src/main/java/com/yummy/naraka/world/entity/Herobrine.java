@@ -72,11 +72,11 @@ public class Herobrine extends AbstractHerobrine {
 
     protected final CarpetBombingSkill carpetBombingSkill = registerSkill(7, this, CarpetBombingSkill::new, AnimationLocations.CARPET_BOMBING);
     protected final ExplosionSkill explosionSkill = registerSkill(7, this, ExplosionSkill::new, AnimationLocations.EXPLOSION);
-    protected final StormSkill stormSkill = registerSkill(this, StormSkill::new, AnimationLocations.STORM);
+    protected final StormSkill stormSkill = registerSkill(7, this, StormSkill::new, AnimationLocations.STORM);
 
     protected final StrikeDownSkill strikeDownSkill = registerSkill(this, StrikeDownSkill::new, AnimationLocations.FINAL_COMBO_ATTACK_3);
     protected final SpinUpSkill spinUpSkill = registerSkill(new SpinUpSkill(strikeDownSkill, this), AnimationLocations.FINAL_COMBO_ATTACK_2);
-    protected final SplitAttackSkill splitAttackSkill = registerSkill(7, new SplitAttackSkill(spinUpSkill, this), AnimationLocations.FINAL_COMBO_ATTACK_1);
+    protected final SplitAttackSkill splitAttackSkill = registerSkill(6, new SplitAttackSkill(spinUpSkill, this), AnimationLocations.FINAL_COMBO_ATTACK_1);
 
     @Nullable
     private LivingEntity firstTarget;
