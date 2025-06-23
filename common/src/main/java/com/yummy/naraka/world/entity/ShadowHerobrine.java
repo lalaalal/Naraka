@@ -37,7 +37,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntity {
-    protected static final EntityDataAccessor<Boolean> FINAL_MODEL = SynchedEntityData.defineId(ShadowHerobrine.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Integer> ALPHA = SynchedEntityData.defineId(ShadowHerobrine.class, EntityDataSerializers.INT);
 
     protected final ShadowPunchSkill punchSkill = registerSkill(1, this, ShadowPunchSkill::new, AnimationLocations.COMBO_ATTACK_1);
@@ -107,8 +106,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(FINAL_MODEL, false)
-                .define(ALPHA, 0x01);
+        builder.define(ALPHA, 0x01);
     }
 
     @Override
@@ -132,10 +130,6 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         }
         if (getAlpha() == 0)
             discard();
-    }
-
-    public boolean isFinalModel() {
-        return entityData.get(FINAL_MODEL);
     }
 
     public void usePunchOnly() {
@@ -255,7 +249,6 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         super.addAdditionalSaveData(compound);
         if (herobrine != null)
             compound.putString("Herobrine", herobrine.getStringUUID());
-        compound.putBoolean("FinalModel", isFinalModel());
     }
 
     @Override
@@ -264,9 +257,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
         Optional<String> uuid = compound.getString("Herobrine");
         uuid.ifPresent(string -> this.herobrineUUID = UUID.fromString(string));
-        boolean finalModel = compound.getBooleanOr("FinalModel", false);
-        entityData.set(FINAL_MODEL, finalModel);
-        if (finalModel)
+        if (isFinalModel())
             reduceAlpha = true;
     }
 

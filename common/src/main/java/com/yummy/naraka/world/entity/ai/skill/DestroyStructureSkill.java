@@ -44,8 +44,9 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
         if (mob.hasSpawnPosition()) {
             mob.startWhiteScreen();
         } else {
-            tickCount = duration;
+            tickCount = duration - 1;
             mob.sendMusic(3);
+            mob.startHerobrineSky();
         }
     }
 
@@ -53,7 +54,7 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
     protected void skillTick(ServerLevel level) {
         if (tickCount == 20)
             mob.startHerobrineSky();
-        if (tickCount < 15 || NarakaConfig.COMMON.disableHerobrineDestroyingStructure.getValue())
+        if (tickCount < 15 || NarakaConfig.COMMON.disableHerobrineDestroyingStructure.getValue() || !mob.hasSpawnPosition())
             return;
         if (radius < 95) {
             if (positions.isEmpty()) {
@@ -79,6 +80,8 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
     protected void onLastTick(ServerLevel level) {
         mob.stopWhiteScreen();
         mob.sendMusic(3);
+        mob.stopStaticAnimation();
+        mob.setFinalModel(true);
         mob.playStaticAnimation(AnimationLocations.ENTER_PHASE_3, 120, false);
     }
 

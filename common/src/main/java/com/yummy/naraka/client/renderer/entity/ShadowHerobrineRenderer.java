@@ -30,11 +30,6 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
     }
 
     @Override
-    protected boolean isFinalModel(ShadowHerobrine entity) {
-        return entity.isFinalModel();
-    }
-
-    @Override
     public ShadowHerobrineRenderState createRenderState() {
         return new ShadowHerobrineRenderState();
     }

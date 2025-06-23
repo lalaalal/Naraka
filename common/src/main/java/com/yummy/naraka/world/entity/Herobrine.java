@@ -199,7 +199,7 @@ public class Herobrine extends AbstractHerobrine {
         navigation = new FlyingPathNavigation(this, level());
         moveControl = new HerobrineFlyMoveControl(this, 0.75, 1);
         setNoGravity(true);
-        setAnimation(AnimationLocations.ENTER_PHASE_3);
+        setAnimation(AnimationLocations.PHASE_3_IDLE);
         setDisplayEye(false);
 
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR_TOUGHNESS, NarakaAttributeModifiers.FINAL_HEROBRINE_ARMOR_TOUGHNESS);
@@ -520,7 +520,7 @@ public class Herobrine extends AbstractHerobrine {
         if (source.getDirectEntity() instanceof NarakaFireball fireball && !fireball.hasTarget()) {
             if (getHealth() > getPhaseMinimumHealth())
                 startStaggering();
-            if (getHealth() == getPhaseMinimumHealth())
+            if (getHealth() == getPhaseMinimumHealth() && getPhase() == 1)
                 startStaggering(AnimationLocations.STAGGERING_PHASE_2, 125, 100);
             resetDamageLimit();
             if (hibernateMode)

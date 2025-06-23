@@ -6,6 +6,7 @@ import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -34,6 +35,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractHerobrine extends SkillUsingMob implements StigmatizingEntity, AfterimageEntity, Enemy {
+    protected static final EntityDataAccessor<Boolean> FINAL_MODEL = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Float> SCARF_ROTATION_DEGREE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Boolean> DISPLAY_SCARF = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> DISPLAY_EYE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
@@ -84,9 +86,18 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(SCARF_ROTATION_DEGREE, 0f)
+                .define(FINAL_MODEL, false)
                 .define(DISPLAY_SCARF, false)
                 .define(DISPLAY_EYE, true)
                 .define(DISPLAY_PICKAXE, true);
+    }
+
+    public void setFinalModel(boolean value) {
+        entityData.set(FINAL_MODEL, value);
+    }
+
+    public boolean isFinalModel() {
+        return entityData.get(FINAL_MODEL);
     }
 
     public void setDisplayPickaxe(boolean value) {
@@ -213,6 +224,19 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         updateAnimationTick();
         updateScarfRotation();
         super.customServerAiStep(serverLevel);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        boolean finalModel = tag.getBooleanOr("FinalModel", false);
+        entityData.set(FINAL_MODEL, finalModel);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("FinalModel", isFinalModel());
     }
 
     protected abstract Fireball createFireball(ServerLevel level);

@@ -29,11 +29,6 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
     }
 
     @Override
-    protected boolean isFinalModel(Herobrine entity) {
-        return entity.getPhase() == 3;
-    }
-
-    @Override
     public HerobrineRenderState createRenderState() {
         return new HerobrineRenderState();
     }
@@ -47,7 +42,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
 
     @Override
     protected float getShadowRadius(HerobrineRenderState renderState) {
-        if (renderState.phase == 3)
+        if (renderState.finalModel)
             return 0.7f * renderState.scale;
         return super.getShadowRadius(renderState);
     }
@@ -68,7 +63,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
 
     @Override
     protected ResourceLocation getAfterimageTexture(HerobrineRenderState renderState) {
-        if (renderState.phase == 3)
+        if (renderState.finalModel)
             return NarakaTextures.FINAL_HEROBRINE;
         return NarakaTextures.HEROBRINE_AFTERIMAGE;
     }
