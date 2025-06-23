@@ -4,18 +4,18 @@ import com.yummy.naraka.Platform;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.mixin.accessor.FallingBlockEntityAccessor;
 import com.yummy.naraka.mixin.invoker.FallingBlockEntityInvoker;
+import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.SyncPlayerMovementPacket;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PositionMoveRotation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
@@ -137,8 +137,6 @@ public class NarakaEntityUtils {
     }
 
     public static void sendPlayerMovement(ServerPlayer player, Vec3 movement) {
-        PositionMoveRotation positionMoveRotation = new PositionMoveRotation(player.position(), movement, player.getYRot(), player.getXRot());
-        ClientboundPlayerPositionPacket packet = new ClientboundPlayerPositionPacket(player.getId(), positionMoveRotation, Set.of());
-        player.connection.send(packet);
+        NetworkManager.clientbound().send(player, new SyncPlayerMovementPacket(movement));
     }
 }

@@ -15,25 +15,25 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
-public record SyncEntityDataPayload(int entityId, HolderSet<EntityDataType<?>> entityDataTypes,
-                                    CompoundTag data) implements CustomPacketPayload {
-    public static final Type<SyncEntityDataPayload> TYPE = new Type<>(NarakaMod.location("sync_entity_data"));
+public record SyncEntityDataPacket(int entityId, HolderSet<EntityDataType<?>> entityDataTypes,
+                                   CompoundTag data) implements CustomPacketPayload {
+    public static final Type<SyncEntityDataPacket> TYPE = new Type<>(NarakaMod.location("sync_entity_data"));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, SyncEntityDataPayload> CODEC = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, SyncEntityDataPacket> CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT,
-            SyncEntityDataPayload::entityId,
+            SyncEntityDataPacket::entityId,
             ByteBufCodecs.holderSet(NarakaRegistries.Keys.ENTITY_DATA_TYPE),
-            SyncEntityDataPayload::entityDataTypes,
+            SyncEntityDataPacket::entityDataTypes,
             ByteBufCodecs.COMPOUND_TAG,
-            SyncEntityDataPayload::data,
-            SyncEntityDataPayload::new
+            SyncEntityDataPacket::data,
+            SyncEntityDataPacket::new
     );
 
-    public SyncEntityDataPayload(LivingEntity livingEntity, Holder<EntityDataType<?>> entityDataType, CompoundTag data) {
+    public SyncEntityDataPacket(LivingEntity livingEntity, Holder<EntityDataType<?>> entityDataType, CompoundTag data) {
         this(livingEntity.getId(), HolderSet.direct(entityDataType), data);
     }
 
-    public SyncEntityDataPayload(LivingEntity livingEntity, HolderSet<EntityDataType<?>> entityDataTypes, CompoundTag data) {
+    public SyncEntityDataPacket(LivingEntity livingEntity, HolderSet<EntityDataType<?>> entityDataTypes, CompoundTag data) {
         this(livingEntity.getId(), entityDataTypes, data);
     }
 
@@ -42,7 +42,7 @@ public record SyncEntityDataPayload(int entityId, HolderSet<EntityDataType<?>> e
         return TYPE;
     }
 
-    public static void handle(SyncEntityDataPayload payload, NetworkManager.Context context) {
+    public static void handle(SyncEntityDataPacket payload, NetworkManager.Context context) {
         Player player = context.player();
         Entity entity = player.level().getEntity(payload.entityId);
         CompoundTag data = payload.data;

@@ -11,18 +11,18 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public record SyncAnimationPayload(int entityId, ResourceLocation animationLocation) implements CustomPacketPayload {
-    public static final Type<SyncAnimationPayload> TYPE = new Type<>(NarakaMod.location("sync_animation"));
+public record SyncAnimationPacket(int entityId, ResourceLocation animationLocation) implements CustomPacketPayload {
+    public static final Type<SyncAnimationPacket> TYPE = new Type<>(NarakaMod.location("sync_animation"));
 
-    public static final StreamCodec<ByteBuf, SyncAnimationPayload> CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, SyncAnimationPacket> CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT,
-            SyncAnimationPayload::entityId,
+            SyncAnimationPacket::entityId,
             ResourceLocation.STREAM_CODEC,
-            SyncAnimationPayload::animationLocation,
-            SyncAnimationPayload::new
+            SyncAnimationPacket::animationLocation,
+            SyncAnimationPacket::new
     );
 
-    public SyncAnimationPayload(Entity entity, ResourceLocation animationLocation) {
+    public SyncAnimationPacket(Entity entity, ResourceLocation animationLocation) {
         this(entity.getId(), animationLocation);
     }
 
