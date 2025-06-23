@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
-import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import net.minecraft.core.particles.ParticleTypes;
@@ -20,6 +19,8 @@ public class LandingSkill extends ComboSkill<AbstractHerobrine> {
 
     public LandingSkill(AbstractHerobrine mob) {
         super(createLocation(NAME), 50, 0, 0, null, 50, mob);
+        this.shieldCooldown = 60;
+        this.shieldDamage = 15;
     }
 
     @Override
@@ -32,16 +33,13 @@ public class LandingSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     private void land(ServerLevel level) {
-        hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 4);
+        hurtEntities(level, AbstractHerobrine::isNotHerobrine, 4);
         level.playSound(mob, mob.blockPosition(), SoundEvents.TOTEM_USE, SoundSource.HOSTILE, 1, 1);
     }
 
     @Override
-    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15))
-            return false;
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         mob.stigmatizeEntity(level, target);
-        return super.hurtHitEntity(level, target);
     }
 
     @Override

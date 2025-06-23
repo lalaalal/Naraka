@@ -60,7 +60,10 @@ public class NarakaSkillUtils {
         }
     }
 
-    public static void moveDown(LivingEntity target, Mob mob, double speed, double yAddition) {
+    /**
+     * Move to target with speed. Stop mob is on ground or nearby target
+     */
+    public static void moveToTarget(LivingEntity target, Mob mob, double speed, double yAddition) {
         if (mob.distanceToSqr(target) < 9 || mob.onGround()) {
             mob.setDeltaMovement(0, yAddition, 0);
         } else {

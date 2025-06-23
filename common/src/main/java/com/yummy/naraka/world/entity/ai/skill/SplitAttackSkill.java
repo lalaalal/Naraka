@@ -35,7 +35,7 @@ public class SplitAttackSkill extends SpawnInstantShadowSkill {
         lookTarget(target);
         runBetween(15, 20, () -> moveToTarget(target, 1));
         runBetween(15, 20, () -> rotateTowardTarget(target));
-        runAt(22, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 2));
+        runAt(22, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 2));
         runAt(20, this::stopMoving);
         runAt(25, () -> spawnShadowHerobrine(level));
         runAt(26, () -> shadowUseSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_1));
@@ -45,12 +45,8 @@ public class SplitAttackSkill extends SpawnInstantShadowSkill {
     }
 
     @Override
-    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (super.hurtHitEntity(level, target)) {
-            mob.stigmatizeEntity(level, target);
-            level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
-            return true;
-        }
-        return false;
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
+        mob.stigmatizeEntity(level, target);
+        level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
     }
 }

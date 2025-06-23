@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
-import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
@@ -23,6 +22,8 @@ public class StrikeDownSkill extends SpawnInstantShadowSkill {
 
     public StrikeDownSkill(Herobrine mob) {
         super(LOCATION, 60, 0, 0, null, 60, mob);
+        this.shieldCooldown = 100;
+        this.shieldDamage = 15;
     }
 
     @Override
@@ -41,8 +42,8 @@ public class StrikeDownSkill extends SpawnInstantShadowSkill {
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runBefore(15, () -> rotateTowardTarget(target));
         runBefore(15, () -> lookTarget(target));
-        runBetween(19, 27, () -> NarakaSkillUtils.moveDown(target, mob, 0.5, -2));
-        runAt(21, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 5));
+        runBetween(19, 27, () -> NarakaSkillUtils.moveToTarget(target, mob, 0.5, -2));
+        runAt(21, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 5));
 
         runAt(20, () -> spawnShadowHerobrine(level, shadowPosition));
         runAt(21, () -> shadowUseSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_3));
@@ -55,11 +56,8 @@ public class StrikeDownSkill extends SpawnInstantShadowSkill {
     }
 
     @Override
-    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 100, 15))
-            return false;
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         mob.stigmatizeEntity(level, target);
-        return super.hurtHitEntity(level, target);
     }
 
     private void onGround(ServerLevel level) {

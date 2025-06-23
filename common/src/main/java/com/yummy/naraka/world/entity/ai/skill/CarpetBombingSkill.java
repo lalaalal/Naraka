@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
-import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
@@ -24,7 +23,7 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
     private int onGroundTick = 0;
 
     public CarpetBombingSkill(Herobrine mob) {
-        super(LOCATION, 90, 400, mob);
+        super(LOCATION, 90, 400, 120, 15, mob);
     }
 
     @Override
@@ -66,8 +65,8 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
 
         runBetween(10, 50, () -> rotateTowardTarget(target));
         runAfter(10, () -> lookTarget(target));
-        runBetween(50, 70, () -> NarakaSkillUtils.moveDown(target, mob, 0.3, -2.1));
-        runAt(55, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 4));
+        runBetween(50, 70, () -> NarakaSkillUtils.moveToTarget(target, mob, 0.3, -2.1));
+        runAt(55, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 4));
         runAt(70, () -> mob.setDeltaMovement(0, 0.4, 0));
         runBetween(71, 90, () -> reduceSpeed(0.4f));
         runAt(90, () -> mob.setDeltaMovement(Vec3.ZERO));
@@ -76,11 +75,8 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
     }
 
     @Override
-    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 120, 15))
-            return false;
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         mob.stigmatizeEntity(level, target);
-        return super.hurtHitEntity(level, target);
     }
 
     private void onGround(ServerLevel level) {

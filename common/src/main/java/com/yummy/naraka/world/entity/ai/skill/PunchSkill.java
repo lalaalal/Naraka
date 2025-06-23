@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
-import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.resources.ResourceLocation;
@@ -12,24 +11,15 @@ import org.jetbrains.annotations.Nullable;
 
 public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
     public static final ResourceLocation LOCATION = createLocation("punch");
-    public static final int DEFAULT_COOLDOWN = 200;
 
-    private final boolean stunTarget;
     private boolean linked = false;
-    private boolean canDisableShield;
 
-    public PunchSkill(@Nullable ComboSkill<?> comboSkill, T mob, boolean withStun) {
-        super(LOCATION, 22, DEFAULT_COOLDOWN, 0.8f, comboSkill, 11, mob);
-        this.stunTarget = withStun;
-    }
-
-    public PunchSkill(@Nullable ComboSkill<?> comboSkill, T mob, int cooldown, boolean withStun) {
+    public PunchSkill(@Nullable ComboSkill<?> comboSkill, T mob, int cooldown, boolean disableShield) {
         super(LOCATION, 22, cooldown, 0.8f, comboSkill, 11, mob);
-        this.stunTarget = withStun;
-    }
-
-    public void setCanDisableShield(boolean canDisableShield) {
-        this.canDisableShield = canDisableShield;
+        if (disableShield) {
+            this.shieldCooldown = 60;
+            this.shieldDamage = 15;
+        }
     }
 
     public void setLinkedFromPrevious(boolean linked) {
@@ -55,24 +45,25 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        runAt(10, () -> this.hurtHitEntity(level, target));
+        runAt(10, () -> this.hurtEntity(level, target));
         lookTarget(target);
         rotateTowardTarget(target);
     }
 
     @Override
-    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
+    protected boolean hurtEntity(ServerLevel level, LivingEntity target) {
         if (targetOutOfRange(target, 4))
             return false;
 
-        if (canDisableShield && NarakaEntityUtils.disableAndHurtShield(target, 60, 15))
-            return false;
+        return super.hurtEntity(level, target);
+    }
 
-        if (stunTarget)
+    @Override
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
+        if (canDisableShield())
             StunHelper.stunEntity(target, 100, true);
         mob.stigmatizeEntity(level, target);
         level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
-        return super.hurtHitEntity(level, target);
     }
 
     @Override

@@ -40,17 +40,14 @@ public class SpinUpSkill extends ComboSkill<Herobrine> {
         runBetween(24, 37, () -> blowBlocks(level, 3, 24));
         runBetween(26, 37, () -> blowBlocks(level, 5, 26));
         runBetween(21, 25, () -> reduceSpeed(0.3));
-        runAt(23, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 3));
+        runAt(23, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 3));
         runAt(27, this::stopMoving);
     }
 
     @Override
-    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15))
-            return false;
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         mob.stigmatizeEntity(level, target);
         level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
-        return super.hurtHitEntity(level, target);
     }
 
     private void blowBlocks(ServerLevel level, double distance, int startTick) {

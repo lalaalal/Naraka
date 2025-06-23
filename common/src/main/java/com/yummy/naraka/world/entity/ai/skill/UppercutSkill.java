@@ -15,6 +15,8 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
 
     public UppercutSkill(@Nullable ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
         super(createLocation(NAME), 35, 0, 0.1f, comboSkill, 15, mob);
+        this.shieldCooldown = 60;
+        this.shieldDamage = 15;
     }
 
     @Override
@@ -51,20 +53,24 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
         runBefore(10, () -> moveToTarget(target));
         lookTarget(target);
         rotateTowardTarget(target);
-        runAt(10, () -> this.hurtHitEntity(level, target));
+        runAt(10, () -> this.hurtEntity(level, target));
     }
 
     @Override
-    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15) || !targetInRange(target, 6))
+    protected boolean hurtEntity(ServerLevel level, LivingEntity target) {
+        if (!targetInRange(target, 6))
             return true;
+        return super.hurtEntity(level, target);
+    }
+
+    @Override
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         Vec3 movement = new Vec3(0, 0.4, 0);
         target.addDeltaMovement(movement);
         if (target instanceof ServerPlayer serverPlayer)
             NarakaEntityUtils.sendPlayerMovement(serverPlayer, movement.scale(4));
         mob.stigmatizeEntity(level, target);
         level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
-        return super.hurtHitEntity(level, target);
     }
 
     @Override

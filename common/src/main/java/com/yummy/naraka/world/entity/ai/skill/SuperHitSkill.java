@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
-import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import net.minecraft.core.particles.ParticleTypes;
@@ -24,6 +23,8 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
 
     public SuperHitSkill(ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
         super(createLocation(NAME), 40, 0, 1, comboSkill, 40, mob);
+        this.shieldCooldown = 60;
+        this.shieldDamage = 15;
     }
 
     @Override
@@ -36,7 +37,7 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAt(5, this::superHit);
-        runAfter(5, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 6));
+        runAfter(5, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 6));
         runAfter(5, () -> this.stopOnGround(level));
     }
 
@@ -65,13 +66,17 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     @Override
-    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15) || hitEntities.contains(target))
+    protected boolean hurtEntity(ServerLevel level, LivingEntity target) {
+        if (hitEntities.contains(target))
             return true;
+        return super.hurtEntity(level, target);
+    }
+
+    @Override
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         hitEntities.add(target);
         mob.stigmatizeEntity(level, target);
         level.playSound(mob, mob.blockPosition(), SoundEvents.STONE_BREAK, SoundSource.HOSTILE, 1, 1);
-        return super.hurtHitEntity(level, target);
     }
 
     @Override

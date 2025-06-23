@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
-import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -14,6 +13,8 @@ public class SpinningSkill extends ComboSkill<AbstractHerobrine> {
 
     public SpinningSkill(ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
         super(createLocation(NAME), 20, 0, 1, comboSkill, 20, mob);
+        this.shieldCooldown = 60;
+        this.shieldDamage = 15;
     }
 
     @Override
@@ -28,16 +29,13 @@ public class SpinningSkill extends ComboSkill<AbstractHerobrine> {
 
     private void spinAttack(ServerLevel level) {
         level.sendParticles(ParticleTypes.SWEEP_ATTACK, mob.getX(), mob.getY(), mob.getZ(), 1, 0, 0, 0, 1);
-        hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 4);
+        hurtEntities(level, AbstractHerobrine::isNotHerobrine, 4);
     }
 
     @Override
-    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15))
-            return false;
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         mob.stigmatizeEntity(level, target);
         level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
-        return super.hurtHitEntity(level, target);
     }
 
     @Override
