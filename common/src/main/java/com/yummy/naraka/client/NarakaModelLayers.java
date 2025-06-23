@@ -13,9 +13,13 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 @Environment(EnvType.CLIENT)
 public final class NarakaModelLayers {
     public static final ModelLayerLocation HEROBRINE = location("herobrine");
-    public static final ModelLayerLocation HEROBRINE_FINAL = location("herobrine_final");
     public static final ModelLayerLocation HEROBRINE_SCARF = location("herobrine_scarf");
     public static final ModelLayerLocation SHADOW_HEROBRINE_ARMOR = location("shadow_herobrine_armor");
+
+    public static final ModelLayerLocation FINAL_HEROBRINE = location("final_herobrine");
+
+    public static final ModelLayerLocation DIAMOND_GOLEM = location("diamond_golem");
+
     public static final ModelLayerLocation SPEAR = location("spear");
     public static final ModelLayerLocation SPEAR_OF_LONGINUS = location("spear_of_longinus");
 
@@ -32,7 +36,7 @@ public final class NarakaModelLayers {
 
     public static void initialize() {
         ModelLayerRegistry.register(NarakaModelLayers.HEROBRINE, HerobrineModel::createForHerobrine);
-        ModelLayerRegistry.register(NarakaModelLayers.HEROBRINE_FINAL, HerobrineFinalModel::createBodyLayer);
+        ModelLayerRegistry.register(NarakaModelLayers.FINAL_HEROBRINE, FinalHerobrineModel::createBodyLayer);
         ModelLayerRegistry.register(NarakaModelLayers.HEROBRINE_SCARF, HerobrineScarfModel::createBodyLayer);
         ModelLayerRegistry.register(NarakaModelLayers.SHADOW_HEROBRINE_ARMOR, HerobrineModel::createForShadowArmor);
 
@@ -40,6 +44,8 @@ public final class NarakaModelLayers {
         ModelLayerRegistry.register(NarakaModelLayers.SPEAR_OF_LONGINUS, SpearOfLonginusModel::createBodyLayer);
 
         ModelLayerRegistry.register(NarakaModelLayers.NARAKA_FIREBALL, NarakaFireballModel::createBodyLayer);
+
+        ModelLayerRegistry.register(NarakaModelLayers.DIAMOND_GOLEM, DiamondGolemModel::createBodyLayer);
 
         ModelLayerRegistry.register(NarakaModelLayers.FORGING_BLOCK, ForgingBlockEntityRenderer::createBodyLayer);
         ModelLayerRegistry.register(NarakaModelLayers.SOUL_SMITHING_BLOCK, SoulSmithingBlockEntityRenderer::createMainLayer);

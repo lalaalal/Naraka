@@ -4,14 +4,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
-import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.model.HerobrineScarfModel;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfPose;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfRenderState;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfTexture;
-import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.client.util.NarakaRenderUtils;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -22,9 +22,8 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import java.util.List;
@@ -44,44 +43,57 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
         herobrineModel.upperBody().translateAndRotate(poseStack);
     }
 
+    private RenderType getRenderType(S renderState, ResourceLocation texture) {
+        if (renderState.isShadow)
+            return RenderType.entityTranslucent(texture);
+        return RenderType.entityCutout(texture);
+    }
+
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, S renderState, float yRot, float xRot) {
         if (!renderState.renderScarf)
             return;
         poseStack.pushPose();
         applyTranslateAndRotate(poseStack, getParentModel());
+        int color = selectColor(renderState);
         if (renderState.getModelType() != WavingScarfRenderState.ModelType.BIG) {
-            RenderType renderType = RenderType.entitySmoothCutout(NarakaTextures.HEROBRINE_SCARF);
+            RenderType renderType = RenderType.entitySmoothCutout(renderState.getFixedModelTexture());
             VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
-            scarfModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+            scarfModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color);
         }
 
         for (WavingScarfRenderState.ModelData modelData : renderState.scarfRenderState.modelDataList) {
             poseStack.pushPose();
             WavingScarfPose scarfPose = modelData.pose();
             WavingScarfTexture textureInfo = modelData.textureInfo();
-            RenderType waveRenderType = RenderType.entityCutout(textureInfo.texture());
+            RenderType waveRenderType = getRenderType(renderState, textureInfo.texture(renderState.isShadow));
             VertexConsumer vertexConsumer = bufferSource.getBuffer(waveRenderType);
             float scale = scarfPose.scale();
             Vec3 translation = scarfPose.translation();
-            poseStack.scale(-scale, scale, scale);
+            poseStack.scale(-scale, -scale, scale);
             poseStack.translate(translation);
 
-            renderScarf(poseStack, vertexConsumer, packedLight, renderState.scarfRenderState, modelData);
+            renderScarf(poseStack, vertexConsumer, packedLight, color, renderState.scarfRenderState, modelData);
             poseStack.popPose();
         }
 
         poseStack.popPose();
     }
 
-    public void renderScarf(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, WavingScarfRenderState renderState, WavingScarfRenderState.ModelData modelData) {
+    private int selectColor(S renderState) {
+        if (renderState.isShadow)
+            return NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(renderState.scarfAlpha).pack();
+        return -1;
+    }
+
+    public void renderScarf(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int color, WavingScarfRenderState renderState, WavingScarfRenderState.ModelData modelData) {
         WavingScarfTexture textureInfo = modelData.textureInfo();
         WavingScarfPose scarfPose = modelData.pose();
         ScarfWavingData waveData = renderState.waveData;
 
         poseStack.pushPose();
-        poseStack.rotateAround(Axis.XP.rotationDegrees(renderState.rotationDegree), 0, 0, 0);
+        poseStack.rotateAround(Axis.XN.rotationDegrees(renderState.rotationDegree), 0, 0, 0);
 
         float partialTick = renderState.partialTick;
 
@@ -122,35 +134,12 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
                 float currentU = u + partWidth * horizontal;
                 float currentV = v + partHeight * vertical;
 
-                vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.UP);
-                vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.DOWN);
+                NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, color, Direction.UP);
+                NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, color, Direction.DOWN);
                 poseStack.popPose();
             }
             poseStack.popPose();
         }
         poseStack.popPose();
-    }
-
-    /**
-     * Add 4 vertices in anti-clockwise from left-top based on a positive direction
-     *
-     * @param positions Positions, size must be 4
-     */
-    private static void vertices(VertexConsumer vertexConsumer, PoseStack.Pose pose, List<Vector3f> positions, float u, float v, float width, float height, int packedLight, int packedOverlay, int color, Direction direction) {
-        Vec3i normal = direction.getUnitVec3i();
-        List<Vector2f> uvs = List.of(
-                new Vector2f(u, v + height),
-                new Vector2f(u, v),
-                new Vector2f(u + width, v),
-                new Vector2f(u + width, v + height)
-        );
-        NarakaUtils.iterate(positions, uvs, (position, uv) -> {
-            vertexConsumer.addVertex(pose, position)
-                    .setColor(color)
-                    .setLight(packedLight)
-                    .setOverlay(packedOverlay)
-                    .setUv(uv.x, uv.y)
-                    .setNormal(pose, normal.getX(), normal.getY(), normal.getZ());
-        }, normal.getX() < 0 || normal.getY() < 0 || normal.getZ() < 0);
     }
 }

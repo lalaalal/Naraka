@@ -1,7 +1,10 @@
+import com.hypherionmc.modpublisher.properties.CurseEnvironment
+
 plugins {
     id 'dev.architectury.loom' version '1.10-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+    id "com.hypherionmc.modutils.modpublisher" version "2.1.7"
 }
 
 architectury {
@@ -71,21 +74,24 @@ subprojects {
         it.options.release = 21
     }
 
-    // Configure Maven publishing.
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                artifactId = base.archivesName.get()
-                from components.java
+    ext.setupPublisher = {
+        publisher {
+            apiKeys {
+                modrinth System.getenv("MODRINTH_TOKEN")
+                curseforge System.getenv("CURSE_TOKEN")
             }
-        }
 
-        // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-        repositories {
-            // Add repositories to publish to here.
-            // Notice: This block does NOT have the same function as the block in the top level.
-            // The repositories here will be used for publishing your artifact, not for
-            // retrieving dependencies.
+            setModrinthID("2InS5Swi")
+            setCurseID("1292603")
+            setVersionType("$rootProject.mod_version_type")
+            setChangelog(rootProject.projectDir.toPath().resolve("change.md").toFile())
+            setVersion("$rootProject.mod_version")
+            setProjectVersion("$rootProject.mod_version")
+            setJavaVersions(List.of(JavaVersion.VERSION_21))
+            setGameVersions("$rootProject.supporting_minecraft_version")
+            setDisplayName("${base.archivesName.get()}-${rootProject.mod_version}")
+            setCurseEnvironment(CurseEnvironment.BOTH)
+            setArtifact("build/libs/${base.archivesName.get()}-${rootProject.mod_version}.jar")
         }
     }
 }

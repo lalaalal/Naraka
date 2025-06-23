@@ -27,6 +27,10 @@ public class NarakaAttributeModifiers {
 
     public static final ResourceLocation REDUCE_MAX_HEALTH_ID = reduceMaxHealthId("locked_health");
 
+    public static final AttributeModifier FINAL_HEROBRINE_ARMOR_TOUGHNESS = new AttributeModifier(
+            NarakaMod.location("final_herobrine.armor_toughness"), 16, AttributeModifier.Operation.ADD_VALUE
+    );
+
     public static AttributeModifier reduceMaxHealth(ResourceLocation id, double value) {
         return new AttributeModifier(id, -value, AttributeModifier.Operation.ADD_VALUE);
     }

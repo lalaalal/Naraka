@@ -35,7 +35,8 @@ public abstract class LivingEntityMixin extends Entity {
     @Shadow
     public abstract float getMaxHealth();
 
-    @Shadow @Final private Map<EquipmentSlot, ItemStack> lastEquipmentItems;
+    @Shadow @Final
+    private Map<EquipmentSlot, ItemStack> lastEquipmentItems;
 
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);

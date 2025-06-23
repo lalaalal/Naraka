@@ -44,20 +44,14 @@ public final class NeoForgeNetworkManager implements NarakaEventBus {
     private static class NeoForgeServerboundNetworkManager implements ServerboundNetworkManager {
         @Override
         public <T extends CustomPacketPayload> void define(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
-            if (Platform.getInstance().getSide() == Platform.Side.CLIENT) {
-                NARAKA_BUS.addListener(RegisterPayloadHandlersEvent.class, event -> {
-                    event.registrar(VERSION).playToServer(type, codec, empty());
-                });
-            }
+
         }
 
         @Override
         public <T extends CustomPacketPayload> void register(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.PacketHandler<T> handler) {
-            if (Platform.getInstance().getSide() == Platform.Side.SERVER) {
-                NARAKA_BUS.addListener(RegisterPayloadHandlersEvent.class, event -> {
-                    event.registrar(VERSION).playToServer(type, codec, wrap(handler));
-                });
-            }
+            NARAKA_BUS.addListener(RegisterPayloadHandlersEvent.class, event -> {
+                event.registrar(VERSION).playToServer(type, codec, wrap(handler));
+            });
         }
 
         @Override

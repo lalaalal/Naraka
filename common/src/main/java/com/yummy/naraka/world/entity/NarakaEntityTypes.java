@@ -64,6 +64,19 @@ public class NarakaEntityTypes {
                     .immuneTo(Blocks.CACTUS)
     );
 
+    public static final HolderProxy<EntityType<?>, EntityType<DiamondGolem>> DIAMOND_GOLEM = register(
+            "diamond_golem",
+            EntityType.Builder.of(DiamondGolem::new, MobCategory.MONSTER)
+                    .sized(2, 4)
+                    .fireImmune()
+    );
+
+    public static final HolderProxy<EntityType<?>, EntityType<MagicCircle>> MAGIC_CIRCLE = register(
+            "magic_circle",
+            EntityType.Builder.<MagicCircle>of(MagicCircle::new, MobCategory.MISC)
+                    .sized(1, 0.1f)
+    );
+
     private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {
         return RegistryProxy.register(Registries.ENTITY_TYPE, name, () -> builder.build(createKey(name)));
     }
@@ -75,5 +88,6 @@ public class NarakaEntityTypes {
     public static void initialize() {
         EntityAttributeRegistry.register(HEROBRINE, AbstractHerobrine::getAttributeSupplier);
         EntityAttributeRegistry.register(SHADOW_HEROBRINE, ShadowHerobrine::getAttributeSupplier);
+        EntityAttributeRegistry.register(DIAMOND_GOLEM, DiamondGolem::getAttributeSupplier);
     }
 }

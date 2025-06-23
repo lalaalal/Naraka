@@ -27,7 +27,7 @@ public class StardustStaffItem extends Item {
                 int power = random.nextIntBetweenInclusive(3, 5);
                 int waitingTick = random.nextIntBetweenInclusive(2, 3) * 5;
                 TickSchedule.executeAfter(level.getGameTime(), tickAfter, () -> {
-                    Stardust stardust = new Stardust(level, player, shootingVector, power, waitingTick);
+                    Stardust stardust = new Stardust(level, player, shootingVector, power, waitingTick, false);
                     level.addFreshEntity(stardust);
                 });
             }

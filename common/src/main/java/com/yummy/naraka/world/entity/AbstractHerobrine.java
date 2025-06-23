@@ -6,6 +6,7 @@ import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -34,9 +35,11 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractHerobrine extends SkillUsingMob implements StigmatizingEntity, AfterimageEntity, Enemy {
+    protected static final EntityDataAccessor<Boolean> FINAL_MODEL = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Float> SCARF_ROTATION_DEGREE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Boolean> DISPLAY_SCARF = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> DISPLAY_EYE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> DISPLAY_PICKAXE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
 
     public final boolean isShadow;
     private final ScarfWavingData scarfWavingData = new ScarfWavingData();
@@ -72,6 +75,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         this.isShadow = isShadow;
         registerAnimation(AnimationLocations.STAGGERING);
         registerAnimation(AnimationLocations.IDLE);
+        registerAnimation(AnimationLocations.PHASE_3_IDLE);
 
         setPersistenceRequired();
         updateAnimation(AnimationLocations.IDLE);
@@ -82,8 +86,26 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(SCARF_ROTATION_DEGREE, 0f)
+                .define(FINAL_MODEL, false)
                 .define(DISPLAY_SCARF, false)
-                .define(DISPLAY_EYE, true);
+                .define(DISPLAY_EYE, true)
+                .define(DISPLAY_PICKAXE, true);
+    }
+
+    public void setFinalModel(boolean value) {
+        entityData.set(FINAL_MODEL, value);
+    }
+
+    public boolean isFinalModel() {
+        return entityData.get(FINAL_MODEL);
+    }
+
+    public void setDisplayPickaxe(boolean value) {
+        entityData.set(DISPLAY_PICKAXE, value);
+    }
+
+    public boolean displayPickaxe() {
+        return entityData.get(DISPLAY_PICKAXE);
     }
 
     public boolean displayEye() {
@@ -126,14 +148,11 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         return entityData.get(DISPLAY_SCARF);
     }
 
-    protected void updateAnimationOnSkillEnd(Skill<?> skill) {
-        if (!skill.hasLinkedSkill())
-            setAnimation(AnimationLocations.IDLE);
-    }
+    protected abstract void updateAnimationOnSkillEnd(Skill<?> skill);
 
     private void updateAnimationTick() {
         if (animationTickCount == 0)
-            stopAnimation();
+            stopStaticAnimation();
         if (animationTickCount >= 0) {
             animationTickListener.run();
             animationTickCount -= 1;
@@ -144,21 +163,31 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         return animationTickCount > 0;
     }
 
-    protected void playStaticAnimation(ResourceLocation animation, int duration) {
+    public void playStaticAnimation(ResourceLocation animation, int duration) {
+        playStaticAnimation(animation, duration, true);
+    }
+
+    public void playStaticAnimation(ResourceLocation animation, int duration, boolean interruptSkill) {
         if (animationTickCount > 0)
             return;
-        animationTickCount = Math.max(1, duration);
-        skillManager.pause(true);
         setAnimation(animation);
+        animationTickCount = Math.max(1, duration);
+        skillManager.pause(interruptSkill);
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
     }
 
-    protected void stopAnimation() {
+    public void stopStaticAnimation() {
         if (animationTickCount < 0)
             return;
         animationTickCount = Integer.MIN_VALUE;
         skillManager.resume();
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
+    }
+
+    @Override
+    public void setAnimation(ResourceLocation animationLocation) {
+        if (!isPlayingStaticAnimation())
+            super.setAnimation(animationLocation);
     }
 
     @Override
@@ -187,7 +216,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         eyeAlpha = Mth.clamp(eyeAlpha + alphaAddition, 0, 1);
         prevScarfRotation = entityData.get(SCARF_ROTATION_DEGREE);
 
-        scarfWavingData.update(Mth.lerp(prevScarfRotation / NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue(), 0, 1), (float) getDeltaMovement().y,yBodyRot - yBodyRotO);
+        scarfWavingData.update(Mth.lerp(prevScarfRotation / NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue(), 0, 1), (float) getDeltaMovement().y, yBodyRot - yBodyRotO);
     }
 
     @Override
@@ -195,6 +224,19 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         updateAnimationTick();
         updateScarfRotation();
         super.customServerAiStep(serverLevel);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        boolean finalModel = tag.getBooleanOr("FinalModel", false);
+        entityData.set(FINAL_MODEL, finalModel);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("FinalModel", isFinalModel());
     }
 
     protected abstract Fireball createFireball(ServerLevel level);

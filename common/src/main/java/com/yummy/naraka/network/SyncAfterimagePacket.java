@@ -10,18 +10,18 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
-public record SyncAfterimagePayload(int entityId, Afterimage afterimage) implements CustomPacketPayload {
-    public static final Type<SyncAfterimagePayload> TYPE = new Type<>(NarakaMod.location("sync_afterimage_payload"));
+public record SyncAfterimagePacket(int entityId, Afterimage afterimage) implements CustomPacketPayload {
+    public static final Type<SyncAfterimagePacket> TYPE = new Type<>(NarakaMod.location("sync_afterimage_payload"));
 
-    public static final StreamCodec<ByteBuf, SyncAfterimagePayload> CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, SyncAfterimagePacket> CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT,
-            SyncAfterimagePayload::entityId,
+            SyncAfterimagePacket::entityId,
             Afterimage.STREAM_CODEC,
-            SyncAfterimagePayload::afterimage,
-            SyncAfterimagePayload::new
+            SyncAfterimagePacket::afterimage,
+            SyncAfterimagePacket::new
     );
 
-    public SyncAfterimagePayload(Entity entity, Afterimage afterimage) {
+    public SyncAfterimagePacket(Entity entity, Afterimage afterimage) {
         this(entity.getId(), afterimage);
     }
 

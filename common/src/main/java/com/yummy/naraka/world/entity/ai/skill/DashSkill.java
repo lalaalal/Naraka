@@ -16,18 +16,8 @@ public class DashSkill<T extends AbstractHerobrine> extends TargetSkill<T> {
     private float scale = 1;
     private boolean alwaysMove = false;
 
-    public static void setupDashBack(DashSkill<?> dashSkill, Skill<?> linkSkill) {
-        dashSkill.setScale(-0.5f);
-        dashSkill.setLinkedSkill(linkSkill);
-        dashSkill.alwaysMove = true;
-    }
-
     public DashSkill(T mob) {
         super(LOCATION, 10, 40, mob);
-    }
-
-    public void setScale(float scale) {
-        this.scale = scale;
     }
 
     @Override

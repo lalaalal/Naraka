@@ -2,7 +2,7 @@ package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.network.NetworkManager;
-import com.yummy.naraka.network.SyncAnimationPayload;
+import com.yummy.naraka.network.SyncAnimationPacket;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
 import net.minecraft.network.protocol.game.ClientboundEntityPositionSyncPacket;
@@ -116,7 +116,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
     public void setAnimation(ResourceLocation animationLocation) {
         currentAnimation = animationLocation;
         if (level() instanceof ServerLevel serverLevel) {
-            SyncAnimationPayload payload = new SyncAnimationPayload(this, animationLocation);
+            SyncAnimationPacket payload = new SyncAnimationPacket(this, animationLocation);
             NetworkManager.sendToClient(serverLevel.players(), payload);
         }
     }
@@ -142,6 +142,12 @@ public abstract class SkillUsingMob extends PathfinderMob {
 
     public ResourceLocation getCurrentAnimation() {
         return currentAnimation;
+    }
+
+    @Override
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
+        skillManager.interrupt();
     }
 
     @Override

@@ -2,9 +2,7 @@ package com.yummy.naraka.client.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.util.Mth;
 
 public class FlickerParticle extends TextureSheetParticle {
     private final SpriteSet sprites;
@@ -14,23 +12,17 @@ public class FlickerParticle extends TextureSheetParticle {
         this.sprites = sprites;
         this.setSpriteFromAge(this.sprites);
         this.quadSize = 4;
-        this.lifetime = 6;
-        this.oRoll = this.roll = -Mth.PI / 4;
+        this.lifetime = 5;
     }
 
     public void tick() {
         this.oRoll = this.roll;
-        if (this.age++ >= this.lifetime) {
-            this.remove();
-        } else {
-            roll += Mth.PI / 4 / lifetime;
+        if (this.age < this.lifetime) {
             this.setSpriteFromAge(this.sprites);
+        } else {
+            this.remove();
         }
-    }
-
-    @Override
-    protected int getLightColor(float partialTick) {
-        return LightTexture.pack(15, 15);
+        age += 1;
     }
 
     @Override

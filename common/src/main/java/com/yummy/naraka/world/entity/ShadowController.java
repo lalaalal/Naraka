@@ -3,22 +3,19 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaNbtUtils;
-import com.yummy.naraka.world.entity.ai.skill.PunchSkill;
+import com.yummy.naraka.world.entity.ai.skill.FlickerSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 public class ShadowController {
     private final Herobrine herobrine;
     private final List<UUID> shadowHerobrines = new ArrayList<>();
-    @Nullable
-    private ShadowHerobrine mainShadow;
+    private int flickerStack = 0;
 
     public ShadowController(Herobrine herobrine) {
         this.herobrine = herobrine;
@@ -43,7 +40,9 @@ public class ShadowController {
                 .ifPresent(existing -> shadowHerobrine.setHealth(existing.getHealth()));
         level.addFreshEntity(shadowHerobrine);
         shadowHerobrines.add(shadowHerobrine.getUUID());
-        mainShadow = shadowHerobrine;
+        if (herobrine.isHibernateMode())
+            shadowHerobrine.useFlicker();
+        shadowHerobrine.playStaticAnimation(AnimationLocations.SHADOW_SUMMONED, 80, true);
     }
 
     public void broadcastShadowHerobrineHurt(ServerLevel level, ShadowHerobrine shadowHerobrine) {
@@ -64,19 +63,39 @@ public class ShadowController {
         }
     }
 
-    public void switchWithShadowHerobrine(ServerLevel level) {
-        if (herobrine.isDeadOrDying())
-            return;
-        herobrine.accumulatedHurtDamage = 0;
-        herobrine.accumulatedDamageTickCount = 0;
-        getShadows(level).stream()
-                .findAny()
-                .ifPresent(shadowHerobrine -> {
-                    Vec3 originalHerobrinePosition = herobrine.position();
-                    herobrine.setPos(shadowHerobrine.position());
-                    shadowHerobrine.setPos(originalHerobrinePosition);
-                    shadowHerobrine.playStaticAnimation(AnimationLocations.IDLE, 40);
-                });
+    public void increaseFlickerStack() {
+        flickerStack += 1;
+    }
+
+    public void increaseFlickerStack(int amount) {
+        flickerStack += amount;
+    }
+
+    public void consumeFlickerStack(ServerLevel level) {
+        consumeFlickerStack(level, List.of());
+    }
+
+    public void consumeFlickerStack(ServerLevel level, List<ShadowHerobrine> excludes) {
+        if (flickerStack > 0) {
+            Optional<ShadowHerobrine> shadowHerobrine = selectShadowHerobrine(level, excludes);
+            shadowHerobrine.ifPresent(shadow -> {
+                if (!shadow.isPlayingStaticAnimation()) {
+                    shadow.useSkill(FlickerSkill.LOCATION);
+                    flickerStack -= 1;
+                }
+            });
+        }
+    }
+
+    public Optional<ShadowHerobrine> selectShadowHerobrine(ServerLevel level, List<ShadowHerobrine> excludes) {
+        ShadowHerobrine[] shadows = getShadows(level).stream()
+                .filter(shadowHerobrine -> !excludes.contains(shadowHerobrine))
+                .toArray(ShadowHerobrine[]::new);
+        if (shadows.length == 0)
+            return Optional.empty();
+        int randomIndex = level.random.nextInt(shadows.length);
+
+        return Optional.of(shadows[randomIndex]);
     }
 
     public void killShadows(ServerLevel level) {
@@ -85,49 +104,6 @@ public class ShadowController {
 
     public int getShadowCount() {
         return shadowHerobrines.size();
-    }
-
-    private void updateShadowsGoal(ServerLevel level) {
-        for (ShadowHerobrine shadowHerobrine : getShadows(level)) {
-            if (shadowHerobrine == mainShadow) {
-                shadowHerobrine.stopAvoidTarget();
-            } else {
-                shadowHerobrine.startAvoidTarget();
-            }
-        }
-    }
-
-    private void updateShadowsSkill(ServerLevel level) {
-        for (ShadowHerobrine shadowHerobrine : getShadows(level)) {
-            Skill<?> punchSkill = shadowHerobrine.getSkillManager().getSkill(PunchSkill.LOCATION);
-            if (punchSkill != null) {
-                punchSkill.changeCooldown(getSkillCooldown(shadowHerobrine));
-                punchSkill.setEnabled(shadowHerobrine == mainShadow);
-            }
-        }
-    }
-
-    private void resetShadowsSkill(ServerLevel level) {
-        for (ShadowHerobrine shadowHerobrine : getShadows(level)) {
-            Skill<?> punchSkill = shadowHerobrine.getSkillManager().getSkill(PunchSkill.LOCATION);
-            if (punchSkill != null) {
-                punchSkill.changeCooldown(PunchSkill.DEFAULT_COOLDOWN);
-                punchSkill.setEnabled(true);
-            }
-        }
-    }
-
-    private int getSkillCooldown(ShadowHerobrine shadowHerobrine) {
-        return (shadowHerobrine == mainShadow) ? 0 : PunchSkill.DEFAULT_COOLDOWN;
-    }
-
-    private void switchMainShadow(ServerLevel level) {
-        shadowHerobrines.stream()
-                .filter(uuid -> mainShadow == null || uuid != mainShadow.getUUID())
-                .filter(uuid -> herobrine.getRandom().nextFloat() < 0.7f)
-                .findAny()
-                .map(uuid -> NarakaEntityUtils.findEntityByUUID(level, uuid, ShadowHerobrine.class))
-                .ifPresent(shadowHerobrine -> mainShadow = shadowHerobrine);
     }
 
     public boolean someoneJustUsedSkill(ServerLevel level) {
@@ -139,17 +115,12 @@ public class ShadowController {
         return false;
     }
 
-    public void updateRolePlaying(ServerLevel level) {
-        switchMainShadow(level);
-        updateShadowsSkill(level);
-        updateShadowsGoal(level);
+    public void activateFlickerSkill(ServerLevel level) {
+        getShadows(level).forEach(ShadowHerobrine::useFlicker);
     }
 
-    public void stopRolePlaying(ServerLevel level) {
-        mainShadow = null;
-        resetShadowsSkill(level);
-        for (ShadowHerobrine shadowHerobrine : getShadows(level))
-            shadowHerobrine.stopAvoidTarget();
+    public void deactivateFlickerSkill(ServerLevel level) {
+        getShadows(level).forEach(ShadowHerobrine::usePunchOnly);
     }
 
     public Collection<ShadowHerobrine> getShadows(ServerLevel level) {

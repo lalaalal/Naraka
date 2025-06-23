@@ -21,7 +21,6 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.model.BlockModelPart;
@@ -63,6 +62,9 @@ public abstract class HiddenOreRendererMixin {
 
     @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;addLateDebugPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/client/renderer/FogParameters;)V"))
     protected void addHiddenOres(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo ci, @Local FrameGraphBuilder frameGraphBuilder) {
+        if (minecraft.player == null || !NarakaItemUtils.canApplyOreSeeThrough(minecraft.player) || NarakaConfig.CLIENT.disableOreSeeThrough.getValue())
+            return;
+
         int width = this.minecraft.getMainRenderTarget().width;
         int height = this.minecraft.getMainRenderTarget().height;
         naraka$addHiddenOresPass(frameGraphBuilder, camera);
@@ -76,12 +78,10 @@ public abstract class HiddenOreRendererMixin {
     @Unique
     private void naraka$addHiddenOresPass(FrameGraphBuilder frameGraphBuilder, Camera camera) {
         FramePass framePass = frameGraphBuilder.addPass("hidden_ores");
-        targets.main = framePass.readsAndWrites(this.targets.main);
+        this.targets.main = framePass.readsAndWrites(this.targets.main);
         if (this.targets.entityOutline != null) {
             this.targets.entityOutline = framePass.readsAndWrites(this.targets.entityOutline);
         }
-
-        ResourceHandle<RenderTarget> mainHandler = this.targets.main;
         ResourceHandle<RenderTarget> outlineHandler = this.targets.entityOutline;
 
         framePass.executes(() -> {
@@ -99,17 +99,16 @@ public abstract class HiddenOreRendererMixin {
             PoseStack poseStack = new PoseStack();
             MultiBufferSource.BufferSource bufferSource = this.renderBuffers.bufferSource();
             naraka$renderHiddenOres(poseStack, camera);
-            bufferSource.endLastBatch();
             this.checkPoseStack(poseStack);
+            bufferSource.endLastBatch();
             this.renderBuffers.outlineBufferSource().endOutlineBatch();
         });
     }
 
     @Unique
     private void naraka$renderHiddenOres(PoseStack poseStack, Camera camera) {
-        LocalPlayer player = minecraft.player;
         ClientLevel level = minecraft.level;
-        if (player == null || level == null || !NarakaItemUtils.canApplyOreSeeThrough(player) || NarakaConfig.CLIENT.disableOreSeeThrough.getValue())
+        if (level == null)
             return;
         Vec3 cameraPosition = camera.getPosition();
         BlockPos cameraBlockPos = NarakaUtils.pos(cameraPosition).offset(0, 0, -1);

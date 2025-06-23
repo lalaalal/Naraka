@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.data;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -15,7 +16,7 @@ public class StigmaHelper {
     }
 
     public static void increaseStigma(ServerLevel level, LivingEntity target, Entity cause, boolean recordTime) {
-        if (target.getType().is(NarakaEntityTypeTags.HEROBRINE))
+        if (target.getType().is(NarakaEntityTypeTags.HEROBRINE) || NarakaConfig.COMMON.disableStigma.getValue())
             return;
         Stigma stigma = get(target);
         Stigma increased = stigma.increase(level, target, cause, recordTime);

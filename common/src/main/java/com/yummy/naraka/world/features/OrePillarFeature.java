@@ -1,12 +1,15 @@
 package com.yummy.naraka.world.features;
 
 import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.world.block.DiamondGolemSpawner;
+import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.features.configurations.OrePillarConfiguration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
@@ -33,19 +36,31 @@ public class OrePillarFeature extends Feature<OrePillarConfiguration> {
         if (!state.isAir())
             return false;
 
-        BlockPos pos = NarakaUtils.findFloor(level, origin);
-        BlockState floorState = level.getBlockState(pos);
-        if (pos.equals(origin) || !floorState.is(BlockTags.OVERWORLD_CARVER_REPLACEABLES))
+        BlockPos bottom = NarakaUtils.findFloor(level, origin);
+        BlockState floorState = level.getBlockState(bottom);
+        if (bottom.equals(origin) || !floorState.is(BlockTags.OVERWORLD_CARVER_REPLACEABLES))
             return false;
-        placePillar(level, context.random(), pos, oreSelector, config);
+
+        BlockPos top = NarakaUtils.findCeiling(level, bottom.above());
+        int height = top.getY() - bottom.getY();
+        if (config.maxHeight() < height || height < 7)
+            return false;
+
+        placePillar(level, context.random(), top, bottom, height, oreSelector, config);
+
+        Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(context.random());
+        BlockPos spawnerPos = origin.relative(direction, 2);
+
+        int spawnCount = Mth.clamp(7 - config.maxHeight() / height, 1, 3);
+        BlockState spawnerState = NarakaBlocks.DIAMOND_GOLEM_SPAWNER.get().defaultBlockState();
+        level.setBlock(spawnerPos, spawnerState.setValue(DiamondGolemSpawner.SPAWN_COUNT, spawnCount), Block.UPDATE_ALL);
+        level.scheduleTick(spawnerPos, NarakaBlocks.DIAMOND_GOLEM_SPAWNER.get(), 1);
 
         return true;
     }
 
-    protected void placePillar(WorldGenLevel level, RandomSource random, BlockPos bottom, OreSelector oreSelector, OrePillarConfiguration config) {
+    protected void placePillar(WorldGenLevel level, RandomSource random, BlockPos top, BlockPos bottom, int height, OreSelector oreSelector, OrePillarConfiguration config) {
         int radius = config.sampleRadius(random);
-        BlockPos top = NarakaUtils.findCeiling(level, bottom.above());
-        int height = top.getY() - bottom.getY();
         placeSubPillar(level, random, bottom, oreSelector, config, radius, 1, height, Direction.UP, Direction.UP);
         placeSubPillar(level, random, top, oreSelector, config, radius, 1, height, Direction.DOWN, Direction.DOWN);
     }

@@ -29,6 +29,11 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
                 DamageTypeTags.BYPASSES_SHIELD,
                 DamageTypeTags.BYPASSES_COOLDOWN
         );
+        addTags(NarakaDamageTypes.STIGMA_CONSUME,
+                DamageTypeTags.BYPASSES_ARMOR,
+                DamageTypeTags.BYPASSES_SHIELD,
+                DamageTypeTags.BYPASSES_COOLDOWN
+        );
         addTags(NarakaDamageTypes.SPEAR_OF_LONGINUS,
                 DamageTypeTags.BYPASSES_INVULNERABILITY,
                 DamageTypeTags.BYPASSES_ARMOR,

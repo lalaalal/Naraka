@@ -1,5 +1,8 @@
+import com.hypherionmc.modpublisher.properties.ModLoader
+
 plugins {
     id 'com.github.johnrengelman.shadow'
+    id "com.hypherionmc.modutils.modpublisher" version "2.1.7"
 }
 
 architectury {
@@ -61,4 +64,17 @@ shadowJar {
 
 remapJar {
     input.set shadowJar.archiveFile
+}
+
+publisher {
+    setupPublisher()
+    setLoaders(ModLoader.FABRIC)
+
+    modrinthDepends {
+        required "fabric-api"
+    }
+
+    curseDepends {
+        required "fabric-api"
+    }
 }

@@ -1,6 +1,6 @@
 package com.yummy.naraka.client.model;
 
-import com.yummy.naraka.client.renderer.entity.state.HerobrineRenderState;
+import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
@@ -8,7 +8,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
 @Environment(EnvType.CLIENT)
-public class HerobrineFinalModel extends AbstractHerobrineModel<HerobrineRenderState> {
+public class FinalHerobrineModel<S extends AbstractHerobrineRenderState> extends AbstractHerobrineModel<S> {
     private final ModelPart main;
     private final ModelPart upperBody;
     private final ModelPart head;
@@ -16,10 +16,14 @@ public class HerobrineFinalModel extends AbstractHerobrineModel<HerobrineRenderS
     private final ModelPart rightArm;
     private final ModelPart leftHand;
     private final ModelPart rightHand;
+    private final ModelPart independentPickaxe;
+    private final ModelPart pickaxe;
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition independent_pickaxe = partdefinition.addOrReplaceChild("independent_pickaxe", CubeListBuilder.create(), PartPose.offset(-8.5F, 5.5F, 0.0F));
 
         PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create(), PartPose.offset(0.0F, -4.0F, 0.0F));
 
@@ -61,7 +65,7 @@ public class HerobrineFinalModel extends AbstractHerobrineModel<HerobrineRenderS
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
-    public HerobrineFinalModel(ModelPart root) {
+    public FinalHerobrineModel(ModelPart root) {
         super(root);
         this.main = root.getChild("main");
         this.upperBody = main.getChild("chest");
@@ -70,6 +74,8 @@ public class HerobrineFinalModel extends AbstractHerobrineModel<HerobrineRenderS
         this.leftArm = upperBody.getChild("left_arm");
         this.rightHand = rightArm.getChild("right_hand");
         this.leftHand = leftArm.getChild("left_hand");
+        this.independentPickaxe = root.getChild("independent_pickaxe");
+        this.pickaxe = rightHand.getChild("pickaxe");
     }
 
     @Override

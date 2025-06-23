@@ -35,7 +35,7 @@ public abstract class HerobrineTotemActivatingItemMixin {
                 && HerobrineTotemBlockEntity.isSanctuaryExists(level, pos)
                 && HerobrineTotemBlockEntity.isSleeping(totem)
         ) {
-            ItemStack itemStack =context.getItemInHand();
+            ItemStack itemStack = context.getItemInHand();
             if (player != null)
                 itemStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
             level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1, level.getRandom().nextFloat() * 0.4F + 0.8F);

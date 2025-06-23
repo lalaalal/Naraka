@@ -23,7 +23,7 @@ public class HerobrineAnimation {
         AnimationMapper.register(AnimationLocations.BLOCKING, BLOCKING);
         AnimationMapper.register(AnimationLocations.STAGGERING, STAGGERING);
         AnimationMapper.register(AnimationLocations.STAGGERING_PHASE_2, STAGGERING_PHASE_2);
-        AnimationMapper.register(AnimationLocations.PHASE_2, PHASE_2);
+        AnimationMapper.register(AnimationLocations.ENTER_PHASE_2, PHASE_2);
         AnimationMapper.register(AnimationLocations.IDLE, IDLE);
         AnimationMapper.register(AnimationLocations.SHADOW_SUMMONED, SHADOW_SUMMONED);
     }

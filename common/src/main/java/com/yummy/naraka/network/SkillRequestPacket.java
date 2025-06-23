@@ -2,6 +2,7 @@ package com.yummy.naraka.network;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.SkillUsingMob;
+import com.yummy.naraka.world.entity.ai.skill.Skill;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -13,24 +14,24 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.Optional;
 
-public record SkillRequestPayload(Event event, int entityId, ResourceLocation location) implements CustomPacketPayload {
-    public static final Type<SkillRequestPayload> TYPE = new Type<>(NarakaMod.location("skill_request"));
+public record SkillRequestPacket(Event event, int entityId, ResourceLocation location) implements CustomPacketPayload {
+    public static final Type<SkillRequestPacket> TYPE = new Type<>(NarakaMod.location("skill_request"));
 
-    public static final StreamCodec<ByteBuf, SkillRequestPayload> CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, SkillRequestPacket> CODEC = StreamCodec.composite(
             Event.STREAM_CODEC,
-            SkillRequestPayload::event,
+            SkillRequestPacket::event,
             ByteBufCodecs.INT,
-            SkillRequestPayload::entityId,
+            SkillRequestPacket::entityId,
             ResourceLocation.STREAM_CODEC,
-            SkillRequestPayload::location,
-            SkillRequestPayload::new
+            SkillRequestPacket::location,
+            SkillRequestPacket::new
     );
 
-    public SkillRequestPayload(Event event, SkillUsingMob mob, ResourceLocation location) {
+    public SkillRequestPacket(Event event, SkillUsingMob mob, ResourceLocation location) {
         this(event, mob.getId(), location);
     }
 
-    public SkillRequestPayload(Event event, SkillUsingMob mob) {
+    public SkillRequestPacket(Event event, SkillUsingMob mob) {
         this(event, mob.getId(), NarakaMod.location("empty"));
     }
 
@@ -56,15 +57,27 @@ public record SkillRequestPayload(Event event, int entityId, ResourceLocation lo
                 mob.getSkillManager().enableOnly(List.of());
             });
         }),
+        STOP((payload, context) -> {
+            payload.getEntity(context.level()).ifPresent(mob -> {
+                mob.getSkillManager().interrupt();
+            });
+        }),
+        ENABLE_ONLY((payload, context) -> {
+            payload.getEntity(context.level()).ifPresent(mob -> {
+                Skill<?> skill = mob.getSkillManager().getSkill(payload.location);
+                if (skill != null)
+                    mob.getSkillManager().enableOnly(List.of(skill));
+            });
+        }),
         USE((payload, context) -> {
             payload.getEntity(context.level()).ifPresent(mob -> mob.useSkill(payload.location));
         });
 
         public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.idMapper(Event::byId, Event::ordinal);
 
-        public final NetworkManager.PacketHandler<SkillRequestPayload> handler;
+        public final NetworkManager.PacketHandler<SkillRequestPacket> handler;
 
-        Event(NetworkManager.PacketHandler<SkillRequestPayload> handler) {
+        Event(NetworkManager.PacketHandler<SkillRequestPacket> handler) {
             this.handler = handler;
         }
 

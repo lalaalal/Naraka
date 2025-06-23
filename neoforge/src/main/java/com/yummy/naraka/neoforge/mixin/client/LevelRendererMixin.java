@@ -3,6 +3,7 @@ package com.yummy.naraka.neoforge.mixin.client;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.framegraph.FrameGraphBuilder;
 import com.mojang.blaze3d.framegraph.FramePass;
+import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.renderer.HerobrineSkyRenderHelper;
 import com.yummy.naraka.config.NarakaConfig;
 import net.minecraft.client.Camera;
@@ -29,7 +30,7 @@ public abstract class LevelRendererMixin {
 
     @Inject(method = "addSkyPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/FogParameters;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/framegraph/FramePass;executes(Ljava/lang/Runnable;)V"), cancellable = true)
     public void replaceHerobrineSkyPass(FrameGraphBuilder arg, Camera arg2, float f, FogParameters fog, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, CallbackInfo ci, @Local DimensionSpecialEffects.SkyType skyType, @Local FramePass framePass) {
-        if (skyType == DimensionSpecialEffects.SkyType.OVERWORLD && NarakaConfig.CLIENT.renderHerobrineSky.getValue()) {
+        if (skyType == DimensionSpecialEffects.SkyType.OVERWORLD && NarakaClientContext.ENABLE_HEROBRINE_SKY.getValue()) {
             ci.cancel();
             framePass.executes(() -> HerobrineSkyRenderHelper.renderHerobrineSky(skyRenderer, renderBuffers, fog));
         }
@@ -37,7 +38,7 @@ public abstract class LevelRendererMixin {
 
     @Inject(method = "addCloudsPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/client/CloudStatus;Lnet/minecraft/world/phys/Vec3;FIFLorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/framegraph/FramePass;executes(Ljava/lang/Runnable;)V"), cancellable = true)
     public void speedUpClouds(FrameGraphBuilder arg, CloudStatus cloudStatus, Vec3 cameraPosition, float ticks, int cloudColor, float height, Matrix4f modelViewMatrix, Matrix4f projectionMatrix, CallbackInfo ci, @Local FramePass framePass) {
-        if (NarakaConfig.CLIENT.renderHerobrineSky.getValue()) {
+        if (NarakaClientContext.ENABLE_HEROBRINE_SKY.getValue()) {
             int speed = NarakaConfig.CLIENT.herobrineSkyCloudSpeed.getValue();
             ci.cancel();
             framePass.executes(() -> this.cloudRenderer.render(cloudColor, cloudStatus, height, cameraPosition, ticks * speed));

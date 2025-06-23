@@ -4,7 +4,7 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
-import com.yummy.naraka.network.SyncAfterimagePayload;
+import com.yummy.naraka.network.SyncAfterimagePacket;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
@@ -12,7 +12,7 @@ import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
-import com.yummy.naraka.world.entity.ai.control.HerobrineMoveControl;
+import com.yummy.naraka.world.entity.ai.control.HerobrineFlyMoveControl;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.*;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
@@ -23,9 +23,6 @@ import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
@@ -49,8 +46,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class Herobrine extends AbstractHerobrine {
-    protected static final EntityDataAccessor<Boolean> DISPLAY_PICKAXE = SynchedEntityData.defineId(Herobrine.class, EntityDataSerializers.BOOLEAN);
-
     private static final float[] HEALTH_BY_PHASE = {106, 210, 350};
 
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
@@ -63,10 +58,8 @@ public class Herobrine extends AbstractHerobrine {
     protected final ThrowFireballSkill throwFireballSkill = registerSkill(9, new ThrowFireballSkill(this, this::createFireball), AnimationLocations.THROW_NARAKA_FIREBALL);
     protected final BlockingSkill blockingSkill = registerSkill(10, this, BlockingSkill::new, AnimationLocations.BLOCKING);
     protected final SummonShadowSkill summonShadowSkill = registerSkill(0, this, SummonShadowSkill::new);
-    protected final RolePlayShadowSkill rolePlayShadowSkill = registerSkill(1, this, RolePlayShadowSkill::new);
-    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(9, new RushSkill<>(this, dashSkill), AnimationLocations.RUSH);
+    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(8, new RushSkill<>(this), AnimationLocations.RUSH);
     protected final DestroyStructureSkill destroyStructureSkill = registerSkill(this, DestroyStructureSkill::new);
-    protected final ExplosionSkill explosionSkill = registerSkill(this, ExplosionSkill::new, AnimationLocations.EXPLOSION);
 
     protected final LandingSkill landingSkill = registerSkill(this, LandingSkill::new, AnimationLocations.COMBO_ATTACK_5);
     protected final SuperHitSkill superHitSkill = registerSkill(new SuperHitSkill(landingSkill, this), AnimationLocations.COMBO_ATTACK_4);
@@ -74,19 +67,28 @@ public class Herobrine extends AbstractHerobrine {
     protected final UppercutSkill uppercutSkill = registerSkill(new UppercutSkill(spinningSkill, this), AnimationLocations.COMBO_ATTACK_2);
     protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(2, new PunchSkill<>(uppercutSkill, this, 140, true), AnimationLocations.COMBO_ATTACK_1);
 
-    protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, dashSkill, rushSkill));
+    protected final FlickerSkill<Herobrine> flickerSkill = registerSkill(new FlickerSkill<>(this, dashSkill, punchSkill));
+    protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, flickerSkill));
+
+    protected final CarpetBombingSkill carpetBombingSkill = registerSkill(7, this, CarpetBombingSkill::new, AnimationLocations.CARPET_BOMBING);
+    protected final ExplosionSkill explosionSkill = registerSkill(7, this, ExplosionSkill::new, AnimationLocations.EXPLOSION);
+    protected final StormSkill stormSkill = registerSkill(7, this, StormSkill::new, AnimationLocations.STORM);
+
+    protected final StrikeDownSkill strikeDownSkill = registerSkill(this, StrikeDownSkill::new, AnimationLocations.FINAL_COMBO_ATTACK_3);
+    protected final SpinUpSkill spinUpSkill = registerSkill(new SpinUpSkill(strikeDownSkill, this), AnimationLocations.FINAL_COMBO_ATTACK_2);
+    protected final SplitAttackSkill splitAttackSkill = registerSkill(6, new SplitAttackSkill(spinUpSkill, this), AnimationLocations.FINAL_COMBO_ATTACK_1);
 
     @Nullable
     private LivingEntity firstTarget;
 
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
-    private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill, rolePlayShadowSkill);
+    private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill);
     private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, walkAroundTargetSkill);
     private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, summonShadowSkill, walkAroundTargetSkill);
-    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill);
+    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, splitAttackSkill, stormSkill, carpetBombingSkill);
 
     private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashAroundSkill, walkAroundTargetSkill);
-    private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(AnimationLocations.PHASE_2, AnimationLocations.STAGGERING_PHASE_2);
+    private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(AnimationLocations.ENTER_PHASE_2, AnimationLocations.STAGGERING_PHASE_2, AnimationLocations.ENTER_PHASE_3);
 
     private final List<List<Skill<?>>> HIBERNATED_MODE_SKILL_BY_PHASE = List.of(
             List.of(), HIBERNATED_MODE_PHASE_1_SKILLS, HIBERNATED_MODE_PHASE_2_SKILLS, List.of()
@@ -131,9 +133,11 @@ public class Herobrine extends AbstractHerobrine {
 
         skillManager.runOnSkillStart(this::enableEyeOnPhase3);
         skillManager.runOnSkillEnd(this::disableEyeOnPhase3);
+        skillManager.runOnSkillEnd(this::useShadowFlicker);
         skillManager.enableOnly(PHASE_1_SKILLS);
 
-        registerAnimation(AnimationLocations.PHASE_2);
+        registerAnimation(AnimationLocations.ENTER_PHASE_2);
+        registerAnimation(AnimationLocations.ENTER_PHASE_3);
         registerAnimation(AnimationLocations.STAGGERING_PHASE_2);
         registerAnimation(AnimationLocations.RUSH_SUCCEED);
         registerAnimation(AnimationLocations.RUSH_FAILED);
@@ -141,10 +145,14 @@ public class Herobrine extends AbstractHerobrine {
         registerAnimation(AnimationLocations.STIGMATIZE_ENTITIES);
         registerAnimation(AnimationLocations.STIGMATIZE_ENTITIES_END);
 
-        registerAnimation(AnimationLocations.PHASE_3_IDLE);
+        registerAnimation(AnimationLocations.SWORD_AURA_1);
+        registerAnimation(AnimationLocations.SWORD_AURA_2);
+    }
 
-        registerAnimation(AnimationLocations.STORM);
-        registerAnimation(AnimationLocations.CARPET_BOMBING);
+    private void useShadowFlicker(Skill<?> skill) {
+        if (getPhase() == 2 && level() instanceof ServerLevel serverLevel) {
+            shadowController.consumeFlickerStack(serverLevel);
+        }
     }
 
     private void enableEyeOnPhase3(Skill<?> skill) {
@@ -167,23 +175,9 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DISPLAY_PICKAXE, true);
-    }
-
-    @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64, 1, 5, 0));
-    }
-
-    public void setDisplayPickaxe(boolean value) {
-        entityData.set(DISPLAY_PICKAXE, value);
-    }
-
-    public boolean displayPickaxe() {
-        return entityData.get(DISPLAY_PICKAXE);
+        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64, 1, 1, 0));
     }
 
     public void setSpawnPosition(BlockPos pos) {
@@ -203,10 +197,12 @@ public class Herobrine extends AbstractHerobrine {
         skillManager.setCurrentSkill(destroyStructureSkill);
         entityData.set(DISPLAY_SCARF, true);
         navigation = new FlyingPathNavigation(this, level());
-        moveControl = new HerobrineMoveControl(this, 0.75, 1);
+        moveControl = new HerobrineFlyMoveControl(this, 0.75, 1);
         setNoGravity(true);
         setAnimation(AnimationLocations.PHASE_3_IDLE);
         setDisplayEye(false);
+
+        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR_TOUGHNESS, NarakaAttributeModifiers.FINAL_HEROBRINE_ARMOR_TOUGHNESS);
     }
 
     @Override
@@ -242,11 +238,19 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void startStaggering(int prevPhase, int currentPhase) {
-        startStaggering(AnimationLocations.PHASE_2, 55, 40);
+        if (currentPhase == 2)
+            startStaggering(AnimationLocations.ENTER_PHASE_2, 55, 40);
     }
 
     private void updateMusic(int prevPhase, int currentPhase) {
-        NarakaClientboundEventPacket.Event event = NarakaMusics.musicEventByPhase(currentPhase);
+        if (currentPhase == 3)
+            NetworkManager.sendToClient(bossEvent.getPlayers(), new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.STOP_MUSIC));
+        else
+            sendMusic(currentPhase);
+    }
+
+    public void sendMusic(int phase) {
+        NarakaClientboundEventPacket.Event event = NarakaMusics.musicEventByPhase(phase);
         CustomPacketPayload packet = new NarakaClientboundEventPacket(event);
         NetworkManager.sendToClient(bossEvent.getPlayers(), packet);
     }
@@ -261,6 +265,20 @@ public class Herobrine extends AbstractHerobrine {
 
     public float getHurtDamageLimit() {
         return hurtDamageLimit;
+    }
+
+    private float calculateLockedHealth(ServerLevel level) {
+        double sum = 0;
+        for (LivingEntity livingEntity : NarakaEntityUtils.findEntitiesByUUID(level, watchingEntities, LivingEntity.class))
+            sum += LockedHealthHelper.get(livingEntity);
+        return (float) sum;
+    }
+
+    @Override
+    public float getAttackDamage() {
+        if (level() instanceof ServerLevel serverLevel && getPhase() == 3)
+            return super.getAttackDamage() + calculateLockedHealth(serverLevel) * 3;
+        return super.getAttackDamage();
     }
 
     @Override
@@ -293,7 +311,7 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     public void addAfterimage(Afterimage afterimage) {
         if (!level().isClientSide) {
-            SyncAfterimagePayload payload = new SyncAfterimagePayload(this, afterimage);
+            SyncAfterimagePacket payload = new SyncAfterimagePacket(this, afterimage);
             NetworkManager.sendToClient(bossEvent.getPlayers(), payload);
         }
         this.afterimages.add(afterimage);
@@ -339,6 +357,9 @@ public class Herobrine extends AbstractHerobrine {
             shadowController.killShadows(serverLevel);
             discard();
         }
+        if (getPhase() == 2 && tickCount % 100 == 0) {
+            shadowController.increaseFlickerStack(3);
+        }
 
         super.customServerAiStep(serverLevel);
     }
@@ -362,11 +383,14 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void updateAccumulatedDamage() {
-        if (accumulatedDamageTickCount > MAX_ACCUMULATED_DAMAGE_TICK_COUNT) {
-            accumulatedDamageTickCount = 0;
-            accumulatedHurtDamage = 0;
-        }
+        if (accumulatedDamageTickCount > MAX_ACCUMULATED_DAMAGE_TICK_COUNT)
+            resetAccumulatedDamage();
         accumulatedDamageTickCount += 1;
+    }
+
+    public void resetAccumulatedDamage() {
+        accumulatedDamageTickCount = 0;
+        accumulatedHurtDamage = 0;
     }
 
     private void collectStigma(ServerLevel serverLevel) {
@@ -427,12 +451,27 @@ public class Herobrine extends AbstractHerobrine {
         NetworkManager.clientbound().send(bossEvent.getPlayers(), packet);
     }
 
+    public void startWhiteScreen() {
+        NarakaClientboundEventPacket packet = new NarakaClientboundEventPacket(
+                NarakaClientboundEventPacket.Event.START_WHITE_SCREEN
+        );
+        NetworkManager.clientbound().send(bossEvent.getPlayers(), packet);
+    }
+
+    public void stopWhiteScreen() {
+        NarakaClientboundEventPacket packet = new NarakaClientboundEventPacket(
+                NarakaClientboundEventPacket.Event.STOP_WHITE_FOG
+        );
+        NetworkManager.clientbound().send(bossEvent.getPlayers(), packet);
+    }
+
     @Override
     public void stopSeenByPlayer(ServerPlayer serverPlayer) {
         bossEvent.removePlayer(serverPlayer);
         CustomPacketPayload packet = new NarakaClientboundEventPacket(
                 NarakaClientboundEventPacket.Event.STOP_MUSIC,
-                NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY
+                NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY,
+                NarakaClientboundEventPacket.Event.STOP_WHITE_FOG
         );
         NetworkManager.sendToClient(serverPlayer, packet);
     }
@@ -469,8 +508,8 @@ public class Herobrine extends AbstractHerobrine {
         super.actuallyHurt(level, damageSource, damageAmount);
         updateHurtDamageLimit(level);
         accumulatedHurtDamage += damageAmount;
-        if (accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f)
-            shadowController.switchWithShadowHerobrine(level);
+        if (getPhase() == 2 && (accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f))
+            shadowController.increaseFlickerStack();
     }
 
     private float getPhaseMinimumHealth() {
@@ -481,7 +520,7 @@ public class Herobrine extends AbstractHerobrine {
         if (source.getDirectEntity() instanceof NarakaFireball fireball && !fireball.hasTarget()) {
             if (getHealth() > getPhaseMinimumHealth())
                 startStaggering();
-            if (getHealth() == getPhaseMinimumHealth())
+            if (getHealth() == getPhaseMinimumHealth() && getPhase() == 1)
                 startStaggering(AnimationLocations.STAGGERING_PHASE_2, 125, 100);
             resetDamageLimit();
             if (hibernateMode)
@@ -519,6 +558,9 @@ public class Herobrine extends AbstractHerobrine {
                 startHibernateMode(level);
             }
         }
+        if (getPhase() == 3) {
+            hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT - calculateLockedHealth(level);
+        }
     }
 
     public boolean isHibernateMode() {
@@ -531,7 +573,7 @@ public class Herobrine extends AbstractHerobrine {
         hibernateMode = true;
         skillManager.enableOnly(HIBERNATED_MODE_SKILL_BY_PHASE.get(getPhase()));
         skillManager.interrupt();
-        shadowController.updateRolePlaying(level);
+        shadowController.activateFlickerSkill(level);
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
         teleportToSpawnedPosition();
     }
@@ -540,7 +582,7 @@ public class Herobrine extends AbstractHerobrine {
         hibernateMode = false;
         resetDamageLimit();
         skillManager.enableOnly(SKILLS_BY_PHASE.get(getPhase()));
-        shadowController.stopRolePlaying(level);
+        shadowController.deactivateFlickerSkill(level);
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
 
         setHealth(getHealth() - 1);
@@ -567,6 +609,7 @@ public class Herobrine extends AbstractHerobrine {
     public Fireball createFireball(ServerLevel level) {
         NarakaFireball fireball = new NarakaFireball(this, Vec3.ZERO, level(), false);
         fireball.setDamageCalculator(this::calculateFireballDamage);
+        fireball.setCanDeflect(false);
         fireball.setTimeToLive(50);
         fireball.addHurtTargetListener((target, damage) -> stigmatizeEntity(level, target));
         fireball.addHurtTargetListener((target, damage) -> updateHibernateModeOnTargetSurvivedFromFireball(level, target, damage));

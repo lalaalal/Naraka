@@ -18,6 +18,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
@@ -33,11 +35,13 @@ import java.util.UUID;
 public class NarakaFireball extends Fireball implements ItemSupplier {
     protected static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(NarakaFireball.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Boolean> FIXED_DAMAGE = SynchedEntityData.defineId(NarakaFireball.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> CAN_DEFLECT = SynchedEntityData.defineId(NarakaFireball.class, EntityDataSerializers.BOOLEAN);
 
     private @Nullable Entity cachedTarget;
     private DamageCalculator damageCalculator = fireball -> 10;
     private final List<HurtTargetListener> listeners = new ArrayList<>();
     private int timeToLive = Integer.MAX_VALUE;
+
 
     public NarakaFireball(EntityType<? extends NarakaFireball> entityType, Level level) {
         super(entityType, level);
@@ -67,7 +71,32 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(TARGET_ID, -1)
-                .define(FIXED_DAMAGE, false);
+                .define(FIXED_DAMAGE, false)
+                .define(CAN_DEFLECT, true);
+    }
+
+    public void setCanDeflect(boolean canDeflect) {
+        entityData.set(CAN_DEFLECT, canDeflect);
+    }
+
+    @Override
+    public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
+        super.shoot(x, y, z, velocity, inaccuracy);
+        setCanDeflect(true);
+    }
+
+    @Override
+    public boolean deflect(ProjectileDeflection deflection, @Nullable Entity entity, @Nullable Entity owner, boolean deflectedByPlayer) {
+        if (entityData.get(CAN_DEFLECT))
+            return super.deflect(deflection, entity, owner, deflectedByPlayer);
+        return false;
+    }
+
+    @Override
+    public ProjectileDeflection deflection(Projectile projectile) {
+        if (entityData.get(CAN_DEFLECT))
+            return super.deflection(projectile);
+        return ProjectileDeflection.NONE;
     }
 
     public void setDamageCalculator(DamageCalculator damageCalculator) {

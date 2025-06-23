@@ -1,12 +1,10 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.ai.goal.FollowOwnerGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
-import com.yummy.naraka.world.entity.ai.skill.PunchSkill;
-import com.yummy.naraka.world.entity.ai.skill.ShadowPunchSkill;
-import com.yummy.naraka.world.entity.ai.skill.Skill;
-import com.yummy.naraka.world.entity.ai.skill.UppercutSkill;
+import com.yummy.naraka.world.entity.ai.skill.*;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
@@ -14,6 +12,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -26,7 +27,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TraceableEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -37,47 +37,53 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntity {
-    protected final UppercutSkill uppercutSkill = registerSkill(new UppercutSkill(null, this), AnimationLocations.COMBO_ATTACK_2);
-    protected final ShadowPunchSkill punchSkill = registerSkill(new ShadowPunchSkill(uppercutSkill, this), AnimationLocations.COMBO_ATTACK_1);
+    protected static final EntityDataAccessor<Integer> ALPHA = SynchedEntityData.defineId(ShadowHerobrine.class, EntityDataSerializers.INT);
+
+    protected final ShadowPunchSkill punchSkill = registerSkill(1, this, ShadowPunchSkill::new, AnimationLocations.COMBO_ATTACK_1);
+    protected final DashSkill<ShadowHerobrine> dashSkill = registerSkill(this, DashSkill::new);
+    protected final ShadowFlickerSkill flickerSkill = registerSkill(10, new ShadowFlickerSkill(this, dashSkill, punchSkill));
+
+    protected final SimpleComboAttackSkill finalComboAttack3 = registerSkill(SimpleComboAttackSkill.combo3(this), AnimationLocations.FINAL_COMBO_ATTACK_3);
+    protected final SimpleComboAttackSkill finalComboAttack2 = registerSkill(SimpleComboAttackSkill.combo2(finalComboAttack3, this), AnimationLocations.FINAL_COMBO_ATTACK_2);
+    protected final SimpleComboAttackSkill finalComboAttack1 = registerSkill(SimpleComboAttackSkill.combo1(finalComboAttack2, this), AnimationLocations.FINAL_COMBO_ATTACK_1);
 
     @Nullable
     private Herobrine herobrine;
     @Nullable
     private UUID herobrineUUID;
-
-    private final MoveToTargetGoal moveToTargetGoal = new MoveToTargetGoal(this, 1, 64, 1, 40, 0.6f);
-    private final AvoidEntityGoal<LivingEntity> avoidTargetGoal = new AvoidEntityGoal<>(
-            this, LivingEntity.class,
-            entity -> !this.isUsingSkill(),
-            4, 1.4, 1.6,
-            entity -> getHerobrine()
-                    .map(herobrine -> herobrine.getTarget() == entity)
-                    .orElse(this.getTarget() == entity)
-    );
+    private boolean reduceAlpha = false;
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return AbstractHerobrine.getAttributeSupplier()
                 .add(Attributes.MOVEMENT_SPEED, 0.15f)
-                .add(Attributes.ATTACK_DAMAGE, 6)
+                .add(Attributes.ATTACK_DAMAGE, 10)
                 .add(Attributes.MAX_HEALTH, 150);
+    }
+
+    public static ShadowHerobrine createInstantFinalShadow(Level level, Herobrine mob, Vec3 position) {
+        ShadowHerobrine shadowHerobrine = new ShadowHerobrine(mob.level(), true, true);
+        shadowHerobrine.setPos(position);
+        shadowHerobrine.forceSetRotation(mob.getYRot(), mob.getXRot());
+        shadowHerobrine.getSkillManager().enableOnly(List.of());
+        shadowHerobrine.setTarget(mob.getTarget());
+        shadowHerobrine.goalSelector.removeAllGoals(goal -> true);
+        shadowHerobrine.setNoGravity(true);
+        level.addFreshEntity(shadowHerobrine);
+
+        return shadowHerobrine;
+    }
+
+    public static ShadowHerobrine createInstantFinalShadow(Level level, Herobrine mob) {
+        Vec3 position = mob.position().add(mob.getLookAngle());
+        return createInstantFinalShadow(level, mob, position);
     }
 
     protected ShadowHerobrine(EntityType<? extends AbstractHerobrine> entityType, Level level) {
         super(entityType, level, true);
         skillManager.enableOnly(List.of(punchSkill));
-        skillManager.runOnSkillStart(this::resetPunchCooldown);
-        skillManager.runOnSkillEnd(this::increasePunchCooldown);
-        punchSkill.setCanDisableShield(false);
-        uppercutSkill.setCanDisableShield(false);
-
-        goalSelector.addGoal(3, moveToTargetGoal);
-
         entityData.set(DISPLAY_SCARF, true);
-
+        entityData.set(DISPLAY_PICKAXE, false);
         registerAnimation(AnimationLocations.SHADOW_SUMMONED);
-
-        updateAnimation(AnimationLocations.SHADOW_SUMMONED);
-        playStaticAnimation(AnimationLocations.SHADOW_SUMMONED, 80);
     }
 
     public ShadowHerobrine(Level level, Herobrine herobrine) {
@@ -86,28 +92,65 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         this.herobrineUUID = herobrine.getUUID();
     }
 
-    private void resetPunchCooldown(Skill<?> skill) {
-        if (skill == punchSkill)
-            punchSkill.changeCooldown(PunchSkill.DEFAULT_COOLDOWN);
+    public ShadowHerobrine(Level level, boolean finalModel, boolean instant) {
+        this(NarakaEntityTypes.SHADOW_HEROBRINE.get(), level);
+        entityData.set(FINAL_MODEL, finalModel);
+        if (instant)
+            skillManager.runOnSkillEnd(skill -> reduceAlpha = true);
     }
 
-    private void increasePunchCooldown(Skill<?> skill) {
-        punchSkill.changeCooldown(punchSkill.getCooldown() + 20);
+    public int getAlpha() {
+        return entityData.get(ALPHA);
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ALPHA, 0x01);
+    }
+
+    @Override
+    protected void updateAnimationOnSkillEnd(Skill<?> skill) {
+        if (!skill.hasLinkedSkill()) {
+            if (isFinalModel()) {
+                setAnimation(AnimationLocations.PHASE_3_IDLE);
+            } else {
+                setAnimation(AnimationLocations.IDLE);
+            }
+        }
+    }
+
+    @Override
+    protected void customServerAiStep(ServerLevel serverLevel) {
+        super.customServerAiStep(serverLevel);
+        if (reduceAlpha) {
+            entityData.set(ALPHA, Math.max(0, getAlpha() - 15));
+        } else {
+            entityData.set(ALPHA, Math.min(0xff, getAlpha() + 10));
+        }
+        if (getAlpha() == 0)
+            discard();
+    }
+
+    public void usePunchOnly() {
+        skillManager.enableOnly(List.of(punchSkill));
+    }
+
+    public void useFlicker() {
+        skillManager.enableOnly(List.of(punchSkill, flickerSkill));
+    }
+
+    public boolean otherShadowNotUsingSkill(ServerLevel level) {
+        return !this.getHerobrine()
+                .map(herobrine -> herobrine.getShadowController().someoneJustUsedSkill(level))
+                .orElse(false);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new FollowOwnerGoal<>(this));
-    }
-
-    public void startAvoidTarget() {
-        goalSelector.addGoal(2, avoidTargetGoal);
-    }
-
-    public void stopAvoidTarget() {
-        goalSelector.removeGoal(avoidTargetGoal);
-        moveToTargetGoal.start();
+        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64, 0, 40, 0.6f));
     }
 
     @Override
@@ -152,7 +195,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
         StigmaHelper.removeStigma(target);
         level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.HOSTILE);
-        target.hurtServer(level, damageSources().mobAttack(this), 6 * stigma.value());
+        target.hurtServer(level, NarakaDamageSources.stigmaConsume(this), 6 * stigma.value());
         getHerobrine().ifPresent(herobrine -> herobrine.getShadowController().summonShadowHerobrine(level));
     }
 
@@ -197,6 +240,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         if (level().getEntity(herobrineId) instanceof Herobrine entity) {
             this.herobrine = entity;
             this.herobrineUUID = entity.getUUID();
+            updateAnimation(AnimationLocations.SHADOW_SUMMONED);
         }
     }
 
@@ -213,6 +257,8 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
         Optional<String> uuid = compound.getString("Herobrine");
         uuid.ifPresent(string -> this.herobrineUUID = UUID.fromString(string));
+        if (isFinalModel())
+            reduceAlpha = true;
     }
 
     @Override
