@@ -2,7 +2,7 @@ package com.yummy.naraka.client.gui.screen;
 
 import com.yummy.naraka.client.gui.components.LocationList;
 import com.yummy.naraka.network.NetworkManager;
-import com.yummy.naraka.network.SkillRequestPayload;
+import com.yummy.naraka.network.SkillRequestPacket;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -15,7 +15,7 @@ public class SkillControlScreen extends SkillUsingMobControlScreen {
 
     @Override
     protected void select(LocationList.Entry selected) {
-        SkillRequestPayload payload = new SkillRequestPayload(SkillRequestPayload.Event.USE, mob, selected.location);
+        SkillRequestPacket payload = new SkillRequestPacket(SkillRequestPacket.Event.USE, mob, selected.location);
         NetworkManager.serverbound().send(payload);
     }
 }

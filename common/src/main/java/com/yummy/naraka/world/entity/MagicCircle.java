@@ -58,7 +58,7 @@ public class MagicCircle extends Entity {
     }
 
     private boolean isValidTarget(LivingEntity livingEntity) {
-        double radius = getScale() - 2;
+        double radius = getScale() - 3;
         return AbstractHerobrine.isNotHerobrine(livingEntity) && distanceToSqr(livingEntity) < radius * radius;
     }
 

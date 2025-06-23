@@ -4,7 +4,7 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
-import com.yummy.naraka.network.SyncAfterimagePayload;
+import com.yummy.naraka.network.SyncAfterimagePacket;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
@@ -311,7 +311,7 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     public void addAfterimage(Afterimage afterimage) {
         if (!level().isClientSide) {
-            SyncAfterimagePayload payload = new SyncAfterimagePayload(this, afterimage);
+            SyncAfterimagePacket payload = new SyncAfterimagePacket(this, afterimage);
             NetworkManager.sendToClient(bossEvent.getPlayers(), payload);
         }
         this.afterimages.add(afterimage);

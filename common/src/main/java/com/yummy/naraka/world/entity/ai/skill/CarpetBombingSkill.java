@@ -1,6 +1,8 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
+import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.Stardust;
 import net.minecraft.core.particles.ParticleTypes;
@@ -15,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class CarpetBombingSkill extends TargetSkill<Herobrine> {
+public class CarpetBombingSkill extends AttackSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final.carpet_bombing");
 
     private final Map<Stardust, Integer> stardusts = new HashMap<>();
@@ -52,6 +54,11 @@ public class CarpetBombingSkill extends TargetSkill<Herobrine> {
     }
 
     @Override
+    protected float calculateDamage(LivingEntity target) {
+        return mob.getAttackDamage();
+    }
+
+    @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runAt(10, () -> mob.setDeltaMovement(0, 1.2, 0));
         runBetween(11, 25, () -> reduceSpeed(0.8f));
@@ -60,11 +67,20 @@ public class CarpetBombingSkill extends TargetSkill<Herobrine> {
         runBetween(10, 50, () -> rotateTowardTarget(target));
         runAfter(10, () -> lookTarget(target));
         runBetween(50, 70, () -> NarakaSkillUtils.moveDown(target, mob, 0.3, -2.1));
+        runAt(55, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 4));
         runAt(70, () -> mob.setDeltaMovement(0, 0.4, 0));
         runBetween(71, 90, () -> reduceSpeed(0.4f));
         runAt(90, () -> mob.setDeltaMovement(Vec3.ZERO));
 
         onGround(level);
+    }
+
+    @Override
+    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
+        if (NarakaEntityUtils.disableAndHurtShield(target, 120, 15))
+            return false;
+        mob.stigmatizeEntity(level, target);
+        return super.hurtHitEntity(level, target);
     }
 
     private void onGround(ServerLevel level) {

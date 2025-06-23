@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -63,46 +64,53 @@ public class Stardust extends Entity {
                 .define(HIT_BLOCK, false);
     }
 
+    private void handleOnHitBlock() {
+        if (explosionWaitingTickCount <= EXPLOSION_WAITING_TICK) {
+            explosionWaitingTickCount += 1;
+        } else {
+            discard();
+        }
+        if (explosionWaitingTickCount == EXPLOSION_WAITING_TICK)
+            explode(2);
+    }
+
     @Override
     public void tick() {
         if (entityData.get(HIT_BLOCK)) {
-            if (explosionWaitingTickCount < EXPLOSION_WAITING_TICK)
-                explosionWaitingTickCount += 1;
-            else {
-                explode(6);
-                discard();
-            }
+            handleOnHitBlock();
             return;
         }
-        if (isFalling())
+
+        if (isFalling()) {
             setDeltaMovement(getDeltaMovement().scale(1.2));
-        else
+        } else if (getDeltaMovement().length() < 0.005) {
             waitFalling();
-        Vec3 movement = getDeltaMovement();
-        HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, entity -> entity.getClass() != Stardust.class, ClipContext.Block.COLLIDER);
-        this.onHit(hitResult);
-        setPos(position().add(movement));
+        } else {
+            setDeltaMovement(getDeltaMovement().scale(0.75));
+        }
+
+        if (tickCount > 40) {
+            HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, entity -> entity.getClass() != Stardust.class, ClipContext.Block.COLLIDER);
+            this.onHit(hitResult);
+        }
+        setPos(position().add(getDeltaMovement()));
     }
 
     private void waitFalling() {
-        if (getDeltaMovement().length() < 0.005) {
-            waitingTickCount += 1;
-            int waitingTick = entityData.get(WAITING_TICK);
-            if (waitingTickCount >= waitingTick) {
-                Entity target = getTarget();
-                if (followTarget && target != null) {
-                    Vec3 delta = target.getEyePosition().subtract(this.position()).normalize().scale(1.3);
-                    setDeltaMovement(delta);
-                } else {
-                    RandomSource random = RandomSource.create(getId() + waitingTick);
-                    double y = random.nextIntBetweenInclusive(4, 4) * -0.1;
-                    double x = (random.nextDouble() - 0.5) * 0.5;
-                    double z = (random.nextDouble() - 0.5) * 0.5;
-                    setDeltaMovement(x, y, z);
-                }
+        waitingTickCount += 1;
+        int waitingTick = entityData.get(WAITING_TICK);
+        if (waitingTickCount >= waitingTick) {
+            Entity target = getTarget();
+            if (followTarget && target != null) {
+                Vec3 delta = target.getEyePosition().subtract(this.position()).normalize().scale(1.3);
+                setDeltaMovement(delta);
+            } else {
+                RandomSource random = RandomSource.create(getId() + waitingTick);
+                double y = random.nextIntBetweenInclusive(4, 4) * -0.1;
+                double x = (random.nextDouble() - 0.5) * 0.5;
+                double z = (random.nextDouble() - 0.5) * 0.5;
+                setDeltaMovement(x, y, z);
             }
-        } else {
-            setDeltaMovement(getDeltaMovement().scale(0.75));
         }
     }
 
@@ -122,11 +130,12 @@ public class Stardust extends Entity {
         if (hitResult.getType() == HitResult.Type.BLOCK) {
             setDeltaMovement(Vec3.ZERO);
             entityData.set(HIT_BLOCK, true);
-            explode(2);
+            explode(1);
+            setPos(hitResult.getLocation());
         }
         if (hitResult instanceof EntityHitResult entityHitResult && level() instanceof ServerLevel level) {
             Entity source = owner == null ? this : owner;
-            explode(2);
+            explode(1);
             if (entityHitResult.getEntity() instanceof Player livingEntity
                     && !livingEntity.isInvulnerableTo(level, NarakaDamageSources.stardust(this))) {
                 StigmaHelper.increaseStigma(level, livingEntity, source);
@@ -136,6 +145,7 @@ public class Stardust extends Entity {
 
     private void explode(int radius) {
         Entity source = owner == null ? this : owner;
+        level().addParticle(ParticleTypes.EXPLOSION_EMITTER, getX(), getY(), getZ(), 0, 0, 0);
         level().explode(source, NarakaDamageSources.stardust(this), null, position(), radius, false, Level.ExplosionInteraction.NONE);
     }
 

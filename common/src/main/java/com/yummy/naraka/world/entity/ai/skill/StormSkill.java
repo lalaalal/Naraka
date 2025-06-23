@@ -53,7 +53,7 @@ public class StormSkill extends Skill<Herobrine> {
         AABB boundingBox = mob.getBoundingBox().inflate(20, 3, 20);
         level.getEntitiesOfClass(LivingEntity.class, boundingBox, this::entityToPull).forEach(target -> {
             Vec3 movement = mob.position().subtract(target.position())
-                    .scale(0.3);
+                    .scale(0.2);
             target.setDeltaMovement(movement);
             if (target instanceof ServerPlayer player)
                 NarakaEntityUtils.sendPlayerMovement(player, movement);
