@@ -10,7 +10,6 @@ import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import com.yummy.naraka.client.renderer.entity.state.AfterimageRenderState;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
-import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -71,8 +70,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
         super.extractRenderState(entity, renderState, partialTicks);
         renderState.finalModel = entity.isFinalModel();
         renderState.isShadow = entity.isShadow;
-        renderState.isStaggering = entity.getCurrentAnimation().equals(AnimationLocations.STAGGERING);
-        renderState.isIdle = true;
+        renderState.isIdle = entity.shouldPlayIdleAnimation();
         renderState.eyeAlpha = entity.getEyeAlpha();
         renderState.doWalkAnimation = !renderState.finalModel;
         renderState.displayPickaxe = entity.displayPickaxe() && entity.isAlive();

@@ -214,19 +214,9 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     protected AABB makeBoundingBox(Vec3 position) {
-        if (!firstTick && getPhase() == 3)
+        if (!firstTick && isFinalModel())
             return super.makeBoundingBox(position).expandTowards(0, 0.5, 0);
         return super.makeBoundingBox(position);
-    }
-
-    @Override
-    protected void updateAnimationOnSkillEnd(Skill<?> skill) {
-        if (!skill.hasLinkedSkill()) {
-            if (getPhase() == 3)
-                setAnimation(AnimationLocations.PHASE_3_IDLE);
-            else
-                setAnimation(AnimationLocations.IDLE);
-        }
     }
 
     private void teleportToSpawnedPosition() {
@@ -380,6 +370,11 @@ public class Herobrine extends AbstractHerobrine {
         } else {
             idleTickCount = 0;
         }
+    }
+
+    @Override
+    public boolean shouldPlayIdleAnimation() {
+        return getPhase() < 3;
     }
 
     private void updateAccumulatedDamage() {

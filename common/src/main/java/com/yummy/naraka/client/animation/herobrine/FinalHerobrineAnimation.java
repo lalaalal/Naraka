@@ -32,7 +32,7 @@ public class FinalHerobrineAnimation {
             ))
             .addAnimation("main", new AnimationChannel(AnimationChannel.Targets.POSITION,
                     new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(3.0417F, KeyframeAnimations.posVec(0.0F, 10.0F, 0.0F), NarakaInterpolations.FAST_STEP_OUT),
+                    new Keyframe(3.0417F, KeyframeAnimations.posVec(0.0F, 10.0F, 0.0F), NarakaInterpolations.FAST_STEP_IN),
                     new Keyframe(4.0417F, KeyframeAnimations.posVec(0.0F, 10.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(5.5F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), NarakaInterpolations.FAST_STEP_IN)
             ))

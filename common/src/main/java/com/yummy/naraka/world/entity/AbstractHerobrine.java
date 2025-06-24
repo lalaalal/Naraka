@@ -148,7 +148,21 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         return entityData.get(DISPLAY_SCARF);
     }
 
-    protected abstract void updateAnimationOnSkillEnd(Skill<?> skill);
+    protected void updateAnimationOnSkillEnd(Skill<?> skill) {
+        if (!skill.hasLinkedSkill()) {
+            setAnimation(getIdleAnimation());
+        }
+    }
+
+    protected ResourceLocation getIdleAnimation() {
+        if (isFinalModel())
+            return AnimationLocations.PHASE_3_IDLE;
+        return AnimationLocations.IDLE;
+    }
+
+    public boolean shouldPlayIdleAnimation() {
+        return true;
+    }
 
     private void updateAnimationTick() {
         if (animationTickCount == 0)
@@ -179,6 +193,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     public void stopStaticAnimation() {
         if (animationTickCount < 0)
             return;
+        setAnimation(getIdleAnimation());
         animationTickCount = Integer.MIN_VALUE;
         skillManager.resume();
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);

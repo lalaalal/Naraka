@@ -4,7 +4,10 @@ import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.ai.goal.FollowOwnerGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
-import com.yummy.naraka.world.entity.ai.skill.*;
+import com.yummy.naraka.world.entity.ai.skill.DashSkill;
+import com.yummy.naraka.world.entity.ai.skill.ShadowFlickerSkill;
+import com.yummy.naraka.world.entity.ai.skill.ShadowPunchSkill;
+import com.yummy.naraka.world.entity.ai.skill.SimpleComboAttackSkill;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
@@ -107,17 +110,6 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(ALPHA, 0x01);
-    }
-
-    @Override
-    protected void updateAnimationOnSkillEnd(Skill<?> skill) {
-        if (!skill.hasLinkedSkill()) {
-            if (isFinalModel()) {
-                setAnimation(AnimationLocations.PHASE_3_IDLE);
-            } else {
-                setAnimation(AnimationLocations.IDLE);
-            }
-        }
     }
 
     @Override
