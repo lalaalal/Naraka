@@ -46,6 +46,13 @@ public class SkillManager {
         this.skillSelectListeners.add(listener);
     }
 
+    public void shareCooldown(List<Skill<?>> skills) {
+        this.runOnSkillEnd(skill -> {
+            if (skills.contains(skill))
+                skills.forEach(Skill::setCooldown);
+        });
+    }
+
     @Nullable
     private Skill<?> selectSkill(ServerLevel level) {
         if (paused || waitingTick > 0)

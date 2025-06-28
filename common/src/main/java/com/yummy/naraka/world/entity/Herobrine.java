@@ -77,7 +77,8 @@ public class Herobrine extends AbstractHerobrine {
     protected final StrikeDownSkill strikeDownSkill = registerSkill(this, StrikeDownSkill::new, AnimationLocations.FINAL_COMBO_ATTACK_3);
     protected final SpinUpSkill spinUpSkill = registerSkill(new SpinUpSkill(this, strikeDownSkill), AnimationLocations.FINAL_COMBO_ATTACK_2);
     protected final SplitAttackSkill splitAttackSkill = registerSkill(6, new SplitAttackSkill(this, spinUpSkill), AnimationLocations.FINAL_COMBO_ATTACK_1);
-    protected final PickaxeSlashSkill pickaxeSlashSkill = registerSkill(this, PickaxeSlashSkill::single, AnimationLocations.PICKAXE_SLASH_SINGLE);
+    protected final PickaxeSlashSkill singlePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::single, AnimationLocations.PICKAXE_SLASH_SINGLE);
+    protected final PickaxeSlashSkill triplePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::triple, AnimationLocations.PICKAXE_SLASH_TRIPLE);
 
     @Nullable
     private LivingEntity firstTarget;
@@ -86,7 +87,7 @@ public class Herobrine extends AbstractHerobrine {
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill);
     private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, walkAroundTargetSkill);
     private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, summonShadowSkill, walkAroundTargetSkill);
-    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, splitAttackSkill, stormSkill, carpetBombingSkill, pickaxeSlashSkill);
+    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, splitAttackSkill, stormSkill, carpetBombingSkill, singlePickaxeSlashSkill, triplePickaxeSlashSkill);
 
     private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashAroundSkill, walkAroundTargetSkill);
     private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(AnimationLocations.ENTER_PHASE_2, AnimationLocations.STAGGERING_PHASE_2, AnimationLocations.ENTER_PHASE_3);
@@ -136,6 +137,7 @@ public class Herobrine extends AbstractHerobrine {
         skillManager.runOnSkillEnd(this::disableEyeOnPhase3);
         skillManager.runOnSkillEnd(this::useShadowFlicker);
         skillManager.enableOnly(PHASE_1_SKILLS);
+        skillManager.shareCooldown(List.of(singlePickaxeSlashSkill, triplePickaxeSlashSkill));
 
         registerAnimation(AnimationLocations.ENTER_PHASE_2);
         registerAnimation(AnimationLocations.ENTER_PHASE_3);

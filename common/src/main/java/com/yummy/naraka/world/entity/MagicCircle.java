@@ -93,7 +93,7 @@ public class MagicCircle extends Entity {
     }
 
     private void clientTick(Level level) {
-        setYRot(getYRot() + 18);
+        setYRot(getYRot() + 0.5f);
         float scale = getScale();
         int remainTick = getLifetime() - tickCount;
         if (remainTick % 7 == 3)
