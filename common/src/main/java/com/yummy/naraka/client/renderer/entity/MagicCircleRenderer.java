@@ -7,6 +7,8 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.renderer.entity.state.MagicCircleRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.MagicCircle;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -19,6 +21,7 @@ import org.joml.Vector3fc;
 
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public class MagicCircleRenderer extends EntityRenderer<MagicCircle, MagicCircleRenderState> {
     public MagicCircleRenderer(EntityRendererProvider.Context context) {
         super(context);

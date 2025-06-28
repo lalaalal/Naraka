@@ -6,7 +6,6 @@ import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.NarakaFireballModel;
-import com.yummy.naraka.client.renderer.entity.state.NarakaFireballRenderState;
 import com.yummy.naraka.world.entity.NarakaFireball;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -14,11 +13,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
-public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball, NarakaFireballRenderState> {
+public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball, EntityRenderState> {
     private static final float SIN_45 = (float) Math.sin(Math.PI / 4);
 
     private final NarakaFireballModel model;
@@ -29,12 +29,12 @@ public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball, Narak
     }
 
     @Override
-    public NarakaFireballRenderState createRenderState() {
-        return new NarakaFireballRenderState();
+    public EntityRenderState createRenderState() {
+        return new EntityRenderState();
     }
 
     @Override
-    public void render(NarakaFireballRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(EntityRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
 
         float rotation = renderState.ageInTicks * 5;

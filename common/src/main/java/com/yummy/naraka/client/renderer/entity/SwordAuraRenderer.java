@@ -5,6 +5,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.SwordAura;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -15,6 +17,7 @@ import net.minecraft.core.Direction;
 
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public class SwordAuraRenderer extends EntityRenderer<SwordAura, EntityRenderState> {
     public SwordAuraRenderer(EntityRendererProvider.Context context) {
         super(context);
