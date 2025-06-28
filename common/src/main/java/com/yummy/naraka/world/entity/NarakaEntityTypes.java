@@ -77,10 +77,10 @@ public class NarakaEntityTypes {
                     .sized(1, 0.1f)
     );
 
-    public static final HolderProxy<EntityType<?>, EntityType<SwordAura>> SWORD_AURA = register(
-            "sword_aura",
-            EntityType.Builder.<SwordAura>of(SwordAura::new, MobCategory.MISC)
-                    .sized(0.5f, 1f)
+    public static final HolderProxy<EntityType<?>, EntityType<PickaxeSlash>> PICKAXE_SLASH = register(
+            "pickaxe_slash",
+            EntityType.Builder.<PickaxeSlash>of(PickaxeSlash::new, MobCategory.MISC)
+                    .sized(1f, 2.5f)
     );
 
     private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {

@@ -40,7 +40,7 @@ public final class NarakaTextures {
 
     public static final ResourceLocation STARDUST = entity("stardust_core.png");
     public static final ResourceLocation MAGIC_CIRCLE = entity("magic_circle.png");
-    public static final ResourceLocation SWORD_AURA = entity("sword_aura.png");
+    public static final ResourceLocation PICKAXE_SLASH = entity("pickaxe_slash.png");
 
     public static final ResourceLocation FORGING_BLOCK = entity("forging_block.png");
     public static final ResourceLocation SOUL_STABILIZER = entity("soul_stabilizer.png");

@@ -6,7 +6,7 @@ import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.renderer.entity.state.FlatImageRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
-import com.yummy.naraka.world.entity.MagicCircle;
+import com.yummy.naraka.world.entity.PickaxeSlash;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.LightTexture;
@@ -18,8 +18,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 
 @Environment(EnvType.CLIENT)
-public class MagicCircleRenderer extends EntityRenderer<MagicCircle, FlatImageRenderState> {
-    public MagicCircleRenderer(EntityRendererProvider.Context context) {
+public class PickaxeSlashRenderer extends EntityRenderer<PickaxeSlash, FlatImageRenderState> {
+    public PickaxeSlashRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
@@ -29,19 +29,20 @@ public class MagicCircleRenderer extends EntityRenderer<MagicCircle, FlatImageRe
     }
 
     @Override
-    public void extractRenderState(MagicCircle entity, FlatImageRenderState reusedState, float partialTick) {
+    public void extractRenderState(PickaxeSlash entity, FlatImageRenderState reusedState, float partialTick) {
         super.extractRenderState(entity, reusedState, partialTick);
-        reusedState.yRot = entity.getYRot(partialTick);
-        reusedState.scale = entity.getScale(partialTick);
+        reusedState.yRot = 180 + entity.getYRot(partialTick);
     }
 
     @Override
     public void render(FlatImageRenderState renderState, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
-        poseStack.scale(renderState.scale, renderState.scale, renderState.scale);
-        poseStack.mulPose(Axis.YN.rotation(renderState.yRot));
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutout(NarakaTextures.MAGIC_CIRCLE));
-        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.UP);
+        poseStack.translate(0, 0, 0.5);
+        poseStack.scale(3, 3, 1.26f * 3);
+        poseStack.mulPose(Axis.YN.rotationDegrees(renderState.yRot));
+        poseStack.rotateAround(Axis.ZN.rotationDegrees(30), 0, 0.5f, 0);
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityTranslucentEmissive(NarakaTextures.PICKAXE_SLASH));
+        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.EAST);
         poseStack.popPose();
         super.render(renderState, poseStack, bufferSource, packedLight);
     }

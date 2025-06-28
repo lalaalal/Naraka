@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaTextures;
-import com.yummy.naraka.client.renderer.entity.state.StardustRenderState;
+import com.yummy.naraka.client.renderer.entity.state.FlatImageRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.Stardust;
 import net.fabricmc.api.EnvType;
@@ -19,23 +19,20 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import org.joml.Quaternionfc;
-
-import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class StardustRenderer extends EntityRenderer<Stardust, StardustRenderState> {
+public class StardustRenderer extends EntityRenderer<Stardust, FlatImageRenderState> {
     public StardustRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    public StardustRenderState createRenderState() {
-        return new StardustRenderState();
+    public FlatImageRenderState createRenderState() {
+        return new FlatImageRenderState();
     }
 
     @Override
-    public void extractRenderState(Stardust entity, StardustRenderState reusedState, float partialTick) {
+    public void extractRenderState(Stardust entity, FlatImageRenderState reusedState, float partialTick) {
         super.extractRenderState(entity, reusedState, partialTick);
         Player player = Minecraft.getInstance().player;
         if (player != null) {
@@ -44,10 +41,12 @@ public class StardustRenderer extends EntityRenderer<Stardust, StardustRenderSta
     }
 
     @Override
-    public void render(StardustRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
-        List<Quaternionfc> rotations = List.of(Axis.YN.rotationDegrees(renderState.yRot));
+    public void render(FlatImageRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        poseStack.pushPose();
+        poseStack.mulPose(Axis.YN.rotationDegrees(180 + renderState.yRot));
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(NarakaTextures.STARDUST));
-        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer, rotations, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.NORTH);
+        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.SOUTH);
+        poseStack.popPose();
         super.render(renderState, poseStack, buffer, packedLight);
     }
 }

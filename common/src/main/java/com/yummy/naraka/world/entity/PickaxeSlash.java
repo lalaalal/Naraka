@@ -14,16 +14,16 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class SwordAura extends AbstractHurtingProjectile {
+public class PickaxeSlash extends AbstractHurtingProjectile {
     private int lifetime = Integer.MAX_VALUE;
 
-    public SwordAura(EntityType<? extends SwordAura> entityType, Level level) {
+    public PickaxeSlash(EntityType<? extends PickaxeSlash> entityType, Level level) {
         super(entityType, level);
         setNoGravity(true);
     }
 
-    public SwordAura(Level level, LivingEntity owner, int lifetime) {
-        this(NarakaEntityTypes.SWORD_AURA.get(), level);
+    public PickaxeSlash(Level level, LivingEntity owner, int lifetime) {
+        this(NarakaEntityTypes.PICKAXE_SLASH.get(), level);
         this.setOwner(owner);
         this.lifetime = lifetime;
     }
@@ -54,7 +54,7 @@ public class SwordAura extends AbstractHurtingProjectile {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         if (result.getEntity() instanceof LivingEntity livingEntity && level() instanceof ServerLevel serverLevel) {
-            DamageSource damageSource = NarakaDamageSources.swordAura(this, getOwner());
+            DamageSource damageSource = NarakaDamageSources.pickaxeSlash(this, getOwner());
             livingEntity.hurtServer(serverLevel, damageSource, 6);
         }
     }

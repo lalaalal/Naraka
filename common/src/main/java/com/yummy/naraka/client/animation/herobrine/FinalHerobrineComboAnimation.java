@@ -16,8 +16,8 @@ public class FinalHerobrineComboAnimation {
         AnimationMapper.register(AnimationLocations.FINAL_COMBO_ATTACK_1, FINAL_COMBO_1);
         AnimationMapper.register(AnimationLocations.FINAL_COMBO_ATTACK_2, FINAL_COMBO_2);
         AnimationMapper.register(AnimationLocations.FINAL_COMBO_ATTACK_3, FINAL_COMBO_3);
-        AnimationMapper.register(AnimationLocations.SWORD_AURA_1, SWORD_AURA_1);
-        AnimationMapper.register(AnimationLocations.SWORD_AURA_2, SWORD_AURA_2);
+            AnimationMapper.register(AnimationLocations.PICKAXE_SLASH_SINGLE, PICKAXE_SLASH_SINGLE);
+            AnimationMapper.register(AnimationLocations.PICKAXE_SLASH_TRIPLE, PICKAXE_SLASH_TRIPLE);
     }
 
     public static final AnimationDefinition FINAL_COMBO_1 = AnimationDefinition.Builder.withLength(2.0F)
@@ -443,7 +443,7 @@ public class FinalHerobrineComboAnimation {
             ))
             .build();
 
-    public static final AnimationDefinition SWORD_AURA_1 = AnimationDefinition.Builder.withLength(3.25F)
+        public static final AnimationDefinition PICKAXE_SLASH_SINGLE = AnimationDefinition.Builder.withLength(3.25F)
             .addAnimation("main", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(0.625F, KeyframeAnimations.degreeVec(5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -597,7 +597,7 @@ public class FinalHerobrineComboAnimation {
             ))
             .build();
 
-    public static final AnimationDefinition SWORD_AURA_2 = AnimationDefinition.Builder.withLength(4.0F)
+        public static final AnimationDefinition PICKAXE_SLASH_TRIPLE = AnimationDefinition.Builder.withLength(4.0F)
             .addAnimation("main", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(0.625F, KeyframeAnimations.degreeVec(5.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),

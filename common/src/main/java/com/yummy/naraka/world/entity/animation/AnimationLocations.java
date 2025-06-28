@@ -37,8 +37,8 @@ public class AnimationLocations {
     public static final ResourceLocation FINAL_COMBO_ATTACK_1 = create("final_herobrine", "combo_attack_1");
     public static final ResourceLocation FINAL_COMBO_ATTACK_2 = create("final_herobrine", "combo_attack_2");
     public static final ResourceLocation FINAL_COMBO_ATTACK_3 = create("final_herobrine", "combo_attack_3");
-    public static final ResourceLocation SWORD_AURA_1 = create("final_herobrine", "sword_aura_1");
-    public static final ResourceLocation SWORD_AURA_2 = create("final_herobrine", "sword_aura_2");
+    public static final ResourceLocation PICKAXE_SLASH_SINGLE = create("final_herobrine", "pickaxe_slash.single");
+    public static final ResourceLocation PICKAXE_SLASH_TRIPLE = create("final_herobrine", "pickaxe_slash.triple");
 
     private static ResourceLocation create(String entity, String name) {
         ResourceLocation location = NarakaMod.location("animation/" + entity, name);

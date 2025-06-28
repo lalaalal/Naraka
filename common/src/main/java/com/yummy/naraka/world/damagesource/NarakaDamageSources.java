@@ -86,7 +86,7 @@ public class NarakaDamageSources {
         return source(NarakaDamageTypes.NARAKA_FIREBALL, fireball, fireball.getOwner());
     }
 
-    public static DamageSource swordAura(SwordAura swordAura, @Nullable Entity causingEntity) {
-        return source(NarakaDamageTypes.SWORD_AURA, swordAura, causingEntity);
+    public static DamageSource pickaxeSlash(PickaxeSlash pickaxeSlash, @Nullable Entity causingEntity) {
+        return source(NarakaDamageTypes.PICKAXE_SLASH, pickaxeSlash, causingEntity);
     }
 }

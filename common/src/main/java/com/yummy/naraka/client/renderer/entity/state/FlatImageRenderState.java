@@ -5,7 +5,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 
 @Environment(EnvType.CLIENT)
-public class MagicCircleRenderState extends EntityRenderState {
+public class FlatImageRenderState extends EntityRenderState {
     public float yRot;
     public float scale;
 }
