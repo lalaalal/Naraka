@@ -8,16 +8,12 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
-    protected TargetSkill(ResourceLocation location, int duration, int cooldown, T mob, @Nullable Skill<?> linkedSkill) {
-        super(location, duration, cooldown, mob, linkedSkill);
+    protected TargetSkill(ResourceLocation location, T mob, int duration, int cooldown, @Nullable Skill<?> linkedSkill) {
+        super(location, mob, duration, cooldown, linkedSkill);
     }
 
-    protected TargetSkill(String name, int duration, int cooldown, T mob) {
-        super(name, duration, cooldown, mob);
-    }
-
-    protected TargetSkill(ResourceLocation location, int duration, int cooldown, T mob) {
-        super(location, duration, cooldown, mob);
+    protected TargetSkill(ResourceLocation location, T mob, int duration, int cooldown) {
+        super(location, mob, duration, cooldown);
     }
 
     @Override
@@ -33,7 +29,7 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
     }
 
     /**
-     * Called only when target entity is not null.
+     * Called only when the target entity is not null.
      */
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
 

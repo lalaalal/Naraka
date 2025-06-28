@@ -1,13 +1,14 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.world.entity.Herobrine;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 
 public class SummonShadowSkill extends Skill<Herobrine> {
-    public static final String NAME = "summon_shadow";
+    public static final ResourceLocation LOCATION = createLocation("summon_shadow");
 
     public SummonShadowSkill(Herobrine mob) {
-        super(NAME, 20, 0, mob);
+        super(LOCATION, mob, 20, 0);
     }
 
     @Override

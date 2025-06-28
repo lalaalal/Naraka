@@ -24,7 +24,7 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
     private int destroyCount = 5;
 
     public DestroyStructureSkill(Herobrine mob) {
-        super(LOCATION, 80, Integer.MAX_VALUE, mob);
+        super(LOCATION, mob, 80, Integer.MAX_VALUE);
     }
 
     @Override

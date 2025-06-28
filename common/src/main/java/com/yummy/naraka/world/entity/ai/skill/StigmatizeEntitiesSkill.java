@@ -3,14 +3,15 @@ package com.yummy.naraka.world.entity.ai.skill;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 
 public class StigmatizeEntitiesSkill extends Skill<Herobrine> {
-    public static final String NAME = "stigmatize_entities";
+    public static final ResourceLocation LOCATION = createLocation("stigmatize_entities");
 
     public StigmatizeEntitiesSkill(Herobrine mob) {
-        super(NAME, Integer.MAX_VALUE, 0, mob);
+        super(LOCATION, mob, Integer.MAX_VALUE, 0);
     }
 
     @Override

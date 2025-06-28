@@ -77,6 +77,12 @@ public class NarakaEntityTypes {
                     .sized(1, 0.1f)
     );
 
+    public static final HolderProxy<EntityType<?>, EntityType<SwordAura>> SWORD_AURA = register(
+            "sword_aura",
+            EntityType.Builder.<SwordAura>of(SwordAura::new, MobCategory.MISC)
+                    .sized(0.5f, 1f)
+    );
+
     private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {
         return RegistryProxy.register(Registries.ENTITY_TYPE, name, () -> builder.build(createKey(name)));
     }

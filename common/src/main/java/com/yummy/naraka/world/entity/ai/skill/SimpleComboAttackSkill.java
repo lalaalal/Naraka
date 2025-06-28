@@ -22,8 +22,8 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
     protected boolean moveToTarget;
     protected double moveSpeed;
 
-    public static SimpleComboAttackSkill combo1(Skill<?> nextSkill, AbstractHerobrine mob) {
-        return builder(FINAL_COMBO_ATTACK_1, 40, 100, mob)
+    public static SimpleComboAttackSkill combo1(AbstractHerobrine mob, Skill<?> nextSkill) {
+        return builder(FINAL_COMBO_ATTACK_1, mob, 40, 100)
                 .nextSkill(nextSkill)
                 .moveToTarget(15, 20)
                 .moveSpeed(0.7)
@@ -31,8 +31,8 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
                 .build();
     }
 
-    public static SimpleComboAttackSkill combo2(Skill<?> nextSkill, AbstractHerobrine mob) {
-        return builder(FINAL_COMBO_ATTACK_2, 40, 0, mob)
+    public static SimpleComboAttackSkill combo2(AbstractHerobrine mob, Skill<?> nextSkill) {
+        return builder(FINAL_COMBO_ATTACK_2, mob, 40, 0)
                 .nextSkill(nextSkill)
                 .attackTick(22).attackRange(2)
                 .lookTarget()
@@ -42,7 +42,7 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     public static SimpleComboAttackSkill combo3(AbstractHerobrine mob) {
-        return builder(FINAL_COMBO_ATTACK_3, 60, 0, mob)
+        return builder(FINAL_COMBO_ATTACK_3, mob, 60, 0)
                 .attackTick(22).attackRange(3)
                 .lookTarget()
                 .moveToTarget(15, 20)
@@ -50,12 +50,12 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
                 .build();
     }
 
-    public static Builder builder(ResourceLocation location, int duration, int cooldown, AbstractHerobrine mob) {
+    public static Builder builder(ResourceLocation location, AbstractHerobrine mob, int duration, int cooldown) {
         return new Builder(location, duration, cooldown, mob);
     }
 
-    public SimpleComboAttackSkill(ResourceLocation location, int duration, int cooldown, @Nullable Skill<?> nextSkill, AbstractHerobrine mob) {
-        super(location, duration, cooldown, 1, nextSkill, duration, mob);
+    public SimpleComboAttackSkill(ResourceLocation location, AbstractHerobrine mob, int duration, int cooldown, @Nullable Skill<?> nextSkill) {
+        super(location, mob, duration, cooldown, 1, duration, nextSkill);
     }
 
     @Override
@@ -159,7 +159,7 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
         }
 
         public SimpleComboAttackSkill build() {
-            SimpleComboAttackSkill skill = new SimpleComboAttackSkill(location, duration, cooldown, nextSkill, mob);
+            SimpleComboAttackSkill skill = new SimpleComboAttackSkill(location, mob, duration, cooldown, nextSkill);
             skill.attackTick = this.attackTick;
             skill.attackRange = this.attackRange;
             skill.moveToTarget = this.moveToTarget;

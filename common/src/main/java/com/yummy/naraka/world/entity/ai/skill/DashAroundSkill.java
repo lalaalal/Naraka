@@ -5,6 +5,7 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.entity.AfterimageEntity;
 import com.yummy.naraka.world.entity.SkillUsingMob;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,13 +13,13 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends TargetSkill<T> {
-    public static final String NAME = "dash_around";
+    public static final ResourceLocation LOCATION = createLocation("dash_around");
     private Vec3 prevPosition = Vec3.ZERO;
     private Vec3 deltaMovement = Vec3.ZERO;
     private Vec3 previousTargetPosition = Vec3.ZERO;
 
     public DashAroundSkill(T mob) {
-        super(NAME, 15, 40, mob);
+        super(LOCATION, mob, 15, 40);
     }
 
     @Override

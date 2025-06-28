@@ -20,7 +20,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
     private MagicCircle magicCircle;
 
     public ExplosionSkill(Herobrine mob) {
-        super(LOCATION, 130, 200, mob);
+        super(LOCATION, mob, 130, 200);
     }
 
     @Override

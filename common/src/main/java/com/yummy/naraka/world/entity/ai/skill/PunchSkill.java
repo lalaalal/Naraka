@@ -14,8 +14,8 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
 
     private boolean linked = false;
 
-    public PunchSkill(@Nullable ComboSkill<?> comboSkill, T mob, int cooldown, boolean disableShield) {
-        super(LOCATION, 22, cooldown, 0.8f, comboSkill, 11, mob);
+    public PunchSkill(T mob, int cooldown, boolean disableShield, @Nullable ComboSkill<?> comboSkill) {
+        super(LOCATION, mob, 22, cooldown, 0.8f, 11, comboSkill);
         if (disableShield) {
             this.shieldCooldown = 60;
             this.shieldDamage = 15;

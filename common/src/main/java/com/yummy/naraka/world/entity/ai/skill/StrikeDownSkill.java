@@ -21,7 +21,7 @@ public class StrikeDownSkill extends SpawnInstantShadowSkill {
     private Vec3 shadowPosition = Vec3.ZERO;
 
     public StrikeDownSkill(Herobrine mob) {
-        super(LOCATION, 60, 0, 0, null, 60, mob);
+        super(LOCATION, mob, 60, 0, 0, null, 60);
         this.shieldCooldown = 100;
         this.shieldDamage = 15;
     }

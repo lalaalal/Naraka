@@ -19,7 +19,7 @@ public class ThrowFireballSkill extends TargetSkill<SkillUsingMob> {
     private Fireball fireball;
 
     public ThrowFireballSkill(SkillUsingMob mob, Function<ServerLevel, Fireball> fireballCreator) {
-        super(LOCATION, 35, 100, mob);
+        super(LOCATION, mob, 35, 100);
         this.fireballCreator = fireballCreator;
     }
 

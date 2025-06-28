@@ -13,8 +13,8 @@ import org.jetbrains.annotations.Nullable;
 public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
     public static final String NAME = "uppercut";
 
-    public UppercutSkill(@Nullable ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
-        super(createLocation(NAME), 35, 0, 0.1f, comboSkill, 15, mob);
+    public UppercutSkill(AbstractHerobrine mob, @Nullable ComboSkill<AbstractHerobrine> comboSkill) {
+        super(createLocation(NAME), mob, 35, 0, 0.1f, 15, comboSkill);
         this.shieldCooldown = 60;
         this.shieldDamage = 15;
     }

@@ -11,8 +11,8 @@ import org.jetbrains.annotations.Nullable;
 public class SpinningSkill extends ComboSkill<AbstractHerobrine> {
     public static final String NAME = "spinning";
 
-    public SpinningSkill(ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
-        super(createLocation(NAME), 20, 0, 1, comboSkill, 20, mob);
+    public SpinningSkill(AbstractHerobrine mob, ComboSkill<AbstractHerobrine> comboSkill) {
+        super(createLocation(NAME), mob, 20, 0, 1, 20, comboSkill);
         this.shieldCooldown = 60;
         this.shieldDamage = 15;
     }

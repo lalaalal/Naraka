@@ -62,10 +62,10 @@ public class Herobrine extends AbstractHerobrine {
     protected final DestroyStructureSkill destroyStructureSkill = registerSkill(this, DestroyStructureSkill::new);
 
     protected final LandingSkill landingSkill = registerSkill(this, LandingSkill::new, AnimationLocations.COMBO_ATTACK_5);
-    protected final SuperHitSkill superHitSkill = registerSkill(new SuperHitSkill(landingSkill, this), AnimationLocations.COMBO_ATTACK_4);
-    protected final SpinningSkill spinningSkill = registerSkill(new SpinningSkill(superHitSkill, this), AnimationLocations.COMBO_ATTACK_3);
-    protected final UppercutSkill uppercutSkill = registerSkill(new UppercutSkill(spinningSkill, this), AnimationLocations.COMBO_ATTACK_2);
-    protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(2, new PunchSkill<>(uppercutSkill, this, 140, true), AnimationLocations.COMBO_ATTACK_1);
+    protected final SuperHitSkill superHitSkill = registerSkill(new SuperHitSkill(this, landingSkill), AnimationLocations.COMBO_ATTACK_4);
+    protected final SpinningSkill spinningSkill = registerSkill(new SpinningSkill(this, superHitSkill), AnimationLocations.COMBO_ATTACK_3);
+    protected final UppercutSkill uppercutSkill = registerSkill(new UppercutSkill(this, spinningSkill), AnimationLocations.COMBO_ATTACK_2);
+    protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(2, new PunchSkill<>(this, 140, true, uppercutSkill), AnimationLocations.COMBO_ATTACK_1);
 
     protected final FlickerSkill<Herobrine> flickerSkill = registerSkill(new FlickerSkill<>(this, dashSkill, punchSkill));
     protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, flickerSkill));
@@ -75,8 +75,9 @@ public class Herobrine extends AbstractHerobrine {
     protected final StormSkill stormSkill = registerSkill(7, this, StormSkill::new, AnimationLocations.STORM);
 
     protected final StrikeDownSkill strikeDownSkill = registerSkill(this, StrikeDownSkill::new, AnimationLocations.FINAL_COMBO_ATTACK_3);
-    protected final SpinUpSkill spinUpSkill = registerSkill(new SpinUpSkill(strikeDownSkill, this), AnimationLocations.FINAL_COMBO_ATTACK_2);
-    protected final SplitAttackSkill splitAttackSkill = registerSkill(6, new SplitAttackSkill(spinUpSkill, this), AnimationLocations.FINAL_COMBO_ATTACK_1);
+    protected final SpinUpSkill spinUpSkill = registerSkill(new SpinUpSkill(this, strikeDownSkill), AnimationLocations.FINAL_COMBO_ATTACK_2);
+    protected final SplitAttackSkill splitAttackSkill = registerSkill(6, new SplitAttackSkill(this, spinUpSkill), AnimationLocations.FINAL_COMBO_ATTACK_1);
+    protected final SwordAuraSkill swordAuraSkill = registerSkill(this, SwordAuraSkill::single, AnimationLocations.SWORD_AURA_1);
 
     @Nullable
     private LivingEntity firstTarget;
@@ -85,7 +86,7 @@ public class Herobrine extends AbstractHerobrine {
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill);
     private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, walkAroundTargetSkill);
     private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, summonShadowSkill, walkAroundTargetSkill);
-    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, splitAttackSkill, stormSkill, carpetBombingSkill);
+    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, splitAttackSkill, stormSkill, carpetBombingSkill, swordAuraSkill);
 
     private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashAroundSkill, walkAroundTargetSkill);
     private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(AnimationLocations.ENTER_PHASE_2, AnimationLocations.STAGGERING_PHASE_2, AnimationLocations.ENTER_PHASE_3);

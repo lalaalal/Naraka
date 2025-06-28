@@ -1,7 +1,10 @@
 package com.yummy.naraka.util;
 
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
+import com.yummy.naraka.world.entity.ai.skill.Skill;
+import com.yummy.naraka.world.entity.ai.skill.SkillManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
@@ -14,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class NarakaSkillUtils {
@@ -61,7 +65,7 @@ public class NarakaSkillUtils {
     }
 
     /**
-     * Move to target with speed. Stop mob is on ground or nearby target
+     * Move to the target with speed. Stop mob is on ground or nearby target
      */
     public static void moveToTarget(LivingEntity target, Mob mob, double speed, double yAddition) {
         if (mob.distanceToSqr(target) < 9 || mob.onGround()) {
@@ -73,5 +77,13 @@ public class NarakaSkillUtils {
                     .add(0, yAddition, 0);
             mob.setDeltaMovement(movement);
         }
+    }
+
+    public static void shareCooldown(SkillUsingMob mob, List<Skill<?>> skills) {
+        SkillManager skillManager = mob.getSkillManager();
+        skillManager.runOnSkillEnd(skill -> {
+            if (skills.contains(skill))
+                skills.forEach(Skill::setCooldown);
+        });
     }
 }

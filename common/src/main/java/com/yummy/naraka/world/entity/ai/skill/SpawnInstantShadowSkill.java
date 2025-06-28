@@ -11,8 +11,8 @@ public abstract class SpawnInstantShadowSkill extends ComboSkill<Herobrine> {
     @Nullable
     protected ShadowHerobrine shadowHerobrine;
 
-    protected SpawnInstantShadowSkill(ResourceLocation location, int duration, int cooldown, float linkChance, @Nullable Skill<?> nextSkill, int comboDuration, Herobrine mob) {
-        super(location, duration, cooldown, linkChance, nextSkill, comboDuration, mob);
+    protected SpawnInstantShadowSkill(ResourceLocation location, Herobrine mob, int duration, int cooldown, float linkChance, @Nullable Skill<?> nextSkill, int comboDuration) {
+        super(location, mob, duration, cooldown, linkChance, comboDuration, nextSkill);
     }
 
     protected void spawnShadowHerobrine(ServerLevel level) {

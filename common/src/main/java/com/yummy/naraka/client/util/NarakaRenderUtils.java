@@ -7,13 +7,46 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import org.joml.Quaternionfc;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import java.util.List;
+import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class NarakaRenderUtils {
+    private static final List<Vector3f> VERTICAL = List.of(
+            new Vector3f(-0.5f, 0, 0.5f),
+            new Vector3f(-0.5f, 0, -0.5f),
+            new Vector3f(0.5f, 0, -0.5f),
+            new Vector3f(0.5f, 0, 0.5f)
+    );
+
+    private static final List<Vector3f> HORIZONTAL_X = List.of(
+            new Vector3f(0, 0f, 0.5f),
+            new Vector3f(0, 0f, -0.5f),
+            new Vector3f(0, 1f, -0.5f),
+            new Vector3f(0, 1f, 0.5f)
+    );
+
+    private static final List<Vector3f> HORIZONTAL_Z = List.of(
+            new Vector3f(0.5f, 0f, 0),
+            new Vector3f(-0.5f, 0f, 0),
+            new Vector3f(-0.5f, 1f, 0),
+            new Vector3f(0.5f, 1f, 0)
+    );
+
+    private static final Map<Direction, List<Vector3f>> VERTICES = Map.of(
+            Direction.UP, VERTICAL,
+            Direction.DOWN, VERTICAL,
+            Direction.EAST, HORIZONTAL_X,
+            Direction.WEST, HORIZONTAL_X,
+            Direction.NORTH, HORIZONTAL_Z,
+            Direction.SOUTH, HORIZONTAL_Z
+    );
+
     /**
      * Add 4 vertices in anti-clockwise from left-top based on a positive direction
      *
@@ -39,5 +72,18 @@ public class NarakaRenderUtils {
 
     public static void vertices(VertexConsumer vertexConsumer, PoseStack.Pose pose, List<Vector3f> positions, int packedLight, int packedOverlay, int color, Direction direction) {
         vertices(vertexConsumer, pose, positions, 0, 0, 1, 1, packedLight, packedOverlay, color, direction);
+    }
+
+    public static void renderFlatImage(PoseStack poseStack, VertexConsumer vertexConsumer, List<Quaternionfc> rotations, Vector3fc scale, int packedLight, int packedOverlay, int color, Direction direction) {
+        poseStack.pushPose();
+        rotations.forEach(poseStack::mulPose);
+        poseStack.scale(scale.x(), scale.y(), scale.z());
+        NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), VERTICES.get(direction), packedLight, packedOverlay, color, direction);
+        NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), VERTICES.get(direction), packedLight, packedOverlay, color, direction.getOpposite());
+        poseStack.popPose();
+    }
+
+    public static void renderFlatImage(PoseStack poseStack, VertexConsumer vertexConsumer, List<Quaternionfc> rotations, int packedLight, int packedOverlay, int color, Direction direction) {
+        renderFlatImage(poseStack, vertexConsumer, rotations, new Vector3f(1), packedLight, packedOverlay, color, direction);
     }
 }

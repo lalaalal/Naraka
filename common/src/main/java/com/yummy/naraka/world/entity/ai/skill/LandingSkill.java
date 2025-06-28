@@ -3,6 +3,7 @@ package com.yummy.naraka.world.entity.ai.skill;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -13,12 +14,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Supplier;
 
 public class LandingSkill extends ComboSkill<AbstractHerobrine> {
-    public static final String NAME = "landing";
+    public static final ResourceLocation LOCATION = createLocation("landing");
 
     private final Supplier<Vec3> floatingBlockMovement = () -> new Vec3(0, mob.getRandom().nextDouble() * 0.3 + 0.3, 0);
 
     public LandingSkill(AbstractHerobrine mob) {
-        super(createLocation(NAME), 50, 0, 0, null, 50, mob);
+        super(LOCATION, mob, 50, 0, 0, 50, null);
         this.shieldCooldown = 60;
         this.shieldDamage = 15;
     }

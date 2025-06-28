@@ -13,7 +13,9 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
+import org.joml.Quaternionfc;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import java.util.List;
 
@@ -36,19 +38,10 @@ public class MagicCircleRenderer extends EntityRenderer<MagicCircle, MagicCircle
 
     @Override
     public void render(MagicCircleRenderState renderState, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotation(renderState.yRot));
-        poseStack.scale(renderState.scale, renderState.scale, renderState.scale);
+        List<Quaternionfc> rotations = List.of(Axis.YN.rotation(renderState.yRot));
+        Vector3fc scale = new Vector3f(renderState.scale);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutout(NarakaTextures.MAGIC_CIRCLE));
-        List<Vector3f> vertices = List.of(
-                new Vector3f(-0.5f, 0, 0.5f),
-                new Vector3f(-0.5f, 0, -0.5f),
-                new Vector3f(0.5f, 0, -0.5f),
-                new Vector3f(0.5f, 0, 0.5f)
-        );
-        NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), vertices, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.UP);
-        NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), vertices, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.DOWN);
-        poseStack.popPose();
+        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer, rotations, scale, packedLight, OverlayTexture.NO_OVERLAY, -1, Direction.UP);
         super.render(renderState, poseStack, bufferSource, packedLight);
     }
 }

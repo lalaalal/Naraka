@@ -18,8 +18,8 @@ import org.jetbrains.annotations.Nullable;
 public class SpinUpSkill extends ComboSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final.spin_up");
 
-    public SpinUpSkill(@Nullable Skill<?> nextSkill, Herobrine mob) {
-        super(LOCATION, 40, 0, 1, nextSkill, 40, mob);
+    public SpinUpSkill(Herobrine mob, @Nullable Skill<?> nextSkill) {
+        super(LOCATION, mob, 40, 0, 1, 40, nextSkill);
     }
 
     @Override

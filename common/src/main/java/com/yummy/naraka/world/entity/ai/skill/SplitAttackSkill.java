@@ -11,8 +11,8 @@ import net.minecraft.world.entity.LivingEntity;
 public class SplitAttackSkill extends SpawnInstantShadowSkill {
     public static final ResourceLocation LOCATION = createLocation("final.split_attack");
 
-    public SplitAttackSkill(Skill<?> nextSkill, Herobrine mob) {
-        super(LOCATION, 50, 200, 1, nextSkill, 50, mob);
+    public SplitAttackSkill(Herobrine mob, Skill<?> nextSkill) {
+        super(LOCATION, mob, 50, 200, 1, nextSkill, 50);
     }
 
     @Override

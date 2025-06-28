@@ -28,7 +28,7 @@ public abstract class Skill<T extends SkillUsingMob> {
     @Nullable
     protected Skill<?> linkedSkill;
 
-    protected Skill(ResourceLocation location, int duration, int cooldown, T mob, @Nullable Skill<?> linkedSkill) {
+    protected Skill(ResourceLocation location, T mob, int duration, int cooldown, @Nullable Skill<?> linkedSkill) {
         this.location = location;
         this.mob = mob;
         this.duration = duration;
@@ -38,12 +38,8 @@ public abstract class Skill<T extends SkillUsingMob> {
         this.linkedSkill = linkedSkill;
     }
 
-    protected Skill(String name, int duration, int cooldown, T mob) {
-        this(createLocation(name), duration, cooldown, mob, null);
-    }
-
-    protected Skill(ResourceLocation location, int duration, int cooldown, T mob) {
-        this(location, duration, cooldown, mob, null);
+    protected Skill(ResourceLocation location, T mob, int duration, int cooldown) {
+        this(location, mob, duration, cooldown, null);
     }
 
     protected final boolean targetInRange(float distanceSquare) {

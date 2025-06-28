@@ -21,8 +21,8 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
 
     private final Supplier<Vec3> floatingBlockMovement = () -> new Vec3(0, mob.getRandom().nextDouble() * 0.3 + 0.1, 0);
 
-    public SuperHitSkill(ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
-        super(createLocation(NAME), 40, 0, 1, comboSkill, 40, mob);
+    public SuperHitSkill(AbstractHerobrine mob, ComboSkill<AbstractHerobrine> comboSkill) {
+        super(createLocation(NAME), mob, 40, 0, 1, 40, comboSkill);
         this.shieldCooldown = 60;
         this.shieldDamage = 15;
     }

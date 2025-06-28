@@ -15,7 +15,7 @@ public class FlickerSkill<T extends AbstractHerobrine> extends TargetSkill<T> {
     private final PunchSkill<?> punchSkill;
 
     public FlickerSkill(T mob, DashSkill<?> dashSkill, PunchSkill<?> punchSkill) {
-        super(LOCATION, 1, 50, mob);
+        super(LOCATION, mob, 1, 50);
         this.dashSkill = dashSkill;
         this.punchSkill = punchSkill;
     }

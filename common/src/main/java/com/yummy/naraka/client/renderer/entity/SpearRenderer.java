@@ -43,18 +43,6 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
         return new SpearRenderer(context, model, 3);
     }
 
-    @Override
-    public SpearRenderState createRenderState() {
-        return new SpearRenderState();
-    }
-
-    @Override
-    public void extractRenderState(Spear spear, SpearRenderState renderState, float partialTick) {
-        super.extractRenderState(spear, renderState, partialTick);
-        renderState.setRotation(spear, partialTick);
-        renderState.setType(spear);
-    }
-
     public SpearRenderer(EntityRendererProvider.Context context) {
         super(context);
         model = new SpearModel(context.bakeLayer(NarakaModelLayers.SPEAR));
@@ -65,6 +53,18 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
         super(context);
         this.model = model;
         this.yOffset = yOffset;
+    }
+
+    @Override
+    public SpearRenderState createRenderState() {
+        return new SpearRenderState();
+    }
+
+    @Override
+    public void extractRenderState(Spear spear, SpearRenderState renderState, float partialTick) {
+        super.extractRenderState(spear, renderState, partialTick);
+        renderState.setRotation(spear, partialTick);
+        renderState.setType(spear);
     }
 
     @Override

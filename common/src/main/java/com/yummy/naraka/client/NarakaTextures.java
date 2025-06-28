@@ -33,7 +33,6 @@ public final class NarakaTextures {
     public static final ResourceLocation SHADOW_ARMOR = entity("shadow_armor.png");
 
     public static final ResourceLocation LONGINUS = entity("longinus.png");
-
     public static final ResourceLocation SPEAR = entity("spear.png");
     public static final ResourceLocation MIGHTY_HOLY_SPEAR = entity("mighty_holy_spear.png");
 
@@ -41,6 +40,7 @@ public final class NarakaTextures {
 
     public static final ResourceLocation STARDUST = entity("stardust_core.png");
     public static final ResourceLocation MAGIC_CIRCLE = entity("magic_circle.png");
+    public static final ResourceLocation SWORD_AURA = entity("sword_aura.png");
 
     public static final ResourceLocation FORGING_BLOCK = entity("forging_block.png");
     public static final ResourceLocation SOUL_STABILIZER = entity("soul_stabilizer.png");

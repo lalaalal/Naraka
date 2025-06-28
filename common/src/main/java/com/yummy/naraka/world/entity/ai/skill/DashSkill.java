@@ -17,7 +17,7 @@ public class DashSkill<T extends AbstractHerobrine> extends TargetSkill<T> {
     private boolean alwaysMove = false;
 
     public DashSkill(T mob) {
-        super(LOCATION, 10, 40, mob);
+        super(LOCATION, mob, 10, 40);
     }
 
     @Override

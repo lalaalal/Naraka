@@ -47,8 +47,8 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     protected final ShadowFlickerSkill flickerSkill = registerSkill(10, new ShadowFlickerSkill(this, dashSkill, punchSkill));
 
     protected final SimpleComboAttackSkill finalComboAttack3 = registerSkill(SimpleComboAttackSkill.combo3(this), AnimationLocations.FINAL_COMBO_ATTACK_3);
-    protected final SimpleComboAttackSkill finalComboAttack2 = registerSkill(SimpleComboAttackSkill.combo2(finalComboAttack3, this), AnimationLocations.FINAL_COMBO_ATTACK_2);
-    protected final SimpleComboAttackSkill finalComboAttack1 = registerSkill(SimpleComboAttackSkill.combo1(finalComboAttack2, this), AnimationLocations.FINAL_COMBO_ATTACK_1);
+    protected final SimpleComboAttackSkill finalComboAttack2 = registerSkill(SimpleComboAttackSkill.combo2(this, finalComboAttack3), AnimationLocations.FINAL_COMBO_ATTACK_2);
+    protected final SimpleComboAttackSkill finalComboAttack1 = registerSkill(SimpleComboAttackSkill.combo1(this, finalComboAttack2), AnimationLocations.FINAL_COMBO_ATTACK_1);
 
     @Nullable
     private Herobrine herobrine;
