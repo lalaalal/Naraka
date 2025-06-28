@@ -32,15 +32,16 @@ public class PickaxeSlashRenderer extends EntityRenderer<PickaxeSlash, FlatImage
     public void extractRenderState(PickaxeSlash entity, FlatImageRenderState reusedState, float partialTick) {
         super.extractRenderState(entity, reusedState, partialTick);
         reusedState.yRot = 180 + entity.getYRot(partialTick);
+        reusedState.zRot = entity.getZRot();
     }
 
     @Override
     public void render(FlatImageRenderState renderState, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
-        poseStack.translate(0, 0, 0.5);
+        poseStack.translate(0, -0.25, 0.5);
         poseStack.scale(3, 3, 1.26f * 3);
         poseStack.mulPose(Axis.YN.rotationDegrees(renderState.yRot));
-        poseStack.rotateAround(Axis.ZN.rotationDegrees(30), 0, 0.5f, 0);
+        poseStack.rotateAround(Axis.ZN.rotationDegrees(renderState.zRot), 0, 0.5f, 0);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityTranslucentEmissive(NarakaTextures.PICKAXE_SLASH));
         NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.EAST);
         poseStack.popPose();
