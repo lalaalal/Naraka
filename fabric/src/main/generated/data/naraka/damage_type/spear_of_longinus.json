@@ -1,5 +1,5 @@
 {
   "exhaustion": 1.0,
   "message_id": "spear_of_longinus",
-  "scaling": "when_caused_by_living_non_player"
+  "scaling": "never"
 }

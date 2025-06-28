@@ -22,6 +22,7 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
     protected void addTags(HolderLookup.Provider provider) {
         addTags(NarakaDamageTypes.STIGMA,
                 DamageTypeTags.BYPASSES_INVULNERABILITY,
+                DamageTypeTags.BYPASSES_WOLF_ARMOR,
                 DamageTypeTags.BYPASSES_ARMOR,
                 DamageTypeTags.BYPASSES_EFFECTS,
                 DamageTypeTags.BYPASSES_ENCHANTMENTS,
@@ -36,6 +37,7 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
         );
         addTags(NarakaDamageTypes.SPEAR_OF_LONGINUS,
                 DamageTypeTags.BYPASSES_INVULNERABILITY,
+                DamageTypeTags.BYPASSES_WOLF_ARMOR,
                 DamageTypeTags.BYPASSES_ARMOR,
                 DamageTypeTags.BYPASSES_EFFECTS,
                 DamageTypeTags.BYPASSES_ENCHANTMENTS,
@@ -61,6 +63,10 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
         );
         tag(NarakaDamageTypeTags.DEATH_COUNTING_ATTACK)
                 .add(NarakaDamageTypes.STIGMA);
+        addTags(NarakaDamageTypes.PICKAXE_SLASH,
+                DamageTypeTags.BYPASSES_ENCHANTMENTS,
+                DamageTypeTags.BYPASSES_SHIELD
+        );
     }
 
     @SafeVarargs
