@@ -80,7 +80,7 @@ public class NarakaEntityTypes {
     public static final HolderProxy<EntityType<?>, EntityType<PickaxeSlash>> PICKAXE_SLASH = register(
             "pickaxe_slash",
             EntityType.Builder.<PickaxeSlash>of(PickaxeSlash::new, MobCategory.MISC)
-                    .sized(1f, 2.5f)
+                    .sized(2.5f, 2.5f)
     );
 
     private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {
