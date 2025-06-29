@@ -42,7 +42,7 @@ public class PickaxeSlashRenderer extends EntityRenderer<PickaxeSlash, FlatImage
         poseStack.translate(0, -0.25, 0);
         poseStack.mulPose(Axis.YN.rotationDegrees(renderState.yRot));
         poseStack.rotateAround(Axis.ZN.rotationDegrees(renderState.zRot), 0, 0.5f, 0);
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityTranslucentEmissive(NarakaTextures.PICKAXE_SLASH));
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutout(NarakaTextures.PICKAXE_SLASH));
         NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.EAST);
         poseStack.popPose();
         super.render(renderState, poseStack, bufferSource, packedLight);

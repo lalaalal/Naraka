@@ -34,6 +34,7 @@ public class PickaxeSlash extends AbstractHurtingProjectile {
         this.setOwner(owner);
         this.stigmatizingEntity = owner;
         this.lifetime = lifetime;
+        this.accelerationPower = 0.05;
     }
 
     @Override
