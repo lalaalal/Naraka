@@ -1,8 +1,9 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -97,6 +98,8 @@ public class Stardust extends Entity {
     private void waitFalling() {
         waitingTickCount += 1;
         int waitingTick = entityData.get(WAITING_TICK);
+        if (waitingTickCount == waitingTick - 5)
+            level().addParticle(NarakaParticleTypes.STARDUST.get(), getX(), getY(), getZ(), 0, 0, 0);
         if (waitingTickCount >= waitingTick) {
             Entity target = getTarget();
             if (followTarget && target != null) {
@@ -141,11 +144,26 @@ public class Stardust extends Entity {
         }
     }
 
+    private void addParticles(ParticleOptions particle, double baseSpeed, int count) {
+        for (int i = 0; i < count; i++) {
+            double yRot = random.nextDouble() * 360;
+            double xRot = random.nextDouble() * 180;
+            double speed = random.nextDouble() * 0.2 + baseSpeed;
+            double xSpeed = Math.cos(Math.toRadians(yRot)) * speed;
+            double zSpeed = Math.sin(Math.toRadians(yRot)) * speed;
+            double ySpeed = Math.sin(Math.toRadians(xRot)) * speed;
+            level().addParticle(particle, getX(), getY(), getZ(), xSpeed, ySpeed, zSpeed);
+        }
+    }
+
     private void explode(int radius) {
         Entity source = owner == null ? this : owner;
-        level().addParticle(ParticleTypes.EXPLOSION_EMITTER, getX(), getY(), getZ(), 0, 0, 0);
-        if (!level().isClientSide)
+        if (level().isClientSide) {
+            addParticles(NarakaParticleTypes.STARDUST_FLAME.get(), 0.1, 120);
+            addParticles(NarakaParticleTypes.GOLDEN_FLAME.get(), 0.3, 60);
+        } else {
             level().explode(source, NarakaDamageSources.stardust(this), null, position(), radius, false, Level.ExplosionInteraction.NONE);
+        }
     }
 
     @Override
