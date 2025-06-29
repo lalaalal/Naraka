@@ -83,4 +83,9 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
     protected float calculateDamage(LivingEntity target) {
         return 10;
     }
+
+    @Override
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
+        level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
+    }
 }
