@@ -27,6 +27,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
@@ -449,7 +451,9 @@ public class Herobrine extends AbstractHerobrine {
         );
         NetworkManager.clientbound().send(bossEvent.getPlayers(), packet);
         level.getGameRules().getRule(GameRules.RULE_DAYLIGHT).set(false, level.getServer());
+        level.getGameRules().getRule(GameRules.RULE_WEATHER_CYCLE).set(false, level.getServer());
         level.setDayTime(18000);
+        level.resetWeatherCycle();
     }
 
     public void startWhiteScreen() {
@@ -486,8 +490,10 @@ public class Herobrine extends AbstractHerobrine {
     public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             return super.hurtServer(level, source, damage);
-        if (source.getEntity() == this || isUsingInvulnerableSkill())
+        if (source.getEntity() == this || isUsingInvulnerableSkill()) {
+            level.playSound(null, getX(), getY(), getZ(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.HOSTILE, 4, 0.3f);
             return false;
+        }
 
         float limitedDamage = Math.min(damage, hurtDamageLimit);
         if (updateHibernateMode(level, source, getActualDamage(source, limitedDamage)))
@@ -658,6 +664,7 @@ public class Herobrine extends AbstractHerobrine {
             }
             shadowController.killShadows(serverLevel);
             serverLevel.getGameRules().getRule(GameRules.RULE_DAYLIGHT).set(true, serverLevel.getServer());
+            serverLevel.getGameRules().getRule(GameRules.RULE_WEATHER_CYCLE).set(true, serverLevel.getServer());
         }
         super.remove(reason);
     }
