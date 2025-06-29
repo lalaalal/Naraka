@@ -4,10 +4,10 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 
-public class FlickerParticle extends TextureSheetParticle {
+public class BlinkParticle extends TextureSheetParticle {
     private final SpriteSet sprites;
 
-    protected FlickerParticle(ClientLevel clientLevel, SpriteSet sprites, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+    protected BlinkParticle(ClientLevel clientLevel, SpriteSet sprites, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
         super(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed);
         this.sprites = sprites;
         this.setSpriteFromAge(this.sprites);
@@ -39,7 +39,7 @@ public class FlickerParticle extends TextureSheetParticle {
 
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new FlickerParticle(level, sprites, x, y, z, xSpeed, ySpeed, zSpeed);
+            return new BlinkParticle(level, sprites, x, y, z, xSpeed, ySpeed, zSpeed);
         }
     }
 }

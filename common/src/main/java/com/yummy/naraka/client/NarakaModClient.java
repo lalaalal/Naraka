@@ -135,7 +135,9 @@ public final class NarakaModClient {
         ParticleProviderRegistry.register(NarakaParticleTypes.GOLDEN_FLAME, FlameParticle.Provider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.CORRUPTED_FIRE_FLAME, FlameParticle.Provider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.CORRUPTED_SOUL_FIRE_FLAME, FlameParticle.Provider::new);
-        ParticleProviderRegistry.register(NarakaParticleTypes.FLICKER, FlickerParticle.Provider::new);
+        ParticleProviderRegistry.register(NarakaParticleTypes.FLICKER, BlinkParticle.Provider::new);
+        ParticleProviderRegistry.register(NarakaParticleTypes.STARDUST, BlinkParticle.Provider::new);
+        ParticleProviderRegistry.register(NarakaParticleTypes.STARDUST_FLAME, FlameParticle.Provider::new);
     }
 
     private static void registerKeyMappings() {
