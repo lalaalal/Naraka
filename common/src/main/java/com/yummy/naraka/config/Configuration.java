@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * An abstract class provides interface to load, save values
+ * An abstract class provides an interface to load, save values
  */
 public abstract class Configuration {
     public final String name;

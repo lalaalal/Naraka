@@ -2,13 +2,13 @@ package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.SpearModel;
 import com.yummy.naraka.client.model.SpearOfLonginusModel;
 import com.yummy.naraka.client.renderer.entity.state.SpearRenderState;
-import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.Spear;
 import net.fabricmc.api.EnvType;
@@ -85,7 +85,7 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
         poseStack.mulPose(renderState.xRotation);
         poseStack.translate(0, yOffset, 0);
 
-        if (renderState.isLonginus && NarakaConfig.CLIENT.enableNonShaderLonginusRendering.getValue()) {
+        if (renderState.isLonginus && NarakaClientContext.SHADER_ENABLED.getValue()) {
             renderNonShaderLonginus(model, renderState.ageInTicks, poseStack, buffer);
         } else {
             if (renderState.isLonginus)

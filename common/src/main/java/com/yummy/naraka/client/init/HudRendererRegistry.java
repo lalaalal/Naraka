@@ -10,7 +10,15 @@ import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
 public abstract class HudRendererRegistry {
-    public static void register(ResourceLocation id, Supplier<LayeredDraw.Layer> factory) {
-        MethodInvoker.invoke(HudRendererRegistry.class, "register", id, factory);
+    public static void registerPreLayer(ResourceLocation id, Supplier<LayeredDraw.Layer> layer) {
+        MethodInvoker.of(HudRendererRegistry.class, "registerPreLayer")
+                .invoke(id, layer);
     }
+
+    public static void registerPostLayer(ResourceLocation id, Supplier<LayeredDraw.Layer> factory) {
+        MethodInvoker.of(HudRendererRegistry.class, "registerPostLayer")
+                .invoke(id, factory);
+    }
+
+
 }

@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaTextures;
+import com.yummy.naraka.util.Color;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.*;
@@ -14,15 +15,16 @@ import org.joml.Matrix4f;
 @Environment(EnvType.CLIENT)
 public class HerobrineSkyRenderHelper {
     private static final float TIME_OF_DAY = 0;
-    private static final int SKY_COLOR = 0x000000;
+    private static final Color SKY_COLOR = Color.of(1, 0.04f, 0.04f, 0.04f);
 
     public static void renderHerobrineSky(SkyRenderer skyRenderer, RenderBuffers renderBuffers, FogParameters fog) {
         RenderSystem.setShaderFog(fog);
         PoseStack poseStack = new PoseStack();
-        float r = ARGB.redFloat(SKY_COLOR);
-        float g = ARGB.greenFloat(SKY_COLOR);
-        float b = ARGB.blueFloat(SKY_COLOR);
+        float r = SKY_COLOR.red01();
+        float g = SKY_COLOR.green01();
+        float b = SKY_COLOR.blue01();
         skyRenderer.renderSkyDisc(r, g, b);
+        skyRenderer.renderDarkDisc();
         MultiBufferSource.BufferSource bufferSource = renderBuffers.bufferSource();
         renderEclipse(poseStack, bufferSource);
 

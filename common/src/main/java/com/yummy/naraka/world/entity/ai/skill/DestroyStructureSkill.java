@@ -46,14 +46,14 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
         } else {
             tickCount = duration - 1;
             mob.sendMusic(3);
-            mob.startHerobrineSky();
+            mob.startHerobrineSky(level);
         }
     }
 
     @Override
     protected void skillTick(ServerLevel level) {
         if (tickCount == 20)
-            mob.startHerobrineSky();
+            mob.startHerobrineSky(level);
         if (tickCount < 15 || NarakaConfig.COMMON.disableHerobrineDestroyingStructure.getValue() || !mob.hasSpawnPosition())
             return;
         if (radius < 95) {

@@ -37,6 +37,7 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.AABB;
@@ -442,11 +443,13 @@ public class Herobrine extends AbstractHerobrine {
         NetworkManager.sendToClient(serverPlayer, packet);
     }
 
-    public void startHerobrineSky() {
+    public void startHerobrineSky(ServerLevel level) {
         NarakaClientboundEventPacket packet = new NarakaClientboundEventPacket(
                 NarakaClientboundEventPacket.Event.START_HEROBRINE_SKY
         );
         NetworkManager.clientbound().send(bossEvent.getPlayers(), packet);
+        level.getGameRules().getRule(GameRules.RULE_DAYLIGHT).set(false, level.getServer());
+        level.setDayTime(18000);
     }
 
     public void startWhiteScreen() {
@@ -471,7 +474,7 @@ public class Herobrine extends AbstractHerobrine {
                 NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY,
                 NarakaClientboundEventPacket.Event.STOP_WHITE_FOG
         );
-        NetworkManager.sendToClient(serverPlayer, packet);
+        NetworkManager.clientbound().send(serverPlayer, packet);
     }
 
     private boolean isUsingInvulnerableSkill() {
@@ -654,6 +657,7 @@ public class Herobrine extends AbstractHerobrine {
                 StigmaHelper.removeStigma(livingEntity);
             }
             shadowController.killShadows(serverLevel);
+            serverLevel.getGameRules().getRule(GameRules.RULE_DAYLIGHT).set(true, serverLevel.getServer());
         }
         super.remove(reason);
     }
