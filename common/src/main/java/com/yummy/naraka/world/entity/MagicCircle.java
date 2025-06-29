@@ -64,7 +64,7 @@ public class MagicCircle extends Entity {
 
     private void serverTick(ServerLevel level) {
         int remainTick = getLifetime() - tickCount;
-        if (20 < remainTick && remainTick <= 40 && remainTick % 5 == 0) {
+        if (remainTick <= 40 && remainTick % 5 == 0) {
             Collection<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0, 7, 0), this::isValidTarget);
             DamageSource damageSource = damageSources().magic();
             for (LivingEntity entity : entities) {

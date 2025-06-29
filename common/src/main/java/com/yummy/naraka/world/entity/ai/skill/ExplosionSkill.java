@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.MagicCircle;
 import net.minecraft.core.BlockPos;
@@ -47,6 +48,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
         runBetween(85, 90, () -> scaleMagicCircle(10, 0, 85, 89));
 
         runAt(62, () -> mob.setDeltaMovement(Vec3.ZERO));
+        runAt(105, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 3));
     }
 
     private void scaleMagicCircle(float from, float to, int startTick, int endTick) {
