@@ -89,9 +89,9 @@ public class Stardust extends Entity {
             setDeltaMovement(getDeltaMovement().scale(0.75));
         }
 
-        if (tickCount > 40) {
+        if (tickCount > 40 && level() instanceof ServerLevel serverLevel) {
             HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, entity -> entity.getClass() != Stardust.class, ClipContext.Block.COLLIDER);
-            this.onHit(hitResult);
+            this.onHit(serverLevel, hitResult);
         }
         setPos(position().add(getDeltaMovement()));
     }
@@ -126,14 +126,14 @@ public class Stardust extends Entity {
         return null;
     }
 
-    public void onHit(HitResult hitResult) {
+    public void onHit(ServerLevel level, HitResult hitResult) {
         if (hitResult.getType() == HitResult.Type.BLOCK) {
             setDeltaMovement(Vec3.ZERO);
             entityData.set(HIT_BLOCK, true);
             explode(1);
             setPos(hitResult.getLocation());
         }
-        if (hitResult instanceof EntityHitResult entityHitResult && level() instanceof ServerLevel level) {
+        if (hitResult instanceof EntityHitResult entityHitResult) {
             Entity source = owner == null ? this : owner;
             explode(1);
             if (entityHitResult.getEntity() instanceof Player livingEntity
