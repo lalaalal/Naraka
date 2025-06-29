@@ -25,7 +25,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
 
     private static final int START_RUNNING_TICK = 15;
     private static final int RUSH_TICK = 18;
-    private static final int FINALE_TICK = 50;
+    private static final int FINALE_TICK = 30;
 
     private Vec3 movement = Vec3.ZERO;
     private boolean hit = false;
@@ -76,7 +76,8 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runBefore(START_RUNNING_TICK, () -> lookTarget(target));
         runBefore(START_RUNNING_TICK, () -> rotateTowardTarget(target));
-        runBefore(RUSH_TICK, () -> traceTarget(target));
+        runBefore(RUSH_TICK, () -> traceTarget(target, 1));
+        runAt(RUSH_TICK, () -> traceTarget(target, 1.5f));
         runAfter(duration - 40, () -> lookTarget(target));
         run(after(duration - 40) && failed, () -> rotateTowardTarget(target));
     }
@@ -154,11 +155,10 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         }
     }
 
-    private void traceTarget(LivingEntity target) {
-        if (before(START_RUNNING_TICK) || isTargetInFront(target)) {
-            this.movement = NarakaEntityUtils.getDirectionNormalVector(mob, target)
-                    .multiply(1, 0, 1);
-        }
+    private void traceTarget(LivingEntity target, float power) {
+        this.movement = NarakaEntityUtils.getDirectionNormalVector(mob, target)
+                .multiply(1, 0, 1)
+                .scale(power);
     }
 
     @Override
