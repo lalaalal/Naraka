@@ -64,21 +64,27 @@ public class Stardust extends Entity {
                 .define(HIT_BLOCK, false);
     }
 
-    private void handleOnHitBlock() {
+    private void handleOnHitBlock(ServerLevel level) {
         if (explosionWaitingTickCount <= EXPLOSION_WAITING_TICK) {
             explosionWaitingTickCount += 1;
         } else {
             discard();
         }
-        if (explosionWaitingTickCount == EXPLOSION_WAITING_TICK)
-            explode(2);
+        if (explosionWaitingTickCount == EXPLOSION_WAITING_TICK && !level().isClientSide)
+            explode(level, 2);
     }
 
     @Override
     public void tick() {
-        if (entityData.get(HIT_BLOCK)) {
-            handleOnHitBlock();
-            return;
+        if (level() instanceof ServerLevel serverLevel) {
+            if (entityData.get(HIT_BLOCK)) {
+                handleOnHitBlock(serverLevel);
+                return;
+            }
+            if (tickCount > 40) {
+                HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, entity -> entity.getClass() != Stardust.class, ClipContext.Block.COLLIDER);
+                this.onHit(serverLevel, hitResult);
+            }
         }
 
         if (isFalling()) {
@@ -87,11 +93,6 @@ public class Stardust extends Entity {
             waitFalling();
         } else {
             setDeltaMovement(getDeltaMovement().scale(0.75));
-        }
-
-        if (tickCount > 40 && level() instanceof ServerLevel serverLevel) {
-            HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, entity -> entity.getClass() != Stardust.class, ClipContext.Block.COLLIDER);
-            this.onHit(serverLevel, hitResult);
         }
         setPos(position().add(getDeltaMovement()));
     }
@@ -130,12 +131,12 @@ public class Stardust extends Entity {
         if (hitResult.getType() == HitResult.Type.BLOCK) {
             setDeltaMovement(Vec3.ZERO);
             entityData.set(HIT_BLOCK, true);
-            explode(1);
+            explode(level, 1);
             setPos(hitResult.getLocation());
         }
         if (hitResult instanceof EntityHitResult entityHitResult) {
             Entity source = owner == null ? this : owner;
-            explode(1);
+            explode(level, 1);
             if (entityHitResult.getEntity() instanceof Player livingEntity
                     && !livingEntity.isInvulnerableTo(level, NarakaDamageSources.stardust(this))) {
                 StigmaHelper.increaseStigma(level, livingEntity, source);
@@ -143,10 +144,10 @@ public class Stardust extends Entity {
         }
     }
 
-    private void explode(int radius) {
+    private void explode(ServerLevel level, int radius) {
         Entity source = owner == null ? this : owner;
-        level().addParticle(ParticleTypes.EXPLOSION_EMITTER, getX(), getY(), getZ(), 0, 0, 0);
-        level().explode(source, NarakaDamageSources.stardust(this), null, position(), radius, false, Level.ExplosionInteraction.NONE);
+        level.sendParticles(ParticleTypes.EXPLOSION_EMITTER, getX(), getY(), getZ(), 1, 0, 0, 0, 1);
+        level.explode(source, NarakaDamageSources.stardust(this), null, position(), radius, false, Level.ExplosionInteraction.NONE);
     }
 
     @Override
