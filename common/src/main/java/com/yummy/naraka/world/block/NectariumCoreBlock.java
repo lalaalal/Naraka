@@ -73,8 +73,10 @@ public class NectariumCoreBlock extends Block {
         if (stack.is(Items.HONEY_BOTTLE)) {
             BlockState activatedState = state.setValue(HONEY, MAX_HONEY);
             level.setBlock(pos, activatedState, UPDATE_ALL_IMMEDIATE);
-            if (!player.isCreative())
-                player.setItemInHand(hand, new ItemStack(Items.GLASS_BOTTLE));
+            if (!player.isCreative()) {
+                stack.shrink(1);
+                player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));
+            }
             if (player instanceof ServerPlayer serverPlayer)
                 NarakaCriteriaTriggers.SIMPLE_TRIGGER.get().trigger(serverPlayer, SimpleTrigger.ACTIVATE_NECTARIUM_CORE);
             return InteractionResult.CONSUME;
