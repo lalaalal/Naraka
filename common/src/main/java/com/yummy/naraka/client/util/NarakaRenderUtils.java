@@ -15,6 +15,8 @@ import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class NarakaRenderUtils {
+    public static final float SIN_45 = (float) Math.sin(Math.PI / 4);
+
     private static final List<Vector3f> VERTICAL = List.of(
             new Vector3f(-0.5f, 0, 0.5f),
             new Vector3f(-0.5f, 0, -0.5f),
@@ -74,7 +76,6 @@ public class NarakaRenderUtils {
 
     public static void renderFlatImage(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color, Direction face) {
         NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), VERTICES.get(face), packedLight, packedOverlay, color, Direction.UP);
-        if (face.getAxis().isVertical())
-            NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), VERTICES.get(face), packedLight, packedOverlay, color, Direction.DOWN);
+        NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), VERTICES.get(face), packedLight, packedOverlay, color, Direction.DOWN);
     }
 }

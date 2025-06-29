@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.NarakaFireballModel;
+import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.NarakaFireball;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,8 +20,6 @@ import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
 public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball, EntityRenderState> {
-    private static final float SIN_45 = (float) Math.sin(Math.PI / 4);
-
     private final NarakaFireballModel model;
 
     public NarakaFireballRenderer(EntityRendererProvider.Context context) {
@@ -39,10 +38,9 @@ public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball, Entit
 
         float rotation = renderState.ageInTicks * 5;
         poseStack.translate(0, 0.25, 0);
-        poseStack.mulPose(new Quaternionf().setAngleAxis((float) (Math.PI / 3), SIN_45, 0.0F, SIN_45));
+        poseStack.mulPose(new Quaternionf().setAngleAxis((float) (Math.PI / 3), NarakaRenderUtils.SIN_45, 0.0F, NarakaRenderUtils.SIN_45));
         poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
         poseStack.mulPose(Axis.ZP.rotationDegrees(rotation * 2));
-        poseStack.translate(0, -1.5, 0);
 
         RenderType renderType = model.renderType(NarakaTextures.NARAKA_FIREBALL);
         VertexConsumer vertexConsumer = buffer.getBuffer(renderType);

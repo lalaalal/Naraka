@@ -47,7 +47,7 @@ public class NarakaEntityTypes {
     public static final HolderProxy<EntityType<?>, EntityType<Stardust>> STARDUST = register(
             "stardust",
             EntityType.Builder.<Stardust>of(Stardust::new, MobCategory.MISC)
-                    .sized(1, 1)
+                    .sized(0.5f, 0.5f)
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<NarakaFireball>> NARAKA_FIREBALL = register(

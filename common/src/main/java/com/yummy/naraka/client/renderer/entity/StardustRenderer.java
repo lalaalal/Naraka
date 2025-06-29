@@ -7,6 +7,7 @@ import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.StardustModel;
 import com.yummy.naraka.client.renderer.entity.state.FlatImageRenderState;
+import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.Stardust;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,6 +20,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
 public class StardustRenderer extends EntityRenderer<Stardust, FlatImageRenderState> {
@@ -46,15 +48,15 @@ public class StardustRenderer extends EntityRenderer<Stardust, FlatImageRenderSt
     @Override
     public void render(FlatImageRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
-        poseStack.translate(-0.75, -1.625, -1.25);
-        poseStack.mulPose(Axis.YN.rotationDegrees(45));
-        poseStack.mulPose(Axis.ZN.rotationDegrees(45));
-
-        poseStack.scale(2, 2, 2);
+        float rotation = renderState.ageInTicks * 5;
+        poseStack.translate(0, 0.25, 0);
+        poseStack.mulPose(new Quaternionf().setAngleAxis((float) (Math.PI / 3), NarakaRenderUtils.SIN_45, 0.0F, NarakaRenderUtils.SIN_45));
+        poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(rotation * 2));
 
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(NarakaTextures.STARDUST));
         model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
-        poseStack.popPose();
         super.render(renderState, poseStack, buffer, packedLight);
+        poseStack.popPose();
     }
 }
