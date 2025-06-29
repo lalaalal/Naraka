@@ -64,8 +64,15 @@ public class PickaxeSlash extends AbstractHurtingProjectile {
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide && tickCount >= lifetime)
+        if (level() instanceof ServerLevel serverLevel)
+            serverTick(serverLevel);
+    }
+
+    private void serverTick(ServerLevel level) {
+        if (tickCount >= lifetime)
             discard();
+        level.getEntitiesOfClass(LivingEntity.class, getBoundingBox(), this::canHitEntity)
+                .forEach(target -> hurtEntity(level, target));
     }
 
     @Override
@@ -75,13 +82,13 @@ public class PickaxeSlash extends AbstractHurtingProjectile {
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        if (result.getEntity() instanceof LivingEntity target && level() instanceof ServerLevel serverLevel) {
-            if (target.invulnerableTime < 10 && stigmatizingEntity != null)
-                stigmatizingEntity.stigmatizeEntity(serverLevel, target);
-            DamageSource damageSource = NarakaDamageSources.pickaxeSlash(this, getOwner());
-            target.hurtServer(serverLevel, damageSource, 6);
-            setPos(oldPosition().add(getDeltaMovement()));
-        }
+        setPos(oldPosition().add(getDeltaMovement()));
+    }
+
+    private void hurtEntity(ServerLevel level, LivingEntity target) {
+        DamageSource damageSource = NarakaDamageSources.pickaxeSlash(this, getOwner());
+        if (target.hurtServer(level, damageSource, 6) && stigmatizingEntity != null)
+            stigmatizingEntity.stigmatizeEntity(level, target);
     }
 
     @Override

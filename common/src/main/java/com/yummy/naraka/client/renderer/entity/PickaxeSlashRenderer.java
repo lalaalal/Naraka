@@ -38,8 +38,8 @@ public class PickaxeSlashRenderer extends EntityRenderer<PickaxeSlash, FlatImage
     @Override
     public void render(FlatImageRenderState renderState, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
-        poseStack.translate(0, -0.25, 0.5);
-        poseStack.scale(3, 3, 1.26f * 3);
+        poseStack.scale(6, 6, 6);
+        poseStack.translate(0, -0.25, 0);
         poseStack.mulPose(Axis.YN.rotationDegrees(renderState.yRot));
         poseStack.rotateAround(Axis.ZN.rotationDegrees(renderState.zRot), 0, 0.5f, 0);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityTranslucentEmissive(NarakaTextures.PICKAXE_SLASH));
