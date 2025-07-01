@@ -73,7 +73,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
         renderState.isIdle = entity.shouldPlayIdleAnimation();
         renderState.eyeAlpha = entity.getEyeAlpha();
         renderState.doWalkAnimation = !renderState.finalModel;
-        renderState.displayPickaxe = entity.displayPickaxe() && entity.isAlive();
+        renderState.displayPickaxe = entity.displayPickaxe();
 
         renderState.setAfterimages(entity, partialTicks);
         renderState.setAnimationVisitor(entity);

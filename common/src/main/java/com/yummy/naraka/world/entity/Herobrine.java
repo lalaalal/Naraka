@@ -83,6 +83,8 @@ public class Herobrine extends AbstractHerobrine {
     protected final PickaxeSlashSkill singlePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::single, AnimationLocations.PICKAXE_SLASH_SINGLE);
     protected final PickaxeSlashSkill triplePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::triple, AnimationLocations.PICKAXE_SLASH_TRIPLE);
 
+    public final AnimationState chzzkAnimationState = new AnimationState();
+
     @Nullable
     private LivingEntity firstTarget;
 
@@ -151,8 +153,8 @@ public class Herobrine extends AbstractHerobrine {
         registerAnimation(AnimationLocations.STIGMATIZE_ENTITIES);
         registerAnimation(AnimationLocations.STIGMATIZE_ENTITIES_END);
 
-        registerAnimation(AnimationLocations.PICKAXE_SLASH_SINGLE);
-        registerAnimation(AnimationLocations.PICKAXE_SLASH_TRIPLE);
+        registerAnimation(AnimationLocations.DYING);
+        registerAnimation(AnimationLocations.CHZZK);
     }
 
     private void useShadowFlicker(Skill<?> skill) {
@@ -600,7 +602,7 @@ public class Herobrine extends AbstractHerobrine {
         resetDamageLimit();
         List<Integer> particleTicks = List.of(showParticleTick, showParticleTick - 5, showParticleTick - 10);
         animationTickListener = () -> {
-            if (particleTicks.contains(animationTickCount) && level() instanceof ServerLevel serverLevel) {
+            if (particleTicks.contains(animationTickLeft) && level() instanceof ServerLevel serverLevel) {
                 showPhaseChangeParticle(serverLevel);
                 if (phaseManager.getCurrentPhase() == 2)
                     entityData.set(DISPLAY_SCARF, true);
@@ -653,15 +655,40 @@ public class Herobrine extends AbstractHerobrine {
         if (damageSource.getEntity() instanceof LivingEntity livingEntity)
             rewardChallenger(livingEntity);
         super.die(damageSource);
+        if (level() instanceof ServerLevel serverLevel) {
+            bossEvent.getPlayers().forEach(this::stopSeenByPlayer);
+            releaseStigma(serverLevel);
+        }
+        if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+            deathTime = 1180;
+    }
+
+    @Override
+    protected void tickDeath() {
+        setDeltaMovement(0, -1, 0);
+        if (deathTime == 0)
+            updateAnimation(AnimationLocations.DYING);
+        if (deathTime == 60) {
+            updateAnimation(AnimationLocations.CHZZK);
+            chzzkAnimationState.start(tickCount);
+        }
+        if (deathTime > 1200)
+            super.tickDeath();
+        this.deathTime++;
+    }
+
+    private void releaseStigma(ServerLevel level) {
+        for (LivingEntity livingEntity : NarakaEntityUtils.findEntitiesByUUID(level, stigmatizedEntities, LivingEntity.class)) {
+            LockedHealthHelper.release(livingEntity);
+            StigmaHelper.removeStigma(livingEntity);
+        }
+        stigmatizedEntities.clear();
     }
 
     @Override
     public void remove(RemovalReason reason) {
         if (reason.shouldDestroy() && level() instanceof ServerLevel serverLevel) {
-            for (LivingEntity livingEntity : NarakaEntityUtils.findEntitiesByUUID(serverLevel, stigmatizedEntities, LivingEntity.class)) {
-                LockedHealthHelper.release(livingEntity);
-                StigmaHelper.removeStigma(livingEntity);
-            }
+            releaseStigma(serverLevel);
             shadowController.killShadows(serverLevel);
             serverLevel.getGameRules().getRule(GameRules.RULE_DAYLIGHT).set(true, serverLevel.getServer());
             serverLevel.getGameRules().getRule(GameRules.RULE_WEATHER_CYCLE).set(true, serverLevel.getServer());

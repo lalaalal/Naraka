@@ -33,7 +33,6 @@ public abstract class AbstractHerobrineModel<S extends AbstractHerobrineRenderSt
     @Override
     public void setupAnim(S renderState) {
         super.setupAnim(renderState);
-        this.root.getAllParts().forEach(ModelPart::resetPose);
 
         applyHeadRotation(renderState);
         if (renderState.isIdle)

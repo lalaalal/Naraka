@@ -31,6 +31,10 @@ public class AnimationLocations {
 
     public static final ResourceLocation ENTER_PHASE_3 = create("final_herobrine", "enter_phase_3");
     public static final ResourceLocation PHASE_3_IDLE = create("final_herobrine", "idle");
+    public static final ResourceLocation DYING = create("final_herobrine", "dying");
+    public static final ResourceLocation CHZZK = create("final_herobrine", "chzzk");
+    public static final ResourceLocation HIDDEN_CHZZK = create("final_herobrine", "hidden_chzzk");
+
     public static final ResourceLocation STORM = create("final_herobrine", "storm");
     public static final ResourceLocation CARPET_BOMBING = create("final_herobrine", "carpet_bombing");
     public static final ResourceLocation EXPLOSION = create("final_herobrine", "explosion");

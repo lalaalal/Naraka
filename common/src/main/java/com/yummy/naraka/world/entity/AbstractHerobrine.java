@@ -46,7 +46,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
     private float eyeAlpha = 1;
     private float prevScarfRotation = 0;
-    protected int animationTickCount = Integer.MIN_VALUE;
+    protected int animationTickLeft = Integer.MIN_VALUE;
     protected Runnable animationTickListener = () -> {
     };
 
@@ -165,16 +165,16 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     private void updateAnimationTick() {
-        if (animationTickCount == 0)
+        if (animationTickLeft == 0)
             stopStaticAnimation();
-        if (animationTickCount >= 0) {
+        if (animationTickLeft >= 0) {
             animationTickListener.run();
-            animationTickCount -= 1;
+            animationTickLeft -= 1;
         }
     }
 
     public boolean isPlayingStaticAnimation() {
-        return animationTickCount > 0;
+        return animationTickLeft > 0;
     }
 
     public void playStaticAnimation(ResourceLocation animation, int duration) {
@@ -182,21 +182,25 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     public void playStaticAnimation(ResourceLocation animation, int duration, boolean interruptSkill) {
-        if (animationTickCount > 0)
+        if (animationTickLeft > 0)
             return;
         setAnimation(animation);
-        animationTickCount = Math.max(1, duration);
+        animationTickLeft = Math.max(1, duration);
         skillManager.pause(interruptSkill);
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
+        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.FLYING_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
     }
 
     public void stopStaticAnimation() {
-        if (animationTickCount < 0)
+        if (animationTickLeft < 0)
             return;
         setAnimation(getIdleAnimation());
-        animationTickCount = Integer.MIN_VALUE;
+        animationTickLeft = Integer.MIN_VALUE;
+        animationTickListener = () -> {
+        };
         skillManager.resume();
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
+        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.FLYING_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
     }
 
     @Override
