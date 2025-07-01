@@ -38,7 +38,7 @@ public class NarakaRenderUtils {
             new Vector3f(0.5f, 0, 0)
     );
 
-    private static final Map<Direction, List<Vector3f>> VERTICES = Map.of(
+    private static final Map<Direction, List<Vector3f>> VERTEX_MAPPINGS = Map.of(
             Direction.UP, VERTICAL,
             Direction.DOWN, VERTICAL,
             Direction.EAST, HORIZONTAL_X,
@@ -47,35 +47,47 @@ public class NarakaRenderUtils {
             Direction.SOUTH, HORIZONTAL_Z
     );
 
-    /**
-     * Add 4 vertices in anti-clockwise from left-top based on a positive direction
-     *
-     * @param positions Positions, size must be 4
-     */
-    public static void vertices(VertexConsumer vertexConsumer, PoseStack.Pose pose, List<Vector3f> positions, float u, float v, float width, float height, int packedLight, int packedOverlay, int color, Direction direction) {
-        Vec3i normal = direction.getUnitVec3i();
-        List<Vector2f> uvs = List.of(
+    private static final Map<Direction, List<Vector3f>> OPPOSITE_VERTEX_MAPPINGS = Map.of(
+            Direction.UP, VERTICAL.reversed(),
+            Direction.DOWN, VERTICAL.reversed(),
+            Direction.EAST, HORIZONTAL_X.reversed(),
+            Direction.WEST, HORIZONTAL_X.reversed(),
+            Direction.NORTH, HORIZONTAL_Z.reversed(),
+            Direction.SOUTH, HORIZONTAL_Z.reversed()
+    );
+
+    private static final List<Vector2f> DEFAULT_UVS = createUVList(0, 0, 1, 1);
+    private static final List<Vector2f> OPPOSITE_UVS = DEFAULT_UVS.reversed();
+
+    private static List<Vector2f> createUVList(float u, float v, float width, float height) {
+        return List.of(
                 new Vector2f(u, v + height),
                 new Vector2f(u, v),
                 new Vector2f(u + width, v),
                 new Vector2f(u + width, v + height)
         );
-        NarakaUtils.iterate(positions, uvs, (position, uv) -> {
-            vertexConsumer.addVertex(pose, position)
+    }
+
+    public static void vertices(VertexConsumer vertexConsumer, PoseStack.Pose pose, List<Vector3f> vertices, List<Vector2f> uvs, int packedLight, int packedOverlay, int color, Direction direction, boolean reverse) {
+        Vec3i normal = direction.getUnitVec3i();
+        NarakaUtils.iterate(vertices, uvs, (vertex, uv) -> {
+            vertexConsumer.addVertex(pose, vertex)
                     .setColor(color)
                     .setLight(packedLight)
                     .setOverlay(packedOverlay)
                     .setUv(uv.x, uv.y)
                     .setNormal(pose, normal.getX(), normal.getY(), normal.getZ());
-        }, normal.getX() > 0 || normal.getY() > 0 || normal.getZ() > 0);
-    }
-
-    public static void vertices(VertexConsumer vertexConsumer, PoseStack.Pose pose, List<Vector3f> positions, int packedLight, int packedOverlay, int color, Direction direction) {
-        vertices(vertexConsumer, pose, positions, 0, 0, 1, 1, packedLight, packedOverlay, color, direction);
+        }, reverse);
     }
 
     public static void renderFlatImage(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color, Direction face) {
-        NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), VERTICES.get(face), packedLight, packedOverlay, color, Direction.UP);
-        NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), VERTICES.get(face), packedLight, packedOverlay, color, Direction.DOWN);
+        vertices(vertexConsumer, poseStack.last(), VERTEX_MAPPINGS.get(face), DEFAULT_UVS, packedLight, packedOverlay, color, Direction.UP, false);
+        vertices(vertexConsumer, poseStack.last(), OPPOSITE_VERTEX_MAPPINGS.get(face), OPPOSITE_UVS, packedLight, packedOverlay, color, Direction.UP, false);
+    }
+
+    public static void renderFlatImage(PoseStack poseStack, VertexConsumer vertexConsumer, List<Vector3f> vertices, float u, float v, float width, float height, int packedLight, int packedOverlay, int color) {
+        List<Vector2f> uvs = createUVList(u, v, width, height);
+        vertices(vertexConsumer, poseStack.last(), vertices, uvs, packedLight, packedOverlay, color, Direction.UP, false);
+        vertices(vertexConsumer, poseStack.last(), vertices, uvs, packedLight, packedOverlay, color, Direction.UP, true);
     }
 }
