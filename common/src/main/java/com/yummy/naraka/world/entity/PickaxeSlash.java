@@ -87,7 +87,7 @@ public class PickaxeSlash extends AbstractHurtingProjectile {
     }
 
     private void hurtEntity(ServerLevel level, LivingEntity target) {
-        DamageSource damageSource = NarakaDamageSources.pickaxeSlash(this, getOwner());
+        DamageSource damageSource = NarakaDamageSources.pickaxeSlash(this);
         if (target.hurtServer(level, damageSource, 6) && stigmatizingEntity != null)
             stigmatizingEntity.stigmatizeEntity(level, target);
     }

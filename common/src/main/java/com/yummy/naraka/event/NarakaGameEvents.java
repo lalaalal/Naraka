@@ -5,12 +5,10 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.util.TickSchedule;
-import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -61,9 +59,6 @@ public final class NarakaGameEvents {
     }
 
     private static void onServerStarted(MinecraftServer server) {
-        RegistryAccess registryAccess = server.registryAccess();
-        NarakaDamageSources.initialize(registryAccess);
-
         if (server.isDedicatedServer())
             NarakaMod.isModLoaded = true;
     }
