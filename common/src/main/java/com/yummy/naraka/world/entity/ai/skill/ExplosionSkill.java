@@ -48,7 +48,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
         runBetween(85, 90, () -> scaleMagicCircle(10, 0, 85, 89));
 
         runAt(62, () -> mob.setDeltaMovement(Vec3.ZERO));
-        runAt(105, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 3));
+        runAt(107, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 3));
     }
 
     private void scaleMagicCircle(float from, float to, int startTick, int endTick) {
