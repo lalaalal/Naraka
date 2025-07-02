@@ -15,11 +15,12 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
-import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ARGB;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -54,8 +55,19 @@ public class StardustRenderer extends EntityRenderer<Stardust, StardustRenderSta
     }
 
     @Override
-    public boolean shouldRender(Stardust livingEntity, Frustum camera, double camX, double camY, double camZ) {
-        return true;
+    protected AABB getBoundingBoxForCulling(Stardust stardust) {
+        AABB boundingBox = super.getBoundingBoxForCulling(stardust);
+        double maxX = boundingBox.maxX, maxY = boundingBox.maxY, maxZ = boundingBox.maxZ;
+        double minX = boundingBox.minX, minY = boundingBox.minY, minZ = boundingBox.minZ;
+        for (Vec3 position : stardust.getTailPositions()) {
+            maxX = Math.max(position.x, maxX);
+            maxY = Math.max(position.y, maxY);
+            maxZ = Math.max(position.z, maxZ);
+            minX = Math.min(position.x, minX);
+            minY = Math.min(position.y, minY);
+            minZ = Math.min(position.z, minZ);
+        }
+        return new AABB(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
     @Override

@@ -217,8 +217,6 @@ public class Stardust extends Entity {
         super.recreateFromPacket(packet);
         int ownerId = packet.getData();
         this.owner = level().getEntity(ownerId);
-        Vec3 deltaMovement = new Vec3(packet.getXa(), packet.getYa(), packet.getZa());
-        this.setDeltaMovement(deltaMovement);
         Collections.fill(tailPositions, this.position());
     }
 
