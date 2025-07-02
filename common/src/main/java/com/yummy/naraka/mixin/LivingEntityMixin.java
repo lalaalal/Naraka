@@ -1,7 +1,9 @@
 package com.yummy.naraka.mixin;
 
 import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.util.TickSchedule;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
@@ -16,6 +18,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,6 +41,10 @@ public abstract class LivingEntityMixin extends Entity {
     @Shadow @Final
     private Map<EquipmentSlot, ItemStack> lastEquipmentItems;
 
+    @Unique
+    @Nullable
+    private TickSchedule naraka$purifiedSoulFireSchedule = null;
+
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
@@ -57,6 +64,26 @@ public abstract class LivingEntityMixin extends Entity {
     public void removeEntityData(RemovalReason removalReason, CallbackInfo ci) {
         if (removalReason.shouldDestroy())
             EntityDataHelper.removeEntityData(naraka$living());
+    }
+
+    @Override
+    public void setSharedFlagOnFire(boolean isOnFire) {
+        super.setSharedFlagOnFire(isOnFire);
+        if (!EntityDataHelper.getEntityData(naraka$living(), NarakaEntityDataTypes.IS_ON_PURIFIED_SOUL_FIRE.get()))
+            return;
+        long gameTime = level().getGameTime();
+        if (naraka$purifiedSoulFireSchedule != null && naraka$purifiedSoulFireSchedule.isExpired(gameTime))
+            naraka$purifiedSoulFireSchedule = null;
+        if (!isOnFire) {
+            if (naraka$purifiedSoulFireSchedule == null) {
+                naraka$purifiedSoulFireSchedule = TickSchedule.executeAfter(gameTime, 20, () -> {
+                    EntityDataHelper.setEntityData(naraka$living(), NarakaEntityDataTypes.IS_ON_PURIFIED_SOUL_FIRE.get(), false);
+                });
+            }
+        } else if (naraka$purifiedSoulFireSchedule != null) {
+            TickSchedule.cancel(naraka$purifiedSoulFireSchedule);
+            naraka$purifiedSoulFireSchedule = null;
+        }
     }
 
     /**

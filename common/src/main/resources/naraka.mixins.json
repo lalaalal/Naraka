@@ -5,6 +5,7 @@
   "minVersion": "0.8",
   "client": [
     "client.DripParticleMixin",
+    "client.EntityRenderDispatcherMixin",
     "client.FogRendererMixin",
     "client.HiddenOreRendererMixin",
     "client.ItemBlockRenderTypesMixin",
@@ -15,6 +16,7 @@
     "client.LocalPlayerMixin",
     "client.MinecraftMixin",
     "client.MouseHandlerMixin",
+    "client.ScreenEffectRendererMixin",
     "client.SimpleSoundInstanceMixin"
   ],
   "mixins": [
