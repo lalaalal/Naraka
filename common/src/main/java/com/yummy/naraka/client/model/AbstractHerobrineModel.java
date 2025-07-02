@@ -44,7 +44,7 @@ public abstract class AbstractHerobrineModel<S extends AbstractHerobrineRenderSt
         });
     }
 
-    private void applyHeadRotation(AbstractHerobrineRenderState renderState) {
+    public void applyHeadRotation(AbstractHerobrineRenderState renderState) {
         float yRot = Mth.clamp(renderState.yRot, -45, 45);
         float xRot = Mth.clamp(renderState.xRot, -80, 45);
 

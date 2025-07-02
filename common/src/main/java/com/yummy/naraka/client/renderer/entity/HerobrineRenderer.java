@@ -56,13 +56,14 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
         super.render(renderState, poseStack, buffer, packedLight);
         if (renderState.dead) {
             renderChzzk(renderState, poseStack, buffer, -2, packedLight, 0x88ff0000);
-            renderChzzk(renderState, poseStack, buffer, 1.5f, packedLight, 0x880000ff);
+            renderChzzk(renderState, poseStack, buffer, 2.5f, packedLight, 0x880000ff);
         }
     }
 
     private void renderChzzk(HerobrineRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, float tickOffset, int packedLight, int color) {
         poseStack.pushPose();
         poseStack.scale(0.935f, 0.935f, 0.935f);
+        dyingModel.applyHeadRotation(renderState);
         dyingModel.setupChzzkAnim(renderState.chzzkAnimationState, renderState.ageInTicks + tickOffset);
         this.setupRotations(renderState, poseStack, renderState.bodyRot, renderState.scale);
         poseStack.scale(-1, -1, 1);
