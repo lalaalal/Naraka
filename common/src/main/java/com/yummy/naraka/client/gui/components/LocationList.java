@@ -10,20 +10,24 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.Comparator;
 import java.util.Set;
+import java.util.function.Function;
 
 @Environment(EnvType.CLIENT)
 public class LocationList extends ObjectSelectionList<LocationList.Entry> {
     private final Screen screen;
+    private final Function<ResourceLocation, String> translationKeyGenerator;
 
-    public LocationList(Minecraft minecraft, Screen screen, Set<ResourceLocation> locations) {
+    public LocationList(Minecraft minecraft, Screen screen, Set<ResourceLocation> locations, Function<ResourceLocation, String> keyGenerator) {
         super(minecraft, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight() - 50, 38, 18);
         this.screen = screen;
-        for (ResourceLocation location : locations) {
-            Entry entry = new Entry(location);
-            addEntry(entry);
-            setSelected(entry);
-        }
+        this.translationKeyGenerator = keyGenerator;
+        locations.stream()
+                .map(Entry::new)
+                .sorted(Comparator.comparing(entry -> entry.component.getString()))
+                .forEach(this::addEntry);
+        setSelected(children().getFirst());
     }
 
     public class Entry extends ObjectSelectionList.Entry<Entry> {
@@ -32,7 +36,7 @@ public class LocationList extends ObjectSelectionList<LocationList.Entry> {
 
         protected Entry(ResourceLocation location) {
             this.location = location;
-            this.component = Component.literal(location.toString());
+            this.component = Component.translatable(translationKeyGenerator.apply(location));
         }
 
         @Override

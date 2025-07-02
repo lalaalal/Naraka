@@ -3,6 +3,7 @@ package com.yummy.naraka.world.entity.ai.skill;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,14 +16,14 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
-    public static final String NAME = "super_hit";
+    public static final ResourceLocation LOCATION = createLocation("super_hit");
     private int onGroundTick = 0;
     private final Set<LivingEntity> hitEntities = new HashSet<>();
 
     private final Supplier<Vec3> floatingBlockMovement = () -> new Vec3(0, mob.getRandom().nextDouble() * 0.3 + 0.1, 0);
 
     public SuperHitSkill(AbstractHerobrine mob, ComboSkill<AbstractHerobrine> comboSkill) {
-        super(createLocation(NAME), mob, 40, 0, 1, 40, comboSkill);
+        super(LOCATION, mob, 40, 0, 1, 40, comboSkill);
         this.shieldCooldown = 60;
         this.shieldDamage = 15;
     }

@@ -1,6 +1,7 @@
 package com.yummy.naraka.client.gui.screen;
 
 import com.yummy.naraka.client.gui.components.LocationList;
+import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SkillRequestPacket;
 import com.yummy.naraka.world.entity.SkillUsingMob;
@@ -16,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Set;
+import java.util.function.Function;
 
 @Environment(EnvType.CLIENT)
 public abstract class SkillUsingMobControlScreen extends Screen {
@@ -23,10 +25,10 @@ public abstract class SkillUsingMobControlScreen extends Screen {
     protected final LocationList locationList;
     protected final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this);
 
-    protected SkillUsingMobControlScreen(SkillUsingMob mob, Set<ResourceLocation> locations) {
+    protected SkillUsingMobControlScreen(SkillUsingMob mob, Set<ResourceLocation> locations, Function<ResourceLocation, String> translationKeyGenerator) {
         super(Component.literal("Skill Control"));
         this.mob = mob;
-        this.locationList = new LocationList(Minecraft.getInstance(), this, locations);
+        this.locationList = new LocationList(Minecraft.getInstance(), this, locations, translationKeyGenerator);
     }
 
     @Override
@@ -41,7 +43,7 @@ public abstract class SkillUsingMobControlScreen extends Screen {
         firstLayout.addChild(Button.builder(Component.literal("stop current skill"), action(SkillRequestPacket.Event.STOP)).build());
 
         LinearLayout secondLayout = new LinearLayout(layout.getWidth(), layout.getFooterHeight(), LinearLayout.Orientation.HORIZONTAL);
-        secondLayout.addChild(Button.builder(Component.literal("disable skills"), this::disableSkills).build());
+        secondLayout.addChild(Button.builder(Component.translatable(LanguageKey.DISABLE_SKILL_USE_KEY), this::disableSkills).build());
         secondLayout.addChild(Button.builder(CommonComponents.GUI_DONE, this::onDone).build());
 
         footerLayout.addChild(firstLayout);

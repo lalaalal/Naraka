@@ -68,4 +68,14 @@ public final class LanguageKey {
         String state = disabled ? "disable" : "enable";
         return "message.naraka.ore_see_through." + state;
     }
+
+    public static String animation(ResourceLocation animationLocation) {
+        return "animation." + animationLocation.getNamespace() + "." + animationLocation.getPath()
+                .replaceAll("animation/", "")
+                .replaceAll("/", ".");
+    }
+
+    public static String skill(ResourceLocation skillLocation) {
+        return "skill." + skillLocation.getNamespace() + "." + skillLocation.getPath().replaceAll("skill/", "");
+    }
 }

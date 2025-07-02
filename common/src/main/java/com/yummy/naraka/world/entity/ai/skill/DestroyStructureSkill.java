@@ -47,39 +47,38 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
 
     @Override
     protected void onFirstTick(ServerLevel level) {
-        if (mob.hasSpawnPosition()) {
-            mob.startWhiteScreen();
-        } else {
-            tickCount = duration - 1;
-            mob.sendMusic(3);
-            mob.startHerobrineSky(level);
-        }
+        mob.startWhiteScreen();
     }
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        if (tickCount == 20)
-            mob.startHerobrineSky(level);
-        if (tickCount < 15 || NarakaConfig.COMMON.disableHerobrineDestroyingStructure.getValue() || !mob.hasSpawnPosition())
-            return;
+        runAt(20, () -> mob.startHerobrineSky(level));
+
         runAt(80, this::startPhase3);
         runAt(160, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 5));
-        if (radius < 95) {
-            if (positions.isEmpty()) {
-                radius += 5;
-                determinePositions();
-                destroyCount *= 2;
-            } else {
-                for (int i = 0; i < destroyCount; i++) {
-                    int randomIndex = mob.getRandom().nextInt(positions.size());
-                    BlockPos pos = positions.get(randomIndex);
-                    positions.remove(pos);
+        run(canDestroyStructure(), () -> destroyStructure(level));
+    }
 
-                    destroySphere(level, pos);
+    private boolean canDestroyStructure() {
+        return after(15) && radius < 95 && !NarakaConfig.COMMON.disableHerobrineDestroyingStructure.getValue() && mob.hasSpawnPosition();
+    }
 
-                    if (positions.isEmpty())
-                        break;
-                }
+
+    private void destroyStructure(ServerLevel level) {
+        if (positions.isEmpty()) {
+            radius += 5;
+            determinePositions();
+            destroyCount *= 2;
+        } else {
+            for (int i = 0; i < destroyCount; i++) {
+                int randomIndex = mob.getRandom().nextInt(positions.size());
+                BlockPos pos = positions.get(randomIndex);
+                positions.remove(pos);
+
+                destroySphere(level, pos);
+
+                if (positions.isEmpty())
+                    break;
             }
         }
     }
