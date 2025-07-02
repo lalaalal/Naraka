@@ -7,25 +7,18 @@ import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.LightTailEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
-import java.util.List;
-import java.util.function.BiFunction;
-
 @Environment(EnvType.CLIENT)
 public abstract class LightTailEntityRenderer<T extends LightTailEntity, S extends LightTailEntityRenderState> extends EntityRenderer<T, S> {
-    private static final int MAX_TAIL_ALPHA = 0xff;
-
     protected LightTailEntityRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
@@ -76,7 +69,7 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
             Vector3f from = renderState.tailPositions.get(index);
             Vector3f to = renderState.tailPositions.get(index + 1);
             float uv = index / (float) renderState.tailPositions.size();
-            int alpha = (int) (MAX_TAIL_ALPHA * (1 - uv));
+            int alpha = (int) (NarakaRenderUtils.MAX_TAIL_ALPHA * (1 - uv));
             renderTailPart(renderState, poseStack, vertexConsumer, from, to, uv, partSize, ARGB.color(alpha, renderState.tailColor));
         }
 
@@ -84,38 +77,6 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
     }
 
     protected void renderTailPart(S renderState, PoseStack poseStack, VertexConsumer vertexConsumer, Vector3f from, Vector3f to, float index, float size, int color) {
-        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer,
-                createVertices(from, to, renderState.tailWidth, this::modifyX), index, index, size, size,
-                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
-        );
-        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer,
-                createVertices(from, to, renderState.tailWidth, this::modifyY), index, index, size, size,
-                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
-        );
-        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer,
-                createVertices(from, to, renderState.tailWidth, this::modifyZ), index, index, size, size,
-                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
-        );
-    }
-
-    protected List<Vector3f> createVertices(Vector3f from, Vector3f to, float interval, BiFunction<Vector3f, Float, Vector3f> modifier) {
-        return List.of(
-                modifier.apply(from, interval),
-                modifier.apply(from, -interval),
-                modifier.apply(to, -interval),
-                modifier.apply(to, interval)
-        );
-    }
-
-    protected Vector3f modifyX(Vector3f vector, float interval) {
-        return vector.add(interval, 0, 0, new Vector3f());
-    }
-
-    protected Vector3f modifyY(Vector3f vector, float interval) {
-        return vector.add(0, interval, 0, new Vector3f());
-    }
-
-    protected Vector3f modifyZ(Vector3f vector, float interval) {
-        return vector.add(0, 0, interval, new Vector3f());
+        NarakaRenderUtils.renderTailPart(poseStack, vertexConsumer, from, to, renderState.tailWidth, index, size, color);
     }
 }

@@ -5,17 +5,25 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.util.NarakaUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BeaconRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 @Environment(EnvType.CLIENT)
 public class NarakaRenderUtils {
+    public static final int MAX_TAIL_ALPHA = 0xff;
     public static final float SIN_45 = (float) Math.sin(Math.PI / 4);
 
     private static final List<Vector3f> VERTICAL = List.of(
@@ -94,5 +102,57 @@ public class NarakaRenderUtils {
 
     public static Vector3f vector3f(Vec3 vec3) {
         return new Vector3f((float) vec3.x, (float) vec3.y, (float) vec3.z);
+    }
+
+    public static void renderSimpleTail(PoseStack poseStack, MultiBufferSource buffer, Vec3 translation, List<Vector3f> tailPositions, float tailWidth, int tailColor) {
+        poseStack.pushPose();
+        poseStack.translate(0, 0.25, 0);
+        poseStack.translate(translation);
+        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.beaconBeam(BeaconRenderer.BEAM_LOCATION, true));
+        float partSize = 1 / (float) tailPositions.size();
+        for (int index = 0; index < tailPositions.size() - 1; index++) {
+            Vector3f from = tailPositions.get(index);
+            Vector3f to = tailPositions.get(index + 1);
+            float uv = index / (float) tailPositions.size();
+            int alpha = (int) (MAX_TAIL_ALPHA * (1 - uv));
+            renderTailPart(poseStack, vertexConsumer, from, to, tailWidth, uv, partSize, ARGB.color(alpha, tailColor));
+        }
+        poseStack.popPose();
+    }
+
+    public static void renderTailPart(PoseStack poseStack, VertexConsumer vertexConsumer, Vector3f from, Vector3f to, float tailWidth, float index, float size, int color) {
+        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer,
+                createVertices(from, to, tailWidth, NarakaRenderUtils::modifyX), index, index, size, size,
+                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
+        );
+        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer,
+                createVertices(from, to, tailWidth, NarakaRenderUtils::modifyY), index, index, size, size,
+                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
+        );
+        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer,
+                createVertices(from, to, tailWidth, NarakaRenderUtils::modifyZ), index, index, size, size,
+                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
+        );
+    }
+
+    public static List<Vector3f> createVertices(Vector3f from, Vector3f to, float interval, BiFunction<Vector3f, Float, Vector3f> modifier) {
+        return List.of(
+                modifier.apply(from, interval),
+                modifier.apply(from, -interval),
+                modifier.apply(to, -interval),
+                modifier.apply(to, interval)
+        );
+    }
+
+    public static Vector3f modifyX(Vector3f vector, float interval) {
+        return vector.add(interval, 0, 0, new Vector3f());
+    }
+
+    public static Vector3f modifyY(Vector3f vector, float interval) {
+        return vector.add(0, interval, 0, new Vector3f());
+    }
+
+    public static Vector3f modifyZ(Vector3f vector, float interval) {
+        return vector.add(0, 0, interval, new Vector3f());
     }
 }
