@@ -44,12 +44,12 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
         runAt(0, () -> mob.setDeltaMovement(0, 0.2, 0));
         runBetween(0, 18, () -> reduceSpeed(0.8));
         runAt(19, () -> spawnMagicCircle(level));
-        runBetween(20, 41, () -> scaleMagicCircle(1, 10, 20, 40));
+        runBetween(20, 41, () -> scaleMagicCircle(1, 15, 20, 40));
 
         runAt(60, () -> mob.setDeltaMovement(0, 0.4, 0));
         runAt(60, () -> level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE));
         runBetween(60, 70, () -> sendParticles(level));
-        runBetween(85, 90, () -> scaleMagicCircle(10, 0, 85, 89));
+        runBetween(85, 90, () -> scaleMagicCircle(15, 0, 85, 89));
 
         runAt(62, () -> mob.setDeltaMovement(Vec3.ZERO));
         runAt(107, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 5));
@@ -91,7 +91,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
     @Override
     protected void hurtEntities(ServerLevel level, Predicate<LivingEntity> predicate, double size) {
         super.hurtEntities(level, predicate, size);
-        NarakaSkillUtils.sendCircleParticle(level, mob.position(), NarakaParticleTypes.CORRUPTED_FIRE_FLAME.get(), size);
+        NarakaSkillUtils.sendCircleParticle(level, mob.position(), NarakaParticleTypes.GOLDEN_FLAME.get(), size);
     }
 
     @Override

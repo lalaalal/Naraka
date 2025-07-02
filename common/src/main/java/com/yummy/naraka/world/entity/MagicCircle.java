@@ -29,8 +29,8 @@ public class MagicCircle extends Entity {
 
     @Nullable
     private Herobrine owner;
-    private float prevScale;
-    private float currentScale;
+    private float prevScale = 10;
+    private float currentScale = 10;
     private final List<Double> heightList = new ArrayList<>();
 
     public MagicCircle(EntityType<? extends MagicCircle> entityType, Level level) {
@@ -149,7 +149,7 @@ public class MagicCircle extends Entity {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(SCALE, 1f)
+        builder.define(SCALE, 10f)
                 .define(LIFETIME, 1200);
     }
 
