@@ -29,6 +29,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 public class Stardust extends Entity {
@@ -40,6 +43,7 @@ public class Stardust extends Entity {
     @Nullable
     private Entity owner;
     private boolean followTarget;
+    private final List<Vec3> tailPositions = new LinkedList<>(Collections.nCopies(20, Vec3.ZERO));
 
     public Stardust(EntityType<? extends Stardust> entityType, Level level) {
         super(entityType, level);
@@ -75,8 +79,14 @@ public class Stardust extends Entity {
             explode(2);
     }
 
+    public List<Vec3> getTailPositions() {
+        return tailPositions;
+    }
+
     @Override
     public void tick() {
+        tailPositions.addFirst(position());
+        tailPositions.removeLast();
         if (entityData.get(HIT_BLOCK)) {
             handleOnHitBlock();
             return;

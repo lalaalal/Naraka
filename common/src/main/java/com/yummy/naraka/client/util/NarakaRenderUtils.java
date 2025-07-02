@@ -7,6 +7,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -56,8 +57,8 @@ public class NarakaRenderUtils {
             Direction.SOUTH, HORIZONTAL_Z.reversed()
     );
 
-    private static final List<Vector2f> DEFAULT_UVS = createUVList(0, 0, 1, 1);
-    private static final List<Vector2f> OPPOSITE_UVS = DEFAULT_UVS.reversed();
+    public static final List<Vector2f> DEFAULT_UVS = createUVList(0, 0, 1, 1);
+    public static final List<Vector2f> OPPOSITE_UVS = DEFAULT_UVS.reversed();
 
     private static List<Vector2f> createUVList(float u, float v, float width, float height) {
         return List.of(
@@ -89,5 +90,9 @@ public class NarakaRenderUtils {
         List<Vector2f> uvs = createUVList(u, v, width, height);
         vertices(vertexConsumer, poseStack.last(), vertices, uvs, packedLight, packedOverlay, color, Direction.UP, false);
         vertices(vertexConsumer, poseStack.last(), vertices, uvs, packedLight, packedOverlay, color, Direction.UP, true);
+    }
+
+    public static Vector3f vector3f(Vec3 vec3) {
+        return new Vector3f((float) vec3.x, (float) vec3.y, (float) vec3.z);
     }
 }
