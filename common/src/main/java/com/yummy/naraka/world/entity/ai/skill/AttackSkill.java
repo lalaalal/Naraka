@@ -45,7 +45,7 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T
      * @see AttackSkill#hurtEntity(ServerLevel, LivingEntity)
      * @see AttackSkill#onHurtEntity(ServerLevel, LivingEntity)
      */
-    protected final void hurtEntities(ServerLevel level, Predicate<LivingEntity> predicate, double size) {
+    protected void hurtEntities(ServerLevel level, Predicate<LivingEntity> predicate, double size) {
         level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(size))
                 .stream()
                 .filter(predicate)

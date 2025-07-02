@@ -1,5 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
@@ -13,6 +15,8 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Predicate;
 
 public class ExplosionSkill extends AttackSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final.explosion");
@@ -48,7 +52,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
         runBetween(85, 90, () -> scaleMagicCircle(10, 0, 85, 89));
 
         runAt(62, () -> mob.setDeltaMovement(Vec3.ZERO));
-        runAt(107, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 3));
+        runAt(107, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 5));
     }
 
     private void scaleMagicCircle(float from, float to, int startTick, int endTick) {
@@ -82,6 +86,12 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
     @Override
     protected float calculateDamage(LivingEntity target) {
         return 10;
+    }
+
+    @Override
+    protected void hurtEntities(ServerLevel level, Predicate<LivingEntity> predicate, double size) {
+        super.hurtEntities(level, predicate, size);
+        NarakaSkillUtils.sendCircleParticle(level, mob.position(), NarakaParticleTypes.CORRUPTED_FIRE_FLAME.get(), size);
     }
 
     @Override

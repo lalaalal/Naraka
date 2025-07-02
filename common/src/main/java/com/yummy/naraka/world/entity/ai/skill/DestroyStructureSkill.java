@@ -1,21 +1,27 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
-public class DestroyStructureSkill extends Skill<Herobrine> {
+public class DestroyStructureSkill extends AttackSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("destroy_structure");
     private static final int SPHERE_RADIUS = 10;
 
@@ -24,7 +30,7 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
     private int destroyCount = 5;
 
     public DestroyStructureSkill(Herobrine mob) {
-        super(LOCATION, mob, 80, Integer.MAX_VALUE);
+        super(LOCATION, mob, 200, Integer.MAX_VALUE);
     }
 
     @Override
@@ -51,11 +57,13 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
     }
 
     @Override
-    protected void skillTick(ServerLevel level) {
+    protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         if (tickCount == 20)
             mob.startHerobrineSky(level);
         if (tickCount < 15 || NarakaConfig.COMMON.disableHerobrineDestroyingStructure.getValue() || !mob.hasSpawnPosition())
             return;
+        runAt(80, this::startPhase3);
+        runAt(160, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 5));
         if (radius < 95) {
             if (positions.isEmpty()) {
                 radius += 5;
@@ -77,7 +85,12 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
     }
 
     @Override
-    protected void onLastTick(ServerLevel level) {
+    protected void hurtEntities(ServerLevel level, Predicate<LivingEntity> predicate, double size) {
+        super.hurtEntities(level, predicate, size);
+        NarakaSkillUtils.sendCircleParticle(level, mob.position(), NarakaParticleTypes.CORRUPTED_FIRE_FLAME.get(), size);
+    }
+
+    protected void startPhase3() {
         mob.stopWhiteScreen();
         mob.sendMusic(3);
         mob.stopStaticAnimation();
@@ -110,5 +123,10 @@ public class DestroyStructureSkill extends Skill<Herobrine> {
         NarakaUtils.sphere(box, 1, blockPos -> {
             level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
         });
+    }
+
+    @Override
+    protected float calculateDamage(LivingEntity target) {
+        return mob.getAttackDamage();
     }
 }
