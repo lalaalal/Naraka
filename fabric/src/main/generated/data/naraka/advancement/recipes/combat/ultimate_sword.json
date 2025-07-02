@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:ebony_sword"
+        "recipe": "naraka:ultimate_sword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "naraka:ebony_sword"
+      "naraka:ultimate_sword"
     ]
   }
 }

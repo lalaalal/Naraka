@@ -93,6 +93,7 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> GOD_BLOOD = registerSimpleItem(
             "god_blood",
             properties -> properties.stacksTo(1)
+                    .trimMaterial(SoulType.GOD_BLOOD.material)
                     .fireResistant()
     );
 
@@ -158,26 +159,27 @@ public class NarakaItems {
                             .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
             )
     );
-    public static final HolderProxy<Item, Item> EBONY_SWORD = registerSimpleItem(
-            "ebony_sword",
-            properties -> properties.sword(ToolMaterial.IRON, 3, -2.4f)
+    public static final HolderProxy<Item, Item> ULTIMATE_SWORD = registerSimpleItem(
+            "ultimate_sword",
+            properties -> properties.sword(NarakaToolMaterials.LONGINUS, 3, -2.4f)
     );
 
-    public static final HolderProxy<Item, PurifiedSoulArmorItem> PURIFIED_SOUL_HELMET = registerPurifiedSoulArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.HELMET, 0);
-    public static final HolderProxy<Item, PurifiedSoulArmorItem> PURIFIED_SOUL_CHESTPLATE = registerPurifiedSoulArmorItem("purified_soul_chestplate", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.CHESTPLATE, 0);
-    public static final HolderProxy<Item, PurifiedSoulArmorItem> PURIFIED_SOUL_LEGGINGS = registerPurifiedSoulArmorItem("purified_soul_leggings", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.LEGGINGS, 0);
-    public static final HolderProxy<Item, PurifiedSoulArmorItem> PURIFIED_SOUL_BOOTS = registerPurifiedSoulArmorItem("purified_soul_boots", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.BOOTS, 0);
+    public static final HolderProxy<Item, Item> PURIFIED_SOUL_HELMET = registerPurifiedSoulArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.HELMET);
+    public static final HolderProxy<Item, Item> PURIFIED_SOUL_CHESTPLATE = registerPurifiedSoulArmorItem("purified_soul_chestplate", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.CHESTPLATE);
+    public static final HolderProxy<Item, Item> PURIFIED_SOUL_LEGGINGS = registerPurifiedSoulArmorItem("purified_soul_leggings", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.LEGGINGS);
+    public static final HolderProxy<Item, Item> PURIFIED_SOUL_BOOTS = registerPurifiedSoulArmorItem("purified_soul_boots", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.BOOTS);
 
-    public static final HolderProxy<Item, PurifiedSoulArmorItem> EBONY_METAL_HELMET = registerPurifiedSoulArmorItem("ebony_metal_helmet", NarakaArmorMaterials.EBONY_METAL, ArmorType.HELMET, 7);
-    public static final HolderProxy<Item, PurifiedSoulArmorItem> EBONY_METAL_CHESTPLATE = registerPurifiedSoulArmorItem("ebony_metal_chestplate", NarakaArmorMaterials.EBONY_METAL, ArmorType.CHESTPLATE, 7);
-    public static final HolderProxy<Item, PurifiedSoulArmorItem> EBONY_METAL_LEGGINGS = registerPurifiedSoulArmorItem("ebony_metal_leggings", NarakaArmorMaterials.EBONY_METAL, ArmorType.LEGGINGS, 7);
-    public static final HolderProxy<Item, PurifiedSoulArmorItem> EBONY_METAL_BOOTS = registerPurifiedSoulArmorItem("ebony_metal_boots", NarakaArmorMaterials.EBONY_METAL, ArmorType.BOOTS, 7);
+    public static final HolderProxy<Item, Item> EBONY_METAL_HELMET = registerPurifiedSoulArmorItem("ebony_metal_helmet", NarakaArmorMaterials.EBONY_METAL, ArmorType.HELMET);
+    public static final HolderProxy<Item, Item> EBONY_METAL_CHESTPLATE = registerPurifiedSoulArmorItem("ebony_metal_chestplate", NarakaArmorMaterials.EBONY_METAL, ArmorType.CHESTPLATE);
+    public static final HolderProxy<Item, Item> EBONY_METAL_LEGGINGS = registerPurifiedSoulArmorItem("ebony_metal_leggings", NarakaArmorMaterials.EBONY_METAL, ArmorType.LEGGINGS);
+    public static final HolderProxy<Item, Item> EBONY_METAL_BOOTS = registerPurifiedSoulArmorItem("ebony_metal_boots", NarakaArmorMaterials.EBONY_METAL, ArmorType.BOOTS);
 
     public static final HolderProxy<Item, Item> HEROBRINE_SPAWN_EGG = registerItem("herobrine_spawn_egg", properties -> new SpawnEggItem(NarakaEntityTypes.HEROBRINE.get(), properties));
 
-    public static HolderProxy<Item, PurifiedSoulArmorItem> registerPurifiedSoulArmorItem(String name, ArmorMaterial armorMaterial, ArmorType armorType, int durability) {
-        return registerItem(name, properties -> new PurifiedSoulArmorItem(armorMaterial, armorType, properties.durability(durability)
-                .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)));
+    public static HolderProxy<Item, Item> registerPurifiedSoulArmorItem(String name, ArmorMaterial armorMaterial, ArmorType armorType) {
+        return registerSimpleItem(name, properties -> NarakaArmorMaterials.humanoidPropertiesWithoutEnchantable(properties, armorMaterial, armorType)
+                .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
+        );
     }
 
     public static void forEachSoulInfusedItem(Consumer<Item> consumer) {

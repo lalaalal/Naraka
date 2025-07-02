@@ -18,7 +18,6 @@
     "client.SimpleSoundInstanceMixin"
   ],
   "mixins": [
-    "EnchantmentMixin",
     "FeatureMixin",
     "HerobrineTotemActivatingItemMixin",
     "LivingEntityMixin",

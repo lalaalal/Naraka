@@ -240,7 +240,7 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD, "Soul Infused Nectarium Sword", "영혼이 주입된 넥타륨 검");
         addItem(NarakaItems.PURIFIED_SOUL_SWORD, "Purified Soul Sword", "정화된 영혼 검");
 
-        addItem(NarakaItems.EBONY_SWORD, "Ebony Sword", "흑단나무 검");
+        addItem(NarakaItems.ULTIMATE_SWORD, "Ultimate Sword", "궁극의 검");
         addItem(NarakaItems.EBONY_ROOTS_SCRAP, "Ebony Roots Scrap", "흑단나무 뿌리 파편");
         addItem(NarakaItems.EBONY_METAL_INGOT, "Ebony Metal Ingot", "흑단나무 금속 주괴");
         addItem(NarakaItems.SANCTUARY_COMPASS, "Sanctuary Compass", "생츄어리 나침반");

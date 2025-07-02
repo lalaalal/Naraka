@@ -88,7 +88,7 @@ public class NarakaRecipeProvider extends RecipeProvider {
 
         stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.HARD_EBONY_PLANKS.get(), NarakaBlocks.EBONY_LOG.get(), 1);
         stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.HARD_EBONY_PLANKS.get(), NarakaBlocks.EBONY_WOOD.get(), 1);
-        sword(NarakaBlocks.HARD_EBONY_PLANKS.get(), NarakaItems.EBONY_SWORD.get());
+        sword(NarakaBlocks.HARD_EBONY_PLANKS.get(), NarakaItems.ULTIMATE_SWORD.get());
 
         nineBlockStorageRecipes(RecipeCategory.BUILDING_BLOCKS, Blocks.IRON_BLOCK.asItem(), RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT.get());
         nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
