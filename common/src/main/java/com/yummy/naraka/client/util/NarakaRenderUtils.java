@@ -47,22 +47,16 @@ public class NarakaRenderUtils {
             new Vector3f(0.5f, 0, 0)
     );
 
-    private static final Map<Direction, List<Vector3f>> VERTEX_MAPPINGS = Map.of(
-            Direction.UP, VERTICAL,
-            Direction.DOWN, VERTICAL,
-            Direction.EAST, HORIZONTAL_X,
-            Direction.WEST, HORIZONTAL_X,
-            Direction.NORTH, HORIZONTAL_Z,
-            Direction.SOUTH, HORIZONTAL_Z
+    private static final Map<Direction.Axis, List<Vector3f>> VERTEX_MAPPINGS = Map.of(
+            Direction.Axis.Y, VERTICAL,
+            Direction.Axis.X, HORIZONTAL_X,
+            Direction.Axis.Z, HORIZONTAL_Z
     );
 
-    private static final Map<Direction, List<Vector3f>> OPPOSITE_VERTEX_MAPPINGS = Map.of(
-            Direction.UP, VERTICAL.reversed(),
-            Direction.DOWN, VERTICAL.reversed(),
-            Direction.EAST, HORIZONTAL_X.reversed(),
-            Direction.WEST, HORIZONTAL_X.reversed(),
-            Direction.NORTH, HORIZONTAL_Z.reversed(),
-            Direction.SOUTH, HORIZONTAL_Z.reversed()
+    private static final Map<Direction.Axis, List<Vector3f>> OPPOSITE_VERTEX_MAPPINGS = Map.of(
+            Direction.Axis.Y, VERTICAL.reversed(),
+            Direction.Axis.X, HORIZONTAL_X.reversed(),
+            Direction.Axis.Z, HORIZONTAL_Z.reversed()
     );
 
     public static final List<Vector2f> DEFAULT_UVS = createUVList(0, 0, 1, 1);
@@ -89,7 +83,7 @@ public class NarakaRenderUtils {
         }, reverse);
     }
 
-    public static void renderFlatImage(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color, Direction face) {
+    public static void renderFlatImage(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color, Direction.Axis face) {
         vertices(vertexConsumer, poseStack.last(), VERTEX_MAPPINGS.get(face), DEFAULT_UVS, packedLight, packedOverlay, color, Direction.UP, false);
         vertices(vertexConsumer, poseStack.last(), OPPOSITE_VERTEX_MAPPINGS.get(face), OPPOSITE_UVS, packedLight, packedOverlay, color, Direction.UP, false);
     }
