@@ -14,7 +14,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,12 +28,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 
-public class Stardust extends Entity {
+public class Stardust extends LightTailEntity {
     public static final int EXPLOSION_WAITING_TICK = 120;
     public static final EntityDataAccessor<Integer> WAITING_TICK = SynchedEntityData.defineId(Stardust.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Boolean> HIT_BLOCK = SynchedEntityData.defineId(Stardust.class, EntityDataSerializers.BOOLEAN);
@@ -43,7 +39,6 @@ public class Stardust extends Entity {
     @Nullable
     private Entity owner;
     private boolean followTarget;
-    private final List<Vec3> tailPositions = new LinkedList<>(Collections.nCopies(20, Vec3.ZERO));
 
     public Stardust(EntityType<? extends Stardust> entityType, Level level) {
         super(entityType, level);
@@ -79,14 +74,9 @@ public class Stardust extends Entity {
             explode(2);
     }
 
-    public List<Vec3> getTailPositions() {
-        return tailPositions;
-    }
-
     @Override
     public void tick() {
-        tailPositions.addFirst(position());
-        tailPositions.removeLast();
+        updateTailPositions();
         if (entityData.get(HIT_BLOCK)) {
             handleOnHitBlock();
             return;
@@ -123,11 +113,6 @@ public class Stardust extends Entity {
                 setDeltaMovement(x, y, z);
             }
         }
-    }
-
-    @Override
-    public boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
-        return false;
     }
 
     @Nullable
@@ -177,6 +162,22 @@ public class Stardust extends Entity {
     }
 
     @Override
+    protected boolean shouldBurn() {
+        return false;
+    }
+
+    @Override
+    @Nullable
+    protected ParticleOptions getTrailParticle() {
+        return null;
+    }
+
+    @Override
+    public int getTailColor() {
+        return 0xED7419;
+    }
+
+    @Override
     public boolean ignoreExplosion(Explosion explosion) {
         return true;
     }
@@ -187,7 +188,7 @@ public class Stardust extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         if (level() instanceof ServerLevel serverLevel && compound.contains("Owner"))
             this.owner = serverLevel.getEntity(UUID.fromString(compound.getStringOr("Owner", "")));
         entityData.set(HIT_BLOCK, compound.getBooleanOr("HitBlock", true));
@@ -197,7 +198,7 @@ public class Stardust extends Entity {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         if (owner != null)
             compound.putString("Owner", owner.getUUID().toString());
         compound.putBoolean("HitBlock", entityData.get(HIT_BLOCK));
@@ -217,7 +218,6 @@ public class Stardust extends Entity {
         super.recreateFromPacket(packet);
         int ownerId = packet.getData();
         this.owner = level().getEntity(ownerId);
-        Collections.fill(tailPositions, this.position());
     }
 
     public boolean isFalling() {

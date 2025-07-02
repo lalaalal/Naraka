@@ -10,14 +10,13 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class PickaxeSlash extends AbstractHurtingProjectile {
+public class PickaxeSlash extends LightTailEntity {
     public static final EntityDataAccessor<Float> Z_ROT = SynchedEntityData.defineId(PickaxeSlash.class, EntityDataSerializers.FLOAT);
 
     private int lifetime = Integer.MAX_VALUE;
@@ -25,7 +24,7 @@ public class PickaxeSlash extends AbstractHurtingProjectile {
     private StigmatizingEntity stigmatizingEntity;
 
     public PickaxeSlash(EntityType<? extends PickaxeSlash> entityType, Level level) {
-        super(entityType, level);
+        super(entityType, level, 40);
         setNoGravity(true);
     }
 
@@ -40,7 +39,12 @@ public class PickaxeSlash extends AbstractHurtingProjectile {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(Z_ROT, 0f);
+        builder.define(Z_ROT, 60f);
+    }
+
+    @Override
+    public int getTailColor() {
+        return 0x5772F4;
     }
 
     public void setZRot(float zRot) {

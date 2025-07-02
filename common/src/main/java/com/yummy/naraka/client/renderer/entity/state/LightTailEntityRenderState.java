@@ -9,7 +9,12 @@ import org.joml.Vector3f;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class StardustRenderState extends EntityRenderState {
+public class LightTailEntityRenderState extends EntityRenderState {
     public List<Vector3f> tailPositions = List.of();
     public Vec3 partialTranslation = Vec3.ZERO;
+    public float tailWidth;
+    public int tailColor;
+    public float xRot;
+    public float yRot;
+    public float zRot;
 }

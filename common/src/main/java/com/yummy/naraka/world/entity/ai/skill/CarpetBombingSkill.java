@@ -40,8 +40,8 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
             float yRot = 360f / 16 * i;
             float xRot = mob.getRandom().nextFloat() * 30 + 15;
             Vec3 shootingVector = mob.calculateViewVector(-xRot, yRot);
-            int power = mob.getRandom().nextIntBetweenInclusive(3, 5);
-            int waitingTick = mob.getRandom().nextIntBetweenInclusive(2, 3) * 10;
+            int power = mob.getRandom().nextIntBetweenInclusive(4, 5);
+            int waitingTick = mob.getRandom().nextIntBetweenInclusive(2, 3) * 10 - 5;
             Stardust stardust = new Stardust(level, mob, shootingVector, power, waitingTick, false);
             stardusts.put(stardust, spawnTick);
         }
@@ -61,7 +61,7 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runAt(10, () -> mob.setDeltaMovement(0, 1.2, 0));
         runBetween(11, 25, () -> reduceSpeed(0.8f));
-        runFrom(0, () -> spawnStardust(level, 0));
+        runFrom(0, () -> spawnStardust(level));
 
         runBetween(10, 50, () -> rotateTowardTarget(target));
         runAfter(10, () -> lookTarget(target));
@@ -91,10 +91,9 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
         }
     }
 
-    private void spawnStardust(ServerLevel level, int startTick) {
-        int spawnTick = tickCount - startTick;
+    private void spawnStardust(ServerLevel level) {
         stardusts.entrySet().stream()
-                .filter(entry -> entry.getValue() == spawnTick)
+                .filter(entry -> entry.getValue() == tickCount)
                 .forEach(entry -> {
                     level.addFreshEntity(entry.getKey());
                 });
