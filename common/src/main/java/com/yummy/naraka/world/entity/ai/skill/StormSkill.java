@@ -22,7 +22,7 @@ public class StormSkill extends Skill<Herobrine> {
     private final HashMap<LivingEntity, Integer> hurtEntities = new HashMap<>();
 
     public StormSkill(Herobrine mob) {
-        super(LOCATION, mob, 80, 480);
+        super(LOCATION, mob, 100, 480);
     }
 
     @Override
@@ -46,14 +46,14 @@ public class StormSkill extends Skill<Herobrine> {
     }
 
     private boolean entityToPull(LivingEntity target) {
-        return targetInRange(target, 20 * 20) && AbstractHerobrine.isNotHerobrine(target);
+        return targetInRange(target, 80 * 80) && AbstractHerobrine.isNotHerobrine(target);
     }
 
     private void pullEntities(ServerLevel level) {
-        AABB boundingBox = mob.getBoundingBox().inflate(20, 3, 20);
+        AABB boundingBox = mob.getBoundingBox().inflate(80, 10, 80);
         level.getEntitiesOfClass(LivingEntity.class, boundingBox, this::entityToPull).forEach(target -> {
             Vec3 movement = mob.position().subtract(target.position())
-                    .scale(0.2);
+                    .scale(0.23);
             target.setDeltaMovement(movement);
             if (target instanceof ServerPlayer player)
                 NarakaEntityUtils.sendPlayerMovement(player, movement);
@@ -80,7 +80,7 @@ public class StormSkill extends Skill<Herobrine> {
         if (waveTick > 3) {
             level.getEntitiesOfClass(
                     LivingEntity.class,
-                    mob.getBoundingBox().inflate(waveTick, 3, waveTick),
+                    mob.getBoundingBox().inflate(waveTick, 10, waveTick),
                     target -> findValidTarget(target, startTick) && inHurtRange(target, waveTick)
             ).forEach(entity -> {
                 mob.stigmatizeEntity(level, entity);
