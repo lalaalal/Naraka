@@ -42,6 +42,7 @@ import java.util.UUID;
 
 public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntity {
     protected static final EntityDataAccessor<Integer> ALPHA = SynchedEntityData.defineId(ShadowHerobrine.class, EntityDataSerializers.INT);
+    protected static final int MAX_ALPHA = 0xaa;
 
     protected final ShadowPunchSkill punchSkill = registerSkill(1, this, ShadowPunchSkill::new, AnimationLocations.COMBO_ATTACK_1);
     protected final DashSkill<ShadowHerobrine> dashSkill = registerSkill(this, DashSkill::new);
@@ -119,7 +120,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         if (reduceAlpha) {
             entityData.set(ALPHA, Math.max(0, getAlpha() - 15));
         } else {
-            entityData.set(ALPHA, Math.min(0xff, getAlpha() + 10));
+            entityData.set(ALPHA, Math.min(MAX_ALPHA, getAlpha() + 10));
         }
         if (getAlpha() == 0)
             discard();
