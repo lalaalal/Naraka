@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -22,9 +23,11 @@ public class PickaxeSlash extends LightTailEntity {
     private int lifetime = Integer.MAX_VALUE;
     @Nullable
     private StigmatizingEntity stigmatizingEntity;
+    private float prevAlpha = 1f;
+    private float alpha = 1f;
 
     public PickaxeSlash(EntityType<? extends PickaxeSlash> entityType, Level level) {
-        super(entityType, level, 40);
+        super(entityType, level, 30);
         setNoGravity(true);
     }
 
@@ -34,6 +37,10 @@ public class PickaxeSlash extends LightTailEntity {
         this.stigmatizingEntity = owner;
         this.lifetime = lifetime;
         this.accelerationPower = 0.05;
+    }
+
+    public float getAlpha(float partialTick) {
+        return Mth.lerp(partialTick, prevAlpha, alpha);
     }
 
     @Override
@@ -71,10 +78,13 @@ public class PickaxeSlash extends LightTailEntity {
         super.tick();
         if (level() instanceof ServerLevel serverLevel)
             serverTick(serverLevel);
+        prevAlpha = alpha;
+        if (alpha < 1f)
+            alpha = Math.max(0, alpha - 0.1f);
     }
 
     private void serverTick(ServerLevel level) {
-        if (tickCount >= lifetime)
+        if (tickCount >= lifetime || alpha <= 0)
             discard();
         level.getEntitiesOfClass(LivingEntity.class, getBoundingBox(), this::canHitEntity)
                 .forEach(target -> hurtEntity(level, target));
@@ -99,6 +109,7 @@ public class PickaxeSlash extends LightTailEntity {
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        discard();
+        if (alpha >= 1)
+            alpha = 0.95f;
     }
 }

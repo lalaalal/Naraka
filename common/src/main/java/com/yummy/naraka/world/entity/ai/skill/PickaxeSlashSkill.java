@@ -49,7 +49,7 @@ public class PickaxeSlashSkill extends TargetSkill<AbstractHerobrine> {
     private void createPickaxeSlash(ServerLevel level, LivingEntity target) {
         rotateTowardTarget(target);
         int zRotDegree = mob.getRandom().nextInt(45, 65) * rotateDirection;
-        PickaxeSlash pickaxeSlash = new PickaxeSlash(level, mob, 120);
+        PickaxeSlash pickaxeSlash = new PickaxeSlash(level, mob, 360);
         pickaxeSlash.setPos(mob.getX(), mob.getEyeY() - 0.75, mob.getZ());
         pickaxeSlash.setDeltaMovement(NarakaEntityUtils.getDirectionNormalVector(mob, target));
         pickaxeSlash.setZRot(zRotDegree);
