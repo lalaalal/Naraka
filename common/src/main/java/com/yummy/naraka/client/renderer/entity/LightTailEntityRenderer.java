@@ -9,7 +9,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.ARGB;
@@ -63,13 +62,15 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
         poseStack.pushPose();
         poseStack.translate(0, 0.25, 0);
         poseStack.translate(translation);
-        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.beaconBeam(BeaconRenderer.BEAM_LOCATION, true));
+        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.lightning());
         float partSize = 1 / (float) renderState.tailPositions.size();
         for (int index = 0; index < renderState.tailPositions.size() - 1; index++) {
             Vector3f from = renderState.tailPositions.get(index);
             Vector3f to = renderState.tailPositions.get(index + 1);
             float uv = index / (float) renderState.tailPositions.size();
-            int alpha = (int) (NarakaRenderUtils.MAX_TAIL_ALPHA * (1 - uv));
+            int alpha = NarakaRenderUtils.MAX_TAIL_ALPHA;
+            if (uv > 0.5)
+                alpha = (int) (NarakaRenderUtils.MAX_TAIL_ALPHA * (1 - (uv - 0.5) * 2));
             renderTailPart(renderState, poseStack, vertexConsumer, from, to, uv, partSize, ARGB.color(alpha, renderState.tailColor));
         }
 

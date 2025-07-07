@@ -65,17 +65,8 @@ public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash, 
 
     @Override
     protected void renderTailPart(PickaxeSlashRenderState renderState, PoseStack poseStack, VertexConsumer vertexConsumer, Vector3f from, Vector3f to, float index, float size, int color) {
-        int alpha = ARGB.alpha(color);
         NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer,
                 NarakaRenderUtils.createVertices(from, to, 1.5f, modifier(renderState.yRot, renderState.zRot)), index, index, size, size,
-                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ARGB.color(alpha / 4, color)
-        );
-        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer,
-                NarakaRenderUtils.createVertices(from, to, 1, modifier(renderState.yRot, renderState.zRot)), index, index, size, size,
-                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ARGB.color(alpha / 2, color)
-        );
-        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer,
-                NarakaRenderUtils.createVertices(from, to, 0.5f, modifier(renderState.yRot, renderState.zRot)), index, index, size, size,
                 LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
         );
     }

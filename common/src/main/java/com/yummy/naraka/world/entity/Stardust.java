@@ -52,6 +52,8 @@ public class Stardust extends LightTailEntity {
         entityData.set(WAITING_TICK, waitingTick);
         this.owner = owner;
         this.followTarget = followTarget;
+        if (followTarget)
+            explosionWaitingTickCount = EXPLOSION_WAITING_TICK - 20;
     }
 
     public @Nullable Entity getOwner() {
@@ -103,7 +105,10 @@ public class Stardust extends LightTailEntity {
         if (waitingTickCount >= waitingTick) {
             Entity target = getTarget();
             if (followTarget && target != null) {
-                Vec3 delta = target.getEyePosition().subtract(this.position()).normalize().scale(1.3);
+                Vec3 delta = target.getEyePosition()
+                        .subtract(this.position())
+                        .normalize()
+                        .scale(0.1);
                 setDeltaMovement(delta);
             } else {
                 RandomSource random = RandomSource.create(getId() + waitingTick);
