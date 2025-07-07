@@ -14,10 +14,11 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 
-public class StormSkill extends Skill<Herobrine> {
+public class StormSkill extends TargetSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final.storm");
     private final HashMap<LivingEntity, Integer> hurtEntities = new HashMap<>();
 
@@ -37,7 +38,7 @@ public class StormSkill extends Skill<Herobrine> {
     }
 
     @Override
-    protected void skillTick(ServerLevel level) {
+    protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAt(30, () -> pullEntities(level));
 
         runFrom(40, () -> stigmatizingWave(level, 40));

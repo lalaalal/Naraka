@@ -28,6 +28,7 @@ public class AnimationMapper {
         HerobrineComboAttackAnimation.initialize();
 
         FinalHerobrineAnimation.initialize();
+        FinalHerobrineSkillAnimation.initialize();
         FinalHerobrineComboAnimation.initialize();
 
         AnimationLocations.checkMappings(MAPPER.keySet());

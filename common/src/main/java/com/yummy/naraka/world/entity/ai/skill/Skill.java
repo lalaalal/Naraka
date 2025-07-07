@@ -4,7 +4,6 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,24 +39,6 @@ public abstract class Skill<T extends SkillUsingMob> {
 
     protected Skill(ResourceLocation location, T mob, int duration, int cooldown) {
         this(location, mob, duration, cooldown, null);
-    }
-
-    protected final boolean targetInRange(float distanceSquare) {
-        LivingEntity target = mob.getTarget();
-        return target != null && targetInRange(target, distanceSquare);
-    }
-
-    protected final boolean targetInRange(LivingEntity target, float distanceSquare) {
-        return mob.distanceToSqr(target) <= distanceSquare;
-    }
-
-    protected final boolean targetOutOfRange(float distanceSquare) {
-        LivingEntity target = mob.getTarget();
-        return target != null && !targetInRange(distanceSquare);
-    }
-
-    protected final boolean targetOutOfRange(LivingEntity target, float distanceSquare) {
-        return !targetInRange(target, distanceSquare);
     }
 
     public abstract boolean canUse(ServerLevel level);

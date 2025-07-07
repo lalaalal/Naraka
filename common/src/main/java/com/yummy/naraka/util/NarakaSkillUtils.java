@@ -66,7 +66,7 @@ public class NarakaSkillUtils {
     }
 
     /**
-     * Move to the target with speed. Stop mob is on ground or nearby target
+     * Move to the target with speed. Stop mob is on the ground or nearby target
      */
     public static void moveToTarget(LivingEntity target, Mob mob, double speed, double yAddition) {
         if (mob.distanceToSqr(target) < 9 || mob.onGround()) {

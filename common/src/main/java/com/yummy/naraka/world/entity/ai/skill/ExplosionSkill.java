@@ -96,6 +96,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
 
     @Override
     protected void onHurtEntity(ServerLevel level, LivingEntity target) {
+        mob.stigmatizeEntity(level, target);
         level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
     }
 }

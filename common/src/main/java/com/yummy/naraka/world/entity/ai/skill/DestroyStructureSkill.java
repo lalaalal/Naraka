@@ -10,6 +10,8 @@ import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Block;
@@ -87,6 +89,12 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
     protected void hurtEntities(ServerLevel level, Predicate<LivingEntity> predicate, double size) {
         super.hurtEntities(level, predicate, size);
         NarakaSkillUtils.sendCircleParticle(level, mob.position(), NarakaParticleTypes.CORRUPTED_FIRE_FLAME.get(), size);
+    }
+
+    @Override
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
+        mob.stigmatizeEntity(level, target);
+        level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
     }
 
     protected void startPhase3() {

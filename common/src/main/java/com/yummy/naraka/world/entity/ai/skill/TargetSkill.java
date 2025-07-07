@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -53,5 +54,33 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
                 .scale(speed);
         if (mob.distanceToSqr(target) > 3)
             mob.setDeltaMovement(deltaMovement);
+    }
+
+    protected final boolean targetInRange(float distanceSquare) {
+        LivingEntity target = mob.getTarget();
+        return target != null && targetInRange(target, distanceSquare);
+    }
+
+    protected final boolean targetInRange(LivingEntity target, float distanceSquare) {
+        return mob.distanceToSqr(target) <= distanceSquare;
+    }
+
+    protected final boolean targetOutOfRange(float distanceSquare) {
+        LivingEntity target = mob.getTarget();
+        return target != null && !targetInRange(distanceSquare);
+    }
+
+    protected final boolean targetOutOfRange(LivingEntity target, float distanceSquare) {
+        return !targetInRange(target, distanceSquare);
+    }
+
+    protected final boolean targetInLookAngle(Vec3 target, float from, float to) {
+        Vec3 diff = target.subtract(mob.position());
+        double angle = NarakaUtils.wrapRadians(Math.atan2(diff.z, diff.x) - Math.toRadians(mob.getYRot() + 90));
+        return from <= angle && angle <= to;
+    }
+
+    protected final boolean targetInLookAngle(LivingEntity target, float from, float to) {
+        return targetInLookAngle(target.position(), from, to);
     }
 }

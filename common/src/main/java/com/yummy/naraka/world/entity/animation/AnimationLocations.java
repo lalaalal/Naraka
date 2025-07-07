@@ -38,6 +38,8 @@ public class AnimationLocations {
     public static final ResourceLocation STORM = create("final_herobrine", "storm");
     public static final ResourceLocation CARPET_BOMBING = create("final_herobrine", "carpet_bombing");
     public static final ResourceLocation EXPLOSION = create("final_herobrine", "explosion");
+    public static final ResourceLocation EARTH_SHOCK = create("final_herobrine", "earth_shock");
+
     public static final ResourceLocation FINAL_COMBO_ATTACK_1 = create("final_herobrine", "combo_attack_1");
     public static final ResourceLocation FINAL_COMBO_ATTACK_2 = create("final_herobrine", "combo_attack_2");
     public static final ResourceLocation FINAL_COMBO_ATTACK_3 = create("final_herobrine", "combo_attack_3");
