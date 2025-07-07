@@ -83,6 +83,12 @@ public class NarakaEntityTypes {
                     .sized(6f, 3f)
     );
 
+    public static final HolderProxy<EntityType<?>, EntityType<ColoredLightningBolt>> COLORED_LIGHTNING_BOLT = register(
+            "colored_lightning_bolt",
+            EntityType.Builder.<ColoredLightningBolt>of(ColoredLightningBolt::new, MobCategory.MISC)
+                    .sized(0, 0)
+    );
+
     private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {
         return RegistryProxy.register(Registries.ENTITY_TYPE, name, () -> builder.build(createKey(name)));
     }

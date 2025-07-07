@@ -112,6 +112,7 @@ public final class NarakaModClient {
         EntityRendererRegistry.register(NarakaEntityTypes.STARDUST, StardustRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_FIREBALL, NarakaFireballRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.PICKAXE_SLASH, PickaxeSlashRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.COLORED_LIGHTNING_BOLT, ColoredLightningBoltRenderer::new);
     }
 
     private static void registerHudRenders() {
