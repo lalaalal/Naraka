@@ -57,8 +57,12 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
         runAt(20, () -> mob.startHerobrineSky(level));
 
         runAt(80, this::startPhase3);
-        runAt(160, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 5));
+        runAt(160, () -> hurtEntities(level, this::checkTarget, 5));
         run(canDestroyStructure(), () -> destroyStructure(level));
+    }
+
+    private boolean checkTarget(LivingEntity target) {
+        return targetInLookAngle(target, -Mth.HALF_PI, Mth.HALF_PI) && AbstractHerobrine.isNotHerobrine(target);
     }
 
     private boolean canDestroyStructure() {

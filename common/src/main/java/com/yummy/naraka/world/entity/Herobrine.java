@@ -76,7 +76,7 @@ public class Herobrine extends AbstractHerobrine {
     protected final CarpetBombingSkill carpetBombingSkill = registerSkill(7, this, CarpetBombingSkill::new, AnimationLocations.CARPET_BOMBING);
     protected final ExplosionSkill explosionSkill = registerSkill(7, this, ExplosionSkill::new, AnimationLocations.EXPLOSION);
     protected final StormSkill stormSkill = registerSkill(7, this, StormSkill::new, AnimationLocations.STORM);
-    protected final EarthShockSkill earthShockSkill = registerSkill(this, EarthShockSkill::new, AnimationLocations.EARTH_SHOCK);
+    protected final EarthShockSkill earthShockSkill = registerSkill(7, this, EarthShockSkill::new, AnimationLocations.EARTH_SHOCK);
 
     protected final StrikeDownSkill strikeDownSkill = registerSkill(this, StrikeDownSkill::new, AnimationLocations.FINAL_COMBO_ATTACK_3);
     protected final SpinUpSkill spinUpSkill = registerSkill(new SpinUpSkill(this, strikeDownSkill), AnimationLocations.FINAL_COMBO_ATTACK_2);

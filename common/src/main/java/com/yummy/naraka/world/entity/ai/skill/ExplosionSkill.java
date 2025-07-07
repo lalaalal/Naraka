@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -52,7 +53,11 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
         runBetween(85, 90, () -> scaleMagicCircle(15, 0, 85, 89));
 
         runAt(62, () -> mob.setDeltaMovement(Vec3.ZERO));
-        runAt(107, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 5));
+        runAt(107, () -> hurtEntities(level, this::checkTarget, 5));
+    }
+
+    private boolean checkTarget(LivingEntity target) {
+        return targetInLookAngle(target, -Mth.HALF_PI, Mth.HALF_PI) && AbstractHerobrine.isNotHerobrine(target);
     }
 
     private void scaleMagicCircle(float from, float to, int startTick, int endTick) {

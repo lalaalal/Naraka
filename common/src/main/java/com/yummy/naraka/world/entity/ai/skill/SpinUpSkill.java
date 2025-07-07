@@ -40,8 +40,12 @@ public class SpinUpSkill extends ComboSkill<Herobrine> {
         runBetween(24, 37, () -> blowBlocks(level, 3, 24));
         runBetween(26, 37, () -> blowBlocks(level, 5, 26));
         runBetween(21, 25, () -> reduceSpeed(0.3));
-        runAt(23, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 3));
+        runAt(23, () -> hurtEntities(level, this::checkTarget, 3));
         runAt(27, this::stopMoving);
+    }
+
+    private boolean checkTarget(LivingEntity target) {
+        return targetInLookAngle(target, -Mth.HALF_PI, Mth.HALF_PI) && AbstractHerobrine.isNotHerobrine(target);
     }
 
     @Override

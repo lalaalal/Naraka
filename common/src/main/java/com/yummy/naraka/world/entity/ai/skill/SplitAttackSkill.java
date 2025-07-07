@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 
 public class SplitAttackSkill extends SpawnInstantShadowSkill {
@@ -35,13 +36,17 @@ public class SplitAttackSkill extends SpawnInstantShadowSkill {
         lookTarget(target);
         runBetween(15, 20, () -> moveToTarget(target, 1));
         runBetween(15, 20, () -> rotateTowardTarget(target));
-        runAt(22, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 2));
+        runAt(22, () -> hurtEntities(level, this::checkTarget, 2));
         runAt(20, this::stopMoving);
         runAt(25, () -> spawnShadowHerobrine(level));
         runAt(26, () -> shadowUseSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_1));
 
         runAt(35, () -> spawnShadowHerobrine(level));
         runAt(36, () -> shadowUseSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_2));
+    }
+
+    private boolean checkTarget(LivingEntity target) {
+        return targetInLookAngle(target, -Mth.HALF_PI * 0.3f, Mth.HALF_PI * 0.3f) && AbstractHerobrine.isNotHerobrine(target);
     }
 
     @Override

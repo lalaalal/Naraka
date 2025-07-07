@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,10 +53,13 @@ public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
 
     @Override
     protected boolean hurtEntity(ServerLevel level, LivingEntity target) {
-        if (targetOutOfRange(target, 4))
-            return false;
+        if (checkTarget(target))
+            return super.hurtEntity(level, target);
+        return false;
+    }
 
-        return super.hurtEntity(level, target);
+    private boolean checkTarget(LivingEntity target) {
+        return targetInLookAngle(target, -Mth.HALF_PI * 0.3f, Mth.HALF_PI * 0.3f) && targetInRange(target, 4);
     }
 
     @Override
