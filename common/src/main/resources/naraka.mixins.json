@@ -29,11 +29,8 @@
     "ServerPlayerGameModeMixin",
     "WanderingTraderMixin",
     "accessor.CreativeModeTabsAccessor",
-    "accessor.FallingBlockEntityAccessor",
-    "invoker.FallingBlockEntityInvoker",
     "invoker.MangroveRootsBlockInvoker",
     "invoker.MobEffectInvoker",
-    "invoker.OverworldBiomesInvoker",
     "invoker.RootPlacerTypeInvoker"
   ],
   "injectors": {

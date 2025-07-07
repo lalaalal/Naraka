@@ -1,9 +1,5 @@
 package com.yummy.naraka.util;
 
-import com.yummy.naraka.Platform;
-import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.mixin.accessor.FallingBlockEntityAccessor;
-import com.yummy.naraka.mixin.invoker.FallingBlockEntityInvoker;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncPlayerMovementPacket;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
@@ -23,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -122,18 +117,11 @@ public class NarakaEntityUtils {
     }
 
     public static void createFloatingBlock(Level level, BlockPos pos, BlockState state, Vec3 movement) {
-        if (Platform.getInstance().isDevelopmentEnvironment() && !NarakaConfig.COMMON.allowFloatingBlockOnDev.getValue())
-            return;
-        FallingBlockEntity fallingBlockEntity = FallingBlockEntityInvoker.create(
-                level,
-                pos.getX() + 0.5,
-                pos.getY(),
-                pos.getZ() + 0.5,
-                state.hasProperty(BlockStateProperties.WATERLOGGED) ? state.setValue(BlockStateProperties.WATERLOGGED, false) : state
-        );
-        ((FallingBlockEntityAccessor) fallingBlockEntity).setCancelDrop(true);
-        fallingBlockEntity.setDeltaMovement(movement);
-        level.addFreshEntity(fallingBlockEntity);
+        if (level.getBlockState(pos).isAir()) {
+            FallingBlockEntity fallingBlockEntity = FallingBlockEntity.fall(level, pos, state);
+            fallingBlockEntity.disableDrop();
+            fallingBlockEntity.setDeltaMovement(movement);
+        }
     }
 
     public static void sendPlayerMovement(ServerPlayer player, Vec3 movement) {

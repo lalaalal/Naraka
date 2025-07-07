@@ -11,7 +11,6 @@ public class NarakaCommonConfig extends StaticConfiguration {
 
     public final ConfigValue<Boolean> breakComboWhenSkillDisabled;
     public final ConfigValue<Boolean> alwaysCombo;
-    public final ConfigValue<Boolean> allowFloatingBlockOnDev;
     public final ConfigValue<Boolean> disableStigma;
 
     public NarakaCommonConfig() {
@@ -31,7 +30,6 @@ public class NarakaCommonConfig extends StaticConfiguration {
 
         this.breakComboWhenSkillDisabled = define("break_combo_when_skill_disabled", false);
         this.alwaysCombo = define("always_combo", false);
-        this.allowFloatingBlockOnDev = define("allow_floating_block_on_dev", false);
         this.disableStigma = define("disable_stigma", false);
     }
 }
