@@ -64,24 +64,42 @@ public class NarakaUtils {
         return Mth.lerp(Math.clamp(newDelta, 0, 1), start, end);
     }
 
+    @FunctionalInterface
     public interface PositionConsumer {
         void accept(int x, int y, int z);
     }
 
+    @FunctionalInterface
     public interface LengthPositionConsumer {
         void accept(double length, int x, int y, int z);
     }
 
-    public static final BiPredicate<Integer, Integer> OUTLINE = (xz, radius) -> (radius - 0.75) * (radius - 0.75) <= xz && xz <= (radius + 0.25) * (radius + 0.25);
+    public static final BiPredicate<BlockPos, Integer> OUTLINE = (position, radius) -> {
+        int xz = position.getX() * position.getX() + position.getZ() * position.getZ();
+        return (radius - 0.75) * (radius - 0.75) <= xz && xz <= (radius + 0.25) * (radius + 0.25);
+    };
 
-    public static void circle(BlockPos center, int radius, BiPredicate<Integer, Integer> predicate, Consumer<BlockPos> consumer) {
+    public static void circle(BlockPos center, int radius, BiPredicate<BlockPos, Integer> predicate, Consumer<BlockPos> consumer) {
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
-                if (predicate.test(x * x + z * z, radius)) {
+                if (predicate.test(new BlockPos(x, center.getY(), z), radius)) {
                     consumer.accept(center.offset(x, 0, z));
                 }
             }
         }
+    }
+
+    public static double wrapRadians(double angle) {
+        double result = angle % Math.TAU;
+        if (result >= Math.PI) {
+            result -= Math.TAU;
+        }
+
+        if (result < -Math.PI) {
+            result += Math.TAU;
+        }
+
+        return result;
     }
 
     public static void sphere(BoundingBox box, float size, PositionConsumer consumer) {

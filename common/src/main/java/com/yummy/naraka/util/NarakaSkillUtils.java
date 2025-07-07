@@ -14,17 +14,22 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Collection;
+import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 
 public class NarakaSkillUtils {
-    public static void shockwaveBlocks(Level level, BlockPos base, int radius, Supplier<Vec3> movementSupplier) {
+    public static void shockwaveBlocks(Level level, BlockPos base, int radius, BiPredicate<BlockPos, Integer> positionPredicate, Supplier<Vec3> movementSupplier) {
         base = NarakaUtils.findAir(level, base, Direction.UP);
 
-        NarakaUtils.circle(base, radius, NarakaUtils.OUTLINE, blockPos -> {
+        NarakaUtils.circle(base, radius, positionPredicate, blockPos -> {
             BlockPos floor = NarakaUtils.findFloor(level, blockPos);
             BlockState state = level.getBlockState(floor);
             NarakaEntityUtils.createFloatingBlock(level, floor.above(), state, movementSupplier.get());
         });
+    }
+
+    public static void shockwaveBlocks(Level level, BlockPos base, int radius, Supplier<Vec3> movementSupplier) {
+        shockwaveBlocks(level, base, radius, NarakaUtils.OUTLINE, movementSupplier);
     }
 
     public static void shockwaveBlocks(Level level, BlockPos base, int radius) {
