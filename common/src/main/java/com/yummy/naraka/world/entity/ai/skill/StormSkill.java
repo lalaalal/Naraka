@@ -46,6 +46,13 @@ public class StormSkill extends TargetSkill<Herobrine> {
         runFrom(60, () -> stigmatizingWave(level, 60));
     }
 
+    @Override
+    protected void tickWithTarget(ServerLevel level, LivingEntity target) {
+        runBefore(30, () -> lookTarget(target));
+        runBefore(30, () -> rotateTowardTarget(target));
+        runAfter(60, () -> lookTarget(target));
+    }
+
     private boolean entityToPull(LivingEntity target) {
         return targetInRange(target, 80 * 80) && AbstractHerobrine.isNotHerobrine(target);
     }

@@ -37,7 +37,7 @@ public class PickaxeSlashSkill extends TargetSkill<AbstractHerobrine> {
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return targetOutOfRange(15 * 15);
+        return targetOutOfRange(12 * 12);
     }
 
     @Override

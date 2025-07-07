@@ -101,7 +101,7 @@ public class Stardust extends LightTailEntity {
         waitingTickCount += 1;
         int waitingTick = entityData.get(WAITING_TICK);
         if (waitingTickCount == waitingTick - 5)
-            level().addParticle(NarakaParticleTypes.STARDUST.get(), getX(), getY(), getZ(), 0, 0, 0);
+            level().addParticle(NarakaParticleTypes.STARDUST.get(), true, true, getX(), getY(), getZ(), 0, 0, 0);
         if (waitingTickCount >= waitingTick) {
             Entity target = getTarget();
             if (followTarget && target != null) {

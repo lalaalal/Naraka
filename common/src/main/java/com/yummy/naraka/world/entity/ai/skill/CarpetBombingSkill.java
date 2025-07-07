@@ -65,6 +65,10 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
         return mob.getAttackDamage();
     }
 
+    private Vec3 modifyMovement(Vec3 original) {
+        return original.scale(0.4).add(0, -3, 0);
+    }
+
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runAt(10, () -> mob.setDeltaMovement(0, 1.2, 0));
@@ -73,7 +77,7 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
 
         runBetween(10, 50, () -> rotateTowardTarget(target));
         runAfter(10, () -> lookTarget(target));
-        runBetween(50, 70, () -> NarakaSkillUtils.moveToTarget(target, mob, 0.3, -2.1));
+        runBetween(50, 70, () -> moveToTarget(target, true, this::modifyMovement));
         runAt(55, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 4));
         runAt(70, () -> mob.setDeltaMovement(0, 0.4, 0));
         runBetween(71, 90, () -> reduceSpeed(0.4f));

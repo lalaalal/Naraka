@@ -38,11 +38,15 @@ public class StrikeDownSkill extends SpawnInstantShadowSkill {
         return mob.getAttackDamage();
     }
 
+    private Vec3 modifyMovement(Vec3 original) {
+        return original.scale(0.6).add(0, -2, 0);
+    }
+
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runBefore(15, () -> rotateTowardTarget(target));
         runBefore(15, () -> lookTarget(target));
-        runBetween(19, 27, () -> NarakaSkillUtils.moveToTarget(target, mob, 0.5, -2));
+        runBetween(19, 27, () -> moveToTarget(target, true, this::modifyMovement));
         runAt(21, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 5));
 
         runAt(20, () -> spawnShadowHerobrine(level, shadowPosition));

@@ -8,6 +8,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.UnaryOperator;
+
 public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
     protected TargetSkill(ResourceLocation location, T mob, int duration, int cooldown, @Nullable Skill<?> linkedSkill) {
         super(location, mob, duration, cooldown, linkedSkill);
@@ -45,15 +47,17 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
     }
 
     protected final void moveToTarget(LivingEntity target, double speed) {
-        if (mob.distanceToSqr(target) < 6) {
-            mob.setDeltaMovement(Vec3.ZERO);
+        moveToTarget(target, true, deltaMovement -> deltaMovement.normalize().scale(speed));
+    }
+
+    protected void moveToTarget(LivingEntity target, boolean stopOnGround, UnaryOperator<Vec3> modifier) {
+        if (mob.distanceToSqr(target) < 9 || (stopOnGround && mob.onGround())) {
+            mob.setDeltaMovement(modifier.apply(Vec3.ZERO));
             return;
         }
-        Vec3 deltaMovement = target.position().subtract(mob.position())
-                .normalize()
-                .scale(speed);
-        if (mob.distanceToSqr(target) > 3)
-            mob.setDeltaMovement(deltaMovement);
+        Vec3 deltaMovement = target.position()
+                .subtract(mob.position());
+        mob.setDeltaMovement(modifier.apply(deltaMovement));
     }
 
     protected final boolean targetInRange(float distanceSquare) {

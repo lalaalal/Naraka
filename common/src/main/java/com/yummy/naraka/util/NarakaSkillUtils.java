@@ -7,7 +7,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,10 +29,6 @@ public class NarakaSkillUtils {
 
     public static void shockwaveBlocks(Level level, BlockPos base, int radius, Supplier<Vec3> movementSupplier) {
         shockwaveBlocks(level, base, radius, NarakaUtils.OUTLINE, movementSupplier);
-    }
-
-    public static void shockwaveBlocks(Level level, BlockPos base, int radius) {
-        shockwaveBlocks(level, base, radius, () -> new Vec3(0, 0.5, 0));
     }
 
     public static <T extends LivingEntity & StigmatizingEntity> void stigmatize(ServerLevel level, T mob, int radius) {
@@ -62,21 +57,6 @@ public class NarakaSkillUtils {
             double x = Math.cos(Math.toRadians(yRot)) * radius;
             double z = Math.sin(Math.toRadians(yRot)) * radius;
             level.sendParticles(particle, position.x() + x, position.y() + 1.5, position.z() + z, 1, 0, 0, 0, 1);
-        }
-    }
-
-    /**
-     * Move to the target with speed. Stop mob is on the ground or nearby target
-     */
-    public static void moveToTarget(LivingEntity target, Mob mob, double speed, double yAddition) {
-        if (mob.distanceToSqr(target) < 9 || mob.onGround()) {
-            mob.setDeltaMovement(0, yAddition, 0);
-        } else {
-            Vec3 movement = target.position()
-                    .subtract(mob.position())
-                    .scale(speed)
-                    .add(0, yAddition, 0);
-            mob.setDeltaMovement(movement);
         }
     }
 }

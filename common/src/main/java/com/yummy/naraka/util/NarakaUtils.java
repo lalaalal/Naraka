@@ -167,7 +167,7 @@ public class NarakaUtils {
 
     public static BlockPos findFaceSturdy(LevelAccessor level, BlockPos from, Direction faceDirection) {
         BlockPos.MutableBlockPos current = from.mutable();
-        while (level.isInsideBuildHeight(from.getY())) {
+        while (level.isInsideBuildHeight(current.getY())) {
             BlockPos pos = current.immutable();
             BlockState state = level.getBlockState(pos);
             if (state.isFaceSturdy(level, pos, faceDirection))
