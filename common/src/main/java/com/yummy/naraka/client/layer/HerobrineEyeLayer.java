@@ -2,6 +2,7 @@ package com.yummy.naraka.client.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.yummy.naraka.Platform;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import net.fabricmc.api.EnvType;
@@ -21,6 +22,8 @@ public class HerobrineEyeLayer<S extends AbstractHerobrineRenderState, M extends
     }
 
     private RenderType getRenderType(S renderState) {
+        if (Platform.getInstance().getModLoader() == Platform.ModLoader.NEO_FORGE)
+            return RenderType.entityTranslucent(renderState.eyeTexture);
         return RenderType.entityTranslucentEmissive(renderState.eyeTexture);
     }
 
