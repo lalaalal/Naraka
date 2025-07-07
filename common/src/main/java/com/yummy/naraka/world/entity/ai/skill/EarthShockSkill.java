@@ -35,7 +35,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return true;
+        return mob.getTarget() != null;
     }
 
     private Supplier<Vec3> blockFloatingMovement(float base, float multiplier) {
@@ -55,10 +55,10 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         runBetween(0, 10, () -> reduceSpeed(0.4));
         runAt(10, () -> mob.setDeltaMovement(0, -8, 0));
         color = ARGB.color(0x33, 0x0000E5);
-        runBetween(15, 25, () -> spawnLightningBoltGroup(level, 15, 3, 1.4f, -Mth.PI, Mth.PI, Mth.PI * 0.025f));
-        runBetween(15, 25, () -> shockwaveBlocks(level, 15, 5, -Mth.PI, Mth.PI, blockFloatingMovement(0.2f, 0.4f)));
+        runBetween(15, 25, () -> spawnLightningBoltGroup(level, 15, 3, 1.4f, -Mth.PI, Mth.PI, Mth.PI * 0.1f));
+        runBetween(20, 25, () -> shockwaveBlocks(level, 15, 1, -Mth.PI, Mth.PI, blockFloatingMovement(0.2f, 0.4f)));
         color = ARGB.color(0x33, 0x940000);
-        runBetween(15, 30, () -> spawnLightningBoltGroup(level, 15, 1, 1f, -Mth.HALF_PI * 0.67f, Mth.HALF_PI * 0.67f, Mth.PI * 0.1f));
+        runBetween(15, 30, () -> spawnLightningBoltGroup(level, 15, 1, 1f, -Mth.HALF_PI * 0.125f, Mth.HALF_PI * 0.125f, Mth.PI * 0.1f));
 
         color = ARGB.color(0x33, 0x11118D);
         runBetween(30, 60, () -> spawnLightningBoltGroup(level, 30, 3, 1.2f, -Mth.PI, Mth.PI, 0.314f * 2));
