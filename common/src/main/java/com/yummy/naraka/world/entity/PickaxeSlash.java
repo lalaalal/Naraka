@@ -51,7 +51,7 @@ public class PickaxeSlash extends LightTailEntity {
 
     @Override
     public int getTailColor() {
-        return 0x5772F4;
+        return 0x0000ff;
     }
 
     public void setZRot(float zRot) {
