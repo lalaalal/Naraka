@@ -75,6 +75,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
         BlockPos floor = NarakaUtils.findFloor(level, mob.blockPosition());
         magicCircle = new MagicCircle(level, mob, 80, 1);
         magicCircle.setPos(mob.getX(), floor.above().getY() + 0.1, mob.getZ());
+        magicCircle.setScale(0);
         level.addFreshEntity(magicCircle);
     }
 

@@ -33,17 +33,25 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
         onGroundTick = 0;
     }
 
+    private void addStardust(ServerLevel level, float yRot, int basePower, boolean followTarget) {
+        int spawnTick = mob.getRandom().nextIntBetweenInclusive(1, 10);
+        float xRot = mob.getRandom().nextFloat() * 30 + 15;
+        Vec3 shootingVector = mob.calculateViewVector(-xRot, yRot);
+        int power = mob.getRandom().nextIntBetweenInclusive(basePower, basePower + 1);
+        int waitingTick = mob.getRandom().nextIntBetweenInclusive(2, 3) * 10 - 5;
+        Stardust stardust = new Stardust(level, mob, shootingVector, power, waitingTick, followTarget);
+        stardusts.put(stardust, spawnTick);
+    }
+
     @Override
     protected void onFirstTick(ServerLevel level) {
         for (int i = 0; i < 16; i++) {
-            int spawnTick = mob.getRandom().nextIntBetweenInclusive(1, 10);
+            float yRot = 360f / 16 * i + 360f / 32;
+            addStardust(level, yRot, 4, false);
+        }
+        for (int i = 0; i < 16; i++) {
             float yRot = 360f / 16 * i;
-            float xRot = mob.getRandom().nextFloat() * 30 + 15;
-            Vec3 shootingVector = mob.calculateViewVector(-xRot, yRot);
-            int power = mob.getRandom().nextIntBetweenInclusive(4, 5);
-            int waitingTick = mob.getRandom().nextIntBetweenInclusive(2, 3) * 10 - 5;
-            Stardust stardust = new Stardust(level, mob, shootingVector, power, waitingTick, false);
-            stardusts.put(stardust, spawnTick);
+            addStardust(level, yRot, 6, true);
         }
     }
 
