@@ -186,7 +186,7 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64, 1, 1, 0));
+        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 32, 5, 0));
     }
 
     public void setSpawnPosition(BlockPos pos) {
@@ -206,7 +206,7 @@ public class Herobrine extends AbstractHerobrine {
         skillManager.setCurrentSkill(destroyStructureSkill);
         entityData.set(DISPLAY_SCARF, true);
         navigation = new FlyingPathNavigation(this, level());
-        moveControl = new HerobrineFlyMoveControl(this, 0.75, 1);
+        moveControl = new HerobrineFlyMoveControl(this, 0.75);
         setNoGravity(true);
         setAnimation(AnimationLocations.PHASE_3_IDLE);
         setDisplayEye(false);

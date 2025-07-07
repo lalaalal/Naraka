@@ -749,21 +749,21 @@ public class FinalHerobrineSkillAnimation {
                     new Keyframe(2.125F, KeyframeAnimations.degreeVec(17.7F, 28.4F, 1.73F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(2.75F, KeyframeAnimations.degreeVec(17.6576F, 26.401F, 1.1283F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(4.25F, KeyframeAnimations.degreeVec(17.66F, 26.4F, 1.13F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(4.5F, KeyframeAnimations.degreeVec(0.0F, 7.5F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(5.5F, KeyframeAnimations.degreeVec(0.0F, 7.5F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(5.75F, KeyframeAnimations.degreeVec(0.0F, 0.55F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.625F, KeyframeAnimations.degreeVec(-4.38F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.degreeVec(-0.51F, -37.5F, -1.03F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.degreeVec(1.0348F, -52.4955F, -1.441F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.degreeVec(0.28F, -14.0F, -0.38F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(6.25F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("main", new AnimationChannel(AnimationChannel.Targets.POSITION,
                     new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(0.75F, KeyframeAnimations.posVec(0.0F, 7.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(0.8333F, KeyframeAnimations.posVec(0.0F, -7.0F, -6.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(0.875F, KeyframeAnimations.posVec(0.0F, -7.0F, -6.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(1.5F, KeyframeAnimations.posVec(0.0F, -7.0F, -6.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(1.625F, KeyframeAnimations.posVec(0.0F, -8.0F, -6.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(4.25F, KeyframeAnimations.posVec(0.0F, -8.0F, -6.0F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(4.5F, KeyframeAnimations.posVec(0.0F, 2.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(5.5F, KeyframeAnimations.posVec(0.0F, 2.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(5.75F, KeyframeAnimations.posVec(0.0F, 0.15F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.625F, KeyframeAnimations.posVec(0.0F, 6.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.posVec(0.0F, 6.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(6.25F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("chest", new AnimationChannel(AnimationChannel.Targets.ROTATION,
@@ -772,20 +772,22 @@ public class FinalHerobrineSkillAnimation {
                     new Keyframe(0.875F, KeyframeAnimations.degreeVec(-3.0536F, 17.1429F, -2.3541F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(1.5F, KeyframeAnimations.degreeVec(-18.4674F, -32.7893F, 0.429F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(1.625F, KeyframeAnimations.degreeVec(33.7319F, 14.0054F, 25.0894F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(2.125F, KeyframeAnimations.degreeVec(35.7651F, 12.9475F, 26.3141F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(2.75F, KeyframeAnimations.degreeVec(23.9411F, -2.3638F, 2.3145F), AnimationChannel.Interpolations.CATMULLROM),
+                    new Keyframe(2.125F, KeyframeAnimations.degreeVec(35.27F, 14.4F, 24.22F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(2.75F, KeyframeAnimations.degreeVec(24.1067F, -6.9312F, 0.2727F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(2.8333F, KeyframeAnimations.degreeVec(34.541F, 18.1449F, 28.0088F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(4.25F, KeyframeAnimations.degreeVec(35.0359F, 20.1933F, 29.52F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(4.5F, KeyframeAnimations.degreeVec(-10.0F, 10.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+                    new Keyframe(4.625F, KeyframeAnimations.degreeVec(-7.8861F, 29.9685F, -1.4426F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.degreeVec(-13.82F, -18.93F, 7.86F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.degreeVec(-16.1949F, -38.4905F, 11.577F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.degreeVec(-11.65F, -2.93F, 3.09F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(6.25F, KeyframeAnimations.degreeVec(-10.0F, 10.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("chest", new AnimationChannel(AnimationChannel.Targets.POSITION,
                     new Keyframe(1.5F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(1.625F, KeyframeAnimations.posVec(0.0F, 0.0F, -1.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(2.125F, KeyframeAnimations.posVec(0.0F, 0.0F, -0.97F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(2.75F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(2.8333F, KeyframeAnimations.posVec(0.0F, 0.0F, -1.0F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(4.25F, KeyframeAnimations.posVec(0.0F, 0.0F, -1.0F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(4.5F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+                    new Keyframe(2.8333F, KeyframeAnimations.posVec(0.0F, 0.0F, -1.0F), AnimationChannel.Interpolations.CATMULLROM)
             ))
             .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(17.8471F, -9.5447F, -4.0407F), AnimationChannel.Interpolations.LINEAR),
@@ -793,13 +795,14 @@ public class FinalHerobrineSkillAnimation {
                     new Keyframe(0.875F, KeyframeAnimations.degreeVec(12.8601F, 0.8582F, -1.0886F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(1.5F, KeyframeAnimations.degreeVec(23.8155F, 33.8262F, 20.2189F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(1.625F, KeyframeAnimations.degreeVec(15.1179F, -29.2822F, -5.1033F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(2.125F, KeyframeAnimations.degreeVec(14.8075F, -32.7692F, -6.1002F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(2.75F, KeyframeAnimations.degreeVec(11.7846F, -18.2761F, 3.3837F), AnimationChannel.Interpolations.CATMULLROM),
+                    new Keyframe(2.125F, KeyframeAnimations.degreeVec(14.42F, -30.35F, -5.36F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(2.75F, KeyframeAnimations.degreeVec(11.3074F, -8.4774F, 5.4385F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(2.8333F, KeyframeAnimations.degreeVec(18.3271F, -43.6602F, -10.4571F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(4.25F, KeyframeAnimations.degreeVec(18.3271F, -43.6602F, -10.4571F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(4.5F, KeyframeAnimations.degreeVec(17.6614F, -17.4476F, -3.9473F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(5.5F, KeyframeAnimations.degreeVec(17.6614F, -17.4476F, -3.9473F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(5.75F, KeyframeAnimations.degreeVec(17.83F, -10.12F, -4.03F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.625F, KeyframeAnimations.degreeVec(12.5881F, -14.9854F, -0.6696F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.degreeVec(39.02F, 36.08F, 16.77F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.degreeVec(49.5861F, 56.5012F, 23.7414F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.degreeVec(26.31F, 8.07F, 3.37F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(6.25F, KeyframeAnimations.degreeVec(17.8471F, -9.5447F, -4.0407F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.POSITION,
@@ -811,7 +814,11 @@ public class FinalHerobrineSkillAnimation {
                     new Keyframe(2.75F, KeyframeAnimations.posVec(0.0F, 1.0F, -2.0F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(2.8333F, KeyframeAnimations.posVec(0.0F, 1.0F, -3.0F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(4.25F, KeyframeAnimations.posVec(0.0F, 1.0F, -3.0F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(4.5F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+                    new Keyframe(4.625F, KeyframeAnimations.posVec(0.0F, 1.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.posVec(0.0F, 1.71F, -0.71F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.posVec(0.0F, 2.0F, -1.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.posVec(0.0F, 0.0F, -1.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(6.25F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("right_arm", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(18.1921F, 20.5607F, 18.8746F), AnimationChannel.Interpolations.LINEAR),
@@ -824,9 +831,10 @@ public class FinalHerobrineSkillAnimation {
                     new Keyframe(2.75F, KeyframeAnimations.degreeVec(-0.4582F, 3.5023F, 41.9592F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(2.8333F, KeyframeAnimations.degreeVec(18.3185F, 12.5202F, 65.0842F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(4.25F, KeyframeAnimations.degreeVec(38.3185F, 12.5202F, 65.0842F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(4.5F, KeyframeAnimations.degreeVec(-111.685F, -13.2668F, 1.2071F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(5.5F, KeyframeAnimations.degreeVec(-82.4577F, 15.4081F, 4.8831F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(5.75F, KeyframeAnimations.degreeVec(8.75F, 18.1F, 17.59F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.625F, KeyframeAnimations.degreeVec(-12.3894F, 34.784F, 45.8262F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.degreeVec(-70.54F, -1.72F, 54.98F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.degreeVec(-93.8064F, -16.3222F, 58.6355F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.degreeVec(-11.67F, 10.73F, 29.48F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(6.25F, KeyframeAnimations.degreeVec(18.1921F, 20.5607F, 18.8746F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("right_arm", new AnimationChannel(AnimationChannel.Targets.POSITION,
@@ -834,9 +842,10 @@ public class FinalHerobrineSkillAnimation {
                     new Keyframe(0.25F, KeyframeAnimations.posVec(-2.59F, -1.59F, -1.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(0.75F, KeyframeAnimations.posVec(-2.0F, -2.0F, -1.0F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(4.25F, KeyframeAnimations.posVec(-2.0F, -2.0F, -1.0F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(4.5F, KeyframeAnimations.posVec(-1.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(5.5F, KeyframeAnimations.posVec(-1.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(5.75F, KeyframeAnimations.posVec(-0.07F, 0.0F, -0.93F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.625F, KeyframeAnimations.posVec(-1.0F, -1.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.posVec(-3.86F, -1.71F, -0.71F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.posVec(-5.0F, -2.0F, -1.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.posVec(-1.33F, -0.53F, -1.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(6.25F, KeyframeAnimations.posVec(0.0F, 0.0F, -1.0F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("right_hand", new AnimationChannel(AnimationChannel.Targets.ROTATION,
@@ -851,30 +860,41 @@ public class FinalHerobrineSkillAnimation {
                     new Keyframe(2.75F, KeyframeAnimations.degreeVec(-60.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(2.8333F, KeyframeAnimations.degreeVec(-70.102F, 1.9199F, -75.9061F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(4.25F, KeyframeAnimations.degreeVec(-70.102F, 1.9199F, -75.9061F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(4.5F, KeyframeAnimations.degreeVec(-29.9976F, -0.109F, -2.4976F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(5.5F, KeyframeAnimations.degreeVec(-29.9976F, -0.109F, -2.4976F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(5.75F, KeyframeAnimations.degreeVec(-4.5F, -0.01F, -0.18F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.625F, KeyframeAnimations.degreeVec(-23.5097F, 24.5948F, -4.6293F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.degreeVec(-27.35F, 11.37F, 1.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.degreeVec(-28.8931F, 6.0803F, 3.2568F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.degreeVec(-9.54F, 1.62F, 0.87F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(6.25F, KeyframeAnimations.degreeVec(-2.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+            ))
+            .addAnimation("right_hand", new AnimationChannel(AnimationChannel.Targets.POSITION,
+                    new Keyframe(4.25F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
+                    new Keyframe(4.625F, KeyframeAnimations.posVec(0.0F, 0.0F, -1.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.posVec(0.0F, 0.0F, -0.29F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("pickaxe", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(4.25F, KeyframeAnimations.degreeVec(50.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(4.5F, KeyframeAnimations.degreeVec(-2.4786F, -0.3262F, 82.5071F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(5.5F, KeyframeAnimations.degreeVec(-2.4786F, -0.3262F, 82.5071F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(5.75F, KeyframeAnimations.degreeVec(46.18F, -0.02F, 6.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.625F, KeyframeAnimations.degreeVec(-1.1864F, -22.4654F, -78.8492F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.degreeVec(39.7481F, 32.8282F, 24.2681F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.degreeVec(9.4627F, -34.494F, 95.4997F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.degreeVec(-18.7055F, -25.6755F, 112.8261F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.6667F, KeyframeAnimations.degreeVec(-34.9543F, -59.702F, 135.593F), AnimationChannel.Interpolations.CATMULLROM),
+                    new Keyframe(5.9167F, KeyframeAnimations.degreeVec(41.7271F, -52.1659F, 26.4596F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(6.25F, KeyframeAnimations.degreeVec(50.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("pickaxe", new AnimationChannel(AnimationChannel.Targets.POSITION,
                     new Keyframe(4.25F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(4.5F, KeyframeAnimations.posVec(0.0F, -2.0F, 2.0F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(5.5F, KeyframeAnimations.posVec(0.0F, -2.0F, 2.0F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(5.75F, KeyframeAnimations.posVec(0.0F, -0.15F, 0.15F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.625F, KeyframeAnimations.posVec(30.0F, 18.0F, 8.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.posVec(0.0F, -2.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.posVec(0.0F, -2.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.posVec(0.8F, -0.6F, 2.13F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(6.25F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("pickaxe", new AnimationChannel(AnimationChannel.Targets.SCALE,
                     new Keyframe(0.0F, KeyframeAnimations.scaleVec(1.0F, 1.0F, 1.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(0.125F, KeyframeAnimations.scaleVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(4.375F, KeyframeAnimations.scaleVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(4.5F, KeyframeAnimations.scaleVec(1.0F, 1.0F, 1.0F), AnimationChannel.Interpolations.LINEAR)
+                    new Keyframe(4.625F, KeyframeAnimations.scaleVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.scaleVec(1.0F, 1.0F, 1.0F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("left_arm", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(30.2136F, -6.4905F, -23.7661F), AnimationChannel.Interpolations.LINEAR),
@@ -886,9 +906,10 @@ public class FinalHerobrineSkillAnimation {
                     new Keyframe(2.75F, KeyframeAnimations.degreeVec(-49.4072F, 1.6607F, -16.1929F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(2.8333F, KeyframeAnimations.degreeVec(-36.4924F, 10.268F, -50.9145F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(4.25F, KeyframeAnimations.degreeVec(-36.49F, 10.27F, -50.91F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(4.5F, KeyframeAnimations.degreeVec(15.2136F, -6.4905F, -23.7661F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(5.5F, KeyframeAnimations.degreeVec(15.2136F, -6.4905F, -23.7661F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(5.75F, KeyframeAnimations.degreeVec(29.12F, -6.49F, -23.77F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.625F, KeyframeAnimations.degreeVec(-43.8918F, -3.6525F, -30.7875F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.degreeVec(3.04F, -7.06F, -41.16F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.degreeVec(21.8188F, -8.418F, -45.3098F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.degreeVec(27.98F, -7.0F, -29.51F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(6.25F, KeyframeAnimations.degreeVec(30.2136F, -6.4905F, -23.7661F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("left_arm", new AnimationChannel(AnimationChannel.Targets.POSITION,
@@ -901,7 +922,9 @@ public class FinalHerobrineSkillAnimation {
                     new Keyframe(2.75F, KeyframeAnimations.posVec(3.0F, 0.0F, -4.0F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(2.8333F, KeyframeAnimations.posVec(2.0F, -2.0F, -2.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(4.25F, KeyframeAnimations.posVec(2.0F, -2.0F, -2.0F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(4.5F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+                    new Keyframe(5.25F, KeyframeAnimations.posVec(1.0F, -1.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.posVec(0.27F, -0.27F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(6.25F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("left_hand", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(-22.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
@@ -913,31 +936,49 @@ public class FinalHerobrineSkillAnimation {
                     new Keyframe(2.75F, KeyframeAnimations.degreeVec(-6.8661F, 17.2258F, 10.4748F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(2.8333F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(4.25F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(4.5F, KeyframeAnimations.degreeVec(-22.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+                    new Keyframe(4.625F, KeyframeAnimations.degreeVec(-42.5053F, -28.4804F, 9.8491F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.degreeVec(-35.36F, -28.48F, 9.85F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.degreeVec(-32.5053F, -28.4804F, 9.8491F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.degreeVec(-25.17F, -7.59F, 2.63F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(6.25F, KeyframeAnimations.degreeVec(-22.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+            ))
+            .addAnimation("left_hand", new AnimationChannel(AnimationChannel.Targets.POSITION,
+                    new Keyframe(4.25F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.posVec(0.0F, 0.0F, -1.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.posVec(0.0F, 0.0F, -0.27F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(6.25F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("right_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(10.4028F, 31.721F, 4.8974F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(0.5F, KeyframeAnimations.degreeVec(-90.5051F, 24.3757F, 17.6836F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(0.75F, KeyframeAnimations.degreeVec(-90.5051F, 24.3757F, 17.6836F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(0.7917F, KeyframeAnimations.degreeVec(-35.1995F, 14.9996F, 7.7817F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(0.7917F, KeyframeAnimations.degreeVec(-30.8164F, 23.2099F, 21.0857F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(0.875F, KeyframeAnimations.degreeVec(-68.472F, 22.627F, 22.7868F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(1.5F, KeyframeAnimations.degreeVec(-68.47F, 22.63F, 22.79F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(1.625F, KeyframeAnimations.degreeVec(-73.71F, 8.92F, 17.92F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(2.125F, KeyframeAnimations.degreeVec(-73.94F, 8.32F, 17.71F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(2.75F, KeyframeAnimations.degreeVec(-73.71F, 8.92F, 17.92F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(4.25F, KeyframeAnimations.degreeVec(-73.71F, 8.92F, 17.92F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(4.5F, KeyframeAnimations.degreeVec(10.4028F, 31.721F, 4.8974F), AnimationChannel.Interpolations.LINEAR)
+                    new Keyframe(4.625F, KeyframeAnimations.degreeVec(20.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.degreeVec(-16.92F, 8.87F, 13.47F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.degreeVec(-31.6813F, 12.4236F, 18.8591F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.degreeVec(-0.82F, 26.58F, 8.62F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(6.25F, KeyframeAnimations.degreeVec(10.4028F, 31.721F, 4.8974F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("right_legdown", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(0.5F, KeyframeAnimations.degreeVec(69.1784F, 13.2721F, -7.0531F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(0.75F, KeyframeAnimations.degreeVec(69.1784F, 13.2721F, -7.0531F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(0.7917F, KeyframeAnimations.degreeVec(20.6824F, 9.081F, 4.9549F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(0.7917F, KeyframeAnimations.degreeVec(18.3451F, 13.2721F, -7.0531F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(0.875F, KeyframeAnimations.degreeVec(56.6784F, 13.2721F, -7.0531F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(1.5F, KeyframeAnimations.degreeVec(56.9749F, 11.1794F, -5.6535F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(1.625F, KeyframeAnimations.degreeVec(56.97F, 11.18F, -5.65F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(4.25F, KeyframeAnimations.degreeVec(56.97F, 11.18F, -5.65F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(4.5F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+                    new Keyframe(4.625F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.degreeVec(53.57F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.degreeVec(75.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.degreeVec(20.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(6.25F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("left_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(-21.3604F, -19.8753F, 0.0457F), AnimationChannel.Interpolations.LINEAR),
@@ -945,13 +986,21 @@ public class FinalHerobrineSkillAnimation {
                     new Keyframe(0.875F, KeyframeAnimations.degreeVec(9.3377F, -12.7622F, -2.4339F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(1.5F, KeyframeAnimations.degreeVec(9.34F, -12.76F, -2.43F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(4.25F, KeyframeAnimations.degreeVec(9.34F, -12.76F, -2.43F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(4.5F, KeyframeAnimations.degreeVec(-21.3604F, -19.8753F, 0.0457F), AnimationChannel.Interpolations.LINEAR)
+                    new Keyframe(4.625F, KeyframeAnimations.degreeVec(-2.5385F, -9.9904F, 0.4407F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.degreeVec(2.16F, -21.99F, -4.47F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.degreeVec(4.0327F, -26.7952F, -6.4285F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.degreeVec(-14.59F, -21.72F, -1.68F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(6.25F, KeyframeAnimations.degreeVec(-21.3604F, -19.8753F, 0.0457F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("left_legdown", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.75F, KeyframeAnimations.degreeVec(42.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(0.875F, KeyframeAnimations.degreeVec(50.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(4.25F, KeyframeAnimations.degreeVec(50.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(4.5F, KeyframeAnimations.degreeVec(42.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
+                    new Keyframe(4.625F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(4.75F, KeyframeAnimations.degreeVec(7.14F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.25F, KeyframeAnimations.degreeVec(10.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(5.4583F, KeyframeAnimations.degreeVec(33.83F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+                    new Keyframe(6.25F, KeyframeAnimations.degreeVec(42.5F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)
             ))
             .addAnimation("independent_pickaxe", new AnimationChannel(AnimationChannel.Targets.SCALE,
                     new Keyframe(0.0F, KeyframeAnimations.scaleVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR)

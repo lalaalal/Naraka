@@ -62,7 +62,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
                 .add(Attributes.SAFE_FALL_DISTANCE, 256)
                 .add(Attributes.FALL_DAMAGE_MULTIPLIER, 0)
                 .add(Attributes.JUMP_STRENGTH, 0)
-                .add(Attributes.FLYING_SPEED, 0.3f)
+                .add(Attributes.FLYING_SPEED, 0.5f)
                 .add(Attributes.MAX_HEALTH, 666);
     }
 

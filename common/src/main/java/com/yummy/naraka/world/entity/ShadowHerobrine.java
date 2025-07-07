@@ -144,7 +144,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new FollowOwnerGoal<>(this));
-        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64, 0, 40, 0.6f));
+        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64, 40, 0.6f));
     }
 
     @Override
