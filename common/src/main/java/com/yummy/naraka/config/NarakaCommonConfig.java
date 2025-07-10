@@ -8,6 +8,7 @@ public class NarakaCommonConfig extends StaticConfiguration {
     public final ConfigValue<Float> fasterLiquidSwimmingSpeed;
     public final ConfigValue<Integer> narakaFireballTargetTracingLevel;
     public final ConfigValue<Boolean> disableHerobrineDestroyingStructure;
+    public final ConfigValue<Boolean> despawnHerobrineWhenTargetIsDead;
 
     public final ConfigValue<Boolean> breakComboWhenSkillDisabled;
     public final ConfigValue<Boolean> alwaysCombo;
@@ -27,6 +28,7 @@ public class NarakaCommonConfig extends StaticConfiguration {
                 .comment("1 : Can rotate movement")
                 .comment("2 : Can reduce speed (can turn back)");
         this.disableHerobrineDestroyingStructure = define("disable_herobrine_destroying_structure", false);
+        this.despawnHerobrineWhenTargetIsDead = define("despawn_herobrine_when_target_is_dead", true);
 
         this.breakComboWhenSkillDisabled = define("break_combo_when_skill_disabled", false);
         this.alwaysCombo = define("always_combo", false);

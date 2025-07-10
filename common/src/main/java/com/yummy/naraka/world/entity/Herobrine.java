@@ -81,8 +81,8 @@ public class Herobrine extends AbstractHerobrine {
     protected final StrikeDownSkill strikeDownSkill = registerSkill(this, StrikeDownSkill::new, AnimationLocations.FINAL_COMBO_ATTACK_3);
     protected final SpinUpSkill spinUpSkill = registerSkill(new SpinUpSkill(this, strikeDownSkill), AnimationLocations.FINAL_COMBO_ATTACK_2);
     protected final SplitAttackSkill splitAttackSkill = registerSkill(6, new SplitAttackSkill(this, spinUpSkill), AnimationLocations.FINAL_COMBO_ATTACK_1);
-    protected final PickaxeSlashSkill singlePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::single, AnimationLocations.PICKAXE_SLASH_SINGLE);
-    protected final PickaxeSlashSkill triplePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::triple, AnimationLocations.PICKAXE_SLASH_TRIPLE);
+    protected final PickaxeSlashSkill<AbstractHerobrine> singlePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::single, AnimationLocations.PICKAXE_SLASH_SINGLE);
+    protected final PickaxeSlashSkill<Herobrine> triplePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::triple, AnimationLocations.PICKAXE_SLASH_TRIPLE);
 
     public final AnimationState chzzkAnimationState = new AnimationState();
 
@@ -352,7 +352,8 @@ public class Herobrine extends AbstractHerobrine {
         collectStigma(serverLevel);
         phaseManager.updatePhase(bossEvent);
 
-        if (firstTarget != null && firstTarget.isDeadOrDying()) {
+        if (NarakaConfig.COMMON.despawnHerobrineWhenTargetIsDead.getValue()
+                && firstTarget != null && firstTarget.isDeadOrDying()) {
             shadowController.killShadows(serverLevel);
             discard();
         }

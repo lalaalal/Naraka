@@ -26,7 +26,7 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
         return builder(FINAL_COMBO_ATTACK_1, mob, 40, 100)
                 .nextSkill(nextSkill)
                 .moveToTarget(15, 20)
-                .moveSpeed(0.7)
+                .moveSpeed(1)
                 .attackTick(22).attackRange(3)
                 .build();
     }
@@ -46,7 +46,7 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
                 .attackTick(22).attackRange(3)
                 .lookTarget()
                 .moveToTarget(15, 20)
-                .moveSpeed(1.3)
+                .moveSpeed(1.4)
                 .build();
     }
 

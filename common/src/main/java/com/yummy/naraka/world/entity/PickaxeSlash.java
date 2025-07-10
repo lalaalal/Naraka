@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -18,6 +19,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class PickaxeSlash extends LightTailEntity {
+    public static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(PickaxeSlash.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Float> Z_ROT = SynchedEntityData.defineId(PickaxeSlash.class, EntityDataSerializers.FLOAT);
 
     private int lifetime = Integer.MAX_VALUE;
@@ -29,6 +31,7 @@ public class PickaxeSlash extends LightTailEntity {
     public PickaxeSlash(EntityType<? extends PickaxeSlash> entityType, Level level) {
         super(entityType, level, 30);
         setNoGravity(true);
+        setTailColor(0x0000ff);
     }
 
     public PickaxeSlash(Level level, AbstractHerobrine owner, int lifetime) {
@@ -46,12 +49,16 @@ public class PickaxeSlash extends LightTailEntity {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(Z_ROT, 60f);
+        builder.define(Z_ROT, 60f)
+                .define(COLOR, 0xffffff);
     }
 
-    @Override
-    public int getTailColor() {
-        return 0x0000ff;
+    public void setColor(int color) {
+        entityData.set(COLOR, color);
+    }
+
+    public int getColor(float partialTick) {
+        return ARGB.color((int) (getAlpha(partialTick) * 255), entityData.get(COLOR));
     }
 
     public void setZRot(float zRot) {

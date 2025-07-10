@@ -3,6 +3,7 @@ package com.yummy.naraka.world.entity.ai.skill;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
+import com.yummy.naraka.world.entity.ShadowHerobrine;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -13,17 +14,23 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Supplier;
 
-public class StrikeDownSkill extends SpawnInstantShadowSkill {
+public class StrikeDownSkill extends AttackSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final.strike_down");
 
     private final Supplier<Vec3> movementSupplier = () -> new Vec3(0, mob.getRandom().nextFloat() * 0.4 + 0.3, 0);
     private int onGroundTick;
     private Vec3 shadowPosition = Vec3.ZERO;
+    private InstantShadowSpawner shadowSpawner = InstantShadowSpawner.EMPTY;
 
     public StrikeDownSkill(Herobrine mob) {
-        super(LOCATION, mob, 60, 0, 0, null, 60);
+        super(LOCATION, mob, 60, 0);
         this.shieldCooldown = 100;
         this.shieldDamage = 15;
+    }
+
+    @Override
+    public boolean canUse(ServerLevel level) {
+        return false;
     }
 
     @Override
@@ -31,6 +38,7 @@ public class StrikeDownSkill extends SpawnInstantShadowSkill {
         super.prepare();
         onGroundTick = 0;
         shadowPosition = mob.position();
+        shadowSpawner = InstantShadowSpawner.simple(mob);
     }
 
     @Override
@@ -39,7 +47,7 @@ public class StrikeDownSkill extends SpawnInstantShadowSkill {
     }
 
     private Vec3 modifyMovement(Vec3 original) {
-        return original.scale(0.6).add(0, -2, 0);
+        return original.scale(0.5).add(0, -2, 0);
     }
 
     @Override
@@ -49,14 +57,18 @@ public class StrikeDownSkill extends SpawnInstantShadowSkill {
         runBetween(19, 27, () -> moveToTarget(target, true, this::modifyMovement));
         runAt(21, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 5));
 
-        runAt(20, () -> spawnShadowHerobrine(level, shadowPosition));
-        runAt(21, () -> shadowUseSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_3));
+        runAt(20, () -> shadowSpawner.control(this::displayShadowPickaxe).spawn(level, shadowPosition, mob.getYRot()));
+        runAt(21, () -> shadowSpawner.useSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_3));
 
         runAt(38, () -> mob.setDeltaMovement(0, 0.4, 0));
         runAfter(40, () -> lookTarget(target));
         runBetween(40, 48, () -> reduceSpeed(0.5));
         runAt(50, this::stopMoving);
         onGround(level);
+    }
+
+    private void displayShadowPickaxe(ShadowHerobrine shadowHerobrine) {
+        shadowHerobrine.setDisplayPickaxe(true);
     }
 
     @Override

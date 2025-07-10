@@ -29,18 +29,18 @@ public class SpinUpSkill extends ComboSkill<Herobrine> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        if (tickCount < 20 || tickCount > 27) {
+        if (tickCount > 27) {
             lookTarget(target);
             rotateTowardTarget(target);
         }
-        runAt(20, this::spinUp);
+        runAt(20, () -> spinUp(target));
         runBetween(20, 32, () -> blowBlocks(level, 3, 20));
         runBetween(23, 35, () -> blowBlocks(level, 4, 23));
         runBetween(25, 37, () -> blowBlocks(level, 5, 25));
         runBetween(24, 37, () -> blowBlocks(level, 3, 24));
         runBetween(26, 37, () -> blowBlocks(level, 5, 26));
         runBetween(21, 25, () -> reduceSpeed(0.3));
-        runAt(23, () -> hurtEntities(level, this::checkTarget, 3));
+        runBetween(20, 25, () -> hurtEntities(level, this::checkTarget, 3));
         runAt(27, this::stopMoving);
     }
 
@@ -71,9 +71,9 @@ public class SpinUpSkill extends ComboSkill<Herobrine> {
         }
     }
 
-    private void spinUp() {
-        Vec3 deltaMovement = mob.getLookAngle()
-                .multiply(5, 3, 5)
+    private void spinUp(LivingEntity target) {
+        Vec3 deltaMovement = target.position().subtract(mob.position())
+                .scale(0.6)
                 .add(0, 2, 0);
         mob.setDeltaMovement(deltaMovement);
     }

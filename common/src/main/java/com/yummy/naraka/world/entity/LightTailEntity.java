@@ -1,6 +1,9 @@
 package com.yummy.naraka.world.entity;
 
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.level.Level;
@@ -11,6 +14,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class LightTailEntity extends AbstractHurtingProjectile {
+    public static final EntityDataAccessor<Integer> TAIL_COLOR = SynchedEntityData.defineId(LightTailEntity.class, EntityDataSerializers.INT);
+
     protected final List<Vec3> tailPositions;
 
     public LightTailEntity(EntityType<? extends LightTailEntity> entityType, Level level) {
@@ -22,7 +27,19 @@ public abstract class LightTailEntity extends AbstractHurtingProjectile {
         tailPositions = new LinkedList<>(Collections.nCopies(tailLength, Vec3.ZERO));
     }
 
-    public abstract int getTailColor();
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(TAIL_COLOR, 0);
+    }
+
+    public void setTailColor(int color) {
+        entityData.set(TAIL_COLOR, color);
+    }
+
+    public int getTailColor() {
+        return entityData.get(TAIL_COLOR);
+    }
 
     @Override
     public void recreateFromPacket(ClientboundAddEntityPacket packet) {

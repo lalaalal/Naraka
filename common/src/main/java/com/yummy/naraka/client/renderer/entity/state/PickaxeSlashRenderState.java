@@ -1,5 +1,5 @@
 package com.yummy.naraka.client.renderer.entity.state;
 
 public class PickaxeSlashRenderState extends LightTailEntityRenderState {
-    public float alpha;
+    public int color;
 }

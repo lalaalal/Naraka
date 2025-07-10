@@ -42,10 +42,11 @@ public class Stardust extends LightTailEntity {
 
     public Stardust(EntityType<? extends Stardust> entityType, Level level) {
         super(entityType, level);
+        setTailColor(0xED7419);
     }
 
     public Stardust(Level level, LivingEntity owner, Vec3 shootingVector, double power, int waitingTick, boolean followTarget) {
-        super(NarakaEntityTypes.STARDUST.get(), level);
+        this(NarakaEntityTypes.STARDUST.get(), level);
         setPos(owner.getEyePosition());
         setRot(owner.getYRot(), owner.getXRot());
         setDeltaMovement(shootingVector.normalize().scale(power));
@@ -62,6 +63,7 @@ public class Stardust extends LightTailEntity {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(WAITING_TICK, 10)
                 .define(HIT_BLOCK, false);
     }
@@ -175,11 +177,6 @@ public class Stardust extends LightTailEntity {
     @Nullable
     protected ParticleOptions getTrailParticle() {
         return null;
-    }
-
-    @Override
-    public int getTailColor() {
-        return 0xED7419;
     }
 
     @Override

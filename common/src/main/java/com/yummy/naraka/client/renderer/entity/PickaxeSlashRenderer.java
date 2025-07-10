@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
@@ -38,7 +37,7 @@ public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash, 
         reusedState.yRot = 180 + entity.getYRot(partialTick);
         reusedState.zRot = entity.getZRot();
         reusedState.tailWidth = 1;
-        reusedState.alpha = entity.getAlpha(partialTick);
+        reusedState.color = entity.getColor(partialTick);
     }
 
     @Override
@@ -51,7 +50,7 @@ public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash, 
         poseStack.rotateAround(Axis.ZN.rotationDegrees(renderState.zRot), 0, 0.5f, 0);
         poseStack.translate(0, 0, -0.25);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityTranslucent(NarakaTextures.PICKAXE_SLASH));
-        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ARGB.white(renderState.alpha), Direction.Axis.X);
+        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, renderState.color, Direction.Axis.X);
         poseStack.popPose();
     }
 
