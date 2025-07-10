@@ -93,8 +93,12 @@ public class PickaxeSlash extends LightTailEntity {
     private void serverTick(ServerLevel level) {
         if (tickCount >= lifetime || alpha <= 0)
             discard();
-        level.getEntitiesOfClass(LivingEntity.class, getBoundingBox(), this::canHitEntity)
+        level.getEntitiesOfClass(LivingEntity.class, getBoundingBox(), this::checkTarget)
                 .forEach(target -> hurtEntity(level, target));
+    }
+
+    protected boolean checkTarget(LivingEntity target) {
+        return super.canHitEntity(target) && AbstractHerobrine.isNotHerobrine(target);
     }
 
     @Override
