@@ -70,7 +70,7 @@ public class OrePillarFeature extends Feature<OrePillarConfiguration> {
         if (maxRadius <= radius || config.maxHeight() < height || height <= 1)
             return;
 
-        BlockPos rootPos = NarakaUtils.findFaceSturdy(level, start, growingDirection);
+        BlockPos rootPos = NarakaUtils.findCollision(level, start, growingDirection);
         int offset = Math.abs(start.getY() - rootPos.getY());
         if (offset > radius + 2)
             rootPos = start.relative(growingDirection.getOpposite(), radius + 2);

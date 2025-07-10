@@ -165,12 +165,12 @@ public class NarakaUtils {
         return new BlockPos((int) pos.x, (int) pos.y, (int) pos.z);
     }
 
-    public static BlockPos findFaceSturdy(LevelAccessor level, BlockPos from, Direction faceDirection) {
+    public static BlockPos findCollision(LevelAccessor level, BlockPos from, Direction faceDirection) {
         BlockPos.MutableBlockPos current = from.mutable();
         while (level.isInsideBuildHeight(current.getY())) {
             BlockPos pos = current.immutable();
             BlockState state = level.getBlockState(pos);
-            if (state.isFaceSturdy(level, pos, faceDirection))
+            if (!state.getCollisionShape(level, pos).isEmpty())
                 return pos;
             current.move(faceDirection.getOpposite());
         }
@@ -179,11 +179,11 @@ public class NarakaUtils {
     }
 
     public static BlockPos findCeiling(LevelAccessor level, BlockPos from) {
-        return findFaceSturdy(level, from, Direction.DOWN);
+        return findCollision(level, from, Direction.DOWN);
     }
 
     public static BlockPos findFloor(LevelAccessor level, BlockPos from) {
-        return findFaceSturdy(level, from, Direction.UP);
+        return findCollision(level, from, Direction.UP);
     }
 
     public static BlockPos findAir(LevelAccessor level, BlockPos from, Direction findingDirection) {
