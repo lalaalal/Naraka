@@ -45,12 +45,12 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
         runAt(0, () -> mob.setDeltaMovement(0, 0.2, 0));
         runBetween(0, 18, () -> reduceSpeed(0.8));
         runAt(19, () -> spawnMagicCircle(level));
-        runBetween(20, 41, () -> scaleMagicCircle(1, 15, 20, 40));
+        runBetween(20, 41, () -> scaleMagicCircle(0, 30, 20, 40));
 
         runAt(60, () -> mob.setDeltaMovement(0, 0.4, 0));
         runAt(60, () -> level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE));
         runBetween(60, 70, () -> sendParticles(level));
-        runBetween(85, 90, () -> scaleMagicCircle(15, 0, 85, 89));
+        runBetween(85, 90, () -> scaleMagicCircle(30, 0, 85, 89));
 
         runAt(62, () -> mob.setDeltaMovement(Vec3.ZERO));
         runAt(107, () -> hurtEntities(level, this::checkTarget, 5));
@@ -73,9 +73,8 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
     private void spawnMagicCircle(ServerLevel level) {
         mob.setDeltaMovement(0, -8, 0);
         BlockPos floor = NarakaUtils.findFloor(level, mob.blockPosition());
-        magicCircle = new MagicCircle(level, mob, 80, 1);
+        magicCircle = new MagicCircle(level, mob, 80, 0);
         magicCircle.setPos(mob.getX(), floor.above().getY() + 0.1, mob.getZ());
-        magicCircle.setScale(0);
         level.addFreshEntity(magicCircle);
     }
 

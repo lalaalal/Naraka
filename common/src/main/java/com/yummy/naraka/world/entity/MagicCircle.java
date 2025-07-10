@@ -29,8 +29,8 @@ public class MagicCircle extends Entity {
 
     @Nullable
     private Herobrine owner;
-    private float prevScale = 10;
-    private float currentScale = 10;
+    private float prevScale = 0;
+    private float currentScale = 0;
     private final List<Double> heightList = new ArrayList<>();
 
     public MagicCircle(EntityType<? extends MagicCircle> entityType, Level level) {
@@ -58,8 +58,13 @@ public class MagicCircle extends Entity {
     }
 
     private boolean isValidTarget(LivingEntity livingEntity) {
-        double radius = getScale() * 0.6;
+        double radius = getScale() * 0.5;
         return AbstractHerobrine.isNotHerobrine(livingEntity) && distanceToSqr(livingEntity) < radius * radius;
+    }
+
+    private boolean isInCircle(double x, double y, double z) {
+        double radius = getScale() * 0.5;
+        return distanceToSqr(x, y, z) < radius * radius;
     }
 
     private void serverTick(ServerLevel level) {
@@ -103,7 +108,8 @@ public class MagicCircle extends Entity {
                 double x = Math.cos(Math.toRadians(yRot)) * scale * 0.5 + getX() + random.nextDouble() * 0.4;
                 double z = Math.sin(Math.toRadians(yRot)) * scale * 0.5 + getZ() + random.nextDouble() * 0.4;
                 double y = getHeight(yRot) + getY() + random.nextDouble() * 0.4;
-                level.addParticle(NarakaParticleTypes.GOLDEN_FLAME.get(), x, y, z, 0, 1, 0);
+
+                level.addParticle(NarakaParticleTypes.GOLDEN_FLAME.get(), true, true, x, y, z, 0, 1, 0);
             }
             level.playLocalSound(getX(), getY(), getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.HOSTILE, 2, 1, false);
         } else {
@@ -112,8 +118,8 @@ public class MagicCircle extends Entity {
                 double y = random.nextDouble() * 0.3 + 0.1 + getY();
                 double z = random.nextDouble() * scale - scale * 0.5 + getZ();
                 double ySpeed = random.nextDouble() * 0.1 + 0.05;
-
-                level.addParticle(NarakaParticleTypes.GOLDEN_FLAME.get(), x, y, z, 0, ySpeed, 0);
+                if (isInCircle(x, y, z))
+                    level.addParticle(NarakaParticleTypes.GOLDEN_FLAME.get(), x, y, z, 0, ySpeed, 0);
             }
         }
         prevScale = currentScale;
@@ -149,7 +155,7 @@ public class MagicCircle extends Entity {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(SCALE, 10f)
+        builder.define(SCALE, 0f)
                 .define(LIFETIME, 1200);
     }
 
