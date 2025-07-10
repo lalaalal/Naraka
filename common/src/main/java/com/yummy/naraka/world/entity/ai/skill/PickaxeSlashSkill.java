@@ -101,6 +101,8 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
         pickaxeSlash.setZRot(zRotDegree);
         pickaxeSlash.setColor(slashColor);
         pickaxeSlash.setTailColor(tailColor);
+        if (mob.isShadow)
+            pickaxeSlash.setStunTarget(true);
         level.addFreshEntity(pickaxeSlash);
         this.rotateDirection *= -1;
     }

@@ -27,6 +27,7 @@ public class PickaxeSlash extends LightTailEntity {
     private StigmatizingEntity stigmatizingEntity;
     private float prevAlpha = 1f;
     private float alpha = 1f;
+    private boolean stunTarget;
 
     public PickaxeSlash(EntityType<? extends PickaxeSlash> entityType, Level level) {
         super(entityType, level, 30);
@@ -40,6 +41,10 @@ public class PickaxeSlash extends LightTailEntity {
         this.stigmatizingEntity = owner;
         this.lifetime = lifetime;
         this.accelerationPower = 0.05;
+    }
+
+    public void setStunTarget(boolean stunTarget) {
+        this.stunTarget = stunTarget;
     }
 
     public float getAlpha(float partialTick) {
@@ -115,6 +120,8 @@ public class PickaxeSlash extends LightTailEntity {
         DamageSource damageSource = NarakaDamageSources.pickaxeSlash(this);
         if (target.hurtServer(level, damageSource, 6) && stigmatizingEntity != null)
             stigmatizingEntity.stigmatizeEntity(level, target);
+        if (stunTarget)
+            StunHelper.stunEntity(target, 20);
     }
 
     @Override
