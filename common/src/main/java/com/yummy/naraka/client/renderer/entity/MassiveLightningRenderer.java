@@ -5,13 +5,11 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.renderer.entity.state.MassiveLightningRenderState;
 import com.yummy.naraka.world.entity.MassiveLightning;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import org.joml.Vector3f;
 
 public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning, MassiveLightningRenderState> {
@@ -36,46 +34,40 @@ public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning, M
     }
 
     @Override
+    protected boolean affectedByCulling(MassiveLightning display) {
+        return false;
+    }
+
+    @Override
     public void render(MassiveLightningRenderState renderState, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.lightning());
-
-        poseStack.pushPose();
-        poseStack.mulPose(Axis.YN.rotation(renderState.ageInTicks * 0.2f));
-        pillar(vertexConsumer, poseStack, renderState.size, 0, 120, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xff868686);
-        poseStack.popPose();
-
-        poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotation(renderState.ageInTicks * 0.175f));
-        pillar(vertexConsumer, poseStack, renderState.size, 0, 120, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xff868686);
-        poseStack.popPose();
-
-        poseStack.pushPose();
-        poseStack.scale(1.1f, 1.1f, 1.1f);
-        poseStack.mulPose(Axis.YP.rotation(renderState.ageInTicks * 0.075f));
-        pillar(vertexConsumer, poseStack, renderState.size, 0, 120, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xff5A1D8D);
-        poseStack.popPose();
-
+        poseStack.mulPose(Axis.YP.rotation(renderState.ageInTicks * 0.05f));
+        pillar(vertexConsumer, poseStack, renderState.size * 0.6f, renderState.size * 0.6f, 1, 123, 0x66ababab);
+        pillar(vertexConsumer, poseStack, renderState.size * 0.7f, renderState.size * 0.7f, 0, 122, 0x55ababab);
+        pillar(vertexConsumer, poseStack, renderState.size * 0.8f, renderState.size * 0.8f, 0, 121, 0x44ababab);
+        pillar(vertexConsumer, poseStack, renderState.size * 0.9f, renderState.size * 0.9f, 0, 120, 0x33ababab);
+        pillar(vertexConsumer, poseStack, renderState.size, renderState.size, 0, 120, 0x665A1D8D);
         poseStack.popPose();
 
         super.render(renderState, poseStack, bufferSource, packedLight);
     }
 
-    private void pillar(VertexConsumer vertexConsumer, PoseStack poseStack, float size, float minY, float maxY, int packedLight, int packedOverlay, int color) {
-        plane(vertexConsumer, poseStack.last(), new Vector3f(-size, minY, size), new Vector3f(size, maxY, size), packedLight, packedOverlay, color);
-        plane(vertexConsumer, poseStack.last(), new Vector3f(-size, maxY, -size), new Vector3f(size, minY, -size), packedLight, packedOverlay, color);
-        plane(vertexConsumer, poseStack.last(), new Vector3f(size, minY, size), new Vector3f(size, maxY, -size), packedLight, packedOverlay, color);
-        plane(vertexConsumer, poseStack.last(), new Vector3f(-size, maxY, size), new Vector3f(-size, minY, -size), packedLight, packedOverlay, color);
+    private void pillar(VertexConsumer vertexConsumer, PoseStack poseStack, float innerSize, float outerSize, float minY, float maxY, int color) {
+        plane(vertexConsumer, poseStack.last(), new Vector3f(-innerSize, minY, outerSize), new Vector3f(innerSize, maxY, outerSize), color);
+        plane(vertexConsumer, poseStack.last(), new Vector3f(-innerSize, maxY, -outerSize), new Vector3f(innerSize, minY, -outerSize), color);
+        plane(vertexConsumer, poseStack.last(), new Vector3f(outerSize, minY, innerSize), new Vector3f(outerSize, maxY, -innerSize), color);
+        plane(vertexConsumer, poseStack.last(), new Vector3f(-outerSize, maxY, innerSize), new Vector3f(-outerSize, minY, -innerSize), color);
     }
 
-    private void plane(VertexConsumer vertexConsumer, PoseStack.Pose pose, Vector3f min, Vector3f max, int packedLight, int packedOverlay, int color) {
-        vertex(vertexConsumer, pose, new Vector3f(min.x, max.y, min.z), packedLight, packedOverlay, color);
-        vertex(vertexConsumer, pose, new Vector3f(min.x, min.y, min.z), packedLight, packedOverlay, color);
-        vertex(vertexConsumer, pose, new Vector3f(max.x, min.y, max.z), packedLight, packedOverlay, color);
-        vertex(vertexConsumer, pose, new Vector3f(max.x, max.y, max.z), packedLight, packedOverlay, color);
+    private void plane(VertexConsumer vertexConsumer, PoseStack.Pose pose, Vector3f min, Vector3f max, int color) {
+        vertex(vertexConsumer, pose, new Vector3f(min.x, max.y, min.z), color);
+        vertex(vertexConsumer, pose, new Vector3f(min.x, min.y, min.z), color);
+        vertex(vertexConsumer, pose, new Vector3f(max.x, min.y, max.z), color);
+        vertex(vertexConsumer, pose, new Vector3f(max.x, max.y, max.z), color);
     }
 
-    private void vertex(VertexConsumer vertexConsumer, PoseStack.Pose pose, Vector3f position, int packedLight, int packedOverlay, int color) {
-        vertexConsumer.addVertex(pose, position).setUv(0, 0).setLight(packedLight).setOverlay(packedOverlay).setColor(color).setNormal(pose, 0, 1, 0);
+    private void vertex(VertexConsumer vertexConsumer, PoseStack.Pose pose, Vector3f position, int color) {
+        vertexConsumer.addVertex(pose, position).setColor(color);
     }
 }
