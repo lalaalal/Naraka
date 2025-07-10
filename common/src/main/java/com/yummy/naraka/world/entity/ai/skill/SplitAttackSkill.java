@@ -46,7 +46,7 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
         runBetween(0, 10, () -> rotateTowardTarget(target));
         runBetween(15, 20, () -> moveToTarget(target, 1));
         runBetween(15, 20, () -> rotateTowardTarget(target));
-        runAt(22, () -> hurtEntities(level, this::checkTarget, 1.5));
+        runBetween(18, 20, () -> hurtEntities(level, this::checkTarget, 1.5));
         runAt(20, this::stopMoving);
         runAt(25, () -> firstShadowSpawner.spawn(level, mob.position(), mob.getYRot()));
         runAt(26, () -> firstShadowSpawner.control(this::displayShadowPickaxe).useSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_1));

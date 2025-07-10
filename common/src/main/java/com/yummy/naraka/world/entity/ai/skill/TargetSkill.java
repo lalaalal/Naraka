@@ -4,6 +4,8 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -64,6 +66,7 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
         Vec3 delta = target.getLookAngle().scale(distance);
         Vec3 position = target.position().add(delta);
         mob.teleportTo(position.x, mob.getY(), position.z);
+        mob.level().playSound(null, mob, SoundEvents.PLAYER_TELEPORT, SoundSource.HOSTILE, 1, 1);
     }
 
     protected final boolean targetInRange(float distanceSquare) {
