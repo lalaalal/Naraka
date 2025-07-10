@@ -60,6 +60,12 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
         mob.setDeltaMovement(modifier.apply(deltaMovement));
     }
 
+    protected void teleportToTarget(LivingEntity target, double distance) {
+        Vec3 delta = target.getLookAngle().scale(distance);
+        Vec3 position = target.position().add(delta);
+        mob.teleportTo(position.x, mob.getY(), position.z);
+    }
+
     protected final boolean targetInRange(float distanceSquare) {
         LivingEntity target = mob.getTarget();
         return target != null && targetInRange(target, distanceSquare);

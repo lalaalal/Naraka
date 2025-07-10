@@ -23,7 +23,7 @@ public class StormSkill extends TargetSkill<Herobrine> {
     private final HashMap<LivingEntity, Integer> hurtEntities = new HashMap<>();
 
     public StormSkill(Herobrine mob) {
-        super(LOCATION, mob, 100, 480);
+        super(LOCATION, mob, 100, 600);
     }
 
     @Override

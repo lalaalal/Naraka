@@ -73,7 +73,7 @@ public class SpinUpSkill extends ComboSkill<Herobrine> {
 
     private void spinUp(LivingEntity target) {
         Vec3 deltaMovement = target.position().subtract(mob.position())
-                .scale(0.6)
+                .scale(0.5)
                 .add(0, 2, 0);
         mob.setDeltaMovement(deltaMovement);
     }

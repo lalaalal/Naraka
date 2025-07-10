@@ -33,13 +33,15 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return targetInRange(36);
+        return mob.getTarget() != null;
     }
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         lookTarget(target);
-        runBetween(15, 20, () -> moveToTarget(target, 1.7));
+        runAt(0, () -> teleportToTarget(target, 3));
+        runBetween(0, 10, () -> rotateTowardTarget(target));
+        runBetween(15, 20, () -> moveToTarget(target, 1));
         runBetween(15, 20, () -> rotateTowardTarget(target));
         runAt(22, () -> hurtEntities(level, this::checkTarget, 1.5));
         runAt(20, this::stopMoving);

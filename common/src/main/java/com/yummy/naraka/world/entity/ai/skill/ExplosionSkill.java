@@ -26,7 +26,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
     private MagicCircle magicCircle;
 
     public ExplosionSkill(Herobrine mob) {
-        super(LOCATION, mob, 130, 200);
+        super(LOCATION, mob, 130, 300);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return targetInRange(4 * 4);
+        return targetOutOfRange(16);
     }
 
     @Override
@@ -80,6 +80,8 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
+        runAt(0, () -> teleportToTarget(target, 1));
+        runBetween(0, 10, () -> rotateTowardTarget(target));
         runAfter(95, () -> lookTarget(target));
         runAfter(110, () -> rotateTowardTarget(target));
     }

@@ -24,10 +24,8 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
 
     private static final float HALF_ANGLE = Mth.HALF_PI * 0.125f;
 
-    private int color;
-
     public EarthShockSkill(Herobrine mob) {
-        super(LOCATION, mob, 205, 360);
+        super(LOCATION, mob, 205, 600);
     }
 
     @Override

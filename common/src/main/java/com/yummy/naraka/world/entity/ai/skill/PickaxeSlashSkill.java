@@ -29,7 +29,7 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
     }
 
     public static PickaxeSlashSkill<Herobrine> triple(Herobrine herobrine) {
-        return new PickaxeSlashSkill<>(TRIPLE, herobrine, 80, 360, true, 40, 45, 55);
+        return new PickaxeSlashSkill<>(TRIPLE, herobrine, 80, 460, true, 40, 45, 55);
     }
 
     protected PickaxeSlashSkill(ResourceLocation location, T mob, int duration, int cooldown, boolean spawnShadow, Integer... pickaxeSlashSpawnTimes) {
@@ -57,13 +57,15 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return targetOutOfRange(12 * 12);
+        return mob.getTarget() != null;
     }
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         lookTarget(target);
         rotateTowardTarget(target);
+        runAt(0, () -> teleportToTarget(target, 12));
+        runBetween(0, 10, () -> rotateTowardTarget(target));
         run(pickaxeSlashSpawnTimes.contains(tickCount), () -> createPickaxeSlash(level, target));
         runAt(0, () -> shadowSpawner.spawn(level).control(this::setupShadowHerobrine));
         runAt(10, this::stopShadowMoving);
