@@ -138,6 +138,7 @@ public final class NarakaModClient {
         ParticleProviderRegistry.register(NarakaParticleTypes.CORRUPTED_SOUL_FIRE_FLAME, FlameParticle.Provider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.FLICKER, BlinkParticle.Provider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.STARDUST, BlinkParticle.Provider::withGlowing);
+        ParticleProviderRegistry.register(NarakaParticleTypes.TELEPORT, BlinkParticle.Provider::withGlowing);
         ParticleProviderRegistry.register(NarakaParticleTypes.STARDUST_FLAME, FlameParticle.Provider::new);
     }
 

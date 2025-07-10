@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
@@ -39,7 +40,8 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         lookTarget(target);
-        runAt(0, () -> teleportToTarget(target, 3));
+        runAt(0, () -> level.sendParticles(NarakaParticleTypes.TELEPORT.get(), mob.getX(), mob.getEyeHeight(), mob.getZ(), 1, 0, 0, 0, 0));
+        runAt(3, () -> teleportToTarget(target, 3));
         runBetween(0, 10, () -> rotateTowardTarget(target));
         runBetween(15, 20, () -> moveToTarget(target, 1));
         runBetween(15, 20, () -> rotateTowardTarget(target));

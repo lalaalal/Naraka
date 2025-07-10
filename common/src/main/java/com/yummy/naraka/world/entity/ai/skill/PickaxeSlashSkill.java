@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
@@ -64,7 +65,8 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         lookTarget(target);
         rotateTowardTarget(target);
-        runAt(0, () -> teleportToTarget(target, 12));
+        runAt(0, () -> level.sendParticles(NarakaParticleTypes.TELEPORT.get(), mob.getX(), mob.getEyeHeight(), mob.getZ(), 1, 0, 0, 0, 0));
+        runAt(5, () -> teleportToTarget(target, 12));
         runBetween(0, 10, () -> rotateTowardTarget(target));
         run(pickaxeSlashSpawnTimes.contains(tickCount), () -> createPickaxeSlash(level, target));
         runAt(0, () -> shadowSpawner.spawn(level).control(this::setupShadowHerobrine));

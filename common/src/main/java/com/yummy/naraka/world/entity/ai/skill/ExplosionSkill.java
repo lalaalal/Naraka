@@ -80,7 +80,8 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        runAt(0, () -> teleportToTarget(target, 1));
+        runAt(0, () -> level.sendParticles(NarakaParticleTypes.TELEPORT.get(), mob.getX(), mob.getEyeHeight(), mob.getZ(), 1, 0, 0, 0, 0));
+        runAt(3, () -> teleportToTarget(target, 1));
         runBetween(0, 10, () -> rotateTowardTarget(target));
         runAfter(95, () -> lookTarget(target));
         runAfter(110, () -> rotateTowardTarget(target));
