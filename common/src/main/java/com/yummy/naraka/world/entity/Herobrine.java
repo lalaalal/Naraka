@@ -74,14 +74,14 @@ public class Herobrine extends AbstractHerobrine {
     protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, flickerSkill));
 
     protected final CarpetBombingSkill carpetBombingSkill = registerSkill(7, this, CarpetBombingSkill::new, AnimationLocations.CARPET_BOMBING);
-    protected final ExplosionSkill explosionSkill = registerSkill(6, this, ExplosionSkill::new, AnimationLocations.EXPLOSION);
+    protected final ExplosionSkill explosionSkill = registerSkill(7, this, ExplosionSkill::new, AnimationLocations.EXPLOSION);
     protected final StormSkill stormSkill = registerSkill(6, this, StormSkill::new, AnimationLocations.STORM);
-    protected final EarthShockSkill earthShockSkill = registerSkill(7, this, EarthShockSkill::new, AnimationLocations.EARTH_SHOCK);
+    protected final EarthShockSkill earthShockSkill = registerSkill(6, this, EarthShockSkill::new, AnimationLocations.EARTH_SHOCK);
 
     protected final StrikeDownSkill strikeDownSkill = registerSkill(this, StrikeDownSkill::new, AnimationLocations.FINAL_COMBO_ATTACK_3);
     protected final SpinUpSkill spinUpSkill = registerSkill(new SpinUpSkill(this, strikeDownSkill), AnimationLocations.FINAL_COMBO_ATTACK_2);
-    protected final SplitAttackSkill splitAttackSkill = registerSkill(6, new SplitAttackSkill(this, spinUpSkill), AnimationLocations.FINAL_COMBO_ATTACK_1);
-    protected final PickaxeSlashSkill<AbstractHerobrine> singlePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::single, AnimationLocations.PICKAXE_SLASH_SINGLE);
+    protected final SplitAttackSkill splitAttackSkill = registerSkill(7, new SplitAttackSkill(this, spinUpSkill), AnimationLocations.FINAL_COMBO_ATTACK_1);
+    protected final PickaxeSlashSkill<AbstractHerobrine> singlePickaxeSlashSkill = registerSkill(7, this, PickaxeSlashSkill::single, AnimationLocations.PICKAXE_SLASH_SINGLE);
     protected final PickaxeSlashSkill<Herobrine> triplePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::triple, AnimationLocations.PICKAXE_SLASH_TRIPLE);
 
     public final AnimationState chzzkAnimationState = new AnimationState();
@@ -672,6 +672,7 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     protected void tickDeath() {
+        setXRot(0);
         setDeltaMovement(0, -1, 0);
         if (deathTime == 0)
             updateAnimation(AnimationLocations.DYING);

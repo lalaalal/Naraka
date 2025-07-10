@@ -90,6 +90,11 @@ public class NarakaRenderUtils {
         vertices(vertexConsumer, poseStack.last(), vertices, uvs, packedLight, packedOverlay, color, Direction.UP, true);
     }
 
+    public static void renderFlatImage(PoseStack poseStack, VertexConsumer vertexConsumer, List<Vector3f> vertices, int packedLight, int packedOverlay, int color) {
+        vertices(vertexConsumer, poseStack.last(), vertices, DEFAULT_UVS, packedLight, packedOverlay, color, Direction.UP, false);
+        vertices(vertexConsumer, poseStack.last(), vertices, OPPOSITE_UVS, packedLight, packedOverlay, color, Direction.UP, true);
+    }
+
     public static Vector3f vector3f(Vec3 vec3) {
         return new Vector3f((float) vec3.x, (float) vec3.y, (float) vec3.z);
     }

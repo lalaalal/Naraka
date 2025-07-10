@@ -66,8 +66,10 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         lookTarget(target);
         rotateTowardTarget(target);
-        runAt(0, () -> NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.TELEPORT.get()));
-        runAt(5, () -> teleportToTarget(target, 12));
+        if (!mob.isShadow) {
+            runAt(0, () -> NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.TELEPORT.get()));
+            runAt(5, () -> teleportToTarget(target, 12));
+        }
         runBetween(0, 10, () -> rotateTowardTarget(target));
         run(pickaxeSlashSpawnTimes.contains(tickCount), () -> createPickaxeSlash(level, target));
         runAt(5, () -> shadowSpawner.spawn(level).control(this::setupShadowHerobrine));
@@ -86,9 +88,7 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
     }
 
     private void stopShadowMoving() {
-        shadowSpawner.control(shadowHerobrine -> {
-            shadowHerobrine.setDeltaMovement(Vec3.ZERO);
-        });
+        shadowSpawner.control(shadowHerobrine -> shadowHerobrine.setDeltaMovement(Vec3.ZERO));
     }
 
     private void createPickaxeSlash(ServerLevel level, LivingEntity target) {

@@ -5,6 +5,7 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ColoredLightningBolt;
 import com.yummy.naraka.world.entity.Herobrine;
+import com.yummy.naraka.world.entity.MassiveLightning;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -79,10 +80,25 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         runBetween(65, 95, () -> hurtTargetInAngle(level, 65, 1, 1, -HALF_ANGLE + Mth.HALF_PI, HALF_ANGLE + Mth.HALF_PI));
         runBetween(65, 95, () -> hurtTargetInAngle(level, 65, 1, 1, -HALF_ANGLE - Mth.HALF_PI, HALF_ANGLE - Mth.HALF_PI));
         runBetween(65, 95, () -> hurtTargetInAngle(level, 65, 1, 1, -HALF_ANGLE + Mth.PI, HALF_ANGLE + Mth.PI));
-
         runAt(60, () -> mob.setDeltaMovement(0, -8, 0));
+
+        runAt(95, () -> spawnMassiveLightning(level));
+        runBetween(95, 100, () -> spawnLightningBolts(level, 4, 10, 0x335A1D8D));
+
+        runAt(115, () -> NarakaSkillUtils.pullEntities(level, mob, this::entityToPull, 0.25));
+
         runAt(170, () -> mob.setDeltaMovement(0, 0.4, 0));
         runAfter(170, () -> reduceSpeed(0.6));
+    }
+
+    private void spawnMassiveLightning(ServerLevel level) {
+        MassiveLightning massiveLightning = new MassiveLightning(level, mob, 10);
+        massiveLightning.setPos(mob.position());
+        level.addFreshEntity(massiveLightning);
+    }
+
+    private boolean entityToPull(LivingEntity target) {
+        return targetInRange(target, 80 * 80) && AbstractHerobrine.isNotHerobrine(target);
     }
 
     private void sendParticles(ServerLevel level, int maxRadius) {

@@ -83,6 +83,12 @@ public class NarakaEntityTypes {
                     .sized(5f, 3f)
     );
 
+    public static final HolderProxy<EntityType<?>, EntityType<MassiveLightning>> MASSIVE_LIGHTNING = register(
+            "massive_lightning",
+            EntityType.Builder.<MassiveLightning>of(MassiveLightning::new, MobCategory.MISC)
+                    .sized(0, 0)
+    );
+
     public static final HolderProxy<EntityType<?>, EntityType<ColoredLightningBolt>> COLORED_LIGHTNING_BOLT = register(
             "colored_lightning_bolt",
             EntityType.Builder.<ColoredLightningBolt>of(ColoredLightningBolt::new, MobCategory.MISC)

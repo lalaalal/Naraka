@@ -6,15 +6,18 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Collection;
 import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class NarakaSkillUtils {
@@ -65,5 +68,16 @@ public class NarakaSkillUtils {
             double z = Math.sin(Math.toRadians(yRot)) * radius;
             level.sendParticles(particle, position.x() + x, position.y() + 1.5, position.z() + z, 1, 0, 0, 0, 1);
         }
+    }
+
+    public static void pullEntities(ServerLevel level, Mob mob, Predicate<LivingEntity> targetPredicate, double scale) {
+        AABB boundingBox = mob.getBoundingBox().inflate(80, 10, 80);
+        level.getEntitiesOfClass(LivingEntity.class, boundingBox, targetPredicate).forEach(target -> {
+            Vec3 movement = mob.position().subtract(target.position())
+                    .scale(scale);
+            target.setDeltaMovement(movement);
+            if (target instanceof ServerPlayer player)
+                NarakaEntityUtils.sendPlayerMovement(player, movement);
+        });
     }
 }

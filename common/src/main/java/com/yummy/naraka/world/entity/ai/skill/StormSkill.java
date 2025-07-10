@@ -1,19 +1,15 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
-import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -39,7 +35,7 @@ public class StormSkill extends TargetSkill<Herobrine> {
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        runAt(30, () -> pullEntities(level));
+        runAt(30, () -> NarakaSkillUtils.pullEntities(level, mob, this::entityToPull, 0.23));
 
         runFrom(40, () -> stigmatizingWave(level, 40));
         runFrom(50, () -> stigmatizingWave(level, 50));
@@ -55,17 +51,6 @@ public class StormSkill extends TargetSkill<Herobrine> {
 
     private boolean entityToPull(LivingEntity target) {
         return targetInRange(target, 80 * 80) && AbstractHerobrine.isNotHerobrine(target);
-    }
-
-    private void pullEntities(ServerLevel level) {
-        AABB boundingBox = mob.getBoundingBox().inflate(80, 10, 80);
-        level.getEntitiesOfClass(LivingEntity.class, boundingBox, this::entityToPull).forEach(target -> {
-            Vec3 movement = mob.position().subtract(target.position())
-                    .scale(0.23);
-            target.setDeltaMovement(movement);
-            if (target instanceof ServerPlayer player)
-                NarakaEntityUtils.sendPlayerMovement(player, movement);
-        });
     }
 
     private boolean findValidTarget(LivingEntity target, int startTick) {
