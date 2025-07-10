@@ -75,7 +75,7 @@ public class Herobrine extends AbstractHerobrine {
 
     protected final CarpetBombingSkill carpetBombingSkill = registerSkill(7, this, CarpetBombingSkill::new, AnimationLocations.CARPET_BOMBING);
     protected final ExplosionSkill explosionSkill = registerSkill(6, this, ExplosionSkill::new, AnimationLocations.EXPLOSION);
-    protected final StormSkill stormSkill = registerSkill(10, this, StormSkill::new, AnimationLocations.STORM);
+    protected final StormSkill stormSkill = registerSkill(6, this, StormSkill::new, AnimationLocations.STORM);
     protected final EarthShockSkill earthShockSkill = registerSkill(7, this, EarthShockSkill::new, AnimationLocations.EARTH_SHOCK);
 
     protected final StrikeDownSkill strikeDownSkill = registerSkill(this, StrikeDownSkill::new, AnimationLocations.FINAL_COMBO_ATTACK_3);
@@ -477,6 +477,10 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     public void stopSeenByPlayer(ServerPlayer serverPlayer) {
         bossEvent.removePlayer(serverPlayer);
+        sendStopPacket(serverPlayer);
+    }
+
+    private void sendStopPacket(ServerPlayer serverPlayer) {
         CustomPacketPayload packet = new NarakaClientboundEventPacket(
                 NarakaClientboundEventPacket.Event.STOP_MUSIC,
                 NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY,
@@ -658,7 +662,8 @@ public class Herobrine extends AbstractHerobrine {
             rewardChallenger(livingEntity);
         super.die(damageSource);
         if (level() instanceof ServerLevel serverLevel) {
-            bossEvent.getPlayers().forEach(this::stopSeenByPlayer);
+            bossEvent.getPlayers().forEach(this::sendStopPacket);
+            bossEvent.removeAllPlayers();
             releaseStigma(serverLevel);
         }
         if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
