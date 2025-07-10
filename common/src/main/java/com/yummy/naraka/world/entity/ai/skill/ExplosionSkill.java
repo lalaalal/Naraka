@@ -49,7 +49,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
 
         runAt(60, () -> mob.setDeltaMovement(0, 0.4, 0));
         runAt(60, () -> level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE));
-        runBetween(60, 70, () -> sendParticles(level));
+        runBetween(60, 70, () -> level.sendParticles(ParticleTypes.FLASH, mob.getX(), mob.getEyeY(), mob.getZ(), 20, 1, 2, 1, 1));
         runBetween(85, 90, () -> scaleMagicCircle(30, 0, 85, 89));
 
         runAt(62, () -> mob.setDeltaMovement(Vec3.ZERO));
@@ -80,15 +80,11 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        runAt(0, () -> level.sendParticles(NarakaParticleTypes.TELEPORT.get(), mob.getX(), mob.getEyeHeight(), mob.getZ(), 1, 0, 0, 0, 0));
+        runAt(0, () -> NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.TELEPORT.get()));
         runAt(3, () -> teleportToTarget(target, 1));
         runBetween(0, 10, () -> rotateTowardTarget(target));
         runAfter(95, () -> lookTarget(target));
         runAfter(110, () -> rotateTowardTarget(target));
-    }
-
-    private void sendParticles(ServerLevel level) {
-        level.sendParticles(ParticleTypes.FLASH, mob.getX(), mob.getEyeY(), mob.getZ(), 20, 1, 2, 1, 1);
     }
 
     @Override

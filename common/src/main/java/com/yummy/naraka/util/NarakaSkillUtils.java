@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -50,6 +51,12 @@ public class NarakaSkillUtils {
             double zSpeed = Math.sin(Math.toRadians(yRot));
             level.sendParticles(particle, position.x(), position.y() + 1.5, position.z(), 0, xSpeed, 0, zSpeed, speed);
         }
+    }
+
+    public static void sendParticleFront(ServerLevel level, Mob mob, LivingEntity target, ParticleOptions particle) {
+        Vec3 deltaNormal = NarakaEntityUtils.getDirectionNormalVector(mob, target);
+        Vec3 position = mob.position().add(deltaNormal);
+        level.sendParticles(particle, position.x, position.y + mob.getEyeHeight(), position.z, 1, 0, 0, 0, 1);
     }
 
     public static void sendCircleParticle(ServerLevel level, Vec3 position, ParticleOptions particle, double radius) {

@@ -1,12 +1,11 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
-import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.Vec3;
 
 public class FlickerSkill<T extends AbstractHerobrine> extends TargetSkill<T> {
     public static final ResourceLocation LOCATION = createLocation("flicker");
@@ -27,9 +26,7 @@ public class FlickerSkill<T extends AbstractHerobrine> extends TargetSkill<T> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        Vec3 deltaNormal = NarakaEntityUtils.getDirectionNormalVector(mob, target);
-        Vec3 position = mob.position().add(deltaNormal);
-        level.sendParticles(NarakaParticleTypes.FLICKER.get(), position.x, position.y + mob.getEyeHeight(), position.z, 1, 0, 0, 0, 1);
+        NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.FLICKER.get());
         dashSkill.setLinkedSkill(punchSkill);
         punchSkill.setLinkedFromPrevious(true);
         this.setLinkedSkill(dashSkill);
