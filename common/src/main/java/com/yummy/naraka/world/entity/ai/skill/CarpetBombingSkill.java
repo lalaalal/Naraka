@@ -94,6 +94,7 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
     private void onGround(ServerLevel level) {
         if (onGroundTick == 1) {
             level.playSound(mob, mob.blockPosition(), SoundEvents.TOTEM_USE, SoundSource.HOSTILE, 1, 1);
+            mob.shakeCamera();
         }
         if ((mob.onGround() || onGroundTick > 0) && onGroundTick < 3) {
             level.sendParticles(ParticleTypes.FIREWORK, mob.getX(), mob.getY(), mob.getZ(), 10, 0.5, 1, 0.5, 0.3);

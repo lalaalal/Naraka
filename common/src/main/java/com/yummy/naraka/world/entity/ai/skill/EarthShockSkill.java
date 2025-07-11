@@ -77,6 +77,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         runBetween(60, 90, () -> sendParticles(level, 10));
         runBetween(90, 95, () -> spawnLightningBolts(level, 3, 9, 0xaaff00ff));
         runBetween(90, 100, () -> shockwaveBlocks(level, 90, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
+        runAt(90, mob::shakeCamera);
         runAt(92, () -> hurtEntities(level, targetBetween(1, 10), 10));
         runBetween(100, 125, () -> hurtTargetInAngle(level, 100, 2, -HALF_ANGLE, HALF_ANGLE));
         runBetween(100, 125, () -> hurtTargetInAngle(level, 95, 1, -HALF_ANGLE + Mth.HALF_PI, HALF_ANGLE + Mth.HALF_PI));
@@ -85,6 +86,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         runAt(90, () -> mob.setDeltaMovement(0, -8, 0));
 
         runAt(125, () -> spawnMassiveLightning(level));
+        runAt(125, mob::shakeCamera);
         runBetween(125, 135, () -> shockwaveBlocks(level, 125, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
         runAt(125, () -> hurtEntities(level, targetBetween(1, 10), 10));
         runBetween(170, 180, () -> sendParticles(level, 5));
@@ -92,6 +94,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         runBetween(125, 130, () -> spawnLightningBolts(level, 4, 10, 0x99ff00ff));
         runAt(145, () -> NarakaSkillUtils.pullEntities(level, mob, this::entityToPull, 0.25));
 
+        runAt(172, mob::shakeCamera);
         runBetween(172, 176, () -> shockwaveBlocks(level, 172, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
         runAt(172, () -> level.playSound(null, mob, SoundEvents.TOTEM_USE, SoundSource.HOSTILE, 1, 1));
         runAt(172, () -> hurtEntities(level, targetBetween(1, 10), 10));
@@ -109,6 +112,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         MassiveLightning massiveLightning = new MassiveLightning(level, mob, 10);
         massiveLightning.setPos(mob.position());
         level.addFreshEntity(massiveLightning);
+        mob.shakeCamera();
     }
 
     private void spawnLightningCircle(ServerLevel level) {

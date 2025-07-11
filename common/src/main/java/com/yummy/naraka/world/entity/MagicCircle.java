@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -104,6 +105,7 @@ public class MagicCircle extends Entity {
         if (remainTick % 7 == 3)
             updateHeights();
         if (20 < remainTick && remainTick <= 40 && remainTick % 7 < 4) {
+            NarakaClientContext.CAMERA_SHAKE_TICK.set(10);
             for (int yRot = 0; yRot < 360; yRot++) {
                 double x = Math.cos(Math.toRadians(yRot)) * scale * 0.5 + getX() + random.nextDouble() * 0.4;
                 double z = Math.sin(Math.toRadians(yRot)) * scale * 0.5 + getZ() + random.nextDouble() * 0.4;

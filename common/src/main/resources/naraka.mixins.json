@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
+    "client.CameraMixin",
     "client.DripParticleMixin",
     "client.EntityRenderDispatcherMixin",
     "client.FogRendererMixin",

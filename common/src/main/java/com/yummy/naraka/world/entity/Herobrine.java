@@ -661,6 +661,12 @@ public class Herobrine extends AbstractHerobrine {
         return super.teleport(teleportTransition);
     }
 
+    public void shakeCamera() {
+        NetworkManager.clientbound().send(bossEvent.getPlayers(), new NarakaClientboundEventPacket(
+                NarakaClientboundEventPacket.Event.SHAKE_CAMERA
+        ));
+    }
+
     @Override
     public void die(DamageSource damageSource) {
         if (damageSource.getEntity() instanceof LivingEntity livingEntity)
