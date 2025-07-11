@@ -75,10 +75,11 @@ public class Herobrine extends AbstractHerobrine {
 
     protected final CarpetBombingSkill carpetBombingSkill = registerSkill(7, this, CarpetBombingSkill::new, AnimationLocations.CARPET_BOMBING);
     protected final ExplosionSkill explosionSkill = registerSkill(7, this, ExplosionSkill::new, AnimationLocations.EXPLOSION);
-    protected final StormSkill stormSkill = registerSkill(6, this, StormSkill::new, AnimationLocations.STORM);
     protected final EarthShockSkill earthShockSkill = registerSkill(6, this, EarthShockSkill::new, AnimationLocations.EARTH_SHOCK);
+    protected final ParryingSkill parryingSkill = registerSkill(7, this, ParryingSkill::new, AnimationLocations.PARRYING);
+    protected final StormSkill stormSkill = registerSkill(6, new StormSkill(this, parryingSkill), AnimationLocations.STORM);
 
-    protected final StrikeDownSkill strikeDownSkill = registerSkill(this, StrikeDownSkill::new, AnimationLocations.FINAL_COMBO_ATTACK_3);
+    protected final StrikeDownSkill strikeDownSkill = registerSkill(new StrikeDownSkill(this, parryingSkill), AnimationLocations.FINAL_COMBO_ATTACK_3);
     protected final SpinUpSkill spinUpSkill = registerSkill(new SpinUpSkill(this, strikeDownSkill), AnimationLocations.FINAL_COMBO_ATTACK_2);
     protected final SplitAttackSkill splitAttackSkill = registerSkill(7, new SplitAttackSkill(this, spinUpSkill), AnimationLocations.FINAL_COMBO_ATTACK_1);
     protected final PickaxeSlashSkill<AbstractHerobrine> singlePickaxeSlashSkill = registerSkill(7, this, PickaxeSlashSkill::single, AnimationLocations.PICKAXE_SLASH_SINGLE);

@@ -14,12 +14,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 
-public class StormSkill extends TargetSkill<Herobrine> {
+public class StormSkill extends ComboSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final.storm");
     private final HashMap<LivingEntity, Integer> hurtEntities = new HashMap<>();
 
-    public StormSkill(Herobrine mob) {
-        super(LOCATION, mob, 100, 600);
+    public StormSkill(Herobrine mob, Skill<?> parryingSkill) {
+        super(LOCATION, mob, 100, 600, 0.5f, 100, parryingSkill);
     }
 
     @Override
@@ -75,12 +75,17 @@ public class StormSkill extends TargetSkill<Herobrine> {
                     LivingEntity.class,
                     mob.getBoundingBox().inflate(waveTick, 10, waveTick),
                     target -> findValidTarget(target, startTick) && inHurtRange(target, waveTick)
-            ).forEach(entity -> {
-                mob.stigmatizeEntity(level, entity);
-                hurtEntities.put(entity, startTick);
+            ).forEach(target -> {
+                mob.stigmatizeEntity(level, target);
+                hurtEntities.put(target, startTick);
                 DamageSource damageSource = mob.damageSources().magic();
-                entity.hurtServer(level, damageSource, 5);
+                target.hurtServer(level, damageSource, calculateDamage(target));
             });
         }
+    }
+
+    @Override
+    protected float calculateDamage(LivingEntity target) {
+        return mob.getAttackDamage();
     }
 }

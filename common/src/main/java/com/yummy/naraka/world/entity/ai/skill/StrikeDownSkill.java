@@ -11,10 +11,11 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-public class StrikeDownSkill extends AttackSkill<Herobrine> {
+public class StrikeDownSkill extends ComboSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final.strike_down");
 
     private final Supplier<Vec3> movementSupplier = () -> new Vec3(0, mob.getRandom().nextFloat() * 0.4 + 0.3, 0);
@@ -22,15 +23,10 @@ public class StrikeDownSkill extends AttackSkill<Herobrine> {
     private Vec3 shadowPosition = Vec3.ZERO;
     private InstantShadowSpawner shadowSpawner = InstantShadowSpawner.EMPTY;
 
-    public StrikeDownSkill(Herobrine mob) {
-        super(LOCATION, mob, 60, 0);
+    public StrikeDownSkill(Herobrine mob, @Nullable Skill<?> nextSkill) {
+        super(LOCATION, mob, 60, 0, 0.5f, 60, nextSkill);
         this.shieldCooldown = 100;
         this.shieldDamage = 15;
-    }
-
-    @Override
-    public boolean canUse(ServerLevel level) {
-        return false;
     }
 
     @Override

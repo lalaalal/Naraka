@@ -1,0 +1,83 @@
+package com.yummy.naraka.world.entity.ai.skill;
+
+import com.yummy.naraka.world.entity.AbstractHerobrine;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+
+public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
+    public static final ResourceLocation LOCATION = createLocation("parrying");
+
+    private static final int PARRYING_START_TICK = 10;
+    private static final int PARRYING_END_TICK = 40;
+    private static final int PARRYING_DURATION = 55;
+    private boolean succeed;
+
+    public ParryingSkill(AbstractHerobrine mob) {
+        super(LOCATION, 60, 300, 100, 5, mob);
+    }
+
+    @Override
+    public void prepare() {
+        super.prepare();
+        succeed = false;
+    }
+
+    @Override
+    protected float calculateDamage(LivingEntity target) {
+        return mob.getAttackDamage();
+    }
+
+    @Override
+    public boolean canUse(ServerLevel level) {
+        return targetInRange(25);
+    }
+
+    @Override
+    protected void tickWithTarget(ServerLevel level, LivingEntity target) {
+        lookTarget(target);
+        run(succeed, () -> handleSucceed(level, target));
+    }
+
+    private boolean hurtJustNow() {
+        return mob.tickCount - mob.getLastHurtByMobTimestamp() < 2;
+    }
+
+    @Override
+    protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
+        run(succeed, () -> handleSucceed(level));
+        run(at(PARRYING_END_TICK) && !succeed, () -> mob.setAnimation(AnimationLocations.PARRYING_FAILED));
+        if (between(PARRYING_START_TICK, PARRYING_END_TICK) && hurtJustNow() && !succeed) {
+            mob.setAnimation(AnimationLocations.PARRYING_SUCCEED);
+            succeed = true;
+            tickCount = duration - PARRYING_DURATION;
+        }
+    }
+
+    private int tickCount(int succeedTick) {
+        return succeedTick + (duration - PARRYING_DURATION);
+    }
+
+    private Vec3 movement(Vec3 original) {
+        return original.multiply(0.8, 0, 0.8);
+    }
+
+    private void handleSucceed(ServerLevel level, LivingEntity target) {
+        run(at(tickCount(2)) && targetInLookAngle(target, -Mth.HALF_PI * 0.67f, Mth.HALF_PI * 0.67f), () -> hurtEntity(level, target));
+        runBetween(tickCount(20), tickCount(40), () -> moveToTarget(target, false, this::movement));
+        runAt(tickCount(40), this::stopMoving);
+    }
+
+    private void handleSucceed(ServerLevel level) {
+        runBetween(tickCount(20), tickCount(35), () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 1.5));
+    }
+
+    @Override
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
+        mob.stigmatizeEntity(level, target);
+    }
+}
