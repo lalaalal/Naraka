@@ -4,6 +4,7 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.init.EntityAttributeRegistry;
+import com.yummy.naraka.world.LightningCircle;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
@@ -92,6 +93,12 @@ public class NarakaEntityTypes {
     public static final HolderProxy<EntityType<?>, EntityType<ColoredLightningBolt>> COLORED_LIGHTNING_BOLT = register(
             "colored_lightning_bolt",
             EntityType.Builder.<ColoredLightningBolt>of(ColoredLightningBolt::new, MobCategory.MISC)
+                    .sized(0, 0)
+    );
+
+    public static final HolderProxy<EntityType<?>, EntityType<LightningCircle>> LIGHTNING_CIRCLE = register(
+            "lightning_circle",
+            EntityType.Builder.<LightningCircle>of(LightningCircle::new, MobCategory.MISC)
                     .sized(0, 0)
     );
 

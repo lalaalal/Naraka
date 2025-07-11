@@ -114,6 +114,7 @@ public final class NarakaModClient {
         EntityRendererRegistry.register(NarakaEntityTypes.PICKAXE_SLASH, PickaxeSlashRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.COLORED_LIGHTNING_BOLT, ColoredLightningBoltRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.MASSIVE_LIGHTNING, MassiveLightningRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.LIGHTNING_CIRCLE, LightningCircleRenderer::new);
     }
 
     private static void registerHudRenders() {
