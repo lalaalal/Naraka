@@ -16,6 +16,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,6 +27,8 @@ import java.util.function.Predicate;
 public class DestroyStructureSkill extends AttackSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("destroy_structure");
     private static final int SPHERE_RADIUS = 10;
+    private static final int FLOOR_DESTROY_START_TICK = 20;
+    private static final int FLOOR_DESTROY_BASE_RADIUS = 25;
 
     private final List<BlockPos> positions = new ArrayList<>();
     private int radius = 40;
@@ -59,6 +62,7 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
         runAt(80, this::startPhase3);
         runAt(160, () -> hurtEntities(level, this::checkTarget, 5));
         run(canDestroyStructure(), () -> destroyStructure(level));
+        run(between(20, 37) && canDestroyStructure(), () -> destroyFloor(level));
     }
 
     private boolean checkTarget(LivingEntity target) {
@@ -68,7 +72,6 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
     private boolean canDestroyStructure() {
         return after(15) && radius < 95 && !NarakaConfig.COMMON.disableHerobrineDestroyingStructure.getValue() && mob.hasSpawnPosition();
     }
-
 
     private void destroyStructure(ServerLevel level) {
         if (positions.isEmpty()) {
@@ -87,6 +90,31 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
                     break;
             }
         }
+    }
+
+    private void destroyFloor(ServerLevel level) {
+        if (tickCount % 2 == 1)
+            return;
+        int currentRadius = (tickCount - FLOOR_DESTROY_START_TICK) / 2 + FLOOR_DESTROY_BASE_RADIUS;
+
+        BlockPos base = mob.blockPosition();
+        NarakaUtils.circle(base, currentRadius, NarakaUtils.OUTLINE, blockPos -> {
+            if ((base.getX() - 2 < blockPos.getX() && blockPos.getX() < base.getX() + 2) || (base.getZ() - 2 < blockPos.getZ() && blockPos.getZ() < base.getZ() + 2))
+                return;
+            BlockPos current = blockPos;
+            BlockState state = level.getBlockState(blockPos);
+            while (state.is(Blocks.CALCITE)) {
+                current = current.below();
+                state = level.getBlockState(current);
+            }
+            BlockPos floor = NarakaUtils.findFloor(level, current);
+            state = level.getBlockState(floor);
+            if (state.is(Blocks.BLACKSTONE)) {
+                for (int i = 0; i < 17; i++) {
+                    level.setBlock(floor.below(i), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+                }
+            }
+        });
     }
 
     @Override
