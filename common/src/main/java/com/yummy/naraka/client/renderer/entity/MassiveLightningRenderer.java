@@ -43,7 +43,7 @@ public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning, M
         poseStack.pushPose();
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.lightning());
         poseStack.mulPose(Axis.YP.rotation(renderState.ageInTicks * 0.05f));
-        pillar(vertexConsumer, poseStack, renderState.size * 0.6f, renderState.size * 0.6f, 1, 123, 0x66ababab);
+        pillar(vertexConsumer, poseStack, renderState.size * 0.6f, renderState.size * 0.6f, 1, 123, 0x66fafafa);
         pillar(vertexConsumer, poseStack, renderState.size * 0.7f, renderState.size * 0.7f, 0, 122, 0x55ababab);
         pillar(vertexConsumer, poseStack, renderState.size * 0.8f, renderState.size * 0.8f, 0, 121, 0x44ababab);
         pillar(vertexConsumer, poseStack, renderState.size * 0.9f, renderState.size * 0.9f, 0, 120, 0x33ababab);

@@ -14,6 +14,8 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public class LightningCircle extends Entity {
+    public static final int MAX_SCALE = 128;
+
     @Nullable
     private AbstractHerobrine herobrine;
     private float scale = 0;
@@ -45,7 +47,7 @@ public class LightningCircle extends Entity {
         this.prevScale = this.scale;
         scale += 1.5f;
 
-        if (scale > 128)
+        if (scale > MAX_SCALE)
             discard();
         if (level() instanceof ServerLevel serverLevel)
             serverTick(serverLevel);
@@ -57,7 +59,7 @@ public class LightningCircle extends Entity {
                 getBoundingBox().inflate(radius, 5, radius),
                 this::canHurtTarget
         ).forEach(target -> {
-            if (target.hurtServer(level, damageSources().lightningBolt(), 10) && herobrine != null)
+            if (target.hurtServer(level, damageSources().magic(), 10) && herobrine != null)
                 herobrine.stigmatizeEntity(level, target);
         });
     }

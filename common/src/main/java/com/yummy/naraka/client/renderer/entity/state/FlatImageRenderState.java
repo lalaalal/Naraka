@@ -10,4 +10,5 @@ public class FlatImageRenderState extends EntityRenderState {
     public float yRot;
     public float zRot;
     public float scale;
+    public float alpha;
 }

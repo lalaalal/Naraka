@@ -14,6 +14,8 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.Mth;
 
 public class LightningCircleRenderer extends EntityRenderer<LightningCircle, FlatImageRenderState> {
     public LightningCircleRenderer(EntityRendererProvider.Context context) {
@@ -29,6 +31,7 @@ public class LightningCircleRenderer extends EntityRenderer<LightningCircle, Fla
     public void extractRenderState(LightningCircle entity, FlatImageRenderState reusedState, float partialTick) {
         super.extractRenderState(entity, reusedState, partialTick);
         reusedState.scale = entity.getScale(partialTick);
+        reusedState.alpha = Mth.lerp(reusedState.scale / LightningCircle.MAX_SCALE, 0.8f, 0);
     }
 
     @Override
@@ -47,8 +50,8 @@ public class LightningCircleRenderer extends EntityRenderer<LightningCircle, Fla
         poseStack.pushPose();
         poseStack.translate(0, 0.0125, 0);
         poseStack.scale(renderState.scale, renderState.scale, renderState.scale);
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutout(NarakaTextures.LIGHTNING_CIRCLE));
-        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.Axis.Y);
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityTranslucent(NarakaTextures.LIGHTNING_CIRCLE));
+        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ARGB.white(renderState.alpha), Direction.Axis.Y);
 
         poseStack.popPose();
     }
