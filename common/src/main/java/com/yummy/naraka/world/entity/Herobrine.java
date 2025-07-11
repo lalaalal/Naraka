@@ -150,6 +150,10 @@ public class Herobrine extends AbstractHerobrine {
         registerAnimation(AnimationLocations.STAGGERING_PHASE_2);
         registerAnimation(AnimationLocations.RUSH_SUCCEED);
         registerAnimation(AnimationLocations.RUSH_FAILED);
+        registerAnimation(AnimationLocations.FINAL_COMBO_ATTACK_1_RETURN);
+        registerAnimation(AnimationLocations.FINAL_COMBO_ATTACK_2_RETURN);
+        registerAnimation(AnimationLocations.PARRYING_SUCCEED);
+        registerAnimation(AnimationLocations.PARRYING_FAILED);
 
         registerAnimation(AnimationLocations.STIGMATIZE_ENTITIES);
         registerAnimation(AnimationLocations.STIGMATIZE_ENTITIES_END);

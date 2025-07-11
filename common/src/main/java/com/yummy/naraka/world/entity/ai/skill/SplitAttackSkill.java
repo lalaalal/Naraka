@@ -5,6 +5,7 @@ import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -18,7 +19,7 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
     private InstantShadowSpawner secondShadowSpawner = InstantShadowSpawner.EMPTY;
 
     public SplitAttackSkill(Herobrine mob, Skill<?> nextSkill) {
-        super(LOCATION, mob, 50, 200, 1, 50, nextSkill);
+        super(LOCATION, mob, 60, 200, 0.5f, 45, nextSkill);
     }
 
     @Override
@@ -41,8 +42,8 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         lookTarget(target);
-        runAt(0, () -> NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.TELEPORT.get()));
-        runAt(3, () -> teleportToTarget(target, 3));
+        run(at(0) && targetOutOfRange(target, 9), () -> NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.TELEPORT.get()));
+        run(at(3) && targetOutOfRange(target, 9), () -> teleportToTarget(target, 3));
         runBetween(0, 10, () -> rotateTowardTarget(target));
         runBetween(15, 20, () -> moveToTarget(target, 1));
         runBetween(15, 20, () -> rotateTowardTarget(target));
@@ -50,9 +51,11 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
         runAt(20, this::stopMoving);
         runAt(25, () -> firstShadowSpawner.spawn(level, mob.position(), mob.getYRot()));
         runAt(26, () -> firstShadowSpawner.control(this::displayShadowPickaxe).useSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_1));
-
-        runAt(35, () -> secondShadowSpawner.spawn(level, mob.position(), mob.getYRot()));
-        runAt(36, () -> secondShadowSpawner.control(this::displayShadowPickaxe).useSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_2));
+        if (hasLinkedSkill()) {
+            runAt(35, () -> secondShadowSpawner.spawn(level, mob.position(), mob.getYRot()));
+            runAt(36, () -> secondShadowSpawner.control(this::displayShadowPickaxe).useSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_2));
+        }
+        runAt(45, () -> mob.setAnimation(AnimationLocations.FINAL_COMBO_ATTACK_1_RETURN));
     }
 
     private void displayShadowPickaxe(ShadowHerobrine shadowHerobrine) {

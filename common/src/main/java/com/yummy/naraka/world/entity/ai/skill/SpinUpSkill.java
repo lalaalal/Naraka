@@ -4,6 +4,7 @@ import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +20,7 @@ public class SpinUpSkill extends ComboSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final.spin_up");
 
     public SpinUpSkill(Herobrine mob, @Nullable Skill<?> nextSkill) {
-        super(LOCATION, mob, 40, 0, 1, 40, nextSkill);
+        super(LOCATION, mob, 55, 0, 0.75f, 40, nextSkill);
     }
 
     @Override
@@ -42,6 +43,8 @@ public class SpinUpSkill extends ComboSkill<Herobrine> {
         runBetween(21, 25, () -> reduceSpeed(0.3));
         runBetween(20, 25, () -> hurtEntities(level, this::checkTarget, 3));
         runAt(27, this::stopMoving);
+
+        runAt(40, () -> mob.setAnimation(AnimationLocations.FINAL_COMBO_ATTACK_2_RETURN));
     }
 
     private boolean checkTarget(LivingEntity target) {
