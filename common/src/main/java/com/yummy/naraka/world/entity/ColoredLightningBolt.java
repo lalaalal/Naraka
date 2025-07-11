@@ -13,6 +13,7 @@ public class ColoredLightningBolt extends LightningBolt {
 
     public ColoredLightningBolt(EntityType<? extends ColoredLightningBolt> entityType, Level level) {
         super(entityType, level);
+        setVisualOnly(true);
     }
 
     public ColoredLightningBolt(Level level, Vec3 position, int color) {
