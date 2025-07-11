@@ -39,7 +39,7 @@ public class StrikeDownSkill extends ComboSkill<Herobrine> {
 
     @Override
     protected float calculateDamage(LivingEntity target) {
-        return mob.getAttackDamage();
+        return mob.getAttackDamage() + target.getMaxHealth() * 0.1f;
     }
 
     private Vec3 modifyMovement(Vec3 original) {

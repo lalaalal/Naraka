@@ -16,6 +16,8 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     private static final int PARRYING_END_TICK = 40;
     private static final int PARRYING_DURATION = 55;
     private boolean succeed;
+    private float originalHealth;
+    private float hurtDamage;
 
     public ParryingSkill(AbstractHerobrine mob) {
         super(LOCATION, 60, 300, 100, 5, mob);
@@ -25,11 +27,13 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     public void prepare() {
         super.prepare();
         succeed = false;
+        originalHealth = mob.getHealth();
+        hurtDamage = 0;
     }
 
     @Override
     protected float calculateDamage(LivingEntity target) {
-        return mob.getAttackDamage();
+        return hurtDamage;
     }
 
     @Override
@@ -53,6 +57,8 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
         run(at(PARRYING_END_TICK) && !succeed, () -> mob.setAnimation(AnimationLocations.PARRYING_FAILED));
         if (between(PARRYING_START_TICK, PARRYING_END_TICK) && hurtJustNow() && !succeed) {
             mob.setAnimation(AnimationLocations.PARRYING_SUCCEED);
+            hurtDamage = originalHealth - mob.getHealth();
+            mob.heal(hurtDamage * 2);
             succeed = true;
             tickCount = duration - PARRYING_DURATION;
         }

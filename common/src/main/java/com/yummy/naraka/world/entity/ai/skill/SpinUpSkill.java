@@ -25,7 +25,7 @@ public class SpinUpSkill extends ComboSkill<Herobrine> {
 
     @Override
     protected float calculateDamage(LivingEntity target) {
-        return mob.getAttackDamage();
+        return mob.getAttackDamage() + target.getMaxHealth() * 0.1f;
     }
 
     @Override

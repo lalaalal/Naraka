@@ -31,7 +31,7 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
 
     @Override
     protected float calculateDamage(LivingEntity target) {
-        return mob.getAttackDamage();
+        return mob.getAttackDamage() + target.getMaxHealth() * 0.1f;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
         runBetween(0, 10, () -> rotateTowardTarget(target));
         runBetween(15, 20, () -> moveToTarget(target, 1));
         runBetween(15, 20, () -> rotateTowardTarget(target));
-        runBetween(18, 20, () -> hurtEntities(level, this::checkTarget, 1.5));
+        runBetween(18, 20, () -> hurtEntities(level, this::checkTarget, 1.8));
         runAt(20, this::stopMoving);
         runAt(25, () -> firstShadowSpawner.spawn(level, mob.position(), mob.getYRot()));
         runAt(26, () -> firstShadowSpawner.control(this::displayShadowPickaxe).useSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_1));
@@ -63,7 +63,7 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
     }
 
     private boolean checkTarget(LivingEntity target) {
-        return targetInLookAngle(target, -Mth.HALF_PI * 0.3f, Mth.HALF_PI * 0.3f) && AbstractHerobrine.isNotHerobrine(target);
+        return targetInLookAngle(target, -Mth.HALF_PI * 0.67f, Mth.HALF_PI * 0.67f) && AbstractHerobrine.isNotHerobrine(target);
     }
 
     @Override
