@@ -26,7 +26,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
     private static final float HALF_ANGLE = Mth.HALF_PI * 0.125f;
 
     public EarthShockSkill(Herobrine mob) {
-        super(LOCATION, mob, 205, 600);
+        super(LOCATION, mob, 240, 600);
     }
 
     @Override
@@ -54,9 +54,8 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        runBefore(10, () -> rotateTowardTarget(target));
-        runBetween(10, 60, () -> moveToTarget(target, false, applyAcceleration(10, 4, 5, 0.9f)));
-
+        runBefore(40, () -> rotateTowardTarget(target));
+        runBetween(40, 90, () -> moveToTarget(target, false, applyAcceleration(40, 4, 5, 0.9f)));
     }
 
     private Predicate<LivingEntity> targetBetween(float from, float to) {
@@ -68,27 +67,27 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         if (target == null) {
-            runBetween(10, 60, () -> mob.setDeltaMovement(0, 4, 0));
-            runBetween(10, 60, () -> reduceSpeed(0.8));
+            runBetween(40, 90, () -> mob.setDeltaMovement(0, 4, 0));
+            runBetween(40, 90, () -> reduceSpeed(0.8));
         }
 
-        runBetween(30, 60, () -> sendParticles(level, 10));
-        runBetween(60, 65, () -> spawnLightningBolts(level, 3, 9, 0x335A1D8D));
-        runBetween(60, 70, () -> shockwaveBlocks(level, 60, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
-        runAt(62, () -> hurtEntities(level, targetBetween(1, 10), 10));
-        runBetween(65, 95, () -> hurtTargetInAngle(level, 65, 1, 1, -HALF_ANGLE, HALF_ANGLE));
-        runBetween(65, 95, () -> hurtTargetInAngle(level, 65, 1, 1, -HALF_ANGLE + Mth.HALF_PI, HALF_ANGLE + Mth.HALF_PI));
-        runBetween(65, 95, () -> hurtTargetInAngle(level, 65, 1, 1, -HALF_ANGLE - Mth.HALF_PI, HALF_ANGLE - Mth.HALF_PI));
-        runBetween(65, 95, () -> hurtTargetInAngle(level, 65, 1, 1, -HALF_ANGLE + Mth.PI, HALF_ANGLE + Mth.PI));
-        runAt(60, () -> mob.setDeltaMovement(0, -8, 0));
+        runBetween(60, 90, () -> sendParticles(level, 10));
+        runBetween(90, 95, () -> spawnLightningBolts(level, 3, 9, 0x335A1D8D));
+        runBetween(90, 100, () -> shockwaveBlocks(level, 90, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
+        runAt(92, () -> hurtEntities(level, targetBetween(1, 10), 10));
+        runBetween(95, 125, () -> hurtTargetInAngle(level, 95, 1, 1, -HALF_ANGLE, HALF_ANGLE));
+        runBetween(95, 125, () -> hurtTargetInAngle(level, 95, 1, 1, -HALF_ANGLE + Mth.HALF_PI, HALF_ANGLE + Mth.HALF_PI));
+        runBetween(95, 125, () -> hurtTargetInAngle(level, 95, 1, 1, -HALF_ANGLE - Mth.HALF_PI, HALF_ANGLE - Mth.HALF_PI));
+        runBetween(95, 125, () -> hurtTargetInAngle(level, 95, 1, 1, -HALF_ANGLE + Mth.PI, HALF_ANGLE + Mth.PI));
+        runAt(90, () -> mob.setDeltaMovement(0, -8, 0));
 
-        runAt(95, () -> spawnMassiveLightning(level));
-        runBetween(95, 100, () -> spawnLightningBolts(level, 4, 10, 0x335A1D8D));
+        runAt(125, () -> spawnMassiveLightning(level));
+        runBetween(125, 130, () -> spawnLightningBolts(level, 4, 10, 0x335A1D8D));
 
-        runAt(115, () -> NarakaSkillUtils.pullEntities(level, mob, this::entityToPull, 0.25));
+        runAt(145, () -> NarakaSkillUtils.pullEntities(level, mob, this::entityToPull, 0.25));
 
-        runAt(170, () -> mob.setDeltaMovement(0, 0.4, 0));
-        runAfter(170, () -> reduceSpeed(0.6));
+        runAt(200, () -> mob.setDeltaMovement(0, 0.4, 0));
+        runAfter(200, () -> reduceSpeed(0.6));
     }
 
     private void spawnMassiveLightning(ServerLevel level) {
@@ -142,7 +141,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
             return;
 
         int spawnTick = rawSpawnTick / tickInterval;
-        shockwaveBlocks(level, 65, 1, angleFrom, angleTo, blockFloatingMovement(0.2f, 0.05f * spawnTick));
+        shockwaveBlocks(level, startTick, 1, angleFrom, angleTo, blockFloatingMovement(0.2f, 0.05f * spawnTick));
 
         float distance = spawnTick * positionInterval;
         float distanceFrom = distance - positionInterval;
