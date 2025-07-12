@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class FabricBiomeModifier implements NarakaBiomes.Modifier {
+public final class FabricBiomeModifier implements NarakaBiomes.Modifier {
     public static final FabricBiomeModifier INSTANCE = new FabricBiomeModifier();
 
     private FabricBiomeModifier() {

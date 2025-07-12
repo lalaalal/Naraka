@@ -17,6 +17,7 @@ public final class NarakaModFabric implements ModInitializer, NarakaInitializer 
         MethodInvoker.register(FabricRegistryFactory.class);
         MethodInvoker.register(FabricRegistryProxyProvider.class);
         MethodInvoker.register(FabricSpawnPlacementRegistry.class);
+        MethodInvoker.register(FabricCommandRegistry.class);
 
         NarakaMod.initialize(this);
         NarakaMod.isRegistryLoaded = true;

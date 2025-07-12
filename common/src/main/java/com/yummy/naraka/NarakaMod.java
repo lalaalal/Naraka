@@ -3,6 +3,7 @@ package com.yummy.naraka;
 import com.mojang.logging.LogUtils;
 import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
 import com.yummy.naraka.client.init.NarakaClientInitializer;
+import com.yummy.naraka.commands.NarakaCommands;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
@@ -99,6 +100,7 @@ public final class NarakaMod {
 
         NarakaGameEvents.initialize();
         NarakaNetworks.initialize();
+        NarakaCommands.initialize();
 
         RegistryProxyProvider.forEach(RegistryProxy::onRegistrationFinished);
     }

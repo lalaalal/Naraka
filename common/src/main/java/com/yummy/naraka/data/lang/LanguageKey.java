@@ -32,6 +32,12 @@ public final class LanguageKey {
     public static final String REINFORCEMENT_KEY = "item.reinforcement";
     public static final String BLESSED_KEY = "item.blessed";
 
+    public static final String STIGMA_COMMAND_GET_KEY = "commands.stigma.get.success";
+    public static final String STIGMA_COMMAND_SET_KEY = "commands.stigma.set.success";
+    public static final String STIGMA_COMMAND_CONSUME_KEY = "commands.stigma.consume.success";
+    public static final String STIGMA_COMMAND_INCREASE_KEY = "commands.stigma.increase.success";
+    public static final String STIGMA_COMMAND_REMOVE_KEY = "commands.stigma.remove.success";
+
     public static final String DISABLE_SKILL_USE_KEY = "skill_controller.disable_skill_use";
 
     public static final String CHALLENGERS_BLESSING = Util.makeDescriptionId("effect", NarakaMod.location("challengers_blessing"));
