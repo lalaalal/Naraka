@@ -353,7 +353,8 @@ public class Herobrine extends AbstractHerobrine {
         updateIdleTick();
         updateAccumulatedDamage();
 
-        tryAvoidProjectile();
+        if (!isFinalModel())
+            tryAvoidProjectile();
         collectStigma(serverLevel);
         phaseManager.updatePhase(bossEvent);
 
@@ -439,8 +440,8 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     public boolean canBeHitByProjectile() {
         return getCurrentSkill()
-                .filter(skill -> skill != dashAroundSkill && super.canBeHitByProjectile())
-                .isPresent();
+                .filter(skill -> skill != dashAroundSkill)
+                .isPresent() && super.canBeHitByProjectile();
     }
 
     @Override
@@ -517,7 +518,8 @@ public class Herobrine extends AbstractHerobrine {
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
             if (source.getDirectEntity() != null)
                 lookAt(source.getDirectEntity(), 360, 0);
-            skillManager.setCurrentSkillIfAbsence(blockingSkill);
+            if (!isFinalModel())
+                skillManager.setCurrentSkillIfAbsence(blockingSkill);
             return false;
         }
         return super.hurtServer(level, source, limitedDamage);

@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 public class SpinningSkill extends ComboSkill<AbstractHerobrine> {
     public static final ResourceLocation LOCATION = createLocation("herobrine.spinning");
 
-    public SpinningSkill(AbstractHerobrine mob, ComboSkill<AbstractHerobrine> comboSkill) {
+    public SpinningSkill(AbstractHerobrine mob, Skill<?> comboSkill) {
         super(LOCATION, mob, 20, 0, 1, 20, comboSkill);
         this.shieldCooldown = 60;
         this.shieldDamage = 15;
