@@ -78,7 +78,6 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         registerAnimation(AnimationLocations.IDLE);
         registerAnimation(AnimationLocations.PHASE_3_IDLE);
 
-        setPersistenceRequired();
         updateAnimation(AnimationLocations.IDLE);
         skillManager.runOnSkillEnd(this::updateAnimationOnSkillEnd);
     }
@@ -251,6 +250,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         super.readAdditionalSaveData(tag);
         boolean finalModel = tag.getBooleanOr("FinalModel", false);
         entityData.set(FINAL_MODEL, finalModel);
+        setPersistenceRequired();
     }
 
     @Override
