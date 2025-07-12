@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
 public class BlockingSkill extends Skill<SkillUsingMob> {
-    public static final ResourceLocation LOCATION = createLocation("blocking");
+    public static final ResourceLocation LOCATION = createLocation("herobrine.blocking");
 
     public BlockingSkill(SkillUsingMob mob) {
         super(LOCATION, mob, 30, 0);

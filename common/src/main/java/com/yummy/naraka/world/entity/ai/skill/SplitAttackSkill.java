@@ -14,7 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 
 public class SplitAttackSkill extends ComboSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("final.split_attack");
+    public static final ResourceLocation LOCATION = createLocation("final_herobrine.split_attack");
     private InstantShadowSpawner firstShadowSpawner = InstantShadowSpawner.EMPTY;
     private InstantShadowSpawner secondShadowSpawner = InstantShadowSpawner.EMPTY;
 

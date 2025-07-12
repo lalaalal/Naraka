@@ -350,6 +350,14 @@ public class NarakaLanguageProviders {
         add(LanguageKey.skill(SummonShadowSkill.LOCATION), "Summon Shadow", "그림자 소환");
         add(LanguageKey.skill(CarpetBombingSkill.LOCATION), "Carpet Bombing", "융단폭격");
         add(LanguageKey.skill(BlockingSkill.LOCATION), "Blocking");
+        add(LanguageKey.skill(ParryingSkill.LOCATION), "Parrying", "패링");
+        add(LanguageKey.skill(EarthShockSkill.LOCATION), "Earth Shock");
+
+        add(LanguageKey.STIGMA_COMMAND_GET_KEY, "Stigma for entity %s is %d");
+        add(LanguageKey.STIGMA_COMMAND_SET_KEY, "Stigma for %d entities set to %d", "%d개의 엔티티의 낙인을 %d로 설정하였습니다");
+        add(LanguageKey.STIGMA_COMMAND_INCREASE_KEY, "Increased stigma for %1$d entities", "%1$d개의 엔티티의 낙인을 증가시켰습니다");
+        add(LanguageKey.STIGMA_COMMAND_REMOVE_KEY, "Removed stigma for %1$d entities", "%1$d개의 엔티티의 낙인을 제거했습니다");
+        add(LanguageKey.STIGMA_COMMAND_CONSUME_KEY, "%2$s consumed %$1d entities stigma", "%2$s(이)가 %1$d개의 엔티티의 낙인을 소모했습니다");
     }
 
     public void addProvidersTo(Consumer<FabricDataGenerator.Pack.RegistryDependentFactory<FabricLanguageProvider>> consumer) {

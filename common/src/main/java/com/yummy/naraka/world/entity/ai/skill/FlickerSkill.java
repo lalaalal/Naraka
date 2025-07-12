@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
 public class FlickerSkill<T extends AbstractHerobrine> extends TargetSkill<T> {
-    public static final ResourceLocation LOCATION = createLocation("flicker");
+    public static final ResourceLocation LOCATION = createLocation("herobrine.flicker");
 
     private final DashSkill<?> dashSkill;
     private final PunchSkill<?> punchSkill;

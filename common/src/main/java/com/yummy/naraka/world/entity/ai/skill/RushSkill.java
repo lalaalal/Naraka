@@ -21,7 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends AttackSkill<T> {
-    public static final ResourceLocation LOCATION = createLocation("rush");
+    public static final ResourceLocation LOCATION = createLocation("herobrine.rush");
 
     private static final int START_RUNNING_TICK = 15;
     private static final int RUSH_TICK = 18;

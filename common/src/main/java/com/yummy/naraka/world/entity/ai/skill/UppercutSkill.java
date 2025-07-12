@@ -12,7 +12,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
-    public static final ResourceLocation LOCATION = createLocation("uppercut");
+    public static final ResourceLocation LOCATION = createLocation("herobrine.uppercut");
 
     public UppercutSkill(AbstractHerobrine mob, @Nullable ComboSkill<AbstractHerobrine> comboSkill) {
         super(LOCATION, mob, 35, 0, 0.1f, 15, comboSkill);

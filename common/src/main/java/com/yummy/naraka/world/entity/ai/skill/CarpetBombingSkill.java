@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class CarpetBombingSkill extends AttackSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("final.carpet_bombing");
+    public static final ResourceLocation LOCATION = createLocation("final_herobrine.carpet_bombing");
 
     private final Map<Stardust, Integer> stardusts = new HashMap<>();
     private int onGroundTick = 0;

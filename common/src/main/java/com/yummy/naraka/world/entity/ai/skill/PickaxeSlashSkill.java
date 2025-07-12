@@ -17,8 +17,8 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<T> {
-    public static final ResourceLocation SINGLE = createLocation("pickaxe_slash.single");
-    public static final ResourceLocation TRIPLE = createLocation("pickaxe_slash.triple");
+    public static final ResourceLocation SINGLE = createLocation("final_herobrine.pickaxe_slash.single");
+    public static final ResourceLocation TRIPLE = createLocation("final_herobrine.pickaxe_slash.triple");
     private final List<Integer> pickaxeSlashSpawnTimes;
     private int rotateDirection = 1;
     private final boolean spawnShadow;

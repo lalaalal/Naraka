@@ -11,7 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
-    public static final ResourceLocation LOCATION = createLocation("punch");
+    public static final ResourceLocation LOCATION = createLocation("herobrine.punch");
 
     private boolean linked = false;
 

@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 public class EarthShockSkill extends AttackSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("earth_shock");
+    public static final ResourceLocation LOCATION = createLocation("final_herobrine.earth_shock");
 
     private static final float HALF_ANGLE = Mth.HALF_PI * 0.125f;
 

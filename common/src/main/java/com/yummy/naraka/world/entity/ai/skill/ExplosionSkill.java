@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Predicate;
 
 public class ExplosionSkill extends AttackSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("final.explosion");
+    public static final ResourceLocation LOCATION = createLocation("final_herobrine.explosion");
 
     @Nullable
     private MagicCircle magicCircle;

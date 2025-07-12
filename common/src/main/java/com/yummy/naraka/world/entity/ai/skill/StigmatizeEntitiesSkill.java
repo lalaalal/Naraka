@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 
 public class StigmatizeEntitiesSkill extends Skill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("stigmatize_entities");
+    public static final ResourceLocation LOCATION = createLocation("herobrine.stigmatize_entities");
 
     public StigmatizeEntitiesSkill(Herobrine mob) {
         super(LOCATION, mob, Integer.MAX_VALUE, 0);

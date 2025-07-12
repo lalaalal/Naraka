@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 public final class NeoForgeCommandRegistry implements NarakaEventBus {
     @MethodProxy(CommandRegistry.class)
     public static void register(Consumer<CommandDispatcher<CommandSourceStack>> consumer) {
-        NARAKA_BUS.addListener(RegisterCommandsEvent.class, event -> {
+        NEOFORGE_BUS.addListener(RegisterCommandsEvent.class, event -> {
             consumer.accept(event.getDispatcher());
         });
     }

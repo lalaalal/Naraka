@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 
 public class SummonShadowSkill extends Skill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("summon_shadow");
+    public static final ResourceLocation LOCATION = createLocation("herobrine.summon_shadow");
 
     public SummonShadowSkill(Herobrine mob) {
         super(LOCATION, mob, 20, 0);

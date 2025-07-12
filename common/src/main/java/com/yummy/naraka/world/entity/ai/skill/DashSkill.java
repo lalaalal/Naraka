@@ -9,7 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 public class DashSkill<T extends AbstractHerobrine> extends TargetSkill<T> {
-    public static final ResourceLocation LOCATION = createLocation("dash");
+    public static final ResourceLocation LOCATION = createLocation("herobrine.dash");
 
     private Vec3 prevPosition = Vec3.ZERO;
     private Vec3 deltaMovement = Vec3.ZERO;

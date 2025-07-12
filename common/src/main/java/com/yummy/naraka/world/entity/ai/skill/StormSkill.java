@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 
 public class StormSkill extends ComboSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("final.storm");
+    public static final ResourceLocation LOCATION = createLocation("final_herobrine.storm");
     private final HashMap<LivingEntity, Integer> hurtEntities = new HashMap<>();
 
     public StormSkill(Herobrine mob, Skill<?> parryingSkill) {

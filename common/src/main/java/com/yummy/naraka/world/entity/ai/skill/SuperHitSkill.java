@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
-    public static final ResourceLocation LOCATION = createLocation("super_hit");
+    public static final ResourceLocation LOCATION = createLocation("herobrine.super_hit");
     private int onGroundTick = 0;
     private final Set<LivingEntity> hitEntities = new HashSet<>();
 

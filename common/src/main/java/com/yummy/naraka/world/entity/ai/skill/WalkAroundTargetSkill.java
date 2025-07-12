@@ -9,7 +9,7 @@ import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
 public class WalkAroundTargetSkill extends TargetSkill<SkillUsingMob> {
-    public static final ResourceLocation LOCATION = createLocation("walk_around");
+    public static final ResourceLocation LOCATION = createLocation("herobrine.walk_around");
 
     private static final int DEFAULT_DURATION = 80;
     private int direction;
