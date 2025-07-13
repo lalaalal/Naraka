@@ -185,6 +185,6 @@ public class NarakaPickaxe extends Entity {
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         if (herobrine != null)
-            tag.storeNullable("Owner", UUIDUtil.CODEC, herobrine.getUUID());
+            tag.store("Owner", UUIDUtil.CODEC, herobrine.getUUID());
     }
 }

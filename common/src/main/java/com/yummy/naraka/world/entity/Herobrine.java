@@ -218,12 +218,6 @@ public class Herobrine extends AbstractHerobrine {
         setNoGravity(true);
         setAnimation(AnimationLocations.PHASE_3_IDLE);
         setDisplayEye(false);
-        if (narakaPickaxe == null) {
-            narakaPickaxe = new NarakaPickaxe(level(), this);
-            narakaPickaxe.setPos(position());
-            narakaPickaxe.setDeltaMovement(0, 0.2, 0);
-            level().addFreshEntity(narakaPickaxe);
-        }
 
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR_TOUGHNESS, NarakaAttributeModifiers.FINAL_HEROBRINE_ARMOR_TOUGHNESS);
     }
@@ -745,7 +739,8 @@ public class Herobrine extends AbstractHerobrine {
         compound.putBoolean("HibernateMode", hibernateMode);
         if (spawnPosition != null)
             compound.put("SpawnPosition", NarakaNbtUtils.writeBlockPos(spawnPosition));
-        compound.storeNullable("NarakaPickaxe", UUIDUtil.CODEC, narakaPickaxe.getUUID());
+        if (narakaPickaxe != null)
+            compound.store("NarakaPickaxe", UUIDUtil.CODEC, narakaPickaxe.getUUID());
         NarakaNbtUtils.writeCollection(compound, "StigmatizedEntities", stigmatizedEntities, NarakaNbtUtils::writeUUID, registryAccess());
         NarakaNbtUtils.writeCollection(compound, "WatchingEntities", watchingEntities, NarakaNbtUtils::writeUUID, registryAccess());
         shadowController.save(compound);
