@@ -46,6 +46,8 @@
   "animation.naraka.herobrine.idle": "Idle",
   "animation.naraka.herobrine.staggering": "Staggering",
   "animation.naraka.herobrine.walking": "Walking",
+  "commands.lockhealth.lock.success": "Locked %2$s health %1$d",
+  "commands.lockhealth.remove.success": "Removed %1$s locked healths",
   "commands.stigma.consume.success": "%2$s consumed %$1d entities stigma",
   "commands.stigma.get.success": "Stigma for entity %s is %d",
   "commands.stigma.increase.success": "Increased stigma for %1$d entities",

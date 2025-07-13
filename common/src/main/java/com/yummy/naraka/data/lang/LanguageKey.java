@@ -38,6 +38,9 @@ public final class LanguageKey {
     public static final String STIGMA_COMMAND_INCREASE_KEY = "commands.stigma.increase.success";
     public static final String STIGMA_COMMAND_REMOVE_KEY = "commands.stigma.remove.success";
 
+    public static final String LOCK_HEALTH_COMMAND_LOCK_KEY = "commands.lockhealth.lock.success";
+    public static final String LOCK_HEALTH_COMMAND_REMOVE_KEY = "commands.lockhealth.remove.success";
+
     public static final String DISABLE_SKILL_USE_KEY = "skill_controller.disable_skill_use";
 
     public static final String CHALLENGERS_BLESSING = Util.makeDescriptionId("effect", NarakaMod.location("challengers_blessing"));

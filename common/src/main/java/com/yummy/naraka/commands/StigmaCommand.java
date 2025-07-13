@@ -5,7 +5,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
@@ -22,9 +21,7 @@ import java.util.Collection;
 import java.util.Set;
 
 public class StigmaCommand {
-    private static final DynamicCommandExceptionType ERROR_NOT_LIVING_ENTITY = new DynamicCommandExceptionType(
-            object -> Component.translatableEscape("commands.attribute.failed.entity", object)
-    );
+
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("stigma")
@@ -128,7 +125,7 @@ public class StigmaCommand {
     }
 
     private static int getStigma(CommandSourceStack source, Entity entity) throws CommandSyntaxException {
-        LivingEntity livingEntity = getLivingEntity(entity);
+        LivingEntity livingEntity = NarakaCommands.getLivingEntity(entity);
         source.sendSuccess(() -> Component.translatable(LanguageKey.STIGMA_COMMAND_GET_KEY, livingEntity.getName(), StigmaHelper.get(livingEntity).value()), false);
         return Command.SINGLE_SUCCESS;
     }
@@ -136,7 +133,7 @@ public class StigmaCommand {
     private static int setStigma(CommandSourceStack source, Collection<? extends Entity> targets, int value, boolean markTime) throws CommandSyntaxException {
         int count = 0;
         for (Entity target : targets) {
-            LivingEntity livingEntity = getLivingEntity(target);
+            LivingEntity livingEntity = NarakaCommands.getLivingEntity(target);
             long lastMarkedTime = markTime ? livingEntity.level().getGameTime() : 0;
             EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.get(), new Stigma(value, lastMarkedTime));
             count += 1;
@@ -149,7 +146,7 @@ public class StigmaCommand {
     private static int increaseStigma(CommandSourceStack source, Collection<? extends Entity> targets, Entity cause) throws CommandSyntaxException {
         int count = 0;
         for (Entity target : targets) {
-            LivingEntity livingEntity = getLivingEntity(target);
+            LivingEntity livingEntity = NarakaCommands.getLivingEntity(target);
             StigmaHelper.increaseStigma(source.getLevel(), livingEntity, cause);
             count += 1;
         }
@@ -160,19 +157,16 @@ public class StigmaCommand {
 
     private static int consumeStigma(CommandSourceStack source, Collection<? extends Entity> targets, Entity cause) throws CommandSyntaxException {
         int succeed = 0;
-        int failed = 0;
         for (Entity target : targets) {
-            LivingEntity livingEntity = getLivingEntity(target);
+            LivingEntity livingEntity = NarakaCommands.getLivingEntity(target);
             Stigma stigma = StigmaHelper.get(livingEntity);
             if (stigma.value() > 0) {
                 Stigma result = stigma.consume(source.getLevel(), livingEntity, cause);
                 EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.get(), result);
                 succeed += 1;
-            } else {
-                failed += 1;
             }
         }
-        Component component = Component.translatable(LanguageKey.STIGMA_COMMAND_CONSUME_KEY, succeed, failed, cause.getName());
+        Component component = Component.translatable(LanguageKey.STIGMA_COMMAND_CONSUME_KEY, succeed, cause.getName(), cause.getName());
         source.sendSuccess(() -> component, false);
         return Command.SINGLE_SUCCESS;
     }
@@ -180,18 +174,12 @@ public class StigmaCommand {
     private static int removeStigma(CommandSourceStack source, Collection<? extends Entity> targets) throws CommandSyntaxException {
         int count = 0;
         for (Entity target : targets) {
-            LivingEntity livingEntity = getLivingEntity(target);
+            LivingEntity livingEntity = NarakaCommands.getLivingEntity(target);
             EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.get(), Stigma.ZERO);
             count += 1;
         }
         Component component = Component.translatable(LanguageKey.STIGMA_COMMAND_REMOVE_KEY, count);
         source.sendSuccess(() -> component, false);
         return Command.SINGLE_SUCCESS;
-    }
-
-    private static LivingEntity getLivingEntity(Entity entity) throws CommandSyntaxException {
-        if (entity instanceof LivingEntity livingEntity)
-            return livingEntity;
-        throw ERROR_NOT_LIVING_ENTITY.create(entity.getName());
     }
 }

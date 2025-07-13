@@ -46,6 +46,8 @@
   "animation.naraka.herobrine.idle": "대기",
   "animation.naraka.herobrine.staggering": "허약",
   "animation.naraka.herobrine.walking": "걷기",
+  "commands.lockhealth.lock.success": "%2$s의 체력을 %1$d 잠궜습니다",
+  "commands.lockhealth.remove.success": "%1$s의 잠긴 체력을 해제했습니다",
   "commands.stigma.consume.success": "%2$s(이)가 %1$d개의 엔티티의 낙인을 소모했습니다",
   "commands.stigma.get.success": "Stigma for entity %s is %d",
   "commands.stigma.increase.success": "%1$d개의 엔티티의 낙인을 증가시켰습니다",
