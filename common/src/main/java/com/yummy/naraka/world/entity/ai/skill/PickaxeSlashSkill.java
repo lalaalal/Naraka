@@ -74,7 +74,7 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
         run(pickaxeSlashSpawnTimes.contains(tickCount), () -> createPickaxeSlash(level, target));
         runAt(5, () -> shadowSpawner.spawn(level).control(this::setupShadowHerobrine));
         runAt(10, this::stopShadowMoving);
-        runAt(10, () -> shadowSpawner.useSkill(SINGLE));
+        runAt(30, () -> shadowSpawner.useSkill(SINGLE));
     }
 
     private void setupShadowHerobrine(ShadowHerobrine shadowHerobrine) {

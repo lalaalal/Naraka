@@ -31,7 +31,7 @@ public class LightningCircleRenderer extends EntityRenderer<LightningCircle, Fla
     public void extractRenderState(LightningCircle entity, FlatImageRenderState reusedState, float partialTick) {
         super.extractRenderState(entity, reusedState, partialTick);
         reusedState.scale = entity.getScale(partialTick);
-        reusedState.alpha = Mth.lerp(reusedState.scale / LightningCircle.MAX_SCALE, 0.8f, 0);
+        reusedState.alpha = Mth.lerp(reusedState.scale / LightningCircle.MAX_SCALE, 1f, 0.5f);
     }
 
     @Override

@@ -97,9 +97,9 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         runAt(172, mob::shakeCamera);
         runBetween(172, 176, () -> shockwaveBlocks(level, 172, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
         runAt(172, () -> level.playSound(null, mob, SoundEvents.TOTEM_USE, SoundSource.HOSTILE, 1, 1));
-        runAt(172, () -> hurtEntities(level, targetBetween(1, 10), 10));
+        runAt(172, () -> hurtEntities(level, targetBetween(1, 10), 7));
         runAt(170, () -> spawnLightningCircle(level));
-        runBetween(170, 180, () -> sendParticles(level, 5));
+        runBetween(170, 180, () -> sendParticles(level, 7));
 
         runAt(180, () -> spawnLightningCircle(level));
         runAt(200, () -> spawnLightningCircle(level));
