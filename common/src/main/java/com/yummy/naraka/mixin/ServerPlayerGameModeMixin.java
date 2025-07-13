@@ -25,7 +25,8 @@ public abstract class ServerPlayerGameModeMixin {
 
     @Inject(method = "setGameModeForPlayer", at = @At("RETURN"))
     public void updateReinforcementEffects(CallbackInfo ci) {
-        if (player.isAlive())
+        // To prevent NullPointerException during join the world
+        if (player.connection != null)
             NarakaItemUtils.updateAllReinforcementEffects(player);
     }
 
