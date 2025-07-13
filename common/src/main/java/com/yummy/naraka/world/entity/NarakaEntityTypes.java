@@ -5,6 +5,7 @@ import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.init.EntityAttributeRegistry;
 import com.yummy.naraka.world.LightningCircle;
+import com.yummy.naraka.world.NarakaPickaxe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
@@ -100,6 +101,12 @@ public class NarakaEntityTypes {
             "lightning_circle",
             EntityType.Builder.<LightningCircle>of(LightningCircle::new, MobCategory.MISC)
                     .sized(0, 0)
+    );
+
+    public static final HolderProxy<EntityType<?>, EntityType<NarakaPickaxe>> NARAKA_PICKAXE = register(
+            "naraka_pickaxe",
+            EntityType.Builder.<NarakaPickaxe>of(NarakaPickaxe::new, MobCategory.MISC)
+                    .sized(0.2f, 0.2f)
     );
 
     private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {

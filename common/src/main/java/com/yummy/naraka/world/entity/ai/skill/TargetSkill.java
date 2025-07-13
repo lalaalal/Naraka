@@ -88,8 +88,8 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
     }
 
     protected final boolean targetInLookAngle(Vec3 target, float from, float to) {
-        Vec3 diff = target.subtract(mob.position());
-        double angle = NarakaUtils.wrapRadians(Math.atan2(diff.z, diff.x) - Math.toRadians(mob.getYRot() + 90));
+        Vec3 delta = target.subtract(mob.position());
+        double angle = NarakaUtils.wrapRadians(Math.atan2(delta.z, delta.horizontalDistance()) - Math.toRadians(mob.getYRot() + 90));
         return from <= angle && angle <= to;
     }
 

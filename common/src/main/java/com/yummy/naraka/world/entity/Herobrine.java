@@ -10,6 +10,7 @@ import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.world.NarakaPickaxe;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.control.HerobrineFlyMoveControl;
@@ -21,6 +22,7 @@ import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -118,6 +120,7 @@ public class Herobrine extends AbstractHerobrine {
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this, bossEvent);
     private final ShadowController shadowController = new ShadowController(this);
+    private @Nullable NarakaPickaxe narakaPickaxe;
 
     private float hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
 
@@ -215,6 +218,12 @@ public class Herobrine extends AbstractHerobrine {
         setNoGravity(true);
         setAnimation(AnimationLocations.PHASE_3_IDLE);
         setDisplayEye(false);
+        if (narakaPickaxe == null) {
+            narakaPickaxe = new NarakaPickaxe(level(), this);
+            narakaPickaxe.setPos(position());
+            narakaPickaxe.setDeltaMovement(0, 0.2, 0);
+            level().addFreshEntity(narakaPickaxe);
+        }
 
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR_TOUGHNESS, NarakaAttributeModifiers.FINAL_HEROBRINE_ARMOR_TOUGHNESS);
     }
@@ -736,6 +745,7 @@ public class Herobrine extends AbstractHerobrine {
         compound.putBoolean("HibernateMode", hibernateMode);
         if (spawnPosition != null)
             compound.put("SpawnPosition", NarakaNbtUtils.writeBlockPos(spawnPosition));
+        compound.storeNullable("NarakaPickaxe", UUIDUtil.CODEC, narakaPickaxe.getUUID());
         NarakaNbtUtils.writeCollection(compound, "StigmatizedEntities", stigmatizedEntities, NarakaNbtUtils::writeUUID, registryAccess());
         NarakaNbtUtils.writeCollection(compound, "WatchingEntities", watchingEntities, NarakaNbtUtils::writeUUID, registryAccess());
         shadowController.save(compound);
@@ -750,6 +760,9 @@ public class Herobrine extends AbstractHerobrine {
             hibernateMode = compound.getBooleanOr("HibernatedMode", false);
             if (hibernateMode && level() instanceof ServerLevel level)
                 startHibernateMode(level);
+        }
+        if (level() instanceof ServerLevel level) {
+            compound.read("NarakaPickaxe", UUIDUtil.CODEC).ifPresent(uuid -> this.narakaPickaxe = NarakaEntityUtils.findEntityByUUID(level, uuid, NarakaPickaxe.class));
         }
         NarakaNbtUtils.readBlockPos(compound, "SpawnPosition")
                 .ifPresent(pos -> spawnPosition = pos);

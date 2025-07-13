@@ -33,13 +33,11 @@ public class HerobrineFlyMoveControl extends MoveControl {
             mob.setNoGravity(true);
             Vec3 wanted = new Vec3(wantedX, wantedY, wantedZ);
             Vec3 delta = wanted.subtract(mob.position());
-            double distanceSquare = delta.x * delta.x + delta.z * delta.z;
 
             float yRot = (float) (Math.toDegrees(Mth.atan2(delta.z, delta.x))) - 90.0f;
             this.mob.setYRot(this.rotlerp(this.mob.getYRot(), yRot, 90.0f));
 
-            float proj = (float) Math.sqrt(distanceSquare);
-            float xRot = (float) Math.toDegrees(Math.atan2(delta.y, proj));
+            float xRot = (float) Math.toDegrees(Math.atan2(delta.y, delta.horizontalDistance()));
             this.mob.setXRot(xRot);
             if (Math.abs(wantedY - mob.getY()) > 0.1) {
                 this.mob.setYya(xRot * 0.015f);
