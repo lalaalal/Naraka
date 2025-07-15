@@ -3,43 +3,52 @@ package com.yummy.naraka.world.entity.ai.control;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.Herobrine;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.phys.Vec3;
 
 public class HerobrineFlyMoveControl extends MoveControl {
     private final double hoverHeight;
-    private final Herobrine herobrine;
 
-    public HerobrineFlyMoveControl(Herobrine mob, double hoverHeight, double speedModifier) {
+    public HerobrineFlyMoveControl(Herobrine mob, double hoverHeight) {
         super(mob);
-        this.herobrine = mob;
         this.hoverHeight = hoverHeight;
-        this.speedModifier = speedModifier;
     }
 
     @Override
     public void setWantedPosition(double x, double y, double z, double speed) {
         BlockPos floor = NarakaUtils.findFloor(mob.level(), BlockPos.containing(x, y, z));
-        super.setWantedPosition(x, floor.getY() + hoverHeight + 1, z, speed);
+        double newY = floor.getY() + hoverHeight + 1;
+        super.setWantedPosition(x, Math.max(newY, y), z, speed);
     }
 
     @Override
     public void tick() {
-        if (!hasWanted() || herobrine.isUsingSkill())
-            return;
-
         if (this.operation == Operation.MOVE_TO) {
             this.operation = Operation.WAIT;
-            double speed = mob.getAttributeValue(Attributes.FLYING_SPEED) * 0.3;
+            float speed = (float) (mob.getAttributeValue(Attributes.FLYING_SPEED) * speedModifier);
 
+            mob.setSpeed(speed);
             mob.setNoGravity(true);
             Vec3 wanted = new Vec3(wantedX, wantedY, wantedZ);
-            Vec3 delta = wanted.subtract(mob.position())
-                    .normalize()
-                    .scale(speed);
+            Vec3 delta = wanted.subtract(mob.position());
 
-            mob.setDeltaMovement(delta);
+            float yRot = (float) (Math.toDegrees(Mth.atan2(delta.z, delta.x))) - 90.0f;
+            this.mob.setYRot(this.rotlerp(this.mob.getYRot(), yRot, 90.0f));
+
+            float xRot = (float) Math.toDegrees(Math.atan2(delta.y, delta.horizontalDistance()));
+            this.mob.setXRot(xRot);
+            if (Math.abs(wantedY - mob.getY()) > 0.1) {
+                this.mob.setYya(xRot * 0.015f);
+            } else {
+                this.mob.setYya(0);
+                this.mob.setDeltaMovement(mob.getDeltaMovement().multiply(1, 0, 1));
+            }
+
+        } else {
+            this.mob.setYya(0.0f);
+            this.mob.setZza(0.0f);
         }
     }
 }

@@ -21,7 +21,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
@@ -134,8 +133,7 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
                 float currentU = u + partWidth * horizontal;
                 float currentV = v + partHeight * vertical;
 
-                NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, color, Direction.UP);
-                NarakaRenderUtils.vertices(vertexConsumer, poseStack.last(), vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, color, Direction.DOWN);
+                NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer, vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, color);
                 poseStack.popPose();
             }
             poseStack.popPose();

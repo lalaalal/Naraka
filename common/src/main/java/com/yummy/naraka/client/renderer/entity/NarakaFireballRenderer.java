@@ -6,7 +6,7 @@ import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.NarakaFireballModel;
-import com.yummy.naraka.client.renderer.entity.state.NarakaFireballRenderState;
+import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.NarakaFireball;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -14,13 +14,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
-public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball, NarakaFireballRenderState> {
-    private static final float SIN_45 = (float) Math.sin(Math.PI / 4);
-
+public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball, EntityRenderState> {
     private final NarakaFireballModel model;
 
     public NarakaFireballRenderer(EntityRendererProvider.Context context) {
@@ -29,20 +28,19 @@ public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball, Narak
     }
 
     @Override
-    public NarakaFireballRenderState createRenderState() {
-        return new NarakaFireballRenderState();
+    public EntityRenderState createRenderState() {
+        return new EntityRenderState();
     }
 
     @Override
-    public void render(NarakaFireballRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(EntityRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
 
         float rotation = renderState.ageInTicks * 5;
         poseStack.translate(0, 0.25, 0);
-        poseStack.mulPose(new Quaternionf().setAngleAxis((float) (Math.PI / 3), SIN_45, 0.0F, SIN_45));
+        poseStack.mulPose(new Quaternionf().setAngleAxis((float) (Math.PI / 3), NarakaRenderUtils.SIN_45, 0.0F, NarakaRenderUtils.SIN_45));
         poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
         poseStack.mulPose(Axis.ZP.rotationDegrees(rotation * 2));
-        poseStack.translate(0, -1.5, 0);
 
         RenderType renderType = model.renderType(NarakaTextures.NARAKA_FIREBALL);
         VertexConsumer vertexConsumer = buffer.getBuffer(renderType);

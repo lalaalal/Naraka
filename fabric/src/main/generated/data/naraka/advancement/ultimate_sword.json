@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "naraka:ebony_sword"
+            "items": "naraka:ultimate_sword"
           }
         ]
       },
@@ -19,7 +19,7 @@
     "frame": "challenge",
     "icon": {
       "count": 1,
-      "id": "naraka:ebony_sword"
+      "id": "naraka:ultimate_sword"
     },
     "title": {
       "translate": "advancements.naraka.ultimate_sword.title"

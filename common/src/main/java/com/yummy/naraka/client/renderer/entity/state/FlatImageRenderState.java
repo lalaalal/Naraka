@@ -5,6 +5,10 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 
 @Environment(EnvType.CLIENT)
-public class NarakaFireballRenderState extends EntityRenderState {
-
+public class FlatImageRenderState extends EntityRenderState {
+    public float xRot;
+    public float yRot;
+    public float zRot;
+    public float scale;
+    public float alpha;
 }

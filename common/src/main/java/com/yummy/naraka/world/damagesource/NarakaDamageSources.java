@@ -1,9 +1,6 @@
 package com.yummy.naraka.world.damagesource;
 
-import com.yummy.naraka.world.entity.NarakaFireball;
-import com.yummy.naraka.world.entity.Spear;
-import com.yummy.naraka.world.entity.SpearOfLonginus;
-import com.yummy.naraka.world.entity.Stardust;
+import com.yummy.naraka.world.entity.*;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
@@ -16,31 +13,19 @@ import net.minecraft.world.entity.projectile.Projectile;
 import org.jetbrains.annotations.Nullable;
 
 public class NarakaDamageSources {
-    @Nullable
-    private static Registry<DamageType> registry;
-
-    public static void initialize(RegistryAccess registryAccess) {
-        registry = registryAccess.lookupOrThrow(Registries.DAMAGE_TYPE);
-    }
-
-    private static void ensureInitialized(@Nullable Registry<DamageType> registry) {
-        if (registry == null)
-            throw new IllegalStateException("NarakaDamageSources is not initialized");
-    }
-
-    public static DamageSource source(ResourceKey<DamageType> key) {
-        ensureInitialized(registry);
-        return new DamageSource(registry.getOrThrow(key));
+    public static DamageSource source(ResourceKey<DamageType> key, RegistryAccess registryAccess) {
+        Registry<DamageType> damageTypes = registryAccess.lookupOrThrow(Registries.DAMAGE_TYPE);
+        return new DamageSource(damageTypes.getOrThrow(key));
     }
 
     public static DamageSource source(ResourceKey<DamageType> key, Entity causingEntity) {
-        ensureInitialized(registry);
-        return new DamageSource(registry.getOrThrow(key), causingEntity);
+        Registry<DamageType> damageTypes = causingEntity.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE);
+        return new DamageSource(damageTypes.getOrThrow(key), causingEntity);
     }
 
     public static DamageSource source(ResourceKey<DamageType> key, Entity directEntity, @Nullable Entity causingEntity) {
-        ensureInitialized(registry);
-        return new DamageSource(registry.getOrThrow(key), directEntity, causingEntity);
+        Registry<DamageType> damageTypes = directEntity.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE);
+        return new DamageSource(damageTypes.getOrThrow(key), directEntity, causingEntity);
     }
 
     public static DamageSource fixed(Entity causingEntity) {
@@ -87,5 +72,9 @@ public class NarakaDamageSources {
 
     public static DamageSource narakaFireball(NarakaFireball fireball) {
         return source(NarakaDamageTypes.NARAKA_FIREBALL, fireball, fireball.getOwner());
+    }
+
+    public static DamageSource pickaxeSlash(PickaxeSlash pickaxeSlash) {
+        return source(NarakaDamageTypes.PICKAXE_SLASH, pickaxeSlash, pickaxeSlash.getOwner());
     }
 }

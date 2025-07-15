@@ -65,7 +65,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
     @Override
     public boolean canReinforce(ItemStack stack) {
-        return stack.is(NarakaItemTags.SOUL_REINFORCEABLE) && super.canReinforce(stack);
+        return stack.is(NarakaItemTags.SOUL_REINFORCEABLE) && !stack.isEmpty() && !stack.isStackable();
     }
 
     public boolean tryAttachSoulStabilizer(ItemStack stack) {
@@ -149,10 +149,9 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     private boolean reinforceArmor(SoulType soulType, int requiredSoul) {
         if (!forgingItem.is(NarakaItemTags.PURIFIED_SOUL_ARMOR) || level == null)
             return false;
-        if (soulType == SoulType.GOD_BLOOD) {
+        if (soulType == SoulType.GOD_BLOOD)
             forgingItem.set(NarakaDataComponentTypes.BLESSED.get(), true);
-            forgingItem.set(DataComponents.ENCHANTABLE, new Enchantable(9));
-        }
+        forgingItem.set(DataComponents.ENCHANTABLE, new Enchantable(9));
 
         soulStabilizer.consumeSoul(requiredSoul);
         while (Reinforcement.canReinforce(forgingItem))

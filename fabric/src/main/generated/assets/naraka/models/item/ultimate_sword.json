@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "naraka:item/ebony_sword"
+    "layer0": "naraka:item/ultimate_sword"
   }
 }

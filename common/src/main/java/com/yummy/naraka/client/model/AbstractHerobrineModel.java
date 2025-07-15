@@ -33,9 +33,8 @@ public abstract class AbstractHerobrineModel<S extends AbstractHerobrineRenderSt
     @Override
     public void setupAnim(S renderState) {
         super.setupAnim(renderState);
-        this.root.getAllParts().forEach(ModelPart::resetPose);
-        if (!renderState.isStaggering)
-            applyHeadRotation(renderState);
+
+        applyHeadRotation(renderState);
         if (renderState.isIdle)
             AnimationUtils.bobArms(rightArm(), leftArm(), renderState.ageInTicks);
         if (renderState.doWalkAnimation)
@@ -45,7 +44,7 @@ public abstract class AbstractHerobrineModel<S extends AbstractHerobrineRenderSt
         });
     }
 
-    private void applyHeadRotation(AbstractHerobrineRenderState renderState) {
+    public void applyHeadRotation(AbstractHerobrineRenderState renderState) {
         float yRot = Mth.clamp(renderState.yRot, -45, 45);
         float xRot = Mth.clamp(renderState.xRot, -80, 45);
 

@@ -1,11 +1,13 @@
 package com.yummy.naraka.client.model;
 
+import com.yummy.naraka.client.animation.herobrine.FinalHerobrineAnimation;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.world.entity.AnimationState;
 
 @Environment(EnvType.CLIENT)
 public class FinalHerobrineModel<S extends AbstractHerobrineRenderState> extends AbstractHerobrineModel<S> {
@@ -76,6 +78,11 @@ public class FinalHerobrineModel<S extends AbstractHerobrineRenderState> extends
         this.leftHand = leftArm.getChild("left_hand");
         this.independentPickaxe = root.getChild("independent_pickaxe");
         this.pickaxe = rightHand.getChild("pickaxe");
+    }
+
+    public void setupChzzkAnim(AnimationState chzzkAnimationState, float ageInTicks) {
+        resetPose();
+        this.animate(chzzkAnimationState, FinalHerobrineAnimation.HIDDEN_CHZZK, ageInTicks);
     }
 
     @Override

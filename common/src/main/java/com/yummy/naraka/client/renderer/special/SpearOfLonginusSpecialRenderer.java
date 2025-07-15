@@ -2,11 +2,11 @@ package com.yummy.naraka.client.renderer.special;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.MapCodec;
+import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.model.SpearOfLonginusModel;
 import com.yummy.naraka.client.renderer.entity.SpearRenderer;
 import com.yummy.naraka.client.renderer.entity.state.SpearRenderState;
-import com.yummy.naraka.config.NarakaConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -43,7 +43,7 @@ public class SpearOfLonginusSpecialRenderer implements NoDataSpecialModelRendere
         if (displayContext == ItemDisplayContext.GROUND)
             poseStack.scale(4, 4, 4);
 
-        if (NarakaConfig.CLIENT.enableNonShaderLonginusRendering.getValue())
+        if (NarakaClientContext.SHADER_ENABLED.getValue())
             SpearRenderer.renderNonShaderLonginus(model, getAgeInTicks(), poseStack, bufferSource);
         else
             SpearRenderer.renderShaderLonginus(model, poseStack, bufferSource);

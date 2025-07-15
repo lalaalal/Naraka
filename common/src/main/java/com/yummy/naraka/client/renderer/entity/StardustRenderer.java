@@ -3,74 +3,46 @@ package com.yummy.naraka.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
-import com.yummy.naraka.client.renderer.entity.state.StardustRenderState;
+import com.yummy.naraka.client.model.StardustModel;
+import com.yummy.naraka.client.renderer.entity.state.LightTailEntityRenderState;
+import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.Stardust;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Player;
+import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
-public class StardustRenderer extends EntityRenderer<Stardust, StardustRenderState> {
+public class StardustRenderer extends LightTailEntityRenderer<Stardust, LightTailEntityRenderState> {
+    private final StardustModel model;
+
     public StardustRenderer(EntityRendererProvider.Context context) {
         super(context);
+        this.model = new StardustModel(context.bakeLayer(NarakaModelLayers.STARDUST));
     }
 
     @Override
-    public StardustRenderState createRenderState() {
-        return new StardustRenderState();
+    public LightTailEntityRenderState createRenderState() {
+        return new LightTailEntityRenderState();
     }
 
     @Override
-    public void extractRenderState(Stardust entity, StardustRenderState reusedState, float partialTick) {
-        super.extractRenderState(entity, reusedState, partialTick);
-        reusedState.partialTick = partialTick;
-    }
-
-    @Override
-    public void render(StardustRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(LightTailEntityRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
-        Player player = Minecraft.getInstance().player;
+        float rotation = renderState.ageInTicks * renderState.ageInTicks * 0.1f;
+        poseStack.translate(0, 0.25, 0);
+        poseStack.mulPose(new Quaternionf().setAngleAxis((float) (Math.PI / 3), NarakaRenderUtils.SIN_45, 0.0F, NarakaRenderUtils.SIN_45));
+        poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(rotation * 2));
 
-        if (player != null) {
-            float yHeadRot = Mth.rotLerp(renderState.partialTick, player.yHeadRotO, player.yHeadRot);
-            poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - yHeadRot));
-        }
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(NarakaTextures.STARDUST));
-        PoseStack.Pose pose = poseStack.last();
-        vertexConsumer.addVertex(pose, -1, 1, 0)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setColor(0xffffff)
-                .setUv(0, 1)
-                .setNormal(pose, 0, 0, 1);
-        vertexConsumer.addVertex(pose, -1, 0, 0)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setColor(0xffffff)
-                .setUv(0, 0)
-                .setNormal(pose, 0, 0, 1);
-        vertexConsumer.addVertex(pose, 0, 0, 0)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setColor(0xffffff)
-                .setUv(1, 0)
-                .setNormal(pose, 0, 0, 1);
-        vertexConsumer.addVertex(pose, 0, 1, 0)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setColor(0xffffff)
-                .setUv(1, 1)
-                .setNormal(pose, 0, 0, 1);
-
+        model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
         super.render(renderState, poseStack, buffer, packedLight);
     }

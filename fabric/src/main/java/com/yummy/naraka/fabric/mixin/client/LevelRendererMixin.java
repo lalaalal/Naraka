@@ -9,6 +9,7 @@ import com.yummy.naraka.config.NarakaConfig;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CloudStatus;
 import net.minecraft.client.renderer.*;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,11 +37,11 @@ public abstract class LevelRendererMixin {
 
     @Inject(method = "addCloudsPass", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/framegraph/FramePass;executes(Ljava/lang/Runnable;)V"), cancellable = true)
     public void speedUpClouds(FrameGraphBuilder frameGraphBuilder, CloudStatus cloudStatus, Vec3 cameraPosition, float ticks, int cloudColor, float cloudHeight, CallbackInfo ci, @Local FramePass framePass) {
-        if (NarakaClientContext.ENABLE_HEROBRINE_SKY.getValue()) {
-            int speed = NarakaConfig.CLIENT.herobrineSkyCloudSpeed.getValue();
-
+        if (NarakaClientContext.ENABLE_HEROBRINE_SKY.getValue() && !NarakaClientContext.SHADER_ENABLED.getValue()) {
             ci.cancel();
-            framePass.executes(() -> this.cloudRenderer.render(cloudColor, cloudStatus, cloudHeight, cameraPosition, ticks * speed));
+            int speed = NarakaConfig.CLIENT.herobrineSkyCloudSpeed.getValue();
+            float fakeTicks = ticks * speed;
+            framePass.executes(() -> this.cloudRenderer.render(ARGB.white(0.8f), cloudStatus, cloudHeight, cameraPosition, fakeTicks));
         }
     }
 }

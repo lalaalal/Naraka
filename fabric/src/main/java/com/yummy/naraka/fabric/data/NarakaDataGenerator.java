@@ -41,6 +41,7 @@ public class NarakaDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(patched(NarakaDamageTypeTagsProvider::new));
         pack.addProvider(patched(NarakaPlacementTagsProvider::new));
         pack.addProvider(patched(NarakaStructureSetsTagProvider::new));
+        pack.addProvider(patched(NarakaMobEffectTagsProvider::new));
     }
 
     private <T extends DataProvider> FabricDataGenerator.Pack.Factory<T> patched(FabricDataGenerator.Pack.RegistryDependentFactory<T> factory) {

@@ -1,9 +1,10 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
-import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
+import com.yummy.naraka.world.entity.Herobrine;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,15 +16,17 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
 
-public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
-    public static final String NAME = "super_hit";
+public class SuperHitSkill extends ComboSkill<Herobrine> {
+    public static final ResourceLocation LOCATION = createLocation("herobrine.super_hit");
     private int onGroundTick = 0;
     private final Set<LivingEntity> hitEntities = new HashSet<>();
 
     private final Supplier<Vec3> floatingBlockMovement = () -> new Vec3(0, mob.getRandom().nextDouble() * 0.3 + 0.1, 0);
 
-    public SuperHitSkill(ComboSkill<AbstractHerobrine> comboSkill, AbstractHerobrine mob) {
-        super(createLocation(NAME), 40, 0, 1, comboSkill, 40, mob);
+    public SuperHitSkill(Herobrine mob, Skill<?> comboSkill) {
+        super(LOCATION, mob, 40, 0, 1, 40, comboSkill);
+        this.shieldCooldown = 60;
+        this.shieldDamage = 15;
     }
 
     @Override
@@ -36,11 +39,12 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAt(5, this::superHit);
-        runAfter(5, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 6));
+        runAfter(5, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 6));
         runAfter(5, () -> this.stopOnGround(level));
     }
 
     private void superHit() {
+        mob.shakeCamera();
         mob.setNoGravity(false);
         Vec3 lookVector = mob.getLookAngle().scale(0.5f);
         mob.setDeltaMovement(lookVector.x, -1.2, lookVector.z);
@@ -65,13 +69,17 @@ public class SuperHitSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     @Override
-    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15) || hitEntities.contains(target))
+    protected boolean hurtEntity(ServerLevel level, LivingEntity target) {
+        if (hitEntities.contains(target))
             return true;
+        return super.hurtEntity(level, target);
+    }
+
+    @Override
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         hitEntities.add(target);
         mob.stigmatizeEntity(level, target);
         level.playSound(mob, mob.blockPosition(), SoundEvents.STONE_BREAK, SoundSource.HOSTILE, 1, 1);
-        return super.hurtHitEntity(level, target);
     }
 
     @Override

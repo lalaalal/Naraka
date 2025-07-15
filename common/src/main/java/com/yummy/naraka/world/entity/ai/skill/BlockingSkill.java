@@ -1,14 +1,15 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.world.entity.SkillUsingMob;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
 public class BlockingSkill extends Skill<SkillUsingMob> {
-    public static final String NAME = "blocking";
+    public static final ResourceLocation LOCATION = createLocation("herobrine.blocking");
 
     public BlockingSkill(SkillUsingMob mob) {
-        super(NAME, 30, 0, mob);
+        super(LOCATION, mob, 30, 0);
     }
 
     @Override

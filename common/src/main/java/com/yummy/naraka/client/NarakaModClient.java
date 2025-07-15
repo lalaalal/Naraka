@@ -1,12 +1,12 @@
 package com.yummy.naraka.client;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.Platform;
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.event.ClientEventHandler;
 import com.yummy.naraka.client.gui.hud.DeathCountHud;
 import com.yummy.naraka.client.gui.hud.LockedHealthHud;
 import com.yummy.naraka.client.gui.hud.StigmaHud;
+import com.yummy.naraka.client.gui.hud.WhiteHud;
 import com.yummy.naraka.client.init.*;
 import com.yummy.naraka.client.particle.*;
 import com.yummy.naraka.client.renderer.ColoredItemRenderer;
@@ -55,7 +55,7 @@ public final class NarakaModClient {
         AnimationMapper.initialize();
 
         initializer.runAfterRegistryLoaded(NarakaModClient::onRegistryLoaded);
-        initializer.runAfterRegistryLoaded(NarakaModClient::checkIris);
+        initializer.runAfterRegistryLoaded(NarakaConfig::checkIris);
     }
 
     private static void registerSpecialRenderers() {
@@ -75,12 +75,6 @@ public final class NarakaModClient {
         NarakaClientEvents.initialize();
 
         NarakaMod.isModLoaded = true;
-    }
-
-    private static void checkIris() {
-        boolean irisLoaded = Platform.getInstance().modExists("iris");
-        if (NarakaConfig.CLIENT.enableNonShaderLonginusRendering.getValue())
-            NarakaConfig.CLIENT.enableNonShaderLonginusRendering.set(irisLoaded);
     }
 
     private static void initializeItems() {
@@ -117,12 +111,18 @@ public final class NarakaModClient {
 
         EntityRendererRegistry.register(NarakaEntityTypes.STARDUST, StardustRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_FIREBALL, NarakaFireballRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.PICKAXE_SLASH, PickaxeSlashRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.COLORED_LIGHTNING_BOLT, ColoredLightningBoltRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.MASSIVE_LIGHTNING, MassiveLightningRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.LIGHTNING_CIRCLE, LightningCircleRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_PICKAXE, NarakaPickaxeRenderer::new);
     }
 
     private static void registerHudRenders() {
-        HudRendererRegistry.register(NarakaMod.location("hud", "death_count"), DeathCountHud::new);
-        HudRendererRegistry.register(NarakaMod.location("hud", "stigma"), StigmaHud::new);
-        HudRendererRegistry.register(NarakaMod.location("hud", "locked_health"), LockedHealthHud::new);
+        HudRendererRegistry.registerPostLayer(NarakaMod.location("hud", "death_count"), DeathCountHud::new);
+        HudRendererRegistry.registerPostLayer(NarakaMod.location("hud", "stigma"), StigmaHud::new);
+        HudRendererRegistry.registerPostLayer(NarakaMod.location("hud", "locked_health"), LockedHealthHud::new);
+        HudRendererRegistry.registerPreLayer(NarakaMod.location("hud", "white"), WhiteHud::new);
     }
 
     private static void registerMenus() {
@@ -139,7 +139,10 @@ public final class NarakaModClient {
         ParticleProviderRegistry.register(NarakaParticleTypes.GOLDEN_FLAME, FlameParticle.Provider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.CORRUPTED_FIRE_FLAME, FlameParticle.Provider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.CORRUPTED_SOUL_FIRE_FLAME, FlameParticle.Provider::new);
-        ParticleProviderRegistry.register(NarakaParticleTypes.FLICKER, FlickerParticle.Provider::new);
+        ParticleProviderRegistry.register(NarakaParticleTypes.FLICKER, BlinkParticle.Provider::new);
+        ParticleProviderRegistry.register(NarakaParticleTypes.STARDUST, BlinkParticle.Provider::withGlowing);
+        ParticleProviderRegistry.register(NarakaParticleTypes.TELEPORT, BlinkParticle.Provider::withGlowing);
+        ParticleProviderRegistry.register(NarakaParticleTypes.STARDUST_FLAME, FlameParticle.Provider::new);
     }
 
     private static void registerKeyMappings() {

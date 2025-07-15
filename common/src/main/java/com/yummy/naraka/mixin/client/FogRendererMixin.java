@@ -26,7 +26,7 @@ public abstract class FogRendererMixin {
     private static boolean fogEnabled;
 
     @Inject(method = "setupFog", at = @At("HEAD"), cancellable = true)
-    private static void visibleWithLavaVision(Camera camera, FogRenderer.FogMode fogMode, Vector4f fogColor, float renderDistance, boolean isFoggy, float partialTick, CallbackInfoReturnable<FogParameters> cir) {
+    private static void setupFog(Camera camera, FogRenderer.FogMode fogMode, Vector4f fogColor, float renderDistance, boolean isFoggy, float partialTick, CallbackInfoReturnable<FogParameters> cir) {
         if (!fogEnabled)
             return;
         FogType fogType = camera.getFluidInCamera();

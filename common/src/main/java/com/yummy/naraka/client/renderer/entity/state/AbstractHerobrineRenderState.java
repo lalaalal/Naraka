@@ -22,7 +22,6 @@ import java.util.function.Consumer;
 public abstract class AbstractHerobrineRenderState extends LivingEntityRenderState implements AnimationRenderState, AfterimageRenderState.Provider {
     public boolean isShadow = false;
     public boolean finalModel = false;
-    public boolean isStaggering = false;
     public boolean isIdle = false;
     public boolean renderScarf = false;
     public boolean doWalkAnimation = true;

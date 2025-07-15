@@ -2,6 +2,12 @@ package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.tags.NarakaItemTags;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -10,12 +16,19 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.Tool;
+import net.minecraft.world.item.component.Weapon;
+import net.minecraft.world.level.block.Block;
+
+import java.util.List;
 
 public class NarakaToolMaterials {
     public static final ResourceLocation ENTITY_INTERACTION_RANGE_ID = NarakaMod.location("entity_interaction_range");
     public static final ResourceLocation BLOCK_INTERACTION_RANGE_ID = NarakaMod.location("block_interaction_range");
 
     public static final ToolMaterial LONGINUS = new ToolMaterial(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 0, 6, 65, 6, NarakaItemTags.LONGINUS_TOOL_MATERIALS);
+
+    private static final ResourceKey<Block> COBWEB = ResourceKey.create(Registries.BLOCK, NarakaMod.mcLocation("cobweb"));
 
     public static Item.Properties applyCommonProperties(Item.Properties properties, ToolMaterial material) {
         return properties.durability(material.durability())
@@ -29,7 +42,16 @@ public class NarakaToolMaterials {
     }
 
     public static Item.Properties applyWeaponPropertiesWithoutEnchantable(Item.Properties properties, ToolMaterial material, float attackDamage, float attackSpeed) {
+        HolderGetter<Block> blocks = BuiltInRegistries.acquireBootstrapRegistrationLookup(BuiltInRegistries.BLOCK);
+
         return applyCommonPropertiesWithoutEnchantable(properties, material)
+                .component(DataComponents.TOOL, new Tool(List.of(
+                                Tool.Rule.minesAndDrops(HolderSet.direct(blocks.getOrThrow(COBWEB)), 15.0f),
+                                Tool.Rule.overrideSpeed(blocks.getOrThrow(BlockTags.SWORD_INSTANTLY_MINES), Float.MAX_VALUE),
+                                Tool.Rule.overrideSpeed(blocks.getOrThrow(BlockTags.SWORD_EFFICIENT), 1.5f)), 1.0f, 2, false
+                        )
+                )
+                .component(DataComponents.WEAPON, new Weapon(1))
                 .attributes(createWeaponAttributes(material, attackDamage, attackSpeed).build());
     }
 

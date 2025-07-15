@@ -4,7 +4,6 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +27,7 @@ public abstract class Skill<T extends SkillUsingMob> {
     @Nullable
     protected Skill<?> linkedSkill;
 
-    protected Skill(ResourceLocation location, int duration, int cooldown, T mob, @Nullable Skill<?> linkedSkill) {
+    protected Skill(ResourceLocation location, T mob, int duration, int cooldown, @Nullable Skill<?> linkedSkill) {
         this.location = location;
         this.mob = mob;
         this.duration = duration;
@@ -38,30 +37,8 @@ public abstract class Skill<T extends SkillUsingMob> {
         this.linkedSkill = linkedSkill;
     }
 
-    protected Skill(String name, int duration, int cooldown, T mob) {
-        this(createLocation(name), duration, cooldown, mob, null);
-    }
-
-    protected Skill(ResourceLocation location, int duration, int cooldown, T mob) {
-        this(location, duration, cooldown, mob, null);
-    }
-
-    protected final boolean targetInRange(float distanceSquare) {
-        LivingEntity target = mob.getTarget();
-        return target != null && targetInRange(target, distanceSquare);
-    }
-
-    protected final boolean targetInRange(LivingEntity target, float distanceSquare) {
-        return mob.distanceToSqr(target) <= distanceSquare;
-    }
-
-    protected final boolean targetOutOfRange(float distanceSquare) {
-        LivingEntity target = mob.getTarget();
-        return target != null && !targetInRange(distanceSquare);
-    }
-
-    protected final boolean targetOutOfRange(LivingEntity target, float distanceSquare) {
-        return !targetInRange(target, distanceSquare);
+    protected Skill(ResourceLocation location, T mob, int duration, int cooldown) {
+        this(location, mob, duration, cooldown, null);
     }
 
     public abstract boolean canUse(ServerLevel level);

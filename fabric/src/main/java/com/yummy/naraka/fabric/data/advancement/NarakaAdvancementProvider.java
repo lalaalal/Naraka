@@ -191,10 +191,10 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
                             .requirements(AdvancementRequirements.Strategy.AND);
                 }
         );
-        AdvancementHolder ultimateSword = challenge(soulSwords, NarakaItems.EBONY_SWORD.get(), AdvancementNarakaComponents.ULTIMATE_SWORD,
+        AdvancementHolder ultimateSword = challenge(soulSwords, NarakaItems.ULTIMATE_SWORD.get(), AdvancementNarakaComponents.ULTIMATE_SWORD,
                 builder -> builder.addCriterion(
                         "has_ultimate_sword",
-                        InventoryChangeTrigger.TriggerInstance.hasItems(NarakaItems.EBONY_SWORD.get())
+                        InventoryChangeTrigger.TriggerInstance.hasItems(NarakaItems.ULTIMATE_SWORD.get())
                 ).rewards(AdvancementRewards.Builder.experience(666))
         );
 

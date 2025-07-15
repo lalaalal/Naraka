@@ -12,6 +12,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -19,6 +20,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantable;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 
@@ -31,7 +33,7 @@ public class NarakaCreativeModeTabs {
     );
     public static final HolderProxy<CreativeModeTab, CreativeModeTab> SOUL_MATERIALS_TAB = register("soul_materials", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
             .title(Component.translatable(LanguageKey.ITEM_GROUP_SOUL_MATERIALS))
-            .icon(() -> NarakaItems.EBONY_SWORD.get().getDefaultInstance())
+            .icon(() -> NarakaItems.ULTIMATE_SWORD.get().getDefaultInstance())
             .displayItems(NarakaCreativeModeTabs::createSoulMaterialsTab)
     );
     public static final HolderProxy<CreativeModeTab, CreativeModeTab> NARAKA_TEST_TAB = registerOnlyDev("naraka_test", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
@@ -81,7 +83,7 @@ public class NarakaCreativeModeTabs {
 
         output.accept(NarakaItems.PURIFIED_SOUL_SWORD.get());
         output.accept(NarakaItems.GOD_BLOOD.get());
-        output.accept(NarakaItems.EBONY_SWORD.get());
+        output.accept(NarakaItems.ULTIMATE_SWORD.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_1_DISC.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_2_DISC.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_3_DISC.get());
@@ -130,7 +132,7 @@ public class NarakaCreativeModeTabs {
     private static void createNarakaTestTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
         output.accept(NarakaItems.SKILL_CONTROLLER.get());
         output.accept(NarakaItems.ANIMATION_CONTROLLER.get());
-        output.accept(NarakaItems.EBONY_SWORD.get());
+        output.accept(NarakaItems.ULTIMATE_SWORD.get());
         output.accept(NarakaItems.EBONY_METAL_HELMET.get());
         output.accept(NarakaItems.EBONY_METAL_CHESTPLATE.get());
         output.accept(NarakaItems.EBONY_METAL_LEGGINGS.get());
@@ -181,10 +183,11 @@ public class NarakaCreativeModeTabs {
     private static ItemStack blessed(Item item) {
         ItemStack itemStack = new ItemStack(item);
         itemStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
+        itemStack.set(DataComponents.ENCHANTABLE, new Enchantable(9));
         return itemStack;
     }
 
-    private static ItemStack reinforced(PurifiedSoulArmorItem item) {
+    private static ItemStack reinforced(Item item) {
         ItemStack itemStack = blessed(item);
         while (Reinforcement.canReinforce(itemStack))
             Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack));

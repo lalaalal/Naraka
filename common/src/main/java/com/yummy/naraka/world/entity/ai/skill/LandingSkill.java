@@ -1,9 +1,10 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
-import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
+import com.yummy.naraka.world.entity.Herobrine;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -13,13 +14,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-public class LandingSkill extends ComboSkill<AbstractHerobrine> {
-    public static final String NAME = "landing";
+public class LandingSkill extends ComboSkill<Herobrine> {
+    public static final ResourceLocation LOCATION = createLocation("herobrine.landing");
 
     private final Supplier<Vec3> floatingBlockMovement = () -> new Vec3(0, mob.getRandom().nextDouble() * 0.3 + 0.3, 0);
 
-    public LandingSkill(AbstractHerobrine mob) {
-        super(createLocation(NAME), 50, 0, 0, null, 50, mob);
+    public LandingSkill(Herobrine mob) {
+        super(LOCATION, mob, 50, 0, 0, 50, null);
+        this.shieldCooldown = 60;
+        this.shieldDamage = 15;
     }
 
     @Override
@@ -32,16 +35,14 @@ public class LandingSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     private void land(ServerLevel level) {
-        hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 4);
+        mob.shakeCamera();
+        hurtEntities(level, AbstractHerobrine::isNotHerobrine, 4);
         level.playSound(mob, mob.blockPosition(), SoundEvents.TOTEM_USE, SoundSource.HOSTILE, 1, 1);
     }
 
     @Override
-    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15))
-            return false;
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         mob.stigmatizeEntity(level, target);
-        return super.hurtHitEntity(level, target);
     }
 
     @Override

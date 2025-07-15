@@ -64,24 +64,42 @@ public class NarakaUtils {
         return Mth.lerp(Math.clamp(newDelta, 0, 1), start, end);
     }
 
+    @FunctionalInterface
     public interface PositionConsumer {
         void accept(int x, int y, int z);
     }
 
+    @FunctionalInterface
     public interface LengthPositionConsumer {
         void accept(double length, int x, int y, int z);
     }
 
-    public static final BiPredicate<Integer, Integer> OUTLINE = (xz, radius) -> (radius - 0.75) * (radius - 0.75) <= xz && xz <= (radius + 0.25) * (radius + 0.25);
+    public static final BiPredicate<BlockPos, Integer> OUTLINE = (position, radius) -> {
+        int xz = position.getX() * position.getX() + position.getZ() * position.getZ();
+        return (radius - 0.75) * (radius - 0.75) <= xz && xz <= (radius + 0.25) * (radius + 0.25);
+    };
 
-    public static void circle(BlockPos center, int radius, BiPredicate<Integer, Integer> predicate, Consumer<BlockPos> consumer) {
+    public static void circle(BlockPos center, int radius, BiPredicate<BlockPos, Integer> predicate, Consumer<BlockPos> consumer) {
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
-                if (predicate.test(x * x + z * z, radius)) {
+                if (predicate.test(new BlockPos(x, center.getY(), z), radius)) {
                     consumer.accept(center.offset(x, 0, z));
                 }
             }
         }
+    }
+
+    public static double wrapRadians(double angle) {
+        double result = angle % Math.TAU;
+        if (result >= Math.PI) {
+            result -= Math.TAU;
+        }
+
+        if (result < -Math.PI) {
+            result += Math.TAU;
+        }
+
+        return result;
     }
 
     public static void sphere(BoundingBox box, float size, PositionConsumer consumer) {
@@ -147,12 +165,12 @@ public class NarakaUtils {
         return new BlockPos((int) pos.x, (int) pos.y, (int) pos.z);
     }
 
-    public static BlockPos findFaceSturdy(LevelAccessor level, BlockPos from, Direction faceDirection) {
+    public static BlockPos findCollision(LevelAccessor level, BlockPos from, Direction faceDirection) {
         BlockPos.MutableBlockPos current = from.mutable();
-        while (level.isInsideBuildHeight(from.getY())) {
+        while (level.isInsideBuildHeight(current.getY())) {
             BlockPos pos = current.immutable();
             BlockState state = level.getBlockState(pos);
-            if (state.isFaceSturdy(level, pos, faceDirection))
+            if (!state.getCollisionShape(level, pos).isEmpty())
                 return pos;
             current.move(faceDirection.getOpposite());
         }
@@ -161,11 +179,11 @@ public class NarakaUtils {
     }
 
     public static BlockPos findCeiling(LevelAccessor level, BlockPos from) {
-        return findFaceSturdy(level, from, Direction.DOWN);
+        return findCollision(level, from, Direction.DOWN);
     }
 
     public static BlockPos findFloor(LevelAccessor level, BlockPos from) {
-        return findFaceSturdy(level, from, Direction.UP);
+        return findCollision(level, from, Direction.UP);
     }
 
     public static BlockPos findAir(LevelAccessor level, BlockPos from, Direction findingDirection) {

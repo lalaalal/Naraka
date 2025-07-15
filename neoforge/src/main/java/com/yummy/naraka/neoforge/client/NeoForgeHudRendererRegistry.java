@@ -20,13 +20,22 @@ import java.util.function.Supplier;
 public final class NeoForgeHudRendererRegistry implements NarakaEventBus {
     private static final Map<ResourceLocation, LayeredDraw.Layer> LAYERS = new HashMap<>();
 
+    private static void render(ResourceLocation id, Supplier<LayeredDraw.Layer> factory, GuiGraphics graphics, DeltaTracker deltaTracker) {
+        LayeredDraw.Layer layer = LAYERS.computeIfAbsent(id, key -> factory.get());
+        layer.render(graphics, deltaTracker);
+    }
+
     @MethodProxy(HudRendererRegistry.class)
-    public static void register(ResourceLocation id, Supplier<LayeredDraw.Layer> factory) {
+    public static void registerPreLayer(ResourceLocation id, Supplier<LayeredDraw.Layer> factory) {
+        NEOFORGE_BUS.addListener(RenderGuiEvent.Pre.class, event -> {
+            render(id, factory, event.getGuiGraphics(), event.getPartialTick());
+        });
+    }
+
+    @MethodProxy(HudRendererRegistry.class)
+    public static void registerPostLayer(ResourceLocation id, Supplier<LayeredDraw.Layer> factory) {
         NEOFORGE_BUS.addListener(RenderGuiEvent.Post.class, event -> {
-            LayeredDraw.Layer layer = LAYERS.computeIfAbsent(id, key -> factory.get());
-            GuiGraphics graphics = event.getGuiGraphics();
-            DeltaTracker deltaTracker = event.getPartialTick();
-            layer.render(graphics, deltaTracker);
+            render(id, factory, event.getGuiGraphics(), event.getPartialTick());
         });
     }
 }

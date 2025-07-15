@@ -35,8 +35,6 @@ public class SpearOfLonginusItem extends SpearItem {
     @Nullable
     @Override
     public DamageSource getDamageSource(LivingEntity entity) {
-        if (entity.level().isClientSide)
-            return null;
         return NarakaDamageSources.longinus(entity);
     }
 

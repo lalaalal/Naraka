@@ -6,6 +6,7 @@ import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
@@ -32,6 +33,15 @@ public final class LanguageKey {
     public static final String REINFORCEMENT_KEY = "item.reinforcement";
     public static final String BLESSED_KEY = "item.blessed";
 
+    public static final String STIGMA_COMMAND_GET_KEY = "commands.stigma.get.success";
+    public static final String STIGMA_COMMAND_SET_KEY = "commands.stigma.set.success";
+    public static final String STIGMA_COMMAND_CONSUME_KEY = "commands.stigma.consume.success";
+    public static final String STIGMA_COMMAND_INCREASE_KEY = "commands.stigma.increase.success";
+    public static final String STIGMA_COMMAND_REMOVE_KEY = "commands.stigma.remove.success";
+
+    public static final String LOCK_HEALTH_COMMAND_LOCK_KEY = "commands.lockhealth.lock.success";
+    public static final String LOCK_HEALTH_COMMAND_REMOVE_KEY = "commands.lockhealth.remove.success";
+
     public static final String DISABLE_SKILL_USE_KEY = "skill_controller.disable_skill_use";
 
     public static final String CHALLENGERS_BLESSING = Util.makeDescriptionId("effect", NarakaMod.location("challengers_blessing"));
@@ -42,6 +52,10 @@ public final class LanguageKey {
             throw new IllegalStateException("Resource key doesn't exists : " + reinforcementEffect);
         ResourceLocation id = key.get().location();
         return Util.makeDescriptionId("reinforcement_effect", id);
+    }
+
+    public static String mobEffect(Holder<MobEffect> mobEffect) {
+        return Util.makeDescriptionId("effect", mobEffect.unwrapKey().orElseThrow().location());
     }
 
     public static String tooltip(Block block) {
@@ -67,5 +81,15 @@ public final class LanguageKey {
     public static String toggleOreSeeThroughMessage(boolean disabled) {
         String state = disabled ? "disable" : "enable";
         return "message.naraka.ore_see_through." + state;
+    }
+
+    public static String animation(ResourceLocation animationLocation) {
+        return "animation." + animationLocation.getNamespace() + "." + animationLocation.getPath()
+                .replaceAll("animation/", "")
+                .replaceAll("/", ".");
+    }
+
+    public static String skill(ResourceLocation skillLocation) {
+        return "skill." + skillLocation.getNamespace() + "." + skillLocation.getPath().replaceAll("skill/", "");
     }
 }

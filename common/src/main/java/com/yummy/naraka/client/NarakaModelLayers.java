@@ -24,6 +24,7 @@ public final class NarakaModelLayers {
     public static final ModelLayerLocation SPEAR_OF_LONGINUS = location("spear_of_longinus");
 
     public static final ModelLayerLocation NARAKA_FIREBALL = location("naraka_fireball");
+    public static final ModelLayerLocation STARDUST = location("stardust");
 
     public static final ModelLayerLocation FORGING_BLOCK = location("forging_block");
     public static final ModelLayerLocation SOUL_SMITHING_BLOCK = location("soul_smithing_block");
@@ -44,6 +45,7 @@ public final class NarakaModelLayers {
         ModelLayerRegistry.register(NarakaModelLayers.SPEAR_OF_LONGINUS, SpearOfLonginusModel::createBodyLayer);
 
         ModelLayerRegistry.register(NarakaModelLayers.NARAKA_FIREBALL, NarakaFireballModel::createBodyLayer);
+        ModelLayerRegistry.register(NarakaModelLayers.STARDUST, StardustModel::createBodyLayer);
 
         ModelLayerRegistry.register(NarakaModelLayers.DIAMOND_GOLEM, DiamondGolemModel::createBodyLayer);
 

@@ -4,8 +4,9 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
-    "client.ClientLevelDataMixin",
+    "client.CameraMixin",
     "client.DripParticleMixin",
+    "client.EntityRenderDispatcherMixin",
     "client.FogRendererMixin",
     "client.HiddenOreRendererMixin",
     "client.ItemBlockRenderTypesMixin",
@@ -16,10 +17,10 @@
     "client.LocalPlayerMixin",
     "client.MinecraftMixin",
     "client.MouseHandlerMixin",
+    "client.ScreenEffectRendererMixin",
     "client.SimpleSoundInstanceMixin"
   ],
   "mixins": [
-    "EnchantmentMixin",
     "FeatureMixin",
     "HerobrineTotemActivatingItemMixin",
     "LivingEntityMixin",
@@ -29,11 +30,8 @@
     "ServerPlayerGameModeMixin",
     "WanderingTraderMixin",
     "accessor.CreativeModeTabsAccessor",
-    "accessor.FallingBlockEntityAccessor",
-    "invoker.FallingBlockEntityInvoker",
     "invoker.MangroveRootsBlockInvoker",
     "invoker.MobEffectInvoker",
-    "invoker.OverworldBiomesInvoker",
     "invoker.RootPlacerTypeInvoker"
   ],
   "injectors": {

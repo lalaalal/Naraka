@@ -1,56 +1,74 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
+import com.yummy.naraka.world.entity.ShadowHerobrine;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 
-public class SplitAttackSkill extends SpawnInstantShadowSkill {
-    public static final ResourceLocation LOCATION = createLocation("final.split_attack");
+public class SplitAttackSkill extends ComboSkill<Herobrine> {
+    public static final ResourceLocation LOCATION = createLocation("final_herobrine.split_attack");
+    private InstantShadowSpawner firstShadowSpawner = InstantShadowSpawner.EMPTY;
+    private InstantShadowSpawner secondShadowSpawner = InstantShadowSpawner.EMPTY;
 
-    public SplitAttackSkill(Skill<?> nextSkill, Herobrine mob) {
-        super(LOCATION, 50, 200, 1, nextSkill, 50, mob);
+    public SplitAttackSkill(Herobrine mob, Skill<?> nextSkill) {
+        super(LOCATION, mob, 60, 200, 0.5f, 45, nextSkill);
     }
 
     @Override
     public void prepare() {
         super.prepare();
+        firstShadowSpawner = InstantShadowSpawner.simple(mob);
+        secondShadowSpawner = InstantShadowSpawner.simple(mob);
     }
 
     @Override
     protected float calculateDamage(LivingEntity target) {
-        return mob.getAttackDamage();
+        return mob.getAttackDamage() + target.getMaxHealth() * 0.1f;
     }
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return targetInRange(36);
+        return mob.getTarget() != null;
     }
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         lookTarget(target);
+        run(at(0) && targetOutOfRange(target, 9), () -> NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.TELEPORT.get()));
+        run(at(3) && targetOutOfRange(target, 9), () -> teleportToTarget(target, 3));
+        runBetween(0, 10, () -> rotateTowardTarget(target));
         runBetween(15, 20, () -> moveToTarget(target, 1));
         runBetween(15, 20, () -> rotateTowardTarget(target));
-        runAt(22, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 2));
+        runBetween(18, 20, () -> hurtEntities(level, this::checkTarget, 1.8));
         runAt(20, this::stopMoving);
-        runAt(25, () -> spawnShadowHerobrine(level));
-        runAt(26, () -> shadowUseSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_1));
+        runAt(25, () -> firstShadowSpawner.spawn(level, mob.position(), mob.getYRot()));
+        runAt(26, () -> firstShadowSpawner.control(this::displayShadowPickaxe).useSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_1));
+        if (hasLinkedSkill()) {
+            runAt(35, () -> secondShadowSpawner.spawn(level, mob.position(), mob.getYRot()));
+            runAt(36, () -> secondShadowSpawner.control(this::displayShadowPickaxe).useSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_2));
+        }
+        runAt(45, () -> mob.setAnimation(AnimationLocations.FINAL_COMBO_ATTACK_1_RETURN));
+    }
 
-        runAt(35, () -> spawnShadowHerobrine(level));
-        runAt(36, () -> shadowUseSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_2));
+    private void displayShadowPickaxe(ShadowHerobrine shadowHerobrine) {
+        shadowHerobrine.setDisplayPickaxe(true);
+    }
+
+    private boolean checkTarget(LivingEntity target) {
+        return targetInLookAngle(target, -Mth.HALF_PI * 0.67f, Mth.HALF_PI * 0.67f) && AbstractHerobrine.isNotHerobrine(target);
     }
 
     @Override
-    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (super.hurtHitEntity(level, target)) {
-            mob.stigmatizeEntity(level, target);
-            level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
-            return true;
-        }
-        return false;
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
+        mob.stigmatizeEntity(level, target);
+        level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
     }
 }

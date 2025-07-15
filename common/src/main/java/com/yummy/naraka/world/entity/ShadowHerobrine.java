@@ -21,14 +21,12 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.TraceableEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,14 +36,17 @@ import java.util.UUID;
 
 public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntity {
     protected static final EntityDataAccessor<Integer> ALPHA = SynchedEntityData.defineId(ShadowHerobrine.class, EntityDataSerializers.INT);
+    protected static final int MAX_ALPHA = 0xaa;
 
     protected final ShadowPunchSkill punchSkill = registerSkill(1, this, ShadowPunchSkill::new, AnimationLocations.COMBO_ATTACK_1);
     protected final DashSkill<ShadowHerobrine> dashSkill = registerSkill(this, DashSkill::new);
     protected final ShadowFlickerSkill flickerSkill = registerSkill(10, new ShadowFlickerSkill(this, dashSkill, punchSkill));
 
+    protected final PickaxeSlashSkill<AbstractHerobrine> pickaxeSlashSkill = registerSkill(PickaxeSlashSkill.single(this), AnimationLocations.PICKAXE_SLASH_SINGLE);
+
     protected final SimpleComboAttackSkill finalComboAttack3 = registerSkill(SimpleComboAttackSkill.combo3(this), AnimationLocations.FINAL_COMBO_ATTACK_3);
-    protected final SimpleComboAttackSkill finalComboAttack2 = registerSkill(SimpleComboAttackSkill.combo2(finalComboAttack3, this), AnimationLocations.FINAL_COMBO_ATTACK_2);
-    protected final SimpleComboAttackSkill finalComboAttack1 = registerSkill(SimpleComboAttackSkill.combo1(finalComboAttack2, this), AnimationLocations.FINAL_COMBO_ATTACK_1);
+    protected final SimpleComboAttackSkill finalComboAttack2 = registerSkill(SimpleComboAttackSkill.combo2(this, finalComboAttack3), AnimationLocations.FINAL_COMBO_ATTACK_2);
+    protected final SimpleComboAttackSkill finalComboAttack1 = registerSkill(SimpleComboAttackSkill.combo1(this, finalComboAttack2), AnimationLocations.FINAL_COMBO_ATTACK_1);
 
     @Nullable
     private Herobrine herobrine;
@@ -60,22 +61,22 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
                 .add(Attributes.MAX_HEALTH, 150);
     }
 
-    public static ShadowHerobrine createInstantFinalShadow(Level level, Herobrine mob, Vec3 position) {
-        ShadowHerobrine shadowHerobrine = new ShadowHerobrine(mob.level(), true, true);
+    public static ShadowHerobrine createInstantFinalShadow(Mob spawner, Vec3 position) {
+        ShadowHerobrine shadowHerobrine = createInstantFinalShadow(spawner);
         shadowHerobrine.setPos(position);
-        shadowHerobrine.forceSetRotation(mob.getYRot(), mob.getXRot());
-        shadowHerobrine.getSkillManager().enableOnly(List.of());
-        shadowHerobrine.setTarget(mob.getTarget());
-        shadowHerobrine.goalSelector.removeAllGoals(goal -> true);
-        shadowHerobrine.setNoGravity(true);
-        level.addFreshEntity(shadowHerobrine);
+        shadowHerobrine.forceSetRotation(spawner.getYRot(), spawner.getXRot());
 
         return shadowHerobrine;
     }
 
-    public static ShadowHerobrine createInstantFinalShadow(Level level, Herobrine mob) {
-        Vec3 position = mob.position().add(mob.getLookAngle());
-        return createInstantFinalShadow(level, mob, position);
+    public static ShadowHerobrine createInstantFinalShadow(Mob spawner) {
+        ShadowHerobrine shadowHerobrine = new ShadowHerobrine(spawner.level(), true, true);
+        shadowHerobrine.getSkillManager().enableOnly(List.of());
+        shadowHerobrine.setTarget(spawner.getTarget());
+        shadowHerobrine.goalSelector.removeAllGoals(goal -> true);
+        shadowHerobrine.setNoGravity(true);
+
+        return shadowHerobrine;
     }
 
     protected ShadowHerobrine(EntityType<? extends AbstractHerobrine> entityType, Level level) {
@@ -110,23 +111,12 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     @Override
-    protected void updateAnimationOnSkillEnd(Skill<?> skill) {
-        if (!skill.hasLinkedSkill()) {
-            if (isFinalModel()) {
-                setAnimation(AnimationLocations.PHASE_3_IDLE);
-            } else {
-                setAnimation(AnimationLocations.IDLE);
-            }
-        }
-    }
-
-    @Override
     protected void customServerAiStep(ServerLevel serverLevel) {
         super.customServerAiStep(serverLevel);
         if (reduceAlpha) {
             entityData.set(ALPHA, Math.max(0, getAlpha() - 15));
-        } else {
-            entityData.set(ALPHA, Math.min(0xff, getAlpha() + 10));
+        } else if (!isFinalModel() || displayPickaxe()) {
+            entityData.set(ALPHA, Math.min(MAX_ALPHA, getAlpha() + 10));
         }
         if (getAlpha() == 0)
             discard();
@@ -150,7 +140,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new FollowOwnerGoal<>(this));
-        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64, 0, 40, 0.6f));
+        goalSelector.addGoal(3, new MoveToTargetGoal(this, 1, 64, 40, 0.6f));
     }
 
     @Override
@@ -195,7 +185,9 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
         StigmaHelper.removeStigma(target);
         level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.HOSTILE);
-        target.hurtServer(level, NarakaDamageSources.stigmaConsume(this), 6 * stigma.value());
+
+        float baseDamage = target.getMaxHealth() * 0.25f;
+        target.hurtServer(level, NarakaDamageSources.stigmaConsume(this), baseDamage * stigma.value());
         getHerobrine().ifPresent(herobrine -> herobrine.getShadowController().summonShadowHerobrine(level));
     }
 
@@ -214,7 +206,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
             return super.hurtServer(serverLevel, source, amount);
         if (getHerobrine().isPresent())
             amount = Math.min(amount, getHurtDamageLimit());
-        if (animationTickCount > 0)
+        if (animationTickLeft > 0 || isFinalModel())
             return false;
         return super.hurtServer(serverLevel, source, amount);
     }
@@ -225,6 +217,15 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         getHerobrine().ifPresent(herobrine -> {
             herobrine.getShadowController().broadcastShadowHerobrineHurt(level, this);
         });
+    }
+
+    @Override
+    protected AABB makeBoundingBox(Vec3 position) {
+        if (isFinalModel()) {
+            AABB boundingBox = super.makeBoundingBox(position);
+            return boundingBox.setMaxY(boundingBox.maxY - 1.7);
+        }
+        return super.makeBoundingBox(position);
     }
 
     @Override

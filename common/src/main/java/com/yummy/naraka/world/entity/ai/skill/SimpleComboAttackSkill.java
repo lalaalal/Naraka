@@ -10,9 +10,9 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
-    public static final ResourceLocation FINAL_COMBO_ATTACK_1 = createLocation("final.combo_attack_1");
-    public static final ResourceLocation FINAL_COMBO_ATTACK_2 = createLocation("final.combo_attack_2");
-    public static final ResourceLocation FINAL_COMBO_ATTACK_3 = createLocation("final.combo_attack_3");
+    public static final ResourceLocation FINAL_COMBO_ATTACK_1 = createLocation("final_herobrine.combo_attack_1");
+    public static final ResourceLocation FINAL_COMBO_ATTACK_2 = createLocation("final_herobrine.combo_attack_2");
+    public static final ResourceLocation FINAL_COMBO_ATTACK_3 = createLocation("final_herobrine.combo_attack_3");
 
     protected int attackTick;
     protected int attackRange;
@@ -22,17 +22,17 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
     protected boolean moveToTarget;
     protected double moveSpeed;
 
-    public static SimpleComboAttackSkill combo1(Skill<?> nextSkill, AbstractHerobrine mob) {
-        return builder(FINAL_COMBO_ATTACK_1, 40, 100, mob)
+    public static SimpleComboAttackSkill combo1(AbstractHerobrine mob, Skill<?> nextSkill) {
+        return builder(FINAL_COMBO_ATTACK_1, mob, 40, 100)
                 .nextSkill(nextSkill)
                 .moveToTarget(15, 20)
-                .moveSpeed(0.7)
+                .moveSpeed(1)
                 .attackTick(22).attackRange(3)
                 .build();
     }
 
-    public static SimpleComboAttackSkill combo2(Skill<?> nextSkill, AbstractHerobrine mob) {
-        return builder(FINAL_COMBO_ATTACK_2, 40, 0, mob)
+    public static SimpleComboAttackSkill combo2(AbstractHerobrine mob, Skill<?> nextSkill) {
+        return builder(FINAL_COMBO_ATTACK_2, mob, 40, 0)
                 .nextSkill(nextSkill)
                 .attackTick(22).attackRange(2)
                 .lookTarget()
@@ -42,20 +42,20 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     public static SimpleComboAttackSkill combo3(AbstractHerobrine mob) {
-        return builder(FINAL_COMBO_ATTACK_3, 60, 0, mob)
+        return builder(FINAL_COMBO_ATTACK_3, mob, 60, 0)
                 .attackTick(22).attackRange(3)
                 .lookTarget()
                 .moveToTarget(15, 20)
-                .moveSpeed(1.3)
+                .moveSpeed(1.4)
                 .build();
     }
 
-    public static Builder builder(ResourceLocation location, int duration, int cooldown, AbstractHerobrine mob) {
+    public static Builder builder(ResourceLocation location, AbstractHerobrine mob, int duration, int cooldown) {
         return new Builder(location, duration, cooldown, mob);
     }
 
-    public SimpleComboAttackSkill(ResourceLocation location, int duration, int cooldown, @Nullable Skill<?> nextSkill, AbstractHerobrine mob) {
-        super(location, duration, cooldown, 1, nextSkill, duration, mob);
+    public SimpleComboAttackSkill(ResourceLocation location, AbstractHerobrine mob, int duration, int cooldown, @Nullable Skill<?> nextSkill) {
+        super(location, mob, duration, cooldown, 1, duration, nextSkill);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        runAt(attackTick, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, attackRange));
+        runAt(attackTick, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, attackRange));
         if (lookTarget) {
             lookTarget(target);
             runBetween(moveStartTick, moveEndTick, () -> rotateTowardTarget(target));
@@ -86,13 +86,9 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     @Override
-    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (super.hurtHitEntity(level, target)) {
-            mob.stigmatizeEntity(level, target);
-            level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
-            return true;
-        }
-        return false;
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
+        mob.stigmatizeEntity(level, target);
+        level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
     }
 
     private void moveToTarget(LivingEntity target) {
@@ -163,7 +159,7 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
         }
 
         public SimpleComboAttackSkill build() {
-            SimpleComboAttackSkill skill = new SimpleComboAttackSkill(location, duration, cooldown, nextSkill, mob);
+            SimpleComboAttackSkill skill = new SimpleComboAttackSkill(location, mob, duration, cooldown, nextSkill);
             skill.attackTick = this.attackTick;
             skill.attackRange = this.attackRange;
             skill.moveToTarget = this.moveToTarget;

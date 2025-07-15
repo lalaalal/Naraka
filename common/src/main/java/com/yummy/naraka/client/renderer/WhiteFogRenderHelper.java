@@ -39,16 +39,18 @@ public class WhiteFogRenderHelper {
     }
 
     public static Vector4f getFogColor(Vector4f original, float partialTick) {
-        float delta = whiteFogTickCount / (float) MAX_WHITE_SCREEN_TICK;
-        if (prevWhiteFogTickCount < whiteFogTickCount) {
-            delta = (prevWhiteFogTickCount + partialTick) / (float) MAX_WHITE_SCREEN_TICK;
-        } else if (prevWhiteFogTickCount > whiteFogTickCount) {
-            delta = (whiteFogTickCount - partialTick) / (float) MAX_WHITE_SCREEN_TICK;
-        }
+        float delta = getProgress(partialTick);
         float x = Mth.lerp(Math.min(delta, 1), original.x, 1);
         float y = Mth.lerp(Math.min(delta, 1), original.y, 1);
         float z = Mth.lerp(Math.min(delta, 1), original.z, 1);
         return new Vector4f(x, y, z, 1);
+    }
 
+    public static float getProgress(float partialTick) {
+        if (prevWhiteFogTickCount < whiteFogTickCount)
+            return (prevWhiteFogTickCount + partialTick) / (float) MAX_WHITE_SCREEN_TICK;
+        if (prevWhiteFogTickCount > whiteFogTickCount)
+            return (whiteFogTickCount - partialTick) / (float) MAX_WHITE_SCREEN_TICK;
+        return whiteFogTickCount / (float) MAX_WHITE_SCREEN_TICK;
     }
 }

@@ -310,7 +310,6 @@ public class HerobrineComboAttackAnimation {
             .addAnimation("main", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(0.5F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 5.0F), AnimationChannel.Interpolations.LINEAR),
-//                    new Keyframe(0.75F, KeyframeAnimations.degreeVec(0.0F, -330.0F, 5.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(1.0F, KeyframeAnimations.degreeVec(0.0F, -360.0F, 5.0F), NarakaInterpolations.FAST_STEP_IN)
             ))
             .addAnimation("main", new AnimationChannel(AnimationChannel.Targets.POSITION,

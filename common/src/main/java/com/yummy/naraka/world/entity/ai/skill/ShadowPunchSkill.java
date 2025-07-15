@@ -9,8 +9,7 @@ import java.util.List;
 
 public class ShadowPunchSkill extends PunchSkill<ShadowHerobrine> {
     public ShadowPunchSkill(ShadowHerobrine mob) {
-        super(null, mob, 30, false);
-        setCanDisableShield(false);
+        super(mob, 30, false, null);
     }
 
     @Override

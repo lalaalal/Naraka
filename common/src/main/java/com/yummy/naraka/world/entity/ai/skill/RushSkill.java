@@ -21,18 +21,18 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends AttackSkill<T> {
-    public static final ResourceLocation LOCATION = createLocation("rush");
+    public static final ResourceLocation LOCATION = createLocation("herobrine.rush");
 
     private static final int START_RUNNING_TICK = 15;
     private static final int RUSH_TICK = 18;
-    private static final int FINALE_TICK = 50;
+    private static final int FINALE_TICK = 30;
 
     private Vec3 movement = Vec3.ZERO;
     private boolean hit = false;
     private boolean failed = false;
 
     public RushSkill(T mob) {
-        super(LOCATION, 200, 200, mob);
+        super(LOCATION, 200, 200, 100, 15, mob);
     }
 
     @Override
@@ -76,7 +76,8 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runBefore(START_RUNNING_TICK, () -> lookTarget(target));
         runBefore(START_RUNNING_TICK, () -> rotateTowardTarget(target));
-        runBefore(RUSH_TICK, () -> traceTarget(target));
+        runBefore(RUSH_TICK, () -> traceTarget(target, 1));
+        runAt(RUSH_TICK, () -> traceTarget(target, 1.5f));
         runAfter(duration - 40, () -> lookTarget(target));
         run(after(duration - 40) && failed, () -> rotateTowardTarget(target));
     }
@@ -85,7 +86,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAfter(START_RUNNING_TICK, this::moving);
         runAfter(RUSH_TICK, () -> calculateDeltaMovement(level, target));
-        run(after(RUSH_TICK) && !hit && !failed, () -> hurtHitEntities(level, this::entityPredicate, 3));
+        run(after(RUSH_TICK) && !hit && !failed, () -> hurtEntities(level, this::entityPredicate, 3));
         runAt(FINALE_TICK, this::failed);
         this.movement = movement.add(0, -0.098, 0);
 
@@ -147,29 +148,25 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
             this.hit = true;
             this.failed = false;
             if (hitEntity)
-                hurtHitEntity(level, target);
+                hurtEntity(level, target);
             level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 2, 1);
             level.sendParticles(ParticleTypes.SONIC_BOOM, mob.getX(), mob.getY() + 1, mob.getZ(), 1, 0, 0, 0, 1);
             mob.setAnimation(AnimationLocations.RUSH_SUCCEED);
         }
     }
 
-    private void traceTarget(LivingEntity target) {
-        if (before(START_RUNNING_TICK) || isTargetInFront(target)) {
-            this.movement = NarakaEntityUtils.getDirectionNormalVector(mob, target)
-                    .multiply(1, 0, 1);
-        }
+    private void traceTarget(LivingEntity target, float power) {
+        this.movement = NarakaEntityUtils.getDirectionNormalVector(mob, target)
+                .multiply(1, 0, 1)
+                .scale(power);
     }
 
     @Override
-    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 20 * 5, 15))
-            return false;
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         StunHelper.stunEntity(target, 100);
         mob.stigmatizeEntity(level, target);
         Vec3 delta = NarakaEntityUtils.getDirectionNormalVector(mob, target);
         target.knockback(5, -delta.x, -delta.z);
-        return super.hurtHitEntity(level, target);
     }
 
     @Override

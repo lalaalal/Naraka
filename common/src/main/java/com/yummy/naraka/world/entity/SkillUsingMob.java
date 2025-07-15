@@ -24,7 +24,7 @@ import java.util.function.Function;
 
 public abstract class SkillUsingMob extends PathfinderMob {
     protected final SkillManager skillManager = new SkillManager(random);
-    protected final Map<ResourceLocation, AnimationController> animationStates = new HashMap<>();
+    protected final Map<ResourceLocation, AnimationController> animationControllers = new HashMap<>();
     protected ResourceLocation currentAnimation = NarakaMod.location("empty");
 
     protected SkillUsingMob(EntityType<? extends PathfinderMob> entityType, Level level) {
@@ -48,7 +48,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
     }
 
     public void forEachAnimations(BiConsumer<ResourceLocation, AnimationState> consumer) {
-        for (AnimationController controller : animationStates.values())
+        for (AnimationController controller : animationControllers.values())
             controller.update(consumer);
     }
 
@@ -57,7 +57,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
     }
 
     public Set<ResourceLocation> getAnimations() {
-        return animationStates.keySet();
+        return animationControllers.keySet();
     }
 
     public void useSkill(ResourceLocation location) {
@@ -71,11 +71,11 @@ public abstract class SkillUsingMob extends PathfinderMob {
     }
 
     public void registerAnimation(ResourceLocation animationSetLocation, List<ResourceLocation> animationLocations) {
-        this.animationStates.put(animationSetLocation, AnimationController.of(random, animationLocations));
+        this.animationControllers.put(animationSetLocation, AnimationController.of(random, animationLocations));
     }
 
     public void registerAnimation(ResourceLocation animationLocation) {
-        this.animationStates.put(animationLocation, AnimationController.simple(animationLocation));
+        this.animationControllers.put(animationLocation, AnimationController.simple(animationLocation));
     }
 
     public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(int priority, S skill, ResourceLocation... animationLocations) {
@@ -131,7 +131,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
      * @param animationLocation Animation
      */
     public void updateAnimation(ResourceLocation animationLocation) {
-        animationStates.forEach((location, animationController) -> {
+        animationControllers.forEach((location, animationController) -> {
             if (animationLocation.equals(location))
                 animationController.start(tickCount);
             else

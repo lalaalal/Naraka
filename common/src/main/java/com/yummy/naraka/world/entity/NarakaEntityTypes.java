@@ -4,6 +4,8 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.init.EntityAttributeRegistry;
+import com.yummy.naraka.world.LightningCircle;
+import com.yummy.naraka.world.NarakaPickaxe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
@@ -47,7 +49,7 @@ public class NarakaEntityTypes {
     public static final HolderProxy<EntityType<?>, EntityType<Stardust>> STARDUST = register(
             "stardust",
             EntityType.Builder.<Stardust>of(Stardust::new, MobCategory.MISC)
-                    .sized(1, 1)
+                    .sized(0.5f, 0.5f)
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<NarakaFireball>> NARAKA_FIREBALL = register(
@@ -75,6 +77,36 @@ public class NarakaEntityTypes {
             "magic_circle",
             EntityType.Builder.<MagicCircle>of(MagicCircle::new, MobCategory.MISC)
                     .sized(1, 0.1f)
+    );
+
+    public static final HolderProxy<EntityType<?>, EntityType<PickaxeSlash>> PICKAXE_SLASH = register(
+            "pickaxe_slash",
+            EntityType.Builder.<PickaxeSlash>of(PickaxeSlash::new, MobCategory.MISC)
+                    .sized(5f, 3f)
+    );
+
+    public static final HolderProxy<EntityType<?>, EntityType<MassiveLightning>> MASSIVE_LIGHTNING = register(
+            "massive_lightning",
+            EntityType.Builder.<MassiveLightning>of(MassiveLightning::new, MobCategory.MISC)
+                    .sized(0, 0)
+    );
+
+    public static final HolderProxy<EntityType<?>, EntityType<ColoredLightningBolt>> COLORED_LIGHTNING_BOLT = register(
+            "colored_lightning_bolt",
+            EntityType.Builder.<ColoredLightningBolt>of(ColoredLightningBolt::new, MobCategory.MISC)
+                    .sized(0, 0)
+    );
+
+    public static final HolderProxy<EntityType<?>, EntityType<LightningCircle>> LIGHTNING_CIRCLE = register(
+            "lightning_circle",
+            EntityType.Builder.<LightningCircle>of(LightningCircle::new, MobCategory.MISC)
+                    .sized(0, 0)
+    );
+
+    public static final HolderProxy<EntityType<?>, EntityType<NarakaPickaxe>> NARAKA_PICKAXE = register(
+            "naraka_pickaxe",
+            EntityType.Builder.<NarakaPickaxe>of(NarakaPickaxe::new, MobCategory.MISC)
+                    .sized(0.2f, 0.2f)
     );
 
     private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {

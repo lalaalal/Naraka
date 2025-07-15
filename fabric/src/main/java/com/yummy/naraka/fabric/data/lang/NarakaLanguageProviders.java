@@ -3,7 +3,10 @@ package com.yummy.naraka.fabric.data.lang;
 import com.yummy.naraka.data.lang.*;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
+import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
+import com.yummy.naraka.world.entity.ai.skill.*;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.SoulType;
@@ -238,7 +241,7 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD, "Soul Infused Nectarium Sword", "영혼이 주입된 넥타륨 검");
         addItem(NarakaItems.PURIFIED_SOUL_SWORD, "Purified Soul Sword", "정화된 영혼 검");
 
-        addItem(NarakaItems.EBONY_SWORD, "Ebony Sword", "흑단나무 검");
+        addItem(NarakaItems.ULTIMATE_SWORD, "Ultimate Sword", "궁극의 검");
         addItem(NarakaItems.EBONY_ROOTS_SCRAP, "Ebony Roots Scrap", "흑단나무 뿌리 파편");
         addItem(NarakaItems.EBONY_METAL_INGOT, "Ebony Metal Ingot", "흑단나무 금속 주괴");
         addItem(NarakaItems.SANCTUARY_COMPASS, "Sanctuary Compass", "생츄어리 나침반");
@@ -303,13 +306,71 @@ public class NarakaLanguageProviders {
         addEntityType(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, "Spear of Longinus", "롱기누스의 창");
         addEntityType(NarakaEntityTypes.NARAKA_FIREBALL, "Naraka Fireball", "나락 화염구");
         addEntityType(NarakaEntityTypes.STARDUST, "Stardust");
+        addEntityType(NarakaEntityTypes.PICKAXE_SLASH, "Pickaxe slash");
+        addEntityType(NarakaEntityTypes.DIAMOND_GOLEM, "Diamond Golem", "다이아몬드 골렘");
+        addEntityType(NarakaEntityTypes.MAGIC_CIRCLE, "Magic Circle", "마법진");
 
-        addDamageType(NarakaDamageTypes.SPEAR_OF_LONGINUS,
-                List.of("%1$s's AT Field was torn by %2$s", "%1$s의 AT 필드가 %2$s에 찢어졌습니다."),
-                List.of("%1$s's AT Field was torn by %2$s thrown %3$s", "%1$s의 AT 필드가 %3$s가 던진 %2$s에 찢어졌습니다."));
-        addDamageType(NarakaDamageTypes.STIGMA,
-                List.of("Stigma"),
-                List.of("Stigma"));
+        addDamageType(NarakaDamageTypes.SPEAR_OF_LONGINUS, "%1$s's AT Field was torn by %2$s", "%1$s의 AT 필드가 %2$s에 찢어졌습니다");
+        addDamageType(NarakaDamageTypes.STIGMA, "%1$s's has been deprived of life due to %2$s's stigma stacking", "%1$s이(가) %2$s의 낙인이 중첩돼 생명을 빼앗겼습니다");
+        addDamageType(NarakaDamageTypes.STIGMA_CONSUME, "%2$s has been consumed %1$s's stigma", "%2$s이(가) %1$s의 낙인을 소모해 생명을 앗아갔습니다");
+        addDamageType(NarakaDamageTypes.PICKAXE_SLASH, "%1$s was slain by %2$s", "%1$s이(가) %2$s에 썰렸습니다");
+        addDamageType(NarakaDamageTypes.NARAKA_FIREBALL, "%1$s was blown by naraka fireball thrown by %2$s", "%1$s이(가) %2$s이(가) 던진 나락 화염구에 폭발했습니다");
+
+        add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_AMETHYST), "Challenger's Blessing", "도전자의 축복");
+        add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_COPPER), "Challenger's Blessing", "도전자의 축복");
+        add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_DIAMOND), "Challenger's Blessing", "도전자의 축복");
+        add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_EMERALD), "Challenger's Blessing", "도전자의 축복");
+        add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_GOLD), "Challenger's Blessing", "도전자의 축복");
+        add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_LAPIS), "Challenger's Blessing", "도전자의 축복");
+        add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_NECTARIUM), "Challenger's Blessing", "도전자의 축복");
+        add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_REDSTONE), "Challenger's Blessing", "도전자의 축복");
+        
+        add(LanguageKey.animation(AnimationLocations.COMBO_ATTACK_1), "Combo Attack 1", "연계 공격 1");
+        add(LanguageKey.animation(AnimationLocations.COMBO_ATTACK_2), "Combo Attack 2", "연계 공격 2");
+        add(LanguageKey.animation(AnimationLocations.COMBO_ATTACK_3), "Combo Attack 3", "연계 공격 3");
+        add(LanguageKey.animation(AnimationLocations.COMBO_ATTACK_4), "Combo Attack 4", "연계 공격 4");
+        add(LanguageKey.animation(AnimationLocations.COMBO_ATTACK_5), "Combo Attack 5", "연계 공격 5");
+        add(LanguageKey.animation(AnimationLocations.IDLE), "Idle", "대기");
+        add(LanguageKey.animation(AnimationLocations.WALKING), "Walking", "걷기");
+        add(LanguageKey.animation(AnimationLocations.PHASE_3_IDLE), "Phase 3 Idle", "3페 걷기");
+        add(LanguageKey.animation(AnimationLocations.ENTER_PHASE_2), "Enter Phase 2", "2페 진입");
+        add(LanguageKey.animation(AnimationLocations.ENTER_PHASE_3), "Enter Phase 3", "3페 진입");
+        add(LanguageKey.animation(AnimationLocations.STAGGERING), "Staggering", "허약");
+
+        add(LanguageKey.skill(RushSkill.LOCATION), "Rush", "돌진");
+        add(LanguageKey.skill(DashSkill.LOCATION), "Dash", "대시");
+        add(LanguageKey.skill(DashAroundSkill.LOCATION), "Dash Around");
+        add(LanguageKey.skill(PunchSkill.LOCATION), "Combo Attack 1", "연계 공격 1");
+        add(LanguageKey.skill(UppercutSkill.LOCATION), "Combo Attack 2", "연계 공격 2");
+        add(LanguageKey.skill(SpinningSkill.LOCATION), "Combo Attack 3", "연계 공격 3");
+        add(LanguageKey.skill(SuperHitSkill.LOCATION), "Combo Attack 4", "연계 공격 4");
+        add(LanguageKey.skill(LandingSkill.LOCATION), "Combo Attack 5", "연계 공격 5");
+        add(LanguageKey.skill(ThrowFireballSkill.LOCATION), "Throw Fireball", "화염구 투척");
+        add(LanguageKey.skill(StigmatizeEntitiesSkill.LOCATION), "Phase 2 Gimmick", "2페 기믹");
+        add(LanguageKey.skill(WalkAroundTargetSkill.LOCATION), "Walk Around", "정찰");
+        add(LanguageKey.skill(FlickerSkill.LOCATION), "Flicker", "플리커");
+        add(LanguageKey.skill(ExplosionSkill.LOCATION), "Explosion", "폭발");
+        add(LanguageKey.skill(SplitAttackSkill.LOCATION), "P3 Combo Attack 1", "3페 연계공격 1");
+        add(LanguageKey.skill(SpinUpSkill.LOCATION), "P3 Combo Attack 2", "3페 연계공격 2");
+        add(LanguageKey.skill(StrikeDownSkill.LOCATION), "P3 Combo Attack 3", "3페 연계공격 3");
+        add(LanguageKey.skill(StormSkill.LOCATION), "Storm", "폭풍");
+        add(LanguageKey.skill(PickaxeSlashSkill.SINGLE), "Pickaxe Slash Single", "낫 베기 1회");
+        add(LanguageKey.skill(PickaxeSlashSkill.TRIPLE), "Pickaxe Slash Triple", "낫 베기 3회");
+        add(LanguageKey.skill(DestroyStructureSkill.LOCATION), "Destroy Structure (Enter Phase 3)", "구조물 파괴 (3페 진입)");
+        add(LanguageKey.skill(SummonShadowSkill.LOCATION), "Summon Shadow", "그림자 소환");
+        add(LanguageKey.skill(CarpetBombingSkill.LOCATION), "Carpet Bombing", "융단폭격");
+        add(LanguageKey.skill(BlockingSkill.LOCATION), "Blocking");
+        add(LanguageKey.skill(ParryingSkill.LOCATION), "Parrying", "패링");
+        add(LanguageKey.skill(EarthShockSkill.LOCATION), "Earth Shock");
+
+        add(LanguageKey.STIGMA_COMMAND_GET_KEY, "Stigma for entity %s is %d");
+        add(LanguageKey.STIGMA_COMMAND_SET_KEY, "Stigma for %d entities set to %d", "%d개의 엔티티의 낙인을 %d로 설정하였습니다");
+        add(LanguageKey.STIGMA_COMMAND_INCREASE_KEY, "Increased stigma for %1$d entities", "%1$d개의 엔티티의 낙인을 증가시켰습니다");
+        add(LanguageKey.STIGMA_COMMAND_REMOVE_KEY, "Removed stigma for %1$d entities", "%1$d개의 엔티티의 낙인을 제거했습니다");
+        add(LanguageKey.STIGMA_COMMAND_CONSUME_KEY, "%2$s consumed %$1d entities stigma", "%2$s(이)가 %1$d개의 엔티티의 낙인을 소모했습니다");
+
+        add(LanguageKey.LOCK_HEALTH_COMMAND_LOCK_KEY, "Locked %2$s health %1$d", "%2$s의 체력을 %1$d 잠궜습니다");
+        add(LanguageKey.LOCK_HEALTH_COMMAND_REMOVE_KEY, "Removed %1$s locked healths", "%1$s의 잠긴 체력을 해제했습니다");
     }
 
     public void addProvidersTo(Consumer<FabricDataGenerator.Pack.RegistryDependentFactory<FabricLanguageProvider>> consumer) {
@@ -324,7 +385,6 @@ public class NarakaLanguageProviders {
             throw new IllegalStateException("Translations must not be empty");
         translationMap.put(key, translations);
     }
-
 
     public void addItem(Supplier<? extends Item> item, String... translations) {
         add(item.get().getDescriptionId(), translations);
@@ -361,12 +421,12 @@ public class NarakaLanguageProviders {
         add(advancementComponent.descriptionKey(), descriptions.toArray(new String[0]));
     }
 
-    public void addDamageType(ResourceKey<DamageType> damageType, List<String> directMessages, List<String> indirectMessages) {
+    public void addDamageType(ResourceKey<DamageType> damageType, String... message) {
         String directKey = "death.attack." + damageType.location().getPath();
         String indirectKey = directKey + ".player";
 
-        add(directKey, directMessages.toArray(new String[0]));
-        add(indirectKey, indirectMessages.toArray(new String[0]));
+        add(directKey, message);
+        add(indirectKey, message);
     }
 
     public void addReinforcementEffect(Holder<ReinforcementEffect> effect, String... translations) {

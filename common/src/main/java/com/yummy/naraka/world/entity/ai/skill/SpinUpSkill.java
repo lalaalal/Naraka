@@ -4,6 +4,7 @@ import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
+import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -16,41 +17,44 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class SpinUpSkill extends ComboSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("final.spin_up");
+    public static final ResourceLocation LOCATION = createLocation("final_herobrine.spin_up");
 
-    public SpinUpSkill(@Nullable Skill<?> nextSkill, Herobrine mob) {
-        super(LOCATION, 40, 0, 1, nextSkill, 40, mob);
+    public SpinUpSkill(Herobrine mob, @Nullable Skill<?> nextSkill) {
+        super(LOCATION, mob, 55, 0, 0.75f, 40, nextSkill);
     }
 
     @Override
     protected float calculateDamage(LivingEntity target) {
-        return mob.getAttackDamage();
+        return mob.getAttackDamage() + target.getMaxHealth() * 0.1f;
     }
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        if (tickCount < 20 || tickCount > 27) {
+        if (tickCount > 27) {
             lookTarget(target);
             rotateTowardTarget(target);
         }
-        runAt(20, this::spinUp);
+        runAt(20, () -> spinUp(target));
         runBetween(20, 32, () -> blowBlocks(level, 3, 20));
         runBetween(23, 35, () -> blowBlocks(level, 4, 23));
         runBetween(25, 37, () -> blowBlocks(level, 5, 25));
         runBetween(24, 37, () -> blowBlocks(level, 3, 24));
         runBetween(26, 37, () -> blowBlocks(level, 5, 26));
         runBetween(21, 25, () -> reduceSpeed(0.3));
-        runAt(23, () -> hurtHitEntities(level, AbstractHerobrine::isNotHerobrine, 3));
+        runBetween(20, 25, () -> hurtEntities(level, this::checkTarget, 3));
         runAt(27, this::stopMoving);
+
+        runAt(40, () -> mob.setAnimation(AnimationLocations.FINAL_COMBO_ATTACK_2_RETURN));
+    }
+
+    private boolean checkTarget(LivingEntity target) {
+        return targetInLookAngle(target, -Mth.HALF_PI, Mth.HALF_PI) && AbstractHerobrine.isNotHerobrine(target);
     }
 
     @Override
-    protected boolean hurtHitEntity(ServerLevel level, LivingEntity target) {
-        if (NarakaEntityUtils.disableAndHurtShield(target, 60, 15))
-            return false;
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         mob.stigmatizeEntity(level, target);
         level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
-        return super.hurtHitEntity(level, target);
     }
 
     private void blowBlocks(ServerLevel level, double distance, int startTick) {
@@ -70,9 +74,9 @@ public class SpinUpSkill extends ComboSkill<Herobrine> {
         }
     }
 
-    private void spinUp() {
-        Vec3 deltaMovement = mob.getLookAngle()
-                .multiply(5, 3, 5)
+    private void spinUp(LivingEntity target) {
+        Vec3 deltaMovement = target.position().subtract(mob.position())
+                .scale(0.5)
                 .add(0, 2, 0);
         mob.setDeltaMovement(deltaMovement);
     }

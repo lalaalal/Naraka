@@ -28,6 +28,7 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
@@ -46,7 +47,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
     private float eyeAlpha = 1;
     private float prevScarfRotation = 0;
-    protected int animationTickCount = Integer.MIN_VALUE;
+    protected int animationTickLeft = Integer.MIN_VALUE;
     protected Runnable animationTickListener = () -> {
     };
 
@@ -62,7 +63,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
                 .add(Attributes.SAFE_FALL_DISTANCE, 256)
                 .add(Attributes.FALL_DAMAGE_MULTIPLIER, 0)
                 .add(Attributes.JUMP_STRENGTH, 0)
-                .add(Attributes.FLYING_SPEED, 0.3f)
+                .add(Attributes.FLYING_SPEED, 0.5f)
                 .add(Attributes.MAX_HEALTH, 666);
     }
 
@@ -77,7 +78,6 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         registerAnimation(AnimationLocations.IDLE);
         registerAnimation(AnimationLocations.PHASE_3_IDLE);
 
-        setPersistenceRequired();
         updateAnimation(AnimationLocations.IDLE);
         skillManager.runOnSkillEnd(this::updateAnimationOnSkillEnd);
     }
@@ -148,19 +148,33 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         return entityData.get(DISPLAY_SCARF);
     }
 
-    protected abstract void updateAnimationOnSkillEnd(Skill<?> skill);
+    protected void updateAnimationOnSkillEnd(Skill<?> skill) {
+        if (!skill.hasLinkedSkill()) {
+            setAnimation(getIdleAnimation());
+        }
+    }
+
+    protected ResourceLocation getIdleAnimation() {
+        if (isFinalModel())
+            return AnimationLocations.PHASE_3_IDLE;
+        return AnimationLocations.IDLE;
+    }
+
+    public boolean shouldPlayIdleAnimation() {
+        return true;
+    }
 
     private void updateAnimationTick() {
-        if (animationTickCount == 0)
+        if (animationTickLeft == 0)
             stopStaticAnimation();
-        if (animationTickCount >= 0) {
+        if (animationTickLeft >= 0) {
             animationTickListener.run();
-            animationTickCount -= 1;
+            animationTickLeft -= 1;
         }
     }
 
     public boolean isPlayingStaticAnimation() {
-        return animationTickCount > 0;
+        return animationTickLeft > 0;
     }
 
     public void playStaticAnimation(ResourceLocation animation, int duration) {
@@ -168,20 +182,25 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     public void playStaticAnimation(ResourceLocation animation, int duration, boolean interruptSkill) {
-        if (animationTickCount > 0)
+        if (animationTickLeft > 0)
             return;
         setAnimation(animation);
-        animationTickCount = Math.max(1, duration);
+        animationTickLeft = Math.max(1, duration);
         skillManager.pause(interruptSkill);
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
+        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.FLYING_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
     }
 
     public void stopStaticAnimation() {
-        if (animationTickCount < 0)
+        if (animationTickLeft < 0)
             return;
-        animationTickCount = Integer.MIN_VALUE;
+        setAnimation(getIdleAnimation());
+        animationTickLeft = Integer.MIN_VALUE;
+        animationTickListener = () -> {
+        };
         skillManager.resume();
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
+        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.FLYING_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
     }
 
     @Override
@@ -202,7 +221,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     @Override
     protected void registerGoals() {
         targetSelector.addGoal(1, new HurtByTargetGoal(this, Herobrine.class));
-        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, false, (target, level) -> isNotHerobrine(target)));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, (target, level) -> isNotHerobrine(target)));
 
         goalSelector.addGoal(1, new FloatGoal(this));
         goalSelector.addGoal(2, new LookAtTargetGoal(this));
@@ -231,6 +250,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         super.readAdditionalSaveData(tag);
         boolean finalModel = tag.getBooleanOr("FinalModel", false);
         entityData.set(FINAL_MODEL, finalModel);
+        setPersistenceRequired();
     }
 
     @Override
