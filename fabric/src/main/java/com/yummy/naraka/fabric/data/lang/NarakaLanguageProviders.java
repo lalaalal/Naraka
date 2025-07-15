@@ -3,6 +3,7 @@ package com.yummy.naraka.fabric.data.lang;
 import com.yummy.naraka.data.lang.*;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
+import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.ai.skill.*;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
@@ -315,6 +316,15 @@ public class NarakaLanguageProviders {
         addDamageType(NarakaDamageTypes.PICKAXE_SLASH, "%1$s was slain by %2$s", "%1$s이(가) %2$s에 썰렸습니다");
         addDamageType(NarakaDamageTypes.NARAKA_FIREBALL, "%1$s was blown by naraka fireball thrown by %2$s", "%1$s이(가) %2$s이(가) 던진 나락 화염구에 폭발했습니다");
 
+        add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_AMETHYST), "Challenger's Blessing", "도전자의 축복");
+        add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_COPPER), "Challenger's Blessing", "도전자의 축복");
+        add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_DIAMOND), "Challenger's Blessing", "도전자의 축복");
+        add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_EMERALD), "Challenger's Blessing", "도전자의 축복");
+        add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_GOLD), "Challenger's Blessing", "도전자의 축복");
+        add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_LAPIS), "Challenger's Blessing", "도전자의 축복");
+        add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_NECTARIUM), "Challenger's Blessing", "도전자의 축복");
+        add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_REDSTONE), "Challenger's Blessing", "도전자의 축복");
+        
         add(LanguageKey.animation(AnimationLocations.COMBO_ATTACK_1), "Combo Attack 1", "연계 공격 1");
         add(LanguageKey.animation(AnimationLocations.COMBO_ATTACK_2), "Combo Attack 2", "연계 공격 2");
         add(LanguageKey.animation(AnimationLocations.COMBO_ATTACK_3), "Combo Attack 3", "연계 공격 3");

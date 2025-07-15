@@ -6,6 +6,7 @@ import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
@@ -51,6 +52,10 @@ public final class LanguageKey {
             throw new IllegalStateException("Resource key doesn't exists : " + reinforcementEffect);
         ResourceLocation id = key.get().location();
         return Util.makeDescriptionId("reinforcement_effect", id);
+    }
+
+    public static String mobEffect(Holder<MobEffect> mobEffect) {
+        return Util.makeDescriptionId("effect", mobEffect.unwrapKey().orElseThrow().location());
     }
 
     public static String tooltip(Block block) {
