@@ -4,6 +4,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.Optional;
+
 public class BooleanEntityDataType extends EntityDataType<Boolean> {
     protected BooleanEntityDataType(ResourceLocation id, boolean defaultValue) {
         super(id, defaultValue);
@@ -15,8 +17,8 @@ public class BooleanEntityDataType extends EntityDataType<Boolean> {
     }
 
     @Override
-    public Boolean read(CompoundTag tag, HolderLookup.Provider provider) {
-        return tag.getBooleanOr(name(), getDefaultValue());
+    public Optional<Boolean> read(CompoundTag tag, HolderLookup.Provider provider) {
+        return tag.getBoolean(name());
     }
 
     @Override

@@ -14,7 +14,7 @@ import java.util.*;
 
 public class ShadowController {
     private final Herobrine herobrine;
-    private final List<UUID> shadowHerobrines = new ArrayList<>();
+    private final Set<UUID> shadowHerobrines = new HashSet<>();
     private int flickerStack = 0;
 
     public ShadowController(Herobrine herobrine) {
@@ -22,12 +22,12 @@ public class ShadowController {
     }
 
     public void save(CompoundTag tag) {
-        NarakaNbtUtils.writeCollection(tag, "ShadowHerobrines", shadowHerobrines, NarakaNbtUtils::writeUUID, herobrine.registryAccess());
+        tag.store("ShadowHerobrines", NarakaNbtUtils.UUID_LIST_CODEC, List.copyOf(shadowHerobrines));
     }
 
     public void load(CompoundTag tag) {
         shadowHerobrines.clear();
-        NarakaNbtUtils.readCollection(tag, "ShadowHerobrines", () -> shadowHerobrines, NarakaNbtUtils::readUUID, herobrine.registryAccess());
+        tag.read("ShadowHerobrines", NarakaNbtUtils.UUID_LIST_CODEC).ifPresent(shadowHerobrines::addAll);
     }
 
     public void summonShadowHerobrine(ServerLevel level) {

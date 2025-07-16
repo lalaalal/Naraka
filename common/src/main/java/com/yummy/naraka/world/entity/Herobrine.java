@@ -744,32 +744,27 @@ public class Herobrine extends AbstractHerobrine {
         super.addAdditionalSaveData(compound);
         compound.putFloat("HurtDamageLimit", hurtDamageLimit);
         compound.putBoolean("HibernateMode", hibernateMode);
-        if (spawnPosition != null)
-            compound.put("SpawnPosition", NarakaNbtUtils.writeBlockPos(spawnPosition));
+        compound.storeNullable("SpawnPosition", BlockPos.CODEC, spawnPosition);
         if (narakaPickaxe != null)
             compound.store("NarakaPickaxe", UUIDUtil.CODEC, narakaPickaxe.getUUID());
-        NarakaNbtUtils.writeCollection(compound, "StigmatizedEntities", stigmatizedEntities, NarakaNbtUtils::writeUUID, registryAccess());
-        NarakaNbtUtils.writeCollection(compound, "WatchingEntities", watchingEntities, NarakaNbtUtils::writeUUID, registryAccess());
+        compound.store("StigmatizedEntities", NarakaNbtUtils.UUID_LIST_CODEC, List.copyOf(stigmatizedEntities));
+        compound.store("WatchingEntities", NarakaNbtUtils.UUID_LIST_CODEC, List.copyOf(watchingEntities));
         shadowController.save(compound);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
+        if (!(level() instanceof ServerLevel level))
+            return;
         super.readAdditionalSaveData(compound);
-        if (compound.contains("HurtDamageLimit"))
-            hurtDamageLimit = compound.getFloatOr("HurtDamageLimit", 0);
-        if (compound.contains("HibernatedMode")) {
-            hibernateMode = compound.getBooleanOr("HibernatedMode", false);
-            if (hibernateMode && level() instanceof ServerLevel level)
-                startHibernateMode(level);
-        }
-        if (level() instanceof ServerLevel level) {
-            compound.read("NarakaPickaxe", UUIDUtil.CODEC).ifPresent(uuid -> this.narakaPickaxe = NarakaEntityUtils.findEntityByUUID(level, uuid, NarakaPickaxe.class));
-        }
-        NarakaNbtUtils.readBlockPos(compound, "SpawnPosition")
-                .ifPresent(pos -> spawnPosition = pos);
-        NarakaNbtUtils.readCollection(compound, "StigmatizedEntities", () -> stigmatizedEntities, NarakaNbtUtils::readUUID, registryAccess());
-        NarakaNbtUtils.readCollection(compound, "WatchingEntities", () -> watchingEntities, NarakaNbtUtils::readUUID, registryAccess());
+        hurtDamageLimit = compound.getFloatOr("HurtDamageLimit", 0);
+        hibernateMode = compound.getBooleanOr("HibernatedMode", false);
+        if (hibernateMode)
+            startHibernateMode(level);
+        compound.read("NarakaPickaxe", UUIDUtil.CODEC).ifPresent(uuid -> narakaPickaxe = NarakaEntityUtils.findEntityByUUID(level, uuid, NarakaPickaxe.class));
+        compound.read("SpawnPosition", BlockPos.CODEC).ifPresent(pos -> spawnPosition = pos);
+        compound.read("StigmatizedEntities", NarakaNbtUtils.UUID_LIST_CODEC).ifPresent(stigmatizedEntities::addAll);
+        compound.read("WatchingEntities", NarakaNbtUtils.UUID_LIST_CODEC).ifPresent(watchingEntities::addAll);
         shadowController.load(compound);
     }
 }

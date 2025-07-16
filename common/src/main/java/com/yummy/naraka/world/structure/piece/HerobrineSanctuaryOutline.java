@@ -2,7 +2,6 @@ package com.yummy.naraka.world.structure.piece;
 
 import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.tags.NarakaBlockTags;
-import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -59,14 +58,14 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
 
     public HerobrineSanctuaryOutline(StructurePieceSerializationContext context, CompoundTag tag) {
         super(NarakaStructurePieceTypes.HEROBRINE_SANCTUARY_OUTLINE.get(), tag);
-        this.pos = NarakaNbtUtils.readBlockPos(tag, "pos").orElse(BlockPos.ZERO);
+        this.pos = tag.read("Position", BlockPos.CODEC).orElse(BlockPos.ZERO);
         this.lavaBox = createLavaBox(pos);
         this.airBox = createAirBox(pos);
     }
 
     @Override
     protected void addAdditionalSaveData(StructurePieceSerializationContext pContext, CompoundTag tag) {
-        tag.put("pos", NarakaNbtUtils.writeBlockPos(pos));
+        tag.store("Position", BlockPos.CODEC, pos);
     }
 
     @Override

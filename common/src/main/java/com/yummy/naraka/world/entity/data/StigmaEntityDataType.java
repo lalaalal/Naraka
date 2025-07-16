@@ -5,6 +5,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.Optional;
+
 public class StigmaEntityDataType extends EntityDataType<Stigma> {
     public static final ResourceLocation ID = NarakaMod.location("stigma");
 
@@ -23,12 +25,12 @@ public class StigmaEntityDataType extends EntityDataType<Stigma> {
     }
 
     @Override
-    public Stigma read(CompoundTag tag, HolderLookup.Provider provider) {
+    public Optional<Stigma> read(CompoundTag tag, HolderLookup.Provider provider) {
         if (!saveExists(tag))
-            return getDefaultValue();
+            return Optional.empty();
         int stigma = tag.getIntOr("Stigma", 0);
         long lastMarkedTime = tag.getLongOr("LastMarkedTime", 0);
-        return new Stigma(stigma, lastMarkedTime);
+        return Optional.of(new Stigma(stigma, lastMarkedTime));
     }
 
     @Override

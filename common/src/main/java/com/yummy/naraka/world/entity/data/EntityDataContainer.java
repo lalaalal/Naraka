@@ -44,7 +44,7 @@ public class EntityDataContainer {
         NarakaRegistries.ENTITY_DATA_TYPE.stream().toList()
                 .forEach(entityDataType -> {
                     if (entityDataType.saveExists(compoundTag)) {
-                        Object data = entityDataType.read(compoundTag, registries);
+                        Object data = entityDataType.readOrDefault(compoundTag, registries);
                         setEntityData(entityDataType, data);
                     }
                 });

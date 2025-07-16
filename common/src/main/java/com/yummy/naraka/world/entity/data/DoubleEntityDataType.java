@@ -4,6 +4,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.Optional;
+
 public class DoubleEntityDataType extends EntityDataType<Double> {
     public DoubleEntityDataType(ResourceLocation id, double defaultValue) {
         super(id, defaultValue);
@@ -15,8 +17,8 @@ public class DoubleEntityDataType extends EntityDataType<Double> {
     }
 
     @Override
-    public Double read(CompoundTag tag, HolderLookup.Provider provider) {
-        return tag.getDoubleOr(name(), getDefaultValue());
+    public Optional<Double> read(CompoundTag tag, HolderLookup.Provider provider) {
+        return tag.getDouble(name());
     }
 
     @Override
