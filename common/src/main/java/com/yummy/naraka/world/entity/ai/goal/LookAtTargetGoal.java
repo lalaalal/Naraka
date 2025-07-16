@@ -1,31 +1,31 @@
 package com.yummy.naraka.world.entity.ai.goal;
 
-import com.yummy.naraka.world.entity.AbstractHerobrine;
+import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
 
 public class LookAtTargetGoal extends Goal {
-    private final AbstractHerobrine herobrine;
+    private final SkillUsingMob skillUsingMob;
 
-    public LookAtTargetGoal(AbstractHerobrine herobrine) {
-        this.herobrine = herobrine;
+    public LookAtTargetGoal(SkillUsingMob skillUsingMob) {
+        this.skillUsingMob = skillUsingMob;
         this.setFlags(EnumSet.of(Flag.LOOK));
     }
 
     @Override
     public boolean canUse() {
-        LivingEntity target = herobrine.getTarget();
+        LivingEntity target = skillUsingMob.getTarget();
         if (target == null)
             return false;
-        return !herobrine.isPlayingStaticAnimation() && !herobrine.isUsingSkill();
+        return !skillUsingMob.isPlayingStaticAnimation() && !skillUsingMob.isUsingSkill();
     }
 
     @Override
     public void tick() {
-        LivingEntity target = herobrine.getTarget();
+        LivingEntity target = skillUsingMob.getTarget();
         if (target != null)
-            herobrine.getLookControl().setLookAt(target);
+            skillUsingMob.getLookControl().setLookAt(target);
     }
 }

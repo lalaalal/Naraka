@@ -1,7 +1,7 @@
 package com.yummy.naraka.client.animation.herobrine;
 
 import com.yummy.naraka.client.animation.AnimationMapper;
-import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
@@ -9,13 +9,13 @@ import net.minecraft.client.animation.KeyframeAnimations;
 
 public class FinalHerobrineSkillAnimation {
     public static void initialize() {
-        AnimationMapper.register(AnimationLocations.STORM, STORM);
-        AnimationMapper.register(AnimationLocations.CARPET_BOMBING, CARPET_BOMBING);
-        AnimationMapper.register(AnimationLocations.EXPLOSION, EXPLOSION);
-        AnimationMapper.register(AnimationLocations.EARTH_SHOCK, EARTH_SHOCK);
-        AnimationMapper.register(AnimationLocations.PARRYING, PARRYING);
-        AnimationMapper.register(AnimationLocations.PARRYING_SUCCEED, PARRYING_SUCCEED);
-        AnimationMapper.register(AnimationLocations.PARRYING_FAILED, PARRYING_FAILED);
+        AnimationMapper.register(HerobrineAnimationLocations.STORM, STORM);
+        AnimationMapper.register(HerobrineAnimationLocations.CARPET_BOMBING, CARPET_BOMBING);
+        AnimationMapper.register(HerobrineAnimationLocations.EXPLOSION, EXPLOSION);
+        AnimationMapper.register(HerobrineAnimationLocations.EARTH_SHOCK, EARTH_SHOCK);
+        AnimationMapper.register(HerobrineAnimationLocations.PARRYING, PARRYING);
+        AnimationMapper.register(HerobrineAnimationLocations.PARRYING_SUCCEED, PARRYING_SUCCEED);
+        AnimationMapper.register(HerobrineAnimationLocations.PARRYING_FAILED, PARRYING_FAILED);
     }
 
     public static final AnimationDefinition STORM = AnimationDefinition.Builder.withLength(4.0F)

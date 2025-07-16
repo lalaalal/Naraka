@@ -2,7 +2,7 @@ package com.yummy.naraka.client.animation.herobrine;
 
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.animation.NarakaInterpolations;
-import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
@@ -19,13 +19,13 @@ import net.minecraft.client.animation.KeyframeAnimations;
 @Environment(EnvType.CLIENT)
 public class HerobrineAnimation {
     public static void initialize() {
-        AnimationMapper.register(AnimationLocations.WALKING, WALKING);
-        AnimationMapper.register(AnimationLocations.BLOCKING, BLOCKING);
-        AnimationMapper.register(AnimationLocations.STAGGERING, STAGGERING);
-        AnimationMapper.register(AnimationLocations.STAGGERING_PHASE_2, STAGGERING_PHASE_2);
-        AnimationMapper.register(AnimationLocations.ENTER_PHASE_2, PHASE_2);
-        AnimationMapper.register(AnimationLocations.IDLE, IDLE);
-        AnimationMapper.register(AnimationLocations.SHADOW_SUMMONED, SHADOW_SUMMONED);
+        AnimationMapper.register(HerobrineAnimationLocations.WALKING, WALKING);
+        AnimationMapper.register(HerobrineAnimationLocations.BLOCKING, BLOCKING);
+        AnimationMapper.register(HerobrineAnimationLocations.STAGGERING, STAGGERING);
+        AnimationMapper.register(HerobrineAnimationLocations.STAGGERING_PHASE_2, STAGGERING_PHASE_2);
+        AnimationMapper.register(HerobrineAnimationLocations.ENTER_PHASE_2, PHASE_2);
+        AnimationMapper.register(HerobrineAnimationLocations.IDLE, IDLE);
+        AnimationMapper.register(HerobrineAnimationLocations.SHADOW_SUMMONED, SHADOW_SUMMONED);
     }
 
     public static final AnimationDefinition WALKING = AnimationDefinition.Builder.withLength(2.0F).looping()

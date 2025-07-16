@@ -16,7 +16,7 @@ public class StigmaHelper {
     }
 
     public static void increaseStigma(ServerLevel level, LivingEntity target, Entity cause, boolean recordTime) {
-        if (target.getType().is(NarakaEntityTypeTags.HEROBRINE) || NarakaConfig.COMMON.disableStigma.getValue())
+        if (target.getType().is(NarakaEntityTypeTags.STIGMA_IMMUNE) || NarakaConfig.COMMON.disableStigma.getValue())
             return;
         Stigma stigma = get(target);
         Stigma increased = stigma.increase(level, target, cause, recordTime);

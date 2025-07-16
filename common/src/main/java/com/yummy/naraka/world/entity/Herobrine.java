@@ -15,8 +15,9 @@ import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.control.HerobrineFlyMoveControl;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
-import com.yummy.naraka.world.entity.ai.skill.*;
-import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import com.yummy.naraka.world.entity.ai.skill.Skill;
+import com.yummy.naraka.world.entity.ai.skill.herobrine.*;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import com.yummy.naraka.world.entity.data.LockedHealthHelper;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
@@ -59,33 +60,33 @@ public class Herobrine extends AbstractHerobrine {
 
     protected final DashSkill<AbstractHerobrine> dashSkill = registerSkill(10, this, DashSkill::new);
     protected final DashAroundSkill<AbstractHerobrine> dashAroundSkill = registerSkill(10, this, DashAroundSkill::new);
-    protected final StigmatizeEntitiesSkill stigmatizeEntitiesSkill = registerSkill(10, this, StigmatizeEntitiesSkill::new, AnimationLocations.STIGMATIZE_ENTITIES_START);
-    protected final ThrowFireballSkill throwFireballSkill = registerSkill(9, new ThrowFireballSkill(this, this::createFireball), AnimationLocations.THROW_NARAKA_FIREBALL);
-    protected final BlockingSkill blockingSkill = registerSkill(10, this, BlockingSkill::new, AnimationLocations.BLOCKING);
+    protected final StigmatizeEntitiesSkill stigmatizeEntitiesSkill = registerSkill(10, this, StigmatizeEntitiesSkill::new, HerobrineAnimationLocations.STIGMATIZE_ENTITIES_START);
+    protected final ThrowFireballSkill throwFireballSkill = registerSkill(9, new ThrowFireballSkill(this, this::createFireball), HerobrineAnimationLocations.THROW_NARAKA_FIREBALL);
+    protected final BlockingSkill blockingSkill = registerSkill(10, this, BlockingSkill::new, HerobrineAnimationLocations.BLOCKING);
     protected final SummonShadowSkill summonShadowSkill = registerSkill(0, this, SummonShadowSkill::new);
-    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(8, new RushSkill<>(this), AnimationLocations.RUSH);
+    protected final RushSkill<AbstractHerobrine> rushSkill = registerSkill(8, new RushSkill<>(this), HerobrineAnimationLocations.RUSH);
     protected final DestroyStructureSkill destroyStructureSkill = registerSkill(this, DestroyStructureSkill::new);
 
-    protected final LandingSkill landingSkill = registerSkill(this, LandingSkill::new, AnimationLocations.COMBO_ATTACK_5);
-    protected final SuperHitSkill superHitSkill = registerSkill(new SuperHitSkill(this, landingSkill), AnimationLocations.COMBO_ATTACK_4);
-    protected final SpinningSkill spinningSkill = registerSkill(new SpinningSkill(this, superHitSkill), AnimationLocations.COMBO_ATTACK_3);
-    protected final UppercutSkill uppercutSkill = registerSkill(new UppercutSkill(this, spinningSkill), AnimationLocations.COMBO_ATTACK_2);
-    protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(2, new PunchSkill<>(this, 140, true, uppercutSkill), AnimationLocations.COMBO_ATTACK_1);
+    protected final LandingSkill landingSkill = registerSkill(this, LandingSkill::new, HerobrineAnimationLocations.COMBO_ATTACK_5);
+    protected final SuperHitSkill superHitSkill = registerSkill(new SuperHitSkill(this, landingSkill), HerobrineAnimationLocations.COMBO_ATTACK_4);
+    protected final SpinningSkill spinningSkill = registerSkill(new SpinningSkill(this, superHitSkill), HerobrineAnimationLocations.COMBO_ATTACK_3);
+    protected final UppercutSkill uppercutSkill = registerSkill(new UppercutSkill(this, spinningSkill), HerobrineAnimationLocations.COMBO_ATTACK_2);
+    protected final PunchSkill<AbstractHerobrine> punchSkill = registerSkill(2, new PunchSkill<>(this, 140, true, uppercutSkill), HerobrineAnimationLocations.COMBO_ATTACK_1);
 
     protected final FlickerSkill<Herobrine> flickerSkill = registerSkill(new FlickerSkill<>(this, dashSkill, punchSkill));
     protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, flickerSkill));
 
-    protected final CarpetBombingSkill carpetBombingSkill = registerSkill(7, this, CarpetBombingSkill::new, AnimationLocations.CARPET_BOMBING);
-    protected final ExplosionSkill explosionSkill = registerSkill(7, this, ExplosionSkill::new, AnimationLocations.EXPLOSION);
-    protected final EarthShockSkill earthShockSkill = registerSkill(6, this, EarthShockSkill::new, AnimationLocations.EARTH_SHOCK);
-    protected final ParryingSkill parryingSkill = registerSkill(7, this, ParryingSkill::new, AnimationLocations.PARRYING);
-    protected final StormSkill stormSkill = registerSkill(6, new StormSkill(this, parryingSkill), AnimationLocations.STORM);
+    protected final CarpetBombingSkill carpetBombingSkill = registerSkill(7, this, CarpetBombingSkill::new, HerobrineAnimationLocations.CARPET_BOMBING);
+    protected final ExplosionSkill explosionSkill = registerSkill(7, this, ExplosionSkill::new, HerobrineAnimationLocations.EXPLOSION);
+    protected final EarthShockSkill earthShockSkill = registerSkill(6, this, EarthShockSkill::new, HerobrineAnimationLocations.EARTH_SHOCK);
+    protected final ParryingSkill parryingSkill = registerSkill(7, this, ParryingSkill::new, HerobrineAnimationLocations.PARRYING);
+    protected final StormSkill stormSkill = registerSkill(6, new StormSkill(this, parryingSkill), HerobrineAnimationLocations.STORM);
 
-    protected final StrikeDownSkill strikeDownSkill = registerSkill(new StrikeDownSkill(this, parryingSkill), AnimationLocations.FINAL_COMBO_ATTACK_3);
-    protected final SpinUpSkill spinUpSkill = registerSkill(new SpinUpSkill(this, strikeDownSkill), AnimationLocations.FINAL_COMBO_ATTACK_2);
-    protected final SplitAttackSkill splitAttackSkill = registerSkill(7, new SplitAttackSkill(this, spinUpSkill), AnimationLocations.FINAL_COMBO_ATTACK_1);
-    protected final PickaxeSlashSkill<AbstractHerobrine> singlePickaxeSlashSkill = registerSkill(7, this, PickaxeSlashSkill::single, AnimationLocations.PICKAXE_SLASH_SINGLE);
-    protected final PickaxeSlashSkill<Herobrine> triplePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::triple, AnimationLocations.PICKAXE_SLASH_TRIPLE);
+    protected final StrikeDownSkill strikeDownSkill = registerSkill(new StrikeDownSkill(this, parryingSkill), HerobrineAnimationLocations.FINAL_COMBO_ATTACK_3);
+    protected final SpinUpSkill spinUpSkill = registerSkill(new SpinUpSkill(this, strikeDownSkill), HerobrineAnimationLocations.FINAL_COMBO_ATTACK_2);
+    protected final SplitAttackSkill splitAttackSkill = registerSkill(7, new SplitAttackSkill(this, spinUpSkill), HerobrineAnimationLocations.FINAL_COMBO_ATTACK_1);
+    protected final PickaxeSlashSkill<AbstractHerobrine> singlePickaxeSlashSkill = registerSkill(7, this, PickaxeSlashSkill::single, HerobrineAnimationLocations.PICKAXE_SLASH_SINGLE);
+    protected final PickaxeSlashSkill<Herobrine> triplePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::triple, HerobrineAnimationLocations.PICKAXE_SLASH_TRIPLE);
 
     public final AnimationState chzzkAnimationState = new AnimationState();
 
@@ -99,7 +100,7 @@ public class Herobrine extends AbstractHerobrine {
     private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, splitAttackSkill, stormSkill, carpetBombingSkill, singlePickaxeSlashSkill, triplePickaxeSlashSkill, earthShockSkill);
 
     private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashAroundSkill, walkAroundTargetSkill);
-    private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(AnimationLocations.ENTER_PHASE_2, AnimationLocations.STAGGERING_PHASE_2, AnimationLocations.ENTER_PHASE_3);
+    private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(HerobrineAnimationLocations.ENTER_PHASE_2, HerobrineAnimationLocations.STAGGERING_PHASE_2, HerobrineAnimationLocations.ENTER_PHASE_3);
 
     private final List<List<Skill<?>>> HIBERNATED_MODE_SKILL_BY_PHASE = List.of(
             List.of(), HIBERNATED_MODE_PHASE_1_SKILLS, HIBERNATED_MODE_PHASE_2_SKILLS, List.of()
@@ -149,21 +150,21 @@ public class Herobrine extends AbstractHerobrine {
         skillManager.enableOnly(PHASE_1_SKILLS);
         skillManager.shareCooldown(List.of(singlePickaxeSlashSkill, triplePickaxeSlashSkill));
 
-        registerAnimation(AnimationLocations.ENTER_PHASE_2);
-        registerAnimation(AnimationLocations.ENTER_PHASE_3);
-        registerAnimation(AnimationLocations.STAGGERING_PHASE_2);
-        registerAnimation(AnimationLocations.RUSH_SUCCEED);
-        registerAnimation(AnimationLocations.RUSH_FAILED);
-        registerAnimation(AnimationLocations.FINAL_COMBO_ATTACK_1_RETURN);
-        registerAnimation(AnimationLocations.FINAL_COMBO_ATTACK_2_RETURN);
-        registerAnimation(AnimationLocations.PARRYING_SUCCEED);
-        registerAnimation(AnimationLocations.PARRYING_FAILED);
+        registerAnimation(HerobrineAnimationLocations.ENTER_PHASE_2);
+        registerAnimation(HerobrineAnimationLocations.ENTER_PHASE_3);
+        registerAnimation(HerobrineAnimationLocations.STAGGERING_PHASE_2);
+        registerAnimation(HerobrineAnimationLocations.RUSH_SUCCEED);
+        registerAnimation(HerobrineAnimationLocations.RUSH_FAILED);
+        registerAnimation(HerobrineAnimationLocations.FINAL_COMBO_ATTACK_1_RETURN);
+        registerAnimation(HerobrineAnimationLocations.FINAL_COMBO_ATTACK_2_RETURN);
+        registerAnimation(HerobrineAnimationLocations.PARRYING_SUCCEED);
+        registerAnimation(HerobrineAnimationLocations.PARRYING_FAILED);
 
-        registerAnimation(AnimationLocations.STIGMATIZE_ENTITIES);
-        registerAnimation(AnimationLocations.STIGMATIZE_ENTITIES_END);
+        registerAnimation(HerobrineAnimationLocations.STIGMATIZE_ENTITIES);
+        registerAnimation(HerobrineAnimationLocations.STIGMATIZE_ENTITIES_END);
 
-        registerAnimation(AnimationLocations.DYING);
-        registerAnimation(AnimationLocations.CHZZK);
+        registerAnimation(HerobrineAnimationLocations.DYING);
+        registerAnimation(HerobrineAnimationLocations.CHZZK);
     }
 
     private void useShadowFlicker(Skill<?> skill) {
@@ -216,8 +217,14 @@ public class Herobrine extends AbstractHerobrine {
         navigation = new FlyingPathNavigation(this, level());
         moveControl = new HerobrineFlyMoveControl(this, 0.75);
         setNoGravity(true);
-        setAnimation(AnimationLocations.PHASE_3_IDLE);
+        setAnimation(HerobrineAnimationLocations.PHASE_3_IDLE);
         setDisplayEye(false);
+        if (narakaPickaxe == null || narakaPickaxe.isDeadOrDying()) {
+            narakaPickaxe = new NarakaPickaxe(level(), this);
+            narakaPickaxe.setPos(position());
+            narakaPickaxe.setDeltaMovement(0, 0.2, 0);
+            level().addFreshEntity(narakaPickaxe);
+        }
 
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR_TOUGHNESS, NarakaAttributeModifiers.FINAL_HEROBRINE_ARMOR_TOUGHNESS);
     }
@@ -246,7 +253,7 @@ public class Herobrine extends AbstractHerobrine {
 
     private void startStaggering(int prevPhase, int currentPhase) {
         if (currentPhase == 2)
-            startStaggering(AnimationLocations.ENTER_PHASE_2, 55, 40);
+            startStaggering(HerobrineAnimationLocations.ENTER_PHASE_2, 55, 40);
     }
 
     private void updateMusic(int prevPhase, int currentPhase) {
@@ -384,7 +391,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void updateIdleTick() {
-        if (getCurrentAnimation().equals(AnimationLocations.IDLE)) {
+        if (getCurrentAnimation().equals(HerobrineAnimationLocations.IDLE)) {
             idleTickCount += 1;
         } else {
             idleTickCount = 0;
@@ -546,7 +553,7 @@ public class Herobrine extends AbstractHerobrine {
             if (getHealth() > getPhaseMinimumHealth())
                 startStaggering();
             if (getHealth() == getPhaseMinimumHealth() && getPhase() == 1)
-                startStaggering(AnimationLocations.STAGGERING_PHASE_2, 125, 100);
+                startStaggering(HerobrineAnimationLocations.STAGGERING_PHASE_2, 125, 100);
             resetDamageLimit();
             if (hibernateMode)
                 stopHibernateMode(level);
@@ -627,7 +634,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     protected void startStaggering() {
-        startStaggering(AnimationLocations.STAGGERING, 70, -1);
+        startStaggering(HerobrineAnimationLocations.STAGGERING, 70, -1);
     }
 
     @Override
@@ -691,9 +698,9 @@ public class Herobrine extends AbstractHerobrine {
         setXRot(0);
         setDeltaMovement(0, -1, 0);
         if (deathTime == 0)
-            updateAnimation(AnimationLocations.DYING);
+            updateAnimation(HerobrineAnimationLocations.DYING);
         if (deathTime == 60) {
-            updateAnimation(AnimationLocations.CHZZK);
+            updateAnimation(HerobrineAnimationLocations.CHZZK);
             chzzkAnimationState.start(tickCount);
         }
         if (deathTime > 1200)

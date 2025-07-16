@@ -2,7 +2,7 @@ package com.yummy.naraka.client.animation.herobrine;
 
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.animation.NarakaInterpolations;
-import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
@@ -18,11 +18,11 @@ import net.minecraft.client.animation.KeyframeAnimations;
 @Environment(EnvType.CLIENT)
 public class HerobrineComboAttackAnimation {
     public static void initialize() {
-        AnimationMapper.register(AnimationLocations.COMBO_ATTACK_1, COMBO_ATTACK_1);
-        AnimationMapper.register(AnimationLocations.COMBO_ATTACK_2, COMBO_ATTACK_2);
-        AnimationMapper.register(AnimationLocations.COMBO_ATTACK_3, COMBO_ATTACK_3);
-        AnimationMapper.register(AnimationLocations.COMBO_ATTACK_4, COMBO_ATTACK_4);
-        AnimationMapper.register(AnimationLocations.COMBO_ATTACK_5, COMBO_ATTACK_5);
+        AnimationMapper.register(HerobrineAnimationLocations.COMBO_ATTACK_1, COMBO_ATTACK_1);
+        AnimationMapper.register(HerobrineAnimationLocations.COMBO_ATTACK_2, COMBO_ATTACK_2);
+        AnimationMapper.register(HerobrineAnimationLocations.COMBO_ATTACK_3, COMBO_ATTACK_3);
+        AnimationMapper.register(HerobrineAnimationLocations.COMBO_ATTACK_4, COMBO_ATTACK_4);
+        AnimationMapper.register(HerobrineAnimationLocations.COMBO_ATTACK_5, COMBO_ATTACK_5);
     }
 
     public static final AnimationDefinition COMBO_ATTACK_1 = AnimationDefinition.Builder.withLength(1.125F)

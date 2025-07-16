@@ -2,10 +2,9 @@ package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
-import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
-import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -47,9 +46,6 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
     private float eyeAlpha = 1;
     private float prevScarfRotation = 0;
-    protected int animationTickLeft = Integer.MIN_VALUE;
-    protected Runnable animationTickListener = () -> {
-    };
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
@@ -74,11 +70,11 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     protected AbstractHerobrine(EntityType<? extends AbstractHerobrine> entityType, Level level, boolean isShadow) {
         super(entityType, level);
         this.isShadow = isShadow;
-        registerAnimation(AnimationLocations.STAGGERING);
-        registerAnimation(AnimationLocations.IDLE);
-        registerAnimation(AnimationLocations.PHASE_3_IDLE);
+        registerAnimation(HerobrineAnimationLocations.STAGGERING);
+        registerAnimation(HerobrineAnimationLocations.IDLE);
+        registerAnimation(HerobrineAnimationLocations.PHASE_3_IDLE);
 
-        updateAnimation(AnimationLocations.IDLE);
+        updateAnimation(HerobrineAnimationLocations.IDLE);
         skillManager.runOnSkillEnd(this::updateAnimationOnSkillEnd);
     }
 
@@ -156,57 +152,20 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
     protected ResourceLocation getIdleAnimation() {
         if (isFinalModel())
-            return AnimationLocations.PHASE_3_IDLE;
-        return AnimationLocations.IDLE;
+            return HerobrineAnimationLocations.PHASE_3_IDLE;
+        return HerobrineAnimationLocations.IDLE;
+    }
+
+    @Override
+    public void stopStaticAnimation() {
+        if (animationTickLeft >= 0)
+            setAnimation(getIdleAnimation());
+        super.stopStaticAnimation();
+
     }
 
     public boolean shouldPlayIdleAnimation() {
         return true;
-    }
-
-    private void updateAnimationTick() {
-        if (animationTickLeft == 0)
-            stopStaticAnimation();
-        if (animationTickLeft >= 0) {
-            animationTickListener.run();
-            animationTickLeft -= 1;
-        }
-    }
-
-    public boolean isPlayingStaticAnimation() {
-        return animationTickLeft > 0;
-    }
-
-    public void playStaticAnimation(ResourceLocation animation, int duration) {
-        playStaticAnimation(animation, duration, true);
-    }
-
-    public void playStaticAnimation(ResourceLocation animation, int duration, boolean interruptSkill) {
-        if (animationTickLeft > 0)
-            return;
-        setAnimation(animation);
-        animationTickLeft = Math.max(1, duration);
-        skillManager.pause(interruptSkill);
-        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
-        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.FLYING_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
-    }
-
-    public void stopStaticAnimation() {
-        if (animationTickLeft < 0)
-            return;
-        setAnimation(getIdleAnimation());
-        animationTickLeft = Integer.MIN_VALUE;
-        animationTickListener = () -> {
-        };
-        skillManager.resume();
-        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
-        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.FLYING_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
-    }
-
-    @Override
-    public void setAnimation(ResourceLocation animationLocation) {
-        if (!isPlayingStaticAnimation())
-            super.setAnimation(animationLocation);
     }
 
     @Override
@@ -240,7 +199,6 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
     @Override
     protected void customServerAiStep(ServerLevel serverLevel) {
-        updateAnimationTick();
         updateScarfRotation();
         super.customServerAiStep(serverLevel);
     }

@@ -1,6 +1,7 @@
 package com.yummy.naraka.client.animation;
 
 import com.yummy.naraka.client.animation.herobrine.*;
+import com.yummy.naraka.client.animation.naraka_pickaxe.NarakaPickaxeAnimation;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -30,6 +31,8 @@ public class AnimationMapper {
         FinalHerobrineAnimation.initialize();
         FinalHerobrineSkillAnimation.initialize();
         FinalHerobrineComboAnimation.initialize();
+
+        NarakaPickaxeAnimation.initialize();
 
         AnimationLocations.checkMappings(MAPPER.keySet());
     }
