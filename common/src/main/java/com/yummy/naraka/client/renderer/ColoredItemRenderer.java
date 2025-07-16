@@ -14,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.HashMap;
@@ -28,6 +29,8 @@ import java.util.function.Supplier;
 @Environment(EnvType.CLIENT)
 public class ColoredItemRenderer {
     private static final Map<Item, Supplier<Color>> ITEM_COLORS = new HashMap<>();
+    @Nullable
+    private static Color temporaryColor;
     private static ItemStack currentRenderingItem = ItemStack.EMPTY;
 
     public static void register(Supplier<Item> item, Supplier<Color> color) {
@@ -38,14 +41,23 @@ public class ColoredItemRenderer {
         currentRenderingItem = itemStack;
     }
 
+    public static void setTemporaryColorForCurrent(Color color) {
+        temporaryColor = color;
+    }
+
     public static boolean shouldRenderAsColored() {
-        return ITEM_COLORS.containsKey(currentRenderingItem.getItem());
+        return ITEM_COLORS.containsKey(currentRenderingItem.getItem()) || temporaryColor != null;
     }
 
     public static void renderColored(List<BakedQuad> quads, int packedLight, int packedOverlay, PoseStack poseStack, VertexConsumer vertexConsumer) {
-        Color color = ITEM_COLORS.get(currentRenderingItem.getItem())
-                .get().withAlpha(0xff);
-        renderColoredQuadList(poseStack, vertexConsumer, quads, packedLight, packedOverlay, color);
+        renderColoredQuadList(poseStack, vertexConsumer, quads, packedLight, packedOverlay, getColor(currentRenderingItem));
+        temporaryColor = null;
+    }
+
+    private static Color getColor(ItemStack stack) {
+        if (temporaryColor != null)
+            return temporaryColor;
+        return ITEM_COLORS.get(stack.getItem()).get().withAlpha(0xff);
     }
 
     private static void renderColoredQuadList(PoseStack poseStack, VertexConsumer buffer, List<BakedQuad> quads, int combinedLight, int combinedOverlay, Color color) {

@@ -4,7 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.model.NarakaPickaxeModel;
+import com.yummy.naraka.client.renderer.ColoredItemRenderer;
 import com.yummy.naraka.client.renderer.entity.state.NarakaPickaxeRenderState;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.NarakaPickaxe;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
@@ -57,6 +59,7 @@ public class NarakaPickaxeRenderer extends EntityRenderer<NarakaPickaxe, NarakaP
         reusedState.setAnimationVisitor(entity);
         reusedState.yRot = entity.getYRot(partialTick);
         itemModelResolver.updateForNonLiving(reusedState.pickaxe, pickaxe, ItemDisplayContext.NONE, entity);
+        ColoredItemRenderer.setTemporaryColorForCurrent(Color.of(0xabffffff));
     }
 
     @Override
