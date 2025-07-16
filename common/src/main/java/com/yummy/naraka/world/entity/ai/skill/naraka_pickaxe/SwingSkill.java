@@ -40,8 +40,8 @@ public class SwingSkill extends AttackSkill<NarakaPickaxe> {
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAt(0, () -> mob.setDeltaMovement(0, 1, 0));
         runBetween(0, 40, () -> reduceSpeed(0.75));
-        runBetween(0, 5, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 2));
-        runBetween(60, 75, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 2));
+        runBetween(0, 5, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 1));
+        runBetween(60, 75, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 1));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class SwingSkill extends AttackSkill<NarakaPickaxe> {
         Stigma stigma = StigmaHelper.get(target);
         if (stigma.value() > 0) {
             StigmaHelper.decreaseStigma(target);
-            target.hurtServer(level, NarakaDamageSources.stigmaConsume(target), stigma.value() * calculateDamage(target));
+            target.hurtServer(level, NarakaDamageSources.stigmaConsume(mob), stigma.value() * calculateDamage(target));
             level.playSound(null, mob, SoundEvents.BEACON_DEACTIVATE, SoundSource.HOSTILE, 1, 1);
         }
     }

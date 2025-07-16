@@ -136,6 +136,7 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
         mob.stopStaticAnimation();
         mob.setFinalModel(true);
         mob.playStaticAnimation(HerobrineAnimationLocations.ENTER_PHASE_3, 120, false);
+        mob.spawnNarakaPickaxe();
     }
 
     private void determinePositions() {

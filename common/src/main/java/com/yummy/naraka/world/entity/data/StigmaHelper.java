@@ -28,8 +28,9 @@ public class StigmaHelper {
     }
 
     public static void decreaseStigma(LivingEntity livingEntity) {
-        long currentGameTime = livingEntity.level().getGameTime();
         Stigma stigma = get(livingEntity);
+
+        long currentGameTime = stigma.value() > 1 ? livingEntity.level().getGameTime() : 0;
         Stigma decreased = stigma.decrease(currentGameTime);
 
         set(livingEntity, decreased);

@@ -219,14 +219,19 @@ public class Herobrine extends AbstractHerobrine {
         setNoGravity(true);
         setAnimation(HerobrineAnimationLocations.PHASE_3_IDLE);
         setDisplayEye(false);
+
+        int armor = bossEvent.getPlayers().size() * 2;
+        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR, NarakaAttributeModifiers.finalHerobrineArmor(armor));
+        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR_TOUGHNESS, NarakaAttributeModifiers.FINAL_HEROBRINE_ARMOR_TOUGHNESS);
+    }
+
+    public void spawnNarakaPickaxe() {
         if (narakaPickaxe == null || narakaPickaxe.isDeadOrDying()) {
             narakaPickaxe = new NarakaPickaxe(level(), this);
             narakaPickaxe.setPos(position());
             narakaPickaxe.setDeltaMovement(0, 0.2, 0);
             level().addFreshEntity(narakaPickaxe);
         }
-
-        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR_TOUGHNESS, NarakaAttributeModifiers.FINAL_HEROBRINE_ARMOR_TOUGHNESS);
     }
 
     @Override
