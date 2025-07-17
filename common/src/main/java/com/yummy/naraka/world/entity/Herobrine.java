@@ -121,7 +121,7 @@ public class Herobrine extends AbstractHerobrine {
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this, bossEvent);
     private final ShadowController shadowController = new ShadowController(this);
-    private @Nullable NarakaPickaxe narakaPickaxe;
+    private @Nullable UUID narakaPickaxeUUID;
 
     private float hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
 
@@ -226,11 +226,13 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     public void spawnNarakaPickaxe() {
-        if (narakaPickaxe == null || narakaPickaxe.isDeadOrDying()) {
-            narakaPickaxe = new NarakaPickaxe(level(), this);
+        if (narakaPickaxeUUID == null) {
+            NarakaPickaxe narakaPickaxe = new NarakaPickaxe(level(), this);
             narakaPickaxe.setPos(position());
             narakaPickaxe.setDeltaMovement(0, 0.2, 0);
+            narakaPickaxe.setYRot(180);
             level().addFreshEntity(narakaPickaxe);
+            this.narakaPickaxeUUID = narakaPickaxe.getUUID();
         }
     }
 
@@ -750,8 +752,7 @@ public class Herobrine extends AbstractHerobrine {
         compound.putFloat("HurtDamageLimit", hurtDamageLimit);
         compound.putBoolean("HibernateMode", hibernateMode);
         compound.storeNullable("SpawnPosition", BlockPos.CODEC, spawnPosition);
-        if (narakaPickaxe != null)
-            compound.store("NarakaPickaxe", UUIDUtil.CODEC, narakaPickaxe.getUUID());
+        compound.storeNullable("NarakaPickaxe", UUIDUtil.CODEC, narakaPickaxeUUID);
         compound.store("StigmatizedEntities", NarakaNbtUtils.UUID_LIST_CODEC, List.copyOf(stigmatizedEntities));
         compound.store("WatchingEntities", NarakaNbtUtils.UUID_LIST_CODEC, List.copyOf(watchingEntities));
         shadowController.save(compound);
@@ -766,7 +767,7 @@ public class Herobrine extends AbstractHerobrine {
         hibernateMode = compound.getBooleanOr("HibernatedMode", false);
         if (hibernateMode)
             startHibernateMode(level);
-        compound.read("NarakaPickaxe", UUIDUtil.CODEC).ifPresent(uuid -> narakaPickaxe = NarakaEntityUtils.findEntityByUUID(level, uuid, NarakaPickaxe.class));
+        compound.read("NarakaPickaxe", UUIDUtil.CODEC).ifPresent(uuid -> narakaPickaxeUUID = uuid);
         compound.read("SpawnPosition", BlockPos.CODEC).ifPresent(pos -> spawnPosition = pos);
         compound.read("StigmatizedEntities", NarakaNbtUtils.UUID_LIST_CODEC).ifPresent(stigmatizedEntities::addAll);
         compound.read("WatchingEntities", NarakaNbtUtils.UUID_LIST_CODEC).ifPresent(watchingEntities::addAll);

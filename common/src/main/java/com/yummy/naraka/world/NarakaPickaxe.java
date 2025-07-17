@@ -23,12 +23,18 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 public class NarakaPickaxe extends SkillUsingMob {
     private final SwingSkill swingSkill = registerSkill(this, SwingSkill::new, NarakaPickaxeAnimationLocations.SWING);
     private final ExplodeSkill explodeSkill = registerSkill(this, ExplodeSkill::new, NarakaPickaxeAnimationLocations.EXPLODE);
 
     @Nullable
-    private Herobrine herobrine;
+    private Herobrine cachedHerobrine;
+    @Nullable
+    private UUID herobrineUUID;
 
     public static boolean isNotNarakaPickaxe(LivingEntity livingEntity) {
         return livingEntity.getType() != NarakaEntityTypes.NARAKA_PICKAXE.get();
@@ -48,20 +54,39 @@ public class NarakaPickaxe extends SkillUsingMob {
     public NarakaPickaxe(EntityType<NarakaPickaxe> entityType, Level level) {
         super(entityType, level);
         registerAnimation(NarakaPickaxeAnimationLocations.IDLE);
-        explodeSkill.setCooldown();
+        skillManager.enableOnly(List.of());
     }
 
     public NarakaPickaxe(Level level, Herobrine herobrine) {
         this(NarakaEntityTypes.NARAKA_PICKAXE.get(), level);
-        this.herobrine = herobrine;
+        this.cachedHerobrine = herobrine;
+        this.herobrineUUID = herobrine.getUUID();
+    }
+
+    private void startUsingSkill() {
+        skillManager.enableOnly(List.of(swingSkill, explodeSkill));
+        explodeSkill.setCooldown();
+    }
+
+    private Optional<Herobrine> getHerobrine(ServerLevel level) {
+        if (this.herobrineUUID == null)
+            return Optional.empty();
+        if (cachedHerobrine == null)
+            return Optional.ofNullable(cachedHerobrine = NarakaEntityUtils.findEntityByUUID(level, herobrineUUID, Herobrine.class));
+        return Optional.of(cachedHerobrine);
     }
 
     @Override
     public void tick() {
         setNoGravity(true);
         super.tick();
-        if (herobrine != null && (herobrine.isDeadOrDying() || herobrine.isRemoved()))
-            discard();
+        if (tickCount == 100)
+            startUsingSkill();
+        if (level() instanceof ServerLevel level) {
+            getHerobrine(level)
+                    .filter(herobrine -> herobrine.isDeadOrDying() || herobrine.isRemoved())
+                    .ifPresent(herobrine -> discard());
+        }
     }
 
     @Override
@@ -74,8 +99,8 @@ public class NarakaPickaxe extends SkillUsingMob {
     @Override
     public @Nullable LivingEntity getTarget() {
         LivingEntity target = super.getTarget();
-        if (target == null && herobrine != null)
-            return herobrine.getTarget();
+        if (target == null && cachedHerobrine != null)
+            return cachedHerobrine.getTarget();
         return target;
     }
 
@@ -86,16 +111,11 @@ public class NarakaPickaxe extends SkillUsingMob {
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
-        tag.read("Owner", UUIDUtil.CODEC).ifPresent(uuid -> {
-            if (level() instanceof ServerLevel level) {
-                this.herobrine = NarakaEntityUtils.findEntityByUUID(level, uuid, Herobrine.class);
-            }
-        });
+        tag.read("Owner", UUIDUtil.CODEC).ifPresent(uuid -> herobrineUUID = uuid);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
-        if (herobrine != null)
-            tag.store("Owner", UUIDUtil.CODEC, herobrine.getUUID());
+        tag.storeNullable("Owner", UUIDUtil.CODEC, herobrineUUID);
     }
 }
