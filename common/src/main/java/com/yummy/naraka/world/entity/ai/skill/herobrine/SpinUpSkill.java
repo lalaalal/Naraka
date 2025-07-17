@@ -1,6 +1,8 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
@@ -37,6 +39,7 @@ public class SpinUpSkill extends ComboSkill<Herobrine> {
             rotateTowardTarget(target);
         }
         runAt(20, () -> spinUp(target));
+        runBetween(20, 25, () -> NarakaSkillUtils.sendTraceParticles(level, mob, NarakaParticleTypes.CORRUPTED_SOUL_FIRE_FLAME.get()));
         runBetween(20, 32, () -> blowBlocks(level, 3, 20));
         runBetween(23, 35, () -> blowBlocks(level, 4, 23));
         runBetween(25, 37, () -> blowBlocks(level, 5, 25));

@@ -49,6 +49,7 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
         run(at(3) && targetOutOfRange(target, 9), () -> teleportToTarget(target, 3));
         runBetween(0, 10, () -> rotateTowardTarget(target));
         runBetween(15, 20, () -> moveToTarget(target, true, 1));
+        runBetween(15, 20, () -> NarakaSkillUtils.sendTraceParticles(level, mob, NarakaParticleTypes.CORRUPTED_SOUL_FIRE_FLAME.get()));
         runBetween(15, 20, () -> rotateTowardTarget(target));
         runBetween(18, 20, () -> hurtEntities(level, this::checkTarget, 1.8));
         runAt(20, this::stopMoving);

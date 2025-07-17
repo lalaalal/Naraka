@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -67,6 +68,20 @@ public class NarakaSkillUtils {
             double x = Math.cos(Math.toRadians(yRot)) * radius;
             double z = Math.sin(Math.toRadians(yRot)) * radius;
             level.sendParticles(particle, position.x() + x, position.y() + 1.5, position.z() + z, 1, 0, 0, 0, 1);
+        }
+    }
+
+    public static void sendTraceParticles(ServerLevel level, LivingEntity entity, ParticleOptions particle) {
+        Vec3 movement = entity.getDeltaMovement();
+
+        int count = 25;
+        for (int i = 0; i < count; i++) {
+            float delta = i / (float) count;
+
+            double x = entity.getX() + Mth.lerp(delta, 0, movement.x) + entity.getRandom().nextDouble() * 0.3;
+            double y = entity.getEyeY() + 0.5 + Mth.lerp(delta, 0, movement.y) + entity.getRandom().nextDouble() * 0.1;
+            double z = entity.getZ() + Mth.lerp(delta, 0, movement.z) + entity.getRandom().nextDouble() * 0.3;
+            level.sendParticles(particle, x, y, z, 1, 0, 0.01, 0, 0.1);
         }
     }
 

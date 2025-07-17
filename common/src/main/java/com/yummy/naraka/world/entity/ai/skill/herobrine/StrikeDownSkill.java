@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
@@ -54,6 +55,7 @@ public class StrikeDownSkill extends ComboSkill<Herobrine> {
         runBefore(15, () -> rotateTowardTarget(target));
         runBefore(15, () -> lookTarget(target));
         runBetween(19, 27, () -> moveToTarget(target, true, this::modifyMovement));
+        runBetween(19, 25, () -> NarakaSkillUtils.sendTraceParticles(level, mob, NarakaParticleTypes.CORRUPTED_SOUL_FIRE_FLAME.get()));
         runAt(21, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 5));
 
         runAt(20, () -> shadowSpawner.control(this::displayShadowPickaxe).spawn(level, shadowPosition, mob.getYRot()));
