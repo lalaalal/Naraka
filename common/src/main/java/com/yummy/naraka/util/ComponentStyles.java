@@ -1,7 +1,5 @@
 package com.yummy.naraka.util;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Style;
 
 import java.util.List;
@@ -13,20 +11,12 @@ import java.util.stream.Stream;
  *
  * @author lalaalal
  */
-@Environment(EnvType.CLIENT)
 public class ComponentStyles {
-    public static final ColorTransforming LONGINUS_COLOR = new ColorTransforming(
+    public static final ColorTransforming RAINBOW_COLOR = new ColorTransforming(
             Stream.of(0xB02E26, 0xF9801D, 0xFED83D, 0x80C71F, 0x169C9C, 0x3C44AA, 0x8932B8, 0xC74EBD)
                     .map(Color::of).toList(),
             10
     );
-    private static long tickCount = 0;
-
-    public static void tick() {
-        LONGINUS_COLOR.updateColor();
-
-        tickCount++;
-    }
 
     public static class ColorTransforming implements UnaryOperator<Style> {
         private final List<Color> colors;
@@ -34,13 +24,13 @@ public class ComponentStyles {
         private long lastChangedTime;
         private Color previousColor;
         private Color currentColor;
+        private long tickCount;
 
         public ColorTransforming(List<Color> colors, long transformTime) {
             this.colors = colors;
             this.transformTime = transformTime;
             previousColor = colors.getFirst();
             currentColor = previousColor;
-            lastChangedTime = tickCount;
         }
 
         public Color next() {
@@ -56,6 +46,8 @@ public class ComponentStyles {
             Color nextColor = next();
             double delta = (tickCount - lastChangedTime) / (double) transformTime;
             currentColor = ColorUtil.transform(previousColor, nextColor, delta);
+
+            tickCount += 1;
         }
 
         public Color getCurrentColor() {

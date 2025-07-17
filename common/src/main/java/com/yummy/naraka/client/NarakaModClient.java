@@ -78,7 +78,7 @@ public final class NarakaModClient {
     }
 
     private static void initializeItems() {
-        ColoredItemRenderer.register(NarakaItems.RAINBOW_SWORD, ComponentStyles.LONGINUS_COLOR::getCurrentColor);
+        ColoredItemRenderer.register(NarakaItems.RAINBOW_SWORD, ComponentStyles.RAINBOW_COLOR::getCurrentColor);
     }
 
     private static void initializeBlocks() {
