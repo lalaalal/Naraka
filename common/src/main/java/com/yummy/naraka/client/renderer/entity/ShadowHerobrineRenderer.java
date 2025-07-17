@@ -43,7 +43,7 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
         renderState.pickaxeLight = 0;
         renderState.alpha = entity.getAlpha();
         renderState.scarfAlpha = renderState.alpha;
-        ColoredItemRenderer.setTemporaryColorForCurrent(Color.of(0x000000).withAlpha(renderState.alpha));
+        ColoredItemRenderer.setTemporaryColorForCurrent(Color.of(0).withAlpha(renderState.alpha));
     }
 
     @Override

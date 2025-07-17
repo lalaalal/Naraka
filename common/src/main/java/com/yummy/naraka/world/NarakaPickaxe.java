@@ -89,11 +89,16 @@ public class NarakaPickaxe extends SkillUsingMob {
         }
     }
 
+    private boolean filterTarget(LivingEntity target, ServerLevel level) {
+        return AbstractHerobrine.isNotHerobrine(target)
+                && target.getType() != NarakaEntityTypes.NARAKA_PICKAXE.get();
+    }
+
     @Override
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new LookAtTargetGoal(this));
-        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, false, (entity, level) -> AbstractHerobrine.isNotHerobrine(entity)));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, false, this::filterTarget));
     }
 
     @Override
