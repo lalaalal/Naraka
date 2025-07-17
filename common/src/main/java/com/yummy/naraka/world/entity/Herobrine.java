@@ -284,10 +284,6 @@ public class Herobrine extends AbstractHerobrine {
         return phaseManager.getCurrentPhase();
     }
 
-    public float getHurtDamageLimit() {
-        return hurtDamageLimit;
-    }
-
     private float calculateLockedHealth(ServerLevel level) {
         double sum = 0;
         for (LivingEntity livingEntity : NarakaEntityUtils.findEntitiesByUUID(level, watchingEntities, LivingEntity.class))
@@ -763,7 +759,7 @@ public class Herobrine extends AbstractHerobrine {
         if (!(level() instanceof ServerLevel level))
             return;
         super.readAdditionalSaveData(compound);
-        hurtDamageLimit = compound.getFloatOr("HurtDamageLimit", 0);
+        hurtDamageLimit = compound.getFloatOr("HurtDamageLimit", MAX_HURT_DAMAGE_LIMIT);
         hibernateMode = compound.getBooleanOr("HibernatedMode", false);
         if (hibernateMode)
             startHibernateMode(level);
