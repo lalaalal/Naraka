@@ -33,11 +33,18 @@ public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball, Entit
     }
 
     @Override
+    public void extractRenderState(NarakaFireball entity, EntityRenderState reusedState, float partialTick) {
+        super.extractRenderState(entity, reusedState, partialTick);
+        reusedState.boundingBoxWidth *= 0.67f;
+        reusedState.boundingBoxHeight *= 0.67f;
+    }
+
+    @Override
     public void render(EntityRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
 
         float rotation = renderState.ageInTicks * 5;
-        poseStack.translate(0, 0.25, 0);
+        poseStack.translate(0, 0.33, 0);
         poseStack.mulPose(new Quaternionf().setAngleAxis((float) (Math.PI / 3), NarakaRenderUtils.SIN_45, 0.0F, NarakaRenderUtils.SIN_45));
         poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
         poseStack.mulPose(Axis.ZP.rotationDegrees(rotation * 2));

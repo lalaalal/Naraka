@@ -55,7 +55,7 @@ public class NarakaEntityTypes {
     public static final HolderProxy<EntityType<?>, EntityType<NarakaFireball>> NARAKA_FIREBALL = register(
             "naraka_fireball",
             EntityType.Builder.<NarakaFireball>of(NarakaFireball::new, MobCategory.MISC)
-                    .sized(0.5f, 0.5f)
+                    .sized(0.75f, 0.75f)
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<SpearOfLonginus>> THROWN_SPEAR_OF_LONGINUS = register(
