@@ -53,8 +53,7 @@ public class PurifiedSoulFireBlock extends BaseFireBlock {
 
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
-        super.entityInside(state, level, pos, entity, effectApplier);
         if (entity instanceof LivingEntity livingEntity)
-            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.IS_ON_PURIFIED_SOUL_FIRE.get(), true);
+            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get(), 120);
     }
 }

@@ -9,6 +9,8 @@ import net.minecraft.client.resources.model.Material;
 
 @Environment(EnvType.CLIENT)
 public class PurifiedSoulFireTextureProvider {
+    private static boolean usePurifiedSoulFireTexture = false;
+
     @SuppressWarnings("deprecation")
     private static final Material PURIFIED_SOUL_FIRE_0 = new Material(TextureAtlas.LOCATION_BLOCKS, NarakaMod.location("block", "purified_soul_fire_0"));
     @SuppressWarnings("deprecation")
@@ -20,5 +22,19 @@ public class PurifiedSoulFireTextureProvider {
 
     public static TextureAtlasSprite modifyFire1() {
         return PURIFIED_SOUL_FIRE_1.sprite();
+    }
+
+    public static boolean isUsingPurifiedSoulFireTexture() {
+        return usePurifiedSoulFireTexture;
+    }
+
+    public static void setUsePurifiedSoulFireTexture(boolean value) {
+        PurifiedSoulFireTextureProvider.usePurifiedSoulFireTexture = value;
+    }
+
+    public static void runWithPurifiedSoulFireTexture(Runnable runnable) {
+        usePurifiedSoulFireTexture = true;
+        runnable.run();
+        usePurifiedSoulFireTexture = false;
     }
 }

@@ -77,4 +77,8 @@ public class NarakaDamageSources {
     public static DamageSource pickaxeSlash(PickaxeSlash pickaxeSlash) {
         return source(NarakaDamageTypes.PICKAXE_SLASH, pickaxeSlash, pickaxeSlash.getOwner());
     }
+
+    public static DamageSource purifiedSoulFire(RegistryAccess registryAccess) {
+        return source(NarakaDamageTypes.PURIFIED_SOUL_FIRE, registryAccess);
+    }
 }
