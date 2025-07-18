@@ -1,14 +1,13 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -68,11 +67,11 @@ public interface DeathCountingEntity {
         }
 
         public void save(CompoundTag compoundTag) {
-            compoundTag.store("DeathCountedEntities", NarakaNbtUtils.UUID_LIST_CODEC, List.copyOf(countedEntities));
+            compoundTag.store("DeathCountedEntities", UUIDUtil.CODEC_SET, countedEntities);
         }
 
         public void load(CompoundTag compoundTag) {
-            compoundTag.read("DeathCountedEntities", NarakaNbtUtils.UUID_LIST_CODEC).ifPresent(countedEntities::addAll);
+            compoundTag.read("DeathCountedEntities", UUIDUtil.CODEC_SET).ifPresent(countedEntities::addAll);
         }
     }
 }

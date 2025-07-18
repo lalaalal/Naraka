@@ -8,7 +8,6 @@ import com.yummy.naraka.network.SyncAfterimagePacket;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.NarakaPickaxe;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
@@ -749,8 +748,8 @@ public class Herobrine extends AbstractHerobrine {
         compound.putBoolean("HibernateMode", hibernateMode);
         compound.storeNullable("SpawnPosition", BlockPos.CODEC, spawnPosition);
         compound.storeNullable("NarakaPickaxe", UUIDUtil.CODEC, narakaPickaxeUUID);
-        compound.store("StigmatizedEntities", NarakaNbtUtils.UUID_LIST_CODEC, List.copyOf(stigmatizedEntities));
-        compound.store("WatchingEntities", NarakaNbtUtils.UUID_LIST_CODEC, List.copyOf(watchingEntities));
+        compound.store("StigmatizedEntities", UUIDUtil.CODEC_SET, stigmatizedEntities);
+        compound.store("WatchingEntities", UUIDUtil.CODEC_SET, watchingEntities);
         shadowController.save(compound);
     }
 
@@ -765,8 +764,8 @@ public class Herobrine extends AbstractHerobrine {
             startHibernateMode(level);
         compound.read("NarakaPickaxe", UUIDUtil.CODEC).ifPresent(uuid -> narakaPickaxeUUID = uuid);
         compound.read("SpawnPosition", BlockPos.CODEC).ifPresent(pos -> spawnPosition = pos);
-        compound.read("StigmatizedEntities", NarakaNbtUtils.UUID_LIST_CODEC).ifPresent(stigmatizedEntities::addAll);
-        compound.read("WatchingEntities", NarakaNbtUtils.UUID_LIST_CODEC).ifPresent(watchingEntities::addAll);
+        compound.read("StigmatizedEntities", UUIDUtil.CODEC_SET).ifPresent(stigmatizedEntities::addAll);
+        compound.read("WatchingEntities", UUIDUtil.CODEC_SET).ifPresent(watchingEntities::addAll);
         shadowController.load(compound);
     }
 }

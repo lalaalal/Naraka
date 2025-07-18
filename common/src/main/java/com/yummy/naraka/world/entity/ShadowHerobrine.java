@@ -8,6 +8,7 @@ import com.yummy.naraka.world.entity.ai.skill.herobrine.*;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -249,17 +250,18 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         if (herobrine != null)
-            compound.putString("Herobrine", herobrine.getStringUUID());
+            compound.store("Herobrine", UUIDUtil.CODEC, herobrine.getUUID());
+        compound.putBoolean("FinalModel", isFinalModel());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
 
-        Optional<String> uuid = compound.getString("Herobrine");
-        uuid.ifPresent(string -> this.herobrineUUID = UUID.fromString(string));
+        compound.read("Herobrine", UUIDUtil.CODEC).ifPresent(uuid -> this.herobrineUUID = uuid);
         if (isFinalModel())
             reduceAlpha = true;
+        compound.getBoolean("FinalModel").ifPresent(this::setFinalModel);
     }
 
     @Override

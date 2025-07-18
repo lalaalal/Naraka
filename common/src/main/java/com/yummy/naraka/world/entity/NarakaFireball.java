@@ -5,11 +5,9 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -29,8 +27,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 public class NarakaFireball extends Fireball implements ItemSupplier {
     protected static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(NarakaFireball.class, EntityDataSerializers.INT);
@@ -225,24 +221,6 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         if (entityData.get(FIXED_DAMAGE))
             return NarakaDamageSources.projectileFixed(this, owner);
         return NarakaDamageSources.narakaFireball(this);
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        if (cachedTarget != null)
-            compound.putString("Target", cachedTarget.getStringUUID());
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        if (compound.contains("Target") && level() instanceof ServerLevel serverLevel) {
-            Optional<String> uuid = compound.getString("Target");
-            uuid.ifPresent(string -> {
-                setTarget(serverLevel.getEntity(UUID.fromString(string)));
-            });
-        }
     }
 
     @FunctionalInterface
