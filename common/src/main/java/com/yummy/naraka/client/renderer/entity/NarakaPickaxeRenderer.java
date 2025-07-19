@@ -14,13 +14,13 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.AABB;
 import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
@@ -75,8 +75,9 @@ public class NarakaPickaxeRenderer extends EntityRenderer<NarakaPickaxe, NarakaP
         poseStack.popPose();
     }
 
+
     @Override
-    public boolean shouldRender(NarakaPickaxe livingEntity, Frustum camera, double camX, double camY, double camZ) {
-        return true;
+    protected AABB getBoundingBoxForCulling(NarakaPickaxe entity) {
+        return super.getBoundingBoxForCulling(entity).inflate(4);
     }
 }
