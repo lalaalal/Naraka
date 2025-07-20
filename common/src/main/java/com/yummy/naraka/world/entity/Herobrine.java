@@ -9,6 +9,7 @@ import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.NarakaPickaxe;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
@@ -20,6 +21,7 @@ import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import com.yummy.naraka.world.entity.data.LockedHealthHelper;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
+import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
@@ -516,6 +518,11 @@ public class Herobrine extends AbstractHerobrine {
     public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             return super.hurtServer(level, source, damage);
+        if (isDeadOrDying() && source.getEntity() instanceof LivingEntity sourceEntity
+                && sourceEntity.getMainHandItem().is(NarakaItems.PURIFIED_SOUL_SWORD.get())) {
+            teleportTargetToNarakaDimension(level, sourceEntity);
+            return false;
+        }
         if (source.getEntity() == this || isUsingInvulnerableSkill()) {
             level.playSound(null, getX(), getY(), getZ(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.HOSTILE, 4, 0.3f);
             return false;
@@ -662,6 +669,15 @@ public class Herobrine extends AbstractHerobrine {
     private void updateHibernateModeOnTargetSurvivedFromFireball(ServerLevel level, LivingEntity target, float damage) {
         if (target != this && getPhase() == 1 && hibernateMode && damage >= 66 && target.isAlive()) {
             stopHibernateMode(level);
+        }
+    }
+
+    protected void teleportTargetToNarakaDimension(ServerLevel level, Entity target) {
+        if (isDeadOrDying() && isFinalModel()) {
+            ServerLevel narakaDimension = level.getServer().getLevel(NarakaDimensions.NARAKA);
+            if (narakaDimension != null) {
+                target.teleport(new TeleportTransition(narakaDimension, new Vec3(0, 1, 0), Vec3.ZERO, 0, 0, TeleportTransition.PLAY_PORTAL_SOUND));
+            }
         }
     }
 

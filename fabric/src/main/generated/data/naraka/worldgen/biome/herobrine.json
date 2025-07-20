@@ -2,7 +2,7 @@
   "carvers": [],
   "downfall": 0.0,
   "effects": {
-    "fog_color": 65793,
+    "fog_color": 8947848,
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,
@@ -11,8 +11,8 @@
     },
     "music_volume": 1.0,
     "sky_color": 0,
-    "water_color": 1250067,
-    "water_fog_color": 394758
+    "water_color": 11250603,
+    "water_fog_color": 12369084
   },
   "features": [],
   "has_precipitation": false,

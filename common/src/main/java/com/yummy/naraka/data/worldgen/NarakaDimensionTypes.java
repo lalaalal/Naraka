@@ -16,7 +16,7 @@ public class NarakaDimensionTypes {
 
     public static void bootstrap(BootstrapContext<DimensionType> context) {
         context.register(NARAKA, new DimensionType(
-                OptionalLong.of(6000),
+                OptionalLong.of(18000),
                 false,
                 false,
                 false,

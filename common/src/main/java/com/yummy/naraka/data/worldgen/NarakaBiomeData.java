@@ -16,9 +16,9 @@ public class NarakaBiomeData {
                 .downfall(0)
                 .specialEffects(
                         new BiomeSpecialEffects.Builder()
-                                .waterColor(0x131313)
-                                .waterFogColor(0x060606)
-                                .fogColor(0x010101)
+                                .waterColor(0xababab)
+                                .waterFogColor(0xbcbcbc)
+                                .fogColor(0x888888)
                                 .skyColor(0)
                                 .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                                 .build()

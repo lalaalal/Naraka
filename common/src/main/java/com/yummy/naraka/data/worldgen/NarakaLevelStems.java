@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.flat.FlatLevelGeneratorSettings;
 import java.util.List;
 import java.util.Optional;
 
-public class NarakaDimensions {
+public class NarakaLevelStems {
     public static final ResourceKey<LevelStem> NARAKA = create("naraka");
 
     public static FlatLevelGeneratorSettings getNarakaSettings(HolderGetter<Biome> biomes) {
