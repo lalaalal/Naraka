@@ -5,6 +5,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -20,19 +21,20 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TransparentBlock extends Block {
     public static final BooleanProperty VISIBLE = BooleanProperty.create("visible");
+    public static final BooleanProperty COLLISION = BooleanProperty.create("collision");
 
     public TransparentBlock(Properties properties) {
         super(properties);
         registerDefaultState(
-                this.stateDefinition
-                        .any()
-                        .setValue(VISIBLE, true)
+                this.stateDefinition.any()
+                        .setValue(VISIBLE, false)
+                        .setValue(COLLISION, true)
         );
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(VISIBLE);
+        builder.add(VISIBLE).add(COLLISION);
     }
 
     @Override
@@ -48,12 +50,35 @@ public class TransparentBlock extends Block {
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level pLevel, BlockPos pos, Player player, InteractionHand pHand, BlockHitResult pHitResult) {
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        if (state.getValue(COLLISION))
+            return Shapes.block();
+        return Shapes.empty();
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return defaultBlockState().setValue(VISIBLE, true).setValue(COLLISION, true);
+    }
+
+    @Override
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand pHand, BlockHitResult pHitResult) {
         if (player.isCreative() && itemStack.is(NarakaBlocks.TRANSPARENT_BLOCK.get().asItem())) {
-            pLevel.setBlock(pos, blockState.cycle(VISIBLE), 10);
+            if (player.onGround()) {
+                level.setBlock(pos, blockState.cycle(VISIBLE), 10);
+            } else {
+                level.setBlock(pos, blockState.cycle(VISIBLE).cycle(COLLISION), 10);
+            }
+
             return InteractionResult.SUCCESS;
         }
-        return super.useItemOn(itemStack, blockState, pLevel, pos, player, pHand, pHitResult);
+        return super.useItemOn(itemStack, blockState, level, pos, player, pHand, pHitResult);
+    }
+
+    @Override
+    protected void spawnDestroyParticles(Level level, Player player, BlockPos pos, BlockState state) {
+        if (state.getValue(VISIBLE))
+            super.spawnDestroyParticles(level, player, pos, state);
     }
 
     @Override

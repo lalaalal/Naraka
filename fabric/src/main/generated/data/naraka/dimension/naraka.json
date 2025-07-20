@@ -1,0 +1,17 @@
+{
+  "type": "naraka:naraka",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "naraka:herobrine",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "naraka:transparent_block",
+          "height": 1
+        }
+      ]
+    }
+  }
+}

@@ -20,6 +20,6 @@ public class NarakaFabricRecipeProvider extends FabricRecipeProvider {
 
     @Override
     public String getName() {
-        return "naraka/recipe_provider";
+        return "RecipeProvider";
     }
 }

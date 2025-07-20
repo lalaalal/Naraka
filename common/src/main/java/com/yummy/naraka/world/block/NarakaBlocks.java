@@ -30,8 +30,8 @@ public class NarakaBlocks {
     public static final HolderProxy<Block, TransparentBlock> TRANSPARENT_BLOCK = registerBlockWithItem(
             "transparent_block",
             properties -> new TransparentBlock(
-                    properties.noCollission()
-                            .forceSolidOn()
+                    properties.forceSolidOn()
+                            .noTerrainParticles()
                             .noLootTable()
             ),
             Blocks.BEDROCK
