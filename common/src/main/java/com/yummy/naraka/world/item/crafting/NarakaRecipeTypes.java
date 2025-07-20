@@ -8,8 +8,6 @@ import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
 
 public class NarakaRecipeTypes {
-    public static final HolderProxy<RecipeType<?>, RecipeType<SoulCraftingRecipe>> SOUL_CRAFTING = register("soul_crafting");
-
     private static <I extends RecipeInput, T extends Recipe<I>> HolderProxy<RecipeType<?>, RecipeType<T>> register(String name) {
         return RegistryProxy.register(Registries.RECIPE_TYPE, name, () -> new RecipeType<>() {
                     @Override
