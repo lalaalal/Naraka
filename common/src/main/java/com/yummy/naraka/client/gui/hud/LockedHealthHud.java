@@ -27,7 +27,6 @@ import net.minecraft.world.entity.player.Player;
 public class LockedHealthHud implements LayeredDraw.Layer {
     public static final int HEARTS_PER_LINE = 10;
     public static final int HEART_WIDTH = 8;
-    public static final int HEART_HEIGHT = 9;
 
     private int blinkTime;
 
@@ -79,6 +78,7 @@ public class LockedHealthHud implements LayeredDraw.Layer {
         double originalMaxHealth = maxHealth + lockedHealth;
         int heartCount = Mth.ceil(originalMaxHealth / 2);
         int lockedHeartCount = Mth.ceil(lockedHealth / 2);
+        float absorption = player.getAbsorptionAmount();
 
         boolean hasRightHalfLockedHeart = Mth.ceil(maxHealth) % 2 != 0;
         boolean hasLeftHalfLockedHeart = Mth.ceil(originalMaxHealth) % 2 != 0;
@@ -90,12 +90,14 @@ public class LockedHealthHud implements LayeredDraw.Layer {
         if (modifier == null || modifier.amount() != -lockedHealth)
             return;
 
+        int totalHeartLineCount = Mth.ceil((originalMaxHealth + absorption) / 20f);
+        int height = Math.max(10 - (totalHeartLineCount - 2), 3);
         boolean blink = (blinkTime / 3) % 2 != 0;
         for (int i = 1; i <= lockedHeartCount; i++) {
             int row = (heartCount - i) / HEARTS_PER_LINE;
             int column = (heartCount - i) % HEARTS_PER_LINE;
             int x = baseX + column * HEART_WIDTH;
-            int y = baseY - row * (HEART_HEIGHT + 1);
+            int y = baseY - row * height;
             if (hasRightHalfLockedHeart && i == lockedHeartCount) {
                 renderRightHalfLockedHeart(graphics, x, y, blink);
             } else if (hasLeftHalfLockedHeart && i == 1) {
