@@ -13,6 +13,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 @Environment(EnvType.CLIENT)
 public final class NarakaModelLayers {
     public static final ModelLayerLocation HEROBRINE = location("herobrine");
+    public static final ModelLayerLocation ABSOLUTE_HEROBRINE = location("absolute_herobrine");
     public static final ModelLayerLocation HEROBRINE_SCARF = location("herobrine_scarf");
     public static final ModelLayerLocation SHADOW_HEROBRINE_ARMOR = location("shadow_herobrine_armor");
 
@@ -40,6 +41,7 @@ public final class NarakaModelLayers {
     public static void initialize() {
         ModelLayerRegistry.register(NarakaModelLayers.HEROBRINE, HerobrineModel::createForHerobrine);
         ModelLayerRegistry.register(NarakaModelLayers.FINAL_HEROBRINE, FinalHerobrineModel::createBodyLayer);
+        ModelLayerRegistry.register(NarakaModelLayers.ABSOLUTE_HEROBRINE, AbsoluteHerobrineModel::createBodyLayer);
         ModelLayerRegistry.register(NarakaModelLayers.HEROBRINE_SCARF, HerobrineScarfModel::createBodyLayer);
         ModelLayerRegistry.register(NarakaModelLayers.SHADOW_HEROBRINE_ARMOR, HerobrineModel::createForShadowArmor);
 

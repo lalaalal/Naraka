@@ -100,6 +100,7 @@ public final class NarakaModClient {
 
     private static void registerEntityRenderers() {
         EntityRendererRegistry.register(NarakaEntityTypes.HEROBRINE, HerobrineRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.ABSOLUTE_HEROBRINE, AbsoluteHerobrineRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.SHADOW_HEROBRINE, ShadowHerobrineRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.DIAMOND_GOLEM, DiamondGolemRenderer::new);
 

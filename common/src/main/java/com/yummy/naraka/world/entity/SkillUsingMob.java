@@ -32,7 +32,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
     protected Runnable animationTickListener = () -> {
     };
 
-    protected SkillUsingMob(EntityType<? extends PathfinderMob> entityType, Level level) {
+    protected SkillUsingMob(EntityType<? extends SkillUsingMob> entityType, Level level) {
         super(entityType, level);
 
         skillManager.runOnSkillStart(this::setAnimation);

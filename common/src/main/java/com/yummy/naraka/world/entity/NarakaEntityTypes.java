@@ -24,6 +24,13 @@ public class NarakaEntityTypes {
                     .clientTrackingRange(32)
     );
 
+    public static final HolderProxy<EntityType<?>, EntityType<AbsoluteHerobrine>> ABSOLUTE_HEROBRINE = register(
+            "absolute_herobrine",
+            EntityType.Builder.<AbsoluteHerobrine>of(AbsoluteHerobrine::new, MobCategory.MONSTER)
+                    .fireImmune()
+                    .sized(0.5f, 1.5f)
+    );
+
     public static final HolderProxy<EntityType<?>, EntityType<ShadowHerobrine>> SHADOW_HEROBRINE = register(
             "shadow_herobrine",
             EntityType.Builder.<ShadowHerobrine>of(ShadowHerobrine::new, MobCategory.MONSTER)
@@ -119,6 +126,7 @@ public class NarakaEntityTypes {
 
     public static void initialize() {
         EntityAttributeRegistry.register(HEROBRINE, AbstractHerobrine::getAttributeSupplier);
+        EntityAttributeRegistry.register(ABSOLUTE_HEROBRINE, AbstractHerobrine::getAttributeSupplier);
         EntityAttributeRegistry.register(SHADOW_HEROBRINE, ShadowHerobrine::getAttributeSupplier);
         EntityAttributeRegistry.register(DIAMOND_GOLEM, DiamondGolem::getAttributeSupplier);
         EntityAttributeRegistry.register(NARAKA_PICKAXE, NarakaPickaxe::getAttributeSupplier);

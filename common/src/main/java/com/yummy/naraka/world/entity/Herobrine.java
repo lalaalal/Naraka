@@ -28,6 +28,7 @@ import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -706,9 +707,16 @@ public class Herobrine extends AbstractHerobrine {
             bossEvent.getPlayers().forEach(this::sendStopPacket);
             bossEvent.removeAllPlayers();
             releaseStigma(serverLevel);
+            spawnAbsoluteHerobrine(serverLevel.getServer());
         }
         if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             deathTime = 1180;
+    }
+
+    private void spawnAbsoluteHerobrine(MinecraftServer server) {
+        ServerLevel narakaLevel = server.getLevel(NarakaDimensions.NARAKA);
+        if (narakaLevel != null)
+            NarakaEntityTypes.ABSOLUTE_HEROBRINE.get().spawn(narakaLevel, BlockPos.ZERO.above(), EntitySpawnReason.TRIGGERED);
     }
 
     @Override
