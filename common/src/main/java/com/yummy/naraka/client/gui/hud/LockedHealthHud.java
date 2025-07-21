@@ -1,9 +1,12 @@
 package com.yummy.naraka.client.gui.hud;
 
 import com.yummy.naraka.client.NarakaSprites;
+import com.yummy.naraka.client.event.ClientEvents;
+import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import com.yummy.naraka.world.entity.data.EntityDataType;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,6 +16,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -24,6 +28,24 @@ public class LockedHealthHud implements LayeredDraw.Layer {
     public static final int HEART_WIDTH = 8;
     public static final int HEART_HEIGHT = 9;
 
+    private int blinkTime;
+
+    public LockedHealthHud() {
+        EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.LOCKED_HEALTH.get(), this::onLockedHealthChanged);
+        ClientEvents.TICK_PRE.register(this::tick);
+    }
+
+    private void onLockedHealthChanged(LivingEntity entity, EntityDataType<Double> entityDataType, double from, double to) {
+        if (NarakaRenderUtils.isCurrentPlayer(entity) && to > from) {
+            blinkTime = 20;
+        }
+    }
+
+    private void tick(Minecraft minecraft) {
+        if (blinkTime > 0)
+            blinkTime -= 1;
+    }
+
     @Override
     public void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
         Player player = Minecraft.getInstance().player;
@@ -33,9 +55,13 @@ public class LockedHealthHud implements LayeredDraw.Layer {
         int heartBaseX = graphics.guiWidth() / 2 - 91;
         int heartBaseY = graphics.guiHeight() - 39;
         double lockedHealth = EntityDataHelper.getEntityData(player, NarakaEntityDataTypes.LOCKED_HEALTH.get());
-        double originalMaxHealth = player.getMaxHealth() + lockedHealth;
+        double maxHealth = player.getMaxHealth();
+        double originalMaxHealth = maxHealth + lockedHealth;
         int heartCount = Mth.ceil(originalMaxHealth / 2);
         int lockedHeartCount = Mth.ceil(lockedHealth / 2);
+
+        boolean hasRightHalfLockedHeart = Mth.ceil(maxHealth) % 2 != 0;
+        boolean hasLeftHalfLockedHeart = Mth.ceil(originalMaxHealth) % 2 != 0;
 
         AttributeInstance attributeInstance = player.getAttribute(Attributes.MAX_HEALTH);
         if (attributeInstance == null)
@@ -44,17 +70,34 @@ public class LockedHealthHud implements LayeredDraw.Layer {
         if (modifier == null || modifier.amount() != -lockedHealth)
             return;
 
+        boolean blink = (blinkTime / 3) % 2 != 0;
         for (int i = 1; i <= lockedHeartCount; i++) {
             int row = (heartCount - i) / HEARTS_PER_LINE;
             int column = (heartCount - i) % HEARTS_PER_LINE;
             int x = heartBaseX + column * HEART_WIDTH;
-            int y = heartBaseY - row * HEART_HEIGHT;
-            renderLockedHeart(graphics, x, y);
+            int y = heartBaseY - row * (HEART_HEIGHT + 1);
+            if (hasRightHalfLockedHeart && i == lockedHeartCount) {
+                renderRightHalfLockedHeart(graphics, x, y, blink);
+            } else if (hasLeftHalfLockedHeart && i == 1) {
+                renderLeftHalfLockedHeart(graphics, x, y, blink);
+            } else {
+                renderLockedHeart(graphics, x, y, blink);
+            }
         }
     }
 
-    public void renderLockedHeart(GuiGraphics graphics, int x, int y) {
-        graphics.blitSprite(RenderType::guiTextured, NarakaSprites.HEART_CONTAINER, x, y, 9, 9);
-        graphics.blitSprite(RenderType::guiTextured, NarakaSprites.DEATH_COUNT_HEART, 14, 7, 0, 0, x + 1, y + 1, 7, 7);
+    public void renderLockedHeart(GuiGraphics graphics, int x, int y, boolean blink) {
+        int u = blink ? 7 : 0;
+        graphics.blitSprite(RenderType::guiTextured, NarakaSprites.DEATH_COUNT_HEART, 14, 7, u, 0, x + 1, y + 1, 7, 7);
+    }
+
+    public void renderRightHalfLockedHeart(GuiGraphics graphics, int x, int y, boolean blink) {
+        int u = blink ? 7 : 0;
+        graphics.blitSprite(RenderType::guiTextured, NarakaSprites.DEATH_COUNT_HEART, 14, 7, u + 4, 0, x + 5, y + 1, 3, 7);
+    }
+
+    public void renderLeftHalfLockedHeart(GuiGraphics graphics, int x, int y, boolean blink) {
+        int u = blink ? 7 : 0;
+        graphics.blitSprite(RenderType::guiTextured, NarakaSprites.DEATH_COUNT_HEART, 14, 7, u, 0, x + 1, y + 1, 4, 7);
     }
 }

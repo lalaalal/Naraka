@@ -1,6 +1,8 @@
 package com.yummy.naraka.client.gui.hud;
 
 import com.yummy.naraka.client.NarakaSprites;
+import com.yummy.naraka.client.event.ClientEvents;
+import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.entity.data.*;
 import net.fabricmc.api.EnvType;
@@ -30,19 +32,18 @@ public class StigmaHud implements LayeredDraw.Layer {
 
     private int consumeIconDisplayTick;
 
-    private static boolean isCurrentPlayer(LivingEntity livingEntity) {
-        Player player = Minecraft.getInstance().player;
-        if (player == null)
-            return false;
-        return player.getUUID().equals(livingEntity.getUUID());
-    }
-
     public StigmaHud() {
         EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.STIGMA.get(), this::onStigmaConsumed);
+        ClientEvents.TICK_PRE.register(this::tick);
+    }
+
+    private void tick(Minecraft minecraft) {
+        if (consumeIconDisplayTick > 0)
+            consumeIconDisplayTick -= 1;
     }
 
     private void onStigmaConsumed(LivingEntity livingEntity, EntityDataType<Stigma> entityDataType, Stigma from, Stigma to) {
-        if (isCurrentPlayer(livingEntity)) {
+        if (NarakaRenderUtils.isCurrentPlayer(livingEntity)) {
             if (0 < from.value() && to.value() == 0 && to.lastMarkedTime() != 0)
                 consumeIconDisplayTick = CONSUME_ICON_DISPLAYING_TIME;
         }
@@ -73,10 +74,8 @@ public class StigmaHud implements LayeredDraw.Layer {
 
         int deathCount = DeathCountHelper.get(player);
 
-        if (consumeIconDisplayTick > 0) {
+        if (consumeIconDisplayTick > 0)
             renderStigmaConsumeIcon(guiGraphics);
-            consumeIconDisplayTick -= 1;
-        }
 
         if (deathCount <= 0 && stigma.value() < 1)
             return;
