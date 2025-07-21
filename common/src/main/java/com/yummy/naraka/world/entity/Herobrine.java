@@ -677,7 +677,7 @@ public class Herobrine extends AbstractHerobrine {
         if (isDeadOrDying() && isFinalModel()) {
             ServerLevel narakaDimension = level.getServer().getLevel(NarakaDimensions.NARAKA);
             if (narakaDimension != null) {
-                target.teleport(new TeleportTransition(narakaDimension, new Vec3(0, 1, 0), Vec3.ZERO, 0, 0, TeleportTransition.PLAY_PORTAL_SOUND));
+                target.teleport(new TeleportTransition(narakaDimension, new Vec3(0, 10, 0), Vec3.ZERO, 0, 0, TeleportTransition.PLAY_PORTAL_SOUND));
             }
         }
     }
@@ -716,7 +716,7 @@ public class Herobrine extends AbstractHerobrine {
     private void spawnAbsoluteHerobrine(MinecraftServer server) {
         ServerLevel narakaLevel = server.getLevel(NarakaDimensions.NARAKA);
         if (narakaLevel != null)
-            NarakaEntityTypes.ABSOLUTE_HEROBRINE.get().spawn(narakaLevel, BlockPos.ZERO.above(), EntitySpawnReason.TRIGGERED);
+            NarakaEntityTypes.ABSOLUTE_HEROBRINE.get().spawn(narakaLevel, BlockPos.ZERO.above(10), EntitySpawnReason.TRIGGERED);
     }
 
     @Override

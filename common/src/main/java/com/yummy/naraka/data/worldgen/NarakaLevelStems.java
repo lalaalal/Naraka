@@ -7,6 +7,7 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.flat.FlatLayerInfo;
 import net.minecraft.world.level.levelgen.flat.FlatLevelGeneratorSettings;
@@ -21,7 +22,9 @@ public class NarakaLevelStems {
         FlatLevelGeneratorSettings flatLevelGeneratorSettings = new FlatLevelGeneratorSettings(
                 Optional.empty(), biomes.getOrThrow(NarakaBiomes.HEROBRINE), List.of()
         );
-        flatLevelGeneratorSettings.getLayersInfo().add(new FlatLayerInfo(1, NarakaBlocks.TRANSPARENT_BLOCK.get()));
+        flatLevelGeneratorSettings.getLayersInfo().add(new FlatLayerInfo(10, NarakaBlocks.TRANSPARENT_BLOCK.get()));
+        flatLevelGeneratorSettings.getLayersInfo().add(new FlatLayerInfo(1, Blocks.WATER));
+        flatLevelGeneratorSettings.setDecoration();
         flatLevelGeneratorSettings.updateLayers();
         return flatLevelGeneratorSettings;
     }
