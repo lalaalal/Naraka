@@ -8,7 +8,6 @@
     "client.DripParticleMixin",
     "client.EntityRenderDispatcherMixin",
     "client.FogRendererMixin",
-    "client.GuiMixin",
     "client.HiddenOreRendererMixin",
     "client.ItemBlockRenderTypesMixin",
     "client.ItemEntityRendererMixin",

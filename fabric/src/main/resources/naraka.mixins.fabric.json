@@ -5,6 +5,7 @@
   "minVersion": "0.8",
   "client": [
     "client.CompassAngleStateMixin",
+    "client.GuiMixin",
     "client.LevelRendererMixin"
   ],
   "mixins": [
