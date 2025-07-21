@@ -13,6 +13,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
@@ -49,11 +50,12 @@ public class StigmaHud implements LayeredDraw.Layer {
         }
     }
 
-    private void renderStigmaConsumeIcon(GuiGraphics guiGraphics) {
+    private void renderStigmaConsumeIcon(GuiGraphics guiGraphics, float partialTick) {
         int x = guiGraphics.guiWidth() / 2 - CONSUME_ICON_WIDTH / 2;
         int y = guiGraphics.guiHeight() / 2 - CONSUME_ICON_HEIGHT / 2;
 
-        float alpha = consumeIconDisplayTick / (float) CONSUME_ICON_DISPLAYING_TIME;
+        float tick = Math.max(Mth.lerp(partialTick, consumeIconDisplayTick, consumeIconDisplayTick - 1), 0);
+        float alpha = tick / (float) CONSUME_ICON_DISPLAYING_TIME;
         guiGraphics.blitSprite(RenderType::guiTextured, NarakaSprites.STIGMA_CONSUME, x, y, CONSUME_ICON_WIDTH, CONSUME_ICON_HEIGHT, ARGB.white(alpha));
     }
 
@@ -68,14 +70,13 @@ public class StigmaHud implements LayeredDraw.Layer {
         Stigma stigma = StigmaHelper.get(player);
         long stigmatizedTime = player.level().getGameTime() - stigma.lastMarkedTime();
 
-
         int baseX = guiGraphics.guiWidth() / 2 - (BACKGROUND_WIDTH / 2);
         int baseY = 20;
 
         int deathCount = DeathCountHelper.get(player);
 
         if (consumeIconDisplayTick > 0)
-            renderStigmaConsumeIcon(guiGraphics);
+            renderStigmaConsumeIcon(guiGraphics, tickCounter.getGameTimeDeltaPartialTick(true));
 
         if (deathCount <= 0 && stigma.value() < 1)
             return;
