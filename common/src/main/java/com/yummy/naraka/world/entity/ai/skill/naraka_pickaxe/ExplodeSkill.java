@@ -1,6 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe;
 
-import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.NarakaPickaxe;
@@ -77,7 +77,7 @@ public class ExplodeSkill extends AttackSkill<NarakaPickaxe> {
             double z = Math.sin(yRot) * distance + mob.getZ();
             double ySpeedMultiplier = mob.getRandom().nextDouble() * 0.5 + 0.5;
 
-            level.sendParticles(NarakaParticleTypes.CORRUPTED_SOUL_FIRE_FLAME.get(), x, y, z, 0, 0, ySpeed * ySpeedMultiplier, 0, 1);
+            level.sendParticles(NarakaFlameParticleOption.EMERALD, x, y, z, 0, 0, ySpeed * ySpeedMultiplier, 0, 1);
         }
     }
 

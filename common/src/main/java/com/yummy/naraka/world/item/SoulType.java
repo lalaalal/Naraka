@@ -9,14 +9,11 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.IntFunction;
 
 public enum SoulType implements StringRepresentable {
     NONE(0xffffff),
@@ -30,9 +27,8 @@ public enum SoulType implements StringRepresentable {
     NECTARIUM(0xd65cd6),
     GOD_BLOOD(NarakaTrimMaterials.GOD_BLOOD, "god_blood", "god_blood", 0x625859);
 
-    private static final IntFunction<SoulType> BY_ID = ByIdMap.continuous(SoulType::getId, SoulType.values(), ByIdMap.OutOfBoundsStrategy.ZERO);
     public static final Codec<SoulType> CODEC = StringRepresentable.fromEnum(SoulType::values);
-    public static final StreamCodec<ByteBuf, SoulType> STREAM_CODEC = ByteBufCodecs.idMapper(BY_ID, SoulType::getId);
+    public static final StreamCodec<ByteBuf, SoulType> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
     public final int id;
     private final ResourceLocation itemName;

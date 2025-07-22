@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAfterimagePacket;
@@ -360,7 +360,7 @@ public class Herobrine extends AbstractHerobrine {
 
             double speed = 0.6;
 
-            level.sendParticles(NarakaParticleTypes.GOLDEN_FLAME.get(), getX(), getEyeY(), getZ(), 0, xSpeed, ySpeed, zSpeed, speed);
+            level.sendParticles(NarakaFlameParticleOption.GOLD, getX(), getEyeY(), getZ(), 0, xSpeed, ySpeed, zSpeed, speed);
         }
     }
 

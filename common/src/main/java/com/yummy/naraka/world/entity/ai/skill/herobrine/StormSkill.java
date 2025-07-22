@@ -1,6 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
-import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.NarakaPickaxe;
@@ -82,7 +82,7 @@ public class StormSkill extends ComboSkill<Herobrine> {
         if (waveTick == 0) {
             level.playSound(null, mob, SoundEvents.BLAZE_SHOOT, SoundSource.HOSTILE, 2, 1);
         }
-        NarakaSkillUtils.sendCircleParticle(level, mob.position(), NarakaParticleTypes.CORRUPTED_FIRE_FLAME.get(), waveTick);
+        NarakaSkillUtils.sendCircleParticle(level, mob.position(), NarakaFlameParticleOption.REDSTONE, waveTick);
         if (waveTick > 3) {
             level.getEntitiesOfClass(
                     LivingEntity.class,

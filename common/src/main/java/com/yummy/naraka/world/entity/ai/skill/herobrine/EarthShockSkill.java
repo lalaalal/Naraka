@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
+import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.LightningCircle;
@@ -10,7 +11,6 @@ import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.MassiveLightning;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -132,7 +132,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
             double radius = mob.getRandom().nextFloat() * maxRadius * 2 - maxRadius;
             double x = Math.cos(angle) * radius + mob.getX();
             double z = Math.sin(angle) * radius + mob.getZ();
-            level.sendParticles(ParticleTypes.FLAME, x, y, z, 0, 0, 1, 0, 0.05);
+            level.sendParticles(NarakaFlameParticleOption.AMETHYST, x, y, z, 0, 0, 1, 0, 0.05);
         }
     }
 
@@ -150,7 +150,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
 
     private void shockwaveBlocks(ServerLevel level, int startTick, int radius, float angleFrom, float angleTo, Supplier<Vec3> movementSupplier) {
         int waveTick = tickCount - startTick;
-        level.sendParticles(ParticleTypes.FIREWORK, mob.getX(), mob.getY(), mob.getZ(), 15, 0.5, 1, 0.5, 0.3);
+        level.sendParticles(NarakaFlameParticleOption.AMETHYST, mob.getX(), mob.getY(), mob.getZ(), 15, 0.5, 1, 0.5, 0.3);
 
         BiPredicate<BlockPos, Integer> predicate = (position, r) -> {
             BlockPos actualPosition = mob.blockPosition().offset(position);

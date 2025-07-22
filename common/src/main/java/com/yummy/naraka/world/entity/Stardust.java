@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
@@ -161,8 +162,8 @@ public class Stardust extends LightTailEntity {
     private void explode(int radius) {
         Entity source = owner == null ? this : owner;
         if (level().isClientSide) {
-            addParticles(NarakaParticleTypes.STARDUST_FLAME.get(), 0.1, 120 * radius);
-            addParticles(NarakaParticleTypes.GOLDEN_FLAME.get(), 0.3, 60 * radius);
+            addParticles(NarakaFlameParticleOption.COPPER, 0.1, 120 * radius);
+            addParticles(NarakaFlameParticleOption.COPPER, 0.3, 60 * radius);
         } else {
             level().explode(source, NarakaDamageSources.stardust(this), null, position(), radius, false, Level.ExplosionInteraction.NONE);
         }

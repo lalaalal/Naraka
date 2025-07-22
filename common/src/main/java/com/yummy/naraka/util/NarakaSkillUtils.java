@@ -1,6 +1,6 @@
 package com.yummy.naraka.util;
 
-import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -46,7 +46,7 @@ public class NarakaSkillUtils {
         for (LivingEntity target : entities)
             mob.stigmatizeEntity(level, target);
 
-        NarakaSkillUtils.sendParticleWave(level, mob.position(), NarakaParticleTypes.CORRUPTED_FIRE_FLAME.get(), 1);
+        NarakaSkillUtils.sendParticleWave(level, mob.position(), NarakaFlameParticleOption.REDSTONE, 1);
     }
 
     public static void sendParticleWave(ServerLevel level, Vec3 position, ParticleOptions particle, double speed) {

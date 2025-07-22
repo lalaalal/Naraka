@@ -30,7 +30,6 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 
@@ -137,13 +136,10 @@ public final class NarakaModClient {
         ParticleProviderRegistry.register(NarakaParticleTypes.LANDING_NECTARIUM, NectariumParticle::createNectariumLandParticle);
         ParticleProviderRegistry.register(NarakaParticleTypes.SOUL, SoulParticle::create);
         ParticleProviderRegistry.register(NarakaParticleTypes.HEROBRINE_SPAWN, HerobrineSpawnParticle.Provider::new);
-        ParticleProviderRegistry.register(NarakaParticleTypes.GOLDEN_FLAME, FlameParticle.Provider::new);
-        ParticleProviderRegistry.register(NarakaParticleTypes.CORRUPTED_FIRE_FLAME, FlameParticle.Provider::new);
-        ParticleProviderRegistry.register(NarakaParticleTypes.CORRUPTED_SOUL_FIRE_FLAME, FlameParticle.Provider::new);
+        ParticleProviderRegistry.register(NarakaParticleTypes.NARAKA_FLAME, NarakaFlame.Provider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.FLICKER, BlinkParticle.Provider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.STARDUST, BlinkParticle.Provider::withGlowing);
         ParticleProviderRegistry.register(NarakaParticleTypes.TELEPORT, BlinkParticle.Provider::withGlowing);
-        ParticleProviderRegistry.register(NarakaParticleTypes.STARDUST_FLAME, FlameParticle.Provider::new);
     }
 
     private static void registerKeyMappings() {

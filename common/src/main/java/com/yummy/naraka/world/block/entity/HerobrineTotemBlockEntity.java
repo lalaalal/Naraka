@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.block.entity;
 
+import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.util.NarakaUtils;
@@ -80,7 +81,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
                         pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 10,
                         0.5, 0.5, 0.5, 0
                 );
-                level.sendParticles(NarakaParticleTypes.GOLDEN_FLAME.get(),
+                level.sendParticles(NarakaFlameParticleOption.GOLD,
                         pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 20,
                         1, 1, 1, 0
                 );
@@ -132,7 +133,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 15,
                 1, 1, 1, 0.01
         );
-        level.sendParticles(NarakaParticleTypes.GOLDEN_FLAME.get(),
+        level.sendParticles(NarakaFlameParticleOption.GOLD,
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 30,
                 1, 1, 1, 0.05
         );

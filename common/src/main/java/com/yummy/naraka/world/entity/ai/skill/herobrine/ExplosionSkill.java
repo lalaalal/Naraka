@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
+import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
@@ -96,7 +97,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
     @Override
     protected void hurtEntities(ServerLevel level, Predicate<LivingEntity> predicate, double size) {
         super.hurtEntities(level, predicate, size);
-        NarakaSkillUtils.sendCircleParticle(level, mob.position(), NarakaParticleTypes.GOLDEN_FLAME.get(), size);
+        NarakaSkillUtils.sendCircleParticle(level, mob.position(), NarakaFlameParticleOption.GOLD, size);
     }
 
     @Override

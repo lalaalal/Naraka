@@ -1,4 +1,4 @@
 accessWidener v2 named
 
 accessible class net/minecraft/client/data/models/ItemModelGenerators$TrimMaterialData
-
+accessible method net/minecraft/client/particle/FlameParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)V

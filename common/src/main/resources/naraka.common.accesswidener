@@ -16,3 +16,6 @@ accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
 accessible method net/minecraft/client/particle/FallingLeavesParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/client/particle/SpriteSet;FFZZFF)V
 
 accessible class net/minecraft/client/renderer/FogRenderer$FogData
+
+accessible class net/minecraft/client/data/models/ItemModelGenerators$TrimMaterialData
+accessible method net/minecraft/client/particle/FlameParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)V
