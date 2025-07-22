@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
@@ -75,6 +76,7 @@ public class SoulEquipmentSet extends EquipmentSet {
                 livingEntity.addEffect(new MobEffectInstance(effect, -1));
                 if (livingEntity instanceof ServerPlayer serverPlayer)
                     NarakaCriteriaTriggers.SIMPLE_TRIGGER.get().trigger(serverPlayer, SimpleTrigger.CHALLENGERS_BLESSING);
+                livingEntity.addEffect(new MobEffectInstance(MobEffects.SPEED, -1, 1));
             }
         }
 
@@ -83,6 +85,7 @@ public class SoulEquipmentSet extends EquipmentSet {
             NarakaMobEffects.getChallengersBlessing(livingEntity)
                     .map(MobEffectInstance::getEffect)
                     .ifPresent(livingEntity::removeEffect);
+            livingEntity.removeEffect(MobEffects.SPEED);
         }
     }
 }
