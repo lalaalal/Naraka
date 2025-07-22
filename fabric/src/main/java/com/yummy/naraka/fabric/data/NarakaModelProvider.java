@@ -7,7 +7,6 @@ import com.yummy.naraka.client.renderer.special.SoulSmithingBlockSpecialRenderer
 import com.yummy.naraka.client.renderer.special.SoulStabilizerSpecialRenderer;
 import com.yummy.naraka.client.renderer.special.SpearOfLonginusSpecialRenderer;
 import com.yummy.naraka.client.renderer.special.SpearSpecialRenderer;
-import com.yummy.naraka.fabric.mixin.client.CompassAngleStateMixin;
 import com.yummy.naraka.world.block.EbonyLogBlock;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
@@ -355,9 +354,6 @@ public class NarakaModelProvider extends FabricModelProvider {
         return ItemModelUtils.plainModel(modelLocation);
     }
 
-    /**
-     * @see CompassAngleStateMixin
-     */
     public static void generateSanctuaryCompassItem(ItemModelGenerators generator, Item item) {
         List<RangeSelectItemModel.Entry> list = generator.createCompassModels(item);
         generator.itemModelOutput

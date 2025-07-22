@@ -1,5 +1,6 @@
 package com.yummy.naraka.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
@@ -7,6 +8,7 @@ import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
+import com.yummy.naraka.world.item.reinforcement.ReinforcementEffectHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -25,6 +27,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -60,6 +63,26 @@ public abstract class LivingEntityMixin extends Entity {
     public void removeEntityData(RemovalReason removalReason, CallbackInfo ci) {
         if (removalReason.shouldDestroy())
             EntityDataHelper.removeEntityData(naraka$living());
+    }
+
+    @SuppressWarnings("UnresolvedMixinReference")
+    @ModifyArg(
+            method = {"travelInFluid(Lnet/minecraft/world/phys/Vec3;)V", "travelInFluid(Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/level/material/FluidState;)V"},
+            require = 1,
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V")
+    )
+    public float increaseSpeedInLiquid(float scale) {
+        return ReinforcementEffectHelper.increaseSpeedInLiquid(naraka$living(), scale);
+    }
+
+    @SuppressWarnings("UnresolvedMixinReference")
+    @ModifyExpressionValue(
+            method = {"travelInFluid(Lnet/minecraft/world/phys/Vec3;)V", "travelInFluid(Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/level/material/FluidState;)V"},
+            require = 1,
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInWater()Z")
+    )
+    public boolean considerLiquidAsWater(boolean original) {
+        return ReinforcementEffectHelper.considerLiquidAsWater(naraka$living(), original);
     }
 
     /**
