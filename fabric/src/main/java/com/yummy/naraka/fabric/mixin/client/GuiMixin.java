@@ -20,17 +20,17 @@ public abstract class GuiMixin {
     private int tickCount;
 
     @ModifyExpressionValue(method = "renderPlayerHealth", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getAttributeValue(Lnet/minecraft/core/Holder;)D"))
-    public double modifyMaxHealth(double original, @Local(name = "player") Player player) {
+    public double modifyMaxHealth(double original, @Local Player player) {
         return original + LockedHealthHelper.get(player);
     }
 
     @ModifyArg(method = "renderPlayerHealth", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;renderHearts(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V"), index = 5)
-    public int modifyOffsetHeartIndex(int original, @Local(name = "player") Player player) {
+    public int modifyOffsetHeartIndex(int original, @Local Player player) {
         return LockedHealthHud.modifyOffsetHeartIndex(player, tickCount, original);
     }
 
     @ModifyArg(method = "renderHearts", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;renderHeart(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/gui/Gui$HeartType;IIZZZ)V"), index = 3)
-    public int modifyHeartY(int original, @Local(name = "player") Player player, @Local(name = "y") int baseY, @Local(name = "height") int height, @Local(name = "m") int lineCount, @Local(name = "l") int heartIndex) {
+    public int modifyHeartY(int original, @Local(argsOnly = true) Player player, @Local(index = 4, argsOnly = true) int baseY, @Local(index = 5, argsOnly = true) int height, @Local(index = 17) int lineCount, @Local(index = 18) int heartIndex) {
         return LockedHealthHud.modifyHeartY(player, original, baseY, height, lineCount, heartIndex);
     }
 }
