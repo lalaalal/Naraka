@@ -221,6 +221,7 @@ public class Herobrine extends AbstractHerobrine {
         setNoGravity(true);
         setAnimation(HerobrineAnimationLocations.PHASE_3_IDLE);
         setDisplayEye(false);
+        setDisplayPickaxe(true);
 
         int armor = bossEvent.getPlayers().size() * 2;
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR, NarakaAttributeModifiers.finalHerobrineArmor(armor));

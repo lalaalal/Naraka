@@ -251,17 +251,14 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         super.addAdditionalSaveData(compound);
         if (herobrine != null)
             compound.store("Herobrine", UUIDUtil.CODEC, herobrine.getUUID());
-        compound.putBoolean("FinalModel", isFinalModel());
+        compound.putBoolean("ReduceAlpha", reduceAlpha);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-
         compound.read("Herobrine", UUIDUtil.CODEC).ifPresent(uuid -> this.herobrineUUID = uuid);
-        if (isFinalModel())
-            reduceAlpha = true;
-        compound.getBoolean("FinalModel").ifPresent(this::setFinalModel);
+        reduceAlpha = compound.getBooleanOr("ReduceAlpha", isFinalModel());
     }
 
     @Override

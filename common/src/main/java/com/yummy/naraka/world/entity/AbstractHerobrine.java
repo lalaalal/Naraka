@@ -85,7 +85,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
                 .define(FINAL_MODEL, false)
                 .define(DISPLAY_SCARF, false)
                 .define(DISPLAY_EYE, true)
-                .define(DISPLAY_PICKAXE, true);
+                .define(DISPLAY_PICKAXE, false);
     }
 
     public void setFinalModel(boolean value) {
@@ -208,6 +208,8 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         super.readAdditionalSaveData(tag);
         boolean finalModel = tag.getBooleanOr("FinalModel", false);
         entityData.set(FINAL_MODEL, finalModel);
+        boolean displayPickaxe = tag.getBooleanOr("DisplayPickaxe", false);
+        setDisplayPickaxe(displayPickaxe);
         setPersistenceRequired();
     }
 
@@ -215,6 +217,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("FinalModel", isFinalModel());
+        tag.putBoolean("DisplayPickaxe", displayPickaxe());
     }
 
     protected abstract Fireball createFireball(ServerLevel level);
