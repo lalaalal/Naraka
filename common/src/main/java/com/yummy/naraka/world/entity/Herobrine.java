@@ -382,6 +382,11 @@ public class Herobrine extends AbstractHerobrine {
             shadowController.increaseFlickerStack(3);
         }
 
+        if (getPhase() == 3 && tickCount % 200 == 0) {
+            float lockedHealth = calculateLockedHealth(serverLevel);
+            heal(lockedHealth * 6);
+        }
+
         super.customServerAiStep(serverLevel);
     }
 

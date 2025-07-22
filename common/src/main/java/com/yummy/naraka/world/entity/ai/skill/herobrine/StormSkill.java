@@ -2,11 +2,13 @@ package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.util.NarakaSkillUtils;
+import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.NarakaPickaxe;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -33,7 +35,9 @@ public class StormSkill extends ComboSkill<Herobrine> {
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return mob.getTarget() != null;
+        BlockPos blockPos = mob.blockPosition();
+        BlockPos floor = NarakaUtils.findFloor(level, blockPos);
+        return mob.getTarget() != null && blockPos.getY() - floor.getY() <=  2;
     }
 
     @Override
@@ -50,6 +54,12 @@ public class StormSkill extends ComboSkill<Herobrine> {
         runBefore(30, () -> lookTarget(target));
         runBefore(30, () -> rotateTowardTarget(target));
         runAfter(60, () -> lookTarget(target));
+    }
+
+    @Override
+    protected void onLastTick(ServerLevel level) {
+        if (!hasLinkedSkill())
+            mob.getSkillManager().waitNextSkill(40);
     }
 
     private boolean entityToPull(LivingEntity target) {
