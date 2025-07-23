@@ -1,5 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill;
 
+import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -10,6 +12,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class SkillManager {
+    private final SkillUsingMob mob;
     private final RandomSource random;
     private final Map<ResourceLocation, Entry> skills = new HashMap<>();
     private final List<Consumer<Skill<?>>> skillStartListeners = new ArrayList<>();
@@ -18,8 +21,9 @@ public class SkillManager {
     private boolean paused = false;
     private int waitingTick = 0;
 
-    public SkillManager(RandomSource random) {
-        this.random = random;
+    public SkillManager(SkillUsingMob mob) {
+        this.mob = mob;
+        this.random = mob.getRandom();
     }
 
     @Nullable
@@ -81,6 +85,7 @@ public class SkillManager {
     public void setCurrentSkill(@Nullable Skill<?> skill) {
         if (skill == null)
             return;
+        NarakaMod.LOGGER.debug("{} : Setting current skill {}", mob, skill.location);
         currentSkill = skill;
         currentSkill.prepare();
         for (Consumer<Skill<?>> listener : skillStartListeners)
@@ -99,6 +104,7 @@ public class SkillManager {
 
     public void interrupt() {
         if (currentSkill != null) {
+            NarakaMod.LOGGER.debug("{} : Interrupting skill {}", mob, currentSkill.location);
             for (Consumer<Skill<?>> listener : skillEndListeners)
                 listener.accept(currentSkill);
             this.currentSkill.interrupt();

@@ -24,7 +24,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public abstract class SkillUsingMob extends PathfinderMob {
-    protected final SkillManager skillManager = new SkillManager(random);
+    protected final SkillManager skillManager = new SkillManager(this);
     protected final Map<ResourceLocation, AnimationController> animationControllers = new HashMap<>();
     protected ResourceLocation currentAnimation = NarakaMod.location("empty");
 
@@ -119,9 +119,11 @@ public abstract class SkillUsingMob extends PathfinderMob {
      * @param animationLocation Animation
      */
     public void setAnimation(ResourceLocation animationLocation) {
+        NarakaMod.LOGGER.debug("{} : Setting animation {}", this, animationLocation);
         if (!isPlayingStaticAnimation()) {
             currentAnimation = animationLocation;
             if (level() instanceof ServerLevel serverLevel) {
+                NarakaMod.LOGGER.debug("{} : Sending animation ({}) sync packet", this, animationLocation);
                 SyncAnimationPacket payload = new SyncAnimationPacket(this, animationLocation);
                 NetworkManager.clientbound().send(serverLevel.players(), payload);
             }
@@ -138,6 +140,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
      * @param animationLocation Animation
      */
     public void updateAnimation(ResourceLocation animationLocation) {
+        NarakaMod.LOGGER.debug("{} : Updating animation {}", this, animationLocation);
         animationControllers.forEach((location, animationController) -> {
             if (animationLocation.equals(location))
                 animationController.start(tickCount);
@@ -212,7 +215,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
         private static final AnimationController EMPTY = new AnimationController(List.of()) {
             @Override
             protected ResourceLocation select() {
-                return NarakaMod.location("empty");
+                return NarakaMod.location("animation", "empty");
             }
         };
 

@@ -3,7 +3,6 @@ package com.yummy.naraka.world.entity.animation;
 import net.minecraft.resources.ResourceLocation;
 
 public class HerobrineAnimationLocations {
-
     public static final ResourceLocation WALKING = AnimationLocations.create("herobrine", "walking");
     public static final ResourceLocation COMBO_ATTACK_1 = AnimationLocations.create("herobrine", "combo_attack_1");
     public static final ResourceLocation COMBO_ATTACK_2 = AnimationLocations.create("herobrine", "combo_attack_2");

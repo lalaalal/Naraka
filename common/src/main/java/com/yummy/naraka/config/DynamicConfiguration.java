@@ -43,7 +43,7 @@ public abstract class DynamicConfiguration<T> extends Configuration {
 
     @Override
     public void loadValues() {
-        NarakaMod.LOGGER.info("Loading dynamic configuration \"{}\"", name);
+        NarakaMod.LOGGER.debug("Loading dynamic configuration \"{}\"", name);
         configurations.clear();
         try (Reader reader = file.createReader()) {
             for (String key : file.load(reader)) {
@@ -62,7 +62,7 @@ public abstract class DynamicConfiguration<T> extends Configuration {
 
     @Override
     public void saveValues() {
-        NarakaMod.LOGGER.info("Saving dynamic configuration \"{}\" to \"{}\"", name, file.getAbsolutePath());
+        NarakaMod.LOGGER.debug("Saving dynamic configuration \"{}\" to \"{}\"", name, file.getAbsolutePath());
         watchChange = false;
         try (Writer writer = file.createWriter()) {
             for (Map.Entry<String, ConfigValue<T>> entry : defaultValues.entrySet())

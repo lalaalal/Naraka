@@ -81,7 +81,7 @@ public class NarakaConfig {
                             .filter(configuration -> configuration.canUpdateOnFileChange(changedFileName))
                             .findAny()
                             .ifPresent(configuration -> {
-                                NarakaMod.LOGGER.info("Configuration change detected \"{}\"", configuration.name);
+                                NarakaMod.LOGGER.debug("Configuration change detected \"{}\"", configuration.name);
                                 configuration.loadValues();
                             });
                     if (changedFileName.equals("iris.properties") && Platform.getInstance().getSide() == Platform.Side.CLIENT)
