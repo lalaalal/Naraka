@@ -95,6 +95,16 @@ public class NarakaPickaxe extends SkillUsingMob {
     }
 
     @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
+    public boolean isPushedByFluid() {
+        return false;
+    }
+
+    @Override
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(1, new LookAtTargetGoal(this));

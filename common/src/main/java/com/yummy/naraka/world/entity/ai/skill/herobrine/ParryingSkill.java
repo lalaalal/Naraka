@@ -1,5 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
+import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
@@ -63,6 +65,7 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
             succeed = true;
             tickCount = duration - PARRYING_DURATION;
         }
+        runBetween(PARRYING_START_TICK, PARRYING_START_TICK + 5, () -> level.sendParticles(NarakaParticleTypes.PARRYING.get(), mob.getX(), mob.getY() + 1, mob.getZ(), 25, 0, 0.5, 0, 1));
     }
 
     private int tickCount(int succeedTick) {
@@ -75,7 +78,9 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
 
     private void handleSucceed(ServerLevel level, LivingEntity target) {
         run(at(tickCount(2)) && targetInLookAngle(target, -Mth.HALF_PI * 0.67f, Mth.HALF_PI * 0.67f), () -> hurtEntity(level, target));
+        runAt(tickCount(2), () -> level.sendParticles(NarakaFlameParticleOption.NECTARIUM, mob.getX(), mob.getY() + 1, mob.getZ(), 15, 1, 0.3, 1, 0.1));
         runBetween(tickCount(20), tickCount(40), () -> moveToTarget(target, false, this::movement));
+        runBetween(tickCount(20), tickCount(30), () -> level.sendParticles(NarakaFlameParticleOption.NECTARIUM, mob.getX(), mob.getY() + 1, mob.getZ(), 15, 2, 0.3, 2, 0.1));
         runAt(tickCount(40), this::stopMoving);
     }
 

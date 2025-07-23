@@ -18,6 +18,7 @@ public class NarakaParticleTypes {
     public static final HolderProxy<ParticleType<?>, ParticleType<NarakaFlameParticleOption>> NARAKA_FLAME = register("naraka_flame", true, NarakaFlameParticleOption::type);
 
     public static final HolderProxy<ParticleType<?>, SimpleParticleType> HEROBRINE_SPAWN = register("herobrine_spawn", false);
+    public static final HolderProxy<ParticleType<?>, SimpleParticleType> PARRYING = register("parrying", false);
 
     public static final HolderProxy<ParticleType<?>, SimpleParticleType> FLICKER = register("flicker", true);
     public static final HolderProxy<ParticleType<?>, SimpleParticleType> TELEPORT = register("teleport", true);

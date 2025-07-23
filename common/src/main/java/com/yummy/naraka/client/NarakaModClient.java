@@ -135,7 +135,8 @@ public final class NarakaModClient {
         ParticleProviderRegistry.register(NarakaParticleTypes.FALLING_NECTARIUM, NectariumParticle::createNectariumFallParticle);
         ParticleProviderRegistry.register(NarakaParticleTypes.LANDING_NECTARIUM, NectariumParticle::createNectariumLandParticle);
         ParticleProviderRegistry.register(NarakaParticleTypes.SOUL, SoulParticle::create);
-        ParticleProviderRegistry.register(NarakaParticleTypes.HEROBRINE_SPAWN, HerobrineSpawnParticle.Provider::new);
+        ParticleProviderRegistry.register(NarakaParticleTypes.HEROBRINE_SPAWN, TurningParticle::herobrineSpawn);
+        ParticleProviderRegistry.register(NarakaParticleTypes.PARRYING, TurningParticle::parrying);
         ParticleProviderRegistry.register(NarakaParticleTypes.NARAKA_FLAME, NarakaFlame.Provider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.FLICKER, BlinkParticle.Provider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.STARDUST, BlinkParticle.Provider::withGlowing);

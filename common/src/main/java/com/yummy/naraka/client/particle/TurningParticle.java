@@ -11,20 +11,23 @@ import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Collection;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 @Environment(EnvType.CLIENT)
-public class HerobrineSpawnParticle extends TextureSheetParticle {
-    private final double radius;
-    private final double speed;
+public class TurningParticle extends TextureSheetParticle {
+    private final Predicate<TurningParticle> spreadPredicate;
     private boolean spread = false;
     private final double startX;
     private final double startZ;
     private final double startAngle;
+    private double speed;
+    private double radius;
 
-    public HerobrineSpawnParticle(ClientLevel clientLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+    public TurningParticle(ClientLevel clientLevel, Predicate<TurningParticle> spreadPredicate, int baseLifetime, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
         super(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed);
-        lifetime = 100 + random.nextInt(0, 20);
+        this.spreadPredicate = spreadPredicate;
+        lifetime = baseLifetime + random.nextInt(0, 20);
         speed = Math.PI / random.nextInt(5, 10);
         int randomNumber = random.nextInt(2, 5);
         radius = 1 + (randomNumber * randomNumber) / 5.0;
@@ -42,8 +45,7 @@ public class HerobrineSpawnParticle extends TextureSheetParticle {
             remove();
 
         if (!spread) {
-            Collection<Herobrine> entities = level.getEntities(EntityTypeTest.forClass(Herobrine.class), AABB.ofSize(new Vec3(x, y, z), 10, 10, 10), entity -> true);
-            if (!entities.isEmpty()) {
+            if (spreadPredicate.test(this)) {
                 spread = true;
                 this.xd = xd * 5;
                 this.zd = zd * 5;
@@ -71,17 +73,52 @@ public class HerobrineSpawnParticle extends TextureSheetParticle {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
+    public static Provider herobrineSpawn(SpriteSet sprites) {
+        return new Provider(sprites, 100, TurningParticle::isHerobrineExist);
+    }
+
+    public static Provider parrying(SpriteSet sprites) {
+        return new Provider(sprites, 10, TurningParticle::never)
+                .withModifier(particle -> {
+                    particle.radius = 2;
+                    particle.speed *= 2;
+                });
+    }
+
+    private static boolean isHerobrineExist(TurningParticle particle) {
+        return !particle.level.getEntities(EntityTypeTest.forClass(Herobrine.class),
+                        AABB.ofSize(new Vec3(particle.x, particle.y, particle.z), 10, 10, 10),
+                        entity -> true
+                )
+                .isEmpty();
+    }
+
+    private static boolean never(TurningParticle particle) {
+        return false;
+    }
+
     public static class Provider implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprites;
+        private final Predicate<TurningParticle> spreadPredicate;
+        private Consumer<TurningParticle> modifier = particle -> {};
+        private final int baseLifetime;
 
-        public Provider(SpriteSet sprites) {
+        public Provider(SpriteSet sprites, int baseLifetime, Predicate<TurningParticle> spreadPredicate) {
             this.sprites = sprites;
+            this.spreadPredicate = spreadPredicate;
+            this.baseLifetime = baseLifetime;
+        }
+
+        public Provider withModifier(Consumer<TurningParticle> modifier) {
+            this.modifier = modifier;
+            return this;
         }
 
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            HerobrineSpawnParticle particle = new HerobrineSpawnParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
+            TurningParticle particle = new TurningParticle(level, spreadPredicate, baseLifetime, x, y, z, xSpeed, ySpeed, zSpeed);
             particle.pickSprite(sprites);
+            modifier.accept(particle);
             return particle;
         }
     }
