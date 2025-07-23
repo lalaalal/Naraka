@@ -84,7 +84,6 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
         shadowHerobrine.setPos(mob.position());
         Vec3 movement = shadowHerobrine.getLookAngle().scale(1.5);
         shadowHerobrine.setDeltaMovement(movement);
-        shadowHerobrine.setDisplayPickaxe(true);
         shadowHerobrine.setAnimation(HerobrineAnimationLocations.PHASE_3_IDLE);
         shadowHerobrine.setTarget(mob.getTarget());
     }

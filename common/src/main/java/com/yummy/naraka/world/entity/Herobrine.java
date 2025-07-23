@@ -190,8 +190,8 @@ public class Herobrine extends AbstractHerobrine {
         setPos(pos);
     }
 
-    public ShadowController getShadowController() {
-        return shadowController;
+    public Optional<ShadowController> getShadowController() {
+        return Optional.of(shadowController);
     }
 
     @Override

@@ -4,7 +4,6 @@ import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
-import com.yummy.naraka.world.entity.ShadowHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.InstantShadowSpawner;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
@@ -58,18 +57,13 @@ public class StrikeDownSkill extends ComboSkill<Herobrine> {
         runBetween(19, 25, () -> NarakaSkillUtils.sendTraceParticles(level, mob, NarakaFlameParticleOption.DIAMOND));
         runAt(21, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 5));
 
-        runAt(20, () -> shadowSpawner.control(this::displayShadowPickaxe).spawn(level, shadowPosition, mob.getYRot()));
-        runAt(21, () -> shadowSpawner.useSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_3));
+        runAt(20, () -> shadowSpawner.spawn(level, shadowPosition, mob.getYRot()).useSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_3));
 
         runAt(38, () -> mob.setDeltaMovement(0, 0.4, 0));
         runAfter(40, () -> lookTarget(target));
         runBetween(40, 48, () -> reduceSpeed(0.5));
         runAt(50, this::stopMoving);
         onGround(level);
-    }
-
-    private void displayShadowPickaxe(ShadowHerobrine shadowHerobrine) {
-        shadowHerobrine.setDisplayPickaxe(true);
     }
 
     @Override

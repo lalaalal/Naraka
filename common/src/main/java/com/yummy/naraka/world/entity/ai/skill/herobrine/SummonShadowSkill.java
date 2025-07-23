@@ -24,6 +24,6 @@ public class SummonShadowSkill extends Skill<Herobrine> {
 
     @Override
     protected void onLastTick(ServerLevel level) {
-        mob.getShadowController().summonShadowHerobrine(level);
+        mob.getShadowController().ifPresent(controller -> controller.summonShadowHerobrine(level));
     }
 }

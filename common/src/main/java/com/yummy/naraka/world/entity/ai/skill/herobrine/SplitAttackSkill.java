@@ -5,7 +5,6 @@ import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
-import com.yummy.naraka.world.entity.ShadowHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.InstantShadowSpawner;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
@@ -54,17 +53,9 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
         runBetween(15, 20, () -> rotateTowardTarget(target));
         runBetween(18, 20, () -> hurtEntities(level, this::checkTarget, 1.8));
         runAt(20, this::stopMoving);
-        runAt(25, () -> firstShadowSpawner.spawn(level, mob.position(), mob.getYRot()));
-        runAt(26, () -> firstShadowSpawner.control(this::displayShadowPickaxe).useSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_1));
-        if (hasLinkedSkill()) {
-            runAt(35, () -> secondShadowSpawner.spawn(level, mob.position(), mob.getYRot()));
-            runAt(36, () -> secondShadowSpawner.control(this::displayShadowPickaxe).useSkill(SimpleComboAttackSkill.FINAL_COMBO_ATTACK_2));
-        }
+        runAt(25, () -> firstShadowSpawner.spawnAndUseSkill(level, mob, SimpleComboAttackSkill.FINAL_COMBO_ATTACK_1));
+        run(at(35) && hasLinkedSkill(), () -> secondShadowSpawner.spawnAndUseSkill(level, mob, SimpleComboAttackSkill.FINAL_COMBO_ATTACK_2));
         runAt(45, () -> mob.setAnimation(HerobrineAnimationLocations.FINAL_COMBO_ATTACK_1_RETURN));
-    }
-
-    private void displayShadowPickaxe(ShadowHerobrine shadowHerobrine) {
-        shadowHerobrine.setDisplayPickaxe(true);
     }
 
     private boolean checkTarget(LivingEntity target) {

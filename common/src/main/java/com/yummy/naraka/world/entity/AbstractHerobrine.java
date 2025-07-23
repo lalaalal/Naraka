@@ -34,6 +34,8 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 public abstract class AbstractHerobrine extends SkillUsingMob implements StigmatizingEntity, AfterimageEntity, Enemy {
     protected static final EntityDataAccessor<Boolean> FINAL_MODEL = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Float> SCARF_ROTATION_DEGREE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.FLOAT);
@@ -221,6 +223,8 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     protected abstract Fireball createFireball(ServerLevel level);
+
+    public abstract Optional<ShadowController> getShadowController();
 
     @Override
     public boolean canBeAffected(MobEffectInstance effectInstance) {

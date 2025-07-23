@@ -9,6 +9,7 @@ import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 
 import java.util.*;
 
@@ -28,6 +29,14 @@ public class ShadowController {
     public void load(CompoundTag tag) {
         shadowHerobrines.clear();
         tag.read("ShadowHerobrines", UUIDUtil.CODEC_SET).ifPresent(shadowHerobrines::addAll);
+    }
+
+    public void addShadowHerobrine(ShadowHerobrine shadowHerobrine) {
+        shadowHerobrines.add(shadowHerobrine.getUUID());
+    }
+
+    public void removeShadowHerobrine(ShadowHerobrine shadowHerobrine) {
+        shadowHerobrines.remove(shadowHerobrine.getUUID());
     }
 
     public void summonShadowHerobrine(ServerLevel level) {
@@ -99,7 +108,7 @@ public class ShadowController {
     }
 
     public void killShadows(ServerLevel level) {
-        getShadows(level).forEach(shadowHerobrine -> shadowHerobrine.kill(level));
+        getShadows(level).forEach(Entity::discard);
     }
 
     public int getShadowCount() {

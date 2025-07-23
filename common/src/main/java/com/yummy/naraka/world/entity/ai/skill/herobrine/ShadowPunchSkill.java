@@ -32,9 +32,7 @@ public class ShadowPunchSkill extends PunchSkill<ShadowHerobrine> {
 
     @Override
     protected void onLastTick(ServerLevel level) {
-        mob.getHerobrine().ifPresent(herobrine -> {
-            herobrine.getShadowController().consumeFlickerStack(level, List.of(mob));
-        });
+        mob.getShadowController().ifPresent(controller -> controller.consumeFlickerStack(level, List.of(mob)));
     }
 
     @Override
