@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
+import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.LightningCircle;
@@ -16,7 +17,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -63,9 +66,9 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         runBetween(40, 90, () -> moveToTarget(target, false, applyAcceleration()));
     }
 
-    private Predicate<LivingEntity> targetBetween(float from, float to) {
-        return target -> targetInRange(to * to)
-                && targetOutOfRange(from * from)
+    private Predicate<LivingEntity> targetBetween() {
+        return target -> targetInRange(100)
+                && targetOutOfRange(1)
                 && AbstractHerobrine.isNotHerobrine(target);
     }
 
@@ -80,7 +83,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         runBetween(90, 95, () -> spawnLightningBolts(level, 3, 9, 0xaaff00ff));
         runBetween(90, 100, () -> shockwaveBlocks(level, 90, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
         runAt(90, mob::shakeCamera);
-        runAt(92, () -> hurtEntities(level, targetBetween(1, 10), 10));
+        runAt(92, () -> hurtEntities(level, targetBetween(), 10));
         runBetween(100, 125, () -> hurtTargetInAngle(level, 100, 2, -HALF_ANGLE, HALF_ANGLE));
         runBetween(100, 125, () -> hurtTargetInAngle(level, 95, 1, -HALF_ANGLE + Mth.HALF_PI, HALF_ANGLE + Mth.HALF_PI));
         runBetween(100, 125, () -> hurtTargetInAngle(level, 95, 1, -HALF_ANGLE - Mth.HALF_PI, HALF_ANGLE - Mth.HALF_PI));
@@ -90,16 +93,17 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         runAt(125, () -> spawnMassiveLightning(level));
         runAt(125, mob::shakeCamera);
         runBetween(125, 135, () -> shockwaveBlocks(level, 125, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
-        runAt(125, () -> hurtEntities(level, targetBetween(1, 10), 10));
+        runAt(125, () -> hurtEntities(level, targetBetween(), 10));
         runBetween(170, 180, () -> sendParticles(level, 5));
 
         runBetween(125, 130, () -> spawnLightningBolts(level, 4, 10, 0x99ff00ff));
-        runAt(145, () -> NarakaSkillUtils.pullEntities(level, mob, this::entityToPull, 0.25));
+        runBetween(120, 130, () -> pullBlocks(level));
+        runAt(145, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPull, 0.25));
 
         runAt(172, mob::shakeCamera);
         runBetween(172, 176, () -> shockwaveBlocks(level, 172, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
         runAt(172, () -> level.playSound(null, mob, SoundEvents.TOTEM_USE, SoundSource.HOSTILE, 1, 1));
-        runAt(172, () -> hurtEntities(level, targetBetween(1, 10), 7));
+        runAt(172, () -> hurtEntities(level, targetBetween(), 7));
         runAt(170, () -> spawnLightningCircle(level));
         runBetween(170, 180, () -> sendParticles(level, 7));
 
@@ -155,9 +159,26 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         BiPredicate<BlockPos, Integer> predicate = (position, r) -> {
             BlockPos actualPosition = mob.blockPosition().offset(position);
             return targetInLookAngle(new Vec3(actualPosition.getX() + 0.5, mob.getY(), actualPosition.getZ() + 0.5), angleFrom, angleTo)
-                    && NarakaUtils.OUTLINE.test(position, r);
+                    && NarakaUtils.CIRCLE_OUTLINE.test(position, r);
         };
         NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), radius + waveTick, predicate, movementSupplier);
+    }
+
+    private void pullBlocks(ServerLevel level) {
+        RandomSource random = mob.getRandom();
+        NarakaUtils.square(mob.blockPosition(), 25, NarakaUtils.circleBetween(10, 25), pos -> {
+            if (random.nextDouble() < 0.025) {
+                BlockPos floor = NarakaUtils.findFloor(level, pos);
+                if (!level.getBlockState(floor.above()).isAir())
+                    return;
+                BlockState state = level.getBlockState(floor);
+                double speed = random.nextDouble() * 0.2 + 0.4;
+                Vec3 movement = mob.position().subtract(floor.getBottomCenter())
+                        .multiply(0.05, 0, 0.05)
+                        .add(0, speed, 0);
+                NarakaEntityUtils.createFloatingBlock(level, floor.above(), state, movement);
+            }
+        });
     }
 
     private void hurtTargetInAngle(ServerLevel level, int startTick, int tickInterval, float angleFrom, float angleTo) {

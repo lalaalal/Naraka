@@ -8,6 +8,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -25,15 +26,16 @@ public class NarakaSkillUtils {
     public static void shockwaveBlocks(Level level, BlockPos base, int radius, BiPredicate<BlockPos, Integer> positionPredicate, Supplier<Vec3> movementSupplier) {
         base = NarakaUtils.findAir(level, base, Direction.UP);
 
-        NarakaUtils.circle(base, radius, positionPredicate, blockPos -> {
+        NarakaUtils.square(base, radius, positionPredicate, blockPos -> {
             BlockPos floor = NarakaUtils.findFloor(level, blockPos);
             BlockState state = level.getBlockState(floor);
-            NarakaEntityUtils.createFloatingBlock(level, floor.above(), state, movementSupplier.get());
+            if (level.getBlockState(floor.above()).isAir())
+                NarakaEntityUtils.createFloatingBlock(level, floor.above(), state, movementSupplier.get());
         });
     }
 
     public static void shockwaveBlocks(Level level, BlockPos base, int radius, Supplier<Vec3> movementSupplier) {
-        shockwaveBlocks(level, base, radius, NarakaUtils.OUTLINE, movementSupplier);
+        shockwaveBlocks(level, base, radius, NarakaUtils.CIRCLE_OUTLINE, movementSupplier);
     }
 
     public static <T extends LivingEntity & StigmatizingEntity> void stigmatize(ServerLevel level, T mob, int radius) {
@@ -85,9 +87,13 @@ public class NarakaSkillUtils {
         }
     }
 
-    public static void pullEntities(ServerLevel level, Mob mob, Predicate<LivingEntity> targetPredicate, double scale) {
+    public static void pullLivingEntities(ServerLevel level, Mob mob, Predicate<LivingEntity> targetPredicate, double scale) {
+        pullEntities(level, mob, LivingEntity.class, targetPredicate, scale);
+    }
+
+    public static <T extends Entity> void pullEntities(ServerLevel level, Mob mob, Class<T> type, Predicate<T> targetPredicate, double scale) {
         AABB boundingBox = mob.getBoundingBox().inflate(80, 10, 80);
-        level.getEntitiesOfClass(LivingEntity.class, boundingBox, targetPredicate).forEach(target -> {
+        level.getEntitiesOfClass(type, boundingBox, targetPredicate).forEach(target -> {
             Vec3 movement = mob.position().subtract(target.position())
                     .scale(scale);
             target.setDeltaMovement(movement);

@@ -99,7 +99,7 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
         int currentRadius = (tickCount - FLOOR_DESTROY_START_TICK) / 2 + FLOOR_DESTROY_BASE_RADIUS;
 
         BlockPos base = mob.blockPosition();
-        NarakaUtils.circle(base, currentRadius, NarakaUtils.OUTLINE, blockPos -> {
+        NarakaUtils.square(base, currentRadius, NarakaUtils.CIRCLE_OUTLINE, blockPos -> {
             if ((base.getX() - 2 < blockPos.getX() && blockPos.getX() < base.getX() + 2) || (base.getZ() - 2 < blockPos.getZ() && blockPos.getZ() < base.getZ() + 2))
                 return;
             BlockPos current = blockPos;

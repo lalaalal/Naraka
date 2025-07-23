@@ -123,7 +123,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
             currentAnimation = animationLocation;
             if (level() instanceof ServerLevel serverLevel) {
                 SyncAnimationPacket payload = new SyncAnimationPacket(this, animationLocation);
-                NetworkManager.sendToClient(serverLevel.players(), payload);
+                NetworkManager.clientbound().send(serverLevel.players(), payload);
             }
         }
     }

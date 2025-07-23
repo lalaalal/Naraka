@@ -1,6 +1,5 @@
 package com.yummy.naraka.util;
 
-import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -21,14 +20,6 @@ import java.util.function.Function;
 public class NarakaUtils {
     private static final float A2 = 0.41421f;
     private static final float A3 = 0.30277f;
-
-    public static AnimationChannel.Interpolation easeInOut(float partition) {
-        return (vector3f, delta, keyframes, start, end, scale) -> {
-            Vector3f vectorStart = keyframes[start].target();
-            Vector3f vectorEnd = keyframes[end].target();
-            return easeInOut(delta, partition, vectorStart, vectorEnd, vector3f);
-        };
-    }
 
     public static float fastStepIn(float x) {
         final float a = A3;
@@ -74,12 +65,24 @@ public class NarakaUtils {
         void accept(double length, int x, int y, int z);
     }
 
-    public static final BiPredicate<BlockPos, Integer> OUTLINE = (position, radius) -> {
+    public static final BiPredicate<BlockPos, Integer> CIRCLE_OUTLINE = (position, radius) -> {
         int xz = position.getX() * position.getX() + position.getZ() * position.getZ();
         return (radius - 0.75) * (radius - 0.75) <= xz && xz <= (radius + 0.25) * (radius + 0.25);
     };
 
-    public static void circle(BlockPos center, int radius, BiPredicate<BlockPos, Integer> predicate, Consumer<BlockPos> consumer) {
+    public static final BiPredicate<BlockPos, Integer> CIRCLE = (position, radius) -> {
+        int xz = position.getX() * position.getX() + position.getZ() * position.getZ();
+        return xz < radius * radius;
+    };
+
+    public static BiPredicate<BlockPos, Integer> circleBetween(int from, int to) {
+        return (position, radius) -> {
+            int xz = position.getX() * position.getX() + position.getZ() * position.getZ();
+            return from * from <= xz && xz <= to * to;
+        };
+    }
+
+    public static void square(BlockPos center, int radius, BiPredicate<BlockPos, Integer> predicate, Consumer<BlockPos> consumer) {
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
                 if (predicate.test(new BlockPos(x, center.getY(), z), radius)) {
@@ -216,10 +219,5 @@ public class NarakaUtils {
             iterate(list1.reversed(), list2.reversed(), consumer);
         else
             iterate(list1, list2, consumer);
-    }
-
-    public static Vec3 projection(Vec3 target, Vec3 base) {
-        base = base.normalize();
-        return base.scale(target.dot(base) / base.length());
     }
 }

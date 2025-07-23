@@ -19,7 +19,7 @@ public class NarakaFireballStaffItem extends Item {
         NarakaFireball fireball = new NarakaFireball(player, player, Vec3.ZERO, level);
         fireball.setPos(player.position().add(viewVector.x, 0, viewVector.z));
         level.addFreshEntity(fireball);
-        fireball.shoot(viewVector.x, viewVector.y, viewVector.z, 4, 0);
+        fireball.shoot(viewVector.x, viewVector.y, viewVector.z, 1, 0);
         return super.use(level, player, usedHand);
     }
 }

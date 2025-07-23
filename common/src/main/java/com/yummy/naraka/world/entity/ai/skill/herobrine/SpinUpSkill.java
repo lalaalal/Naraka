@@ -74,7 +74,8 @@ public class SpinUpSkill extends ComboSkill<Herobrine> {
             BlockPos floor = NarakaUtils.findFloor(level, pos);
             BlockState state = level.getBlockState(floor);
             Vec3 movement = current.scale(0.2).add(0, 0.7, 0);
-            NarakaEntityUtils.createFloatingBlock(level, floor.above(), state, movement);
+            if (level.getBlockState(floor.above()).isAir())
+                NarakaEntityUtils.createFloatingBlock(level, floor.above(), state, movement);
             level.playSound(mob, mob.blockPosition(), SoundEvents.BREEZE_WIND_CHARGE_BURST.value(), SoundSource.HOSTILE, 1, 1);
         }
     }

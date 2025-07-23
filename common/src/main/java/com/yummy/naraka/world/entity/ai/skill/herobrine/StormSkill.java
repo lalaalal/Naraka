@@ -42,7 +42,7 @@ public class StormSkill extends ComboSkill<Herobrine> {
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        runAt(30, () -> NarakaSkillUtils.pullEntities(level, mob, this::entityToPull, 0.23));
+        runAt(30, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPull, 0.23));
 
         runFrom(40, () -> stigmatizingWave(level, 40));
         runFrom(50, () -> stigmatizingWave(level, 50));

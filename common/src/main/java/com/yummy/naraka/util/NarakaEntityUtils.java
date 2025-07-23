@@ -4,7 +4,6 @@ import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncPlayerMovementPacket;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -20,7 +19,6 @@ import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -77,17 +75,6 @@ public class NarakaEntityUtils {
         return to.subtract(from).normalize();
     }
 
-    public static void updatePositionForUpStep(Level level, Entity entity, Vec3 delta, double stepHeight) {
-        delta = delta.multiply(1, 0, 1)
-                .normalize();
-        BlockPos pos = BlockPos.containing(entity.position().add(delta));
-        BlockState state = level.getBlockState(pos);
-        VoxelShape shape = state.getCollisionShape(level, pos);
-        double height = shape.max(Direction.Axis.Y);
-        if (!shape.isEmpty() && height <= stepHeight && entity.getY() - entity.blockPosition().getY() < height)
-            entity.setPos(entity.getX(), entity.getY() + height, entity.getZ());
-    }
-
     public static boolean disableAndHurtShield(LivingEntity livingEntity, int cooldown, int damage) {
         if (NarakaAttributeModifiers.hasAttributeModifier(livingEntity, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STUN_PREVENT_MOVING))
             return false;
@@ -116,12 +103,11 @@ public class NarakaEntityUtils {
         return !(player.isCreative() || player.isSpectator());
     }
 
-    public static void createFloatingBlock(Level level, BlockPos pos, BlockState state, Vec3 movement) {
-        if (level.getBlockState(pos).isAir()) {
-            FallingBlockEntity fallingBlockEntity = FallingBlockEntity.fall(level, pos, state);
-            fallingBlockEntity.disableDrop();
-            fallingBlockEntity.setDeltaMovement(movement);
-        }
+    public static FallingBlockEntity createFloatingBlock(Level level, BlockPos pos, BlockState state, Vec3 movement) {
+        FallingBlockEntity fallingBlockEntity = FallingBlockEntity.fall(level, pos, state);
+        fallingBlockEntity.disableDrop();
+        fallingBlockEntity.setDeltaMovement(movement);
+        return fallingBlockEntity;
     }
 
     public static void sendPlayerMovement(ServerPlayer player, Vec3 movement) {

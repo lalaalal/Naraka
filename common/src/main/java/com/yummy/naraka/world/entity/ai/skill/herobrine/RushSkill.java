@@ -106,7 +106,8 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         BlockPos floor = NarakaUtils.findFloor(level, pos);
         BlockState state = level.getBlockState(floor);
         Vec3 movement = current.add(0, 0.3, 0).scale(power);
-        NarakaEntityUtils.createFloatingBlock(level, floor.above(), state, movement);
+        if (level.getBlockState(floor.above()).isAir())
+            NarakaEntityUtils.createFloatingBlock(level, floor.above(), state, movement);
     }
 
     private boolean entityPredicate(LivingEntity entity) {

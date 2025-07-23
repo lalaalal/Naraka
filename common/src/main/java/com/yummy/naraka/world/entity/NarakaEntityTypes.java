@@ -26,9 +26,10 @@ public class NarakaEntityTypes {
 
     public static final HolderProxy<EntityType<?>, EntityType<AbsoluteHerobrine>> ABSOLUTE_HEROBRINE = register(
             "absolute_herobrine",
-            EntityType.Builder.<AbsoluteHerobrine>of(AbsoluteHerobrine::new, MobCategory.MONSTER)
+            EntityType.Builder.of(AbsoluteHerobrine::new, MobCategory.MONSTER)
                     .fireImmune()
                     .sized(0.5f, 1.5f)
+                    .updateInterval(1)
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<ShadowHerobrine>> SHADOW_HEROBRINE = register(

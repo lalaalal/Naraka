@@ -1,7 +1,6 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.core.BlockPos;
@@ -145,7 +144,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         Entity target = getTarget();
         int tracingLevel = NarakaConfig.COMMON.narakaFireballTargetTracingLevel.getValue();
         if (canRotateMovement(tracingLevel) && target != null) {
-            if (this.distanceToSqr(target) > 12 * 12)
+            if (!alwaysTrace(tracingLevel) && this.distanceToSqr(target) > 12 * 12)
                 return;
 
             boolean canReduceSpeed = canReduceSpeed(tracingLevel);
@@ -153,7 +152,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
             Vec3 movingVector = getDeltaMovement().normalize();
             if (movingVector.equals(Vec3.ZERO))
                 return;
-            Vec3 projectionVector = NarakaUtils.projection(targetVector, movingVector);
+            Vec3 projectionVector = targetVector.projectedOn(movingVector);
             Vec3 tracingVector = targetVector.subtract(projectionVector);
             double tracingVectorLength = tracingVector.length();
 
@@ -174,6 +173,10 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     }
 
     private boolean canReduceSpeed(int tracingLevel) {
+        return tracingLevel >= 3;
+    }
+
+    private boolean alwaysTrace(int tracingLevel) {
         return tracingLevel >= 2;
     }
 
