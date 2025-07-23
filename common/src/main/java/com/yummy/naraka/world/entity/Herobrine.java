@@ -154,6 +154,7 @@ public class Herobrine extends AbstractHerobrine {
 
         registerAnimation(HerobrineAnimationLocations.ENTER_PHASE_2);
         registerAnimation(HerobrineAnimationLocations.ENTER_PHASE_3);
+        registerAnimation(HerobrineAnimationLocations.PREPARE_PHASE_3);
         registerAnimation(HerobrineAnimationLocations.STAGGERING_PHASE_2);
         registerAnimation(HerobrineAnimationLocations.RUSH_SUCCEED);
         registerAnimation(HerobrineAnimationLocations.RUSH_FAILED);
@@ -213,13 +214,15 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void onPhase3(int phase) {
-        teleportToSpawnedPosition();
-        skillManager.setCurrentSkill(destroyStructureSkill);
         entityData.set(DISPLAY_SCARF, true);
         navigation = new FlyingPathNavigation(this, level());
         moveControl = new HerobrineFlyMoveControl(this, 0.75);
-        setNoGravity(true);
         setAnimation(HerobrineAnimationLocations.PHASE_3_IDLE);
+        if (isFinalModel())
+            return;
+        teleportToSpawnedPosition();
+        skillManager.setCurrentSkill(destroyStructureSkill);
+        setNoGravity(true);
         setDisplayEye(false);
         setDisplayPickaxe(true);
 
@@ -264,6 +267,8 @@ public class Herobrine extends AbstractHerobrine {
     private void startStaggering(int prevPhase, int currentPhase) {
         if (currentPhase == 2)
             startStaggering(HerobrineAnimationLocations.ENTER_PHASE_2, 55, 40);
+        if (currentPhase == 3 && getCurrentAnimation() != HerobrineAnimationLocations.STIGMATIZE_ENTITIES_END && !isFinalModel())
+            startStaggering();
     }
 
     private void updateMusic(int prevPhase, int currentPhase) {
@@ -312,9 +317,11 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void collectStigma(ServerLevel level, LivingEntity target, Stigma original) {
-        this.heal(21);
-        if (getPhase() == 2 && target.isDeadOrDying())
-            stopHibernateMode(level);
+        if (isAlive()) {
+            this.heal(21);
+            if (getPhase() == 2 && target.isDeadOrDying())
+                stopHibernateMode(level);
+        }
     }
 
     @Override
@@ -469,11 +476,7 @@ public class Herobrine extends AbstractHerobrine {
     public void startSeenByPlayer(ServerPlayer serverPlayer) {
         if (isAlive()) {
             bossEvent.addPlayer(serverPlayer);
-            List<NarakaClientboundEventPacket.Event> events = new ArrayList<>();
-            events.add(NarakaMusics.musicEventByPhase(getPhase()));
-            if (getPhase() == 3)
-                events.add(NarakaClientboundEventPacket.Event.START_HEROBRINE_SKY);
-            CustomPacketPayload packet = new NarakaClientboundEventPacket(events);
+            CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaMusics.musicEventByPhase(getPhase()));
             NetworkManager.sendToClient(serverPlayer, packet);
         }
     }

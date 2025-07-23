@@ -36,7 +36,7 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
     private int destroyCount = 5;
 
     public DestroyStructureSkill(Herobrine mob) {
-        super(LOCATION, mob, 200, Integer.MAX_VALUE);
+        super(LOCATION, mob, 280, Integer.MAX_VALUE);
     }
 
     @Override
@@ -52,18 +52,18 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
     }
 
     @Override
-    protected void onFirstTick(ServerLevel level) {
-        mob.startWhiteScreen();
-    }
-
-    @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        runAt(20, () -> mob.startHerobrineSky(level));
+        runAt(25, () -> mob.playStaticAnimation(HerobrineAnimationLocations.PREPARE_PHASE_3, 95, false, true));
+        runAt(80, mob::startWhiteScreen);
+        runAt(87, () -> mob.setDeltaMovement(0, 0.8, 0));
+        runBetween(85, 100, () -> reduceSpeed(0.75));
 
-        runAt(80, this::startPhase3);
-        runAt(160, () -> hurtEntities(level, this::checkTarget, 5));
+        runAt(160, () -> startPhase3(level));
+        runAt(240, () -> hurtEntities(level, this::checkTarget, 5));
+        runAt(240, () -> mob.setDeltaMovement(0, -0.5, 0));
+        runAfter(240, () -> reduceSpeed(0.75));
         run(canDestroyStructure(), () -> destroyStructure(level));
-        run(between(20, 37) && canDestroyStructure(), () -> destroyFloor(level));
+        run(between(100, 117) && canDestroyStructure(), () -> destroyFloor(level));
     }
 
     private boolean checkTarget(LivingEntity target) {
@@ -71,7 +71,7 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
     }
 
     private boolean canDestroyStructure() {
-        return after(15) && radius < 95 && !NarakaConfig.COMMON.disableHerobrineDestroyingStructure.getValue() && mob.hasSpawnPosition();
+        return after(95) && radius < 95 && !NarakaConfig.COMMON.disableHerobrineDestroyingStructure.getValue() && mob.hasSpawnPosition();
     }
 
     private void destroyStructure(ServerLevel level) {
@@ -130,12 +130,12 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
         level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
     }
 
-    protected void startPhase3() {
+    protected void startPhase3(ServerLevel level) {
         mob.stopWhiteScreen();
+        mob.startHerobrineSky(level);
         mob.sendMusic(3);
-        mob.stopStaticAnimation();
         mob.setFinalModel(true);
-        mob.playStaticAnimation(HerobrineAnimationLocations.ENTER_PHASE_3, 120, false);
+        mob.playStaticAnimation(HerobrineAnimationLocations.ENTER_PHASE_3, 120, false, true);
         mob.spawnNarakaPickaxe();
     }
 

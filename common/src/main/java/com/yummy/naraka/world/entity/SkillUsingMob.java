@@ -169,6 +169,12 @@ public abstract class SkillUsingMob extends PathfinderMob {
     }
 
     public void playStaticAnimation(ResourceLocation animation, int duration, boolean interruptSkill) {
+        playStaticAnimation(animation, duration, interruptSkill, false);
+    }
+
+    public void playStaticAnimation(ResourceLocation animation, int duration, boolean interruptSkill, boolean force) {
+        if (force)
+            stopStaticAnimation();
         if (animationTickLeft > 0)
             return;
         setAnimation(animation);

@@ -163,7 +163,6 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         if (animationTickLeft >= 0)
             setAnimation(getIdleAnimation());
         super.stopStaticAnimation();
-
     }
 
     public boolean shouldPlayIdleAnimation() {
