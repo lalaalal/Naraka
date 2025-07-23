@@ -467,13 +467,15 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void startSeenByPlayer(ServerPlayer serverPlayer) {
-        bossEvent.addPlayer(serverPlayer);
-        List<NarakaClientboundEventPacket.Event> events = new ArrayList<>();
-        events.add(NarakaMusics.musicEventByPhase(getPhase()));
-        if (getPhase() == 3)
-            events.add(NarakaClientboundEventPacket.Event.START_HEROBRINE_SKY);
-        CustomPacketPayload packet = new NarakaClientboundEventPacket(events);
-        NetworkManager.sendToClient(serverPlayer, packet);
+        if (isAlive()) {
+            bossEvent.addPlayer(serverPlayer);
+            List<NarakaClientboundEventPacket.Event> events = new ArrayList<>();
+            events.add(NarakaMusics.musicEventByPhase(getPhase()));
+            if (getPhase() == 3)
+                events.add(NarakaClientboundEventPacket.Event.START_HEROBRINE_SKY);
+            CustomPacketPayload packet = new NarakaClientboundEventPacket(events);
+            NetworkManager.sendToClient(serverPlayer, packet);
+        }
     }
 
     public void startHerobrineSky(ServerLevel level) {
