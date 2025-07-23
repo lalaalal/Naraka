@@ -28,7 +28,8 @@ import java.util.function.Predicate;
 public class DestroyStructureSkill extends AttackSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("herobrine.destroy_structure");
     private static final int SPHERE_RADIUS = 10;
-    private static final int FLOOR_DESTROY_START_TICK = 20;
+    private static final int FLOOR_DESTROY_START_TICK = 100;
+    private static final int FLOOR_DESTROY_END_TICK = 117;
     private static final int FLOOR_DESTROY_BASE_RADIUS = 25;
 
     private final List<BlockPos> positions = new ArrayList<>();
@@ -54,7 +55,7 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAt(25, () -> mob.playStaticAnimation(HerobrineAnimationLocations.PREPARE_PHASE_3, 95, false, true));
-        runAt(80, mob::startWhiteScreen);
+        runAt(85, mob::startWhiteScreen);
         runAt(87, () -> mob.setDeltaMovement(0, 0.8, 0));
         runBetween(85, 100, () -> reduceSpeed(0.75));
 
@@ -63,7 +64,7 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
         runAt(240, () -> mob.setDeltaMovement(0, -0.5, 0));
         runAfter(240, () -> reduceSpeed(0.75));
         run(canDestroyStructure(), () -> destroyStructure(level));
-        run(between(100, 117) && canDestroyStructure(), () -> destroyFloor(level));
+        run(between(FLOOR_DESTROY_START_TICK, FLOOR_DESTROY_END_TICK) && canDestroyStructure(), () -> destroyFloor(level));
     }
 
     private boolean checkTarget(LivingEntity target) {
@@ -77,7 +78,7 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
     private void destroyStructure(ServerLevel level) {
         if (positions.isEmpty()) {
             radius += 5;
-            determinePositions();
+            determinePositions(level);
             destroyCount *= 2;
         } else {
             for (int i = 0; i < destroyCount; i++) {
@@ -98,7 +99,7 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
             return;
         int currentRadius = (tickCount - FLOOR_DESTROY_START_TICK) / 2 + FLOOR_DESTROY_BASE_RADIUS;
 
-        BlockPos base = mob.blockPosition();
+        BlockPos base = NarakaUtils.findFloor(level, mob.blockPosition());
         NarakaUtils.square(base, currentRadius, NarakaUtils.CIRCLE_OUTLINE, blockPos -> {
             if ((base.getX() - 2 < blockPos.getX() && blockPos.getX() < base.getX() + 2) || (base.getZ() - 2 < blockPos.getZ() && blockPos.getZ() < base.getZ() + 2))
                 return;
@@ -139,12 +140,13 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
         mob.spawnNarakaPickaxe();
     }
 
-    private void determinePositions() {
+    private void determinePositions(ServerLevel level) {
         int yCount = radius / SPHERE_RADIUS;
+        BlockPos floor = NarakaUtils.findFloor(level, mob.blockPosition());
         for (int height = 0; height < yCount; height++) {
             double ratio = (1 - height / (double) yCount);
             int radius = (int) (this.radius * ratio);
-            int y = 15 + height * SPHERE_RADIUS + mob.getBlockY();
+            int y = 15 + height * SPHERE_RADIUS + floor.getY() + 1;
 
             float circumference = Mth.TWO_PI * radius;
             int n = (int) circumference / SPHERE_RADIUS;

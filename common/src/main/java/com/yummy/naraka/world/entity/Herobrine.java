@@ -236,7 +236,7 @@ public class Herobrine extends AbstractHerobrine {
             NarakaPickaxe narakaPickaxe = new NarakaPickaxe(level(), this);
             narakaPickaxe.setPos(position());
             narakaPickaxe.setDeltaMovement(0, 0.2, 0);
-            narakaPickaxe.setYRot(getYRot() + 180);
+            narakaPickaxe.setYRot(Mth.wrapDegrees(getYRot() + 180));
             level().addFreshEntity(narakaPickaxe);
             this.narakaPickaxeUUID = narakaPickaxe.getUUID();
         }
