@@ -129,8 +129,6 @@ public class Herobrine extends AbstractHerobrine {
 
     private boolean hibernateMode = false;
 
-    protected int idleTickCount = 0;
-
     protected int accumulatedDamageTickCount;
     protected float accumulatedHurtDamage;
 
@@ -299,6 +297,13 @@ public class Herobrine extends AbstractHerobrine {
         return (float) sum;
     }
 
+    private float calculateStigma(ServerLevel level) {
+        float sum = 0;
+        for (LivingEntity livingEntity : NarakaEntityUtils.findEntitiesByUUID(level, stigmatizedEntities, LivingEntity.class))
+            sum += StigmaHelper.get(livingEntity).value();
+        return sum;
+    }
+
     @Override
     public float getAttackDamage() {
         if (level() instanceof ServerLevel serverLevel && getPhase() == 3)
@@ -373,7 +378,6 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     protected void customServerAiStep(ServerLevel serverLevel) {
-        updateIdleTick();
         updateAccumulatedDamage();
 
         if (!isFinalModel())
@@ -392,7 +396,8 @@ public class Herobrine extends AbstractHerobrine {
 
         if (getPhase() == 3 && tickCount % 200 == 0) {
             float lockedHealth = calculateLockedHealth(serverLevel);
-            heal(lockedHealth * 6);
+            float stigma = calculateStigma(serverLevel);
+            heal(stigma * lockedHealth * 6);
         }
 
         super.customServerAiStep(serverLevel);
@@ -406,14 +411,6 @@ public class Herobrine extends AbstractHerobrine {
         if (isUsingSkill())
             return 0;
         return super.maxUpStep();
-    }
-
-    private void updateIdleTick() {
-        if (getCurrentAnimation().equals(HerobrineAnimationLocations.IDLE)) {
-            idleTickCount += 1;
-        } else {
-            idleTickCount = 0;
-        }
     }
 
     @Override
