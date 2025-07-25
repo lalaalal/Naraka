@@ -123,7 +123,11 @@ public class Herobrine extends AbstractHerobrine {
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this, bossEvent);
     private final ShadowController shadowController = new ShadowController(this);
-    private @Nullable UUID narakaPickaxeUUID;
+
+    @Nullable
+    private UUID narakaPickaxeUUID;
+    @Nullable
+    private NarakaPickaxe cachedNarakaPickaxe;
 
     private float hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
 
@@ -237,7 +241,16 @@ public class Herobrine extends AbstractHerobrine {
             narakaPickaxe.setYRot(Mth.wrapDegrees(getYRot() + 180));
             level().addFreshEntity(narakaPickaxe);
             this.narakaPickaxeUUID = narakaPickaxe.getUUID();
+            this.cachedNarakaPickaxe = narakaPickaxe;
         }
+    }
+
+    public Optional<NarakaPickaxe> getNarakaPickaxe(ServerLevel level) {
+        if (narakaPickaxeUUID == null)
+            return Optional.empty();
+        if (cachedNarakaPickaxe == null)
+            return Optional.ofNullable(NarakaEntityUtils.findEntityByUUID(level, narakaPickaxeUUID, NarakaPickaxe.class));
+        return Optional.of(cachedNarakaPickaxe);
     }
 
     @Override

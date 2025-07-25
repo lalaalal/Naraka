@@ -41,6 +41,13 @@ public class StormSkill extends ComboSkill<Herobrine> {
     }
 
     @Override
+    protected void onFirstTick(ServerLevel level) {
+        mob.getNarakaPickaxe(level).ifPresent(
+                narakaPickaxe -> narakaPickaxe.getSkillManager().waitNextSkill(100)
+        );
+    }
+
+    @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAt(30, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPull, 0.23));
 
