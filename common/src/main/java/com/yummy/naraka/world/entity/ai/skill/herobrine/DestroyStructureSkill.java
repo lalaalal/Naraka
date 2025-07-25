@@ -55,6 +55,9 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAt(25, () -> mob.playStaticAnimation(HerobrineAnimationLocations.PREPARE_PHASE_3, 95, false, true));
+        runAt(85, () -> mob.showPhaseChangeParticle(level, NarakaFlameParticleOption.GOD_BLOOD));
+        runAt(85, () -> mob.showPhaseChangeParticle(level, NarakaFlameParticleOption.GOD_BLOOD));
+
         runAt(85, mob::startWhiteScreen);
         runAt(87, () -> mob.setDeltaMovement(0, 0.8, 0));
         runBetween(85, 100, () -> reduceSpeed(0.75));

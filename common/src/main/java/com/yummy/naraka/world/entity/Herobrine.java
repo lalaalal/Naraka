@@ -25,6 +25,7 @@ import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -373,7 +374,7 @@ public class Herobrine extends AbstractHerobrine {
         afterimages.removeIf(Afterimage::tick);
     }
 
-    private void showPhaseChangeParticle(ServerLevel level) {
+    public void showPhaseChangeParticle(ServerLevel level, ParticleOptions particle) {
         for (int count = 0; count < 1500; count++) {
             double xRot = random.nextDouble() * Math.PI * 2;
             double yRot = random.nextDouble() * Math.PI * 2;
@@ -385,7 +386,7 @@ public class Herobrine extends AbstractHerobrine {
 
             double speed = 0.6;
 
-            level.sendParticles(NarakaFlameParticleOption.GOLD, getX(), getEyeY(), getZ(), 0, xSpeed, ySpeed, zSpeed, speed);
+            level.sendParticles(particle, getX(), getEyeY(), getZ(), 0, xSpeed, ySpeed, zSpeed, speed);
         }
     }
 
@@ -657,7 +658,7 @@ public class Herobrine extends AbstractHerobrine {
         List<Integer> particleTicks = List.of(showParticleTick, showParticleTick - 5, showParticleTick - 10);
         animationTickListener = () -> {
             if (particleTicks.contains(animationTickLeft) && level() instanceof ServerLevel serverLevel) {
-                showPhaseChangeParticle(serverLevel);
+                showPhaseChangeParticle(serverLevel, NarakaFlameParticleOption.GOLD);
                 if (phaseManager.getCurrentPhase() == 2)
                     entityData.set(DISPLAY_SCARF, true);
             }
