@@ -37,7 +37,7 @@ public class StormSkill extends ComboSkill<Herobrine> {
     public boolean canUse(ServerLevel level) {
         BlockPos blockPos = mob.blockPosition();
         BlockPos floor = NarakaUtils.findFloor(level, blockPos);
-        return mob.getTarget() != null && blockPos.getY() - floor.getY() <=  2;
+        return mob.getTarget() != null && blockPos.getY() - floor.getY() <= 2;
     }
 
     @Override

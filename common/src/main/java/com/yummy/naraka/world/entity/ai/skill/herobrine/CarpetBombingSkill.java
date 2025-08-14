@@ -13,7 +13,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -46,13 +48,20 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
 
     @Override
     protected void onFirstTick(ServerLevel level) {
-        for (int i = 0; i < 16; i++) {
-            float yRot = 360f / 16 * i + 360f / 32;
-            addStardust(level, yRot, 4, false);
+        List<Integer> candidates = new ArrayList<>();
+        for (int index = 0; index < 16; index++)
+            candidates.add(index);
+        List<Integer> followingIndex = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            int randomIndex = mob.getRandom().nextInt(candidates.size());
+            candidates.remove(randomIndex);
+            followingIndex.add(randomIndex);
         }
+
         for (int i = 0; i < 16; i++) {
             float yRot = 360f / 16 * i;
-            addStardust(level, yRot, 6, true);
+            addStardust(level, yRot + 360f / 32, 4, false);
+            addStardust(level, yRot, 6, followingIndex.contains(i));
         }
     }
 
@@ -67,19 +76,19 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
     }
 
     private Vec3 modifyMovement(Vec3 original) {
-        return original.scale(0.4).add(0, -3, 0);
+        return original.scale(0.5).add(0, -3, 0);
     }
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        runAt(10, () -> mob.setDeltaMovement(0, 1.2, 0));
+        runAt(10, () -> mob.setDeltaMovement(0, 1.5, 0));
         runBetween(11, 25, () -> reduceSpeed(0.8f));
         runFrom(0, () -> spawnStardust(level));
 
         runBetween(10, 50, () -> rotateTowardTarget(target));
         runAfter(10, () -> lookTarget(target));
         runBetween(50, 70, () -> moveToTarget(target, true, this::modifyMovement));
-        runAt(55, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 4));
+        runAt(55, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 3));
         runAt(70, () -> mob.setDeltaMovement(0, 0.4, 0));
         runBetween(71, 90, () -> reduceSpeed(0.4f));
         runAt(90, () -> mob.setDeltaMovement(Vec3.ZERO));

@@ -7,6 +7,7 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
+import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -55,11 +56,9 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAt(25, () -> mob.playStaticAnimation(HerobrineAnimationLocations.PREPARE_PHASE_3, 95, false, true));
-        runAt(85, () -> mob.showPhaseChangeParticle(level, NarakaFlameParticleOption.GOD_BLOOD));
-        runAt(85, () -> mob.showPhaseChangeParticle(level, NarakaFlameParticleOption.GOD_BLOOD));
 
         runAt(85, mob::startWhiteScreen);
-        runAt(87, () -> mob.setDeltaMovement(0, 0.8, 0));
+        runAt(87, () -> mob.setDeltaMovement(0, 0.6, 0));
         runBetween(85, 100, () -> reduceSpeed(0.75));
 
         runAt(160, () -> startPhase3(level));
@@ -125,7 +124,7 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
     @Override
     protected void hurtEntities(ServerLevel level, Predicate<LivingEntity> predicate, double size) {
         super.hurtEntities(level, predicate, size);
-        NarakaSkillUtils.sendCircleParticle(level, mob.position(), NarakaFlameParticleOption.REDSTONE, size);
+        NarakaSkillUtils.sendCircleParticle(level, mob.position(), NarakaFlameParticleOption.GOD_BLOOD, size);
     }
 
     @Override
@@ -141,6 +140,9 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
         mob.setFinalModel(true);
         mob.playStaticAnimation(HerobrineAnimationLocations.ENTER_PHASE_3, 120, false, true);
         mob.spawnNarakaPickaxe();
+        Skill<?> stormSkill = mob.getSkillManager().getSkill(StormSkill.LOCATION);
+        if (stormSkill != null)
+            stormSkill.setCooldown();
     }
 
     private void determinePositions(ServerLevel level) {
