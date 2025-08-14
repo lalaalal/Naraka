@@ -50,7 +50,7 @@ public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning, M
         pillar(vertexConsumer, poseStack, renderState.size * 0.7f, renderState.size * 0.7f, 0, 122, 0x55ababab);
         pillar(vertexConsumer, poseStack, renderState.size * 0.8f, renderState.size * 0.8f, 0, 121, 0x44ababab);
         pillar(vertexConsumer, poseStack, renderState.size * 0.9f, renderState.size * 0.9f, 0, 120, 0x33ababab);
-        pillar(vertexConsumer, poseStack, renderState.size, renderState.size, 0, 120, 0x665A1D8D);
+        pillar(vertexConsumer, poseStack, renderState.size, renderState.size, 0, 120, 0x668308e4);
         poseStack.popPose();
 
         super.render(renderState, poseStack, bufferSource, packedLight);

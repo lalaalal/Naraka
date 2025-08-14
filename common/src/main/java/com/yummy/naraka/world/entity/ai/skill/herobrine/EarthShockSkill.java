@@ -80,7 +80,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         }
 
         runBetween(60, 90, () -> sendParticles(level, 10));
-        runBetween(90, 95, () -> spawnLightningBolts(level, 3, 9, 0xaaff00ff));
+        runBetween(90, 95, () -> spawnLightningBolts(level, 3, 9, 0xaa8308e4));
         runBetween(90, 100, () -> shockwaveBlocks(level, 90, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
         runAt(90, mob::shakeCamera);
         runAt(92, () -> hurtEntities(level, targetBetween(), 10));
@@ -96,7 +96,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         runAt(125, () -> hurtEntities(level, targetBetween(), 10));
         runBetween(170, 180, () -> sendParticles(level, 5));
 
-        runBetween(125, 130, () -> spawnLightningBolts(level, 4, 10, 0x99ff00ff));
+        runBetween(125, 130, () -> spawnLightningBolts(level, 4, 10, 0x998308e4));
         runBetween(120, 130, () -> pullBlocks(level));
         runAt(145, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPull, 0.25));
 
