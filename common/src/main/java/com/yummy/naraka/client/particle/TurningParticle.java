@@ -82,6 +82,7 @@ public class TurningParticle extends TextureSheetParticle {
                 .withModifier(particle -> {
                     particle.radius = 2;
                     particle.speed *= 2;
+                    particle.setColor(0.839f, 0.361f, 0.839f);
                 });
     }
 
