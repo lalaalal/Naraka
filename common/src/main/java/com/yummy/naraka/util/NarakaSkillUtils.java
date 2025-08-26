@@ -1,7 +1,5 @@
 package com.yummy.naraka.util;
 
-import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
-import com.yummy.naraka.world.entity.StigmatizingEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
@@ -11,13 +9,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Collection;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -36,27 +32,6 @@ public class NarakaSkillUtils {
 
     public static void shockwaveBlocks(Level level, BlockPos base, int radius, Supplier<Vec3> movementSupplier) {
         shockwaveBlocks(level, base, radius, NarakaUtils.CIRCLE_OUTLINE, movementSupplier);
-    }
-
-    public static <T extends LivingEntity & StigmatizingEntity> void stigmatize(ServerLevel level, T mob, int radius) {
-        Collection<LivingEntity> entities = level.getNearbyEntities(
-                LivingEntity.class,
-                TargetingConditions.forCombat(),
-                mob,
-                mob.getBoundingBox().inflate(radius)
-        );
-        for (LivingEntity target : entities)
-            mob.stigmatizeEntity(level, target);
-
-        NarakaSkillUtils.sendParticleWave(level, mob.position(), NarakaFlameParticleOption.REDSTONE, 1);
-    }
-
-    public static void sendParticleWave(ServerLevel level, Vec3 position, ParticleOptions particle, double speed) {
-        for (int yRot = 0; yRot < 360; yRot++) {
-            double xSpeed = Math.cos(Math.toRadians(yRot));
-            double zSpeed = Math.sin(Math.toRadians(yRot));
-            level.sendParticles(particle, position.x(), position.y() + 1.5, position.z(), 0, xSpeed, 0, zSpeed, speed);
-        }
     }
 
     public static void sendParticleFront(ServerLevel level, Mob mob, LivingEntity target, ParticleOptions particle) {
@@ -84,6 +59,20 @@ public class NarakaSkillUtils {
             double y = entity.getEyeY() + 0.5 + Mth.lerp(delta, 0, movement.y) + entity.getRandom().nextDouble() * 0.1;
             double z = entity.getZ() + Mth.lerp(delta, 0, movement.z) + entity.getRandom().nextDouble() * 0.3;
             level.sendParticles(particle, x, y, z, 1, 0, 0.01, 0, 0.1);
+        }
+    }
+
+    public static void sendSphereParticles(ServerLevel level, LivingEntity entity, ParticleOptions particle, double speed) {
+        for (int count = 0; count < 1500; count++) {
+            double xRot = entity.getRandom().nextDouble() * Math.PI * 2;
+            double yRot = entity.getRandom().nextDouble() * Math.PI * 2;
+            double ySpeed = Math.sin(xRot);
+            double base = Math.cos(xRot);
+
+            double xSpeed = Math.cos(yRot) * base;
+            double zSpeed = Math.sin(yRot) * base;
+
+            level.sendParticles(particle, entity.getX(), entity.getEyeY(), entity.getZ(), 0, xSpeed, ySpeed, zSpeed, speed);
         }
     }
 

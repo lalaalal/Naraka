@@ -8,6 +8,7 @@ import com.yummy.naraka.network.SyncAfterimagePacket;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.NarakaPickaxe;
@@ -25,7 +26,6 @@ import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -374,22 +374,6 @@ public class Herobrine extends AbstractHerobrine {
         afterimages.removeIf(Afterimage::tick);
     }
 
-    public void showPhaseChangeParticle(ServerLevel level, ParticleOptions particle) {
-        for (int count = 0; count < 1500; count++) {
-            double xRot = random.nextDouble() * Math.PI * 2;
-            double yRot = random.nextDouble() * Math.PI * 2;
-            double ySpeed = Math.sin(xRot);
-            double base = Math.cos(xRot);
-
-            double xSpeed = Math.cos(yRot) * base;
-            double zSpeed = Math.sin(yRot) * base;
-
-            double speed = 0.6;
-
-            level.sendParticles(particle, getX(), getEyeY(), getZ(), 0, xSpeed, ySpeed, zSpeed, speed);
-        }
-    }
-
     @Override
     protected void customServerAiStep(ServerLevel serverLevel) {
         updateAccumulatedDamage();
@@ -658,7 +642,7 @@ public class Herobrine extends AbstractHerobrine {
         List<Integer> particleTicks = List.of(showParticleTick, showParticleTick - 5, showParticleTick - 10);
         animationTickListener = () -> {
             if (particleTicks.contains(animationTickLeft) && level() instanceof ServerLevel serverLevel) {
-                showPhaseChangeParticle(serverLevel, NarakaFlameParticleOption.GOLD);
+                NarakaSkillUtils.sendSphereParticles(serverLevel, this, NarakaFlameParticleOption.GOLD, 0.6);
                 if (phaseManager.getCurrentPhase() == 2)
                     entityData.set(DISPLAY_SCARF, true);
             }

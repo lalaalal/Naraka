@@ -9,16 +9,17 @@ import java.io.Writer;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class PropertiesConfigFile extends ConfigFile {
-    private static final Map<Class<?>, Parser<String, ?>> PARSERS = Map.of(
+    private static final Map<Class<?>, Function<String, ?>> PARSERS = Map.of(
             Boolean.class, Boolean::parseBoolean,
             Integer.class, Integer::parseInt,
             Long.class, Long::parseLong,
             Float.class, Float::parseFloat,
             Double.class, Double::parseDouble,
-            String.class, value -> value,
+            String.class, Function.identity(),
             Color.class, Color::of
     );
 
@@ -67,12 +68,12 @@ public class PropertiesConfigFile extends ConfigFile {
     @Override
     public <T> void read(String key, StaticConfiguration.ConfigValue<T> value) {
         String property = cache.getProperty(key);
-        Parser<String, T> parser = (Parser<String, T>) PARSERS.get(value.getType());
+        Function<String, T> parser = (Function<String, T>) PARSERS.get(value.getType());
         if (property == null || parser == null) {
             NarakaMod.LOGGER.warn("Cannot load config value for key ({}), using default {}", key, value.getDefaultValue());
             return;
         }
-        value.set(parser.parse(property));
+        value.set(parser.apply(property));
     }
 
     @Override

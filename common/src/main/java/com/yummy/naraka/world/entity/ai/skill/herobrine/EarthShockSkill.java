@@ -79,7 +79,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
             runBetween(40, 90, () -> reduceSpeed(0.8));
         }
 
-        runBetween(60, 90, () -> sendParticles(level, 10));
+        runBetween(60, 90, () -> sendParticles(level));
         runBetween(90, 95, () -> spawnLightningBolts(level, 3, 9, 0xaa8308e4));
         runBetween(90, 100, () -> shockwaveBlocks(level, 90, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
         runAt(90, mob::shakeCamera);
@@ -94,7 +94,6 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         runAt(125, mob::shakeCamera);
         runBetween(125, 135, () -> shockwaveBlocks(level, 125, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
         runAt(125, () -> hurtEntities(level, targetBetween(), 10));
-        runBetween(170, 180, () -> sendParticles(level, 5));
 
         runBetween(125, 130, () -> spawnLightningBolts(level, 4, 10, 0x998308e4));
         runBetween(120, 130, () -> pullBlocks(level));
@@ -105,10 +104,12 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         runAt(172, () -> level.playSound(null, mob, SoundEvents.TOTEM_USE, SoundSource.HOSTILE, 1, 1));
         runAt(172, () -> hurtEntities(level, targetBetween(), 7));
         runAt(170, () -> spawnLightningCircle(level));
-        runBetween(170, 180, () -> sendParticles(level, 7));
+        runAt(170, () -> NarakaSkillUtils.sendSphereParticles(level, mob, NarakaFlameParticleOption.AMETHYST, 0.75));
 
         runAt(180, () -> spawnLightningCircle(level));
+        runAt(180, () -> NarakaSkillUtils.sendSphereParticles(level, mob, NarakaFlameParticleOption.AMETHYST, 0.75));
         runAt(200, () -> spawnLightningCircle(level));
+        runAt(200, () -> NarakaSkillUtils.sendSphereParticles(level, mob, NarakaFlameParticleOption.AMETHYST, 0.75));
 
         runAt(200, () -> mob.setDeltaMovement(0, 0.4, 0));
         runAfter(200, () -> reduceSpeed(0.6));
@@ -129,11 +130,11 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         return targetInRange(target, 80 * 80) && AbstractHerobrine.isNotHerobrine(target) && NarakaPickaxe.isNotNarakaPickaxe(target);
     }
 
-    private void sendParticles(ServerLevel level, int maxRadius) {
+    private void sendParticles(ServerLevel level) {
         float y = NarakaUtils.findFloor(level, mob.blockPosition()).getY() + 1.1f;
         for (int i = 0; i < 100; i++) {
             double angle = mob.getRandom().nextFloat() * Math.TAU;
-            double radius = mob.getRandom().nextFloat() * maxRadius * 2 - maxRadius;
+            double radius = mob.getRandom().nextFloat() * 10 * 2 - 10;
             double x = Math.cos(angle) * radius + mob.getX();
             double z = Math.sin(angle) * radius + mob.getZ();
             level.sendParticles(NarakaFlameParticleOption.AMETHYST, x, y, z, 0, 0, 1, 0, 0.05);
