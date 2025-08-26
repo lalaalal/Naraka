@@ -11,7 +11,6 @@ import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.NarakaDimensions;
-import com.yummy.naraka.world.NarakaPickaxe;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.control.HerobrineFlyMoveControl;
@@ -90,6 +89,7 @@ public class Herobrine extends AbstractHerobrine {
     protected final SplitAttackSkill splitAttackSkill = registerSkill(7, new SplitAttackSkill(this, spinUpSkill), HerobrineAnimationLocations.FINAL_COMBO_ATTACK_1);
     protected final PickaxeSlashSkill<AbstractHerobrine> singlePickaxeSlashSkill = registerSkill(7, this, PickaxeSlashSkill::single, HerobrineAnimationLocations.PICKAXE_SLASH_SINGLE);
     protected final PickaxeSlashSkill<Herobrine> triplePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::triple, HerobrineAnimationLocations.PICKAXE_SLASH_TRIPLE);
+    protected final PickaxeStrikeSkill pickaxeStrikeSkill = registerSkill(7, this, PickaxeStrikeSkill::new, HerobrineAnimationLocations.PICKAXE_STRIKE);
 
     public final AnimationState chzzkAnimationState = new AnimationState();
 
@@ -100,7 +100,7 @@ public class Herobrine extends AbstractHerobrine {
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill);
     private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, walkAroundTargetSkill);
     private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, summonShadowSkill, walkAroundTargetSkill);
-    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, splitAttackSkill, stormSkill, carpetBombingSkill, singlePickaxeSlashSkill, triplePickaxeSlashSkill, earthShockSkill);
+    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, splitAttackSkill, stormSkill, carpetBombingSkill, singlePickaxeSlashSkill, triplePickaxeSlashSkill, earthShockSkill, pickaxeStrikeSkill);
 
     private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashAroundSkill, walkAroundTargetSkill);
     private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(HerobrineAnimationLocations.ENTER_PHASE_2, HerobrineAnimationLocations.STAGGERING_PHASE_2, HerobrineAnimationLocations.ENTER_PHASE_3);
@@ -124,11 +124,6 @@ public class Herobrine extends AbstractHerobrine {
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this, bossEvent);
     private final ShadowController shadowController = new ShadowController(this);
-
-    @Nullable
-    private UUID narakaPickaxeUUID;
-    @Nullable
-    private NarakaPickaxe cachedNarakaPickaxe;
 
     private float hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
 
@@ -232,26 +227,6 @@ public class Herobrine extends AbstractHerobrine {
         int armor = bossEvent.getPlayers().size() * 2;
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR, NarakaAttributeModifiers.finalHerobrineArmor(armor));
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR_TOUGHNESS, NarakaAttributeModifiers.FINAL_HEROBRINE_ARMOR_TOUGHNESS);
-    }
-
-    public void spawnNarakaPickaxe() {
-        if (narakaPickaxeUUID == null) {
-            NarakaPickaxe narakaPickaxe = new NarakaPickaxe(level(), this);
-            narakaPickaxe.setPos(position());
-            narakaPickaxe.setDeltaMovement(0, 0.2, 0);
-            narakaPickaxe.setYRot(Mth.wrapDegrees(getYRot() + 180));
-            level().addFreshEntity(narakaPickaxe);
-            this.narakaPickaxeUUID = narakaPickaxe.getUUID();
-            this.cachedNarakaPickaxe = narakaPickaxe;
-        }
-    }
-
-    public Optional<NarakaPickaxe> getNarakaPickaxe(ServerLevel level) {
-        if (narakaPickaxeUUID == null)
-            return Optional.empty();
-        if (cachedNarakaPickaxe == null)
-            return Optional.ofNullable(NarakaEntityUtils.findEntityByUUID(level, narakaPickaxeUUID, NarakaPickaxe.class));
-        return Optional.of(cachedNarakaPickaxe);
     }
 
     @Override
@@ -777,7 +752,6 @@ public class Herobrine extends AbstractHerobrine {
         compound.putFloat("HurtDamageLimit", hurtDamageLimit);
         compound.putBoolean("HibernateMode", hibernateMode);
         compound.storeNullable("SpawnPosition", BlockPos.CODEC, spawnPosition);
-        compound.storeNullable("NarakaPickaxe", UUIDUtil.CODEC, narakaPickaxeUUID);
         compound.store("StigmatizedEntities", UUIDUtil.CODEC_SET, stigmatizedEntities);
         compound.store("WatchingEntities", UUIDUtil.CODEC_SET, watchingEntities);
         shadowController.save(compound);
@@ -792,7 +766,6 @@ public class Herobrine extends AbstractHerobrine {
         hibernateMode = compound.getBooleanOr("HibernatedMode", false);
         if (hibernateMode)
             startHibernateMode(level);
-        compound.read("NarakaPickaxe", UUIDUtil.CODEC).ifPresent(uuid -> narakaPickaxeUUID = uuid);
         compound.read("SpawnPosition", BlockPos.CODEC).ifPresent(pos -> spawnPosition = pos);
         compound.read("StigmatizedEntities", UUIDUtil.CODEC_SET).ifPresent(stigmatizedEntities::addAll);
         compound.read("WatchingEntities", UUIDUtil.CODEC_SET).ifPresent(watchingEntities::addAll);

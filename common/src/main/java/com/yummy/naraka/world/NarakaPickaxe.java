@@ -7,6 +7,7 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe.ExplodeSkill;
+import com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe.StrikeSkill;
 import com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe.SwingSkill;
 import com.yummy.naraka.world.entity.animation.NarakaPickaxeAnimationLocations;
 import net.minecraft.core.UUIDUtil;
@@ -30,6 +31,7 @@ import java.util.UUID;
 public class NarakaPickaxe extends SkillUsingMob {
     private final SwingSkill swingSkill = registerSkill(this, SwingSkill::new, NarakaPickaxeAnimationLocations.SWING);
     private final ExplodeSkill explodeSkill = registerSkill(this, ExplodeSkill::new, NarakaPickaxeAnimationLocations.EXPLODE);
+    private final StrikeSkill strikeSkill = registerSkill(this, StrikeSkill::new, NarakaPickaxeAnimationLocations.STRIKE);
 
     @Nullable
     private Herobrine cachedHerobrine;

@@ -55,6 +55,11 @@ public class NarakaUtils {
         return Mth.lerp(Math.clamp(newDelta, 0, 1), start, end);
     }
 
+    public static Vec3 interpolateVec3(float delta, Vec3 start, Vec3 end, Function<Float, Float> function) {
+        float newDelta = function.apply(delta);
+        return Mth.lerp(Math.clamp(newDelta, 0, 1), start, end);
+    }
+
     @FunctionalInterface
     public interface PositionConsumer {
         void accept(int x, int y, int z);

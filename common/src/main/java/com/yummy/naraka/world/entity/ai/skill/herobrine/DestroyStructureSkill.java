@@ -139,7 +139,6 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
         mob.sendMusic(3);
         mob.setFinalModel(true);
         mob.playStaticAnimation(HerobrineAnimationLocations.ENTER_PHASE_3, 120, false, true);
-        mob.spawnNarakaPickaxe();
         Skill<?> stormSkill = mob.getSkillManager().getSkill(StormSkill.LOCATION);
         if (stormSkill != null)
             stormSkill.setCooldown();

@@ -15,6 +15,7 @@ public class NarakaPickaxeAnimation {
     public static void initialize() {
         AnimationMapper.register(NarakaPickaxeAnimationLocations.SWING, SWING);
         AnimationMapper.register(NarakaPickaxeAnimationLocations.EXPLODE, EXPLODE);
+        AnimationMapper.register(NarakaPickaxeAnimationLocations.STRIKE, STRIKE);
         AnimationMapper.register(NarakaPickaxeAnimationLocations.IDLE, IDLE);
     }
 
@@ -38,6 +39,12 @@ public class NarakaPickaxeAnimation {
             .addAnimation("main", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
                     new Keyframe(2.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, -900.0F), NarakaInterpolations.FAST_STEP_IN)
+            ))
+            .build();
+
+    public static final AnimationDefinition STRIKE = AnimationDefinition.Builder.withLength(0)
+            .addAnimation("main", new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                    new Keyframe(0, KeyframeAnimations.degreeVec(0, 0, 180), AnimationChannel.Interpolations.LINEAR)
             ))
             .build();
 
