@@ -23,9 +23,9 @@ public class KnockbackResistance extends AttributeModifyingEffect {
     }
 
     @Override
-    protected AttributeModifier createModifier(int reinforcement) {
+    protected AttributeModifier createModifier(EquipmentSlot slot, int reinforcement) {
         return new AttributeModifier(
-                modifierId("knockback_resistance"),
+                modifierId(slot, "knockback_resistance"),
                 1,
                 AttributeModifier.Operation.ADD_VALUE
         );

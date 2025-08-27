@@ -22,7 +22,7 @@ public class PickaxeStrikeSkill extends AttackSkill<Herobrine> {
     private Vec3 destination = Vec3.ZERO;
 
     public PickaxeStrikeSkill(Herobrine mob) {
-        super(LOCATION, mob, 75, 20);
+        super(LOCATION, mob, 90, 20);
     }
 
     @Override

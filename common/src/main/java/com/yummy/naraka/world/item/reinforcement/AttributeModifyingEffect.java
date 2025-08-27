@@ -13,6 +13,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.equipment.Equippable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,6 +34,10 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
         return Set.copyOf(slots);
     }
 
+    protected static ResourceLocation modifierId(EquipmentSlot slot, String name) {
+        return NarakaMod.location("reinforcement_effect." + slot.name() + "." + name);
+    }
+
     public static AttributeModifyingEffect simple(Holder<Attribute> attribute, EquipmentSlotGroup slotGroup) {
         return simple(attribute, slotGroup, reinforcement -> reinforcement, true);
     }
@@ -46,9 +51,9 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
 
         return new AttributeModifyingEffect(attribute, slotGroup) {
             @Override
-            protected AttributeModifier createModifier(int reinforcement) {
+            protected AttributeModifier createModifier(EquipmentSlot slot, int reinforcement) {
                 return new AttributeModifier(
-                        modifierId(modifierName),
+                        modifierId(slot, modifierName),
                         modifyingValueByReinforcement.apply(reinforcement),
                         AttributeModifier.Operation.ADD_VALUE
                 );
@@ -77,22 +82,23 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
         return slots;
     }
 
-    protected static ResourceLocation modifierId(String name) {
-        return NarakaMod.location("reinforcement_effect", name);
-    }
-
-    protected abstract AttributeModifier createModifier(int reinforcement);
+    protected abstract AttributeModifier createModifier(EquipmentSlot slot, int reinforcement);
 
     @Override
     public void onReinforcementIncreased(ItemStack itemStack, int previousReinforcement, int currentReinforcement) {
         ItemAttributeModifiers modifiers = NarakaItemUtils.getAttributeModifiers(itemStack);
-        itemStack.set(
-                DataComponents.ATTRIBUTE_MODIFIERS,
-                modifiers.withModifierAdded(
-                        attribute,
-                        createModifier(currentReinforcement),
-                        slotGroup
-                )
-        );
+        Equippable equippable = itemStack.get(DataComponents.EQUIPPABLE);
+        if (equippable != null) {
+            EquipmentSlot slot = equippable.slot();
+            itemStack.set(
+                    DataComponents.ATTRIBUTE_MODIFIERS,
+                    modifiers.withModifierAdded(
+                            attribute,
+                            createModifier(slot, currentReinforcement),
+                            slotGroup
+                    )
+            );
+        }
+
     }
 }

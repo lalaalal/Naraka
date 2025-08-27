@@ -154,7 +154,7 @@ public class NarakaItems {
     public static final HolderProxy<Item, PurifiedSoulSwordItem> PURIFIED_SOUL_SWORD = registerItem(
             "purified_soul_sword",
             properties -> new PurifiedSoulSwordItem(ToolMaterial.IRON,
-                    3, -2.4f,
+                    -2, -2.4f,
                     properties.fireResistant()
                             .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
             )
@@ -226,7 +226,7 @@ public class NarakaItems {
         HolderProxy<Item, Item> item = registerItem(SOUL_INFUSED_PREFIX + type.getSerializedName() + "_sword",
                 properties -> new SoulInfusedSwordItem(
                         properties.fireResistant()
-                                .sword(ToolMaterial.IRON, 3, -2.4f)
+                                .sword(ToolMaterial.IRON, 5, -2.4f)
                                 .rarity(Rarity.RARE)
                                 .component(NarakaDataComponentTypes.SOUL.get(), type)
                                 .component(DataComponents.UNBREAKABLE, Unit.INSTANCE),
