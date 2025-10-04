@@ -21,6 +21,8 @@ import java.util.function.Supplier;
 
 public class StrikeSkill extends AttackSkill<NarakaPickaxe> {
     public static final ResourceLocation LOCATION = createLocation("naraka_pickaxe.strike");
+    private static final int STRIKE_TICK = 20;
+    private static final int STRIKE_END_TICK = 160;
 
     public StrikeSkill(NarakaPickaxe mob) {
         super(LOCATION, mob, 200, 0);
@@ -62,18 +64,16 @@ public class StrikeSkill extends AttackSkill<NarakaPickaxe> {
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         level.sendParticles(NarakaFlameParticleOption.EMERALD, mob.getX(), mob.getY(), mob.getZ(), 10, 0.5, 1, 0.5, 0.3);
-        runBefore(40, () -> sendHaloParticles(level, 4));
-        runBefore(40, () -> sendHaloParticles(level, 10));
-        runBefore(40, () -> sendHaloParticles(level, 13));
-        runAfter(40, () -> mob.setDeltaMovement(0, -8, 0));
-        if (tickCount < 160 && mob.onGround())
-            tickCount = 160;
+        runBefore(STRIKE_TICK, () -> sendParticles(level));
+        runAfter(STRIKE_TICK, () -> mob.setDeltaMovement(0, -8, 0));
+        if (tickCount < STRIKE_END_TICK && mob.onGround())
+            tickCount = STRIKE_END_TICK;
 
-        runAt(160, () -> level.playSound(null, mob, SoundEvents.TOTEM_USE, SoundSource.HOSTILE, 1, 1));
-        runAt(160, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 13));
-        runAt(160, () -> NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 5, NarakaUtils.CIRCLE, calculateFloatingMovement(0.7f)));
-        runAt(160, () -> NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 7, NarakaUtils.CIRCLE, calculateFloatingMovement(0.4f)));
-        runAt(160, () -> NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 13, NarakaUtils.CIRCLE, calculateFloatingMovement(0.3f)));
+        runAt(STRIKE_END_TICK, () -> level.playSound(null, mob, SoundEvents.TOTEM_USE, SoundSource.HOSTILE, 1, 1));
+        runAt(STRIKE_END_TICK, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 13));
+        runAt(STRIKE_END_TICK, () -> NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 5, NarakaUtils.CIRCLE, calculateFloatingMovement(0.7f)));
+        runAt(STRIKE_END_TICK, () -> NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 7, NarakaUtils.CIRCLE, calculateFloatingMovement(0.4f)));
+        runAt(STRIKE_END_TICK, () -> NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 13, NarakaUtils.CIRCLE, calculateFloatingMovement(0.3f)));
     }
 
     @Override
@@ -81,12 +81,7 @@ public class StrikeSkill extends AttackSkill<NarakaPickaxe> {
         mob.discard();
     }
 
-    private void sendHaloParticles(ServerLevel level, double radius) {
-        for (int angle = 0; angle < 360; angle++) {
-            double x = Math.cos(Math.toRadians(angle)) * radius + mob.getX();
-            double z = Math.sin(Math.toRadians(angle)) * radius + mob.getZ();
-            double y = mob.getEyeY();
-            level.sendParticles(NarakaFlameParticleOption.EMERALD, true, true, x, y, z, 0, 0, 0, 0, 1);
-        }
+    private void sendParticles(ServerLevel level) {
+        level.sendParticles(NarakaFlameParticleOption.EMERALD, mob.getX(), mob.getY(), mob.getZ(), 20, 0.3, 0.3, 0.3, 0.6);
     }
 }

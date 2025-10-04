@@ -24,7 +24,7 @@ public class StormSkill extends ComboSkill<Herobrine> {
     private final HashMap<LivingEntity, Integer> hurtEntities = new HashMap<>();
 
     public StormSkill(Herobrine mob, Skill<?> parryingSkill) {
-        super(LOCATION, mob, 100, 600, 0.5f, 100, parryingSkill);
+        super(LOCATION, mob, 80, 600, 0.5f, 80, parryingSkill);
     }
 
     @Override

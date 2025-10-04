@@ -22,7 +22,7 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
     private InstantShadowSpawner secondShadowSpawner = InstantShadowSpawner.EMPTY;
 
     public SplitAttackSkill(Herobrine mob, Skill<?> nextSkill) {
-        super(LOCATION, mob, 60, 200, 0.5f, 45, nextSkill);
+        super(LOCATION, mob, 60, 100, 0.5f, 45, nextSkill);
     }
 
     @Override

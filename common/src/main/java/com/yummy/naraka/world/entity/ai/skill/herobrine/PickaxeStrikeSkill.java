@@ -16,13 +16,13 @@ import org.jetbrains.annotations.Nullable;
 public class PickaxeStrikeSkill extends AttackSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final_herobrine.pickaxe_strike");
 
-    private static final int SHOOT_TICK = 30;
+    private static final int SHOOT_TICK = 10;
     private static final int SHOOT_DURATION = 20;
 
     private Vec3 destination = Vec3.ZERO;
 
     public PickaxeStrikeSkill(Herobrine mob) {
-        super(LOCATION, mob, 90, 20);
+        super(LOCATION, mob, 70, 400);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class PickaxeStrikeSkill extends AttackSkill<Herobrine> {
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         sendShootingParticles(level);
-        runAt(50, () -> spawnNarakaPickaxe(level));
+        runAt(SHOOT_TICK + SHOOT_DURATION, () -> spawnNarakaPickaxe(level));
     }
 
     @Override

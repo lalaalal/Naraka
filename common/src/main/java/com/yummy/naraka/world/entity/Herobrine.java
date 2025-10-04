@@ -224,7 +224,7 @@ public class Herobrine extends AbstractHerobrine {
         setDisplayEye(false);
         setDisplayPickaxe(true);
 
-        int armor = bossEvent.getPlayers().size() * 2;
+        int armor = bossEvent.getPlayers().size() * 6;
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR, NarakaAttributeModifiers.finalHerobrineArmor(armor));
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR_TOUGHNESS, NarakaAttributeModifiers.FINAL_HEROBRINE_ARMOR_TOUGHNESS);
     }
@@ -367,10 +367,10 @@ public class Herobrine extends AbstractHerobrine {
             shadowController.increaseFlickerStack(3);
         }
 
-        if (getPhase() == 3 && tickCount % 200 == 0) {
+        if (getPhase() == 3 && tickCount % 66 == 0) {
             float lockedHealth = calculateLockedHealth(serverLevel);
             float stigma = calculateStigma(serverLevel);
-            heal(stigma * lockedHealth * 6);
+            heal(stigma * (lockedHealth + 1) * 6);
         }
 
         super.customServerAiStep(serverLevel);
