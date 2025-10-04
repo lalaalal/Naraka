@@ -169,11 +169,6 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_LEGGINGS = registerPurifiedSoulArmorItem("purified_soul_leggings", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.LEGGINGS);
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_BOOTS = registerPurifiedSoulArmorItem("purified_soul_boots", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.BOOTS);
 
-    public static final HolderProxy<Item, Item> EBONY_METAL_HELMET = registerPurifiedSoulArmorItem("ebony_metal_helmet", NarakaArmorMaterials.EBONY_METAL, ArmorType.HELMET);
-    public static final HolderProxy<Item, Item> EBONY_METAL_CHESTPLATE = registerPurifiedSoulArmorItem("ebony_metal_chestplate", NarakaArmorMaterials.EBONY_METAL, ArmorType.CHESTPLATE);
-    public static final HolderProxy<Item, Item> EBONY_METAL_LEGGINGS = registerPurifiedSoulArmorItem("ebony_metal_leggings", NarakaArmorMaterials.EBONY_METAL, ArmorType.LEGGINGS);
-    public static final HolderProxy<Item, Item> EBONY_METAL_BOOTS = registerPurifiedSoulArmorItem("ebony_metal_boots", NarakaArmorMaterials.EBONY_METAL, ArmorType.BOOTS);
-
     public static final HolderProxy<Item, Item> HEROBRINE_SPAWN_EGG = registerItem("herobrine_spawn_egg", properties -> new SpawnEggItem(NarakaEntityTypes.HEROBRINE.get(), properties));
 
     public static HolderProxy<Item, Item> registerPurifiedSoulArmorItem(String name, ArmorMaterial armorMaterial, ArmorType armorType) {

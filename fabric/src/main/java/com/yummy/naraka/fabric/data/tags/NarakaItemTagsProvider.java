@@ -84,16 +84,12 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
                 .addTag(NarakaItemTags.SOUL_SWORDS);
 
         getOrCreateTagBuilder(ItemTags.HEAD_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_HELMET.get())
-                .add(NarakaItems.EBONY_METAL_HELMET.get());
+                .add(NarakaItems.PURIFIED_SOUL_HELMET.get());
         getOrCreateTagBuilder(ItemTags.CHEST_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get())
-                .add(NarakaItems.EBONY_METAL_CHESTPLATE.get());
+                .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get());
         getOrCreateTagBuilder(ItemTags.LEG_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_LEGGINGS.get())
-                .add(NarakaItems.EBONY_METAL_LEGGINGS.get());
+                .add(NarakaItems.PURIFIED_SOUL_LEGGINGS.get());
         getOrCreateTagBuilder(ItemTags.FOOT_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_BOOTS.get())
-                .add(NarakaItems.EBONY_METAL_BOOTS.get());
+                .add(NarakaItems.PURIFIED_SOUL_BOOTS.get());
     }
 }

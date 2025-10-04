@@ -40,6 +40,8 @@ public class ComponentPredicateRecipe implements CraftingRecipe {
 
     @Override
     public boolean matches(CraftingInput input, Level level) {
+        if (input.width() != 3 || input.height() != 3)
+            return false;
         for (ComponentPredicateIngredient ingredient : predicateIngredients) {
             if (!ingredient.test(input))
                 return false;

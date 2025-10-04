@@ -1,8 +1,6 @@
 package com.yummy.naraka.world.block;
 
-import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.world.block.entity.ForgingBlockEntity;
-import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -14,22 +12,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.Nullable;
 
-public class ForgingBlock extends BaseEntityBlock {
-    public static final MapCodec<ForgingBlock> CODEC = simpleCodec(ForgingBlock::new);
-
-    public ForgingBlock(Properties properties) {
+public abstract class ForgingBlock extends BaseEntityBlock {
+    protected ForgingBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new ForgingBlockEntity(blockPos, blockState);
     }
 
     @Override
@@ -58,18 +46,5 @@ public class ForgingBlock extends BaseEntityBlock {
         if (blockEntity instanceof ForgingBlockEntity forgingBlockEntity)
             forgingBlockEntity.dropItems();
         super.destroy(level, pos, state);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        if (level.isClientSide)
-            return super.getTicker(level, state, type);
-        return createTickerHelper(type, NarakaBlockEntityTypes.FORGING.get(), ForgingBlockEntity::serverTick);
     }
 }

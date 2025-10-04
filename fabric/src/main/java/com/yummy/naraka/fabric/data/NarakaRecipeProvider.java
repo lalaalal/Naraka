@@ -106,10 +106,6 @@ public class NarakaRecipeProvider extends RecipeProvider {
         nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.EBONY_METAL_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.EBONY_METAL_BLOCK.get());
         copySmithingTemplate(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.EBONY_METAL_INGOT.get(), NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
 
-        helmet(NarakaItems.EBONY_METAL_INGOT.get(), NarakaItems.EBONY_METAL_HELMET.get());
-        chestplate(NarakaItems.EBONY_METAL_INGOT.get(), NarakaItems.EBONY_METAL_CHESTPLATE.get());
-        legging(NarakaItems.EBONY_METAL_INGOT.get(), NarakaItems.EBONY_METAL_LEGGINGS.get());
-        boots(NarakaItems.EBONY_METAL_INGOT.get(), NarakaItems.EBONY_METAL_BOOTS.get());
         ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, NarakaBlocks.SOUL_STABILIZER.get())
                 .define('#', Blocks.GLASS_PANE)
                 .pattern("##")

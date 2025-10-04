@@ -133,11 +133,7 @@ public class NarakaBlocks {
                     .lightLevel(state -> 7)
 
     );
-    public static final HolderProxy<Block, ForgingBlock> FORGING_BLOCK = registerBlockWithItem(
-            "forging_block",
-            ForgingBlock::new,
-            Blocks.ANVIL
-    );
+
     public static final HolderProxy<Block, SoulSmithingBlock> SOUL_SMITHING_BLOCK = registerBlockWithItem(
             "soul_smithing_block",
             SoulSmithingBlock::new,

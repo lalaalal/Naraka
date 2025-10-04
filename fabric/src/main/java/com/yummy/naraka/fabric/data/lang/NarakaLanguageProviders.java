@@ -212,10 +212,6 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "Mighty Holy Spear", "강력한 성스러운 창");
         addItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM, "Spear of Longinus", "롱기누스의 창");
 
-        addItem(NarakaItems.EBONY_METAL_HELMET, "Ebony Metal Helmet", "흑단나무 금속 투구");
-        addItem(NarakaItems.EBONY_METAL_CHESTPLATE, "Ebony Metal Chestplate", "흑단나무 금속 흉갑");
-        addItem(NarakaItems.EBONY_METAL_LEGGINGS, "Ebony Metal Leggings", "흑단나무 금속 레깅스");
-        addItem(NarakaItems.EBONY_METAL_BOOTS, "Ebony Metal Boots", "흑단나무 금속 부츠");
         addItem(NarakaItems.PURIFIED_SOUL_HELMET, "Purified Soul Helmet", "정화된 영혼 투구");
         addItem(NarakaItems.PURIFIED_SOUL_CHESTPLATE, "Purified Soul Chestplate", "정화된 영혼 흉갑");
         addItem(NarakaItems.PURIFIED_SOUL_LEGGINGS, "Purified Soul Leggings", "정화된 영혼 레깅스");
@@ -289,14 +285,12 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.HARD_EBONY_PLANKS, "Hard Ebony Planks", "단단한 흑단나무 판자");
         addBlock(NarakaBlocks.EBONY_ROOTS, "Ebony Roots", "흑단나무 뿌리");
         addBlock(NarakaBlocks.EBONY_METAL_BLOCK, "Block of Ebony Metal", "흑단나무 금속 블록");
-        addBlock(NarakaBlocks.FORGING_BLOCK, "Forging Block", "단조 블록");
         addBlock(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Nectarium Core", "넥타륨 코어");
         addBlock(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, "Nectarium Crystal", "넥타륨 결정");
         addBlock(NarakaBlocks.SOUL_STABILIZER, "Soul Stabilizer", "영혼 안정기");
         addBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, "Soul Smithing Block", "영혼 대장장이 블록");
 
         addTooltip(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Honey is dripping", "꿀이 뚝뚝 떨어져");
-        addTooltip(NarakaBlocks.FORGING_BLOCK, "Smash item with a hammer...?", "아이템을 망치로 부수기..?");
         addTooltip(NarakaBlocks.SOUL_SMITHING_BLOCK, "Smash item with a hammer...?", "아이템을 망치로 부수기..?");
 
         addEntityType(NarakaEntityTypes.HEROBRINE, "Naraka Tyrant: Herobrine", "나락의 폭군: 히로빈");
