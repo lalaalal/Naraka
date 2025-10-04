@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -74,6 +75,29 @@ public class NarakaEntityLootProvider extends SimpleFabricLootTableProvider {
                                         LootItemKilledByPlayerCondition.killedByPlayer(),
                                         LootItemRandomChanceCondition.randomChance(0.0001f)
                                 ))
+                        )
+        );
+        generator.accept(
+                NarakaEntityTypes.DIAMOND_GOLEM.get().getDefaultLootTable()
+                        .orElseThrow(),
+                LootTable.lootTable()
+                        .withPool(LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1))
+                                .add(LootItem.lootTableItem(Items.DIAMOND_BLOCK))
+                                .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        )
+                        .withPool(LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1))
+                                .add(LootItem.lootTableItem(Items.COBBLESTONE)
+                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
+                                )
+                        )
+                        .withPool(LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1))
+                                .add(LootItem.lootTableItem(Items.DIAMOND)
+                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(1, 4)))
+                                )
+                                .when(LootItemKilledByPlayerCondition.killedByPlayer())
                         )
         );
     }
