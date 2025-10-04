@@ -29,7 +29,7 @@ public class DiamondGolem extends SkillUsingMob implements Enemy {
                 .add(Attributes.ATTACK_DAMAGE, 20)
                 .add(Attributes.MAX_HEALTH, 100)
                 .add(Attributes.FOLLOW_RANGE, 128)
-                .add(Attributes.STEP_HEIGHT, 1)
+                .add(Attributes.STEP_HEIGHT, 2)
                 .add(Attributes.MOVEMENT_SPEED, 0.17f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, 1)
@@ -52,7 +52,7 @@ public class DiamondGolem extends SkillUsingMob implements Enemy {
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, DiamondGolem.class));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 
-        this.goalSelector.addGoal(2, new MoveToTargetGoal(this, 0.9, 32, 1, 0));
+        this.goalSelector.addGoal(2, new MoveToTargetGoal(this, 0.9, 32, 30, 0));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
     }
 
