@@ -33,7 +33,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
     private boolean failed = false;
 
     public RushSkill(T mob) {
-        super(LOCATION, 200, 200, 100, 15, mob);
+        super(LOCATION, mob, 200, 200, 100, 15);
     }
 
     @Override

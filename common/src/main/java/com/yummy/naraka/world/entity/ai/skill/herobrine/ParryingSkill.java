@@ -23,7 +23,7 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     private float hurtDamage;
 
     public ParryingSkill(AbstractHerobrine mob) {
-        super(LOCATION, 60, 300, 100, 5, mob);
+        super(LOCATION, mob, 60, 300, 100, 5);
     }
 
     @Override

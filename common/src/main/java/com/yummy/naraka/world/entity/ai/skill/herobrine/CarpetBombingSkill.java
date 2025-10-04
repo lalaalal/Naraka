@@ -26,7 +26,7 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
     private int onGroundTick = 0;
 
     public CarpetBombingSkill(Herobrine mob) {
-        super(LOCATION, 90, 400, 120, 15, mob);
+        super(LOCATION, mob, 90, 400, 120, 15);
     }
 
     @Override

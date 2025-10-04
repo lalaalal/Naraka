@@ -4,5 +4,5 @@
     "translate": "jukebox_song.naraka.herobrine_phase_4"
   },
   "length_in_seconds": 148.0,
-  "sound_event": "naraka:herobrine_phase_4"
+  "sound_event": "naraka:music.herobrine_phase_4"
 }

@@ -77,8 +77,8 @@ public class NarakaEntityTypes {
     public static final HolderProxy<EntityType<?>, EntityType<DiamondGolem>> DIAMOND_GOLEM = register(
             "diamond_golem",
             EntityType.Builder.of(DiamondGolem::new, MobCategory.MONSTER)
-                    .sized(2, 4)
-                    .fireImmune()
+                    .sized(1.4f, 2.7f)
+                    .updateInterval(1)
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<MagicCircle>> MAGIC_CIRCLE = register(

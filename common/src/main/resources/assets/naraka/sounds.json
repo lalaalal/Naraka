@@ -1,34 +1,89 @@
 {
-    "herobrine_phase_1": {
-        "sounds": [
-            {
-                "name": "naraka:herobrine_phase_1",
-                "stream": true
-            }
-        ]
-    },
-    "herobrine_phase_2": {
-        "sounds": [
-            {
-                "name": "naraka:herobrine_phase_2",
-                "stream": true
-            }
-        ]
-    },
-    "herobrine_phase_3": {
-        "sounds": [
-            {
-                "name": "naraka:herobrine_phase_3",
-                "stream": true
-            }
-        ]
-    },
-    "herobrine_phase_4": {
-        "sounds": [
-            {
-                "name": "naraka:herobrine_phase_4",
-                "stream": true
-            }
-        ]
-    }
+  "music.herobrine_phase_1": {
+    "sounds": [
+      {
+        "name": "naraka:music/herobrine_phase_1",
+        "stream": true
+      }
+    ]
+  },
+  "music.herobrine_phase_2": {
+    "sounds": [
+      {
+        "name": "naraka:music/herobrine_phase_2",
+        "stream": true
+      }
+    ]
+  },
+  "music.herobrine_phase_3": {
+    "sounds": [
+      {
+        "name": "naraka:music/herobrine_phase_3",
+        "stream": true
+      }
+    ]
+  },
+  "music.herobrine_phase_4": {
+    "sounds": [
+      {
+        "name": "naraka:music/herobrine_phase_4",
+        "stream": true
+      }
+    ]
+  },
+  "diamond_golem.attack": {
+    "sounds": [
+      "naraka:diamond_golem/attack"
+    ]
+  },
+  "diamond_golem.hurt": {
+    "sounds": [
+      "naraka:diamond_golem/hurt1",
+      "naraka:diamond_golem/hurt2",
+      "naraka:diamond_golem/hurt3",
+      "naraka:diamond_golem/hurt4",
+      "naraka:diamond_golem/hurt5",
+      "naraka:diamond_golem/hurt6",
+      "naraka:diamond_golem/hurt7"
+    ]
+  },
+  "diamond_golem.basic": {
+    "sounds": [
+      "naraka:diamond_golem/basic1",
+      "naraka:diamond_golem/basic2"
+    ]
+  },
+  "diamond_golem.swipe": {
+    "sounds": [
+      "naraka:diamond_golem/swipe1",
+      "naraka:diamond_golem/swipe2"
+    ]
+  },
+  "diamond_golem.strong": {
+    "sounds": [
+      "naraka:diamond_golem/swing1",
+      "naraka:diamond_golem/swing2"
+    ]
+  },
+  "diamond_golem.death": {
+    "sounds": [
+      "naraka:diamond_golem/death1",
+      "naraka:diamond_golem/death2",
+      "naraka:diamond_golem/death3"
+    ]
+  },
+  "diamond_golem.idle": {
+    "sounds": [
+      "naraka:diamond_golem/idle1",
+      "naraka:diamond_golem/idle2",
+      "naraka:diamond_golem/idle3",
+      "naraka:diamond_golem/idle4",
+      "naraka:diamond_golem/idle5"
+    ]
+  },
+  "diamond_golem.chest": {
+    "sounds": [
+      "naraka:diamond_golem/chest"
+    ]
+  }
 }

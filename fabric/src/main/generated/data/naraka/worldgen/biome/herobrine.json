@@ -17,7 +17,7 @@
           "max_delay": 0,
           "min_delay": 0,
           "replace_current_music": true,
-          "sound": "naraka:herobrine_phase_4"
+          "sound": "naraka:music.herobrine_phase_4"
         },
         "weight": 1
       }

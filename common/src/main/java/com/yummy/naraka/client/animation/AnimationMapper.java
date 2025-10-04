@@ -34,6 +34,8 @@ public class AnimationMapper {
 
         NarakaPickaxeAnimation.initialize();
 
+        DiamondGolemAnimation.initialize();
+
         AnimationLocations.checkMappings(MAPPER.keySet());
     }
 }
