@@ -1,11 +1,11 @@
 {
   "parent": "naraka:soul_swords",
   "criteria": {
-    "has_ultimate_sword": {
+    "has_ultimate_spear": {
       "conditions": {
         "items": [
           {
-            "items": "naraka:ultimate_sword"
+            "items": "naraka:spear_of_longinus"
           }
         ]
       },
@@ -14,20 +14,20 @@
   },
   "display": {
     "description": {
-      "translate": "advancements.naraka.ultimate_sword.description"
+      "translate": "advancements.naraka.ultimate_spear.description"
     },
     "frame": "challenge",
     "icon": {
       "count": 1,
-      "id": "naraka:ultimate_sword"
+      "id": "naraka:spear_of_longinus"
     },
     "title": {
-      "translate": "advancements.naraka.ultimate_sword.title"
+      "translate": "advancements.naraka.ultimate_spear.title"
     }
   },
   "requirements": [
     [
-      "has_ultimate_sword"
+      "has_ultimate_spear"
     ]
   ],
   "rewards": {

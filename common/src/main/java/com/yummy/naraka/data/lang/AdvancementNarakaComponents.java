@@ -16,7 +16,7 @@ public enum AdvancementNarakaComponents implements AdvancementComponent {
     FILL_SOUL_STABILIZER,
     CHALLENGERS_BLESSING,
     SOUL_SWORDS,
-    ULTIMATE_SWORD;
+    ULTIMATE_SPEAR;
 
     @Override
     public String rootName() {

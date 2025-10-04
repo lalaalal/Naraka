@@ -170,9 +170,9 @@ public class NarakaLanguageProviders {
                 List.of("Rainbow!", "무지개!"),
                 List.of("Get every color type of blessed soul sword", "모든 색의 축복받은 검을 수집하세요")
         );
-        addAdvancement(AdvancementNarakaComponents.ULTIMATE_SWORD,
+        addAdvancement(AdvancementNarakaComponents.ULTIMATE_SPEAR,
                 List.of("Long live the new Naraka tyrant", "새 나락의 폭군"),
-                List.of("Get Ultimate soul sword", "궁극의 검을 얻으세요")
+                List.of("Get Ultimate soul spear", "궁극의 창을 얻으세요")
         );
 
         addAdvancement(AdvancementExtraComponents.BUY_NECTARIUM_CORE,
