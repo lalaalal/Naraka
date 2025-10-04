@@ -5,6 +5,8 @@ import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
 import com.yummy.naraka.client.init.NarakaClientInitializer;
 import com.yummy.naraka.commands.NarakaCommands;
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.core.component.NarakaDataComponentPredicates;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryFactory;
@@ -27,7 +29,6 @@ import com.yummy.naraka.world.features.NarakaFeatures;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import com.yummy.naraka.world.item.NarakaItems;
-import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeSerializers;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeTypes;
 import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
@@ -77,6 +78,7 @@ public final class NarakaMod {
 
         NarakaReinforcementEffects.initialize();
         NarakaDataComponentTypes.initialize();
+        NarakaDataComponentPredicates.initialize();
         NarakaItems.initialize();
         NarakaRecipeTypes.initialize();
         NarakaRecipeSerializers.initialize();

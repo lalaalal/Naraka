@@ -2,9 +2,9 @@ package com.yummy.naraka.world.item.equipmentset;
 
 import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
 import com.yummy.naraka.advancements.criterion.SimpleTrigger;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.item.SoulType;
-import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;

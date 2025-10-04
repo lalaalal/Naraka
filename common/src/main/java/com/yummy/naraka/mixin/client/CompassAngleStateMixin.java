@@ -2,7 +2,7 @@ package com.yummy.naraka.mixin.client;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.component.SanctuaryTracker;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

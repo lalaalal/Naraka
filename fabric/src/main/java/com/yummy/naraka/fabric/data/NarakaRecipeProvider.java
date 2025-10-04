@@ -1,8 +1,12 @@
 package com.yummy.naraka.fabric.data;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.core.component.AnyPredicate;
+import com.yummy.naraka.core.component.BlessedPredicate;
+import com.yummy.naraka.core.component.NarakaDataComponentPredicates;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.crafting.ComponentPredicateRecipeBuilder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -18,8 +22,8 @@ import net.minecraft.world.level.block.Blocks;
 import java.util.List;
 
 public class NarakaRecipeProvider extends RecipeProvider {
-    private final List<ItemLike> NECTARIUM_SMELTABLES = List.of(NarakaBlocks.NECTARIUM_ORE.get(), NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
-    private final List<ItemLike> AMETHYST_SMELTABLES = List.of(NarakaBlocks.AMETHYST_ORE.get(), NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
+    private static final List<ItemLike> NECTARIUM_SMELTABLES = List.of(NarakaBlocks.NECTARIUM_ORE.get(), NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
+    private static final List<ItemLike> AMETHYST_SMELTABLES = List.of(NarakaBlocks.AMETHYST_ORE.get(), NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
 
     private final HolderGetter<Item> items;
 
@@ -129,6 +133,20 @@ public class NarakaRecipeProvider extends RecipeProvider {
         soulInfusedMaterial(Items.LAPIS_LAZULI, NarakaItems.SOUL_INFUSED_LAPIS.get());
         soulInfusedMaterial(Items.AMETHYST_SHARD, NarakaItems.SOUL_INFUSED_AMETHYST.get());
         soulInfusedMaterial(NarakaItems.NECTARIUM.get(), NarakaItems.SOUL_INFUSED_NECTARIUM.get());
+
+        ComponentPredicateRecipeBuilder.predicate(items, RecipeCategory.COMBAT, NarakaItems.SPEAR_OF_LONGINUS_ITEM)
+                .requires(0, 0, NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
+                .requires(0, 1, NarakaItems.SOUL_INFUSED_COPPER_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
+                .requires(0, 2, NarakaItems.SOUL_INFUSED_GOLD_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
+                .requires(1, 0, NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
+                .requires(1, 1, NarakaItems.GOD_BLOOD.get(), NarakaDataComponentPredicates.ANY.get(), AnyPredicate.INSTANCE)
+                .requires(1, 2, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
+                .requires(2, 0, NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
+                .requires(2, 1, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
+                .requires(2, 2, NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
+                .showNotification()
+                .unlockedBy(getHasName(NarakaItems.GOD_BLOOD.get()), has(NarakaItems.GOD_BLOOD.get()))
+                .save(output);
     }
 
     protected void soulInfusedMaterial(ItemLike material, ItemLike result) {

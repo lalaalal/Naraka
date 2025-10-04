@@ -1,8 +1,8 @@
 package com.yummy.naraka.mixin.client;
 
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.util.ComponentStyles;
-import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

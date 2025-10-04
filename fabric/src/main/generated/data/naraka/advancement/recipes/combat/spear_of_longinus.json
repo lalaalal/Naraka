@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_god_blood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "naraka:god_blood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "naraka:spear_of_longinus"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_god_blood"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "naraka:spear_of_longinus"
+    ]
+  }
+}
