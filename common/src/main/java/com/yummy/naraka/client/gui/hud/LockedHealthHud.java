@@ -14,7 +14,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -109,16 +109,16 @@ public class LockedHealthHud implements HudRenderer {
 
     private void renderLockedHeart(GuiGraphics graphics, int x, int y, boolean blink) {
         int u = blink ? 7 : 0;
-        graphics.blitSprite(RenderType::guiTextured, NarakaSprites.DEATH_COUNT_HEART, 14, 7, u, 0, x + 1, y + 1, 7, 7);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, NarakaSprites.DEATH_COUNT_HEART, 14, 7, u, 0, x + 1, y + 1, 7, 7);
     }
 
     private void renderRightHalfLockedHeart(GuiGraphics graphics, int x, int y, boolean blink) {
         int u = blink ? 7 : 0;
-        graphics.blitSprite(RenderType::guiTextured, NarakaSprites.DEATH_COUNT_HEART, 14, 7, u + 4, 0, x + 5, y + 1, 3, 7);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, NarakaSprites.DEATH_COUNT_HEART, 14, 7, u + 4, 0, x + 5, y + 1, 3, 7);
     }
 
     private void renderLeftHalfLockedHeart(GuiGraphics graphics, int x, int y, boolean blink) {
         int u = blink ? 7 : 0;
-        graphics.blitSprite(RenderType::guiTextured, NarakaSprites.DEATH_COUNT_HEART, 14, 7, u, 0, x + 1, y + 1, 4, 7);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, NarakaSprites.DEATH_COUNT_HEART, 14, 7, u, 0, x + 1, y + 1, 4, 7);
     }
 }
