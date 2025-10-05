@@ -9,6 +9,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadHandler;
@@ -56,7 +57,7 @@ public final class NeoForgeNetworkManager implements NarakaEventBus {
 
         @Override
         public void send(CustomPacketPayload payload) {
-            PacketDistributor.sendToServer(payload);
+            ClientPacketDistributor.sendToServer(payload);
         }
     }
 
