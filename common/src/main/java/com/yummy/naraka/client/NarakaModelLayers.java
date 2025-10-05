@@ -3,7 +3,6 @@ package com.yummy.naraka.client;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.init.ModelLayerRegistry;
 import com.yummy.naraka.client.model.*;
-import com.yummy.naraka.client.renderer.blockentity.ForgingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulStabilizerBlockEntityRenderer;
 import net.fabricmc.api.EnvType;
@@ -27,7 +26,6 @@ public final class NarakaModelLayers {
     public static final ModelLayerLocation NARAKA_FIREBALL = location("naraka_fireball");
     public static final ModelLayerLocation STARDUST = location("stardust");
 
-    public static final ModelLayerLocation FORGING_BLOCK = location("forging_block");
     public static final ModelLayerLocation SOUL_SMITHING_BLOCK = location("soul_smithing_block");
     public static final ModelLayerLocation SOUL_STABILIZER = location("soul_stabilizer");
     public static final ModelLayerLocation TRIM_TEMPLATE = location("trim_location");
@@ -53,7 +51,6 @@ public final class NarakaModelLayers {
 
         ModelLayerRegistry.register(NarakaModelLayers.DIAMOND_GOLEM, DiamondGolemModel::createBodyLayer);
 
-        ModelLayerRegistry.register(NarakaModelLayers.FORGING_BLOCK, ForgingBlockEntityRenderer::createBodyLayer);
         ModelLayerRegistry.register(NarakaModelLayers.SOUL_SMITHING_BLOCK, SoulSmithingBlockEntityRenderer::createMainLayer);
         ModelLayerRegistry.register(NarakaModelLayers.SOUL_STABILIZER, SoulStabilizerBlockEntityRenderer::createBodyLayer);
         ModelLayerRegistry.register(NarakaModelLayers.TRIM_TEMPLATE, SoulSmithingBlockEntityRenderer::createTrimTemplateLayer);

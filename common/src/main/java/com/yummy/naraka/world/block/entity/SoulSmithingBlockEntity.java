@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -52,11 +51,10 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         return isStabilizerAttached;
     }
 
-    @Nullable
     public SoulType getSoulType() {
         if (isStabilizerAttached)
             return soulStabilizer.getSoulType();
-        return null;
+        return SoulType.NONE;
     }
 
     public int getSouls() {
