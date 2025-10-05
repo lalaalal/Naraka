@@ -7,7 +7,6 @@
     "client.CameraMixin",
     "client.CompassAngleStateMixin",
     "client.CraftingRecipeBookComponentMixin",
-    "client.DripParticleMixin",
     "client.EntityRenderDispatcherMixin",
     "client.FogRendererMixin",
     "client.GuiMixin",

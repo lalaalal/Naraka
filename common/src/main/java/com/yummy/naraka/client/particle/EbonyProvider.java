@@ -8,6 +8,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
@@ -20,7 +21,7 @@ public class EbonyProvider implements ParticleProvider<SimpleParticleType> {
 
     @Nullable
     @Override
-    public Particle createParticle(SimpleParticleType particleOptions, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
-        return new FallingLeavesParticle(level, x, y, z, this.sprites, 0.25F, 2.0F, false, true, 1.0F, 0.0F);
+    public Particle createParticle(SimpleParticleType particleOptions, ClientLevel level, double x, double y, double z, double dx, double dy, double dz, RandomSource randomSource) {
+        return new FallingLeavesParticle(level, x, y, z, this.sprites.get(randomSource), 0.25F, 2.0F, false, true, 1.0F, 0.0F);
     }
 }

@@ -4,9 +4,14 @@ import com.yummy.naraka.world.entity.Herobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -15,7 +20,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @Environment(EnvType.CLIENT)
-public class TurningParticle extends TextureSheetParticle {
+public class TurningParticle extends SingleQuadParticle {
     private final Predicate<TurningParticle> spreadPredicate;
     private boolean spread = false;
     private final double startX;
@@ -24,8 +29,8 @@ public class TurningParticle extends TextureSheetParticle {
     private double speed;
     private double radius;
 
-    public TurningParticle(ClientLevel clientLevel, Predicate<TurningParticle> spreadPredicate, int baseLifetime, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-        super(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed);
+    public TurningParticle(ClientLevel clientLevel, Predicate<TurningParticle> spreadPredicate, int baseLifetime, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, TextureAtlasSprite textureAtlasSprite) {
+        super(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed, textureAtlasSprite);
         this.spreadPredicate = spreadPredicate;
         lifetime = baseLifetime + random.nextInt(0, 20);
         speed = Math.PI / random.nextInt(5, 10);
@@ -68,11 +73,6 @@ public class TurningParticle extends TextureSheetParticle {
         return LightTexture.pack(15, 15);
     }
 
-    @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
-    }
-
     public static Provider herobrineSpawn(SpriteSet sprites) {
         return new Provider(sprites, 100, TurningParticle::isHerobrineExist);
     }
@@ -98,6 +98,11 @@ public class TurningParticle extends TextureSheetParticle {
         return false;
     }
 
+    @Override
+    protected Layer getLayer() {
+        return Layer.OPAQUE;
+    }
+
     public static class Provider implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprites;
         private final Predicate<TurningParticle> spreadPredicate;
@@ -116,9 +121,8 @@ public class TurningParticle extends TextureSheetParticle {
         }
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            TurningParticle particle = new TurningParticle(level, spreadPredicate, baseLifetime, x, y, z, xSpeed, ySpeed, zSpeed);
-            particle.pickSprite(sprites);
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource randomSource) {
+            TurningParticle particle = new TurningParticle(level, spreadPredicate, baseLifetime, x, y, z, xSpeed, ySpeed, zSpeed, sprites.get(randomSource));
             modifier.accept(particle);
             return particle;
         }

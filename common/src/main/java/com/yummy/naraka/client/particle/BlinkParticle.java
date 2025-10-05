@@ -1,16 +1,20 @@
 package com.yummy.naraka.client.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 
-public class BlinkParticle extends TextureSheetParticle {
+public class BlinkParticle extends SingleQuadParticle {
     private final SpriteSet sprites;
     private boolean withGlowing = false;
 
     protected BlinkParticle(ClientLevel clientLevel, SpriteSet sprites, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-        super(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed);
+        super(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed, sprites.first());
         this.sprites = sprites;
         this.setSpriteFromAge(this.sprites);
         this.quadSize = 4;
@@ -35,8 +39,8 @@ public class BlinkParticle extends TextureSheetParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+    protected Layer getLayer() {
+        return Layer.OPAQUE;
     }
 
     public static class Provider implements ParticleProvider<SimpleParticleType> {
@@ -54,7 +58,7 @@ public class BlinkParticle extends TextureSheetParticle {
         }
 
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource randomSource) {
             BlinkParticle particle = new BlinkParticle(level, sprites, x, y, z, xSpeed, ySpeed, zSpeed);
             particle.withGlowing = withGlowing;
             return particle;
