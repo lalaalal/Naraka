@@ -39,7 +39,15 @@ public class StardustRenderer extends LightTailEntityRenderer<Stardust, LightTai
         poseStack.mulPose(new Quaternionf().setAngleAxis((float) (Math.PI / 3), NarakaRenderUtils.SIN_45, 0.0F, NarakaRenderUtils.SIN_45));
         poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
         poseStack.mulPose(Axis.ZP.rotationDegrees(rotation * 2));
-        submitNodeCollector.submitModel(model, renderState, poseStack, RenderType.entityCutout(NarakaTextures.STARDUST), renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1, null);
+        submitNodeCollector.submitModel(
+                model,
+                renderState,
+                poseStack,
+                RenderType.entityCutout(NarakaTextures.STARDUST),
+                renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1,
+                null,
+                renderState.outlineColor,
+                null);
         poseStack.popPose();
         super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
     }

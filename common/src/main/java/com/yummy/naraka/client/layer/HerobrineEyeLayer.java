@@ -29,7 +29,7 @@ public class HerobrineEyeLayer<S extends AbstractHerobrineRenderState, M extends
     public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, S renderState, float yRot, float xRot) {
         submitNodeCollector.submitModel(getParentModel(), renderState,
                 poseStack, getRenderType(renderState),
-                light, OverlayTexture.NO_OVERLAY, ARGB.white(renderState.eyeAlpha), null
+                light, OverlayTexture.NO_OVERLAY, ARGB.white(renderState.eyeAlpha), null, renderState.outlineColor, null
         );
     }
 }

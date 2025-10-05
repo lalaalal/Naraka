@@ -4,6 +4,7 @@ import com.yummy.naraka.client.animation.herobrine.FinalHerobrineAnimation;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -20,6 +21,8 @@ public class FinalHerobrineModel<S extends AbstractHerobrineRenderState> extends
     private final ModelPart rightHand;
     private final ModelPart independentPickaxe;
     private final ModelPart pickaxe;
+
+    private final KeyframeAnimation chzzkAnimation;
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
@@ -68,7 +71,7 @@ public class FinalHerobrineModel<S extends AbstractHerobrineRenderState> extends
     }
 
     public FinalHerobrineModel(ModelPart root) {
-        super(root);
+        super(root, FinalHerobrineAnimation.IDLE, "final_herobrine");
         this.main = root.getChild("main");
         this.upperBody = main.getChild("chest");
         this.head = upperBody.getChild("head");
@@ -78,11 +81,13 @@ public class FinalHerobrineModel<S extends AbstractHerobrineRenderState> extends
         this.leftHand = leftArm.getChild("left_hand");
         this.independentPickaxe = root.getChild("independent_pickaxe");
         this.pickaxe = rightHand.getChild("pickaxe");
+
+        this.chzzkAnimation = FinalHerobrineAnimation.HIDDEN_CHZZK.bake(root);
     }
 
     public void setupChzzkAnim(AnimationState chzzkAnimationState, float ageInTicks) {
         resetPose();
-        this.animate(chzzkAnimationState, FinalHerobrineAnimation.HIDDEN_CHZZK, ageInTicks);
+        chzzkAnimation.apply(chzzkAnimationState, ageInTicks);
     }
 
     @Override

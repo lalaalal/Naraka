@@ -28,7 +28,7 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.network.chat.Component;
 
 @Environment(EnvType.CLIENT)
@@ -79,7 +79,7 @@ public final class NarakaModClient {
     }
 
     private static void initializeBlocks() {
-        BlockRenderTypeRegistry.register(RenderType.cutout(),
+        BlockRenderTypeRegistry.register(ChunkSectionLayer.CUTOUT,
                 NarakaBlocks.EBONY_SAPLING.get(),
                 NarakaBlocks.POTTED_EBONY_SAPLING.get(),
                 NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(),

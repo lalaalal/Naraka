@@ -64,10 +64,10 @@ public class SpearItem extends Item implements ProjectileItem {
     }
 
     protected void throwSpear(Level level, LivingEntity livingEntity, ItemStack stack) {
-        if (level.isClientSide)
+        if (level.isClientSide())
             return;
         if (livingEntity instanceof Player player) {
-            stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(livingEntity.getUsedItemHand()));
+            stack.hurtAndBreak(1, player, livingEntity.getUsedItemHand());
             Spear spear = createSpear(level, player, stack);
             spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0, 2.5f, 1);
             if (player.hasInfiniteMaterials())

@@ -21,7 +21,7 @@ public class HerobrineAnimationLocations {
     public static final ResourceLocation STAGGERING_PHASE_2 = AnimationLocations.create("herobrine", "staggering.enter_phase_2");
     public static final ResourceLocation ENTER_PHASE_2 = AnimationLocations.create("herobrine", "enter_phase_2");
     public static final ResourceLocation IDLE = AnimationLocations.create("herobrine", "idle");
-    public static final ResourceLocation SHADOW_SUMMONED = AnimationLocations.create("shadow_herobrine", "summoned");
+    public static final ResourceLocation SHADOW_SUMMONED = AnimationLocations.create("herobrine", "summoned");
     public static final ResourceLocation PREPARE_PHASE_3 = AnimationLocations.create("herobrine", "prepare_phase_3");
     public static final ResourceLocation ENTER_PHASE_3 = AnimationLocations.create("final_herobrine", "enter_phase_3");
     public static final ResourceLocation PHASE_3_IDLE = AnimationLocations.create("final_herobrine", "idle");

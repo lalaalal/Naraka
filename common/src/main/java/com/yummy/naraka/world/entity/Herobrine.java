@@ -25,7 +25,6 @@ import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -47,6 +46,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.portal.TeleportTransition;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -747,28 +748,28 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putFloat("HurtDamageLimit", hurtDamageLimit);
-        compound.putBoolean("HibernateMode", hibernateMode);
-        compound.storeNullable("SpawnPosition", BlockPos.CODEC, spawnPosition);
-        compound.store("StigmatizedEntities", UUIDUtil.CODEC_SET, stigmatizedEntities);
-        compound.store("WatchingEntities", UUIDUtil.CODEC_SET, watchingEntities);
-        shadowController.save(compound);
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putFloat("HurtDamageLimit", hurtDamageLimit);
+        output.putBoolean("HibernateMode", hibernateMode);
+        output.storeNullable("SpawnPosition", BlockPos.CODEC, spawnPosition);
+        output.store("StigmatizedEntities", UUIDUtil.CODEC_SET, stigmatizedEntities);
+        output.store("WatchingEntities", UUIDUtil.CODEC_SET, watchingEntities);
+        shadowController.save(output);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
+    public void readAdditionalSaveData(ValueInput input) {
         if (!(level() instanceof ServerLevel level))
             return;
-        super.readAdditionalSaveData(compound);
-        hurtDamageLimit = compound.getFloatOr("HurtDamageLimit", MAX_HURT_DAMAGE_LIMIT);
-        hibernateMode = compound.getBooleanOr("HibernatedMode", false);
+        super.readAdditionalSaveData(input);
+        hurtDamageLimit = input.getFloatOr("HurtDamageLimit", MAX_HURT_DAMAGE_LIMIT);
+        hibernateMode = input.getBooleanOr("HibernatedMode", false);
         if (hibernateMode)
             startHibernateMode(level);
-        compound.read("SpawnPosition", BlockPos.CODEC).ifPresent(pos -> spawnPosition = pos);
-        compound.read("StigmatizedEntities", UUIDUtil.CODEC_SET).ifPresent(stigmatizedEntities::addAll);
-        compound.read("WatchingEntities", UUIDUtil.CODEC_SET).ifPresent(watchingEntities::addAll);
-        shadowController.load(compound);
+        input.read("SpawnPosition", BlockPos.CODEC).ifPresent(pos -> spawnPosition = pos);
+        input.read("StigmatizedEntities", UUIDUtil.CODEC_SET).ifPresent(stigmatizedEntities::addAll);
+        input.read("WatchingEntities", UUIDUtil.CODEC_SET).ifPresent(watchingEntities::addAll);
+        shadowController.load(input);
     }
 }

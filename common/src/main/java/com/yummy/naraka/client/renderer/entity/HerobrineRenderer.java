@@ -68,7 +68,16 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
         this.setupRotations(renderState, poseStack, renderState.bodyRot, renderState.scale);
         poseStack.scale(-1, -1, 1);
         poseStack.translate(0, -1.501F, 0);
-        submitNodeCollector.submitModel(dyingModel, renderState, poseStack, RenderType.entityTranslucent(getTextureLocation(renderState)), packedLight, OverlayTexture.NO_OVERLAY, color, null);
+        submitNodeCollector.submitModel(
+                dyingModel,
+                renderState,
+                poseStack,
+                RenderType.entityTranslucent(getTextureLocation(renderState)),
+                packedLight, OverlayTexture.NO_OVERLAY, color,
+                null,
+                renderState.outlineColor,
+                null
+        );
         poseStack.popPose();
     }
 

@@ -21,6 +21,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -49,13 +51,17 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
-    public void saveEntityData(CompoundTag compoundTag, CallbackInfo ci) {
-        if (EntityDataHelper.hasEntityData(naraka$living()))
+    public void saveEntityData(ValueOutput output, CallbackInfo ci) {
+        if (EntityDataHelper.hasEntityData(naraka$living())) {
+            CompoundTag compoundTag = new CompoundTag();
             EntityDataHelper.saveEntityData(naraka$living(), compoundTag);
+            output.store("EntityData", CompoundTag.CODEC, compoundTag);
+        }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))
-    public void readEntityData(CompoundTag compoundTag, CallbackInfo ci) {
+    public void readEntityData(ValueInput input, CallbackInfo ci) {
+        CompoundTag compoundTag = input.read("EntityData", CompoundTag.CODEC).orElse(new CompoundTag());
         EntityDataHelper.readEntityData(naraka$living(), compoundTag);
     }
 

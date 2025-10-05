@@ -47,13 +47,6 @@ public class NarakaBlocks {
             Blocks.SPAWNER
     );
 
-    public static final HolderProxy<Block, UnstableBlock> UNSTABLE_BLOCK = registerBlockWithItem(
-            "unstable_block", properties -> new UnstableBlock(
-                    properties.strength(-1, 3600000)
-                            .noLootTable()
-            ), Blocks.DIRT
-    );
-
     public static final HolderProxy<Block, DropExperienceBlock> AMETHYST_ORE = registerBlockWithItem(
             "amethyst_ore",
             properties -> new DropExperienceBlock(UniformInt.of(0, 2), properties.requiresCorrectToolForDrops()),

@@ -51,7 +51,15 @@ public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball, Entit
 
         RenderType renderType = model.renderType(NarakaTextures.NARAKA_FIREBALL);
 
-        submitNodeCollector.submitModel(model, renderState, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1, null);
+        submitNodeCollector.submitModel(
+                model,
+                renderState,
+                poseStack,
+                renderType,
+                renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1,
+                null,
+                renderState.outlineColor,
+                null);
         super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
 
         poseStack.popPose();

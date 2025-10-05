@@ -111,7 +111,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
         poseStack.mulPose(Axis.ZP.rotationDegrees(225));
         poseStack.translate(0.5, 0.5, 0);
         poseStack.scale(4, 4, 1);
-        renderState.pickaxe.submit(poseStack, submitNodeCollector, renderState.pickaxeLight, OverlayTexture.NO_OVERLAY, -1);
+        renderState.pickaxe.submit(poseStack, submitNodeCollector, renderState.pickaxeLight, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
     }
 
@@ -126,6 +126,8 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
                 poseStack,
                 renderType,
                 LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color,
+                null,
+                renderState.outlineColor,
                 null
         );
     }

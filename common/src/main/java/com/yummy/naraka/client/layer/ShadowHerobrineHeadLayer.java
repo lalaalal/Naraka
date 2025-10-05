@@ -26,7 +26,7 @@ public class ShadowHerobrineHeadLayer extends RenderLayer<ShadowHerobrineRenderS
         poseStack.pushPose();
         int color = NarakaConfig.CLIENT.shadowHerobrineColor.getValue().pack();
         RenderType renderType = RenderType.entityCutout(NarakaTextures.SHADOW_HEROBRINE_HEAD);
-        submitNodeCollector.submitModel(getParentModel(), renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, color, null);
+        submitNodeCollector.submitModel(getParentModel(), renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, color, null, renderState.outlineColor, null);
         poseStack.popPose();
     }
 }

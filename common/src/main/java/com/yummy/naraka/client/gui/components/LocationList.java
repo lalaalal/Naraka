@@ -40,10 +40,10 @@ public class LocationList extends ObjectSelectionList<LocationList.Entry> {
         }
 
         @Override
-        public void render(GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick) {
+        public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean hovered, float partialTick) {
             Font font = minecraft.font;
             int entryWidth = screen.width / 2;
-            int entryHeight = top + height / 2;
+            int entryHeight = getContentY() + getContentHeight() / 2;
             guiGraphics.drawCenteredString(font, component, entryWidth, entryHeight - 9 / 2, -1);
         }
 

@@ -144,8 +144,16 @@ public class NarakaRenderUtils {
     public static <S> void submitModelWithFoilRenderTypes(Model<? super S> model, S renderState, PoseStack poseStack, RenderType renderType, SubmitNodeCollector submitNodeCollector, int packedLight, boolean hasFoil) {
         List<RenderType> renderTypes = ItemRenderer.getFoilRenderTypes(renderType, false, hasFoil);
         for (int index = 0; index < renderTypes.size(); index++) {
-            submitNodeCollector.order(index)
-                    .submitModel(model, renderState, poseStack, renderTypes.get(index), packedLight, OverlayTexture.NO_OVERLAY, -1, null);
+            submitNodeCollector.order(index).submitModel(
+                    model,
+                    renderState,
+                    poseStack,
+                    renderTypes.get(index),
+                    packedLight, OverlayTexture.NO_OVERLAY, -1,
+                    null,
+                    0,
+                    null
+            );
         }
     }
 }

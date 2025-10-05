@@ -72,7 +72,11 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
         submitNodeCollector.submitModel(
                 getAfterimageModel(renderState),
-                renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, -1, null
+                renderState, poseStack, renderType,
+                packedLight, OverlayTexture.NO_OVERLAY, color.pack(),
+                null,
+                afterimageRenderState.outlineColor,
+                null
         );
         submitAfterimageLayer(renderState, afterimageRenderState, poseStack, submitNodeCollector, packedLight, color.alpha());
 

@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Environment(EnvType.CLIENT)
 public class AnimationMapper {
@@ -17,6 +18,10 @@ public class AnimationMapper {
 
     public static void register(ResourceLocation key, AnimationDefinition animationDefinition) {
         MAPPER.putIfAbsent(key, animationDefinition);
+    }
+
+    public static Set<ResourceLocation> keySet() {
+        return MAPPER.keySet();
     }
 
     public static AnimationDefinition get(ResourceLocation key) {

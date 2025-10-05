@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.FireChargeItem;
 import net.minecraft.world.item.FlintAndSteelItem;
@@ -38,7 +37,7 @@ public abstract class HerobrineTotemActivatingItemMixin {
         ) {
             ItemStack itemStack = context.getItemInHand();
             if (player != null)
-                itemStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
+                itemStack.hurtAndBreak(1, player, context.getHand());
             if (itemStack.is(Items.FIRE_CHARGE))
                 itemStack.shrink(1);
 

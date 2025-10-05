@@ -18,7 +18,7 @@ public class StardustStaffItem extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
         RandomSource random = player.getRandom();
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             for (int i = 0; i < 16; i++) {
                 int tickAfter = random.nextIntBetweenInclusive(1, 10);
                 float yRot = 360f / 16 * i;

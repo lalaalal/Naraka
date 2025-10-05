@@ -71,7 +71,7 @@ public class NarakaPickaxeRenderer extends EntityRenderer<NarakaPickaxe, NarakaP
         poseStack.mulPose(Axis.ZP.rotationDegrees(45));
         poseStack.translate(0.5, 0.5, 0);
         poseStack.scale(4, 4, 1);
-        renderState.pickaxe.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1);
+        renderState.pickaxe.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
     }
 

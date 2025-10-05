@@ -51,7 +51,7 @@ public class SoulStabilizerSpecialRenderer implements NoDataSpecialModelRenderer
         poseStack.scale(2.8f, 2.8f, 2.8f);
         poseStack.translate(-0.32, 0, -0.32);
         RenderType bottleRenderType = RenderType.entityCutout(NarakaTextures.SOUL_STABILIZER);
-        submitNodeCollector.submitModelPart(bottle, poseStack, bottleRenderType, light, overlay, null, color, null);
+        submitNodeCollector.submitModelPart(bottle, poseStack, bottleRenderType, light, overlay, null, -1, null);
         poseStack.popPose();
 
         if (blockEntity.getSoulType() == SoulType.NONE)
@@ -70,8 +70,9 @@ public class SoulStabilizerSpecialRenderer implements NoDataSpecialModelRenderer
 
     @Override
     public void getExtents(Set<Vector3f> output) {
-        bottle.getExtentsForGui(new PoseStack(), output);
-        liquid.getExtentsForGui(new PoseStack(), output);
+        PoseStack poseStack = new PoseStack();
+        bottle.getExtentsForGui(poseStack, output);
+        liquid.getExtentsForGui(poseStack, output);
     }
 
     @Environment(EnvType.CLIENT)

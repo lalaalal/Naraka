@@ -38,13 +38,13 @@ public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
     }
 
     @Override
-    public void submit(@Nullable Boolean hasFoil, ItemDisplayContext itemDisplayContext, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int i, int j, boolean bl, int k) {
+    public void submit(@Nullable Boolean hasFoil, ItemDisplayContext itemDisplayContext, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, int overlay, boolean bl, int outlineColor) {
         if (hasFoil == null)
             return;
         poseStack.pushPose();
         poseStack.scale(1, -1, 1);
         RenderType renderType = model.renderType(texture);
-        NarakaRenderUtils.submitModelWithFoilRenderTypes(model, Unit.INSTANCE, poseStack, renderType, submitNodeCollector, i, hasFoil);
+        NarakaRenderUtils.submitModelWithFoilRenderTypes(model, Unit.INSTANCE, poseStack, renderType, submitNodeCollector, light, hasFoil);
         poseStack.popPose();
     }
 

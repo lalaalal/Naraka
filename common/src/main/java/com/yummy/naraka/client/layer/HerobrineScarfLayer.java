@@ -56,7 +56,7 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
         int color = selectColor(renderState);
         if (renderState.getModelType() != WavingScarfRenderState.ModelType.BIG) {
             RenderType renderType = RenderType.entitySmoothCutout(renderState.getFixedModelTexture());
-            submitNodeCollector.submitModel(scarfModel, renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, color, null);
+            submitNodeCollector.submitModel(scarfModel, renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, color, null, renderState.outlineColor, null);
         }
 
         for (WavingScarfRenderState.ModelData modelData : renderState.scarfRenderState.modelDataList) {
