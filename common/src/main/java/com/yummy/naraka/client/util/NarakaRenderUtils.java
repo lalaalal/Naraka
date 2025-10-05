@@ -6,7 +6,12 @@ import com.yummy.naraka.util.NarakaUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -135,5 +140,13 @@ public class NarakaRenderUtils {
         if (player == null)
             return false;
         return player.getUUID().equals(livingEntity.getUUID());
+    }
+
+    public static <S extends EntityRenderState, M extends EntityModel<S>> void submitModelWithFoilRenderTypes(S renderState, M model, PoseStack poseStack, RenderType renderType, SubmitNodeCollector submitNodeCollector, boolean hasFoil) {
+        List<RenderType> renderTypes = ItemRenderer.getFoilRenderTypes(renderType, false, hasFoil);
+        for (int index = 0; index < renderTypes.size(); index++) {
+            submitNodeCollector.order(index)
+                    .submitModel(model, renderState, poseStack, renderTypes.get(index), renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1, null);
+        }
     }
 }

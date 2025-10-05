@@ -1,12 +1,12 @@
 package com.yummy.naraka.client.model;
 
-import com.yummy.naraka.client.renderer.entity.state.FlatImageRenderState;
+import com.yummy.naraka.client.renderer.entity.state.LightTailEntityRenderState;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
-public class StardustModel extends EntityModel<FlatImageRenderState> {
+public class StardustModel extends EntityModel<LightTailEntityRenderState> {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();

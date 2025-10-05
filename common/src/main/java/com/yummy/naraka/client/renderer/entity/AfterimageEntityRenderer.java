@@ -1,7 +1,6 @@
 package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.renderer.entity.state.AfterimageRenderState;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.AfterimageEntity;
@@ -9,7 +8,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -40,35 +38,22 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
     @Override
     public void submit(S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         Collection<AfterimageRenderState> afterimages = renderState.afterimages();
+        int packedLight = renderState.lightCoords;
         if (!afterimages.isEmpty()) {
             int blockLight = Mth.clamp(afterimages.size(), LightTexture.block(packedLight), 15);
             int skyLight = Mth.clamp(afterimages.size(), LightTexture.sky(packedLight), 15);
-
-            packedLight = Math.max(LightTexture.pack(blockLight, skyLight), packedLight);
+            renderState.lightCoords = Math.max(LightTexture.pack(blockLight, skyLight), packedLight);
         }
         super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
-        renderAfterimages(renderState, poseStack, buffer);
+        submitAfterimages(renderState, poseStack, submitNodeCollector);
     }
 
-    @Override
-    public void render(S renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
-        Collection<AfterimageRenderState> afterimages = renderState.afterimages();
-        if (!afterimages.isEmpty()) {
-            int blockLight = Mth.clamp(afterimages.size(), LightTexture.block(packedLight), 15);
-            int skyLight = Mth.clamp(afterimages.size(), LightTexture.sky(packedLight), 15);
-
-            packedLight = Math.max(LightTexture.pack(blockLight, skyLight), packedLight);
-        }
-        super.render(renderState, poseStack, buffer, packedLight);
-        renderAfterimages(renderState, poseStack, buffer);
-    }
-
-    protected void renderAfterimages(S renderState, PoseStack poseStack, MultiBufferSource buffer) {
+    protected void submitAfterimages(S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
         for (AfterimageRenderState afterimage : renderState.afterimages())
-            this.renderAfterimage(renderState, afterimage, poseStack, buffer);
+            this.submitAfterimage(renderState, afterimage, poseStack, submitNodeCollector);
     }
 
-    protected void renderAfterimage(S renderState, AfterimageRenderState afterimageRenderState, PoseStack poseStack, MultiBufferSource buffer) {
+    protected void submitAfterimage(S renderState, AfterimageRenderState afterimageRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
         if (!afterimageRenderState.canRender)
             return;
 
@@ -81,18 +66,20 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
         this.setupRotations(renderState, poseStack, afterimageRenderState.bodyRot, renderState.scale);
 
         RenderType renderType = RenderType.entityTranslucent(getAfterimageTexture(renderState), true);
-        VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
         Color color = afterimageRenderState.color;
         int light = (int) (color.alpha01() * 5);
         int packedLight = LightTexture.pack(light, light);
 
-        getAfterimageModel(renderState).renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color.pack());
-        renderAfterimageLayer(renderState, afterimageRenderState, poseStack, buffer, packedLight, color.alpha());
+        submitNodeCollector.submitModel(
+                getAfterimageModel(renderState),
+                renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, -1, null
+        );
+        submitAfterimageLayer(renderState, afterimageRenderState, poseStack, submitNodeCollector, packedLight, color.alpha());
 
         poseStack.popPose();
     }
 
-    protected void renderAfterimageLayer(S renderState, AfterimageRenderState afterimage, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int alpha) {
+    protected void submitAfterimageLayer(S renderState, AfterimageRenderState afterimage, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, int alpha) {
 
     }
 

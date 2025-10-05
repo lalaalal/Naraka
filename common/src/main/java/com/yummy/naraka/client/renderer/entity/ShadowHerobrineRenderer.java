@@ -14,8 +14,9 @@ import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.resources.ResourceLocation;
 
 @Environment(EnvType.CLIENT)
@@ -55,10 +56,10 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
     }
 
     @Override
-    public void render(ShadowHerobrineRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void submit(ShadowHerobrineRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         if (renderState.finalModel && !renderState.displayPickaxe)
             return;
-        super.render(renderState, poseStack, buffer, packedLight);
+        super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
     }
 
     @Override

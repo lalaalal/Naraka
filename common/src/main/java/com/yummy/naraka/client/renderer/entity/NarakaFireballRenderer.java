@@ -1,7 +1,6 @@
 package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
@@ -10,11 +9,12 @@ import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.NarakaFireball;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import org.joml.Quaternionf;
 
@@ -40,7 +40,7 @@ public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball, Entit
     }
 
     @Override
-    public void render(EntityRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void submit(EntityRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
 
         float rotation = renderState.ageInTicks * 5;
@@ -50,10 +50,9 @@ public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball, Entit
         poseStack.mulPose(Axis.ZP.rotationDegrees(rotation * 2));
 
         RenderType renderType = model.renderType(NarakaTextures.NARAKA_FIREBALL);
-        VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
 
-        model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
-        super.render(renderState, poseStack, buffer, packedLight);
+        submitNodeCollector.submitModel(model, renderState, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1, null);
+        super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
 
         poseStack.popPose();
     }

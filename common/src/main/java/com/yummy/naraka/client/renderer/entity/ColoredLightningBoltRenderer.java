@@ -39,20 +39,23 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
         float[] gs = new float[8];
         float f = 0.0F;
         float g = 0.0F;
-        RandomSource randomSource = RandomSource.create(renderState.seed);
+        RandomSource random1 = RandomSource.create(renderState.seed);
 
         for (int index = 7; index >= 0; index--) {
             fs[index] = f;
             gs[index] = g;
-            f += randomSource.nextInt(11) - 5;
-            g += randomSource.nextInt(11) - 5;
+            f += random1.nextInt(11) - 5;
+            g += random1.nextInt(11) - 5;
         }
 
-        submitNodeCollector.submitCustomGeometry(poseStack, RenderType.lightning(), ((pose, vertexConsumer) -> {
+        float ff = f;
+        float gg = g;
+
+        submitNodeCollector.submitCustomGeometry(poseStack, RenderType.lightning(), (pose, vertexConsumer) -> {
             Matrix4f matrix4f = poseStack.last().pose();
 
             for (int k = 0; k < 4; k++) {
-                RandomSource randomSource = RandomSource.create(renderState.seed);
+                RandomSource random2 = RandomSource.create(renderState.seed);
                 for (int l = 0; l < 3; l++) {
                     int m = 7;
                     int n = 0;
@@ -64,18 +67,18 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
                         n = m - 2;
                     }
 
-                    float x1 = fs[m] - f;
-                    float z1 = gs[m] - g;
+                    float x1 = fs[m] - ff;
+                    float z1 = gs[m] - gg;
 
                     for (int sectionY = m; sectionY >= n; sectionY--) {
                         float x2 = x1;
                         float z2 = z1;
                         if (l == 0) {
-                            x1 += randomSource.nextInt(11) - 5;
-                            z1 += randomSource.nextInt(11) - 5;
+                            x1 += random2.nextInt(11) - 5;
+                            z1 += random2.nextInt(11) - 5;
                         } else {
-                            x1 += randomSource.nextInt(31) - 15;
-                            z1 += randomSource.nextInt(31) - 15;
+                            x1 += random2.nextInt(31) - 15;
+                            z1 += random2.nextInt(31) - 15;
                         }
 
                         float innerThickness = 0.1F + k * 0.2F;
@@ -99,7 +102,7 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
                     }
                 }
             }
-        }));
+        });
     }
 
     private static void quad(
