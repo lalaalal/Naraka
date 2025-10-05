@@ -1,11 +1,13 @@
 package com.yummy.naraka.mixin.client;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.renderer.HerobrineSkyRenderHelper;
 import com.yummy.naraka.config.NarakaConfig;
 import net.minecraft.client.CloudStatus;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.state.SkyRenderState;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Final;
@@ -29,15 +31,15 @@ public abstract class LevelRendererMixin {
     @Final
     private CloudRenderer cloudRenderer;
 
-    @SuppressWarnings({"UnresolvedMixinReference", "LocalMayBeArgsOnly"})
+    @SuppressWarnings({"UnresolvedMixinReference", "LocalMayBeArgsOnly", "UnnecessaryQualifiedMemberReference"})
     @ModifyArg(
-            method = {"addSkyPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/FogParameters;)V", "addSkyPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/FogParameters;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V"},
+            method = {"Lnet/minecraft/client/renderer/LevelRenderer;addSkyPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/client/Camera;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;)V", "Lnet/minecraft/client/renderer/LevelRenderer;addSkyPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/client/Camera;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lorg/joml/Matrix4f;)V"},
             require = 1,
             at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/framegraph/FramePass;executes(Ljava/lang/Runnable;)V")
     )
-    public Runnable replaceHerobrineSkyPass(Runnable original, @Local(argsOnly = true) FogParameters fog, @Local DimensionSpecialEffects.SkyType skyType) {
-        if (skyType == DimensionSpecialEffects.SkyType.OVERWORLD && naraka$isHerobrineSkyEnabled())
-            return () -> HerobrineSkyRenderHelper.renderHerobrineSky(skyRenderer, renderBuffers, fog);
+    public Runnable replaceHerobrineSkyPass(Runnable original, @Local(argsOnly = true) GpuBufferSlice gpuBufferSlice, @Local SkyRenderState skyRenderState) {
+        if (skyRenderState.skyType == DimensionSpecialEffects.SkyType.OVERWORLD && naraka$isHerobrineSkyEnabled())
+            return () -> HerobrineSkyRenderHelper.renderHerobrineSky(skyRenderer, skyRenderState, gpuBufferSlice);
         return original;
     }
 

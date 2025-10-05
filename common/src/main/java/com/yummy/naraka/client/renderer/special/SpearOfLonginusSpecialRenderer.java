@@ -57,7 +57,6 @@ public class SpearOfLonginusSpecialRenderer implements NoDataSpecialModelRendere
     @Override
     public void getExtents(Set<Vector3f> output) {
         PoseStack poseStack = new PoseStack();
-        poseStack.scale(1.0F, -1.0F, -1.0F);
         this.model.root().getExtentsForGui(poseStack, output);
     }
 

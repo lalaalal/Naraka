@@ -1,7 +1,6 @@
 package com.yummy.naraka.client.renderer.special;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.client.NarakaModelLayers;
@@ -9,32 +8,37 @@ import com.yummy.naraka.client.NarakaTextures;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.Model;
-import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
+import org.joml.Vector3f;
+
+import java.util.Set;
 
 @Environment(EnvType.CLIENT)
 public class SoulSmithingBlockSpecialRenderer implements NoDataSpecialModelRenderer {
-    private final Model model;
+    private final Model<?> model;
 
-    public SoulSmithingBlockSpecialRenderer(Model model) {
+    public SoulSmithingBlockSpecialRenderer(Model<?> model) {
         this.model = model;
     }
 
     @Override
-    public void render(ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean hasFoilType) {
+    public void submit(ItemDisplayContext itemDisplayContext, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, int packedOverlay, boolean bl, int color) {
         poseStack.pushPose();
         poseStack.rotateAround(Axis.XP.rotation(Mth.PI), 0.5f, 0.5f, 0.5f);
         RenderType renderType = model.renderType(NarakaTextures.SOUL_SMITHING_BLOCK);
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-
-        model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
+        submitNodeCollector.submitModelPart(model.root(), poseStack, renderType, packedLight, packedOverlay, null, color, null);
         poseStack.popPose();
+    }
+
+    @Override
+    public void getExtents(Set<Vector3f> output) {
+        model.root().getExtentsForGui(new PoseStack(), output);
     }
 
     @Environment(EnvType.CLIENT)
@@ -42,9 +46,9 @@ public class SoulSmithingBlockSpecialRenderer implements NoDataSpecialModelRende
         public static final MapCodec<Unbaked> CODEC = MapCodec.unit(new Unbaked());
 
         @Override
-        public SpecialModelRenderer<?> bake(EntityModelSet modelSet) {
-            ModelPart root = modelSet.bakeLayer(NarakaModelLayers.SOUL_SMITHING_BLOCK);
-            Model model = new Model.Simple(root, RenderType::entityTranslucent);
+        public SpecialModelRenderer<?> bake(BakingContext context) {
+            ModelPart root = context.entityModelSet().bakeLayer(NarakaModelLayers.SOUL_SMITHING_BLOCK);
+            Model<?> model = new Model.Simple(root, RenderType::entityTranslucent);
             return new SoulSmithingBlockSpecialRenderer(model);
         }
 

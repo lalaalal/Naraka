@@ -1,7 +1,6 @@
 package com.yummy.naraka.client.renderer.special;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
@@ -12,10 +11,9 @@ import com.yummy.naraka.world.block.entity.SoulStabilizerBlockEntity;
 import com.yummy.naraka.world.item.SoulType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.core.BlockPos;
@@ -24,6 +22,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import org.joml.Vector3f;
+
+import java.util.Set;
 
 @Environment(EnvType.CLIENT)
 public class SoulStabilizerSpecialRenderer implements NoDataSpecialModelRenderer {
@@ -45,26 +46,32 @@ public class SoulStabilizerSpecialRenderer implements NoDataSpecialModelRenderer
     }
 
     @Override
-    public void render(ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean hasFoilType) {
+    public void submit(ItemDisplayContext itemDisplayContext, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, int overlay, boolean bl, int color) {
         poseStack.pushPose();
         poseStack.scale(2.8f, 2.8f, 2.8f);
         poseStack.translate(-0.32, 0, -0.32);
-        VertexConsumer bottleBuffer = bufferSource.getBuffer(RenderType.entityCutout(NarakaTextures.SOUL_STABILIZER));
-        bottle.render(poseStack, bottleBuffer, packedLight, packedOverlay);
+        RenderType bottleRenderType = RenderType.entityCutout(NarakaTextures.SOUL_STABILIZER);
+        submitNodeCollector.submitModelPart(bottle, poseStack, bottleRenderType, light, overlay, null, color, null);
         poseStack.popPose();
 
         if (blockEntity.getSoulType() == SoulType.NONE)
             return;
 
         float soulRatio = (float) blockEntity.getSouls() / SoulStabilizerBlockEntity.CAPACITY;
-        int color = ARGB.color(0x99, blockEntity.getSoulType().getColor());
+        int liquidColor = ARGB.color(0x99, blockEntity.getSoulType().getColor());
 
         poseStack.pushPose();
         poseStack.scale(2.8f, soulRatio * 2.8f, 2.8f);
         poseStack.translate(-0.32, 0, -0.32);
-        VertexConsumer liquidBuffer = bufferSource.getBuffer(RenderType.entityTranslucent(SoulStabilizerBlockEntityRenderer.WATER_OVERLAY));
-        liquid.render(poseStack, liquidBuffer, packedLight, packedOverlay, color);
+        RenderType liquidRenderType = RenderType.entityTranslucent(SoulStabilizerBlockEntityRenderer.WATER_OVERLAY);
+        submitNodeCollector.submitModelPart(liquid, poseStack, liquidRenderType, light, overlay, null, liquidColor, null);
         poseStack.popPose();
+    }
+
+    @Override
+    public void getExtents(Set<Vector3f> output) {
+        bottle.getExtentsForGui(new PoseStack(), output);
+        liquid.getExtentsForGui(new PoseStack(), output);
     }
 
     @Environment(EnvType.CLIENT)
@@ -72,8 +79,8 @@ public class SoulStabilizerSpecialRenderer implements NoDataSpecialModelRenderer
         public static final MapCodec<SoulStabilizerSpecialRenderer.Unbaked> CODEC = MapCodec.unit(new Unbaked());
 
         @Override
-        public SpecialModelRenderer<?> bake(EntityModelSet modelSet) {
-            ModelPart root = modelSet.bakeLayer(NarakaModelLayers.SOUL_STABILIZER);
+        public SpecialModelRenderer<?> bake(BakingContext context) {
+            ModelPart root = context.entityModelSet().bakeLayer(NarakaModelLayers.SOUL_STABILIZER);
             return new SoulStabilizerSpecialRenderer(root.getChild("bottle"), root.getChild("liquid"));
         }
 

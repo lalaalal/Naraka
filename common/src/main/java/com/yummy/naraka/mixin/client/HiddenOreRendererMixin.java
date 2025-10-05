@@ -1,6 +1,7 @@
 package com.yummy.naraka.mixin.client;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.framegraph.FrameGraphBuilder;
 import com.mojang.blaze3d.framegraph.FramePass;
 import com.mojang.blaze3d.pipeline.RenderTarget;
@@ -31,6 +32,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
+import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -60,8 +62,8 @@ public abstract class HiddenOreRendererMixin {
     @Shadow
     protected abstract void checkPoseStack(PoseStack poseStack);
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;addLateDebugPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/client/renderer/FogParameters;)V"))
-    protected void addHiddenOres(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo ci, @Local FrameGraphBuilder frameGraphBuilder) {
+    @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;addLateDebugPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/world/phys/Vec3;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lnet/minecraft/client/renderer/culling/Frustum;)V"))
+    protected void addHiddenOres(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean bl, Camera camera, Matrix4f matrix4f, Matrix4f matrix4f2, Matrix4f matrix4f3, GpuBufferSlice gpuBufferSlice, Vector4f vector4f, boolean bl2, CallbackInfo ci, @Local FrameGraphBuilder frameGraphBuilder) {
         if (minecraft.player == null || !NarakaItemUtils.canApplyOreSeeThrough(minecraft.player) || NarakaConfig.CLIENT.disableOreSeeThrough.getValue())
             return;
 
@@ -70,7 +72,7 @@ public abstract class HiddenOreRendererMixin {
         naraka$addHiddenOresPass(frameGraphBuilder, camera);
         PostChain postChain = this.minecraft.getShaderManager().getPostChain(LevelTargetBundle.ENTITY_OUTLINE_TARGET_ID, LevelTargetBundle.OUTLINE_TARGETS);
         if (postChain != null) {
-            postChain.addToFrame(frameGraphBuilder, width, height, this.targets, null);
+            postChain.addToFrame(frameGraphBuilder, width, height, this.targets);
         }
         doEntityOutline();
     }
@@ -124,7 +126,7 @@ public abstract class HiddenOreRendererMixin {
                 Color color = NarakaConfig.ORE_COLORS.getColor(state);
                 if (color.alpha() == 0)
                     return;
-                outlineBufferSource.setColor(color.red(), color.green(), color.blue(), color.alpha());
+                outlineBufferSource.setColor(color.pack());
 
                 poseStack.pushPose();
                 poseStack.translate(pos.getX() - cameraPosition.x, pos.getY() - cameraPosition.y, pos.getZ() - cameraPosition.z);

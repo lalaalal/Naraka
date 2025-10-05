@@ -20,7 +20,7 @@ public abstract class CompassAngleStateMixin {
     @Shadow @Final
     private CompassAngleState.CompassTarget compassTarget;
 
-    @ModifyExpressionValue(method = "calculate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/item/properties/numeric/CompassAngleState$CompassTarget;get(Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/core/GlobalPos;"))
+    @ModifyExpressionValue(method = "calculate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/item/properties/numeric/CompassAngleState$CompassTarget;get(Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/ItemOwner;)Lnet/minecraft/core/GlobalPos;"))
     protected GlobalPos modifyTargetPosition(GlobalPos original, @Local(argsOnly = true) ItemStack stack) {
         if (compassTarget != CompassAngleState.CompassTarget.NONE)
             return original;

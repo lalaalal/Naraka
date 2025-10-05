@@ -91,7 +91,7 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
             if (renderState.isLonginus)
                 renderState.lightCoords = LightTexture.FULL_BRIGHT;
             RenderType renderType = model.renderType(getTextureLocation(renderState));
-            NarakaRenderUtils.submitModelWithFoilRenderTypes(renderState, model, poseStack, renderType, submitNodeCollector, renderState.hasFoil);
+            NarakaRenderUtils.submitModelWithFoilRenderTypes(model, renderState, poseStack, renderType, submitNodeCollector, renderState.lightCoords, renderState.hasFoil);
         }
 
         poseStack.popPose();
