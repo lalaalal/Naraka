@@ -2,15 +2,16 @@ package com.yummy.naraka.world.item.equipmentset;
 
 import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
 import com.yummy.naraka.advancements.criterion.SimpleTrigger;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.item.SoulType;
-import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
@@ -75,6 +76,7 @@ public class SoulEquipmentSet extends EquipmentSet {
                 livingEntity.addEffect(new MobEffectInstance(effect, -1));
                 if (livingEntity instanceof ServerPlayer serverPlayer)
                     NarakaCriteriaTriggers.SIMPLE_TRIGGER.get().trigger(serverPlayer, SimpleTrigger.CHALLENGERS_BLESSING);
+                livingEntity.addEffect(new MobEffectInstance(MobEffects.SPEED, -1, 1));
             }
         }
 
@@ -82,7 +84,10 @@ public class SoulEquipmentSet extends EquipmentSet {
         public void deactivate(LivingEntity livingEntity) {
             NarakaMobEffects.getChallengersBlessing(livingEntity)
                     .map(MobEffectInstance::getEffect)
-                    .ifPresent(livingEntity::removeEffect);
+                    .ifPresent(effect -> {
+                        livingEntity.removeEffect(effect);
+                        livingEntity.removeEffect(MobEffects.SPEED);
+                    });
         }
     }
 }

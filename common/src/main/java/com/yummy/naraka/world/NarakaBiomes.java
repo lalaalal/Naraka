@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class NarakaBiomes {
+    public static final ResourceKey<Biome> HEROBRINE = create("herobrine");
+
     public static void initialize(NarakaInitializer initializer) {
         Modifier modifier = initializer.getBiomeModifier();
         modifier.addFeatures(

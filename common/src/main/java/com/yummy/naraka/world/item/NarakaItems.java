@@ -1,11 +1,11 @@
 package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
-import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -154,7 +154,7 @@ public class NarakaItems {
     public static final HolderProxy<Item, PurifiedSoulSwordItem> PURIFIED_SOUL_SWORD = registerItem(
             "purified_soul_sword",
             properties -> new PurifiedSoulSwordItem(ToolMaterial.IRON,
-                    3, -2.4f,
+                    -2, -2.4f,
                     properties.fireResistant()
                             .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
             )
@@ -168,11 +168,6 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_CHESTPLATE = registerPurifiedSoulArmorItem("purified_soul_chestplate", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.CHESTPLATE);
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_LEGGINGS = registerPurifiedSoulArmorItem("purified_soul_leggings", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.LEGGINGS);
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_BOOTS = registerPurifiedSoulArmorItem("purified_soul_boots", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.BOOTS);
-
-    public static final HolderProxy<Item, Item> EBONY_METAL_HELMET = registerPurifiedSoulArmorItem("ebony_metal_helmet", NarakaArmorMaterials.EBONY_METAL, ArmorType.HELMET);
-    public static final HolderProxy<Item, Item> EBONY_METAL_CHESTPLATE = registerPurifiedSoulArmorItem("ebony_metal_chestplate", NarakaArmorMaterials.EBONY_METAL, ArmorType.CHESTPLATE);
-    public static final HolderProxy<Item, Item> EBONY_METAL_LEGGINGS = registerPurifiedSoulArmorItem("ebony_metal_leggings", NarakaArmorMaterials.EBONY_METAL, ArmorType.LEGGINGS);
-    public static final HolderProxy<Item, Item> EBONY_METAL_BOOTS = registerPurifiedSoulArmorItem("ebony_metal_boots", NarakaArmorMaterials.EBONY_METAL, ArmorType.BOOTS);
 
     public static final HolderProxy<Item, Item> HEROBRINE_SPAWN_EGG = registerItem("herobrine_spawn_egg", properties -> new SpawnEggItem(NarakaEntityTypes.HEROBRINE.get(), properties));
 
@@ -226,7 +221,7 @@ public class NarakaItems {
         HolderProxy<Item, Item> item = registerItem(SOUL_INFUSED_PREFIX + type.getSerializedName() + "_sword",
                 properties -> new SoulInfusedSwordItem(
                         properties.fireResistant()
-                                .sword(ToolMaterial.IRON, 3, -2.4f)
+                                .sword(ToolMaterial.IRON, 5, -2.4f)
                                 .rarity(Rarity.RARE)
                                 .component(NarakaDataComponentTypes.SOUL.get(), type)
                                 .component(DataComponents.UNBREAKABLE, Unit.INSTANCE),

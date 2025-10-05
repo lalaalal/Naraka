@@ -29,7 +29,7 @@ public class NarakaClientEvents {
     }
 
     private static void onClientTick(Minecraft minecraft) {
-        ComponentStyles.tick();
+        ComponentStyles.RAINBOW_COLOR.updateColor();
         WhiteFogRenderHelper.tick();
         cameraTick();
     }

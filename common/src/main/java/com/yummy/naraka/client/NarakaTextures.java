@@ -14,6 +14,7 @@ import java.util.Map;
 @Environment(EnvType.CLIENT)
 public final class NarakaTextures {
     public static final ResourceLocation HEROBRINE = entity("herobrine.png");
+    public static final ResourceLocation ABSOLUTE_HEROBRINE = entity("absolute_herobrine.png");
     public static final ResourceLocation FINAL_HEROBRINE = entity("final_herobrine.png");
     public static final ResourceLocation HEROBRINE_EYE = entity("herobrine_eye.png");
     public static final ResourceLocation HEROBRINE_AFTERIMAGE = entity("herobrine_afterimage.png");

@@ -10,7 +10,6 @@ import com.yummy.naraka.client.gui.hud.WhiteHud;
 import com.yummy.naraka.client.init.*;
 import com.yummy.naraka.client.particle.*;
 import com.yummy.naraka.client.renderer.ColoredItemRenderer;
-import com.yummy.naraka.client.renderer.blockentity.ForgingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulStabilizerBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.UnstableBlockEntityRenderer;
@@ -30,7 +29,6 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 
@@ -78,7 +76,7 @@ public final class NarakaModClient {
     }
 
     private static void initializeItems() {
-        ColoredItemRenderer.register(NarakaItems.RAINBOW_SWORD, ComponentStyles.LONGINUS_COLOR::getCurrentColor);
+        ColoredItemRenderer.register(NarakaItems.RAINBOW_SWORD, ComponentStyles.RAINBOW_COLOR::getCurrentColor);
     }
 
     private static void initializeBlocks() {
@@ -92,7 +90,6 @@ public final class NarakaModClient {
     }
 
     private static void registerBlockEntityRenderers() {
-        BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.FORGING, ForgingBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.SOUL_STABILIZER, SoulStabilizerBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.SOUL_SMITHING, SoulSmithingBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.UNSTABLE_BLOCK, UnstableBlockEntityRenderer::new);
@@ -100,6 +97,7 @@ public final class NarakaModClient {
 
     private static void registerEntityRenderers() {
         EntityRendererRegistry.register(NarakaEntityTypes.HEROBRINE, HerobrineRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.ABSOLUTE_HEROBRINE, AbsoluteHerobrineRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.SHADOW_HEROBRINE, ShadowHerobrineRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.DIAMOND_GOLEM, DiamondGolemRenderer::new);
 
@@ -135,14 +133,12 @@ public final class NarakaModClient {
         ParticleProviderRegistry.register(NarakaParticleTypes.FALLING_NECTARIUM, NectariumParticle::createNectariumFallParticle);
         ParticleProviderRegistry.register(NarakaParticleTypes.LANDING_NECTARIUM, NectariumParticle::createNectariumLandParticle);
         ParticleProviderRegistry.register(NarakaParticleTypes.SOUL, SoulParticle::create);
-        ParticleProviderRegistry.register(NarakaParticleTypes.HEROBRINE_SPAWN, HerobrineSpawnParticle.Provider::new);
-        ParticleProviderRegistry.register(NarakaParticleTypes.GOLDEN_FLAME, FlameParticle.Provider::new);
-        ParticleProviderRegistry.register(NarakaParticleTypes.CORRUPTED_FIRE_FLAME, FlameParticle.Provider::new);
-        ParticleProviderRegistry.register(NarakaParticleTypes.CORRUPTED_SOUL_FIRE_FLAME, FlameParticle.Provider::new);
+        ParticleProviderRegistry.register(NarakaParticleTypes.HEROBRINE_SPAWN, TurningParticle::herobrineSpawn);
+        ParticleProviderRegistry.register(NarakaParticleTypes.PARRYING, TurningParticle::parrying);
+        ParticleProviderRegistry.register(NarakaParticleTypes.NARAKA_FLAME, NarakaFlame.Provider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.FLICKER, BlinkParticle.Provider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.STARDUST, BlinkParticle.Provider::withGlowing);
         ParticleProviderRegistry.register(NarakaParticleTypes.TELEPORT, BlinkParticle.Provider::withGlowing);
-        ParticleProviderRegistry.register(NarakaParticleTypes.STARDUST_FLAME, FlameParticle.Provider::new);
     }
 
     private static void registerKeyMappings() {

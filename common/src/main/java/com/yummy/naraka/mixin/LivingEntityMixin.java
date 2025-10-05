@@ -1,15 +1,18 @@
 package com.yummy.naraka.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.yummy.naraka.util.NarakaItemUtils;
-import com.yummy.naraka.util.TickSchedule;
+import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
+import com.yummy.naraka.world.item.reinforcement.ReinforcementEffectHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -18,13 +21,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -35,15 +38,11 @@ public abstract class LivingEntityMixin extends Entity {
     @Shadow @Final
     private static EntityDataAccessor<Float> DATA_HEALTH_ID;
 
-    @Shadow
-    public abstract float getMaxHealth();
-
     @Shadow @Final
     private Map<EquipmentSlot, ItemStack> lastEquipmentItems;
 
-    @Unique
-    @Nullable
-    private TickSchedule naraka$purifiedSoulFireSchedule = null;
+    @Shadow
+    public abstract float getMaxHealth();
 
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -66,24 +65,24 @@ public abstract class LivingEntityMixin extends Entity {
             EntityDataHelper.removeEntityData(naraka$living());
     }
 
-    @Override
-    public void setSharedFlagOnFire(boolean isOnFire) {
-        super.setSharedFlagOnFire(isOnFire);
-        if (!EntityDataHelper.getEntityData(naraka$living(), NarakaEntityDataTypes.IS_ON_PURIFIED_SOUL_FIRE.get()))
-            return;
-        long gameTime = level().getGameTime();
-        if (naraka$purifiedSoulFireSchedule != null && naraka$purifiedSoulFireSchedule.isExpired(gameTime))
-            naraka$purifiedSoulFireSchedule = null;
-        if (!isOnFire) {
-            if (naraka$purifiedSoulFireSchedule == null) {
-                naraka$purifiedSoulFireSchedule = TickSchedule.executeAfter(gameTime, 20, () -> {
-                    EntityDataHelper.setEntityData(naraka$living(), NarakaEntityDataTypes.IS_ON_PURIFIED_SOUL_FIRE.get(), false);
-                });
-            }
-        } else if (naraka$purifiedSoulFireSchedule != null) {
-            TickSchedule.cancel(naraka$purifiedSoulFireSchedule);
-            naraka$purifiedSoulFireSchedule = null;
-        }
+    @SuppressWarnings("UnresolvedMixinReference")
+    @ModifyArg(
+            method = {"travelInFluid(Lnet/minecraft/world/phys/Vec3;)V", "travelInFluid(Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/level/material/FluidState;)V"},
+            require = 1,
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V")
+    )
+    public float increaseSpeedInLiquid(float scale) {
+        return ReinforcementEffectHelper.increaseSpeedInLiquid(naraka$living(), scale);
+    }
+
+    @SuppressWarnings("UnresolvedMixinReference")
+    @ModifyExpressionValue(
+            method = {"travelInFluid(Lnet/minecraft/world/phys/Vec3;)V", "travelInFluid(Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/level/material/FluidState;)V"},
+            require = 1,
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInWater()Z")
+    )
+    public boolean considerLiquidAsWater(boolean original) {
+        return ReinforcementEffectHelper.considerLiquidAsWater(naraka$living(), original);
     }
 
     /**
@@ -95,6 +94,16 @@ public abstract class LivingEntityMixin extends Entity {
             health = 0;
         this.entityData.set(DATA_HEALTH_ID, Mth.clamp(health, 0.0F, this.getMaxHealth()));
         ci.cancel();
+    }
+
+    @Inject(method = "tick", at = @At("RETURN"))
+    public void tickPurifiedSoulFire(CallbackInfo ci) {
+        int purifiedSoulFireTick = EntityDataHelper.getEntityData(naraka$living(), NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get());
+        if (purifiedSoulFireTick > 0 && level() instanceof ServerLevel level) {
+            if (purifiedSoulFireTick % 20 == 0)
+                hurtServer(level, NarakaDamageSources.purifiedSoulFire(registryAccess()), 6);
+            EntityDataHelper.setEntityData(naraka$living(), NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get(), purifiedSoulFireTick - 1);
+        }
     }
 
     @Unique

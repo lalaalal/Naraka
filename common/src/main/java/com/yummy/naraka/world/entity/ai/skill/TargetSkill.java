@@ -48,8 +48,8 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
         mob.lookAt(target, 180, 0);
     }
 
-    protected final void moveToTarget(LivingEntity target, double speed) {
-        moveToTarget(target, true, deltaMovement -> deltaMovement.normalize().scale(speed));
+    protected final void moveToTarget(LivingEntity target, boolean stopOnGround, double speed) {
+        moveToTarget(target, stopOnGround, deltaMovement -> deltaMovement.normalize().scale(speed));
     }
 
     protected void moveToTarget(LivingEntity target, boolean stopOnGround, UnaryOperator<Vec3> modifier) {
@@ -89,7 +89,7 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
 
     protected final boolean targetInLookAngle(Vec3 target, float from, float to) {
         Vec3 delta = target.subtract(mob.position());
-        double angle = NarakaUtils.wrapRadians(Math.atan2(delta.z, delta.horizontalDistance()) - Math.toRadians(mob.getYRot() + 90));
+        double angle = NarakaUtils.wrapRadians(Math.atan2(delta.z, delta.x) - Math.toRadians(mob.getYRot() + 90));
         return from <= angle && angle <= to;
     }
 

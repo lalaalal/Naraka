@@ -2,28 +2,49 @@ package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import com.yummy.naraka.client.NarakaModelLayers;
+import com.yummy.naraka.client.model.NarakaPickaxeModel;
+import com.yummy.naraka.client.renderer.ColoredItemRenderer;
 import com.yummy.naraka.client.renderer.entity.state.NarakaPickaxeRenderState;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.NarakaPickaxe;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.AABB;
+import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
 public class NarakaPickaxeRenderer extends EntityRenderer<NarakaPickaxe, NarakaPickaxeRenderState> {
     private final ItemModelResolver itemModelResolver;
     private final ItemStack pickaxe = NarakaItems.HEROBRINE_PICKAXE.get().getDefaultInstance();
+    private final NarakaPickaxeModel model;
+
+    public static void applyTransformAndRotate(PoseStack poseStack, ModelPart part) {
+        poseStack.translate(-part.x / 16, -part.y / 16, part.z / 16);
+        if (part.xRot != 0 || part.yRot != 0 || part.zRot != 0) {
+            poseStack.mulPose(new Quaternionf().rotationZYX(part.zRot, -part.yRot, -part.xRot));
+        }
+        poseStack.scale(part.xScale, part.yScale, part.zScale);
+    }
+
+    public static void applyTransformAndRotate(PoseStack poseStack, ModelPart... parts) {
+        for (ModelPart part : parts)
+            applyTransformAndRotate(poseStack, part);
+    }
 
     public NarakaPickaxeRenderer(EntityRendererProvider.Context context) {
         super(context);
+        this.model = new NarakaPickaxeModel(context.bakeLayer(NarakaModelLayers.NARAKA_PICKAXE));
         this.itemModelResolver = context.getItemModelResolver();
     }
 
@@ -35,26 +56,28 @@ public class NarakaPickaxeRenderer extends EntityRenderer<NarakaPickaxe, NarakaP
     @Override
     public void extractRenderState(NarakaPickaxe entity, NarakaPickaxeRenderState reusedState, float partialTick) {
         super.extractRenderState(entity, reusedState, partialTick);
-        reusedState.xRot = entity.getXRot(partialTick);
+        reusedState.setAnimationVisitor(entity);
         reusedState.yRot = entity.getYRot(partialTick);
         itemModelResolver.updateForNonLiving(reusedState.pickaxe, pickaxe, ItemDisplayContext.NONE, entity);
+        ColoredItemRenderer.setTemporaryColorForCurrent(Color.of(0xabffffff));
     }
 
     @Override
     public void render(NarakaPickaxeRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        model.setupAnim(renderState);
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - renderState.yRot));
-        poseStack.mulPose(Axis.XP.rotationDegrees(90 - renderState.xRot));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(225));
-        poseStack.translate(-1, -1, 0);
+        poseStack.mulPose(Axis.YP.rotationDegrees(180 - renderState.yRot));
+        applyTransformAndRotate(poseStack, model.root().getChild("main"));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(45));
+        poseStack.translate(0.5, 0.5, 0);
         poseStack.scale(4, 4, 1);
         renderState.pickaxe.render(poseStack, buffer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
-        super.render(renderState, poseStack, buffer, packedLight);
     }
 
+
     @Override
-    public boolean shouldRender(NarakaPickaxe livingEntity, Frustum camera, double camX, double camY, double camZ) {
-        return true;
+    protected AABB getBoundingBoxForCulling(NarakaPickaxe entity) {
+        return super.getBoundingBoxForCulling(entity).inflate(4);
     }
 }

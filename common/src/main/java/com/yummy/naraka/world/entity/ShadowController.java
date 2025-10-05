@@ -2,19 +2,20 @@ package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.util.NarakaNbtUtils;
-import com.yummy.naraka.world.entity.ai.skill.FlickerSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
-import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import com.yummy.naraka.world.entity.ai.skill.herobrine.FlickerSkill;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 
 import java.util.*;
 
 public class ShadowController {
     private final Herobrine herobrine;
-    private final List<UUID> shadowHerobrines = new ArrayList<>();
+    private final Set<UUID> shadowHerobrines = new HashSet<>();
     private int flickerStack = 0;
 
     public ShadowController(Herobrine herobrine) {
@@ -22,12 +23,20 @@ public class ShadowController {
     }
 
     public void save(CompoundTag tag) {
-        NarakaNbtUtils.writeCollection(tag, "ShadowHerobrines", shadowHerobrines, NarakaNbtUtils::writeUUID, herobrine.registryAccess());
+        tag.store("ShadowHerobrines", UUIDUtil.CODEC_SET, shadowHerobrines);
     }
 
     public void load(CompoundTag tag) {
         shadowHerobrines.clear();
-        NarakaNbtUtils.readCollection(tag, "ShadowHerobrines", () -> shadowHerobrines, NarakaNbtUtils::readUUID, herobrine.registryAccess());
+        tag.read("ShadowHerobrines", UUIDUtil.CODEC_SET).ifPresent(shadowHerobrines::addAll);
+    }
+
+    public void addShadowHerobrine(ShadowHerobrine shadowHerobrine) {
+        shadowHerobrines.add(shadowHerobrine.getUUID());
+    }
+
+    public void removeShadowHerobrine(ShadowHerobrine shadowHerobrine) {
+        shadowHerobrines.remove(shadowHerobrine.getUUID());
     }
 
     public void summonShadowHerobrine(ServerLevel level) {
@@ -42,7 +51,7 @@ public class ShadowController {
         shadowHerobrines.add(shadowHerobrine.getUUID());
         if (herobrine.isHibernateMode())
             shadowHerobrine.useFlicker();
-        shadowHerobrine.playStaticAnimation(AnimationLocations.SHADOW_SUMMONED, 80, true);
+        shadowHerobrine.playStaticAnimation(HerobrineAnimationLocations.SHADOW_SUMMONED, 80, true);
     }
 
     public void broadcastShadowHerobrineHurt(ServerLevel level, ShadowHerobrine shadowHerobrine) {
@@ -56,7 +65,7 @@ public class ShadowController {
             skillManager.interrupt();
             if (herobrine.isHibernateMode()) {
                 herobrine.stopHibernateMode(level);
-                herobrine.startStaggering(AnimationLocations.STIGMATIZE_ENTITIES_END, 100, -1);
+                herobrine.startStaggering(HerobrineAnimationLocations.STIGMATIZE_ENTITIES_END, 100, -1);
             } else {
                 herobrine.startStaggering();
             }
@@ -99,7 +108,7 @@ public class ShadowController {
     }
 
     public void killShadows(ServerLevel level) {
-        getShadows(level).forEach(shadowHerobrine -> shadowHerobrine.kill(level));
+        getShadows(level).forEach(Entity::discard);
     }
 
     public int getShadowCount() {

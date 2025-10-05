@@ -5,6 +5,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.renderer.entity.state.MassiveLightningRenderState;
 import com.yummy.naraka.world.entity.MassiveLightning;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -12,6 +14,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import org.joml.Vector3f;
 
+@Environment(EnvType.CLIENT)
 public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning, MassiveLightningRenderState> {
     public MassiveLightningRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -47,7 +50,7 @@ public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning, M
         pillar(vertexConsumer, poseStack, renderState.size * 0.7f, renderState.size * 0.7f, 0, 122, 0x55ababab);
         pillar(vertexConsumer, poseStack, renderState.size * 0.8f, renderState.size * 0.8f, 0, 121, 0x44ababab);
         pillar(vertexConsumer, poseStack, renderState.size * 0.9f, renderState.size * 0.9f, 0, 120, 0x33ababab);
-        pillar(vertexConsumer, poseStack, renderState.size, renderState.size, 0, 120, 0x665A1D8D);
+        pillar(vertexConsumer, poseStack, renderState.size, renderState.size, 0, 120, 0x668308e4);
         poseStack.popPose();
 
         super.render(renderState, poseStack, bufferSource, packedLight);

@@ -2,7 +2,7 @@ package com.yummy.naraka.client.animation.herobrine;
 
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.animation.NarakaInterpolations;
-import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
@@ -13,11 +13,11 @@ import net.minecraft.client.animation.KeyframeAnimations;
 @Environment(EnvType.CLIENT)
 public class FinalHerobrineAnimation {
     public static void initialize() {
-        AnimationMapper.register(AnimationLocations.ENTER_PHASE_3, ENTER_PHASE_3);
-        AnimationMapper.register(AnimationLocations.PHASE_3_IDLE, IDLE);
-        AnimationMapper.register(AnimationLocations.DYING, DYING);
-        AnimationMapper.register(AnimationLocations.CHZZK, CHZZK);
-        AnimationMapper.register(AnimationLocations.HIDDEN_CHZZK, HIDDEN_CHZZK);
+        AnimationMapper.register(HerobrineAnimationLocations.ENTER_PHASE_3, ENTER_PHASE_3);
+        AnimationMapper.register(HerobrineAnimationLocations.PHASE_3_IDLE, IDLE);
+        AnimationMapper.register(HerobrineAnimationLocations.DYING, DYING);
+        AnimationMapper.register(HerobrineAnimationLocations.CHZZK, CHZZK);
+        AnimationMapper.register(HerobrineAnimationLocations.HIDDEN_CHZZK, HIDDEN_CHZZK);
     }
 
     public static final AnimationDefinition ENTER_PHASE_3 = AnimationDefinition.Builder.withLength(5.5F)

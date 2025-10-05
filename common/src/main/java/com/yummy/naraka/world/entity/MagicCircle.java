@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.client.NarakaClientContext;
-import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -111,7 +111,7 @@ public class MagicCircle extends Entity {
                 double z = Math.sin(Math.toRadians(yRot)) * scale * 0.5 + getZ() + random.nextDouble() * 0.4;
                 double y = getHeight(yRot) + getY() + random.nextDouble() * 0.4;
 
-                level.addParticle(NarakaParticleTypes.GOLDEN_FLAME.get(), true, true, x, y, z, 0, 1, 0);
+                level.addParticle(NarakaFlameParticleOption.GOLD, true, true, x, y, z, 0, 1, 0);
             }
             level.playLocalSound(getX(), getY(), getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.HOSTILE, 2, 1, false);
         } else {
@@ -121,7 +121,7 @@ public class MagicCircle extends Entity {
                 double z = random.nextDouble() * scale - scale * 0.5 + getZ();
                 double ySpeed = random.nextDouble() * 0.1 + 0.05;
                 if (isInCircle(x, y, z))
-                    level.addParticle(NarakaParticleTypes.GOLDEN_FLAME.get(), x, y, z, 0, ySpeed, 0);
+                    level.addParticle(NarakaFlameParticleOption.GOLD, x, y, z, 0, ySpeed, 0);
             }
         }
         prevScale = currentScale;

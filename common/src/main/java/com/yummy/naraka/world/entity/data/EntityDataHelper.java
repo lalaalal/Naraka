@@ -74,21 +74,21 @@ public class EntityDataHelper {
     }
 
     public static void saveEntityData(LivingEntity livingEntity, CompoundTag compoundTag) {
-        RegistryAccess registries = livingEntity.level().registryAccess();
+        RegistryAccess registries = livingEntity.registryAccess();
         EntityDataContainer container = ENTITY_DATA_MAP.get(livingEntity.getUUID());
         if (container != null)
             container.save(compoundTag, registries);
     }
 
     public static void saveEntityData(LivingEntity livingEntity, CompoundTag compoundTag, HolderSet<EntityDataType<?>> entityDataTypes) {
-        RegistryAccess registries = livingEntity.level().registryAccess();
+        RegistryAccess registries = livingEntity.registryAccess();
         EntityDataContainer container = ENTITY_DATA_MAP.get(livingEntity.getUUID());
         if (container != null)
             container.save(compoundTag, registries, entityDataTypes);
     }
 
     public static void readEntityData(LivingEntity livingEntity, CompoundTag compoundTag) {
-        RegistryAccess registries = livingEntity.level().registryAccess();
+        RegistryAccess registries = livingEntity.registryAccess();
         EntityDataContainer container = new EntityDataContainer();
         container.read(compoundTag, registries);
         ENTITY_DATA_MAP.put(livingEntity.getUUID(), container);

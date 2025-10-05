@@ -1,0 +1,75 @@
+{
+  "type": "naraka:component_predicate_recipe",
+  "category": "equipment",
+  "group": "",
+  "ingredients": [
+    {
+      "column": 0,
+      "ingredient": "naraka:soul_infused_redstone_sword",
+      "predicate": "naraka:blessed",
+      "row": 0,
+      "value": true
+    },
+    {
+      "column": 1,
+      "ingredient": "naraka:soul_infused_copper_sword",
+      "predicate": "naraka:blessed",
+      "row": 0,
+      "value": true
+    },
+    {
+      "column": 2,
+      "ingredient": "naraka:soul_infused_gold_sword",
+      "predicate": "naraka:blessed",
+      "row": 0,
+      "value": true
+    },
+    {
+      "column": 0,
+      "ingredient": "naraka:soul_infused_emerald_sword",
+      "predicate": "naraka:blessed",
+      "row": 1,
+      "value": true
+    },
+    {
+      "column": 1,
+      "ingredient": "naraka:god_blood",
+      "predicate": "naraka:any",
+      "row": 1,
+      "value": {}
+    },
+    {
+      "column": 2,
+      "ingredient": "naraka:soul_infused_diamond_sword",
+      "predicate": "naraka:blessed",
+      "row": 1,
+      "value": true
+    },
+    {
+      "column": 0,
+      "ingredient": "naraka:soul_infused_lapis_sword",
+      "predicate": "naraka:blessed",
+      "row": 2,
+      "value": true
+    },
+    {
+      "column": 1,
+      "ingredient": "naraka:soul_infused_amethyst_sword",
+      "predicate": "naraka:blessed",
+      "row": 2,
+      "value": true
+    },
+    {
+      "column": 2,
+      "ingredient": "naraka:soul_infused_nectarium_sword",
+      "predicate": "naraka:blessed",
+      "row": 2,
+      "value": true
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "naraka:spear_of_longinus"
+  },
+  "show_notification": true
+}

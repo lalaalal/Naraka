@@ -1,12 +1,13 @@
 package com.yummy.naraka.world.block.entity;
 
+import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.Herobrine;
-import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.BlockPos;
@@ -80,7 +81,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
                         pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 10,
                         0.5, 0.5, 0.5, 0
                 );
-                level.sendParticles(NarakaParticleTypes.GOLDEN_FLAME.get(),
+                level.sendParticles(NarakaFlameParticleOption.GOLD,
                         pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 20,
                         1, 1, 1, 0
                 );
@@ -120,7 +121,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         BlockPos floorPos = NarakaUtils.findFloor(level, pos);
         Herobrine herobrine = new Herobrine(level, new Vec3(floorPos.getX() + 0.5, floorPos.getY() + 1, floorPos.getZ() + 0.5));
         herobrine.setSpawnPosition(pos);
-        herobrine.setAnimation(AnimationLocations.BLOCKING);
+        herobrine.setAnimation(HerobrineAnimationLocations.BLOCKING);
         level.addFreshEntity(herobrine);
 
         LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
@@ -132,7 +133,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 15,
                 1, 1, 1, 0.01
         );
-        level.sendParticles(NarakaParticleTypes.GOLDEN_FLAME.get(),
+        level.sendParticles(NarakaFlameParticleOption.GOLD,
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 30,
                 1, 1, 1, 0.05
         );

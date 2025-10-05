@@ -74,8 +74,4 @@ public abstract class ConfigFile implements ConfigReader, ConfigWriter {
         if (writer != this.writer)
             NarakaMod.LOGGER.warn("{} is using external writer", getConfigName());
     }
-
-    protected interface Parser<T, R> {
-        R parse(T value);
-    }
 }

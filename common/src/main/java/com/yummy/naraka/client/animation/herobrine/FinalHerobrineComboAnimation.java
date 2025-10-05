@@ -2,7 +2,7 @@ package com.yummy.naraka.client.animation.herobrine;
 
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.animation.NarakaInterpolations;
-import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
@@ -13,13 +13,13 @@ import net.minecraft.client.animation.KeyframeAnimations;
 @Environment(EnvType.CLIENT)
 public class FinalHerobrineComboAnimation {
     public static void initialize() {
-        AnimationMapper.register(AnimationLocations.FINAL_COMBO_ATTACK_1, FINAL_COMBO_1);
-        AnimationMapper.register(AnimationLocations.FINAL_COMBO_ATTACK_2, FINAL_COMBO_2);
-        AnimationMapper.register(AnimationLocations.FINAL_COMBO_ATTACK_3, FINAL_COMBO_3);
-        AnimationMapper.register(AnimationLocations.FINAL_COMBO_ATTACK_1_RETURN, FINAL_COMBO_1_RETURN);
-        AnimationMapper.register(AnimationLocations.FINAL_COMBO_ATTACK_2_RETURN, FINAL_COMBO_2_RETURN);
-        AnimationMapper.register(AnimationLocations.PICKAXE_SLASH_SINGLE, PICKAXE_SLASH_SINGLE);
-        AnimationMapper.register(AnimationLocations.PICKAXE_SLASH_TRIPLE, PICKAXE_SLASH_TRIPLE);
+        AnimationMapper.register(HerobrineAnimationLocations.FINAL_COMBO_ATTACK_1, FINAL_COMBO_1);
+        AnimationMapper.register(HerobrineAnimationLocations.FINAL_COMBO_ATTACK_2, FINAL_COMBO_2);
+        AnimationMapper.register(HerobrineAnimationLocations.FINAL_COMBO_ATTACK_3, FINAL_COMBO_3);
+        AnimationMapper.register(HerobrineAnimationLocations.FINAL_COMBO_ATTACK_1_RETURN, FINAL_COMBO_1_RETURN);
+        AnimationMapper.register(HerobrineAnimationLocations.FINAL_COMBO_ATTACK_2_RETURN, FINAL_COMBO_2_RETURN);
+        AnimationMapper.register(HerobrineAnimationLocations.PICKAXE_SLASH_SINGLE, PICKAXE_SLASH_SINGLE);
+        AnimationMapper.register(HerobrineAnimationLocations.PICKAXE_SLASH_TRIPLE, PICKAXE_SLASH_TRIPLE);
     }
 
     public static final AnimationDefinition FINAL_COMBO_1 = AnimationDefinition.Builder.withLength(2.0F)

@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class SpearOfLonginusItem extends SpearItem {
     public SpearOfLonginusItem(Properties properties) {
-        super(NarakaToolMaterials.LONGINUS, false, 600, -3, 6, properties, NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS);
+        super(NarakaToolMaterials.LONGINUS, false, 600, -3, 66, properties, NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS);
     }
 
     @Override
@@ -47,6 +47,6 @@ public class SpearOfLonginusItem extends SpearItem {
     public Component getName(ItemStack stack) {
         return super.getName(stack).copy()
                 .withStyle(ChatFormatting.BOLD)
-                .withStyle(ComponentStyles.LONGINUS_COLOR);
+                .withStyle(ComponentStyles.RAINBOW_COLOR);
     }
 }

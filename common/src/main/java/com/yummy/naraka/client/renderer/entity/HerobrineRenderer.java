@@ -10,7 +10,7 @@ import com.yummy.naraka.client.model.FinalHerobrineModel;
 import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.client.renderer.entity.state.HerobrineRenderState;
 import com.yummy.naraka.world.entity.Herobrine;
-import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -47,7 +47,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
         renderState.phase = herobrine.getPhase();
         renderState.hasRedOverlay = renderState.hasRedOverlay && !herobrine.isDeadOrDying();
         renderState.deathTime = -1;
-        renderState.dead = herobrine.getCurrentAnimation().equals(AnimationLocations.CHZZK);
+        renderState.dead = herobrine.getCurrentAnimation().equals(HerobrineAnimationLocations.CHZZK);
         renderState.chzzkAnimationState = herobrine.chzzkAnimationState;
     }
 

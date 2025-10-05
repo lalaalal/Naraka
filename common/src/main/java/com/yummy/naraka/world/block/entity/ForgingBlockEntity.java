@@ -18,17 +18,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ForgingBlockEntity extends BlockEntity {
-    public static final float DEFAULT_SUCCESS_CHANCE = 0.3f;
+public abstract class ForgingBlockEntity extends BlockEntity {
     public static final int COOLDOWN = 30;
 
     private final float successChance;
     protected ItemStack forgingItem = ItemStack.EMPTY;
     protected int cooldownTick = 0;
-
-    public ForgingBlockEntity(BlockPos pos, BlockState state) {
-        this(NarakaBlockEntityTypes.FORGING.get(), pos, state, DEFAULT_SUCCESS_CHANCE);
-    }
 
     protected ForgingBlockEntity(BlockEntityType<? extends ForgingBlockEntity> type, BlockPos blockPos, BlockState blockState, float successChance) {
         super(type, blockPos, blockState);

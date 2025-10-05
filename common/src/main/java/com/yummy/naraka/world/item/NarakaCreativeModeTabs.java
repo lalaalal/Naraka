@@ -3,13 +3,13 @@ package com.yummy.naraka.world.item;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.Platform;
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.CreativeModeTabEvents;
 import com.yummy.naraka.mixin.accessor.CreativeModeTabsAccessor;
 import com.yummy.naraka.world.block.NarakaBlocks;
-import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.component.DataComponents;
@@ -133,23 +133,25 @@ public class NarakaCreativeModeTabs {
         output.accept(NarakaItems.SKILL_CONTROLLER.get());
         output.accept(NarakaItems.ANIMATION_CONTROLLER.get());
         output.accept(NarakaItems.ULTIMATE_SWORD.get());
-        output.accept(NarakaItems.EBONY_METAL_HELMET.get());
-        output.accept(NarakaItems.EBONY_METAL_CHESTPLATE.get());
-        output.accept(NarakaItems.EBONY_METAL_LEGGINGS.get());
-        output.accept(NarakaItems.EBONY_METAL_BOOTS.get());
         output.accept(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-
         output.accept(NarakaItems.EBONY_METAL_INGOT.get());
         output.accept(NarakaItems.COMPRESSED_IRON_INGOT.get());
-
         output.accept(NarakaItems.SPEAR_ITEM.get());
         output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get());
         output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
 
+        output.accept(blessed(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get()));
+        output.accept(blessed(NarakaItems.SOUL_INFUSED_COPPER_SWORD.get()));
+        output.accept(blessed(NarakaItems.SOUL_INFUSED_GOLD_SWORD.get()));
+        output.accept(blessed(NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get()));
+        output.accept(blessed(NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get()));
+        output.accept(blessed(NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get()));
+        output.accept(blessed(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get()));
+        output.accept(blessed(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get()));
+
         output.accept(NarakaBlocks.EBONY_METAL_BLOCK.get());
         output.accept(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
         output.accept(NarakaBlocks.PURIFIED_SOUL_BLOCK.get());
-
         output.accept(NarakaBlocks.EBONY_LOG.get());
         output.accept(NarakaBlocks.EBONY_WOOD.get());
         output.accept(NarakaBlocks.STRIPPED_EBONY_LOG.get());
@@ -164,8 +166,6 @@ public class NarakaCreativeModeTabs {
         output.accept(NarakaItems.STIGMA_ROD.get());
         output.accept(NarakaItems.STARDUST_STAFF.get());
         output.accept(NarakaItems.NARAKA_FIREBALL_STAFF.get());
-
-        output.accept(NarakaBlocks.FORGING_BLOCK.get());
 
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_HELMET.get()));
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get()));

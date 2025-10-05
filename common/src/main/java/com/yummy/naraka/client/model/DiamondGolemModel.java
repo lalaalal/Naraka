@@ -1,17 +1,19 @@
 package com.yummy.naraka.client.model;
 
+import com.yummy.naraka.client.animation.AnimationMapper;
+import com.yummy.naraka.client.animation.DiamondGolemAnimation;
+import com.yummy.naraka.client.renderer.entity.state.SkillUsingMobRenderState;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
-public class DiamondGolemModel extends EntityModel<LivingEntityRenderState> {
+public class DiamondGolemModel extends EntityModel<SkillUsingMobRenderState> {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create(), PartPose.offset(0.0F, -20.0F, 0.0F));
+        PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, -20.0F, 0.0F, 0, 3.1416F, 0));
         PartDefinition body = main.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.offset(0.0F, 16.0F, 0.0F));
         PartDefinition body_r1 = body.addOrReplaceChild("body_r1", CubeListBuilder.create().texOffs(0, 0).addBox(-20.0F, -16.0F, -10.0F, 40.0F, 32.0F, 20.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -16.0F, 0.0F, -3.1416F, 0.0F, 3.1416F));
 
@@ -46,5 +48,14 @@ public class DiamondGolemModel extends EntityModel<LivingEntityRenderState> {
 
     public DiamondGolemModel(ModelPart root) {
         super(root);
+    }
+
+    @Override
+    public void setupAnim(SkillUsingMobRenderState renderState) {
+        super.setupAnim(renderState);
+        animateWalk(DiamondGolemAnimation.WALKING, renderState.walkAnimationPos, renderState.walkAnimationSpeed, 3, 3);
+        renderState.animations((animationLocation, animationState) -> {
+            this.animate(animationState, AnimationMapper.get(animationLocation), renderState.ageInTicks);
+        });
     }
 }

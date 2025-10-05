@@ -1,6 +1,6 @@
 package com.yummy.naraka.world.item;
 
-import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.component.SanctuaryTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

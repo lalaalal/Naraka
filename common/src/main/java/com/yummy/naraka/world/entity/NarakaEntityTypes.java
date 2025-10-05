@@ -24,6 +24,14 @@ public class NarakaEntityTypes {
                     .clientTrackingRange(32)
     );
 
+    public static final HolderProxy<EntityType<?>, EntityType<AbsoluteHerobrine>> ABSOLUTE_HEROBRINE = register(
+            "absolute_herobrine",
+            EntityType.Builder.of(AbsoluteHerobrine::new, MobCategory.MONSTER)
+                    .fireImmune()
+                    .sized(0.5f, 1.5f)
+                    .updateInterval(1)
+    );
+
     public static final HolderProxy<EntityType<?>, EntityType<ShadowHerobrine>> SHADOW_HEROBRINE = register(
             "shadow_herobrine",
             EntityType.Builder.<ShadowHerobrine>of(ShadowHerobrine::new, MobCategory.MONSTER)
@@ -55,7 +63,7 @@ public class NarakaEntityTypes {
     public static final HolderProxy<EntityType<?>, EntityType<NarakaFireball>> NARAKA_FIREBALL = register(
             "naraka_fireball",
             EntityType.Builder.<NarakaFireball>of(NarakaFireball::new, MobCategory.MISC)
-                    .sized(0.5f, 0.5f)
+                    .sized(0.75f, 0.75f)
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<SpearOfLonginus>> THROWN_SPEAR_OF_LONGINUS = register(
@@ -69,8 +77,8 @@ public class NarakaEntityTypes {
     public static final HolderProxy<EntityType<?>, EntityType<DiamondGolem>> DIAMOND_GOLEM = register(
             "diamond_golem",
             EntityType.Builder.of(DiamondGolem::new, MobCategory.MONSTER)
-                    .sized(2, 4)
-                    .fireImmune()
+                    .sized(2f, 3f)
+                    .updateInterval(1)
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<MagicCircle>> MAGIC_CIRCLE = register(
@@ -106,7 +114,7 @@ public class NarakaEntityTypes {
     public static final HolderProxy<EntityType<?>, EntityType<NarakaPickaxe>> NARAKA_PICKAXE = register(
             "naraka_pickaxe",
             EntityType.Builder.<NarakaPickaxe>of(NarakaPickaxe::new, MobCategory.MISC)
-                    .sized(0.2f, 0.2f)
+                    .sized(0.5f, 1f)
     );
 
     private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {
@@ -119,7 +127,9 @@ public class NarakaEntityTypes {
 
     public static void initialize() {
         EntityAttributeRegistry.register(HEROBRINE, AbstractHerobrine::getAttributeSupplier);
+        EntityAttributeRegistry.register(ABSOLUTE_HEROBRINE, AbstractHerobrine::getAttributeSupplier);
         EntityAttributeRegistry.register(SHADOW_HEROBRINE, ShadowHerobrine::getAttributeSupplier);
         EntityAttributeRegistry.register(DIAMOND_GOLEM, DiamondGolem::getAttributeSupplier);
+        EntityAttributeRegistry.register(NARAKA_PICKAXE, NarakaPickaxe::getAttributeSupplier);
     }
 }

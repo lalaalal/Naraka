@@ -1,9 +1,6 @@
 package com.yummy.naraka.fabric.data;
 
-import com.yummy.naraka.data.worldgen.NarakaBiomeData;
-import com.yummy.naraka.data.worldgen.NarakaConfiguredWorldCarvers;
-import com.yummy.naraka.data.worldgen.NarakaStructureSets;
-import com.yummy.naraka.data.worldgen.NarakaStructures;
+import com.yummy.naraka.data.worldgen.*;
 import com.yummy.naraka.data.worldgen.features.NarakaConfiguredFeatures;
 import com.yummy.naraka.data.worldgen.placement.NarakaPlacements;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
@@ -32,7 +29,8 @@ public class NarakaDatapackProvider extends RegistriesDatapackGenerator {
             .add(Registries.TRIM_MATERIAL, NarakaTrimMaterials::bootstrap)
             .add(Registries.JUKEBOX_SONG, NarakaJukeboxSongs::bootstrap)
             .add(Registries.CONFIGURED_CARVER, NarakaConfiguredWorldCarvers::bootstrap)
-            .add(Registries.BIOME, NarakaBiomeData::bootstrap);
+            .add(Registries.BIOME, NarakaBiomeData::bootstrap)
+            .add(Registries.DIMENSION_TYPE, NarakaDimensionTypes::bootstrap);
 
     private final CompletableFuture<HolderLookup.Provider> fullRegistries;
 

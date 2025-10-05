@@ -29,7 +29,7 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T
         super(location, mob, duration, cooldown);
     }
 
-    protected AttackSkill(ResourceLocation location, int duration, int cooldown, int shieldCooldown, int shieldDamage, T mob) {
+    protected AttackSkill(ResourceLocation location, T mob, int duration, int cooldown, int shieldCooldown, int shieldDamage) {
         super(location, mob, duration, cooldown);
         this.shieldCooldown = shieldCooldown;
         this.shieldDamage = shieldDamage;

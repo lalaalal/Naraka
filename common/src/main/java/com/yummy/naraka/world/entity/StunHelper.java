@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.TickSchedule;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.world.entity.LivingEntity;
@@ -103,6 +104,8 @@ public final class StunHelper {
     }
 
     public static void stunEntity(LivingEntity livingEntity, int duration, boolean update) {
+        if (livingEntity.getType().is(NarakaEntityTypeTags.STUN_IMMUNE))
+            return;
         holdEntity(livingEntity);
         livingEntity.stopUsingItem();
         long gameTime = livingEntity.level().getGameTime();

@@ -13,6 +13,8 @@ public final class NarakaEntityTypeTags {
     public static final TagKey<EntityType<?>> DEATH_COUNTABLE = create("death_countable");
     public static final TagKey<EntityType<?>> DEATH_COUNTING = create("death_count_exclude");
     public static final TagKey<EntityType<?>> HEROBRINE = create("herobrine");
+    public static final TagKey<EntityType<?>> STIGMA_IMMUNE = create("stigma_immune");
+    public static final TagKey<EntityType<?>> STUN_IMMUNE = create("stun_immune");
 
     public static TagKey<EntityType<?>> create(String name) {
         return TagKey.create(Registries.ENTITY_TYPE, NarakaMod.location(name));

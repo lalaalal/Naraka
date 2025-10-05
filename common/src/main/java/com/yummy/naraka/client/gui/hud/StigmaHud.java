@@ -1,6 +1,8 @@
 package com.yummy.naraka.client.gui.hud;
 
 import com.yummy.naraka.client.NarakaSprites;
+import com.yummy.naraka.client.event.ClientEvents;
+import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.entity.data.*;
 import net.fabricmc.api.EnvType;
@@ -11,6 +13,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
@@ -30,29 +33,29 @@ public class StigmaHud implements LayeredDraw.Layer {
 
     private int consumeIconDisplayTick;
 
-    private static boolean isCurrentPlayer(LivingEntity livingEntity) {
-        Player player = Minecraft.getInstance().player;
-        if (player == null)
-            return false;
-        return player.getUUID().equals(livingEntity.getUUID());
-    }
-
     public StigmaHud() {
         EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.STIGMA.get(), this::onStigmaConsumed);
+        ClientEvents.TICK_PRE.register(this::tick);
+    }
+
+    private void tick(Minecraft minecraft) {
+        if (consumeIconDisplayTick > 0)
+            consumeIconDisplayTick -= 1;
     }
 
     private void onStigmaConsumed(LivingEntity livingEntity, EntityDataType<Stigma> entityDataType, Stigma from, Stigma to) {
-        if (isCurrentPlayer(livingEntity)) {
+        if (NarakaRenderUtils.isCurrentPlayer(livingEntity)) {
             if (0 < from.value() && to.value() == 0 && to.lastMarkedTime() != 0)
                 consumeIconDisplayTick = CONSUME_ICON_DISPLAYING_TIME;
         }
     }
 
-    private void renderStigmaConsumeIcon(GuiGraphics guiGraphics) {
+    private void renderStigmaConsumeIcon(GuiGraphics guiGraphics, float partialTick) {
         int x = guiGraphics.guiWidth() / 2 - CONSUME_ICON_WIDTH / 2;
         int y = guiGraphics.guiHeight() / 2 - CONSUME_ICON_HEIGHT / 2;
 
-        float alpha = consumeIconDisplayTick / (float) CONSUME_ICON_DISPLAYING_TIME;
+        float tick = Math.max(Mth.lerp(partialTick, consumeIconDisplayTick, consumeIconDisplayTick - 1), 0);
+        float alpha = tick / (float) CONSUME_ICON_DISPLAYING_TIME;
         guiGraphics.blitSprite(RenderType::guiTextured, NarakaSprites.STIGMA_CONSUME, x, y, CONSUME_ICON_WIDTH, CONSUME_ICON_HEIGHT, ARGB.white(alpha));
     }
 
@@ -67,16 +70,13 @@ public class StigmaHud implements LayeredDraw.Layer {
         Stigma stigma = StigmaHelper.get(player);
         long stigmatizedTime = player.level().getGameTime() - stigma.lastMarkedTime();
 
-
         int baseX = guiGraphics.guiWidth() / 2 - (BACKGROUND_WIDTH / 2);
         int baseY = 20;
 
         int deathCount = DeathCountHelper.get(player);
 
-        if (consumeIconDisplayTick > 0) {
-            renderStigmaConsumeIcon(guiGraphics);
-            consumeIconDisplayTick -= 1;
-        }
+        if (consumeIconDisplayTick > 0)
+            renderStigmaConsumeIcon(guiGraphics, tickCounter.getGameTimeDeltaPartialTick(true));
 
         if (deathCount <= 0 && stigma.value() < 1)
             return;

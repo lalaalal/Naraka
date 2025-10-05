@@ -5,10 +5,13 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.util.NarakaUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -125,5 +128,12 @@ public class NarakaRenderUtils {
 
     public static Vector3f modifyZ(Vector3f vector, float interval) {
         return vector.add(0, 0, interval, new Vector3f());
+    }
+
+    public static boolean isCurrentPlayer(LivingEntity livingEntity) {
+        Player player = Minecraft.getInstance().player;
+        if (player == null)
+            return false;
+        return player.getUUID().equals(livingEntity.getUUID());
     }
 }

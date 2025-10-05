@@ -7,8 +7,10 @@ import com.yummy.naraka.client.layer.ShadowHerobrineHeadLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.model.FinalHerobrineModel;
 import com.yummy.naraka.client.model.HerobrineModel;
+import com.yummy.naraka.client.renderer.ColoredItemRenderer;
 import com.yummy.naraka.client.renderer.entity.state.ShadowHerobrineRenderState;
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -41,6 +43,8 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
         renderState.pickaxeLight = 0;
         renderState.alpha = entity.getAlpha();
         renderState.scarfAlpha = renderState.alpha;
+        if (renderState.displayPickaxe)
+            ColoredItemRenderer.setTemporaryColorForCurrent(Color.of(0).withAlpha(renderState.alpha));
     }
 
     @Override

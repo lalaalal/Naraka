@@ -18,12 +18,6 @@ public class NarakaBlockEntityTypes {
             NarakaBlocks.HEROBRINE_TOTEM
     );
 
-    public static final HolderProxy<BlockEntityType<?>, BlockEntityType<ForgingBlockEntity>> FORGING = register(
-            "forging",
-            ForgingBlockEntity::new,
-            NarakaBlocks.FORGING_BLOCK
-    );
-
     public static final HolderProxy<BlockEntityType<?>, BlockEntityType<SoulSmithingBlockEntity>> SOUL_SMITHING = register(
             "soul_smithing",
             SoulSmithingBlockEntity::new,

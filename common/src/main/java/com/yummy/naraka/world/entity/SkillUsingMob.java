@@ -3,6 +3,7 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAnimationPacket;
+import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
 import net.minecraft.network.protocol.game.ClientboundEntityPositionSyncPacket;
@@ -15,7 +16,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
 
 import java.util.*;
@@ -23,24 +23,18 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public abstract class SkillUsingMob extends PathfinderMob {
-    protected final SkillManager skillManager = new SkillManager(random);
+    protected final SkillManager skillManager = new SkillManager(this);
     protected final Map<ResourceLocation, AnimationController> animationControllers = new HashMap<>();
     protected ResourceLocation currentAnimation = NarakaMod.location("empty");
 
-    protected SkillUsingMob(EntityType<? extends PathfinderMob> entityType, Level level) {
+    protected int animationTickLeft = Integer.MIN_VALUE;
+    protected Runnable animationTickListener = () -> {
+    };
+
+    protected SkillUsingMob(EntityType<? extends SkillUsingMob> entityType, Level level) {
         super(entityType, level);
 
         skillManager.runOnSkillStart(this::setAnimation);
-        skillManager.runOnSkillStart(this::disableMovingGoals);
-        skillManager.runOnSkillEnd(this::enableMovingGoals);
-    }
-
-    protected void disableMovingGoals(Skill<?> skill) {
-        goalSelector.disableControlFlag(Goal.Flag.MOVE);
-    }
-
-    protected void enableMovingGoals(Skill<?> skill) {
-        goalSelector.enableControlFlag(Goal.Flag.MOVE);
     }
 
     public boolean isUsingSkill() {
@@ -114,10 +108,14 @@ public abstract class SkillUsingMob extends PathfinderMob {
      * @param animationLocation Animation
      */
     public void setAnimation(ResourceLocation animationLocation) {
-        currentAnimation = animationLocation;
-        if (level() instanceof ServerLevel serverLevel) {
-            SyncAnimationPacket payload = new SyncAnimationPacket(this, animationLocation);
-            NetworkManager.sendToClient(serverLevel.players(), payload);
+        NarakaMod.LOGGER.debug("{} : Setting animation {}", this, animationLocation);
+        if (!isPlayingStaticAnimation()) {
+            currentAnimation = animationLocation;
+            if (level() instanceof ServerLevel serverLevel) {
+                NarakaMod.LOGGER.debug("{} : Sending animation ({}) sync packet", this, animationLocation);
+                SyncAnimationPacket payload = new SyncAnimationPacket(this, animationLocation);
+                NetworkManager.clientbound().send(serverLevel.players(), payload);
+            }
         }
     }
 
@@ -131,6 +129,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
      * @param animationLocation Animation
      */
     public void updateAnimation(ResourceLocation animationLocation) {
+        NarakaMod.LOGGER.debug("{} : Updating animation {}", this, animationLocation);
         animationControllers.forEach((location, animationController) -> {
             if (animationLocation.equals(location))
                 animationController.start(tickCount);
@@ -144,6 +143,50 @@ public abstract class SkillUsingMob extends PathfinderMob {
         return currentAnimation;
     }
 
+    private void updateAnimationTick() {
+        if (animationTickLeft == 0)
+            stopStaticAnimation();
+        if (animationTickLeft >= 0) {
+            animationTickListener.run();
+            animationTickLeft -= 1;
+        }
+    }
+
+    public boolean isPlayingStaticAnimation() {
+        return animationTickLeft > 0;
+    }
+
+    public void playStaticAnimation(ResourceLocation animation, int duration) {
+        playStaticAnimation(animation, duration, true);
+    }
+
+    public void playStaticAnimation(ResourceLocation animation, int duration, boolean interruptSkill) {
+        playStaticAnimation(animation, duration, interruptSkill, false);
+    }
+
+    public void playStaticAnimation(ResourceLocation animation, int duration, boolean interruptSkill, boolean force) {
+        if (force)
+            stopStaticAnimation();
+        if (animationTickLeft > 0)
+            return;
+        setAnimation(animation);
+        animationTickLeft = Math.max(1, duration);
+        skillManager.pause(interruptSkill);
+        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
+        NarakaAttributeModifiers.addAttributeModifier(this, Attributes.FLYING_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
+    }
+
+    public void stopStaticAnimation() {
+        if (animationTickLeft < 0)
+            return;
+        animationTickLeft = Integer.MIN_VALUE;
+        animationTickListener = () -> {
+        };
+        skillManager.resume();
+        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
+        NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.FLYING_SPEED, NarakaAttributeModifiers.ANIMATION_PREVENT_MOVING);
+    }
+
     @Override
     public void die(DamageSource damageSource) {
         super.die(damageSource);
@@ -152,6 +195,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
 
     @Override
     protected void customServerAiStep(ServerLevel level) {
+        updateAnimationTick();
         skillManager.tick(level);
         NetworkManager.clientbound().send(level.players(), ClientboundEntityPositionSyncPacket.of(this));
     }
@@ -160,7 +204,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
         private static final AnimationController EMPTY = new AnimationController(List.of()) {
             @Override
             protected ResourceLocation select() {
-                return NarakaMod.location("empty");
+                return NarakaMod.location("animation", "empty");
             }
         };
 

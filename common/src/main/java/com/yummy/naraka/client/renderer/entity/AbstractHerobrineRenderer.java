@@ -26,7 +26,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Quaternionf;
 
 import java.util.function.Function;
 
@@ -90,14 +89,6 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
         itemModelResolver.updateForLiving(renderState.pickaxe, pickaxe, ItemDisplayContext.NONE, entity);
     }
 
-    private void applyTransformAndRotate(PoseStack poseStack, ModelPart part) {
-        poseStack.translate(-part.x / 16, -part.y / 16, part.z / 16);
-        if (part.xRot != 0 || part.yRot != 0 || part.zRot != 0) {
-            poseStack.mulPose(new Quaternionf().rotationZYX(part.zRot, -part.yRot, -part.xRot));
-        }
-        poseStack.scale(part.xScale, part.yScale, part.zScale);
-    }
-
     @Override
     public void render(S renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
@@ -106,34 +97,22 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
         poseStack.popPose();
 
         if (renderState.finalModel && renderState.displayPickaxe) {
-            poseStack.pushPose();
-            poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - renderState.bodyRot));
-            poseStack.translate(0, 1.4, 0);
-            applyTransformAndRotate(poseStack, model.root());
-            applyTransformAndRotate(poseStack, model.main());
-            applyTransformAndRotate(poseStack, model.upperBody());
-            applyTransformAndRotate(poseStack, model.rightArm());
-            applyTransformAndRotate(poseStack, model.rightHand());
-            applyTransformAndRotate(poseStack, model.rightHand().getChild("pickaxe"));
-            poseStack.mulPose(Axis.XP.rotationDegrees(90));
-            poseStack.mulPose(Axis.ZP.rotationDegrees(225));
-            poseStack.translate(0.5, 0.5, 0);
-            poseStack.scale(4, 4, 1);
-            renderState.pickaxe.render(poseStack, buffer, renderState.pickaxeLight, OverlayTexture.NO_OVERLAY);
-            poseStack.popPose();
-
-            poseStack.pushPose();
-            poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - renderState.bodyRot));
-            poseStack.translate(0, 1.4, 0);
-            applyTransformAndRotate(poseStack, model.root());
-            applyTransformAndRotate(poseStack, model.root().getChild("independent_pickaxe"));
-            poseStack.mulPose(Axis.XP.rotationDegrees(90));
-            poseStack.mulPose(Axis.ZP.rotationDegrees(225));
-            poseStack.translate(0.5, 0.5, 0);
-            poseStack.scale(4, 4, 1);
-            renderState.pickaxe.render(poseStack, buffer, renderState.pickaxeLight, OverlayTexture.NO_OVERLAY);
-            poseStack.popPose();
+            renderPickaxe(renderState, poseStack, buffer, model.root(), model.main(), model.upperBody(), model.rightArm(), model.rightHand(), model.rightHand().getChild("pickaxe"));
+            renderPickaxe(renderState, poseStack, buffer, model.root().getChild("independent_pickaxe"));
         }
+    }
+
+    private void renderPickaxe(S renderState, PoseStack poseStack, MultiBufferSource buffer, ModelPart... parts) {
+        poseStack.pushPose();
+        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - renderState.bodyRot));
+        poseStack.translate(0, 1.4, 0);
+        NarakaPickaxeRenderer.applyTransformAndRotate(poseStack, parts);
+        poseStack.mulPose(Axis.XP.rotationDegrees(90));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(225));
+        poseStack.translate(0.5, 0.5, 0);
+        poseStack.scale(4, 4, 1);
+        renderState.pickaxe.render(poseStack, buffer, renderState.pickaxeLight, OverlayTexture.NO_OVERLAY);
+        poseStack.popPose();
     }
 
     @Override

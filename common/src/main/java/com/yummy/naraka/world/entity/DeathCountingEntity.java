@@ -1,10 +1,8 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -44,20 +42,6 @@ public interface DeathCountingEntity {
 
     class DeathCountingInstance {
         private final Set<UUID> countedEntities = new HashSet<>();
-        private final RegistryAccess registryAccess;
-
-        public DeathCountingInstance(RegistryAccess registryAccess) {
-            this.registryAccess = registryAccess;
-        }
-
-        private CompoundTag write(UUID value, CompoundTag tag, HolderLookup.Provider provider) {
-            tag.putString("UUID", value.toString());
-            return tag;
-        }
-
-        private UUID read(CompoundTag tag, HolderLookup.Provider provider) {
-            return UUID.fromString(tag.getStringOr("UUID", ""));
-        }
 
         public void add(LivingEntity livingEntity) {
             countedEntities.add(livingEntity.getUUID());
@@ -83,11 +67,11 @@ public interface DeathCountingEntity {
         }
 
         public void save(CompoundTag compoundTag) {
-            NarakaNbtUtils.writeCollection(compoundTag, "DeathCountedEntities", countedEntities, this::write, registryAccess);
+            compoundTag.store("DeathCountedEntities", UUIDUtil.CODEC_SET, countedEntities);
         }
 
         public void load(CompoundTag compoundTag) {
-            NarakaNbtUtils.readCollection(compoundTag, "DeathCountedEntities", () -> countedEntities, this::read, registryAccess);
+            compoundTag.read("DeathCountedEntities", UUIDUtil.CODEC_SET).ifPresent(countedEntities::addAll);
         }
     }
 }

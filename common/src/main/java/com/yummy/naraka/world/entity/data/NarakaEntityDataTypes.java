@@ -16,7 +16,7 @@ public class NarakaEntityDataTypes {
     public static final HolderProxy<EntityDataType<?>, StigmaEntityDataType> STIGMA = register("stigma", StigmaEntityDataType::new);
     public static final HolderProxy<EntityDataType<?>, IntegerEntityDataType> DEATH_COUNT = register("death_count", IntegerEntityDataType::new, -1);
     public static final HolderProxy<EntityDataType<?>, DoubleEntityDataType> LOCKED_HEALTH = register("locked_health", DoubleEntityDataType::new, 0.0);
-    public static final HolderProxy<EntityDataType<?>, BooleanEntityDataType> IS_ON_PURIFIED_SOUL_FIRE = register("is_on_purified_soul_fire", BooleanEntityDataType::new, false);
+    public static final HolderProxy<EntityDataType<?>, IntegerEntityDataType> PURIFIED_SOUL_FIRE_TICK = register("purified_soul_fire_tick", IntegerEntityDataType::new, 0);
 
     private static <D, T extends EntityDataType<D>> HolderProxy<EntityDataType<?>, T> register(String name, BiFunction<ResourceLocation, Supplier<D>, T> factory, Supplier<D> defaultValue) {
         ResourceLocation id = NarakaMod.location(name);

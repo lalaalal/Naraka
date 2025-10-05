@@ -19,13 +19,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayerGameMode.class)
 public abstract class ServerPlayerGameModeMixin {
-    @Shadow
-    @Final
+    @Shadow @Final
     protected ServerPlayer player;
 
+    @SuppressWarnings("ConstantValue")
     @Inject(method = "setGameModeForPlayer", at = @At("RETURN"))
     public void updateReinforcementEffects(CallbackInfo ci) {
-        // To prevent NullPointerException during join the world
         if (player.connection != null)
             NarakaItemUtils.updateAllReinforcementEffects(player);
     }

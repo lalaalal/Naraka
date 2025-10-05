@@ -1,0 +1,37 @@
+{
+  "parent": "naraka:soul_swords",
+  "criteria": {
+    "has_ultimate_spear": {
+      "conditions": {
+        "items": [
+          {
+            "items": "naraka:spear_of_longinus"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.naraka.ultimate_spear.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "naraka:spear_of_longinus"
+    },
+    "title": {
+      "translate": "advancements.naraka.ultimate_spear.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_ultimate_spear"
+    ]
+  ],
+  "rewards": {
+    "experience": 666
+  },
+  "sends_telemetry_event": true
+}

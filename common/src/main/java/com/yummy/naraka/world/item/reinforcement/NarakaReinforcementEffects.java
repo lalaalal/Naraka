@@ -1,9 +1,9 @@
 package com.yummy.naraka.world.item.reinforcement;
 
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.tags.NarakaItemTags;
-import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import net.minecraft.advancements.critereon.TagPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;

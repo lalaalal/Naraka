@@ -1,0 +1,13 @@
+{
+  "textures": [
+    "naraka:redstone_flame",
+    "naraka:copper_flame",
+    "naraka:gold_flame",
+    "naraka:emerald_flame",
+    "naraka:diamond_flame",
+    "naraka:lapis_flame",
+    "naraka:nectarium_flame",
+    "naraka:amethyst_flame",
+    "naraka:god_blood_flame"
+  ]
+}

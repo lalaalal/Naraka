@@ -19,6 +19,7 @@ public class NarakaClientConfig extends StaticConfiguration {
 
     public final ConfigValue<Float> cameraShakingSpeed = define("camera_shaking_speed", 4f);
     public final ConfigValue<Float> cameraShakingStrength = define("camera_shaking_strength", 0.025f);
+    public final ConfigValue<Boolean> disableWorldOpenExperimentalWarning = define("disable_world_open_experimental_warning", false);
 
     public NarakaClientConfig() {
         super("naraka-client", PropertiesConfigFile::new);

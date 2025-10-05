@@ -8,23 +8,17 @@ import com.yummy.naraka.world.entity.Afterimage;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.AnimationState;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
-public abstract class AbstractHerobrineRenderState extends LivingEntityRenderState implements AnimationRenderState, AfterimageRenderState.Provider {
+public abstract class AbstractHerobrineRenderState extends SkillUsingMobRenderState implements AfterimageRenderState.Provider {
     public boolean isShadow = false;
     public boolean finalModel = false;
-    public boolean isIdle = false;
     public boolean renderScarf = false;
-    public boolean doWalkAnimation = true;
     public float eyeAlpha = 1;
     public int scarfAlpha = 0xff;
     public int pickaxeLight = LightTexture.FULL_BRIGHT;
@@ -36,9 +30,6 @@ public abstract class AbstractHerobrineRenderState extends LivingEntityRenderSta
     public WavingScarfRenderState scarfRenderState = new WavingScarfRenderState();
 
     private Collection<AfterimageRenderState> afterimages = List.of();
-    private Consumer<BiConsumer<ResourceLocation, AnimationState>> animationVisitor = consumer -> {
-
-    };
 
     protected AbstractHerobrineRenderState() {
 
@@ -61,10 +52,6 @@ public abstract class AbstractHerobrineRenderState extends LivingEntityRenderSta
         return WavingScarfRenderState.ModelType.SMALL;
     }
 
-    public void setAnimationVisitor(AbstractHerobrine herobrine) {
-        animationVisitor = herobrine::forEachAnimations;
-    }
-
     public void setAfterimages(AbstractHerobrine herobrine, float partialTicks) {
         Color color = NarakaConfig.CLIENT.afterimageColor.getValue();
         this.afterimages = herobrine.getAfterimages().stream()
@@ -77,11 +64,6 @@ public abstract class AbstractHerobrineRenderState extends LivingEntityRenderSta
         AfterimageRenderState renderState = new AfterimageRenderState(afterimage, partialTicks, color);
         renderState.translation = afterimage.translation(herobrine, partialTicks);
         return renderState;
-    }
-
-    @Override
-    public void animations(BiConsumer<ResourceLocation, AnimationState> consumer) {
-        animationVisitor.accept(consumer);
     }
 
     @Override

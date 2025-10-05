@@ -1,8 +1,8 @@
 package com.yummy.naraka.mixin.client;
 
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.util.ComponentStyles;
-import com.yummy.naraka.world.item.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -39,6 +39,6 @@ public abstract class ItemStackMixin implements DataComponentHolder {
     @Inject(method = "addDetailsToTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;has(Lnet/minecraft/core/component/DataComponentType;)Z"))
     public void addBlessedTooltip(Item.TooltipContext context, TooltipDisplay tooltipDisplay, Player player, TooltipFlag tooltipFlag, Consumer<Component> tooltipAdder, CallbackInfo ci) {
         if (getOrDefault(NarakaDataComponentTypes.BLESSED.get(), false))
-            tooltipAdder.accept(Component.translatable(LanguageKey.BLESSED_KEY).withStyle(ComponentStyles.LONGINUS_COLOR));
+            tooltipAdder.accept(Component.translatable(LanguageKey.BLESSED_KEY).withStyle(ComponentStyles.RAINBOW_COLOR));
     }
 }

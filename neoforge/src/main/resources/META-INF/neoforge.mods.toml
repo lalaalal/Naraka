@@ -36,6 +36,3 @@ side = "BOTH"
 
 [[mixins]]
 config = "naraka.mixins.json"
-
-[[mixins]]
-config = "naraka.mixins.neoforge.json"

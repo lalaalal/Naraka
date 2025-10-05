@@ -48,7 +48,7 @@ public record SyncEntityDataPacket(int entityId, HolderSet<EntityDataType<?>> en
         CompoundTag data = payload.data;
         for (Holder<EntityDataType<?>> holder : payload.entityDataTypes) {
             EntityDataType<?> entityDataType = holder.value();
-            Object value = entityDataType.read(data, context.registryAccess());
+            Object value = entityDataType.readOrDefault(data, context.registryAccess());
             if (entity instanceof LivingEntity livingEntity)
                 EntityDataHelper.setEntityData(livingEntity, holder.value(), value);
         }

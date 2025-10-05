@@ -37,7 +37,7 @@ public abstract class StaticConfiguration extends Configuration {
 
     @Override
     public synchronized void loadValues() {
-        NarakaMod.LOGGER.info("Loading static configuration \"{}\"", name);
+        NarakaMod.LOGGER.debug("Loading static configuration \"{}\"", name);
         try (Reader reader = file.createReader()) {
             file.load(reader);
             AtomicInteger counter = new AtomicInteger(0);
@@ -59,7 +59,7 @@ public abstract class StaticConfiguration extends Configuration {
 
     @Override
     public synchronized void saveValues() {
-        NarakaMod.LOGGER.info("Saving static configuration \"{}\" to \"{}\"", name, file.getAbsolutePath());
+        NarakaMod.LOGGER.debug("Saving static configuration \"{}\" to \"{}\"", name, file.getAbsolutePath());
         watchChange = false;
         try (Writer writer = file.createWriter()) {
             for (Map.Entry<String, ConfigValue<?>> entry : configurations.entrySet()) {

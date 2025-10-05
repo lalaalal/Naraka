@@ -35,6 +35,10 @@ public abstract class EntityDataType<T> implements NarakaNbtUtils.TagWriter<T>, 
 
     public abstract Class<T> getValueType();
 
+    public T readOrDefault(CompoundTag tag, HolderLookup.Provider provider) {
+        return read(tag, provider).orElse(getDefaultValue());
+    }
+
     public boolean saveExists(CompoundTag compoundTag) {
         return compoundTag.contains(name());
     }

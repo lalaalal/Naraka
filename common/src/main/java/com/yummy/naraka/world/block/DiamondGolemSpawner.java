@@ -36,7 +36,7 @@ public class DiamondGolemSpawner extends Block {
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         final int maxCount = state.getValue(SPAWN_COUNT);
         AtomicInteger count = new AtomicInteger();
-        NarakaUtils.circle(pos, 4, NarakaUtils.OUTLINE, current -> {
+        NarakaUtils.square(pos, 4, NarakaUtils.CIRCLE_OUTLINE, current -> {
             BlockPos floor = NarakaUtils.findFloor(level, current);
             if (count.get() < maxCount && !floor.equals(current)) {
                 NarakaEntityTypes.DIAMOND_GOLEM.get().spawn(level, floor.above(), EntitySpawnReason.SPAWNER);

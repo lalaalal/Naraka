@@ -5,8 +5,8 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
-import com.yummy.naraka.world.entity.ai.skill.*;
-import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import com.yummy.naraka.world.entity.ai.skill.herobrine.*;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.SoulType;
@@ -170,9 +170,9 @@ public class NarakaLanguageProviders {
                 List.of("Rainbow!", "무지개!"),
                 List.of("Get every color type of blessed soul sword", "모든 색의 축복받은 검을 수집하세요")
         );
-        addAdvancement(AdvancementNarakaComponents.ULTIMATE_SWORD,
+        addAdvancement(AdvancementNarakaComponents.ULTIMATE_SPEAR,
                 List.of("Long live the new Naraka tyrant", "새 나락의 폭군"),
-                List.of("Get Ultimate soul sword", "궁극의 검을 얻으세요")
+                List.of("Get Ultimate soul spear", "궁극의 창을 얻으세요")
         );
 
         addAdvancement(AdvancementExtraComponents.BUY_NECTARIUM_CORE,
@@ -212,10 +212,6 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "Mighty Holy Spear", "강력한 성스러운 창");
         addItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM, "Spear of Longinus", "롱기누스의 창");
 
-        addItem(NarakaItems.EBONY_METAL_HELMET, "Ebony Metal Helmet", "흑단나무 금속 투구");
-        addItem(NarakaItems.EBONY_METAL_CHESTPLATE, "Ebony Metal Chestplate", "흑단나무 금속 흉갑");
-        addItem(NarakaItems.EBONY_METAL_LEGGINGS, "Ebony Metal Leggings", "흑단나무 금속 레깅스");
-        addItem(NarakaItems.EBONY_METAL_BOOTS, "Ebony Metal Boots", "흑단나무 금속 부츠");
         addItem(NarakaItems.PURIFIED_SOUL_HELMET, "Purified Soul Helmet", "정화된 영혼 투구");
         addItem(NarakaItems.PURIFIED_SOUL_CHESTPLATE, "Purified Soul Chestplate", "정화된 영혼 흉갑");
         addItem(NarakaItems.PURIFIED_SOUL_LEGGINGS, "Purified Soul Leggings", "정화된 영혼 레깅스");
@@ -289,26 +285,26 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.HARD_EBONY_PLANKS, "Hard Ebony Planks", "단단한 흑단나무 판자");
         addBlock(NarakaBlocks.EBONY_ROOTS, "Ebony Roots", "흑단나무 뿌리");
         addBlock(NarakaBlocks.EBONY_METAL_BLOCK, "Block of Ebony Metal", "흑단나무 금속 블록");
-        addBlock(NarakaBlocks.FORGING_BLOCK, "Forging Block", "단조 블록");
         addBlock(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Nectarium Core", "넥타륨 코어");
         addBlock(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, "Nectarium Crystal", "넥타륨 결정");
         addBlock(NarakaBlocks.SOUL_STABILIZER, "Soul Stabilizer", "영혼 안정기");
         addBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, "Soul Smithing Block", "영혼 대장장이 블록");
 
         addTooltip(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Honey is dripping", "꿀이 뚝뚝 떨어져");
-        addTooltip(NarakaBlocks.FORGING_BLOCK, "Smash item with a hammer...?", "아이템을 망치로 부수기..?");
         addTooltip(NarakaBlocks.SOUL_SMITHING_BLOCK, "Smash item with a hammer...?", "아이템을 망치로 부수기..?");
 
-        addEntityType(NarakaEntityTypes.HEROBRINE, "Naraka: Herobrine", "히로빈");
+        addEntityType(NarakaEntityTypes.HEROBRINE, "Naraka Tyrant: Herobrine", "나락의 폭군: 히로빈");
+        addEntityType(NarakaEntityTypes.ABSOLUTE_HEROBRINE, "Absolute Herobrine");
         addEntityType(NarakaEntityTypes.SHADOW_HEROBRINE, "Shadow Herobrine", "그림자 히로빈");
         addEntityType(NarakaEntityTypes.THROWN_SPEAR, "Spear", "창");
         addEntityType(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, "Mighty Holy Spear", "강력한 성스러운 창");
         addEntityType(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, "Spear of Longinus", "롱기누스의 창");
         addEntityType(NarakaEntityTypes.NARAKA_FIREBALL, "Naraka Fireball", "나락 화염구");
-        addEntityType(NarakaEntityTypes.STARDUST, "Stardust");
-        addEntityType(NarakaEntityTypes.PICKAXE_SLASH, "Pickaxe slash");
+        addEntityType(NarakaEntityTypes.STARDUST, "Stardust", "부패의 별");
+        addEntityType(NarakaEntityTypes.PICKAXE_SLASH, "Pickaxe Slash");
         addEntityType(NarakaEntityTypes.DIAMOND_GOLEM, "Diamond Golem", "다이아몬드 골렘");
         addEntityType(NarakaEntityTypes.MAGIC_CIRCLE, "Magic Circle", "마법진");
+        addEntityType(NarakaEntityTypes.NARAKA_PICKAXE, "Naraka Pickaxe", "파멸의 낫");
 
         addDamageType(NarakaDamageTypes.SPEAR_OF_LONGINUS, "%1$s's AT Field was torn by %2$s", "%1$s의 AT 필드가 %2$s에 찢어졌습니다");
         addDamageType(NarakaDamageTypes.STIGMA, "%1$s's has been deprived of life due to %2$s's stigma stacking", "%1$s이(가) %2$s의 낙인이 중첩돼 생명을 빼앗겼습니다");
@@ -324,18 +320,18 @@ public class NarakaLanguageProviders {
         add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_LAPIS), "Challenger's Blessing", "도전자의 축복");
         add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_NECTARIUM), "Challenger's Blessing", "도전자의 축복");
         add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_REDSTONE), "Challenger's Blessing", "도전자의 축복");
-        
-        add(LanguageKey.animation(AnimationLocations.COMBO_ATTACK_1), "Combo Attack 1", "연계 공격 1");
-        add(LanguageKey.animation(AnimationLocations.COMBO_ATTACK_2), "Combo Attack 2", "연계 공격 2");
-        add(LanguageKey.animation(AnimationLocations.COMBO_ATTACK_3), "Combo Attack 3", "연계 공격 3");
-        add(LanguageKey.animation(AnimationLocations.COMBO_ATTACK_4), "Combo Attack 4", "연계 공격 4");
-        add(LanguageKey.animation(AnimationLocations.COMBO_ATTACK_5), "Combo Attack 5", "연계 공격 5");
-        add(LanguageKey.animation(AnimationLocations.IDLE), "Idle", "대기");
-        add(LanguageKey.animation(AnimationLocations.WALKING), "Walking", "걷기");
-        add(LanguageKey.animation(AnimationLocations.PHASE_3_IDLE), "Phase 3 Idle", "3페 걷기");
-        add(LanguageKey.animation(AnimationLocations.ENTER_PHASE_2), "Enter Phase 2", "2페 진입");
-        add(LanguageKey.animation(AnimationLocations.ENTER_PHASE_3), "Enter Phase 3", "3페 진입");
-        add(LanguageKey.animation(AnimationLocations.STAGGERING), "Staggering", "허약");
+
+        add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_1), "Combo Attack 1", "연계 공격 1");
+        add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_2), "Combo Attack 2", "연계 공격 2");
+        add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_3), "Combo Attack 3", "연계 공격 3");
+        add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_4), "Combo Attack 4", "연계 공격 4");
+        add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_5), "Combo Attack 5", "연계 공격 5");
+        add(LanguageKey.animation(HerobrineAnimationLocations.IDLE), "Idle", "대기");
+        add(LanguageKey.animation(HerobrineAnimationLocations.WALKING), "Walking", "걷기");
+        add(LanguageKey.animation(HerobrineAnimationLocations.PHASE_3_IDLE), "Phase 3 Idle", "3페 걷기");
+        add(LanguageKey.animation(HerobrineAnimationLocations.ENTER_PHASE_2), "Enter Phase 2", "2페 진입");
+        add(LanguageKey.animation(HerobrineAnimationLocations.ENTER_PHASE_3), "Enter Phase 3", "3페 진입");
+        add(LanguageKey.animation(HerobrineAnimationLocations.STAGGERING), "Staggering", "허약");
 
         add(LanguageKey.skill(RushSkill.LOCATION), "Rush", "돌진");
         add(LanguageKey.skill(DashSkill.LOCATION), "Dash", "대시");
