@@ -1,6 +1,6 @@
 package com.yummy.naraka.client.renderer.entity.state;
 
-import com.yummy.naraka.world.NarakaPickaxe;
+import com.yummy.naraka.world.entity.NarakaPickaxe;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;

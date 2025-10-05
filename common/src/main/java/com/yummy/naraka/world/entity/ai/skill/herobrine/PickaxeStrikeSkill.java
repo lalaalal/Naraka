@@ -2,8 +2,8 @@ package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.util.NarakaUtils;
-import com.yummy.naraka.world.NarakaPickaxe;
 import com.yummy.naraka.world.entity.Herobrine;
+import com.yummy.naraka.world.entity.NarakaPickaxe;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe.StrikeSkill;
 import net.minecraft.resources.ResourceLocation;

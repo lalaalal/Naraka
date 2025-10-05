@@ -10,13 +10,12 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 @Environment(EnvType.CLIENT)
-public class DeathCountHud implements LayeredDraw.Layer {
+public class DeathCountHud implements HudRenderer {
     public static final int HEART_WIDTH = 14;
     public static final int HEART_HEIGHT = 7;
     public static final int BACKGROUND_WIDTH = 75;

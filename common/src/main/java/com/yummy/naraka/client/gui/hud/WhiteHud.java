@@ -6,11 +6,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.util.ARGB;
 
 @Environment(EnvType.CLIENT)
-public class WhiteHud implements LayeredDraw.Layer {
+public class WhiteHud implements HudRenderer {
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         if (NarakaClientContext.SHADER_ENABLED.getValue()) {

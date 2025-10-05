@@ -1,7 +1,6 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.util.NarakaUtils;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -18,6 +17,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import javax.annotation.Nullable;
 
@@ -98,13 +99,13 @@ public class MassiveLightning extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag tag) {
-        setMaxSize(tag.getIntOr("MaxSize", 10));
+    protected void readAdditionalSaveData(ValueInput input) {
+        setMaxSize(input.getIntOr("MaxSize", 10));
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag tag) {
-        tag.putInt("MaxSize", getMaxSize());
+    protected void addAdditionalSaveData(ValueOutput output) {
+        output.putInt("MaxSize", getMaxSize());
     }
 
     @Override

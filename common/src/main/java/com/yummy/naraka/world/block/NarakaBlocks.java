@@ -40,9 +40,9 @@ public class NarakaBlocks {
     public static final HolderProxy<Block, DiamondGolemSpawner> DIAMOND_GOLEM_SPAWNER = registerBlockWithItem(
             "diamond_golem_spawner",
             properties -> new DiamondGolemSpawner(
-                    properties.noCollission()
-                            .noLootTable()
+                    properties.noLootTable()
                             .noTerrainParticles()
+                            .noCollision()
             ),
             Blocks.SPAWNER
     );

@@ -26,6 +26,8 @@ import net.minecraft.world.item.equipment.trim.TrimMaterials;
 import net.minecraft.world.item.equipment.trim.TrimPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -197,36 +199,30 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
                 soulStabilizer.setLevel(level);
         }
         if (!templateItem.isEmpty())
-            tag.put("TemplateItem", templateItem.save(provider));
-
+            tag.store("TemplateItem", ItemStack.STRICT_CODEC, templateItem);
         return tag;
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
-        super.saveAdditional(compoundTag, provider);
-        compoundTag.putBoolean("IsStabilizerAttached", isStabilizerAttached);
-        if (isStabilizerAttached) {
-            CompoundTag stabilizerData = new CompoundTag();
-            soulStabilizer.saveAdditional(stabilizerData, provider);
-            compoundTag.put("StabilizerData", stabilizerData);
-        }
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        output.putBoolean("IsStabilizerAttached", isStabilizerAttached);
+        if (isStabilizerAttached)
+            soulStabilizer.saveAdditional(output);
         if (!templateItem.isEmpty())
-            compoundTag.put("TemplateItem", templateItem.save(provider));
+            output.store("TemplateItem", ItemStack.STRICT_CODEC, templateItem);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
-        super.loadAdditional(compoundTag, provider);
-        isStabilizerAttached = compoundTag.getBooleanOr("IsStabilizerAttached", false);
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        isStabilizerAttached = input.getBooleanOr("IsStabilizerAttached", false);
         if (isStabilizerAttached) {
-            soulStabilizer.loadAdditional(compoundTag.getCompoundOrEmpty("StabilizerData"), provider);
+            soulStabilizer.loadAdditional(input);
             if (level != null)
                 soulStabilizer.setLevel(level);
         }
-        Optional<CompoundTag> templateItemTag = compoundTag.getCompound("TemplateItem");
-        templateItemTag.flatMap(tag -> ItemStack.parse(provider, tag))
-                .ifPresent(item -> this.templateItem = item);
-
+        input.read("TemplateItem", ItemStack.STRICT_CODEC)
+                .ifPresent(item -> templateItem = item);
     }
 }

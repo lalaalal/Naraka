@@ -2,7 +2,6 @@ package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,6 +15,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -50,7 +51,7 @@ public class MagicCircle extends Entity {
         super.tick();
         if (level() instanceof ServerLevel serverLevel)
             serverTick(serverLevel);
-        if (level().isClientSide)
+        if (level().isClientSide())
             clientTick(level());
     }
 
@@ -171,14 +172,14 @@ public class MagicCircle extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag tag) {
-        tag.getFloatOr("Scale", 1);
-        tag.getIntOr("Lifetime", 1);
+    protected void readAdditionalSaveData(ValueInput input) {
+        setScale(input.getFloatOr("Scale", 1));
+        entityData.set(LIFETIME, input.getIntOr("Lifetime", 1));
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag tag) {
-        tag.putFloat("Scale", getScale());
-        tag.putInt("Lifetime", getLifetime());
+    protected void addAdditionalSaveData(ValueOutput output) {
+        output.putFloat("Scale", getScale());
+        output.putInt("Lifetime", getLifetime());
     }
 }

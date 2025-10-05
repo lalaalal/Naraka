@@ -10,7 +10,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
@@ -18,7 +17,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 @Environment(EnvType.CLIENT)
-public class StigmaHud implements LayeredDraw.Layer {
+public class StigmaHud implements HudRenderer {
     public static final int BACKGROUND_WIDTH = 15;
     public static final int BACKGROUND_HEIGHT = 5;
     public static final int STIGMA_SIZE = 5;

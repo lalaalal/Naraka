@@ -14,7 +14,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,7 +23,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 
 @Environment(EnvType.CLIENT)
-public class LockedHealthHud implements LayeredDraw.Layer {
+public class LockedHealthHud implements HudRenderer {
     public static final int HEARTS_PER_LINE = 10;
     public static final int HEART_WIDTH = 8;
 

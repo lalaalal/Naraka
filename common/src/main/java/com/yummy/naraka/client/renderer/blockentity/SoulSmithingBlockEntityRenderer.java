@@ -75,8 +75,8 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
     public SoulSmithingBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         main = context.bakeLayer(NarakaModelLayers.SOUL_SMITHING_BLOCK);
         trimTemplate = context.bakeLayer(NarakaModelLayers.TRIM_TEMPLATE);
-        itemRenderer = context.getItemRenderer();
-        blockEntityRenderDispatcher = context.getBlockEntityRenderDispatcher();
+        itemRenderer = context.itemRenderer();
+        blockEntityRenderDispatcher = context.blockEntityRenderDispatcher();
     }
 
     @Override

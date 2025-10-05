@@ -6,10 +6,11 @@ import com.yummy.naraka.client.renderer.entity.state.ColoredLightningBoltRenderS
 import com.yummy.naraka.world.entity.ColoredLightningBolt;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
 import org.joml.Matrix4f;
@@ -33,7 +34,7 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
     }
 
     @Override
-    public void render(ColoredLightningBoltRenderState renderState, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void submit(ColoredLightningBoltRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         float[] fs = new float[8];
         float[] gs = new float[8];
         float f = 0.0F;
@@ -47,57 +48,58 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
             g += randomSource.nextInt(11) - 5;
         }
 
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.lightning());
-        Matrix4f matrix4f = poseStack.last().pose();
+        submitNodeCollector.submitCustomGeometry(poseStack, RenderType.lightning(), ((pose, vertexConsumer) -> {
+            Matrix4f matrix4f = poseStack.last().pose();
 
-        for (int k = 0; k < 4; k++) {
-            randomSource = RandomSource.create(renderState.seed);
-            for (int l = 0; l < 3; l++) {
-                int m = 7;
-                int n = 0;
-                if (l > 0) {
-                    m = 7 - l;
-                }
-
-                if (l > 0) {
-                    n = m - 2;
-                }
-
-                float x1 = fs[m] - f;
-                float z1 = gs[m] - g;
-
-                for (int sectionY = m; sectionY >= n; sectionY--) {
-                    float x2 = x1;
-                    float z2 = z1;
-                    if (l == 0) {
-                        x1 += randomSource.nextInt(11) - 5;
-                        z1 += randomSource.nextInt(11) - 5;
-                    } else {
-                        x1 += randomSource.nextInt(31) - 15;
-                        z1 += randomSource.nextInt(31) - 15;
+            for (int k = 0; k < 4; k++) {
+                RandomSource randomSource = RandomSource.create(renderState.seed);
+                for (int l = 0; l < 3; l++) {
+                    int m = 7;
+                    int n = 0;
+                    if (l > 0) {
+                        m = 7 - l;
                     }
 
-                    float innerThickness = 0.1F + k * 0.2F;
-                    if (l == 0) {
-                        innerThickness *= sectionY * 0.1F + 1.0F;
+                    if (l > 0) {
+                        n = m - 2;
                     }
 
-                    float outerThickness = 0.1F + k * 0.2F;
-                    if (l == 0) {
-                        outerThickness *= (sectionY - 1.0F) * 0.1F + 1.0F;
-                    }
+                    float x1 = fs[m] - f;
+                    float z1 = gs[m] - g;
 
-                    float alpha = ARGB.alphaFloat(renderState.color);
-                    float red = ARGB.redFloat(renderState.color);
-                    float green = ARGB.greenFloat(renderState.color);
-                    float blue = ARGB.blueFloat(renderState.color);
-                    quad(matrix4f, vertexConsumer, x1, z1, sectionY, x2, z2, alpha, red, green, blue, innerThickness, outerThickness, false, false, true, false);
-                    quad(matrix4f, vertexConsumer, x1, z1, sectionY, x2, z2, alpha, red, green, blue, innerThickness, outerThickness, true, false, true, true);
-                    quad(matrix4f, vertexConsumer, x1, z1, sectionY, x2, z2, alpha, red, green, blue, innerThickness, outerThickness, true, true, false, true);
-                    quad(matrix4f, vertexConsumer, x1, z1, sectionY, x2, z2, alpha, red, green, blue, innerThickness, outerThickness, false, true, false, false);
+                    for (int sectionY = m; sectionY >= n; sectionY--) {
+                        float x2 = x1;
+                        float z2 = z1;
+                        if (l == 0) {
+                            x1 += randomSource.nextInt(11) - 5;
+                            z1 += randomSource.nextInt(11) - 5;
+                        } else {
+                            x1 += randomSource.nextInt(31) - 15;
+                            z1 += randomSource.nextInt(31) - 15;
+                        }
+
+                        float innerThickness = 0.1F + k * 0.2F;
+                        if (l == 0) {
+                            innerThickness *= sectionY * 0.1F + 1.0F;
+                        }
+
+                        float outerThickness = 0.1F + k * 0.2F;
+                        if (l == 0) {
+                            outerThickness *= (sectionY - 1.0F) * 0.1F + 1.0F;
+                        }
+
+                        float alpha = ARGB.alphaFloat(renderState.color);
+                        float red = ARGB.redFloat(renderState.color);
+                        float green = ARGB.greenFloat(renderState.color);
+                        float blue = ARGB.blueFloat(renderState.color);
+                        quad(matrix4f, vertexConsumer, x1, z1, sectionY, x2, z2, alpha, red, green, blue, innerThickness, outerThickness, false, false, true, false);
+                        quad(matrix4f, vertexConsumer, x1, z1, sectionY, x2, z2, alpha, red, green, blue, innerThickness, outerThickness, true, false, true, true);
+                        quad(matrix4f, vertexConsumer, x1, z1, sectionY, x2, z2, alpha, red, green, blue, innerThickness, outerThickness, true, true, false, true);
+                        quad(matrix4f, vertexConsumer, x1, z1, sectionY, x2, z2, alpha, red, green, blue, innerThickness, outerThickness, false, true, false, false);
+                    }
                 }
             }
-        }
+        }));
     }
 
     private static void quad(

@@ -11,10 +11,12 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -33,6 +35,19 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
     @Override
     public boolean shouldRender(T entity, Frustum camera, double camX, double camY, double camZ) {
         return !entity.getAfterimages().isEmpty() || super.shouldRender(entity, camera, camX, camY, camZ);
+    }
+
+    @Override
+    public void submit(S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+        Collection<AfterimageRenderState> afterimages = renderState.afterimages();
+        if (!afterimages.isEmpty()) {
+            int blockLight = Mth.clamp(afterimages.size(), LightTexture.block(packedLight), 15);
+            int skyLight = Mth.clamp(afterimages.size(), LightTexture.sky(packedLight), 15);
+
+            packedLight = Math.max(LightTexture.pack(blockLight, skyLight), packedLight);
+        }
+        super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
+        renderAfterimages(renderState, poseStack, buffer);
     }
 
     @Override

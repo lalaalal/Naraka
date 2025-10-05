@@ -3,7 +3,6 @@ package com.yummy.naraka.world.block;
 import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
-import com.yummy.naraka.world.block.entity.UnstableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;

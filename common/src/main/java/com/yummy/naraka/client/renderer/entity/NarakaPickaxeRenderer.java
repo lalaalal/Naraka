@@ -7,7 +7,7 @@ import com.yummy.naraka.client.model.NarakaPickaxeModel;
 import com.yummy.naraka.client.renderer.ColoredItemRenderer;
 import com.yummy.naraka.client.renderer.entity.state.NarakaPickaxeRenderState;
 import com.yummy.naraka.util.Color;
-import com.yummy.naraka.world.NarakaPickaxe;
+import com.yummy.naraka.world.entity.NarakaPickaxe;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

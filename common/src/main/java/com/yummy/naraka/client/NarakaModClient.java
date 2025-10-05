@@ -12,7 +12,6 @@ import com.yummy.naraka.client.particle.*;
 import com.yummy.naraka.client.renderer.ColoredItemRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulStabilizerBlockEntityRenderer;
-import com.yummy.naraka.client.renderer.blockentity.UnstableBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.entity.*;
 import com.yummy.naraka.client.renderer.special.SoulSmithingBlockSpecialRenderer;
 import com.yummy.naraka.client.renderer.special.SoulStabilizerSpecialRenderer;
@@ -92,7 +91,6 @@ public final class NarakaModClient {
     private static void registerBlockEntityRenderers() {
         BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.SOUL_STABILIZER, SoulStabilizerBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.SOUL_SMITHING, SoulSmithingBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.UNSTABLE_BLOCK, UnstableBlockEntityRenderer::new);
     }
 
     private static void registerEntityRenderers() {

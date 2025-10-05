@@ -331,7 +331,7 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void addAfterimage(Afterimage afterimage) {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             SyncAfterimagePacket payload = new SyncAfterimagePacket(this, afterimage);
             NetworkManager.sendToClient(bossEvent.getPlayers(), payload);
         }

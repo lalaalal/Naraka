@@ -6,7 +6,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Position;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -28,6 +27,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -72,15 +73,15 @@ public class Spear extends AbstractArrow {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putBoolean("DealtDamage", dealtDamage);
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putBoolean("DealtDamage", dealtDamage);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        dealtDamage = compound.getBooleanOr("DealtDamage", true);
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        dealtDamage = input.getBooleanOr("DealtDamage", true);
         entityData.set(ID_LOYALTY, getLoyaltyFromItem(getPickupItem()));
         entityData.set(ID_FOIL, getPickupItem().hasFoil());
     }
@@ -123,7 +124,7 @@ public class Spear extends AbstractArrow {
                 this.setNoPhysics(true);
                 Vec3 vec3 = owner.getEyePosition().subtract(this.position());
                 this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015 * loyaltyLevel, this.getZ());
-                if (level().isClientSide) {
+                if (level().isClientSide()) {
                     this.yOld = this.getY();
                 }
 
