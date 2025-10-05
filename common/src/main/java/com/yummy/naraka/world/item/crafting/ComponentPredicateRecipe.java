@@ -3,12 +3,15 @@ package com.yummy.naraka.world.item.crafting;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yummy.naraka.world.item.crafting.display.ComponentPredicateRecipeDisplay;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
@@ -31,7 +34,10 @@ public class ComponentPredicateRecipe implements CraftingRecipe {
         this.category = category;
         this.showNotification = showNotification;
         this.predicateIngredients = predicateIngredients;
-        this.ingredients = predicateIngredients.stream().map(ComponentPredicateIngredient::ingredient).toList();
+        this.ingredients = predicateIngredients.stream()
+                .map(ComponentPredicateIngredient::ingredient)
+                .map(Ingredient::of)
+                .toList();
     }
 
     public List<Ingredient> ingredients() {
@@ -79,6 +85,18 @@ public class ComponentPredicateRecipe implements CraftingRecipe {
     @Override
     public String group() {
         return group;
+    }
+
+    @Override
+    public List<RecipeDisplay> display() {
+        return List.of(
+                new ComponentPredicateRecipeDisplay(
+                        predicateIngredients.stream()
+                                .map(ComponentPredicateIngredient::display)
+                                .toList(),
+                        new SlotDisplay.ItemStackSlotDisplay(result)
+                )
+        );
     }
 
     public static class Serializer implements RecipeSerializer<ComponentPredicateRecipe> {

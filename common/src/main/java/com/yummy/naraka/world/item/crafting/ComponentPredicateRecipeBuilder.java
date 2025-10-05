@@ -7,7 +7,9 @@ import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.predicates.DataComponentPredicate;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -15,7 +17,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 
@@ -43,12 +44,17 @@ public class ComponentPredicateRecipeBuilder implements RecipeBuilder {
     }
 
     public <T extends DataComponentPredicate> ComponentPredicateRecipeBuilder requires(int row, int column, ItemLike item, DataComponentPredicate.Type<T> type, T predicate) {
-        predicateIngredients.add(new ComponentPredicateIngredient(row, column, Ingredient.of(item), new DataComponentPredicate.Single<>(type, predicate)));
+        ComponentPredicateIngredient ingredient = new ComponentPredicateIngredient(
+                row, column,
+                HolderSet.direct(BuiltInRegistries.ITEM::wrapAsHolder, item.asItem()),
+                new DataComponentPredicate.Single<>(type, predicate)
+        );
+        predicateIngredients.add(ingredient);
         return this;
     }
 
     public <T extends DataComponentPredicate> ComponentPredicateRecipeBuilder requires(int row, int column, TagKey<Item> tag, DataComponentPredicate.Type<T> type, T predicate) {
-        predicateIngredients.add(new ComponentPredicateIngredient(row, column, Ingredient.of(items.getOrThrow(tag)), new DataComponentPredicate.Single<>(type, predicate)));
+        predicateIngredients.add(new ComponentPredicateIngredient(row, column, items.getOrThrow(tag), new DataComponentPredicate.Single<>(type, predicate)));
         return this;
     }
 
