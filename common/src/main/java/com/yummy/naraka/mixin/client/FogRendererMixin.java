@@ -24,9 +24,9 @@ import java.util.List;
 public abstract class FogRendererMixin {
     @Shadow @Final private static List<FogEnvironment> FOG_ENVIRONMENTS;
 
-    @Inject(method = "<clinit>", at = @At("TAIL"))
-    private static void addWhiteFogEnvironment(CallbackInfo ci) {
-        FOG_ENVIRONMENTS.add(new WhiteFogEnvironment());
+    @Inject(method = "<init>", at = @At("TAIL"))
+    private void addWhiteFogEnvironment(CallbackInfo ci) {
+        FOG_ENVIRONMENTS.addFirst(new WhiteFogEnvironment());
     }
 
     @Inject(method = "computeFogColor", at = @At("RETURN"), cancellable = true)

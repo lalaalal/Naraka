@@ -33,7 +33,7 @@ public class WhiteFogRenderHelper {
         float prevDistance = 4 * renderDistance * (1 - prevWhiteFogTickCount / (float) MAX_WHITE_SCREEN_TICK);
         float currentDistance = 4 * renderDistance * (1 - whiteFogTickCount / (float) MAX_WHITE_SCREEN_TICK);
         float distance = Mth.lerp(partialTick, prevDistance, currentDistance);
-        fogData.environmentalStart = 0;
+        fogData.environmentalStart = 0.25f;
         fogData.environmentalEnd = distance;
         fogData.skyEnd = fogData.environmentalEnd;
         fogData.cloudEnd = fogData.environmentalEnd;
