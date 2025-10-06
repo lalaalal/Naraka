@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
-import org.joml.Matrix4f;
 
 @Environment(EnvType.CLIENT)
 public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightningBolt, ColoredLightningBoltRenderState> {
@@ -52,8 +51,6 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
         float gg = g;
 
         submitNodeCollector.submitCustomGeometry(poseStack, RenderType.lightning(), (pose, vertexConsumer) -> {
-            Matrix4f matrix4f = poseStack.last().pose();
-
             for (int k = 0; k < 4; k++) {
                 RandomSource random2 = RandomSource.create(renderState.seed);
                 for (int l = 0; l < 3; l++) {
@@ -95,10 +92,10 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
                         float red = ARGB.redFloat(renderState.color);
                         float green = ARGB.greenFloat(renderState.color);
                         float blue = ARGB.blueFloat(renderState.color);
-                        quad(matrix4f, vertexConsumer, x1, z1, sectionY, x2, z2, alpha, red, green, blue, innerThickness, outerThickness, false, false, true, false);
-                        quad(matrix4f, vertexConsumer, x1, z1, sectionY, x2, z2, alpha, red, green, blue, innerThickness, outerThickness, true, false, true, true);
-                        quad(matrix4f, vertexConsumer, x1, z1, sectionY, x2, z2, alpha, red, green, blue, innerThickness, outerThickness, true, true, false, true);
-                        quad(matrix4f, vertexConsumer, x1, z1, sectionY, x2, z2, alpha, red, green, blue, innerThickness, outerThickness, false, true, false, false);
+                        quad(pose, vertexConsumer, x1, z1, sectionY, x2, z2, alpha, red, green, blue, innerThickness, outerThickness, false, false, true, false);
+                        quad(pose, vertexConsumer, x1, z1, sectionY, x2, z2, alpha, red, green, blue, innerThickness, outerThickness, true, false, true, true);
+                        quad(pose, vertexConsumer, x1, z1, sectionY, x2, z2, alpha, red, green, blue, innerThickness, outerThickness, true, true, false, true);
+                        quad(pose, vertexConsumer, x1, z1, sectionY, x2, z2, alpha, red, green, blue, innerThickness, outerThickness, false, true, false, false);
                     }
                 }
             }
@@ -106,7 +103,7 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
     }
 
     private static void quad(
-            Matrix4f pose,
+            PoseStack.Pose pose,
             VertexConsumer buffer,
             float x1,
             float z1,

@@ -47,22 +47,22 @@ public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning, M
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotation(renderState.ageInTicks * 0.05f));
         submitNodeCollector.submitCustomGeometry(poseStack, RenderType.lightning(), (pose, vertexConsumer) -> {
-            pillar(vertexConsumer, poseStack, renderState.size * 0.6f, renderState.size * 0.6f, 1, 123, 0x66fafafa);
-            pillar(vertexConsumer, poseStack, renderState.size * 0.7f, renderState.size * 0.7f, 0, 122, 0x55ababab);
-            pillar(vertexConsumer, poseStack, renderState.size * 0.8f, renderState.size * 0.8f, 0, 121, 0x44ababab);
-            pillar(vertexConsumer, poseStack, renderState.size * 0.9f, renderState.size * 0.9f, 0, 120, 0x33ababab);
-            pillar(vertexConsumer, poseStack, renderState.size, renderState.size, 0, 120, 0x668308e4);
+            pillar(vertexConsumer, pose, renderState.size * 0.6f, renderState.size * 0.6f, 1, 123, 0x66fafafa);
+            pillar(vertexConsumer, pose, renderState.size * 0.7f, renderState.size * 0.7f, 0, 122, 0x55ababab);
+            pillar(vertexConsumer, pose, renderState.size * 0.8f, renderState.size * 0.8f, 0, 121, 0x44ababab);
+            pillar(vertexConsumer, pose, renderState.size * 0.9f, renderState.size * 0.9f, 0, 120, 0x33ababab);
+            pillar(vertexConsumer, pose, renderState.size, renderState.size, 0, 120, 0x668308e4);
         });
 
         poseStack.popPose();
         super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
     }
 
-    private void pillar(VertexConsumer vertexConsumer, PoseStack poseStack, float innerSize, float outerSize, float minY, float maxY, int color) {
-        plane(vertexConsumer, poseStack.last(), new Vector3f(-innerSize, minY, outerSize), new Vector3f(innerSize, maxY, outerSize), color);
-        plane(vertexConsumer, poseStack.last(), new Vector3f(-innerSize, maxY, -outerSize), new Vector3f(innerSize, minY, -outerSize), color);
-        plane(vertexConsumer, poseStack.last(), new Vector3f(outerSize, minY, innerSize), new Vector3f(outerSize, maxY, -innerSize), color);
-        plane(vertexConsumer, poseStack.last(), new Vector3f(-outerSize, maxY, innerSize), new Vector3f(-outerSize, minY, -innerSize), color);
+    private void pillar(VertexConsumer vertexConsumer, PoseStack.Pose pose, float innerSize, float outerSize, float minY, float maxY, int color) {
+        plane(vertexConsumer, pose, new Vector3f(-innerSize, minY, outerSize), new Vector3f(innerSize, maxY, outerSize), color);
+        plane(vertexConsumer, pose, new Vector3f(-innerSize, maxY, -outerSize), new Vector3f(innerSize, minY, -outerSize), color);
+        plane(vertexConsumer, pose, new Vector3f(outerSize, minY, innerSize), new Vector3f(outerSize, maxY, -innerSize), color);
+        plane(vertexConsumer, pose, new Vector3f(-outerSize, maxY, innerSize), new Vector3f(-outerSize, minY, -innerSize), color);
     }
 
     private void plane(VertexConsumer vertexConsumer, PoseStack.Pose pose, Vector3f min, Vector3f max, int color) {
