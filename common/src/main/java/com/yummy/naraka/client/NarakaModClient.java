@@ -9,7 +9,7 @@ import com.yummy.naraka.client.gui.hud.StigmaHud;
 import com.yummy.naraka.client.gui.hud.WhiteHud;
 import com.yummy.naraka.client.init.*;
 import com.yummy.naraka.client.particle.*;
-import com.yummy.naraka.client.renderer.ColoredItemRenderer;
+import com.yummy.naraka.client.renderer.ItemColorRegistry;
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulStabilizerBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.entity.*;
@@ -75,7 +75,7 @@ public final class NarakaModClient {
     }
 
     private static void initializeItems() {
-        ColoredItemRenderer.register(NarakaItems.RAINBOW_SWORD, ComponentStyles.RAINBOW_COLOR::getCurrentColor);
+        ItemColorRegistry.register(NarakaItems.RAINBOW_SWORD, ComponentStyles.RAINBOW_COLOR::getCurrentColor);
     }
 
     private static void initializeBlocks() {
