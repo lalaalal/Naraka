@@ -10,6 +10,7 @@ import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.SoulType;
+import com.yummy.naraka.world.item.alchemy.NarakaPotions;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimPatterns;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
@@ -24,7 +25,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.JukeboxSong;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.item.equipment.trim.TrimPattern;
 import net.minecraft.world.level.block.Block;
@@ -197,6 +200,10 @@ public class NarakaLanguageProviders {
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_3, "Herobrine Phase 3", "히로빈 3 페이즈");
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_4, "Herobrine Phase 4", "히로빈 4 페이즈");
 
+        addPotion(Items.POTION, NarakaPotions.GOD_BLESS, "Potion of Bless", "축복의 물약");
+        addPotion(Items.SPLASH_POTION, NarakaPotions.GOD_BLESS, "Splash Potion of Bless", "투척용 축복의 물약");
+        addPotion(Items.LINGERING_POTION, NarakaPotions.GOD_BLESS, "Lingering Potion of Bless", "잔류형 축복의 물약");
+
         addItem(NarakaItems.STIGMA_ROD, "Stigma Rod", "낙인 막대기");
         addItem(NarakaItems.STARDUST_STAFF, "Stardust Staff");
         addItem(NarakaItems.NARAKA_FIREBALL_STAFF, "Naraka Fireball Staff");
@@ -320,6 +327,7 @@ public class NarakaLanguageProviders {
         add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_LAPIS), "Challenger's Blessing", "도전자의 축복");
         add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_NECTARIUM), "Challenger's Blessing", "도전자의 축복");
         add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_REDSTONE), "Challenger's Blessing", "도전자의 축복");
+        add(LanguageKey.mobEffect(NarakaMobEffects.GOD_BLESS), "God Bless", "신의 축복");
 
         add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_1), "Combo Attack 1", "연계 공격 1");
         add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_2), "Combo Attack 2", "연계 공격 2");
@@ -380,6 +388,13 @@ public class NarakaLanguageProviders {
         if (translations.length == 0)
             throw new IllegalStateException("Translations must not be empty");
         translationMap.put(key, translations);
+    }
+
+    public void addPotion(Item item, Holder<Potion> potion, String... effectTranslations) {
+        add(
+                item.getDescriptionId() + ".effect." + potion.value().name(),
+                effectTranslations
+        );
     }
 
     public void addItem(Supplier<? extends Item> item, String... translations) {
