@@ -103,14 +103,13 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
 
     public static void renderNonShaderLonginus(EntityModel<SpearRenderState> model, float ageInTicks, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
         submitNodeCollector.submitModelPart(model.root(), poseStack, RenderType.entityCutout(NarakaTextures.LONGINUS), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, 0xff000000, null);
-
-        renderLonginus(model, ageInTicks, 0.001f, 0.01f, poseStack, submitNodeCollector);
-        renderLonginus(model, ageInTicks, 0.002f, 0.005f, poseStack, submitNodeCollector);
-        renderLonginus(model, ageInTicks, 0.0015f, 0.0025f, poseStack, submitNodeCollector);
+        renderLonginus(model, ageInTicks, 0.001f, 0.01f, poseStack, submitNodeCollector, 1);
+        renderLonginus(model, ageInTicks, 0.002f, 0.005f, poseStack, submitNodeCollector, 2);
+        renderLonginus(model, ageInTicks, 0.0015f, 0.0025f, poseStack, submitNodeCollector, 3);
     }
 
-    private static void renderLonginus(EntityModel<SpearRenderState> model, float ageInTicks, float uMultiplier, float vMultiplier, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+    private static void renderLonginus(EntityModel<SpearRenderState> model, float ageInTicks, float uMultiplier, float vMultiplier, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int order) {
         RenderType renderType = RenderType.energySwirl(NarakaTextures.LONGINUS, (ageInTicks * uMultiplier) % 1, (ageInTicks * vMultiplier) % 1);
-        submitNodeCollector.submitModelPart(model.root(), poseStack, renderType, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, 0xdd888888, null);
+        submitNodeCollector.order(order).submitModelPart(model.root(), poseStack, renderType, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, -1, null);
     }
 }
