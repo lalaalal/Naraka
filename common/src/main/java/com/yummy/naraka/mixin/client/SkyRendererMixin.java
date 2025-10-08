@@ -35,19 +35,22 @@ import java.util.OptionalInt;
 @Environment(EnvType.CLIENT)
 @Mixin(SkyRenderer.class)
 public abstract class SkyRendererMixin {
-    @Shadow @Final
+    @Shadow
+    @Final
     private RenderSystem.AutoStorageIndexBuffer quadIndices;
 
-    @Nullable @Unique
+    @Nullable
+    @Unique
     private AbstractTexture naraka$eclipseTexture;
 
-    @Nullable @Unique
+    @Nullable
+    @Unique
     private GpuBuffer naraka$eclipseBuffer;
 
     @Shadow
     protected abstract AbstractTexture getTexture(ResourceLocation resourceLocation);
 
-    @Inject(method = "<init>", at = @At("TAIL"))
+    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SkyRenderer;buildMoonPhases()Lcom/mojang/blaze3d/buffers/GpuBuffer;"))
     private void initEclipseBuffer(CallbackInfo ci) {
         naraka$eclipseBuffer = naraka$buildEclipseBuffer();
         HerobrineSkyRenderHelper.setEclipseRenderer(this::naraka$renderEclipse);
@@ -68,41 +71,38 @@ public abstract class SkyRendererMixin {
 
     @Unique
     private GpuBuffer naraka$buildEclipseBuffer() {
-        GpuBuffer var5;
         try (ByteBufferBuilder byteBufferBuilder = ByteBufferBuilder.exactlySized(4 * DefaultVertexFormat.POSITION_TEX.getVertexSize())) {
             BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
             Matrix4f matrix4f = new Matrix4f();
-            bufferBuilder.addVertex(matrix4f, -1.0F, 0.0F, -1.0F).setUv(0.0F, 0.0F);
-            bufferBuilder.addVertex(matrix4f, 1.0F, 0.0F, -1.0F).setUv(1.0F, 0.0F);
-            bufferBuilder.addVertex(matrix4f, 1.0F, 0.0F, 1.0F).setUv(1.0F, 1.0F);
             bufferBuilder.addVertex(matrix4f, -1.0F, 0.0F, 1.0F).setUv(0.0F, 1.0F);
+            bufferBuilder.addVertex(matrix4f, 1.0F, 0.0F, 1.0F).setUv(1.0F, 1.0F);
+            bufferBuilder.addVertex(matrix4f, 1.0F, 0.0F, -1.0F).setUv(1.0F, 0.0F);
+            bufferBuilder.addVertex(matrix4f, -1.0F, 0.0F, -1.0F).setUv(0.0F, 0.0F);
 
             try (MeshData meshData = bufferBuilder.buildOrThrow()) {
-                var5 = RenderSystem.getDevice().createBuffer(() -> "Sun quad", 40, meshData.vertexBuffer());
+                return RenderSystem.getDevice().createBuffer(() -> "Eclipse quad", 40, meshData.vertexBuffer());
             }
         }
-
-        return var5;
     }
 
     @Unique
-    private void naraka$renderEclipse(float f, PoseStack poseStack) {
+    private void naraka$renderEclipse(float rainBrightness, PoseStack poseStack) {
         if (this.naraka$eclipseTexture != null && this.naraka$eclipseBuffer != null) {
             Matrix4fStack matrix4fStack = RenderSystem.getModelViewStack();
             matrix4fStack.pushMatrix();
             matrix4fStack.mul(poseStack.last().pose());
-            matrix4fStack.translate(0.0F, 100.0F, 0.0F);
-            matrix4fStack.scale(30.0F, 1.0F, 30.0F);
+            matrix4fStack.translate(0.0F, -100.0F, 0.0F);
+            matrix4fStack.scale(30, 1, 30);
             GpuBufferSlice gpuBufferSlice = RenderSystem.getDynamicUniforms()
-                    .writeTransform(matrix4fStack, new Vector4f(1.0F, 1.0F, 1.0F, f), new Vector3f(), new Matrix4f(), 0.0F);
-            GpuTextureView gpuTextureView = Minecraft.getInstance().getMainRenderTarget().getColorTextureView();
-            GpuTextureView gpuTextureView2 = Minecraft.getInstance().getMainRenderTarget().getDepthTextureView();
+                    .writeTransform(matrix4fStack, new Vector4f(1.0F, 1.0F, 1.0F, rainBrightness), new Vector3f(), new Matrix4f(), 0.0F);
+            GpuTextureView colorTextureView = Minecraft.getInstance().getMainRenderTarget().getColorTextureView();
+            GpuTextureView depthTextureView = Minecraft.getInstance().getMainRenderTarget().getDepthTextureView();
             GpuBuffer gpuBuffer = this.quadIndices.getBuffer(6);
 
-            if (gpuTextureView != null) {
+            if (colorTextureView != null) {
                 try (RenderPass renderPass = RenderSystem.getDevice()
                         .createCommandEncoder()
-                        .createRenderPass(() -> "Sky eclipse", gpuTextureView, OptionalInt.empty(), gpuTextureView2, OptionalDouble.empty())) {
+                        .createRenderPass(() -> "Sky eclipse", colorTextureView, OptionalInt.empty(), depthTextureView, OptionalDouble.empty())) {
                     renderPass.setPipeline(RenderPipelines.CELESTIAL);
                     RenderSystem.bindDefaultUniforms(renderPass);
                     renderPass.setUniform("DynamicTransforms", gpuBufferSlice);
@@ -115,5 +115,11 @@ public abstract class SkyRendererMixin {
 
             matrix4fStack.popMatrix();
         }
+    }
+
+    @Inject(method = "close", at = @At("TAIL"))
+    private void closeEclipseBuffer(CallbackInfo ci) {
+        if (naraka$eclipseBuffer != null)
+            naraka$eclipseBuffer.close();
     }
 }
