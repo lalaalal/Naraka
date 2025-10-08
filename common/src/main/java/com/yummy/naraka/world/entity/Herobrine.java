@@ -451,18 +451,21 @@ public class Herobrine extends AbstractHerobrine {
             CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaMusics.musicEventByPhase(getPhase()));
             NetworkManager.sendToClient(serverPlayer, packet);
             if (isFinalModel()) {
-                this.startHerobrineSky(serverPlayer.level());
+                this.startHerobrineSky();
                 SyncAnimationPacket payload = new SyncAnimationPacket(this, currentAnimation);
                 NetworkManager.clientbound().send(serverPlayer, payload);
             }
         }
     }
 
-    public void startHerobrineSky(ServerLevel level) {
+    public void startHerobrineSky() {
         NarakaClientboundEventPacket packet = new NarakaClientboundEventPacket(
                 NarakaClientboundEventPacket.Event.START_HEROBRINE_SKY
         );
         NetworkManager.clientbound().send(bossEvent.getPlayers(), packet);
+    }
+
+    public void fixTimeAndWeather(ServerLevel level) {
         level.getGameRules().getRule(GameRules.RULE_DAYLIGHT).set(false, level.getServer());
         level.getGameRules().getRule(GameRules.RULE_WEATHER_CYCLE).set(false, level.getServer());
         level.setDayTime(18000);

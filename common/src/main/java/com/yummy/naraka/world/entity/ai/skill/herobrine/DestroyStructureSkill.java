@@ -61,6 +61,7 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
         runAt(87, () -> mob.setDeltaMovement(0, 0.6, 0));
         runBetween(85, 100, () -> reduceSpeed(0.75));
 
+        runAt(140, () -> mob.fixTimeAndWeather(level));
         runAt(160, () -> startPhase3(level));
         runAt(240, () -> hurtEntities(level, this::checkTarget, 5));
         runAt(240, () -> mob.setDeltaMovement(0, -0.5, 0));
@@ -135,7 +136,7 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
 
     protected void startPhase3(ServerLevel level) {
         mob.stopWhiteScreen();
-        mob.startHerobrineSky(level);
+        mob.startHerobrineSky();
         mob.sendMusic(3);
         mob.setFinalModel(true);
         mob.playStaticAnimation(HerobrineAnimationLocations.ENTER_PHASE_3, 120, false, true);
