@@ -3,6 +3,8 @@ package com.yummy.naraka.mixin.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.yummy.naraka.client.renderer.ItemColorSetter;
 import com.yummy.naraka.client.renderer.LayerRenderStateSetter;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -14,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@Environment(EnvType.CLIENT)
 @Mixin(ItemStackRenderState.class)
 public abstract class ItemStackRenderStateMixin implements ItemColorSetter {
     @Shadow

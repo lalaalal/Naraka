@@ -1,9 +1,11 @@
 package com.yummy.naraka.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.yummy.naraka.client.renderer.ColoredItemSubmitNodeCollector;
+import com.yummy.naraka.client.renderer.ColoredItemSubmitNodeCollection;
 import com.yummy.naraka.client.renderer.ItemColorSetter;
 import com.yummy.naraka.client.renderer.LayerRenderStateSetter;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -20,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 @Mixin(ItemStackRenderState.LayerRenderState.class)
 public abstract class LayerRenderStateMixin implements ItemColorSetter, LayerRenderStateSetter {
     @Shadow
@@ -50,8 +53,8 @@ public abstract class LayerRenderStateMixin implements ItemColorSetter, LayerRen
     public void submitColoredItem(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int i, int j, int k, CallbackInfo ci) {
         if (renderType != null && naraka$color != -1) {
             ci.cancel();
-            if (submitNodeCollector.order(0) instanceof ColoredItemSubmitNodeCollector coloredItemSubmitNodeCollector)
-                coloredItemSubmitNodeCollector.naraka$submitColoredItem(poseStack, naraka$itemDisplayContext, i, j, naraka$color, k, this.tintLayers, this.quads, this.renderType, this.foilType);
+            if (submitNodeCollector.order(0) instanceof ColoredItemSubmitNodeCollection coloredItemSubmitNodeCollection)
+                coloredItemSubmitNodeCollection.naraka$submitColoredItem(poseStack, naraka$itemDisplayContext, i, j, naraka$color, k, this.tintLayers, this.quads, this.renderType, this.foilType);
             poseStack.popPose();
         }
     }

@@ -17,8 +17,8 @@ import java.util.List;
 public class ColoredItemFeatureRenderer {
     private final PoseStack poseStack = new PoseStack();
 
-    public void render(ColoredItemSubmitNodeProvider coloredItemSubmitNodeProvider, MultiBufferSource.BufferSource bufferSource, OutlineBufferSource outlineBufferSource) {
-        coloredItemSubmitNodeProvider.naraka$getColoredItemSubmits().forEach((itemSubmit, color) -> {
+    public void render(ColoredItemSubmitNodeCollection coloredItemSubmitNodeCollection, MultiBufferSource.BufferSource bufferSource, OutlineBufferSource outlineBufferSource) {
+        coloredItemSubmitNodeCollection.naraka$getColoredItemSubmits().forEach((itemSubmit, color) -> {
             this.poseStack.pushPose();
             this.poseStack.last().set(itemSubmit.pose());
             MultiBufferSource buffer = bufferSource;

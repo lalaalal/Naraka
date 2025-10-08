@@ -7,6 +7,9 @@
     "client.CameraMixin",
     "client.CompassAngleStateMixin",
     "client.CraftingRecipeBookComponentMixin",
+    "client.EntityRenderDispatcherMixin",
+    "client.EntityRendererMixin",
+    "client.EntityRenderStateMixin",
     "client.FeatureRenderDispatcherMixin",
     "client.FogRendererMixin",
     "client.GuiMixin",
@@ -37,7 +40,6 @@
     "ServerEntityMixin",
     "ServerPlayerGameModeMixin",
     "WanderingTraderMixin",
-    "accessor.CreativeModeTabsAccessor",
     "invoker.MangroveRootsBlockInvoker",
     "invoker.MobEffectInvoker",
     "invoker.RootPlacerTypeInvoker"
