@@ -6,6 +6,7 @@ import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAfterimagePacket;
+import com.yummy.naraka.network.SyncAnimationPacket;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
@@ -449,6 +450,11 @@ public class Herobrine extends AbstractHerobrine {
             bossEvent.addPlayer(serverPlayer);
             CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaMusics.musicEventByPhase(getPhase()));
             NetworkManager.sendToClient(serverPlayer, packet);
+            if (isFinalModel()) {
+                this.startHerobrineSky(serverPlayer.level());
+                SyncAnimationPacket payload = new SyncAnimationPacket(this, currentAnimation);
+                NetworkManager.clientbound().send(serverPlayer, payload);
+            }
         }
     }
 
