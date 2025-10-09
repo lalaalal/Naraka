@@ -18,7 +18,7 @@ public class HerobrineSanctuaryGenerationPointProvider implements StructureGener
         if (Math.abs(bridgeHeight1 - bridgeHeight2) > 3)
             return Optional.empty();
         int heightOffset = Math.min(bridgeHeight1, bridgeHeight2);
-        if (heightOffset > seaLevel)
+        if (heightOffset > seaLevel + 3)
             return Optional.empty();
         if (heightOffset == seaLevel)
             heightOffset += 1;
