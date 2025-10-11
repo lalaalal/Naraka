@@ -24,7 +24,7 @@ public class StormSkill extends ComboSkill<Herobrine> {
     private final HashMap<LivingEntity, Integer> hurtEntities = new HashMap<>();
 
     public StormSkill(Herobrine mob, Skill<?> parryingSkill) {
-        super(LOCATION, mob, 80, 600, 0.5f, 80, parryingSkill);
+        super(LOCATION, mob, 80, 600, 0.8f, 80, parryingSkill);
     }
 
     @Override
@@ -99,6 +99,6 @@ public class StormSkill extends ComboSkill<Herobrine> {
 
     @Override
     protected float calculateDamage(LivingEntity target) {
-        return mob.getAttackDamage() + target.getMaxHealth() * 0.1f;
+        return target.getMaxHealth() * 0.2f;
     }
 }

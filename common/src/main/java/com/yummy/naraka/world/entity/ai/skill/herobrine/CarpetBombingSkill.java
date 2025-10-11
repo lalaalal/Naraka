@@ -23,6 +23,7 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final_herobrine.carpet_bombing");
 
     private final Map<Stardust, Integer> stardusts = new HashMap<>();
+    private Vec3 deltaMovement = Vec3.ZERO;
     private int onGroundTick = 0;
 
     public CarpetBombingSkill(Herobrine mob) {
@@ -34,6 +35,7 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
         super.prepare();
         stardusts.clear();
         onGroundTick = 0;
+        deltaMovement = Vec3.ZERO;
     }
 
     private void addStardust(ServerLevel level, float yRot, int basePower, boolean followTarget) {
@@ -52,7 +54,7 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
         for (int index = 0; index < 16; index++)
             candidates.add(index);
         List<Integer> followingIndex = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i <= 3; i++) {
             int randomIndex = mob.getRandom().nextInt(candidates.size());
             candidates.remove(randomIndex);
             followingIndex.add(randomIndex);
@@ -75,23 +77,21 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
         return mob.getAttackDamage() + target.getMaxHealth() * 0.1f;
     }
 
-    private Vec3 modifyMovement(Vec3 original) {
-        return original.scale(0.5).add(0, -3, 0);
-    }
-
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        runAt(10, () -> mob.setDeltaMovement(0, 1.5, 0));
+        runAt(10, () -> mob.setDeltaMovement(0, 2, 0));
         runBetween(11, 25, () -> reduceSpeed(0.8f));
         runFrom(0, () -> spawnStardust(level));
 
         runBetween(10, 50, () -> rotateTowardTarget(target));
         runAfter(10, () -> lookTarget(target));
-        runBetween(50, 70, () -> moveToTarget(target, true, this::modifyMovement));
-        runAt(55, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 3));
+        runAt(30, () -> deltaMovement = target.position().subtract(mob.position()).multiply(0.3, 0.6, 0.3));
+        runBetween(50, 53, () -> mob.setDeltaMovement(deltaMovement));
+        runAt(53, this::stopMoving);
+        runAt(55, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 2));
         runAt(70, () -> mob.setDeltaMovement(0, 0.4, 0));
         runBetween(71, 90, () -> reduceSpeed(0.4f));
-        runAt(90, () -> mob.setDeltaMovement(Vec3.ZERO));
+        runAt(90, this::stopMoving);
 
         onGround(level);
     }

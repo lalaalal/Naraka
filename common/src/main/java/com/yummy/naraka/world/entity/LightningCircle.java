@@ -58,7 +58,8 @@ public class LightningCircle extends Entity {
                 getBoundingBox().inflate(radius, 5, radius),
                 this::canHurtTarget
         ).forEach(target -> {
-            if (target.hurtServer(level, damageSources().magic(), 10) && herobrine != null)
+            float damage = target.getMaxHealth() * 0.15f;
+            if (target.hurtServer(level, damageSources().magic(), damage) && herobrine != null)
                 herobrine.stigmatizeEntity(level, target);
         });
     }
