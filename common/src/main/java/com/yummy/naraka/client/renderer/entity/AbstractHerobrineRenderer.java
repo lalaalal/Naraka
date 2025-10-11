@@ -80,17 +80,24 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
 
         if (renderState.finalModel) {
             renderState.eyeTexture = NarakaTextures.FINAL_HEROBRINE_EYE;
-            this.model = finalModel;
         } else {
             renderState.eyeTexture = NarakaTextures.HEROBRINE_EYE;
-            this.model = defaultModel;
         }
 
         itemModelResolver.updateForLiving(renderState.pickaxe, pickaxe, ItemDisplayContext.NONE, entity);
     }
 
+    protected void setupModelByRenderState(S renderState) {
+        if (renderState.finalModel) {
+            this.model = finalModel;
+        } else {
+            this.model = defaultModel;
+        }
+    }
+
     @Override
     public void submit(S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+        setupModelByRenderState(renderState);
         poseStack.pushPose();
         poseStack.scale(0.935f, 0.935f, 0.935f);
         super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
