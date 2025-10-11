@@ -6,7 +6,11 @@ import com.yummy.naraka.util.NarakaUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -82,28 +86,28 @@ public class NarakaRenderUtils {
         }, reverse);
     }
 
-    public static void renderFlatImage(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color, Direction.Axis face) {
-        vertices(vertexConsumer, poseStack.last(), VERTEX_MAPPINGS.get(face), DEFAULT_UVS, packedLight, packedOverlay, color, Direction.UP, false);
-        vertices(vertexConsumer, poseStack.last(), OPPOSITE_VERTEX_MAPPINGS.get(face), OPPOSITE_UVS, packedLight, packedOverlay, color, Direction.UP, false);
+    public static void renderFlatImage(PoseStack.Pose pose, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color, Direction.Axis face) {
+        vertices(vertexConsumer, pose, VERTEX_MAPPINGS.get(face), DEFAULT_UVS, packedLight, packedOverlay, color, Direction.UP, false);
+        vertices(vertexConsumer, pose, OPPOSITE_VERTEX_MAPPINGS.get(face), OPPOSITE_UVS, packedLight, packedOverlay, color, Direction.UP, false);
     }
 
-    public static void renderFlatImage(PoseStack poseStack, VertexConsumer vertexConsumer, List<Vector3f> vertices, float u, float v, float width, float height, int packedLight, int packedOverlay, int color) {
+    public static void renderFlatImage(PoseStack.Pose pose, VertexConsumer vertexConsumer, List<Vector3f> vertices, float u, float v, float width, float height, int packedLight, int packedOverlay, int color) {
         List<Vector2f> uvs = createUVList(u, v, width, height);
-        vertices(vertexConsumer, poseStack.last(), vertices, uvs, packedLight, packedOverlay, color, Direction.UP, false);
-        vertices(vertexConsumer, poseStack.last(), vertices, uvs, packedLight, packedOverlay, color, Direction.UP, true);
+        vertices(vertexConsumer, pose, vertices, uvs, packedLight, packedOverlay, color, Direction.UP, false);
+        vertices(vertexConsumer, pose, vertices, uvs, packedLight, packedOverlay, color, Direction.UP, true);
     }
 
-    public static void renderFlatImage(PoseStack poseStack, VertexConsumer vertexConsumer, List<Vector3f> vertices, int packedLight, int packedOverlay, int color) {
-        vertices(vertexConsumer, poseStack.last(), vertices, DEFAULT_UVS, packedLight, packedOverlay, color, Direction.UP, false);
-        vertices(vertexConsumer, poseStack.last(), vertices, OPPOSITE_UVS, packedLight, packedOverlay, color, Direction.UP, true);
+    public static void renderFlatImage(PoseStack.Pose pose, VertexConsumer vertexConsumer, List<Vector3f> vertices, int packedLight, int packedOverlay, int color) {
+        vertices(vertexConsumer, pose, vertices, DEFAULT_UVS, packedLight, packedOverlay, color, Direction.UP, false);
+        vertices(vertexConsumer, pose, vertices, OPPOSITE_UVS, packedLight, packedOverlay, color, Direction.UP, true);
     }
 
     public static Vector3f vector3f(Vec3 vec3) {
         return new Vector3f((float) vec3.x, (float) vec3.y, (float) vec3.z);
     }
 
-    public static void renderTailPart(PoseStack poseStack, VertexConsumer vertexConsumer, Vector3f from, Vector3f to, float tailWidth, float index, float size, int color) {
-        NarakaRenderUtils.renderFlatImage(poseStack, vertexConsumer,
+    public static void renderTailPart(PoseStack.Pose pose, VertexConsumer vertexConsumer, Vector3f from, Vector3f to, float tailWidth, float index, float size, int color) {
+        NarakaRenderUtils.renderFlatImage(pose, vertexConsumer,
                 createVertices(from, to, tailWidth, NarakaRenderUtils::modifyY), index, index, size, size,
                 LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
         );
@@ -135,5 +139,21 @@ public class NarakaRenderUtils {
         if (player == null)
             return false;
         return player.getUUID().equals(livingEntity.getUUID());
+    }
+
+    public static <S> void submitModelWithFoilRenderTypes(Model<? super S> model, S renderState, PoseStack poseStack, RenderType renderType, SubmitNodeCollector submitNodeCollector, int packedLight, boolean hasFoil) {
+        List<RenderType> renderTypes = ItemRenderer.getFoilRenderTypes(renderType, false, hasFoil);
+        for (int index = 0; index < renderTypes.size(); index++) {
+            submitNodeCollector.order(index).submitModel(
+                    model,
+                    renderState,
+                    poseStack,
+                    renderTypes.get(index),
+                    packedLight, OverlayTexture.NO_OVERLAY, -1,
+                    null,
+                    0,
+                    null
+            );
+        }
     }
 }

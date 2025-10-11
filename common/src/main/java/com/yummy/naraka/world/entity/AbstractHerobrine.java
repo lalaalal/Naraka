@@ -5,7 +5,6 @@ import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -31,6 +30,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -205,20 +206,20 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        boolean finalModel = tag.getBooleanOr("FinalModel", false);
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        boolean finalModel = input.getBooleanOr("FinalModel", false);
         entityData.set(FINAL_MODEL, finalModel);
-        boolean displayPickaxe = tag.getBooleanOr("DisplayPickaxe", false);
+        boolean displayPickaxe = input.getBooleanOr("DisplayPickaxe", false);
         setDisplayPickaxe(displayPickaxe);
         setPersistenceRequired();
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putBoolean("FinalModel", isFinalModel());
-        tag.putBoolean("DisplayPickaxe", displayPickaxe());
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putBoolean("FinalModel", isFinalModel());
+        output.putBoolean("DisplayPickaxe", displayPickaxe());
     }
 
     protected abstract Fireball createFireball(ServerLevel level);

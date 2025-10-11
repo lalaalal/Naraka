@@ -1,11 +1,12 @@
 package com.yummy.naraka.mixin.client;
 
-import com.yummy.naraka.client.renderer.ColoredItemRenderer;
+import com.yummy.naraka.client.renderer.ItemColorRegistry;
+import com.yummy.naraka.client.renderer.ItemColorSetter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -18,7 +19,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ItemModelResolver.class)
 public abstract class ItemModelResolverMixin {
     @Inject(method = "updateForTopItem", at = @At("HEAD"))
-    public void storeItemRenderContext(ItemStackRenderState renderState, ItemStack stack, ItemDisplayContext displayContext, Level level, LivingEntity entity, int seed, CallbackInfo ci) {
-        ColoredItemRenderer.setCurrentRenderingItem(stack);
+    public void storeItemRenderContext(ItemStackRenderState itemStackRenderState, ItemStack itemStack, ItemDisplayContext itemDisplayContext, Level level, ItemOwner itemOwner, int i, CallbackInfo ci) {
+        if (itemStackRenderState instanceof ItemColorSetter itemColorSetter) {
+            if (ItemColorRegistry.hasColorOverride(itemStack)) {
+                itemColorSetter.naraka$setColor(ItemColorRegistry.getColor(itemStack));
+            } else if (ItemColorRegistry.hasTemporaryColor(itemStackRenderState)) {
+                itemColorSetter.naraka$setColor(ItemColorRegistry.getTemporaryColor(itemStackRenderState));
+            }
+        }
     }
 }

@@ -1,31 +1,33 @@
 package com.yummy.naraka.client.renderer.special;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.PrimitiveCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yummy.naraka.client.util.NarakaRenderUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.Model;
-import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
+
+import java.util.Set;
 
 @Environment(EnvType.CLIENT)
 public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
-    private final Model model;
+    private final Model<Unit> model;
     private final ResourceLocation texture;
 
-    public SpearSpecialRenderer(Model model, ResourceLocation texture) {
+    public SpearSpecialRenderer(Model<Unit> model, ResourceLocation texture) {
         this.model = model;
         this.texture = texture;
     }
@@ -36,13 +38,19 @@ public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
     }
 
     @Override
-    public void render(@Nullable Boolean hasFoil, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean hasFoilType) {
+    public void submit(@Nullable Boolean hasFoil, ItemDisplayContext itemDisplayContext, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, int overlay, boolean bl, int outlineColor) {
+        if (hasFoil == null)
+            return;
         poseStack.pushPose();
         poseStack.scale(1, -1, 1);
         RenderType renderType = model.renderType(texture);
-        VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferSource, renderType, false, Boolean.TRUE.equals(hasFoil));
-        model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
+        NarakaRenderUtils.submitModelWithFoilRenderTypes(model, Unit.INSTANCE, poseStack, renderType, submitNodeCollector, light, hasFoil);
         poseStack.popPose();
+    }
+
+    @Override
+    public void getExtents(Set<Vector3f> output) {
+        model.root().getExtentsForGui(new PoseStack(), output);
     }
 
     @Environment(EnvType.CLIENT)
@@ -61,9 +69,9 @@ public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
         }
 
         @Override
-        public SpecialModelRenderer<?> bake(EntityModelSet modelSet) {
-            ModelPart root = modelSet.bakeLayer(modelLayer);
-            Model model = new Model.Simple(root, RenderType::entityCutout);
+        public SpecialModelRenderer<?> bake(BakingContext context) {
+            ModelPart root = context.entityModelSet().bakeLayer(modelLayer);
+            Model<Unit> model = new Model.Simple(root, RenderType::entityCutout);
             return new SpearSpecialRenderer(model, texture);
         }
 

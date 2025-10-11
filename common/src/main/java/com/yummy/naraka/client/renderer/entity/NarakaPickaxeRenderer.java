@@ -4,19 +4,18 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.model.NarakaPickaxeModel;
-import com.yummy.naraka.client.renderer.ColoredItemRenderer;
 import com.yummy.naraka.client.renderer.entity.state.NarakaPickaxeRenderState;
-import com.yummy.naraka.util.Color;
-import com.yummy.naraka.world.NarakaPickaxe;
+import com.yummy.naraka.world.entity.NarakaPickaxe;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -59,11 +58,10 @@ public class NarakaPickaxeRenderer extends EntityRenderer<NarakaPickaxe, NarakaP
         reusedState.setAnimationVisitor(entity);
         reusedState.yRot = entity.getYRot(partialTick);
         itemModelResolver.updateForNonLiving(reusedState.pickaxe, pickaxe, ItemDisplayContext.NONE, entity);
-        ColoredItemRenderer.setTemporaryColorForCurrent(Color.of(0xabffffff));
     }
 
     @Override
-    public void render(NarakaPickaxeRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void submit(NarakaPickaxeRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         model.setupAnim(renderState);
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(180 - renderState.yRot));
@@ -71,10 +69,9 @@ public class NarakaPickaxeRenderer extends EntityRenderer<NarakaPickaxe, NarakaP
         poseStack.mulPose(Axis.ZP.rotationDegrees(45));
         poseStack.translate(0.5, 0.5, 0);
         poseStack.scale(4, 4, 1);
-        renderState.pickaxe.render(poseStack, buffer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
+        renderState.pickaxe.submit(poseStack, submitNodeCollector, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
     }
-
 
     @Override
     protected AABB getBoundingBoxForCulling(NarakaPickaxe entity) {

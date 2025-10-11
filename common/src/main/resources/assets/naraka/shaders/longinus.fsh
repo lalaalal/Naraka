@@ -1,11 +1,15 @@
 #version 150
 
+#moj_import <minecraft:fog.glsl>
+#moj_import <minecraft:matrix.glsl>
+#moj_import <minecraft:globals.glsl>
+
 uniform sampler2D Sampler0;
 uniform sampler2D Sampler1;
 
-uniform float GameTime;
-
 in vec4 texProj0;
+in float sphericalVertexDistance;
+in float cylindricalVertexDistance;
 
 const vec3[] COLORS = vec3[](
     vec3(0.07),
@@ -33,13 +37,6 @@ const mat4 SCALE_TRANSLATE = mat4(
     0.0, 0.0, 0.0, 1.0
 );
 
-mat2 mat2_rotate_z(float radians) {
-    return mat2(
-        cos(radians), -sin(radians),
-        sin(radians), cos(radians)
-    );
-}
-
 mat4 end_portal_layer(float layer) {
     mat4 translate = mat4(
         1.0, 0.0, 0.0, 17.0 / layer,
@@ -60,6 +57,6 @@ out vec4 fragColor;
 void main() {
     vec3 color = textureProj(Sampler0, texProj0).rgb * COLORS[0];
     for (int i = 0; i < LONGINUS_LAYERS; i++)
-    color += textureProj(Sampler1, texProj0 * end_portal_layer(float(i + 1))).rgb * COLORS[i];
+        color += textureProj(Sampler1, texProj0 * end_portal_layer(float(i + 1))).rgb * COLORS[i];
     fragColor = vec4(color, 1.0);
 }

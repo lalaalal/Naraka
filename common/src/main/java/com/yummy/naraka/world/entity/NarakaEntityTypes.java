@@ -4,8 +4,6 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.init.EntityAttributeRegistry;
-import com.yummy.naraka.world.LightningCircle;
-import com.yummy.naraka.world.NarakaPickaxe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
@@ -77,8 +75,9 @@ public class NarakaEntityTypes {
     public static final HolderProxy<EntityType<?>, EntityType<DiamondGolem>> DIAMOND_GOLEM = register(
             "diamond_golem",
             EntityType.Builder.of(DiamondGolem::new, MobCategory.MONSTER)
-                    .sized(2f, 3f)
+                    .sized(1.8f, 3f)
                     .updateInterval(1)
+                    .clientTrackingRange(10)
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<MagicCircle>> MAGIC_CIRCLE = register(

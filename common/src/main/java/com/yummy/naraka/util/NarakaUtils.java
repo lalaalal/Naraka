@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -42,11 +43,11 @@ public class NarakaUtils {
         }
     }
 
-    public static Vector3f easeInOut(float delta, float partition, Vector3f start, Vector3f end, Vector3f dest) {
+    public static Vector3f easeInOut(float delta, float partition, Vector3fc start, Vector3fc end, Vector3f dest) {
         return dest.set(
-                easeInOut(delta, partition, start.x, end.x),
-                easeInOut(delta, partition, start.y, end.y),
-                easeInOut(delta, partition, start.z, end.z)
+                easeInOut(delta, partition, start.x(), end.x()),
+                easeInOut(delta, partition, start.y(), end.y()),
+                easeInOut(delta, partition, start.z(), end.z())
         );
     }
 

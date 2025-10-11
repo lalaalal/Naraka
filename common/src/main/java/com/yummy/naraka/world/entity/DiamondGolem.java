@@ -30,7 +30,7 @@ public class DiamondGolem extends SkillUsingMob implements Enemy {
                 .add(Attributes.MAX_HEALTH, 100)
                 .add(Attributes.FOLLOW_RANGE, 128)
                 .add(Attributes.STEP_HEIGHT, 2)
-                .add(Attributes.MOVEMENT_SPEED, 0.17f)
+                .add(Attributes.MOVEMENT_SPEED, 0.2f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.SAFE_FALL_DISTANCE, 256)
@@ -46,13 +46,14 @@ public class DiamondGolem extends SkillUsingMob implements Enemy {
         skillManager.runOnSkillEnd(skill -> setAnimation(DiamondGolemAnimationLocations.IDLE));
     }
 
+
     @Override
     protected void registerGoals() {
         super.registerGoals();
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, DiamondGolem.class));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 
-        this.goalSelector.addGoal(2, new MoveToTargetGoal(this, 0.9, 32, 30, 0));
+        this.goalSelector.addGoal(2, new MoveToTargetGoal(this, 1, 32, 5, 0));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
     }
 

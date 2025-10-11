@@ -8,7 +8,6 @@ import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.CreativeModeTabEvents;
-import com.yummy.naraka.mixin.accessor.CreativeModeTabsAccessor;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
@@ -16,10 +15,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantable;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
@@ -53,11 +49,11 @@ public class NarakaCreativeModeTabs {
     }
 
     public static void initialize() {
-        CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.buildingBlocks(), NarakaCreativeModeTabs::modifyBuildingBlocksTab);
-        CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.naturalBlocks(), NarakaCreativeModeTabs::modifyNaturalBlocksTab);
-        CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.foodAndDrinks(), NarakaCreativeModeTabs::modifyFoodAndDrinksTab);
-        CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.ingredients(), NarakaCreativeModeTabs::modifyIngredientsTab);
-        CreativeModeTabEvents.modifyEntries(CreativeModeTabsAccessor.spawnEggs(), NarakaCreativeModeTabs::modifySpawnEggsTab);
+        CreativeModeTabEvents.modifyEntries(CreativeModeTabs.BUILDING_BLOCKS, NarakaCreativeModeTabs::modifyBuildingBlocksTab);
+        CreativeModeTabEvents.modifyEntries(CreativeModeTabs.NATURAL_BLOCKS, NarakaCreativeModeTabs::modifyNaturalBlocksTab);
+        CreativeModeTabEvents.modifyEntries(CreativeModeTabs.FOOD_AND_DRINKS, NarakaCreativeModeTabs::modifyFoodAndDrinksTab);
+        CreativeModeTabEvents.modifyEntries(CreativeModeTabs.INGREDIENTS, NarakaCreativeModeTabs::modifyIngredientsTab);
+        CreativeModeTabEvents.modifyEntries(CreativeModeTabs.SPAWN_EGGS, NarakaCreativeModeTabs::modifySpawnEggsTab);
     }
 
     private static void createNarakaTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {

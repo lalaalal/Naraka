@@ -29,6 +29,7 @@ import com.yummy.naraka.world.features.NarakaFeatures;
 import com.yummy.naraka.world.inventory.NarakaMenuTypes;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.alchemy.NarakaPotions;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeSerializers;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeTypes;
 import com.yummy.naraka.world.item.crafting.display.NarakaRecipeDisplays;
@@ -86,6 +87,7 @@ public final class NarakaMod {
         NarakaRecipeDisplays.initialize();
         NarakaEquipmentSets.initialize();
         NarakaCreativeModeTabs.initialize();
+        NarakaPotions.initialize();
 
         NarakaMenuTypes.initialize();
 

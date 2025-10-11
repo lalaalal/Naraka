@@ -1,5 +1,6 @@
 package com.yummy.naraka.client.model;
 
+import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,7 +20,7 @@ public class HerobrineModel<S extends AbstractHerobrineRenderState> extends Abst
     private final ModelPart rightHand;
 
     public HerobrineModel(ModelPart root) {
-        super(root);
+        super(root, HerobrineAnimation.WALKING, "herobrine");
         this.main = root.getChild("main");
         this.upperBody = main.getChild("upper_body");
         this.head = upperBody.getChild("head");

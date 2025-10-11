@@ -30,12 +30,6 @@ public class NarakaBlockEntityTypes {
             NarakaBlocks.SOUL_STABILIZER
     );
 
-    public static final HolderProxy<BlockEntityType<?>, BlockEntityType<UnstableBlockEntity>> UNSTABLE_BLOCK = register(
-            "unstable_block",
-            UnstableBlockEntity::new,
-            NarakaBlocks.UNSTABLE_BLOCK
-    );
-
     private static <T extends BlockEntity> HolderProxy<BlockEntityType<?>, BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> supplier, Supplier<? extends Block> block) {
         return RegistryProxy.register(Registries.BLOCK_ENTITY_TYPE, name, () -> new BlockEntityType<>(supplier, Set.of(block.get())));
     }

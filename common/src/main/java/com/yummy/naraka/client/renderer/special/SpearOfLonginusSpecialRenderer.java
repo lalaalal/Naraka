@@ -11,16 +11,19 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.Level;
+import org.joml.Vector3f;
+
+import java.util.Set;
 
 @Environment(EnvType.CLIENT)
 public class SpearOfLonginusSpecialRenderer implements NoDataSpecialModelRenderer {
+
     private final EntityModel<SpearRenderState> model;
     private final Minecraft minecraft;
 
@@ -37,18 +40,24 @@ public class SpearOfLonginusSpecialRenderer implements NoDataSpecialModelRendere
     }
 
     @Override
-    public void render(ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean hasFoilType) {
+    public void submit(ItemDisplayContext displayContext, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, int overlay, boolean bl, int color) {
         poseStack.pushPose();
         poseStack.scale(1, -1, 1);
         if (displayContext == ItemDisplayContext.GROUND)
             poseStack.scale(4, 4, 4);
 
         if (NarakaClientContext.SHADER_ENABLED.getValue())
-            SpearRenderer.renderNonShaderLonginus(model, getAgeInTicks(), poseStack, bufferSource);
+            SpearRenderer.renderNonShaderLonginus(model, getAgeInTicks(), poseStack, submitNodeCollector);
         else
-            SpearRenderer.renderShaderLonginus(model, poseStack, bufferSource);
+            SpearRenderer.renderShaderLonginus(model, poseStack, submitNodeCollector);
 
         poseStack.popPose();
+    }
+
+    @Override
+    public void getExtents(Set<Vector3f> output) {
+        PoseStack poseStack = new PoseStack();
+        this.model.root().getExtentsForGui(poseStack, output);
     }
 
     @Environment(EnvType.CLIENT)
@@ -56,8 +65,8 @@ public class SpearOfLonginusSpecialRenderer implements NoDataSpecialModelRendere
         public static final MapCodec<Unbaked> CODEC = MapCodec.unit(new Unbaked());
 
         @Override
-        public SpecialModelRenderer<?> bake(EntityModelSet modelSet) {
-            ModelPart root = modelSet.bakeLayer(NarakaModelLayers.SPEAR_OF_LONGINUS);
+        public SpecialModelRenderer<?> bake(BakingContext context) {
+            ModelPart root = context.entityModelSet().bakeLayer(NarakaModelLayers.SPEAR_OF_LONGINUS);
             SpearOfLonginusModel model = new SpearOfLonginusModel(root);
             return new SpearOfLonginusSpecialRenderer(model);
         }

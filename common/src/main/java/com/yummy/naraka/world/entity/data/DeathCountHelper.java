@@ -20,7 +20,7 @@ public class DeathCountHelper {
     }
 
     public static void attachCountingEntity(DeathCountingEntity deathCountingEntity) {
-        if (!deathCountingEntity.living().level().isClientSide && !DEATH_COUNTING_ENTITIES.contains(deathCountingEntity))
+        if (!deathCountingEntity.living().level().isClientSide() && !DEATH_COUNTING_ENTITIES.contains(deathCountingEntity))
             DEATH_COUNTING_ENTITIES.add(deathCountingEntity);
     }
 

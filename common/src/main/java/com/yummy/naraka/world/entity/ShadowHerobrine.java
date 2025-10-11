@@ -10,7 +10,6 @@ import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -28,6 +27,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -253,18 +254,18 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
         if (herobrine != null)
-            compound.store("Herobrine", UUIDUtil.CODEC, herobrine.getUUID());
-        compound.putBoolean("ReduceAlpha", reduceAlpha);
+            output.store("Herobrine", UUIDUtil.CODEC, herobrine.getUUID());
+        output.putBoolean("ReduceAlpha", reduceAlpha);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        compound.read("Herobrine", UUIDUtil.CODEC).ifPresent(uuid -> this.herobrineUUID = uuid);
-        reduceAlpha = compound.getBooleanOr("ReduceAlpha", isFinalModel());
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        input.read("Herobrine", UUIDUtil.CODEC).ifPresent(uuid -> this.herobrineUUID = uuid);
+        reduceAlpha = input.getBooleanOr("ReduceAlpha", isFinalModel());
     }
 
     @Override

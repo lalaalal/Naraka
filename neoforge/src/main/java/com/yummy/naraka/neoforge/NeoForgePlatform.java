@@ -2,6 +2,7 @@ package com.yummy.naraka.neoforge;
 
 import com.yummy.naraka.Platform;
 import com.yummy.naraka.invoker.MethodProxy;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 
@@ -22,12 +23,12 @@ public final class NeoForgePlatform extends Platform {
 
     @Override
     public boolean isDevelopmentEnvironment() {
-        return !FMLLoader.isProduction();
+        return !FMLEnvironment.isProduction();
     }
 
     @Override
     public Side getSide() {
-        return switch (FMLLoader.getDist()) {
+        return switch (FMLEnvironment.getDist()) {
             case DEDICATED_SERVER -> Side.SERVER;
             case CLIENT -> Side.CLIENT;
         };
@@ -40,7 +41,7 @@ public final class NeoForgePlatform extends Platform {
 
     @Override
     public boolean modExists(String id) {
-        return FMLLoader.getLoadingModList().getMods().stream()
+        return FMLLoader.getCurrent().getLoadingModList().getMods().stream()
                 .anyMatch(modInfo -> modInfo.getModId().equals(id));
     }
 }

@@ -17,6 +17,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class ForgingBlockEntity extends BlockEntity {
     public static final int COOLDOWN = 30;
@@ -57,7 +59,7 @@ public abstract class ForgingBlockEntity extends BlockEntity {
 
     public boolean tryReinforce() {
         if (!Reinforcement.canReinforce(forgingItem)
-                || level == null || level.isClientSide
+                || level == null || level.isClientSide()
                 || cooldownTick > 0)
             return false;
         if (level.random.nextFloat() < successChance) {
@@ -87,25 +89,20 @@ public abstract class ForgingBlockEntity extends BlockEntity {
     public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         CompoundTag compoundTag = new CompoundTag();
         if (!forgingItem.isEmpty())
-            compoundTag.put("ForgingItem", forgingItem.save(provider));
+            compoundTag.store("ForgingItem", ItemStack.STRICT_CODEC, forgingItem);
         return compoundTag;
     }
 
     @Override
-    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
-        super.loadAdditional(compoundTag, provider);
-        if (compoundTag.contains("ForgingItem")) {
-            ItemStack.parse(provider, compoundTag.getCompoundOrEmpty("ForgingItem"))
-                    .ifPresent(item -> forgingItem = item);
-        }
+    protected void loadAdditional(ValueInput input) {
+        input.read("ForgingItem", ItemStack.STRICT_CODEC)
+                .ifPresent(item -> forgingItem = item);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
-        super.saveAdditional(compoundTag, provider);
-        if (!forgingItem.isEmpty()) {
-            compoundTag.put("ForgingItem", forgingItem.save(provider));
-        }
+    protected void saveAdditional(ValueOutput output) {
+        if (!forgingItem.isEmpty())
+            output.store("ForgingItem", ItemStack.STRICT_CODEC, forgingItem);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ForgingBlockEntity blockEntity) {

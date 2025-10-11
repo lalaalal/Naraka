@@ -10,15 +10,14 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 @Environment(EnvType.CLIENT)
-public class StigmaHud implements LayeredDraw.Layer {
+public class StigmaHud implements HudRenderer {
     public static final int BACKGROUND_WIDTH = 15;
     public static final int BACKGROUND_HEIGHT = 5;
     public static final int STIGMA_SIZE = 5;
@@ -56,7 +55,7 @@ public class StigmaHud implements LayeredDraw.Layer {
 
         float tick = Math.max(Mth.lerp(partialTick, consumeIconDisplayTick, consumeIconDisplayTick - 1), 0);
         float alpha = tick / (float) CONSUME_ICON_DISPLAYING_TIME;
-        guiGraphics.blitSprite(RenderType::guiTextured, NarakaSprites.STIGMA_CONSUME, x, y, CONSUME_ICON_WIDTH, CONSUME_ICON_HEIGHT, ARGB.white(alpha));
+        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, NarakaSprites.STIGMA_CONSUME, x, y, CONSUME_ICON_WIDTH, CONSUME_ICON_HEIGHT, ARGB.white(alpha));
     }
 
     @Override
@@ -84,11 +83,11 @@ public class StigmaHud implements LayeredDraw.Layer {
         if (stigma.lastMarkedTime() != 0 && stigmatizedTime > herobrineTakingStigmaTick / 6 * 5)
             baseX += (int) (stigmatizedTime % 4 / 2) * 2 - 1;
 
-        guiGraphics.blitSprite(RenderType::guiTextured, NarakaSprites.STIGMA_BACKGROUND, baseX, baseY, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, NarakaSprites.STIGMA_BACKGROUND, baseX, baseY, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
         for (int i = 0; i < stigma.value(); i++) {
             int x = baseX + STIGMA_START_X + i * (STIGMA_OFFSET_INTERVAL + STIGMA_SIZE);
             int y = baseY + STIGMA_START_Y;
-            guiGraphics.blitSprite(RenderType::guiTextured, NarakaSprites.STIGMA, x, y, STIGMA_SIZE, STIGMA_SIZE);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, NarakaSprites.STIGMA, x, y, STIGMA_SIZE, STIGMA_SIZE);
         }
     }
 }

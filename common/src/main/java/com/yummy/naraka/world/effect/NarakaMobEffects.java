@@ -55,6 +55,11 @@ public class NarakaMobEffects {
             () -> MobEffectInvoker.create(MobEffectCategory.NEUTRAL, SoulType.REDSTONE.color)
     );
 
+    public static final Holder<MobEffect> GOD_BLESS = register(
+            "god_bless",
+            () -> MobEffectInvoker.create(MobEffectCategory.BENEFICIAL, 0)
+    );
+
     public static Optional<MobEffectInstance> getChallengersBlessing(LivingEntity livingEntity) {
         for (MobEffectInstance instance : livingEntity.getActiveEffects()) {
             Holder<MobEffect> effect = instance.getEffect();

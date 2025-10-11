@@ -40,18 +40,11 @@ public class NarakaBlocks {
     public static final HolderProxy<Block, DiamondGolemSpawner> DIAMOND_GOLEM_SPAWNER = registerBlockWithItem(
             "diamond_golem_spawner",
             properties -> new DiamondGolemSpawner(
-                    properties.noCollission()
-                            .noLootTable()
+                    properties.noLootTable()
                             .noTerrainParticles()
+                            .noCollision()
             ),
             Blocks.SPAWNER
-    );
-
-    public static final HolderProxy<Block, UnstableBlock> UNSTABLE_BLOCK = registerBlockWithItem(
-            "unstable_block", properties -> new UnstableBlock(
-                    properties.strength(-1, 3600000)
-                            .noLootTable()
-            ), Blocks.DIRT
     );
 
     public static final HolderProxy<Block, DropExperienceBlock> AMETHYST_ORE = registerBlockWithItem(

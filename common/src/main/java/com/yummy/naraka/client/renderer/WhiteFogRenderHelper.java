@@ -1,10 +1,9 @@
 package com.yummy.naraka.client.renderer;
 
-import com.mojang.blaze3d.shaders.FogShape;
 import com.yummy.naraka.client.NarakaClientContext;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.FogParameters;
+import net.minecraft.client.renderer.fog.FogData;
 import net.minecraft.util.Mth;
 import org.joml.Vector4f;
 
@@ -30,12 +29,14 @@ public class WhiteFogRenderHelper {
         return whiteFogTickCount > 0;
     }
 
-    public static FogParameters getWhiteFogParameters(Vector4f fogColor, float renderDistance, float partialTick) {
+    public static void setupWhiteFog(FogData fogData, float renderDistance, float partialTick) {
         float prevDistance = 4 * renderDistance * (1 - prevWhiteFogTickCount / (float) MAX_WHITE_SCREEN_TICK);
         float currentDistance = 4 * renderDistance * (1 - whiteFogTickCount / (float) MAX_WHITE_SCREEN_TICK);
         float distance = Mth.lerp(partialTick, prevDistance, currentDistance);
-        Vector4f color = getFogColor(fogColor, partialTick);
-        return new FogParameters(0, distance, FogShape.SPHERE, color.x, color.y, color.z, color.w);
+        fogData.environmentalStart = 0.25f;
+        fogData.environmentalEnd = distance;
+        fogData.skyEnd = fogData.environmentalEnd;
+        fogData.cloudEnd = fogData.environmentalEnd;
     }
 
     public static Vector4f getFogColor(Vector4f original, float partialTick) {

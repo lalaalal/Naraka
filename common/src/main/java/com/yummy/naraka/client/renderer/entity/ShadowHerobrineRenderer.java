@@ -7,15 +7,16 @@ import com.yummy.naraka.client.layer.ShadowHerobrineHeadLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.model.FinalHerobrineModel;
 import com.yummy.naraka.client.model.HerobrineModel;
-import com.yummy.naraka.client.renderer.ColoredItemRenderer;
+import com.yummy.naraka.client.renderer.ItemColorRegistry;
 import com.yummy.naraka.client.renderer.entity.state.ShadowHerobrineRenderState;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.resources.ResourceLocation;
 
 @Environment(EnvType.CLIENT)
@@ -38,13 +39,14 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
 
     @Override
     public void extractRenderState(ShadowHerobrine entity, ShadowHerobrineRenderState renderState, float partialTicks) {
+        renderState.alpha = entity.getAlpha();
+        if (entity.displayPickaxe())
+            ItemColorRegistry.setTemporaryColor(renderState.pickaxe, Color.of(0).withAlpha(renderState.alpha).pack());
         super.extractRenderState(entity, renderState, partialTicks);
+
         renderState.hasRedOverlay = false;
         renderState.pickaxeLight = 0;
-        renderState.alpha = entity.getAlpha();
         renderState.scarfAlpha = renderState.alpha;
-        if (renderState.displayPickaxe)
-            ColoredItemRenderer.setTemporaryColorForCurrent(Color.of(0).withAlpha(renderState.alpha));
     }
 
     @Override
@@ -55,10 +57,10 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
     }
 
     @Override
-    public void render(ShadowHerobrineRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void submit(ShadowHerobrineRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         if (renderState.finalModel && !renderState.displayPickaxe)
             return;
-        super.render(renderState, poseStack, buffer, packedLight);
+        super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
     }
 
     @Override

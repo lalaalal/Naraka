@@ -10,6 +10,7 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileDeflection;
@@ -107,7 +108,7 @@ public class PickaxeSlash extends LightTailEntity {
     }
 
     @Override
-    public boolean deflect(ProjectileDeflection deflection, @Nullable Entity entity, @Nullable Entity owner, boolean deflectedByPlayer) {
+    public boolean deflect(ProjectileDeflection projectileDeflection, @Nullable Entity entity, @Nullable EntityReference<Entity> entityReference, boolean bl) {
         return false;
     }
 

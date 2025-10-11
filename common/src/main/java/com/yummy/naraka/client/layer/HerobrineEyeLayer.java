@@ -1,15 +1,13 @@
 package com.yummy.naraka.client.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.Platform;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -28,9 +26,10 @@ public class HerobrineEyeLayer<S extends AbstractHerobrineRenderState, M extends
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, S renderState, float yRot, float xRot) {
-        VertexConsumer vertexConsumer = buffer.getBuffer(getRenderType(renderState));
-        M model = getParentModel();
-        model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ARGB.white(renderState.eyeAlpha));
+    public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, S renderState, float yRot, float xRot) {
+        submitNodeCollector.submitModel(getParentModel(), renderState,
+                poseStack, getRenderType(renderState),
+                light, OverlayTexture.NO_OVERLAY, ARGB.white(renderState.eyeAlpha), null, renderState.outlineColor, null
+        );
     }
 }

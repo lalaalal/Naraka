@@ -1,7 +1,6 @@
 package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaRenderTypes;
@@ -9,18 +8,19 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.SpearModel;
 import com.yummy.naraka.client.model.SpearOfLonginusModel;
 import com.yummy.naraka.client.renderer.entity.state.SpearRenderState;
+import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.Spear;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -79,42 +79,37 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
     }
 
     @Override
-    public void render(SpearRenderState renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void submit(SpearRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
         poseStack.mulPose(renderState.yRotation);
         poseStack.mulPose(renderState.xRotation);
         poseStack.translate(0, yOffset, 0);
 
         if (renderState.isLonginus && NarakaClientContext.SHADER_ENABLED.getValue()) {
-            renderNonShaderLonginus(model, renderState.ageInTicks, poseStack, buffer);
+            renderNonShaderLonginus(model, renderState.ageInTicks, poseStack, submitNodeCollector);
         } else {
             if (renderState.isLonginus)
-                packedLight = LightTexture.FULL_BRIGHT;
+                renderState.lightCoords = LightTexture.FULL_BRIGHT;
             RenderType renderType = model.renderType(getTextureLocation(renderState));
-            VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(buffer, renderType, false, renderState.hasFoil);
-            model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 0xffffffff);
+            NarakaRenderUtils.submitModelWithFoilRenderTypes(model, renderState, poseStack, renderType, submitNodeCollector, renderState.lightCoords, renderState.hasFoil);
         }
 
         poseStack.popPose();
     }
 
-    public static void renderShaderLonginus(EntityModel<SpearRenderState> model, PoseStack poseStack, MultiBufferSource buffer) {
-        VertexConsumer vertexConsumer = buffer.getBuffer(NarakaRenderTypes.longinus());
-        model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xffffffff);
+    public static void renderShaderLonginus(EntityModel<SpearRenderState> model, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+        submitNodeCollector.submitModelPart(model.root(), poseStack, NarakaRenderTypes.longinus(), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, -1, null);
     }
 
-    public static void renderNonShaderLonginus(EntityModel<SpearRenderState> model, float ageInTicks, PoseStack poseStack, MultiBufferSource buffer) {
-        VertexConsumer background = buffer.getBuffer(RenderType.entityCutout(NarakaTextures.LONGINUS));
-        model.renderToBuffer(poseStack, background, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xff000000);
-
-        renderLonginus(model, ageInTicks, 0.001f, 0.01f, poseStack, buffer);
-        renderLonginus(model, ageInTicks, 0.002f, 0.005f, poseStack, buffer);
-        renderLonginus(model, ageInTicks, 0.0015f, 0.0025f, poseStack, buffer);
+    public static void renderNonShaderLonginus(EntityModel<SpearRenderState> model, float ageInTicks, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+        submitNodeCollector.submitModelPart(model.root(), poseStack, RenderType.entityCutout(NarakaTextures.LONGINUS), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, 0xff000000, null);
+        renderLonginus(model, ageInTicks, 0.001f, 0.01f, poseStack, submitNodeCollector, 1);
+        renderLonginus(model, ageInTicks, 0.002f, 0.005f, poseStack, submitNodeCollector, 2);
+        renderLonginus(model, ageInTicks, 0.0015f, 0.0025f, poseStack, submitNodeCollector, 3);
     }
 
-    private static void renderLonginus(EntityModel<SpearRenderState> model, float ageInTicks, float uMultiplier, float vMultiplier, PoseStack poseStack, MultiBufferSource buffer) {
+    private static void renderLonginus(EntityModel<SpearRenderState> model, float ageInTicks, float uMultiplier, float vMultiplier, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int order) {
         RenderType renderType = RenderType.energySwirl(NarakaTextures.LONGINUS, (ageInTicks * uMultiplier) % 1, (ageInTicks * vMultiplier) % 1);
-        VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
-        model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xdd888888);
+        submitNodeCollector.order(order).submitModelPart(model.root(), poseStack, renderType, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, -1, null);
     }
 }

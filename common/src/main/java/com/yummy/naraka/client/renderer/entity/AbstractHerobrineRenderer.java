@@ -1,7 +1,6 @@
 package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
@@ -15,10 +14,11 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
@@ -90,19 +90,19 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
     }
 
     @Override
-    public void render(S renderState, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void submit(S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
         poseStack.scale(0.935f, 0.935f, 0.935f);
-        super.render(renderState, poseStack, buffer, packedLight);
+        super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
         poseStack.popPose();
 
         if (renderState.finalModel && renderState.displayPickaxe) {
-            renderPickaxe(renderState, poseStack, buffer, model.root(), model.main(), model.upperBody(), model.rightArm(), model.rightHand(), model.rightHand().getChild("pickaxe"));
-            renderPickaxe(renderState, poseStack, buffer, model.root().getChild("independent_pickaxe"));
+            submitPickaxe(renderState, poseStack, submitNodeCollector, model.root(), model.main(), model.upperBody(), model.rightArm(), model.rightHand(), model.rightHand().getChild("pickaxe"));
+            submitPickaxe(renderState, poseStack, submitNodeCollector, model.root().getChild("independent_pickaxe"));
         }
     }
 
-    private void renderPickaxe(S renderState, PoseStack poseStack, MultiBufferSource buffer, ModelPart... parts) {
+    private void submitPickaxe(S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, ModelPart... parts) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - renderState.bodyRot));
         poseStack.translate(0, 1.4, 0);
@@ -111,15 +111,25 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
         poseStack.mulPose(Axis.ZP.rotationDegrees(225));
         poseStack.translate(0.5, 0.5, 0);
         poseStack.scale(4, 4, 1);
-        renderState.pickaxe.render(poseStack, buffer, renderState.pickaxeLight, OverlayTexture.NO_OVERLAY);
+        renderState.pickaxe.submit(poseStack, submitNodeCollector, renderState.pickaxeLight, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
     }
 
     @Override
-    protected void renderAfterimageLayer(S renderState, AfterimageRenderState afterimage, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int alpha) {
-        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(NarakaTextures.HEROBRINE_EYE));
+    protected void submitAfterimageLayer(S renderState, AfterimageRenderState afterimage, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, int alpha) {
+        RenderType renderType = RenderType.entityTranslucent(NarakaTextures.HEROBRINE_EYE);
         int color = ARGB.white(Mth.clamp(alpha - 25, 0, 255));
-        getAfterimageModel(renderState).renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color);
+
+        submitNodeCollector.submitModel(
+                getAfterimageModel(renderState),
+                renderState,
+                poseStack,
+                renderType,
+                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color,
+                null,
+                renderState.outlineColor,
+                null
+        );
     }
 
     @Override

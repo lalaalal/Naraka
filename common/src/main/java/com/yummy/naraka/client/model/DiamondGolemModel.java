@@ -1,14 +1,12 @@
 package com.yummy.naraka.client.model;
 
-import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.animation.DiamondGolemAnimation;
 import com.yummy.naraka.client.renderer.entity.state.SkillUsingMobRenderState;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
-public class DiamondGolemModel extends EntityModel<SkillUsingMobRenderState> {
+public class DiamondGolemModel extends SkillUsingModModel<SkillUsingMobRenderState> {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
@@ -47,15 +45,13 @@ public class DiamondGolemModel extends EntityModel<SkillUsingMobRenderState> {
     }
 
     public DiamondGolemModel(ModelPart root) {
-        super(root);
+        super(root, DiamondGolemAnimation.WALKING, "diamond_golem");
     }
 
     @Override
     public void setupAnim(SkillUsingMobRenderState renderState) {
         super.setupAnim(renderState);
-        animateWalk(DiamondGolemAnimation.WALKING, renderState.walkAnimationPos, renderState.walkAnimationSpeed, 3, 3);
-        renderState.animations((animationLocation, animationState) -> {
-            this.animate(animationState, AnimationMapper.get(animationLocation), renderState.ageInTicks);
-        });
+        animateWalk(renderState, 3, 3);
+        animate(renderState);
     }
 }

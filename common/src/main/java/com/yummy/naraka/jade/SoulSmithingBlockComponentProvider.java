@@ -11,30 +11,26 @@ import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
-import snownee.jade.api.ui.IElementHelper;
+import snownee.jade.api.ui.JadeUI;
 
 public class SoulSmithingBlockComponentProvider implements IBlockComponentProvider {
     public static final SoulSmithingBlockComponentProvider INSTANCE = new SoulSmithingBlockComponentProvider();
 
     @Override
     public void appendTooltip(ITooltip tooltip, BlockAccessor blockAccessor, IPluginConfig pluginConfig) {
-        IElementHelper elements = IElementHelper.get();
-
         if (blockAccessor.getBlockEntity() instanceof SoulSmithingBlockEntity soulSmithingBlockEntity) {
-            tooltip.add(elements.spacer(0, 1));
+            tooltip.add(JadeUI.spacer(0, 1));
             ItemStack templateItem = soulSmithingBlockEntity.getTemplateItem();
             if (!templateItem.isEmpty())
-                tooltip.append(elements.smallItem(templateItem));
+                tooltip.append(JadeUI.smallItem(templateItem));
 
             SoulType type = soulSmithingBlockEntity.getSoulType();
-            if (type != null) {
-                if (!templateItem.isEmpty())
-                    tooltip.append(Component.literal(" / "));
-                int souls = soulSmithingBlockEntity.getSouls();
-                tooltip.append(Component.translatable(type.translationKey()));
-                tooltip.append(Component.literal(": "));
-                tooltip.append(Component.translatable(LanguageKey.JADE_SOUL_STABILIZER_KEY, souls));
-            }
+            if (!templateItem.isEmpty())
+                tooltip.append(Component.literal(" / "));
+            int souls = soulSmithingBlockEntity.getSouls();
+            tooltip.append(Component.translatable(type.translationKey()));
+            tooltip.append(Component.literal(": "));
+            tooltip.append(Component.translatable(LanguageKey.JADE_SOUL_STABILIZER_KEY, souls));
         }
     }
 

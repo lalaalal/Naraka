@@ -6,6 +6,10 @@ accessible method net/minecraft/client/renderer/RenderType create (Ljava/lang/St
 accessible method net/minecraft/client/renderer/RenderType$CompositeState$CompositeStateBuilder setTextureState (Lnet/minecraft/client/renderer/RenderStateShard$EmptyTextureStateShard;)Lnet/minecraft/client/renderer/RenderType$CompositeState$CompositeStateBuilder;
 accessible method net/minecraft/client/renderer/RenderType$CompositeState$CompositeStateBuilder createCompositeState (Z)Lnet/minecraft/client/renderer/RenderType$CompositeState;
 
+accessible field net/minecraft/client/renderer/RenderPipelines MATRICES_PROJECTION_SNIPPET Lcom/mojang/blaze3d/pipeline/RenderPipeline$Snippet;
+accessible field net/minecraft/client/renderer/RenderPipelines FOG_SNIPPET Lcom/mojang/blaze3d/pipeline/RenderPipeline$Snippet;
+accessible field net/minecraft/client/renderer/RenderPipelines GLOBALS_SNIPPET Lcom/mojang/blaze3d/pipeline/RenderPipeline$Snippet;
+
 accessible method net/minecraft/world/inventory/MenuType <init> (Lnet/minecraft/world/inventory/MenuType$MenuSupplier;Lnet/minecraft/world/flag/FeatureFlagSet;)V
 accessible class net/minecraft/world/inventory/MenuType$MenuSupplier
 
@@ -13,11 +17,14 @@ accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEnt
 accessible method net/minecraft/world/level/block/entity/BlockEntityType <init> (Lnet/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier;Ljava/util/Set;)V
 
 accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
-accessible method net/minecraft/client/particle/FallingLeavesParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/client/particle/SpriteSet;FFZZFF)V
+accessible method net/minecraft/client/particle/FallingLeavesParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;FFZZFF)V
 
-accessible class net/minecraft/client/renderer/FogRenderer$FogData
+accessible field net/minecraft/world/item/CreativeModeTabs BUILDING_BLOCKS Lnet/minecraft/resources/ResourceKey;
+accessible field net/minecraft/world/item/CreativeModeTabs NATURAL_BLOCKS Lnet/minecraft/resources/ResourceKey;
+accessible field net/minecraft/world/item/CreativeModeTabs FOOD_AND_DRINKS Lnet/minecraft/resources/ResourceKey;
+accessible field net/minecraft/world/item/CreativeModeTabs INGREDIENTS Lnet/minecraft/resources/ResourceKey;
+accessible field net/minecraft/world/item/CreativeModeTabs SPAWN_EGGS Lnet/minecraft/resources/ResourceKey;
 
-accessible class net/minecraft/client/data/models/ItemModelGenerators$TrimMaterialData
-accessible method net/minecraft/client/particle/FlameParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)V
+accessible method net/minecraft/client/particle/FlameParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
 
 accessible method net/minecraft/client/gui/screens/recipebook/GhostSlots setInput (Lnet/minecraft/world/inventory/Slot;Lnet/minecraft/util/context/ContextMap;Lnet/minecraft/world/item/crafting/display/SlotDisplay;)V

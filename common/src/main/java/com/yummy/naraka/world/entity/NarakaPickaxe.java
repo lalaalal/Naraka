@@ -1,17 +1,12 @@
-package com.yummy.naraka.world;
+package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.world.entity.AbstractHerobrine;
-import com.yummy.naraka.world.entity.Herobrine;
-import com.yummy.naraka.world.entity.NarakaEntityTypes;
-import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe.ExplodeSkill;
 import com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe.StrikeSkill;
 import com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe.SwingSkill;
 import com.yummy.naraka.world.entity.animation.NarakaPickaxeAnimationLocations;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
@@ -22,6 +17,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -127,12 +124,12 @@ public class NarakaPickaxe extends SkillUsingMob {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        tag.read("Owner", UUIDUtil.CODEC).ifPresent(uuid -> herobrineUUID = uuid);
+    protected void readAdditionalSaveData(ValueInput input) {
+        input.read("Owner", UUIDUtil.CODEC).ifPresent(uuid -> herobrineUUID = uuid);
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        tag.storeNullable("Owner", UUIDUtil.CODEC, herobrineUUID);
+    protected void addAdditionalSaveData(ValueOutput output) {
+        output.storeNullable("Owner", UUIDUtil.CODEC, herobrineUUID);
     }
 }

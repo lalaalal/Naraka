@@ -4,8 +4,8 @@ import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -24,12 +24,12 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 public class Stardust extends LightTailEntity {
     public static final int EXPLOSION_WAITING_TICK = 120;
@@ -161,7 +161,7 @@ public class Stardust extends LightTailEntity {
 
     private void explode(int radius) {
         Entity source = owner == null ? this : owner;
-        if (level().isClientSide) {
+        if (level().isClientSide()) {
             addParticles(NarakaFlameParticleOption.COPPER, 0.1, 120 * radius);
             addParticles(NarakaFlameParticleOption.COPPER, 0.3, 60 * radius);
         } else {
@@ -186,28 +186,28 @@ public class Stardust extends LightTailEntity {
     }
 
     @Override
-    public boolean canBeCollidedWith() {
+    public boolean canBeCollidedWith(@Nullable Entity entity) {
         return true;
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        if (level() instanceof ServerLevel serverLevel && compound.contains("Owner"))
-            this.owner = serverLevel.getEntity(UUID.fromString(compound.getStringOr("Owner", "")));
-        entityData.set(HIT_BLOCK, compound.getBooleanOr("HitBlock", true));
-        entityData.set(WAITING_TICK, compound.getIntOr("WaitingTick", 0));
-        waitingTickCount = compound.getIntOr("WaitingTickCount", 0);
-        explosionWaitingTickCount = compound.getIntOr("ExplosionWaitingTickCount", 0);
+    public void readAdditionalSaveData(ValueInput input) {
+        input.read("Owner", UUIDUtil.CODEC)
+                .ifPresent(uuid -> owner = level().getEntity(uuid));
+        entityData.set(HIT_BLOCK, input.getBooleanOr("HitBlock", true));
+        entityData.set(WAITING_TICK, input.getIntOr("WaitingTick", 0));
+        waitingTickCount = input.getIntOr("WaitingTickCount", 0);
+        explosionWaitingTickCount = input.getIntOr("ExplosionWaitingTickCount", 0);
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
+    protected void addAdditionalSaveData(ValueOutput output) {
         if (owner != null)
-            compound.putString("Owner", owner.getUUID().toString());
-        compound.putBoolean("HitBlock", entityData.get(HIT_BLOCK));
-        compound.putInt("WaitingTick", entityData.get(WAITING_TICK));
-        compound.putInt("WaitingTickCount", waitingTickCount);
-        compound.putInt("ExplosionWaitingTickCount", explosionWaitingTickCount);
+            output.store("Owner", UUIDUtil.CODEC, owner.getUUID());
+        output.putBoolean("HitBlock", entityData.get(HIT_BLOCK));
+        output.putInt("WaitingTick", entityData.get(WAITING_TICK));
+        output.putInt("WaitingTickCount", waitingTickCount);
+        output.putInt("ExplosionWaitingTickCount", explosionWaitingTickCount);
     }
 
     @Override

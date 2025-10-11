@@ -15,6 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class SoulStabilizerBlockEntity extends BlockEntity {
     public static final int CAPACITY = 15552;
@@ -113,22 +115,20 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag compoundTag = super.getUpdateTag(registries);
-        compoundTag.putString("SoulType", soulType.toString());
+        compoundTag.store("SoulType", SoulType.CODEC, soulType);
         compoundTag.putInt("Souls", souls);
         return compoundTag;
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        tag.putString("SoulType", soulType.toString());
-        tag.putInt("Souls", souls);
+    protected void saveAdditional(ValueOutput output) {
+        output.store("SoulType", SoulType.CODEC, soulType);
+        output.putInt("Souls", souls);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        soulType = SoulType.valueOf(tag.getStringOr("SoulType", "NONE"));
-        souls = tag.getIntOr("Souls", 0);
+    protected void loadAdditional(ValueInput input) {
+        soulType = input.read("SoulType", SoulType.CODEC).orElse(SoulType.NONE);
+        souls = input.getIntOr("Souls", 0);
     }
 }

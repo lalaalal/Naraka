@@ -9,10 +9,9 @@ import com.yummy.naraka.client.gui.hud.StigmaHud;
 import com.yummy.naraka.client.gui.hud.WhiteHud;
 import com.yummy.naraka.client.init.*;
 import com.yummy.naraka.client.particle.*;
-import com.yummy.naraka.client.renderer.ColoredItemRenderer;
+import com.yummy.naraka.client.renderer.ItemColorRegistry;
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulStabilizerBlockEntityRenderer;
-import com.yummy.naraka.client.renderer.blockentity.UnstableBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.entity.*;
 import com.yummy.naraka.client.renderer.special.SoulSmithingBlockSpecialRenderer;
 import com.yummy.naraka.client.renderer.special.SoulStabilizerSpecialRenderer;
@@ -29,7 +28,7 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.network.chat.Component;
 
 @Environment(EnvType.CLIENT)
@@ -76,11 +75,11 @@ public final class NarakaModClient {
     }
 
     private static void initializeItems() {
-        ColoredItemRenderer.register(NarakaItems.RAINBOW_SWORD, ComponentStyles.RAINBOW_COLOR::getCurrentColor);
+        ItemColorRegistry.register(NarakaItems.RAINBOW_SWORD, ComponentStyles.RAINBOW_COLOR::getCurrentColor);
     }
 
     private static void initializeBlocks() {
-        BlockRenderTypeRegistry.register(RenderType.cutout(),
+        BlockRenderTypeRegistry.register(ChunkSectionLayer.CUTOUT,
                 NarakaBlocks.EBONY_SAPLING.get(),
                 NarakaBlocks.POTTED_EBONY_SAPLING.get(),
                 NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(),
@@ -92,7 +91,6 @@ public final class NarakaModClient {
     private static void registerBlockEntityRenderers() {
         BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.SOUL_STABILIZER, SoulStabilizerBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.SOUL_SMITHING, SoulSmithingBlockEntityRenderer::new);
-        BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.UNSTABLE_BLOCK, UnstableBlockEntityRenderer::new);
     }
 
     private static void registerEntityRenderers() {
@@ -132,7 +130,7 @@ public final class NarakaModClient {
         ParticleProviderRegistry.register(NarakaParticleTypes.DRIPPING_NECTARIUM, NectariumParticle::createNectariumHangParticle);
         ParticleProviderRegistry.register(NarakaParticleTypes.FALLING_NECTARIUM, NectariumParticle::createNectariumFallParticle);
         ParticleProviderRegistry.register(NarakaParticleTypes.LANDING_NECTARIUM, NectariumParticle::createNectariumLandParticle);
-        ParticleProviderRegistry.register(NarakaParticleTypes.SOUL, SoulParticle::create);
+        ParticleProviderRegistry.register(NarakaParticleTypes.SOUL, SoulParticle.Provider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.HEROBRINE_SPAWN, TurningParticle::herobrineSpawn);
         ParticleProviderRegistry.register(NarakaParticleTypes.PARRYING, TurningParticle::parrying);
         ParticleProviderRegistry.register(NarakaParticleTypes.NARAKA_FLAME, NarakaFlame.Provider::new);

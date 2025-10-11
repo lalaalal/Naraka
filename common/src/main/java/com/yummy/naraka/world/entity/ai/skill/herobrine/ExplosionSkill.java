@@ -9,6 +9,7 @@ import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.MagicCircle;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -51,7 +52,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
 
         runAt(60, () -> mob.setDeltaMovement(0, 0.4, 0));
         runAt(60, () -> level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE));
-        runBetween(60, 70, () -> level.sendParticles(ParticleTypes.FLASH, mob.getX(), mob.getEyeY(), mob.getZ(), 20, 1, 2, 1, 1));
+        runBetween(60, 70, () -> level.sendParticles(ColorParticleOption.create(ParticleTypes.FLASH, -1), mob.getX(), mob.getEyeY(), mob.getZ(), 20, 1, 2, 1, 1));
         runBetween(85, 90, () -> scaleMagicCircle(30, 0, 85, 89));
 
         runAt(62, () -> mob.setDeltaMovement(Vec3.ZERO));
