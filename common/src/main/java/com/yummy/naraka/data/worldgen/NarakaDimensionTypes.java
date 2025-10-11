@@ -29,7 +29,7 @@ public class NarakaDimensionTypes {
                 256,
                 128,
                 BlockTags.INFINIBURN_OVERWORLD,
-                BuiltinDimensionTypes.END_EFFECTS,
+                BuiltinDimensionTypes.OVERWORLD_EFFECTS,
                 0.0F,
                 Optional.empty(),
                 new DimensionType.MonsterSettings(false, false, ConstantInt.ZERO, 0)

@@ -2,7 +2,7 @@
   "ambient_light": 0.0,
   "bed_works": false,
   "coordinate_scale": 1.0,
-  "effects": "minecraft:the_end",
+  "effects": "minecraft:overworld",
   "fixed_time": 18000,
   "has_ceiling": false,
   "has_raids": false,
