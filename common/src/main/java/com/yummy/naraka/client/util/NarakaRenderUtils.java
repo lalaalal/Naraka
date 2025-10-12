@@ -2,6 +2,7 @@ package com.yummy.naraka.client.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import com.yummy.naraka.util.NarakaUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -14,9 +15,11 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -150,5 +153,11 @@ public class NarakaRenderUtils {
                     null
             );
         }
+    }
+
+    public static void applyYZSpin(PoseStack poseStack, float rotation) {
+        poseStack.mulPose(new Quaternionf().setAngleAxis(Mth.PI / 3, SIN_45, 0, SIN_45));
+        poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(rotation * 2));
     }
 }

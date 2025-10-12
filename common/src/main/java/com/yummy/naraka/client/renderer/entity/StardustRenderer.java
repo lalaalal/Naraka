@@ -1,7 +1,6 @@
 package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.StardustModel;
@@ -16,7 +15,6 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
 public class StardustRenderer extends LightTailEntityRenderer<Stardust, LightTailEntityRenderState> {
@@ -37,9 +35,7 @@ public class StardustRenderer extends LightTailEntityRenderer<Stardust, LightTai
         poseStack.pushPose();
         float rotation = renderState.ageInTicks * renderState.ageInTicks * 0.1f;
         poseStack.translate(0, 0.25, 0);
-        poseStack.mulPose(new Quaternionf().setAngleAxis((float) (Math.PI / 3), NarakaRenderUtils.SIN_45, 0.0F, NarakaRenderUtils.SIN_45));
-        poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(rotation * 2));
+        NarakaRenderUtils.applyYZSpin(poseStack, rotation);
         submitNodeCollector.submitModel(
                 model,
                 renderState,
