@@ -104,8 +104,8 @@ public class Herobrine extends AbstractHerobrine {
     private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, summonShadowSkill, walkAroundTargetSkill);
     private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, splitAttackSkill, stormSkill, carpetBombingSkill, singlePickaxeSlashSkill, triplePickaxeSlashSkill, earthShockSkill, pickaxeStrikeSkill);
 
-    private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashAroundSkill, walkAroundTargetSkill);
-    private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(HerobrineAnimationLocations.ENTER_PHASE_2, HerobrineAnimationLocations.STAGGERING_PHASE_2, HerobrineAnimationLocations.ENTER_PHASE_3);
+    private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashAroundSkill, walkAroundTargetSkill, destroyStructureSkill);
+    private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(HerobrineAnimationLocations.ENTER_PHASE_2, HerobrineAnimationLocations.STAGGERING_PHASE_2, HerobrineAnimationLocations.PREPARE_PHASE_3, HerobrineAnimationLocations.ENTER_PHASE_3);
 
     private final List<List<Skill<?>>> HIBERNATED_MODE_SKILL_BY_PHASE = List.of(
             List.of(), HIBERNATED_MODE_PHASE_1_SKILLS, HIBERNATED_MODE_PHASE_2_SKILLS, List.of()
