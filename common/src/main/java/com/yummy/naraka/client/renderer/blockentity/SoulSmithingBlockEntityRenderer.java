@@ -95,6 +95,7 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
         renderState.direction = blockEntity.getBlockState().getValue(SoulSmithingBlock.FACING);
         renderState.templateItem = blockEntity.getTemplateItem();
         renderState.stabilizerAttached = blockEntity.isStabilizerAttached();
+        renderState.stabilizer.lightCoords = renderState.lightCoords;
         renderState.stabilizer.blockEntityType = NarakaBlockEntityTypes.SOUL_STABILIZER.get();
         renderState.stabilizer.souls = blockEntity.getSouls();
         renderState.stabilizer.soulType = blockEntity.getSoulType();
