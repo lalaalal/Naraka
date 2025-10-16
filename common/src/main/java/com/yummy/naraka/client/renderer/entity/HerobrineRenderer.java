@@ -101,7 +101,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
         if (renderState.dead) {
             if (NarakaClientContext.SHADER_ENABLED.getValue())
                 return RenderType.entitySolid(NarakaTextures.LONGINUS);
-            return NarakaRenderTypes.longinus();
+            return NarakaRenderTypes.longinusCutout(NarakaTextures.FINAL_HEROBRINE);
         }
         return super.getRenderType(renderState, bodyVisible, translucent, glowing);
     }

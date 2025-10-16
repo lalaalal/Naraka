@@ -20,13 +20,22 @@ public final class NarakaRenderPipelines {
             .withFragmentShader(NarakaMod.location("longinus"))
             .withSampler("Sampler0")
             .withSampler("Sampler1")
-            .withVertexFormat(DefaultVertexFormat.POSITION, VertexFormat.Mode.QUADS)
+            .withShaderDefine("LONGINUS_LAYERS", 16)
             .buildSnippet();
+
+    public static final RenderPipeline LONGINUS_CUTOUT = RenderPipelineRegistry.register(
+            RenderPipeline.builder(LONGINUS_SNIPPET)
+                    .withLocation(NarakaMod.location("pipeline/longinus"))
+                    .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
+                    .withSampler("Sampler2")
+                    .withShaderDefine("CUTOUT")
+                    .build()
+    );
 
     public static final RenderPipeline LONGINUS = RenderPipelineRegistry.register(
             RenderPipeline.builder(LONGINUS_SNIPPET)
+                    .withVertexFormat(DefaultVertexFormat.POSITION, VertexFormat.Mode.QUADS)
                     .withLocation(NarakaMod.location("pipeline/longinus"))
-                    .withShaderDefine("LONGINUS_LAYERS", 16)
                     .build()
     );
 

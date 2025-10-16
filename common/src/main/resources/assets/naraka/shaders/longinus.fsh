@@ -6,10 +6,15 @@
 
 uniform sampler2D Sampler0;
 uniform sampler2D Sampler1;
+#ifdef CUTOUT
+uniform sampler2D Sampler2;
+#endif
 
 in vec4 texProj0;
-in float sphericalVertexDistance;
-in float cylindricalVertexDistance;
+
+#ifdef CUTOUT
+in vec2 texCoord0;
+#endif
 
 const vec3[] COLORS = vec3[](
     vec3(0.07),
@@ -55,6 +60,10 @@ mat4 end_portal_layer(float layer) {
 out vec4 fragColor;
 
 void main() {
+#ifdef CUTOUT
+    if (texture(Sampler2, texCoord0).a < 0.1)
+        discard;
+#endif
     vec3 color = textureProj(Sampler0, texProj0).rgb * COLORS[0];
     for (int i = 0; i < LONGINUS_LAYERS; i++)
         color += textureProj(Sampler1, texProj0 * end_portal_layer(float(i + 1))).rgb * COLORS[i];

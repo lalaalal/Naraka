@@ -61,7 +61,7 @@ public class NarakaRenderUtils {
 
     public static final List<Vector2f> DEFAULT_UVS = createUVList(0, 0, 1, 1);
 
-    private static List<Vector2f> createUVList(float u, float v, float width, float height) {
+    public static List<Vector2f> createUVList(float u, float v, float width, float height) {
         return List.of(
                 new Vector2f(u, v + height),
                 new Vector2f(u, v),
@@ -70,7 +70,7 @@ public class NarakaRenderUtils {
         );
     }
 
-    public static void vertices(VertexConsumer vertexConsumer, PoseStack.Pose pose, List<Vector3f> vertices, List<Vector2f> uvs, int packedLight, int packedOverlay, int color, Direction direction, boolean reverse) {
+    public static void vertices(PoseStack.Pose pose, VertexConsumer vertexConsumer, List<Vector3f> vertices, List<Vector2f> uvs, int packedLight, int packedOverlay, int color, Direction direction, boolean reverse) {
         Vec3i normal = direction.getUnitVec3i();
         NarakaUtils.iterate(vertices, uvs, (vertex, uv) -> {
             vertexConsumer.addVertex(pose, vertex)
@@ -91,13 +91,13 @@ public class NarakaRenderUtils {
     }
 
     public static void renderFlatImage(PoseStack.Pose pose, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color, Direction.Axis face) {
-        vertices(vertexConsumer, pose, VERTEX_MAPPINGS.get(face), DEFAULT_UVS, packedLight, packedOverlay, color, getNormal(face), false);
+        vertices(pose, vertexConsumer, VERTEX_MAPPINGS.get(face), DEFAULT_UVS, packedLight, packedOverlay, color, getNormal(face), false);
     }
 
     public static void renderFlatImage(PoseStack.Pose pose, VertexConsumer vertexConsumer, List<Vector3f> vertices, float u, float v, float width, float height, int packedLight, int packedOverlay, int color) {
         List<Vector2f> uvs = createUVList(u, v, width, height);
-        vertices(vertexConsumer, pose, vertices, uvs, packedLight, packedOverlay, color, Direction.UP, false);
-        vertices(vertexConsumer, pose, vertices, uvs, packedLight, packedOverlay, color, Direction.UP, true);
+        vertices(pose, vertexConsumer, vertices, uvs, packedLight, packedOverlay, color, Direction.UP, false);
+        vertices(pose, vertexConsumer, vertices, uvs, packedLight, packedOverlay, color, Direction.UP, true);
     }
 
     public static Vector3f vector3f(Vec3 vec3) {
