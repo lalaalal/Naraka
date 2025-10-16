@@ -25,7 +25,7 @@ public final class NarakaRenderPipelines {
 
     public static final RenderPipeline LONGINUS_CUTOUT = RenderPipelineRegistry.register(
             RenderPipeline.builder(LONGINUS_SNIPPET)
-                    .withLocation(NarakaMod.location("pipeline/longinus"))
+                    .withLocation(NarakaMod.location("pipeline/longinus_cutout"))
                     .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
                     .withSampler("Sampler2")
                     .withShaderDefine("CUTOUT")
@@ -34,8 +34,8 @@ public final class NarakaRenderPipelines {
 
     public static final RenderPipeline LONGINUS = RenderPipelineRegistry.register(
             RenderPipeline.builder(LONGINUS_SNIPPET)
-                    .withVertexFormat(DefaultVertexFormat.POSITION, VertexFormat.Mode.QUADS)
                     .withLocation(NarakaMod.location("pipeline/longinus"))
+                    .withVertexFormat(DefaultVertexFormat.POSITION, VertexFormat.Mode.QUADS)
                     .build()
     );
 

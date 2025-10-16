@@ -25,8 +25,8 @@
     "client.LocalPlayerMixin",
     "client.MinecraftMixin",
     "client.MouseHandlerMixin",
+    "client.MusicManagerMixin",
     "client.ScreenEffectRendererMixin",
-    "client.SimpleSoundInstanceMixin",
     "client.SkyRendererMixin",
     "client.SubmitNodeCollectionMixin",
     "client.WorldOpenFlowsMixin"

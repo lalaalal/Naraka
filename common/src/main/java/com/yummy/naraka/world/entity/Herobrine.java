@@ -489,7 +489,8 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     public void stopSeenByPlayer(ServerPlayer serverPlayer) {
         bossEvent.removePlayer(serverPlayer);
-        sendStopPacket(serverPlayer);
+        if (isAlive() || serverPlayer.isDeadOrDying())
+            sendStopPacket(serverPlayer);
     }
 
     private void sendStopPacket(ServerPlayer serverPlayer) {
