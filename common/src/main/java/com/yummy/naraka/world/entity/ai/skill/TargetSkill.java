@@ -87,12 +87,28 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
         return !targetInRange(target, distanceSquare);
     }
 
+    /**
+     * Check if the target position is in the look angle.
+     *
+     * @param target Target entity to check
+     * @param from   Angle in radians
+     * @param to     Angle in radians
+     * @return true if the target position is in the look angle, otherwise false
+     */
     protected final boolean targetInLookAngle(Vec3 target, float from, float to) {
         Vec3 delta = target.subtract(mob.position());
         double angle = NarakaUtils.wrapRadians(Math.atan2(delta.z, delta.x) - Math.toRadians(mob.getYRot() + 90));
         return from <= angle && angle <= to;
     }
 
+    /**
+     * Check if the target entity is in the look angle.
+     *
+     * @param target Target entity to check
+     * @param from   Angle in radians
+     * @param to     Angle in radians
+     * @return true if the target entity is in the look angle, otherwise false
+     */
     protected final boolean targetInLookAngle(LivingEntity target, float from, float to) {
         return targetInLookAngle(target.position(), from, to);
     }

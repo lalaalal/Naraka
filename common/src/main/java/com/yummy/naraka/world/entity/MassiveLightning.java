@@ -64,7 +64,7 @@ public class MassiveLightning extends Entity {
 
     private void serverTick(ServerLevel level) {
         level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(size), this::canHurtTarget).forEach(target -> {
-            if (target.hurtServer(level, damageSources().lightningBolt(), 10) && herobrine != null) {
+            if (target.hurtServer(level, damageSources().lightningBolt(), target.getMaxHealth() * 0.66f) && herobrine != null) {
                 herobrine.stigmatizeEntity(level, target);
             }
         });

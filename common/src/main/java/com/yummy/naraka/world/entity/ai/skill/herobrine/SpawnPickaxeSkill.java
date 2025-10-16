@@ -13,7 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class PickaxeStrikeSkill extends AttackSkill<Herobrine> {
+public class SpawnPickaxeSkill extends AttackSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final_herobrine.pickaxe_strike");
 
     private static final int SHOOT_TICK = 10;
@@ -21,7 +21,7 @@ public class PickaxeStrikeSkill extends AttackSkill<Herobrine> {
 
     private Vec3 destination = Vec3.ZERO;
 
-    public PickaxeStrikeSkill(Herobrine mob) {
+    public SpawnPickaxeSkill(Herobrine mob) {
         super(LOCATION, mob, 70, 400);
     }
 
