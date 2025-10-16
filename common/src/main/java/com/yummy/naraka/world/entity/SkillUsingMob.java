@@ -17,6 +17,8 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -198,6 +200,22 @@ public abstract class SkillUsingMob extends PathfinderMob {
         updateAnimationTick();
         skillManager.tick(level);
         NetworkManager.clientbound().send(level.players(), ClientboundEntityPositionSyncPacket.of(this));
+    }
+
+    @Override
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        getCurrentSkill().ifPresent(skill -> {
+            output.store("CurrentSkill", ResourceLocation.CODEC, skill.location);
+        });
+    }
+
+    @Override
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        input.read("CurrentSkill", ResourceLocation.CODEC).ifPresent(
+                this::useSkill
+        );
     }
 
     protected static abstract class AnimationController {

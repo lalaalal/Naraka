@@ -75,7 +75,7 @@ public class MagicCircle extends Entity {
             Collection<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0, 7, 0), this::isValidTarget);
             DamageSource damageSource = damageSources().magic();
             for (LivingEntity entity : entities) {
-                entity.hurtServer(level, damageSource, entity.getMaxHealth() * 0.2f);
+                entity.hurtServer(level, damageSource, entity.getMaxHealth() * 0.3f);
                 if (owner != null)
                     owner.stigmatizeEntity(level, entity);
             }

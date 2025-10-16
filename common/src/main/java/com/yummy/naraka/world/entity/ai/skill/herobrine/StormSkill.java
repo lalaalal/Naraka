@@ -48,9 +48,18 @@ public class StormSkill extends ComboSkill<Herobrine> {
         runFrom(40, () -> stigmatizingWave(level, 40, tickCount - 40));
         runFrom(50, () -> stigmatizingWave(level, 50, tickCount - 50));
 
+        runBetween(50, 60, () -> sendCircleParticles(level));
         runAt(60, () -> level.sendParticles(ParticleTypes.GUST_EMITTER_LARGE, mob.getX(), mob.getY(), mob.getZ(), 4, 0.5, 0.5, 0.5, 0.3));
         runAt(60, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPush, -3));
         runFrom(65, () -> stigmatizingWave(level, 65, tickCount - 70));
+    }
+
+    private void sendCircleParticles(ServerLevel level) {
+        for (double angle = 0; angle < Math.TAU; angle += Math.PI / 360) {
+            double x = Math.cos(angle) * 3 + mob.getX();
+            double z = Math.sin(angle) * 3 + mob.getZ();
+            level.sendParticles(NarakaFlameParticleOption.REDSTONE, x, mob.getY() + 0.1, z, 0, 0, 0, 0, 0);
+        }
     }
 
     @Override

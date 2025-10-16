@@ -488,6 +488,7 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void stopSeenByPlayer(ServerPlayer serverPlayer) {
+        shadowController.killShadows(serverPlayer.level());
         bossEvent.removePlayer(serverPlayer);
         if (isAlive() || serverPlayer.isDeadOrDying())
             sendStopPacket(serverPlayer);
@@ -699,7 +700,6 @@ public class Herobrine extends AbstractHerobrine {
             bossEvent.getPlayers().forEach(this::sendStopPacket);
             bossEvent.removeAllPlayers();
             releaseStigma(serverLevel);
-            spawnAbsoluteHerobrine(serverLevel.getServer());
         }
         if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             deathTime = 1180;

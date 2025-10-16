@@ -92,7 +92,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
 
     @Override
     protected float calculateDamage(LivingEntity target) {
-        return target.getMaxHealth() * 0.2f;
+        return mob.getAttackDamage() + target.getMaxHealth() * 0.2f;
     }
 
     @Override
