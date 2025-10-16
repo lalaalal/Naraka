@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.data;
 
+import com.yummy.naraka.config.NarakaCommonConfig;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
@@ -18,7 +19,6 @@ import net.minecraft.world.entity.LivingEntity;
 public record Stigma(int value, long lastMarkedTime) {
     public static final Stigma ZERO = new Stigma(0, 0);
     public static final int MAX_STIGMA = 2;
-    public static final int HOLD_ENTITY_DURATION = 20 * 5;
 
     /**
      * Increase value of stigma.
@@ -50,7 +50,7 @@ public record Stigma(int value, long lastMarkedTime) {
 
     /**
      * Reset the stigma of living entity to 0.
-     * Stun and lock health of living entity for {@link #HOLD_ENTITY_DURATION} ticks.<br>
+     * Stun and lock health of living entity for {@link NarakaCommonConfig#stigmaStunDuration} ticks.<br>
      * Call {@link StigmatizingEntity#collectStigma(ServerLevel, LivingEntity, Stigma)} if caused entity is {@linkplain StigmatizingEntity}
      *
      * @param livingEntity Target entity to consume stigma
@@ -61,8 +61,9 @@ public record Stigma(int value, long lastMarkedTime) {
      * @see StigmatizingEntity#collectStigma(ServerLevel, LivingEntity, Stigma)
      */
     public Stigma consume(ServerLevel level, LivingEntity livingEntity, Entity cause) {
+        int stunDuration = NarakaConfig.COMMON.stigmaStunDuration.getValue();
         lockHealth(level, livingEntity, cause);
-        StunHelper.stunEntity(livingEntity, HOLD_ENTITY_DURATION);
+        StunHelper.stunEntity(livingEntity, stunDuration);
         livingEntity.level().playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.TOTEM_USE, livingEntity.getSoundSource(), 1.0F, 1.0F);
 
         if (livingEntity != cause && cause instanceof StigmatizingEntity stigmatizingEntity)
@@ -75,7 +76,7 @@ public record Stigma(int value, long lastMarkedTime) {
         float maxHealth = livingEntity.getMaxHealth();
         double lockedHealth = EntityDataHelper.getEntityData(livingEntity, NarakaEntityDataTypes.LOCKED_HEALTH.get());
         double originalMaxHealth = maxHealth + lockedHealth;
-        double reducingHealth = originalMaxHealth * NarakaConfig.COMMON.lockHealthRatio.getValue();
+        double reducingHealth = Math.round(originalMaxHealth * NarakaConfig.COMMON.lockHealthRatio.getValue());
         lockedHealth += reducingHealth;
 
         if (lockedHealth >= originalMaxHealth) {
