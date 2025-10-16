@@ -18,6 +18,7 @@ public class NarakaCommonConfig extends StaticConfiguration {
     public final ConfigValue<Boolean> breakComboWhenSkillDisabled = define("break_combo_when_skill_disabled", false);
     public final ConfigValue<Boolean> alwaysCombo = define("always_combo", false);
     public final ConfigValue<Boolean> disableStigma = define("disable_stigma", false);
+    public final ConfigValue<Float> lockHealthRatio = define("lock_health_ratio", 0.1f);
 
     public NarakaCommonConfig() {
         super("naraka-common", PropertiesConfigFile::new);

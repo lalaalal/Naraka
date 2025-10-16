@@ -58,7 +58,10 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runBefore(40, () -> rotateTowardTarget(target));
+        runBefore(40, () -> lookTarget(target));
         runBetween(40, 90, () -> moveToTarget(target, false, applyAcceleration()));
+        runBetween(60, 90, () -> rotateTowardTarget(target));
+        runBetween(60, 90, () -> lookTarget(target));
     }
 
     private Predicate<LivingEntity> targetBetween() {

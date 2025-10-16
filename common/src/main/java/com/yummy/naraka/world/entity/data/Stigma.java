@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.data;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
 import com.yummy.naraka.world.entity.StunHelper;
@@ -74,7 +75,7 @@ public record Stigma(int value, long lastMarkedTime) {
         float maxHealth = livingEntity.getMaxHealth();
         double lockedHealth = EntityDataHelper.getEntityData(livingEntity, NarakaEntityDataTypes.LOCKED_HEALTH.get());
         double originalMaxHealth = maxHealth + lockedHealth;
-        double reducingHealth = originalMaxHealth * 0.2;
+        double reducingHealth = originalMaxHealth * NarakaConfig.COMMON.lockHealthRatio.getValue();
         lockedHealth += reducingHealth;
 
         if (lockedHealth >= originalMaxHealth) {

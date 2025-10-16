@@ -372,7 +372,7 @@ public class Herobrine extends AbstractHerobrine {
         if (getPhase() == 3 && tickCount % 66 == 0) {
             float lockedHealth = calculateLockedHealth(serverLevel);
             float stigma = calculateStigma(serverLevel);
-            heal(stigma * (lockedHealth + 1) * 6);
+            heal(stigma * lockedHealth * 1.5f);
         }
 
         super.customServerAiStep(serverLevel);
