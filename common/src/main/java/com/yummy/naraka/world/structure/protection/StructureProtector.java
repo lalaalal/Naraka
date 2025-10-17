@@ -3,14 +3,16 @@ package com.yummy.naraka.world.structure.protection;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.core.registries.NarakaRegistries;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.saveddata.SavedData;
-import net.minecraft.world.level.saveddata.SavedDataType;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 
 import java.util.ArrayList;
@@ -59,24 +61,31 @@ public class StructureProtector {
 
     public static void initialize(ServerLevel level) {
         DimensionDataStorage storage = level.getDataStorage();
-        Container.instance = storage.computeIfAbsent(Container.factory);
+        Container.instance = storage.computeIfAbsent(Container.factory, "structure_protectors");
     }
 
     private static class Container extends SavedData {
-        public static final Codec<Container> CODEC = RecordCodecBuilder.create(
-                instance -> instance.group(
-                        StructureProtector.CODEC.listOf().fieldOf("protectors").forGetter(container -> container.protectors)
-                ).apply(instance, Container::new)
-        );
-        private static final SavedDataType<Container> factory = new SavedDataType<>(
-                "structure_protectors", Container::new, CODEC, DataFixTypes.LEVEL
+        private static final Factory<Container> factory = new Factory<>(
+                Container::new, Container::create, DataFixTypes.LEVEL
         );
         private static Container instance = new Container();
+
+        private static Container create(CompoundTag tag, HolderLookup.Provider registries) {
+            return NarakaNbtUtils.read(tag, "structure_protectors", StructureProtector.CODEC.listOf())
+                    .map(Container::new)
+                    .orElse(new Container());
+        }
 
         private final List<StructureProtector> protectors;
 
         private Container() {
             protectors = new ArrayList<>();
+        }
+
+        @Override
+        public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
+            NarakaNbtUtils.store(tag, "structure_protectors", StructureProtector.CODEC.listOf(), protectors);
+            return tag;
         }
 
         private Container(List<StructureProtector> protectors) {

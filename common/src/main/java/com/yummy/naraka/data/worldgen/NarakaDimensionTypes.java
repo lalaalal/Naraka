@@ -9,7 +9,6 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 
-import java.util.Optional;
 import java.util.OptionalLong;
 
 public class NarakaDimensionTypes {
@@ -31,7 +30,6 @@ public class NarakaDimensionTypes {
                 BlockTags.INFINIBURN_OVERWORLD,
                 BuiltinDimensionTypes.OVERWORLD_EFFECTS,
                 0.0F,
-                Optional.empty(),
                 new DimensionType.MonsterSettings(false, false, ConstantInt.ZERO, 0)
         ));
     }
