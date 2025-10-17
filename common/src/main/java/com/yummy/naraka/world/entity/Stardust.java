@@ -2,10 +2,13 @@ package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -24,8 +27,6 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -104,7 +105,7 @@ public class Stardust extends LightTailEntity {
         waitingTickCount += 1;
         int waitingTick = entityData.get(WAITING_TICK);
         if (waitingTickCount == waitingTick - 5)
-            level().addParticle(NarakaParticleTypes.STARDUST.get(), true, true, getX(), getY(), getZ(), 0, 0, 0);
+            level().addParticle(NarakaParticleTypes.STARDUST.get(), true, getX(), getY(), getZ(), 0, 0, 0);
         if (waitingTickCount >= waitingTick) {
             Entity target = getTarget();
             if (followTarget && target != null) {
@@ -141,7 +142,7 @@ public class Stardust extends LightTailEntity {
             Entity source = owner == null ? this : owner;
             explode(1);
             if (entityHitResult.getEntity() instanceof Player livingEntity
-                    && !livingEntity.isInvulnerableTo(serverLevel, NarakaDamageSources.stardust(this))) {
+                    && !livingEntity.isInvulnerableTo(NarakaDamageSources.stardust(this))) {
                 StigmaHelper.increaseStigma(serverLevel, livingEntity, source);
             }
         }
@@ -186,24 +187,24 @@ public class Stardust extends LightTailEntity {
     }
 
     @Override
-    public boolean canBeCollidedWith(@Nullable Entity entity) {
+    public boolean canBeCollidedWith() {
         return true;
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput input) {
-        input.read("Owner", UUIDUtil.CODEC)
-                .ifPresent(uuid -> owner = level().getEntity(uuid));
-        entityData.set(HIT_BLOCK, input.getBooleanOr("HitBlock", true));
-        entityData.set(WAITING_TICK, input.getIntOr("WaitingTick", 0));
-        waitingTickCount = input.getIntOr("WaitingTickCount", 0);
-        explosionWaitingTickCount = input.getIntOr("ExplosionWaitingTickCount", 0);
+    public void readAdditionalSaveData(CompoundTag input) {
+        NarakaNbtUtils.read(input, "Owner", UUIDUtil.CODEC)
+                .ifPresent(uuid -> owner = NarakaEntityUtils.findEntityByUUID(level(), uuid, Entity.class));
+        entityData.set(HIT_BLOCK, input.getBoolean("HitBlock"));
+        entityData.set(WAITING_TICK, input.getInt("WaitingTick"));
+        waitingTickCount = input.getInt("WaitingTickCount");
+        explosionWaitingTickCount = input.getInt("ExplosionWaitingTickCount");
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput output) {
+    public void addAdditionalSaveData(CompoundTag output) {
         if (owner != null)
-            output.store("Owner", UUIDUtil.CODEC, owner.getUUID());
+            NarakaNbtUtils.store(output, "Owner", UUIDUtil.CODEC, owner.getUUID());
         output.putBoolean("HitBlock", entityData.get(HIT_BLOCK));
         output.putInt("WaitingTick", entityData.get(WAITING_TICK));
         output.putInt("WaitingTickCount", waitingTickCount);

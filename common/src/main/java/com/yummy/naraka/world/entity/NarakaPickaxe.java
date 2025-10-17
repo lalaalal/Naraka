@@ -1,12 +1,14 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe.ExplodeSkill;
 import com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe.StrikeSkill;
 import com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe.SwingSkill;
 import com.yummy.naraka.world.entity.animation.NarakaPickaxeAnimationLocations;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
@@ -17,8 +19,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -88,7 +88,7 @@ public class NarakaPickaxe extends SkillUsingMob {
         }
     }
 
-    private boolean filterTarget(LivingEntity target, ServerLevel level) {
+    private boolean filterTarget(LivingEntity target) {
         return AbstractHerobrine.isNotHerobrine(target)
                 && target.getType() != NarakaEntityTypes.NARAKA_PICKAXE.get();
     }
@@ -119,17 +119,18 @@ public class NarakaPickaxe extends SkillUsingMob {
     }
 
     @Override
-    public boolean isInvulnerableTo(ServerLevel level, DamageSource damageSource) {
+    public boolean isInvulnerableTo(DamageSource damageSource) {
         return !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY);
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput input) {
-        input.read("Owner", UUIDUtil.CODEC).ifPresent(uuid -> herobrineUUID = uuid);
+    public void readAdditionalSaveData(CompoundTag input) {
+        NarakaNbtUtils.read(input, "Herobrine", UUIDUtil.CODEC).ifPresent(uuid -> herobrineUUID = uuid);
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput output) {
-        output.storeNullable("Owner", UUIDUtil.CODEC, herobrineUUID);
+    public void addAdditionalSaveData(CompoundTag output) {
+        if (herobrineUUID != null)
+            NarakaNbtUtils.store(output, "Owner", UUIDUtil.CODEC, herobrineUUID);
     }
 }

@@ -3,7 +3,6 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.diamond_golem.SimpleAttackSkill;
 import com.yummy.naraka.world.entity.animation.DiamondGolemAnimationLocations;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
@@ -68,9 +67,9 @@ public class DiamondGolem extends SkillUsingMob implements Enemy {
     }
 
     @Override
-    public boolean isInvulnerableTo(ServerLevel level, DamageSource damageSource) {
+    public boolean isInvulnerableTo(DamageSource damageSource) {
         if (damageSource.is(DamageTypes.IN_WALL))
             return true;
-        return super.isInvulnerableTo(level, damageSource);
+        return super.isInvulnerableTo(damageSource);
     }
 }

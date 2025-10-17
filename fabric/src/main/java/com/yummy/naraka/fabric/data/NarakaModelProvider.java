@@ -11,7 +11,6 @@ import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SpearItem;
-import com.yummy.naraka.world.item.equipment.NarakaEquipmentAssets;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;

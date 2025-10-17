@@ -58,7 +58,7 @@ public class StrikeSkill extends AttackSkill<NarakaPickaxe> {
         int stigma = StigmaHelper.get(target).value();
         StigmaHelper.removeStigma(target);
         DamageSource damageSource = NarakaDamageSources.stigmaConsume(mob);
-        target.hurtServer(level, damageSource, stigma * calculateStigmaDamage(target));
+        target.hurt(damageSource, stigma * calculateStigmaDamage(target));
     }
 
     @Override

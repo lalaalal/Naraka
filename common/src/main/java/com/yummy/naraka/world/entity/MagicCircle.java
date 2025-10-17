@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -15,10 +16,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -75,7 +73,7 @@ public class MagicCircle extends Entity {
             Collection<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0, 7, 0), this::isValidTarget);
             DamageSource damageSource = damageSources().magic();
             for (LivingEntity entity : entities) {
-                entity.hurtServer(level, damageSource, entity.getMaxHealth() * 0.3f);
+                entity.hurt(damageSource, entity.getMaxHealth() * 0.3f);
                 if (owner != null)
                     owner.stigmatizeEntity(level, entity);
             }
@@ -112,7 +110,7 @@ public class MagicCircle extends Entity {
                 double z = Math.sin(Math.toRadians(yRot)) * scale * 0.5 + getZ() + random.nextDouble() * 0.4;
                 double y = getHeight(yRot) + getY() + random.nextDouble() * 0.4;
 
-                level.addParticle(NarakaFlameParticleOption.GOLD, true, true, x, y, z, 0, 1, 0);
+                level.addParticle(NarakaFlameParticleOption.GOLD, true, x, y, z, 0, 1, 0);
             }
             level.playLocalSound(getX(), getY(), getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.HOSTILE, 2, 1, false);
         } else {
@@ -133,13 +131,13 @@ public class MagicCircle extends Entity {
         super.onSyncedDataUpdated(dataAccessor);
         if (dataAccessor == SCALE) {
             currentScale = getScale();
-            setBoundingBox(makeBoundingBox(position()));
+            setBoundingBox(makeBoundingBox());
         }
     }
 
     public void setScale(float scale) {
         entityData.set(SCALE, scale);
-        setBoundingBox(makeBoundingBox(position()));
+        setBoundingBox(makeBoundingBox());
     }
 
     public float getScale() {
@@ -151,9 +149,9 @@ public class MagicCircle extends Entity {
     }
 
     @Override
-    protected AABB makeBoundingBox(Vec3 position) {
+    protected AABB makeBoundingBox() {
         float scale = getScale() / 2;
-        return super.makeBoundingBox(position).inflate(scale, 0, scale);
+        return super.makeBoundingBox().inflate(scale, 0, scale);
     }
 
     @Override
@@ -163,7 +161,7 @@ public class MagicCircle extends Entity {
     }
 
     @Override
-    public boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
+    public boolean hurt(DamageSource damageSource, float amount) {
         if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             discard();
             return true;
@@ -172,13 +170,13 @@ public class MagicCircle extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput input) {
-        setScale(input.getFloatOr("Scale", 1));
-        entityData.set(LIFETIME, input.getIntOr("Lifetime", 1));
+    protected void readAdditionalSaveData(CompoundTag input) {
+        setScale(input.getFloat("Scale"));
+        entityData.set(LIFETIME, input.getInt("Lifetime"));
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput output) {
+    protected void addAdditionalSaveData(CompoundTag output) {
         output.putFloat("Scale", getScale());
         output.putInt("Lifetime", getLifetime());
     }

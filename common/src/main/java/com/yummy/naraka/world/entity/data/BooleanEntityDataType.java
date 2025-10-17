@@ -18,7 +18,9 @@ public class BooleanEntityDataType extends EntityDataType<Boolean> {
 
     @Override
     public Optional<Boolean> read(CompoundTag tag, HolderLookup.Provider provider) {
-        return tag.getBoolean(name());
+        if (tag.contains(name()))
+            return Optional.of(tag.getBoolean(name()));
+        return Optional.empty();
     }
 
     @Override

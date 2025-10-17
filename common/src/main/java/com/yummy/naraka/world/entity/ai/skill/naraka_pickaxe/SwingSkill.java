@@ -49,7 +49,7 @@ public class SwingSkill extends AttackSkill<NarakaPickaxe> {
         Stigma stigma = StigmaHelper.get(target);
         if (stigma.value() > 0) {
             StigmaHelper.decreaseStigma(target);
-            target.hurtServer(level, NarakaDamageSources.stigmaConsume(mob), stigma.value() * calculateDamage(target));
+            target.hurt(NarakaDamageSources.stigmaConsume(mob), stigma.value() * calculateDamage(target));
             level.playSound(null, mob, SoundEvents.BEACON_DEACTIVATE, SoundSource.HOSTILE, 1, 1);
         }
     }

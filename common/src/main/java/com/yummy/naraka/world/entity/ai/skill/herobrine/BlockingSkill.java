@@ -34,6 +34,6 @@ public class BlockingSkill extends Skill<SkillUsingMob> {
         if (target == null)
             return;
         if (mob.distanceToSqr(target) <= 9)
-            target.hurtServer(level, mob.damageSources().mobAttack(mob), 4);
+            target.hurt(mob.damageSources().mobAttack(mob), 4);
     }
 }

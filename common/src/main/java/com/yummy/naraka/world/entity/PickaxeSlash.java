@@ -6,17 +6,17 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.ARGB;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class PickaxeSlash extends LightTailEntity {
@@ -64,7 +64,7 @@ public class PickaxeSlash extends LightTailEntity {
     }
 
     public int getColor(float partialTick) {
-        return ARGB.color((int) (getAlpha(partialTick) * 255), entityData.get(COLOR));
+        return FastColor.ARGB32.color((int) (getAlpha(partialTick) * 255), entityData.get(COLOR));
     }
 
     public void setZRot(float zRot) {
@@ -108,19 +108,20 @@ public class PickaxeSlash extends LightTailEntity {
     }
 
     @Override
-    public boolean deflect(ProjectileDeflection projectileDeflection, @Nullable Entity entity, @Nullable EntityReference<Entity> entityReference, boolean bl) {
+    public boolean deflect(ProjectileDeflection deflection, @Nullable Entity entity, @Nullable Entity owner, boolean deflectedByPlayer) {
         return false;
     }
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        setPos(oldPosition().add(getDeltaMovement()));
+        Vec3 old = new Vec3(xOld, yOld, zOld);
+        setPos(old.add(getDeltaMovement()));
     }
 
     private void hurtEntity(ServerLevel level, LivingEntity target) {
         DamageSource damageSource = NarakaDamageSources.pickaxeSlash(this);
         float damage = 10 + target.getMaxHealth() * 0.1f;
-        if (target.hurtServer(level, damageSource, damage) && stigmatizingEntity != null)
+        if (target.hurt(damageSource, damage) && stigmatizingEntity != null)
             stigmatizingEntity.stigmatizeEntity(level, target);
         if (stunTarget)
             StunHelper.stunEntity(target, 20);

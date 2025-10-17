@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.ai.goal.FollowOwnerGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
@@ -10,6 +11,7 @@ import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -27,8 +29,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -196,7 +196,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.HOSTILE);
 
         float baseDamage = target.getMaxHealth() * 0.25f;
-        target.hurtServer(level, NarakaDamageSources.stigmaConsume(this), baseDamage * stigma.value());
+        target.hurt(NarakaDamageSources.stigmaConsume(this), baseDamage * stigma.value());
         if (!instant)
             getShadowController().ifPresent(controller -> controller.summonShadowHerobrine(level));
     }
@@ -211,29 +211,30 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     @Override
-    public boolean hurtServer(ServerLevel serverLevel, DamageSource source, float amount) {
+    public boolean hurt(DamageSource source, float amount) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
-            return super.hurtServer(serverLevel, source, amount);
+            return super.hurt(source, amount);
         if (getHerobrine().isPresent())
             amount = Math.min(amount, getHurtDamageLimit());
         if (animationTickLeft > 0 || isFinalModel())
             return false;
-        return super.hurtServer(serverLevel, source, amount);
+        return super.hurt(source, amount);
     }
 
     @Override
-    protected void actuallyHurt(ServerLevel level, DamageSource damageSource, float damageAmount) {
-        super.actuallyHurt(level, damageSource, damageAmount);
-        getShadowController().ifPresent(controller -> controller.broadcastShadowHerobrineHurt(level, this));
+    protected void actuallyHurt(DamageSource damageSource, float damageAmount) {
+        super.actuallyHurt(damageSource, damageAmount);
+        if (level() instanceof ServerLevel level)
+            getShadowController().ifPresent(controller -> controller.broadcastShadowHerobrineHurt(level, this));
     }
 
     @Override
-    protected AABB makeBoundingBox(Vec3 position) {
+    protected AABB makeBoundingBox() {
         if (isFinalModel()) {
-            AABB boundingBox = super.makeBoundingBox(position);
+            AABB boundingBox = super.makeBoundingBox();
             return boundingBox.setMaxY(boundingBox.maxY - 1.7);
         }
-        return super.makeBoundingBox(position);
+        return super.makeBoundingBox();
     }
 
     @Override
@@ -254,18 +255,18 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     @Override
-    public void addAdditionalSaveData(ValueOutput output) {
+    public void addAdditionalSaveData(CompoundTag output) {
         super.addAdditionalSaveData(output);
         if (herobrine != null)
-            output.store("Herobrine", UUIDUtil.CODEC, herobrine.getUUID());
+            NarakaNbtUtils.store(output, "Herobrine", UUIDUtil.CODEC, herobrine.getUUID());
         output.putBoolean("ReduceAlpha", reduceAlpha);
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput input) {
+    public void readAdditionalSaveData(CompoundTag input) {
         super.readAdditionalSaveData(input);
-        input.read("Herobrine", UUIDUtil.CODEC).ifPresent(uuid -> this.herobrineUUID = uuid);
-        reduceAlpha = input.getBooleanOr("ReduceAlpha", isFinalModel());
+        NarakaNbtUtils.read(input, "Herobrine", UUIDUtil.CODEC).ifPresent(uuid -> this.herobrineUUID = uuid);
+        reduceAlpha = input.getBoolean("ReduceAlpha");
     }
 
     @Override

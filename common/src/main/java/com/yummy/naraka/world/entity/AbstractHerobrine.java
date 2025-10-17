@@ -5,6 +5,7 @@ import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -30,8 +31,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -182,7 +181,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     @Override
     protected void registerGoals() {
         targetSelector.addGoal(1, new HurtByTargetGoal(this, Herobrine.class));
-        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, (target, level) -> isNotHerobrine(target)));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, AbstractHerobrine::isNotHerobrine));
 
         goalSelector.addGoal(1, new FloatGoal(this));
         goalSelector.addGoal(2, new LookAtTargetGoal(this));
@@ -200,23 +199,23 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     @Override
-    protected void customServerAiStep(ServerLevel serverLevel) {
+    protected void customServerAiStep() {
         updateScarfRotation();
-        super.customServerAiStep(serverLevel);
+        super.customServerAiStep();
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput input) {
+    public void readAdditionalSaveData(CompoundTag input) {
         super.readAdditionalSaveData(input);
-        boolean finalModel = input.getBooleanOr("FinalModel", false);
+        boolean finalModel = input.getBoolean("FinalModel");
         entityData.set(FINAL_MODEL, finalModel);
-        boolean displayPickaxe = input.getBooleanOr("DisplayPickaxe", false);
+        boolean displayPickaxe = input.getBoolean("DisplayPickaxe");
         setDisplayPickaxe(displayPickaxe);
         setPersistenceRequired();
     }
 
     @Override
-    public void addAdditionalSaveData(ValueOutput output) {
+    public void addAdditionalSaveData(CompoundTag output) {
         super.addAdditionalSaveData(output);
         output.putBoolean("FinalModel", isFinalModel());
         output.putBoolean("DisplayPickaxe", displayPickaxe());
@@ -267,8 +266,8 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     @Override
-    public boolean isInvulnerableTo(ServerLevel serverLevel, DamageSource source) {
-        return source.is(DamageTypes.IN_WALL) || source.is(DamageTypes.LIGHTNING_BOLT) || super.isInvulnerableTo(serverLevel, source);
+    public boolean isInvulnerableTo(DamageSource source) {
+        return source.is(DamageTypes.IN_WALL) || source.is(DamageTypes.LIGHTNING_BOLT) || super.isInvulnerableTo(source);
     }
 
     @Override

@@ -8,7 +8,6 @@ import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe.StrikeSkill;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -62,7 +61,7 @@ public class SpawnPickaxeSkill extends AttackSkill<Herobrine> {
             Vec3 to = NarakaUtils.interpolateVec3(deltaEnd, mob.position(), destination, NarakaUtils::fastStepIn);
 
             for (float i = 0; i <= 1; i += 0.1f) {
-                Vec3 position = Mth.lerp(i, from, to);
+                Vec3 position = NarakaUtils.lerp(i, from, to);
                 level.sendParticles(NarakaFlameParticleOption.EMERALD, position.x, position.y, position.z, 5, 0.2, 0.2, 0.2, 0);
             }
         }

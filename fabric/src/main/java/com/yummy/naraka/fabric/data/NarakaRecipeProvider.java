@@ -6,7 +6,6 @@ import com.yummy.naraka.core.component.BlessedPredicate;
 import com.yummy.naraka.core.component.NarakaDataComponentPredicates;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
-import com.yummy.naraka.world.item.crafting.ComponentPredicateRecipeBuilder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;

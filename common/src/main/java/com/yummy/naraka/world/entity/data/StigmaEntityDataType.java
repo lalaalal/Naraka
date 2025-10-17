@@ -28,8 +28,8 @@ public class StigmaEntityDataType extends EntityDataType<Stigma> {
     public Optional<Stigma> read(CompoundTag tag, HolderLookup.Provider provider) {
         if (!saveExists(tag))
             return Optional.empty();
-        int stigma = tag.getIntOr("Stigma", 0);
-        long lastMarkedTime = tag.getLongOr("LastMarkedTime", 0);
+        int stigma = tag.getInt("Stigma");
+        long lastMarkedTime = tag.getLong("LastMarkedTime");
         return Optional.of(new Stigma(stigma, lastMarkedTime));
     }
 

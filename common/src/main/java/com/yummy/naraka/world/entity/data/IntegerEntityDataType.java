@@ -18,7 +18,9 @@ public class IntegerEntityDataType extends EntityDataType<Integer> {
 
     @Override
     public Optional<Integer> read(CompoundTag tag, HolderLookup.Provider provider) {
-        return tag.getInt(name());
+        if (tag.contains(name()))
+            return Optional.of(tag.getInt(name()));
+        return Optional.empty();
     }
 
     @Override

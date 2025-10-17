@@ -10,6 +10,7 @@ import com.yummy.naraka.network.SyncAnimationPacket;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.NarakaDimensions;
@@ -26,6 +27,7 @@ import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -46,9 +48,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.portal.TeleportTransition;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -239,10 +239,10 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     @Override
-    protected AABB makeBoundingBox(Vec3 position) {
+    protected AABB makeBoundingBox() {
         if (!firstTick && isFinalModel())
-            return super.makeBoundingBox(position).expandTowards(0, 0.5, 0);
-        return super.makeBoundingBox(position);
+            return super.makeBoundingBox().expandTowards(0, 0.5, 0);
+        return super.makeBoundingBox();
     }
 
     private void teleportToSpawnedPosition() {
@@ -488,7 +488,7 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void stopSeenByPlayer(ServerPlayer serverPlayer) {
-        shadowController.killShadows(serverPlayer.level());
+        shadowController.killShadows((ServerLevel) serverPlayer.level());
         bossEvent.removePlayer(serverPlayer);
         if (isAlive() || serverPlayer.isDeadOrDying())
             sendStopPacket(serverPlayer);
@@ -509,39 +509,42 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     @Override
-    public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
+    public boolean hurt(DamageSource source, float damage) {
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
-            return super.hurtServer(level, source, damage);
-        if (isDeadOrDying() && source.getEntity() instanceof LivingEntity sourceEntity
-                && sourceEntity.getMainHandItem().is(NarakaItems.PURIFIED_SOUL_SWORD.get())) {
-            teleportTargetToNarakaDimension(level, sourceEntity);
-            return false;
-        }
-        if (source.getEntity() == this || isUsingInvulnerableSkill()) {
-            level.playSound(null, getX(), getY(), getZ(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.HOSTILE, 4, 0.3f);
-            return false;
-        }
+            return super.hurt(source, damage);
+        if (level() instanceof ServerLevel level) {
+            if (isDeadOrDying() && source.getEntity() instanceof LivingEntity sourceEntity
+                    && sourceEntity.getMainHandItem().is(NarakaItems.PURIFIED_SOUL_SWORD.get())) {
+                teleportTargetToNarakaDimension(level, sourceEntity);
+                return false;
+            }
+            if (source.getEntity() == this || isUsingInvulnerableSkill()) {
+                level.playSound(null, getX(), getY(), getZ(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.HOSTILE, 4, 0.3f);
+                return false;
+            }
+            float limitedDamage = Math.min(damage, hurtDamageLimit);
+            if (updateHibernateMode(level, source, getActualDamage(source, limitedDamage)))
+                return true;
+            if (hibernateMode)
+                return true;
 
-        float limitedDamage = Math.min(damage, hurtDamageLimit);
-        if (updateHibernateMode(level, source, getActualDamage(source, limitedDamage)))
-            return true;
-        if (hibernateMode)
-            return true;
-
-        if (source.is(DamageTypeTags.IS_PROJECTILE)) {
-            if (source.getDirectEntity() != null)
-                lookAt(source.getDirectEntity(), 360, 0);
-            if (!isFinalModel())
-                skillManager.setCurrentSkillIfAbsence(blockingSkill);
-            return false;
+            if (source.is(DamageTypeTags.IS_PROJECTILE)) {
+                if (source.getDirectEntity() != null)
+                    lookAt(source.getDirectEntity(), 360, 0);
+                if (!isFinalModel())
+                    skillManager.setCurrentSkillIfAbsence(blockingSkill);
+                return false;
+            }
+            return super.hurt(source, limitedDamage);
         }
-        return super.hurtServer(level, source, limitedDamage);
+        return super.hurt(source, damage);
     }
 
     @Override
-    protected void actuallyHurt(ServerLevel level, DamageSource damageSource, float damageAmount) {
-        super.actuallyHurt(level, damageSource, damageAmount);
-        updateHurtDamageLimit(level);
+    protected void actuallyHurt(DamageSource damageSource, float damageAmount) {
+        super.actuallyHurt(damageSource, damageAmount);
+        if (level() instanceof ServerLevel level)
+            updateHurtDamageLimit(level);
         accumulatedHurtDamage += damageAmount;
         if (getPhase() == 2 && (accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f))
             shadowController.increaseFlickerStack();
@@ -669,20 +672,18 @@ public class Herobrine extends AbstractHerobrine {
     protected void teleportTargetToNarakaDimension(ServerLevel level, Entity target) {
         if (isDeadOrDying() && isFinalModel()) {
             ServerLevel narakaDimension = level.getServer().getLevel(NarakaDimensions.NARAKA);
-            if (narakaDimension != null) {
-                target.teleport(new TeleportTransition(narakaDimension, new Vec3(0, 10, 0), Vec3.ZERO, 0, 0, TeleportTransition.PLAY_PORTAL_SOUND));
-            }
+            if (narakaDimension != null)
+                target.teleportTo(narakaDimension, 0, 0, 0, Set.of(), 0, 0);
         }
     }
 
     @Override
-    @Nullable
-    public Entity teleport(TeleportTransition teleportTransition) {
-        if (!level().dimension().equals(teleportTransition.newLevel().dimension()) && level() instanceof ServerLevel level) {
+    public @Nullable Entity changeDimension(DimensionTransition transition) {
+        if (level() instanceof ServerLevel level) {
             for (ShadowHerobrine shadowHerobrine : shadowController.getShadows(level))
-                shadowHerobrine.teleport(teleportTransition);
+                shadowHerobrine.changeDimension(transition);
         }
-        return super.teleport(teleportTransition);
+        return super.changeDimension(transition);
     }
 
     public void shakeCamera() {
@@ -708,7 +709,7 @@ public class Herobrine extends AbstractHerobrine {
     private void spawnAbsoluteHerobrine(MinecraftServer server) {
         ServerLevel narakaLevel = server.getLevel(NarakaDimensions.NARAKA);
         if (narakaLevel != null)
-            NarakaEntityTypes.ABSOLUTE_HEROBRINE.get().spawn(narakaLevel, BlockPos.ZERO.above(10), EntitySpawnReason.TRIGGERED);
+            NarakaEntityTypes.ABSOLUTE_HEROBRINE.get().spawn(narakaLevel, BlockPos.ZERO.above(10), MobSpawnType.TRIGGERED);
     }
 
     @Override
@@ -748,9 +749,11 @@ public class Herobrine extends AbstractHerobrine {
     private void rewardChallenger(LivingEntity livingEntity) {
         NarakaMobEffects.getChallengersBlessing(livingEntity).ifPresent(instance -> {
             livingEntity.removeEffect(instance.getEffect());
-            for (EquipmentSlot slot : EquipmentSlotGroup.ARMOR.slots()) {
-                ItemStack stack = livingEntity.getItemBySlot(slot);
-                stack.consume(1, livingEntity);
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                if (EquipmentSlotGroup.ARMOR.test(slot)) {
+                    ItemStack stack = livingEntity.getItemBySlot(slot);
+                    stack.consume(1, livingEntity);
+                }
             }
             ItemStack weaponStack = livingEntity.getMainHandItem();
             weaponStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
@@ -758,28 +761,29 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     @Override
-    public void addAdditionalSaveData(ValueOutput output) {
+    public void addAdditionalSaveData(CompoundTag output) {
         super.addAdditionalSaveData(output);
         output.putFloat("HurtDamageLimit", hurtDamageLimit);
         output.putBoolean("HibernateMode", hibernateMode);
-        output.storeNullable("SpawnPosition", BlockPos.CODEC, spawnPosition);
-        output.store("StigmatizedEntities", UUIDUtil.CODEC_SET, stigmatizedEntities);
-        output.store("WatchingEntities", UUIDUtil.CODEC_SET, watchingEntities);
+        if (spawnPosition != null)
+            NarakaNbtUtils.store(output, "SpawnPosition", BlockPos.CODEC, spawnPosition);
+        NarakaNbtUtils.store(output, "StigmatizedEntities", UUIDUtil.CODEC_SET, stigmatizedEntities);
+        NarakaNbtUtils.store(output, "WatchingEntities", UUIDUtil.CODEC_SET, watchingEntities);
         shadowController.save(output);
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput input) {
+    public void readAdditionalSaveData(CompoundTag input) {
         if (!(level() instanceof ServerLevel level))
             return;
         super.readAdditionalSaveData(input);
-        hurtDamageLimit = input.getFloatOr("HurtDamageLimit", MAX_HURT_DAMAGE_LIMIT);
-        hibernateMode = input.getBooleanOr("HibernatedMode", false);
+        hurtDamageLimit = input.getFloat("HurtDamageLimit");
+        hibernateMode = input.getBoolean("HibernatedMode");
         if (hibernateMode)
             startHibernateMode(level);
-        input.read("SpawnPosition", BlockPos.CODEC).ifPresent(pos -> spawnPosition = pos);
-        input.read("StigmatizedEntities", UUIDUtil.CODEC_SET).ifPresent(stigmatizedEntities::addAll);
-        input.read("WatchingEntities", UUIDUtil.CODEC_SET).ifPresent(watchingEntities::addAll);
+        NarakaNbtUtils.read(input, "SpawnPosition", BlockPos.CODEC).ifPresent(pos -> spawnPosition = pos);
+        NarakaNbtUtils.read(input, "StigmatizedEntities", UUIDUtil.CODEC_SET).ifPresent(stigmatizedEntities::addAll);
+        NarakaNbtUtils.read(input, "WatchingEntities", UUIDUtil.CODEC_SET).ifPresent(watchingEntities::addAll);
         shadowController.load(input);
     }
 }

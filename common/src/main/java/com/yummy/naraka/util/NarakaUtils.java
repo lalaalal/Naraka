@@ -58,7 +58,27 @@ public class NarakaUtils {
 
     public static Vec3 interpolateVec3(float delta, Vec3 start, Vec3 end, Function<Float, Float> function) {
         float newDelta = function.apply(delta);
-        return Mth.lerp(Math.clamp(newDelta, 0, 1), start, end);
+        return new Vec3(
+                Mth.lerp(Math.clamp(newDelta, 0, 1), start.x, end.x),
+                Mth.lerp(Math.clamp(newDelta, 0, 1), start.y, end.y),
+                Mth.lerp(Math.clamp(newDelta, 0, 1), start.z, end.z)
+        );
+    }
+
+    public static Vec3 lerp(float delta, Vec3 start, Vec3 end) {
+        return new Vec3(
+                Mth.lerp(delta, start.x, end.x),
+                Mth.lerp(delta, start.y, end.y),
+                Mth.lerp(delta, start.z, end.z)
+        );
+    }
+
+    public static Vec3 horizontalVec3(Vec3 vec3) {
+        return new Vec3(vec3.x, 0, vec3.z);
+    }
+
+    public static double horizontalDistanceToSqr(Vec3 position1, Vec3 position2) {
+        return horizontalVec3(position1).distanceToSqr(horizontalVec3(position2));
     }
 
     @FunctionalInterface
@@ -176,7 +196,7 @@ public class NarakaUtils {
 
     public static BlockPos findCollision(LevelAccessor level, BlockPos from, Direction faceDirection) {
         BlockPos.MutableBlockPos current = from.mutable();
-        while (level.isInsideBuildHeight(current.getY())) {
+        while (level.getMaxBuildHeight() < current.getY()) {
             BlockPos pos = current.immutable();
             BlockState state = level.getBlockState(pos);
             if (!state.getCollisionShape(level, pos).isEmpty())
@@ -196,7 +216,7 @@ public class NarakaUtils {
     }
 
     public static BlockPos findAir(LevelAccessor level, BlockPos from, Direction findingDirection) {
-        if (level.isInsideBuildHeight(from.getY()))
+        if (level.getMaxBuildHeight() < from.getY())
             return from;
         BlockPos findingPos = from.relative(findingDirection);
         BlockState state = level.getBlockState(findingPos);
@@ -225,5 +245,10 @@ public class NarakaUtils {
             iterate(list1.reversed(), list2.reversed(), consumer);
         else
             iterate(list1, list2, consumer);
+    }
+
+    public static Vec3 projection(Vec3 target, Vec3 base) {
+        base = base.normalize();
+        return base.scale(target.dot(base) / base.length());
     }
 }

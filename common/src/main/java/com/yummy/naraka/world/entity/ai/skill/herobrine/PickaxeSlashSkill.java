@@ -80,7 +80,8 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
     }
 
     private void setupShadowHerobrine(ShadowHerobrine shadowHerobrine) {
-        shadowHerobrine.forceSetRotation(60, true, 0, false);
+        shadowHerobrine.setXRot(0);
+        shadowHerobrine.setYRot(60);
         shadowHerobrine.setPos(mob.position());
         Vec3 movement = shadowHerobrine.getLookAngle().scale(1.5);
         shadowHerobrine.setDeltaMovement(movement);

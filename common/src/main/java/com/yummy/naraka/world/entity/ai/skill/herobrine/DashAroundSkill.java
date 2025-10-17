@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.entity.AfterimageEntity;
 import com.yummy.naraka.world.entity.SkillUsingMob;
@@ -67,7 +68,7 @@ public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends
             int direction = mob.getRandom().nextInt(2);
             deltaMovement = base.yRot(Mth.PI * direction);
         } else {
-            Vec3 projection = compare.projectedOn(base);
+            Vec3 projection = NarakaUtils.projection(compare, base);
             deltaMovement = projection.normalize()
                     .scale(-1);
         }

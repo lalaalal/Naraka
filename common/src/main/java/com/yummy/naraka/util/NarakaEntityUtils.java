@@ -51,12 +51,14 @@ public class NarakaEntityUtils {
     }
 
     @Nullable
-    public static <T> T findEntityByUUID(ServerLevel serverLevel, UUID uuid, Class<T> type) {
-        Entity entity = findEntityByUUID(serverLevel, uuid);
-        if (entity != null)
-            CACHED_ENTITIES.put(uuid, entity);
-        if (type.isInstance(entity))
-            return type.cast(entity);
+    public static <T> T findEntityByUUID(Level level, UUID uuid, Class<T> type) {
+        if (level instanceof ServerLevel serverLevel) {
+            Entity entity = findEntityByUUID(serverLevel, uuid);
+            if (entity != null)
+                CACHED_ENTITIES.put(uuid, entity);
+            if (type.isInstance(entity))
+                return type.cast(entity);
+        }
         return null;
     }
 

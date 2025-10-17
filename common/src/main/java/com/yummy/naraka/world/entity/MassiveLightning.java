@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.util.NarakaUtils;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -17,8 +18,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 
 import javax.annotation.Nullable;
 
@@ -64,7 +63,7 @@ public class MassiveLightning extends Entity {
 
     private void serverTick(ServerLevel level) {
         level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(size), this::canHurtTarget).forEach(target -> {
-            if (target.hurtServer(level, damageSources().lightningBolt(), target.getMaxHealth() * 0.66f) && herobrine != null) {
+            if (target.hurt(damageSources().lightningBolt(), target.getMaxHealth() * 0.66f) && herobrine != null) {
                 herobrine.stigmatizeEntity(level, target);
             }
         });
@@ -94,17 +93,20 @@ public class MassiveLightning extends Entity {
     }
 
     @Override
-    public boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
+    public boolean hurt(DamageSource source, float amount) {
         return false;
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput input) {
-        setMaxSize(input.getIntOr("MaxSize", 10));
+    protected void readAdditionalSaveData(CompoundTag input) {
+        if (input.contains("MaxSize"))
+            setMaxSize(input.getInt("MaxSize"));
+        else
+            setMaxSize(10);
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput output) {
+    protected void addAdditionalSaveData(CompoundTag output) {
         output.putInt("MaxSize", getMaxSize());
     }
 

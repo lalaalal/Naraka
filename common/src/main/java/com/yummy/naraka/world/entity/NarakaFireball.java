@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.core.BlockPos;
@@ -9,7 +10,10 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -78,9 +82,9 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     }
 
     @Override
-    public boolean deflect(ProjectileDeflection projectileDeflection, @Nullable Entity entity, @Nullable EntityReference<Entity> entityReference, boolean bl) {
+    public boolean deflect(ProjectileDeflection deflection, @Nullable Entity entity, @Nullable Entity owner, boolean deflectedByPlayer) {
         if (entityData.get(CAN_DEFLECT))
-            return super.deflect(projectileDeflection, entity, entityReference, bl);
+            return super.deflect(deflection, entity, owner, deflectedByPlayer);
         return false;
     }
 
@@ -149,7 +153,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
             Vec3 movingVector = getDeltaMovement().normalize();
             if (movingVector.equals(Vec3.ZERO))
                 return;
-            Vec3 projectionVector = targetVector.projectedOn(movingVector);
+            Vec3 projectionVector = NarakaUtils.projection(targetVector, movingVector);
             Vec3 tracingVector = targetVector.subtract(projectionVector);
             double tracingVectorLength = tracingVector.length();
 
@@ -182,8 +186,8 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     }
 
     @Override
-    protected void onDeflection(boolean bl) {
-        super.onDeflection(bl);
+    protected void onDeflection(@Nullable Entity entity, boolean deflectedByPlayer) {
+        super.onDeflection(entity, deflectedByPlayer);
         setTarget(null);
     }
 
@@ -207,8 +211,8 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
             float damage = damageCalculator.calculateDamage(this);
             ExplosionDamageCalculator explosionDamageCalculator = new EntityBasedExplosionDamageCalculator(this) {
                 @Override
-                public float getEntityDamageAmount(Explosion explosion, Entity entity, float seenPercent) {
-                    return damage;
+                public float getEntityDamageAmount(Explosion explosion, Entity entity) {
+                    return super.getEntityDamageAmount(explosion, entity);
                 }
             };
             level().explode(this, getDamageSource(owner), explosionDamageCalculator, position(), 1.5f, false, Level.ExplosionInteraction.TRIGGER);

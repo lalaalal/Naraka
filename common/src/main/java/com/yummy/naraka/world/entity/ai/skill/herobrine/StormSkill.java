@@ -76,14 +76,10 @@ public class StormSkill extends ComboSkill<Herobrine> {
     }
 
     private boolean entityToPull(LivingEntity target) {
-        target.position().horizontal()
-                .distanceTo(target.position().horizontal());
         return targetInRange(target, 80 * 80) && AbstractHerobrine.isNotHerobrine(target) && NarakaPickaxe.isNotNarakaPickaxe(target);
     }
 
     private boolean entityToPush(LivingEntity target) {
-        target.position().horizontal()
-                .distanceTo(target.position().horizontal());
         return targetInRange(target, 9) && AbstractHerobrine.isNotHerobrine(target) && NarakaPickaxe.isNotNarakaPickaxe(target);
     }
 
@@ -96,8 +92,7 @@ public class StormSkill extends ComboSkill<Herobrine> {
     private boolean inHurtRange(LivingEntity target, float radius) {
         float from = (radius - 1) * (radius - 1);
         float to = (radius + 1) * (radius + 1);
-        double horizontalDistance = mob.position().horizontal()
-                .distanceToSqr(target.position().horizontal());
+        double horizontalDistance = NarakaUtils.horizontalDistanceToSqr(mob.position(), target.position());
         return from < horizontalDistance && horizontalDistance < to;
     }
 
@@ -115,7 +110,7 @@ public class StormSkill extends ComboSkill<Herobrine> {
                 mob.stigmatizeEntity(level, target);
                 hurtEntities.put(target, startTick);
                 DamageSource damageSource = mob.damageSources().magic();
-                target.hurtServer(level, damageSource, calculateDamage(target));
+                target.hurt(damageSource, calculateDamage(target));
             });
         }
     }

@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -8,8 +9,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 public class LightningCircle extends Entity {
@@ -59,7 +58,7 @@ public class LightningCircle extends Entity {
                 this::canHurtTarget
         ).forEach(target -> {
             float damage = target.getMaxHealth() * 0.15f;
-            if (target.hurtServer(level, damageSources().magic(), damage) && herobrine != null)
+            if (target.hurt(damageSources().magic(), damage) && herobrine != null)
                 herobrine.stigmatizeEntity(level, target);
         });
     }
@@ -74,17 +73,17 @@ public class LightningCircle extends Entity {
     }
 
     @Override
-    public boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
+    public boolean hurt(DamageSource source, float amount) {
         return false;
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput input) {
+    protected void readAdditionalSaveData(CompoundTag input) {
 
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput output) {
+    protected void addAdditionalSaveData(CompoundTag output) {
 
     }
 }

@@ -6,6 +6,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Position;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -27,8 +28,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -73,15 +72,15 @@ public class Spear extends AbstractArrow {
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput output) {
+    public void addAdditionalSaveData(CompoundTag output) {
         super.addAdditionalSaveData(output);
         output.putBoolean("DealtDamage", dealtDamage);
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput input) {
+    public void readAdditionalSaveData(CompoundTag input) {
         super.readAdditionalSaveData(input);
-        dealtDamage = input.getBooleanOr("DealtDamage", true);
+        dealtDamage = input.getBoolean("DealtDamage");
         entityData.set(ID_LOYALTY, getLoyaltyFromItem(getPickupItem()));
         entityData.set(ID_FOIL, getPickupItem().hasFoil());
     }
@@ -115,8 +114,8 @@ public class Spear extends AbstractArrow {
         int loyaltyLevel = getLoyalty();
         if (loyaltyLevel > 0 && (this.dealtDamage || this.isNoPhysics()) && owner != null) {
             if (!this.isAcceptibleReturnOwner()) {
-                if (level() instanceof ServerLevel serverLevel && this.pickup == Pickup.ALLOWED) {
-                    this.spawnAtLocation(serverLevel, this.getPickupItem(), 0.1f);
+                if (this.pickup == Pickup.ALLOWED) {
+                    this.spawnAtLocation(this.getPickupItem(), 0.1f);
                 }
 
                 this.discard();
@@ -159,7 +158,7 @@ public class Spear extends AbstractArrow {
 
     protected void hurtHitEntity(ServerLevel serverLevel, Entity entity) {
         DamageSource damageSource = NarakaDamageSources.spear(this);
-        entity.hurtServer(serverLevel, damageSource, getAttackDamage());
+        entity.hurt(damageSource, getAttackDamage());
     }
 
     protected float getAttackDamage() {

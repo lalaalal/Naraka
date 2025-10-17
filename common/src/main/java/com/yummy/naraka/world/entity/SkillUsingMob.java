@@ -3,10 +3,11 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAnimationPacket;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
-import net.minecraft.network.protocol.game.ClientboundEntityPositionSyncPacket;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -17,8 +18,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -196,24 +195,24 @@ public abstract class SkillUsingMob extends PathfinderMob {
     }
 
     @Override
-    protected void customServerAiStep(ServerLevel level) {
+    protected void customServerAiStep() {
         updateAnimationTick();
-        skillManager.tick(level);
-        NetworkManager.clientbound().send(level.players(), ClientboundEntityPositionSyncPacket.of(this));
+        if (level() instanceof ServerLevel level)
+            skillManager.tick(level);
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput output) {
+    public void addAdditionalSaveData(CompoundTag output) {
         super.addAdditionalSaveData(output);
         getCurrentSkill().ifPresent(skill -> {
-            output.store("CurrentSkill", ResourceLocation.CODEC, skill.location);
+            NarakaNbtUtils.store(output, "CurrentSkill", ResourceLocation.CODEC, skill.location);
         });
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput input) {
+    public void readAdditionalSaveData(CompoundTag input) {
         super.readAdditionalSaveData(input);
-        input.read("CurrentSkill", ResourceLocation.CODEC).ifPresent(
+        NarakaNbtUtils.read(input, "CurrentSkill", ResourceLocation.CODEC).ifPresent(
                 this::useSkill
         );
     }

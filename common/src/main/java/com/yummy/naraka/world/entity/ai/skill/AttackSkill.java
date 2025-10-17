@@ -71,7 +71,7 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T
         if (tryDisableShield(target))
             return false;
 
-        boolean hurtSucceed = target.hurtServer(level, mob.getDefaultDamageSource(), calculateDamage(target));
+        boolean hurtSucceed = target.hurt(mob.getDefaultDamageSource(), calculateDamage(target));
         if (hurtSucceed)
             onHurtEntity(level, target);
         return hurtSucceed;
