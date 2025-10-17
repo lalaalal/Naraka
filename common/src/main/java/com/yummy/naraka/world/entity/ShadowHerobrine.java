@@ -109,14 +109,19 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     @Override
+    public int getScarfAlpha() {
+        return getAlpha();
+    }
+
+    @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(ALPHA, 0x01);
     }
 
     @Override
-    protected void customServerAiStep(ServerLevel serverLevel) {
-        super.customServerAiStep(serverLevel);
+    protected void customServerAiStep() {
+        super.customServerAiStep();
         if (reduceAlpha) {
             entityData.set(ALPHA, Math.max(0, getAlpha() - 15));
         } else if (!isFinalModel() || displayPickaxe()) {

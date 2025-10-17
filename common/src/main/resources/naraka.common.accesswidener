@@ -17,7 +17,7 @@ accessible method net/minecraft/client/renderer/RenderStateShard$ShaderStateShar
 #accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
 #accessible method net/minecraft/world/level/block/entity/BlockEntityType <init> (Lnet/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier;Ljava/util/Set;)V
 #
-#accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
+accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
 #accessible method net/minecraft/client/particle/FallingLeavesParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;FFZZFF)V
 #
 accessible field net/minecraft/world/item/CreativeModeTabs BUILDING_BLOCKS Lnet/minecraft/resources/ResourceKey;

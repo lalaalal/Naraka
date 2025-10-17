@@ -118,6 +118,10 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         return eyeAlpha;
     }
 
+    public int getScarfAlpha() {
+        return 0xff;
+    }
+
     public ScarfWavingData getScarfWavingData() {
         return scarfWavingData;
     }
