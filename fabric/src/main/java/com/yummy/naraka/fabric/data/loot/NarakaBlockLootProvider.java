@@ -5,7 +5,6 @@ import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.ItemTags;
@@ -27,8 +26,7 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import java.util.concurrent.CompletableFuture;
 
 public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
-    private final HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
-    private final LootItemCondition.Builder NECTARIUM_CRYSTAL_TOOLS = MatchTool.toolMatches(ItemPredicate.Builder.item().of(items, ItemTags.PICKAXES));
+    private final LootItemCondition.Builder NECTARIUM_CRYSTAL_TOOLS = MatchTool.toolMatches(ItemPredicate.Builder.item().of(ItemTags.PICKAXES));
 
     public NarakaBlockLootProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(dataOutput, registryLookup);
@@ -51,18 +49,7 @@ public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
         dropSelf(NarakaBlocks.PURIFIED_SOUL_BLOCK.get());
         dropSelf(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
 
-        dropSelf(NarakaBlocks.EBONY_LOG.get());
-        dropSelf(NarakaBlocks.STRIPPED_EBONY_LOG.get());
-        dropSelf(NarakaBlocks.EBONY_WOOD.get());
-        dropSelf(NarakaBlocks.STRIPPED_EBONY_WOOD.get());
-        dropSelf(NarakaBlocks.HARD_EBONY_PLANKS.get());
-
-        add(NarakaBlocks.EBONY_LEAVES.get(), createLeavesDrops(NarakaBlocks.EBONY_LEAVES.get(), NarakaBlocks.EBONY_SAPLING.get(), 0.01f));
-        dropSelf(NarakaBlocks.EBONY_SAPLING.get());
         dropSelf(NarakaBlocks.HEROBRINE_TOTEM.get());
-        dropPottedContents(NarakaBlocks.POTTED_EBONY_SAPLING.get());
-        dropSelf(NarakaBlocks.EBONY_ROOTS.get());
-        dropSelf(NarakaBlocks.EBONY_METAL_BLOCK.get());
 
         dropWhenSilkTouch(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
         add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get(), this::createNectariumCrystalDrops);

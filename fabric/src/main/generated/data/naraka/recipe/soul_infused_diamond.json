@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "M": "minecraft:diamond",
-    "P": "naraka:purified_soul_shard"
+    "M": {
+      "item": "minecraft:diamond"
+    },
+    "P": {
+      "item": "naraka:purified_soul_shard"
+    }
   },
   "pattern": [
     "MMM",

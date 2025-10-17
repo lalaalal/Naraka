@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "naraka:purified_soul_metal_block"
+    {
+      "item": "naraka:purified_soul_metal_block"
+    }
   ],
   "result": {
     "count": 9,

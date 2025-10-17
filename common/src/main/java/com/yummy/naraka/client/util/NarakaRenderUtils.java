@@ -71,7 +71,7 @@ public class NarakaRenderUtils {
     }
 
     public static void vertices(PoseStack.Pose pose, VertexConsumer vertexConsumer, List<Vector3f> vertices, List<Vector2f> uvs, int packedLight, int packedOverlay, int color, Direction direction, boolean reverse) {
-        Vec3i normal = direction.getUnitVec3i();
+        Vec3i normal = direction.getNormal();
         NarakaUtils.iterate(vertices, uvs, (vertex, uv) -> {
             vertexConsumer.addVertex(pose, vertex)
                     .setColor(color)

@@ -12,7 +12,6 @@ import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.alchemy.NarakaPotions;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
-import com.yummy.naraka.world.item.equipment.trim.NarakaTrimPatterns;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -28,8 +27,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.JukeboxSong;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.equipment.trim.TrimMaterial;
-import net.minecraft.world.item.equipment.trim.TrimPattern;
+import net.minecraft.world.item.armortrim.TrimMaterial;
+import net.minecraft.world.item.armortrim.TrimPattern;
 import net.minecraft.world.level.block.Block;
 
 import java.util.HashMap;
@@ -110,7 +109,6 @@ public class NarakaLanguageProviders {
         addReinforcementEffect(NarakaReinforcementEffects.EFFICIENT_MINING_IN_AIR, "Efficient mining in air", "공중 채굴 효율");
         addReinforcementEffect(NarakaReinforcementEffects.WATER_BREATHING, "Water breathing", "수중 호흡");
 
-        addTrimPattern(NarakaTrimPatterns.PURIFIED_SOUL_SILENCE, "Purified Soul Silence Armor Trim", "정화된 영혼 고요 갑옷 장식");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, "Soul Infused Redstone Material", "영혼이 주입된 레드스톤 소재");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_COPPER, "Soul Infused Copper Material", "영혼이 주입된 구리 소재");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_GOLD, "Soul Infused Gold Material", "영혼이 주입된 금 소재");
@@ -213,7 +211,6 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.GOD_BLOOD, "§lGod Blood", "§l신의 피");
         addItem(NarakaItems.COMPRESSED_IRON_INGOT, "Compressed Iron Ingot", "압축된 철 주괴");
         addItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "Smithing Template", "대장장이 형판");
-        addItem(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, "Smithing Template", "대장장이 형판");
 
         addItem(NarakaItems.SPEAR_ITEM, "Spear", "창");
         addItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "Mighty Holy Spear", "강력한 성스러운 창");
@@ -245,8 +242,6 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.PURIFIED_SOUL_SWORD, "Purified Soul Sword", "정화된 영혼 검");
 
         addItem(NarakaItems.ULTIMATE_SWORD, "Ultimate Sword", "궁극의 검");
-        addItem(NarakaItems.EBONY_ROOTS_SCRAP, "Ebony Roots Scrap", "흑단나무 뿌리 파편");
-        addItem(NarakaItems.EBONY_METAL_INGOT, "Ebony Metal Ingot", "흑단나무 금속 주괴");
         addItem(NarakaItems.SANCTUARY_COMPASS, "Sanctuary Compass", "생츄어리 나침반");
 
         addItem(NarakaItems.HEROBRINE_PHASE_1_DISC, "Herobrine Phase 1 Disc", "히로빈 1 페이즈 음반");
@@ -282,16 +277,6 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.PURIFIED_SOUL_LAMP, "Purified Soul Lamp", "정화된 영혼 조명");
         addBlock(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK, "Purified Soul Fire", "정화된 영혼 불");
         addBlock(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK, "Block of Purified Soul Metal", "정화된 영혼 금속 블록");
-        addBlock(NarakaBlocks.EBONY_LOG, "Ebony Log", "흑단나무 원목");
-        addBlock(NarakaBlocks.STRIPPED_EBONY_LOG, "Stripped Ebony Log", "껍질 벗긴 흑단나무 원목");
-        addBlock(NarakaBlocks.EBONY_WOOD, "Ebony Wood", "흑단나무");
-        addBlock(NarakaBlocks.STRIPPED_EBONY_WOOD, "Stripped Ebony Wood", "껍질 벗긴 흑단나무");
-        addBlock(NarakaBlocks.EBONY_LEAVES, "Ebony Leaves", "흑단나무 나뭇잎");
-        addBlock(NarakaBlocks.EBONY_SAPLING, "Ebony Sapling", "흑단나무 묘목");
-        addBlock(NarakaBlocks.POTTED_EBONY_SAPLING, "Potted Ebony Sapling", "화분에 심은 흑단나무 묘목");
-        addBlock(NarakaBlocks.HARD_EBONY_PLANKS, "Hard Ebony Planks", "단단한 흑단나무 판자");
-        addBlock(NarakaBlocks.EBONY_ROOTS, "Ebony Roots", "흑단나무 뿌리");
-        addBlock(NarakaBlocks.EBONY_METAL_BLOCK, "Block of Ebony Metal", "흑단나무 금속 블록");
         addBlock(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Nectarium Core", "넥타륨 코어");
         addBlock(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, "Nectarium Crystal", "넥타륨 결정");
         addBlock(NarakaBlocks.SOUL_STABILIZER, "Soul Stabilizer", "영혼 안정기");
@@ -392,7 +377,8 @@ public class NarakaLanguageProviders {
 
     public void addPotion(Item item, Holder<Potion> potion, String... effectTranslations) {
         add(
-                item.getDescriptionId() + ".effect." + potion.value().name(),
+                item.getDescriptionId() + ".effect." + potion.unwrapKey().orElseThrow()
+                        .location().getPath(),
                 effectTranslations
         );
     }

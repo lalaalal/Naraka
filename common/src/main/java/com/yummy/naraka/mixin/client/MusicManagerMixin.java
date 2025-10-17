@@ -6,9 +6,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.client.sounds.MusicInfo;
 import net.minecraft.client.sounds.MusicManager;
-import net.minecraft.client.sounds.SoundEngine;
 import net.minecraft.sounds.Music;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -27,10 +25,6 @@ public abstract class MusicManagerMixin implements BossMusicPlayer {
     @Shadow @Final
     private Minecraft minecraft;
     @Shadow
-    private boolean toastShown;
-    @Shadow
-    private float currentGain;
-    @Shadow
     private int nextSongDelay;
 
     @Shadow
@@ -48,7 +42,6 @@ public abstract class MusicManagerMixin implements BossMusicPlayer {
         if (naraka$bossMusic != null) {
             if (naraka$stopBossMusic || naraka$nextMusic != null) {
                 naraka$bossMusic.decreaseVolume(0.02f);
-                this.currentGain = naraka$bossMusic.getVolume();
             }
             if (naraka$bossMusic.getVolume() == 0) {
                 naraka$bossMusic = null;
@@ -62,16 +55,13 @@ public abstract class MusicManagerMixin implements BossMusicPlayer {
     }
 
     @Override
-    public void naraka$playBossMusic(MusicInfo musicInfo) {
-        Music music = musicInfo.music();
-        if (music != null) {
-            BossMusicSoundInstance bossMusicSoundInstance = new BossMusicSoundInstance(music.event().value());
-            if (naraka$bossMusic == null) {
-                stopPlaying();
-                naraka$playBossMusicInstance(bossMusicSoundInstance);
-            } else {
-                naraka$nextMusic = bossMusicSoundInstance;
-            }
+    public void naraka$playBossMusic(Music music) {
+        BossMusicSoundInstance bossMusicSoundInstance = new BossMusicSoundInstance(music.getEvent().value());
+        if (naraka$bossMusic == null) {
+            stopPlaying();
+            naraka$playBossMusicInstance(bossMusicSoundInstance);
+        } else {
+            naraka$nextMusic = bossMusicSoundInstance;
         }
     }
 
@@ -86,14 +76,7 @@ public abstract class MusicManagerMixin implements BossMusicPlayer {
         naraka$bossMusic = bossMusicSoundInstance;
         currentMusic = naraka$bossMusic;
         naraka$stopBossMusic = false;
-        SoundEngine.PlayResult result = this.minecraft.getSoundManager().play(bossMusicSoundInstance);
-        if (result == SoundEngine.PlayResult.STARTED) {
-            this.minecraft.getToastManager().showNowPlayingToast();
-            this.toastShown = true;
-        } else {
-            this.toastShown = false;
-        }
+        this.minecraft.getSoundManager().play(bossMusicSoundInstance);
         this.nextSongDelay = Integer.MAX_VALUE;
-        this.currentGain = bossMusicSoundInstance.getVolume();
     }
 }

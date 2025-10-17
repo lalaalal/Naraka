@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": "naraka:soul_infused_copper"
+    "#": {
+      "item": "naraka:soul_infused_copper"
+    }
   },
   "pattern": [
     "###",

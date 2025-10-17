@@ -3,5 +3,7 @@
   "description": {
     "color": "#FFD24D",
     "translate": "trim_material.naraka.soul_infused_gold"
-  }
+  },
+  "ingredient": "naraka:soul_infused_gold",
+  "item_model_index": 0.676
 }

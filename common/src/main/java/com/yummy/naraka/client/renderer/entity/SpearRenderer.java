@@ -94,14 +94,14 @@ public class SpearRenderer<T extends Spear> extends EntityRenderer<T> {
         poseStack.popPose();
     }
 
-    public static <T extends Spear> void renderShaderLonginus(EntityModel<T> model, PoseStack poseStack, MultiBufferSource bufferSource) {
+    public static void renderShaderLonginus(EntityModel<? extends Spear> model, PoseStack poseStack, MultiBufferSource bufferSource) {
         poseStack.pushPose();
         VertexConsumer vertexConsumer = bufferSource.getBuffer(NarakaRenderTypes.longinus());
         model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
     }
 
-    public static <T extends Spear> void renderNonShaderLonginus(EntityModel<T> model, float ageInTicks, PoseStack poseStack, MultiBufferSource bufferSource) {
+    public static void renderNonShaderLonginus(EntityModel<? extends Spear> model, float ageInTicks, PoseStack poseStack, MultiBufferSource bufferSource) {
         poseStack.pushPose();
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutout(NarakaTextures.LONGINUS));
         model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xff000000);
@@ -112,7 +112,7 @@ public class SpearRenderer<T extends Spear> extends EntityRenderer<T> {
         renderLonginus(model, ageInTicks, 0.0015f, 0.0025f, poseStack, bufferSource);
     }
 
-    private static <T extends Spear> void renderLonginus(EntityModel<T> model, float ageInTicks, float uMultiplier, float vMultiplier, PoseStack poseStack, MultiBufferSource bufferSource) {
+    private static void renderLonginus(EntityModel<? extends Spear> model, float ageInTicks, float uMultiplier, float vMultiplier, PoseStack poseStack, MultiBufferSource bufferSource) {
         poseStack.pushPose();
         RenderType renderType = RenderType.energySwirl(NarakaTextures.LONGINUS, (ageInTicks * uMultiplier) % 1, (ageInTicks * vMultiplier) % 1);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);

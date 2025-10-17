@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "G": "naraka:imitation_gold_block",
-    "T": "naraka:herobrine_totem"
+    "G": {
+      "item": "naraka:imitation_gold_block"
+    },
+    "T": {
+      "item": "naraka:herobrine_totem"
+    }
   },
   "pattern": [
     "GGG",

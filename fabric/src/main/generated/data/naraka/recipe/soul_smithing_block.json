@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": "minecraft:heavy_core",
-    "B": "minecraft:smithing_table"
+    "#": {
+      "item": "minecraft:heavy_core"
+    },
+    "B": {
+      "item": "minecraft:smithing_table"
+    }
   },
   "pattern": [
     "##",

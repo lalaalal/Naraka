@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "M": "minecraft:lapis_lazuli",
-    "P": "naraka:purified_soul_shard"
+    "M": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "P": {
+      "item": "naraka:purified_soul_shard"
+    }
   },
   "pattern": [
     "MMM",

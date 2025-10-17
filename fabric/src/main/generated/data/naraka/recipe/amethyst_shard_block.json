@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "naraka:amethyst_shard_block"
+    {
+      "item": "naraka:amethyst_shard_block"
+    }
   ],
   "result": {
     "count": 9,

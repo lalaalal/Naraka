@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": "naraka:soul_infused_diamond"
+    "#": {
+      "item": "naraka:soul_infused_diamond"
+    }
   },
   "pattern": [
     "###",

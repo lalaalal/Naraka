@@ -6,9 +6,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.tags.TagAppender;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 import java.util.concurrent.CompletableFuture;
@@ -20,79 +18,54 @@ public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider 
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        valueLookupBuilder(BlockTags.INCORRECT_FOR_DIAMOND_TOOL)
+        getOrCreateTagBuilder(BlockTags.INCORRECT_FOR_DIAMOND_TOOL)
                 .addTag(NarakaBlockTags.NEEDS_NETHERITE_TOOL);
-        valueLookupBuilder(BlockTags.INCORRECT_FOR_IRON_TOOL)
+        getOrCreateTagBuilder(BlockTags.INCORRECT_FOR_IRON_TOOL)
                 .addTag(NarakaBlockTags.NEEDS_NETHERITE_TOOL);
-        valueLookupBuilder(BlockTags.INCORRECT_FOR_GOLD_TOOL)
+        getOrCreateTagBuilder(BlockTags.INCORRECT_FOR_GOLD_TOOL)
                 .addTag(NarakaBlockTags.NEEDS_NETHERITE_TOOL);
-        valueLookupBuilder(BlockTags.INCORRECT_FOR_STONE_TOOL)
+        getOrCreateTagBuilder(BlockTags.INCORRECT_FOR_STONE_TOOL)
                 .addTag(NarakaBlockTags.NEEDS_NETHERITE_TOOL);
-        valueLookupBuilder(BlockTags.INCORRECT_FOR_WOODEN_TOOL)
+        getOrCreateTagBuilder(BlockTags.INCORRECT_FOR_WOODEN_TOOL)
                 .addTag(NarakaBlockTags.NEEDS_NETHERITE_TOOL);
-        valueLookupBuilder(NarakaBlockTags.NECTARIUM_ORES)
+        getOrCreateTagBuilder(NarakaBlockTags.NECTARIUM_ORES)
                 .add(NarakaBlocks.NECTARIUM_ORE.get())
                 .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
-        valueLookupBuilder(NarakaBlockTags.AMETHYST_ORES)
+        getOrCreateTagBuilder(NarakaBlockTags.AMETHYST_ORES)
                 .add(NarakaBlocks.AMETHYST_ORE.get())
                 .add(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
-        valueLookupBuilder(ConventionalTags.Blocks.ORES)
+        getOrCreateTagBuilder(ConventionalTags.Blocks.ORES)
                 .addTag(NarakaBlockTags.NECTARIUM_ORES)
                 .addTag(NarakaBlockTags.AMETHYST_ORES);
 
-        valueLookupBuilder(BlockTags.FIRE)
+        getOrCreateTagBuilder(BlockTags.FIRE)
                 .add(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get());
 
-        valueLookupBuilder(BlockTags.FLOWER_POTS)
-                .add(NarakaBlocks.POTTED_EBONY_SAPLING.get());
-        valueLookupBuilder(BlockTags.SAPLINGS)
-                .add(NarakaBlocks.EBONY_SAPLING.get());
-
-        valueLookupBuilder(NarakaBlockTags.EBONY_LOGS)
-                .add(NarakaBlocks.EBONY_LOG.get())
-                .add(NarakaBlocks.EBONY_WOOD.get())
-                .add(NarakaBlocks.STRIPPED_EBONY_LOG.get())
-                .add(NarakaBlocks.STRIPPED_EBONY_WOOD.get());
-        valueLookupBuilder(NarakaBlockTags.EBONY_ROOTS_CAN_GROW_THROUGH)
-                .forceAddTag(BlockTags.DIRT)
-                .forceAddTag(BlockTags.BASE_STONE_OVERWORLD);
-
-        valueLookupBuilder(BlockTags.LOGS_THAT_BURN)
-                .addTag(NarakaBlockTags.EBONY_LOGS);
-        valueLookupBuilder(BlockTags.PLANKS)
-                .add(NarakaBlocks.HARD_EBONY_PLANKS.get());
-
-        valueLookupBuilder(NarakaBlockTags.HEROBRINE_SANCTUARY_AIR_WRAP_TARGETS)
+        getOrCreateTagBuilder(NarakaBlockTags.HEROBRINE_SANCTUARY_AIR_WRAP_TARGETS)
                 .add(Blocks.WATER)
                 .add(Blocks.GRAVEL)
                 .forceAddTag(BlockTags.SAND);
-        valueLookupBuilder(NarakaBlockTags.HEROBRINE_SANCTUARY_LAVA_WRAP_TARGETS)
+        getOrCreateTagBuilder(NarakaBlockTags.HEROBRINE_SANCTUARY_LAVA_WRAP_TARGETS)
                 .forceAddTag(BlockTags.AIR)
                 .add(Blocks.WATER);
 
-        valueLookupBuilder(BlockTags.NEEDS_STONE_TOOL)
+        getOrCreateTagBuilder(BlockTags.NEEDS_STONE_TOOL)
                 .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get())
                 .add(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
 
-        TagAppender<Block, Block> needsIronTool = valueLookupBuilder(BlockTags.NEEDS_IRON_TOOL)
+        FabricTagBuilder needsIronTool = getOrCreateTagBuilder(BlockTags.NEEDS_IRON_TOOL)
                 .add(NarakaBlocks.NECTARIUM_BLOCK.get())
                 .add(NarakaBlocks.NECTARIUM_ORE.get())
                 .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get())
                 .add(NarakaBlocks.IMITATION_GOLD_BLOCK.get())
-                .add(NarakaBlocks.COMPRESSED_IRON_BLOCK.get())
-                .addTag(NarakaBlockTags.EBONY_LOGS)
-                .add(NarakaBlocks.HARD_EBONY_PLANKS.get())
-                .add(NarakaBlocks.EBONY_ROOTS.get());
+                .add(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
         NarakaBlocks.forEachSoulInfusedBlock(needsIronTool::add);
 
-        valueLookupBuilder(BlockTags.NEEDS_DIAMOND_TOOL)
-                .add(NarakaBlocks.EBONY_METAL_BLOCK.get());
-        valueLookupBuilder(NarakaBlockTags.NEEDS_NETHERITE_TOOL)
+        getOrCreateTagBuilder(NarakaBlockTags.NEEDS_NETHERITE_TOOL)
                 .add(NarakaBlocks.HEROBRINE_TOTEM.get())
                 .add(NarakaBlocks.PURIFIED_SOUL_BLOCK.get())
                 .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
-        TagAppender<Block, Block> mineableWithPickaxe = valueLookupBuilder(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(NarakaBlocks.EBONY_METAL_BLOCK.get())
+        FabricTagBuilder mineableWithPickaxe = getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(NarakaBlocks.HEROBRINE_TOTEM.get())
                 .add(NarakaBlocks.AMETHYST_SHARD_BLOCK.get())
                 .add(NarakaBlocks.NECTARIUM_BLOCK.get())
@@ -107,14 +80,10 @@ public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider 
                 .add(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
         NarakaBlocks.forEachSoulInfusedBlock(mineableWithPickaxe::add);
 
-        valueLookupBuilder(BlockTags.MINEABLE_WITH_HOE)
-                .add(NarakaBlocks.PURIFIED_SOUL_BLOCK.get())
-                .add(NarakaBlocks.EBONY_LEAVES.get());
+        getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_HOE)
+                .add(NarakaBlocks.PURIFIED_SOUL_BLOCK.get());
 
-        valueLookupBuilder(BlockTags.MINEABLE_WITH_AXE)
-                .addTag(NarakaBlockTags.EBONY_LOGS)
-                .add(NarakaBlocks.SOUL_SMITHING_BLOCK.get())
-                .add(NarakaBlocks.HARD_EBONY_PLANKS.get())
-                .add(NarakaBlocks.EBONY_ROOTS.get());
+        getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_AXE)
+                .add(NarakaBlocks.SOUL_SMITHING_BLOCK.get());
     }
 }

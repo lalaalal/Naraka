@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "naraka:soul_infused_copper_block"
+    {
+      "item": "naraka:soul_infused_copper_block"
+    }
   ],
   "result": {
     "count": 9,

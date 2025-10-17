@@ -17,7 +17,7 @@ public class NarakaPlacementTagsProvider extends FabricTagProvider<PlacedFeature
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        builder(NarakaPlacementTags.NECTARIUM)
+        getOrCreateTagBuilder(NarakaPlacementTags.NECTARIUM)
                 .add(NarakaOrePlacements.NECTARIUM_ORE_SMALL)
                 .add(NarakaOrePlacements.NECTARIUM_ORE_LARGE)
                 .add(NarakaOrePlacements.NECTARIUM_ORE_BURIED);

@@ -9,22 +9,26 @@ import com.yummy.naraka.client.gui.hud.StigmaHud;
 import com.yummy.naraka.client.gui.hud.WhiteHud;
 import com.yummy.naraka.client.init.*;
 import com.yummy.naraka.client.particle.*;
-import com.yummy.naraka.client.renderer.ItemColorRegistry;
+import com.yummy.naraka.client.renderer.CustomRenderManager;
+import com.yummy.naraka.client.renderer.NarakaBlockEntityItemRenderer;
+import com.yummy.naraka.client.renderer.SpearItemRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulStabilizerBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.entity.*;
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.network.NarakaNetworks;
-import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.component.SanctuaryTracker;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.network.chat.Component;
 
 @Environment(EnvType.CLIENT)
@@ -35,8 +39,12 @@ public final class NarakaModClient {
         NarakaShaders.initialize();
         NarakaRenderTypes.initialize();
         NarakaNetworks.initializeClient();
+        NarakaShaders.initialize();
 
         registerParticles();
+
+        initializer.registerClientReloadListener("spear_item_renderer", () -> SpearItemRenderer.INSTANCE);
+        initializer.registerClientReloadListener("custom_renderer", () -> NarakaBlockEntityItemRenderer.INSTANCE);
 
         registerEntityRenderers();
         registerBlockEntityRenderers();
@@ -60,7 +68,16 @@ public final class NarakaModClient {
     }
 
     private static void initializeItems() {
-        ItemColorRegistry.register(NarakaItems.RAINBOW_SWORD, ComponentStyles.RAINBOW_COLOR::getCurrentColor);
+        CustomRenderManager.register(NarakaItems.SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
+        CustomRenderManager.register(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
+        CustomRenderManager.register(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get(), SpearItemRenderer.INSTANCE);
+
+        ItemPropertyRegistry.register(NarakaItems.SANCTUARY_COMPASS.get(), NarakaMod.location("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) -> {
+            SanctuaryTracker tracker = itemStack.get(NarakaDataComponentTypes.SANCTUARY_TRACKER.get());
+            if (tracker == null)
+                return null;
+            return tracker.sanctuaryPos().orElse(null);
+        }));
     }
 
     private static void initializeBlocks() {

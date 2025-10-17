@@ -352,30 +352,32 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     @Override
-    protected void customServerAiStep(ServerLevel serverLevel) {
+    protected void customServerAiStep() {
         updateAccumulatedDamage();
 
         if (!isFinalModel())
             tryAvoidProjectile();
-        collectStigma(serverLevel);
-        phaseManager.updatePhase(bossEvent);
+        if (level() instanceof ServerLevel serverLevel) {
+            collectStigma(serverLevel);
+            phaseManager.updatePhase(bossEvent);
 
-        if (NarakaConfig.COMMON.despawnHerobrineWhenTargetIsDead.getValue()
-                && firstTarget != null && firstTarget.isDeadOrDying()) {
-            shadowController.killShadows(serverLevel);
-            discard();
-        }
-        if (getPhase() == 2 && tickCount % 100 == 0) {
-            shadowController.increaseFlickerStack(3);
+            if (NarakaConfig.COMMON.despawnHerobrineWhenTargetIsDead.getValue()
+                    && firstTarget != null && firstTarget.isDeadOrDying()) {
+                shadowController.killShadows(serverLevel);
+                discard();
+            }
+            if (getPhase() == 2 && tickCount % 100 == 0) {
+                shadowController.increaseFlickerStack(3);
+            }
+
+            if (getPhase() == 3 && tickCount % 66 == 0) {
+                float lockedHealth = calculateLockedHealth(serverLevel);
+                float stigma = calculateStigma(serverLevel);
+                heal(stigma * lockedHealth * 1.5f);
+            }
         }
 
-        if (getPhase() == 3 && tickCount % 66 == 0) {
-            float lockedHealth = calculateLockedHealth(serverLevel);
-            float stigma = calculateStigma(serverLevel);
-            heal(stigma * lockedHealth * 1.5f);
-        }
-
-        super.customServerAiStep(serverLevel);
+        super.customServerAiStep();
     }
 
     @Override

@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "M": "naraka:nectarium",
-    "P": "naraka:purified_soul_shard"
+    "M": {
+      "item": "naraka:nectarium"
+    },
+    "P": {
+      "item": "naraka:purified_soul_shard"
+    }
   },
   "pattern": [
     "MMM",

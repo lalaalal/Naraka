@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": "minecraft:iron_block"
+    "#": {
+      "item": "minecraft:iron_block"
+    }
   },
   "pattern": [
     "###",

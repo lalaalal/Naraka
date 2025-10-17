@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": "naraka:nectarium"
+    "#": {
+      "item": "naraka:nectarium"
+    }
   },
   "pattern": [
     "###",

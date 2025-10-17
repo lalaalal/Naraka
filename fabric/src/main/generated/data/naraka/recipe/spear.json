@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "/": "minecraft:stick",
-    "=": "naraka:purified_soul_metal"
+    "/": {
+      "item": "minecraft:stick"
+    },
+    "=": {
+      "item": "naraka:purified_soul_metal"
+    }
   },
   "pattern": [
     "  =",

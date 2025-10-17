@@ -3,7 +3,6 @@ package com.yummy.naraka.client.renderer;
 import com.yummy.naraka.client.NarakaClientContext;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.fog.FogData;
 import net.minecraft.util.Mth;
 import org.joml.Vector4f;
 
@@ -29,15 +28,15 @@ public class WhiteFogRenderHelper {
         return whiteFogTickCount > 0;
     }
 
-    public static void setupWhiteFog(FogData fogData, float renderDistance, float partialTick) {
-        float prevDistance = 4 * renderDistance * (1 - prevWhiteFogTickCount / (float) MAX_WHITE_SCREEN_TICK);
-        float currentDistance = 4 * renderDistance * (1 - whiteFogTickCount / (float) MAX_WHITE_SCREEN_TICK);
-        float distance = Mth.lerp(partialTick, prevDistance, currentDistance);
-        fogData.environmentalStart = 0.25f;
-        fogData.environmentalEnd = distance;
-        fogData.skyEnd = fogData.environmentalEnd;
-        fogData.cloudEnd = fogData.environmentalEnd;
-    }
+//    public static void setupWhiteFog(FogData fogData, float renderDistance, float partialTick) {
+//        float prevDistance = 4 * renderDistance * (1 - prevWhiteFogTickCount / (float) MAX_WHITE_SCREEN_TICK);
+//        float currentDistance = 4 * renderDistance * (1 - whiteFogTickCount / (float) MAX_WHITE_SCREEN_TICK);
+//        float distance = Mth.lerp(partialTick, prevDistance, currentDistance);
+//        fogData.environmentalStart = 0.25f;
+//        fogData.environmentalEnd = distance;
+//        fogData.skyEnd = fogData.environmentalEnd;
+//        fogData.cloudEnd = fogData.environmentalEnd;
+//    }
 
     public static Vector4f getFogColor(Vector4f original, float partialTick) {
         float delta = getProgress(partialTick);

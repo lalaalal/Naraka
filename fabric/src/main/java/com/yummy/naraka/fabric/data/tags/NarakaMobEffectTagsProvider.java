@@ -17,7 +17,7 @@ public class NarakaMobEffectTagsProvider extends FabricTagProvider<MobEffect> {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        builder(NarakaMobEffectTags.CHALLENGERS_BLESSING)
+        getOrCreateTagBuilder(NarakaMobEffectTags.CHALLENGERS_BLESSING)
                 .add(NarakaMobEffects.CHALLENGERS_BLESSING_AMETHYST.unwrapKey().orElseThrow())
                 .add(NarakaMobEffects.CHALLENGERS_BLESSING_COPPER.unwrapKey().orElseThrow())
                 .add(NarakaMobEffects.CHALLENGERS_BLESSING_DIAMOND.unwrapKey().orElseThrow())

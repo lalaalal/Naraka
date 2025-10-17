@@ -68,7 +68,7 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
                 DamageTypeTags.BYPASSES_SHIELD
         );
 
-        builder(NarakaDamageTypeTags.DEATH_COUNTING_ATTACK)
+        getOrCreateTagBuilder(NarakaDamageTypeTags.DEATH_COUNTING_ATTACK)
                 .add(NarakaDamageTypes.STIGMA);
         addTags(NarakaDamageTypes.PICKAXE_SLASH,
                 DamageTypeTags.BYPASSES_ENCHANTMENTS,
@@ -79,6 +79,6 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
     @SafeVarargs
     private void addTags(ResourceKey<DamageType> type, TagKey<DamageType>... tags) {
         for (TagKey<DamageType> key : tags)
-            builder(key).add(type);
+            tag(key).add(type);
     }
 }

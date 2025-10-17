@@ -18,29 +18,29 @@ public class NarakaEntityTypeTagsProvider extends FabricTagProvider.EntityTypeTa
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        valueLookupBuilder(NarakaEntityTypeTags.DEATH_COUNTABLE)
+        getOrCreateTagBuilder(NarakaEntityTypeTags.DEATH_COUNTABLE)
                 .addTag(ConventionalTags.Entities.BOSSES)
                 .add(EntityType.PLAYER);
-        valueLookupBuilder(NarakaEntityTypeTags.HEROBRINE)
+        getOrCreateTagBuilder(NarakaEntityTypeTags.HEROBRINE)
                 .add(NarakaEntityTypes.HEROBRINE.get())
                 .add(NarakaEntityTypes.SHADOW_HEROBRINE.get());
-        valueLookupBuilder(NarakaEntityTypeTags.DEATH_COUNTING)
+        getOrCreateTagBuilder(NarakaEntityTypeTags.DEATH_COUNTING)
                 .addTag(NarakaEntityTypeTags.HEROBRINE);
 
-        valueLookupBuilder(ConventionalTags.Entities.BOSSES)
+        getOrCreateTagBuilder(ConventionalTags.Entities.BOSSES)
                 .add(NarakaEntityTypes.HEROBRINE.get());
-        valueLookupBuilder(EntityTypeTags.CAN_BREATHE_UNDER_WATER)
+        getOrCreateTagBuilder(EntityTypeTags.CAN_BREATHE_UNDER_WATER)
                 .add(NarakaEntityTypes.HEROBRINE.get());
-        valueLookupBuilder(EntityTypeTags.FALL_DAMAGE_IMMUNE)
+        getOrCreateTagBuilder(EntityTypeTags.FALL_DAMAGE_IMMUNE)
                 .add(NarakaEntityTypes.HEROBRINE.get());
 
-        valueLookupBuilder(EntityTypeTags.REDIRECTABLE_PROJECTILE)
+        getOrCreateTagBuilder(EntityTypeTags.REDIRECTABLE_PROJECTILE)
                 .add(NarakaEntityTypes.NARAKA_FIREBALL.get());
 
-        valueLookupBuilder(NarakaEntityTypeTags.STIGMA_IMMUNE)
+        getOrCreateTagBuilder(NarakaEntityTypeTags.STIGMA_IMMUNE)
                 .addTag(NarakaEntityTypeTags.HEROBRINE)
                 .add(NarakaEntityTypes.NARAKA_PICKAXE.get());
-        valueLookupBuilder(NarakaEntityTypeTags.STUN_IMMUNE)
+        getOrCreateTagBuilder(NarakaEntityTypeTags.STUN_IMMUNE)
                 .addTag(NarakaEntityTypeTags.HEROBRINE)
                 .add(NarakaEntityTypes.NARAKA_PICKAXE.get());
     }

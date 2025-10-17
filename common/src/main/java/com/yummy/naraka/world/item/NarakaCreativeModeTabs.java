@@ -11,6 +11,7 @@ import com.yummy.naraka.event.CreativeModeTabEvents;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -164,6 +165,8 @@ public class NarakaCreativeModeTabs {
     private static ItemStack blessed(Item item) {
         ItemStack itemStack = new ItemStack(item);
         itemStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
+        itemStack.set(DataComponents.ITEM_NAME, Component.literal("Blessed ")
+                .append(Component.translatable(item.getDescriptionId())));
         return itemStack;
     }
 
@@ -171,6 +174,8 @@ public class NarakaCreativeModeTabs {
         ItemStack itemStack = blessed(item);
         while (Reinforcement.canReinforce(itemStack))
             Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack));
+        itemStack.set(DataComponents.ITEM_NAME, Component.literal("Reinforced ")
+                .append(Component.translatable(item.getDescriptionId())));
         return itemStack;
     }
 

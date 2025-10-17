@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "naraka:compressed_iron_block"
+    {
+      "item": "naraka:compressed_iron_block"
+    }
   ],
   "result": {
     "count": 9,

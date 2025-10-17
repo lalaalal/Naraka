@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    "naraka:compressed_iron_ingot"
+    {
+      "item": "naraka:compressed_iron_ingot"
+    }
   ],
   "result": {
     "count": 9,

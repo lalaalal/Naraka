@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "naraka:item/naraka_fireball_staff"
-  }
-}

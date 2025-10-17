@@ -18,7 +18,7 @@ public class NarakaBiomeTagsProvider extends FabricTagProvider<Biome> {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        builder(NarakaBiomeTags.HEROBRINE_SANCTUARY_BIOMES)
+        getOrCreateTagBuilder(NarakaBiomeTags.HEROBRINE_SANCTUARY_BIOMES)
                 .forceAddTag(ConventionalTags.Biomes.IS_PLAINS)
                 .add(Biomes.FOREST)
                 .add(Biomes.BIRCH_FOREST);

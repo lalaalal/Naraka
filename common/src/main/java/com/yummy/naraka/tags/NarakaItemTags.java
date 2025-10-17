@@ -12,7 +12,6 @@ public final class NarakaItemTags {
     public static final TagKey<Item> SPEAR_ENCHANTABLE = create("enchantable/spear");
     public static final TagKey<Item> LOYALTY_ENCHANTABLE = create("enchantable/loyalty");
 
-    public static final TagKey<Item> EBONY_LOGS = create("ebony_logs");
     public static final TagKey<Item> PURIFIED_SOUL_ARMOR = create("purified_soul_armor");
 
     public static final TagKey<Item> SOUL_REINFORCEABLE = create("soul_reinforceable");

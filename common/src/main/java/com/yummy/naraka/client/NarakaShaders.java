@@ -31,7 +31,7 @@ public final class NarakaShaders {
         ShaderRegistry.register(NarakaMod.location("longinus"), DefaultVertexFormat.POSITION, shaderInstance -> {
             longinus = shaderInstance;
         });
-        ShaderRegistry.register(NarakaMod.location("longinus_cutout"), DefaultVertexFormat.POSITION, shaderInstance -> {
+        ShaderRegistry.register(NarakaMod.location("longinus_cutout"), DefaultVertexFormat.POSITION_TEX, shaderInstance -> {
             longinusCutout = shaderInstance;
         });
     }

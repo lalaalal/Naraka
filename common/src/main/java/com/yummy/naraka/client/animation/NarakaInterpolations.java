@@ -13,20 +13,20 @@ import java.util.function.Function;
 public class NarakaInterpolations {
 
     public static final AnimationChannel.Interpolation FAST_STEP_IN = (vector3f, delta, keyframes, start, end, scale) -> {
-        Vector3fc vectorStart = keyframes[start].postTarget();
-        Vector3fc vectorEnd = keyframes[end].postTarget();
+        Vector3fc vectorStart = keyframes[start].target();
+        Vector3fc vectorEnd = keyframes[end].target();
         return interpolate(delta, vectorStart, vectorEnd, NarakaUtils::fastStepIn, vector3f);
     };
 
     public static final AnimationChannel.Interpolation FAST_STEP_OUT = (vector3f, delta, keyframes, start, end, scale) -> {
-        Vector3fc vectorStart = keyframes[start].postTarget();
-        Vector3fc vectorEnd = keyframes[end].postTarget();
+        Vector3fc vectorStart = keyframes[start].target();
+        Vector3fc vectorEnd = keyframes[end].target();
         return interpolate(delta, vectorStart, vectorEnd, NarakaUtils::fastStepOut, vector3f);
     };
 
     public static final AnimationChannel.Interpolation EASE_IN_OUT = (vector3f, delta, keyframes, start, end, scale) -> {
-        Vector3fc vectorStart = keyframes[start].postTarget();
-        Vector3fc vectorEnd = keyframes[end].postTarget();
+        Vector3fc vectorStart = keyframes[start].target();
+        Vector3fc vectorEnd = keyframes[end].target();
         return NarakaUtils.easeInOut(delta, 0.5f, vectorStart, vectorEnd, vector3f);
     };
 

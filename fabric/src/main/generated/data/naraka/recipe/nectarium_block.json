@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "naraka:nectarium_block"
+    {
+      "item": "naraka:nectarium_block"
+    }
   ],
   "result": {
     "count": 9,
