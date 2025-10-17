@@ -1,39 +1,35 @@
 package com.yummy.naraka.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
-import com.yummy.naraka.client.renderer.blockentity.state.SoulSmithingBlockRenderState;
 import com.yummy.naraka.world.block.SoulSmithingBlock;
-import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.block.entity.SoulSmithingBlockEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.item.ItemModelResolver;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.item.ItemStack;
 import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
-public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<SoulSmithingBlockEntity, SoulSmithingBlockRenderState> {
+public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<SoulSmithingBlockEntity> {
     private final ModelPart main;
     private final ModelPart trimTemplate;
-    private final ItemModelResolver itemModelResolver;
+    private final ItemRenderer itemRenderer;
     private final BlockEntityRenderDispatcher blockEntityRenderDispatcher;
 
     public static LayerDefinition createMainLayer() {
@@ -79,74 +75,59 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
     public SoulSmithingBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         main = context.bakeLayer(NarakaModelLayers.SOUL_SMITHING_BLOCK);
         trimTemplate = context.bakeLayer(NarakaModelLayers.TRIM_TEMPLATE);
-        itemModelResolver = context.itemModelResolver();
-        blockEntityRenderDispatcher = context.blockEntityRenderDispatcher();
+        itemRenderer = context.getItemRenderer();
+        blockEntityRenderDispatcher = context.getBlockEntityRenderDispatcher();
     }
 
     @Override
-    public SoulSmithingBlockRenderState createRenderState() {
-        return new SoulSmithingBlockRenderState();
-    }
-
-    @Override
-    public void extractRenderState(SoulSmithingBlockEntity blockEntity, SoulSmithingBlockRenderState renderState, float f, Vec3 vec3, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
-        BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, f, vec3, crumblingOverlay);
-        this.itemModelResolver.updateForTopItem(renderState.forgingItem, blockEntity.getForgingItem(), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, blockEntity.getSouls());
-        renderState.direction = blockEntity.getBlockState().getValue(SoulSmithingBlock.FACING);
-        renderState.templateItem = blockEntity.getTemplateItem();
-        renderState.stabilizerAttached = blockEntity.isStabilizerAttached();
-        renderState.stabilizer.lightCoords = renderState.lightCoords;
-        renderState.stabilizer.blockEntityType = NarakaBlockEntityTypes.SOUL_STABILIZER.get();
-        renderState.stabilizer.souls = blockEntity.getSouls();
-        renderState.stabilizer.soulType = blockEntity.getSoulType();
-    }
-
-    @Override
-    public void submit(SoulSmithingBlockRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+    public void render(SoulSmithingBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         poseStack.pushPose();
-        Direction direction = renderState.direction;
+        Direction direction = blockEntity.getBlockState().getValue(SoulSmithingBlock.FACING);
         Quaternionf rotation = Axis.YN.rotationDegrees(direction.toYRot());
         poseStack.rotateAround(rotation, 0.5f, 0.5f, 0.5f);
         poseStack.rotateAround(Axis.ZP.rotation(Mth.PI), 0.5f, 0.5f, 0.5f);
         RenderType renderType = RenderType.entityCutout(NarakaTextures.SOUL_SMITHING_BLOCK);
-        submitNodeCollector.submitModelPart(main, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, -1, null);
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
+        main.render(poseStack, vertexConsumer, packedLight, packedOverlay);
         poseStack.popPose();
 
-        submitTrim(renderState, poseStack, submitNodeCollector, rotation);
-        submitSoulStabilizer(renderState, poseStack, submitNodeCollector, cameraRenderState, rotation);
-        submitItem(renderState, poseStack, submitNodeCollector, rotation);
+        renderTrim(blockEntity, poseStack, bufferSource, rotation, packedLight);
+        renderSoulStabilizer(blockEntity, partialTick, poseStack, bufferSource, rotation);
+        renderItem(blockEntity, poseStack, bufferSource, rotation, packedLight);
     }
 
-    private void submitSoulStabilizer(SoulSmithingBlockRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState, Quaternionf rotation) {
-        if (!renderState.stabilizerAttached)
+    private void renderSoulStabilizer(SoulSmithingBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, Quaternionf rotation) {
+        if (!blockEntity.isStabilizerAttached())
             return;
 
         poseStack.pushPose();
         poseStack.rotateAround(rotation, 0.5f, 0.5f, 0.5f);
         poseStack.translate(-1.5f / 16f, 1f / 16f, -4.5f / 16f);
-        blockEntityRenderDispatcher.submit(renderState.stabilizer, poseStack, submitNodeCollector, cameraRenderState);
+        blockEntityRenderDispatcher.render(blockEntity.getSoulStabilizer(), partialTick, poseStack, bufferSource);
         poseStack.popPose();
     }
 
-    private void submitTrim(SoulSmithingBlockRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, Quaternionf rotation) {
-        if (renderState.templateItem.isEmpty())
+    private void renderTrim(SoulSmithingBlockEntity blockEntity, PoseStack poseStack, MultiBufferSource bufferSource, Quaternionf rotation, int packedLight) {
+        ItemStack templateItem = blockEntity.getTemplateItem();
+        if (templateItem.isEmpty())
             return;
 
         poseStack.pushPose();
         poseStack.rotateAround(rotation, 0.5f, 0.5f, 0.5f);
-        RenderType renderType = RenderType.entityCutout(NarakaTextures.getTemplateTexture(renderState.templateItem));
-        submitNodeCollector.submitModelPart(trimTemplate, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, -1, null);
+        RenderType renderType = RenderType.entityCutout(NarakaTextures.getTemplateTexture(templateItem));
+        trimTemplate.render(poseStack, bufferSource.getBuffer(renderType), packedLight, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
     }
 
-    private void submitItem(SoulSmithingBlockRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, Quaternionf rotation) {
-        if (renderState.forgingItem.isEmpty())
+    private void renderItem(SoulSmithingBlockEntity blockEntity, PoseStack poseStack, MultiBufferSource bufferSource, Quaternionf rotation, int packedLight) {
+        ItemStack forgingItem = blockEntity.getForgingItem();
+        if (forgingItem.isEmpty())
             return;
         poseStack.pushPose();
         poseStack.rotateAround(rotation.rotateX(Mth.HALF_PI), 0.5f, 0.5f, 0.5f);
         poseStack.translate(0.5, 0.5, 0);
         poseStack.scale(0.8f, 0.8f, 0.8f);
-        renderState.forgingItem.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1);
+        itemRenderer.renderStatic(forgingItem, ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, null, blockEntity.getSouls());
         poseStack.popPose();
     }
 }
