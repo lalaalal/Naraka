@@ -1,8 +1,6 @@
 package com.yummy.naraka.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.yummy.naraka.client.renderer.ColoredItemSubmitNodeCollection;
-import com.yummy.naraka.client.renderer.PurifiedSoulFireSubmitNodeCollection;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;

@@ -1,7 +1,6 @@
 package com.yummy.naraka.mixin.client;
 
 import com.yummy.naraka.client.renderer.ItemColorRegistry;
-import com.yummy.naraka.client.renderer.ItemColorSetter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.item.ItemModelResolver;

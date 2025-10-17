@@ -2,6 +2,7 @@ package com.yummy.naraka.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
@@ -12,7 +13,6 @@ import com.yummy.naraka.world.item.reinforcement.ReinforcementEffectHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -21,8 +21,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -40,28 +38,31 @@ public abstract class LivingEntityMixin extends Entity {
     @Shadow @Final
     private static EntityDataAccessor<Float> DATA_HEALTH_ID;
 
-    @Shadow @Final
-    private Map<EquipmentSlot, ItemStack> lastEquipmentItems;
-
     @Shadow
     public abstract float getMaxHealth();
+
+    @Shadow
+    protected abstract ItemStack getLastHandItem(EquipmentSlot slot);
+
+    @Shadow
+    protected abstract ItemStack getLastArmorItem(EquipmentSlot slot);
 
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
-    public void saveEntityData(ValueOutput output, CallbackInfo ci) {
+    public void saveEntityData(CompoundTag output, CallbackInfo ci) {
         if (EntityDataHelper.hasEntityData(naraka$living())) {
             CompoundTag compoundTag = new CompoundTag();
             EntityDataHelper.saveEntityData(naraka$living(), compoundTag);
-            output.store("EntityData", CompoundTag.CODEC, compoundTag);
+            NarakaNbtUtils.store(output, "EntityData", CompoundTag.CODEC, compoundTag);
         }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))
-    public void readEntityData(ValueInput input, CallbackInfo ci) {
-        CompoundTag compoundTag = input.read("EntityData", CompoundTag.CODEC).orElse(new CompoundTag());
+    public void readEntityData(CompoundTag input, CallbackInfo ci) {
+        CompoundTag compoundTag = NarakaNbtUtils.read(input, "EntityData", CompoundTag.CODEC).orElse(new CompoundTag());
         EntityDataHelper.readEntityData(naraka$living(), compoundTag);
     }
 
@@ -71,9 +72,8 @@ public abstract class LivingEntityMixin extends Entity {
             EntityDataHelper.removeEntityData(naraka$living());
     }
 
-    @SuppressWarnings("UnresolvedMixinReference")
     @ModifyArg(
-            method = {"travelInFluid(Lnet/minecraft/world/phys/Vec3;)V", "travelInFluid(Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/level/material/FluidState;)V"},
+            method = "travel",
             require = 1,
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V")
     )
@@ -81,9 +81,8 @@ public abstract class LivingEntityMixin extends Entity {
         return ReinforcementEffectHelper.increaseSpeedInLiquid(naraka$living(), scale);
     }
 
-    @SuppressWarnings("UnresolvedMixinReference")
     @ModifyExpressionValue(
-            method = {"travelInFluid(Lnet/minecraft/world/phys/Vec3;)V", "travelInFluid(Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/level/material/FluidState;)V"},
+            method = "travel",
             require = 1,
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInWater()Z")
     )
@@ -105,9 +104,9 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(method = "tick", at = @At("RETURN"))
     public void tickPurifiedSoulFire(CallbackInfo ci) {
         int purifiedSoulFireTick = EntityDataHelper.getEntityData(naraka$living(), NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get());
-        if (purifiedSoulFireTick > 0 && level() instanceof ServerLevel level) {
+        if (purifiedSoulFireTick > 0) {
             if (purifiedSoulFireTick % 20 == 0)
-                hurtServer(level, NarakaDamageSources.purifiedSoulFire(registryAccess()), 6);
+                hurt(NarakaDamageSources.purifiedSoulFire(registryAccess()), 6);
             EntityDataHelper.setEntityData(naraka$living(), NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get(), purifiedSoulFireTick - 1);
         }
     }
@@ -166,7 +165,11 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Unique
     private ItemStack naraka$getPreviousStack(EquipmentSlot slot) {
-        return lastEquipmentItems.getOrDefault(slot, ItemStack.EMPTY);
+        return switch (slot.getType()) {
+            case HAND -> getLastHandItem(slot);
+            case HUMANOID_ARMOR -> getLastArmorItem(slot);
+            default -> ItemStack.EMPTY;
+        };
     }
 
     @Unique

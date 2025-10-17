@@ -37,7 +37,7 @@ public abstract class HerobrineTotemActivatingItemMixin {
         ) {
             ItemStack itemStack = context.getItemInHand();
             if (player != null)
-                itemStack.hurtAndBreak(1, player, context.getHand());
+                itemStack.hurtAndBreak(1, player, player.getEquipmentSlotForItem(itemStack));
             if (itemStack.is(Items.FIRE_CHARGE))
                 itemStack.shrink(1);
 
@@ -45,7 +45,7 @@ public abstract class HerobrineTotemActivatingItemMixin {
             level.setBlockAndUpdate(pos.above(), Blocks.FIRE.defaultBlockState());
             HerobrineTotem.crack(level, pos.below(), totem);
             level.gameEvent(player, GameEvent.BLOCK_PLACE, pos);
-            cir.setReturnValue(InteractionResult.SUCCESS_SERVER);
+            cir.setReturnValue(InteractionResult.SUCCESS);
             cir.cancel();
         }
     }

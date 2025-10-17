@@ -1,7 +1,6 @@
 package com.yummy.naraka.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.yummy.naraka.client.renderer.PurifiedSoulFireSubmitNodeCollection;
 import com.yummy.naraka.client.renderer.entity.state.PurifiedSoulFlameRenderState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
