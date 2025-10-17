@@ -36,7 +36,7 @@ public final class NarakaModClient {
     public static void initialize(NarakaClientInitializer initializer) {
         ClientEventHandler.prepare();
         NarakaModelLayers.initialize();
-        NarakaRenderPipelines.initialize();
+        NarakaShaders.initialize();
         NarakaRenderTypes.initialize();
         NarakaNetworks.initializeClient();
 

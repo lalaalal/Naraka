@@ -1,8 +1,9 @@
 accessWidener v2 named
-#accessible class net/minecraft/client/renderer/RenderType$CompositeState
-#accessible class net/minecraft/client/renderer/RenderStateShard$MultiTextureStateShard
-#accessible method net/minecraft/client/renderer/RenderType create (Ljava/lang/String;IZZLcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/client/renderer/RenderType$CompositeState;)Lnet/minecraft/client/renderer/RenderType$CompositeRenderType;
-#
+accessible class net/minecraft/client/renderer/RenderType$CompositeState
+accessible class net/minecraft/client/renderer/RenderStateShard$MultiTextureStateShard
+accessible method net/minecraft/client/renderer/RenderType create (Ljava/lang/String;Lcom/mojang/blaze3d/vertex/VertexFormat;Lcom/mojang/blaze3d/vertex/VertexFormat$Mode;IZZLnet/minecraft/client/renderer/RenderType$CompositeState;)Lnet/minecraft/client/renderer/RenderType$CompositeRenderType;
+accessible method net/minecraft/client/renderer/RenderStateShard$ShaderStateShard <init> (Ljava/util/function/Supplier;)V
+
 #accessible method net/minecraft/client/renderer/RenderType$CompositeState$CompositeStateBuilder setTextureState (Lnet/minecraft/client/renderer/RenderStateShard$EmptyTextureStateShard;)Lnet/minecraft/client/renderer/RenderType$CompositeState$CompositeStateBuilder;
 #accessible method net/minecraft/client/renderer/RenderType$CompositeState$CompositeStateBuilder createCompositeState (Z)Lnet/minecraft/client/renderer/RenderType$CompositeState;
 #
@@ -19,12 +20,12 @@ accessWidener v2 named
 #accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
 #accessible method net/minecraft/client/particle/FallingLeavesParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;FFZZFF)V
 #
-#accessible field net/minecraft/world/item/CreativeModeTabs BUILDING_BLOCKS Lnet/minecraft/resources/ResourceKey;
-#accessible field net/minecraft/world/item/CreativeModeTabs NATURAL_BLOCKS Lnet/minecraft/resources/ResourceKey;
-#accessible field net/minecraft/world/item/CreativeModeTabs FOOD_AND_DRINKS Lnet/minecraft/resources/ResourceKey;
-#accessible field net/minecraft/world/item/CreativeModeTabs INGREDIENTS Lnet/minecraft/resources/ResourceKey;
-#accessible field net/minecraft/world/item/CreativeModeTabs SPAWN_EGGS Lnet/minecraft/resources/ResourceKey;
-#
+accessible field net/minecraft/world/item/CreativeModeTabs BUILDING_BLOCKS Lnet/minecraft/resources/ResourceKey;
+accessible field net/minecraft/world/item/CreativeModeTabs NATURAL_BLOCKS Lnet/minecraft/resources/ResourceKey;
+accessible field net/minecraft/world/item/CreativeModeTabs FOOD_AND_DRINKS Lnet/minecraft/resources/ResourceKey;
+accessible field net/minecraft/world/item/CreativeModeTabs INGREDIENTS Lnet/minecraft/resources/ResourceKey;
+accessible field net/minecraft/world/item/CreativeModeTabs SPAWN_EGGS Lnet/minecraft/resources/ResourceKey;
+
 #accessible method net/minecraft/client/particle/FlameParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
 #
 #accessible method net/minecraft/client/gui/screens/recipebook/GhostSlots setInput (Lnet/minecraft/world/inventory/Slot;Lnet/minecraft/util/context/ContextMap;Lnet/minecraft/world/item/crafting/display/SlotDisplay;)V
