@@ -26,9 +26,6 @@
     ],
     "client": [
       "com.yummy.naraka.fabric.client.NarakaModFabricClient"
-    ],
-    "jade": [
-      "com.yummy.naraka.jade.NarakaJadePlugin"
     ]
   },
   "accessWidener": "naraka.fabric.accesswidener",
