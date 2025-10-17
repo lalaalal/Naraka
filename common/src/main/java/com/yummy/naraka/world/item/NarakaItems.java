@@ -165,7 +165,8 @@ public class NarakaItems {
                 new ArmorItem(
                         armorMaterial,
                         armorType,
-                        properties.component(DataComponents.UNBREAKABLE, new Unbreakable(true))
+                        properties.durability(1)
+                                .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
                 )
         );
     }
