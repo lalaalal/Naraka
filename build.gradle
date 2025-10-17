@@ -92,7 +92,7 @@ subprojects {
             setVersion("$rootProject.mod_version")
             setProjectVersion("$rootProject.mod_version")
             setJavaVersions(List.of(JavaVersion.VERSION_21))
-            setGameVersions("$rootProject.supporting_minecraft_version")
+            setGameVersions("1.21", "1.21.1")
             setDisplayName("${base.archivesName.get()}-${rootProject.mod_version}")
             setCurseEnvironment(CurseEnvironment.BOTH)
             setArtifact("build/libs/${base.archivesName.get()}-${rootProject.mod_version}.jar")
