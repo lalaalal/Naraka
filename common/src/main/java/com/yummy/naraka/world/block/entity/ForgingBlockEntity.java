@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.block.entity;
 
 import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.BlockPos;
@@ -17,8 +18,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class ForgingBlockEntity extends BlockEntity {
     public static final int COOLDOWN = 30;
@@ -89,20 +88,20 @@ public abstract class ForgingBlockEntity extends BlockEntity {
     public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         CompoundTag compoundTag = new CompoundTag();
         if (!forgingItem.isEmpty())
-            compoundTag.store("ForgingItem", ItemStack.STRICT_CODEC, forgingItem);
+            NarakaNbtUtils.store(compoundTag, "ForgingItem", ItemStack.STRICT_CODEC, forgingItem);
         return compoundTag;
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        input.read("ForgingItem", ItemStack.STRICT_CODEC)
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider provider) {
+        NarakaNbtUtils.read(input, "ForgingItem", ItemStack.STRICT_CODEC)
                 .ifPresent(item -> forgingItem = item);
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider provider) {
         if (!forgingItem.isEmpty())
-            output.store("ForgingItem", ItemStack.STRICT_CODEC, forgingItem);
+            NarakaNbtUtils.store(output, "ForgingItem", ItemStack.STRICT_CODEC, forgingItem);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ForgingBlockEntity blockEntity) {

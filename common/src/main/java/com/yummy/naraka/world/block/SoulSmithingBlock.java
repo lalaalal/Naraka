@@ -7,7 +7,7 @@ import com.yummy.naraka.world.block.entity.SoulSmithingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -62,7 +62,7 @@ public class SoulSmithingBlock extends ForgingBlock {
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (stack.is(Items.MACE))
             return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
@@ -70,17 +70,17 @@ public class SoulSmithingBlock extends ForgingBlock {
             if (isStabilizerSide(state, hitResult.getDirection())
                     && soulSmithingBlockEntity.isStabilizerAttached()) {
                 soulSmithingBlockEntity.detachSoulStabilizer();
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             } else if (isTemplatedSide(state, hitResult.getDirection())
                     && !soulSmithingBlockEntity.getTemplateItem().isEmpty()) {
                 soulSmithingBlockEntity.detachTemplateItem();
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             } else if (soulSmithingBlockEntity.tryAttachSoulStabilizer(stack)) {
                 stack.consume(1, player);
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             } else if (soulSmithingBlockEntity.tryAttachTemplate(stack)) {
                 stack.consume(1, player);
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);

@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.block.entity;
 
 import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -15,8 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 
 public class SoulStabilizerBlockEntity extends BlockEntity {
     public static final int CAPACITY = 15552;
@@ -115,20 +114,20 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag compoundTag = super.getUpdateTag(registries);
-        compoundTag.store("SoulType", SoulType.CODEC, soulType);
+        NarakaNbtUtils.store(compoundTag, "SoulType", SoulType.CODEC, soulType);
         compoundTag.putInt("Souls", souls);
         return compoundTag;
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        output.store("SoulType", SoulType.CODEC, soulType);
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+        NarakaNbtUtils.store(output, "SoulType", SoulType.CODEC, soulType);
         output.putInt("Souls", souls);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        soulType = input.read("SoulType", SoulType.CODEC).orElse(SoulType.NONE);
-        souls = input.getIntOr("Souls", 0);
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+        soulType = NarakaNbtUtils.read(input, "SoulType", SoulType.CODEC).orElse(SoulType.NONE);
+        souls = input.getInt("Souls");
     }
 }

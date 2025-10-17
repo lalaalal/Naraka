@@ -5,7 +5,7 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -39,7 +39,7 @@ public class DiamondGolemSpawner extends Block {
         NarakaUtils.square(pos, 4, NarakaUtils.CIRCLE_OUTLINE, current -> {
             BlockPos floor = NarakaUtils.findFloor(level, current);
             if (count.get() < maxCount && !floor.equals(current)) {
-                NarakaEntityTypes.DIAMOND_GOLEM.get().spawn(level, floor.above(), EntitySpawnReason.SPAWNER);
+                NarakaEntityTypes.DIAMOND_GOLEM.get().spawn(level, floor.above(), MobSpawnType.SPAWNER);
                 count.incrementAndGet();
             }
         });

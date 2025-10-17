@@ -3,6 +3,7 @@ package com.yummy.naraka.world.block.entity;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SoulType;
@@ -19,15 +20,12 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SmithingTemplateItem;
-import net.minecraft.world.item.enchantment.Enchantable;
-import net.minecraft.world.item.equipment.trim.ArmorTrim;
-import net.minecraft.world.item.equipment.trim.TrimMaterial;
-import net.minecraft.world.item.equipment.trim.TrimMaterials;
-import net.minecraft.world.item.equipment.trim.TrimPattern;
+import net.minecraft.world.item.armortrim.ArmorTrim;
+import net.minecraft.world.item.armortrim.TrimMaterial;
+import net.minecraft.world.item.armortrim.TrimMaterials;
+import net.minecraft.world.item.armortrim.TrimPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.Optional;
 
@@ -151,7 +149,6 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
             return false;
         if (soulType == SoulType.GOD_BLOOD)
             forgingItem.set(NarakaDataComponentTypes.BLESSED.get(), true);
-        forgingItem.set(DataComponents.ENCHANTABLE, new Enchantable(9));
 
         soulStabilizer.consumeSoul(requiredSoul);
         while (Reinforcement.canReinforce(forgingItem))
@@ -160,7 +157,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
         cooldownTick = COOLDOWN;
 
-        Optional<Holder<TrimMaterial>> material = TrimMaterials.getFromIngredient(level.registryAccess(), soulType.getItem().getDefaultInstance());
+        Optional<Holder.Reference<TrimMaterial>> material = TrimMaterials.getFromIngredient(level.registryAccess(), soulType.getItem().getDefaultInstance());
         Optional<Holder.Reference<TrimPattern>> pattern = NarakaTrimPatterns.fromItem(level.registryAccess(), templateItem);
         if (material.isPresent() && pattern.isPresent()) {
             ArmorTrim armorTrim = new ArmorTrim(material.get(), pattern.get());
@@ -197,30 +194,30 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
                 soulStabilizer.setLevel(level);
         }
         if (!templateItem.isEmpty())
-            tag.store("TemplateItem", ItemStack.STRICT_CODEC, templateItem);
+            NarakaNbtUtils.store(tag, "TemplateItem", ItemStack.STRICT_CODEC, templateItem);
         return tag;
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
+    protected void saveAdditional(CompoundTag output, HolderLookup.Provider provider) {
+        super.saveAdditional(output, provider);
         output.putBoolean("IsStabilizerAttached", isStabilizerAttached);
         if (isStabilizerAttached)
-            soulStabilizer.saveAdditional(output);
+            soulStabilizer.saveAdditional(output, provider);
         if (!templateItem.isEmpty())
-            output.store("TemplateItem", ItemStack.STRICT_CODEC, templateItem);
+            NarakaNbtUtils.store(output, "TemplateItem", ItemStack.STRICT_CODEC, templateItem);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        isStabilizerAttached = input.getBooleanOr("IsStabilizerAttached", false);
+    protected void loadAdditional(CompoundTag input, HolderLookup.Provider provider) {
+        super.loadAdditional(input, provider);
+        isStabilizerAttached = input.getBoolean("IsStabilizerAttached");
         if (isStabilizerAttached) {
-            soulStabilizer.loadAdditional(input);
+            soulStabilizer.loadAdditional(input, provider);
             if (level != null)
                 soulStabilizer.setLevel(level);
         }
-        input.read("TemplateItem", ItemStack.STRICT_CODEC)
+        NarakaNbtUtils.read(input, "TemplateItem", ItemStack.STRICT_CODEC)
                 .ifPresent(item -> templateItem = item);
     }
 }

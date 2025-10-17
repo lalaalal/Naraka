@@ -31,7 +31,7 @@ public class NarakaBlockEntityTypes {
     );
 
     private static <T extends BlockEntity> HolderProxy<BlockEntityType<?>, BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> supplier, Supplier<? extends Block> block) {
-        return RegistryProxy.register(Registries.BLOCK_ENTITY_TYPE, name, () -> new BlockEntityType<>(supplier, Set.of(block.get())));
+        return RegistryProxy.register(Registries.BLOCK_ENTITY_TYPE, name, () -> new BlockEntityType<>(supplier, Set.of(block.get()), null));
     }
 
     public static void initialize() {
