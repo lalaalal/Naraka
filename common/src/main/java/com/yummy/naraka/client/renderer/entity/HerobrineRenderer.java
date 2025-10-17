@@ -1,6 +1,7 @@
 package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaRenderTypes;
@@ -9,23 +10,20 @@ import com.yummy.naraka.client.layer.HerobrineScarfLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.model.FinalHerobrineModel;
 import com.yummy.naraka.client.model.HerobrineModel;
-import com.yummy.naraka.client.renderer.entity.state.HerobrineRenderState;
 import com.yummy.naraka.world.entity.Herobrine;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
-public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, HerobrineRenderState, AbstractHerobrineModel<HerobrineRenderState>> {
-    private final AbstractHerobrineModel<HerobrineRenderState> afterimageModel;
-    private final FinalHerobrineModel<HerobrineRenderState> dyingModel;
+public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, AbstractHerobrineModel<Herobrine>> {
+    private final AbstractHerobrineModel<Herobrine> afterimageModel;
+    private final FinalHerobrineModel<Herobrine> dyingModel;
 
     public HerobrineRenderer(EntityRendererProvider.Context context) {
         super(context, defaultModel(context, HerobrineModel::new), finalModel(context, FinalHerobrineModel::new), 0.5f);
@@ -40,89 +38,67 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
     }
 
     @Override
-    public HerobrineRenderState createRenderState() {
-        return new HerobrineRenderState();
-    }
-
-    @Override
-    public void extractRenderState(Herobrine herobrine, HerobrineRenderState renderState, float partialTicks) {
-        super.extractRenderState(herobrine, renderState, partialTicks);
-        renderState.phase = herobrine.getPhase();
-        renderState.hasRedOverlay = renderState.hasRedOverlay && !herobrine.isDeadOrDying();
-        renderState.deathTime = -1;
-        renderState.dead = herobrine.getCurrentAnimation().equals(HerobrineAnimationLocations.CHZZK);
-        renderState.chzzkAnimationState = herobrine.chzzkAnimationState;
-    }
-
-    @Override
-    public void submit(HerobrineRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
-        if (renderState.dead && NarakaClientContext.SHADER_ENABLED.getValue()) {
-            submitChzzk(renderState, poseStack, submitNodeCollector, getChzzkRenderType(renderState, 0.001f, 0.01f), 1);
-            submitChzzk(renderState, poseStack, submitNodeCollector, getChzzkRenderType(renderState, 0.002f, 0.005f), 2);
-            submitChzzk(renderState, poseStack, submitNodeCollector, getChzzkRenderType(renderState, 0.0015f, 0.0025f), 3);
-            renderState.lightCoords = 0;
+    public void render(Herobrine entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        if (entity.isDeadOrDying() && NarakaClientContext.SHADER_ENABLED.getValue()) {
+            renderChzzk(entity, partialTicks, poseStack, buffer, getChzzkRenderType(entity, partialTicks, 0.001f, 0.01f), packedLight);
+            renderChzzk(entity, partialTicks, poseStack, buffer, getChzzkRenderType(entity, partialTicks, 0.002f, 0.005f), packedLight);
+            renderChzzk(entity, partialTicks, poseStack, buffer, getChzzkRenderType(entity, partialTicks, 0.0015f, 0.0025f), packedLight);
+            packedLight = 0;
         }
-        super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
+        super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
     }
 
-    private RenderType getChzzkRenderType(HerobrineRenderState renderState, float uMultiplier, float vMultiplier) {
-        return RenderType.energySwirl(NarakaTextures.LONGINUS, (renderState.ageInTicks * uMultiplier) % 1, (renderState.ageInTicks * vMultiplier) % 1);
+    private RenderType getChzzkRenderType(Herobrine herobrine, float partialTick, float uMultiplier, float vMultiplier) {
+        float ageInTicks = herobrine.tickCount + partialTick;
+        return RenderType.energySwirl(NarakaTextures.LONGINUS, (ageInTicks * uMultiplier) % 1, (ageInTicks * vMultiplier) % 1);
     }
 
-    private void submitChzzk(HerobrineRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, RenderType renderType, int order) {
+    private void renderChzzk(Herobrine herobrine, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, RenderType renderType, int packedLight) {
         poseStack.pushPose();
-        dyingModel.applyHeadRotation(renderState);
-        dyingModel.setupChzzkAnim(renderState.chzzkAnimationState, renderState.ageInTicks + (float) 0);
-        this.setupRotations(renderState, poseStack, renderState.bodyRot, renderState.scale);
+        dyingModel.applyHeadRotation(herobrine);
+        dyingModel.setupChzzkAnim(herobrine.chzzkAnimationState, herobrine.tickCount + partialTick);
+        this.setupRotations(herobrine, poseStack, getBob(herobrine, partialTick), herobrine.getViewYRot(partialTick), partialTick, herobrine.getScale());
         poseStack.scale(-1, -1, 1);
         poseStack.translate(0, -1.501F, 0);
-        submitNodeCollector.order(order).submitModel(
-                dyingModel,
-                renderState,
-                poseStack,
-                renderType,
-                renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1,
-                null,
-                renderState.outlineColor,
-                null
-        );
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
+        dyingModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
     }
 
     @Override
-    protected float getShadowRadius(HerobrineRenderState renderState) {
-        if (renderState.finalModel)
-            return 0.7f * renderState.scale;
-        return super.getShadowRadius(renderState);
+    protected float getShadowRadius(Herobrine herobrine) {
+        if (herobrine.isFinalModel())
+            return 0.7f * herobrine.getScale();
+        return super.getShadowRadius(herobrine);
     }
 
     @Override
-    protected @Nullable RenderType getRenderType(HerobrineRenderState renderState, boolean bodyVisible, boolean translucent, boolean glowing) {
-        if (renderState.dead) {
+    protected @Nullable RenderType getRenderType(Herobrine herobrine, boolean bodyVisible, boolean translucent, boolean glowing) {
+        if (herobrine.isDeadOrDying()) {
             if (NarakaClientContext.SHADER_ENABLED.getValue())
                 return RenderType.entitySolid(NarakaTextures.LONGINUS);
             return NarakaRenderTypes.longinusCutout(NarakaTextures.FINAL_HEROBRINE);
         }
-        return super.getRenderType(renderState, bodyVisible, translucent, glowing);
+        return super.getRenderType(herobrine, bodyVisible, translucent, glowing);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(HerobrineRenderState renderState) {
-        if (renderState.finalModel)
+    public ResourceLocation getTextureLocation(Herobrine herobrine) {
+        if (herobrine.isFinalModel())
             return NarakaTextures.FINAL_HEROBRINE;
         return NarakaTextures.HEROBRINE;
     }
 
     @Override
-    protected AbstractHerobrineModel<HerobrineRenderState> getAfterimageModel(HerobrineRenderState renderState) {
-        if (renderState.finalModel)
+    protected AbstractHerobrineModel<Herobrine> getAfterimageModel(Herobrine herobrine) {
+        if (herobrine.isFinalModel())
             return finalModel;
         return afterimageModel;
     }
 
     @Override
-    protected ResourceLocation getAfterimageTexture(HerobrineRenderState renderState) {
-        if (renderState.finalModel)
+    protected ResourceLocation getAfterimageTexture(Herobrine herobrine) {
+        if (herobrine.isFinalModel())
             return NarakaTextures.FINAL_HEROBRINE;
         return NarakaTextures.HEROBRINE_AFTERIMAGE;
     }

@@ -1,50 +1,45 @@
 package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaTextures;
-import com.yummy.naraka.client.renderer.entity.state.FlatImageRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.MagicCircle;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 
 @Environment(EnvType.CLIENT)
-public class MagicCircleRenderer extends EntityRenderer<MagicCircle, FlatImageRenderState> {
+public class MagicCircleRenderer extends EntityRenderer<MagicCircle> {
     public MagicCircleRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    public FlatImageRenderState createRenderState() {
-        return new FlatImageRenderState();
+    public ResourceLocation getTextureLocation(MagicCircle entity) {
+        return NarakaTextures.MAGIC_CIRCLE;
     }
 
     @Override
-    public void extractRenderState(MagicCircle entity, FlatImageRenderState reusedState, float partialTick) {
-        super.extractRenderState(entity, reusedState, partialTick);
-        reusedState.yRot = entity.getYRot(partialTick);
-        reusedState.scale = entity.getScale(partialTick);
-    }
-
-    @Override
-    public void submit(FlatImageRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
-        super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
+    public void render(MagicCircle entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+        float yRot = entity.getViewYRot(partialTick);
+        float scale = entity.getScale(partialTick);
         poseStack.pushPose();
         poseStack.translate(0, 0.0125, 0);
-        poseStack.scale(renderState.scale, renderState.scale, renderState.scale);
-        poseStack.mulPose(Axis.YN.rotation(renderState.yRot));
-        submitNodeCollector.submitCustomGeometry(poseStack, RenderType.entityCutout(NarakaTextures.MAGIC_CIRCLE), (pose, vertexConsumer) -> {
-            NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.Axis.Y);
-        });
+        poseStack.scale(scale, scale, scale);
+        poseStack.mulPose(Axis.YN.rotation(yRot));
+        RenderType renderType = RenderType.entityCutout(getTextureLocation(entity));
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
+        NarakaRenderUtils.renderFlatImage(poseStack.last(), vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.Axis.Y);
         poseStack.popPose();
     }
 }

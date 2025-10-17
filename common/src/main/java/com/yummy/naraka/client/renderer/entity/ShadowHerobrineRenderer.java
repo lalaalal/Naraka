@@ -7,20 +7,15 @@ import com.yummy.naraka.client.layer.ShadowHerobrineHeadLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.model.FinalHerobrineModel;
 import com.yummy.naraka.client.model.HerobrineModel;
-import com.yummy.naraka.client.renderer.ItemColorRegistry;
-import com.yummy.naraka.client.renderer.entity.state.ShadowHerobrineRenderState;
-import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.resources.ResourceLocation;
 
 @Environment(EnvType.CLIENT)
-public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHerobrine, ShadowHerobrineRenderState, AbstractHerobrineModel<ShadowHerobrineRenderState>> {
+public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHerobrine, AbstractHerobrineModel<ShadowHerobrine>> {
     public ShadowHerobrineRenderer(EntityRendererProvider.Context context) {
         super(context, defaultModel(context, HerobrineModel::new), finalModel(context, FinalHerobrineModel::new), 0.5f);
     }
@@ -33,38 +28,17 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
     }
 
     @Override
-    public ShadowHerobrineRenderState createRenderState() {
-        return new ShadowHerobrineRenderState();
-    }
-
-    @Override
-    public void extractRenderState(ShadowHerobrine entity, ShadowHerobrineRenderState renderState, float partialTicks) {
-        renderState.alpha = entity.getAlpha();
-        if (entity.displayPickaxe())
-            ItemColorRegistry.setTemporaryColor(renderState.pickaxe, Color.of(0).withAlpha(renderState.alpha).pack());
-        super.extractRenderState(entity, renderState, partialTicks);
-
-        renderState.hasRedOverlay = false;
-        renderState.pickaxeLight = 0;
-        renderState.scarfAlpha = renderState.alpha;
-    }
-
-    @Override
-    public ResourceLocation getTextureLocation(ShadowHerobrineRenderState renderState) {
-        if (renderState.finalModel)
+    public ResourceLocation getTextureLocation(ShadowHerobrine shadowHerobrine) {
+        if (shadowHerobrine.isFinalModel())
             return NarakaTextures.FINAL_HEROBRINE;
         return NarakaTextures.SHADOW_HEROBRINE;
     }
 
-    @Override
-    public void submit(ShadowHerobrineRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
-        if (renderState.finalModel && !renderState.displayPickaxe)
-            return;
-        super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
-    }
 
     @Override
-    protected int getModelTint(ShadowHerobrineRenderState renderState) {
-        return NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(renderState.alpha).pack();
+    public void render(ShadowHerobrine entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        if (entity.isFinalModel() && !entity.displayPickaxe())
+            return;
+        super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
     }
 }

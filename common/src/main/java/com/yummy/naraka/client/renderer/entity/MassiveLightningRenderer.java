@@ -3,33 +3,28 @@ package com.yummy.naraka.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import com.yummy.naraka.client.renderer.entity.state.MassiveLightningRenderState;
 import com.yummy.naraka.world.entity.MassiveLightning;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.resources.ResourceLocation;
 import org.joml.Vector3f;
 
 @Environment(EnvType.CLIENT)
-public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning, MassiveLightningRenderState> {
+public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning> {
     public MassiveLightningRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    public MassiveLightningRenderState createRenderState() {
-        return new MassiveLightningRenderState();
-    }
-
-    @Override
-    public void extractRenderState(MassiveLightning entity, MassiveLightningRenderState reusedState, float partialTick) {
-        super.extractRenderState(entity, reusedState, partialTick);
-        reusedState.size = entity.getSize(partialTick);
+    @Deprecated
+    public ResourceLocation getTextureLocation(MassiveLightning entity) {
+        return TextureAtlas.LOCATION_BLOCKS;
     }
 
     @Override
@@ -38,24 +33,22 @@ public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning, M
     }
 
     @Override
-    protected boolean affectedByCulling(MassiveLightning display) {
-        return false;
-    }
-
-    @Override
-    public void submit(MassiveLightningRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+    public void render(MassiveLightning entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        float size = entity.getSize(partialTick);
+        float ageInTicks = entity.tickCount + partialTick;
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotation(renderState.ageInTicks * 0.05f));
-        submitNodeCollector.submitCustomGeometry(poseStack, RenderType.lightning(), (pose, vertexConsumer) -> {
-            pillar(vertexConsumer, pose, renderState.size * 0.6f, renderState.size * 0.6f, 1, 123, 0x66fafafa);
-            pillar(vertexConsumer, pose, renderState.size * 0.7f, renderState.size * 0.7f, 0, 122, 0x55ababab);
-            pillar(vertexConsumer, pose, renderState.size * 0.8f, renderState.size * 0.8f, 0, 121, 0x44ababab);
-            pillar(vertexConsumer, pose, renderState.size * 0.9f, renderState.size * 0.9f, 0, 120, 0x33ababab);
-            pillar(vertexConsumer, pose, renderState.size, renderState.size, 0, 120, 0x668308e4);
-        });
+        poseStack.mulPose(Axis.YP.rotation(ageInTicks * 0.05f));
+        RenderType renderType = RenderType.lightning();
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
+        PoseStack.Pose pose = poseStack.last();
+        pillar(vertexConsumer, pose, size * 0.6f, size * 0.6f, 1, 123, 0x66fafafa);
+        pillar(vertexConsumer, pose, size * 0.7f, size * 0.7f, 0, 122, 0x55ababab);
+        pillar(vertexConsumer, pose, size * 0.8f, size * 0.8f, 0, 121, 0x44ababab);
+        pillar(vertexConsumer, pose, size * 0.9f, size * 0.9f, 0, 120, 0x33ababab);
+        pillar(vertexConsumer, pose, size, size, 0, 120, 0x668308e4);
 
         poseStack.popPose();
-        super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
+        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 
     private void pillar(VertexConsumer vertexConsumer, PoseStack.Pose pose, float innerSize, float outerSize, float minY, float maxY, int color) {

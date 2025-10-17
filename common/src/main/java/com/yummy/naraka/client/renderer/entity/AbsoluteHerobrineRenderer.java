@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.ResourceLocation;
 
 @Environment(EnvType.CLIENT)
-public class AbsoluteHerobrineRenderer extends LivingEntityRenderer<AbsoluteHerobrine, LivingEntityRenderState, AbsoluteHerobrineModel> {
+public class AbsoluteHerobrineRenderer extends LivingEntityRenderer<AbsoluteHerobrine, AbsoluteHerobrineModel> {
     public AbsoluteHerobrineRenderer(EntityRendererProvider.Context context) {
         super(context, new AbsoluteHerobrineModel(context.bakeLayer(NarakaModelLayers.ABSOLUTE_HEROBRINE)), 0);
     }
@@ -20,10 +20,5 @@ public class AbsoluteHerobrineRenderer extends LivingEntityRenderer<AbsoluteHero
     @Override
     public ResourceLocation getTextureLocation(LivingEntityRenderState renderState) {
         return NarakaTextures.ABSOLUTE_HEROBRINE;
-    }
-
-    @Override
-    public LivingEntityRenderState createRenderState() {
-        return new LivingEntityRenderState();
     }
 }
