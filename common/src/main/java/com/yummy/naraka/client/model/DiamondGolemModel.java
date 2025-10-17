@@ -1,12 +1,12 @@
 package com.yummy.naraka.client.model;
 
 import com.yummy.naraka.client.animation.DiamondGolemAnimation;
-import com.yummy.naraka.client.renderer.entity.state.SkillUsingMobRenderState;
+import com.yummy.naraka.world.entity.DiamondGolem;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
-public class DiamondGolemModel extends SkillUsingModModel<SkillUsingMobRenderState> {
+public class DiamondGolemModel extends SkillUsingModModel<DiamondGolem> {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
@@ -45,13 +45,12 @@ public class DiamondGolemModel extends SkillUsingModModel<SkillUsingMobRenderSta
     }
 
     public DiamondGolemModel(ModelPart root) {
-        super(root, DiamondGolemAnimation.WALKING, "diamond_golem");
+        super(root, "diamond_golem");
     }
 
     @Override
-    public void setupAnim(SkillUsingMobRenderState renderState) {
-        super.setupAnim(renderState);
-        animateWalk(renderState, 3, 3);
-        animate(renderState);
+    public void setupAnim(DiamondGolem entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        animateWalk(DiamondGolemAnimation.WALKING, limbSwing, limbSwingAmount, 3, 3);
+        playAnimations(entity, ageInTicks);
     }
 }

@@ -55,8 +55,8 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Abst
 
     private void renderChzzk(Herobrine herobrine, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, RenderType renderType, int packedLight) {
         poseStack.pushPose();
-        dyingModel.applyHeadRotation(herobrine);
-        dyingModel.setupChzzkAnim(herobrine.chzzkAnimationState, herobrine.tickCount + partialTick);
+        dyingModel.applyHeadRotation(herobrine.getYHeadRot(), herobrine.getViewXRot(partialTick));
+        dyingModel.setupChzzkAnimation(herobrine.chzzkAnimationState, herobrine.tickCount + partialTick);
         this.setupRotations(herobrine, poseStack, getBob(herobrine, partialTick), herobrine.getViewYRot(partialTick), partialTick, herobrine.getScale());
         poseStack.scale(-1, -1, 1);
         poseStack.translate(0, -1.501F, 0);

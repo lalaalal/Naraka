@@ -1,16 +1,15 @@
 package com.yummy.naraka.client.model;
 
+import com.yummy.naraka.world.entity.AbsoluteHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
 @Environment(EnvType.CLIENT)
-public class AbsoluteHerobrineModel extends EntityModel<LivingEntityRenderState> {
+public class AbsoluteHerobrineModel extends SimpleEntityModel<AbsoluteHerobrine> {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();

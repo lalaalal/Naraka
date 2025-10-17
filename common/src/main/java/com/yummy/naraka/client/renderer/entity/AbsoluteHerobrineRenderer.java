@@ -8,7 +8,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.ResourceLocation;
 
 @Environment(EnvType.CLIENT)
@@ -18,7 +17,7 @@ public class AbsoluteHerobrineRenderer extends LivingEntityRenderer<AbsoluteHero
     }
 
     @Override
-    public ResourceLocation getTextureLocation(LivingEntityRenderState renderState) {
+    public ResourceLocation getTextureLocation(AbsoluteHerobrine entity) {
         return NarakaTextures.ABSOLUTE_HEROBRINE;
     }
 }

@@ -7,10 +7,10 @@ import com.yummy.naraka.util.NarakaUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.Model;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
@@ -139,20 +139,9 @@ public class NarakaRenderUtils {
         return player.getUUID().equals(livingEntity.getUUID());
     }
 
-    public static <S> void submitModelWithFoilRenderTypes(Model<? super S> model, S renderState, PoseStack poseStack, RenderType renderType, SubmitNodeCollector submitNodeCollector, int packedLight, boolean hasFoil) {
-        List<RenderType> renderTypes = ItemRenderer.getFoilRenderTypes(renderType, false, hasFoil);
-        for (int index = 0; index < renderTypes.size(); index++) {
-            submitNodeCollector.order(index).submitModel(
-                    model,
-                    renderState,
-                    poseStack,
-                    renderTypes.get(index),
-                    packedLight, OverlayTexture.NO_OVERLAY, -1,
-                    null,
-                    0,
-                    null
-            );
-        }
+    public static <T> void submitModelWithFoilRenderTypes(EntityModel<? super T> model, PoseStack poseStack, RenderType renderType, MultiBufferSource bufferSource, int packedLight, boolean hasFoil) {
+        VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferSource, renderType, false, hasFoil);
+        model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
     }
 
     public static void applyYZSpin(PoseStack poseStack, float rotation) {

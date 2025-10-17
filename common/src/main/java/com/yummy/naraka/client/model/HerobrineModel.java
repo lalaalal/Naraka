@@ -1,7 +1,6 @@
 package com.yummy.naraka.client.model;
 
-import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
-import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
+import com.yummy.naraka.world.entity.AbstractHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.Util;
@@ -10,7 +9,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
 @Environment(EnvType.CLIENT)
-public class HerobrineModel<S extends AbstractHerobrineRenderState> extends AbstractHerobrineModel<S> {
+public class HerobrineModel<T extends AbstractHerobrine> extends AbstractHerobrineModel<T> {
     private final ModelPart main;
     private final ModelPart upperBody;
     private final ModelPart head;
@@ -20,7 +19,7 @@ public class HerobrineModel<S extends AbstractHerobrineRenderState> extends Abst
     private final ModelPart rightHand;
 
     public HerobrineModel(ModelPart root) {
-        super(root, HerobrineAnimation.WALKING, "herobrine");
+        super(root, "herobrine");
         this.main = root.getChild("main");
         this.upperBody = main.getChild("upper_body");
         this.head = upperBody.getChild("head");

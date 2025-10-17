@@ -1,15 +1,14 @@
 package com.yummy.naraka.client.model;
 
+import com.yummy.naraka.world.entity.NarakaFireball;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
 
 @Environment(EnvType.CLIENT)
-public class NarakaFireballModel extends EntityModel<EntityRenderState> {
+public class NarakaFireballModel extends SimpleEntityModel<NarakaFireball> {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
