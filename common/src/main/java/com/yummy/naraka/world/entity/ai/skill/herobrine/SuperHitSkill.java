@@ -60,7 +60,7 @@ public class SuperHitSkill extends ComboSkill<Herobrine> {
         }
         if (mob.onGround()) {
             level.sendParticles(ParticleTypes.FIREWORK, mob.getX(), mob.getY(), mob.getZ(), 10, 0.5, 1, 0.5, 0.3);
-            NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 5 + onGroundTick, floatingBlockMovement);
+            NarakaSkillUtils.shockwaveBlocks(level, mob.players(), mob.blockPosition(), 5 + onGroundTick, floatingBlockMovement);
             onGroundTick += 1;
         }
     }

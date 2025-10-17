@@ -31,7 +31,7 @@ public class LandingSkill extends ComboSkill<Herobrine> {
         runAt(15, () -> this.land(level));
         run(between(15, 20) && tickCount % 2 == 0, () -> {
             level.sendParticles(ParticleTypes.FIREWORK, mob.getX(), mob.getY(), mob.getZ(), 10, 0.5, 1, 0.5, 0.3);
-            NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), (tickCount - 9) / 2, floatingBlockMovement);
+            NarakaSkillUtils.shockwaveBlocks(level, mob.players(), mob.blockPosition(), (tickCount - 9) / 2, floatingBlockMovement);
         });
     }
 

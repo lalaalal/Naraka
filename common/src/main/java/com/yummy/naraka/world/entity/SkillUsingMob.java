@@ -10,6 +10,7 @@ import com.yummy.naraka.world.entity.ai.skill.SkillManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
@@ -31,6 +32,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
     protected int animationTickLeft = Integer.MIN_VALUE;
     protected Runnable animationTickListener = () -> {
     };
+    protected final List<ServerPlayer> players = new ArrayList<>();
 
     protected SkillUsingMob(EntityType<? extends SkillUsingMob> entityType, Level level) {
         super(entityType, level);
@@ -101,6 +103,23 @@ public abstract class SkillUsingMob extends PathfinderMob {
 
     public DamageSource getDefaultDamageSource() {
         return damageSources().mobAttack(this);
+    }
+
+    @Override
+    public void startSeenByPlayer(ServerPlayer serverPlayer) {
+        super.startSeenByPlayer(serverPlayer);
+        players.add(serverPlayer);
+        NetworkManager.clientbound().send(serverPlayer, new SyncAnimationPacket(this, currentAnimation));
+    }
+
+    @Override
+    public void stopSeenByPlayer(ServerPlayer serverPlayer) {
+        super.stopSeenByPlayer(serverPlayer);
+        players.remove(serverPlayer);
+    }
+
+    public List<ServerPlayer> players() {
+        return players;
     }
 
     /**

@@ -71,9 +71,9 @@ public class StrikeSkill extends AttackSkill<NarakaPickaxe> {
 
         runAt(STRIKE_END_TICK, () -> level.playSound(null, mob, SoundEvents.TOTEM_USE, SoundSource.HOSTILE, 1, 1));
         runAt(STRIKE_END_TICK, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 13));
-        runAt(STRIKE_END_TICK, () -> NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 5, NarakaUtils.CIRCLE, calculateFloatingMovement(0.7f)));
-        runAt(STRIKE_END_TICK, () -> NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 7, NarakaUtils.CIRCLE, calculateFloatingMovement(0.4f)));
-        runAt(STRIKE_END_TICK, () -> NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 13, NarakaUtils.CIRCLE, calculateFloatingMovement(0.3f)));
+        runAt(STRIKE_END_TICK, () -> NarakaSkillUtils.shockwaveBlocks(level, mob.players(), mob.blockPosition(), 5, NarakaUtils.CIRCLE, calculateFloatingMovement(0.7f)));
+        runAt(STRIKE_END_TICK, () -> NarakaSkillUtils.shockwaveBlocks(level, mob.players(), mob.blockPosition(), 7, NarakaUtils.CIRCLE, calculateFloatingMovement(0.4f)));
+        runAt(STRIKE_END_TICK, () -> NarakaSkillUtils.shockwaveBlocks(level, mob.players(), mob.blockPosition(), 13, NarakaUtils.CIRCLE, calculateFloatingMovement(0.3f)));
     }
 
     @Override

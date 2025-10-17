@@ -109,7 +109,7 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
         if ((mob.onGround() || onGroundTick > 0) && onGroundTick < 3) {
             level.sendParticles(ParticleTypes.FIREWORK, mob.getX(), mob.getY(), mob.getZ(), 10, 0.5, 1, 0.5, 0.3);
             Supplier<Vec3> movementSupplier = () -> new Vec3(0, mob.getRandom().nextFloat() * 0.5 + 0.5, 0);
-            NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 4 + onGroundTick, movementSupplier);
+            NarakaSkillUtils.shockwaveBlocks(level, mob.players(), mob.blockPosition(), 4 + onGroundTick, movementSupplier);
             onGroundTick += 1;
         }
     }

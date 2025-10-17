@@ -160,7 +160,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
             return targetInLookAngle(new Vec3(actualPosition.getX() + 0.5, mob.getY(), actualPosition.getZ() + 0.5), angleFrom, angleTo)
                     && NarakaUtils.CIRCLE_OUTLINE.test(position, r);
         };
-        NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), radius + waveTick, predicate, movementSupplier);
+        NarakaSkillUtils.shockwaveBlocks(level, mob.players(), mob.blockPosition(), radius + waveTick, predicate, movementSupplier);
     }
 
     private void pullBlocks(ServerLevel level) {
@@ -186,7 +186,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
             return;
 
         int spawnTick = rawSpawnTick / tickInterval;
-        shockwaveBlocks(level, startTick, 1, angleFrom, angleTo, blockFloatingMovement(0.2f, 0.05f * spawnTick));
+        shockwaveBlocks(level, startTick, 1, angleFrom, angleTo, blockFloatingMovement(0.3f, 0.05f * spawnTick));
 
         float distanceFrom = spawnTick - 1;
         float distanceTo = spawnTick + 1;

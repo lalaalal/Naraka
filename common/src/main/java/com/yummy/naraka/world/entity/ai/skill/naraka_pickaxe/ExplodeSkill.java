@@ -58,8 +58,8 @@ public class ExplodeSkill extends AttackSkill<NarakaPickaxe> {
         runBetween(20, 80, () -> sendCircleParticlesOnFloor(level));
         runAt(80, () -> mob.setDeltaMovement(0, -8, 0));
         runAt(82, () -> level.playSound(null, mob, SoundEvents.TOTEM_USE, SoundSource.HOSTILE, 1, 1));
-        runAt(83, () -> NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 3, floatingBlockMovement));
-        runAt(84, () -> NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 4, floatingBlockMovement));
+        runAt(83, () -> NarakaSkillUtils.shockwaveBlocks(level, mob.players(), mob.blockPosition(), 3, floatingBlockMovement));
+        runAt(84, () -> NarakaSkillUtils.shockwaveBlocks(level, mob.players(), mob.blockPosition(), 4, floatingBlockMovement));
         runAfter(90, () -> sendCircleParticles(level, 25, mob.getY() + 0.1, 0.05));
         run(after(90) && tickCount % 80 == 0, () -> hurtAndSendParticles(level));
     }

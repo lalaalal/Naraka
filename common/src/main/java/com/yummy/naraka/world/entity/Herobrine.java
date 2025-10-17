@@ -448,6 +448,7 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void startSeenByPlayer(ServerPlayer serverPlayer) {
+        super.startSeenByPlayer(serverPlayer);
         if (isAlive()) {
             bossEvent.addPlayer(serverPlayer);
             CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaMusics.musicEventByPhase(getPhase()));
@@ -490,6 +491,7 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void stopSeenByPlayer(ServerPlayer serverPlayer) {
+        super.stopSeenByPlayer(serverPlayer);
         shadowController.killShadows((ServerLevel) serverPlayer.level());
         bossEvent.removePlayer(serverPlayer);
         if (isAlive() || serverPlayer.isDeadOrDying())

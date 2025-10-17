@@ -78,7 +78,7 @@ public class StrikeDownSkill extends ComboSkill<Herobrine> {
         }
         if ((mob.onGround() || onGroundTick > 0) && onGroundTick < 5) {
             level.sendParticles(ParticleTypes.FIREWORK, mob.getX(), mob.getY(), mob.getZ(), 15, 0.5, 1, 0.5, 0.3);
-            NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 3 + onGroundTick, movementSupplier);
+            NarakaSkillUtils.shockwaveBlocks(level, mob.players(), mob.blockPosition(), 3 + onGroundTick, movementSupplier);
             onGroundTick += 1;
         }
     }

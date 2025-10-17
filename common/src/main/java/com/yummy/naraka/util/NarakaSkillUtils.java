@@ -3,35 +3,40 @@ package com.yummy.naraka.util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class NarakaSkillUtils {
-    public static void shockwaveBlocks(Level level, BlockPos base, int radius, BiPredicate<BlockPos, Integer> positionPredicate, Supplier<Vec3> movementSupplier) {
+    public static void shockwaveBlocks(ServerLevel level, List<ServerPlayer> players, BlockPos base, int radius, BiPredicate<BlockPos, Integer> positionPredicate, Supplier<Vec3> movementSupplier) {
         base = NarakaUtils.findAir(level, base, Direction.UP);
 
         NarakaUtils.square(base, radius, positionPredicate, blockPos -> {
             BlockPos floor = NarakaUtils.findFloor(level, blockPos);
             BlockState state = level.getBlockState(floor);
-            if (level.getBlockState(floor.above()).isAir())
-                NarakaEntityUtils.createFloatingBlock(level, floor.above(), state, movementSupplier.get());
+            if (level.getBlockState(floor.above()).isAir()) {
+                Entity entity = NarakaEntityUtils.createFloatingBlock(level, floor.above(), state, movementSupplier.get());
+                ClientboundSetEntityMotionPacket packet = new ClientboundSetEntityMotionPacket(entity);
+                players.forEach(player -> player.connection.send(packet));
+            }
         });
+
     }
 
-    public static void shockwaveBlocks(Level level, BlockPos base, int radius, Supplier<Vec3> movementSupplier) {
-        shockwaveBlocks(level, base, radius, NarakaUtils.CIRCLE_OUTLINE, movementSupplier);
+    public static void shockwaveBlocks(ServerLevel level, List<ServerPlayer> players, BlockPos base, int radius, Supplier<Vec3> movementSupplier) {
+        shockwaveBlocks(level, players, base, radius, NarakaUtils.CIRCLE_OUTLINE, movementSupplier);
     }
 
     public static void sendParticleFront(ServerLevel level, Mob mob, LivingEntity target, ParticleOptions particle) {

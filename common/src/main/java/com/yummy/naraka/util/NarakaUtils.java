@@ -196,7 +196,7 @@ public class NarakaUtils {
 
     public static BlockPos findCollision(LevelAccessor level, BlockPos from, Direction faceDirection) {
         BlockPos.MutableBlockPos current = from.mutable();
-        while (level.getMaxBuildHeight() < current.getY()) {
+        while (level.getMinBuildHeight() <= current.getY() && current.getY() <= level.getMaxBuildHeight()) {
             BlockPos pos = current.immutable();
             BlockState state = level.getBlockState(pos);
             if (!state.getCollisionShape(level, pos).isEmpty())
@@ -216,7 +216,7 @@ public class NarakaUtils {
     }
 
     public static BlockPos findAir(LevelAccessor level, BlockPos from, Direction findingDirection) {
-        if (level.getMaxBuildHeight() < from.getY())
+        if (level.getMinBuildHeight() > from.getY() || from.getY() < level.getMaxBuildHeight())
             return from;
         BlockPos findingPos = from.relative(findingDirection);
         BlockState state = level.getBlockState(findingPos);
