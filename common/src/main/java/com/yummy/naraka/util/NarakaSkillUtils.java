@@ -3,7 +3,6 @@ package com.yummy.naraka.util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -26,13 +25,9 @@ public class NarakaSkillUtils {
         NarakaUtils.square(base, radius, positionPredicate, blockPos -> {
             BlockPos floor = NarakaUtils.findFloor(level, blockPos);
             BlockState state = level.getBlockState(floor);
-            if (level.getBlockState(floor.above()).isAir()) {
-                Entity entity = NarakaEntityUtils.createFloatingBlock(level, floor.above(), state, movementSupplier.get());
-                ClientboundSetEntityMotionPacket packet = new ClientboundSetEntityMotionPacket(entity);
-                players.forEach(player -> player.connection.send(packet));
-            }
+            if (level.getBlockState(floor.above()).isAir())
+                NarakaEntityUtils.createFloatingBlock(level, players, floor.above(), state, movementSupplier.get());
         });
-
     }
 
     public static void shockwaveBlocks(ServerLevel level, List<ServerPlayer> players, BlockPos base, int radius, Supplier<Vec3> movementSupplier) {

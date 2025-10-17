@@ -781,7 +781,9 @@ public class Herobrine extends AbstractHerobrine {
         if (!(level() instanceof ServerLevel level))
             return;
         super.readAdditionalSaveData(input);
-        hurtDamageLimit = input.getFloat("HurtDamageLimit");
+        if (input.contains("HurtDamageLimit"))
+            hurtDamageLimit = input.getFloat("HurtDamageLimit");
+        else hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
         hibernateMode = input.getBoolean("HibernatedMode");
         if (hibernateMode)
             startHibernateMode(level);

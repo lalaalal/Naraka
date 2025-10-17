@@ -4,6 +4,7 @@ import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncPlayerMovementPacket;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -102,10 +103,12 @@ public class NarakaEntityUtils {
         return !(player.isCreative() || player.isSpectator());
     }
 
-    public static FallingBlockEntity createFloatingBlock(Level level, BlockPos pos, BlockState state, Vec3 movement) {
+    public static FallingBlockEntity createFloatingBlock(ServerLevel level, List<ServerPlayer> players, BlockPos pos, BlockState state, Vec3 movement) {
         FallingBlockEntity fallingBlockEntity = FallingBlockEntity.fall(level, pos, state);
         fallingBlockEntity.disableDrop();
         fallingBlockEntity.setDeltaMovement(movement);
+        ClientboundSetEntityMotionPacket packet = new ClientboundSetEntityMotionPacket(fallingBlockEntity);
+        players.forEach(player -> player.connection.send(packet));
         return fallingBlockEntity;
     }
 
