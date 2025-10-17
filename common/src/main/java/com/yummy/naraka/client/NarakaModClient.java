@@ -83,6 +83,9 @@ public final class NarakaModClient {
     }
 
     private static void initializeBlocks() {
+        CustomRenderManager.register(NarakaBlocks.SOUL_STABILIZER.get(), NarakaBlockEntityItemRenderer.INSTANCE);
+        CustomRenderManager.register(NarakaBlocks.SOUL_SMITHING_BLOCK.get(), NarakaBlockEntityItemRenderer.INSTANCE);
+
         BlockRenderTypeRegistry.register(RenderType.cutout(),
                 NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(),
                 NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get()

@@ -25,7 +25,7 @@ public class CustomRenderManager {
     }
 
     public static void renderRainbow(Item item) {
-        COLORED_ITEMS.put(item, ComponentStyles.RAINBOW_COLOR::getCurrentColor);
+        COLORED_ITEMS.put(item, () -> ComponentStyles.RAINBOW_COLOR.getCurrentColor().withAlpha(0xff));
     }
 
     public static void renderColored(Item item, Supplier<Color> color) {

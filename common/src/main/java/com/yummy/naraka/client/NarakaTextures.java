@@ -48,7 +48,7 @@ public final class NarakaTextures {
     public static final ResourceLocation SOUL_SMITHING_BLOCK = entity("soul_smithing_block.png");
     public static final ResourceLocation LIGHTNING_CIRCLE = entity("lightning_circle.png");
 
-    public static final ResourceLocation NARAKA_ADVANCEMENT_ROOT_BACKGROUND = advancements("backgrounds/naraka");
+    public static final ResourceLocation NARAKA_ADVANCEMENT_ROOT_BACKGROUND = advancements("backgrounds/naraka.png");
 
     private static ResourceLocation texture(String parent, String path) {
         return NarakaMod.location("textures/%s".formatted(parent), path);
@@ -59,7 +59,7 @@ public final class NarakaTextures {
     }
 
     private static ResourceLocation advancements(String path) {
-        return NarakaMod.location("gui/advancements", path);
+        return NarakaMod.location("textures/gui/advancements", path);
     }
 
     private static final Map<Item, ResourceLocation> TRIM_TEMPLATE_TEXTURES = new HashMap<>();

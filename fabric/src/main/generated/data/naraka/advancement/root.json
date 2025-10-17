@@ -9,7 +9,7 @@
   },
   "display": {
     "announce_to_chat": false,
-    "background": "naraka:gui/advancements/backgrounds/naraka",
+    "background": "naraka:textures/gui/advancements/backgrounds/naraka.png",
     "description": {
       "translate": "advancements.naraka.root.description"
     },
