@@ -2,51 +2,38 @@ package com.yummy.naraka.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.yummy.naraka.util.Color;
+import com.yummy.naraka.util.ComponentStyles;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
+import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
 public class CustomRenderManager {
     private static final Map<Item, CustomItemRenderer> CUSTOM_RENDERERS = new HashMap<>();
-    private static final Map<Block, RenderType> CUSTOM_BLOCK_RENDER_TYPES = new HashMap<>();
-    private static final Map<Item, Color> COLORED_ITEMS = new HashMap<>();
-    private static final Set<Item> RAINBOW_ITEMS = new HashSet<>();
+    private static final Map<Item, Supplier<Color>> COLORED_ITEMS = new HashMap<>();
 
     public static void register(ItemLike item, CustomItemRenderer customItemRenderer) {
         CUSTOM_RENDERERS.put(item.asItem(), customItemRenderer);
     }
 
-    public static void register(RenderType renderType, Block... blocks) {
-        for (Block block : blocks)
-            CUSTOM_BLOCK_RENDER_TYPES.put(block, renderType);
-    }
-
     public static void renderRainbow(Item item) {
-        RAINBOW_ITEMS.add(item);
+        COLORED_ITEMS.put(item, ComponentStyles.RAINBOW_COLOR::getCurrentColor);
     }
 
-    public static void renderColored(Item item, Color color) {
+    public static void renderColored(Item item, Supplier<Color> color) {
         COLORED_ITEMS.put(item, color);
     }
 
     public static void restoreColor(Item item) {
         COLORED_ITEMS.remove(item);
-    }
-
-    public static boolean shouldRenderRainbow(ItemStack itemStack) {
-        return RAINBOW_ITEMS.contains(itemStack.getItem());
     }
 
     public static boolean shouldRenderColored(ItemStack itemStack) {
@@ -64,12 +51,8 @@ public class CustomRenderManager {
         return itemRenderer;
     }
 
-    public static Map<Block, RenderType> getCustomBlockRenderTypes() {
-        return Map.copyOf(CUSTOM_BLOCK_RENDER_TYPES);
-    }
-
     public static Color getItemColor(ItemStack stack) {
-        return COLORED_ITEMS.get(stack.getItem());
+        return COLORED_ITEMS.get(stack.getItem()).get();
     }
 
     public interface CustomItemRenderer {

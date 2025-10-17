@@ -11,6 +11,7 @@
     "client.HiddenOreRendererMixin",
     "client.ItemBlockRenderTypesMixin",
     "client.ItemEntityRendererMixin",
+    "client.ItemRendererMixin",
     "client.ItemStackMixin",
     "client.LevelRendererMixin",
     "client.LocalPlayerMixin",
