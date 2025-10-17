@@ -76,14 +76,10 @@ public class StormSkill extends ComboSkill<Herobrine> {
     }
 
     private boolean entityToPull(LivingEntity target) {
-        target.position().horizontal()
-                .distanceTo(target.position().horizontal());
         return targetInRange(target, 80 * 80) && AbstractHerobrine.isNotHerobrine(target) && NarakaPickaxe.isNotNarakaPickaxe(target);
     }
 
     private boolean entityToPush(LivingEntity target) {
-        target.position().horizontal()
-                .distanceTo(target.position().horizontal());
         return targetInRange(target, 9) && AbstractHerobrine.isNotHerobrine(target) && NarakaPickaxe.isNotNarakaPickaxe(target);
     }
 
