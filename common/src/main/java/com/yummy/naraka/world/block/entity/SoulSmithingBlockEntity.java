@@ -15,6 +15,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.Item;
@@ -104,7 +106,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     private int getRequiredSoul() {
         if (forgingItem.is(NarakaItems.PURIFIED_SOUL_SWORD.get()))
             return 14976;
-        if (getSoulType() != null && getSoulType() == SoulType.GOD_BLOOD)
+        if (getSoulType() == SoulType.GOD_BLOOD)
             return 3888;
         return 9 * 16;
     }
@@ -188,13 +190,10 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         CompoundTag tag = super.getUpdateTag(provider);
         tag.putBoolean("IsStabilizerAttached", isStabilizerAttached);
-        if (isStabilizerAttached) {
-            tag.put("StabilizerData", soulStabilizer.getUpdateTag(provider));
-            if (level != null)
-                soulStabilizer.setLevel(level);
-        }
+        if (isStabilizerAttached)
+            tag.merge(soulStabilizer.getUpdateTag(provider));
         if (!templateItem.isEmpty())
-            NarakaNbtUtils.store(tag, "TemplateItem", ItemStack.STRICT_CODEC, templateItem);
+            NarakaNbtUtils.store(tag, "TemplateItem", ItemStack.STRICT_CODEC, RegistryOps.create(NbtOps.INSTANCE, provider), templateItem);
         return tag;
     }
 
@@ -205,7 +204,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         if (isStabilizerAttached)
             soulStabilizer.saveAdditional(output, provider);
         if (!templateItem.isEmpty())
-            NarakaNbtUtils.store(output, "TemplateItem", ItemStack.STRICT_CODEC, templateItem);
+            NarakaNbtUtils.store(output, "TemplateItem", ItemStack.STRICT_CODEC, RegistryOps.create(NbtOps.INSTANCE, provider), templateItem);
     }
 
     @Override
@@ -217,7 +216,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
             if (level != null)
                 soulStabilizer.setLevel(level);
         }
-        NarakaNbtUtils.read(input, "TemplateItem", ItemStack.STRICT_CODEC)
+        NarakaNbtUtils.read(input, "TemplateItem", ItemStack.STRICT_CODEC, RegistryOps.create(NbtOps.INSTANCE, provider))
                 .ifPresent(item -> templateItem = item);
     }
 }

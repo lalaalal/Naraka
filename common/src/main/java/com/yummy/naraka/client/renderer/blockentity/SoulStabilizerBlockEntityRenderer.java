@@ -62,9 +62,9 @@ public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<So
     @Override
     public void render(SoulStabilizerBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         poseStack.pushPose();
-        RenderType renderType = RenderType.entityCutout(NarakaTextures.SOUL_STABILIZER);
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-        bottle.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        RenderType bottleRenderType = RenderType.entityCutout(NarakaTextures.SOUL_STABILIZER);
+        VertexConsumer bottleVertexConsumer = bufferSource.getBuffer(bottleRenderType);
+        bottle.render(poseStack, bottleVertexConsumer, packedLight, packedOverlay);
         poseStack.popPose();
 
         if (blockEntity.getSoulType() == SoulType.NONE)
@@ -76,7 +76,9 @@ public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<So
 
         poseStack.pushPose();
         poseStack.scale(1, soulRatio, 1);
-        liquid.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+        RenderType liquidRenderType = RenderType.entityCutout(WATER_OVERLAY);
+        VertexConsumer liquidVertexConsumer = bufferSource.getBuffer(liquidRenderType);
+        liquid.render(poseStack, liquidVertexConsumer, packedLight, packedOverlay, color);
         poseStack.popPose();
     }
 }

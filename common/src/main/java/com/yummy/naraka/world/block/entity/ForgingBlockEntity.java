@@ -7,9 +7,11 @@ import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
@@ -88,20 +90,20 @@ public abstract class ForgingBlockEntity extends BlockEntity {
     public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         CompoundTag compoundTag = new CompoundTag();
         if (!forgingItem.isEmpty())
-            NarakaNbtUtils.store(compoundTag, "ForgingItem", ItemStack.STRICT_CODEC, forgingItem);
+            NarakaNbtUtils.store(compoundTag, "ForgingItem", ItemStack.STRICT_CODEC, RegistryOps.create(NbtOps.INSTANCE, provider), forgingItem);
         return compoundTag;
     }
 
     @Override
     protected void loadAdditional(CompoundTag input, HolderLookup.Provider provider) {
-        NarakaNbtUtils.read(input, "ForgingItem", ItemStack.STRICT_CODEC)
+        NarakaNbtUtils.read(input, "ForgingItem", ItemStack.STRICT_CODEC, RegistryOps.create(NbtOps.INSTANCE, provider))
                 .ifPresent(item -> forgingItem = item);
     }
 
     @Override
     protected void saveAdditional(CompoundTag output, HolderLookup.Provider provider) {
         if (!forgingItem.isEmpty())
-            NarakaNbtUtils.store(output, "ForgingItem", ItemStack.STRICT_CODEC, forgingItem);
+            NarakaNbtUtils.store(output, "ForgingItem", ItemStack.STRICT_CODEC, RegistryOps.create(NbtOps.INSTANCE, provider), forgingItem);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ForgingBlockEntity blockEntity) {
