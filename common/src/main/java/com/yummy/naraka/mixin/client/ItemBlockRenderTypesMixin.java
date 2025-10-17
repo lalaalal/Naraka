@@ -4,7 +4,7 @@ import com.yummy.naraka.client.init.BlockRenderTypeRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.Block;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,7 +19,7 @@ import java.util.Map;
 @Mixin(ItemBlockRenderTypes.class)
 public abstract class ItemBlockRenderTypesMixin {
     @Shadow @Final
-    private static Map<Block, ChunkSectionLayer> TYPE_BY_BLOCK;
+    private static Map<Block, RenderType> TYPE_BY_BLOCK;
 
     @Inject(method = "<clinit>", at = @At("RETURN"))
     private static void afterInitializeClass(CallbackInfo ci) {

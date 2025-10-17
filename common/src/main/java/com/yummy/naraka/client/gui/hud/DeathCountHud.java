@@ -10,12 +10,12 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 @Environment(EnvType.CLIENT)
-public class DeathCountHud implements HudRenderer {
+public class DeathCountHud implements LayeredDraw.Layer {
     public static final int HEART_WIDTH = 14;
     public static final int HEART_HEIGHT = 7;
     public static final int BACKGROUND_WIDTH = 75;
@@ -45,7 +45,7 @@ public class DeathCountHud implements HudRenderer {
     private static void drawHeart(GuiGraphics guiGraphics, int x, int y, boolean fill, boolean blink) {
         if (fill) {
             int u = blink ? HEART_PURPLE_X : HEART_PINK_X;
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, NarakaSprites.DEATH_COUNT_HEART, HEART_WIDTH, HEART_HEIGHT,
+            guiGraphics.blitSprite(NarakaSprites.DEATH_COUNT_HEART, HEART_WIDTH, HEART_HEIGHT,
                     u, 0, x, y,
                     HEART_SIZE_SINGLE, HEART_SIZE_SINGLE);
         }
@@ -73,7 +73,7 @@ public class DeathCountHud implements HudRenderer {
             return;
 
         boolean blink = (blinkTime / 10) % 2 == 0;
-        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, NarakaSprites.DEATH_COUNT_BACKGROUND, BASE_X, BASE_Y, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+        guiGraphics.blitSprite(NarakaSprites.DEATH_COUNT_BACKGROUND, BASE_X, BASE_Y, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
         for (int i = 0; i < DeathCountHelper.MAX_DEATH_COUNT; i++) {
             int x = HEART_START_X + HEART_OFFSET_BORDER + BASE_X + i * (HEART_SIZE_SINGLE + HEART_GAP + HEART_OFFSET_BORDER);
             int y = BASE_Y + HEART_START_Y + HEART_OFFSET_BORDER;

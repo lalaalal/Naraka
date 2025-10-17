@@ -13,10 +13,6 @@ import com.yummy.naraka.client.renderer.ItemColorRegistry;
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulStabilizerBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.entity.*;
-import com.yummy.naraka.client.renderer.special.SoulSmithingBlockSpecialRenderer;
-import com.yummy.naraka.client.renderer.special.SoulStabilizerSpecialRenderer;
-import com.yummy.naraka.client.renderer.special.SpearOfLonginusSpecialRenderer;
-import com.yummy.naraka.client.renderer.special.SpearSpecialRenderer;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
@@ -28,7 +24,7 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 
 @Environment(EnvType.CLIENT)
@@ -41,7 +37,6 @@ public final class NarakaModClient {
         NarakaNetworks.initializeClient();
 
         registerParticles();
-        registerSpecialRenderers();
 
         registerEntityRenderers();
         registerBlockEntityRenderers();
@@ -53,16 +48,6 @@ public final class NarakaModClient {
 
         initializer.runAfterRegistryLoaded(NarakaModClient::onRegistryLoaded);
         initializer.runAfterRegistryLoaded(NarakaConfig::checkIris);
-    }
-
-    private static void registerSpecialRenderers() {
-        SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("soul_stabilizer"), SoulStabilizerSpecialRenderer.Unbaked.CODEC);
-        SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("soul_smithing_block"), SoulSmithingBlockSpecialRenderer.Unbaked.CODEC);
-        SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("spear"), SpearSpecialRenderer.Unbaked.CODEC);
-        SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("spear_of_longinus"), SpearOfLonginusSpecialRenderer.Unbaked.CODEC);
-
-        SpecialModelRendererRegistry.registerBlock(NarakaBlocks.SOUL_STABILIZER, new SoulStabilizerSpecialRenderer.Unbaked());
-        SpecialModelRendererRegistry.registerBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, new SoulSmithingBlockSpecialRenderer.Unbaked());
     }
 
     private static void onRegistryLoaded() {
@@ -79,11 +64,8 @@ public final class NarakaModClient {
     }
 
     private static void initializeBlocks() {
-        BlockRenderTypeRegistry.register(ChunkSectionLayer.CUTOUT,
-                NarakaBlocks.EBONY_SAPLING.get(),
-                NarakaBlocks.POTTED_EBONY_SAPLING.get(),
+        BlockRenderTypeRegistry.register(RenderType.cutout(),
                 NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(),
-                NarakaBlocks.EBONY_ROOTS.get(),
                 NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get()
         );
     }
