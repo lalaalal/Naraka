@@ -4,10 +4,10 @@ import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncPlayerMovementPacket;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,7 +15,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -80,17 +79,15 @@ public class NarakaEntityUtils {
     public static boolean disableAndHurtShield(LivingEntity livingEntity, int cooldown, int damage) {
         if (NarakaAttributeModifiers.hasAttributeModifier(livingEntity, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STUN_PREVENT_MOVING))
             return false;
-        if (livingEntity instanceof Player player && livingEntity.isBlocking() && livingEntity.level() instanceof ServerLevel level) {
-            ItemStack usedItem = player.getItemBlockingWith();
-            if (usedItem != null) {
-                EquipmentSlot slot = player.getEquipmentSlotForItem(usedItem);
-                usedItem.hurtAndBreak(damage, player, slot);
-                BlocksAttacks blocksAttacks = usedItem.get(DataComponents.BLOCKS_ATTACKS);
-                if (blocksAttacks != null) {
-                    blocksAttacks.disable(level, player, cooldown / 20f, usedItem);
-                }
-                return true;
-            }
+        if (livingEntity instanceof Player player && livingEntity.isBlocking()) {
+            InteractionHand hand = player.getUsedItemHand();
+            ItemStack usedItem = player.getItemInHand(hand);
+            EquipmentSlot slot = player.getEquipmentSlotForItem(usedItem);
+            usedItem.hurtAndBreak(damage, player, slot);
+            player.getCooldowns().addCooldown(usedItem.getItem(), cooldown);
+            player.stopUsingItem();
+            player.level().broadcastEntityEvent(livingEntity, (byte) 30);
+            return true;
         }
         return false;
     }

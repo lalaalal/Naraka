@@ -13,11 +13,10 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.component.TypedEntityData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class NarakaItemUtils {
     /**
@@ -51,11 +50,11 @@ public class NarakaItemUtils {
     }
 
     public static void saveBlockEntity(ItemStack itemStack, BlockEntity blockEntity, HolderLookup.Provider provider) {
-        itemStack.set(DataComponents.BLOCK_ENTITY_DATA, TypedEntityData.of(blockEntity.getType(), blockEntity.saveWithFullMetadata(provider)));
+        itemStack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(blockEntity.saveWithFullMetadata(provider)));
     }
 
     public static void loadBlockEntity(ItemStack itemStack, BlockEntity blockEntity, HolderLookup.Provider provider) {
-        TypedEntityData<BlockEntityType<?>> customData = itemStack.getOrDefault(DataComponents.BLOCK_ENTITY_DATA, TypedEntityData.of(blockEntity.getType(), new CompoundTag()));
+        CustomData customData = itemStack.getOrDefault(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(new CompoundTag()));
         customData.loadInto(blockEntity, provider);
     }
 
