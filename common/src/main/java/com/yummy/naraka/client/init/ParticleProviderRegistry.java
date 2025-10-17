@@ -24,7 +24,6 @@ public abstract class ParticleProviderRegistry {
                 .invoke(particle, factory);
     }
 
-    @Deprecated
     public static <T extends ParticleOptions> void register(Supplier<? extends ParticleType<T>> particle, ParticleProvider.Sprite<T> provider) {
         register(particle, ParticleFactory.from(provider));
     }

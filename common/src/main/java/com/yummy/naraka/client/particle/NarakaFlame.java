@@ -6,12 +6,10 @@ import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.RandomSource;
 
 public class NarakaFlame extends FlameParticle {
-    public NarakaFlame(ClientLevel clientLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, TextureAtlasSprite sprite) {
-        super(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed, sprite);
+    public NarakaFlame(ClientLevel clientLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        super(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed);
     }
 
     public static class Provider implements ParticleProvider<NarakaFlameParticleOption> {
@@ -22,8 +20,8 @@ public class NarakaFlame extends FlameParticle {
         }
 
         @Override
-        public Particle createParticle(NarakaFlameParticleOption type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource randomSource) {
-            NarakaFlame particle = new NarakaFlame(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites.first());
+        public Particle createParticle(NarakaFlameParticleOption type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            NarakaFlame particle = new NarakaFlame(level, x, y, z, xSpeed, ySpeed, zSpeed);
             particle.setSprite(sprites.get(type.ordinal(), NarakaFlameParticleOption.values().length - 1));
             return particle;
         }
