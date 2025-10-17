@@ -2,6 +2,7 @@ package com.yummy.naraka.mixin.client;
 
 import com.yummy.naraka.client.sound.BossMusicPlayer;
 import com.yummy.naraka.client.sound.BossMusicSoundInstance;
+import com.yummy.naraka.client.sound.VolumeController;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -42,6 +43,8 @@ public abstract class MusicManagerMixin implements BossMusicPlayer {
         if (naraka$bossMusic != null) {
             if (naraka$stopBossMusic || naraka$nextMusic != null) {
                 naraka$bossMusic.decreaseVolume(0.02f);
+                if (minecraft.getSoundManager() instanceof VolumeController volumeController)
+                    volumeController.naraka$setVolume(naraka$bossMusic);
             }
             if (naraka$bossMusic.getVolume() == 0) {
                 naraka$bossMusic = null;

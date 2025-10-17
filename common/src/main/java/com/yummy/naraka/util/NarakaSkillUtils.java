@@ -87,7 +87,7 @@ public class NarakaSkillUtils {
 
     public static <T extends Entity> void pullEntities(ServerLevel level, Mob mob, Class<T> type, Predicate<T> targetPredicate, double scale) {
         AABB boundingBox = mob.getBoundingBox().inflate(80, 10, 80);
-        level.getEntitiesOfClass(type, boundingBox, targetPredicate).forEach(target -> {
+        level.getEntitiesOfClass(type, boundingBox, entity -> entity.isAlive() && targetPredicate.test(entity)).forEach(target -> {
             Vec3 movement = mob.position().subtract(target.position())
                     .scale(scale);
             target.setDeltaMovement(movement);

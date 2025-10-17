@@ -17,6 +17,8 @@
     "client.MouseHandlerMixin",
     "client.MusicManagerMixin",
     "client.ScreenEffectRendererMixin",
+    "client.SoundEngineMixin",
+    "client.SoundManagerMixin",
     "client.WorldOpenFlowsMixin"
   ],
   "mixins": [

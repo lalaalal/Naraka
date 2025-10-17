@@ -8,7 +8,9 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -71,7 +73,7 @@ public class StructureProtector {
         private static Container instance = new Container();
 
         private static Container create(CompoundTag tag, HolderLookup.Provider registries) {
-            return NarakaNbtUtils.read(tag, "structure_protectors", StructureProtector.CODEC.listOf())
+            return NarakaNbtUtils.read(tag, "structure_protectors", StructureProtector.CODEC.listOf(), RegistryOps.create(NbtOps.INSTANCE, registries))
                     .map(Container::new)
                     .orElse(new Container());
         }
@@ -84,7 +86,7 @@ public class StructureProtector {
 
         @Override
         public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
-            NarakaNbtUtils.store(tag, "structure_protectors", StructureProtector.CODEC.listOf(), protectors);
+            NarakaNbtUtils.store(tag, "structure_protectors", StructureProtector.CODEC.listOf(), RegistryOps.create(NbtOps.INSTANCE, registries), protectors);
             return tag;
         }
 
