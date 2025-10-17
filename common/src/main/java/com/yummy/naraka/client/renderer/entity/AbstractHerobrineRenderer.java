@@ -85,6 +85,11 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, M e
         }
     }
 
+    @Override
+    protected float getFlipDegrees(T livingEntity) {
+        return 0;
+    }
+
     private void renderPickaxe(T entity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, ModelPart... parts) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - entity.getViewYRot(partialTick)));
@@ -94,7 +99,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, M e
         poseStack.mulPose(Axis.ZP.rotationDegrees(225));
         poseStack.translate(0.5, 0.5, 0);
         poseStack.scale(4, 4, 1);
-        itemRenderer.renderStatic(pickaxe, ItemDisplayContext.FIXED, getPickaxeLight(entity), OverlayTexture.NO_OVERLAY, poseStack, bufferSource, null, 0);
+        itemRenderer.renderStatic(pickaxe, ItemDisplayContext.NONE, getPickaxeLight(entity), OverlayTexture.NO_OVERLAY, poseStack, bufferSource, null, 0);
         poseStack.popPose();
     }
 

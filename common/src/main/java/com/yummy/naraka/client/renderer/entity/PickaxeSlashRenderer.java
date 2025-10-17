@@ -35,7 +35,7 @@ public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash> 
     public void render(PickaxeSlash entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
         int color = entity.getColor(partialTick);
-        float yRot = entity.getViewYRot(partialTick);
+        float yRot = 180 + entity.getYRot();
         float zRot = entity.getZRot();
 
         poseStack.pushPose();
@@ -54,13 +54,13 @@ public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash> 
     protected void renderTail(PickaxeSlash entity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, Vec3 translation) {
         Vector3f vector3f = new Vector3f(0, 0, 1)
                 .rotate(Axis.ZN.rotationDegrees(entity.getZRot()))
-                .rotate(Axis.YN.rotationDegrees(entity.getViewYRot(partialTick)));
+                .rotate(Axis.YN.rotationDegrees(180 + entity.getYRot()));
         super.renderTail(entity, partialTick, poseStack, bufferSource, new Vec3(vector3f).add(translation).add(0, 1.2, 0));
     }
 
     @Override
     protected void renderTailPart(PickaxeSlash entity, float partialTick, PoseStack.Pose pose, VertexConsumer vertexConsumer, Vector3f from, Vector3f to, float index, float size, int color) {
-        float yRot = entity.getViewYRot(partialTick);
+        float yRot = 180 + entity.getYRot();
         float zRot = entity.getZRot();
         NarakaRenderUtils.renderFlatImage(pose, vertexConsumer,
                 NarakaRenderUtils.createVertices(from, to, 1.5f, modifier(yRot, zRot)), index, index, size, size,

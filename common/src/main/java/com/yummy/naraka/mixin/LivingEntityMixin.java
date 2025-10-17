@@ -165,11 +165,11 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Unique
     private ItemStack naraka$getPreviousStack(EquipmentSlot slot) {
-        return switch (slot.getType()) {
-            case HAND -> getLastHandItem(slot);
-            case HUMANOID_ARMOR -> getLastArmorItem(slot);
-            default -> ItemStack.EMPTY;
-        };
+        if (slot.getType() == EquipmentSlot.Type.HAND)
+            return getLastHandItem(slot);
+        if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR)
+            return getLastArmorItem(slot);
+        return ItemStack.EMPTY;
     }
 
     @Unique

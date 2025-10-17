@@ -121,8 +121,6 @@ public class HerobrineScarfLayer<T extends AbstractHerobrine, M extends Abstract
 
         poseStack.pushPose();
         poseStack.rotateAround(Axis.XN.rotationDegrees(rotationDegree), 0, 0, 0);
-        VertexConsumer insideVertexConsumer = bufferSource.getBuffer(insideRenderType);
-        VertexConsumer outsideVertexConsumer = bufferSource.getBuffer(outsideRenderType);
 
         int verticalSize = waveData.getVerticalSize();
         int horizontalSize = waveData.getHorizontalSize();
@@ -162,8 +160,13 @@ public class HerobrineScarfLayer<T extends AbstractHerobrine, M extends Abstract
                 float currentV = v + partHeight * vertical;
 
                 List<Vector2f> uvs = NarakaRenderUtils.createUVList(currentU, currentV, partWidth, partHeight);
+
+                VertexConsumer insideVertexConsumer = bufferSource.getBuffer(insideRenderType);
                 NarakaRenderUtils.vertices(poseStack.last(), insideVertexConsumer, vertices, uvs, packedLight, OverlayTexture.NO_OVERLAY, color, Direction.UP, false);
+
+                VertexConsumer outsideVertexConsumer = bufferSource.getBuffer(outsideRenderType);
                 NarakaRenderUtils.vertices(poseStack.last(), outsideVertexConsumer, vertices, uvs, packedLight, OverlayTexture.NO_OVERLAY, color, Direction.UP, true);
+
                 poseStack.popPose();
             }
             poseStack.popPose();

@@ -55,11 +55,10 @@ public class NarakaPickaxeRenderer extends LivingEntityRenderer<NarakaPickaxe, N
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(180 - entity.getViewYRot(partialTick)));
         applyTransformAndRotate(poseStack, model.root().getChild("main"));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(45));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(225));
         poseStack.translate(0.5, 0.5, 0);
         poseStack.scale(4, 4, 1);
-        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
-        itemRenderer.renderStatic(pickaxe, ItemDisplayContext.FIXED, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, null, 0);
+        itemRenderer.renderStatic(pickaxe, ItemDisplayContext.NONE, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, null, 0);
         poseStack.popPose();
     }
 }

@@ -1,14 +1,14 @@
 package com.yummy.naraka.client.model;
 
 import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
-import com.yummy.naraka.world.entity.SkillUsingMob;
+import com.yummy.naraka.world.entity.AbstractHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 
 @Environment(EnvType.CLIENT)
-public abstract class AbstractHerobrineModel<T extends SkillUsingMob> extends SkillUsingModModel<T> {
+public abstract class AbstractHerobrineModel<T extends AbstractHerobrine> extends SkillUsingModModel<T> {
     protected AbstractHerobrineModel(ModelPart root, String entityName) {
         super(root, entityName);
     }
@@ -31,7 +31,8 @@ public abstract class AbstractHerobrineModel<T extends SkillUsingMob> extends Sk
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         resetPose();
         applyHeadRotation(netHeadYaw, headPitch);
-        animateWalk(HerobrineAnimation.WALKING, limbSwing, limbSwingAmount, 5, 6);
+        if (!entity.isFinalModel())
+            animateWalk(HerobrineAnimation.WALKING, limbSwing, limbSwingAmount, 5, 6);
         playAnimations(entity, ageInTicks);
     }
 
