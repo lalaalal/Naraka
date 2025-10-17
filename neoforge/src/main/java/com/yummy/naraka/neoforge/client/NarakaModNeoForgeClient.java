@@ -10,7 +10,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.ArrayList;
@@ -35,8 +35,8 @@ public final class NarakaModNeoForgeClient implements NarakaClientInitializer, I
         MethodInvoker.register(NeoForgeScreenFactoryRegistry.class);
         MethodInvoker.register(NeoForgeHudRendererRegistry.class);
         MethodInvoker.register(NeoForgeKeyMappingRegistry.class);
-        MethodInvoker.register(NeoForgeRenderPipelineRegistry.class);
-        MethodInvoker.register(NeoForgeSpecialModelRendererRegistry.class);
+        MethodInvoker.register(NeoForgeShaderRegistry.class);
+        MethodInvoker.register(NeoForgeItemPropertiesRegistry.class);
 
         NarakaModClient.initialize(this);
 
@@ -55,8 +55,8 @@ public final class NarakaModNeoForgeClient implements NarakaClientInitializer, I
 
     @Override
     public void registerClientReloadListener(String name, Supplier<PreparableReloadListener> listener) {
-        bus.addListener((Consumer<AddClientReloadListenersEvent>) event -> {
-            event.addListener(NarakaMod.location(name), listener.get());
+        bus.addListener((Consumer<RegisterClientReloadListenersEvent>) event -> {
+            event.registerReloadListener(listener.get());
         });
     }
 }

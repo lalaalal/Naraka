@@ -38,7 +38,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @SuppressWarnings("UnresolvedMixinReference")
     @ModifyExpressionValue(
-            method = {"getDestroySpeed(Lnet/minecraft/world/level/block/state/BlockState;)F", "getDestroySpeed(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)F"},
+            method = {"getDestroySpeed(Lnet/minecraft/world/level/block/state/BlockState;)F", "getDigSpeed(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)F"},
             require = 1,
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isEyeInFluid(Lnet/minecraft/tags/TagKey;)Z")
     )
@@ -48,7 +48,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @SuppressWarnings("UnresolvedMixinReference")
     @ModifyExpressionValue(
-            method = {"getDestroySpeed(Lnet/minecraft/world/level/block/state/BlockState;)F", "getDestroySpeed(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)F"},
+            method = {"getDestroySpeed(Lnet/minecraft/world/level/block/state/BlockState;)F", "getDigSpeed(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)F"},
             require = 1,
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;onGround()Z")
     )

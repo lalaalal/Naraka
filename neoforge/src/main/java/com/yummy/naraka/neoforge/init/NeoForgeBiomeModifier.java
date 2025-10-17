@@ -8,7 +8,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
@@ -61,9 +60,8 @@ public class NeoForgeBiomeModifier implements NarakaBiomes.Modifier {
             HolderGetter<Biome> biomeGetter = context.lookup(Registries.BIOME);
             HolderSet<Biome> targetBiomes = biomeGetter.getOrThrow(biomes);
 
-            WeightedList<MobSpawnSettings.SpawnerData> spawners = WeightedList.<MobSpawnSettings.SpawnerData>builder()
-                    .add(new MobSpawnSettings.SpawnerData(entityType.get(), minGroupSize, maxGroupSize), weight)
-                    .build();
+            List<MobSpawnSettings.SpawnerData> spawners = new ArrayList<>();
+            spawners.add(new MobSpawnSettings.SpawnerData(entityType.get(), weight, minGroupSize, maxGroupSize));
             context.register(create(name), new BiomeModifiers.AddSpawnsBiomeModifier(targetBiomes, spawners));
         });
 
