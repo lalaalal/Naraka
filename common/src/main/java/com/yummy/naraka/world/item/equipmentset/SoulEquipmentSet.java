@@ -16,8 +16,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.equipment.trim.ArmorTrim;
-import net.minecraft.world.item.equipment.trim.TrimMaterial;
+import net.minecraft.world.item.armortrim.ArmorTrim;
+import net.minecraft.world.item.armortrim.TrimMaterial;
 
 import java.util.Map;
 import java.util.Optional;
@@ -29,8 +29,8 @@ public class SoulEquipmentSet extends EquipmentSet {
         if (soulType == SoulType.NONE)
             return false;
 
-        for (EquipmentSlot slot : EquipmentSlotGroup.ARMOR.slots()) {
-            if (slot.getType() != EquipmentSlot.Type.HUMANOID_ARMOR)
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            if (slot.getType() != EquipmentSlot.Type.HUMANOID_ARMOR || !EquipmentSlotGroup.ARMOR.test(slot))
                 continue;
             ItemStack armorItemStack = livingEntity.getItemBySlot(slot);
             ArmorTrim armorTrim = armorItemStack.get(DataComponents.TRIM);
@@ -76,7 +76,7 @@ public class SoulEquipmentSet extends EquipmentSet {
                 livingEntity.addEffect(new MobEffectInstance(effect, -1));
                 if (livingEntity instanceof ServerPlayer serverPlayer)
                     NarakaCriteriaTriggers.SIMPLE_TRIGGER.get().trigger(serverPlayer, SimpleTrigger.CHALLENGERS_BLESSING);
-                livingEntity.addEffect(new MobEffectInstance(MobEffects.SPEED, -1, 1));
+                livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, -1, 1));
             }
         }
 
@@ -86,7 +86,7 @@ public class SoulEquipmentSet extends EquipmentSet {
                     .map(MobEffectInstance::getEffect)
                     .ifPresent(effect -> {
                         livingEntity.removeEffect(effect);
-                        livingEntity.removeEffect(MobEffects.SPEED);
+                        livingEntity.removeEffect(MobEffects.MOVEMENT_SPEED);
                     });
         }
     }

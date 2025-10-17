@@ -3,12 +3,14 @@ package com.yummy.naraka.world.item;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
 
-public class SoulInfusedSwordItem extends Item {
+public class SoulInfusedSwordItem extends SwordItem {
     private final int color;
 
-    public SoulInfusedSwordItem(Item.Properties properties, int color) {
-        super(properties);
+    public SoulInfusedSwordItem(Tier tier, Item.Properties properties, int color) {
+        super(tier, properties);
         this.color = color;
     }
 

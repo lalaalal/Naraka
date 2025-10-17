@@ -39,7 +39,7 @@ public record SanctuaryTracker(Optional<GlobalPos> sanctuaryPos, boolean tracked
     public SanctuaryTracker update(ServerLevel serverLevel, BlockPos userPos, boolean forceUpdate) {
         if (tracked && !forceUpdate)
             return this;
-        Registry<Structure> registry = serverLevel.registryAccess().lookupOrThrow(Registries.STRUCTURE);
+        HolderLookup.RegistryLookup<Structure> registry = serverLevel.registryAccess().lookupOrThrow(Registries.STRUCTURE);
         Holder<Structure> sanctuary = registry.getOrThrow(NarakaStructures.HEROBRINE_SANCTUARY);
         Pair<BlockPos, Holder<Structure>> pair = serverLevel.getChunkSource().getGenerator().findNearestMapStructure(serverLevel, HolderSet.direct(sanctuary), userPos, 100, false);
         if (pair == null)

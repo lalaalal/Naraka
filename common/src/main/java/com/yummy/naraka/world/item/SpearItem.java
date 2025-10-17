@@ -7,46 +7,37 @@ import net.minecraft.core.Position;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.Supplier;
 
-public class SpearItem extends Item implements ProjectileItem {
+public class SpearItem extends TieredItem implements ProjectileItem {
     protected final Supplier<? extends EntityType<? extends Spear>> spearType;
+    private final boolean enchantable;
 
-    @Deprecated
-    public static ItemAttributeModifiers createAttributes(double attackDamage, double attackSpeed) {
-        return ItemAttributeModifiers.builder()
-                .add(Attributes.ATTACK_DAMAGE,
-                        new AttributeModifier(BASE_ATTACK_DAMAGE_ID, attackDamage, AttributeModifier.Operation.ADD_VALUE),
-                        EquipmentSlotGroup.MAINHAND
-                ).add(Attributes.ATTACK_SPEED,
-                        new AttributeModifier(BASE_ATTACK_SPEED_ID, attackSpeed, AttributeModifier.Operation.ADD_VALUE),
-                        EquipmentSlotGroup.MAINHAND
-                ).build();
-    }
-
-    public SpearItem(ToolMaterial material, boolean enchantable, float attackDamage, float attackSpeed, float interactionRange, Properties properties, Supplier<? extends EntityType<? extends Spear>> spearType) {
-        super(NarakaToolMaterials.applySpearProperties(properties, material, enchantable, attackDamage, attackSpeed, interactionRange));
+    public SpearItem(Tier tier, boolean enchantable, float attackDamage, float attackSpeed, float interactionRange, Properties properties, Supplier<? extends EntityType<? extends Spear>> spearType) {
+        super(tier, NarakaTiers.applySpearProperties(properties, tier, attackDamage, attackSpeed, interactionRange));
         this.spearType = spearType;
+        this.enchantable = enchantable;
     }
 
     @Override
-    public ItemUseAnimation getUseAnimation(ItemStack stack) {
-        return ItemUseAnimation.SPEAR;
+    public boolean isEnchantable(ItemStack stack) {
+        return this.enchantable;
+    }
+
+    @Override
+    public UseAnim getUseAnimation(ItemStack stack) {
+        return UseAnim.SPEAR;
     }
 
     @Override
@@ -55,19 +46,17 @@ public class SpearItem extends Item implements ProjectileItem {
     }
 
     @Override
-    public boolean releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeCharged) {
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeCharged) {
         if (getUseDuration(stack, livingEntity) - timeCharged >= TridentItem.THROW_THRESHOLD_TIME) {
             throwSpear(level, livingEntity, stack);
-            return true;
         }
-        return false;
     }
 
     protected void throwSpear(Level level, LivingEntity livingEntity, ItemStack stack) {
         if (level.isClientSide())
             return;
         if (livingEntity instanceof Player player) {
-            stack.hurtAndBreak(1, player, livingEntity.getUsedItemHand());
+            stack.hurtAndBreak(1, player, livingEntity.getEquipmentSlotForItem(stack));
             Spear spear = createSpear(level, player, stack);
             spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0, 2.5f, 1);
             if (player.hasInfiniteMaterials())
@@ -85,9 +74,9 @@ public class SpearItem extends Item implements ProjectileItem {
     }
 
     @Override
-    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         player.startUsingItem(hand);
-        return InteractionResult.CONSUME;
+        return InteractionResultHolder.consume(player.getItemInHand(hand));
     }
 
     @Override

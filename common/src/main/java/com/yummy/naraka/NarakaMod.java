@@ -32,7 +32,6 @@ import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.alchemy.NarakaPotions;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeSerializers;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeTypes;
-import com.yummy.naraka.world.item.crafting.display.NarakaRecipeDisplays;
 import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.rootplacer.NarakaRootPlacerTypes;

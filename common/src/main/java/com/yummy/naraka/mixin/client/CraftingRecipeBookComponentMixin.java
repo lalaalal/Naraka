@@ -1,6 +1,5 @@
 package com.yummy.naraka.mixin.client;
 
-import com.yummy.naraka.world.item.crafting.display.ComponentPredicateRecipeDisplay;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screens.recipebook.CraftingRecipeBookComponent;

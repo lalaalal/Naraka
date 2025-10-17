@@ -5,14 +5,12 @@ import com.yummy.naraka.world.item.component.SanctuaryTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 public class SanctuaryCompassItem extends Item {
     public SanctuaryCompassItem(Properties properties) {
@@ -20,13 +18,13 @@ public class SanctuaryCompassItem extends Item {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity, @Nullable EquipmentSlot slot) {
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         BlockPos userPos = entity.blockPosition();
         updateTracker(stack, level, userPos, false);
     }
 
     @Override
-    public InteractionResult use(Level level, Player player, InteractionHand interactionHand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         BlockPos userPos = player.blockPosition();
         ItemStack itemStack = player.getItemInHand(interactionHand);
         updateTracker(itemStack, level, userPos, true);

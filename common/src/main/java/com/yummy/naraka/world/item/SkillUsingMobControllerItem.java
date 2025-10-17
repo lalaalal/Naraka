@@ -20,7 +20,7 @@ public class SkillUsingMobControllerItem extends Item {
         return ItemAttributeModifiers.builder()
                 .add(
                         Attributes.ENTITY_INTERACTION_RANGE,
-                        new AttributeModifier(NarakaToolMaterials.ENTITY_INTERACTION_RANGE_ID, 32, AttributeModifier.Operation.ADD_VALUE),
+                        new AttributeModifier(NarakaTiers.ENTITY_INTERACTION_RANGE_ID, 32, AttributeModifier.Operation.ADD_VALUE),
                         EquipmentSlotGroup.MAINHAND
                 ).build();
     }

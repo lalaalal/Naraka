@@ -9,8 +9,6 @@ import net.minecraft.world.level.levelgen.feature.rootplacers.RootPlacer;
 import net.minecraft.world.level.levelgen.feature.rootplacers.RootPlacerType;
 
 public class NarakaRootPlacerTypes {
-    public static final HolderProxy<RootPlacerType<?>, RootPlacerType<EbonyRootPlacer>> EBONY_ROOT = register("ebony_root", EbonyRootPlacer.CODEC);
-
     private static <P extends RootPlacer> HolderProxy<RootPlacerType<?>, RootPlacerType<P>> register(String name, MapCodec<P> codec) {
         return RegistryProxy.register(Registries.ROOT_PLACER_TYPE, name, () -> RootPlacerTypeInvoker.create(codec));
     }

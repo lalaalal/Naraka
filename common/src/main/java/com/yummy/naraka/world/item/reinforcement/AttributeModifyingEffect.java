@@ -11,9 +11,9 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.equipment.Equippable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -87,9 +87,8 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
     @Override
     public void onReinforcementIncreased(ItemStack itemStack, int previousReinforcement, int currentReinforcement) {
         ItemAttributeModifiers modifiers = NarakaItemUtils.getAttributeModifiers(itemStack);
-        Equippable equippable = itemStack.get(DataComponents.EQUIPPABLE);
-        if (equippable != null) {
-            EquipmentSlot slot = equippable.slot();
+        if (itemStack.getItem() instanceof Equipable equipable) {
+            EquipmentSlot slot = equipable.getEquipmentSlot();
             itemStack.set(
                     DataComponents.ATTRIBUTE_MODIFIERS,
                     modifiers.withModifierAdded(

@@ -1,7 +1,6 @@
 package com.yummy.naraka.data.worldgen.features;
 
 import com.yummy.naraka.world.block.NarakaBlocks;
-import com.yummy.naraka.world.rootplacer.EbonyRootPlacer;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;

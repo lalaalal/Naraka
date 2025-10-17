@@ -15,11 +15,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
-public class SpearOfLonginusItem extends SpearItem {
+public class SpearOfLonginusItem extends SpearItem implements ItemDamageSourceProvider {
     public SpearOfLonginusItem(Properties properties) {
-        super(NarakaToolMaterials.LONGINUS, false, 600, -3, 66, properties, NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS);
+        super(NarakaTiers.LONGINUS, false, 600, -3, 66, properties, NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS);
     }
 
     @Override
@@ -32,10 +31,9 @@ public class SpearOfLonginusItem extends SpearItem {
         return new SpearOfLonginus(level, position, stack);
     }
 
-    @Nullable
     @Override
-    public DamageSource getDamageSource(LivingEntity entity) {
-        return NarakaDamageSources.longinus(entity);
+    public DamageSource naraka$getDamageSource(LivingEntity user) {
+        return NarakaDamageSources.longinus(user);
     }
 
     @Override
