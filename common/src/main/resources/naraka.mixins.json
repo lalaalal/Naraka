@@ -6,6 +6,7 @@
   "client": [
     "client.CameraMixin",
     "client.EntityRenderDispatcherMixin",
+    "client.FogRendererMixin",
     "client.GuiMixin",
     "client.HiddenOreRendererMixin",
     "client.ItemBlockRenderTypesMixin",

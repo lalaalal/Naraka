@@ -38,9 +38,7 @@
         "trims/models/armor/bolt",
         "trims/models/armor/bolt_leggings",
         "trims/models/armor/flow",
-        "trims/models/armor/flow_leggings",
-        "naraka:trims/entity/humanoid/purified_soul_silence",
-        "naraka:trims/entity/humanoid_leggings/purified_soul_silence"
+        "trims/models/armor/flow_leggings"
       ],
       "palette_key": "trims/color_palettes/trim_palette",
       "permutations": {
