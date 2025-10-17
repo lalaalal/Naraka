@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.damagesource;
 
 import com.yummy.naraka.world.entity.*;
-import net.minecraft.core.Registry;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -14,17 +14,17 @@ import org.jetbrains.annotations.Nullable;
 
 public class NarakaDamageSources {
     public static DamageSource source(ResourceKey<DamageType> key, RegistryAccess registryAccess) {
-        Registry<DamageType> damageTypes = registryAccess.lookupOrThrow(Registries.DAMAGE_TYPE);
+        HolderLookup.RegistryLookup<DamageType> damageTypes = registryAccess.lookupOrThrow(Registries.DAMAGE_TYPE);
         return new DamageSource(damageTypes.getOrThrow(key));
     }
 
     public static DamageSource source(ResourceKey<DamageType> key, Entity causingEntity) {
-        Registry<DamageType> damageTypes = causingEntity.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE);
+        HolderLookup.RegistryLookup<DamageType> damageTypes = causingEntity.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE);
         return new DamageSource(damageTypes.getOrThrow(key), causingEntity);
     }
 
     public static DamageSource source(ResourceKey<DamageType> key, Entity directEntity, @Nullable Entity causingEntity) {
-        Registry<DamageType> damageTypes = directEntity.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE);
+        HolderLookup.RegistryLookup<DamageType> damageTypes = directEntity.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE);
         return new DamageSource(damageTypes.getOrThrow(key), directEntity, causingEntity);
     }
 
