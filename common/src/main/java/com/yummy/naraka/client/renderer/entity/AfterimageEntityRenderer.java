@@ -44,17 +44,17 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
             packedLight = Math.max(LightTexture.pack(blockLight, skyLight), packedLight);
         }
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
-        renderAfterimages(entity, poseStack, buffer);
+        renderAfterimages(entity, partialTicks, poseStack, buffer);
     }
 
-    protected void renderAfterimages(T entity, PoseStack poseStack, MultiBufferSource bufferSource) {
+    protected void renderAfterimages(T entity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource) {
         for (Afterimage afterimage : entity.getAfterimages())
-            this.renderAfterimage(entity, afterimage, afterimage.getPartialTicks(), poseStack, bufferSource);
+            this.renderAfterimage(entity, afterimage, partialTick, poseStack, bufferSource);
     }
 
     protected void renderAfterimage(T entity, Afterimage afterimage, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource) {
         int alpha = afterimage.getAlpha(partialTick);
-        if (!(alpha == 0 && afterimage.getPartialTicks() < partialTick))
+        if (alpha == 0 && afterimage.getPartialTicks() < partialTick)
             return;
 
         Vec3 translation = afterimage.translation(entity, partialTick);
@@ -68,7 +68,7 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
         Color color = getAfterimageColor(afterimage, partialTick);
         int light = (int) (color.alpha01() * 5);
         int packedLight = LightTexture.pack(light, light);
-        RenderType renderType = RenderType.entityTranslucent(getAfterimageTexture(entity), true);
+        RenderType renderType = RenderType.entityTranslucent(getAfterimageTexture(entity));
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
         getAfterimageModel(entity).renderToBuffer(

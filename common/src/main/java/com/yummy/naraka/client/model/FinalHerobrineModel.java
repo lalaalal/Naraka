@@ -67,8 +67,8 @@ public class FinalHerobrineModel<T extends AbstractHerobrine> extends AbstractHe
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
-    public FinalHerobrineModel(ModelPart root) {
-        super(root, "final_herobrine");
+    public FinalHerobrineModel(ModelPart root, boolean forShadow) {
+        super(root, "final_herobrine", forShadow);
         this.main = root.getChild("main");
         this.upperBody = main.getChild("chest");
         this.head = upperBody.getChild("head");

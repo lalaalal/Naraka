@@ -17,7 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 @Environment(EnvType.CLIENT)
 public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHerobrine, AbstractHerobrineModel<ShadowHerobrine>> {
     public ShadowHerobrineRenderer(EntityRendererProvider.Context context) {
-        super(context, defaultModel(context, HerobrineModel::new), finalModel(context, FinalHerobrineModel::new), 0.5f);
+        super(context, defaultModel(context, true, HerobrineModel::new), finalModel(context, true, FinalHerobrineModel::new), 0.5f);
     }
 
     @Override
@@ -41,4 +41,6 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
             return;
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
     }
+
+
 }

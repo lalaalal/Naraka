@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 
 @Environment(EnvType.CLIENT)
 public class HerobrineEyeLayer<T extends AbstractHerobrine, M extends AbstractHerobrineModel<T>> extends RenderLayer<T, M> {
@@ -39,8 +38,7 @@ public class HerobrineEyeLayer<T extends AbstractHerobrine, M extends AbstractHe
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T livingEntity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
         poseStack.pushPose();
         VertexConsumer vertexConsumer = bufferSource.getBuffer(getRenderType(livingEntity));
-        int color = FastColor.ARGB32.colorFromFloat(livingEntity.getEyeAlpha(), 1, 1, 1);
-        getParentModel().renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color);
+        getParentModel().renderForEye(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, livingEntity.getEyeAlpha());
         poseStack.popPose();
     }
 }

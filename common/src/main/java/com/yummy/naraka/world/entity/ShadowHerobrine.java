@@ -104,13 +104,9 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
             reduceAlpha = true;
     }
 
+    @Override
     public int getAlpha() {
         return entityData.get(ALPHA);
-    }
-
-    @Override
-    public int getScarfAlpha() {
-        return getAlpha();
     }
 
     @Override

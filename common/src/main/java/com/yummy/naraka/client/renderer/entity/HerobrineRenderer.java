@@ -26,9 +26,9 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Abst
     private final FinalHerobrineModel<Herobrine> dyingModel;
 
     public HerobrineRenderer(EntityRendererProvider.Context context) {
-        super(context, defaultModel(context, HerobrineModel::new), finalModel(context, FinalHerobrineModel::new), 0.5f);
-        this.afterimageModel = new HerobrineModel<>(context.bakeLayer(NarakaModelLayers.HEROBRINE));
-        this.dyingModel = new FinalHerobrineModel<>(context.bakeLayer(NarakaModelLayers.FINAL_HEROBRINE));
+        super(context, defaultModel(context, false, HerobrineModel::new), finalModel(context, false, FinalHerobrineModel::new), 0.5f);
+        this.afterimageModel = new HerobrineModel<>(context.bakeLayer(NarakaModelLayers.HEROBRINE), false);
+        this.dyingModel = new FinalHerobrineModel<>(context.bakeLayer(NarakaModelLayers.FINAL_HEROBRINE), false);
     }
 
     @Override

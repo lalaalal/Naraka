@@ -18,8 +18,8 @@ public class HerobrineModel<T extends AbstractHerobrine> extends AbstractHerobri
     private final ModelPart leftHand;
     private final ModelPart rightHand;
 
-    public HerobrineModel(ModelPart root) {
-        super(root, "herobrine");
+    public HerobrineModel(ModelPart root, boolean forShadow) {
+        super(root, "herobrine", forShadow);
         this.main = root.getChild("main");
         this.upperBody = main.getChild("upper_body");
         this.head = upperBody.getChild("head");

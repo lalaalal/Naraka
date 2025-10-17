@@ -26,7 +26,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 @Environment(EnvType.CLIENT)
 public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, M extends AbstractHerobrineModel<T>>
@@ -37,12 +37,12 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, M e
     private final ItemRenderer itemRenderer;
     private final ItemStack pickaxe = NarakaItems.HEROBRINE_PICKAXE.get().getDefaultInstance();
 
-    protected static <T extends AbstractHerobrine, M extends AbstractHerobrineModel<T>> M defaultModel(EntityRendererProvider.Context context, Function<ModelPart, M> constructor) {
-        return constructor.apply(context.bakeLayer(NarakaModelLayers.HEROBRINE));
+    protected static <T extends AbstractHerobrine, M extends AbstractHerobrineModel<T>> M defaultModel(EntityRendererProvider.Context context, boolean forShadow, BiFunction<ModelPart, Boolean, M> constructor) {
+        return constructor.apply(context.bakeLayer(NarakaModelLayers.HEROBRINE), forShadow);
     }
 
-    protected static <T extends AbstractHerobrine, M extends AbstractHerobrineModel<T>> M finalModel(EntityRendererProvider.Context context, Function<ModelPart, M> constructor) {
-        return constructor.apply(context.bakeLayer(NarakaModelLayers.FINAL_HEROBRINE));
+    protected static <T extends AbstractHerobrine, M extends AbstractHerobrineModel<T>> M finalModel(EntityRendererProvider.Context context, boolean forShadow, BiFunction<ModelPart, Boolean, M> constructor) {
+        return constructor.apply(context.bakeLayer(NarakaModelLayers.FINAL_HEROBRINE), forShadow);
     }
 
     protected AbstractHerobrineRenderer(EntityRendererProvider.Context context, M defaultModel, M finalModel, float shadowRadius) {

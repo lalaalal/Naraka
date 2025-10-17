@@ -111,7 +111,7 @@ public class HerobrineScarfLayer<T extends AbstractHerobrine, M extends Abstract
 
     private int selectColor(T entity) {
         if (entity.isShadow)
-            return NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(entity.getScarfAlpha()).pack();
+            return NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(entity.getAlpha()).pack();
         return -1;
     }
 
