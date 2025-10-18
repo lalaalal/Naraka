@@ -14,9 +14,7 @@ import net.minecraft.world.level.material.Fluids;
 @Environment(EnvType.CLIENT)
 public class NectariumParticle {
     public static TextureSheetParticle createNectariumHangParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-        NarakaMod.LOGGER.info("createNectariumHangParticle");
         DripParticle particle = DripParticleInvoker.DripHangParticleInvoker.create(level, x, y, z, Fluids.EMPTY, NarakaParticleTypes.FALLING_NECTARIUM.get());
-        NarakaMod.LOGGER.info("setting...");
         particle.setLifetime(100);
         particle.setColor(0.7f, 0.4f, 0.7f);
         return particle;
