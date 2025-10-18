@@ -21,7 +21,10 @@
     "client.ScreenEffectRendererMixin",
     "client.SoundEngineMixin",
     "client.SoundManagerMixin",
-    "client.WorldOpenFlowsMixin"
+    "client.WorldOpenFlowsMixin",
+    "invoker.DripParticleInvoker$DripHangParticleInvoker",
+    "invoker.DripParticleInvoker$DripLandParticleInvoker",
+    "invoker.DripParticleInvoker$HoneyFallAndLandParticleInvoker"
   ],
   "mixins": [
     "FeatureMixin",
