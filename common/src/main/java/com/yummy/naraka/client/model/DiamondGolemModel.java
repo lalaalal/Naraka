@@ -50,6 +50,7 @@ public class DiamondGolemModel extends SkillUsingModModel<DiamondGolem> {
 
     @Override
     public void setupAnim(DiamondGolem entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        resetPose();
         animateWalk(DiamondGolemAnimation.WALKING, limbSwing, limbSwingAmount, 3, 3);
         playAnimations(entity, ageInTicks);
     }
