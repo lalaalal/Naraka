@@ -92,7 +92,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, M e
 
     private void renderPickaxe(T entity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, ModelPart... parts) {
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - entity.getViewYRot(partialTick)));
+        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - entity.getYRot()));
         poseStack.translate(0, 1.4, 0);
         NarakaPickaxeRenderer.applyTransformAndRotate(poseStack, parts);
         poseStack.mulPose(Axis.XP.rotationDegrees(90));

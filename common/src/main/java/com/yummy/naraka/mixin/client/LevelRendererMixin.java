@@ -53,7 +53,7 @@ public abstract class LevelRendererMixin {
 
     @Inject(method = "renderSky", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getStarBrightness(F)F"))
     private void renderEclipse(Matrix4f frustumMatrix, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo ci, @Local Tesselator tesselator, @Local PoseStack poseStack) {
-        if (NarakaClientContext.ENABLE_HEROBRINE_SKY.getValue()) {
+        if (naraka$isHerobrineSkyEnabled()) {
             PoseStack.Pose pose = poseStack.last();
             RenderSystem.setShaderTexture(0, NarakaTextures.ECLIPSE);
             BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
@@ -67,6 +67,6 @@ public abstract class LevelRendererMixin {
 
     @Unique
     private static boolean naraka$isHerobrineSkyEnabled() {
-        return NarakaClientContext.ENABLE_HEROBRINE_SKY.getValue() && !NarakaClientContext.SHADER_ENABLED.getValue();
+        return NarakaClientContext.ENABLE_HEROBRINE_SKY.getValue();
     }
 }

@@ -25,4 +25,9 @@ public class BossMusicSoundInstance extends AbstractSoundInstance {
     public void increaseVolume(float interval) {
         this.volume += interval;
     }
+
+    @Override
+    public boolean isLooping() {
+        return true;
+    }
 }

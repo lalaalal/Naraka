@@ -15,6 +15,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -74,6 +75,10 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
         }
         runBetween(0, 10, () -> rotateTowardTarget(target));
         run(pickaxeSlashSpawnTimes.contains(tickCount), () -> createPickaxeSlash(level, target));
+    }
+
+    @Override
+    protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAt(5, () -> shadowSpawner.spawn(level).control(this::setupShadowHerobrine));
         runAt(10, this::stopShadowMoving);
         runAt(30, () -> shadowSpawner.useSkill(SINGLE));

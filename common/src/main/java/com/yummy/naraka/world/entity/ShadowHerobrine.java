@@ -224,9 +224,16 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
     @Override
     protected void actuallyHurt(DamageSource damageSource, float damageAmount) {
-        super.actuallyHurt(damageSource, damageAmount);
         if (level() instanceof ServerLevel level)
             getShadowController().ifPresent(controller -> controller.broadcastShadowHerobrineHurt(level, this));
+        super.actuallyHurt(damageSource, damageAmount);
+    }
+
+    @Override
+    public void die(DamageSource damageSource) {
+        if (level() instanceof ServerLevel level)
+            getShadowController().ifPresent(controller -> controller.broadcastShadowHerobrineHurt(level, this));
+        super.die(damageSource);
     }
 
     @Override
