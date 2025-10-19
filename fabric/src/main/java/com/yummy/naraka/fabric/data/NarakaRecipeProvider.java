@@ -90,21 +90,11 @@ public class NarakaRecipeProvider extends RecipeProvider {
         nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_NECTARIUM.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK.get());
         nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_METAL.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
 
-        stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.HARD_EBONY_PLANKS.get(), NarakaBlocks.EBONY_LOG.get(), 1);
-        stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.HARD_EBONY_PLANKS.get(), NarakaBlocks.EBONY_WOOD.get(), 1);
-        sword(NarakaBlocks.HARD_EBONY_PLANKS.get(), NarakaItems.ULTIMATE_SWORD.get());
-
         nineBlockStorageRecipes(RecipeCategory.BUILDING_BLOCKS, Blocks.IRON_BLOCK.asItem(), RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT.get());
         nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
         nineBlockStorageRecipes(RecipeCategory.MISC, Items.AMETHYST_SHARD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.AMETHYST_SHARD_BLOCK.get());
-        smeltingResultFromBase(NarakaItems.EBONY_ROOTS_SCRAP.get(), NarakaBlocks.EBONY_ROOTS.get());
-        ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, NarakaItems.EBONY_METAL_INGOT.get())
-                .requires(NarakaItems.EBONY_ROOTS_SCRAP.get(), 4)
-                .requires(Items.NETHERITE_SCRAP, 4)
-                .unlockedBy(getHasName(NarakaItems.EBONY_ROOTS_SCRAP.get()), has(NarakaItems.EBONY_ROOTS_SCRAP.get()))
-                .save(output);
-        nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.EBONY_METAL_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.EBONY_METAL_BLOCK.get());
-        copySmithingTemplate(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.EBONY_METAL_INGOT.get(), NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
+
+        copySmithingTemplate(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_METAL.get(), NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
 
         ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, NarakaBlocks.SOUL_STABILIZER.get())
                 .define('#', Blocks.GLASS_PANE)

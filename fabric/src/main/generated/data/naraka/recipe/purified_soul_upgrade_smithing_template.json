@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": "naraka:ebony_metal_ingot",
+    "#": "naraka:purified_soul_metal",
     "C": "naraka:compressed_iron_block",
     "S": "naraka:purified_soul_upgrade_smithing_template"
   },

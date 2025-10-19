@@ -130,7 +130,6 @@ public class NarakaCreativeModeTabs {
         output.accept(NarakaItems.ANIMATION_CONTROLLER.get());
         output.accept(NarakaItems.ULTIMATE_SWORD.get());
         output.accept(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        output.accept(NarakaItems.EBONY_METAL_INGOT.get());
         output.accept(NarakaItems.COMPRESSED_IRON_INGOT.get());
         output.accept(NarakaItems.SPEAR_ITEM.get());
         output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get());
@@ -145,19 +144,8 @@ public class NarakaCreativeModeTabs {
         output.accept(blessed(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get()));
         output.accept(blessed(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get()));
 
-        output.accept(NarakaBlocks.EBONY_METAL_BLOCK.get());
         output.accept(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
         output.accept(NarakaBlocks.PURIFIED_SOUL_BLOCK.get());
-        output.accept(NarakaBlocks.EBONY_LOG.get());
-        output.accept(NarakaBlocks.EBONY_WOOD.get());
-        output.accept(NarakaBlocks.STRIPPED_EBONY_LOG.get());
-        output.accept(NarakaBlocks.STRIPPED_EBONY_WOOD.get());
-        output.accept(NarakaBlocks.HARD_EBONY_PLANKS.get());
-        output.accept(NarakaBlocks.EBONY_ROOTS.get());
-
-        output.accept(NarakaItems.EBONY_ROOTS_SCRAP.get());
-        output.accept(NarakaBlocks.EBONY_LEAVES.get());
-        output.accept(NarakaBlocks.EBONY_SAPLING.get());
 
         output.accept(NarakaItems.STIGMA_ROD.get());
         output.accept(NarakaItems.STARDUST_STAFF.get());

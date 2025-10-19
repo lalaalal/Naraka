@@ -35,19 +35,6 @@ public class NarakaArmorMaterials {
             NarakaItemTags.SOUL_MATERIALS,
             NarakaEquipmentAssets.PURIFIED_SOUL
     );
-    public static final ArmorMaterial EBONY_METAL = register(
-            7,
-            Map.of(ArmorType.BOOTS, 0,
-                    ArmorType.LEGGINGS, 0,
-                    ArmorType.CHESTPLATE, 0,
-                    ArmorType.HELMET, 0,
-                    ArmorType.BODY, 0),
-            12,
-            SoundEvents.ARMOR_EQUIP_GENERIC,
-            1, 0.1f,
-            NarakaItemTags.EBONY_LOGS,
-            NarakaEquipmentAssets.EBONY
-    );
 
     private static ArmorMaterial register(
             int durability,

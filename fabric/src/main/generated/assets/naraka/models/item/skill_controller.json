@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "naraka:item/purified_soul_silence_armor_trim_smithing_template"
+    "layer0": "minecraft:item/shaper_armor_trim_smithing_template"
   }
 }

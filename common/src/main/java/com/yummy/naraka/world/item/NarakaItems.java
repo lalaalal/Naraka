@@ -87,9 +87,6 @@ public class NarakaItems {
             )
     );
 
-    public static final HolderProxy<Item, Item> EBONY_ROOTS_SCRAP = registerSimpleItem("ebony_roots_scrap");
-    public static final HolderProxy<Item, Item> EBONY_METAL_INGOT = registerSimpleItem("ebony_metal_ingot", Item.Properties::fireResistant);
-
     public static final HolderProxy<Item, Item> GOD_BLOOD = registerSimpleItem(
             "god_blood",
             properties -> properties.stacksTo(1)

@@ -1,7 +1,6 @@
 package com.yummy.naraka.fabric.data.tags;
 
 import com.yummy.naraka.tags.NarakaItemTags;
-import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -33,17 +32,6 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
         valueLookupBuilder(NarakaItemTags.LOYALTY_ENCHANTABLE)
                 .addTag(NarakaItemTags.SPEAR_ENCHANTABLE)
                 .forceAddTag(ItemTags.TRIDENT_ENCHANTABLE);
-
-        valueLookupBuilder(NarakaItemTags.EBONY_LOGS)
-                .add(NarakaBlocks.EBONY_LOG.get().asItem())
-                .add(NarakaBlocks.EBONY_WOOD.get().asItem())
-                .add(NarakaBlocks.STRIPPED_EBONY_LOG.get().asItem())
-                .add(NarakaBlocks.STRIPPED_EBONY_WOOD.get().asItem());
-
-        valueLookupBuilder(ItemTags.LOGS_THAT_BURN)
-                .addTag(NarakaItemTags.EBONY_LOGS);
-        valueLookupBuilder(ItemTags.PLANKS)
-                .add(NarakaBlocks.HARD_EBONY_PLANKS.get().asItem());
 
         valueLookupBuilder(ItemTags.DURABILITY_ENCHANTABLE)
                 .addTag(NarakaItemTags.SPEAR_ENCHANTABLE);

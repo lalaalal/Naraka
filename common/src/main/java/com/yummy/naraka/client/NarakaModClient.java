@@ -80,10 +80,7 @@ public final class NarakaModClient {
 
     private static void initializeBlocks() {
         BlockRenderTypeRegistry.register(ChunkSectionLayer.CUTOUT,
-                NarakaBlocks.EBONY_SAPLING.get(),
-                NarakaBlocks.POTTED_EBONY_SAPLING.get(),
                 NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(),
-                NarakaBlocks.EBONY_ROOTS.get(),
                 NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get()
         );
     }

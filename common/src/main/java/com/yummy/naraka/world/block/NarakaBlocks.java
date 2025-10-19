@@ -3,7 +3,6 @@ package com.yummy.naraka.world.block;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.mixin.invoker.MangroveRootsBlockInvoker;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -154,38 +153,6 @@ public class NarakaBlocks {
     public static final HolderProxy<Block, Block> SOUL_INFUSED_LAPIS_BLOCK = registerSoulInfusedBlock("lapis_block", Blocks.LAPIS_BLOCK);
     public static final HolderProxy<Block, Block> SOUL_INFUSED_AMETHYST_BLOCK = registerSoulInfusedBlock("amethyst_block", Blocks.AMETHYST_BLOCK);
     public static final HolderProxy<Block, Block> SOUL_INFUSED_NECTARIUM_BLOCK = registerSoulInfusedBlock("nectarium_block", NECTARIUM_BLOCK);
-
-    public static final HolderProxy<Block, EbonyLogBlock> EBONY_LOG = registerBlockWithItem("ebony_log", EbonyLogBlock::new,
-            from(Blocks.DARK_OAK_LOG)
-                    .strength(5, 6)
-                    .requiresCorrectToolForDrops()
-    );
-    public static final HolderProxy<Block, RotatedPillarBlock> STRIPPED_EBONY_LOG = registerBlockWithItem("stripped_ebony_log", RotatedPillarBlock::new,
-            from(Blocks.STRIPPED_DARK_OAK_LOG)
-                    .strength(5, 6).
-                    requiresCorrectToolForDrops()
-    );
-    public static final HolderProxy<Block, RotatedPillarBlock> EBONY_WOOD = registerBlockWithItem("ebony_wood", RotatedPillarBlock::new,
-            from(Blocks.DARK_OAK_WOOD)
-                    .strength(5, 6).
-                    requiresCorrectToolForDrops()
-    );
-    public static final HolderProxy<Block, RotatedPillarBlock> STRIPPED_EBONY_WOOD = registerBlockWithItem("stripped_ebony_wood", RotatedPillarBlock::new,
-            from(Blocks.STRIPPED_DARK_OAK_WOOD)
-                    .strength(5, 6).
-                    requiresCorrectToolForDrops()
-    );
-    public static final HolderProxy<Block, Block> HARD_EBONY_PLANKS = registerBlockWithItem("hard_ebony_planks", RotatedPillarBlock::new,
-            from(Blocks.DARK_OAK_PLANKS)
-                    .strength(40, 6)
-                    .requiresCorrectToolForDrops()
-    );
-    public static final HolderProxy<Block, Block> EBONY_METAL_BLOCK = registerSimpleBlockWithItem("ebony_metal_block", Blocks.NETHERITE_BLOCK);
-    public static final HolderProxy<Block, EbonyLeavesBlock> EBONY_LEAVES = registerBlockWithItem("ebony_leaves", properties -> new EbonyLeavesBlock(0.5f, properties), Blocks.DARK_OAK_LEAVES);
-    public static final HolderProxy<Block, MangroveRootsBlock> EBONY_ROOTS = registerBlockWithItem("ebony_roots", MangroveRootsBlockInvoker::create, Blocks.MANGROVE_ROOTS);
-
-    public static final HolderProxy<Block, EbonySaplingBlock> EBONY_SAPLING = registerBlockWithItem("ebony_sapling", EbonySaplingBlock::new, Blocks.DARK_OAK_SAPLING);
-    public static final HolderProxy<Block, FlowerPotBlock> POTTED_EBONY_SAPLING = registerBlockWithItem("potted_ebony_sapling", properties -> new FlowerPotBlock(EBONY_SAPLING.get(), properties), Blocks.POTTED_DARK_OAK_SAPLING);
 
     public static final HolderProxy<Block, HerobrineTotem> HEROBRINE_TOTEM = registerBlockWithItem(
             "herobrine_totem",
