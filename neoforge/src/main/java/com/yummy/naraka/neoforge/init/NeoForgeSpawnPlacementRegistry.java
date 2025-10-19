@@ -12,7 +12,7 @@ import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 
 import java.util.function.Supplier;
 
-public class NeoForgeSpawnPlacementRegistry implements NarakaEventBus {
+public final class NeoForgeSpawnPlacementRegistry implements NarakaEventBus {
     @MethodProxy(SpawnPlacementRegistry.class)
     public static <T extends Mob> void register(Supplier<EntityType<T>> entityType, SpawnPlacementType spawnPlacementType, Heightmap.Types heightmapType, SpawnPlacements.SpawnPredicate<T> predicate) {
         NARAKA_BUS.addListener(RegisterSpawnPlacementsEvent.class, event -> {
