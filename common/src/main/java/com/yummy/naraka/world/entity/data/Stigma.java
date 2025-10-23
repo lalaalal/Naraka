@@ -10,6 +10,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 /**
  * @param value          Actual value of stigma (0 ~ 3)
@@ -73,10 +74,10 @@ public record Stigma(int value, long lastMarkedTime) {
     }
 
     private void lockHealth(ServerLevel level, LivingEntity livingEntity, Entity cause) {
-        float maxHealth = livingEntity.getMaxHealth();
+        double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
         double lockedHealth = EntityDataHelper.getEntityData(livingEntity, NarakaEntityDataTypes.LOCKED_HEALTH.get());
         double originalMaxHealth = maxHealth + lockedHealth;
-        double reducingHealth = Math.round(originalMaxHealth * NarakaConfig.COMMON.lockHealthRatio.getValue());
+        double reducingHealth = originalMaxHealth * NarakaConfig.COMMON.lockHealthRatio.getValue();
         lockedHealth += reducingHealth;
 
         if (lockedHealth >= originalMaxHealth) {
