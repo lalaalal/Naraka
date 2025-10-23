@@ -11,45 +11,52 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.alchemy.Potion;
 
 public class NarakaPotions {
-    public static final Holder<Potion> GOD_BLESS = register("god_bless", new Potion(
-                    "god_bless",
-                    new MobEffectInstance(NarakaMobEffects.GOD_BLESS, 3600, 255),
-                    new MobEffectInstance(MobEffects.SPEED, 3600),
-                    new MobEffectInstance(MobEffects.SPEED, 3600),
-                    new MobEffectInstance(MobEffects.SLOWNESS, 3600),
-                    new MobEffectInstance(MobEffects.STRENGTH, 3600),
-                    new MobEffectInstance(MobEffects.JUMP_BOOST, 3600),
-                    new MobEffectInstance(MobEffects.REGENERATION, 3600),
-                    new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 3600),
-                    new MobEffectInstance(MobEffects.WATER_BREATHING, 3600),
-                    new MobEffectInstance(MobEffects.INVISIBILITY, 3600),
-                    new MobEffectInstance(MobEffects.NIGHT_VISION, 3600),
-                    new MobEffectInstance(MobEffects.WEAKNESS, 3600),
-                    new MobEffectInstance(MobEffects.POISON, 3600),
-                    new MobEffectInstance(MobEffects.WITHER, 3600),
-                    new MobEffectInstance(MobEffects.HASTE, 3600),
-                    new MobEffectInstance(MobEffects.MINING_FATIGUE, 3600),
-                    new MobEffectInstance(MobEffects.LEVITATION, 3600),
-                    new MobEffectInstance(MobEffects.GLOWING, 3600),
-                    new MobEffectInstance(MobEffects.ABSORPTION, 3600),
-                    new MobEffectInstance(MobEffects.HUNGER, 3600),
-                    new MobEffectInstance(MobEffects.NAUSEA, 3600),
-                    new MobEffectInstance(MobEffects.RESISTANCE, 3600),
-                    new MobEffectInstance(MobEffects.SLOW_FALLING, 3600),
-                    new MobEffectInstance(MobEffects.CONDUIT_POWER, 3600),
-                    new MobEffectInstance(MobEffects.DOLPHINS_GRACE, 3600),
-                    new MobEffectInstance(MobEffects.BLINDNESS, 3600),
-                    new MobEffectInstance(MobEffects.BAD_OMEN, 3600),
-                    new MobEffectInstance(MobEffects.HERO_OF_THE_VILLAGE, 3600),
-                    new MobEffectInstance(MobEffects.DARKNESS, 3600),
-                    new MobEffectInstance(MobEffects.OOZING, 3600),
-                    new MobEffectInstance(MobEffects.INFESTED, 3600),
-                    new MobEffectInstance(MobEffects.WIND_CHARGED, 3600),
-                    new MobEffectInstance(MobEffects.WEAVING, 3600),
-                    new MobEffectInstance(MobEffects.TRIAL_OMEN, 3600),
-                    new MobEffectInstance(MobEffects.RAID_OMEN, 3600)
-            )
-    );
+    public static final Holder<Potion> CHALLENGER = register("challenger", new Potion(
+            "challenger",
+            new MobEffectInstance(NarakaMobEffects.GOD_BLESS, 3600, 255),
+            new MobEffectInstance(MobEffects.SPEED, 3600),
+            new MobEffectInstance(MobEffects.SPEED, 3600),
+            new MobEffectInstance(MobEffects.SLOWNESS, 3600),
+            new MobEffectInstance(MobEffects.STRENGTH, 3600),
+            new MobEffectInstance(MobEffects.JUMP_BOOST, 3600),
+            new MobEffectInstance(MobEffects.REGENERATION, 3600),
+            new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 3600),
+            new MobEffectInstance(MobEffects.WATER_BREATHING, 3600),
+            new MobEffectInstance(MobEffects.INVISIBILITY, 3600),
+            new MobEffectInstance(MobEffects.NIGHT_VISION, 3600),
+            new MobEffectInstance(MobEffects.WEAKNESS, 3600),
+            new MobEffectInstance(MobEffects.POISON, 3600),
+            new MobEffectInstance(MobEffects.WITHER, 3600),
+            new MobEffectInstance(MobEffects.HASTE, 3600),
+            new MobEffectInstance(MobEffects.MINING_FATIGUE, 3600),
+            new MobEffectInstance(MobEffects.LEVITATION, 3600),
+            new MobEffectInstance(MobEffects.GLOWING, 3600),
+            new MobEffectInstance(MobEffects.ABSORPTION, 3600),
+            new MobEffectInstance(MobEffects.HUNGER, 3600),
+            new MobEffectInstance(MobEffects.NAUSEA, 3600),
+            new MobEffectInstance(MobEffects.RESISTANCE, 3600),
+            new MobEffectInstance(MobEffects.SLOW_FALLING, 3600),
+            new MobEffectInstance(MobEffects.CONDUIT_POWER, 3600),
+            new MobEffectInstance(MobEffects.DOLPHINS_GRACE, 3600),
+            new MobEffectInstance(MobEffects.BLINDNESS, 3600),
+            new MobEffectInstance(MobEffects.BAD_OMEN, 3600),
+            new MobEffectInstance(MobEffects.HERO_OF_THE_VILLAGE, 3600),
+            new MobEffectInstance(MobEffects.DARKNESS, 3600),
+            new MobEffectInstance(MobEffects.OOZING, 3600),
+            new MobEffectInstance(MobEffects.INFESTED, 3600),
+            new MobEffectInstance(MobEffects.WIND_CHARGED, 3600),
+            new MobEffectInstance(MobEffects.WEAVING, 3600),
+            new MobEffectInstance(MobEffects.TRIAL_OMEN, 3600),
+            new MobEffectInstance(MobEffects.RAID_OMEN, 3600)
+    ));
+
+    public static final Holder<Potion> BLESS = register("bless", new Potion(
+            "bless",
+            new MobEffectInstance(MobEffects.RESISTANCE, 3600, 1),
+            new MobEffectInstance(MobEffects.SPEED, 3600, 1),
+            new MobEffectInstance(MobEffects.STRENGTH, 3600, 1),
+            new MobEffectInstance(MobEffects.ABSORPTION, 3600, 6)
+    ));
 
     private static HolderProxy<Potion, Potion> register(String name, Potion potion) {
         return RegistryProxy.register(Registries.POTION, name, () -> potion);
