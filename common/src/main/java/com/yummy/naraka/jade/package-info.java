@@ -2,7 +2,7 @@
 @FieldsAreNonnullByDefault
 @ParametersAreNonnullByDefault
 
-package com.yummy.naraka.commands;
+package com.yummy.naraka.jade;
 
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
