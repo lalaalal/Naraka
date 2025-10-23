@@ -13,8 +13,8 @@ import net.minecraft.world.item.alchemy.Potion;
 import java.util.function.Supplier;
 
 public class NarakaPotions {
-    public static final Holder<Potion> GOD_BLESS = register("god_bless", () -> new Potion(
-                    "god_bless",
+    public static final Holder<Potion> CHALLENGER = register("challenger", () -> new Potion(
+            "challenger",
                     new MobEffectInstance(NarakaMobEffects.GOD_BLESS, 3600, 255),
             new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3600),
             new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3600),
@@ -52,6 +52,14 @@ public class NarakaPotions {
                     new MobEffectInstance(MobEffects.RAID_OMEN, 3600)
             )
     );
+
+    public static final Holder<Potion> BLESS = register("bless", () -> new Potion(
+            "bless",
+            new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 3600, 1),
+            new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3600, 1),
+            new MobEffectInstance(MobEffects.DAMAGE_BOOST, 3600, 1),
+            new MobEffectInstance(MobEffects.ABSORPTION, 3600, 6)
+    ));
 
     private static HolderProxy<Potion, Potion> register(String name, Supplier<Potion> potion) {
         return RegistryProxy.register(Registries.POTION, name, potion);
