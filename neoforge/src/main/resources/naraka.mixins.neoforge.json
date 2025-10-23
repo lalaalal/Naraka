@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.yummy.naraka.neoforge.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [
+    "client.ItemBlockRenderTypesMixin"
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
