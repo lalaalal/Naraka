@@ -11,16 +11,11 @@ public class LockedHealthHelper {
         return EntityDataHelper.getEntityData(livingEntity, NarakaEntityDataTypes.LOCKED_HEALTH.get());
     }
 
-    public static double getOriginalMaxHealth(LivingEntity livingEntity) {
-        double maxHealth = livingEntity.getMaxHealth();
-        return maxHealth + get(livingEntity);
-    }
-
     /**
      * Reduce max health
      *
      * @param target Target entity to reduce max health
-     * @param amount Amount of max health to be reduced
+     * @param amount The amount of max health to be reduced
      */
     public static void lock(LivingEntity target, double amount) {
         if (NarakaEntityUtils.isDamageable(target)) {
