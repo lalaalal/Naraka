@@ -22,6 +22,9 @@ public class NarakaCommonConfig extends StaticConfiguration {
     public final ConfigValue<Boolean> disableStigma = define("disable_stigma", false);
     public final ConfigValue<Float> lockHealthRatio = define("lock_health_ratio", 0.1f);
 
+    public final ConfigValue<Integer> soulStabilizerCapacity = define("soul_stabilizer_capacity", 10);
+    public final ConfigValue<Integer> soulStabilizerConsume = define("soul_stabilizer_consume", 2);
+
     public NarakaCommonConfig() {
         super("naraka-common", PropertiesConfigFile::new);
     }

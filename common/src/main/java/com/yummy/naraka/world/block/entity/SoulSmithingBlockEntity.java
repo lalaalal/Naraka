@@ -103,14 +103,6 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         return false;
     }
 
-    private int getRequiredSoul() {
-        if (forgingItem.is(NarakaItems.PURIFIED_SOUL_SWORD.get()))
-            return 14976;
-        if (getSoulType() != null && getSoulType() == SoulType.GOD_BLOOD)
-            return 3888;
-        return 9 * 16;
-    }
-
     public void detachTemplateItem() {
         if (!templateItem.isEmpty() && level != null) {
             NarakaItemUtils.summonItemEntity(level, templateItem, getBlockPos());
@@ -172,7 +164,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
     @Override
     public boolean tryReinforce() {
-        int requiredSoul = getRequiredSoul();
+        int requiredSoul = SoulStabilizerBlockEntity.getConsume();
         if (forgingItem.is(NarakaItemTags.SOUL_REINFORCEABLE)
                 && !templateItem.isEmpty()
                 && cooldownTick <= 0
@@ -192,7 +184,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         CompoundTag tag = super.getUpdateTag(provider);
         tag.putBoolean("IsStabilizerAttached", isStabilizerAttached);
         if (isStabilizerAttached) {
-            tag.put("StabilizerData", soulStabilizer.getUpdateTag(provider));
+            tag.merge(soulStabilizer.getUpdateTag(provider));
             if (level != null)
                 soulStabilizer.setLevel(level);
         }
