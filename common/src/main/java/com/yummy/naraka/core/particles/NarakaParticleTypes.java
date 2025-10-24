@@ -9,7 +9,6 @@ import net.minecraft.core.registries.Registries;
 import java.util.function.Function;
 
 public class NarakaParticleTypes {
-    public static final HolderProxy<ParticleType<?>, SimpleParticleType> EBONY_LEAVES = register("ebony_leaves", false);
     public static final HolderProxy<ParticleType<?>, SimpleParticleType> DRIPPING_NECTARIUM = register("dripping_nectarium", false);
     public static final HolderProxy<ParticleType<?>, SimpleParticleType> FALLING_NECTARIUM = register("falling_nectarium", false);
     public static final HolderProxy<ParticleType<?>, SimpleParticleType> LANDING_NECTARIUM = register("landing_nectarium", false);

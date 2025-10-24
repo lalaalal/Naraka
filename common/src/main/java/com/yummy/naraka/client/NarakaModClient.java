@@ -123,7 +123,6 @@ public final class NarakaModClient {
     }
 
     private static void registerParticles() {
-        ParticleProviderRegistry.register(NarakaParticleTypes.EBONY_LEAVES, EbonyProvider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.DRIPPING_NECTARIUM, NectariumParticle::createNectariumHangParticle);
         ParticleProviderRegistry.register(NarakaParticleTypes.FALLING_NECTARIUM, NectariumParticle::createNectariumFallParticle);
         ParticleProviderRegistry.register(NarakaParticleTypes.LANDING_NECTARIUM, NectariumParticle::createNectariumLandParticle);
