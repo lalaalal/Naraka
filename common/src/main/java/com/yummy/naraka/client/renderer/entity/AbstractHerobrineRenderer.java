@@ -80,8 +80,8 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, M e
         poseStack.popPose();
 
         if (entity.isFinalModel() && entity.displayPickaxe()) {
-            renderPickaxe(entity, partialTicks, poseStack, buffer, model.root(), model.main(), model.upperBody(), model.rightArm(), model.rightHand(), model.rightHand().getChild("pickaxe"));
-            renderPickaxe(entity, partialTicks, poseStack, buffer, model.root().getChild("independent_pickaxe"));
+            renderPickaxe(entity, poseStack, buffer, model.root(), model.main(), model.upperBody(), model.rightArm(), model.rightHand(), model.rightHand().getChild("pickaxe"));
+            renderPickaxe(entity, poseStack, buffer, model.root().getChild("independent_pickaxe"));
         }
     }
 
@@ -90,9 +90,9 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, M e
         return 0;
     }
 
-    private void renderPickaxe(T entity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, ModelPart... parts) {
+    private void renderPickaxe(T entity, PoseStack poseStack, MultiBufferSource bufferSource, ModelPart... parts) {
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - entity.getYRot()));
+        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - entity.getVisualRotationYInDegrees()));
         poseStack.translate(0, 1.4, 0);
         NarakaPickaxeRenderer.applyTransformAndRotate(poseStack, parts);
         poseStack.mulPose(Axis.XP.rotationDegrees(90));
