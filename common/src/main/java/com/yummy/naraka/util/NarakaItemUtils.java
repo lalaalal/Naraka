@@ -58,6 +58,11 @@ public class NarakaItemUtils {
         customData.loadInto(blockEntity, provider);
     }
 
+    public static void loadBlockEntity(ItemStack itemStack, BlockEntity blockEntity, CompoundTag defaultValue, HolderLookup.Provider provider) {
+        CustomData customData = itemStack.getOrDefault(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(defaultValue));
+        customData.loadInto(blockEntity, provider);
+    }
+
     public static boolean canApplyReinforcementEffect(LivingEntity livingEntity, Holder<ReinforcementEffect> effect) {
         for (EquipmentSlot slot : effect.value().getAvailableSlots()) {
             ItemStack itemStack = livingEntity.getItemBySlot(slot);

@@ -71,7 +71,7 @@ public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<So
             return;
 
         int souls = blockEntity.getSouls();
-        float soulRatio = (float) souls / SoulStabilizerBlockEntity.CAPACITY;
+        float soulRatio = (float) souls / SoulStabilizerBlockEntity.getCapacity();
         int color = FastColor.ARGB32.color(0x99, blockEntity.getSoulType().getColor());
 
         poseStack.pushPose();
