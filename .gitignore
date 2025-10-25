@@ -30,6 +30,7 @@ bin/
 
 # minecraft
 
+run
 run/
 .cache/
 

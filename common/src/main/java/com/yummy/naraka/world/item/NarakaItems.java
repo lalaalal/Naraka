@@ -217,7 +217,10 @@ public class NarakaItems {
                         properties.fireResistant()
                                 .rarity(Rarity.RARE)
                                 .component(NarakaDataComponentTypes.SOUL.get(), type)
-                                .component(DataComponents.UNBREAKABLE, new Unbreakable(true)),
+                                .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
+                                .component(DataComponents.ATTRIBUTE_MODIFIERS,
+                                        NarakaTiers.createWeaponAttributes(Tiers.IRON, 5, -2.4f).build()
+                                ),
                         type.color
                 )
         );
