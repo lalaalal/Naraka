@@ -47,7 +47,7 @@ public class NarakaEntityLootProvider extends SimpleFabricLootTableProvider {
                                 .add(LootItem.lootTableItem(NarakaItems.GOD_BLOOD.get()))
                                 .when(AllOfCondition.allOf(
                                         LootItemKilledByPlayerCondition.killedByPlayer(),
-                                        LootItemRandomChanceCondition.randomChance(0.01f)
+                                        LootItemRandomChanceCondition.randomChance(0.1f)
                                 ))
                         ).withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
