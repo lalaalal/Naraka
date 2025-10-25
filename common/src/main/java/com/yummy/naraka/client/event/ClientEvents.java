@@ -21,10 +21,7 @@ public class ClientEvents {
     /**
      * @see com.yummy.naraka.mixin.client.ClientHandshakePacketListenerImplMixin
      */
-    public static final Event<Runnable> LOGIN = Event.create(listeners -> () -> {
-        for (Runnable listener : listeners)
-            listener.run();
-    });
+    public static final Event<Runnable> LOGIN = Event.simple();
 
     static <T> Event<ClientState<T>> create() {
         return Event.create(listeners -> instance -> {
