@@ -79,7 +79,11 @@ public class NarakaLanguageProviders {
         add(NarakaJadeProviderComponents.SOUL_STABILIZER.translationKey, "Soul Stabilizer", "영혼 안정기");
         add(LanguageKey.JADE_STIGMA_KEY, "Stigma: %d", "낙인: %d");
         add(LanguageKey.JADE_DEATH_COUNT_KEY, "Death Count: %d", "데스카운트: %d");
+        add(LanguageKey.JADE_NECTARIUM_CORE_ACTIVATED_KEY, "Activated", "활성화됨");
+        add(LanguageKey.JADE_NECTARIUM_CORE_INACTIVATED_KEY, "Inactivated", "비활성화됨");
+        add(LanguageKey.JADE_NECTARIUM_CORE_HONEY_KEY, "(%d left)", "(%d 남음)");
         add(NarakaJadeProviderComponents.SOUL_SMITHING_BLOCK.translationKey, "Soul Smithing Block", "영혼 대장장이 블록");
+        add(NarakaJadeProviderComponents.NECTARIUM_CORE.translationKey, "Nectarium Core", "넥타륨 코어");
         add(NarakaJadeProviderComponents.ENTITY_DATA.translationKey, "Stigma", "낙인");
 
         add(LanguageKey.DISABLE_SKILL_USE_KEY, "Disable skill using", "스킬 사용 중지");
