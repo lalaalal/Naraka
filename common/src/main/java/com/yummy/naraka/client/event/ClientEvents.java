@@ -18,6 +18,14 @@ public class ClientEvents {
             listener.setup(context, level, entity, detached, thirdPersonReverse, partialTick);
     });
 
+    /**
+     * @see com.yummy.naraka.mixin.client.ClientHandshakePacketListenerImplMixin
+     */
+    public static final Event<Runnable> LOGIN = Event.create(listeners -> () -> {
+        for (Runnable listener : listeners)
+            listener.run();
+    });
+
     static <T> Event<ClientState<T>> create() {
         return Event.create(listeners -> instance -> {
             for (ClientState<T> listener : listeners)
@@ -44,6 +52,4 @@ public class ClientEvents {
             void setRotation(float yRot, float xRot);
         }
     }
-
-
 }

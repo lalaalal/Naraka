@@ -5,6 +5,7 @@
   "minVersion": "0.8",
   "client": [
     "client.CameraMixin",
+    "client.ClientHandshakePacketListenerImplMixin",
     "client.CompassAngleStateMixin",
     "client.CraftingRecipeBookComponentMixin",
     "client.DripParticleMixin$HoneyFallProviderMixin",
