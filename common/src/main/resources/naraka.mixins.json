@@ -5,6 +5,7 @@
   "minVersion": "0.8",
   "client": [
     "client.CameraMixin",
+    "client.ClientHandshakePacketListenerImplMixin",
     "client.DripParticleMixin$DripHangParticleMixin",
     "client.DripParticleMixin$HoneyFallAndLandParticleMixin",
     "client.EntityRenderDispatcherMixin",

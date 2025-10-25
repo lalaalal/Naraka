@@ -17,6 +17,7 @@ public class NarakaClientEvents {
         ClientEvents.TICK_PRE.register(NarakaClientEvents::onClientTick);
         ClientEvents.CLIENT_STOPPING.register(NarakaClientEvents::onClientStopping);
         ClientEvents.CAMERA_SETUP.register(NarakaClientEvents::shakeCamera);
+        ClientEvents.LOGIN.register(NarakaClientContext::initialize);
     }
 
     private static void shakeCamera(ClientEvents.CameraSetup.Context context, BlockGetter level, Entity entity, boolean detached, boolean thirdPersonReverse, float partialTick) {
