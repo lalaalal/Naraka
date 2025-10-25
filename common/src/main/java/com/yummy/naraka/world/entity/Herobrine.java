@@ -569,6 +569,10 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     protected void actuallyHurt(ServerLevel level, DamageSource damageSource, float damageAmount) {
+        if (phaseManager.getCurrentPhaseHealth() - damageAmount < 0) {
+            setHealth(phaseManager.getActualPhaseMaxHealth(getPhase() + 1) + 1);
+            return;
+        }
         super.actuallyHurt(level, damageSource, damageAmount);
         updateHurtDamageLimit(level);
         accumulatedHurtDamage += damageAmount;
