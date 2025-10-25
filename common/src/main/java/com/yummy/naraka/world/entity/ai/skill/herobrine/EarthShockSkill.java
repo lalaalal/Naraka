@@ -66,7 +66,6 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
 
     private Predicate<LivingEntity> targetBetween() {
         return target -> targetInRange(100)
-                && targetOutOfRange(1)
                 && AbstractHerobrine.isNotHerobrine(target);
     }
 
