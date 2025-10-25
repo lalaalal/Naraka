@@ -573,7 +573,7 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     protected void actuallyHurt(DamageSource damageSource, float damageAmount) {
-        if (phaseManager.getCurrentPhaseHealth() - damageAmount < 0) {
+        if (phaseManager.getCurrentPhaseHealth() - damageAmount < 0 && getPhase() < 3) {
             setHealth(phaseManager.getActualPhaseMaxHealth(getPhase() + 1) + 1);
             return;
         }
