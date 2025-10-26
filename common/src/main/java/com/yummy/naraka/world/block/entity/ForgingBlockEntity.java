@@ -97,8 +97,8 @@ public abstract class ForgingBlockEntity extends BlockEntity {
 
     @Override
     protected void loadAdditional(ValueInput input) {
-        input.read("ForgingItem", ItemStack.STRICT_CODEC)
-                .ifPresent(item -> forgingItem = item);
+        forgingItem = input.read("ForgingItem", ItemStack.STRICT_CODEC)
+                .orElse(ItemStack.EMPTY);
     }
 
     @Override
