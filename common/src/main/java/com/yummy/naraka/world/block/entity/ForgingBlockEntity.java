@@ -96,8 +96,8 @@ public abstract class ForgingBlockEntity extends BlockEntity {
 
     @Override
     protected void loadAdditional(CompoundTag input, HolderLookup.Provider provider) {
-        NarakaNbtUtils.read(input, "ForgingItem", ItemStack.STRICT_CODEC, RegistryOps.create(NbtOps.INSTANCE, provider))
-                .ifPresent(item -> forgingItem = item);
+        forgingItem = NarakaNbtUtils.read(input, "ForgingItem", ItemStack.STRICT_CODEC, RegistryOps.create(NbtOps.INSTANCE, provider))
+                .orElse(ItemStack.EMPTY);
     }
 
     @Override
