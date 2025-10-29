@@ -1,11 +1,14 @@
 package com.yummy.naraka.fabric.data;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.crafting.ComponentPredicateRecipeBuilder;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPredicate;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -113,6 +116,23 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
         soulInfusedMaterial(output, Items.LAPIS_LAZULI, NarakaItems.SOUL_INFUSED_LAPIS.get());
         soulInfusedMaterial(output, Items.AMETHYST_SHARD, NarakaItems.SOUL_INFUSED_AMETHYST.get());
         soulInfusedMaterial(output, NarakaItems.NECTARIUM.get(), NarakaItems.SOUL_INFUSED_NECTARIUM.get());
+
+        DataComponentPredicate blessed = DataComponentPredicate.builder()
+                .expect(NarakaDataComponentTypes.BLESSED.get(), true)
+                .build();
+        ComponentPredicateRecipeBuilder.predicate(RecipeCategory.COMBAT, NarakaItems.SPEAR_OF_LONGINUS_ITEM)
+                .requires(0, 0, NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get(), blessed)
+                .requires(0, 1, NarakaItems.SOUL_INFUSED_COPPER_SWORD.get(), blessed)
+                .requires(0, 2, NarakaItems.SOUL_INFUSED_GOLD_SWORD.get(), blessed)
+                .requires(1, 0, NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get(), blessed)
+                .requires(1, 1, NarakaItems.GOD_BLOOD.get(), DataComponentPredicate.EMPTY)
+                .requires(1, 2, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get(), blessed)
+                .requires(2, 0, NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get(), blessed)
+                .requires(2, 1, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get(), blessed)
+                .requires(2, 2, NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get(), blessed)
+                .showNotification()
+                .unlockedBy(getHasName(NarakaItems.GOD_BLOOD.get()), has(NarakaItems.GOD_BLOOD.get()))
+                .save(output);
     }
 
     protected void soulInfusedMaterial(RecipeOutput output, ItemLike material, ItemLike result) {
