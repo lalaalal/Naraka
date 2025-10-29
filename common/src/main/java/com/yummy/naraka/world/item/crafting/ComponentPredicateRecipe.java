@@ -4,18 +4,17 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
-import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ComponentPredicateRecipe implements CraftingRecipe {
     private final ItemStack result;
@@ -23,6 +22,7 @@ public class ComponentPredicateRecipe implements CraftingRecipe {
     private final CraftingBookCategory category;
     private final boolean showNotification;
     private final List<ComponentPredicateIngredient> predicateIngredients;
+    private final NonNullList<Ingredient> ingredients;
 
     public ComponentPredicateRecipe(ItemStack result, String group, CraftingBookCategory category, boolean showNotification, List<ComponentPredicateIngredient> predicateIngredients) {
         this.result = result;
@@ -30,6 +30,14 @@ public class ComponentPredicateRecipe implements CraftingRecipe {
         this.category = category;
         this.showNotification = showNotification;
         this.predicateIngredients = predicateIngredients;
+        this.ingredients = predicateIngredients.stream()
+                .map(ComponentPredicateIngredient::componentAppliedIngredients)
+                .collect(Collectors.toCollection(NonNullList::create));
+    }
+
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        return ingredients;
     }
 
     @Override

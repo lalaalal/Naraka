@@ -1,6 +1,7 @@
 package com.yummy.naraka.core.registries;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.core.component.DataComponentApplier;
 import com.yummy.naraka.world.entity.data.EntityDataType;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
@@ -17,6 +18,7 @@ public class NarakaRegistries {
     public static final Registry<EntityDataType<?>> ENTITY_DATA_TYPE = RegistryFactory.create(Keys.ENTITY_DATA_TYPE);
     public static final Registry<ReinforcementEffect> REINFORCEMENT_EFFECT = RegistryFactory.create(Keys.REINFORCEMENT_EFFECT);
     public static final Registry<EquipmentSet> EQUIPMENT_SET = RegistryFactory.create(Keys.EQUIPMENT_SET);
+    public static final Registry<DataComponentApplier.Type<?>> DATA_COMPONENT_APPLIER = RegistryFactory.create(Keys.DATA_COMPONENT_APPLIER);
 
     public static void initialize() {
 
@@ -29,6 +31,7 @@ public class NarakaRegistries {
         public static final ResourceKey<Registry<EntityDataType<?>>> ENTITY_DATA_TYPE = create("entity_data_type");
         public static final ResourceKey<Registry<ReinforcementEffect>> REINFORCEMENT_EFFECT = create("reinforcement_effect");
         public static final ResourceKey<Registry<EquipmentSet>> EQUIPMENT_SET = create("equipment_set");
+        public static final ResourceKey<Registry<DataComponentApplier.Type<?>>> DATA_COMPONENT_APPLIER = create("data_component_applier");
 
         private static <T> ResourceKey<Registry<T>> create(String name) {
             return ResourceKey.createRegistryKey(NarakaMod.location(name));

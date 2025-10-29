@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.item.crafting;
 
+import com.yummy.naraka.core.component.DataComponentApplier;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
@@ -38,18 +39,23 @@ public class ComponentPredicateRecipeBuilder implements RecipeBuilder {
         this.category = category;
     }
 
-    public ComponentPredicateRecipeBuilder requires(int row, int column, ItemLike item, DataComponentPredicate predicate) {
+    public ComponentPredicateRecipeBuilder requires(int row, int column, ItemLike item, DataComponentPredicate predicate, DataComponentApplier.Single<?> applier) {
         ComponentPredicateIngredient ingredient = new ComponentPredicateIngredient(
                 row, column,
                 Ingredient.of(item),
-                predicate
+                predicate,
+                applier
         );
         predicateIngredients.add(ingredient);
         return this;
     }
 
-    public ComponentPredicateRecipeBuilder requires(int row, int column, TagKey<Item> tag, DataComponentPredicate predicate) {
-        predicateIngredients.add(new ComponentPredicateIngredient(row, column, Ingredient.of(tag), predicate));
+    public ComponentPredicateRecipeBuilder requires(int row, int column, ItemLike item, DataComponentPredicate predicate) {
+        return requires(row, column, item, predicate, DataComponentApplier.empty());
+    }
+
+    public ComponentPredicateRecipeBuilder requires(int row, int column, TagKey<Item> tag, DataComponentPredicate predicate, DataComponentApplier.Single<?> applier) {
+        predicateIngredients.add(new ComponentPredicateIngredient(row, column, Ingredient.of(tag), predicate, applier));
         return this;
     }
 
