@@ -25,7 +25,7 @@ public record ComponentPredicateIngredient(int row, int column, HolderSet<Item> 
                     Codec.intRange(0, 2).fieldOf("row").forGetter(ComponentPredicateIngredient::row),
                     Codec.intRange(0, 2).fieldOf("column").forGetter(ComponentPredicateIngredient::column),
                     HolderSetCodec.create(Registries.ITEM, Item.CODEC, false).fieldOf("ingredient").forGetter(ComponentPredicateIngredient::ingredient),
-                    DataComponentPredicate.singleCodec("predicate").forGetter(ComponentPredicateIngredient::predicate)
+                    DataComponentPredicate.singleCodec("type").fieldOf("predicate").forGetter(ComponentPredicateIngredient::predicate)
             ).apply(instance, ComponentPredicateIngredient::new)
     );
 
