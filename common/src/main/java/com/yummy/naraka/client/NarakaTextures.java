@@ -28,10 +28,9 @@ public final class NarakaTextures {
     public static final ResourceLocation SHADOW_HEROBRINE = entity("shadow_herobrine/shadow_herobrine.png");
     public static final ResourceLocation SHADOW_HEROBRINE_HEAD = entity("shadow_herobrine/shadow_herobrine_head.png");
     public static final ResourceLocation SHADOW_HEROBRINE_SCARF = entity("shadow_herobrine/shadow_herobrine_scarf.png");
-    public static final ResourceLocation SHADOW_HEROBRINE_80 = entity("shadow_herobrine/shadow_herobrine_crack_80.png");
-    public static final ResourceLocation SHADOW_HEROBRINE_60 = entity("shadow_herobrine/shadow_herobrine_crack_60.png");
-    public static final ResourceLocation SHADOW_HEROBRINE_40 = entity("shadow_herobrine/shadow_herobrine_crack_40.png");
-    public static final ResourceLocation SHADOW_HEROBRINE_20 = entity("shadow_herobrine/shadow_herobrine_crack_20.png");
+    public static final ResourceLocation SHADOW_HEROBRINE_75 = entity("shadow_herobrine/shadow_herobrine_crack_75.png");
+    public static final ResourceLocation SHADOW_HEROBRINE_50 = entity("shadow_herobrine/shadow_herobrine_crack_50.png");
+    public static final ResourceLocation SHADOW_HEROBRINE_25 = entity("shadow_herobrine/shadow_herobrine_crack_25.png");
 
     public static final ResourceLocation ECLIPSE = texture("environment", "eclipse.png");
 

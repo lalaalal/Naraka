@@ -49,7 +49,7 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
         renderState.pickaxeLight = 0;
         renderState.scarfAlpha = renderState.alpha;
         float healthRatio = entity.getHealth() / entity.getMaxHealth();
-        renderState.crack = Mth.floor(healthRatio / 0.2f);
+        renderState.crack = Mth.floor(healthRatio / 0.25f);
     }
 
     @Override

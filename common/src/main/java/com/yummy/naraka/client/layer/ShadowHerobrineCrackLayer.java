@@ -16,10 +16,9 @@ import net.minecraft.resources.ResourceLocation;
 @Environment(EnvType.CLIENT)
 public class ShadowHerobrineCrackLayer extends RenderLayer<ShadowHerobrineRenderState, AbstractHerobrineModel<ShadowHerobrineRenderState>> {
     private static final ResourceLocation[] CRACK_TEXTURES = {
-            NarakaTextures.SHADOW_HEROBRINE_20,
-            NarakaTextures.SHADOW_HEROBRINE_40,
-            NarakaTextures.SHADOW_HEROBRINE_60,
-            NarakaTextures.SHADOW_HEROBRINE_80,
+            NarakaTextures.SHADOW_HEROBRINE_25,
+            NarakaTextures.SHADOW_HEROBRINE_50,
+            NarakaTextures.SHADOW_HEROBRINE_75
     };
 
     public ShadowHerobrineCrackLayer(RenderLayerParent<ShadowHerobrineRenderState, AbstractHerobrineModel<ShadowHerobrineRenderState>> renderer) {
@@ -27,12 +26,12 @@ public class ShadowHerobrineCrackLayer extends RenderLayer<ShadowHerobrineRender
     }
 
     private ResourceLocation getTexture(ShadowHerobrineRenderState renderState) {
-        return CRACK_TEXTURES[Math.clamp(renderState.crack, 0, 3)];
+        return CRACK_TEXTURES[Math.clamp(renderState.crack, 0, CRACK_TEXTURES.length - 1)];
     }
 
     @Override
     public void submit(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, ShadowHerobrineRenderState renderState, float yRot, float xRot) {
-        if (renderState.crack > 3)
+        if (renderState.crack > CRACK_TEXTURES.length - 1)
             return;
         poseStack.pushPose();
         AbstractHerobrineModel<ShadowHerobrineRenderState> model = getParentModel();
