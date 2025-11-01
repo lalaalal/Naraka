@@ -73,7 +73,6 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
         generator.createTrivialCube(NarakaBlocks.NECTARIUM_BLOCK.get());
         generator.createTrivialCube(NarakaBlocks.IMITATION_GOLD_BLOCK.get());
-        generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_BLOCK.get());
         generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
         generator.createTrivialCube(NarakaBlocks.AMETHYST_SHARD_BLOCK.get());
         createHerobrineTotem(generator);

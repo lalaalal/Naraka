@@ -9,7 +9,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
@@ -101,14 +100,6 @@ public class NarakaBlocks {
                     .emissiveRendering(NarakaBlocks::always)
     );
 
-    public static final HolderProxy<Block, PurifiedSoulBlock> PURIFIED_SOUL_BLOCK = registerBlockWithItem(
-            "purified_soul_block",
-            PurifiedSoulBlock::new,
-            from(Blocks.SOUL_SAND)
-                    .mapColor(DyeColor.WHITE)
-                    .requiresCorrectToolForDrops(),
-            item().fireResistant()
-    );
     public static final HolderProxy<Block, Block> PURIFIED_SOUL_METAL_BLOCK = registerSimpleBlockWithItem(
             "purified_soul_metal_block",
             from(Blocks.IRON_BLOCK)
@@ -116,6 +107,7 @@ public class NarakaBlocks {
                     .requiresCorrectToolForDrops(),
             item().fireResistant()
     );
+
     public static final HolderProxy<Block, BaseFireBlock> PURIFIED_SOUL_FIRE_BLOCK = registerBlock(
             "purified_soul_fire",
             PurifiedSoulFireBlock::new,
