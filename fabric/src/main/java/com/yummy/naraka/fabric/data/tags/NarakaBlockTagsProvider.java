@@ -62,7 +62,6 @@ public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider 
 
         getOrCreateTagBuilder(NarakaBlockTags.NEEDS_NETHERITE_TOOL)
                 .add(NarakaBlocks.HEROBRINE_TOTEM.get())
-                .add(NarakaBlocks.PURIFIED_SOUL_BLOCK.get())
                 .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
         FabricTagBuilder mineableWithPickaxe = getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(NarakaBlocks.HEROBRINE_TOTEM.get())
@@ -77,9 +76,6 @@ public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider 
                 .add(NarakaBlocks.AMETHYST_ORE.get())
                 .add(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
         NarakaBlocks.forEachSoulInfusedBlock(mineableWithPickaxe::add);
-
-        getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_HOE)
-                .add(NarakaBlocks.PURIFIED_SOUL_BLOCK.get());
 
         getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_AXE)
                 .add(NarakaBlocks.SOUL_SMITHING_BLOCK.get());

@@ -45,7 +45,6 @@ public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
         dropSelf(NarakaBlocks.AMETHYST_SHARD_BLOCK.get());
 
         NarakaBlocks.forEachSoulInfusedBlock(this::dropSelf);
-        dropSelf(NarakaBlocks.PURIFIED_SOUL_BLOCK.get());
         dropSelf(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
 
         dropSelf(NarakaBlocks.HEROBRINE_TOTEM.get());

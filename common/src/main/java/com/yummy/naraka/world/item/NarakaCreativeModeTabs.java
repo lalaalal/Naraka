@@ -142,8 +142,6 @@ public class NarakaCreativeModeTabs {
         output.accept(blessed(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get()));
         output.accept(blessed(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get()));
 
-        output.accept(NarakaBlocks.PURIFIED_SOUL_BLOCK.get());
-
         output.accept(NarakaItems.STIGMA_ROD.get());
         output.accept(NarakaItems.STARDUST_STAFF.get());
         output.accept(NarakaItems.NARAKA_FIREBALL_STAFF.get());

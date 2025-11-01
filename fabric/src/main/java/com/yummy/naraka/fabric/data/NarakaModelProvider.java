@@ -46,7 +46,6 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
         generator.createTrivialCube(NarakaBlocks.NECTARIUM_BLOCK.get());
         generator.createTrivialCube(NarakaBlocks.IMITATION_GOLD_BLOCK.get());
-        generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_BLOCK.get());
         generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
         generator.createTrivialCube(NarakaBlocks.AMETHYST_SHARD_BLOCK.get());
         createHerobrineTotem(generator);
@@ -127,7 +126,6 @@ public class NarakaModelProvider extends FabricModelProvider {
                 .with(BlockModelGenerators.wrapModels(sideModels, (variant) -> variant.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)))
                 .with(BlockModelGenerators.wrapModels(sideModels, (variant) -> variant.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)))
         );
-        generator.delegateItemModel(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(), sideModels.getFirst());
     }
 
     private static final List<ItemModelGenerators.TrimModelData> TRIM_MODELS = List.of(
