@@ -2,7 +2,7 @@ package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.yummy.naraka.client.NarakaTextures;
-import com.yummy.naraka.client.layer.HerobrineScarfLayer;
+import com.yummy.naraka.client.layer.ShadowHerobrineCrackLayer;
 import com.yummy.naraka.client.layer.ShadowHerobrineHeadLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.model.FinalHerobrineModel;
@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 @Environment(EnvType.CLIENT)
 public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHerobrine, ShadowHerobrineRenderState, AbstractHerobrineModel<ShadowHerobrineRenderState>> {
@@ -28,7 +29,7 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
     @Override
     protected void addLayers(EntityRendererProvider.Context context) {
         this.addLayer(new ShadowHerobrineHeadLayer(this));
-        this.addLayer(new HerobrineScarfLayer<>(this, context));
+        this.addLayer(new ShadowHerobrineCrackLayer(this));
         super.addLayers(context);
     }
 
@@ -47,6 +48,8 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
         renderState.hasRedOverlay = false;
         renderState.pickaxeLight = 0;
         renderState.scarfAlpha = renderState.alpha;
+        float healthRatio = entity.getHealth() / entity.getMaxHealth();
+        renderState.crack = Mth.floor(healthRatio / 0.2f);
     }
 
     @Override

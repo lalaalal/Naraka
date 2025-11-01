@@ -13,21 +13,25 @@ import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public final class NarakaTextures {
-    public static final ResourceLocation HEROBRINE = entity("herobrine.png");
-    public static final ResourceLocation ABSOLUTE_HEROBRINE = entity("absolute_herobrine.png");
-    public static final ResourceLocation FINAL_HEROBRINE = entity("final_herobrine.png");
-    public static final ResourceLocation HEROBRINE_EYE = entity("herobrine_eye.png");
-    public static final ResourceLocation HEROBRINE_AFTERIMAGE = entity("herobrine_afterimage.png");
-    public static final ResourceLocation HEROBRINE_SCARF = entity("herobrine_scarf.png");
+    public static final ResourceLocation HEROBRINE = entity("herobrine/herobrine.png");
+    public static final ResourceLocation ABSOLUTE_HEROBRINE = entity("herobrine/absolute_herobrine.png");
+    public static final ResourceLocation FINAL_HEROBRINE = entity("herobrine/final_herobrine.png");
+    public static final ResourceLocation HEROBRINE_EYE = entity("herobrine/herobrine_eye.png");
+    public static final ResourceLocation HEROBRINE_AFTERIMAGE = entity("herobrine/herobrine_afterimage.png");
+    public static final ResourceLocation HEROBRINE_SCARF = entity("herobrine/herobrine_scarf.png");
 
-    public static final ResourceLocation FINAL_HEROBRINE_SCARF = entity("final_herobrine.png");
-    public static final ResourceLocation FINAL_HEROBRINE_EYE = entity("final_herobrine_eye.png");
+    public static final ResourceLocation FINAL_HEROBRINE_SCARF = entity("herobrine/final_herobrine.png");
+    public static final ResourceLocation FINAL_HEROBRINE_EYE = entity("herobrine/final_herobrine_eye.png");
 
     public static final ResourceLocation DIAMOND_GOLEM = entity("diamond_golem.png");
 
-    public static final ResourceLocation SHADOW_HEROBRINE = entity("shadow_herobrine.png");
-    public static final ResourceLocation SHADOW_HEROBRINE_HEAD = entity("shadow_herobrine_head.png");
-    public static final ResourceLocation SHADOW_HEROBRINE_SCARF = entity("shadow_herobrine_scarf.png");
+    public static final ResourceLocation SHADOW_HEROBRINE = entity("shadow_herobrine/shadow_herobrine.png");
+    public static final ResourceLocation SHADOW_HEROBRINE_HEAD = entity("shadow_herobrine/shadow_herobrine_head.png");
+    public static final ResourceLocation SHADOW_HEROBRINE_SCARF = entity("shadow_herobrine/shadow_herobrine_scarf.png");
+    public static final ResourceLocation SHADOW_HEROBRINE_80 = entity("shadow_herobrine/shadow_herobrine_crack_80.png");
+    public static final ResourceLocation SHADOW_HEROBRINE_60 = entity("shadow_herobrine/shadow_herobrine_crack_60.png");
+    public static final ResourceLocation SHADOW_HEROBRINE_40 = entity("shadow_herobrine/shadow_herobrine_crack_40.png");
+    public static final ResourceLocation SHADOW_HEROBRINE_20 = entity("shadow_herobrine/shadow_herobrine_crack_20.png");
 
     public static final ResourceLocation ECLIPSE = texture("environment", "eclipse.png");
 
