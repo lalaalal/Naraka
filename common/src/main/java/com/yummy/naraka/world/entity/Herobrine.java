@@ -622,6 +622,15 @@ public class Herobrine extends AbstractHerobrine {
         return getDamageAfterMagicAbsorb(source, damage);
     }
 
+    private float calculateHurtDamageLimitByLockedHealth() {
+        double sum = 0;
+        for (LivingEntity livingEntity : cachedWatchingEntities.values()) {
+            double lockedHealth = LockedHealthHelper.get(livingEntity);
+            sum += (lockedHealth / (livingEntity.getMaxHealth() + lockedHealth)) * 20;
+        }
+        return MAX_HURT_DAMAGE_LIMIT - (float) sum;
+    }
+
     private void updateHurtDamageLimit(ServerLevel level) {
         if (phaseManager.getCurrentPhase() < 3 && hurtDamageLimit > 1) {
             float damageLimitReduce = NarakaConfig.COMMON.herobrineHurtLimitReduce.getValue();
@@ -632,7 +641,7 @@ public class Herobrine extends AbstractHerobrine {
             }
         }
         if (getPhase() == 3) {
-            hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT - calculateLockedHealth();
+            hurtDamageLimit = calculateHurtDamageLimitByLockedHealth();
         }
     }
 
