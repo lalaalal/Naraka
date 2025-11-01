@@ -244,12 +244,14 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void push(Vec3 vector) {
-
+        if (getPhase() < 3)
+            super.push(vector);
     }
 
     @Override
     public void push(double x, double y, double z) {
-
+        if (getPhase() < 3)
+            super.push(x, y, z);
     }
 
     @Override
@@ -580,7 +582,8 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     protected void actuallyHurt(ServerLevel level, DamageSource damageSource, float damageAmount) {
-        if (phaseManager.getCurrentPhaseHealth() - damageAmount < 0 && getPhase() < 3) {
+        if (!damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)
+                && phaseManager.getCurrentPhaseHealth() - damageAmount < 0 && getPhase() < 3) {
             setHealth(phaseManager.getActualPhaseMaxHealth(getPhase() + 1) + 1);
             return;
         }

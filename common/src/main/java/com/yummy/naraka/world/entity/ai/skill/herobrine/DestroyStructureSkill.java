@@ -57,6 +57,7 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAt(25, () -> mob.playStaticAnimation(HerobrineAnimationLocations.PREPARE_PHASE_3, 95, false, true));
 
+        runAt(80, () -> mob.setNoGravity(true));
         runAt(85, mob::startWhiteScreen);
         runAt(87, () -> mob.setDeltaMovement(0, 0.6, 0));
         runBetween(85, 100, () -> reduceSpeed(0.75));

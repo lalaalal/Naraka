@@ -17,7 +17,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
@@ -55,7 +54,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
         runBetween(60, 70, () -> level.sendParticles(ColorParticleOption.create(ParticleTypes.FLASH, -1), mob.getX(), mob.getEyeY(), mob.getZ(), 20, 1, 2, 1, 1));
         runBetween(85, 90, () -> scaleMagicCircle(30, 0, 85, 89));
 
-        runAt(62, () -> mob.setDeltaMovement(Vec3.ZERO));
+        runAfter(62, this::stopMoving);
         runAt(107, () -> hurtEntities(level, this::checkTarget, 5));
     }
 
