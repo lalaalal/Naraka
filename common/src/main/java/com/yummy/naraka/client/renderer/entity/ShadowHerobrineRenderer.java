@@ -2,7 +2,7 @@ package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.yummy.naraka.client.NarakaTextures;
-import com.yummy.naraka.client.layer.HerobrineScarfLayer;
+import com.yummy.naraka.client.layer.ShadowHerobrineCrackLayer;
 import com.yummy.naraka.client.layer.ShadowHerobrineHeadLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.model.FinalHerobrineModel;
@@ -11,6 +11,7 @@ import com.yummy.naraka.world.entity.ShadowHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
@@ -23,7 +24,7 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
     @Override
     protected void addLayers(EntityRendererProvider.Context context) {
         this.addLayer(new ShadowHerobrineHeadLayer(this));
-        this.addLayer(new HerobrineScarfLayer<>(this, context));
+        this.addLayer(new ShadowHerobrineCrackLayer(this));
         super.addLayers(context);
     }
 
@@ -34,6 +35,10 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
         return NarakaTextures.SHADOW_HEROBRINE;
     }
 
+    @Override
+    protected RenderType getRenderType(ShadowHerobrine livingEntity, boolean bodyVisible, boolean translucent, boolean glowing) {
+        return RenderType.entityTranslucent(getTextureLocation(livingEntity));
+    }
 
     @Override
     public void render(ShadowHerobrine entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
@@ -41,6 +46,4 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
             return;
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
     }
-
-
 }

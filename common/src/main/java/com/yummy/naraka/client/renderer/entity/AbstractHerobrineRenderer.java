@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.layer.HerobrineEyeLayer;
+import com.yummy.naraka.client.layer.HerobrineScarfLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Afterimage;
@@ -56,6 +57,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, M e
 
     protected void addLayers(EntityRendererProvider.Context context) {
         this.addLayer(new HerobrineEyeLayer<>(this));
+        this.addLayer(new HerobrineScarfLayer<>(this, context));
     }
 
     @Override
