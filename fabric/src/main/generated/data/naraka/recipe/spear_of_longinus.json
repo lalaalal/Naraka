@@ -41,7 +41,7 @@
     },
     {
       "column": 1,
-      "ingredient": "naraka:god_blood",
+      "ingredient": "naraka:mighty_holy_spear",
       "predicate": {
         "type": "naraka:any",
         "value": {}

@@ -46,6 +46,7 @@
   "animation.naraka.herobrine.idle": "Idle",
   "animation.naraka.herobrine.staggering": "Staggering",
   "animation.naraka.herobrine.walking": "Walking",
+  "block.minecraft.air": "Purified Soul Fire",
   "commands.lockhealth.lock.success": "Locked %2$s health %1$d",
   "commands.lockhealth.remove.success": "Removed %1$s locked healths",
   "commands.stigma.consume.success": "%2$s consumed %$1d entities stigma",
@@ -101,8 +102,6 @@
   "item.naraka.amethyst_ore": "Amethyst Ore",
   "item.naraka.amethyst_shard_block": "Block of Amethyst Shard",
   "item.naraka.animation_controller": "Animation Controller",
-  "item.naraka.compressed_iron_block": "Block of Compressed Iron",
-  "item.naraka.compressed_iron_ingot": "Compressed Iron Ingot",
   "item.naraka.deepslate_amethyst_ore": "Deepslate Amethyst Ore",
   "item.naraka.deepslate_nectarium_ore": "Deepslate Nectarium Ore",
   "item.naraka.god_blood": "§lGod Blood",
@@ -124,7 +123,6 @@
   "item.naraka.purified_soul_block": "Block of Purified Soul",
   "item.naraka.purified_soul_boots": "Purified Soul Boots",
   "item.naraka.purified_soul_chestplate": "Purified Soul Chestplate",
-  "item.naraka.purified_soul_fire": "Purified Soul Fire",
   "item.naraka.purified_soul_helmet": "Purified Soul Helmet",
   "item.naraka.purified_soul_lamp": "Purified Soul Lamp",
   "item.naraka.purified_soul_lantern": "Purified Soul Lantern",
@@ -250,6 +248,5 @@
   "trim_material.naraka.soul_infused_lapis": "Soul Infused Lapis Material",
   "trim_material.naraka.soul_infused_nectarium": "Soul Infused Nectarium Material",
   "trim_material.naraka.soul_infused_redstone": "Soul Infused Redstone Material",
-  "trim_pattern.naraka.purified_soul_silence": "Purified Soul Silence Armor Trim",
   "upgrade.naraka.purified_soul_upgrade": "Purified Soul Upgrade"
 }

@@ -129,8 +129,6 @@ public class NarakaCreativeModeTabs {
         output.accept(NarakaItems.SKILL_CONTROLLER.get());
         output.accept(NarakaItems.ANIMATION_CONTROLLER.get());
         output.accept(NarakaItems.ULTIMATE_SWORD.get());
-        output.accept(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        output.accept(NarakaItems.COMPRESSED_IRON_INGOT.get());
         output.accept(NarakaItems.SPEAR_ITEM.get());
         output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get());
         output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
@@ -144,7 +142,6 @@ public class NarakaCreativeModeTabs {
         output.accept(blessed(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get()));
         output.accept(blessed(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get()));
 
-        output.accept(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
         output.accept(NarakaBlocks.PURIFIED_SOUL_BLOCK.get());
 
         output.accept(NarakaItems.STIGMA_ROD.get());

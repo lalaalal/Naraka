@@ -36,7 +36,7 @@ public class NarakaBlocks {
             Blocks.BEDROCK
     );
 
-    public static final HolderProxy<Block, DiamondGolemSpawner> DIAMOND_GOLEM_SPAWNER = registerBlockWithItem(
+    public static final HolderProxy<Block, DiamondGolemSpawner> DIAMOND_GOLEM_SPAWNER = registerBlock(
             "diamond_golem_spawner",
             properties -> new DiamondGolemSpawner(
                     properties.noLootTable()
@@ -116,14 +116,13 @@ public class NarakaBlocks {
                     .requiresCorrectToolForDrops(),
             item().fireResistant()
     );
-    public static final HolderProxy<Block, BaseFireBlock> PURIFIED_SOUL_FIRE_BLOCK = registerBlockWithItem(
+    public static final HolderProxy<Block, BaseFireBlock> PURIFIED_SOUL_FIRE_BLOCK = registerBlock(
             "purified_soul_fire",
             PurifiedSoulFireBlock::new,
             from(Blocks.SOUL_FIRE)
                     .mapColor(MapColor.COLOR_BLACK)
                     .noLootTable()
                     .lightLevel(state -> 7)
-
     );
 
     public static final HolderProxy<Block, SoulSmithingBlock> SOUL_SMITHING_BLOCK = registerBlockWithItem(
@@ -132,7 +131,6 @@ public class NarakaBlocks {
             Blocks.SMITHING_TABLE
     );
 
-    public static final HolderProxy<Block, Block> COMPRESSED_IRON_BLOCK = registerSimpleBlockWithItem("compressed_iron_block", Blocks.IRON_BLOCK);
     public static final HolderProxy<Block, Block> IMITATION_GOLD_BLOCK = registerBlockWithItem(
             "imitation_gold_block",
             properties -> new EncroachingBlock(properties.strength(5, 6), Blocks.IRON_BLOCK),
@@ -216,6 +214,10 @@ public class NarakaBlocks {
         BlockBehaviour.Properties properties = BlockBehaviour.Properties.ofFullCopy(propertyBase)
                 .setId(NarakaBlocks.key(name));
         return RegistryProxy.register(Registries.BLOCK, name, () -> function.apply(properties));
+    }
+
+    private static <B extends Block> HolderProxy<Block, B> registerBlock(String name, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties properties) {
+        return RegistryProxy.register(Registries.BLOCK, name, () -> function.apply(properties.setId(NarakaBlocks.key(name))));
     }
 
     private static <B extends Block> HolderProxy<Block, B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties blockProperties, Item.Properties itemProperties) {

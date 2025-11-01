@@ -89,12 +89,7 @@ public class NarakaRecipeProvider extends RecipeProvider {
         nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_AMETHYST.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK.get());
         nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_NECTARIUM.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK.get());
         nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_METAL.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
-
-        nineBlockStorageRecipes(RecipeCategory.BUILDING_BLOCKS, Blocks.IRON_BLOCK.asItem(), RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT.get());
-        nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
         nineBlockStorageRecipes(RecipeCategory.MISC, Items.AMETHYST_SHARD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.AMETHYST_SHARD_BLOCK.get());
-
-        copySmithingTemplate(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), NarakaItems.PURIFIED_SOUL_METAL.get(), NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
 
         ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, NarakaBlocks.SOUL_STABILIZER.get())
                 .define('#', Blocks.GLASS_PANE)
@@ -125,7 +120,7 @@ public class NarakaRecipeProvider extends RecipeProvider {
                 .requires(0, 1, NarakaItems.SOUL_INFUSED_COPPER_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
                 .requires(0, 2, NarakaItems.SOUL_INFUSED_GOLD_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
                 .requires(1, 0, NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
-                .requires(1, 1, NarakaItems.GOD_BLOOD.get(), NarakaDataComponentPredicates.ANY.get(), AnyPredicate.INSTANCE)
+                .requires(1, 1, NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), NarakaDataComponentPredicates.ANY.get(), AnyPredicate.INSTANCE)
                 .requires(1, 2, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
                 .requires(2, 0, NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
                 .requires(2, 1, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)

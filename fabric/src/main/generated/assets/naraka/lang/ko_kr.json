@@ -46,6 +46,7 @@
   "animation.naraka.herobrine.idle": "대기",
   "animation.naraka.herobrine.staggering": "허약",
   "animation.naraka.herobrine.walking": "걷기",
+  "block.minecraft.air": "정화된 영혼 불",
   "commands.lockhealth.lock.success": "%2$s의 체력을 %1$d 잠궜습니다",
   "commands.lockhealth.remove.success": "%1$s의 잠긴 체력을 해제했습니다",
   "commands.stigma.consume.success": "%2$s(이)가 %1$d개의 엔티티의 낙인을 소모했습니다",
@@ -101,8 +102,6 @@
   "item.naraka.amethyst_ore": "자수정 광석",
   "item.naraka.amethyst_shard_block": "자수정 조각 블록",
   "item.naraka.animation_controller": "애니메이션 컨트롤러",
-  "item.naraka.compressed_iron_block": "압축된 철 블록",
-  "item.naraka.compressed_iron_ingot": "압축된 철 주괴",
   "item.naraka.deepslate_amethyst_ore": "심층암 자수정 광석",
   "item.naraka.deepslate_nectarium_ore": "심층암 넥타륨 광석",
   "item.naraka.god_blood": "§l신의 피",
@@ -124,7 +123,6 @@
   "item.naraka.purified_soul_block": "정화된 영혼 블록",
   "item.naraka.purified_soul_boots": "정화된 영혼 부츠",
   "item.naraka.purified_soul_chestplate": "정화된 영혼 흉갑",
-  "item.naraka.purified_soul_fire": "정화된 영혼 불",
   "item.naraka.purified_soul_helmet": "정화된 영혼 투구",
   "item.naraka.purified_soul_lamp": "정화된 영혼 조명",
   "item.naraka.purified_soul_lantern": "정화된 영혼 랜턴",
@@ -250,6 +248,5 @@
   "trim_material.naraka.soul_infused_lapis": "영혼이 주입된 청금석 소재",
   "trim_material.naraka.soul_infused_nectarium": "영혼이 주입된 넥타륨 소재",
   "trim_material.naraka.soul_infused_redstone": "영혼이 주입된 레드스톤 소재",
-  "trim_pattern.naraka.purified_soul_silence": "정화된 영혼 고요 갑옷 장식",
   "upgrade.naraka.purified_soul_upgrade": "정화된 영혼 강화"
 }

@@ -12,7 +12,6 @@ import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.alchemy.NarakaPotions;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
-import com.yummy.naraka.world.item.equipment.trim.NarakaTrimPatterns;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -114,7 +113,6 @@ public class NarakaLanguageProviders {
         addReinforcementEffect(NarakaReinforcementEffects.EFFICIENT_MINING_IN_AIR, "Efficient mining in air", "공중 채굴 효율");
         addReinforcementEffect(NarakaReinforcementEffects.WATER_BREATHING, "Water breathing", "수중 호흡");
 
-        addTrimPattern(NarakaTrimPatterns.PURIFIED_SOUL_SILENCE, "Purified Soul Silence Armor Trim", "정화된 영혼 고요 갑옷 장식");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, "Soul Infused Redstone Material", "영혼이 주입된 레드스톤 소재");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_COPPER, "Soul Infused Copper Material", "영혼이 주입된 구리 소재");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_GOLD, "Soul Infused Gold Material", "영혼이 주입된 금 소재");
@@ -218,7 +216,6 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard", "정화된 영혼 조각");
         addItem(NarakaItems.NECTARIUM, "Nectarium", "넥타륨");
         addItem(NarakaItems.GOD_BLOOD, "§lGod Blood", "§l신의 피");
-        addItem(NarakaItems.COMPRESSED_IRON_INGOT, "Compressed Iron Ingot", "압축된 철 주괴");
         addItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "Smithing Template", "대장장이 형판");
 
         addItem(NarakaItems.SPEAR_ITEM, "Spear", "창");
@@ -267,7 +264,6 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "Deepslate Nectarium Ore", "심층암 넥타륨 광석");
         addBlock(NarakaBlocks.NECTARIUM_BLOCK, "Block of Nectarium", "넥타륨 블록");
         addBlock(NarakaBlocks.TRANSPARENT_BLOCK, "Block of Transparent", "투명 블록");
-        addBlock(NarakaBlocks.COMPRESSED_IRON_BLOCK, "Block of Compressed Iron", "압축된 철 블록");
         addBlock(NarakaBlocks.IMITATION_GOLD_BLOCK, "Block of Imitation Gold", "거짓된 금 블록");
         addBlock(NarakaBlocks.AMETHYST_SHARD_BLOCK, "Block of Amethyst Shard", "자수정 조각 블록");
 

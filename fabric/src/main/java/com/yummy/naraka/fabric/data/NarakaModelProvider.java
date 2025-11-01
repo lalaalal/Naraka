@@ -71,7 +71,6 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.TRANSPARENT_BLOCK.get());
         generator.createTrivialCube(NarakaBlocks.NECTARIUM_ORE.get());
         generator.createTrivialCube(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
-        generator.createTrivialCube(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
         generator.createTrivialCube(NarakaBlocks.NECTARIUM_BLOCK.get());
         generator.createTrivialCube(NarakaBlocks.IMITATION_GOLD_BLOCK.get());
         generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_BLOCK.get());
@@ -87,6 +86,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
         generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_LAMP.get());
         generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_LANTERN.get());
+        generator.createAirLikeBlock(NarakaBlocks.DIAMOND_GOLEM_SPAWNER.get(), Items.STRUCTURE_VOID);
     }
 
     private static void createBlockEntity(BlockModelGenerators generator, Block particle, Block block, SpecialModelRenderer.Unbaked unbaked) {
@@ -218,12 +218,10 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.generateFlatItem(NarakaItems.GOD_BLOOD.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.NECTARIUM.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.ULTIMATE_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-        generator.generateFlatItem(NarakaItems.COMPRESSED_IRON_INGOT.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_METAL.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SHARD.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-        generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.RAINBOW_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         generator.generateFlatItem(NarakaItems.HEROBRINE_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
 
@@ -270,6 +268,7 @@ public class NarakaModelProvider extends FabricModelProvider {
 
         generateSanctuaryCompassItem(generator, NarakaItems.SANCTUARY_COMPASS.get());
         generator.declareCustomModelItem(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get().asItem());
+
     }
 
     public static void generateSpear(ItemModelGenerators generator, SpearItem spearItem, ModelLayerLocation modelLayer, ResourceLocation texture) {
