@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity.data;
 
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
+import com.yummy.naraka.util.NarakaEntityUtils;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,7 +17,8 @@ public class StigmaHelper {
     }
 
     public static void increaseStigma(ServerLevel level, LivingEntity target, Entity cause, boolean recordTime) {
-        if (target.getType().is(NarakaEntityTypeTags.STIGMA_IMMUNE) || NarakaConfig.COMMON.disableStigma.getValue())
+        if (target.getType().is(NarakaEntityTypeTags.STIGMA_IMMUNE) || NarakaConfig.COMMON.disableStigma.getValue()
+                || !NarakaEntityUtils.isDamageable(target))
             return;
         Stigma stigma = get(target);
         Stigma increased = stigma.increase(level, target, cause, recordTime);

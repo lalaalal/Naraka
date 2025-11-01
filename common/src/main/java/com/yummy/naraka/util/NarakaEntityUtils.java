@@ -27,16 +27,16 @@ import java.util.UUID;
 public class NarakaEntityUtils {
 
     @Nullable
-    public static <T> T findEntityByUUID(ServerLevel serverLevel, UUID uuid, Class<T> type) {
-        Entity entity = serverLevel.getEntity(uuid);
+    public static <T> T findEntityByUUID(Level level, UUID uuid, Class<T> type) {
+        Entity entity = level.getEntity(uuid);
         if (type.isInstance(entity))
             return type.cast(entity);
         return null;
     }
 
-    public static <T> Collection<T> findEntitiesByUUID(ServerLevel serverLevel, Collection<UUID> uuids, Class<T> type) {
+    public static <T> Collection<T> findEntitiesByUUID(Level level, Collection<UUID> uuids, Class<T> type) {
         return uuids.stream()
-                .map(uuid -> findEntityByUUID(serverLevel, uuid, type))
+                .map(uuid -> findEntityByUUID(level, uuid, type))
                 .filter(Objects::nonNull)
                 .toList();
     }
