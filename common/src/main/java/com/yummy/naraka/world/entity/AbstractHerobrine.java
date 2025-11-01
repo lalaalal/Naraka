@@ -20,7 +20,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
@@ -187,7 +186,6 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         targetSelector.addGoal(1, new HurtByTargetGoal(this, Herobrine.class));
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, AbstractHerobrine::isNotHerobrine));
 
-        goalSelector.addGoal(1, new FloatGoal(this));
         goalSelector.addGoal(2, new LookAtTargetGoal(this));
     }
 

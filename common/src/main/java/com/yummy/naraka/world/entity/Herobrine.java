@@ -228,17 +228,28 @@ public class Herobrine extends AbstractHerobrine {
         navigation = new FlyingPathNavigation(this, level());
         moveControl = new HerobrineFlyMoveControl(this, 0.75);
         setAnimation(HerobrineAnimationLocations.PHASE_3_IDLE);
-        if (isFinalModel())
+        if (isFinalModel()) {
+            setNoGravity(true);
             return;
+        }
         teleportToSpawnedPosition();
         skillManager.setCurrentSkill(destroyStructureSkill);
-        setNoGravity(true);
         setDisplayEye(false);
         setDisplayPickaxe(true);
 
         int armor = bossEvent.getPlayers().size() * 6;
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR, NarakaAttributeModifiers.finalHerobrineArmor(armor));
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR_TOUGHNESS, NarakaAttributeModifiers.FINAL_HEROBRINE_ARMOR_TOUGHNESS);
+    }
+
+    @Override
+    public void push(Vec3 vector) {
+
+    }
+
+    @Override
+    public void push(double x, double y, double z) {
+
     }
 
     @Override
