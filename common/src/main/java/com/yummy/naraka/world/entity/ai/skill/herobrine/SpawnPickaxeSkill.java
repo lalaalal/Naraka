@@ -44,6 +44,7 @@ public class SpawnPickaxeSkill extends AttackSkill<Herobrine> {
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         sendShootingParticles(level);
         runAt(SHOOT_TICK + SHOOT_DURATION, () -> spawnNarakaPickaxe(level));
+        stopMoving();
     }
 
     @Override

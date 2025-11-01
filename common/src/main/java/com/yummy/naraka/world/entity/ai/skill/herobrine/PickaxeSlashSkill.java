@@ -72,6 +72,7 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
         if (!mob.isShadow) {
             runAt(0, () -> NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.TELEPORT.get()));
             runAt(5, () -> teleportToTarget(target, 12));
+            runAfter(10, this::stopMoving);
         }
         runBetween(0, 10, () -> rotateTowardTarget(target));
         run(pickaxeSlashSpawnTimes.contains(tickCount), () -> createPickaxeSlash(level, target));

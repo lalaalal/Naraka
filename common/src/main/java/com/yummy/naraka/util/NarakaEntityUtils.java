@@ -1,7 +1,5 @@
 package com.yummy.naraka.util;
 
-import com.yummy.naraka.network.NetworkManager;
-import com.yummy.naraka.network.SyncPlayerMovementPacket;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
@@ -110,9 +108,5 @@ public class NarakaEntityUtils {
         ClientboundSetEntityMotionPacket packet = new ClientboundSetEntityMotionPacket(fallingBlockEntity);
         players.forEach(player -> player.connection.send(packet));
         return fallingBlockEntity;
-    }
-
-    public static void sendPlayerMovement(ServerPlayer player, Vec3 movement) {
-        NetworkManager.clientbound().send(player, new SyncPlayerMovementPacket(movement));
     }
 }

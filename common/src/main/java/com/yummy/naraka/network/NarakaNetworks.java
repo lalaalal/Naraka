@@ -8,7 +8,6 @@ public class NarakaNetworks {
         NetworkManager.clientbound().define(SyncEntityDataPacket.TYPE, SyncEntityDataPacket.CODEC);
         NetworkManager.clientbound().define(SyncAnimationPacket.TYPE, SyncAnimationPacket.CODEC);
         NetworkManager.clientbound().define(SyncAfterimagePacket.TYPE, SyncAfterimagePacket.CODEC);
-        NetworkManager.clientbound().define(SyncPlayerMovementPacket.TYPE, SyncPlayerMovementPacket.CODEC);
         NetworkManager.clientbound().define(NarakaClientboundEntityEventPacket.TYPE, NarakaClientboundEntityEventPacket.CODEC);
         NetworkManager.clientbound().define(NarakaClientboundEventPacket.TYPE, NarakaClientboundEventPacket.CODEC);
 
@@ -22,7 +21,6 @@ public class NarakaNetworks {
         NetworkManager.clientbound().register(SyncEntityDataPacket.TYPE, SyncEntityDataPacket.CODEC, SyncEntityDataPacket::handle);
         NetworkManager.clientbound().register(SyncAnimationPacket.TYPE, SyncAnimationPacket.CODEC, SyncAnimationPacket::handle);
         NetworkManager.clientbound().register(SyncAfterimagePacket.TYPE, SyncAfterimagePacket.CODEC, SyncAfterimagePacket::handle);
-        NetworkManager.clientbound().register(SyncPlayerMovementPacket.TYPE, SyncPlayerMovementPacket.CODEC, SyncPlayerMovementPacket::handle);
         NetworkManager.clientbound().register(NarakaClientboundEntityEventPacket.TYPE, NarakaClientboundEntityEventPacket.CODEC, NarakaClientboundEventHandler::handleEntityEvent);
         NetworkManager.clientbound().register(NarakaClientboundEventPacket.TYPE, NarakaClientboundEventPacket.CODEC, NarakaClientboundEventHandler::handleEvent);
     }
