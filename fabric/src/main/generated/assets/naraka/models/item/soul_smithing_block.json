@@ -1,6 +1,6 @@
 {
   "parent": "naraka:item/template_block_entity",
   "textures": {
-    "particle": "minecraft:block/glass"
+    "particle": "minecraft:block/stone"
   }
 }

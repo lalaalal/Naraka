@@ -57,8 +57,7 @@ public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider 
                 .add(NarakaBlocks.NECTARIUM_BLOCK.get())
                 .add(NarakaBlocks.NECTARIUM_ORE.get())
                 .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get())
-                .add(NarakaBlocks.IMITATION_GOLD_BLOCK.get())
-                .add(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
+                .add(NarakaBlocks.IMITATION_GOLD_BLOCK.get());
         NarakaBlocks.forEachSoulInfusedBlock(needsIronTool::add);
 
         getOrCreateTagBuilder(NarakaBlockTags.NEEDS_NETHERITE_TOOL)
@@ -73,7 +72,6 @@ public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider 
                 .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get())
                 .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get())
                 .add(NarakaBlocks.IMITATION_GOLD_BLOCK.get())
-                .add(NarakaBlocks.COMPRESSED_IRON_BLOCK.get())
                 .add(NarakaBlocks.NECTARIUM_CORE_BLOCK.get())
                 .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get())
                 .add(NarakaBlocks.AMETHYST_ORE.get())

@@ -35,7 +35,7 @@ public class NarakaBlocks {
             Blocks.BEDROCK
     );
 
-    public static final HolderProxy<Block, DiamondGolemSpawner> DIAMOND_GOLEM_SPAWNER = registerBlockWithItem(
+    public static final HolderProxy<Block, DiamondGolemSpawner> DIAMOND_GOLEM_SPAWNER = registerBlock(
             "diamond_golem_spawner",
             properties -> new DiamondGolemSpawner(
                     properties.noLootTable()
@@ -131,7 +131,6 @@ public class NarakaBlocks {
             Blocks.SMITHING_TABLE
     );
 
-    public static final HolderProxy<Block, Block> COMPRESSED_IRON_BLOCK = registerSimpleBlockWithItem("compressed_iron_block", Blocks.IRON_BLOCK);
     public static final HolderProxy<Block, Block> IMITATION_GOLD_BLOCK = registerBlockWithItem(
             "imitation_gold_block",
             properties -> new EncroachingBlock(properties.strength(5, 6), Blocks.IRON_BLOCK),
