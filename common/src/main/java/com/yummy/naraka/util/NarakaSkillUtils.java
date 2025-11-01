@@ -85,7 +85,9 @@ public class NarakaSkillUtils {
         level.getEntitiesOfClass(type, boundingBox, entity -> entity.isAlive() && targetPredicate.test(entity)).forEach(target -> {
             Vec3 movement = mob.position().subtract(target.position())
                     .scale(scale);
-            target.push(movement);
+            target.setDeltaMovement(movement);
+            if (target instanceof ServerPlayer player && NarakaEntityUtils.isDamageablePlayer(player))
+                NarakaEntityUtils.sendPlayerMovement(player, movement);
         });
     }
 }

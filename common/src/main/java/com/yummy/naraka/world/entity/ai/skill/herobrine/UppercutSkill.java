@@ -1,9 +1,11 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
+import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -65,7 +67,10 @@ public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
 
     @Override
     protected void onHurtEntity(ServerLevel level, LivingEntity target) {
-        target.push(0, 0.4, 0);
+        Vec3 movement = new Vec3(0, 0.4, 0);
+        target.addDeltaMovement(movement);
+        if (target instanceof ServerPlayer serverPlayer)
+            NarakaEntityUtils.sendPlayerMovement(serverPlayer, movement.scale(4));
         mob.stigmatizeEntity(level, target);
         level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
     }
