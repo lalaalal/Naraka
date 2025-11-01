@@ -407,12 +407,12 @@ public class Herobrine extends AbstractHerobrine {
 
     private void updateWatchingEntities(ServerLevel level) {
         watchingEntities.removeIf(uuid -> {
-            LivingEntity entity = NarakaEntityUtils.findEntityByUUID(level, uuid, LivingEntity.class);
-            if (entity == null || entity.isDeadOrDying()) {
+            LivingEntity target = NarakaEntityUtils.findEntityByUUID(level, uuid, LivingEntity.class);
+            if (target == null || target.isDeadOrDying() || !NarakaEntityUtils.isDamageable(target)) {
                 cachedWatchingEntities.remove(uuid);
                 return true;
             }
-            cachedWatchingEntities.put(uuid, entity);
+            cachedWatchingEntities.put(uuid, target);
             return false;
         });
     }

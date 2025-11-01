@@ -86,7 +86,7 @@ public class NarakaSkillUtils {
             Vec3 movement = mob.position().subtract(target.position())
                     .scale(scale);
             target.setDeltaMovement(movement);
-            if (target instanceof ServerPlayer player)
+            if (target instanceof ServerPlayer player && NarakaEntityUtils.isDamageablePlayer(player))
                 NarakaEntityUtils.sendPlayerMovement(player, movement);
         });
     }
