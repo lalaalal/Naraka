@@ -216,7 +216,7 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard", "정화된 영혼 조각");
         addItem(NarakaItems.NECTARIUM, "Nectarium", "넥타륨");
         addItem(NarakaItems.GOD_BLOOD, "§lGod Blood", "§l신의 피");
-        addItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "Smithing Template", "대장장이 형판");
+        addItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "Soul Smithing Template", "영혼 대장장이 형판");
 
         addItem(NarakaItems.SPEAR_ITEM, "Spear", "창");
         addItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "Mighty Holy Spear", "강력한 성스러운 창");
@@ -247,7 +247,6 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD, "Soul Infused Nectarium Sword", "영혼이 주입된 넥타륨 검");
         addItem(NarakaItems.PURIFIED_SOUL_SWORD, "Purified Soul Sword", "정화된 영혼 검");
 
-        addItem(NarakaItems.ULTIMATE_SWORD, "Ultimate Sword", "궁극의 검");
         addItem(NarakaItems.SANCTUARY_COMPASS, "Sanctuary Compass", "생츄어리 나침반");
 
         addItem(NarakaItems.HEROBRINE_PHASE_1_DISC, "Herobrine Phase 1 Disc", "히로빈 1 페이즈 음반");
@@ -287,7 +286,7 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, "Soul Smithing Block", "영혼 대장장이 블록");
 
         addTooltip(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Honey is dripping", "꿀이 뚝뚝 떨어져");
-        addTooltip(NarakaBlocks.SOUL_SMITHING_BLOCK, "Smash item with a hammer...?", "아이템을 망치로 부수기..?");
+        addTooltip(NarakaBlocks.SOUL_SMITHING_BLOCK, "Smash item with a mace...?", "아이템을 철퇴로 부수기..?");
 
         addEntityType(NarakaEntityTypes.HEROBRINE, "Naraka Tyrant: Herobrine", "나락의 폭군: 히로빈");
         addEntityType(NarakaEntityTypes.ABSOLUTE_HEROBRINE, "Absolute Herobrine");

@@ -151,10 +151,6 @@ public class NarakaItems {
                             .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
             )
     );
-    public static final HolderProxy<Item, Item> ULTIMATE_SWORD = registerSimpleItem(
-            "ultimate_sword",
-            properties -> properties.sword(NarakaToolMaterials.LONGINUS, 3, -2.4f)
-    );
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_HELMET = registerPurifiedSoulArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.HELMET);
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_CHESTPLATE = registerPurifiedSoulArmorItem("purified_soul_chestplate", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.CHESTPLATE);

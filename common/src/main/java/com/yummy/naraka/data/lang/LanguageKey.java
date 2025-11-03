@@ -63,11 +63,15 @@ public final class LanguageKey {
     }
 
     public static String tooltip(Block block) {
-        return tooltip(block.asItem());
+        return block.asItem().getDescriptionId() + ".tooltip";
     }
 
     public static String tooltip(Item item) {
         return item.getDescriptionId() + ".tooltip";
+    }
+
+    public static String tooltip(String name) {
+        return "item.naraka." + name + ".tooltip";
     }
 
     public static String itemGroup(String path) {

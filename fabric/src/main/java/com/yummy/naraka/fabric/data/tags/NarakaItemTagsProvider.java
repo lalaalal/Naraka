@@ -70,7 +70,6 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
         NarakaItems.forEachSoulInfusedSword(soulSwords::add);
 
         valueLookupBuilder(ItemTags.SWORDS)
-                .add(NarakaItems.ULTIMATE_SWORD.get())
                 .addTag(NarakaItemTags.SOUL_SWORDS);
 
         valueLookupBuilder(ItemTags.HEAD_ARMOR)
