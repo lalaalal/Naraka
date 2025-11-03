@@ -90,7 +90,6 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
         nineBlockStorageRecipes(output, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_NECTARIUM.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK.get());
         nineBlockStorageRecipes(output, RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_METAL.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
 
-        nineBlockStorageRecipes(output, RecipeCategory.BUILDING_BLOCKS, Blocks.IRON_BLOCK.asItem(), RecipeCategory.MISC, NarakaItems.COMPRESSED_IRON_INGOT.get());
         nineBlockStorageRecipes(output, RecipeCategory.MISC, Items.AMETHYST_SHARD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.AMETHYST_SHARD_BLOCK.get());
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NarakaBlocks.SOUL_STABILIZER.get())

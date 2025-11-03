@@ -87,7 +87,6 @@ public class NarakaItems {
     );
 
     public static final HolderProxy<Item, SanctuaryCompassItem> SANCTUARY_COMPASS = registerItem("sanctuary_compass", SanctuaryCompassItem::new);
-    public static final HolderProxy<Item, Item> COMPRESSED_IRON_INGOT = registerSimpleItem("compressed_iron_ingot");
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = registerSimpleItem("purified_soul_upgrade_smithing_template");
 
@@ -143,13 +142,6 @@ public class NarakaItems {
                     -2, -2.4f,
                     properties.fireResistant()
                             .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
-            )
-    );
-    public static final HolderProxy<Item, Item> ULTIMATE_SWORD = registerItem(
-            "ultimate_sword",
-            properties -> new SwordItem(
-                    NarakaTiers.LONGINUS,
-                    properties.attributes(NarakaTiers.createWeaponAttributes(NarakaTiers.LONGINUS, 3, -2.4f).build())
             )
     );
 

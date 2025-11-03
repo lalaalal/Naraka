@@ -3,12 +3,16 @@ package com.yummy.naraka.world.block;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.data.lang.LanguageKey;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -26,33 +30,31 @@ public class NarakaBlocks {
 
     public static final HolderProxy<Block, TransparentBlock> TRANSPARENT_BLOCK = registerBlockWithItem(
             "transparent_block",
-            properties -> new TransparentBlock(
-                    properties.forceSolidOn()
-                            .noTerrainParticles()
-                            .noLootTable()
-            ),
-            Blocks.BEDROCK
+            TransparentBlock::new,
+            from(Blocks.BEDROCK)
+                    .forceSolidOn()
+                    .noTerrainParticles()
+                    .noLootTable()
     );
 
     public static final HolderProxy<Block, DiamondGolemSpawner> DIAMOND_GOLEM_SPAWNER = registerBlock(
             "diamond_golem_spawner",
-            properties -> new DiamondGolemSpawner(
-                    properties.noLootTable()
-                            .noTerrainParticles()
-                            .noCollission()
-            ),
-            Blocks.SPAWNER
+            DiamondGolemSpawner::new,
+            from(Blocks.SPAWNER)
+                    .noLootTable()
+                    .noTerrainParticles()
+                    .noCollission()
     );
 
     public static final HolderProxy<Block, DropExperienceBlock> AMETHYST_ORE = registerBlockWithItem(
             "amethyst_ore",
-            properties -> new DropExperienceBlock(UniformInt.of(0, 2), properties.requiresCorrectToolForDrops()),
-            Blocks.STONE
+            properties -> new DropExperienceBlock(UniformInt.of(0, 2), properties),
+            from(Blocks.STONE).requiresCorrectToolForDrops()
     );
     public static final HolderProxy<Block, DropExperienceBlock> DEEPSLATE_AMETHYST_ORE = registerBlockWithItem(
             "deepslate_amethyst_ore",
-            properties -> new DropExperienceBlock(UniformInt.of(1, 2), properties.requiresCorrectToolForDrops()),
-            Blocks.DEEPSLATE
+            properties -> new DropExperienceBlock(UniformInt.of(1, 2), properties),
+            from(Blocks.DEEPSLATE).requiresCorrectToolForDrops()
     );
 
     public static final HolderProxy<Block, DropExperienceBlock> NECTARIUM_ORE = registerBlockWithItem(
@@ -73,16 +75,15 @@ public class NarakaBlocks {
 
     public static final HolderProxy<Block, NectariumCoreBlock> NECTARIUM_CORE_BLOCK = registerBlockWithItem(
             "nectarium_core",
-            properties -> new NectariumCoreBlock(properties
+            NectariumCoreBlock::new,
+            from(Blocks.AMETHYST_CLUSTER)
                     .requiresCorrectToolForDrops()
-                    .lightLevel(NectariumCoreBlock::lightLevel)),
-            Blocks.AMETHYST_CLUSTER
+                    .lightLevel(NectariumCoreBlock::lightLevel)
     );
     public static final HolderProxy<Block, NectariumCrystalBlock> NECTARIUM_CRYSTAL_BLOCK = registerBlockWithItem(
             "nectarium_crystal",
-            properties -> new NectariumCrystalBlock(properties
-                    .requiresCorrectToolForDrops()),
-            Blocks.AMETHYST_BLOCK
+            NectariumCrystalBlock::new,
+            from(Blocks.AMETHYST_BLOCK).requiresCorrectToolForDrops()
     );
 
     public static final HolderProxy<Block, Block> PURIFIED_SOUL_LAMP = registerSimpleBlockWithItem(
@@ -120,7 +121,14 @@ public class NarakaBlocks {
     public static final HolderProxy<Block, SoulSmithingBlock> SOUL_SMITHING_BLOCK = registerBlockWithItem(
             "soul_smithing_block",
             SoulSmithingBlock::new,
-            Blocks.SMITHING_TABLE
+            from(Blocks.SMITHING_TABLE),
+            item().component(
+                    DataComponents.LORE, new ItemLore(
+                            List.of(Component.translatable(
+                                    LanguageKey.blockTooltip("soul_smithing_block"))
+                            )
+                    )
+            )
     );
 
     public static final HolderProxy<Block, Block> IMITATION_GOLD_BLOCK = registerBlockWithItem(
