@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaModelLayers;
-import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.SpearModel;
 import com.yummy.naraka.client.model.SpearOfLonginusModel;
@@ -65,9 +64,7 @@ public class SpearRenderer<T extends Spear> extends EntityRenderer<T> {
 
     @Override
     public ResourceLocation getTextureLocation(T entity) {
-        if (TEXTURE_MAP.containsKey(entity.getType()))
-            return TEXTURE_MAP.get(entity.getType());
-        return NarakaTextures.SPEAR;
+        return TEXTURE_MAP.getOrDefault(entity.getType(), NarakaTextures.SPEAR);
     }
 
     @Override
@@ -91,13 +88,6 @@ public class SpearRenderer<T extends Spear> extends EntityRenderer<T> {
             NarakaRenderUtils.submitModelWithFoilRenderTypes(model, poseStack, renderType, bufferSource, packedLight, entity.hasFoil());
         }
 
-        poseStack.popPose();
-    }
-
-    public static void renderShaderLonginus(EntityModel<? extends Spear> model, PoseStack poseStack, MultiBufferSource bufferSource) {
-        poseStack.pushPose();
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(NarakaRenderTypes.longinus());
-        model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
     }
 
