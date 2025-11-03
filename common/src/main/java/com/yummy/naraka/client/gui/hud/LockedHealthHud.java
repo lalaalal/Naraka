@@ -73,10 +73,10 @@ public class LockedHealthHud implements HudRenderer {
         int baseX = graphics.guiWidth() / 2 - 91;
         int baseY = graphics.guiHeight() - 39;
         double lockedHealth = EntityDataHelper.getEntityData(player, NarakaEntityDataTypes.LOCKED_HEALTH.get());
-        double maxHealth = player.getMaxHealth();
+        double maxHealth = player.getAttributeValue(Attributes.MAX_HEALTH);
         double originalMaxHealth = maxHealth + lockedHealth;
         int heartCount = Mth.ceil(originalMaxHealth / 2);
-        int lockedHeartCount = Mth.ceil(lockedHealth / 2);
+        int lockedHeartCount = heartCount - (int) Math.round(maxHealth / 2);
         float absorption = player.getAbsorptionAmount();
 
         boolean hasRightHalfLockedHeart = Mth.ceil(maxHealth) % 2 != 0;

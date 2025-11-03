@@ -1,10 +1,7 @@
 package com.yummy.naraka.world.entity;
 
-import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
-import com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe.ExplodeSkill;
 import com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe.StrikeSkill;
-import com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe.SwingSkill;
 import com.yummy.naraka.world.entity.animation.NarakaPickaxeAnimationLocations;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.server.level.ServerLevel;
@@ -22,14 +19,9 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class NarakaPickaxe extends SkillUsingMob {
-    private final SwingSkill swingSkill = registerSkill(this, SwingSkill::new, NarakaPickaxeAnimationLocations.SWING);
-    private final ExplodeSkill explodeSkill = registerSkill(this, ExplodeSkill::new, NarakaPickaxeAnimationLocations.EXPLODE);
-    private final StrikeSkill strikeSkill = registerSkill(this, StrikeSkill::new, NarakaPickaxeAnimationLocations.STRIKE);
-
     @Nullable
     private Herobrine cachedHerobrine;
     @Nullable
@@ -53,7 +45,10 @@ public class NarakaPickaxe extends SkillUsingMob {
     public NarakaPickaxe(EntityType<NarakaPickaxe> entityType, Level level) {
         super(entityType, level);
         registerAnimation(NarakaPickaxeAnimationLocations.IDLE);
+        registerSkill(this, StrikeSkill::new, NarakaPickaxeAnimationLocations.STRIKE);
+
         skillManager.enableOnly(List.of());
+        skillManager.runOnSkillEnd(skill -> discard());
     }
 
     public NarakaPickaxe(Level level, Herobrine herobrine) {
@@ -62,30 +57,10 @@ public class NarakaPickaxe extends SkillUsingMob {
         this.herobrineUUID = herobrine.getUUID();
     }
 
-    private void startUsingSkill() {
-        skillManager.enableOnly(List.of(swingSkill, explodeSkill));
-        explodeSkill.setCooldown();
-    }
-
-    private Optional<Herobrine> getHerobrine(ServerLevel level) {
-        if (this.herobrineUUID == null)
-            return Optional.empty();
-        if (cachedHerobrine == null)
-            return Optional.ofNullable(cachedHerobrine = NarakaEntityUtils.findEntityByUUID(level, herobrineUUID, Herobrine.class));
-        return Optional.of(cachedHerobrine);
-    }
-
     @Override
     public void tick() {
         setNoGravity(true);
         super.tick();
-        if (tickCount == 100)
-            startUsingSkill();
-        if (level() instanceof ServerLevel level) {
-            getHerobrine(level)
-                    .filter(herobrine -> herobrine.isDeadOrDying() || herobrine.isRemoved())
-                    .ifPresent(herobrine -> discard());
-        }
     }
 
     private boolean filterTarget(LivingEntity target, ServerLevel level) {

@@ -79,19 +79,20 @@ public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<So
     @Override
     public void submit(SoulStabilizerRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
-        RenderType renderType = RenderType.entityCutout(NarakaTextures.SOUL_STABILIZER);
-        submitNodeCollector.submitModelPart(bottle, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, -1, null);
+        RenderType bottleRenderType = RenderType.entityCutout(NarakaTextures.SOUL_STABILIZER);
+        submitNodeCollector.submitModelPart(bottle, poseStack, bottleRenderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, -1, null);
         poseStack.popPose();
 
         if (renderState.soulType == SoulType.NONE)
             return;
 
-        float soulRatio = (float) renderState.souls / SoulStabilizerBlockEntity.CAPACITY;
+        float soulRatio = (float) renderState.souls / SoulStabilizerBlockEntity.getCapacity();
         int color = ARGB.color(0x99, renderState.soulType.getColor());
 
         poseStack.pushPose();
         poseStack.scale(1, soulRatio, 1);
-        submitNodeCollector.submitModelPart(liquid, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, color, null);
+        RenderType liquidRenderType = RenderType.entityCutout(WATER_OVERLAY);
+        submitNodeCollector.submitModelPart(liquid, poseStack, liquidRenderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, color, null);
         poseStack.popPose();
     }
 }

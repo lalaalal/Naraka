@@ -5,8 +5,11 @@
   "minVersion": "0.8",
   "client": [
     "client.CameraMixin",
+    "client.ClientHandshakePacketListenerImplMixin",
     "client.CompassAngleStateMixin",
     "client.CraftingRecipeBookComponentMixin",
+    "client.DripParticleMixin$HoneyFallProviderMixin",
+    "client.DripParticleMixin$HoneyHangProviderMixin",
     "client.EntityRenderDispatcherMixin",
     "client.EntityRendererMixin",
     "client.EntityRenderStateMixin",
@@ -25,8 +28,8 @@
     "client.LocalPlayerMixin",
     "client.MinecraftMixin",
     "client.MouseHandlerMixin",
+    "client.MusicManagerMixin",
     "client.ScreenEffectRendererMixin",
-    "client.SimpleSoundInstanceMixin",
     "client.SkyRendererMixin",
     "client.SubmitNodeCollectionMixin",
     "client.WorldOpenFlowsMixin"

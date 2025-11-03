@@ -119,7 +119,8 @@ public class PickaxeSlash extends LightTailEntity {
 
     private void hurtEntity(ServerLevel level, LivingEntity target) {
         DamageSource damageSource = NarakaDamageSources.pickaxeSlash(this);
-        if (target.hurtServer(level, damageSource, 6) && stigmatizingEntity != null)
+        float damage = 10 + target.getMaxHealth() * 0.1f;
+        if (target.hurtServer(level, damageSource, damage) && stigmatizingEntity != null)
             stigmatizingEntity.stigmatizeEntity(level, target);
         if (stunTarget)
             StunHelper.stunEntity(target, 20);

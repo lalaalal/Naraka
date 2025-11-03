@@ -45,7 +45,7 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
 
     public SpearRenderer(EntityRendererProvider.Context context) {
         super(context);
-        model = new SpearModel(context.bakeLayer(NarakaModelLayers.SPEAR));
+        this.model = new SpearModel(context.bakeLayer(NarakaModelLayers.SPEAR));
         this.yOffset = 0;
     }
 
@@ -65,6 +65,7 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
         super.extractRenderState(spear, renderState, partialTick);
         renderState.setRotation(spear, partialTick);
         renderState.setType(spear);
+        renderState.hasFoil = spear.hasFoil();
     }
 
     @Override
@@ -73,9 +74,7 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
     }
 
     public ResourceLocation getTextureLocation(SpearRenderState renderState) {
-        if (TEXTURE_MAP.containsKey(renderState.type))
-            return TEXTURE_MAP.get(renderState.type);
-        return NarakaTextures.SPEAR;
+        return TEXTURE_MAP.getOrDefault(renderState.type, NarakaTextures.SPEAR);
     }
 
     @Override

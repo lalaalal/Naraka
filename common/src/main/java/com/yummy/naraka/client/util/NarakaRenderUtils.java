@@ -2,6 +2,7 @@ package com.yummy.naraka.client.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import com.yummy.naraka.util.NarakaUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -14,9 +15,11 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -30,10 +33,10 @@ public class NarakaRenderUtils {
     public static final float SIN_45 = (float) Math.sin(Math.PI / 4);
 
     private static final List<Vector3f> VERTICAL = List.of(
-            new Vector3f(-0.5f, 0, 0.5f),
-            new Vector3f(-0.5f, 0, -0.5f),
+            new Vector3f(0.5f, 0, 0.5f),
             new Vector3f(0.5f, 0, -0.5f),
-            new Vector3f(0.5f, 0, 0.5f)
+            new Vector3f(-0.5f, 0, -0.5f),
+            new Vector3f(-0.5f, 0, 0.5f)
     );
 
     private static final List<Vector3f> HORIZONTAL_X = List.of(
@@ -56,16 +59,9 @@ public class NarakaRenderUtils {
             Direction.Axis.Z, HORIZONTAL_Z
     );
 
-    private static final Map<Direction.Axis, List<Vector3f>> OPPOSITE_VERTEX_MAPPINGS = Map.of(
-            Direction.Axis.Y, VERTICAL.reversed(),
-            Direction.Axis.X, HORIZONTAL_X.reversed(),
-            Direction.Axis.Z, HORIZONTAL_Z.reversed()
-    );
-
     public static final List<Vector2f> DEFAULT_UVS = createUVList(0, 0, 1, 1);
-    public static final List<Vector2f> OPPOSITE_UVS = DEFAULT_UVS.reversed();
 
-    private static List<Vector2f> createUVList(float u, float v, float width, float height) {
+    public static List<Vector2f> createUVList(float u, float v, float width, float height) {
         return List.of(
                 new Vector2f(u, v + height),
                 new Vector2f(u, v),
@@ -74,7 +70,7 @@ public class NarakaRenderUtils {
         );
     }
 
-    public static void vertices(VertexConsumer vertexConsumer, PoseStack.Pose pose, List<Vector3f> vertices, List<Vector2f> uvs, int packedLight, int packedOverlay, int color, Direction direction, boolean reverse) {
+    public static void vertices(PoseStack.Pose pose, VertexConsumer vertexConsumer, List<Vector3f> vertices, List<Vector2f> uvs, int packedLight, int packedOverlay, int color, Direction direction, boolean reverse) {
         Vec3i normal = direction.getUnitVec3i();
         NarakaUtils.iterate(vertices, uvs, (vertex, uv) -> {
             vertexConsumer.addVertex(pose, vertex)
@@ -86,20 +82,22 @@ public class NarakaRenderUtils {
         }, reverse);
     }
 
+    private static Direction getNormal(Direction.Axis axis) {
+        if (axis.isVertical())
+            return Direction.UP;
+        if (axis == Direction.Axis.X)
+            return Direction.SOUTH;
+        return Direction.EAST;
+    }
+
     public static void renderFlatImage(PoseStack.Pose pose, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color, Direction.Axis face) {
-        vertices(vertexConsumer, pose, VERTEX_MAPPINGS.get(face), DEFAULT_UVS, packedLight, packedOverlay, color, Direction.UP, false);
-        vertices(vertexConsumer, pose, OPPOSITE_VERTEX_MAPPINGS.get(face), OPPOSITE_UVS, packedLight, packedOverlay, color, Direction.UP, false);
+        vertices(pose, vertexConsumer, VERTEX_MAPPINGS.get(face), DEFAULT_UVS, packedLight, packedOverlay, color, getNormal(face), false);
     }
 
     public static void renderFlatImage(PoseStack.Pose pose, VertexConsumer vertexConsumer, List<Vector3f> vertices, float u, float v, float width, float height, int packedLight, int packedOverlay, int color) {
         List<Vector2f> uvs = createUVList(u, v, width, height);
-        vertices(vertexConsumer, pose, vertices, uvs, packedLight, packedOverlay, color, Direction.UP, false);
-        vertices(vertexConsumer, pose, vertices, uvs, packedLight, packedOverlay, color, Direction.UP, true);
-    }
-
-    public static void renderFlatImage(PoseStack.Pose pose, VertexConsumer vertexConsumer, List<Vector3f> vertices, int packedLight, int packedOverlay, int color) {
-        vertices(vertexConsumer, pose, vertices, DEFAULT_UVS, packedLight, packedOverlay, color, Direction.UP, false);
-        vertices(vertexConsumer, pose, vertices, OPPOSITE_UVS, packedLight, packedOverlay, color, Direction.UP, true);
+        vertices(pose, vertexConsumer, vertices, uvs, packedLight, packedOverlay, color, Direction.UP, false);
+        vertices(pose, vertexConsumer, vertices, uvs, packedLight, packedOverlay, color, Direction.UP, true);
     }
 
     public static Vector3f vector3f(Vec3 vec3) {
@@ -155,5 +153,11 @@ public class NarakaRenderUtils {
                     null
             );
         }
+    }
+
+    public static void applyYZSpin(PoseStack poseStack, float rotation) {
+        poseStack.mulPose(new Quaternionf().setAngleAxis(Mth.PI / 3, SIN_45, 0, SIN_45));
+        poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(rotation * 2));
     }
 }

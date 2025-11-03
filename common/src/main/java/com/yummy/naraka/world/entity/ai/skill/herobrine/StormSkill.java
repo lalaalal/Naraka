@@ -9,6 +9,7 @@ import com.yummy.naraka.world.entity.NarakaPickaxe;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -24,7 +25,7 @@ public class StormSkill extends ComboSkill<Herobrine> {
     private final HashMap<LivingEntity, Integer> hurtEntities = new HashMap<>();
 
     public StormSkill(Herobrine mob, Skill<?> parryingSkill) {
-        super(LOCATION, mob, 80, 600, 0.5f, 80, parryingSkill);
+        super(LOCATION, mob, 80, 600, 0.8f, 80, parryingSkill);
     }
 
     @Override
@@ -44,9 +45,21 @@ public class StormSkill extends ComboSkill<Herobrine> {
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAt(30, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPull, 0.23));
 
-        runFrom(40, () -> stigmatizingWave(level, 40));
-        runFrom(50, () -> stigmatizingWave(level, 50));
-        runFrom(60, () -> stigmatizingWave(level, 60));
+        runFrom(40, () -> stigmatizingWave(level, 40, tickCount - 40));
+        runFrom(50, () -> stigmatizingWave(level, 50, tickCount - 50));
+
+        runBetween(50, 60, () -> sendCircleParticles(level));
+        runAt(60, () -> level.sendParticles(ParticleTypes.GUST_EMITTER_LARGE, mob.getX(), mob.getY(), mob.getZ(), 4, 0.5, 0.5, 0.5, 0.3));
+        runAt(60, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPush, -3));
+        runFrom(65, () -> stigmatizingWave(level, 65, tickCount - 70));
+    }
+
+    private void sendCircleParticles(ServerLevel level) {
+        for (double angle = 0; angle < Math.TAU; angle += Math.PI / 360) {
+            double x = Math.cos(angle) * 3 + mob.getX();
+            double z = Math.sin(angle) * 3 + mob.getZ();
+            level.sendParticles(NarakaFlameParticleOption.REDSTONE, x, mob.getY() + 0.1, z, 0, 0, 0, 0, 0);
+        }
     }
 
     @Override
@@ -66,6 +79,10 @@ public class StormSkill extends ComboSkill<Herobrine> {
         return targetInRange(target, 80 * 80) && AbstractHerobrine.isNotHerobrine(target) && NarakaPickaxe.isNotNarakaPickaxe(target);
     }
 
+    private boolean entityToPush(LivingEntity target) {
+        return targetInRange(target, 9) && AbstractHerobrine.isNotHerobrine(target) && NarakaPickaxe.isNotNarakaPickaxe(target);
+    }
+
     private boolean findValidTarget(LivingEntity target, int startTick) {
         if (!hurtEntities.containsKey(target))
             return AbstractHerobrine.isNotHerobrine(target);
@@ -73,21 +90,23 @@ public class StormSkill extends ComboSkill<Herobrine> {
     }
 
     private boolean inHurtRange(LivingEntity target, float radius) {
-        float distanceSqr = radius * radius;
-        return targetInRange(distanceSqr + 9) && targetOutOfRange(target, distanceSqr - 9);
+        float from = (radius - 1) * (radius - 1);
+        float to = (radius + 1) * (radius + 1);
+        double horizontalDistance = mob.position().horizontal()
+                .distanceToSqr(target.position().horizontal());
+        return from < horizontalDistance && horizontalDistance < to;
     }
 
-    private void stigmatizingWave(ServerLevel level, int startTick) {
-        int waveTick = tickCount - startTick;
-        if (waveTick == 0) {
+    private void stigmatizingWave(ServerLevel level, int startTick, int distance) {
+        if (distance == 0) {
             level.playSound(null, mob, SoundEvents.BLAZE_SHOOT, SoundSource.HOSTILE, 2, 1);
         }
-        NarakaSkillUtils.sendCircleParticle(level, mob.position(), NarakaFlameParticleOption.REDSTONE, waveTick);
-        if (waveTick > 3) {
+        NarakaSkillUtils.sendCircleParticle(level, mob.position(), NarakaFlameParticleOption.REDSTONE, distance);
+        if (distance > 3) {
             level.getEntitiesOfClass(
                     LivingEntity.class,
-                    mob.getBoundingBox().inflate(waveTick, 10, waveTick),
-                    target -> findValidTarget(target, startTick) && inHurtRange(target, waveTick)
+                    mob.getBoundingBox().inflate(distance, 10, distance),
+                    target -> findValidTarget(target, startTick) && inHurtRange(target, distance)
             ).forEach(target -> {
                 mob.stigmatizeEntity(level, target);
                 hurtEntities.put(target, startTick);
@@ -99,6 +118,6 @@ public class StormSkill extends ComboSkill<Herobrine> {
 
     @Override
     protected float calculateDamage(LivingEntity target) {
-        return mob.getAttackDamage() + target.getMaxHealth() * 0.1f;
+        return target.getMaxHealth() * 0.2f;
     }
 }

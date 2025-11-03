@@ -25,12 +25,14 @@ public class SoulSmithingBlockComponentProvider implements IBlockComponentProvid
                 tooltip.append(JadeUI.smallItem(templateItem));
 
             SoulType type = soulSmithingBlockEntity.getSoulType();
-            if (!templateItem.isEmpty())
-                tooltip.append(Component.literal(" / "));
-            int souls = soulSmithingBlockEntity.getSouls();
-            tooltip.append(Component.translatable(type.translationKey()));
-            tooltip.append(Component.literal(": "));
-            tooltip.append(Component.translatable(LanguageKey.JADE_SOUL_STABILIZER_KEY, souls));
+            if (type != SoulType.NONE) {
+                if (!templateItem.isEmpty())
+                    tooltip.append(Component.literal(" / "));
+                int souls = soulSmithingBlockEntity.getSouls();
+                tooltip.append(Component.translatable(type.translationKey()));
+                tooltip.append(Component.literal(": "));
+                tooltip.append(Component.translatable(LanguageKey.JADE_SOUL_STABILIZER_KEY, souls));
+            }
         }
     }
 

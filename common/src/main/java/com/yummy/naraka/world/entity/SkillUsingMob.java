@@ -9,6 +9,7 @@ import com.yummy.naraka.world.entity.ai.skill.SkillManager;
 import net.minecraft.network.protocol.game.ClientboundEntityPositionSyncPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
@@ -17,6 +18,8 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -30,6 +33,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
     protected int animationTickLeft = Integer.MIN_VALUE;
     protected Runnable animationTickListener = () -> {
     };
+    protected final List<ServerPlayer> players = new ArrayList<>();
 
     protected SkillUsingMob(EntityType<? extends SkillUsingMob> entityType, Level level) {
         super(entityType, level);
@@ -100,6 +104,23 @@ public abstract class SkillUsingMob extends PathfinderMob {
 
     public DamageSource getDefaultDamageSource() {
         return damageSources().mobAttack(this);
+    }
+
+    @Override
+    public void startSeenByPlayer(ServerPlayer serverPlayer) {
+        super.startSeenByPlayer(serverPlayer);
+        players.add(serverPlayer);
+        NetworkManager.clientbound().send(serverPlayer, new SyncAnimationPacket(this, currentAnimation));
+    }
+
+    @Override
+    public void stopSeenByPlayer(ServerPlayer serverPlayer) {
+        super.stopSeenByPlayer(serverPlayer);
+        players.remove(serverPlayer);
+    }
+
+    public List<ServerPlayer> players() {
+        return players;
     }
 
     /**
@@ -198,6 +219,22 @@ public abstract class SkillUsingMob extends PathfinderMob {
         updateAnimationTick();
         skillManager.tick(level);
         NetworkManager.clientbound().send(level.players(), ClientboundEntityPositionSyncPacket.of(this));
+    }
+
+    @Override
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        getCurrentSkill().ifPresent(skill -> {
+            output.store("CurrentSkill", ResourceLocation.CODEC, skill.location);
+        });
+    }
+
+    @Override
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        input.read("CurrentSkill", ResourceLocation.CODEC).ifPresent(
+                this::useSkill
+        );
     }
 
     protected static abstract class AnimationController {

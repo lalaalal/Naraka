@@ -42,7 +42,7 @@ public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
         if (hasFoil == null)
             return;
         poseStack.pushPose();
-        poseStack.scale(1, -1, 1);
+        poseStack.scale(1, -1, -1);
         RenderType renderType = model.renderType(texture);
         NarakaRenderUtils.submitModelWithFoilRenderTypes(model, Unit.INSTANCE, poseStack, renderType, submitNodeCollector, light, hasFoil);
         poseStack.popPose();
@@ -50,7 +50,9 @@ public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
 
     @Override
     public void getExtents(Set<Vector3f> output) {
-        model.root().getExtentsForGui(new PoseStack(), output);
+        PoseStack poseStack = new PoseStack();
+        poseStack.scale(1, -1, -1);
+        model.root().getExtentsForGui(poseStack, output);
     }
 
     @Environment(EnvType.CLIENT)

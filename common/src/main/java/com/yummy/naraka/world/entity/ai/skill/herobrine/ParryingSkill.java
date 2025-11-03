@@ -47,7 +47,7 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         lookTarget(target);
-        run(succeed, () -> handleSucceed(level, target));
+        run(succeed, () -> handleSucceed(level, mob.getLastAttacker()));
     }
 
     private boolean hurtJustNow() {
@@ -58,7 +58,7 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         run(succeed, () -> handleSucceed(level));
         run(at(PARRYING_END_TICK) && !succeed, () -> mob.setAnimation(HerobrineAnimationLocations.PARRYING_FAILED));
-        if (between(PARRYING_START_TICK, PARRYING_END_TICK) && hurtJustNow() && !succeed) {
+        if (between(PARRYING_START_TICK, PARRYING_END_TICK) && hurtJustNow() && !succeed && mob.getLastHurtByMob() != null) {
             mob.setAnimation(HerobrineAnimationLocations.PARRYING_SUCCEED);
             hurtDamage = originalHealth - mob.getHealth();
             mob.heal(hurtDamage * 2);

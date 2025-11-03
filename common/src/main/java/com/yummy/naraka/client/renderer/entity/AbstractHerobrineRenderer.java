@@ -5,6 +5,7 @@ import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.layer.HerobrineEyeLayer;
+import com.yummy.naraka.client.layer.HerobrineScarfLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import com.yummy.naraka.client.renderer.entity.state.AfterimageRenderState;
@@ -57,6 +58,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
 
     protected void addLayers(EntityRendererProvider.Context context) {
         this.addLayer(new HerobrineEyeLayer<>(this));
+        this.addLayer(new HerobrineScarfLayer<>(this, context));
     }
 
     @Override
@@ -80,17 +82,24 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
 
         if (renderState.finalModel) {
             renderState.eyeTexture = NarakaTextures.FINAL_HEROBRINE_EYE;
-            this.model = finalModel;
         } else {
             renderState.eyeTexture = NarakaTextures.HEROBRINE_EYE;
-            this.model = defaultModel;
         }
 
         itemModelResolver.updateForLiving(renderState.pickaxe, pickaxe, ItemDisplayContext.NONE, entity);
     }
 
+    protected void setupModelByRenderState(S renderState) {
+        if (renderState.finalModel) {
+            this.model = finalModel;
+        } else {
+            this.model = defaultModel;
+        }
+    }
+
     @Override
     public void submit(S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+        setupModelByRenderState(renderState);
         poseStack.pushPose();
         poseStack.scale(0.935f, 0.935f, 0.935f);
         super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);

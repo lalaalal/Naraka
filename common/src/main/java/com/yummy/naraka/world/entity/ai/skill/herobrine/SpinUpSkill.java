@@ -24,7 +24,7 @@ public class SpinUpSkill extends ComboSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final_herobrine.spin_up");
 
     public SpinUpSkill(Herobrine mob, @Nullable Skill<?> nextSkill) {
-        super(LOCATION, mob, 55, 0, 0.75f, 40, nextSkill);
+        super(LOCATION, mob, 55, 0, 1, 40, nextSkill);
     }
 
     @Override

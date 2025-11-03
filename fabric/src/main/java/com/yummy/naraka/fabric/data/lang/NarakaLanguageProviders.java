@@ -12,7 +12,6 @@ import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.alchemy.NarakaPotions;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
-import com.yummy.naraka.world.item.equipment.trim.NarakaTrimPatterns;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -77,9 +76,13 @@ public class NarakaLanguageProviders {
         add(NarakaJadeProviderComponents.SOUL_CRAFTING_BLOCK.translationKey, "Soul Crafting Block", "영혼 세공기");
         add(LanguageKey.JADE_SOUL_STABILIZER_KEY, "%d");
         add(NarakaJadeProviderComponents.SOUL_STABILIZER.translationKey, "Soul Stabilizer", "영혼 안정기");
-        add(LanguageKey.JADE_STIGMA_KEY, "Stigma: %d", "낙인: %d");
+        add(LanguageKey.JADE_STIGMA_KEY, ": %d", ": %d");
         add(LanguageKey.JADE_DEATH_COUNT_KEY, "Death Count: %d", "데스카운트: %d");
+        add(LanguageKey.JADE_NECTARIUM_CORE_ACTIVATED_KEY, "Activated", "활성화됨");
+        add(LanguageKey.JADE_NECTARIUM_CORE_INACTIVATED_KEY, "Inactivated", "비활성화됨");
+        add(LanguageKey.JADE_NECTARIUM_CORE_HONEY_KEY, "(%d left)", "(%d 남음)");
         add(NarakaJadeProviderComponents.SOUL_SMITHING_BLOCK.translationKey, "Soul Smithing Block", "영혼 대장장이 블록");
+        add(NarakaJadeProviderComponents.NECTARIUM_CORE.translationKey, "Nectarium Core", "넥타륨 코어");
         add(NarakaJadeProviderComponents.ENTITY_DATA.translationKey, "Stigma", "낙인");
 
         add(LanguageKey.DISABLE_SKILL_USE_KEY, "Disable skill using", "스킬 사용 중지");
@@ -110,7 +113,6 @@ public class NarakaLanguageProviders {
         addReinforcementEffect(NarakaReinforcementEffects.EFFICIENT_MINING_IN_AIR, "Efficient mining in air", "공중 채굴 효율");
         addReinforcementEffect(NarakaReinforcementEffects.WATER_BREATHING, "Water breathing", "수중 호흡");
 
-        addTrimPattern(NarakaTrimPatterns.PURIFIED_SOUL_SILENCE, "Purified Soul Silence Armor Trim", "정화된 영혼 고요 갑옷 장식");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, "Soul Infused Redstone Material", "영혼이 주입된 레드스톤 소재");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_COPPER, "Soul Infused Copper Material", "영혼이 주입된 구리 소재");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_GOLD, "Soul Infused Gold Material", "영혼이 주입된 금 소재");
@@ -200,9 +202,12 @@ public class NarakaLanguageProviders {
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_3, "Herobrine Phase 3", "히로빈 3 페이즈");
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_4, "Herobrine Phase 4", "히로빈 4 페이즈");
 
-        addPotion(Items.POTION, NarakaPotions.GOD_BLESS, "Potion of Bless", "축복의 물약");
-        addPotion(Items.SPLASH_POTION, NarakaPotions.GOD_BLESS, "Splash Potion of Bless", "투척용 축복의 물약");
-        addPotion(Items.LINGERING_POTION, NarakaPotions.GOD_BLESS, "Lingering Potion of Bless", "잔류형 축복의 물약");
+        addPotion(Items.POTION, NarakaPotions.CHALLENGER, "Challenger's Potion", "도전자의 물약");
+        addPotion(Items.SPLASH_POTION, NarakaPotions.CHALLENGER, "Challenger's Splash Potion", "도전자의 물약");
+        addPotion(Items.LINGERING_POTION, NarakaPotions.CHALLENGER, "Challenger's Lingering Potion", "도전자의 물약");
+        addPotion(Items.POTION, NarakaPotions.BLESS, "Potion of Bless", "축복의 물약");
+        addPotion(Items.SPLASH_POTION, NarakaPotions.BLESS, "Splash Potion of Bless", "투척용 축복의 물약");
+        addPotion(Items.LINGERING_POTION, NarakaPotions.BLESS, "Lingering Potion of Bless", "잔류형 축복의 물약");
 
         addItem(NarakaItems.STIGMA_ROD, "Stigma Rod", "낙인 막대기");
         addItem(NarakaItems.STARDUST_STAFF, "Stardust Staff");
@@ -211,9 +216,7 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard", "정화된 영혼 조각");
         addItem(NarakaItems.NECTARIUM, "Nectarium", "넥타륨");
         addItem(NarakaItems.GOD_BLOOD, "§lGod Blood", "§l신의 피");
-        addItem(NarakaItems.COMPRESSED_IRON_INGOT, "Compressed Iron Ingot", "압축된 철 주괴");
-        addItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "Smithing Template", "대장장이 형판");
-        addItem(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, "Smithing Template", "대장장이 형판");
+        addItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "Soul Smithing Template", "영혼 대장장이 형판");
 
         addItem(NarakaItems.SPEAR_ITEM, "Spear", "창");
         addItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "Mighty Holy Spear", "강력한 성스러운 창");
@@ -244,9 +247,6 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD, "Soul Infused Nectarium Sword", "영혼이 주입된 넥타륨 검");
         addItem(NarakaItems.PURIFIED_SOUL_SWORD, "Purified Soul Sword", "정화된 영혼 검");
 
-        addItem(NarakaItems.ULTIMATE_SWORD, "Ultimate Sword", "궁극의 검");
-        addItem(NarakaItems.EBONY_ROOTS_SCRAP, "Ebony Roots Scrap", "흑단나무 뿌리 파편");
-        addItem(NarakaItems.EBONY_METAL_INGOT, "Ebony Metal Ingot", "흑단나무 금속 주괴");
         addItem(NarakaItems.SANCTUARY_COMPASS, "Sanctuary Compass", "생츄어리 나침반");
 
         addItem(NarakaItems.HEROBRINE_PHASE_1_DISC, "Herobrine Phase 1 Disc", "히로빈 1 페이즈 음반");
@@ -263,7 +263,6 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE, "Deepslate Nectarium Ore", "심층암 넥타륨 광석");
         addBlock(NarakaBlocks.NECTARIUM_BLOCK, "Block of Nectarium", "넥타륨 블록");
         addBlock(NarakaBlocks.TRANSPARENT_BLOCK, "Block of Transparent", "투명 블록");
-        addBlock(NarakaBlocks.COMPRESSED_IRON_BLOCK, "Block of Compressed Iron", "압축된 철 블록");
         addBlock(NarakaBlocks.IMITATION_GOLD_BLOCK, "Block of Imitation Gold", "거짓된 금 블록");
         addBlock(NarakaBlocks.AMETHYST_SHARD_BLOCK, "Block of Amethyst Shard", "자수정 조각 블록");
 
@@ -275,30 +274,19 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK, "Block of Soul Infused Lapis", "영혼이 주입된 청금석 블록");
         addBlock(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK, "Block of Soul Infused Amethyst", "영혼이 주입된 자수정 블록");
         addBlock(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK, "Block of Soul Infused Nectarium", "영혼이 주입된 넥타륨 블록");
-        addBlock(NarakaBlocks.PURIFIED_SOUL_BLOCK, "Block of Purified Soul", "정화된 영혼 블록");
 
         addBlock(NarakaBlocks.HEROBRINE_TOTEM, "Herobrine Totem", "히로빈 토템");
         addBlock(NarakaBlocks.PURIFIED_SOUL_LANTERN, "Purified Soul Lantern", "정화된 영혼 랜턴");
         addBlock(NarakaBlocks.PURIFIED_SOUL_LAMP, "Purified Soul Lamp", "정화된 영혼 조명");
         addBlock(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK, "Purified Soul Fire", "정화된 영혼 불");
         addBlock(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK, "Block of Purified Soul Metal", "정화된 영혼 금속 블록");
-        addBlock(NarakaBlocks.EBONY_LOG, "Ebony Log", "흑단나무 원목");
-        addBlock(NarakaBlocks.STRIPPED_EBONY_LOG, "Stripped Ebony Log", "껍질 벗긴 흑단나무 원목");
-        addBlock(NarakaBlocks.EBONY_WOOD, "Ebony Wood", "흑단나무");
-        addBlock(NarakaBlocks.STRIPPED_EBONY_WOOD, "Stripped Ebony Wood", "껍질 벗긴 흑단나무");
-        addBlock(NarakaBlocks.EBONY_LEAVES, "Ebony Leaves", "흑단나무 나뭇잎");
-        addBlock(NarakaBlocks.EBONY_SAPLING, "Ebony Sapling", "흑단나무 묘목");
-        addBlock(NarakaBlocks.POTTED_EBONY_SAPLING, "Potted Ebony Sapling", "화분에 심은 흑단나무 묘목");
-        addBlock(NarakaBlocks.HARD_EBONY_PLANKS, "Hard Ebony Planks", "단단한 흑단나무 판자");
-        addBlock(NarakaBlocks.EBONY_ROOTS, "Ebony Roots", "흑단나무 뿌리");
-        addBlock(NarakaBlocks.EBONY_METAL_BLOCK, "Block of Ebony Metal", "흑단나무 금속 블록");
         addBlock(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Nectarium Core", "넥타륨 코어");
         addBlock(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, "Nectarium Crystal", "넥타륨 결정");
         addBlock(NarakaBlocks.SOUL_STABILIZER, "Soul Stabilizer", "영혼 안정기");
         addBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, "Soul Smithing Block", "영혼 대장장이 블록");
 
         addTooltip(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Honey is dripping", "꿀이 뚝뚝 떨어져");
-        addTooltip(NarakaBlocks.SOUL_SMITHING_BLOCK, "Smash item with a hammer...?", "아이템을 망치로 부수기..?");
+        addTooltip(NarakaBlocks.SOUL_SMITHING_BLOCK, "Smash item with a mace...?", "아이템을 철퇴로 부수기..?");
 
         addEntityType(NarakaEntityTypes.HEROBRINE, "Naraka Tyrant: Herobrine", "나락의 폭군: 히로빈");
         addEntityType(NarakaEntityTypes.ABSOLUTE_HEROBRINE, "Absolute Herobrine");

@@ -6,7 +6,6 @@ import com.yummy.naraka.world.entity.Spear;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import org.joml.Quaternionf;
 
@@ -19,8 +18,8 @@ public class SpearRenderState extends EntityRenderState {
     public boolean isLonginus = false;
 
     public void setRotation(Spear spear, float partialTicks) {
-        yRotation = Axis.YP.rotationDegrees(Mth.lerp(partialTicks, spear.yRotO, spear.getYRot()) - 90.0F);
-        xRotation = Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, spear.xRotO, spear.getXRot()) + 90.0F);
+        yRotation = Axis.YP.rotationDegrees(spear.getYRot(partialTicks) - 90.0F);
+        xRotation = Axis.ZP.rotationDegrees(spear.getXRot(partialTicks) + 90.0F);
     }
 
     public void setType(Spear spear) {

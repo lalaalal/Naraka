@@ -30,6 +30,10 @@ public final class LanguageKey {
     public static final String JADE_STIGMA_KEY = "jade.naraka.stigma";
     public static final String JADE_DEATH_COUNT_KEY = "jade.naraka.death_count";
     public static final String JADE_SOUL_STABILIZER_KEY = "jade.naraka.soul_stabilizer";
+    public static final String JADE_NECTARIUM_CORE_ACTIVATED_KEY = "jade.naraka.nectarium_core.activated";
+    public static final String JADE_NECTARIUM_CORE_INACTIVATED_KEY = "jade.naraka.nectarium_core.deactivated";
+    public static final String JADE_NECTARIUM_CORE_HONEY_KEY = "jade.naraka.nectarium_core.honey";
+
     public static final String REINFORCEMENT_KEY = "item.reinforcement";
     public static final String BLESSED_KEY = "item.blessed";
 
@@ -59,11 +63,15 @@ public final class LanguageKey {
     }
 
     public static String tooltip(Block block) {
-        return tooltip(block.asItem());
+        return block.asItem().getDescriptionId() + ".tooltip";
     }
 
     public static String tooltip(Item item) {
         return item.getDescriptionId() + ".tooltip";
+    }
+
+    public static String tooltip(String name) {
+        return "item.naraka." + name + ".tooltip";
     }
 
     public static String itemGroup(String path) {

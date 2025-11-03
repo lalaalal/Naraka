@@ -1,7 +1,6 @@
 package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.NarakaFireballModel;
@@ -9,14 +8,12 @@ import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.NarakaFireball;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
 public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball, EntityRenderState> {
@@ -42,20 +39,14 @@ public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball, Entit
     @Override
     public void submit(EntityRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
-
         float rotation = renderState.ageInTicks * 5;
         poseStack.translate(0, 0.33, 0);
-        poseStack.mulPose(new Quaternionf().setAngleAxis((float) (Math.PI / 3), NarakaRenderUtils.SIN_45, 0.0F, NarakaRenderUtils.SIN_45));
-        poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(rotation * 2));
-
-        RenderType renderType = model.renderType(NarakaTextures.NARAKA_FIREBALL);
-
+        NarakaRenderUtils.applyYZSpin(poseStack, rotation);
         submitNodeCollector.submitModel(
                 model,
                 renderState,
                 poseStack,
-                renderType,
+                model.renderType(NarakaTextures.NARAKA_FIREBALL),
                 renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1,
                 null,
                 renderState.outlineColor,

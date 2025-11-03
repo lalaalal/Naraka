@@ -1,5 +1,7 @@
 package com.yummy.naraka.world.entity.data;
 
+import com.yummy.naraka.config.NarakaCommonConfig;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
 import com.yummy.naraka.world.entity.StunHelper;
@@ -8,6 +10,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 /**
  * @param value          Actual value of stigma (0 ~ 3)
@@ -17,7 +20,6 @@ import net.minecraft.world.entity.LivingEntity;
 public record Stigma(int value, long lastMarkedTime) {
     public static final Stigma ZERO = new Stigma(0, 0);
     public static final int MAX_STIGMA = 2;
-    public static final int HOLD_ENTITY_DURATION = 20 * 5;
 
     /**
      * Increase value of stigma.
@@ -49,7 +51,7 @@ public record Stigma(int value, long lastMarkedTime) {
 
     /**
      * Reset the stigma of living entity to 0.
-     * Stun and lock health of living entity for {@link #HOLD_ENTITY_DURATION} ticks.<br>
+     * Stun and lock health of living entity for {@link NarakaCommonConfig#stigmaStunDuration} ticks.<br>
      * Call {@link StigmatizingEntity#collectStigma(ServerLevel, LivingEntity, Stigma)} if caused entity is {@linkplain StigmatizingEntity}
      *
      * @param livingEntity Target entity to consume stigma
@@ -60,8 +62,9 @@ public record Stigma(int value, long lastMarkedTime) {
      * @see StigmatizingEntity#collectStigma(ServerLevel, LivingEntity, Stigma)
      */
     public Stigma consume(ServerLevel level, LivingEntity livingEntity, Entity cause) {
+        int stunDuration = NarakaConfig.COMMON.stigmaStunDuration.getValue();
         lockHealth(level, livingEntity, cause);
-        StunHelper.stunEntity(livingEntity, HOLD_ENTITY_DURATION);
+        StunHelper.stunEntity(livingEntity, stunDuration);
         livingEntity.level().playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.TOTEM_USE, livingEntity.getSoundSource(), 1.0F, 1.0F);
 
         if (livingEntity != cause && cause instanceof StigmatizingEntity stigmatizingEntity)
@@ -71,10 +74,10 @@ public record Stigma(int value, long lastMarkedTime) {
     }
 
     private void lockHealth(ServerLevel level, LivingEntity livingEntity, Entity cause) {
-        float maxHealth = livingEntity.getMaxHealth();
+        double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
         double lockedHealth = EntityDataHelper.getEntityData(livingEntity, NarakaEntityDataTypes.LOCKED_HEALTH.get());
         double originalMaxHealth = maxHealth + lockedHealth;
-        double reducingHealth = originalMaxHealth * 0.2;
+        double reducingHealth = originalMaxHealth * NarakaConfig.COMMON.lockHealthRatio.getValue();
         lockedHealth += reducingHealth;
 
         if (lockedHealth >= originalMaxHealth) {

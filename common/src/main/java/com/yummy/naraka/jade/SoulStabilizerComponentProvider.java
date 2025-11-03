@@ -19,7 +19,7 @@ public class SoulStabilizerComponentProvider implements IBlockComponentProvider 
         if (blockAccessor.getBlockEntity() instanceof SoulStabilizerBlockEntity soulStabilizerBlockEntity) {
             SoulType type = soulStabilizerBlockEntity.getSoulType();
             int souls = soulStabilizerBlockEntity.getSouls();
-            if (type != null) {
+            if (type != SoulType.NONE) {
                 tooltip.add(Component.translatable(type.translationKey()));
                 tooltip.append(Component.literal(": "));
                 tooltip.append(Component.translatable(LanguageKey.JADE_SOUL_STABILIZER_KEY, souls));

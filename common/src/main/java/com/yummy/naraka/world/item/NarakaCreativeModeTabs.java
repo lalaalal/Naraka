@@ -29,12 +29,12 @@ public class NarakaCreativeModeTabs {
     );
     public static final HolderProxy<CreativeModeTab, CreativeModeTab> SOUL_MATERIALS_TAB = register("soul_materials", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
             .title(Component.translatable(LanguageKey.ITEM_GROUP_SOUL_MATERIALS))
-            .icon(() -> NarakaItems.ULTIMATE_SWORD.get().getDefaultInstance())
+            .icon(() -> NarakaItems.RAINBOW_SWORD.get().getDefaultInstance())
             .displayItems(NarakaCreativeModeTabs::createSoulMaterialsTab)
     );
     public static final HolderProxy<CreativeModeTab, CreativeModeTab> NARAKA_TEST_TAB = registerOnlyDev("naraka_test", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
             .title(Component.translatable(LanguageKey.ITEM_GROUP_TEST))
-            .icon(() -> NarakaItems.SPEAR_ITEM.get().getDefaultInstance())
+            .icon(() -> NarakaItems.NARAKA_FIREBALL_STAFF.get().getDefaultInstance())
             .displayItems(NarakaCreativeModeTabs::createNarakaTestTab)
     );
 
@@ -79,14 +79,17 @@ public class NarakaCreativeModeTabs {
 
         output.accept(NarakaItems.PURIFIED_SOUL_SWORD.get());
         output.accept(NarakaItems.GOD_BLOOD.get());
-        output.accept(NarakaItems.ULTIMATE_SWORD.get());
+        output.accept(NarakaItems.SPEAR_ITEM.get());
+        output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get());
+        output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_1_DISC.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_2_DISC.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_3_DISC.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_4_DISC.get());
+
         output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get());
         output.accept(NarakaItems.SANCTUARY_COMPASS.get());
-
+        output.accept(NarakaItems.HEROBRINE_SPAWN_EGG.get());
         output.accept(NarakaBlocks.SOUL_SMITHING_BLOCK.get());
         output.accept(NarakaBlocks.SOUL_STABILIZER.get());
         output.accept(NarakaBlocks.PURIFIED_SOUL_LAMP.get());
@@ -126,16 +129,6 @@ public class NarakaCreativeModeTabs {
     }
 
     private static void createNarakaTestTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-        output.accept(NarakaItems.SKILL_CONTROLLER.get());
-        output.accept(NarakaItems.ANIMATION_CONTROLLER.get());
-        output.accept(NarakaItems.ULTIMATE_SWORD.get());
-        output.accept(NarakaItems.PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        output.accept(NarakaItems.EBONY_METAL_INGOT.get());
-        output.accept(NarakaItems.COMPRESSED_IRON_INGOT.get());
-        output.accept(NarakaItems.SPEAR_ITEM.get());
-        output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get());
-        output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
-
         output.accept(blessed(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get()));
         output.accept(blessed(NarakaItems.SOUL_INFUSED_COPPER_SWORD.get()));
         output.accept(blessed(NarakaItems.SOUL_INFUSED_GOLD_SWORD.get()));
@@ -144,36 +137,22 @@ public class NarakaCreativeModeTabs {
         output.accept(blessed(NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get()));
         output.accept(blessed(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get()));
         output.accept(blessed(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get()));
-
-        output.accept(NarakaBlocks.EBONY_METAL_BLOCK.get());
-        output.accept(NarakaBlocks.COMPRESSED_IRON_BLOCK.get());
-        output.accept(NarakaBlocks.PURIFIED_SOUL_BLOCK.get());
-        output.accept(NarakaBlocks.EBONY_LOG.get());
-        output.accept(NarakaBlocks.EBONY_WOOD.get());
-        output.accept(NarakaBlocks.STRIPPED_EBONY_LOG.get());
-        output.accept(NarakaBlocks.STRIPPED_EBONY_WOOD.get());
-        output.accept(NarakaBlocks.HARD_EBONY_PLANKS.get());
-        output.accept(NarakaBlocks.EBONY_ROOTS.get());
-
-        output.accept(NarakaItems.EBONY_ROOTS_SCRAP.get());
-        output.accept(NarakaBlocks.EBONY_LEAVES.get());
-        output.accept(NarakaBlocks.EBONY_SAPLING.get());
+        output.accept(NarakaItems.RAINBOW_SWORD.get());
 
         output.accept(NarakaItems.STIGMA_ROD.get());
-        output.accept(NarakaItems.STARDUST_STAFF.get());
-        output.accept(NarakaItems.NARAKA_FIREBALL_STAFF.get());
-
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_HELMET.get()));
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get()));
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_LEGGINGS.get()));
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_BOOTS.get()));
-
-        output.accept(NarakaItems.HEROBRINE_SPAWN_EGG.get());
-
         output.accept(reinforced(NarakaItems.PURIFIED_SOUL_HELMET.get()));
         output.accept(reinforced(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get()));
         output.accept(reinforced(NarakaItems.PURIFIED_SOUL_LEGGINGS.get()));
         output.accept(reinforced(NarakaItems.PURIFIED_SOUL_BOOTS.get()));
+
+        output.accept(NarakaItems.SKILL_CONTROLLER.get());
+        output.accept(NarakaItems.ANIMATION_CONTROLLER.get());
+        output.accept(NarakaItems.STARDUST_STAFF.get());
+        output.accept(NarakaItems.NARAKA_FIREBALL_STAFF.get());
     }
 
     private static ItemStack blessed(Item item) {

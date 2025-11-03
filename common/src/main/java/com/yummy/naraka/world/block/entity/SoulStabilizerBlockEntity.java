@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.block.entity;
 
 import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -19,10 +20,16 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 public class SoulStabilizerBlockEntity extends BlockEntity {
-    public static final int CAPACITY = 15552;
-
     private SoulType soulType = SoulType.NONE;
     private int souls = 0;
+
+    public static int getCapacity() {
+        return NarakaConfig.COMMON.soulStabilizerCapacity.getValue();
+    }
+
+    public static int getConsume() {
+        return NarakaConfig.COMMON.soulStabilizerConsume.getValue();
+    }
 
     public SoulStabilizerBlockEntity(BlockPos pos, BlockState blockState) {
         super(NarakaBlockEntityTypes.SOUL_STABILIZER.get(), pos, blockState);
@@ -36,20 +43,20 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     public boolean canInject(ItemStack itemStack) {
         if (soulType == SoulType.NONE)
             return SoulType.fromItem(itemStack) != SoulType.NONE;
-        return soulType.test(itemStack) && souls + getSoulByItem(itemStack) <= CAPACITY;
+        return soulType.test(itemStack) && souls + getSoulByItem(itemStack) <= getCapacity();
     }
 
     private int findMaxInjectableCount(ItemStack itemStack) {
         int itemSoul = getSoulByItem(itemStack);
         if (itemSoul == 0)
             return 0;
-        return Mth.clamp((CAPACITY - souls) / itemSoul, 0, itemStack.getCount());
+        return Mth.clamp((getCapacity() - souls) / itemSoul, 0, itemStack.getCount());
     }
 
     private int getSoulByItem(ItemStack itemStack) {
         if (soulType != SoulType.NONE) {
             if (soulType == SoulType.GOD_BLOOD)
-                return 15552;
+                return getCapacity();
             if (soulType.getItem() == itemStack.getItem())
                 return 1;
             if (soulType.getBlockItem() == itemStack.getItem())
@@ -76,7 +83,7 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     public int tryInject(Player player, ItemStack itemStack, boolean injectAll) {
         int count = inject(itemStack, injectAll);
         if (player instanceof ServerPlayer serverPlayer)
-            NarakaCriteriaTriggers.FILL_SOUL_STABILIZER.get().trigger(serverPlayer, souls == CAPACITY);
+            NarakaCriteriaTriggers.FILL_SOUL_STABILIZER.get().trigger(serverPlayer, souls == getCapacity());
         return count;
     }
 
@@ -95,7 +102,7 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     }
 
     public void consumeSoul(int consume) {
-        souls = Mth.clamp(souls - consume, 0, CAPACITY);
+        souls = Mth.clamp(souls - consume, 0, getCapacity());
         if (souls == 0)
             soulType = SoulType.NONE;
     }

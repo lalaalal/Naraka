@@ -39,7 +39,7 @@ public class StrikeSkill extends AttackSkill<NarakaPickaxe> {
 
     private float calculateStigmaDamage(LivingEntity target) {
         float distance = mob.distanceTo(target);
-        if (distance > 13)
+        if (distance > 11)
             return 0;
         if (distance > 7)
             return target.getMaxHealth() * 0.1f;

@@ -72,5 +72,9 @@ public abstract class Configuration {
         public Class<T> getType() {
             return type;
         }
+
+        public void reset() {
+            value = defaultValue;
+        }
     }
 }

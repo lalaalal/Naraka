@@ -95,6 +95,7 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
         renderState.direction = blockEntity.getBlockState().getValue(SoulSmithingBlock.FACING);
         renderState.templateItem = blockEntity.getTemplateItem();
         renderState.stabilizerAttached = blockEntity.isStabilizerAttached();
+        renderState.stabilizer.lightCoords = renderState.lightCoords;
         renderState.stabilizer.blockEntityType = NarakaBlockEntityTypes.SOUL_STABILIZER.get();
         renderState.stabilizer.souls = blockEntity.getSouls();
         renderState.stabilizer.soulType = blockEntity.getSoulType();
@@ -145,7 +146,7 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
         poseStack.rotateAround(rotation.rotateX(Mth.HALF_PI), 0.5f, 0.5f, 0.5f);
         poseStack.translate(0.5, 0.5, 0);
         poseStack.scale(0.8f, 0.8f, 0.8f);
-        renderState.forgingItem.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1);
+        renderState.forgingItem.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
     }
 }

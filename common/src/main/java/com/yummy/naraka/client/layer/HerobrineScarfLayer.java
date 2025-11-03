@@ -2,7 +2,9 @@ package com.yummy.naraka.client.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaModelLayers;
+import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.model.HerobrineScarfModel;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
@@ -20,8 +22,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import java.util.List;
@@ -41,10 +44,18 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
         herobrineModel.upperBody().translateAndRotate(poseStack);
     }
 
-    private RenderType getRenderType(S renderState, ResourceLocation texture) {
+    private RenderType getOutsideRenderType(S renderState, WavingScarfTexture textureInfo) {
         if (renderState.isShadow)
-            return RenderType.entityTranslucent(texture);
-        return RenderType.entityCutout(texture);
+            return RenderType.entityTranslucent(textureInfo.texture(true));
+        return RenderType.entityCutout(textureInfo.texture(false));
+    }
+
+    private RenderType getInsideRenderType(S renderState, WavingScarfTexture textureInfo) {
+        if (!renderState.finalModel || NarakaClientContext.SHADER_ENABLED.getValue())
+            return getOutsideRenderType(renderState, textureInfo);
+        if (renderState.isShadow)
+            return RenderType.entityTranslucent(textureInfo.texture(true));
+        return NarakaRenderTypes.longinusCutout(textureInfo.texture(false));
     }
 
     @Override
@@ -63,13 +74,14 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
             poseStack.pushPose();
             WavingScarfPose scarfPose = modelData.pose();
             WavingScarfTexture textureInfo = modelData.textureInfo();
-            RenderType waveRenderType = getRenderType(renderState, textureInfo.texture(renderState.isShadow));
+            RenderType outsideRenderType = getOutsideRenderType(renderState, textureInfo);
+            RenderType insideRenderType = getInsideRenderType(renderState, textureInfo);
             float scale = scarfPose.scale();
             Vec3 translation = scarfPose.translation();
             poseStack.scale(-scale, -scale, scale);
             poseStack.translate(translation);
 
-            renderScarf(poseStack, waveRenderType, submitNodeCollector, packedLight, color, renderState.scarfRenderState, modelData);
+            renderScarf(poseStack, insideRenderType, outsideRenderType, submitNodeCollector, packedLight, color, renderState.scarfRenderState, modelData);
             poseStack.popPose();
         }
 
@@ -82,7 +94,7 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
         return -1;
     }
 
-    public void renderScarf(PoseStack poseStack, RenderType renderType, SubmitNodeCollector submitNodeCollector, int packedLight, int color, WavingScarfRenderState renderState, WavingScarfRenderState.ModelData modelData) {
+    public void renderScarf(PoseStack poseStack, RenderType insideRenderType, RenderType outsideRenderType, SubmitNodeCollector submitNodeCollector, int packedLight, int color, WavingScarfRenderState renderState, WavingScarfRenderState.ModelData modelData) {
         WavingScarfTexture textureInfo = modelData.textureInfo();
         WavingScarfPose scarfPose = modelData.pose();
         ScarfWavingData waveData = renderState.waveData;
@@ -129,8 +141,12 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
                 float currentU = u + partWidth * horizontal;
                 float currentV = v + partHeight * vertical;
 
-                submitNodeCollector.submitCustomGeometry(poseStack, renderType, (pose, vertexConsumer) -> {
-                    NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, vertices, currentU, currentV, partWidth, partHeight, packedLight, OverlayTexture.NO_OVERLAY, color);
+                List<Vector2f> uvs = NarakaRenderUtils.createUVList(currentU, currentV, partWidth, partHeight);
+                submitNodeCollector.submitCustomGeometry(poseStack, insideRenderType, (pose, vertexConsumer) -> {
+                    NarakaRenderUtils.vertices(pose, vertexConsumer, vertices, uvs, packedLight, OverlayTexture.NO_OVERLAY, color, Direction.UP, false);
+                });
+                submitNodeCollector.submitCustomGeometry(poseStack, outsideRenderType, (pose, vertexConsumer) -> {
+                    NarakaRenderUtils.vertices(pose, vertexConsumer, vertices, uvs, packedLight, OverlayTexture.NO_OVERLAY, color, Direction.UP, true);
                 });
                 poseStack.popPose();
             }

@@ -5,7 +5,6 @@ import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.NarakaTextures;
-import com.yummy.naraka.client.layer.HerobrineScarfLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.model.FinalHerobrineModel;
 import com.yummy.naraka.client.model.HerobrineModel;
@@ -31,12 +30,6 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
         super(context, defaultModel(context, HerobrineModel::new), finalModel(context, FinalHerobrineModel::new), 0.5f);
         this.afterimageModel = new HerobrineModel<>(context.bakeLayer(NarakaModelLayers.HEROBRINE));
         this.dyingModel = new FinalHerobrineModel<>(context.bakeLayer(NarakaModelLayers.FINAL_HEROBRINE));
-    }
-
-    @Override
-    protected void addLayers(EntityRendererProvider.Context context) {
-        this.addLayer(new HerobrineScarfLayer<>(this, context));
-        super.addLayers(context);
     }
 
     @Override
@@ -101,7 +94,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
         if (renderState.dead) {
             if (NarakaClientContext.SHADER_ENABLED.getValue())
                 return RenderType.entitySolid(NarakaTextures.LONGINUS);
-            return NarakaRenderTypes.longinus();
+            return NarakaRenderTypes.longinusCutout(NarakaTextures.FINAL_HEROBRINE);
         }
         return super.getRenderType(renderState, bodyVisible, translucent, glowing);
     }

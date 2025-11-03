@@ -30,6 +30,13 @@ public abstract class Event<T> {
         return new SimpleEvent<>(invokerFactory);
     }
 
+    public static Event<Runnable> simple() {
+        return new SimpleEvent<>(listeners -> () -> {
+            for (Runnable listener : listeners)
+                listener.run();
+        });
+    }
+
     protected Event() {
     }
 

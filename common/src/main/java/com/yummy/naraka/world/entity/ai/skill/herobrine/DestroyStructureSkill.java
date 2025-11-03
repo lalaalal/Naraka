@@ -57,12 +57,13 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAt(25, () -> mob.playStaticAnimation(HerobrineAnimationLocations.PREPARE_PHASE_3, 95, false, true));
 
+        runAt(80, () -> mob.setNoGravity(true));
         runAt(85, mob::startWhiteScreen);
         runAt(87, () -> mob.setDeltaMovement(0, 0.6, 0));
         runBetween(85, 100, () -> reduceSpeed(0.75));
 
         runAt(140, () -> mob.fixTimeAndWeather(level));
-        runAt(160, () -> startPhase3(level));
+        runAt(160, this::startPhase3);
         runAt(240, () -> hurtEntities(level, this::checkTarget, 5));
         runAt(240, () -> mob.setDeltaMovement(0, -0.5, 0));
         runAfter(240, () -> reduceSpeed(0.75));
@@ -134,7 +135,7 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
         level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
     }
 
-    protected void startPhase3(ServerLevel level) {
+    protected void startPhase3() {
         mob.stopWhiteScreen();
         mob.startHerobrineSky();
         mob.sendMusic(3);

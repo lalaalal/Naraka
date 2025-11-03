@@ -3,14 +3,13 @@ package com.yummy.naraka.network;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.gui.screen.AnimationControlScreen;
 import com.yummy.naraka.client.gui.screen.SkillControlScreen;
+import com.yummy.naraka.client.sound.BossMusicPlayer;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.MusicInfo;
-import net.minecraft.client.sounds.MusicManager;
-import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -65,22 +64,14 @@ public class NarakaClientboundEventHandler {
     }
 
     private static void updateHerobrineMusic(final int phase) {
-        Minecraft minecraft = Minecraft.getInstance();
-        SoundManager soundManager = minecraft.getSoundManager();
-        MusicManager musicManager = minecraft.getMusicManager();
-
-        if (0 < phase && phase <= 4) {
-            soundManager.stop();
-            musicManager.stopPlaying();
-            musicManager.startPlaying(new MusicInfo(HEROBRINE_MUSIC[phase]));
-        }
+        BossMusicPlayer bossMusicPlayer = NarakaMusics.bossMusicPlayer();
+        if (0 < phase && phase <= 4)
+            bossMusicPlayer.naraka$playBossMusic(new MusicInfo(HEROBRINE_MUSIC[phase]));
     }
 
     private static void stopHerobrineMusic() {
-        Minecraft minecraft = Minecraft.getInstance();
-        MusicManager musicManager = minecraft.getMusicManager();
-
-        musicManager.stopPlaying();
+        BossMusicPlayer bossMusicPlayer = NarakaMusics.bossMusicPlayer();
+        bossMusicPlayer.naraka$stopBossMusic();
     }
 
     private static void showSkillControlScreen(Entity entity) {

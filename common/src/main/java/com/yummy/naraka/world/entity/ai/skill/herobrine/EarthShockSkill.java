@@ -58,12 +58,14 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runBefore(40, () -> rotateTowardTarget(target));
+        runBefore(40, () -> lookTarget(target));
         runBetween(40, 90, () -> moveToTarget(target, false, applyAcceleration()));
+        runBetween(60, 90, () -> rotateTowardTarget(target));
+        runBetween(60, 90, () -> lookTarget(target));
     }
 
     private Predicate<LivingEntity> targetBetween() {
         return target -> targetInRange(100)
-                && targetOutOfRange(1)
                 && AbstractHerobrine.isNotHerobrine(target);
     }
 
@@ -79,7 +81,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         runBetween(90, 100, () -> shockwaveBlocks(level, 90, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
         runAt(90, mob::shakeCamera);
         runAt(92, () -> hurtEntities(level, targetBetween(), 10));
-        runBetween(100, 125, () -> hurtTargetInAngle(level, 100, 2, -HALF_ANGLE, HALF_ANGLE));
+        runBetween(100, 125, () -> hurtTargetInAngle(level, 95, 1, -HALF_ANGLE, HALF_ANGLE));
         runBetween(100, 125, () -> hurtTargetInAngle(level, 95, 1, -HALF_ANGLE + Mth.HALF_PI, HALF_ANGLE + Mth.HALF_PI));
         runBetween(100, 125, () -> hurtTargetInAngle(level, 95, 1, -HALF_ANGLE - Mth.HALF_PI, HALF_ANGLE - Mth.HALF_PI));
         runBetween(100, 125, () -> hurtTargetInAngle(level, 95, 1, -HALF_ANGLE + Mth.PI, HALF_ANGLE + Mth.PI));
@@ -187,9 +189,9 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
 
         float distanceFrom = spawnTick - 1;
         float distanceTo = spawnTick + 1;
-        Predicate<LivingEntity> targetPredicate = target -> targetInLookAngle(target, angleFrom, angleTo)
-                && targetOutOfRange(target, distanceFrom * distanceFrom)
+        Predicate<LivingEntity> targetPredicate = target -> targetOutOfRange(target, distanceFrom * distanceFrom)
                 && targetInRange(target, distanceTo * distanceTo)
+                && targetInLookAngle(target, angleFrom, angleTo)
                 && AbstractHerobrine.isNotHerobrine(target);
         hurtEntities(level, targetPredicate, spawnTick + 4);
     }

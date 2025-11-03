@@ -87,9 +87,6 @@ public class NarakaItems {
             )
     );
 
-    public static final HolderProxy<Item, Item> EBONY_ROOTS_SCRAP = registerSimpleItem("ebony_roots_scrap");
-    public static final HolderProxy<Item, Item> EBONY_METAL_INGOT = registerSimpleItem("ebony_metal_ingot", Item.Properties::fireResistant);
-
     public static final HolderProxy<Item, Item> GOD_BLOOD = registerSimpleItem(
             "god_blood",
             properties -> properties.stacksTo(1)
@@ -98,13 +95,8 @@ public class NarakaItems {
     );
 
     public static final HolderProxy<Item, SanctuaryCompassItem> SANCTUARY_COMPASS = registerItem("sanctuary_compass", SanctuaryCompassItem::new);
-    public static final HolderProxy<Item, Item> COMPRESSED_IRON_INGOT = registerSimpleItem("compressed_iron_ingot");
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = registerSimpleItem("purified_soul_upgrade_smithing_template");
-    public static final HolderProxy<Item, SmithingTemplateItem> PURIFIED_SOUL_SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE = registerItem(
-            "purified_soul_silence_armor_trim_smithing_template",
-            SmithingTemplateItem::createArmorTrimTemplate
-    );
 
     public static final HolderProxy<Item, Item> SOUL_INFUSED_REDSTONE = registerSoulInfusedItem(SoulType.REDSTONE);
     public static final HolderProxy<Item, Item> SOUL_INFUSED_COPPER = registerSoulInfusedItem(SoulType.COPPER);
@@ -128,7 +120,7 @@ public class NarakaItems {
     public static final HolderProxy<Item, SpearItem> MIGHTY_HOLY_SPEAR_ITEM = registerItem(
             "mighty_holy_spear",
             properties -> new SpearItem(ToolMaterial.NETHERITE,
-                    true, 61, -3, 3,
+                    true, 7, -3, 3,
                     properties.fireResistant()
                             .component(DataComponents.TOOL, TridentItem.createToolProperties()),
                     NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR
@@ -158,10 +150,6 @@ public class NarakaItems {
                     properties.fireResistant()
                             .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
             )
-    );
-    public static final HolderProxy<Item, Item> ULTIMATE_SWORD = registerSimpleItem(
-            "ultimate_sword",
-            properties -> properties.sword(NarakaToolMaterials.LONGINUS, 3, -2.4f)
     );
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_HELMET = registerPurifiedSoulArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.HELMET);

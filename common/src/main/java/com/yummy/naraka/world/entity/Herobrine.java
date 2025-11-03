@@ -6,7 +6,6 @@ import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAfterimagePacket;
-import com.yummy.naraka.network.SyncAnimationPacket;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
@@ -91,21 +90,18 @@ public class Herobrine extends AbstractHerobrine {
     protected final SplitAttackSkill splitAttackSkill = registerSkill(7, new SplitAttackSkill(this, spinUpSkill), HerobrineAnimationLocations.FINAL_COMBO_ATTACK_1);
     protected final PickaxeSlashSkill<AbstractHerobrine> singlePickaxeSlashSkill = registerSkill(7, this, PickaxeSlashSkill::single, HerobrineAnimationLocations.PICKAXE_SLASH_SINGLE);
     protected final PickaxeSlashSkill<Herobrine> triplePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::triple, HerobrineAnimationLocations.PICKAXE_SLASH_TRIPLE);
-    protected final PickaxeStrikeSkill pickaxeStrikeSkill = registerSkill(7, this, PickaxeStrikeSkill::new, HerobrineAnimationLocations.PICKAXE_STRIKE);
+    protected final SpawnPickaxeSkill spawnPickaxeSkill = registerSkill(7, this, SpawnPickaxeSkill::new, HerobrineAnimationLocations.PICKAXE_STRIKE);
 
     public final AnimationState chzzkAnimationState = new AnimationState();
-
-    @Nullable
-    private LivingEntity firstTarget;
 
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill);
     private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, walkAroundTargetSkill);
     private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, summonShadowSkill, walkAroundTargetSkill);
-    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, splitAttackSkill, stormSkill, carpetBombingSkill, singlePickaxeSlashSkill, triplePickaxeSlashSkill, earthShockSkill, pickaxeStrikeSkill);
+    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, splitAttackSkill, stormSkill, carpetBombingSkill, singlePickaxeSlashSkill, triplePickaxeSlashSkill, earthShockSkill, spawnPickaxeSkill);
 
-    private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashAroundSkill, walkAroundTargetSkill);
-    private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(HerobrineAnimationLocations.ENTER_PHASE_2, HerobrineAnimationLocations.STAGGERING_PHASE_2, HerobrineAnimationLocations.ENTER_PHASE_3);
+    private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashAroundSkill, walkAroundTargetSkill, destroyStructureSkill);
+    private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(HerobrineAnimationLocations.ENTER_PHASE_2, HerobrineAnimationLocations.STAGGERING_PHASE_2, HerobrineAnimationLocations.PREPARE_PHASE_3, HerobrineAnimationLocations.ENTER_PHASE_3);
 
     private final List<List<Skill<?>>> HIBERNATED_MODE_SKILL_BY_PHASE = List.of(
             List.of(), HIBERNATED_MODE_PHASE_1_SKILLS, HIBERNATED_MODE_PHASE_2_SKILLS, List.of()
@@ -119,8 +115,11 @@ public class Herobrine extends AbstractHerobrine {
     );
 
     private final List<Projectile> ignoredProjectiles = new ArrayList<>();
-    private final Set<UUID> stigmatizedEntities = new HashSet<>();
+    private int maxWatchedEntities = 0;
+    @Nullable
+    private LivingEntity selectedTarget;
     private final Set<UUID> watchingEntities = new HashSet<>();
+    private final Map<UUID, LivingEntity> cachedWatchingEntities = new HashMap<>();
     protected final List<Afterimage> afterimages = new ArrayList<>();
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
@@ -149,6 +148,7 @@ public class Herobrine extends AbstractHerobrine {
         skillManager.runOnSkillStart(this::enableEyeOnPhase3);
         skillManager.runOnSkillEnd(this::disableEyeOnPhase3);
         skillManager.runOnSkillEnd(this::useShadowFlicker);
+        skillManager.runOnSkillSelect(this::changeTarget);
         skillManager.enableOnly(PHASE_1_SKILLS);
         skillManager.shareCooldown(List.of(singlePickaxeSlashSkill, triplePickaxeSlashSkill));
 
@@ -186,6 +186,16 @@ public class Herobrine extends AbstractHerobrine {
             setDisplayEye(false);
     }
 
+    private void changeTarget(Skill<?> skill) {
+        if (!cachedWatchingEntities.isEmpty()) {
+            int randomSkip = random.nextInt(cachedWatchingEntities.size());
+            cachedWatchingEntities.values().stream()
+                    .skip(randomSkip)
+                    .findFirst()
+                    .ifPresent(livingEntity -> selectedTarget = livingEntity);
+        }
+    }
+
     public Herobrine(Level level, Vec3 pos) {
         this(NarakaEntityTypes.HEROBRINE.get(), level);
         setPos(pos);
@@ -218,11 +228,12 @@ public class Herobrine extends AbstractHerobrine {
         navigation = new FlyingPathNavigation(this, level());
         moveControl = new HerobrineFlyMoveControl(this, 0.75);
         setAnimation(HerobrineAnimationLocations.PHASE_3_IDLE);
-        if (isFinalModel())
+        if (isFinalModel()) {
+            setNoGravity(true);
             return;
+        }
         teleportToSpawnedPosition();
         skillManager.setCurrentSkill(destroyStructureSkill);
-        setNoGravity(true);
         setDisplayEye(false);
         setDisplayPickaxe(true);
 
@@ -232,10 +243,33 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     @Override
+    public void push(Vec3 vector) {
+        if (getPhase() < 3)
+            super.push(vector);
+    }
+
+    @Override
+    public void push(double x, double y, double z) {
+        if (getPhase() < 3)
+            super.push(x, y, z);
+    }
+
+    @Override
     public void setTarget(@Nullable LivingEntity target) {
         super.setTarget(target);
-        if (firstTarget == null && target != null)
-            firstTarget = target;
+        if (target != null && !watchingEntities.contains(target.getUUID())) {
+            watchingEntities.add(target.getUUID());
+            cachedWatchingEntities.put(target.getUUID(), target);
+            maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
+        }
+    }
+
+    @Override
+    @Nullable
+    public LivingEntity getTarget() {
+        if (selectedTarget != null && selectedTarget.isAlive())
+            return selectedTarget;
+        return super.getTarget();
     }
 
     @Override
@@ -281,24 +315,24 @@ public class Herobrine extends AbstractHerobrine {
         return phaseManager.getCurrentPhase();
     }
 
-    private float calculateLockedHealth(ServerLevel level) {
+    private float calculateLockedHealth() {
         double sum = 0;
-        for (LivingEntity livingEntity : NarakaEntityUtils.findEntitiesByUUID(level, watchingEntities, LivingEntity.class))
+        for (LivingEntity livingEntity : cachedWatchingEntities.values())
             sum += LockedHealthHelper.get(livingEntity);
         return (float) sum;
     }
 
-    private float calculateStigma(ServerLevel level) {
+    private float calculateStigma() {
         float sum = 0;
-        for (LivingEntity livingEntity : NarakaEntityUtils.findEntitiesByUUID(level, stigmatizedEntities, LivingEntity.class))
+        for (LivingEntity livingEntity : cachedWatchingEntities.values())
             sum += StigmaHelper.get(livingEntity).value();
         return sum;
     }
 
     @Override
     public float getAttackDamage() {
-        if (level() instanceof ServerLevel serverLevel && getPhase() == 3)
-            return super.getAttackDamage() + calculateLockedHealth(serverLevel) * 3;
+        if (getPhase() == 3)
+            return super.getAttackDamage() + calculateLockedHealth() * 3;
         return super.getAttackDamage();
     }
 
@@ -306,8 +340,9 @@ public class Herobrine extends AbstractHerobrine {
     public void stigmatizeEntity(ServerLevel level, LivingEntity target) {
         if (!target.getType().is(NarakaEntityTypeTags.HEROBRINE) && getPhase() > 1) {
             StigmaHelper.increaseStigma(level, target, this, true);
-            stigmatizedEntities.add(target.getUUID());
             watchingEntities.add(target.getUUID());
+            cachedWatchingEntities.put(target.getUUID(), target);
+            maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
         }
     }
 
@@ -354,6 +389,7 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     protected void customServerAiStep(ServerLevel serverLevel) {
         updateAccumulatedDamage();
+        updateWatchingEntities(serverLevel);
 
         if (!isFinalModel())
             tryAvoidProjectile();
@@ -361,8 +397,7 @@ public class Herobrine extends AbstractHerobrine {
         phaseManager.updatePhase(bossEvent);
 
         if (NarakaConfig.COMMON.despawnHerobrineWhenTargetIsDead.getValue()
-                && firstTarget != null && firstTarget.isDeadOrDying()) {
-            shadowController.killShadows(serverLevel);
+                && watchingEntities.isEmpty() && maxWatchedEntities > 0) {
             discard();
         }
         if (getPhase() == 2 && tickCount % 100 == 0) {
@@ -370,12 +405,27 @@ public class Herobrine extends AbstractHerobrine {
         }
 
         if (getPhase() == 3 && tickCount % 66 == 0) {
-            float lockedHealth = calculateLockedHealth(serverLevel);
-            float stigma = calculateStigma(serverLevel);
-            heal(stigma * (lockedHealth + 1) * 6);
+            float lockedHealth = calculateLockedHealth();
+            float stigma = calculateStigma();
+            heal(stigma * lockedHealth * 1.5f);
         }
 
+        if (isInWall())
+            teleportToSpawnedPosition();
+
         super.customServerAiStep(serverLevel);
+    }
+
+    private void updateWatchingEntities(ServerLevel level) {
+        watchingEntities.removeIf(uuid -> {
+            LivingEntity target = NarakaEntityUtils.findEntityByUUID(level, uuid, LivingEntity.class);
+            if (target == null || target.isDeadOrDying() || !NarakaEntityUtils.isDamageable(target)) {
+                cachedWatchingEntities.remove(uuid);
+                return true;
+            }
+            cachedWatchingEntities.put(uuid, target);
+            return false;
+        });
     }
 
     @Override
@@ -406,16 +456,9 @@ public class Herobrine extends AbstractHerobrine {
 
     private void collectStigma(ServerLevel serverLevel) {
         final int waitingTick = NarakaConfig.COMMON.herobrineTakingStigmaTick.getValue();
-        watchingEntities.removeIf(uuid -> {
-            LivingEntity entity = NarakaEntityUtils.findEntityByUUID(serverLevel, uuid, LivingEntity.class);
-            if (entity == null)
-                return false;
-            if (entity.isDeadOrDying()) {
-                stigmatizedEntities.remove(uuid);
-                return true;
-            }
-            return StigmaHelper.collectStigmaAfter(serverLevel, entity, this, waitingTick);
-        });
+
+        for (LivingEntity entity : cachedWatchingEntities.values())
+            StigmaHelper.collectStigmaAfter(serverLevel, entity, this, waitingTick);
     }
 
     private boolean shouldCheckProjectile(Projectile projectile) {
@@ -446,14 +489,13 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void startSeenByPlayer(ServerPlayer serverPlayer) {
+        super.startSeenByPlayer(serverPlayer);
         if (isAlive()) {
             bossEvent.addPlayer(serverPlayer);
             CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaMusics.musicEventByPhase(getPhase()));
             NetworkManager.sendToClient(serverPlayer, packet);
             if (isFinalModel()) {
                 this.startHerobrineSky();
-                SyncAnimationPacket payload = new SyncAnimationPacket(this, currentAnimation);
-                NetworkManager.clientbound().send(serverPlayer, payload);
             }
         }
     }
@@ -488,8 +530,10 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void stopSeenByPlayer(ServerPlayer serverPlayer) {
+        super.stopSeenByPlayer(serverPlayer);
         bossEvent.removePlayer(serverPlayer);
-        sendStopPacket(serverPlayer);
+        if (isAlive() || serverPlayer.isDeadOrDying())
+            sendStopPacket(serverPlayer);
     }
 
     private void sendStopPacket(ServerPlayer serverPlayer) {
@@ -538,6 +582,11 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     protected void actuallyHurt(ServerLevel level, DamageSource damageSource, float damageAmount) {
+        if (!damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)
+                && phaseManager.getCurrentPhaseHealth() - damageAmount < 0 && getPhase() < 3) {
+            setHealth(phaseManager.getActualPhaseMaxHealth(getPhase() + 1) + 1);
+            return;
+        }
         super.actuallyHurt(level, damageSource, damageAmount);
         updateHurtDamageLimit(level);
         accumulatedHurtDamage += damageAmount;
@@ -582,6 +631,15 @@ public class Herobrine extends AbstractHerobrine {
         return getDamageAfterMagicAbsorb(source, damage);
     }
 
+    private float calculateHurtDamageLimitByLockedHealth() {
+        double sum = 0;
+        for (LivingEntity livingEntity : cachedWatchingEntities.values()) {
+            double lockedHealth = LockedHealthHelper.get(livingEntity);
+            sum += (lockedHealth / (livingEntity.getMaxHealth() + lockedHealth)) * 20;
+        }
+        return MAX_HURT_DAMAGE_LIMIT - (float) sum;
+    }
+
     private void updateHurtDamageLimit(ServerLevel level) {
         if (phaseManager.getCurrentPhase() < 3 && hurtDamageLimit > 1) {
             float damageLimitReduce = NarakaConfig.COMMON.herobrineHurtLimitReduce.getValue();
@@ -592,7 +650,7 @@ public class Herobrine extends AbstractHerobrine {
             }
         }
         if (getPhase() == 3) {
-            hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT - calculateLockedHealth(level);
+            hurtDamageLimit = calculateHurtDamageLimitByLockedHealth();
         }
     }
 
@@ -694,11 +752,10 @@ public class Herobrine extends AbstractHerobrine {
         if (damageSource.getEntity() instanceof LivingEntity livingEntity)
             rewardChallenger(livingEntity);
         super.die(damageSource);
-        if (level() instanceof ServerLevel serverLevel) {
+        if (!level().isClientSide()) {
             bossEvent.getPlayers().forEach(this::sendStopPacket);
             bossEvent.removeAllPlayers();
-            releaseStigma(serverLevel);
-            spawnAbsoluteHerobrine(serverLevel.getServer());
+            releaseStigma();
         }
         if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             deathTime = 1180;
@@ -725,19 +782,19 @@ public class Herobrine extends AbstractHerobrine {
         this.deathTime++;
     }
 
-    private void releaseStigma(ServerLevel level) {
-        for (LivingEntity livingEntity : NarakaEntityUtils.findEntitiesByUUID(level, stigmatizedEntities, LivingEntity.class)) {
+    private void releaseStigma() {
+        for (LivingEntity livingEntity : cachedWatchingEntities.values()) {
             LockedHealthHelper.release(livingEntity);
             StigmaHelper.removeStigma(livingEntity);
         }
-        stigmatizedEntities.clear();
     }
 
     @Override
     public void remove(RemovalReason reason) {
         if (reason.shouldDestroy() && level() instanceof ServerLevel serverLevel) {
-            releaseStigma(serverLevel);
+            releaseStigma();
             shadowController.killShadows(serverLevel);
+            players().forEach(this::sendStopPacket);
             serverLevel.getGameRules().getRule(GameRules.RULE_DAYLIGHT).set(true, serverLevel.getServer());
             serverLevel.getGameRules().getRule(GameRules.RULE_WEATHER_CYCLE).set(true, serverLevel.getServer());
         }
@@ -762,7 +819,6 @@ public class Herobrine extends AbstractHerobrine {
         output.putFloat("HurtDamageLimit", hurtDamageLimit);
         output.putBoolean("HibernateMode", hibernateMode);
         output.storeNullable("SpawnPosition", BlockPos.CODEC, spawnPosition);
-        output.store("StigmatizedEntities", UUIDUtil.CODEC_SET, stigmatizedEntities);
         output.store("WatchingEntities", UUIDUtil.CODEC_SET, watchingEntities);
         shadowController.save(output);
     }
@@ -777,7 +833,6 @@ public class Herobrine extends AbstractHerobrine {
         if (hibernateMode)
             startHibernateMode(level);
         input.read("SpawnPosition", BlockPos.CODEC).ifPresent(pos -> spawnPosition = pos);
-        input.read("StigmatizedEntities", UUIDUtil.CODEC_SET).ifPresent(stigmatizedEntities::addAll);
         input.read("WatchingEntities", UUIDUtil.CODEC_SET).ifPresent(watchingEntities::addAll);
         shadowController.load(input);
     }

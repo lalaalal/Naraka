@@ -1,5 +1,6 @@
 package com.yummy.naraka.jade;
 
+import com.yummy.naraka.world.block.NectariumCoreBlock;
 import com.yummy.naraka.world.block.SoulSmithingBlock;
 import com.yummy.naraka.world.block.SoulStabilizer;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,6 +20,7 @@ public class NarakaJadePlugin implements IWailaPlugin {
     public void registerClient(IWailaClientRegistration registration) {
         registration.registerBlockComponent(SoulStabilizerComponentProvider.INSTANCE, SoulStabilizer.class);
         registration.registerBlockComponent(SoulSmithingBlockComponentProvider.INSTANCE, SoulSmithingBlock.class);
+        registration.registerBlockComponent(NectariumCoreComponentProvider.INSTANCE, NectariumCoreBlock.class);
 
         registration.registerEntityComponent(NarakaEntityDataProvider.INSTANCE, LivingEntity.class);
     }
