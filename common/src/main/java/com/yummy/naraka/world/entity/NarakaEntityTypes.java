@@ -69,6 +69,7 @@ public class NarakaEntityTypes {
             "spear_of_longinus",
             EntityType.Builder.<SpearOfLonginus>of(SpearOfLonginus::new, MobCategory.MISC)
                     .sized(0.5f, 1.0f)
+                    .updateInterval(1)
                     .fireImmune()
                     .immuneTo(Blocks.CACTUS)
     );
