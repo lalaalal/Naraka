@@ -66,6 +66,8 @@
   "death.attack.pickaxe_slash.player": "%1$s이(가) %2$s에 썰렸습니다",
   "death.attack.spear_of_longinus": "%1$s의 AT 필드가 %2$s에 찢어졌습니다",
   "death.attack.spear_of_longinus.player": "%1$s의 AT 필드가 %2$s에 찢어졌습니다",
+  "death.attack.stardust": "%1$s이(가) %2$s에 폭사했습니다",
+  "death.attack.stardust.player": "%1$s이(가) %2$s에 폭사했습니다",
   "death.attack.stigma": "%1$s이(가) %2$s의 낙인이 중첩돼 생명을 빼앗겼습니다",
   "death.attack.stigma.player": "%1$s이(가) %2$s의 낙인이 중첩돼 생명을 빼앗겼습니다",
   "death.attack.stigma_consume": "%2$s이(가) %1$s의 낙인을 소모해 생명을 앗아갔습니다",

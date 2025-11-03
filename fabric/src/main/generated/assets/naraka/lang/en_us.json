@@ -66,6 +66,8 @@
   "death.attack.pickaxe_slash.player": "%1$s was slain by %2$s",
   "death.attack.spear_of_longinus": "%1$s's AT Field was torn by %2$s",
   "death.attack.spear_of_longinus.player": "%1$s's AT Field was torn by %2$s",
+  "death.attack.stardust": "%1$s was exploded by %2$s",
+  "death.attack.stardust.player": "%1$s was exploded by %2$s",
   "death.attack.stigma": "%1$s's has been deprived of life due to %2$s's stigma stacking",
   "death.attack.stigma.player": "%1$s's has been deprived of life due to %2$s's stigma stacking",
   "death.attack.stigma_consume": "%2$s has been consumed %1$s's stigma",
