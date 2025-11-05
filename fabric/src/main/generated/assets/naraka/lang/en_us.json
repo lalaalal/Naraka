@@ -90,6 +90,8 @@
   "death.attack.naraka_fireball.player": "%1$s was blown by naraka fireball thrown by %2$s",
   "death.attack.pickaxe_slash": "%1$s was slain by %2$s",
   "death.attack.pickaxe_slash.player": "%1$s was slain by %2$s",
+  "death.attack.purified_soul_fire": "%1$s went up in black flames",
+  "death.attack.purified_soul_fire.player": "%1$s went up in black flames",
   "death.attack.spear_of_longinus": "%1$s's AT Field was torn by %2$s",
   "death.attack.spear_of_longinus.player": "%1$s's AT Field was torn by %2$s",
   "death.attack.stardust": "%1$s was exploded by %2$s",
