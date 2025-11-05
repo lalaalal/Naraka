@@ -64,6 +64,8 @@
   "death.attack.naraka_fireball.player": "%1$s이(가) %2$s이(가) 던진 나락 화염구에 폭발했습니다",
   "death.attack.pickaxe_slash": "%1$s이(가) %2$s에 썰렸습니다",
   "death.attack.pickaxe_slash.player": "%1$s이(가) %2$s에 썰렸습니다",
+  "death.attack.purified_soul_fire": "%1$s이(가) 검은 불 속에서 타 죽었습니다",
+  "death.attack.purified_soul_fire.player": "%1$s이(가) 검은 불 속에서 타 죽었습니다",
   "death.attack.spear_of_longinus": "%1$s의 AT 필드가 %2$s에 찢어졌습니다",
   "death.attack.spear_of_longinus.player": "%1$s의 AT 필드가 %2$s에 찢어졌습니다",
   "death.attack.stardust": "%1$s이(가) %2$s에 폭사했습니다",
