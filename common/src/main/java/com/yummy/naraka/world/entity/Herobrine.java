@@ -8,11 +8,13 @@ import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAfterimagePacket;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
+import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.NarakaDimensions;
+import com.yummy.naraka.world.block.NarakaPortalBlock;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.control.HerobrineFlyMoveControl;
@@ -23,7 +25,6 @@ import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import com.yummy.naraka.world.entity.data.LockedHealthHelper;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
-import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -554,14 +555,14 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public boolean hurt(DamageSource source, float damage) {
-        if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
-            return super.hurt(source, damage);
         if (level() instanceof ServerLevel level) {
             if (isDeadOrDying() && source.getEntity() instanceof LivingEntity sourceEntity
-                    && sourceEntity.getMainHandItem().is(NarakaItems.PURIFIED_SOUL_SWORD.get())) {
+                    && sourceEntity.getMainHandItem().is(NarakaItemTags.ENTER_NARAKA_DIMENSION)) {
                 teleportTargetToNarakaDimension(level, sourceEntity);
                 return false;
             }
+            if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+                return super.hurt(source, damage);
             if (source.getEntity() == this || isUsingInvulnerableSkill()) {
                 level.playSound(null, getX(), getY(), getZ(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.HOSTILE, 4, 0.3f);
                 return false;
@@ -730,8 +731,11 @@ public class Herobrine extends AbstractHerobrine {
     protected void teleportTargetToNarakaDimension(ServerLevel level, Entity target) {
         if (isDeadOrDying() && isFinalModel()) {
             ServerLevel narakaDimension = level.getServer().getLevel(NarakaDimensions.NARAKA);
-            if (narakaDimension != null)
-                target.teleportTo(narakaDimension, 0, 0, 0, Set.of(), 0, 0);
+            if (narakaDimension != null) {
+                BlockPos blockPos = NarakaPortalBlock.createRandomNarakaSpawnPosition(random);
+                Vec3 pos = blockPos.getBottomCenter();
+                target.teleportTo(narakaDimension, pos.x, pos.y, pos.z, Set.of(), 180, 0);
+            }
         }
     }
 

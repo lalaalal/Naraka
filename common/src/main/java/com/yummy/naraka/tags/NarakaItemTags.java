@@ -18,7 +18,7 @@ public final class NarakaItemTags {
     public static final TagKey<Item> SOUL_MATERIALS = create("soul_materials");
     public static final TagKey<Item> SOUL_SWORDS = create("soul_swords");
 
-    public static final TagKey<Item> LONGINUS_TOOL_MATERIALS = create("longinus_tool_materials");
+    public static final TagKey<Item> ENTER_NARAKA_DIMENSION = create("enter_naraka_dimension");
 
     public static TagKey<Item> create(String name) {
         return TagKey.create(Registries.ITEM, NarakaMod.location(name));
