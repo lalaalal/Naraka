@@ -169,6 +169,17 @@ public class NarakaBlocks {
             Blocks.GLASS
     );
 
+    public static final HolderProxy<Block, NarakaPortalBlock> NARAKA_PORTAL = registerBlock(
+            "naraka_portal",
+            NarakaPortalBlock::new,
+            from(Blocks.NETHER_PORTAL)
+                    .lightLevel(state -> 15)
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .pushReaction(PushReaction.BLOCK)
+                    .strength(-1, 3600000)
+                    .noLootTable()
+    );
+
     public static final List<Supplier<Block>> SOUL_INFUSED_BLOCKS = List.of(
             SOUL_INFUSED_REDSTONE_BLOCK,
             SOUL_INFUSED_COPPER_BLOCK,

@@ -2,6 +2,7 @@ package com.yummy.naraka.data.worldgen.features;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.block.NarakaBlocks;
+import com.yummy.naraka.world.features.NarakaFeatures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.ReplaceBlockCon
 
 public class NarakaConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> PURIFIED_SOUL_LANTERN = create("purified_soul_lantern");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> NARAKA_PORTAL = create("naraka_portal");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         NarakaTreeFeatures.bootstrap(context);
@@ -23,6 +25,7 @@ public class NarakaConfiguredFeatures {
                         NarakaBlocks.PURIFIED_SOUL_LANTERN.get().defaultBlockState()
                 )
         );
+        FeatureUtils.register(context, NARAKA_PORTAL, NarakaFeatures.NARAKA_PORTAL.get());
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> create(String name) {

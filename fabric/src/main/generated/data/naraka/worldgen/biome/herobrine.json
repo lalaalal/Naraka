@@ -29,7 +29,8 @@
   },
   "features": [
     [
-      "naraka:purified_soul_lantern"
+      "naraka:purified_soul_lantern",
+      "naraka:naraka_portal"
     ]
   ],
   "has_precipitation": false,

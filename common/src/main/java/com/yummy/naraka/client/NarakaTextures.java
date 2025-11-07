@@ -52,6 +52,10 @@ public final class NarakaTextures {
 
     public static final ResourceLocation NARAKA_ADVANCEMENT_ROOT_BACKGROUND = advancements("backgrounds/naraka");
 
+    public static final ResourceLocation NARAKA_PORTAL_1 = entity("naraka_portal/naraka_portal_waxing_crescent.png");
+    public static final ResourceLocation NARAKA_PORTAL_2 = entity("naraka_portal/naraka_portal_first_quarter.png");
+    public static final ResourceLocation NARAKA_PORTAL_3 = entity("naraka_portal/naraka_portal_waxing_gibbous.png");
+
     private static ResourceLocation texture(String parent, String path) {
         return NarakaMod.location("textures/%s".formatted(parent), path);
     }
