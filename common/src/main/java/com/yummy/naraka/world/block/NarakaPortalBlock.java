@@ -93,7 +93,7 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
         boolean toRespawn = currentDimension == NarakaDimensions.NARAKA;
         ResourceKey<Level> destinationDimension = toRespawn ? respawnData.dimension() : NarakaDimensions.NARAKA;
         ServerLevel destinationLevel = level.getServer().getLevel(destinationDimension);
-        float yRot = toRespawn ? respawnData.yaw() : 0;
+        float yRot = toRespawn ? respawnData.yaw() : 180;
         float xRot = toRespawn ? respawnData.pitch() : 0;
         if (destinationLevel == null)
             return null;

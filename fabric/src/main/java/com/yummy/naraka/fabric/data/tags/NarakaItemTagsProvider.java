@@ -52,6 +52,11 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
         valueLookupBuilder(ItemTags.FOOT_ARMOR_ENCHANTABLE)
                 .add(NarakaItems.PURIFIED_SOUL_BOOTS.get());
 
+        valueLookupBuilder(NarakaItemTags.ENTER_NARAKA_DIMENSION)
+                .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get())
+                .add(NarakaItems.PURIFIED_SOUL_SWORD.get())
+                .addTag(NarakaItemTags.SOUL_SWORDS);
+
         valueLookupBuilder(NarakaItemTags.PURIFIED_SOUL_ARMOR)
                 .add(NarakaItems.PURIFIED_SOUL_HELMET.get())
                 .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get())
