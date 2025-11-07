@@ -278,4 +278,9 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     public boolean canFreeze() {
         return false;
     }
+
+    @Override
+    public boolean canUsePortal(boolean allowPassengers) {
+        return false;
+    }
 }
