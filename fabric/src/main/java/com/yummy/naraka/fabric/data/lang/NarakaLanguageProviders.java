@@ -287,6 +287,7 @@ public class NarakaLanguageProviders {
 
         addTooltip(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Honey is dripping", "꿀이 뚝뚝 떨어져");
         addTooltip(NarakaBlocks.SOUL_SMITHING_BLOCK, "Smash item with a mace...?", "아이템을 철퇴로 부수기..?");
+        addTooltip(NarakaBlocks.HEROBRINE_TOTEM, "It seems like it would only work in sacred places", "신성한 곳에서만 작동할 것 같다");
 
         addEntityType(NarakaEntityTypes.HEROBRINE, "Naraka Tyrant: Herobrine", "나락의 폭군: 히로빈");
         addEntityType(NarakaEntityTypes.ABSOLUTE_HEROBRINE, "Absolute Herobrine");
