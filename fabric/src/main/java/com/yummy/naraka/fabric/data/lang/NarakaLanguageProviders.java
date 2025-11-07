@@ -284,6 +284,7 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, "Nectarium Crystal", "넥타륨 결정");
         addBlock(NarakaBlocks.SOUL_STABILIZER, "Soul Stabilizer", "영혼 안정기");
         addBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, "Soul Smithing Block", "영혼 대장장이 블록");
+        addBlock(NarakaBlocks.NARAKA_PORTAL, "Naraka Portal", "나락 포탈");
 
         addTooltip(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Honey is dripping", "꿀이 뚝뚝 떨어져");
         addTooltip(NarakaBlocks.SOUL_SMITHING_BLOCK, "Smash item with a mace...?", "아이템을 철퇴로 부수기..?");

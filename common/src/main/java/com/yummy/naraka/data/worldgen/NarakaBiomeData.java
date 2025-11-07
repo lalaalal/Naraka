@@ -36,6 +36,7 @@ public class NarakaBiomeData {
                 .mobSpawnSettings(MobSpawnSettings.EMPTY)
                 .generationSettings(new BiomeGenerationSettings.PlainBuilder()
                         .addFeature(GenerationStep.Decoration.RAW_GENERATION, placedFeatures.getOrThrow(NarakaPlacements.PURIFIED_SOUL_LANTERN))
+                        .addFeature(GenerationStep.Decoration.RAW_GENERATION, placedFeatures.getOrThrow(NarakaPlacements.NARAKA_PORTAL))
                         .build()
                 )
                 .build();

@@ -94,6 +94,10 @@ public class NarakaRenderUtils {
         vertices(pose, vertexConsumer, VERTEX_MAPPINGS.get(face), DEFAULT_UVS, packedLight, packedOverlay, color, getNormal(face), false);
     }
 
+    public static void renderFlatImage(PoseStack.Pose pose, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color, Direction.Axis face, boolean reverse) {
+        vertices(pose, vertexConsumer, VERTEX_MAPPINGS.get(face), DEFAULT_UVS, packedLight, packedOverlay, color, getNormal(face), reverse);
+    }
+
     public static void renderFlatImage(PoseStack.Pose pose, VertexConsumer vertexConsumer, List<Vector3f> vertices, float u, float v, float width, float height, int packedLight, int packedOverlay, int color) {
         List<Vector2f> uvs = createUVList(u, v, width, height);
         vertices(pose, vertexConsumer, vertices, uvs, packedLight, packedOverlay, color, Direction.UP, false);

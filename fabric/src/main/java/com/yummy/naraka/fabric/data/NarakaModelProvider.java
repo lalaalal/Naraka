@@ -60,6 +60,8 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_LAMP.get());
         generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_LANTERN.get());
         generator.createAirLikeBlock(NarakaBlocks.DIAMOND_GOLEM_SPAWNER.get(), Items.DIAMOND);
+        generator.skipAutoItemBlock(NarakaBlocks.NARAKA_PORTAL.get());
+        createBlockEntityModels(generator, Blocks.OBSIDIAN, NarakaBlocks.NARAKA_PORTAL.get());
     }
 
     private static void createBlockEntityModels(BlockModelGenerators generator, Block particle, Block... blocks) {
