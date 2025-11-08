@@ -7,6 +7,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LevelTargetBundle;
+import net.minecraft.client.renderer.SkyRenderer;
 import net.minecraft.client.renderer.state.LevelRenderState;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -28,6 +29,10 @@ public abstract class LevelRendererMixin {
     @Shadow @Final
     LevelRenderState levelRenderState;
 
+    @Shadow
+    @Final
+    private SkyRenderer skyRenderer;
+
     @Inject(
             method = "addSkyPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/client/Camera;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lorg/joml/Matrix4f;)V",
             at = @At("RETURN")
@@ -36,6 +41,6 @@ public abstract class LevelRendererMixin {
         if (level == null)
             return;
         DimensionSkyRendererRegistry.get(level.dimension())
-                .renderSky(level, targets, frameGraphBuilder, camera, shaderFog, levelRenderState.skyRenderState);
+                .renderSky(level, targets, frameGraphBuilder, camera, shaderFog, skyRenderer, levelRenderState.skyRenderState);
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelTargetBundle;
+import net.minecraft.client.renderer.SkyRenderer;
 import net.minecraft.client.renderer.state.SkyRenderState;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -17,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 public interface DimensionSkyRenderer extends AutoCloseable {
     DimensionSkyRenderer EMPTY = new DimensionSkyRenderer() {
         @Override
-        public void renderSky(ClientLevel level, LevelTargetBundle targets, FrameGraphBuilder frameGraphBuilder, Camera camera, GpuBufferSlice shaderFog, SkyRenderState renderState) {
+        public void renderSky(ClientLevel level, LevelTargetBundle targets, FrameGraphBuilder frameGraphBuilder, Camera camera, GpuBufferSlice shaderFog, SkyRenderer skyRenderer, SkyRenderState renderState) {
         }
 
         @Override
@@ -32,7 +33,7 @@ public interface DimensionSkyRenderer extends AutoCloseable {
         return abstractTexture;
     }
 
-    void renderSky(ClientLevel level, LevelTargetBundle targets, FrameGraphBuilder frameGraphBuilder, Camera camera, GpuBufferSlice shaderFog, SkyRenderState renderState);
+    void renderSky(ClientLevel level, LevelTargetBundle targets, FrameGraphBuilder frameGraphBuilder, Camera camera, GpuBufferSlice shaderFog, SkyRenderer skyRenderer, SkyRenderState renderState);
 
     @Override
     void close();

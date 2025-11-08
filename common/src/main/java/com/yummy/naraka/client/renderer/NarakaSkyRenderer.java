@@ -10,6 +10,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaRenderPipelines;
 import com.yummy.naraka.client.NarakaTextures;
 import net.minecraft.client.Camera;
@@ -17,6 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelTargetBundle;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.SkyRenderer;
 import net.minecraft.client.renderer.state.SkyRenderState;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -100,7 +102,7 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
     }
 
     @Override
-    public void renderSky(ClientLevel level, LevelTargetBundle targets, FrameGraphBuilder frameGraphBuilder, Camera camera, GpuBufferSlice shaderFog, SkyRenderState renderState) {
+    public void renderSky(ClientLevel level, LevelTargetBundle targets, FrameGraphBuilder frameGraphBuilder, Camera camera, GpuBufferSlice shaderFog, SkyRenderer skyRenderer, SkyRenderState renderState) {
         FramePass framePass = frameGraphBuilder.addPass("naraka sky");
         targets.main = framePass.readsAndWrites(targets.main);
         framePass.executes(() -> {
@@ -108,6 +110,10 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
             poseStack.pushPose();
             poseStack.mulPose(Axis.YP.rotationDegrees(-90));
             poseStack.mulPose(Axis.XP.rotationDegrees(180));
+            if (NarakaClientContext.SHADER_ENABLED.getValue()) {
+                RenderSystem.setShaderFog(shaderFog);
+                skyRenderer.renderSkyDisc(1, 1, 1);
+            }
             renderEclipse(poseStack, NarakaTextures.ECLIPSE, RenderPipelines.CELESTIAL);
             renderEclipse(poseStack, NarakaTextures.INVERTED_ECLIPSE, NarakaRenderPipelines.INVERTED_ECLIPSE);
             renderStars(poseStack);

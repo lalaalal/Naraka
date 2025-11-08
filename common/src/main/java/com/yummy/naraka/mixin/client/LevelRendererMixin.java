@@ -64,7 +64,7 @@ public abstract class LevelRendererMixin {
         if (level == null)
             return;
         DimensionSkyRendererRegistry.get(level.dimension())
-                .renderSky(level, targets, frameGraphBuilder, camera, shaderFog, levelRenderState.skyRenderState);
+                .renderSky(level, targets, frameGraphBuilder, camera, shaderFog, skyRenderer, levelRenderState.skyRenderState);
     }
 
     @SuppressWarnings({"UnresolvedMixinReference", "LocalMayBeArgsOnly", "UnnecessaryQualifiedMemberReference"})
