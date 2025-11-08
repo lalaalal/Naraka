@@ -4,11 +4,13 @@ import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.framegraph.FrameGraphBuilder;
 import com.mojang.blaze3d.framegraph.FramePass;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import com.yummy.naraka.client.NarakaRenderPipelines;
 import com.yummy.naraka.client.NarakaTextures;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -82,21 +84,6 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
         }
     }
 
-    @Override
-    public void renderSky(ClientLevel level, LevelTargetBundle targets, FrameGraphBuilder frameGraphBuilder, Camera camera, GpuBufferSlice shaderFog, SkyRenderState renderState) {
-        FramePass framePass = frameGraphBuilder.addPass("naraka sky");
-        targets.main = framePass.readsAndWrites(targets.main);
-        framePass.executes(() -> {
-            PoseStack poseStack = new PoseStack();
-            poseStack.pushPose();
-            poseStack.mulPose(Axis.YP.rotationDegrees(-90));
-            poseStack.mulPose(Axis.XP.rotationDegrees(180));
-            renderEclipse(poseStack, NarakaTextures.ECLIPSE);
-            renderStars(poseStack);
-            poseStack.popPose();
-        });
-    }
-
     private GpuBuffer buildEclipse() {
         try (ByteBufferBuilder byteBufferBuilder = ByteBufferBuilder.exactlySized(4 * DefaultVertexFormat.POSITION_TEX.getVertexSize())) {
             BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
@@ -112,7 +99,23 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
         }
     }
 
-    public void renderEclipse(PoseStack poseStack, ResourceLocation textureLocation) {
+    @Override
+    public void renderSky(ClientLevel level, LevelTargetBundle targets, FrameGraphBuilder frameGraphBuilder, Camera camera, GpuBufferSlice shaderFog, SkyRenderState renderState) {
+        FramePass framePass = frameGraphBuilder.addPass("naraka sky");
+        targets.main = framePass.readsAndWrites(targets.main);
+        framePass.executes(() -> {
+            PoseStack poseStack = new PoseStack();
+            poseStack.pushPose();
+            poseStack.mulPose(Axis.YP.rotationDegrees(-90));
+            poseStack.mulPose(Axis.XP.rotationDegrees(180));
+            renderEclipse(poseStack, NarakaTextures.ECLIPSE, RenderPipelines.CELESTIAL);
+            renderEclipse(poseStack, NarakaTextures.INVERTED_ECLIPSE, NarakaRenderPipelines.INVERTED_ECLIPSE);
+            renderStars(poseStack);
+            poseStack.popPose();
+        });
+    }
+
+    public void renderEclipse(PoseStack poseStack, ResourceLocation textureLocation, RenderPipeline renderPipeline) {
         AbstractTexture texture = ECLIPSE_TEXTURES.get(textureLocation);
         Matrix4fStack matrix4fStack = RenderSystem.getModelViewStack();
         matrix4fStack.pushMatrix();
@@ -129,7 +132,7 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
             try (RenderPass renderPass = RenderSystem.getDevice()
                     .createCommandEncoder()
                     .createRenderPass(() -> "Sky eclipse", colorTextureView, OptionalInt.empty(), depthTextureView, OptionalDouble.empty())) {
-                renderPass.setPipeline(RenderPipelines.CELESTIAL);
+                renderPass.setPipeline(renderPipeline);
                 RenderSystem.bindDefaultUniforms(renderPass);
                 renderPass.setUniform("DynamicTransforms", gpuBufferSlice);
                 renderPass.bindSampler("Sampler0", texture.getTextureView());
@@ -150,13 +153,13 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
         GpuTextureView depthTextureView = Minecraft.getInstance().getMainRenderTarget().getDepthTextureView();
         GpuBuffer gpuBuffer = this.starIndices.getBuffer(this.starIndexCount);
         GpuBufferSlice gpuBufferSlice = RenderSystem.getDynamicUniforms()
-                .writeTransform(matrix4fStack, new Vector4f(1, 0, 0, 1), new Vector3f(), new Matrix4f(), 0);
+                .writeTransform(matrix4fStack, new Vector4f(0, 0, 0, 1), new Vector3f(), new Matrix4f(), 0);
 
         if (colorTextureView != null) {
             try (RenderPass renderPass = RenderSystem.getDevice()
                     .createCommandEncoder()
                     .createRenderPass(() -> "Stars", colorTextureView, OptionalInt.empty(), depthTextureView, OptionalDouble.empty())) {
-                renderPass.setPipeline(RenderPipelines.STARS);
+                renderPass.setPipeline(NarakaRenderPipelines.DARK_STARS);
                 RenderSystem.bindDefaultUniforms(renderPass);
                 renderPass.setUniform("DynamicTransforms", gpuBufferSlice);
                 renderPass.setVertexBuffer(0, this.starBuffer);

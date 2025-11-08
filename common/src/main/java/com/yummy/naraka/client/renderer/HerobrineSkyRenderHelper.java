@@ -8,6 +8,7 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.util.Color;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.SkyRenderer;
 import net.minecraft.client.renderer.state.SkyRenderState;
 
@@ -26,7 +27,7 @@ public class HerobrineSkyRenderHelper {
         poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
         poseStack.mulPose(Axis.XP.rotationDegrees(180));
         NarakaSkyRenderer.getInstance().ifPresent(
-                narakaSkyRenderer -> narakaSkyRenderer.renderEclipse(poseStack, NarakaTextures.ECLIPSE)
+                narakaSkyRenderer -> narakaSkyRenderer.renderEclipse(poseStack, NarakaTextures.ECLIPSE, RenderPipelines.CELESTIAL)
         );
         poseStack.popPose();
     }

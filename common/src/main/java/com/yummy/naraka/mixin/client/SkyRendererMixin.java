@@ -6,6 +6,7 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.renderer.NarakaSkyRenderer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.SkyRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,7 +21,7 @@ public abstract class SkyRendererMixin {
         if (NarakaClientContext.ENABLE_HEROBRINE_SKY.getValue() && NarakaClientContext.SHADER_ENABLED.getValue()) {
             NarakaSkyRenderer.getInstance().ifPresent(narakaSkyRenderer -> {
                 ci.cancel();
-                narakaSkyRenderer.renderEclipse(poseStack, NarakaTextures.ECLIPSE);
+                narakaSkyRenderer.renderEclipse(poseStack, NarakaTextures.ECLIPSE, RenderPipelines.CELESTIAL);
             });
         }
     }
