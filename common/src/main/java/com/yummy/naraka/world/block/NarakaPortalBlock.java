@@ -5,6 +5,7 @@ import com.yummy.naraka.core.particles.SoulParticleOption;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.block.entity.NarakaPortalBlockEntity;
+import com.yummy.naraka.world.features.NarakaPortalFeature;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
@@ -34,7 +35,7 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
 
     public static BlockPos createRandomNarakaSpawnPosition(RandomSource random) {
         int x = random.nextInt(3, 7);
-        return new BlockPos(x, 10, 0);
+        return new BlockPos(x, NarakaPortalFeature.BASE_POSITION.getY(), 0);
     }
 
     public NarakaPortalBlock(Properties properties) {
@@ -119,6 +120,6 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
             return null;
         BlockPos destinationPosition = createRandomNarakaSpawnPosition(level.getRandom());
         Vec3 destinationPositionVec = Vec3.atBottomCenterOf(destinationPosition);
-        return new DimensionTransition(destinationLevel, destinationPositionVec, Vec3.ZERO, 180, 0, dimensionTransition);
+        return new DimensionTransition(destinationLevel, destinationPositionVec, Vec3.ZERO, 0, 0, dimensionTransition);
     }
 }

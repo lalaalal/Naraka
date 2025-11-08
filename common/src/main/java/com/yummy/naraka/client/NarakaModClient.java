@@ -11,6 +11,7 @@ import com.yummy.naraka.client.init.*;
 import com.yummy.naraka.client.particle.*;
 import com.yummy.naraka.client.renderer.CustomRenderManager;
 import com.yummy.naraka.client.renderer.NarakaBlockEntityItemRenderer;
+import com.yummy.naraka.client.renderer.NarakaDimensionSpecialEffects;
 import com.yummy.naraka.client.renderer.SpearItemRenderer;
 import com.yummy.naraka.client.renderer.blockentity.NarakaPortalBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
@@ -20,6 +21,7 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
+import com.yummy.naraka.data.worldgen.NarakaDimensionTypes;
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
@@ -52,6 +54,7 @@ public final class NarakaModClient {
         registerHudRenders();
         registerMenus();
         registerKeyMappings();
+        DimensionSpecialEffectsRegistry.register(NarakaDimensionTypes.NARAKA_EFFECT, NarakaDimensionSpecialEffects.NARAKA);
 
         AnimationMapper.initialize();
 

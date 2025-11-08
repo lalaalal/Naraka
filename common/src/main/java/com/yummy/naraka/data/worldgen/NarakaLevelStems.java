@@ -22,7 +22,7 @@ public class NarakaLevelStems {
         FlatLevelGeneratorSettings flatLevelGeneratorSettings = new FlatLevelGeneratorSettings(
                 Optional.empty(), biomes.getOrThrow(NarakaBiomes.HEROBRINE), List.of()
         );
-        flatLevelGeneratorSettings.getLayersInfo().add(new FlatLayerInfo(10, NarakaBlocks.TRANSPARENT_BLOCK.get()));
+        flatLevelGeneratorSettings.getLayersInfo().add(new FlatLayerInfo(63, NarakaBlocks.TRANSPARENT_BLOCK.get()));
         flatLevelGeneratorSettings.getLayersInfo().add(new FlatLayerInfo(1, Blocks.WATER));
         flatLevelGeneratorSettings.setDecoration();
         flatLevelGeneratorSettings.updateLayers();
