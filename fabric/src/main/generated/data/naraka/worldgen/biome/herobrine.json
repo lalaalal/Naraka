@@ -27,11 +27,7 @@
     "water_color": 16777215,
     "water_fog_color": 16777215
   },
-  "features": [
-    [
-      "naraka:naraka_portal"
-    ]
-  ],
+  "features": [],
   "has_precipitation": false,
   "spawn_costs": {},
   "spawners": {

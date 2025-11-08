@@ -10,7 +10,6 @@ import java.util.function.Supplier;
 
 public class NarakaFeatures {
     public static final HolderProxy<Feature<?>, OrePillarFeature> ORE_PILLAR = register("ore_pillar", OrePillarFeature::new);
-    public static final HolderProxy<Feature<?>, NarakaPortalFeature> NARAKA_PORTAL = register("naraka_portal", NarakaPortalFeature::new);
 
     private static <C extends FeatureConfiguration, F extends Feature<C>> HolderProxy<Feature<?>, F> register(String name, Supplier<F> feature) {
         return RegistryProxy.register(Registries.FEATURE, name, feature);
