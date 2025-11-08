@@ -1,6 +1,7 @@
 package com.yummy.naraka.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.renderer.blockentity.state.NarakaPortalRenderState;
@@ -46,15 +47,22 @@ public class NarakaPortalBlockEntityRenderer implements BlockEntityRenderer<Nara
         return TEXTURE_MAPPING[renderState.usage];
     }
 
+    public RenderType getRenderType(NarakaPortalRenderState renderState) {
+        if (NarakaClientContext.SHADER_ENABLED.getValue())
+            return RenderType.entityTranslucent(getTextureLocation(renderState));
+        return NarakaRenderTypes.longinusCutout(getTextureLocation(renderState));
+    }
+
     @Override
     public void submit(NarakaPortalRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
         poseStack.translate(0.5, 0, 0.5);
         poseStack.scale(3, 3, 3);
-        RenderType renderType = NarakaRenderTypes.longinusCutout(getTextureLocation(renderState));
+        RenderType renderType = getRenderType(renderState);
         nodeCollector.submitCustomGeometry(poseStack, renderType, (pose, vertexConsumer) -> {
-            NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.Axis.X, false);
-            NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.Axis.X, true);
+            NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xbbffffff, Direction.Axis.X, false);
+            if (!NarakaClientContext.SHADER_ENABLED.getValue())
+                NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.Axis.X, true);
         });
         poseStack.popPose();
     }

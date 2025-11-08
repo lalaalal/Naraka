@@ -173,6 +173,7 @@ public class NarakaBlocks {
             "naraka_portal",
             NarakaPortalBlock::new,
             from(Blocks.NETHER_PORTAL)
+                    .randomTicks()
                     .lightLevel(state -> 15)
                     .mapColor(MapColor.COLOR_BLACK)
                     .pushReaction(PushReaction.BLOCK)

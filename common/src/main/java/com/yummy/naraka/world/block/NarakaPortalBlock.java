@@ -61,6 +61,14 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
     }
 
     @Override
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (random.nextDouble() < 0.5) {
+            level.getBlockEntity(pos, NarakaBlockEntityTypes.NARAKA_PORTAL.get())
+                    .ifPresent(NarakaPortalBlockEntity::use);
+        }
+    }
+
+    @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         Vec3 center = Vec3.atCenterOf(pos);
         for (int count = 0; count < 15; count++) {
