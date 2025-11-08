@@ -5,6 +5,7 @@ import com.yummy.naraka.core.particles.SoulParticleOption;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.block.entity.NarakaPortalBlockEntity;
+import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -12,6 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -58,6 +60,13 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new NarakaPortalBlockEntity(pos, state);
+    }
+
+    @Override
+    protected float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+        if (player.getMainHandItem().is(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get()))
+            return 1;
+        return super.getDestroyProgress(state, player, level, pos);
     }
 
     @Override

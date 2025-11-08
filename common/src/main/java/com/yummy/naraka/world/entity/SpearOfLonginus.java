@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.entity;
 
-import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import net.minecraft.ChatFormatting;
@@ -62,7 +61,7 @@ public class SpearOfLonginus extends Spear {
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        if (spawnPortal && level().dimension() != NarakaDimensions.NARAKA) {
+        if (spawnPortal) {
             Direction direction = result.getDirection();
             BlockPos pos = result.getBlockPos();
             level().setBlock(pos.relative(direction), NarakaBlocks.NARAKA_PORTAL.get().defaultBlockState(), Block.UPDATE_ALL);
