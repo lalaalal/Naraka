@@ -23,7 +23,7 @@ public class NarakaBiomeData {
                 .downfall(0)
                 .specialEffects(
                         new BiomeSpecialEffects.Builder()
-                                .waterColor(0xababab)
+                                .waterColor(0x101237)
                                 .waterFogColor(0xababab)
                                 .grassColorOverride(0xababab)
                                 .foliageColorOverride(0xababab)

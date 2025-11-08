@@ -2,6 +2,7 @@ package com.yummy.naraka.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
@@ -31,15 +32,22 @@ public class NarakaPortalBlockEntityRenderer implements BlockEntityRenderer<Nara
         return TEXTURE_MAPPING[blockEntity.getUsage()];
     }
 
+    public RenderType getRenderType(NarakaPortalBlockEntity blockEntity) {
+        if (NarakaClientContext.SHADER_ENABLED.getValue())
+            return RenderType.entityTranslucent(getTextureLocation(blockEntity));
+        return NarakaRenderTypes.longinusCutout(getTextureLocation(blockEntity));
+    }
+
     @Override
     public void render(NarakaPortalBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         poseStack.pushPose();
         poseStack.translate(0.5, 0, 0.5);
         poseStack.scale(3, 3, 3);
-        RenderType renderType = NarakaRenderTypes.longinusCutout(getTextureLocation(blockEntity));
+        RenderType renderType = getRenderType(blockEntity);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-        NarakaRenderUtils.renderFlatImage(poseStack.last(), vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.Axis.X, false);
-        NarakaRenderUtils.renderFlatImage(poseStack.last(), vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.Axis.X, true);
+        NarakaRenderUtils.renderFlatImage(poseStack.last(), vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xbbffffff, Direction.Axis.X, false);
+        if (!NarakaClientContext.SHADER_ENABLED.getValue())
+            NarakaRenderUtils.renderFlatImage(poseStack.last(), vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xbbffffff, Direction.Axis.X, true);
         poseStack.popPose();
     }
 }
