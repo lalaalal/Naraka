@@ -2,7 +2,6 @@ package com.yummy.naraka.data.worldgen.placement;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.data.worldgen.features.NarakaConfiguredFeatures;
-import com.yummy.naraka.world.features.NarakaPortalFeature;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -10,11 +9,13 @@ import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraft.world.level.levelgen.placement.BiomeFilter;
+import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
+import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class NarakaPlacements {
     public static final ResourceKey<PlacedFeature> PURIFIED_SOUL_LANTERN = create("purified_soul_lantern");
-    public static final ResourceKey<PlacedFeature> NARAKA_PORTAL = create("naraka_portal");
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         NarakaOrePlacements.bootstrap(context);
@@ -27,12 +28,6 @@ public class NarakaPlacements {
                 configuredFeatures.getOrThrow(NarakaConfiguredFeatures.PURIFIED_SOUL_LANTERN),
                 InSquarePlacement.spread(),
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(56), VerticalAnchor.absolute(60)),
-                BiomeFilter.biome()
-        );
-        PlacementUtils.register(context,
-                NARAKA_PORTAL,
-                configuredFeatures.getOrThrow(NarakaConfiguredFeatures.NARAKA_PORTAL),
-                FixedPlacement.of(NarakaPortalFeature.BASE_POSITION),
                 BiomeFilter.biome()
         );
     }

@@ -1,0 +1,13 @@
+{
+  "placement": {
+    "type": "naraka:exact_position",
+    "chunk_x": 0,
+    "chunk_z": 0
+  },
+  "structures": [
+    {
+      "structure": "naraka:naraka_platform",
+      "weight": 1
+    }
+  ]
+}

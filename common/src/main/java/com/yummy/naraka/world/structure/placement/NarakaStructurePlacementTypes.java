@@ -12,6 +12,11 @@ public class NarakaStructurePlacementTypes {
             () -> ExclusiveRandomSpreadStructurePlacement.CODEC
     );
 
+    public static final HolderProxy<StructurePlacementType<?>, StructurePlacementType<ExactPositionStructurePlacement>> EXACT_POSITION = register(
+            "exact_position",
+            () -> ExactPositionStructurePlacement.CODEC
+    );
+
     private static <T extends StructurePlacement> HolderProxy<StructurePlacementType<?>, StructurePlacementType<T>> register(String name, StructurePlacementType<T> type) {
         return RegistryProxy.register(Registries.STRUCTURE_PLACEMENT, name, () -> type);
     }

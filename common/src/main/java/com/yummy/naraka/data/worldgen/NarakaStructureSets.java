@@ -2,6 +2,7 @@ package com.yummy.naraka.data.worldgen;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.tags.NarakaStructureSetTags;
+import com.yummy.naraka.world.structure.placement.ExactPositionStructurePlacement;
 import com.yummy.naraka.world.structure.placement.ExclusiveRandomSpreadStructurePlacement;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 
 public class NarakaStructureSets {
     public static final ResourceKey<StructureSet> HEROBRINE_SANCTUARY = create("herobrine_sanctuary");
+    public static final ResourceKey<StructureSet> NARAKA_PLATFORM = create("naraka_platform");
 
     public static void bootstrap(BootstrapContext<StructureSet> context) {
         HolderGetter<StructureSet> structureSets = context.lookup(Registries.STRUCTURE_SET);
@@ -31,6 +33,13 @@ public class NarakaStructureSets {
                                 12,
                                 8927916
                         )
+                )
+        );
+        context.register(
+                NARAKA_PLATFORM,
+                new StructureSet(
+                        structures.getOrThrow(NarakaStructures.NARAKA_PLATFORM),
+                        new ExactPositionStructurePlacement(0, 0)
                 )
         );
     }

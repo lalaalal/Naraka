@@ -1,0 +1,31 @@
+{
+  "type": "naraka:jumbo_structure",
+  "biomes": "naraka:herobrine",
+  "custom_pieces": [],
+  "generation_point_provider": "naraka:naraka_platform",
+  "name": "naraka_platform",
+  "parts": [
+    {
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "part_name": "main",
+      "piece_count": [
+        2,
+        1,
+        2
+      ],
+      "piece_size": 25
+    }
+  ],
+  "protection_predicate": "naraka:nothing",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "structure_offset": [
+    -25,
+    0,
+    -25
+  ]
+}

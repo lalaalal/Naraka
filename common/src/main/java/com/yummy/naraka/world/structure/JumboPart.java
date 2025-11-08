@@ -11,16 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record JumboPart(String name, int xCount, int yCount, int zCount,
-                        BlockPos offset) implements PiecePositionProvider {
+                        int size, BlockPos offset) implements PiecePositionProvider {
     public static final MapCodec<JumboPart> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     Codec.STRING.fieldOf("part_name").forGetter(JumboPart::name),
                     Codec.INT.listOf().fieldOf("piece_count").forGetter(JumboPart::pieceCount),
+                    Codec.INT.fieldOf("piece_size").forGetter(JumboPart::size),
                     BlockPos.CODEC.fieldOf("offset").forGetter(JumboPart::offset)
             ).apply(instance, JumboPart::new)
     );
-
-    public static final int TEMPLATE_SIZE = 48;
 
     private static List<Vec3i> createPositions(int xCount, int yCount, int zCount) {
         List<Vec3i> list = new ArrayList<>();
@@ -35,8 +34,8 @@ public record JumboPart(String name, int xCount, int yCount, int zCount,
         return list;
     }
 
-    private JumboPart(String name, List<Integer> pieceCounts, BlockPos offset) {
-        this(name, pieceCounts.get(0), pieceCounts.get(1), pieceCounts.get(2), offset);
+    private JumboPart(String name, List<Integer> pieceCounts, int size, BlockPos offset) {
+        this(name, pieceCounts.get(0), pieceCounts.get(1), pieceCounts.get(2), size, offset);
     }
 
     private List<Integer> pieceCount() {
@@ -45,9 +44,9 @@ public record JumboPart(String name, int xCount, int yCount, int zCount,
 
     @Override
     public BlockPos getPiecePosition(int pieceX, int pieceY, int pieceZ) {
-        int x = pieceX * TEMPLATE_SIZE;
-        int y = pieceY * TEMPLATE_SIZE;
-        int z = pieceZ * TEMPLATE_SIZE;
+        int x = pieceX * size;
+        int y = pieceY * size;
+        int z = pieceZ * size;
         return new BlockPos(x, y, z).offset(offset);
     }
 
