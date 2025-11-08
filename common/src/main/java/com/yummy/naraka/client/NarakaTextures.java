@@ -33,8 +33,7 @@ public final class NarakaTextures {
     public static final ResourceLocation SHADOW_HEROBRINE_25 = entity("shadow_herobrine/shadow_herobrine_crack_25.png");
 
     public static final ResourceLocation ECLIPSE = texture("environment", "eclipse.png");
-
-    public static final ResourceLocation SHADOW_ARMOR = entity("shadow_armor.png");
+    public static final ResourceLocation INVERTED_ECLIPSE = texture("environment", "inverted_eclipse.png");
 
     public static final ResourceLocation LONGINUS = entity("longinus.png");
     public static final ResourceLocation SPEAR = entity("spear.png");
