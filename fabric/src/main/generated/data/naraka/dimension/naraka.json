@@ -9,7 +9,7 @@
       "layers": [
         {
           "block": "naraka:transparent_block",
-          "height": 10
+          "height": 63
         },
         {
           "block": "minecraft:water",

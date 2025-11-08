@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public class NarakaPortalFeature extends Feature<NoneFeatureConfiguration> {
-    public static final BlockPos BASE_POSITION = new BlockPos(0, 10, 0);
+    public static final BlockPos BASE_POSITION = new BlockPos(0, 63, 0);
 
     public NarakaPortalFeature() {
         super(NoneFeatureConfiguration.CODEC);

@@ -729,7 +729,7 @@ public class Herobrine extends AbstractHerobrine {
             if (narakaDimension != null) {
                 BlockPos blockPos = NarakaPortalBlock.createRandomNarakaSpawnPosition(random);
                 Vec3 pos = blockPos.getBottomCenter();
-                target.teleport(new TeleportTransition(narakaDimension, pos, Vec3.ZERO, 180, 0, TeleportTransition.PLAY_PORTAL_SOUND));
+                target.teleport(new TeleportTransition(narakaDimension, pos, Vec3.ZERO, 0, 0, TeleportTransition.PLAY_PORTAL_SOUND));
             }
         }
     }

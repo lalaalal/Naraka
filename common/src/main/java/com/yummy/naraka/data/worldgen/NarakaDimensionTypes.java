@@ -4,9 +4,9 @@ import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ConstantInt;
-import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 
 import java.util.Optional;
@@ -14,11 +14,12 @@ import java.util.OptionalLong;
 
 public class NarakaDimensionTypes {
     public static final ResourceKey<DimensionType> NARAKA = create("naraka");
+    public static final ResourceLocation NARAKA_EFFECT = NARAKA.location();
 
     public static void bootstrap(BootstrapContext<DimensionType> context) {
         context.register(NARAKA, new DimensionType(
                 OptionalLong.of(18000),
-                false,
+                true,
                 false,
                 false,
                 false,
@@ -29,8 +30,8 @@ public class NarakaDimensionTypes {
                 256,
                 128,
                 BlockTags.INFINIBURN_OVERWORLD,
-                BuiltinDimensionTypes.OVERWORLD_EFFECTS,
-                0.0F,
+                NARAKA_EFFECT,
+                1,
                 Optional.empty(),
                 new DimensionType.MonsterSettings(false, false, ConstantInt.ZERO, 0)
         ));
