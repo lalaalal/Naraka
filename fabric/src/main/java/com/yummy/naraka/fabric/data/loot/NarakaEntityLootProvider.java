@@ -51,6 +51,13 @@ public class NarakaEntityLootProvider extends SimpleFabricLootTableProvider {
                                 ))
                         ).withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
+                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_SCARF.get()))
+                                .when(AllOfCondition.allOf(
+                                        LootItemKilledByPlayerCondition.killedByPlayer(),
+                                        LootItemRandomChanceCondition.randomChance(0.05f)
+                                ))
+                        ).withPool(LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1))
                                 .setBonusRolls(ConstantValue.exactly(0.3f))
                                 .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_1_DISC.get()))
                                 .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_2_DISC.get()))
