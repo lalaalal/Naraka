@@ -1,7 +1,8 @@
 {
-  "parent": "minecraft:block/cube_column",
+  "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "end": "naraka:block/herobrine_totem_top",
-    "side": "naraka:block/herobrine_totem_7"
+    "bottom": "naraka:block/herobrine_totem_bottom",
+    "side": "naraka:block/herobrine_totem_7",
+    "top": "naraka:block/herobrine_totem_top"
   }
 }

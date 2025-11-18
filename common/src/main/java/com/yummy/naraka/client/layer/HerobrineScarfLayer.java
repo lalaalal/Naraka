@@ -81,7 +81,7 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
             poseStack.scale(-scale, -scale, scale);
             poseStack.translate(translation);
 
-            renderScarf(poseStack, insideRenderType, outsideRenderType, submitNodeCollector, packedLight, color, renderState.scarfRenderState, modelData);
+            submitScarf(poseStack, insideRenderType, outsideRenderType, submitNodeCollector, packedLight, color, renderState.scarfRenderState, modelData);
             poseStack.popPose();
         }
 
@@ -94,7 +94,7 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
         return -1;
     }
 
-    public void renderScarf(PoseStack poseStack, RenderType insideRenderType, RenderType outsideRenderType, SubmitNodeCollector submitNodeCollector, int packedLight, int color, WavingScarfRenderState renderState, WavingScarfRenderState.ModelData modelData) {
+    public static void submitScarf(PoseStack poseStack, RenderType insideRenderType, RenderType outsideRenderType, SubmitNodeCollector submitNodeCollector, int packedLight, int color, WavingScarfRenderState renderState, WavingScarfRenderState.ModelData modelData) {
         WavingScarfTexture textureInfo = modelData.textureInfo();
         WavingScarfPose scarfPose = modelData.pose();
         ScarfWavingData waveData = renderState.waveData;

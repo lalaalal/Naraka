@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Unit;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Consumables;
@@ -150,6 +151,12 @@ public class NarakaItems {
                     properties.fireResistant()
                             .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
             )
+    );
+
+    public static final HolderProxy<Item, Item> HEROBRINE_SCARF = registerItem(
+            "herobrine_scarf",
+            HerobrineScarfItem::new,
+            properties().equippable(EquipmentSlot.CHEST)
     );
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_HELMET = registerPurifiedSoulArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.HELMET);

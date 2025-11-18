@@ -3,9 +3,11 @@ package com.yummy.naraka.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
+import com.yummy.naraka.world.entity.ScarfWavingData;
 import com.yummy.naraka.world.entity.data.EntityData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
+import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
@@ -46,6 +48,9 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Shadow
     public abstract float getMaxHealth();
+
+    @Shadow
+    public abstract ItemStack getItemBySlot(EquipmentSlot slot);
 
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -117,6 +122,12 @@ public abstract class LivingEntityMixin extends Entity {
     public void tickEntityData(CallbackInfo ci) {
         EntityDataHelper.getEntityDataTypes(naraka$living())
                 .forEach(type -> type.tick(naraka$living()));
+
+        if (!EntityDataHelper.hasEntityData(naraka$living(), NarakaEntityDataTypes.SCARF_WAVING_DATA.get())) {
+            ItemStack itemStack = getItemBySlot(EquipmentSlot.CHEST);
+            if (itemStack.is(NarakaItems.HEROBRINE_SCARF.get()))
+                EntityDataHelper.setEntityData(naraka$living(), NarakaEntityDataTypes.SCARF_WAVING_DATA.get(), new ScarfWavingData());
+        }
     }
 
     @Unique
