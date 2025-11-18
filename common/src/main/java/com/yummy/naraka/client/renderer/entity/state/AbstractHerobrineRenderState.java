@@ -36,7 +36,7 @@ public abstract class AbstractHerobrineRenderState extends SkillUsingMobRenderSt
     }
 
     public void updateScarfRenderState(AbstractHerobrine herobrine, float partialTick) {
-        renderScarf = herobrine.shouldRenderScarf() || NarakaConfig.CLIENT.alwaysDisplayHerobrineScarf.getValue();
+        renderScarf = herobrine.shouldRenderScarf();
         scarfRenderState.extract(herobrine, getModelType(), partialTick);
     }
 

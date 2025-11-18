@@ -153,10 +153,9 @@ public class NarakaItems {
             )
     );
 
-    public static final HolderProxy<Item, Item> HEROBRINE_SCARF = registerItem(
+    public static final HolderProxy<Item, Item> HEROBRINE_SCARF = registerSimpleItem(
             "herobrine_scarf",
-            HerobrineScarfItem::new,
-            properties().equippable(EquipmentSlot.CHEST)
+            properties -> properties.equippable(EquipmentSlot.CHEST)
     );
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_HELMET = registerPurifiedSoulArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.HELMET);

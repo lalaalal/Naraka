@@ -6,8 +6,6 @@ public class NarakaClientConfig extends StaticConfiguration {
     public final ConfigValue<Boolean> showReinforcementValue = define("show_reinforcement_value", false);
     public final ConfigValue<Color> afterimageColor = define("afterimage_color", Color.of(0x000000));
     public final ConfigValue<Color> shadowHerobrineColor = define("shadow_herobrine_color", Color.of(0x000000));
-    public final ConfigValue<Boolean> alwaysDisplayHerobrineScarf = define("always_display_herobrine_scarf", false);
-    public final ConfigValue<Float> herobrineScarfDefaultRotation = define("herobrine_scarf_default_rotation", 70.0f);
     public final ConfigValue<Integer> herobrineScarfPartitionNumber = define("herobrine_scarf_partition_number", 32)
             .comment("Divide scarf with given number")
             .comment("Bigger value, short wave cycle")
