@@ -117,6 +117,7 @@ public final class NarakaModClient {
         EntityRendererRegistry.register(NarakaEntityTypes.MASSIVE_LIGHTNING, MassiveLightningRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.LIGHTNING_CIRCLE, LightningCircleRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_PICKAXE, NarakaPickaxeRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_SWORD, NarakaSwordRenderer::new);
     }
 
     private static void registerHudRenders() {

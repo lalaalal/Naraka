@@ -124,6 +124,13 @@ public class NarakaEntityTypes {
                     .sized(0.5f, 1f)
     );
 
+    public static final HolderProxy<EntityType<?>, EntityType<NarakaSword>> NARAKA_SWORD = register(
+            "naraka_sword",
+            EntityType.Builder.<NarakaSword>of(NarakaSword::new, MobCategory.MISC)
+                    .fireImmune()
+                    .sized(0.5f, 0.5f)
+    );
+
     private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {
         return RegistryProxy.register(Registries.ENTITY_TYPE, name, () -> builder.build(createKey(name)));
     }
@@ -133,6 +140,8 @@ public class NarakaEntityTypes {
     }
 
     public static void initialize() {
+        NarakaEntityDataSerializers.initialize();
+
         EntityAttributeRegistry.register(HEROBRINE, AbstractHerobrine::getAttributeSupplier);
         EntityAttributeRegistry.register(ABSOLUTE_HEROBRINE, AbstractHerobrine::getAttributeSupplier);
         EntityAttributeRegistry.register(SHADOW_HEROBRINE, ShadowHerobrine::getAttributeSupplier);

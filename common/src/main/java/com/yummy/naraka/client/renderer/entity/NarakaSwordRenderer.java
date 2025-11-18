@@ -1,0 +1,45 @@
+package com.yummy.naraka.client.renderer.entity;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.yummy.naraka.client.NarakaModelLayers;
+import com.yummy.naraka.client.NarakaRenderTypes;
+import com.yummy.naraka.client.NarakaTextures;
+import com.yummy.naraka.client.model.NarakaSwordModel;
+import com.yummy.naraka.client.renderer.entity.state.NarakaSwordRenderState;
+import com.yummy.naraka.world.entity.NarakaSword;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+
+@Environment(EnvType.CLIENT)
+public class NarakaSwordRenderer extends LightTailEntityRenderer<NarakaSword, NarakaSwordRenderState> {
+    private final NarakaSwordModel model;
+
+    public NarakaSwordRenderer(EntityRendererProvider.Context context) {
+        super(context);
+        this.model = new NarakaSwordModel(context.bakeLayer(NarakaModelLayers.NARAKA_SWORD));
+    }
+
+    @Override
+    public NarakaSwordRenderState createRenderState() {
+        return new NarakaSwordRenderState();
+    }
+
+    @Override
+    public void extractRenderState(NarakaSword entity, NarakaSwordRenderState reusedState, float partialTick) {
+        super.extractRenderState(entity, reusedState, partialTick);
+    }
+
+    @Override
+    public void submit(NarakaSwordRenderState entityRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+        submitNodeCollector.submitModelPart(model.body(), poseStack, NarakaRenderTypes.longinus(), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, -1, null);
+        submitNodeCollector.submitModelPart(model.core(), poseStack, RenderType.entityCutout(NarakaTextures.NARAKA_SWORD), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, entityRenderState.tailColor, null);
+
+        super.submit(entityRenderState, poseStack, submitNodeCollector, cameraRenderState);
+    }
+}
