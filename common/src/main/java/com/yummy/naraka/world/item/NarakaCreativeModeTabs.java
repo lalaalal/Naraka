@@ -15,6 +15,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Unit;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantable;
 import net.minecraft.world.level.ItemLike;
@@ -78,7 +79,7 @@ public class NarakaCreativeModeTabs {
         output.accept(NarakaItems.PURIFIED_SOUL_BOOTS.get());
 
         output.accept(NarakaItems.PURIFIED_SOUL_SWORD.get());
-        output.accept(NarakaItems.GOD_BLOOD.get());
+        output.accept(NarakaItems.NARAKA_PICKAXE.get());
         output.accept(NarakaItems.SPEAR_ITEM.get());
         output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get());
         output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
@@ -87,10 +88,11 @@ public class NarakaCreativeModeTabs {
         output.accept(NarakaItems.HEROBRINE_PHASE_3_DISC.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_4_DISC.get());
 
+        output.accept(NarakaItems.HEROBRINE_SPAWN_EGG.get());
+        output.accept(NarakaItems.GOD_BLOOD.get());
+        output.accept(NarakaItems.HEROBRINE_SCARF_SMITHING_TEMPLATE.get());
         output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get());
         output.accept(NarakaItems.SANCTUARY_COMPASS.get());
-        output.accept(NarakaItems.HEROBRINE_SPAWN_EGG.get());
-        output.accept(NarakaItems.HEROBRINE_SCARF.get());
         output.accept(NarakaBlocks.SOUL_SMITHING_BLOCK.get());
         output.accept(NarakaBlocks.SOUL_STABILIZER.get());
         output.accept(NarakaBlocks.PURIFIED_SOUL_LAMP.get());
@@ -146,7 +148,7 @@ public class NarakaCreativeModeTabs {
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_LEGGINGS.get()));
         output.accept(blessed(NarakaItems.PURIFIED_SOUL_BOOTS.get()));
         output.accept(reinforced(NarakaItems.PURIFIED_SOUL_HELMET.get()));
-        output.accept(reinforced(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get()));
+        output.accept(scarfAttached(reinforced(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get())));
         output.accept(reinforced(NarakaItems.PURIFIED_SOUL_LEGGINGS.get()));
         output.accept(reinforced(NarakaItems.PURIFIED_SOUL_BOOTS.get()));
 
@@ -167,6 +169,11 @@ public class NarakaCreativeModeTabs {
         ItemStack itemStack = blessed(item);
         while (Reinforcement.canReinforce(itemStack))
             Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack));
+        return itemStack;
+    }
+
+    private static ItemStack scarfAttached(ItemStack itemStack) {
+        itemStack.set(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), Unit.INSTANCE);
         return itemStack;
     }
 

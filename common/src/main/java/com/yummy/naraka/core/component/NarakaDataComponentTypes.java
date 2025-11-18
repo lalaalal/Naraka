@@ -9,6 +9,7 @@ import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.util.Unit;
 
 import java.util.function.UnaryOperator;
 
@@ -35,6 +36,12 @@ public class NarakaDataComponentTypes {
             "soul",
             builder -> builder.persistent(SoulType.CODEC)
                     .networkSynchronized(SoulType.STREAM_CODEC)
+    );
+
+    public static final HolderProxy<DataComponentType<?>, DataComponentType<Unit>> HEROBRINE_SCARF = register(
+            "herobrine_scarf",
+            builder -> builder.persistent(Unit.CODEC)
+                    .networkSynchronized(Unit.STREAM_CODEC)
     );
 
     private static <T> HolderProxy<DataComponentType<?>, DataComponentType<T>> register(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {

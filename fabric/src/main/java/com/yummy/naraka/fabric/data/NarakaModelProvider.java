@@ -260,14 +260,13 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_3_DISC.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_4_DISC.get(), ModelTemplates.FLAT_ITEM);
 
-        generator.generateFlatItem(NarakaItems.HEROBRINE_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        generator.itemModelOutput.accept(NarakaItems.NARAKA_PICKAXE.get(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(NarakaItems.NARAKA_PICKAXE.get())));
 
         NarakaItems.forEachSoulInfusedItem(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_ITEM));
         NarakaItems.forEachSoulInfusedSword(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM));
 
         generateSanctuaryCompassItem(generator, NarakaItems.SANCTUARY_COMPASS.get());
         generator.declareCustomModelItem(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get().asItem());
-
     }
 
     public static void generateSpear(ItemModelGenerators generator, SpearItem spearItem, ModelLayerLocation modelLayer, ResourceLocation texture) {

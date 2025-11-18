@@ -18,6 +18,12 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
+        valueLookupBuilder(ItemTags.PICKAXES)
+                .add(NarakaItems.NARAKA_PICKAXE.get());
+
+        valueLookupBuilder(ItemTags.CLUSTER_MAX_HARVESTABLES)
+                .add(NarakaItems.NARAKA_PICKAXE.get());
+
         valueLookupBuilder(NarakaItemTags.SPEAR)
                 .add(NarakaItems.SPEAR_ITEM.get())
                 .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get())

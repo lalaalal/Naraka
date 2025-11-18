@@ -1,10 +1,10 @@
 package com.yummy.naraka.client.renderer.entity.state;
 
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
-import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -42,7 +42,7 @@ public class WavingScarfRenderState {
     public void extract(LivingEntity livingEntity, float partialTick) {
         this.modelDataList = HUMANOID;
         ItemStack itemStack = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
-        this.display = itemStack.is(NarakaItems.HEROBRINE_SCARF.get());
+        this.display = itemStack.has(NarakaDataComponentTypes.HEROBRINE_SCARF.get());
         this.waveData = EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.SCARF_WAVING_DATA.get());
         this.rotationDegree = this.waveData.getScarfRotationDegree();
         this.partialTick = partialTick;

@@ -37,7 +37,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
     protected final M finalModel;
 
     private final ItemModelResolver itemModelResolver;
-    private final ItemStack pickaxe = NarakaItems.HEROBRINE_PICKAXE.get().getDefaultInstance();
+    private final ItemStack pickaxe = NarakaItems.NARAKA_PICKAXE.get().getDefaultInstance();
 
     protected static <S extends AbstractHerobrineRenderState, M extends AbstractHerobrineModel<S>> M defaultModel(EntityRendererProvider.Context context, Function<ModelPart, M> constructor) {
         return constructor.apply(context.bakeLayer(NarakaModelLayers.HEROBRINE));

@@ -1,13 +1,13 @@
 package com.yummy.naraka.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import com.yummy.naraka.world.entity.data.EntityData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
-import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
@@ -125,7 +125,7 @@ public abstract class LivingEntityMixin extends Entity {
 
         if (!EntityDataHelper.hasEntityData(naraka$living(), NarakaEntityDataTypes.SCARF_WAVING_DATA.get())) {
             ItemStack itemStack = getItemBySlot(EquipmentSlot.CHEST);
-            if (itemStack.is(NarakaItems.HEROBRINE_SCARF.get()))
+            if (itemStack.has(NarakaDataComponentTypes.HEROBRINE_SCARF.get()))
                 EntityDataHelper.setEntityData(naraka$living(), NarakaEntityDataTypes.SCARF_WAVING_DATA.get(), new ScarfWavingData());
         }
     }

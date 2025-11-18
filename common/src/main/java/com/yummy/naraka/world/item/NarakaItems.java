@@ -46,7 +46,13 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_3_DISC = registerDiscItem("herobrine_phase_3_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_3);
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_4_DISC = registerDiscItem("herobrine_phase_4_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_4);
 
-    public static final HolderProxy<Item, Item> HEROBRINE_PICKAXE = registerSimpleItem("herobrine_pickaxe");
+    public static final HolderProxy<Item, Item> NARAKA_PICKAXE = registerSimpleItem(
+            "naraka_pickaxe",
+            properties -> properties.pickaxe(NarakaToolMaterials.LONGINUS, 0, -2.8f)
+                    .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
+                    .rarity(Rarity.EPIC)
+                    .fireResistant()
+    );
 
     public static final HolderProxy<Item, Item> SKILL_CONTROLLER = registerItem(
             "skill_controller",
@@ -153,9 +159,10 @@ public class NarakaItems {
             )
     );
 
-    public static final HolderProxy<Item, Item> HEROBRINE_SCARF = registerSimpleItem(
+    public static final HolderProxy<Item, Item> HEROBRINE_SCARF_SMITHING_TEMPLATE = registerSimpleItem(
             "herobrine_scarf",
             properties -> properties.equippable(EquipmentSlot.CHEST)
+                    .component(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), Unit.INSTANCE)
     );
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_HELMET = registerPurifiedSoulArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.HELMET);
