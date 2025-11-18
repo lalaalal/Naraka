@@ -40,7 +40,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity> {
                 RenderType outsideRenderType = naraka$getOutsideRenderType(textureInfo);
                 RenderType insideRenderType = naraka$getInsideRenderType(textureInfo);
                 ScarfWavingData scarfWavingData = EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.SCARF_WAVING_DATA.get());
-                float rotationDegree = scarfWavingData.getScarfRotationDegree();
+                float rotationDegree = scarfWavingData.getScarfRotationDegree(partialTicks);
                 float scale = scarfPose.scale();
                 Vec3 translation = scarfPose.translation();
                 poseStack.scale(-scale, -scale, scale);

@@ -96,7 +96,7 @@ public class HerobrineScarfLayer<T extends AbstractHerobrine, M extends Abstract
             RenderType outsideRenderType = getOutsideRenderType(livingEntity, textureInfo);
             RenderType insideRenderType = getInsideRenderType(livingEntity, textureInfo);
             ScarfWavingData waveData = livingEntity.getScarfWavingData();
-            float rotationDegree = waveData.getScarfRotationDegree();
+            float rotationDegree = waveData.getScarfRotationDegree(partialTick);
             float scale = scarfPose.scale();
             Vec3 translation = scarfPose.translation();
             poseStack.scale(-scale, -scale, scale);

@@ -19,6 +19,7 @@ public class ScarfWavingData {
     private float ySpeed;
 
     private float scarfRotationDegree;
+    private float prevScarfRotationDegree;
 
     public ScarfWavingData() {
         partitionNumber = NarakaConfig.CLIENT.herobrineScarfPartitionNumber.getValue();
@@ -46,6 +47,7 @@ public class ScarfWavingData {
 
 
     public void update(Vec3 deltaMovement, float rotationSpeed, boolean onGround) {
+        prevScarfRotationDegree = scarfRotationDegree;
         updateScarfRotation(deltaMovement, onGround);
         float multiplier = 1 + Mth.lerp(scarfRotationDegree / MAX_SCARF_ROTATION_DEGREE, 0, 1);
 
@@ -68,8 +70,8 @@ public class ScarfWavingData {
         verticalShifts.addFirst(shift);
     }
 
-    public float getScarfRotationDegree() {
-        return scarfRotationDegree - MAX_SCARF_ROTATION_DEGREE;
+    public float getScarfRotationDegree(float partialTicks) {
+        return Mth.lerp(partialTicks, prevScarfRotationDegree, scarfRotationDegree) - MAX_SCARF_ROTATION_DEGREE;
     }
 
     public int getVerticalSize() {
