@@ -154,10 +154,10 @@ public class NarakaModelProvider extends FabricModelProvider {
 
     private static ResourceLocation[] createTotemModels(BlockModelGenerators generator) {
         ResourceLocation[] models = new ResourceLocation[HerobrineTotem.MAX_CRACK + 1];
-        models[0] = TexturedModel.CUBE_TOP.create(NarakaBlocks.HEROBRINE_TOTEM.get(), generator.modelOutput);
+        models[0] = TexturedModel.CUBE_TOP_BOTTOM.create(NarakaBlocks.HEROBRINE_TOTEM.get(), generator.modelOutput);
         for (int crack = 1; crack <= HerobrineTotem.MAX_CRACK; crack++) {
             ResourceLocation texture = TextureMapping.getBlockTexture(NarakaBlocks.HEROBRINE_TOTEM.get(), "_" + crack);
-            models[crack] = TexturedModel.CUBE_TOP
+            models[crack] = TexturedModel.CUBE_TOP_BOTTOM
                     .updateTexture(mapping -> mapping.put(TextureSlot.SIDE, texture))
                     .createWithSuffix(NarakaBlocks.HEROBRINE_TOTEM.get(), "_" + crack, generator.modelOutput);
         }
