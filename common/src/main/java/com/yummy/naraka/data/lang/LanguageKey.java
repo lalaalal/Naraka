@@ -36,6 +36,7 @@ public final class LanguageKey {
 
     public static final String REINFORCEMENT_KEY = "item.reinforcement";
     public static final String BLESSED_KEY = "item.blessed";
+    public static final String HEROBRINE_SCARF_KEY = "item.herobrine_scarf";
 
     public static final String STIGMA_COMMAND_GET_KEY = "commands.stigma.get.success";
     public static final String STIGMA_COMMAND_SET_KEY = "commands.stigma.set.success";

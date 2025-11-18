@@ -45,6 +45,10 @@
         {
           "type": "minecraft:item",
           "name": "naraka:herobrine_scarf"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "naraka:naraka_pickaxe"
         }
       ],
       "rolls": 1.0

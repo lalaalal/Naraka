@@ -41,7 +41,13 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_3_DISC = registerDiscItem("herobrine_phase_3_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_3);
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_4_DISC = registerDiscItem("herobrine_phase_4_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_4);
 
-    public static final HolderProxy<Item, Item> HEROBRINE_PICKAXE = registerSimpleItem("herobrine_pickaxe");
+    public static final HolderProxy<Item, Item> NARAKA_PICKAXE = registerItem(
+            "naraka_pickaxe",
+            properties -> new PickaxeItem(NarakaTiers.LONGINUS, properties),
+            properties().component(DataComponents.UNBREAKABLE, new Unbreakable(true))
+                    .rarity(Rarity.EPIC)
+                    .fireResistant()
+    );
 
     public static final HolderProxy<Item, Item> SKILL_CONTROLLER = registerItem(
             "skill_controller",
@@ -145,7 +151,7 @@ public class NarakaItems {
             )
     );
 
-    public static final HolderProxy<Item, Item> HEROBRINE_SCARF = registerItem(
+    public static final HolderProxy<Item, Item> HEROBRINE_SCARF_SMITHING_TEMPLATE = registerItem(
             "herobrine_scarf", HerobrineScarfItem::new
     );
 

@@ -7,10 +7,10 @@ import com.yummy.naraka.client.layer.HerobrineScarfLayer;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfPose;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfRenderState;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfTexture;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
-import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -32,7 +32,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity> {
     @Inject(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V", at = @At("RETURN"))
     private void renderHerobrineScarf(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
         ItemStack itemStack = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
-        if (itemStack.is(NarakaItems.HEROBRINE_SCARF.get())) {
+        if (itemStack.getOrDefault(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), false)) {
             for (WavingScarfRenderState.ModelData modelData : WavingScarfRenderState.ModelType.HUMANOID.modelData) {
                 poseStack.pushPose();
                 WavingScarfPose scarfPose = modelData.pose();

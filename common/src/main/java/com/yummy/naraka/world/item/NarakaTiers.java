@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.Block;
 import java.util.function.Supplier;
 
 public class NarakaTiers implements Tier {
-    public static final NarakaTiers LONGINUS = new NarakaTiers(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 0, 6, 65, 6, () -> Ingredient.EMPTY);
+    public static final NarakaTiers LONGINUS = new NarakaTiers(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, Integer.MAX_VALUE, 6, 65, 6, () -> Ingredient.EMPTY);
 
     public static final ResourceLocation ENTITY_INTERACTION_RANGE_ID = NarakaMod.location("entity_interaction_range");
     public static final ResourceLocation BLOCK_INTERACTION_RANGE_ID = NarakaMod.location("block_interaction_range");

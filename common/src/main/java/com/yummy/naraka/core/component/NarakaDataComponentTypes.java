@@ -37,6 +37,12 @@ public class NarakaDataComponentTypes {
                     .networkSynchronized(SoulType.STREAM_CODEC)
     );
 
+    public static final HolderProxy<DataComponentType<?>, DataComponentType<Boolean>> HEROBRINE_SCARF = register(
+            "herobrine_scarf",
+            builder -> builder.persistent(Codec.BOOL)
+                    .networkSynchronized(ByteBufCodecs.BOOL)
+    );
+
     private static <T> HolderProxy<DataComponentType<?>, DataComponentType<T>> register(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {
         return RegistryProxy.register(Registries.DATA_COMPONENT_TYPE, name, () -> builder.apply(DataComponentType.builder()).build());
     }

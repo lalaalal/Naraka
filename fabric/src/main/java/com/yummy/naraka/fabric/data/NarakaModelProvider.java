@@ -130,6 +130,8 @@ public class NarakaModelProvider extends FabricModelProvider {
         );
     }
 
+    private static final ModelTemplate SPAWN_EGG = new ModelTemplate(Optional.of(NarakaMod.mcLocation("item/template_spawn_egg")), Optional.empty());
+
     private static final List<ItemModelGenerators.TrimModelData> TRIM_MODELS = List.of(
             new ItemModelGenerators.TrimModelData("quartz", 0.052f, Map.of()),
             new ItemModelGenerators.TrimModelData("iron", 0.104f, Map.of(ArmorMaterials.IRON, "iron_darker")),
@@ -173,8 +175,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SHARD.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         generator.generateFlatItem(NarakaItems.RAINBOW_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-        generator.generateFlatItem(NarakaItems.HEROBRINE_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
-        generator.generateFlatItem(NarakaItems.HEROBRINE_PICKAXE.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.HEROBRINE_SPAWN_EGG.get(), SPAWN_EGG);
 
         for (Item item : armorItems) {
             if (item instanceof ArmorItem armorItem)

@@ -24,7 +24,7 @@ import org.joml.Quaternionf;
 @Environment(EnvType.CLIENT)
 public class NarakaPickaxeRenderer extends LivingEntityRenderer<NarakaPickaxe, NarakaPickaxeModel> {
     private final ItemRenderer itemRenderer;
-    private final ItemStack pickaxe = NarakaItems.HEROBRINE_PICKAXE.get().getDefaultInstance();
+    private final ItemStack pickaxe = NarakaItems.NARAKA_PICKAXE.get().getDefaultInstance();
 
     public static void applyTransformAndRotate(PoseStack poseStack, ModelPart part) {
         poseStack.translate(-part.x / 16, -part.y / 16, part.z / 16);
