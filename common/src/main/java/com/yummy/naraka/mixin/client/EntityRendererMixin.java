@@ -20,7 +20,7 @@ public abstract class EntityRendererMixin<T extends Entity, S extends EntityRend
     @Inject(method = "extractRenderState", at = @At("RETURN"))
     private void setDisplayPurifiedSoulFlame(T entity, S reusedState, float partialTick, CallbackInfo ci) {
         if (entity instanceof LivingEntity livingEntity && reusedState instanceof PurifiedSoulFlameRenderState purifiedSoulFlameRenderState) {
-            boolean displayPurifiedSoulFlame = EntityDataHelper.getEntityData(livingEntity, NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get()) > 0;
+            boolean displayPurifiedSoulFlame = EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get()) > 0;
             purifiedSoulFlameRenderState.naraka$setDisplayPurifiedSoulFlame(displayPurifiedSoulFlame);
         }
     }

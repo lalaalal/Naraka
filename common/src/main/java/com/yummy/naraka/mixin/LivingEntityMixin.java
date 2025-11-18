@@ -3,6 +3,7 @@ package com.yummy.naraka.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
+import com.yummy.naraka.world.entity.data.EntityData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
@@ -10,7 +11,6 @@ import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffectHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -33,6 +33,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.List;
 import java.util.Map;
 
 @Mixin(LivingEntity.class)
@@ -53,16 +54,16 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
     public void saveEntityData(ValueOutput output, CallbackInfo ci) {
         if (EntityDataHelper.hasEntityData(naraka$living())) {
-            CompoundTag compoundTag = new CompoundTag();
-            EntityDataHelper.saveEntityData(naraka$living(), compoundTag);
-            output.store("EntityData", CompoundTag.CODEC, compoundTag);
+            List<EntityData<?>> data = EntityDataHelper.getEntityDataList(naraka$living());
+            output.store("EntityData", EntityData.CODEC.listOf(), data);
         }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))
     public void readEntityData(ValueInput input, CallbackInfo ci) {
-        CompoundTag compoundTag = input.read("EntityData", CompoundTag.CODEC).orElse(new CompoundTag());
-        EntityDataHelper.readEntityData(naraka$living(), compoundTag);
+        List<EntityData<?>> data = input.read("EntityData", EntityData.CODEC.listOf())
+                .orElse(List.of());
+        EntityDataHelper.setEntityDataList(naraka$living(), data);
     }
 
     @Inject(method = "remove", at = @At("RETURN"))
@@ -104,12 +105,18 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "tick", at = @At("RETURN"))
     public void tickPurifiedSoulFire(CallbackInfo ci) {
-        int purifiedSoulFireTick = EntityDataHelper.getEntityData(naraka$living(), NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get());
+        int purifiedSoulFireTick = EntityDataHelper.getRawEntityData(naraka$living(), NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get());
         if (purifiedSoulFireTick > 0 && level() instanceof ServerLevel level) {
             if (purifiedSoulFireTick % 20 == 0)
                 hurtServer(level, NarakaDamageSources.purifiedSoulFire(registryAccess()), 6);
             EntityDataHelper.setEntityData(naraka$living(), NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get(), purifiedSoulFireTick - 1);
         }
+    }
+
+    @Inject(method = "tick", at = @At("RETURN"))
+    public void tickEntityData(CallbackInfo ci) {
+        EntityDataHelper.getEntityDataTypes(naraka$living())
+                .forEach(type -> type.tick(naraka$living()));
     }
 
     @Unique

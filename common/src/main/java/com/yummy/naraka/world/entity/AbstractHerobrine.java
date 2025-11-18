@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.entity;
 
-import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
@@ -31,14 +30,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
 public abstract class AbstractHerobrine extends SkillUsingMob implements StigmatizingEntity, AfterimageEntity, Enemy {
     protected static final EntityDataAccessor<Boolean> FINAL_MODEL = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
-    protected static final EntityDataAccessor<Float> SCARF_ROTATION_DEGREE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Boolean> DISPLAY_SCARF = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> DISPLAY_EYE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> DISPLAY_PICKAXE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
@@ -47,7 +44,6 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     private final ScarfWavingData scarfWavingData = new ScarfWavingData();
 
     private float eyeAlpha = 1;
-    private float prevScarfRotation = 0;
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
@@ -83,8 +79,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(SCARF_ROTATION_DEGREE, 0f)
-                .define(FINAL_MODEL, false)
+        builder.define(FINAL_MODEL, false)
                 .define(DISPLAY_SCARF, false)
                 .define(DISPLAY_EYE, true)
                 .define(DISPLAY_PICKAXE, false);
@@ -120,26 +115,6 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
     public ScarfWavingData getScarfWavingData() {
         return scarfWavingData;
-    }
-
-    public float getScarfRotationDegree(float partialTick) {
-        return Mth.lerp(partialTick, prevScarfRotation, entityData.get(SCARF_ROTATION_DEGREE));
-    }
-
-    private void updateScarfRotation() {
-        float scarfRotationDegree = entityData.get(SCARF_ROTATION_DEGREE);
-        Vec3 movement = getDeltaMovement();
-        Vec3 projection = movement.multiply(1, 0, 1);
-        float targetRotation = (float) projection.length() * 100 * 10;
-        if (scarfRotationDegree < targetRotation)
-            scarfRotationDegree += 1;
-        if (scarfRotationDegree > targetRotation)
-            scarfRotationDegree -= 1;
-        float maxRotation = NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
-        if (!onGround())
-            scarfRotationDegree = scarfRotationDegree - (float) movement.y * 30;
-        float newRotation = Mth.clamp(scarfRotationDegree, 0, maxRotation);
-        entityData.set(SCARF_ROTATION_DEGREE, newRotation);
     }
 
     public boolean shouldRenderScarf() {
@@ -192,15 +167,8 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
         float alphaAddition = displayEye() ? 0.1f : -0.1f;
         eyeAlpha = Mth.clamp(eyeAlpha + alphaAddition, 0, 1);
-        prevScarfRotation = entityData.get(SCARF_ROTATION_DEGREE);
 
-        scarfWavingData.update(Mth.lerp(prevScarfRotation / NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue(), 0, 1), (float) getDeltaMovement().y, yBodyRot - yBodyRotO);
-    }
-
-    @Override
-    protected void customServerAiStep(ServerLevel serverLevel) {
-        updateScarfRotation();
-        super.customServerAiStep(serverLevel);
+        scarfWavingData.update(getDeltaMovement(), yBodyRot - yBodyRotO, onGround());
     }
 
     @Override

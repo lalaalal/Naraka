@@ -1,5 +1,7 @@
 package com.yummy.naraka.world.entity.data;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.config.NarakaCommonConfig;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
@@ -18,6 +20,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
  * @see StigmaHelper
  */
 public record Stigma(int value, long lastMarkedTime) {
+    public static final Codec<Stigma> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                    Codec.INT.fieldOf("value").forGetter(Stigma::value),
+                    Codec.LONG.fieldOf("lastMarkedTime").forGetter(Stigma::lastMarkedTime)
+            ).apply(instance, Stigma::new)
+    );
+
     public static final Stigma ZERO = new Stigma(0, 0);
     public static final int MAX_STIGMA = 2;
 
@@ -75,7 +83,7 @@ public record Stigma(int value, long lastMarkedTime) {
 
     private void lockHealth(ServerLevel level, LivingEntity livingEntity, Entity cause) {
         double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
-        double lockedHealth = EntityDataHelper.getEntityData(livingEntity, NarakaEntityDataTypes.LOCKED_HEALTH.get());
+        double lockedHealth = EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.LOCKED_HEALTH.get());
         double originalMaxHealth = maxHealth + lockedHealth;
         double reducingHealth = originalMaxHealth * NarakaConfig.COMMON.lockHealthRatio.getValue();
         lockedHealth += reducingHealth;
