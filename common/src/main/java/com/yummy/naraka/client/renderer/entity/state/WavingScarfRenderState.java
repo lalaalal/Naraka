@@ -35,7 +35,7 @@ public class WavingScarfRenderState {
     public void extract(AbstractHerobrine herobrine, ModelType type, float partialTick) {
         this.modelDataList = type.modelData;
         this.waveData = herobrine.getScarfWavingData();
-        this.rotationDegree = this.waveData.getScarfRotationDegree();
+        this.rotationDegree = this.waveData.getScarfRotationDegree(partialTick);
         this.partialTick = partialTick;
     }
 
@@ -44,7 +44,7 @@ public class WavingScarfRenderState {
         ItemStack itemStack = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
         this.display = itemStack.has(NarakaDataComponentTypes.HEROBRINE_SCARF.get());
         this.waveData = EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.SCARF_WAVING_DATA.get());
-        this.rotationDegree = this.waveData.getScarfRotationDegree();
+        this.rotationDegree = this.waveData.getScarfRotationDegree(partialTick);
         this.partialTick = partialTick;
     }
 
