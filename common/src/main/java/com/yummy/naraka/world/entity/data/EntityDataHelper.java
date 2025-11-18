@@ -2,96 +2,95 @@ package com.yummy.naraka.world.entity.data;
 
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncEntityDataPacket;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EntityDataHelper {
     private static final Map<UUID, EntityDataContainer> ENTITY_DATA_MAP = new HashMap<>();
-    private static final Map<EntityDataType<?>, List<WrapperListener>> DATA_CHANGE_LISTENERS = new HashMap<>();
+    private static final Map<EntityDataType<?>, List<DataChangeListener<?>>> DATA_CHANGE_LISTENERS = new HashMap<>();
 
     public static void clear() {
         ENTITY_DATA_MAP.clear();
     }
 
     public static <T> void registerDataChangeListener(EntityDataType<T> entityDataType, DataChangeListener<T> listener) {
-        List<WrapperListener> listeners = DATA_CHANGE_LISTENERS.computeIfAbsent(entityDataType, _entityDataType -> new ArrayList<>());
-        listeners.add(wrap(entityDataType, listener));
-    }
-
-    private static <T> WrapperListener wrap(EntityDataType<T> entityDataType, DataChangeListener<T> listener) {
-        return (livingEntity, _entityDataType, from, to) -> {
-            Class<T> type = entityDataType.getValueType();
-            listener.onChange(livingEntity, entityDataType, type.cast(from), type.cast(to));
-        };
+        List<DataChangeListener<?>> listeners = DATA_CHANGE_LISTENERS.computeIfAbsent(entityDataType, _entityDataType -> new ArrayList<>());
+        listeners.add(listener);
     }
 
     public static void syncEntityData(LivingEntity livingEntity, EntityDataType<?> entityDataType) {
-        Holder<EntityDataType<?>> holder = NarakaEntityDataTypes.holder(entityDataType);
         if (livingEntity.level() instanceof ServerLevel serverLevel && serverLevel.getServer().isDedicatedServer()) {
-            CompoundTag data = new CompoundTag();
-            saveEntityData(livingEntity, data);
+            EntityData<?> data = getEntityData(livingEntity, entityDataType);
             for (ServerPlayer player : serverLevel.players())
-                NetworkManager.clientbound().send(player, new SyncEntityDataPacket(livingEntity, holder, data));
+                NetworkManager.clientbound().send(player, new SyncEntityDataPacket(livingEntity, data));
         }
     }
 
     public static void syncEntityData(LivingEntity livingEntity) {
-        HolderSet<EntityDataType<?>> holders = NarakaEntityDataTypes.full();
         if (livingEntity.level() instanceof ServerLevel serverLevel && serverLevel.getServer().isDedicatedServer()) {
-            CompoundTag data = new CompoundTag();
-            saveEntityData(livingEntity, data, holders);
+            List<EntityData<?>> data = getEntityDataList(livingEntity);
             for (ServerPlayer player : serverLevel.players())
-                NetworkManager.clientbound().send(player, new SyncEntityDataPacket(livingEntity, holders, data));
+                NetworkManager.clientbound().send(player, new SyncEntityDataPacket(livingEntity, data));
         }
     }
 
-    public static void setEntityData(LivingEntity livingEntity, EntityDataType<?> entityDataType, Object value) {
+    @SuppressWarnings("unchecked")
+    public static <T> void setEntityData(LivingEntity livingEntity, EntityDataType<T> entityDataType, T value) {
         EntityDataContainer container = ENTITY_DATA_MAP.computeIfAbsent(livingEntity.getUUID(), uuid -> new EntityDataContainer());
-        Object original = container.getEntityData(entityDataType);
+        T original = container.getRawEntityData(entityDataType);
         container.setEntityData(entityDataType, value);
         syncEntityData(livingEntity, entityDataType);
-        for (WrapperListener listener : DATA_CHANGE_LISTENERS.computeIfAbsent(entityDataType, type -> new ArrayList<>()))
-            listener.onChange(livingEntity, entityDataType, original, value);
+        for (DataChangeListener<?> listener : DATA_CHANGE_LISTENERS.computeIfAbsent(entityDataType, type -> new ArrayList<>())) {
+            DataChangeListener<T> castedListener = (DataChangeListener<T>) listener;
+            castedListener.onChange(livingEntity, entityDataType, original, value);
+        }
     }
 
-    public static <T> T getEntityData(LivingEntity livingEntity, EntityDataType<T> entityDataType) {
+    public static <T> void setEntityData(LivingEntity livingEntity, EntityData<T> entityData) {
+        setEntityData(livingEntity, entityData.type(), entityData.value());
+    }
+
+    public static void setEntityDataList(LivingEntity livingEntity, List<EntityData<?>> entityDataList) {
+        entityDataList.forEach(entityData -> setEntityData(livingEntity, entityData));
+    }
+
+    public static <T> T getRawEntityData(LivingEntity livingEntity, EntityDataType<T> entityDataType) {
         if (!ENTITY_DATA_MAP.containsKey(livingEntity.getUUID()))
             return entityDataType.getDefaultValue();
         EntityDataContainer container = ENTITY_DATA_MAP.get(livingEntity.getUUID());
+        return container.getRawEntityData(entityDataType);
+    }
+
+    public static <T> EntityData<T> getEntityData(LivingEntity livingEntity, EntityDataType<T> entityDataType) {
+        if (!ENTITY_DATA_MAP.containsKey(livingEntity.getUUID()))
+            return new EntityData<>(entityDataType, entityDataType.getDefaultValue());
+        EntityDataContainer container = ENTITY_DATA_MAP.get(livingEntity.getUUID());
         return container.getEntityData(entityDataType);
+    }
+
+    public static Set<EntityDataType<?>> getEntityDataTypes(LivingEntity livingEntity) {
+        if (!ENTITY_DATA_MAP.containsKey(livingEntity.getUUID()))
+            return Set.of();
+        EntityDataContainer container = ENTITY_DATA_MAP.get(livingEntity.getUUID());
+        return container.getEntityDataTypes();
+    }
+
+    public static List<EntityData<?>> getEntityDataList(LivingEntity livingEntity) {
+        if (!ENTITY_DATA_MAP.containsKey(livingEntity.getUUID()))
+            return List.of();
+        EntityDataContainer container = ENTITY_DATA_MAP.get(livingEntity.getUUID());
+        return container.getEntityDataTypes().stream()
+                .map(container::getEntityData)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public static void removeEntityData(LivingEntity entity) {
         ENTITY_DATA_MAP.remove(entity.getUUID());
         syncEntityData(entity);
-    }
-
-    public static void saveEntityData(LivingEntity livingEntity, CompoundTag compoundTag) {
-        RegistryAccess registries = livingEntity.registryAccess();
-        EntityDataContainer container = ENTITY_DATA_MAP.get(livingEntity.getUUID());
-        if (container != null)
-            container.save(compoundTag, registries);
-    }
-
-    public static void saveEntityData(LivingEntity livingEntity, CompoundTag compoundTag, HolderSet<EntityDataType<?>> entityDataTypes) {
-        RegistryAccess registries = livingEntity.registryAccess();
-        EntityDataContainer container = ENTITY_DATA_MAP.get(livingEntity.getUUID());
-        if (container != null)
-            container.save(compoundTag, registries, entityDataTypes);
-    }
-
-    public static void readEntityData(LivingEntity livingEntity, CompoundTag compoundTag) {
-        RegistryAccess registries = livingEntity.registryAccess();
-        EntityDataContainer container = new EntityDataContainer();
-        container.read(compoundTag, registries);
-        ENTITY_DATA_MAP.put(livingEntity.getUUID(), container);
     }
 
     public static boolean hasEntityData(LivingEntity livingEntity) {
@@ -104,10 +103,6 @@ public class EntityDataHelper {
                     .hasEntityData(entityDataType);
         }
         return false;
-    }
-
-    private interface WrapperListener {
-        void onChange(LivingEntity livingEntity, EntityDataType<?> entityDataType, Object from, Object to);
     }
 
     public interface DataChangeListener<T> {

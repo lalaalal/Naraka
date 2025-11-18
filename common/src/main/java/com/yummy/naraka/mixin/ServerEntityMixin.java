@@ -1,12 +1,9 @@
 package com.yummy.naraka.mixin;
 
-import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncEntityDataPacket;
+import com.yummy.naraka.world.entity.data.EntityData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
-import com.yummy.naraka.world.entity.data.EntityDataType;
-import net.minecraft.core.HolderSet;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -17,6 +14,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.List;
 
 @Mixin(ServerEntity.class)
 public abstract class ServerEntityMixin {
@@ -29,15 +28,8 @@ public abstract class ServerEntityMixin {
     @Inject(method = "addPairing", at = @At("RETURN"))
     public void addParingEntityData(ServerPlayer serverPlayer, CallbackInfo ci) {
         if (entity instanceof LivingEntity livingEntity) {
-            HolderSet<EntityDataType<?>> entityDataTypes = HolderSet.direct(
-                    NarakaRegistries.ENTITY_DATA_TYPE.stream()
-                            .map(NarakaRegistries.ENTITY_DATA_TYPE::wrapAsHolder)
-                            .filter(holder -> EntityDataHelper.hasEntityData(livingEntity, holder.value()))
-                            .toList()
-            );
-            CompoundTag data = new CompoundTag();
-            EntityDataHelper.saveEntityData(livingEntity, data);
-            NetworkManager.sendToClient(serverPlayer, new SyncEntityDataPacket(livingEntity, entityDataTypes, data));
+            List<EntityData<?>> data = EntityDataHelper.getEntityDataList(livingEntity);
+            NetworkManager.sendToClient(serverPlayer, new SyncEntityDataPacket(livingEntity, data));
         }
     }
 }

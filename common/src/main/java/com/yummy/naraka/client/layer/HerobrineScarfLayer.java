@@ -95,9 +95,9 @@ public class HerobrineScarfLayer<T extends AbstractHerobrine, M extends Abstract
             WavingScarfTexture textureInfo = modelData.textureInfo();
             RenderType outsideRenderType = getOutsideRenderType(livingEntity, textureInfo);
             RenderType insideRenderType = getInsideRenderType(livingEntity, textureInfo);
-            float scale = scarfPose.scale();
-            float rotationDegree = livingEntity.getScarfRotationDegree(partialTick) - NarakaConfig.CLIENT.herobrineScarfDefaultRotation.getValue();
             ScarfWavingData waveData = livingEntity.getScarfWavingData();
+            float rotationDegree = waveData.getScarfRotationDegree();
+            float scale = scarfPose.scale();
             Vec3 translation = scarfPose.translation();
             poseStack.scale(-scale, -scale, scale);
             poseStack.translate(translation.x, translation.y, translation.z);

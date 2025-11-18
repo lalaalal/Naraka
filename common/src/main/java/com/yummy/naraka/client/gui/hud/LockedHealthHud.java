@@ -72,7 +72,7 @@ public class LockedHealthHud implements LayeredDraw.Layer {
 
         int baseX = graphics.guiWidth() / 2 - 91;
         int baseY = graphics.guiHeight() - 39;
-        double lockedHealth = EntityDataHelper.getEntityData(player, NarakaEntityDataTypes.LOCKED_HEALTH.get());
+        double lockedHealth = EntityDataHelper.getRawEntityData(player, NarakaEntityDataTypes.LOCKED_HEALTH.get());
         double maxHealth = player.getAttributeValue(Attributes.MAX_HEALTH);
         double originalMaxHealth = maxHealth + lockedHealth;
         int heartCount = Mth.ceil(originalMaxHealth / 2);

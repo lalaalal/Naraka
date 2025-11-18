@@ -1,18 +1,13 @@
 package com.yummy.naraka.world.entity.data;
 
-import com.yummy.naraka.core.registries.NarakaRegistries;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderSet;
-import net.minecraft.nbt.CompoundTag;
-
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class EntityDataContainer {
     private final Map<EntityDataType<?>, Object> entityDataMap = new HashMap<>();
 
-    public void setEntityData(EntityDataType<?> entityDataType, Object entityData) {
+    public <T> void setEntityData(EntityDataType<T> entityDataType, T entityData) {
         this.entityDataMap.put(entityDataType, entityData);
     }
 
@@ -20,33 +15,18 @@ public class EntityDataContainer {
         return entityDataMap.containsKey(entityDataType);
     }
 
-    public <T> T getEntityData(EntityDataType<T> entityDataType) {
+    @SuppressWarnings("unchecked")
+    public <T> T getRawEntityData(EntityDataType<T> entityDataType) {
         if (this.entityDataMap.containsKey(entityDataType))
-            return entityDataType.getValueType().cast(this.entityDataMap.get(entityDataType));
+            return (T) this.entityDataMap.get(entityDataType);
         return entityDataType.getDefaultValue();
     }
 
-    public void save(CompoundTag compoundTag, HolderLookup.Provider registries) {
-        for (EntityDataType<?> entityDataType : entityDataMap.keySet()) {
-            if (entityDataMap.get(entityDataType) != entityDataType.getDefaultValue())
-                entityDataType.castAndWrite(entityDataMap.get(entityDataType), compoundTag, registries);
-        }
+    public Set<EntityDataType<?>> getEntityDataTypes() {
+        return entityDataMap.keySet();
     }
 
-    public void save(CompoundTag compoundTag, HolderLookup.Provider registries, HolderSet<EntityDataType<?>> entityDataTypes) {
-        for (Holder<EntityDataType<?>> holder : entityDataTypes) {
-            Object value = getEntityData(holder.value());
-            holder.value().castAndWrite(value, compoundTag, registries);
-        }
-    }
-
-    public void read(CompoundTag compoundTag, HolderLookup.Provider registries) {
-        NarakaRegistries.ENTITY_DATA_TYPE.stream().toList()
-                .forEach(entityDataType -> {
-                    if (entityDataType.saveExists(compoundTag)) {
-                        Object data = entityDataType.readOrDefault(compoundTag, registries);
-                        setEntityData(entityDataType, data);
-                    }
-                });
+    public <T> EntityData<T> getEntityData(EntityDataType<T> entityDataType) {
+        return new EntityData<>(entityDataType, getRawEntityData(entityDataType));
     }
 }
