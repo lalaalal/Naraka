@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 public final class EntityDataType<T> {
@@ -19,7 +19,7 @@ public final class EntityDataType<T> {
     private final Supplier<T> defaultValue;
     private final MapCodec<EntityData<T>> mapCodec;
     private final StreamCodec<RegistryFriendlyByteBuf, EntityData<T>> streamCodec;
-    private final Consumer<LivingEntity> ticker;
+    private final BiConsumer<LivingEntity, T> ticker;
 
     public static <T> Builder<T> builder(Codec<T> codec) {
         return new Builder<>(codec);
@@ -29,7 +29,7 @@ public final class EntityDataType<T> {
         return builder(codec).defaultValue(defaultValue);
     }
 
-    public EntityDataType(ResourceLocation id, Codec<T> codec, Supplier<T> defaultValue, Consumer<LivingEntity> ticker) {
+    public EntityDataType(ResourceLocation id, Codec<T> codec, Supplier<T> defaultValue, BiConsumer<LivingEntity, T> ticker) {
         this.id = id;
         this.defaultValue = defaultValue;
         this.mapCodec = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -62,7 +62,8 @@ public final class EntityDataType<T> {
     }
 
     public void tick(LivingEntity livingEntity) {
-        ticker.accept(livingEntity);
+        T value = EntityDataHelper.getRawEntityData(livingEntity, this);
+        ticker.accept(livingEntity, value);
     }
 
     public static class Builder<T> {
@@ -70,12 +71,12 @@ public final class EntityDataType<T> {
         private ResourceLocation id;
         @Nullable
         private Supplier<T> defaultValue;
-        private Consumer<LivingEntity> ticker;
+        private BiConsumer<LivingEntity, T> ticker;
 
         private Builder(Codec<T> codec) {
             this.id = NarakaMod.location("empty");
             this.codec = codec;
-            this.ticker = livingEntity -> {
+            this.ticker = (livingEntity, value) -> {
             };
         }
 
@@ -94,7 +95,7 @@ public final class EntityDataType<T> {
             return this;
         }
 
-        public Builder<T> ticker(Consumer<LivingEntity> ticker) {
+        public Builder<T> ticker(BiConsumer<LivingEntity, T> ticker) {
             this.ticker = ticker;
             return this;
         }

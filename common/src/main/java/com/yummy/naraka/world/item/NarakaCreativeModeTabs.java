@@ -89,6 +89,7 @@ public class NarakaCreativeModeTabs {
         output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get());
         output.accept(NarakaItems.SANCTUARY_COMPASS.get());
         output.accept(NarakaItems.HEROBRINE_SPAWN_EGG.get());
+        output.accept(NarakaItems.HEROBRINE_SCARF.get());
         output.accept(NarakaBlocks.SOUL_SMITHING_BLOCK.get());
         output.accept(NarakaBlocks.SOUL_STABILIZER.get());
         output.accept(NarakaBlocks.PURIFIED_SOUL_LAMP.get());

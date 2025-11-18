@@ -115,7 +115,7 @@ public class HerobrineScarfLayer<T extends AbstractHerobrine, M extends Abstract
         return -1;
     }
 
-    public void renderScarf(PoseStack poseStack, RenderType insideRenderType, RenderType outsideRenderType, MultiBufferSource bufferSource, int packedLight, int color, float partialTick, float rotationDegree, ScarfWavingData waveData, WavingScarfRenderState.ModelData modelData) {
+    public static void renderScarf(PoseStack poseStack, RenderType insideRenderType, RenderType outsideRenderType, MultiBufferSource bufferSource, int packedLight, int color, float partialTick, float rotationDegree, ScarfWavingData waveData, WavingScarfRenderState.ModelData modelData) {
         WavingScarfTexture textureInfo = modelData.textureInfo();
         WavingScarfPose scarfPose = modelData.pose();
 

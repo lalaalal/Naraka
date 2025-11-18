@@ -256,6 +256,7 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.HEROBRINE_SPAWN_EGG, "Herobrine Spawn Egg", "히로빈 생성 알");
         addItem(NarakaItems.SKILL_CONTROLLER, "Skill Controller", "스킬 컨트롤러");
         addItem(NarakaItems.ANIMATION_CONTROLLER, "Animation Controller", "애니메이션 컨트롤러");
+        addItem(NarakaItems.HEROBRINE_SCARF, "Herobrine Scarf", "히로빈 스카프");
 
         addBlock(NarakaBlocks.AMETHYST_ORE, "Amethyst Ore", "자수정 광석");
         addBlock(NarakaBlocks.DEEPSLATE_AMETHYST_ORE, "Deepslate Amethyst Ore", "심층암 자수정 광석");

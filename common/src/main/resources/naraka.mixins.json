@@ -12,6 +12,7 @@
     "client.FogRendererMixin",
     "client.GuiMixin",
     "client.HiddenOreRendererMixin",
+    "client.HumanoidArmorLayerMixin",
     "client.ItemBlockRenderTypesMixin",
     "client.ItemEntityRendererMixin",
     "client.ItemRendererMixin",

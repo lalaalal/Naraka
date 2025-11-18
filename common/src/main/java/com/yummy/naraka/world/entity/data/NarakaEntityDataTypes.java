@@ -34,8 +34,7 @@ public class NarakaEntityDataTypes {
                     .ticker(NarakaEntityDataTypes::tickScarfWavingData)
     );
 
-    private static void tickPurifiedSoulFire(LivingEntity livingEntity) {
-        int purifiedSoulFireTick = EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get());
+    private static void tickPurifiedSoulFire(LivingEntity livingEntity, int purifiedSoulFireTick) {
         if (purifiedSoulFireTick > 0) {
             if (purifiedSoulFireTick % 20 == 0)
                 livingEntity.hurt(NarakaDamageSources.purifiedSoulFire(livingEntity.registryAccess()), 6);
@@ -43,8 +42,9 @@ public class NarakaEntityDataTypes {
         }
     }
 
-    private static void tickScarfWavingData(LivingEntity livingEntity) {
-
+    private static void tickScarfWavingData(LivingEntity livingEntity, ScarfWavingData scarfWavingData) {
+        if (livingEntity.level().isClientSide())
+            scarfWavingData.update(livingEntity.getDeltaMovement(), livingEntity.yBodyRot - livingEntity.yBodyRotO, livingEntity.onGround());
     }
 
     private static <T> HolderProxy<EntityDataType<?>, EntityDataType<T>> register(String name, EntityDataType.Builder<T> builder) {

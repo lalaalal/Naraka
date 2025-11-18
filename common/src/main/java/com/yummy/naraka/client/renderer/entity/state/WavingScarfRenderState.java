@@ -11,9 +11,11 @@ public class WavingScarfRenderState {
             ModelData.of(WavingScarfTexture.PHASE_2_BACK, WavingScarfPose.PHASE_2_BACK),
             ModelData.of(WavingScarfTexture.PHASE_2_FRONT, WavingScarfPose.PHASE_2_FRONT)
     );
-
     private static final List<ModelData> PHASE_3_MODEL_DATA = List.of(
             ModelData.of(WavingScarfTexture.PHASE_3, WavingScarfPose.PHASE_3)
+    );
+    private static final List<ModelData> HUMANOID = List.of(
+            ModelData.of(WavingScarfTexture.PHASE_3, WavingScarfPose.HUMANOID)
     );
 
     public record ModelData(WavingScarfTexture textureInfo, WavingScarfPose pose) {
@@ -24,7 +26,8 @@ public class WavingScarfRenderState {
 
     public enum ModelType {
         SMALL(PHASE_2_MODEL_DATA),
-        BIG(PHASE_3_MODEL_DATA);
+        BIG(PHASE_3_MODEL_DATA),
+        HUMANOID(WavingScarfRenderState.HUMANOID);
 
         public final List<ModelData> modelData;
 

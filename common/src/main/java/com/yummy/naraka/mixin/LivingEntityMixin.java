@@ -3,10 +3,11 @@ package com.yummy.naraka.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.util.NarakaNbtUtils;
-import com.yummy.naraka.world.damagesource.NarakaDamageSources;
+import com.yummy.naraka.world.entity.ScarfWavingData;
 import com.yummy.naraka.world.entity.data.EntityData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
+import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
@@ -50,6 +51,9 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Shadow
     protected abstract ItemStack getLastArmorItem(EquipmentSlot slot);
+
+    @Shadow
+    public abstract ItemStack getItemBySlot(EquipmentSlot slot);
 
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -106,11 +110,13 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "tick", at = @At("RETURN"))
     public void tickPurifiedSoulFire(CallbackInfo ci) {
-        int purifiedSoulFireTick = EntityDataHelper.getRawEntityData(naraka$living(), NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get());
-        if (purifiedSoulFireTick > 0) {
-            if (purifiedSoulFireTick % 20 == 0)
-                hurt(NarakaDamageSources.purifiedSoulFire(registryAccess()), 6);
-            EntityDataHelper.setEntityData(naraka$living(), NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get(), purifiedSoulFireTick - 1);
+        EntityDataHelper.getEntityDataTypes(naraka$living())
+                .forEach(type -> type.tick(naraka$living()));
+
+        ItemStack itemStack = getItemBySlot(EquipmentSlot.CHEST);
+        if (itemStack.is(NarakaItems.HEROBRINE_SCARF.get())) {
+            if (!EntityDataHelper.hasEntityData(naraka$living(), NarakaEntityDataTypes.SCARF_WAVING_DATA.get()))
+                EntityDataHelper.setEntityData(naraka$living(), NarakaEntityDataTypes.SCARF_WAVING_DATA.get(), new ScarfWavingData());
         }
     }
 
