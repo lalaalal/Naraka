@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class EntityDataHelper {
     private static final Map<UUID, EntityDataContainer> ENTITY_DATA_MAP = new HashMap<>();
@@ -18,8 +17,8 @@ public class EntityDataHelper {
     }
 
     public static <T> void registerDataChangeListener(EntityDataType<T> entityDataType, DataChangeListener<T> listener) {
-        List<DataChangeListener<?>> listeners = DATA_CHANGE_LISTENERS.computeIfAbsent(entityDataType, _entityDataType -> new ArrayList<>());
-        listeners.add(listener);
+        DATA_CHANGE_LISTENERS.computeIfAbsent(entityDataType, _entityDataType -> new ArrayList<>())
+                .add(listener);
     }
 
     public static void syncEntityData(LivingEntity livingEntity, EntityDataType<?> entityDataType) {
@@ -67,7 +66,7 @@ public class EntityDataHelper {
 
     public static <T> EntityData<T> getEntityData(LivingEntity livingEntity, EntityDataType<T> entityDataType) {
         if (!ENTITY_DATA_MAP.containsKey(livingEntity.getUUID()))
-            return new EntityData<>(entityDataType, entityDataType.getDefaultValue());
+            return entityDataType.getDefault();
         EntityDataContainer container = ENTITY_DATA_MAP.get(livingEntity.getUUID());
         return container.getEntityData(entityDataType);
     }
@@ -83,9 +82,7 @@ public class EntityDataHelper {
         if (!ENTITY_DATA_MAP.containsKey(livingEntity.getUUID()))
             return List.of();
         EntityDataContainer container = ENTITY_DATA_MAP.get(livingEntity.getUUID());
-        return container.getEntityDataTypes().stream()
-                .map(container::getEntityData)
-                .collect(Collectors.toCollection(ArrayList::new));
+        return container.stream().toList();
     }
 
     public static void removeEntityData(LivingEntity entity) {
