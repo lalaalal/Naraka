@@ -43,6 +43,8 @@ public final class LanguageKey {
     public static final String STIGMA_COMMAND_CONSUME_KEY = "commands.stigma.consume.success";
     public static final String STIGMA_COMMAND_INCREASE_KEY = "commands.stigma.increase.success";
     public static final String STIGMA_COMMAND_REMOVE_KEY = "commands.stigma.remove.success";
+    public static final String STIGMA_COMMAND_DISABLE_KEY = "commands.stigma.disable.success";
+    public static final String STIGMA_COMMAND_ENABLE_KEY = "commands.stigma.enable.success";
 
     public static final String LOCK_HEALTH_COMMAND_LOCK_KEY = "commands.lockhealth.lock.success";
     public static final String LOCK_HEALTH_COMMAND_REMOVE_KEY = "commands.lockhealth.remove.success";

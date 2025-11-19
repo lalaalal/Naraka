@@ -367,6 +367,8 @@ public class NarakaLanguageProviders {
         add(LanguageKey.STIGMA_COMMAND_INCREASE_KEY, "Increased stigma for %1$d entities", "%1$d개의 엔티티의 낙인을 증가시켰습니다");
         add(LanguageKey.STIGMA_COMMAND_REMOVE_KEY, "Removed stigma for %1$d entities", "%1$d개의 엔티티의 낙인을 제거했습니다");
         add(LanguageKey.STIGMA_COMMAND_CONSUME_KEY, "%2$s consumed %$1d entities stigma", "%2$s(이)가 %1$d개의 엔티티의 낙인을 소모했습니다");
+        add(LanguageKey.STIGMA_COMMAND_DISABLE_KEY, "Disabled stigma", "낙인이 비활성화되었습니다");
+        add(LanguageKey.STIGMA_COMMAND_ENABLE_KEY, "Enabled stigma", "낙인이 활성화되었습니다");
 
         add(LanguageKey.LOCK_HEALTH_COMMAND_LOCK_KEY, "Locked %2$s health %1$d", "%2$s의 체력을 %1$d 잠궜습니다");
         add(LanguageKey.LOCK_HEALTH_COMMAND_REMOVE_KEY, "Removed %1$s locked healths", "%1$s의 잠긴 체력을 해제했습니다");
