@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.NarakaMod;
+import net.minecraft.Util;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -12,10 +13,12 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class EntityDataType<T> {
     private final ResourceLocation id;
-    private final EntityData<T> defaultInstance;
+    private final Supplier<EntityData<T>> defaultInstance;
     private final MapCodec<EntityData<T>> mapCodec;
     private final StreamCodec<RegistryFriendlyByteBuf, EntityData<T>> streamCodec;
     private final BiConsumer<LivingEntity, T> ticker;
@@ -28,9 +31,9 @@ public final class EntityDataType<T> {
         return builder(codec).defaultValue(defaultValue);
     }
 
-    public EntityDataType(ResourceLocation id, Codec<T> codec, T defaultValue, BiConsumer<LivingEntity, T> ticker) {
+    private EntityDataType(ResourceLocation id, Codec<T> codec, Function<EntityDataType<T>, EntityData<T>> defaultInstance, BiConsumer<LivingEntity, T> ticker) {
         this.id = id;
-        this.defaultInstance = new EntityData<>(this, defaultValue);
+        this.defaultInstance = () -> defaultInstance.apply(this);
         this.mapCodec = RecordCodecBuilder.mapCodec(instance -> instance.group(
                         codec.fieldOf("value").forGetter(EntityData::value)
                 ).apply(instance, value -> new EntityData<>(this, value))
@@ -45,11 +48,11 @@ public final class EntityDataType<T> {
     }
 
     public T getDefaultValue() {
-        return defaultInstance.value();
+        return getDefault().value();
     }
 
     public EntityData<T> getDefault() {
-        return defaultInstance;
+        return defaultInstance.get();
     }
 
     public String name() {
@@ -73,7 +76,7 @@ public final class EntityDataType<T> {
         private final Codec<T> codec;
         private ResourceLocation id;
         @Nullable
-        private T defaultValue;
+        private Function<EntityDataType<T>, EntityData<T>> defaultInstance;
         private BiConsumer<LivingEntity, T> ticker;
 
         private Builder(Codec<T> codec) {
@@ -88,8 +91,13 @@ public final class EntityDataType<T> {
             return this;
         }
 
+        public Builder<T> defaultValue(Supplier<T> defaultValue) {
+            this.defaultInstance = type -> new EntityData<>(type, defaultValue.get());
+            return this;
+        }
+
         public Builder<T> defaultValue(T defaultValue) {
-            this.defaultValue = defaultValue;
+            this.defaultInstance = Util.memoize(type -> new EntityData<>(type, defaultValue));
             return this;
         }
 
@@ -99,9 +107,9 @@ public final class EntityDataType<T> {
         }
 
         public EntityDataType<T> build() {
-            if (defaultValue == null)
+            if (defaultInstance == null)
                 throw new IllegalStateException("Default value must be set");
-            return new EntityDataType<>(id, codec, defaultValue, ticker);
+            return new EntityDataType<>(id, codec, defaultInstance, ticker);
         }
     }
 }

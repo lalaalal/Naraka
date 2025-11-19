@@ -159,7 +159,7 @@ public class NarakaItems {
             )
     );
 
-    public static final HolderProxy<Item, Item> HEROBRINE_SCARF_SMITHING_TEMPLATE = registerSimpleItem(
+    public static final HolderProxy<Item, Item> HEROBRINE_SCARF = registerSimpleItem(
             "herobrine_scarf",
             properties -> properties.equippable(EquipmentSlot.CHEST)
                     .component(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), Unit.INSTANCE)
