@@ -12,11 +12,10 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 public final class EntityDataType<T> {
     private final ResourceLocation id;
-    private final Supplier<T> defaultValue;
+    private final EntityData<T> defaultInstance;
     private final MapCodec<EntityData<T>> mapCodec;
     private final StreamCodec<RegistryFriendlyByteBuf, EntityData<T>> streamCodec;
     private final BiConsumer<LivingEntity, T> ticker;
@@ -29,9 +28,9 @@ public final class EntityDataType<T> {
         return builder(codec).defaultValue(defaultValue);
     }
 
-    public EntityDataType(ResourceLocation id, Codec<T> codec, Supplier<T> defaultValue, BiConsumer<LivingEntity, T> ticker) {
+    public EntityDataType(ResourceLocation id, Codec<T> codec, T defaultValue, BiConsumer<LivingEntity, T> ticker) {
         this.id = id;
-        this.defaultValue = defaultValue;
+        this.defaultInstance = new EntityData<>(this, defaultValue);
         this.mapCodec = RecordCodecBuilder.mapCodec(instance -> instance.group(
                         codec.fieldOf("value").forGetter(EntityData::value)
                 ).apply(instance, value -> new EntityData<>(this, value))
@@ -46,7 +45,11 @@ public final class EntityDataType<T> {
     }
 
     public T getDefaultValue() {
-        return defaultValue.get();
+        return defaultInstance.value();
+    }
+
+    public EntityData<T> getDefault() {
+        return defaultInstance;
     }
 
     public String name() {
@@ -70,7 +73,7 @@ public final class EntityDataType<T> {
         private final Codec<T> codec;
         private ResourceLocation id;
         @Nullable
-        private Supplier<T> defaultValue;
+        private T defaultValue;
         private BiConsumer<LivingEntity, T> ticker;
 
         private Builder(Codec<T> codec) {
@@ -85,13 +88,8 @@ public final class EntityDataType<T> {
             return this;
         }
 
-        public Builder<T> defaultValue(Supplier<T> defaultValue) {
-            this.defaultValue = defaultValue;
-            return this;
-        }
-
         public Builder<T> defaultValue(T defaultValue) {
-            this.defaultValue = () -> defaultValue;
+            this.defaultValue = defaultValue;
             return this;
         }
 
