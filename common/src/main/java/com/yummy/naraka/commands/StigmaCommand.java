@@ -5,6 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
@@ -21,8 +22,6 @@ import java.util.Collection;
 import java.util.Set;
 
 public class StigmaCommand {
-
-
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("stigma")
                 .requires(source -> source.hasPermission(2))
@@ -120,7 +119,22 @@ public class StigmaCommand {
                                 )
                         )
                 )
-
+                .then(Commands.literal("disable")
+                        .executes(context -> {
+                            NarakaConfig.COMMON.disableStigma.set(true);
+                            NarakaConfig.COMMON.saveValues();
+                            context.getSource().sendSuccess(() -> Component.translatable(LanguageKey.STIGMA_COMMAND_DISABLE_KEY), false);
+                            return Command.SINGLE_SUCCESS;
+                        })
+                )
+                .then(Commands.literal("enable")
+                        .executes(context -> {
+                            NarakaConfig.COMMON.disableStigma.set(false);
+                            NarakaConfig.COMMON.saveValues();
+                            context.getSource().sendSuccess(() -> Component.translatable(LanguageKey.STIGMA_COMMAND_ENABLE_KEY), false);
+                            return Command.SINGLE_SUCCESS;
+                        })
+                )
         );
     }
 

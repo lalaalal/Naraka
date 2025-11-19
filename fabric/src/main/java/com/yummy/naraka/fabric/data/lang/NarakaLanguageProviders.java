@@ -281,14 +281,13 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.HEROBRINE_TOTEM, "Herobrine Totem", "히로빈 토템");
         addBlock(NarakaBlocks.PURIFIED_SOUL_LANTERN, "Purified Soul Lantern", "정화된 영혼 랜턴");
         addBlock(NarakaBlocks.PURIFIED_SOUL_LAMP, "Purified Soul Lamp", "정화된 영혼 조명");
-        addRawBlock(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK, "Purified Soul Fire", "정화된 영혼 불");
+        addBlock(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK, "Purified Soul Fire", "정화된 영혼 불");
         addBlock(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK, "Block of Purified Soul Metal", "정화된 영혼 금속 블록");
         addBlock(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Nectarium Core", "넥타륨 코어");
         addBlock(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, "Nectarium Crystal", "넥타륨 결정");
         addBlock(NarakaBlocks.SOUL_STABILIZER, "Soul Stabilizer", "영혼 안정기");
         addBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, "Soul Smithing Block", "영혼 대장장이 블록");
-
-        addRawBlock(NarakaBlocks.NARAKA_PORTAL, "Naraka Portal", "나락 포탈");
+        addBlock(NarakaBlocks.NARAKA_PORTAL, "Naraka Portal", "나락 포탈");
 
         addTooltip(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Honey is dripping", "꿀이 뚝뚝 떨어져");
         addTooltip(NarakaBlocks.SOUL_SMITHING_BLOCK, "Smash item with a mace...?", "아이템을 철퇴로 부수기..?");
@@ -368,6 +367,8 @@ public class NarakaLanguageProviders {
         add(LanguageKey.STIGMA_COMMAND_INCREASE_KEY, "Increased stigma for %1$d entities", "%1$d개의 엔티티의 낙인을 증가시켰습니다");
         add(LanguageKey.STIGMA_COMMAND_REMOVE_KEY, "Removed stigma for %1$d entities", "%1$d개의 엔티티의 낙인을 제거했습니다");
         add(LanguageKey.STIGMA_COMMAND_CONSUME_KEY, "%2$s consumed %$1d entities stigma", "%2$s(이)가 %1$d개의 엔티티의 낙인을 소모했습니다");
+        add(LanguageKey.STIGMA_COMMAND_DISABLE_KEY, "Disabled stigma", "낙인이 비활성화되었습니다");
+        add(LanguageKey.STIGMA_COMMAND_ENABLE_KEY, "Enabled stigma", "낙인이 활성화되었습니다");
 
         add(LanguageKey.LOCK_HEALTH_COMMAND_LOCK_KEY, "Locked %2$s health %1$d", "%2$s의 체력을 %1$d 잠궜습니다");
         add(LanguageKey.LOCK_HEALTH_COMMAND_REMOVE_KEY, "Removed %1$s locked healths", "%1$s의 잠긴 체력을 해제했습니다");
@@ -399,6 +400,7 @@ public class NarakaLanguageProviders {
 
     public void addBlock(Supplier<? extends Block> block, String... translations) {
         add(block.get().asItem().getDescriptionId(), translations);
+        addRawBlock(block, translations);
     }
 
     public void addRawBlock(Supplier<? extends Block> block, String... translations) {
