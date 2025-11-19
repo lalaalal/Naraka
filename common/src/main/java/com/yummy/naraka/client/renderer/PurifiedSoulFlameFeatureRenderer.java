@@ -3,12 +3,12 @@ package com.yummy.naraka.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.client.NarakaTextures;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.AtlasManager;
 import net.minecraft.client.resources.model.Material;
@@ -16,11 +16,9 @@ import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
 public class PurifiedSoulFlameFeatureRenderer {
-    @SuppressWarnings("deprecation")
-    public static final Material PURIFIED_SOUL_FIRE_0 = new Material(TextureAtlas.LOCATION_BLOCKS, NarakaMod.location("block", "purified_soul_fire_0"));
+    public static final Material PURIFIED_SOUL_FIRE_0 = new Material(NarakaTextures.LOCATION_BLOCKS, NarakaMod.location("block", "purified_soul_fire_0"));
 
-    @SuppressWarnings("deprecation")
-    public static final Material PURIFIED_SOUL_FIRE_1 = new Material(TextureAtlas.LOCATION_BLOCKS, NarakaMod.location("block", "purified_soul_fire_1"));
+    public static final Material PURIFIED_SOUL_FIRE_1 = new Material(NarakaTextures.LOCATION_BLOCKS, NarakaMod.location("block", "purified_soul_fire_1"));
 
 
     public void render(PurifiedSoulFireSubmitNodeCollection purifiedSoulFireSubmitNodeCollection, MultiBufferSource.BufferSource bufferSource, AtlasManager atlasManager) {

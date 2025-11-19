@@ -11,6 +11,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.GpuTexture;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.tags.ConventionalTags;
 import com.yummy.naraka.util.Color;
@@ -25,7 +26,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.model.BlockModelPart;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.state.BlockState;
@@ -131,8 +131,7 @@ public abstract class HiddenOreRendererMixin {
                 poseStack.pushPose();
                 poseStack.translate(pos.getX() - cameraPosition.x, pos.getY() - cameraPosition.y, pos.getZ() - cameraPosition.z);
 
-                @SuppressWarnings("deprecation")
-                RenderType renderType = RenderType.outline(TextureAtlas.LOCATION_BLOCKS);
+                RenderType renderType = RenderType.outline(NarakaTextures.LOCATION_BLOCKS);
                 VertexConsumer vertexConsumer = outlineBufferSource.getBuffer(renderType);
 
                 List<BlockModelPart> blockModelParts = new ArrayList<>();

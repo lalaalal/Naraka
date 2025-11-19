@@ -251,7 +251,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         generateTrimmableItem(generator, Items.NETHERITE_LEGGINGS, EquipmentAssets.NETHERITE, "leggings");
         generateTrimmableItem(generator, Items.NETHERITE_BOOTS, EquipmentAssets.NETHERITE, "boots");
 
-//        generateTrimmableItem(generator, NarakaItems.PURIFIED_SOUL_CHESTPLATE.get(), NarakaEquipmentAssets.PURIFIED_SOUL, "chestplate");
+        generateTrimmableScarfItem(generator, NarakaItems.PURIFIED_SOUL_CHESTPLATE.get(), NarakaEquipmentAssets.PURIFIED_SOUL);
         generateTrimmableItem(generator, NarakaItems.PURIFIED_SOUL_HELMET.get(), NarakaEquipmentAssets.PURIFIED_SOUL, "helmet");
         generateTrimmableItem(generator, NarakaItems.PURIFIED_SOUL_LEGGINGS.get(), NarakaEquipmentAssets.PURIFIED_SOUL, "leggings");
         generateTrimmableItem(generator, NarakaItems.PURIFIED_SOUL_BOOTS.get(), NarakaEquipmentAssets.PURIFIED_SOUL, "boots");
@@ -263,15 +263,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_4_DISC.get(), ModelTemplates.FLAT_ITEM);
 
         generator.itemModelOutput.accept(NarakaItems.NARAKA_PICKAXE.get(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(NarakaItems.NARAKA_PICKAXE.get())));
-
-        ItemModel.Unbaked defaultModel = generateTrimmableItemModel(generator, NarakaItems.PURIFIED_SOUL_CHESTPLATE.get(), NarakaEquipmentAssets.PURIFIED_SOUL, "chestplate", false, false);
-        ItemModel.Unbaked scarfModel = generateTrimmableItemModel(generator, NarakaItems.PURIFIED_SOUL_CHESTPLATE.get(), NarakaEquipmentAssets.PURIFIED_SOUL, "chestplate", false, true);
-        ItemModel.Unbaked model = ItemModelUtils.conditional(
-                new HasComponent(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), false),
-                scarfModel,
-                defaultModel
-        );
-        generator.itemModelOutput.accept(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get(), model);
+        generator.generateFlatItem(NarakaItems.HEROBRINE_SCARF.get(), ModelTemplates.FLAT_ITEM);
 
         NarakaItems.forEachSoulInfusedItem(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_ITEM));
         NarakaItems.forEachSoulInfusedSword(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM));
@@ -312,6 +304,17 @@ public class NarakaModelProvider extends FabricModelProvider {
 
     public static void generateTrimmableItem(ItemModelGenerators generator, Item item, ResourceKey<EquipmentAsset> key, String name) {
         generateTrimmableItem(generator, item, key, name, false);
+    }
+
+    public static void generateTrimmableScarfItem(ItemModelGenerators generator, Item item, ResourceKey<EquipmentAsset> key) {
+        ItemModel.Unbaked defaultModel = generateTrimmableItemModel(generator, item, key, "chestplate", false, false);
+        ItemModel.Unbaked scarfModel = generateTrimmableItemModel(generator, item, key, "chestplate", false, true);
+        ItemModel.Unbaked model = ItemModelUtils.conditional(
+                new HasComponent(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), false),
+                scarfModel,
+                defaultModel
+        );
+        generator.itemModelOutput.accept(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get(), model);
     }
 
     public static void generateTrimmableItem(ItemModelGenerators generator, Item item, ResourceKey<EquipmentAsset> key, String name, boolean withDye) {

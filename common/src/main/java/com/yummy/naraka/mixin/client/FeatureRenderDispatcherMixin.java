@@ -42,6 +42,6 @@ public abstract class FeatureRenderDispatcherMixin {
 
     @Inject(method = "renderAllFeatures", at = @At(value = "TAIL"))
     private void resetTemporaryColors(CallbackInfo ci) {
-        ItemColorRegistry.clearTemporary();
+        ItemRenderRegistry.clearTemporary();
     }
 }

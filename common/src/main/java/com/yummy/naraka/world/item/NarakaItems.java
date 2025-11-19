@@ -5,6 +5,7 @@ import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
+import com.yummy.naraka.tags.NarakaBlockTags;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -48,10 +49,10 @@ public class NarakaItems {
 
     public static final HolderProxy<Item, Item> NARAKA_PICKAXE = registerSimpleItem(
             "naraka_pickaxe",
-            properties -> properties.pickaxe(NarakaToolMaterials.LONGINUS, 0, -2.8f)
+            properties -> properties.fireResistant()
+                    .tool(NarakaToolMaterials.LONGINUS, NarakaBlockTags.MINABLE_WITH_NARAKA_PICKAXE, 0, -2.8f, 5)
                     .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
                     .rarity(Rarity.EPIC)
-                    .fireResistant()
     );
 
     public static final HolderProxy<Item, Item> SKILL_CONTROLLER = registerItem(
