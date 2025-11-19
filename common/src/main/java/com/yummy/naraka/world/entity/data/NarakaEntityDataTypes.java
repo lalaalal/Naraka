@@ -30,7 +30,7 @@ public class NarakaEntityDataTypes {
     );
     public static final HolderProxy<EntityDataType<?>, EntityDataType<ScarfWavingData>> SCARF_WAVING_DATA = register(
             "scarf_waving_data", EntityDataType.builder(Codec.unit(ScarfWavingData::new))
-                    .defaultValue(new ScarfWavingData())
+                    .defaultValue(ScarfWavingData::new)
                     .ticker(NarakaEntityDataTypes::tickScarfWavingData)
     );
 

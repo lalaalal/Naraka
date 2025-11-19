@@ -50,8 +50,8 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.AMETHYST_SHARD_BLOCK.get());
         createHerobrineTotem(generator);
         NarakaBlocks.forEachSoulInfusedBlock(generator::createTrivialCube);
-        createBlockEntityModels(generator, Blocks.GLASS, NarakaBlocks.SOUL_STABILIZER.get());
-        createBlockEntityModels(generator, Blocks.STONE, NarakaBlocks.SOUL_SMITHING_BLOCK.get());
+        createBlockEntityModels(generator, false, Blocks.GLASS, NarakaBlocks.SOUL_STABILIZER.get());
+        createBlockEntityModels(generator, false, Blocks.STONE, NarakaBlocks.SOUL_SMITHING_BLOCK.get());
 
         createNectariumCrystal(generator);
         generator.createTrivialCube(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
@@ -61,12 +61,13 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_LANTERN.get());
         generator.createAirLikeBlock(NarakaBlocks.DIAMOND_GOLEM_SPAWNER.get(), Items.DIAMOND);
         generator.skipAutoItemBlock(NarakaBlocks.NARAKA_PORTAL.get());
-        createBlockEntityModels(generator, Blocks.OBSIDIAN, NarakaBlocks.NARAKA_PORTAL.get());
+        createBlockEntityModels(generator, true, Blocks.OBSIDIAN, NarakaBlocks.NARAKA_PORTAL.get());
     }
 
-    private static void createBlockEntityModels(BlockModelGenerators generator, Block particle, Block... blocks) {
+    private static void createBlockEntityModels(BlockModelGenerators generator, boolean skipItem, Block particle, Block... blocks) {
         for (Block block : blocks) {
-            BLOCK_ENTITY_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.particle(particle), generator.modelOutput);
+            if (!skipItem)
+                BLOCK_ENTITY_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.particle(particle), generator.modelOutput);
             generator.blockEntityModels(block, particle).create(block);
         }
     }
