@@ -13,6 +13,8 @@ import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public final class NarakaTextures {
+    public static final ResourceLocation LOCATION_BLOCKS = NarakaMod.mcLocation("textures/atlas/blocks.png");
+
     public static final ResourceLocation HEROBRINE = entity("herobrine/herobrine.png");
     public static final ResourceLocation ABSOLUTE_HEROBRINE = entity("herobrine/absolute_herobrine.png");
     public static final ResourceLocation FINAL_HEROBRINE = entity("herobrine/final_herobrine.png");

@@ -3,6 +3,7 @@ package com.yummy.naraka.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
+import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.NarakaPickaxeModel;
 import com.yummy.naraka.world.entity.NarakaPickaxe;
 import com.yummy.naraka.world.item.NarakaItems;
@@ -15,7 +16,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -45,9 +45,8 @@ public class NarakaPickaxeRenderer extends LivingEntityRenderer<NarakaPickaxe, N
     }
 
     @Override
-    @Deprecated
     public ResourceLocation getTextureLocation(NarakaPickaxe entity) {
-        return TextureAtlas.LOCATION_BLOCKS;
+        return NarakaTextures.LOCATION_BLOCKS;
     }
 
     @Override

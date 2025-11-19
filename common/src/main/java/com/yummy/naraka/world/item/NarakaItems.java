@@ -43,7 +43,7 @@ public class NarakaItems {
 
     public static final HolderProxy<Item, Item> NARAKA_PICKAXE = registerItem(
             "naraka_pickaxe",
-            properties -> new PickaxeItem(NarakaTiers.LONGINUS, properties),
+            NarakaPickaxeItem::new,
             properties().component(DataComponents.UNBREAKABLE, new Unbreakable(true))
                     .rarity(Rarity.EPIC)
                     .fireResistant()
@@ -151,7 +151,7 @@ public class NarakaItems {
             )
     );
 
-    public static final HolderProxy<Item, Item> HEROBRINE_SCARF_SMITHING_TEMPLATE = registerItem(
+    public static final HolderProxy<Item, Item> HEROBRINE_SCARF = registerItem(
             "herobrine_scarf", HerobrineScarfItem::new
     );
 

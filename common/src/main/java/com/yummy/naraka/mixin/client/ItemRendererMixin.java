@@ -1,5 +1,7 @@
 package com.yummy.naraka.mixin.client;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.renderer.CustomRenderManager;
@@ -7,6 +9,7 @@ import com.yummy.naraka.util.Color;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
@@ -40,6 +43,13 @@ public abstract class ItemRendererMixin {
                 ci.cancel();
             }
         }
+    }
+
+    @ModifyExpressionValue(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemBlockRenderTypes;getRenderType(Lnet/minecraft/world/item/ItemStack;Z)Lnet/minecraft/client/renderer/RenderType;"), require = 0)
+    public RenderType modifyRenderType(RenderType original, @Local(argsOnly = true) ItemStack itemStack) {
+        if (CustomRenderManager.hasCustomRenderType(itemStack))
+            return CustomRenderManager.getCustomRenderType(itemStack, original);
+        return original;
     }
 
     @Inject(method = "renderModelLists", at = @At("HEAD"), cancellable = true)

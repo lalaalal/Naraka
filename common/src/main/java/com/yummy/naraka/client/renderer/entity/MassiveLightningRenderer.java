@@ -3,6 +3,7 @@ package com.yummy.naraka.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.world.entity.MassiveLightning;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -11,7 +12,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Vector3f;
 
@@ -22,9 +22,8 @@ public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning> {
     }
 
     @Override
-    @Deprecated
     public ResourceLocation getTextureLocation(MassiveLightning entity) {
-        return TextureAtlas.LOCATION_BLOCKS;
+        return NarakaTextures.LOCATION_BLOCKS;
     }
 
     @Override

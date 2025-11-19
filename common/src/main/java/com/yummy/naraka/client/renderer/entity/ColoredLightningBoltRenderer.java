@@ -2,6 +2,7 @@ package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.world.entity.ColoredLightningBolt;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -9,7 +10,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.RandomSource;
@@ -92,9 +92,8 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
     }
 
     @Override
-    @Deprecated
     public ResourceLocation getTextureLocation(ColoredLightningBolt entity) {
-        return TextureAtlas.LOCATION_BLOCKS;
+        return NarakaTextures.LOCATION_BLOCKS;
     }
 
     private static void quad(

@@ -99,7 +99,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     private boolean isValidTemplate(ItemStack template) {
         return template.getItem() instanceof SmithingTemplateItem
                 || template.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get())
-                || template.is(NarakaItems.HEROBRINE_SCARF_SMITHING_TEMPLATE.get());
+                || template.is(NarakaItems.HEROBRINE_SCARF.get());
     }
 
     public boolean tryAttachTemplate(ItemStack template) {
@@ -188,7 +188,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
             if (templateItem.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get()))
                 return reinforceSword(soulType, requiredSoul);
-            if (templateItem.is(NarakaItems.HEROBRINE_SCARF_SMITHING_TEMPLATE.get()))
+            if (templateItem.is(NarakaItems.HEROBRINE_SCARF.get()))
                 return attachScarf();
 
             return reinforceArmor(soulType, requiredSoul);

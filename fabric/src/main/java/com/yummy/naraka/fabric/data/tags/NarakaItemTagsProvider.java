@@ -18,6 +18,8 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
     protected void addTags(HolderLookup.Provider provider) {
         getOrCreateTagBuilder(ItemTags.PICKAXES)
                 .add(NarakaItems.NARAKA_PICKAXE.get());
+        getOrCreateTagBuilder(ItemTags.AXES)
+                .add(NarakaItems.NARAKA_PICKAXE.get());
 
         getOrCreateTagBuilder(ItemTags.CLUSTER_MAX_HARVESTABLES)
                 .add(NarakaItems.NARAKA_PICKAXE.get());
@@ -79,6 +81,7 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
         NarakaItems.forEachSoulInfusedSword(soulSwords::add);
 
         getOrCreateTagBuilder(ItemTags.SWORDS)
+                .add(NarakaItems.NARAKA_PICKAXE.get())
                 .addTag(NarakaItemTags.SOUL_SWORDS);
 
         getOrCreateTagBuilder(ItemTags.HEAD_ARMOR)
