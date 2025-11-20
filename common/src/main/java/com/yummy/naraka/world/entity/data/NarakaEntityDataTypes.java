@@ -57,7 +57,12 @@ public class NarakaEntityDataTypes {
     }
 
     private static void tickBeamEffects(LivingEntity livingEntity, List<BeamEffect> beamEffects) {
-        beamEffects.removeIf(beamEffect -> beamEffect.isFinished(livingEntity.tickCount));
+        if (!livingEntity.level().isClientSide()) {
+            List<BeamEffect> finished = beamEffects.stream()
+                    .filter(beamEffect -> beamEffect.isFinished(livingEntity.tickCount))
+                    .toList();
+            BeamEffectsHelper.remove(livingEntity, finished);
+        }
     }
 
     private static <T> HolderProxy<EntityDataType<?>, EntityDataType<T>> register(String name, EntityDataType.Builder<T> builder) {

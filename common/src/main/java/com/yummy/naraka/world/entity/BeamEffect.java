@@ -38,6 +38,10 @@ public record BeamEffect(long startTick, double tickLength, double beamLength,
         return new BeamEffect(entity.tickCount, speed.tickLength, speed.beamLength, radius, thetaOffset, yRot, 1, yInterval, Math.PI / 180, color, PositionFunction.SPIN);
     }
 
+    public static BeamEffect spin(long startTick, Speed speed, double radius, double thetaOffset, double yRot, double yInterval, int color) {
+        return new BeamEffect(startTick, speed.tickLength, speed.beamLength, radius, thetaOffset, yRot, 1, yInterval, Math.PI / 180, color, PositionFunction.SPIN);
+    }
+
     public static Vec3 spin(BeamEffect beamEffect, double theta) {
         double x = Math.cos(theta) * beamEffect.radius();
         double z = Math.sin(theta) * beamEffect.radius();

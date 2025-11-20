@@ -5,12 +5,15 @@ import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.NarakaTextures;
+import com.yummy.naraka.client.layer.BeamEffectLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.model.FinalHerobrineModel;
 import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.client.renderer.entity.state.HerobrineRenderState;
+import com.yummy.naraka.world.entity.BeamEffect;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.data.BeamEffectsHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;
@@ -19,6 +22,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Vector3f;
+
+import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, HerobrineRenderState, AbstractHerobrineModel<HerobrineRenderState>> {
@@ -29,6 +35,12 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
         super(context, defaultModel(context, HerobrineModel::new), finalModel(context, FinalHerobrineModel::new), 0.5f);
         this.afterimageModel = new HerobrineModel<>(context.bakeLayer(NarakaModelLayers.HEROBRINE));
         this.dyingModel = new FinalHerobrineModel<>(context.bakeLayer(NarakaModelLayers.FINAL_HEROBRINE));
+    }
+
+    @Override
+    protected void addLayers(EntityRendererProvider.Context context) {
+        super.addLayers(context);
+        this.addLayer(new BeamEffectLayer<>(this, new Vector3f(3, -3, 3), new Vector3f(0, -0.5f, 0)));
     }
 
     @Override
@@ -44,6 +56,8 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
         renderState.deathTime = -1;
         renderState.dead = herobrine.getCurrentAnimation().equals(HerobrineAnimationLocations.CHZZK);
         renderState.chzzkAnimationState = herobrine.chzzkAnimationState;
+        List<BeamEffect> beamEffects = BeamEffectsHelper.get(herobrine);
+        renderState.updateBeamEffects(beamEffects, renderState.ageInTicks);
     }
 
     @Override
