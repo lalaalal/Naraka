@@ -169,6 +169,7 @@ public class Herobrine extends AbstractHerobrine {
 
         registerAnimation(HerobrineAnimationLocations.DYING);
         registerAnimation(HerobrineAnimationLocations.CHZZK);
+        registerAnimation(HerobrineAnimationLocations.HIDDEN_CHZZK);
     }
 
     private void useShadowFlicker(Skill<?> skill) {

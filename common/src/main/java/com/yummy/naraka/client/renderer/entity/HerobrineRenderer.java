@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
 public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, HerobrineRenderState, AbstractHerobrineModel<HerobrineRenderState>> {
@@ -49,11 +48,15 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
 
     @Override
     public void submit(HerobrineRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
-        if (renderState.dead && NarakaClientContext.SHADER_ENABLED.getValue()) {
-            submitChzzk(renderState, poseStack, submitNodeCollector, getChzzkRenderType(renderState, 0.001f, 0.01f), 1);
-            submitChzzk(renderState, poseStack, submitNodeCollector, getChzzkRenderType(renderState, 0.002f, 0.005f), 2);
-            submitChzzk(renderState, poseStack, submitNodeCollector, getChzzkRenderType(renderState, 0.0015f, 0.0025f), 3);
-            renderState.lightCoords = 0;
+        if (renderState.dead) {
+            if (NarakaClientContext.SHADER_ENABLED.getValue()) {
+                submitChzzk(renderState, poseStack, submitNodeCollector, getChzzkRenderType(renderState, 0.001f, 0.01f), 1, 0);
+                submitChzzk(renderState, poseStack, submitNodeCollector, getChzzkRenderType(renderState, 0.002f, 0.005f), 2, 0);
+                submitChzzk(renderState, poseStack, submitNodeCollector, getChzzkRenderType(renderState, 0.0015f, 0.0025f), 3, 0);
+                renderState.lightCoords = 0;
+            } else {
+                submitChzzk(renderState, poseStack, submitNodeCollector, NarakaRenderTypes.longinusCutout(getTextureLocation(renderState)), 1, 10);
+            }
         }
         super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
     }
@@ -62,21 +65,21 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
         return RenderType.energySwirl(NarakaTextures.LONGINUS, (renderState.ageInTicks * uMultiplier) % 1, (renderState.ageInTicks * vMultiplier) % 1);
     }
 
-    private void submitChzzk(HerobrineRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, RenderType renderType, int order) {
+    private void submitChzzk(HerobrineRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, RenderType renderType, int order, int tickOffset) {
         poseStack.pushPose();
         dyingModel.applyHeadRotation(renderState);
-        dyingModel.setupChzzkAnim(renderState.chzzkAnimationState, renderState.ageInTicks + (float) 0);
+        dyingModel.setupChzzkAnim(renderState.chzzkAnimationState, renderState.ageInTicks + tickOffset);
         this.setupRotations(renderState, poseStack, renderState.bodyRot, renderState.scale);
-        poseStack.scale(-1, -1, 1);
+        poseStack.scale(-0.935f, -0.935f, 0.935f);
         poseStack.translate(0, -1.501F, 0);
-        submitNodeCollector.order(order).submitModel(
-                dyingModel,
-                renderState,
+        submitNodeCollector.order(order).submitModelPart(
+                dyingModel.root(),
                 poseStack,
                 renderType,
-                renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1,
+                renderState.lightCoords,
+                OverlayTexture.NO_OVERLAY,
                 null,
-                renderState.outlineColor,
+                -1,
                 null
         );
         poseStack.popPose();
@@ -87,16 +90,6 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
         if (renderState.finalModel)
             return 0.7f * renderState.scale;
         return super.getShadowRadius(renderState);
-    }
-
-    @Override
-    protected @Nullable RenderType getRenderType(HerobrineRenderState renderState, boolean bodyVisible, boolean translucent, boolean glowing) {
-        if (renderState.dead) {
-            if (NarakaClientContext.SHADER_ENABLED.getValue())
-                return RenderType.entitySolid(NarakaTextures.LONGINUS);
-            return NarakaRenderTypes.longinusCutout(NarakaTextures.FINAL_HEROBRINE);
-        }
-        return super.getRenderType(renderState, bodyVisible, translucent, glowing);
     }
 
     @Override
