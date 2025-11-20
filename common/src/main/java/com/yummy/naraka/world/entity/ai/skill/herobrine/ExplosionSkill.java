@@ -47,6 +47,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
     @Override
     protected void onFirstTick(ServerLevel level) {
         BeamEffectsHelper.addSimpleSet(mob, 60, COLOR);
+        BeamEffectsHelper.addSimpleSet(mob, 70, COLOR);
     }
 
     @Override

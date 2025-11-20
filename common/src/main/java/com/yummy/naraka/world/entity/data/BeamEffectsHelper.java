@@ -15,10 +15,14 @@ public class BeamEffectsHelper {
         EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.BEAM_EFFECTS.get(), beamEffects);
     }
 
-    public static void add(LivingEntity livingEntity, BeamEffect... beamEffects) {
+    public static void add(LivingEntity livingEntity, List<BeamEffect> beamEffects) {
         List<BeamEffect> newBeamEffects = new ArrayList<>(get(livingEntity));
-        newBeamEffects.addAll(List.of(beamEffects));
+        newBeamEffects.addAll(beamEffects);
         set(livingEntity, newBeamEffects);
+    }
+
+    public static void add(LivingEntity livingEntity, BeamEffect... beamEffects) {
+        add(livingEntity, List.of(beamEffects));
     }
 
     public static void remove(LivingEntity livingEntity, List<BeamEffect> beamEffects) {
@@ -36,5 +40,19 @@ public class BeamEffectsHelper {
                 BeamEffect.spin(livingEntity.tickCount + tickAfter, BeamEffect.Speed.NORMAL, 0.6, 0, Math.PI, 0.4, color),
                 BeamEffect.spin(livingEntity.tickCount + tickAfter, BeamEffect.Speed.SLOW, 0.9, 0, 0, 0.4, color)
         );
+    }
+
+    public static void addPullSet(LivingEntity livingEntity, int tickAfter, int color) {
+        List<BeamEffect> beamEffects = new ArrayList<>();
+        for (double yRot = 0; yRot < Math.TAU; yRot += Math.PI / 16)
+            beamEffects.add(BeamEffect.pull(livingEntity.tickCount + tickAfter, BeamEffect.Speed.FAST, 2, yRot, color));
+        BeamEffectsHelper.add(livingEntity, beamEffects);
+    }
+
+    public static void addPushSet(LivingEntity livingEntity, int tickAfter, int color) {
+        List<BeamEffect> beamEffects = new ArrayList<>();
+        for (double yRot = 0; yRot < Math.TAU; yRot += Math.PI / 16)
+            beamEffects.add(BeamEffect.push(livingEntity.tickCount + tickAfter, BeamEffect.Speed.NORMAL, 1, yRot, color));
+        BeamEffectsHelper.add(livingEntity, beamEffects);
     }
 }

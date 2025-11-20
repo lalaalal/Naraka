@@ -35,11 +35,19 @@ public record BeamEffect(long startTick, double tickLength, double beamLength,
     );
 
     public static BeamEffect spin(Entity entity, Speed speed, double radius, double thetaOffset, double yRot, double yInterval, int color) {
-        return new BeamEffect(entity.tickCount, speed.tickLength, speed.beamLength, radius, thetaOffset, yRot, 1, yInterval, Math.PI / 180, color, PositionFunction.SPIN);
+        return new BeamEffect(entity.tickCount, speed.tickLength, speed.beamLength, radius, thetaOffset, yRot, 1, yInterval, Math.PI / 360, color, PositionFunction.SPIN);
     }
 
     public static BeamEffect spin(long startTick, Speed speed, double radius, double thetaOffset, double yRot, double yInterval, int color) {
-        return new BeamEffect(startTick, speed.tickLength, speed.beamLength, radius, thetaOffset, yRot, 1, yInterval, Math.PI / 180, color, PositionFunction.SPIN);
+        return new BeamEffect(startTick, speed.tickLength, speed.beamLength, radius, thetaOffset, yRot, 1, yInterval, Math.PI / 360, color, PositionFunction.SPIN);
+    }
+
+    public static BeamEffect pull(long startTick, Speed speed, double radius, double yRot, int color) {
+        return new BeamEffect(startTick, speed.tickLength, speed.beamLength, radius, 0, yRot, 1, 0, Math.PI / 360, color, PositionFunction.PULL);
+    }
+
+    public static BeamEffect push(long startTick, Speed speed, double radius, double yRot, int color) {
+        return new BeamEffect(startTick, speed.tickLength, speed.beamLength, radius, 0, yRot, 1, 0, Math.PI / 360, color, PositionFunction.PUSH);
     }
 
     public static Vec3 spin(BeamEffect beamEffect, double theta) {
@@ -58,8 +66,24 @@ public record BeamEffect(long startTick, double tickLength, double beamLength,
         return new Vec3(x, y, z);
     }
 
+    public static Vec3 pull(BeamEffect beamEffect, double theta) {
+        double x = Math.pow(2, -(theta - 2));
+        double z = Math.pow(8, -(theta - 0.5));
+        double y = Math.sin(Math.pow(2, theta - 4.25)) * beamEffect.radius();
+
+        return new Vec3(x, y, z);
+    }
+
+    public static Vec3 push(BeamEffect beamEffect, double theta) {
+        double x = (-Math.pow(2, -(theta - 2)) + 4) * beamEffect.radius();
+        double z = (-Math.pow(8, -(theta - 0.5)) + 2.85) * beamEffect.radius();
+        double y = Math.pow(2, theta - 7);
+
+        return new Vec3(x, y, z);
+    }
+
     public boolean isFinished(long tickCount) {
-        return tickCount - startTick >= tickLength;
+        return tickCount - startTick >= tickLength + 10;
     }
 
     public Vec3 calculatePosition(double theta) {
@@ -68,7 +92,9 @@ public record BeamEffect(long startTick, double tickLength, double beamLength,
 
     public enum PositionFunction implements StringRepresentable {
         SPIN(BeamEffect::spin),
-        SPIN_OPPOSITE(BeamEffect::spinOpposite);
+        SPIN_OPPOSITE(BeamEffect::spinOpposite),
+        PULL(BeamEffect::pull),
+        PUSH(BeamEffect::push);
 
         public static final Codec<PositionFunction> CODEC = StringRepresentable.fromValues(PositionFunction::values);
 

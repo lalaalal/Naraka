@@ -8,8 +8,9 @@ import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.NarakaPickaxe;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
+import com.yummy.naraka.world.entity.data.BeamEffectsHelper;
+import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 
 public class StormSkill extends ComboSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final_herobrine.storm");
+    private static final int COLOR = SoulType.REDSTONE.getColor();
     private final HashMap<LivingEntity, Integer> hurtEntities = new HashMap<>();
 
     public StormSkill(Herobrine mob, Skill<?> parryingSkill) {
@@ -42,6 +44,12 @@ public class StormSkill extends ComboSkill<Herobrine> {
     }
 
     @Override
+    protected void onFirstTick(ServerLevel level) {
+        BeamEffectsHelper.addPullSet(mob, 20, COLOR);
+        BeamEffectsHelper.addPushSet(mob, 60, COLOR);
+    }
+
+    @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAt(30, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPull, 0.23));
 
@@ -49,7 +57,6 @@ public class StormSkill extends ComboSkill<Herobrine> {
         runFrom(50, () -> stigmatizingWave(level, 50, tickCount - 50));
 
         runBetween(50, 60, () -> sendCircleParticles(level));
-        runAt(60, () -> level.sendParticles(ParticleTypes.GUST_EMITTER_LARGE, mob.getX(), mob.getY(), mob.getZ(), 4, 0.5, 0.5, 0.5, 0.3));
         runAt(60, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPush, -3));
         runFrom(65, () -> stigmatizingWave(level, 65, tickCount - 70));
     }
