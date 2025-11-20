@@ -7,9 +7,12 @@ import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
+import com.yummy.naraka.world.entity.BeamEffect;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+
+import java.util.List;
 
 public class NarakaEntityDataTypes {
     public static final HolderProxy<EntityDataType<?>, EntityDataType<Stigma>> STIGMA = register(
@@ -34,6 +37,11 @@ public class NarakaEntityDataTypes {
                     .defaultValue(ScarfWavingData::new)
                     .ticker(NarakaEntityDataTypes::tickScarfWavingData)
     );
+    public static final HolderProxy<EntityDataType<?>, EntityDataType<List<BeamEffect>>> BEAM_EFFECTS = register(
+            "beam_effects", EntityDataType.builder(BeamEffect.MUTABLE_LIST_CODEC)
+                    .defaultValue(List::of)
+                    .ticker(NarakaEntityDataTypes::tickBeamEffects)
+    );
 
     private static void tickPurifiedSoulFire(LivingEntity livingEntity, int purifiedSoulFireTick) {
         if (purifiedSoulFireTick > 0 && livingEntity.level() instanceof ServerLevel level) {
@@ -46,6 +54,10 @@ public class NarakaEntityDataTypes {
     private static void tickScarfWavingData(LivingEntity livingEntity, ScarfWavingData scarfWavingData) {
         if (livingEntity.level().isClientSide())
             scarfWavingData.update(livingEntity.getDeltaMovement(), livingEntity.yBodyRot - livingEntity.yBodyRotO, livingEntity.onGround());
+    }
+
+    private static void tickBeamEffects(LivingEntity livingEntity, List<BeamEffect> beamEffects) {
+        beamEffects.removeIf(beamEffect -> beamEffect.isFinished(livingEntity.tickCount));
     }
 
     private static <T> HolderProxy<EntityDataType<?>, EntityDataType<T>> register(String name, EntityDataType.Builder<T> builder) {
