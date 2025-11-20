@@ -6,8 +6,6 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.BiFunction;
 
 public record BeamEffect(long startTick, double tickLength, double beamLength,
@@ -27,11 +25,6 @@ public record BeamEffect(long startTick, double tickLength, double beamLength,
                     Codec.INT.fieldOf("color").forGetter(BeamEffect::color),
                     PositionFunction.CODEC.fieldOf("position_function").forGetter(BeamEffect::positionFunction)
             ).apply(instance, BeamEffect::new)
-    );
-
-    public static final Codec<List<BeamEffect>> MUTABLE_LIST_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                    BeamEffect.CODEC.listOf().fieldOf("beam_effects").forGetter(beamEffects -> beamEffects)
-            ).apply(instance, ArrayList::new)
     );
 
     public static BeamEffect spin(Entity entity, Speed speed, double radius, double thetaOffset, double yRot, double yInterval, int color) {

@@ -38,7 +38,7 @@ public class NarakaEntityDataTypes {
                     .ticker(NarakaEntityDataTypes::tickScarfWavingData)
     );
     public static final HolderProxy<EntityDataType<?>, EntityDataType<List<BeamEffect>>> BEAM_EFFECTS = register(
-            "beam_effects", EntityDataType.builder(BeamEffect.MUTABLE_LIST_CODEC)
+            "beam_effects", EntityDataType.builder(BeamEffect.CODEC.listOf())
                     .defaultValue(List::of)
                     .ticker(NarakaEntityDataTypes::tickBeamEffects)
     );
