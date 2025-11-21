@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
+import com.yummy.naraka.network.AddBeamEffectPacket;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
@@ -44,19 +45,15 @@ public class StormSkill extends ComboSkill<Herobrine> {
     }
 
     @Override
-    protected void onFirstTick(ServerLevel level) {
-        BeamEffectsHelper.addPullSet(mob, 20, COLOR);
-        BeamEffectsHelper.addPushSet(mob, 60, COLOR);
-    }
-
-    @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
+        runAt(20, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.PULL, mob, COLOR));
         runAt(30, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPull, 0.23));
 
         runFrom(40, () -> stigmatizingWave(level, 40, tickCount - 40));
         runFrom(50, () -> stigmatizingWave(level, 50, tickCount - 50));
 
         runBetween(50, 60, () -> sendCircleParticles(level));
+        runAt(60, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.PUSH, mob, COLOR));
         runAt(60, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPush, -3));
         runFrom(65, () -> stigmatizingWave(level, 65, tickCount - 70));
     }

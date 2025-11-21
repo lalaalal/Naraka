@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.network.AddBeamEffectPacket;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
@@ -45,20 +46,17 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
     }
 
     @Override
-    protected void onFirstTick(ServerLevel level) {
-        BeamEffectsHelper.addSimpleSet(mob, 60, COLOR);
-        BeamEffectsHelper.addSimpleSet(mob, 70, COLOR);
-    }
-
-    @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         runAt(0, () -> mob.setDeltaMovement(0, 0.2, 0));
         runBetween(0, 18, () -> reduceSpeed(0.8));
         runAt(19, () -> spawnMagicCircle(level));
         runBetween(20, 41, () -> scaleMagicCircle(0, 30, 20, 40));
 
+        runAt(60, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.SIMPLE, mob, COLOR));
         runAt(60, () -> mob.setDeltaMovement(0, 0.4, 0));
         runAt(60, () -> level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE));
+
+        runAt(70, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.SIMPLE, mob, COLOR));
         runBetween(85, 90, () -> scaleMagicCircle(30, 0, 85, 89));
 
         runAfter(62, this::stopMoving);
