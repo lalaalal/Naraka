@@ -266,6 +266,8 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         super.readAdditionalSaveData(input);
         input.read("Herobrine", UUIDUtil.CODEC).ifPresent(uuid -> this.herobrineUUID = uuid);
         reduceAlpha = input.getBooleanOr("ReduceAlpha", isFinalModel());
+        if (isFinalModel())
+            discard();
     }
 
     @Override

@@ -76,7 +76,9 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
         return original.multiply(0.8, 0, 0.8);
     }
 
-    private void handleSucceed(ServerLevel level, LivingEntity target) {
+    private void handleSucceed(ServerLevel level, @Nullable LivingEntity target) {
+        if (target == null)
+            return;
         run(at(tickCount(2)) && targetInLookAngle(target, -Mth.HALF_PI * 0.67f, Mth.HALF_PI * 0.67f), () -> hurtEntity(level, target));
         runAt(tickCount(2), () -> level.sendParticles(NarakaFlameParticleOption.NECTARIUM, mob.getX(), mob.getY() + 1, mob.getZ(), 15, 1, 0.3, 1, 0.1));
         runBetween(tickCount(20), tickCount(40), () -> moveToTarget(target, false, this::movement));
