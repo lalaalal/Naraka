@@ -58,7 +58,7 @@ public class NarakaEntityDataTypes {
     }
 
     private static void tickBeamEffects(Entity entity, List<BeamEffect> beamEffects) {
-        if (!entity.level().isClientSide()) {
+        if (entity.level().isClientSide()) {
             List<BeamEffect> finished = beamEffects.stream()
                     .filter(beamEffect -> beamEffect.isFinished(entity.tickCount))
                     .toList();
