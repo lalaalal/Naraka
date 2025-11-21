@@ -53,7 +53,7 @@ public class LockedHealthHud implements HudRenderer {
         ClientEvents.TICK_PRE.register(this::tick);
     }
 
-    private void onLockedHealthChanged(LivingEntity entity, EntityDataType<Double> entityDataType, double from, double to) {
+    private void onLockedHealthChanged(LivingEntity entity, EntityDataType<Double, LivingEntity> entityDataType, double from, double to) {
         if (NarakaRenderUtils.isCurrentPlayer(entity) && to > from) {
             blinkTime = 20;
         }

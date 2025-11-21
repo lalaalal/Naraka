@@ -8,12 +8,11 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.List;
 
-public record SyncEntityDataPacket(int entityId, List<EntityData<?>> entityData) implements CustomPacketPayload {
+public record SyncEntityDataPacket(int entityId, List<EntityData<?, ?>> entityData) implements CustomPacketPayload {
     public static final Type<SyncEntityDataPacket> TYPE = new Type<>(NarakaMod.location("sync_entity_data"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncEntityDataPacket> CODEC = StreamCodec.composite(
@@ -24,11 +23,11 @@ public record SyncEntityDataPacket(int entityId, List<EntityData<?>> entityData)
             SyncEntityDataPacket::new
     );
 
-    public SyncEntityDataPacket(LivingEntity livingEntity, EntityData<?> entityData) {
+    public SyncEntityDataPacket(Entity livingEntity, EntityData<?, ?> entityData) {
         this(livingEntity.getId(), List.of(entityData));
     }
 
-    public SyncEntityDataPacket(LivingEntity livingEntity, List<EntityData<?>> entityData) {
+    public SyncEntityDataPacket(Entity livingEntity, List<EntityData<?, ?>> entityData) {
         this(livingEntity.getId(), entityData);
     }
 
@@ -41,9 +40,9 @@ public record SyncEntityDataPacket(int entityId, List<EntityData<?>> entityData)
     public static void handle(SyncEntityDataPacket payload, NetworkManager.Context context) {
         Player player = context.player();
         Entity entity = player.level().getEntity(payload.entityId);
-        for (EntityData<?> data : payload.entityData) {
-            if (entity instanceof LivingEntity livingEntity)
-                EntityDataHelper.setEntityData(livingEntity, data);
+        if (entity != null) {
+            for (EntityData<?, ?> data : payload.entityData)
+                EntityDataHelper.loadEntityData(entity, data);
         }
     }
 }

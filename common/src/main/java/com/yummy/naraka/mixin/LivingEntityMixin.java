@@ -3,9 +3,7 @@ package com.yummy.naraka.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.util.NarakaItemUtils;
-import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.ScarfWavingData;
-import com.yummy.naraka.world.entity.data.EntityData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
@@ -14,7 +12,6 @@ import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffectHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -23,8 +20,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -35,7 +30,6 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.List;
 import java.util.Map;
 
 @Mixin(LivingEntity.class)
@@ -54,27 +48,6 @@ public abstract class LivingEntityMixin extends Entity {
 
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
-    }
-
-    @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
-    public void saveEntityData(ValueOutput output, CallbackInfo ci) {
-        if (EntityDataHelper.hasEntityData(naraka$living())) {
-            List<EntityData<?>> data = EntityDataHelper.getEntityDataList(naraka$living());
-            output.store("EntityData", EntityData.CODEC.listOf(), data);
-        }
-    }
-
-    @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))
-    public void readEntityData(ValueInput input, CallbackInfo ci) {
-        List<EntityData<?>> data = input.read("EntityData", EntityData.CODEC.listOf())
-                .orElse(List.of());
-        EntityDataHelper.setEntityDataList(naraka$living(), data);
-    }
-
-    @Inject(method = "remove", at = @At("RETURN"))
-    public void removeEntityData(RemovalReason removalReason, CallbackInfo ci) {
-        if (removalReason.shouldDestroy())
-            EntityDataHelper.removeEntityData(naraka$living());
     }
 
     @SuppressWarnings("UnresolvedMixinReference")
@@ -109,20 +82,7 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "tick", at = @At("RETURN"))
-    public void tickPurifiedSoulFire(CallbackInfo ci) {
-        int purifiedSoulFireTick = EntityDataHelper.getRawEntityData(naraka$living(), NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get());
-        if (purifiedSoulFireTick > 0 && level() instanceof ServerLevel level) {
-            if (purifiedSoulFireTick % 20 == 0)
-                hurtServer(level, NarakaDamageSources.purifiedSoulFire(registryAccess()), 6);
-            EntityDataHelper.setEntityData(naraka$living(), NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get(), purifiedSoulFireTick - 1);
-        }
-    }
-
-    @Inject(method = "tick", at = @At("RETURN"))
-    public void tickEntityData(CallbackInfo ci) {
-        EntityDataHelper.getEntityDataTypes(naraka$living())
-                .forEach(type -> type.tick(naraka$living()));
-
+    public void checkScarfEquipment(CallbackInfo ci) {
         if (!EntityDataHelper.hasEntityData(naraka$living(), NarakaEntityDataTypes.SCARF_WAVING_DATA.get())) {
             ItemStack itemStack = getItemBySlot(EquipmentSlot.CHEST);
             if (itemStack.has(NarakaDataComponentTypes.HEROBRINE_SCARF.get()))

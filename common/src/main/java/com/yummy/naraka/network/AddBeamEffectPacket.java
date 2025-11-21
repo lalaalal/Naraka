@@ -9,10 +9,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 
-import java.util.Optional;
 import java.util.function.BiConsumer;
 
 public record AddBeamEffectPacket(int entityId, BeamEffectType beamEffectType,
@@ -29,8 +26,8 @@ public record AddBeamEffectPacket(int entityId, BeamEffectType beamEffectType,
             AddBeamEffectPacket::new
     );
 
-    public AddBeamEffectPacket(BeamEffectType beamEffectType, LivingEntity livingEntity, int color) {
-        this(livingEntity.getId(), beamEffectType, color);
+    public AddBeamEffectPacket(BeamEffectType beamEffectType, Entity entity, int color) {
+        this(entity.getId(), beamEffectType, color);
     }
 
     @Override
@@ -38,17 +35,10 @@ public record AddBeamEffectPacket(int entityId, BeamEffectType beamEffectType,
         return TYPE;
     }
 
-    private Optional<LivingEntity> getEntity(Level level) {
-        Entity entity = level.getEntity(entityId);
-        if (entity instanceof LivingEntity livingEntity)
-            return Optional.of(livingEntity);
-        return Optional.empty();
-    }
-
     public void handle(NetworkManager.Context context) {
-        getEntity(context.level()).ifPresent(
-                livingEntity -> beamEffectType.effectAdder.accept(livingEntity, color)
-        );
+        Entity entity = context.level().getEntity(entityId);
+        if (entity != null)
+            beamEffectType.effectAdder.accept(entity, color);
     }
 
     public enum BeamEffectType implements StringRepresentable {
@@ -59,9 +49,9 @@ public record AddBeamEffectPacket(int entityId, BeamEffectType beamEffectType,
         public static final Codec<BeamEffectType> CODEC = StringRepresentable.fromEnum(BeamEffectType::values);
         public static final StreamCodec<ByteBuf, BeamEffectType> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
-        private final BiConsumer<LivingEntity, Integer> effectAdder;
+        private final BiConsumer<Entity, Integer> effectAdder;
 
-        BeamEffectType(BiConsumer<LivingEntity, Integer> effectAdder) {
+        BeamEffectType(BiConsumer<Entity, Integer> effectAdder) {
             this.effectAdder = effectAdder;
         }
 

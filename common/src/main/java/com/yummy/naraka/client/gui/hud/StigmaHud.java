@@ -42,7 +42,7 @@ public class StigmaHud implements HudRenderer {
             consumeIconDisplayTick -= 1;
     }
 
-    private void onStigmaConsumed(LivingEntity livingEntity, EntityDataType<Stigma> entityDataType, Stigma from, Stigma to) {
+    private void onStigmaConsumed(LivingEntity livingEntity, EntityDataType<Stigma, LivingEntity> entityDataType, Stigma from, Stigma to) {
         if (NarakaRenderUtils.isCurrentPlayer(livingEntity)) {
             if (0 < from.value() && to.value() == 0 && to.lastMarkedTime() != 0)
                 consumeIconDisplayTick = CONSUME_ICON_DISPLAYING_TIME;
