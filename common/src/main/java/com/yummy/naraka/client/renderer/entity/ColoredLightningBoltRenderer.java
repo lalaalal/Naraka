@@ -2,6 +2,7 @@ package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.renderer.entity.state.ColoredLightningBoltRenderState;
 import com.yummy.naraka.world.entity.ColoredLightningBolt;
@@ -31,7 +32,7 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
         super.extractRenderState(entity, reusedState, partialTick);
         reusedState.seed = entity.seed;
         reusedState.color = entity.getColor();
-        reusedState.renderType = entity.isSpaceRenderType() ? NarakaRenderTypes.space() : RenderType.lightning();
+        reusedState.renderType = entity.isSpaceRenderType() && !NarakaClientContext.SHADER_ENABLED.getValue() ? NarakaRenderTypes.space() : RenderType.lightning();
     }
 
     @Override
