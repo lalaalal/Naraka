@@ -4,6 +4,7 @@ import com.yummy.naraka.client.renderer.entity.state.BeamEffectRenderState;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
+import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAfterimagePacket;
@@ -315,15 +316,18 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
     }
 
     private void updateMusic(int prevPhase, int currentPhase) {
-        if (currentPhase == 3)
-            NetworkManager.sendToClient(bossEvent.getPlayers(), new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.STOP_MUSIC));
-        else
+        if (currentPhase == 3) {
+            NetworkManager.sendToClient(bossEvent.getPlayers(), new NarakaClientboundEntityEventPacket(
+                    NarakaClientboundEntityEventPacket.Event.STOP_MUSIC, this
+            ));
+        } else {
             sendMusic(currentPhase);
+        }
     }
 
     public void sendMusic(int phase) {
-        NarakaClientboundEventPacket.Event event = NarakaMusics.musicEventByPhase(phase);
-        CustomPacketPayload packet = new NarakaClientboundEventPacket(event);
+        NarakaClientboundEntityEventPacket.Event event = NarakaMusics.musicEventByPhase(phase);
+        CustomPacketPayload packet = new NarakaClientboundEntityEventPacket(event, this);
         NetworkManager.sendToClient(bossEvent.getPlayers(), packet);
     }
 
@@ -514,7 +518,10 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
         super.startSeenByPlayer(serverPlayer);
         if (isAlive()) {
             bossEvent.addPlayer(serverPlayer);
-            CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaMusics.musicEventByPhase(getPhase()));
+            CustomPacketPayload packet = new NarakaClientboundEntityEventPacket(
+                    NarakaMusics.musicEventByPhase(getPhase()),
+                    this
+            );
             NetworkManager.sendToClient(serverPlayer, packet);
             if (isFinalModel()) {
                 this.startHerobrineSky();
@@ -560,11 +567,15 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
 
     private void sendStopPacket(ServerPlayer serverPlayer) {
         CustomPacketPayload packet = new NarakaClientboundEventPacket(
-                NarakaClientboundEventPacket.Event.STOP_MUSIC,
                 NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY,
                 NarakaClientboundEventPacket.Event.STOP_WHITE_FOG
         );
+        CustomPacketPayload entityEventPacket = new NarakaClientboundEntityEventPacket(
+                NarakaClientboundEntityEventPacket.Event.STOP_MUSIC,
+                this
+        );
         NetworkManager.clientbound().send(serverPlayer, packet);
+        NetworkManager.clientbound().send(serverPlayer, entityEventPacket);
     }
 
     private boolean isUsingInvulnerableSkill() {

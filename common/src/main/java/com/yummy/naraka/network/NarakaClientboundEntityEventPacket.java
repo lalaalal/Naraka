@@ -30,6 +30,11 @@ public record NarakaClientboundEntityEventPacket(Event event, int entityId) impl
     }
 
     public enum Event implements StringRepresentable {
+        PLAY_HEROBRINE_PHASE_1,
+        PLAY_HEROBRINE_PHASE_2,
+        PLAY_HEROBRINE_PHASE_3,
+        PLAY_HEROBRINE_PHASE_4,
+        STOP_MUSIC,
         SHOW_SKILL_CONTROL_SCREEN,
         SHOW_ANIMATION_CONTROL_SCREEN;
 

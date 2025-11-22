@@ -1,7 +1,7 @@
 package com.yummy.naraka.sounds;
 
 import com.yummy.naraka.client.sound.BossMusicPlayer;
-import com.yummy.naraka.network.NarakaClientboundEventPacket;
+import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.MusicManager;
 import net.minecraft.core.Holder;
@@ -22,18 +22,18 @@ public final class NarakaMusics {
         return new Music(soundEvent, 0, 0, true);
     }
 
-    private static final NarakaClientboundEventPacket.Event[] HEROBRINE_MUSIC_EVENT = new NarakaClientboundEventPacket.Event[]{
+    private static final NarakaClientboundEntityEventPacket.Event[] HEROBRINE_MUSIC_EVENT = new NarakaClientboundEntityEventPacket.Event[]{
             null,
-            NarakaClientboundEventPacket.Event.PLAY_HEROBRINE_PHASE_1,
-            NarakaClientboundEventPacket.Event.PLAY_HEROBRINE_PHASE_2,
-            NarakaClientboundEventPacket.Event.PLAY_HEROBRINE_PHASE_3,
-            NarakaClientboundEventPacket.Event.PLAY_HEROBRINE_PHASE_4
+            NarakaClientboundEntityEventPacket.Event.PLAY_HEROBRINE_PHASE_1,
+            NarakaClientboundEntityEventPacket.Event.PLAY_HEROBRINE_PHASE_2,
+            NarakaClientboundEntityEventPacket.Event.PLAY_HEROBRINE_PHASE_3,
+            NarakaClientboundEntityEventPacket.Event.PLAY_HEROBRINE_PHASE_4
     };
 
-    public static NarakaClientboundEventPacket.Event musicEventByPhase(int phase) {
+    public static NarakaClientboundEntityEventPacket.Event musicEventByPhase(int phase) {
         if (0 < phase && phase <= 4)
             return HEROBRINE_MUSIC_EVENT[phase];
-        return NarakaClientboundEventPacket.Event.STOP_MUSIC;
+        return NarakaClientboundEntityEventPacket.Event.STOP_MUSIC;
     }
 
     public static BossMusicPlayer bossMusicPlayer() {

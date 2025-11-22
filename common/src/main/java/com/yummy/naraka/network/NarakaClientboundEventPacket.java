@@ -29,11 +29,6 @@ public record NarakaClientboundEventPacket(List<Event> events) implements Custom
     }
 
     public enum Event implements StringRepresentable {
-        PLAY_HEROBRINE_PHASE_1,
-        PLAY_HEROBRINE_PHASE_2,
-        PLAY_HEROBRINE_PHASE_3,
-        PLAY_HEROBRINE_PHASE_4,
-        STOP_MUSIC,
         START_HEROBRINE_SKY,
         STOP_HEROBRINE_SKY,
         START_WHITE_SCREEN,
