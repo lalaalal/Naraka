@@ -85,10 +85,10 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
 
         runBetween(10, 50, () -> rotateTowardTarget(target));
         runAfter(10, () -> lookTarget(target));
-        runAt(30, () -> deltaMovement = target.position().subtract(mob.position()).multiply(0.3, 0.6, 0.3));
+        runAt(45, () -> deltaMovement = target.position().subtract(mob.position()).multiply(0.3, 0.6, 0.3));
         runBetween(50, 53, () -> mob.setDeltaMovement(deltaMovement));
         runAt(53, this::stopMoving);
-        runAt(55, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 2));
+        runAt(55, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 3));
         runAt(70, () -> mob.setDeltaMovement(0, 0.4, 0));
         runBetween(71, 90, () -> reduceSpeed(0.4f));
         runAt(90, this::stopMoving);

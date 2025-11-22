@@ -10,7 +10,6 @@ import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.MagicCircle;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.data.BeamEffectsHelper;
-import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -24,8 +23,6 @@ import java.util.function.Predicate;
 
 public class ExplosionSkill extends AttackSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final_herobrine.explosion");
-
-    public static final int COLOR = SoulType.GOLD.getColor();
 
     @Nullable
     private MagicCircle magicCircle;
@@ -52,11 +49,11 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
         runAt(19, () -> spawnMagicCircle(level));
         runBetween(20, 41, () -> scaleMagicCircle(0, 30, 20, 40));
 
-        runAt(60, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.SIMPLE, mob, COLOR));
+        runAt(60, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.SIMPLE, mob, 0xffffff00));
         runAt(60, () -> mob.setDeltaMovement(0, 0.4, 0));
         runAt(60, () -> level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE));
 
-        runAt(70, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.SIMPLE, mob, COLOR));
+        runAt(70, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.SIMPLE, mob, 0xffffff00));
         runBetween(85, 90, () -> scaleMagicCircle(30, 0, 85, 89));
 
         runAfter(62, this::stopMoving);

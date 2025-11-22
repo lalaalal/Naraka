@@ -62,7 +62,7 @@ public record BeamEffect(long startTick, double tickLength, double beamLength,
     public static Vec3 pull(BeamEffect beamEffect, double theta) {
         double x = Math.pow(2, -(theta - 2));
         double z = Math.pow(8, -(theta - 0.5));
-        double y = Math.sin(Math.pow(2, theta - 4.25)) * beamEffect.radius();
+        double y = Math.sin(Math.pow(2, theta - 5)) * beamEffect.radius();
 
         return new Vec3(x, y, z);
     }

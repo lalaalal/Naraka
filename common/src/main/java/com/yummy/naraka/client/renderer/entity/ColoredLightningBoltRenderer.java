@@ -2,6 +2,8 @@ package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.yummy.naraka.client.NarakaClientContext;
+import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.world.entity.ColoredLightningBolt;
 import net.fabricmc.api.EnvType;
@@ -18,6 +20,12 @@ import net.minecraft.util.RandomSource;
 public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightningBolt> {
     public ColoredLightningBoltRenderer(EntityRendererProvider.Context context) {
         super(context);
+    }
+
+    private RenderType getRenderType(ColoredLightningBolt entity) {
+        if (NarakaClientContext.SHADER_ENABLED.getValue() || !entity.isSpaceRenderType())
+            return RenderType.lightning();
+        return NarakaRenderTypes.space();
     }
 
     @Override
@@ -38,7 +46,7 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
         float ff = f;
         float gg = g;
 
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.lightning());
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(getRenderType(entity));
         PoseStack.Pose pose = poseStack.last();
 
         for (int k = 0; k < 4; k++) {

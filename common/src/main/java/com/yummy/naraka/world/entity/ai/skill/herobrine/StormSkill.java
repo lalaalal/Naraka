@@ -10,7 +10,6 @@ import com.yummy.naraka.world.entity.NarakaPickaxe;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.data.BeamEffectsHelper;
-import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -24,7 +23,6 @@ import java.util.HashMap;
 
 public class StormSkill extends ComboSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final_herobrine.storm");
-    private static final int COLOR = SoulType.REDSTONE.getColor();
     private final HashMap<LivingEntity, Integer> hurtEntities = new HashMap<>();
 
     public StormSkill(Herobrine mob, Skill<?> parryingSkill) {
@@ -46,14 +44,15 @@ public class StormSkill extends ComboSkill<Herobrine> {
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        runAt(20, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.PULL, mob, COLOR));
+        runAt(20, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.PULL, mob, 0xffff0000));
         runAt(30, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPull, 0.23));
 
         runFrom(40, () -> stigmatizingWave(level, 40, tickCount - 40));
         runFrom(50, () -> stigmatizingWave(level, 50, tickCount - 50));
 
         runBetween(50, 60, () -> sendCircleParticles(level));
-        runAt(60, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.PUSH, mob, COLOR));
+        runAt(60, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.PUSH, mob, 0xffff0000));
+        runAt(60, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.SIMPLE, mob, 0xffff0000));
         runAt(60, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPush, -3));
         runFrom(65, () -> stigmatizingWave(level, 65, tickCount - 70));
     }

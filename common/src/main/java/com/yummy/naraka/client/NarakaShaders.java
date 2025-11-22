@@ -14,6 +14,10 @@ public final class NarakaShaders {
     private static ShaderInstance longinus;
     @Nullable
     private static ShaderInstance longinusCutout;
+    @Nullable
+    private static ShaderInstance space;
+    @Nullable
+    private static ShaderInstance spaceCutout;
 
     public static ShaderInstance longinus() {
         if (longinus == null)
@@ -27,12 +31,30 @@ public final class NarakaShaders {
         return longinusCutout;
     }
 
+    public static ShaderInstance space() {
+        if (space == null)
+            throw new IllegalStateException("space shader is not initialized");
+        return space;
+    }
+
+    public static ShaderInstance spaceCutout() {
+        if (spaceCutout == null)
+            throw new IllegalStateException("space_cutout shader is not initialized");
+        return spaceCutout;
+    }
+
     public static void initialize() {
         ShaderRegistry.register(NarakaMod.location("longinus"), DefaultVertexFormat.POSITION, shaderInstance -> {
             longinus = shaderInstance;
         });
         ShaderRegistry.register(NarakaMod.location("longinus_cutout"), DefaultVertexFormat.POSITION_TEX, shaderInstance -> {
             longinusCutout = shaderInstance;
+        });
+        ShaderRegistry.register(NarakaMod.location("space"), DefaultVertexFormat.POSITION, shaderInstance -> {
+            space = shaderInstance;
+        });
+        ShaderRegistry.register(NarakaMod.location("space_cutout"), DefaultVertexFormat.POSITION_TEX, shaderInstance -> {
+            spaceCutout = shaderInstance;
         });
     }
 }

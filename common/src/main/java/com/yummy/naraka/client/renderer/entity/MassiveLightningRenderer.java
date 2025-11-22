@@ -40,11 +40,11 @@ public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning> {
         RenderType renderType = RenderType.lightning();
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
         PoseStack.Pose pose = poseStack.last();
-        pillar(vertexConsumer, pose, size * 0.6f, size * 0.6f, 1, 123, 0x66fafafa);
-        pillar(vertexConsumer, pose, size * 0.7f, size * 0.7f, 0, 122, 0x55ababab);
-        pillar(vertexConsumer, pose, size * 0.8f, size * 0.8f, 0, 121, 0x44ababab);
-        pillar(vertexConsumer, pose, size * 0.9f, size * 0.9f, 0, 120, 0x33ababab);
-        pillar(vertexConsumer, pose, size, size, 0, 120, 0x668308e4);
+        pillar(vertexConsumer, pose, size * 0.6f, size * 0.6f, 1, 123, 0x66ffffff);
+        pillar(vertexConsumer, pose, size * 0.7f, size * 0.7f, 0, 122, 0x55ffffff);
+        pillar(vertexConsumer, pose, size * 0.8f, size * 0.8f, 0, 121, 0x44ffffff);
+        pillar(vertexConsumer, pose, size * 0.9f, size * 0.9f, 0, 120, 0x33ffffff);
+        pillar(vertexConsumer, pose, size, size, 0, 120, 0xffffff);
 
         poseStack.popPose();
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
