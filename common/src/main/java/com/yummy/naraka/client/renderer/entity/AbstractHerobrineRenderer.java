@@ -150,9 +150,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
     @Override
     @Nullable
     protected RenderType getRenderType(S renderState, boolean bodyVisible, boolean translucent, boolean glowing) {
-        if (renderState.isShadow)
-            return RenderType.entityTranslucent(getTextureLocation(renderState));
-        if (renderState.alpha < 0xff)
+        if (renderState.isShadow || renderState.alpha < 0xff)
             return RenderType.entityTranslucent(getTextureLocation(renderState));
         return super.getRenderType(renderState, bodyVisible, translucent, glowing);
     }
