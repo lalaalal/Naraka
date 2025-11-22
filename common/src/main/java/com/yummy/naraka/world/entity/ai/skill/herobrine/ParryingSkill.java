@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
@@ -21,6 +22,7 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     private boolean succeed;
     private float originalHealth;
     private float hurtDamage;
+    private Vec3 movement = Vec3.ZERO;
 
     public ParryingSkill(AbstractHerobrine mob) {
         super(LOCATION, mob, 60, 300, 100, 5);
@@ -81,17 +83,26 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
             return;
         run(at(tickCount(2)) && targetInLookAngle(target, -Mth.HALF_PI * 0.67f, Mth.HALF_PI * 0.67f), () -> hurtEntity(level, target));
         runAt(tickCount(2), () -> level.sendParticles(NarakaFlameParticleOption.NECTARIUM, mob.getX(), mob.getY() + 1, mob.getZ(), 15, 1, 0.3, 1, 0.1));
-        runBetween(tickCount(20), tickCount(40), () -> moveToTarget(target, false, this::movement));
+        runAt(tickCount(15), () -> movement = NarakaUtils.horizontalVec3(target.position().subtract(mob.position())).scale(0.2));
+        runAt(tickCount(20), () -> mob.setDeltaMovement(movement));
         runBetween(tickCount(20), tickCount(30), () -> level.sendParticles(NarakaFlameParticleOption.NECTARIUM, mob.getX(), mob.getY() + 1, mob.getZ(), 15, 2, 0.3, 2, 0.1));
-        runAt(tickCount(40), this::stopMoving);
+        run(after(tickCount(40)) || mob.distanceTo(target) < 2, this::stopMoving);
     }
 
     private void handleSucceed(ServerLevel level) {
+        runAt(tickCount(2), () -> mob.setAlpha(0x55));
         runBetween(tickCount(20), tickCount(35), () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 1.5));
+        runAt(tickCount(10), () -> mob.setAlpha(0xff));
     }
 
     @Override
     protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         mob.stigmatizeEntity(level, target);
+    }
+
+    @Override
+    public void interrupt() {
+        super.interrupt();
+        mob.setAlpha(0xff);
     }
 }

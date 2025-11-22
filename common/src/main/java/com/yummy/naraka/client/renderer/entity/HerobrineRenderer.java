@@ -20,6 +20,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -52,7 +54,18 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Abst
             renderChzzk(entity, partialTicks, poseStack, buffer, getChzzkRenderType(entity, partialTicks, 0.0015f, 0.0025f), packedLight);
             packedLight = 0;
         }
+        poseStack.pushPose();
+        Vec3 translation = entity.getAlpha() < 0xff ? randomTranslation(entity) : Vec3.ZERO;
+        poseStack.translate(translation.x, translation.y, translation.z);
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
+        poseStack.popPose();
+    }
+
+    private Vec3 randomTranslation(Herobrine herobrine) {
+        RandomSource random = RandomSource.create(herobrine.tickCount);
+        double x = random.nextDouble() * 0.5;
+        double z = random.nextDouble() * 0.5;
+        return new Vec3(x, 0, z);
     }
 
     private RenderType getChzzkRenderType(Herobrine herobrine, float partialTick, float uMultiplier, float vMultiplier) {

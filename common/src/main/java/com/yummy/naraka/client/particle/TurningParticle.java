@@ -1,6 +1,7 @@
 package com.yummy.naraka.client.particle;
 
 import com.yummy.naraka.world.entity.Herobrine;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -78,7 +79,7 @@ public class TurningParticle extends TextureSheetParticle {
     }
 
     public static Provider parrying(SpriteSet sprites) {
-        return new Provider(sprites, 10, TurningParticle::never)
+        return new Provider(sprites, 10, TurningParticle::isParryingSucceeded)
                 .withModifier(particle -> {
                     particle.radius = 2;
                     particle.speed *= 2;
@@ -94,8 +95,12 @@ public class TurningParticle extends TextureSheetParticle {
                 .isEmpty();
     }
 
-    private static boolean never(TurningParticle particle) {
-        return false;
+    private static boolean isParryingSucceeded(TurningParticle particle) {
+        return particle.level.getEntitiesOfClass(Herobrine.class, AABB.ofSize(new Vec3(particle.x, particle.y, particle.z), 10, 10, 10))
+                .stream()
+                .findAny()
+                .map(herobrine -> herobrine.getCurrentAnimation().equals(HerobrineAnimationLocations.PARRYING_SUCCEED))
+                .orElse(false);
     }
 
     public static class Provider implements ParticleProvider<SimpleParticleType> {
