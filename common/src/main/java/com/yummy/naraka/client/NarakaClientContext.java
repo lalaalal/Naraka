@@ -29,5 +29,6 @@ public final class NarakaClientContext {
 
     public static void initialize() {
         CONTEXTS.forEach(Configuration.ConfigValue::reset);
+        HEROBRINE_MUSIC_SOURCES.set(new HashSet<>());
     }
 }
