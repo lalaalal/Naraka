@@ -4,6 +4,7 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.SyncEntityDataPacket;
 import com.yummy.naraka.util.TickSchedule;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
@@ -38,7 +39,7 @@ public final class NarakaGameEvents {
     }
 
     private static void syncPlayerEntityData(ServerPlayer player) {
-        EntityDataHelper.syncEntityData(player);
+        EntityDataHelper.syncEntityData(player, SyncEntityDataPacket.Action.LOAD);
         CustomPacketPayload payload = new NarakaClientboundEventPacket(
                 NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY,
                 NarakaClientboundEventPacket.Event.STOP_WHITE_FOG

@@ -22,19 +22,19 @@ public class EntityDataHelper {
                 .add(listener);
     }
 
-    public static void syncEntityData(Entity entity, EntityDataType<?, ?> entityDataType) {
+    public static void syncEntityData(Entity entity, EntityDataType<?, ?> entityDataType, SyncEntityDataPacket.Action action) {
         if (entity.level() instanceof ServerLevel serverLevel && serverLevel.getServer().isDedicatedServer()) {
             EntityData<?, ?> data = getEntityData(entity, entityDataType);
             for (ServerPlayer player : serverLevel.players())
-                NetworkManager.clientbound().send(player, new SyncEntityDataPacket(entity, data));
+                NetworkManager.clientbound().send(player, SyncEntityDataPacket.sync(entity, action, data));
         }
     }
 
-    public static void syncEntityData(Entity entity) {
+    public static void syncEntityData(Entity entity, SyncEntityDataPacket.Action action) {
         if (entity.level() instanceof ServerLevel serverLevel && serverLevel.getServer().isDedicatedServer()) {
             List<EntityData<?, ?>> data = getEntityDataList(entity);
             for (ServerPlayer player : serverLevel.players())
-                NetworkManager.clientbound().send(player, new SyncEntityDataPacket(entity, data));
+                NetworkManager.clientbound().send(player, SyncEntityDataPacket.sync(entity, action, data));
         }
     }
 
@@ -43,7 +43,7 @@ public class EntityDataHelper {
         EntityDataContainer container = ENTITY_DATA_MAP.computeIfAbsent(entity.getUUID(), uuid -> new EntityDataContainer());
         T original = container.getRawEntityData(entityDataType);
         container.setEntityData(entityDataType, value);
-        syncEntityData(entity, entityDataType);
+        syncEntityData(entity, entityDataType, SyncEntityDataPacket.Action.LOAD);
         for (DataChangeListener<?, ?> listener : DATA_CHANGE_LISTENERS.computeIfAbsent(entityDataType, type -> new ArrayList<>())) {
             DataChangeListener<T, E> castedListener = (DataChangeListener<T, E>) listener;
             castedListener.onChange(entity, entityDataType, original, value);
@@ -53,7 +53,7 @@ public class EntityDataHelper {
     public static void loadEntityData(Entity entity, EntityData<?, ?> entityData) {
         ENTITY_DATA_MAP.computeIfAbsent(entity.getUUID(), uuid -> new EntityDataContainer())
                 .setEntityData(entityData);
-        syncEntityData(entity, entityData.type());
+        syncEntityData(entity, entityData.type(), SyncEntityDataPacket.Action.LOAD);
     }
 
     public static void loadEntityDataList(Entity entity, List<EntityData<?, ?>> entityDataList) {
@@ -88,9 +88,21 @@ public class EntityDataHelper {
         return container.stream().toList();
     }
 
+    public static void removeEntityData(UUID uuid) {
+        ENTITY_DATA_MAP.remove(uuid);
+    }
+
     public static void removeEntityData(Entity entity) {
         ENTITY_DATA_MAP.remove(entity.getUUID());
-        syncEntityData(entity);
+        syncEntityData(entity, SyncEntityDataPacket.Action.REMOVE_ALL);
+    }
+
+    public static void removeEntityData(Entity entity, EntityDataType<?, ?> entityDataType) {
+        if (ENTITY_DATA_MAP.containsKey(entity.getUUID())) {
+            EntityDataContainer container = ENTITY_DATA_MAP.get(entity.getUUID());
+            container.removeEntityData(entityDataType);
+        }
+        syncEntityData(entity, SyncEntityDataPacket.Action.REMOVE_GIVEN);
     }
 
     public static boolean hasEntityData(Entity entity) {
