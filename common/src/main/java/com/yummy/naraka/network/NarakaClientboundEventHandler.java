@@ -45,9 +45,9 @@ public class NarakaClientboundEventHandler {
     };
 
     public static void handleEntityEvent(NarakaClientboundEntityEventPacket packet, NetworkManager.Context context) {
+        Level level = context.level();
+        Entity entity = level.getEntity(packet.entityId());
         Minecraft.getInstance().execute(() -> {
-            Level level = context.level();
-            Entity entity = level.getEntity(packet.entityId());
             if (entity != null)
                 ENTITY_EVENT_MAP.getOrDefault(packet.event(), e -> {
                 }).accept(entity);

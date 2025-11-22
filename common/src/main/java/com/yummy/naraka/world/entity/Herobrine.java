@@ -831,7 +831,6 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
         if (reason.shouldDestroy() && level() instanceof ServerLevel serverLevel) {
             releaseStigma();
             shadowController.killShadows(serverLevel);
-            players().forEach(this::sendStopPacket);
             serverLevel.getGameRules().getRule(GameRules.RULE_DAYLIGHT).set(true, serverLevel.getServer());
             serverLevel.getGameRules().getRule(GameRules.RULE_WEATHER_CYCLE).set(true, serverLevel.getServer());
         }
