@@ -144,7 +144,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
             double angle = mob.getRandom().nextFloat() * Math.TAU;
             double x = Math.cos(angle) * maxRadius + mob.getX() + mob.getRandom().nextDouble();
             double z = Math.sin(angle) * maxRadius + mob.getZ() + mob.getRandom().nextDouble();
-            ColoredLightningBolt lightningBolt = new ColoredLightningBolt(level, new Vec3(x, y, z), 0x66ffffff);
+            ColoredLightningBolt lightningBolt = new ColoredLightningBolt(level, new Vec3(x, y, z), 0x669957db);
             lightningBolt.setVisualOnly(true);
             lightningBolt.setSpaceRenderType(true);
             level.addFreshEntity(lightningBolt);
