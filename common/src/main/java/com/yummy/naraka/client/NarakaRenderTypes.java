@@ -16,7 +16,7 @@ import java.util.function.Function;
 public final class NarakaRenderTypes {
     private static final Function<ResourceLocation, RenderType> LONGINUS_CUTOUT = Util.memoize(
             resourceLocation -> RenderType.create(
-                    "longinus",
+                    "longinus_cutout",
                     DefaultVertexFormat.POSITION_TEX,
                     VertexFormat.Mode.QUADS,
                     1536,
