@@ -270,6 +270,8 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         super.readAdditionalSaveData(input);
         NarakaNbtUtils.read(input, "Herobrine", UUIDUtil.CODEC).ifPresent(uuid -> this.herobrineUUID = uuid);
         reduceAlpha = input.getBoolean("ReduceAlpha");
+        if (isFinalModel())
+            discard();
     }
 
     @Override
