@@ -13,9 +13,6 @@ import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -38,7 +35,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntity {
-    protected static final EntityDataAccessor<Integer> ALPHA = SynchedEntityData.defineId(ShadowHerobrine.class, EntityDataSerializers.INT);
     protected static final int MAX_ALPHA = 0xaa;
 
     protected final ShadowPunchSkill punchSkill = registerSkill(1, this, ShadowPunchSkill::new, HerobrineAnimationLocations.COMBO_ATTACK_1);
@@ -82,6 +78,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         skillManager.runOnSkillEnd(this::disappearIfInstant);
         entityData.set(DISPLAY_SCARF, true);
         entityData.set(DISPLAY_PICKAXE, false);
+        entityData.set(ALPHA, 0x01);
         registerAnimation(HerobrineAnimationLocations.SHADOW_SUMMONED);
     }
 
@@ -102,16 +99,6 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     private void disappearIfInstant(Skill<?> skill) {
         if (this.instant)
             reduceAlpha = true;
-    }
-
-    public int getAlpha() {
-        return entityData.get(ALPHA);
-    }
-
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(ALPHA, 0x01);
     }
 
     @Override

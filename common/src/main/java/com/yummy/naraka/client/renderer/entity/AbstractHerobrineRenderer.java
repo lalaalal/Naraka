@@ -75,6 +75,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
         renderState.eyeAlpha = entity.getEyeAlpha();
         renderState.doWalkAnimation = !renderState.finalModel;
         renderState.displayPickaxe = entity.displayPickaxe();
+        renderState.alpha = entity.getAlpha();
 
         renderState.setAfterimages(entity, partialTicks);
         renderState.setAnimationVisitor(entity);
@@ -142,9 +143,16 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
     }
 
     @Override
+    protected int getModelTint(S renderState) {
+        return ARGB.color(renderState.alpha, 0xffffff);
+    }
+
+    @Override
     @Nullable
     protected RenderType getRenderType(S renderState, boolean bodyVisible, boolean translucent, boolean glowing) {
         if (renderState.isShadow)
+            return RenderType.entityTranslucent(getTextureLocation(renderState));
+        if (renderState.alpha < 0xff)
             return RenderType.entityTranslucent(getTextureLocation(renderState));
         return super.getRenderType(renderState, bodyVisible, translucent, glowing);
     }

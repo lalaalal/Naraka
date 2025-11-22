@@ -39,6 +39,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     protected static final EntityDataAccessor<Boolean> DISPLAY_SCARF = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> DISPLAY_EYE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> DISPLAY_PICKAXE = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Integer> ALPHA = SynchedEntityData.defineId(AbstractHerobrine.class, EntityDataSerializers.INT);
 
     public final boolean isShadow;
     private final ScarfWavingData scarfWavingData = new ScarfWavingData();
@@ -82,7 +83,16 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         builder.define(FINAL_MODEL, false)
                 .define(DISPLAY_SCARF, false)
                 .define(DISPLAY_EYE, true)
-                .define(DISPLAY_PICKAXE, false);
+                .define(DISPLAY_PICKAXE, false)
+                .define(ALPHA, 0xff);
+    }
+
+    public void setAlpha(int alpha) {
+        entityData.set(ALPHA, alpha);
+    }
+
+    public int getAlpha() {
+        return entityData.get(ALPHA);
     }
 
     public void setFinalModel(boolean value) {
