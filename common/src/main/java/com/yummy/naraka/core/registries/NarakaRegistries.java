@@ -15,7 +15,7 @@ public class NarakaRegistries {
     public static final Registry<StructurePieceFactory> STRUCTURE_PIECE_FACTORY = RegistryFactory.create(Keys.STRUCTURE_PIECE_FACTORY);
     public static final Registry<StructureGenerationPointProvider> STRUCTURE_GENERATION_POINT_PROVIDER = RegistryFactory.create(Keys.STRUCTURE_GENERATION_POINT_PROVIDER);
     public static final Registry<ProtectionPredicate> PROTECTION_PREDICATE = RegistryFactory.create(Keys.PROTECTION_PREDICATE);
-    public static final Registry<EntityDataType<?>> ENTITY_DATA_TYPE = RegistryFactory.create(Keys.ENTITY_DATA_TYPE);
+    public static final Registry<EntityDataType<?, ?>> ENTITY_DATA_TYPE = RegistryFactory.create(Keys.ENTITY_DATA_TYPE);
     public static final Registry<ReinforcementEffect> REINFORCEMENT_EFFECT = RegistryFactory.create(Keys.REINFORCEMENT_EFFECT);
     public static final Registry<EquipmentSet> EQUIPMENT_SET = RegistryFactory.create(Keys.EQUIPMENT_SET);
     public static final Registry<DataComponentApplier.Type<?>> DATA_COMPONENT_APPLIER = RegistryFactory.create(Keys.DATA_COMPONENT_APPLIER);
@@ -28,7 +28,7 @@ public class NarakaRegistries {
         public static final ResourceKey<Registry<StructurePieceFactory>> STRUCTURE_PIECE_FACTORY = create("structure_piece_factory");
         public static final ResourceKey<Registry<StructureGenerationPointProvider>> STRUCTURE_GENERATION_POINT_PROVIDER = create("structure_generation_point_provider");
         public static final ResourceKey<Registry<ProtectionPredicate>> PROTECTION_PREDICATE = create("protection_predicate");
-        public static final ResourceKey<Registry<EntityDataType<?>>> ENTITY_DATA_TYPE = create("entity_data_type");
+        public static final ResourceKey<Registry<EntityDataType<?, ?>>> ENTITY_DATA_TYPE = create("entity_data_type");
         public static final ResourceKey<Registry<ReinforcementEffect>> REINFORCEMENT_EFFECT = create("reinforcement_effect");
         public static final ResourceKey<Registry<EquipmentSet>> EQUIPMENT_SET = create("equipment_set");
         public static final ResourceKey<Registry<DataComponentApplier.Type<?>>> DATA_COMPONENT_APPLIER = create("data_component_applier");

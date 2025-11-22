@@ -55,6 +55,10 @@ public record Color(int alpha, int red, int green, int blue) {
         return new Color(alpha, red, green, blue);
     }
 
+    public Color withAlpha(float alpha) {
+        return new Color((int) (alpha * 0xff), red, green, blue);
+    }
+
     @Override
     public String toString() {
         if (alpha == 0)

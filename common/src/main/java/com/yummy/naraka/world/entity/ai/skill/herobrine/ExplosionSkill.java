@@ -2,14 +2,16 @@ package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.network.AddBeamEffectPacket;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.MagicCircle;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
+import com.yummy.naraka.world.entity.data.BeamEffectsHelper;
+import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -22,6 +24,8 @@ import java.util.function.Predicate;
 
 public class ExplosionSkill extends AttackSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final_herobrine.explosion");
+
+    public static final int COLOR = SoulType.GOLD.getColor();
 
     @Nullable
     private MagicCircle magicCircle;
@@ -48,9 +52,11 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
         runAt(19, () -> spawnMagicCircle(level));
         runBetween(20, 41, () -> scaleMagicCircle(0, 30, 20, 40));
 
+        runAt(60, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.SIMPLE, mob, COLOR));
         runAt(60, () -> mob.setDeltaMovement(0, 0.4, 0));
         runAt(60, () -> level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE));
-        runBetween(60, 70, () -> level.sendParticles(ParticleTypes.FLASH, mob.getX(), mob.getEyeY(), mob.getZ(), 20, 1, 2, 1, 1));
+
+        runAt(70, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.SIMPLE, mob, COLOR));
         runBetween(85, 90, () -> scaleMagicCircle(30, 0, 85, 89));
 
         runAfter(62, this::stopMoving);

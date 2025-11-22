@@ -28,6 +28,7 @@
     "client.WorldOpenFlowsMixin"
   ],
   "mixins": [
+    "EntityMixin",
     "FeatureMixin",
     "HerobrineTotemActivatingItemMixin",
     "LivingEntityMixin",

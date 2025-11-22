@@ -6,10 +6,13 @@ import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.NarakaTextures;
+import com.yummy.naraka.client.layer.BeamEffectLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.model.FinalHerobrineModel;
 import com.yummy.naraka.client.model.HerobrineModel;
+import com.yummy.naraka.world.entity.BeamEffect;
 import com.yummy.naraka.world.entity.Herobrine;
+import com.yummy.naraka.world.entity.data.BeamEffectsHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,6 +21,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
+
+import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, AbstractHerobrineModel<Herobrine>> {
@@ -31,7 +37,15 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Abst
     }
 
     @Override
+    protected void addLayers(EntityRendererProvider.Context context) {
+        super.addLayers(context);
+        this.addLayer(new BeamEffectLayer<>(this, new Vector3f(3, -3, 3), new Vector3f(0, -0.5f, 0)));
+    }
+
+    @Override
     public void render(Herobrine entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        List<BeamEffect> beamEffects = BeamEffectsHelper.get(entity);
+        entity.updateBeamEffects(beamEffects, entity.tickCount + partialTicks);
         if (entity.isDeadOrDying() && NarakaClientContext.SHADER_ENABLED.getValue()) {
             renderChzzk(entity, partialTicks, poseStack, buffer, getChzzkRenderType(entity, partialTicks, 0.001f, 0.01f), packedLight);
             renderChzzk(entity, partialTicks, poseStack, buffer, getChzzkRenderType(entity, partialTicks, 0.002f, 0.005f), packedLight);

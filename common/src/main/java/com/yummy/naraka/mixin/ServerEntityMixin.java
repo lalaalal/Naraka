@@ -28,7 +28,7 @@ public abstract class ServerEntityMixin {
     @Inject(method = "addPairing", at = @At("RETURN"))
     public void addParingEntityData(ServerPlayer serverPlayer, CallbackInfo ci) {
         if (entity instanceof LivingEntity livingEntity) {
-            List<EntityData<?>> data = EntityDataHelper.getEntityDataList(livingEntity);
+            List<EntityData<?, ? extends Entity>> data = EntityDataHelper.getEntityDataList(livingEntity);
             NetworkManager.sendToClient(serverPlayer, new SyncEntityDataPacket(livingEntity, data));
         }
     }

@@ -9,31 +9,39 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public final class EntityDataType<T> {
+public final class EntityDataType<T, E extends Entity> {
     private final ResourceLocation id;
-    private final Supplier<EntityData<T>> defaultInstance;
-    private final MapCodec<EntityData<T>> mapCodec;
-    private final StreamCodec<RegistryFriendlyByteBuf, EntityData<T>> streamCodec;
-    private final BiConsumer<LivingEntity, T> ticker;
+    private final Supplier<EntityData<T, E>> defaultInstance;
+    private final MapCodec<EntityData<T, E>> mapCodec;
+    private final StreamCodec<RegistryFriendlyByteBuf, EntityData<T, E>> streamCodec;
+    private final BiConsumer<E, T> ticker;
+    private final Class<E> entityType;
 
-    public static <T> Builder<T> builder(Codec<T> codec) {
-        return new Builder<>(codec);
+    public static <T, E extends Entity> Builder<T, E> builder(Codec<T> codec, Class<E> entityType) {
+        return new Builder<>(codec, entityType);
     }
 
-    public static <T> Builder<T> simple(Codec<T> codec, T defaultValue) {
-        return builder(codec).defaultValue(defaultValue);
+    public static <T> Builder<T, Entity> common(Codec<T> codec) {
+        return new Builder<>(codec, Entity.class);
     }
 
-    private EntityDataType(ResourceLocation id, Codec<T> codec, Function<EntityDataType<T>, EntityData<T>> defaultInstance, BiConsumer<LivingEntity, T> ticker) {
+    public static <T> Builder<T, LivingEntity> living(Codec<T> codec) {
+        return new Builder<>(codec, net.minecraft.world.entity.LivingEntity.class);
+    }
+
+    private EntityDataType(ResourceLocation id, Codec<T> codec, Class<E> entityType, Function<EntityDataType<T, E>, EntityData<T, E>> defaultInstance, BiConsumer<E, T> ticker) {
         this.id = id;
         this.defaultInstance = () -> defaultInstance.apply(this);
+        this.entityType = entityType;
         this.mapCodec = RecordCodecBuilder.mapCodec(instance -> instance.group(
                         codec.fieldOf("value").forGetter(EntityData::value)
                 ).apply(instance, value -> new EntityData<>(this, value))
@@ -51,7 +59,7 @@ public final class EntityDataType<T> {
         return getDefault().value();
     }
 
-    public EntityData<T> getDefault() {
+    public EntityData<T, E> getDefault() {
         return defaultInstance.get();
     }
 
@@ -59,57 +67,71 @@ public final class EntityDataType<T> {
         return getId().getPath();
     }
 
-    public MapCodec<EntityData<T>> mapCodec() {
+    public MapCodec<EntityData<T, E>> mapCodec() {
         return mapCodec;
     }
 
-    public StreamCodec<RegistryFriendlyByteBuf, EntityData<T>> streamCodec() {
+    public StreamCodec<RegistryFriendlyByteBuf, EntityData<T, E>> streamCodec() {
         return streamCodec;
     }
 
-    public void tick(LivingEntity livingEntity) {
-        T value = EntityDataHelper.getRawEntityData(livingEntity, this);
-        ticker.accept(livingEntity, value);
+    public void tick(Entity entity) {
+        getCastedTarget(entity).ifPresent(target -> ticker.accept(
+                target,
+                EntityDataHelper.getRawEntityData(target, this)
+        ));
     }
 
-    public static class Builder<T> {
+    public boolean isValidTarget(Entity entity) {
+        return entityType.isInstance(entity);
+    }
+
+    public Optional<E> getCastedTarget(Entity entity) {
+        if (isValidTarget(entity))
+            return Optional.of(entityType.cast(entity));
+        return Optional.empty();
+    }
+
+    public static class Builder<T, E extends Entity> {
         private final Codec<T> codec;
+        private final Class<E> entityType;
         private ResourceLocation id;
         @Nullable
-        private Function<EntityDataType<T>, EntityData<T>> defaultInstance;
-        private BiConsumer<LivingEntity, T> ticker;
+        private Function<EntityDataType<T, E>, EntityData<T, E>> defaultInstance;
+        private BiConsumer<E, T> ticker;
 
-        private Builder(Codec<T> codec) {
+        private Builder(Codec<T> codec, Class<E> entityType) {
             this.id = NarakaMod.location("empty");
             this.codec = codec;
+            this.entityType = entityType;
             this.ticker = (livingEntity, value) -> {
             };
         }
 
-        public Builder<T> id(ResourceLocation id) {
+        public Builder<T, E> id(ResourceLocation id) {
             this.id = id;
             return this;
         }
 
-        public Builder<T> defaultValue(Supplier<T> defaultValue) {
+        public Builder<T, E> defaultValue(Supplier<T> defaultValue) {
             this.defaultInstance = type -> new EntityData<>(type, defaultValue.get());
             return this;
         }
 
-        public Builder<T> defaultValue(T defaultValue) {
+        public Builder<T, E> defaultValue(T defaultValue) {
             this.defaultInstance = Util.memoize(type -> new EntityData<>(type, defaultValue));
             return this;
         }
 
-        public Builder<T> ticker(BiConsumer<LivingEntity, T> ticker) {
+        public Builder<T, E> ticker(BiConsumer<E, T> ticker) {
             this.ticker = ticker;
             return this;
         }
 
-        public EntityDataType<T> build() {
+        public EntityDataType<T, E> build() {
             if (defaultInstance == null)
                 throw new IllegalStateException("Default value must be set");
-            return new EntityDataType<>(id, codec, defaultInstance, ticker);
+            return new EntityDataType<>(id, codec, entityType, defaultInstance, ticker);
         }
     }
 }

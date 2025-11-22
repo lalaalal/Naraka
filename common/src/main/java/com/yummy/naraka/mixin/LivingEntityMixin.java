@@ -3,9 +3,7 @@ package com.yummy.naraka.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.util.NarakaItemUtils;
-import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.entity.ScarfWavingData;
-import com.yummy.naraka.world.entity.data.EntityData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
@@ -13,10 +11,7 @@ import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffectHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -35,7 +30,6 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.List;
 import java.util.Map;
 
 @Mixin(LivingEntity.class)
@@ -57,26 +51,6 @@ public abstract class LivingEntityMixin extends Entity {
 
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
-    }
-
-    @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
-    public void saveEntityData(CompoundTag output, CallbackInfo ci) {
-        if (EntityDataHelper.hasEntityData(naraka$living())) {
-            List<EntityData<?>> data = EntityDataHelper.getEntityDataList(naraka$living());
-            NarakaNbtUtils.store(output, "EntityData", EntityData.CODEC.listOf(), RegistryOps.create(NbtOps.INSTANCE, level().registryAccess()), data);
-        }
-    }
-
-    @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))
-    public void readEntityData(CompoundTag input, CallbackInfo ci) {
-        NarakaNbtUtils.read(input, "EntityData", EntityData.CODEC.listOf(), RegistryOps.create(NbtOps.INSTANCE, level().registryAccess()))
-                .ifPresent(data -> EntityDataHelper.setEntityDataList(naraka$living(), data));
-    }
-
-    @Inject(method = "remove", at = @At("RETURN"))
-    public void removeEntityData(RemovalReason removalReason, CallbackInfo ci) {
-        if (removalReason.shouldDestroy())
-            EntityDataHelper.removeEntityData(naraka$living());
     }
 
     @ModifyArg(
@@ -109,10 +83,7 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "tick", at = @At("RETURN"))
-    public void tickPurifiedSoulFire(CallbackInfo ci) {
-        EntityDataHelper.getEntityDataTypes(naraka$living())
-                .forEach(type -> type.tick(naraka$living()));
-
+    public void checkScarfEquipment(CallbackInfo ci) {
         ItemStack itemStack = getItemBySlot(EquipmentSlot.CHEST);
         if (itemStack.getOrDefault(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), false)) {
             if (!EntityDataHelper.hasEntityData(naraka$living(), NarakaEntityDataTypes.SCARF_WAVING_DATA.get()))
