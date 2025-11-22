@@ -15,7 +15,7 @@ import net.neoforged.neoforge.network.handling.IPayloadHandler;
 
 @SuppressWarnings("unused")
 public final class NeoForgeNetworkManager implements NarakaEventBus {
-    public static final String VERSION = "1";
+    public static final String VERSION = "2";
 
     private static final ClientboundNetworkManager CLIENTBOUND = new NeoForgeClientboundNetworkManager();
     private static final ServerboundNetworkManager SERVERBOUND = new NeoForgeServerboundNetworkManager();

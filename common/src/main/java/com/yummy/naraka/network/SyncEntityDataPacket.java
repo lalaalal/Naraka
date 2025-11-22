@@ -1,48 +1,93 @@
 package com.yummy.naraka.network;
 
+import com.mojang.serialization.Codec;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.data.EntityData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.List;
 
-public record SyncEntityDataPacket(int entityId, List<EntityData<?, ?>> entityData) implements CustomPacketPayload {
+public record SyncEntityDataPacket(int entityId, Action action,
+                                   List<EntityData<?, ?>> entityData) implements CustomPacketPayload {
     public static final Type<SyncEntityDataPacket> TYPE = new Type<>(NarakaMod.location("sync_entity_data"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncEntityDataPacket> CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT,
+            ByteBufCodecs.INT,
             SyncEntityDataPacket::entityId,
+            Action.STREAM_CODEC,
+            SyncEntityDataPacket::action,
             EntityData.STREAM_CODEC.apply(ByteBufCodecs.list()),
             SyncEntityDataPacket::entityData,
             SyncEntityDataPacket::new
     );
 
-    public SyncEntityDataPacket(Entity livingEntity, EntityData<?, ?> entityData) {
-        this(livingEntity.getId(), List.of(entityData));
+    public static SyncEntityDataPacket sync(Entity entity, Action action, List<EntityData<?, ?>> entityData) {
+        return new SyncEntityDataPacket(entity.getId(), action, entityData);
     }
 
-    public SyncEntityDataPacket(Entity livingEntity, List<EntityData<?, ?>> entityData) {
-        this(livingEntity.getId(), entityData);
+    public static SyncEntityDataPacket sync(Entity entity, Action action, EntityData<?, ?> entityData) {
+        return sync(entity, action, List.of(entityData));
     }
-
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 
-    public static void handle(SyncEntityDataPacket payload, NetworkManager.Context context) {
-        Player player = context.player();
-        Entity entity = player.level().getEntity(payload.entityId);
+    public void handle(NetworkManager.Context context) {
+        this.action.sync(this, context);
+    }
+
+    private static void loadEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
+        Entity entity = context.level().getEntity(packet.entityId());
         if (entity != null) {
-            for (EntityData<?, ?> data : payload.entityData)
+            for (EntityData<?, ?> data : packet.entityData())
                 EntityDataHelper.loadEntityData(entity, data);
+        }
+    }
+
+    private static void removeGivenEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
+        Entity entity = context.level().getEntity(packet.entityId());
+        if (entity != null) {
+            for (EntityData<?, ?> data : packet.entityData())
+                EntityDataHelper.removeEntityData(entity, data.type());
+        }
+    }
+
+    private static void removeAllEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
+        Entity entity = context.level().getEntity(packet.entityId());
+        if (entity != null)
+            EntityDataHelper.removeEntityData(entity.getUUID());
+    }
+
+    public enum Action implements StringRepresentable {
+        LOAD(SyncEntityDataPacket::loadEntityData),
+        REMOVE_GIVEN(SyncEntityDataPacket::removeGivenEntityData),
+        REMOVE_ALL(SyncEntityDataPacket::removeAllEntityData);
+
+        public static final Codec<Action> CODEC = StringRepresentable.fromEnum(Action::values);
+        public static final StreamCodec<ByteBuf, Action> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
+
+        private final NetworkManager.PacketHandler<SyncEntityDataPacket> action;
+
+        Action(NetworkManager.PacketHandler<SyncEntityDataPacket> action) {
+            this.action = action;
+        }
+
+        public void sync(SyncEntityDataPacket packet, NetworkManager.Context context) {
+            action.handle(packet, context);
+        }
+
+        @Override
+        public String getSerializedName() {
+            return name().toLowerCase();
         }
     }
 }

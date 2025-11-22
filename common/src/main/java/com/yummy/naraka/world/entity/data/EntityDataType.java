@@ -31,11 +31,11 @@ public final class EntityDataType<T, E extends Entity> {
     }
 
     public static <T> Builder<T, Entity> common(Codec<T> codec) {
-        return new Builder<>(codec, Entity.class);
+        return builder(codec, Entity.class);
     }
 
     public static <T> Builder<T, LivingEntity> living(Codec<T> codec) {
-        return new Builder<>(codec, net.minecraft.world.entity.LivingEntity.class);
+        return builder(codec, LivingEntity.class);
     }
 
     private EntityDataType(ResourceLocation id, Codec<T> codec, Class<E> entityType, Function<EntityDataType<T, E>, EntityData<T, E>> defaultInstance, BiConsumer<E, T> ticker) {

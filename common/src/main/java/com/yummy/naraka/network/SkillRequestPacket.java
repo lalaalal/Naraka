@@ -1,5 +1,6 @@
 package com.yummy.naraka.network;
 
+import com.mojang.serialization.Codec;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
@@ -8,6 +9,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
@@ -51,29 +53,38 @@ public record SkillRequestPacket(Event event, int entityId, ResourceLocation loc
         event.handler.handle(this, context);
     }
 
-    public enum Event {
-        DISABLE((payload, context) -> {
-            payload.getEntity(context.level()).ifPresent(mob -> {
-                mob.getSkillManager().enableOnly(List.of());
-            });
-        }),
-        STOP((payload, context) -> {
-            payload.getEntity(context.level()).ifPresent(mob -> {
-                mob.getSkillManager().interrupt();
-            });
-        }),
-        ENABLE_ONLY((payload, context) -> {
-            payload.getEntity(context.level()).ifPresent(mob -> {
-                Skill<?> skill = mob.getSkillManager().getSkill(payload.location);
-                if (skill != null)
-                    mob.getSkillManager().enableOnly(List.of(skill));
-            });
-        }),
-        USE((payload, context) -> {
-            payload.getEntity(context.level()).ifPresent(mob -> mob.useSkill(payload.location));
+    private static void disable(SkillRequestPacket packet, NetworkManager.Context context) {
+        packet.getEntity(context.level()).ifPresent(mob -> {
+            mob.getSkillManager().enableOnly(List.of());
         });
+    }
 
-        public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.idMapper(Event::byId, Event::ordinal);
+    private static void stop(SkillRequestPacket packet, NetworkManager.Context context) {
+        packet.getEntity(context.level()).ifPresent(mob -> {
+            mob.getSkillManager().interrupt();
+        });
+    }
+
+    private static void enableOnly(SkillRequestPacket packet, NetworkManager.Context context) {
+        packet.getEntity(context.level()).ifPresent(mob -> {
+            Skill<?> skill = mob.getSkillManager().getSkill(packet.location);
+            if (skill != null)
+                mob.getSkillManager().enableOnly(List.of(skill));
+        });
+    }
+
+    private static void use(SkillRequestPacket packet, NetworkManager.Context context) {
+        packet.getEntity(context.level()).ifPresent(mob -> mob.useSkill(packet.location));
+    }
+
+    public enum Event implements StringRepresentable {
+        DISABLE(SkillRequestPacket::disable),
+        STOP(SkillRequestPacket::stop),
+        ENABLE_ONLY(SkillRequestPacket::enableOnly),
+        USE(SkillRequestPacket::use);
+
+        public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
+        public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
         public final NetworkManager.PacketHandler<SkillRequestPacket> handler;
 
@@ -81,12 +92,9 @@ public record SkillRequestPacket(Event event, int entityId, ResourceLocation loc
             this.handler = handler;
         }
 
-        public static Event byId(int id) {
-            for (Event event : values()) {
-                if (event.ordinal() == id)
-                    return event;
-            }
-            throw new IllegalArgumentException("Unknown event id: " + id);
+        @Override
+        public String getSerializedName() {
+            return name().toLowerCase();
         }
     }
 }

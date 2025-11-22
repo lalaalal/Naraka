@@ -31,6 +31,10 @@ public class EntityDataContainer {
         return (EntityData<T, E>) this.entityDataMap.getOrDefault(entityDataType, entityDataType.getDefault());
     }
 
+    public void removeEntityData(EntityDataType<?, ?> entityDataType) {
+        this.entityDataMap.remove(entityDataType);
+    }
+
     public Stream<EntityData<?, ?>> stream() {
         return entityDataMap.values().stream();
     }

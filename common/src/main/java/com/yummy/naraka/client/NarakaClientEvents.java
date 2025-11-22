@@ -4,6 +4,7 @@ import com.yummy.naraka.client.event.ClientEvents;
 import com.yummy.naraka.client.renderer.WhiteFogRenderHelper;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.ComponentStyles;
+import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -17,7 +18,7 @@ public class NarakaClientEvents {
         ClientEvents.TICK_PRE.register(NarakaClientEvents::onClientTick);
         ClientEvents.CLIENT_STOPPING.register(NarakaClientEvents::onClientStopping);
         ClientEvents.CAMERA_SETUP.register(NarakaClientEvents::shakeCamera);
-        ClientEvents.LOGIN.register(NarakaClientContext::initialize);
+        ClientEvents.LOGIN.register(NarakaClientEvents::onClientLogin);
     }
 
     private static void shakeCamera(ClientEvents.CameraSetup.Context context, BlockGetter level, Entity entity, boolean detached, boolean thirdPersonReverse, float partialTick) {
@@ -27,6 +28,11 @@ public class NarakaClientEvents {
             float dy = Mth.sin(ageInTicks * NarakaConfig.CLIENT.cameraShakingSpeed.getValue()) * cameraShakeTick * NarakaConfig.CLIENT.cameraShakingStrength.getValue();
             context.move(0, dy, 0);
         }
+    }
+
+    private static void onClientLogin() {
+        NarakaClientContext.initialize();
+        EntityDataHelper.clear();
     }
 
     private static void onClientTick(Minecraft minecraft) {
