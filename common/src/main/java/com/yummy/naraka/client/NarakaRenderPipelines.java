@@ -60,6 +60,32 @@ public final class NarakaRenderPipelines {
                     .build()
     );
 
+    public static final RenderPipeline.Snippet SPACE_SNIPPET = RenderPipeline.builder(
+                    RenderPipelines.MATRICES_PROJECTION_SNIPPET,
+                    RenderPipelines.FOG_SNIPPET,
+                    RenderPipelines.GLOBALS_SNIPPET
+            )
+            .withVertexShader(NarakaMod.location("longinus"))
+            .withFragmentShader(NarakaMod.location("space"))
+            .withSampler("Sampler0")
+            .buildSnippet();
+
+    public static final RenderPipeline SPACE = RenderPipelineRegistry.register(
+            RenderPipeline.builder(SPACE_SNIPPET)
+                    .withLocation(NarakaMod.location("pipeline/space"))
+                    .withVertexFormat(DefaultVertexFormat.POSITION, VertexFormat.Mode.QUADS)
+                    .build()
+    );
+
+    public static final RenderPipeline SPACE_CUTOUT = RenderPipelineRegistry.register(
+            RenderPipeline.builder(SPACE_SNIPPET)
+                    .withLocation(NarakaMod.location("pipeline/space_cutout"))
+                    .withSampler("Sampler1")
+                    .withShaderDefine("CUTOUT")
+                    .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
+                    .build()
+    );
+
     public static void initialize() {
 
     }

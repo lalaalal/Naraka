@@ -10,6 +10,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class ColoredLightningBolt extends LightningBolt {
     public static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(ColoredLightningBolt.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Boolean> SPACE_RENDER_TYPE = SynchedEntityData.defineId(ColoredLightningBolt.class, EntityDataSerializers.BOOLEAN);
 
     public ColoredLightningBolt(EntityType<? extends ColoredLightningBolt> entityType, Level level) {
         super(entityType, level);
@@ -25,10 +26,19 @@ public class ColoredLightningBolt extends LightningBolt {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(COLOR, -1);
+        builder.define(COLOR, -1)
+                .define(SPACE_RENDER_TYPE, false);
     }
 
     public int getColor() {
         return entityData.get(COLOR);
+    }
+
+    public boolean isSpaceRenderType() {
+        return entityData.get(SPACE_RENDER_TYPE);
+    }
+
+    public void setSpaceRenderType(boolean value) {
+        entityData.set(SPACE_RENDER_TYPE, value);
     }
 }

@@ -37,6 +37,8 @@ public final class NarakaTextures {
     public static final ResourceLocation ECLIPSE = texture("environment", "eclipse.png");
     public static final ResourceLocation INVERTED_ECLIPSE = texture("environment", "inverted_eclipse.png");
 
+    public static final ResourceLocation SPACE = entity("space.png");
+
     public static final ResourceLocation LONGINUS = entity("longinus.png");
     public static final ResourceLocation SPEAR = entity("spear.png");
     public static final ResourceLocation MIGHTY_HOLY_SPEAR = entity("mighty_holy_spear.png");
