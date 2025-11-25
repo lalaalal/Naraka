@@ -10,9 +10,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaRenderPipelines;
 import com.yummy.naraka.client.NarakaTextures;
+import com.yummy.naraka.client.init.ResourceReloadListenerRegistry;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -22,6 +24,8 @@ import net.minecraft.client.renderer.SkyRenderer;
 import net.minecraft.client.renderer.state.SkyRenderState;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
@@ -29,11 +33,10 @@ import org.joml.*;
 
 import java.lang.Math;
 import java.util.Map;
-import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
-public class NarakaSkyRenderer implements DimensionSkyRenderer {
+public class NarakaSkyRenderer implements DimensionSkyRenderer, ResourceManagerReloadListener {
     @Nullable
     private static NarakaSkyRenderer instance;
 
@@ -42,19 +45,23 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
     private int starIndexCount;
     private final GpuBuffer starBuffer = buildStars();
     private final GpuBuffer eclipseBuffer = buildEclipse();
-    private final AbstractTexture eclipseTexture = DimensionSkyRenderer.getTexture(NarakaTextures.ECLIPSE);
-    private final AbstractTexture invertedEclipseTexture = DimensionSkyRenderer.getTexture(NarakaTextures.INVERTED_ECLIPSE);
-    private final Map<ResourceLocation, AbstractTexture> ECLIPSE_TEXTURES = Map.of(
-            NarakaTextures.ECLIPSE, eclipseTexture,
-            NarakaTextures.INVERTED_ECLIPSE, invertedEclipseTexture
-    );
+    @Nullable
+    private AbstractTexture eclipseTexture;
+    @Nullable
+    private AbstractTexture invertedEclipseTexture;
+    private Map<ResourceLocation, AbstractTexture> eclipseTextures = Map.of();
 
-    public static Optional<NarakaSkyRenderer> getInstance() {
-        return Optional.ofNullable(instance);
+    public static NarakaSkyRenderer getInstance() {
+        if (instance == null)
+            throw new IllegalStateException("Naraka sky renderer not initialized");
+        return instance;
     }
 
     public NarakaSkyRenderer() {
+        if (instance != null)
+            throw new IllegalStateException("Naraka sky renderer already initialized");
         instance = this;
+        ResourceReloadListenerRegistry.register(NarakaMod.location("naraka_sky_renderer"), () -> this);
     }
 
     private GpuBuffer buildStars() {
@@ -102,6 +109,17 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
     }
 
     @Override
+    public void onResourceManagerReload(ResourceManager resourceManager) {
+        tryCloseTextures();
+        eclipseTexture = DimensionSkyRenderer.getTexture(NarakaTextures.ECLIPSE);
+        invertedEclipseTexture = DimensionSkyRenderer.getTexture(NarakaTextures.INVERTED_ECLIPSE);
+        eclipseTextures = Map.of(
+                NarakaTextures.ECLIPSE, eclipseTexture,
+                NarakaTextures.INVERTED_ECLIPSE, invertedEclipseTexture
+        );
+    }
+
+    @Override
     public void renderSky(ClientLevel level, LevelTargetBundle targets, FrameGraphBuilder frameGraphBuilder, Camera camera, GpuBufferSlice shaderFog, SkyRenderer skyRenderer, SkyRenderState renderState) {
         FramePass framePass = frameGraphBuilder.addPass("naraka sky");
         targets.main = framePass.readsAndWrites(targets.main);
@@ -122,7 +140,9 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
     }
 
     public void renderEclipse(PoseStack poseStack, ResourceLocation textureLocation, RenderPipeline renderPipeline) {
-        AbstractTexture texture = ECLIPSE_TEXTURES.get(textureLocation);
+        if (!eclipseTextures.containsKey(textureLocation))
+            return;
+        AbstractTexture texture = eclipseTextures.get(textureLocation);
         Matrix4fStack matrix4fStack = RenderSystem.getModelViewStack();
         matrix4fStack.pushMatrix();
         matrix4fStack.mul(poseStack.last().pose());
@@ -181,7 +201,11 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
     public void close() {
         starBuffer.close();
         eclipseBuffer.close();
-        eclipseTexture.close();
-        invertedEclipseTexture.close();
+        tryCloseTextures();
+    }
+
+    private void tryCloseTextures() {
+        if (eclipseTexture != null) eclipseTexture.close();
+        if (invertedEclipseTexture != null) invertedEclipseTexture.close();
     }
 }

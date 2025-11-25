@@ -59,7 +59,7 @@ public class BeamEffectsHelper {
 
     public static void addPushSet(Entity entity, int color) {
         List<BeamEffect> beamEffects = new ArrayList<>();
-        for (double yRot = 0; yRot < Math.TAU; yRot += Math.PI / 16)
+        for (double yRot = 0; yRot < Math.TAU; yRot += Math.PI / 12)
             beamEffects.add(BeamEffect.push(entity.tickCount, BeamEffect.Speed.NORMAL, 1, yRot, color));
         BeamEffectsHelper.add(entity, beamEffects);
     }

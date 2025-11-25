@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
-public class NeoForgeEntityDataSerializerRegistry implements NarakaEventBus {
+public final class NeoForgeEntityDataSerializerRegistry implements NarakaEventBus {
     @MethodProxy(EntityDataSerializerRegistry.class)
     public static void register(ResourceLocation name, EntityDataSerializer<?> serializer) {
         NARAKA_BUS.addListener(RegisterEvent.class, event -> {

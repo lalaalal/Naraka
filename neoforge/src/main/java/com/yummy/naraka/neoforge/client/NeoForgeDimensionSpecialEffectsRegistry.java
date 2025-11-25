@@ -10,7 +10,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent;
 
 @OnlyIn(Dist.CLIENT)
-public class NeoForgeDimensionSpecialEffectsRegistry implements NarakaEventBus {
+public final class NeoForgeDimensionSpecialEffectsRegistry implements NarakaEventBus {
     @MethodProxy(DimensionSpecialEffectsRegistry.class)
     public static void register(ResourceLocation location, DimensionSpecialEffects effects) {
         NARAKA_BUS.addListener(RegisterDimensionSpecialEffectsEvent.class, event -> {

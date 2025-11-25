@@ -19,10 +19,9 @@ public abstract class SkyRendererMixin {
     @Inject(method = "renderMoon", at = @At("HEAD"), cancellable = true)
     public void replaceMoon(int moonPhase, float rainLevel, PoseStack poseStack, CallbackInfo ci) {
         if (NarakaClientContext.ENABLE_HEROBRINE_SKY.getValue() && NarakaClientContext.SHADER_ENABLED.getValue()) {
-            NarakaSkyRenderer.getInstance().ifPresent(narakaSkyRenderer -> {
-                ci.cancel();
-                narakaSkyRenderer.renderEclipse(poseStack, NarakaTextures.ECLIPSE, RenderPipelines.CELESTIAL);
-            });
+            NarakaSkyRenderer.getInstance()
+                    .renderEclipse(poseStack, NarakaTextures.ECLIPSE, RenderPipelines.CELESTIAL);
+            ci.cancel();
         }
     }
 }

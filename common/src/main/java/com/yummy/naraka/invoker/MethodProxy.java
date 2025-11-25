@@ -14,4 +14,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MethodProxy {
     Class<?> value();
+
+    boolean allowDelayedCall() default false;
 }

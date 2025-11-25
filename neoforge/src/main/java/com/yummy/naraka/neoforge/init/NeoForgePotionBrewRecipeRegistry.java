@@ -8,7 +8,7 @@ import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 
 import java.util.function.Consumer;
 
-public class NeoForgePotionBrewRecipeRegistry implements NarakaEventBus {
+public final class NeoForgePotionBrewRecipeRegistry implements NarakaEventBus {
     @MethodProxy(PotionBrewRecipeRegistry.class)
     public static void register(Consumer<PotionBrewing.Builder> consumer) {
         NEOFORGE_BUS.addListener(RegisterBrewingRecipesEvent.class, event -> {

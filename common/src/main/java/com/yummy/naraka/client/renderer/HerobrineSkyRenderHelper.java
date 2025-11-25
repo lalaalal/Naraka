@@ -26,9 +26,8 @@ public class HerobrineSkyRenderHelper {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
         poseStack.mulPose(Axis.XP.rotationDegrees(180));
-        NarakaSkyRenderer.getInstance().ifPresent(
-                narakaSkyRenderer -> narakaSkyRenderer.renderEclipse(poseStack, NarakaTextures.ECLIPSE, RenderPipelines.CELESTIAL)
-        );
+        NarakaSkyRenderer.getInstance()
+                .renderEclipse(poseStack, NarakaTextures.ECLIPSE, RenderPipelines.CELESTIAL);
         poseStack.popPose();
     }
 }

@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class NeoForgeBiomeModifier implements NarakaBiomes.Modifier {
+public final class NeoForgeBiomeModifier implements NarakaBiomes.Modifier {
     public static final NeoForgeBiomeModifier INSTANCE = new NeoForgeBiomeModifier();
 
     private final List<BiomeModifierRecord> modifiers = new ArrayList<>();
