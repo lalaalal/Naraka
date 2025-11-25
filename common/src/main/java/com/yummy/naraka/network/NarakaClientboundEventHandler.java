@@ -33,7 +33,8 @@ public class NarakaClientboundEventHandler {
             NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY, NarakaClientboundEventHandler::stopHerobrineSky,
             NarakaClientboundEventPacket.Event.START_WHITE_SCREEN, NarakaClientboundEventHandler::startWhiteScreen,
             NarakaClientboundEventPacket.Event.STOP_WHITE_FOG, NarakaClientboundEventHandler::stopWhiteScreen,
-            NarakaClientboundEventPacket.Event.SHAKE_CAMERA, NarakaClientboundEventHandler::shakeCamera
+            NarakaClientboundEventPacket.Event.SHAKE_CAMERA, NarakaClientboundEventHandler::shakeCamera,
+            NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT, NarakaClientboundEventHandler::monochromeColor
     );
 
     private static final Music[] HEROBRINE_MUSIC = new Music[]{
@@ -107,5 +108,9 @@ public class NarakaClientboundEventHandler {
 
     private static void shakeCamera() {
         NarakaClientContext.CAMERA_SHAKE_TICK.set(10);
+    }
+
+    private static void monochromeColor() {
+        NarakaClientContext.MONOCHROME_EFFECT_TICK.set(10);
     }
 }

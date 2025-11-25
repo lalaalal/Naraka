@@ -10,6 +10,7 @@
     "client.DripParticleMixin$HoneyFallAndLandParticleMixin",
     "client.EntityRenderDispatcherMixin",
     "client.FogRendererMixin",
+    "client.GameRendererMixin",
     "client.GuiMixin",
     "client.HiddenOreRendererMixin",
     "client.HumanoidArmorLayerMixin",

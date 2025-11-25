@@ -185,6 +185,8 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         super.readAdditionalSaveData(input);
         boolean finalModel = input.getBoolean("FinalModel");
         entityData.set(FINAL_MODEL, finalModel);
+        if (finalModel)
+            entityData.set(DISPLAY_SCARF, true);
         boolean displayPickaxe = input.getBoolean("DisplayPickaxe");
         setDisplayPickaxe(displayPickaxe);
         setPersistenceRequired();
