@@ -37,8 +37,8 @@ public final class NarakaRenderPipelines {
                     RenderPipelines.FOG_SNIPPET,
                     RenderPipelines.GLOBALS_SNIPPET
             )
-            .withVertexShader(NarakaMod.location("longinus"))
-            .withFragmentShader(NarakaMod.location("longinus"))
+            .withVertexShader(NarakaMod.location("core/longinus"))
+            .withFragmentShader(NarakaMod.location("core/longinus"))
             .withSampler("Sampler0")
             .withSampler("Sampler1")
             .withShaderDefine("LONGINUS_LAYERS", 16)
@@ -65,8 +65,8 @@ public final class NarakaRenderPipelines {
                     RenderPipelines.FOG_SNIPPET,
                     RenderPipelines.GLOBALS_SNIPPET
             )
-            .withVertexShader(NarakaMod.location("longinus"))
-            .withFragmentShader(NarakaMod.location("space"))
+            .withVertexShader(NarakaMod.location("core/longinus"))
+            .withFragmentShader(NarakaMod.location("core/space"))
             .withSampler("Sampler0")
             .buildSnippet();
 

@@ -13,6 +13,7 @@
     "client.EntityRenderDispatcherMixin",
     "client.FeatureRenderDispatcherMixin",
     "client.FogRendererMixin",
+    "client.GameRendererMixin",
     "client.GuiMixin",
     "client.HiddenOreRendererMixin",
     "client.HumanoidArmorLayerMixin",

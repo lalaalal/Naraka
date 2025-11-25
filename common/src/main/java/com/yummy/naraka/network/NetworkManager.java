@@ -6,28 +6,22 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
 public abstract class NetworkManager {
-    @Nullable
-    private static ServerboundNetworkManager serverbound;
-    @Nullable
-    private static ClientboundNetworkManager clientbound;
+    private static final ServerboundNetworkManager SERVERBOUND = MethodInvoker.of(NetworkManager.class, "serverbound")
+            .invoke().result(ServerboundNetworkManager.class);
+
+    private static final ClientboundNetworkManager CLIENTBOUND = MethodInvoker.of(NetworkManager.class, "clientbound")
+            .invoke().result(ClientboundNetworkManager.class);
 
     public static ServerboundNetworkManager serverbound() {
-        if (serverbound == null)
-            serverbound = MethodInvoker.of(NetworkManager.class, "serverbound")
-                    .invoke().result(ServerboundNetworkManager.class);
-        return serverbound;
+        return SERVERBOUND;
     }
 
     public static ClientboundNetworkManager clientbound() {
-        if (clientbound == null)
-            clientbound = MethodInvoker.of(NetworkManager.class, "clientbound")
-                    .invoke().result(ClientboundNetworkManager.class);
-        return clientbound;
+        return CLIENTBOUND;
     }
 
     public static void sendToClient(ServerPlayer player, CustomPacketPayload packet) {
