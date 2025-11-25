@@ -12,10 +12,12 @@ import net.minecraft.util.RandomSource;
 public class BossMusicSoundInstance extends AbstractSoundInstance {
     public BossMusicSoundInstance(SoundEvent soundEvent) {
         super(soundEvent, SoundSource.MUSIC, RandomSource.create());
+        looping = true;
     }
 
     public BossMusicSoundInstance(ResourceLocation location) {
         super(location, SoundSource.MUSIC, RandomSource.create());
+        looping = true;
     }
 
     public void decreaseVolume(float interval) {
