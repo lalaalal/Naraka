@@ -110,7 +110,6 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer, ResourceManagerR
 
     @Override
     public void onResourceManagerReload(ResourceManager resourceManager) {
-        tryCloseTextures();
         eclipseTexture = DimensionSkyRenderer.getTexture(NarakaTextures.ECLIPSE);
         invertedEclipseTexture = DimensionSkyRenderer.getTexture(NarakaTextures.INVERTED_ECLIPSE);
         eclipseTextures = Map.of(
