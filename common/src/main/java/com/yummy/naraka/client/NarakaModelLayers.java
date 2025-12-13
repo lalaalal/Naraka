@@ -31,6 +31,7 @@ public final class NarakaModelLayers {
     public static final ModelLayerLocation TRIM_TEMPLATE = location("trim_location");
 
     public static final ModelLayerLocation NARAKA_PICKAXE = location("naraka_pickaxe");
+    public static final ModelLayerLocation NARAKA_SWORD = location("naraka_sword");
 
     public static ModelLayerLocation location(String name) {
         return new ModelLayerLocation(NarakaMod.location(name), "main");
@@ -56,5 +57,6 @@ public final class NarakaModelLayers {
         ModelLayerRegistry.register(NarakaModelLayers.TRIM_TEMPLATE, SoulSmithingBlockEntityRenderer::createTrimTemplateLayer);
 
         ModelLayerRegistry.register(NarakaModelLayers.NARAKA_PICKAXE, NarakaPickaxeModel::createBodyLayer);
+        ModelLayerRegistry.register(NarakaModelLayers.NARAKA_SWORD, NarakaSwordModel::createBodyLayer);
     }
 }

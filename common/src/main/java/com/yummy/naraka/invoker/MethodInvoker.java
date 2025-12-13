@@ -35,6 +35,7 @@ import java.util.Set;
 public class MethodInvoker {
     private static final Set<Class<?>> SEARCHING_CLASSES = new HashSet<>();
     private static final Map<String, Method> CACHE = new HashMap<>();
+    private static final Set<Method> DELAYED_CALL_ALLOWED = new HashSet<>();
 
     private final Class<?> invokerType;
     private final String name;
@@ -185,7 +186,10 @@ public class MethodInvoker {
         MethodProxy methodProxy = method.getAnnotation(MethodProxy.class);
         if (methodProxy == null)
             return false;
-        return methodProxy.value().equals(type);
+        boolean matches = methodProxy.value().equals(type);
+        if (matches && methodProxy.allowDelayedCall())
+            DELAYED_CALL_ALLOWED.add(method);
+        return matches;
     }
 
     /**
@@ -204,7 +208,7 @@ public class MethodInvoker {
 
     private static Object invokeMethod(Method method, Object... parameters) {
         try {
-            if (NarakaMod.isModLoaded)
+            if (NarakaMod.isModLoaded && !DELAYED_CALL_ALLOWED.contains(method))
                 NarakaMod.LOGGER.warn("Using method invoker after mod loaded ({})", method.getName());
             return method.invoke(null, parameters);
         } catch (IllegalAccessException exception) {

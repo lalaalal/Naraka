@@ -9,7 +9,10 @@ import com.yummy.naraka.client.gui.hud.StigmaHud;
 import com.yummy.naraka.client.gui.hud.WhiteHud;
 import com.yummy.naraka.client.init.*;
 import com.yummy.naraka.client.particle.*;
-import com.yummy.naraka.client.renderer.ItemColorRegistry;
+import com.yummy.naraka.client.renderer.ItemRenderRegistry;
+import com.yummy.naraka.client.renderer.NarakaDimensionSpecialEffects;
+import com.yummy.naraka.client.renderer.NarakaSkyRenderer;
+import com.yummy.naraka.client.renderer.blockentity.NarakaPortalBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulStabilizerBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.entity.*;
@@ -20,8 +23,10 @@ import com.yummy.naraka.client.renderer.special.SpearSpecialRenderer;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
+import com.yummy.naraka.data.worldgen.NarakaDimensionTypes;
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.util.ComponentStyles;
+import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
@@ -48,6 +53,8 @@ public final class NarakaModClient {
         registerHudRenders();
         registerMenus();
         registerKeyMappings();
+        DimensionSpecialEffectsRegistry.register(NarakaDimensionTypes.NARAKA_EFFECT, NarakaDimensionSpecialEffects.NARAKA);
+        DimensionSkyRendererRegistry.register(NarakaDimensions.NARAKA, NarakaSkyRenderer::new);
 
         AnimationMapper.initialize();
 
@@ -75,7 +82,11 @@ public final class NarakaModClient {
     }
 
     private static void initializeItems() {
-        ItemColorRegistry.register(NarakaItems.RAINBOW_SWORD, ComponentStyles.RAINBOW_COLOR::getCurrentColor);
+        ItemRenderRegistry.registerColor(NarakaItems.RAINBOW_SWORD, ComponentStyles.RAINBOW_COLOR::getCurrentColor);
+        ItemRenderRegistry.registerRenderType(NarakaItems.HEROBRINE_SCARF, itemRenderTypeSetter -> {
+            if (!NarakaClientContext.SHADER_ENABLED.getValue())
+                itemRenderTypeSetter.naraka$setRenderType(NarakaRenderTypes.longinusCutout(NarakaTextures.LOCATION_BLOCKS));
+        });
     }
 
     private static void initializeBlocks() {
@@ -88,6 +99,7 @@ public final class NarakaModClient {
     private static void registerBlockEntityRenderers() {
         BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.SOUL_STABILIZER, SoulStabilizerBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.SOUL_SMITHING, SoulSmithingBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(NarakaBlockEntityTypes.NARAKA_PORTAL, NarakaPortalBlockEntityRenderer::new);
     }
 
     private static void registerEntityRenderers() {
@@ -109,6 +121,7 @@ public final class NarakaModClient {
         EntityRendererRegistry.register(NarakaEntityTypes.MASSIVE_LIGHTNING, MassiveLightningRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.LIGHTNING_CIRCLE, LightningCircleRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_PICKAXE, NarakaPickaxeRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_SWORD, NarakaSwordRenderer::new);
     }
 
     private static void registerHudRenders() {

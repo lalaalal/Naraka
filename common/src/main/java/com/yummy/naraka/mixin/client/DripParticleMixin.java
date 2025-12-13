@@ -1,6 +1,8 @@
 package com.yummy.naraka.mixin.client;
 
 import com.yummy.naraka.client.particle.DripParticleChain;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.DripParticle;
 import net.minecraft.core.particles.ParticleOptions;
 import org.jetbrains.annotations.Nullable;
@@ -9,8 +11,10 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
+@SuppressWarnings("unused")
+@Environment(EnvType.CLIENT)
 public abstract class DripParticleMixin {
-
+    @Environment(EnvType.CLIENT)
     @Mixin(DripParticle.DripHangParticle.class)
     public static abstract class HoneyHangProviderMixin implements DripParticleChain {
         @Unique @Nullable
@@ -32,6 +36,7 @@ public abstract class DripParticleMixin {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     @Mixin(DripParticle.HoneyFallAndLandParticle.class)
     public static abstract class HoneyFallProviderMixin implements DripParticleChain {
         @Unique @Nullable

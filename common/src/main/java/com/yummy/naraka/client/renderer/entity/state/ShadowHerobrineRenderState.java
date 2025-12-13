@@ -5,6 +5,5 @@ import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public class ShadowHerobrineRenderState extends AbstractHerobrineRenderState {
-    public int alpha = 0xbb;
     public int crack = 0;
 }

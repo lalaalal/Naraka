@@ -2,9 +2,11 @@ package com.yummy.naraka.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.yummy.naraka.client.renderer.ItemColorSetter;
+import com.yummy.naraka.client.renderer.ItemRenderTypeSetter;
 import com.yummy.naraka.client.renderer.LayerRenderStateSetter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -14,21 +16,35 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ItemStackRenderState.class)
-public abstract class ItemStackRenderStateMixin implements ItemColorSetter {
+public abstract class ItemStackRenderStateMixin implements ItemColorSetter, ItemRenderTypeSetter {
     @Shadow
     private ItemStackRenderState.LayerRenderState[] layers;
     @Shadow
     ItemDisplayContext displayContext;
+    @Shadow private boolean animated;
     @Unique
     private int naraka$color = -1;
 
     @Override
     public void naraka$setColor(int color) {
         this.naraka$color = color;
+        this.animated = true;
+    }
+
+    @Override
+    public void naraka$setRenderType(RenderType renderType) {
+        for (ItemStackRenderState.LayerRenderState layer : layers)
+            layer.setRenderType(renderType);
+        this.animated = true;
+    }
+
+    @Override
+    public void naraka$setRenderType(RenderType renderType, int layer) {
+        layers[layer].setRenderType(renderType);
+        this.animated = true;
     }
 
     @Inject(method = "submit", at = @At("HEAD"))
@@ -38,14 +54,6 @@ public abstract class ItemStackRenderStateMixin implements ItemColorSetter {
                 layerRenderStateSetter.naraka$setColor(naraka$color);
                 layerRenderStateSetter.naraka$setItemDisplayContext(displayContext);
             }
-        }
-    }
-
-    @Inject(method = "isAnimated", at = @At("HEAD"), cancellable = true)
-    private void alwaysRenderColoredItem(CallbackInfoReturnable<Boolean> cir) {
-        if (naraka$color != -1) {
-            cir.cancel();
-            cir.setReturnValue(true);
         }
     }
 }

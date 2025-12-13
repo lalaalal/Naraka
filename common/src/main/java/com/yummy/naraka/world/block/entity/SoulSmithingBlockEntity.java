@@ -16,10 +16,13 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Unit;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SmithingTemplateItem;
 import net.minecraft.world.item.enchantment.Enchantable;
+import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.item.equipment.trim.TrimMaterials;
@@ -94,8 +97,14 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         return soulStabilizer;
     }
 
+    private boolean isValidTemplate(ItemStack template) {
+        return template.getItem() instanceof SmithingTemplateItem
+                || template.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get())
+                || template.is(NarakaItems.HEROBRINE_SCARF.get());
+    }
+
     public boolean tryAttachTemplate(ItemStack template) {
-        if (templateItem.isEmpty() && (template.getItem() instanceof SmithingTemplateItem || template.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get()))) {
+        if (templateItem.isEmpty() && isValidTemplate(template)) {
             this.templateItem = template.copyWithCount(1);
             setChanged();
             return true;
@@ -138,6 +147,15 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         return true;
     }
 
+    private boolean attachScarf() {
+        Equippable equippable = forgingItem.get(DataComponents.EQUIPPABLE);
+        if (equippable != null && equippable.slot() == EquipmentSlot.CHEST) {
+            forgingItem.set(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), Unit.INSTANCE);
+            return true;
+        }
+        return false;
+    }
+
     private boolean reinforceArmor(SoulType soulType, int requiredSoul) {
         if (!forgingItem.is(NarakaItemTags.PURIFIED_SOUL_ARMOR) || level == null)
             return false;
@@ -173,6 +191,8 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
             if (templateItem.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get()))
                 return reinforceSword(soulType, requiredSoul);
+            if (templateItem.is(NarakaItems.HEROBRINE_SCARF.get()))
+                return attachScarf();
 
             return reinforceArmor(soulType, requiredSoul);
         }

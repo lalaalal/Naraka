@@ -32,7 +32,7 @@ public class DeathCountHelper {
     }
 
     public static int get(LivingEntity livingEntity) {
-        return EntityDataHelper.getEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT.get());
+        return EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT.get());
     }
 
     public static boolean isDeathCounted(LivingEntity livingEntity) {

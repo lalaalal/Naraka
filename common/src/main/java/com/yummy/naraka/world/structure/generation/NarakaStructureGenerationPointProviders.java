@@ -4,9 +4,11 @@ import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import net.minecraft.core.Holder;
 
+import java.util.Optional;
+
 public class NarakaStructureGenerationPointProviders {
-    public static final Holder<StructureGenerationPointProvider> SEA_LEVEL_HEIGHT = register(
-            "sea_level_height", new DefaultStructureGenerationPointProvider()
+    public static final Holder<StructureGenerationPointProvider> NARAKA_PLATFORM = register(
+            "naraka_platform", (context, base) -> Optional.of(base.atY(62))
     );
 
     public static final Holder<StructureGenerationPointProvider> HEROBRINE_SANCTUARY = register(

@@ -40,5 +40,7 @@ public abstract class ItemStackMixin implements DataComponentHolder {
     public void addBlessedTooltip(Item.TooltipContext context, TooltipDisplay tooltipDisplay, Player player, TooltipFlag tooltipFlag, Consumer<Component> tooltipAdder, CallbackInfo ci) {
         if (getOrDefault(NarakaDataComponentTypes.BLESSED.get(), false))
             tooltipAdder.accept(Component.translatable(LanguageKey.BLESSED_KEY).withStyle(ComponentStyles.RAINBOW_COLOR));
+        if (has(NarakaDataComponentTypes.HEROBRINE_SCARF.get()))
+            tooltipAdder.accept(Component.translatable(LanguageKey.HEROBRINE_SCARF_KEY).withStyle(ComponentStyles.RAINBOW_COLOR));
     }
 }

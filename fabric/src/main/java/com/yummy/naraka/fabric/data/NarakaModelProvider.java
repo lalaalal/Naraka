@@ -7,6 +7,7 @@ import com.yummy.naraka.client.renderer.special.SoulSmithingBlockSpecialRenderer
 import com.yummy.naraka.client.renderer.special.SoulStabilizerSpecialRenderer;
 import com.yummy.naraka.client.renderer.special.SpearOfLonginusSpecialRenderer;
 import com.yummy.naraka.client.renderer.special.SpearSpecialRenderer;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.block.EbonyLogBlock;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
@@ -28,6 +29,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.RangeSelectItemModel;
 import net.minecraft.client.renderer.item.SelectItemModel;
+import net.minecraft.client.renderer.item.properties.conditional.HasComponent;
 import net.minecraft.client.renderer.item.properties.numeric.CompassAngle;
 import net.minecraft.client.renderer.item.properties.numeric.CompassAngleState;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
@@ -86,6 +88,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_LAMP.get());
         generator.createTrivialCube(NarakaBlocks.PURIFIED_SOUL_LANTERN.get());
         generator.createAirLikeBlock(NarakaBlocks.DIAMOND_GOLEM_SPAWNER.get(), Items.STRUCTURE_VOID);
+        generator.createAirLikeBlock(NarakaBlocks.NARAKA_PORTAL.get(), Items.STRUCTURE_VOID);
     }
 
     private static void createBlockEntity(BlockModelGenerators generator, Block particle, Block block, SpecialModelRenderer.Unbaked unbaked) {
@@ -153,10 +156,10 @@ public class NarakaModelProvider extends FabricModelProvider {
 
     private static ResourceLocation[] createTotemModels(BlockModelGenerators generator) {
         ResourceLocation[] models = new ResourceLocation[HerobrineTotem.MAX_CRACK + 1];
-        models[0] = TexturedModel.CUBE_TOP.create(NarakaBlocks.HEROBRINE_TOTEM.get(), generator.modelOutput);
+        models[0] = TexturedModel.COLUMN.create(NarakaBlocks.HEROBRINE_TOTEM.get(), generator.modelOutput);
         for (int crack = 1; crack <= HerobrineTotem.MAX_CRACK; crack++) {
             ResourceLocation texture = TextureMapping.getBlockTexture(NarakaBlocks.HEROBRINE_TOTEM.get(), "_" + crack);
-            models[crack] = TexturedModel.CUBE_TOP
+            models[crack] = TexturedModel.COLUMN
                     .updateTexture(mapping -> mapping.put(TextureSlot.SIDE, texture))
                     .createWithSuffix(NarakaBlocks.HEROBRINE_TOTEM.get(), "_" + crack, generator.modelOutput);
         }
@@ -248,7 +251,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         generateTrimmableItem(generator, Items.NETHERITE_LEGGINGS, EquipmentAssets.NETHERITE, "leggings");
         generateTrimmableItem(generator, Items.NETHERITE_BOOTS, EquipmentAssets.NETHERITE, "boots");
 
-        generateTrimmableItem(generator, NarakaItems.PURIFIED_SOUL_CHESTPLATE.get(), NarakaEquipmentAssets.PURIFIED_SOUL, "chestplate");
+        generateTrimmableScarfItem(generator, NarakaItems.PURIFIED_SOUL_CHESTPLATE.get(), NarakaEquipmentAssets.PURIFIED_SOUL);
         generateTrimmableItem(generator, NarakaItems.PURIFIED_SOUL_HELMET.get(), NarakaEquipmentAssets.PURIFIED_SOUL, "helmet");
         generateTrimmableItem(generator, NarakaItems.PURIFIED_SOUL_LEGGINGS.get(), NarakaEquipmentAssets.PURIFIED_SOUL, "leggings");
         generateTrimmableItem(generator, NarakaItems.PURIFIED_SOUL_BOOTS.get(), NarakaEquipmentAssets.PURIFIED_SOUL, "boots");
@@ -259,14 +262,14 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_3_DISC.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_4_DISC.get(), ModelTemplates.FLAT_ITEM);
 
-        generator.generateFlatItem(NarakaItems.HEROBRINE_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        generator.itemModelOutput.accept(NarakaItems.NARAKA_PICKAXE.get(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(NarakaItems.NARAKA_PICKAXE.get())));
+        generator.generateFlatItem(NarakaItems.HEROBRINE_SCARF.get(), ModelTemplates.FLAT_ITEM);
 
         NarakaItems.forEachSoulInfusedItem(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_ITEM));
         NarakaItems.forEachSoulInfusedSword(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM));
 
         generateSanctuaryCompassItem(generator, NarakaItems.SANCTUARY_COMPASS.get());
         generator.declareCustomModelItem(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get().asItem());
-
     }
 
     public static void generateSpear(ItemModelGenerators generator, SpearItem spearItem, ModelLayerLocation modelLayer, ResourceLocation texture) {
@@ -303,7 +306,22 @@ public class NarakaModelProvider extends FabricModelProvider {
         generateTrimmableItem(generator, item, key, name, false);
     }
 
+    public static void generateTrimmableScarfItem(ItemModelGenerators generator, Item item, ResourceKey<EquipmentAsset> key) {
+        ItemModel.Unbaked defaultModel = generateTrimmableItemModel(generator, item, key, "chestplate", false, false);
+        ItemModel.Unbaked scarfModel = generateTrimmableItemModel(generator, item, key, "chestplate", false, true);
+        ItemModel.Unbaked model = ItemModelUtils.conditional(
+                new HasComponent(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), false),
+                scarfModel,
+                defaultModel
+        );
+        generator.itemModelOutput.accept(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get(), model);
+    }
+
     public static void generateTrimmableItem(ItemModelGenerators generator, Item item, ResourceKey<EquipmentAsset> key, String name, boolean withDye) {
+        generator.itemModelOutput.accept(item, generateTrimmableItemModel(generator, item, key, name, withDye, false));
+    }
+
+    public static ItemModel.Unbaked generateTrimmableItemModel(ItemModelGenerators generator, Item item, ResourceKey<EquipmentAsset> key, String name, boolean withDye, boolean withScarf) {
         ResourceLocation modelLocation = ModelLocationUtils.getModelLocation(item);
         ResourceLocation texture = TextureMapping.getItemTexture(item);
         ResourceLocation overlayTexture = TextureMapping.getItemTexture(item, "_overlay");
@@ -312,28 +330,40 @@ public class NarakaModelProvider extends FabricModelProvider {
         for (ItemModelGenerators.TrimMaterialData data : TRIM_MATERIAL_MODELS) {
             ResourceLocation trimmedArmorModelLocation = modelLocation.withSuffix("_" + data.assets().base().suffix() + "_trim");
             ResourceLocation trimTexture = NarakaMod.mcLocation("trims/items/" + name + "_trim_" + data.assets().assetId(key).suffix());
-            ItemModel.Unbaked unbaked = generateLayer(generator, trimmedArmorModelLocation, texture, overlayTexture, trimTexture, withDye);
+            ItemModel.Unbaked unbaked = generateLayer(generator, trimmedArmorModelLocation, texture, overlayTexture, trimTexture, withDye, withScarf);
 
             list.add(ItemModelUtils.when(data.materialKey(), unbaked));
         }
 
-        ItemModel.Unbaked unbaked = generateModel(generator, modelLocation, texture, overlayTexture, withDye);
-        generator.itemModelOutput.accept(item, ItemModelUtils.select(new TrimMaterialProperty(), unbaked, list));
+        ItemModel.Unbaked unbaked = generateModel(generator, modelLocation, texture, overlayTexture, withDye, withScarf);
+        return ItemModelUtils.select(new TrimMaterialProperty(), unbaked, list);
     }
 
-    private static ItemModel.Unbaked generateLayer(ItemModelGenerators generator, ResourceLocation trimmedArmorModelLocation, ResourceLocation texture, ResourceLocation overlayTexture, ResourceLocation trimTexture, boolean secondLayer) {
+    private static ItemModel.Unbaked generateLayer(ItemModelGenerators generator, ResourceLocation trimmedArmorModelLocation, ResourceLocation texture, ResourceLocation overlayTexture, ResourceLocation trimTexture, boolean secondLayer, boolean withScarf) {
         if (secondLayer) {
             generator.generateLayeredItem(trimmedArmorModelLocation, texture, overlayTexture, trimTexture);
             return ItemModelUtils.tintedModel(trimmedArmorModelLocation, new Dye(-6265536));
+        }
+        if (withScarf) {
+            trimmedArmorModelLocation = trimmedArmorModelLocation.withSuffix("_scarf");
+            ResourceLocation scarfTexture = TextureMapping.getItemTexture(NarakaItems.HEROBRINE_SCARF.get());
+            generator.generateLayeredItem(trimmedArmorModelLocation, scarfTexture, texture, trimTexture);
+            return ItemModelUtils.plainModel(trimmedArmorModelLocation);
         }
         generator.generateLayeredItem(trimmedArmorModelLocation, texture, trimTexture);
         return ItemModelUtils.plainModel(trimmedArmorModelLocation);
     }
 
-    private static ItemModel.Unbaked generateModel(ItemModelGenerators generator, ResourceLocation modelLocation, ResourceLocation texture, ResourceLocation overlayTexture, boolean secondLayer) {
+    private static ItemModel.Unbaked generateModel(ItemModelGenerators generator, ResourceLocation modelLocation, ResourceLocation texture, ResourceLocation overlayTexture, boolean secondLayer, boolean withScarf) {
         if (secondLayer) {
             ModelTemplates.TWO_LAYERED_ITEM.create(modelLocation, TextureMapping.layered(texture, overlayTexture), generator.modelOutput);
             return ItemModelUtils.tintedModel(modelLocation, new Dye(-6265536));
+        }
+        if (withScarf) {
+            modelLocation = modelLocation.withSuffix("_scarf");
+            ResourceLocation scarfTexture = TextureMapping.getItemTexture(NarakaItems.HEROBRINE_SCARF.get());
+            ModelTemplates.TWO_LAYERED_ITEM.create(modelLocation, TextureMapping.layered(scarfTexture, texture), generator.modelOutput);
+            return ItemModelUtils.plainModel(modelLocation);
         }
         ModelTemplates.FLAT_ITEM.create(modelLocation, TextureMapping.layer0(texture), generator.modelOutput);
         return ItemModelUtils.plainModel(modelLocation);

@@ -1,6 +1,8 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
+import com.yummy.naraka.network.NarakaClientboundEventPacket;
+import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
@@ -77,7 +79,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         }
 
         runBetween(60, 90, () -> sendParticles(level));
-        runBetween(90, 95, () -> spawnLightningBolts(level, 3, 9, 0xaa8308e4));
+        runBetween(90, 95, () -> spawnLightningBolts(level, 3, 9));
         runBetween(90, 100, () -> shockwaveBlocks(level, 90, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
         runAt(90, mob::shakeCamera);
         runAt(92, () -> hurtEntities(level, targetBetween(), 10));
@@ -89,10 +91,13 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
 
         runAt(125, () -> spawnMassiveLightning(level));
         runAt(125, mob::shakeCamera);
+        runAt(125, () -> NetworkManager.clientbound().send(
+                mob.players(), new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT)
+        ));
         runBetween(125, 135, () -> shockwaveBlocks(level, 125, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
         runAt(125, () -> hurtEntities(level, targetBetween(), 10));
 
-        runBetween(125, 130, () -> spawnLightningBolts(level, 4, 10, 0x998308e4));
+        runBetween(125, 130, () -> spawnLightningBolts(level, 4, 10));
         runBetween(120, 130, () -> pullBlocks(level));
         runAt(145, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPull, 0.25));
 
@@ -138,14 +143,15 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         }
     }
 
-    private void spawnLightningBolts(ServerLevel level, int count, int maxRadius, int color) {
+    private void spawnLightningBolts(ServerLevel level, int count, int maxRadius) {
         float y = NarakaUtils.findFloor(level, mob.blockPosition()).getY() + 1.1f;
         for (int i = 0; i < count; i++) {
             double angle = mob.getRandom().nextFloat() * Math.TAU;
             double x = Math.cos(angle) * maxRadius + mob.getX() + mob.getRandom().nextDouble();
             double z = Math.sin(angle) * maxRadius + mob.getZ() + mob.getRandom().nextDouble();
-            ColoredLightningBolt lightningBolt = new ColoredLightningBolt(level, new Vec3(x, y, z), color);
+            ColoredLightningBolt lightningBolt = new ColoredLightningBolt(level, new Vec3(x, y, z), 0x669957db);
             lightningBolt.setVisualOnly(true);
+            lightningBolt.setSpaceRenderType(true);
             level.addFreshEntity(lightningBolt);
         }
     }

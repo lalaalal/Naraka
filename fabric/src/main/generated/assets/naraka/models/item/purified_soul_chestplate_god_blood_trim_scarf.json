@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "naraka:item/herobrine_scarf",
+    "layer1": "naraka:item/purified_soul_chestplate",
+    "layer2": "minecraft:trims/items/chestplate_trim_god_blood"
+  }
+}

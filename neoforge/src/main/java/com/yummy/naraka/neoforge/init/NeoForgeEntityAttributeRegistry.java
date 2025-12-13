@@ -11,7 +11,7 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
-public class NeoForgeEntityAttributeRegistry implements NarakaEventBus {
+public final class NeoForgeEntityAttributeRegistry implements NarakaEventBus {
     @MethodProxy(EntityAttributeRegistry.class)
     public static void register(Supplier<? extends EntityType<? extends LivingEntity>> entity, Supplier<AttributeSupplier.Builder> builder) {
         NARAKA_BUS.addListener(EntityAttributeCreationEvent.class, event -> {

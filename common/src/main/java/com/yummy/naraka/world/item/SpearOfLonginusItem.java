@@ -24,7 +24,7 @@ public class SpearOfLonginusItem extends SpearItem {
 
     @Override
     protected Spear createSpear(Level level, LivingEntity owner, ItemStack stack) {
-        return new SpearOfLonginus(level, owner, stack);
+        return new SpearOfLonginus(level, owner, stack, owner.isShiftKeyDown());
     }
 
     @Override

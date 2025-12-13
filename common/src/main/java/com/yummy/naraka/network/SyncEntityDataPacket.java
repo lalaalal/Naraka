@@ -1,40 +1,41 @@
 package com.yummy.naraka.network;
 
+import com.mojang.serialization.Codec;
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.core.registries.NarakaRegistries;
+import com.yummy.naraka.world.entity.data.EntityData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
-import com.yummy.naraka.world.entity.data.EntityDataType;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
-import net.minecraft.nbt.CompoundTag;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
-public record SyncEntityDataPacket(int entityId, HolderSet<EntityDataType<?>> entityDataTypes,
-                                   CompoundTag data) implements CustomPacketPayload {
+import java.util.List;
+import java.util.UUID;
+
+public record SyncEntityDataPacket(UUID uuid, Action action,
+                                   List<EntityData<?, ?>> entityData) implements CustomPacketPayload {
     public static final Type<SyncEntityDataPacket> TYPE = new Type<>(NarakaMod.location("sync_entity_data"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncEntityDataPacket> CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT,
-            SyncEntityDataPacket::entityId,
-            ByteBufCodecs.holderSet(NarakaRegistries.Keys.ENTITY_DATA_TYPE),
-            SyncEntityDataPacket::entityDataTypes,
-            ByteBufCodecs.COMPOUND_TAG,
-            SyncEntityDataPacket::data,
+            UUIDUtil.STREAM_CODEC,
+            SyncEntityDataPacket::uuid,
+            Action.STREAM_CODEC,
+            SyncEntityDataPacket::action,
+            EntityData.STREAM_CODEC.apply(ByteBufCodecs.list()),
+            SyncEntityDataPacket::entityData,
             SyncEntityDataPacket::new
     );
 
-    public SyncEntityDataPacket(LivingEntity livingEntity, Holder<EntityDataType<?>> entityDataType, CompoundTag data) {
-        this(livingEntity.getId(), HolderSet.direct(entityDataType), data);
+    public static SyncEntityDataPacket sync(Entity entity, Action action, List<EntityData<?, ?>> entityData) {
+        return new SyncEntityDataPacket(entity.getUUID(), action, entityData);
     }
 
-    public SyncEntityDataPacket(LivingEntity livingEntity, HolderSet<EntityDataType<?>> entityDataTypes, CompoundTag data) {
-        this(livingEntity.getId(), entityDataTypes, data);
+    public static SyncEntityDataPacket sync(Entity entity, Action action, EntityData<?, ?> entityData) {
+        return sync(entity, action, List.of(entityData));
     }
 
     @Override
@@ -42,15 +43,51 @@ public record SyncEntityDataPacket(int entityId, HolderSet<EntityDataType<?>> en
         return TYPE;
     }
 
-    public static void handle(SyncEntityDataPacket payload, NetworkManager.Context context) {
-        Player player = context.player();
-        Entity entity = player.level().getEntity(payload.entityId);
-        CompoundTag data = payload.data;
-        for (Holder<EntityDataType<?>> holder : payload.entityDataTypes) {
-            EntityDataType<?> entityDataType = holder.value();
-            Object value = entityDataType.readOrDefault(data, context.registryAccess());
-            if (entity instanceof LivingEntity livingEntity)
-                EntityDataHelper.setEntityData(livingEntity, holder.value(), value);
+    public void handle(NetworkManager.Context context) {
+        this.action.sync(this, context);
+    }
+
+    private static void loadEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
+        Entity entity = context.level().getEntity(packet.uuid());
+        if (entity != null) {
+            for (EntityData<?, ?> data : packet.entityData())
+                EntityDataHelper.loadEntityData(entity, data);
+        }
+    }
+
+    private static void removeGivenEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
+        Entity entity = context.level().getEntity(packet.uuid());
+        if (entity != null) {
+            for (EntityData<?, ?> data : packet.entityData())
+                EntityDataHelper.removeEntityData(entity, data.type());
+        }
+    }
+
+    private static void removeAllEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
+        EntityDataHelper.removeEntityData(packet.uuid());
+    }
+
+    public enum Action implements StringRepresentable {
+        LOAD(SyncEntityDataPacket::loadEntityData),
+        REMOVE_GIVEN(SyncEntityDataPacket::removeGivenEntityData),
+        REMOVE_ALL(SyncEntityDataPacket::removeAllEntityData);
+
+        public static final Codec<Action> CODEC = StringRepresentable.fromEnum(Action::values);
+        public static final StreamCodec<ByteBuf, Action> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
+
+        private final NetworkManager.PacketHandler<SyncEntityDataPacket> action;
+
+        Action(NetworkManager.PacketHandler<SyncEntityDataPacket> action) {
+            this.action = action;
+        }
+
+        public void sync(SyncEntityDataPacket packet, NetworkManager.Context context) {
+            action.handle(packet, context);
+        }
+
+        @Override
+        public String getSerializedName() {
+            return name().toLowerCase();
         }
     }
 }

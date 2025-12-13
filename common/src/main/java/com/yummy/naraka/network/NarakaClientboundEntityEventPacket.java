@@ -30,29 +30,16 @@ public record NarakaClientboundEntityEventPacket(Event event, int entityId) impl
     }
 
     public enum Event implements StringRepresentable {
+        PLAY_HEROBRINE_PHASE_1,
+        PLAY_HEROBRINE_PHASE_2,
+        PLAY_HEROBRINE_PHASE_3,
+        PLAY_HEROBRINE_PHASE_4,
+        STOP_MUSIC,
         SHOW_SKILL_CONTROL_SCREEN,
         SHOW_ANIMATION_CONTROL_SCREEN;
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
-        public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.idMapper(Event::byId, Event::getId);
-
-        public final int id;
-
-        Event() {
-            this.id = ordinal();
-        }
-
-        public static Event byId(int id) {
-            for (Event event : values()) {
-                if (event.id == id)
-                    return event;
-            }
-            throw new IllegalArgumentException("Unknown event id: " + id);
-        }
-
-        public int getId() {
-            return id;
-        }
+        public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
         @Override
         public String getSerializedName() {

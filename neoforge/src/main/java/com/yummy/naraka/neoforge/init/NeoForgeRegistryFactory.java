@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceKey;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 
-public class NeoForgeRegistryFactory extends RegistryFactory implements NarakaEventBus {
+public final class NeoForgeRegistryFactory extends RegistryFactory implements NarakaEventBus {
     private static final NeoForgeRegistryFactory INSTANCE = new NeoForgeRegistryFactory();
 
     @SuppressWarnings("unused")

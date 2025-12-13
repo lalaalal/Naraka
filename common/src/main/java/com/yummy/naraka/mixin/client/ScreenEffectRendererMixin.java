@@ -37,7 +37,7 @@ public abstract class ScreenEffectRendererMixin {
     @Inject(method = "renderScreenEffect", at = @At("RETURN"))
     private void renderPurifiedSoulFIre(boolean bl, float f, SubmitNodeCollector submitNodeCollector, CallbackInfo ci, @Local PoseStack poseStack) {
         if (minecraft.player != null && !minecraft.player.isSpectator() && this.minecraft.options.getCameraType().isFirstPerson()
-                && EntityDataHelper.getEntityData(minecraft.player, NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get()) > 0) {
+                && EntityDataHelper.getRawEntityData(minecraft.player, NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get()) > 0) {
             renderFire(poseStack, this.bufferSource, materials.get(PurifiedSoulFlameFeatureRenderer.PURIFIED_SOUL_FIRE_1));
         }
     }

@@ -47,11 +47,11 @@ public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning, M
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotation(renderState.ageInTicks * 0.05f));
         submitNodeCollector.submitCustomGeometry(poseStack, RenderType.lightning(), (pose, vertexConsumer) -> {
-            pillar(vertexConsumer, pose, renderState.size * 0.6f, renderState.size * 0.6f, 1, 123, 0x66fafafa);
-            pillar(vertexConsumer, pose, renderState.size * 0.7f, renderState.size * 0.7f, 0, 122, 0x55ababab);
-            pillar(vertexConsumer, pose, renderState.size * 0.8f, renderState.size * 0.8f, 0, 121, 0x44ababab);
-            pillar(vertexConsumer, pose, renderState.size * 0.9f, renderState.size * 0.9f, 0, 120, 0x33ababab);
-            pillar(vertexConsumer, pose, renderState.size, renderState.size, 0, 120, 0x668308e4);
+            pillar(vertexConsumer, pose, renderState.size * 0.6f, renderState.size * 0.6f, 1, 123, 0x66ffffff);
+            pillar(vertexConsumer, pose, renderState.size * 0.7f, renderState.size * 0.7f, 0, 122, 0x55ffffff);
+            pillar(vertexConsumer, pose, renderState.size * 0.8f, renderState.size * 0.8f, 0, 121, 0x44ffffff);
+            pillar(vertexConsumer, pose, renderState.size * 0.9f, renderState.size * 0.9f, 0, 120, 0x33ffffff);
+            pillar(vertexConsumer, pose, renderState.size, renderState.size, 0, 120, 0x66ffffff);
         });
 
         poseStack.popPose();

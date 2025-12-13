@@ -55,7 +55,7 @@ public class DeathCountHud implements HudRenderer {
         EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.DEATH_COUNT.get(), this::onDeathCountChanged);
     }
 
-    private void onDeathCountChanged(LivingEntity livingEntity, EntityDataType<Integer> entityDataType, Integer from, Integer to) {
+    private void onDeathCountChanged(LivingEntity livingEntity, EntityDataType<Integer, LivingEntity> entityDataType, Integer from, Integer to) {
         if (isCurrentPlayer(livingEntity)) {
             if (to < from && to < DeathCountHelper.MAX_DEATH_COUNT)
                 blinkTime = BLINKING_TIME;

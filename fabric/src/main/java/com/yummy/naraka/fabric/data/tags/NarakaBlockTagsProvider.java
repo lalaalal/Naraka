@@ -39,6 +39,10 @@ public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider 
         valueLookupBuilder(ConventionalTags.Blocks.ORES)
                 .addTag(NarakaBlockTags.NECTARIUM_ORES)
                 .addTag(NarakaBlockTags.AMETHYST_ORES);
+        valueLookupBuilder(NarakaBlockTags.MINABLE_WITH_NARAKA_PICKAXE)
+                .forceAddTag(BlockTags.MINEABLE_WITH_AXE)
+                .forceAddTag(BlockTags.MINEABLE_WITH_HOE)
+                .forceAddTag(BlockTags.MINEABLE_WITH_PICKAXE);
 
         valueLookupBuilder(BlockTags.FIRE)
                 .add(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get());

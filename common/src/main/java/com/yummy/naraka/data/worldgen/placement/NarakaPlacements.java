@@ -27,7 +27,7 @@ public class NarakaPlacements {
                 PURIFIED_SOUL_LANTERN,
                 configuredFeatures.getOrThrow(NarakaConfiguredFeatures.PURIFIED_SOUL_LANTERN),
                 InSquarePlacement.spread(),
-                HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(8)),
+                HeightRangePlacement.uniform(VerticalAnchor.absolute(56), VerticalAnchor.absolute(60)),
                 BiomeFilter.biome()
         );
     }

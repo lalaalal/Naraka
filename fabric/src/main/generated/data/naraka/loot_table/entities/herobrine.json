@@ -26,6 +26,34 @@
       "rolls": 1.0
     },
     {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:all_of",
+          "terms": [
+            {
+              "condition": "minecraft:killed_by_player"
+            },
+            {
+              "chance": 0.05,
+              "condition": "minecraft:random_chance"
+            }
+          ]
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "naraka:herobrine_scarf"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "naraka:naraka_pickaxe"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
       "bonus_rolls": 0.3,
       "conditions": [
         {

@@ -18,6 +18,14 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
+        valueLookupBuilder(ItemTags.PICKAXES)
+                .add(NarakaItems.NARAKA_PICKAXE.get());
+        valueLookupBuilder(ItemTags.AXES)
+                .add(NarakaItems.NARAKA_PICKAXE.get());
+
+        valueLookupBuilder(ItemTags.CLUSTER_MAX_HARVESTABLES)
+                .add(NarakaItems.NARAKA_PICKAXE.get());
+
         valueLookupBuilder(NarakaItemTags.SPEAR)
                 .add(NarakaItems.SPEAR_ITEM.get())
                 .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get())
@@ -52,6 +60,11 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
         valueLookupBuilder(ItemTags.FOOT_ARMOR_ENCHANTABLE)
                 .add(NarakaItems.PURIFIED_SOUL_BOOTS.get());
 
+        valueLookupBuilder(NarakaItemTags.ENTER_NARAKA_DIMENSION)
+                .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get())
+                .add(NarakaItems.PURIFIED_SOUL_SWORD.get())
+                .addTag(NarakaItemTags.SOUL_SWORDS);
+
         valueLookupBuilder(NarakaItemTags.PURIFIED_SOUL_ARMOR)
                 .add(NarakaItems.PURIFIED_SOUL_HELMET.get())
                 .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get())
@@ -70,6 +83,7 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
         NarakaItems.forEachSoulInfusedSword(soulSwords::add);
 
         valueLookupBuilder(ItemTags.SWORDS)
+                .add(NarakaItems.NARAKA_PICKAXE.get())
                 .addTag(NarakaItemTags.SOUL_SWORDS);
 
         valueLookupBuilder(ItemTags.HEAD_ARMOR)

@@ -2,7 +2,6 @@ package com.yummy.naraka.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.yummy.naraka.client.renderer.ColoredItemSubmitNodeCollection;
-import com.yummy.naraka.client.renderer.ItemColorSetter;
 import com.yummy.naraka.client.renderer.LayerRenderStateSetter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -24,7 +23,7 @@ import java.util.List;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ItemStackRenderState.LayerRenderState.class)
-public abstract class LayerRenderStateMixin implements ItemColorSetter, LayerRenderStateSetter {
+public abstract class LayerRenderStateMixin implements LayerRenderStateSetter {
     @Shadow
     private int[] tintLayers;
     @Shadow @Final

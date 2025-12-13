@@ -26,7 +26,7 @@ public class NarakaToolMaterials {
     public static final ResourceLocation ENTITY_INTERACTION_RANGE_ID = NarakaMod.location("entity_interaction_range");
     public static final ResourceLocation BLOCK_INTERACTION_RANGE_ID = NarakaMod.location("block_interaction_range");
 
-    public static final ToolMaterial LONGINUS = new ToolMaterial(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 0, 6, 65, 6, NarakaItemTags.LONGINUS_TOOL_MATERIALS);
+    public static final ToolMaterial LONGINUS = new ToolMaterial(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, Integer.MAX_VALUE, 12, 65, 22, NarakaItemTags.LONGINUS_TOOL_MATERIALS);
 
     private static final ResourceKey<Block> COBWEB = ResourceKey.create(Registries.BLOCK, NarakaMod.mcLocation("cobweb"));
 

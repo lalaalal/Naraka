@@ -13,6 +13,8 @@ import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public final class NarakaTextures {
+    public static final ResourceLocation LOCATION_BLOCKS = NarakaMod.mcLocation("textures/atlas/blocks.png");
+
     public static final ResourceLocation HEROBRINE = entity("herobrine/herobrine.png");
     public static final ResourceLocation ABSOLUTE_HEROBRINE = entity("herobrine/absolute_herobrine.png");
     public static final ResourceLocation FINAL_HEROBRINE = entity("herobrine/final_herobrine.png");
@@ -33,8 +35,9 @@ public final class NarakaTextures {
     public static final ResourceLocation SHADOW_HEROBRINE_25 = entity("shadow_herobrine/shadow_herobrine_crack_25.png");
 
     public static final ResourceLocation ECLIPSE = texture("environment", "eclipse.png");
+    public static final ResourceLocation INVERTED_ECLIPSE = texture("environment", "inverted_eclipse.png");
 
-    public static final ResourceLocation SHADOW_ARMOR = entity("shadow_armor.png");
+    public static final ResourceLocation SPACE = entity("space.png");
 
     public static final ResourceLocation LONGINUS = entity("longinus.png");
     public static final ResourceLocation SPEAR = entity("spear.png");
@@ -45,13 +48,17 @@ public final class NarakaTextures {
     public static final ResourceLocation STARDUST = entity("stardust_core.png");
     public static final ResourceLocation MAGIC_CIRCLE = entity("magic_circle.png");
     public static final ResourceLocation PICKAXE_SLASH = entity("pickaxe_slash.png");
+    public static final ResourceLocation NARAKA_SWORD = entity("naraka_sword.png");
 
-    public static final ResourceLocation FORGING_BLOCK = entity("forging_block.png");
     public static final ResourceLocation SOUL_STABILIZER = entity("soul_stabilizer.png");
     public static final ResourceLocation SOUL_SMITHING_BLOCK = entity("soul_smithing_block.png");
     public static final ResourceLocation LIGHTNING_CIRCLE = entity("lightning_circle.png");
 
     public static final ResourceLocation NARAKA_ADVANCEMENT_ROOT_BACKGROUND = advancements("backgrounds/naraka");
+
+    public static final ResourceLocation NARAKA_PORTAL_1 = entity("naraka_portal/naraka_portal_waxing_crescent.png");
+    public static final ResourceLocation NARAKA_PORTAL_2 = entity("naraka_portal/naraka_portal_first_quarter.png");
+    public static final ResourceLocation NARAKA_PORTAL_3 = entity("naraka_portal/naraka_portal_waxing_gibbous.png");
 
     private static ResourceLocation texture(String parent, String path) {
         return NarakaMod.location("textures/%s".formatted(parent), path);

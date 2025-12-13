@@ -5,6 +5,7 @@ import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
+import com.yummy.naraka.tags.NarakaBlockTags;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -13,6 +14,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Unit;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Consumables;
@@ -45,7 +47,13 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_3_DISC = registerDiscItem("herobrine_phase_3_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_3);
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_4_DISC = registerDiscItem("herobrine_phase_4_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_4);
 
-    public static final HolderProxy<Item, Item> HEROBRINE_PICKAXE = registerSimpleItem("herobrine_pickaxe");
+    public static final HolderProxy<Item, Item> NARAKA_PICKAXE = registerSimpleItem(
+            "naraka_pickaxe",
+            properties -> properties.fireResistant()
+                    .tool(NarakaToolMaterials.LONGINUS, NarakaBlockTags.MINABLE_WITH_NARAKA_PICKAXE, 0, -2.8f, 5)
+                    .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
+                    .rarity(Rarity.EPIC)
+    );
 
     public static final HolderProxy<Item, Item> SKILL_CONTROLLER = registerItem(
             "skill_controller",
@@ -150,6 +158,12 @@ public class NarakaItems {
                     properties.fireResistant()
                             .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
             )
+    );
+
+    public static final HolderProxy<Item, Item> HEROBRINE_SCARF = registerSimpleItem(
+            "herobrine_scarf",
+            properties -> properties.equippable(EquipmentSlot.CHEST)
+                    .component(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), Unit.INSTANCE)
     );
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_HELMET = registerPurifiedSoulArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.HELMET);

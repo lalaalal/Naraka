@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
+import com.yummy.naraka.network.AddBeamEffectPacket;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
@@ -8,8 +9,8 @@ import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.NarakaPickaxe;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
+import com.yummy.naraka.world.entity.data.BeamEffectsHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -43,13 +44,15 @@ public class StormSkill extends ComboSkill<Herobrine> {
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
+        runAt(20, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.PULL, mob, 0xffff0000));
         runAt(30, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPull, 0.23));
 
         runFrom(40, () -> stigmatizingWave(level, 40, tickCount - 40));
         runFrom(50, () -> stigmatizingWave(level, 50, tickCount - 50));
 
         runBetween(50, 60, () -> sendCircleParticles(level));
-        runAt(60, () -> level.sendParticles(ParticleTypes.GUST_EMITTER_LARGE, mob.getX(), mob.getY(), mob.getZ(), 4, 0.5, 0.5, 0.5, 0.3));
+        runAt(60, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.PUSH, mob, 0xffff0000));
+        runAt(60, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.SIMPLE, mob, 0xffff0000));
         runAt(60, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPush, -3));
         runFrom(65, () -> stigmatizingWave(level, 65, tickCount - 70));
     }

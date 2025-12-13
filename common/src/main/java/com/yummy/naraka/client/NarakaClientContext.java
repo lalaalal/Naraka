@@ -4,8 +4,7 @@ import com.yummy.naraka.config.Configuration;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public final class NarakaClientContext {
@@ -15,6 +14,8 @@ public final class NarakaClientContext {
     public static final Configuration.ConfigValue<Boolean> ENABLE_HEROBRINE_SKY = context(false);
     public static final Configuration.ConfigValue<Boolean> ENABLE_WHITE_SCREEN = context(false);
     public static final Configuration.ConfigValue<Integer> CAMERA_SHAKE_TICK = context(0);
+    public static final Configuration.ConfigValue<Integer> MONOCHROME_EFFECT_TICK = context(0);
+    public static final Configuration.ConfigValue<Set<UUID>> HEROBRINE_MUSIC_SOURCES = context(new HashSet<>());
 
     private static <T> Configuration.ConfigValue<T> context(T defaultValue) {
         return context(defaultValue, true);
@@ -29,5 +30,6 @@ public final class NarakaClientContext {
 
     public static void initialize() {
         CONTEXTS.forEach(Configuration.ConfigValue::reset);
+        HEROBRINE_MUSIC_SOURCES.set(new HashSet<>());
     }
 }

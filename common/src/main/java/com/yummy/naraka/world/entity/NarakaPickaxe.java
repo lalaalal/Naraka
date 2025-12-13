@@ -101,6 +101,7 @@ public class NarakaPickaxe extends SkillUsingMob {
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         input.read("Owner", UUIDUtil.CODEC).ifPresent(uuid -> herobrineUUID = uuid);
+        useSkill(NarakaPickaxeAnimationLocations.STRIKE);
     }
 
     @Override

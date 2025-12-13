@@ -66,6 +66,7 @@ public class NarakaLanguageProviders {
         add("container.soul_crafting", "Soul Crafter", "영혼 세공기");
         add(LanguageKey.REINFORCEMENT_KEY, "Reinforcement: %d", "강화: %d");
         add(LanguageKey.BLESSED_KEY, "Blessed", "축복받음");
+        add(LanguageKey.HEROBRINE_SCARF_KEY, "Scarf Attached", "스카프 장착됨");
         add(LanguageKey.PURIFIED_SOUL_UPGRADE_KEY, "Purified Soul Upgrade", "정화된 영혼 강화");
         add(LanguageKey.PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY, "Ebony Tools, Purified Soul Weapons", "흑단나무 검, 정화된 영혼 무기");
         add(LanguageKey.PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "Purified Soul Metal, Soul Infused Materials", "정화된 영혼 금속, 영혼이 주입된 재료");
@@ -256,6 +257,8 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.HEROBRINE_SPAWN_EGG, "Herobrine Spawn Egg", "히로빈 생성 알");
         addItem(NarakaItems.SKILL_CONTROLLER, "Skill Controller", "스킬 컨트롤러");
         addItem(NarakaItems.ANIMATION_CONTROLLER, "Animation Controller", "애니메이션 컨트롤러");
+        addItem(NarakaItems.HEROBRINE_SCARF, "Herobrine Scarf", "히로빈 스카프");
+        addItem(NarakaItems.NARAKA_PICKAXE, "Naraka Pickaxe", "파멸의 낫");
 
         addBlock(NarakaBlocks.AMETHYST_ORE, "Amethyst Ore", "자수정 광석");
         addBlock(NarakaBlocks.DEEPSLATE_AMETHYST_ORE, "Deepslate Amethyst Ore", "심층암 자수정 광석");
@@ -284,9 +287,11 @@ public class NarakaLanguageProviders {
         addBlock(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK, "Nectarium Crystal", "넥타륨 결정");
         addBlock(NarakaBlocks.SOUL_STABILIZER, "Soul Stabilizer", "영혼 안정기");
         addBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, "Soul Smithing Block", "영혼 대장장이 블록");
+        addBlock(NarakaBlocks.NARAKA_PORTAL, "Naraka Portal", "나락 포탈");
 
         addTooltip(NarakaBlocks.NECTARIUM_CORE_BLOCK, "Honey is dripping", "꿀이 뚝뚝 떨어져");
         addTooltip(NarakaBlocks.SOUL_SMITHING_BLOCK, "Smash item with a mace...?", "아이템을 철퇴로 부수기..?");
+        addTooltip(NarakaBlocks.HEROBRINE_TOTEM, "It seems like it would only work in sacred places", "신성한 곳에서만 작동할 것 같다");
 
         addEntityType(NarakaEntityTypes.HEROBRINE, "Naraka Tyrant: Herobrine", "나락의 폭군: 히로빈");
         addEntityType(NarakaEntityTypes.ABSOLUTE_HEROBRINE, "Absolute Herobrine");
@@ -306,6 +311,8 @@ public class NarakaLanguageProviders {
         addDamageType(NarakaDamageTypes.STIGMA_CONSUME, "%2$s has been consumed %1$s's stigma", "%2$s이(가) %1$s의 낙인을 소모해 생명을 앗아갔습니다");
         addDamageType(NarakaDamageTypes.PICKAXE_SLASH, "%1$s was slain by %2$s", "%1$s이(가) %2$s에 썰렸습니다");
         addDamageType(NarakaDamageTypes.NARAKA_FIREBALL, "%1$s was blown by naraka fireball thrown by %2$s", "%1$s이(가) %2$s이(가) 던진 나락 화염구에 폭발했습니다");
+        addDamageType(NarakaDamageTypes.STARDUST, "%1$s was exploded by %2$s", "%1$s이(가) %2$s에 폭사했습니다");
+        addDamageType(NarakaDamageTypes.PURIFIED_SOUL_FIRE, "%1$s went up in black flames", "%1$s이(가) 검은 불 속에서 타 죽었습니다");
 
         add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_AMETHYST), "Challenger's Blessing", "도전자의 축복");
         add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_COPPER), "Challenger's Blessing", "도전자의 축복");
@@ -360,6 +367,8 @@ public class NarakaLanguageProviders {
         add(LanguageKey.STIGMA_COMMAND_INCREASE_KEY, "Increased stigma for %1$d entities", "%1$d개의 엔티티의 낙인을 증가시켰습니다");
         add(LanguageKey.STIGMA_COMMAND_REMOVE_KEY, "Removed stigma for %1$d entities", "%1$d개의 엔티티의 낙인을 제거했습니다");
         add(LanguageKey.STIGMA_COMMAND_CONSUME_KEY, "%2$s consumed %$1d entities stigma", "%2$s(이)가 %1$d개의 엔티티의 낙인을 소모했습니다");
+        add(LanguageKey.STIGMA_COMMAND_DISABLE_KEY, "Disabled stigma", "낙인이 비활성화되었습니다");
+        add(LanguageKey.STIGMA_COMMAND_ENABLE_KEY, "Enabled stigma", "낙인이 활성화되었습니다");
 
         add(LanguageKey.LOCK_HEALTH_COMMAND_LOCK_KEY, "Locked %2$s health %1$d", "%2$s의 체력을 %1$d 잠궜습니다");
         add(LanguageKey.LOCK_HEALTH_COMMAND_REMOVE_KEY, "Removed %1$s locked healths", "%1$s의 잠긴 체력을 해제했습니다");
@@ -391,6 +400,11 @@ public class NarakaLanguageProviders {
 
     public void addBlock(Supplier<? extends Block> block, String... translations) {
         add(block.get().asItem().getDescriptionId(), translations);
+        addRawBlock(block, translations);
+    }
+
+    public void addRawBlock(Supplier<? extends Block> block, String... translations) {
+        add(block.get().getDescriptionId(), translations);
     }
 
     public void addTooltip(Supplier<? extends Block> block, String... translations) {

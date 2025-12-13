@@ -37,7 +37,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
     protected final M finalModel;
 
     private final ItemModelResolver itemModelResolver;
-    private final ItemStack pickaxe = NarakaItems.HEROBRINE_PICKAXE.get().getDefaultInstance();
+    private final ItemStack pickaxe = NarakaItems.NARAKA_PICKAXE.get().getDefaultInstance();
 
     protected static <S extends AbstractHerobrineRenderState, M extends AbstractHerobrineModel<S>> M defaultModel(EntityRendererProvider.Context context, Function<ModelPart, M> constructor) {
         return constructor.apply(context.bakeLayer(NarakaModelLayers.HEROBRINE));
@@ -75,6 +75,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
         renderState.eyeAlpha = entity.getEyeAlpha();
         renderState.doWalkAnimation = !renderState.finalModel;
         renderState.displayPickaxe = entity.displayPickaxe();
+        renderState.alpha = entity.getAlpha();
 
         renderState.setAfterimages(entity, partialTicks);
         renderState.setAnimationVisitor(entity);
@@ -142,9 +143,14 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
     }
 
     @Override
+    protected int getModelTint(S renderState) {
+        return ARGB.color(renderState.alpha, 0xffffff);
+    }
+
+    @Override
     @Nullable
     protected RenderType getRenderType(S renderState, boolean bodyVisible, boolean translucent, boolean glowing) {
-        if (renderState.isShadow)
+        if (renderState.isShadow || renderState.alpha < 0xff)
             return RenderType.entityTranslucent(getTextureLocation(renderState));
         return super.getRenderType(renderState, bodyVisible, translucent, glowing);
     }

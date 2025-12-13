@@ -53,7 +53,7 @@ public class LockedHealthHud implements HudRenderer {
         ClientEvents.TICK_PRE.register(this::tick);
     }
 
-    private void onLockedHealthChanged(LivingEntity entity, EntityDataType<Double> entityDataType, double from, double to) {
+    private void onLockedHealthChanged(LivingEntity entity, EntityDataType<Double, LivingEntity> entityDataType, double from, double to) {
         if (NarakaRenderUtils.isCurrentPlayer(entity) && to > from) {
             blinkTime = 20;
         }
@@ -72,7 +72,7 @@ public class LockedHealthHud implements HudRenderer {
 
         int baseX = graphics.guiWidth() / 2 - 91;
         int baseY = graphics.guiHeight() - 39;
-        double lockedHealth = EntityDataHelper.getEntityData(player, NarakaEntityDataTypes.LOCKED_HEALTH.get());
+        double lockedHealth = EntityDataHelper.getRawEntityData(player, NarakaEntityDataTypes.LOCKED_HEALTH.get());
         double maxHealth = player.getAttributeValue(Attributes.MAX_HEALTH);
         double originalMaxHealth = maxHealth + lockedHealth;
         int heartCount = Mth.ceil(originalMaxHealth / 2);

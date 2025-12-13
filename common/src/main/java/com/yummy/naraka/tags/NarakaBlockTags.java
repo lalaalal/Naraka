@@ -11,6 +11,7 @@ public final class NarakaBlockTags {
     public static final TagKey<Block> AMETHYST_ORES = create("amethyst_ores");
     public static final TagKey<Block> HEROBRINE_SANCTUARY_AIR_WRAP_TARGETS = create("herobrine_sanctuary_air_wrap_targets");
     public static final TagKey<Block> HEROBRINE_SANCTUARY_LAVA_WRAP_TARGETS = create("herobrine_sanctuary_lava_wrap_targets");
+    public static final TagKey<Block> MINABLE_WITH_NARAKA_PICKAXE = create("minable_with_naraka_pickaxe");
 
     public static TagKey<Block> create(String name) {
         return TagKey.create(Registries.BLOCK, NarakaMod.location(name));

@@ -154,19 +154,31 @@ public class NarakaBlocks {
 
     public static final HolderProxy<Block, HerobrineTotem> HEROBRINE_TOTEM = registerBlockWithItem(
             "herobrine_totem",
-            properties -> new HerobrineTotem(properties
+            HerobrineTotem::new,
+            from(Blocks.NETHER_BRICKS)
                     .pushReaction(PushReaction.BLOCK)
                     .strength(50, 1200)
                     .requiresCorrectToolForDrops()
-                    .lightLevel(HerobrineTotem::light)
-            ),
-            Blocks.NETHER_BRICKS
+                    .lightLevel(HerobrineTotem::light),
+            item().component(DataComponents.LORE, new ItemLore(List.of(Component.translatable(LanguageKey.tooltip("herobrine_totem")))))
     );
 
     public static final HolderProxy<Block, SoulStabilizer> SOUL_STABILIZER = registerBlockWithItem(
             "soul_stabilizer",
             SoulStabilizer::new,
             Blocks.GLASS
+    );
+
+    public static final HolderProxy<Block, NarakaPortalBlock> NARAKA_PORTAL = registerBlock(
+            "naraka_portal",
+            NarakaPortalBlock::new,
+            from(Blocks.NETHER_PORTAL)
+                    .randomTicks()
+                    .lightLevel(state -> 15)
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .pushReaction(PushReaction.BLOCK)
+                    .strength(-1, 3600000)
+                    .noLootTable()
     );
 
     public static final List<Supplier<Block>> SOUL_INFUSED_BLOCKS = List.of(

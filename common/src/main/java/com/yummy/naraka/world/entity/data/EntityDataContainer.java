@@ -1,52 +1,45 @@
 package com.yummy.naraka.world.entity.data;
 
-import com.yummy.naraka.core.registries.NarakaRegistries;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderSet;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
 
 public class EntityDataContainer {
-    private final Map<EntityDataType<?>, Object> entityDataMap = new HashMap<>();
+    private final Map<EntityDataType<?, ?>, EntityData<?, ?>> entityDataMap = new HashMap<>();
 
-    public void setEntityData(EntityDataType<?> entityDataType, Object entityData) {
-        this.entityDataMap.put(entityDataType, entityData);
+    public <T, E extends Entity> void setEntityData(EntityDataType<T, E> entityDataType, T value) {
+        this.entityDataMap.put(entityDataType, new EntityData<>(entityDataType, value));
     }
 
-    public boolean hasEntityData(EntityDataType<?> entityDataType) {
+    public void setEntityData(EntityData<?, ?> entityData) {
+        this.entityDataMap.put(entityData.type(), entityData);
+    }
+
+    public boolean hasEntityData(EntityDataType<?, ?> entityDataType) {
         return entityDataMap.containsKey(entityDataType);
     }
 
-    public <T> T getEntityData(EntityDataType<T> entityDataType) {
-        if (this.entityDataMap.containsKey(entityDataType))
-            return entityDataType.getValueType().cast(this.entityDataMap.get(entityDataType));
-        return entityDataType.getDefaultValue();
+    public <T, E extends Entity> T getRawEntityData(EntityDataType<T, E> entityDataType) {
+        return getEntityData(entityDataType).value();
     }
 
-    public void save(CompoundTag compoundTag, HolderLookup.Provider registries) {
-        for (EntityDataType<?> entityDataType : entityDataMap.keySet()) {
-            if (entityDataMap.get(entityDataType) != entityDataType.getDefaultValue())
-                entityDataType.castAndWrite(entityDataMap.get(entityDataType), compoundTag, registries);
-        }
+    @SuppressWarnings("unchecked")
+    public <T, E extends Entity> EntityData<T, E> getEntityData(EntityDataType<T, E> entityDataType) {
+        return (EntityData<T, E>) this.entityDataMap.getOrDefault(entityDataType, entityDataType.getDefault());
     }
 
-    public void save(CompoundTag compoundTag, HolderLookup.Provider registries, HolderSet<EntityDataType<?>> entityDataTypes) {
-        for (Holder<EntityDataType<?>> holder : entityDataTypes) {
-            Object value = getEntityData(holder.value());
-            holder.value().castAndWrite(value, compoundTag, registries);
-        }
+    public void removeEntityData(EntityDataType<?, ?> entityDataType) {
+        this.entityDataMap.remove(entityDataType);
     }
 
-    public void read(CompoundTag compoundTag, HolderLookup.Provider registries) {
-        NarakaRegistries.ENTITY_DATA_TYPE.stream().toList()
-                .forEach(entityDataType -> {
-                    if (entityDataType.saveExists(compoundTag)) {
-                        Object data = entityDataType.readOrDefault(compoundTag, registries);
-                        setEntityData(entityDataType, data);
-                    }
-                });
+    public Stream<EntityData<?, ?>> stream() {
+        return entityDataMap.values().stream();
+    }
+
+    public Set<EntityDataType<?, ?>> getEntityDataTypes() {
+        return entityDataMap.keySet();
     }
 }
