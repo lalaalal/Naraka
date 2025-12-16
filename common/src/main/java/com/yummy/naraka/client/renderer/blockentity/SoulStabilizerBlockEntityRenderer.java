@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
@@ -79,7 +80,7 @@ public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<So
     @Override
     public void submit(SoulStabilizerRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
-        RenderType bottleRenderType = RenderType.entityCutout(NarakaTextures.SOUL_STABILIZER);
+        RenderType bottleRenderType = RenderTypes.entityCutout(NarakaTextures.SOUL_STABILIZER);
         submitNodeCollector.submitModelPart(bottle, poseStack, bottleRenderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, -1, null);
         poseStack.popPose();
 
@@ -91,7 +92,7 @@ public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<So
 
         poseStack.pushPose();
         poseStack.scale(1, soulRatio, 1);
-        RenderType liquidRenderType = RenderType.entityCutout(WATER_OVERLAY);
+        RenderType liquidRenderType = RenderTypes.entityCutout(WATER_OVERLAY);
         submitNodeCollector.submitModelPart(liquid, poseStack, liquidRenderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, color, null);
         poseStack.popPose();
     }

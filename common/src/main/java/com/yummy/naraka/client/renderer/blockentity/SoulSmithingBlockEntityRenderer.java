@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
@@ -108,7 +109,7 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
         Quaternionf rotation = Axis.YN.rotationDegrees(direction.toYRot());
         poseStack.rotateAround(rotation, 0.5f, 0.5f, 0.5f);
         poseStack.rotateAround(Axis.ZP.rotation(Mth.PI), 0.5f, 0.5f, 0.5f);
-        RenderType renderType = RenderType.entityCutout(NarakaTextures.SOUL_SMITHING_BLOCK);
+        RenderType renderType = RenderTypes.entityCutout(NarakaTextures.SOUL_SMITHING_BLOCK);
         submitNodeCollector.submitModelPart(main, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, -1, null);
         poseStack.popPose();
 
@@ -134,7 +135,7 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
 
         poseStack.pushPose();
         poseStack.rotateAround(rotation, 0.5f, 0.5f, 0.5f);
-        RenderType renderType = RenderType.entityCutout(NarakaTextures.getTemplateTexture(renderState.templateItem));
+        RenderType renderType = RenderTypes.entityCutout(NarakaTextures.getTemplateTexture(renderState.templateItem));
         submitNodeCollector.submitModelPart(trimTemplate, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, -1, null);
         poseStack.popPose();
     }

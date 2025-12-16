@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
@@ -49,7 +50,7 @@ public class NarakaPortalBlockEntityRenderer implements BlockEntityRenderer<Nara
 
     public RenderType getRenderType(NarakaPortalRenderState renderState) {
         if (NarakaClientContext.SHADER_ENABLED.getValue())
-            return RenderType.entityTranslucent(getTextureLocation(renderState));
+            return RenderTypes.entityTranslucent(getTextureLocation(renderState));
         return NarakaRenderTypes.longinusCutout(getTextureLocation(renderState));
     }
 
