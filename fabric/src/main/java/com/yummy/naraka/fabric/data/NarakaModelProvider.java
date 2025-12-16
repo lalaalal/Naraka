@@ -204,6 +204,10 @@ public class NarakaModelProvider extends FabricModelProvider {
         generateTrimmableItem(generator, Items.CHAINMAIL_CHESTPLATE, EquipmentAssets.CHAINMAIL, "chestplate");
         generateTrimmableItem(generator, Items.CHAINMAIL_LEGGINGS, EquipmentAssets.CHAINMAIL, "leggings");
         generateTrimmableItem(generator, Items.CHAINMAIL_BOOTS, EquipmentAssets.CHAINMAIL, "boots");
+        generateTrimmableItem(generator, Items.COPPER_HELMET, EquipmentAssets.CHAINMAIL, "helmet");
+        generateTrimmableItem(generator, Items.COPPER_CHESTPLATE, EquipmentAssets.CHAINMAIL, "chestplate");
+        generateTrimmableItem(generator, Items.COPPER_LEGGINGS, EquipmentAssets.CHAINMAIL, "leggings");
+        generateTrimmableItem(generator, Items.COPPER_BOOTS, EquipmentAssets.CHAINMAIL, "boots");
         generateTrimmableItem(generator, Items.IRON_HELMET, EquipmentAssets.IRON, "helmet");
         generateTrimmableItem(generator, Items.IRON_CHESTPLATE, EquipmentAssets.IRON, "chestplate");
         generateTrimmableItem(generator, Items.IRON_LEGGINGS, EquipmentAssets.IRON, "leggings");

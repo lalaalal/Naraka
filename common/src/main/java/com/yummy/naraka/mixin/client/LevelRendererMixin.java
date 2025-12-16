@@ -11,7 +11,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CloudStatus;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.CloudRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -49,11 +48,9 @@ public abstract class LevelRendererMixin {
 
     @Shadow @Final private LevelTargetBundle targets;
 
-    @Shadow @Final private Minecraft minecraft;
-
     @Inject(method = "onResourceManagerReload", at = @At("RETURN"))
     private void prepareDimensionSkyRenderers(ResourceManager resourceManager, CallbackInfo ci) {
-        DimensionSkyRendererRegistry.setup(minecraft.getTextureManager(), minecraft.getAtlasManager());
+        DimensionSkyRendererRegistry.setup();
     }
 
     /**
@@ -88,10 +85,10 @@ public abstract class LevelRendererMixin {
             require = 1,
             at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/framegraph/FramePass;executes(Ljava/lang/Runnable;)V")
     )
-    public Runnable speedUpClouds(Runnable original, @Local(argsOnly = true) CloudStatus cloudStatus, @Local(argsOnly = true) Vec3 cameraPosition, @Local(ordinal = 0, argsOnly = true) float partialTick, @Local(ordinal = 1, argsOnly = true) float cloudHeight, @Local(ordinal = 0, argsOnly = true) int cloudColor, @Local(ordinal = 0, argsOnly = true) long gameTime) {
+    public Runnable speedUpClouds(Runnable original, @Local(argsOnly = true) CloudStatus cloudStatus, @Local(argsOnly = true) Vec3 cameraPosition, @Local(ordinal = 0, argsOnly = true) float partialTick, @Local(ordinal = 1, argsOnly = true) float cloudHeight, @Local(ordinal = 0, argsOnly = true) long gameTime) {
         if (naraka$isHerobrineSkyEnabled()) {
             int speed = NarakaConfig.CLIENT.herobrineSkyCloudSpeed.getValue();
-            return () -> this.cloudRenderer.render(ARGB.color(0.8f, cloudColor), cloudStatus, cloudHeight, cameraPosition, gameTime * speed, partialTick);
+            return () -> this.cloudRenderer.render(ARGB.white(0.8f), cloudStatus, cloudHeight, cameraPosition, gameTime * speed, partialTick * speed);
         }
         return original;
     }

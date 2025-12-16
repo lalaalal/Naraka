@@ -51,7 +51,7 @@ public final class NarakaModClient {
         registerHudRenders();
         registerMenus();
         registerKeyMappings();
-        DimensionSkyRendererRegistry.register(NarakaDimensions.NARAKA, NarakaSkyRenderer::new);
+        DimensionSkyRendererRegistry.register(NarakaDimensions.NARAKA, NarakaSkyRenderer::getInstance);
 
         AnimationMapper.initialize();
 
@@ -82,7 +82,7 @@ public final class NarakaModClient {
         ItemRenderRegistry.registerColor(NarakaItems.RAINBOW_SWORD, ComponentStyles.RAINBOW_COLOR::getCurrentColor);
         ItemRenderRegistry.registerRenderType(NarakaItems.HEROBRINE_SCARF, itemRenderTypeSetter -> {
             if (!NarakaClientContext.SHADER_ENABLED.getValue())
-                itemRenderTypeSetter.naraka$setRenderType(NarakaRenderTypes.longinusCutout(NarakaTextures.LOCATION_BLOCKS));
+                itemRenderTypeSetter.naraka$setRenderType(NarakaRenderTypes.longinusCutout(NarakaTextures.LOCATION_ITEMS));
         });
     }
 
