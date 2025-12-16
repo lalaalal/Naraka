@@ -14,7 +14,6 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaRenderPipelines;
 import com.yummy.naraka.client.NarakaTextures;
-import com.yummy.naraka.client.init.ResourceReloadListenerRegistry;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -22,10 +21,13 @@ import net.minecraft.client.renderer.LevelTargetBundle;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.SkyRenderer;
 import net.minecraft.client.renderer.state.SkyRenderState;
-import net.minecraft.client.renderer.texture.AbstractTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.resources.model.AtlasManager;
+import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
@@ -36,20 +38,21 @@ import java.util.Map;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
-public class NarakaSkyRenderer implements DimensionSkyRenderer, ResourceManagerReloadListener {
+public class NarakaSkyRenderer implements DimensionSkyRenderer {
+    public static final Identifier ECLIPSE = NarakaMod.identifier("eclipse");
+    public static final Identifier INVERTED_ECLIPSE = NarakaMod.identifier("inverted_eclipse");
+
     @Nullable
     private static NarakaSkyRenderer instance;
 
+    private final TextureAtlas celestialsAtlas;
     private final RenderSystem.AutoStorageIndexBuffer quadIndices = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
     private final RenderSystem.AutoStorageIndexBuffer starIndices = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
     private int starIndexCount;
     private final GpuBuffer starBuffer = buildStars();
-    private final GpuBuffer eclipseBuffer = buildEclipse();
-    @Nullable
-    private AbstractTexture eclipseTexture;
-    @Nullable
-    private AbstractTexture invertedEclipseTexture;
-    private Map<Identifier, AbstractTexture> eclipseTextures = Map.of();
+    private final GpuBuffer eclipseBuffer;
+    private final GpuBuffer invertedEclipseBuffer;
+    private final Map<Identifier, GpuBuffer> eclipseBuffers;
 
     public static NarakaSkyRenderer getInstance() {
         if (instance == null)
@@ -57,11 +60,18 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer, ResourceManagerR
         return instance;
     }
 
-    public NarakaSkyRenderer() {
+    public NarakaSkyRenderer(TextureManager textureManager, AtlasManager atlasManager) {
         if (instance != null)
             throw new IllegalStateException("Naraka sky renderer already initialized");
         instance = this;
-        ResourceReloadListenerRegistry.register(NarakaMod.identifier("naraka_sky_renderer"), () -> this);
+
+        this.celestialsAtlas = atlasManager.getAtlasOrThrow(AtlasIds.CELESTIALS);
+        this.eclipseBuffer = buildEclipse(celestialsAtlas.getSprite(ECLIPSE));
+        this.invertedEclipseBuffer = buildEclipse(celestialsAtlas.getSprite(INVERTED_ECLIPSE));
+        this.eclipseBuffers = Map.of(
+                ECLIPSE, eclipseBuffer,
+                INVERTED_ECLIPSE, invertedEclipseBuffer
+        );
     }
 
     private GpuBuffer buildStars() {
@@ -93,29 +103,19 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer, ResourceManagerR
         }
     }
 
-    private GpuBuffer buildEclipse() {
+    private GpuBuffer buildEclipse(TextureAtlasSprite textureAtlasSprite) {
         try (ByteBufferBuilder byteBufferBuilder = ByteBufferBuilder.exactlySized(4 * DefaultVertexFormat.POSITION_TEX.getVertexSize())) {
             BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
             Matrix4f matrix4f = new Matrix4f();
-            bufferBuilder.addVertex(matrix4f, -1.0F, 0.0F, 1.0F).setUv(0.0F, 1.0F);
-            bufferBuilder.addVertex(matrix4f, 1.0F, 0.0F, 1.0F).setUv(1.0F, 1.0F);
-            bufferBuilder.addVertex(matrix4f, 1.0F, 0.0F, -1.0F).setUv(1.0F, 0.0F);
-            bufferBuilder.addVertex(matrix4f, -1.0F, 0.0F, -1.0F).setUv(0.0F, 0.0F);
+            bufferBuilder.addVertex(matrix4f, -1.0F, 0.0F, 1.0F).setUv(textureAtlasSprite.getU0(), textureAtlasSprite.getV0());
+            bufferBuilder.addVertex(matrix4f, 1.0F, 0.0F, 1.0F).setUv(textureAtlasSprite.getU1(), textureAtlasSprite.getV0());
+            bufferBuilder.addVertex(matrix4f, 1.0F, 0.0F, -1.0F).setUv(textureAtlasSprite.getU1(), textureAtlasSprite.getV1());
+            bufferBuilder.addVertex(matrix4f, -1.0F, 0.0F, -1.0F).setUv(textureAtlasSprite.getU0(), textureAtlasSprite.getV1());
 
             try (MeshData meshData = bufferBuilder.buildOrThrow()) {
                 return RenderSystem.getDevice().createBuffer(() -> "Eclipse quad", 40, meshData.vertexBuffer());
             }
         }
-    }
-
-    @Override
-    public void onResourceManagerReload(ResourceManager resourceManager) {
-        eclipseTexture = DimensionSkyRenderer.getTexture(NarakaTextures.ECLIPSE);
-        invertedEclipseTexture = DimensionSkyRenderer.getTexture(NarakaTextures.INVERTED_ECLIPSE);
-        eclipseTextures = Map.of(
-                NarakaTextures.ECLIPSE, eclipseTexture,
-                NarakaTextures.INVERTED_ECLIPSE, invertedEclipseTexture
-        );
     }
 
     @Override
@@ -129,7 +129,7 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer, ResourceManagerR
             poseStack.mulPose(Axis.XP.rotationDegrees(180));
             if (NarakaClientContext.SHADER_ENABLED.getValue()) {
                 RenderSystem.setShaderFog(shaderFog);
-                skyRenderer.renderSkyDisc(1, 1, 1);
+                skyRenderer.renderSkyDisc(ARGB.white(0xff));
             }
             renderEclipse(poseStack, NarakaTextures.ECLIPSE, RenderPipelines.CELESTIAL);
             renderEclipse(poseStack, NarakaTextures.INVERTED_ECLIPSE, NarakaRenderPipelines.INVERTED_ECLIPSE);
@@ -138,17 +138,14 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer, ResourceManagerR
         });
     }
 
-    public void renderEclipse(PoseStack poseStack, Identifier textureLocation, RenderPipeline renderPipeline) {
-        if (!eclipseTextures.containsKey(textureLocation))
-            return;
-        AbstractTexture texture = eclipseTextures.get(textureLocation);
+    public void renderEclipse(PoseStack poseStack, Identifier eclipseIdentifier, RenderPipeline renderPipeline) {
         Matrix4fStack matrix4fStack = RenderSystem.getModelViewStack();
         matrix4fStack.pushMatrix();
         matrix4fStack.mul(poseStack.last().pose());
         matrix4fStack.translate(0.0F, -100.0F, 0.0F);
         matrix4fStack.scale(30, 1, 30);
         GpuBufferSlice gpuBufferSlice = RenderSystem.getDynamicUniforms()
-                .writeTransform(matrix4fStack, new Vector4f(1, 1, 1, 1), new Vector3f(), new Matrix4f(), 0.0F);
+                .writeTransform(matrix4fStack, new Vector4f(1, 1, 1, 1), new Vector3f(), new Matrix4f());
         GpuTextureView colorTextureView = Minecraft.getInstance().getMainRenderTarget().getColorTextureView();
         GpuTextureView depthTextureView = Minecraft.getInstance().getMainRenderTarget().getDepthTextureView();
         GpuBuffer gpuBuffer = this.quadIndices.getBuffer(6);
@@ -160,8 +157,8 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer, ResourceManagerR
                 renderPass.setPipeline(renderPipeline);
                 RenderSystem.bindDefaultUniforms(renderPass);
                 renderPass.setUniform("DynamicTransforms", gpuBufferSlice);
-                renderPass.bindSampler("Sampler0", texture.getTextureView());
-                renderPass.setVertexBuffer(0, this.eclipseBuffer);
+                renderPass.bindTexture("Sampler0", celestialsAtlas.getTextureView(), celestialsAtlas.getSampler());
+                renderPass.setVertexBuffer(0, eclipseBuffers.getOrDefault(eclipseIdentifier, eclipseBuffer));
                 renderPass.setIndexBuffer(gpuBuffer, this.quadIndices.type());
                 renderPass.drawIndexed(0, 0, 6, 1);
             }
@@ -178,7 +175,7 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer, ResourceManagerR
         GpuTextureView depthTextureView = Minecraft.getInstance().getMainRenderTarget().getDepthTextureView();
         GpuBuffer gpuBuffer = this.starIndices.getBuffer(this.starIndexCount);
         GpuBufferSlice gpuBufferSlice = RenderSystem.getDynamicUniforms()
-                .writeTransform(matrix4fStack, new Vector4f(0, 0, 0, 1), new Vector3f(), new Matrix4f(), 0);
+                .writeTransform(matrix4fStack, new Vector4f(0, 0, 0, 1), new Vector3f(), new Matrix4f());
 
         if (colorTextureView != null) {
             try (RenderPass renderPass = RenderSystem.getDevice()
@@ -200,11 +197,6 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer, ResourceManagerR
     public void close() {
         starBuffer.close();
         eclipseBuffer.close();
-        tryCloseTextures();
-    }
-
-    private void tryCloseTextures() {
-        if (eclipseTexture != null) eclipseTexture.close();
-        if (invertedEclipseTexture != null) invertedEclipseTexture.close();
+        invertedEclipseBuffer.close();
     }
 }

@@ -50,7 +50,7 @@ public abstract class LevelRendererMixin {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void prepareDimensionSkyRenderers(Minecraft minecraft, EntityRenderDispatcher entityRenderDispatcher, BlockEntityRenderDispatcher blockEntityRenderDispatcher, RenderBuffers renderBuffers, LevelRenderState levelRenderState, FeatureRenderDispatcher featureRenderDispatcher, CallbackInfo ci) {
-        DimensionSkyRendererRegistry.setup();
+        DimensionSkyRendererRegistry.setup(minecraft.getTextureManager(), minecraft.getAtlasManager());
     }
 
     /**

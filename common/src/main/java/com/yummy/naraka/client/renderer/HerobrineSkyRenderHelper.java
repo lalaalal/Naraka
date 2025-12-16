@@ -22,7 +22,7 @@ public class HerobrineSkyRenderHelper {
         float r = SKY_COLOR.red01();
         float g = SKY_COLOR.green01();
         float b = SKY_COLOR.blue01();
-        skyRenderer.renderSkyDisc(r, g, b);
+        skyRenderer.renderSkyDisc(Color.of(1, r, g, b).pack());
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
         poseStack.mulPose(Axis.XP.rotationDegrees(180));
