@@ -10,21 +10,21 @@ import com.yummy.naraka.world.block.entity.NarakaPortalBlockEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
 public class NarakaPortalBlockEntityRenderer implements BlockEntityRenderer<NarakaPortalBlockEntity, NarakaPortalRenderState> {
-    private static final ResourceLocation[] TEXTURE_MAPPING = {
+    private static final Identifier[] TEXTURE_MAPPING = {
             NarakaTextures.NARAKA_PORTAL_1, NarakaTextures.NARAKA_PORTAL_1, NarakaTextures.NARAKA_PORTAL_2, NarakaTextures.NARAKA_PORTAL_3,
     };
 
@@ -43,7 +43,7 @@ public class NarakaPortalBlockEntityRenderer implements BlockEntityRenderer<Nara
         renderState.usage = blockEntity.getUsage();
     }
 
-    public ResourceLocation getTextureLocation(NarakaPortalRenderState renderState) {
+    public Identifier getTextureLocation(NarakaPortalRenderState renderState) {
         return TEXTURE_MAPPING[renderState.usage];
     }
 

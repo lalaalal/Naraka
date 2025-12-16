@@ -11,10 +11,10 @@ import com.yummy.naraka.world.entity.NarakaSword;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 
@@ -44,7 +44,7 @@ public class NarakaSwordRenderer extends LightTailEntityRenderer<NarakaSword, Na
     public void submit(NarakaSwordRenderState entityRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
         submitNodeCollector.submitModelPart(model.body(), poseStack, NarakaRenderTypes.longinus(), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, -1, null);
-        submitNodeCollector.submitModelPart(model.core(), poseStack, RenderType.entityCutout(NarakaTextures.NARAKA_SWORD), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, entityRenderState.tailColor, null);
+        submitNodeCollector.submitModelPart(model.core(), poseStack, RenderTypes.entityCutout(NarakaTextures.NARAKA_SWORD), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, entityRenderState.tailColor, null);
 
         super.submit(entityRenderState, poseStack, submitNodeCollector, cameraRenderState);
         poseStack.popPose();

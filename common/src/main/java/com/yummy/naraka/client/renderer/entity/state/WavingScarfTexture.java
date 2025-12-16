@@ -3,10 +3,10 @@ package com.yummy.naraka.client.renderer.entity.state;
 import com.yummy.naraka.client.NarakaTextures;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 @Environment(EnvType.CLIENT)
-public record WavingScarfTexture(ResourceLocation herobrineTexture, ResourceLocation shadowTexture,
+public record WavingScarfTexture(Identifier herobrineTexture, Identifier shadowTexture,
                                  int scarfX, int scarfY,
                                  int scarfWidth, int scarfHeight,
                                  int textureWidth, int textureHeight) {
@@ -20,7 +20,7 @@ public record WavingScarfTexture(ResourceLocation herobrineTexture, ResourceLoca
             NarakaTextures.FINAL_HEROBRINE_SCARF, NarakaTextures.FINAL_HEROBRINE_SCARF, 0, 0, 30, 40, 128, 128
     );
 
-    public ResourceLocation texture(boolean isShadow) {
+    public Identifier texture(boolean isShadow) {
         if (isShadow)
             return shadowTexture;
         return herobrineTexture;

@@ -5,7 +5,7 @@ import com.yummy.naraka.data.lang.NarakaJadeProviderComponents;
 import com.yummy.naraka.world.block.entity.SoulStabilizerBlockEntity;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -28,7 +28,7 @@ public class SoulStabilizerComponentProvider implements IBlockComponentProvider 
     }
 
     @Override
-    public ResourceLocation getUid() {
+    public Identifier getUid() {
         return NarakaJadeProviderComponents.SOUL_STABILIZER.location;
     }
 }

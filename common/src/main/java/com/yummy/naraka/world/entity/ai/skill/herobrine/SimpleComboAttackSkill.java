@@ -3,7 +3,7 @@ package com.yummy.naraka.world.entity.ai.skill.herobrine;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -12,9 +12,9 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
-    public static final ResourceLocation FINAL_COMBO_ATTACK_1 = createLocation("final_herobrine.combo_attack_1");
-    public static final ResourceLocation FINAL_COMBO_ATTACK_2 = createLocation("final_herobrine.combo_attack_2");
-    public static final ResourceLocation FINAL_COMBO_ATTACK_3 = createLocation("final_herobrine.combo_attack_3");
+    public static final Identifier FINAL_COMBO_ATTACK_1 = createLocation("final_herobrine.combo_attack_1");
+    public static final Identifier FINAL_COMBO_ATTACK_2 = createLocation("final_herobrine.combo_attack_2");
+    public static final Identifier FINAL_COMBO_ATTACK_3 = createLocation("final_herobrine.combo_attack_3");
 
     protected int attackTick;
     protected int attackRange;
@@ -52,11 +52,11 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
                 .build();
     }
 
-    public static Builder builder(ResourceLocation location, AbstractHerobrine mob, int duration, int cooldown) {
+    public static Builder builder(Identifier location, AbstractHerobrine mob, int duration, int cooldown) {
         return new Builder(location, duration, cooldown, mob);
     }
 
-    public SimpleComboAttackSkill(ResourceLocation location, AbstractHerobrine mob, int duration, int cooldown, @Nullable Skill<?> nextSkill) {
+    public SimpleComboAttackSkill(Identifier location, AbstractHerobrine mob, int duration, int cooldown, @Nullable Skill<?> nextSkill) {
         super(location, mob, duration, cooldown, 1, duration, nextSkill);
     }
 
@@ -107,7 +107,7 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
     }
 
     public static class Builder {
-        private final ResourceLocation location;
+        private final Identifier location;
         private final int duration;
         private final int cooldown;
         private final AbstractHerobrine mob;
@@ -121,7 +121,7 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
         @Nullable
         private Skill<?> nextSkill;
 
-        public Builder(ResourceLocation location, int duration, int cooldown, AbstractHerobrine mob) {
+        public Builder(Identifier location, int duration, int cooldown, AbstractHerobrine mob) {
             this.location = location;
             this.duration = duration;
             this.cooldown = cooldown;

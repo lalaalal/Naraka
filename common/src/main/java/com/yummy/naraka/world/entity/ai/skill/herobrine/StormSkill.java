@@ -11,7 +11,7 @@ import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.data.BeamEffectsHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 
 public class StormSkill extends ComboSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("final_herobrine.storm");
+    public static final Identifier LOCATION = createLocation("final_herobrine.storm");
     private final HashMap<LivingEntity, Integer> hurtEntities = new HashMap<>();
 
     public StormSkill(Herobrine mob, Skill<?> parryingSkill) {

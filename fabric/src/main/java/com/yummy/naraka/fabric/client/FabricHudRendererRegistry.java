@@ -7,7 +7,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.function.Supplier;
 
@@ -15,12 +15,12 @@ import java.util.function.Supplier;
 @Environment(EnvType.CLIENT)
 public final class FabricHudRendererRegistry {
     @MethodProxy(HudRendererRegistry.class)
-    public static void registerPreLayer(ResourceLocation id, Supplier<HudRenderer> factory) {
+    public static void registerPreLayer(Identifier id, Supplier<HudRenderer> factory) {
         HudElementRegistry.attachElementBefore(VanillaHudElements.MISC_OVERLAYS, id, factory.get()::render);
     }
 
     @MethodProxy(HudRendererRegistry.class)
-    public static void registerPostLayer(ResourceLocation id, Supplier<HudRenderer> factory) {
+    public static void registerPostLayer(Identifier id, Supplier<HudRenderer> factory) {
         HudElementRegistry.addLast(id, factory.get()::render);
     }
 }

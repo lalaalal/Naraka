@@ -9,7 +9,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class DiamondGolemRenderer extends MobRenderer<DiamondGolem, SkillUsingMobRenderState, DiamondGolemModel> {
@@ -18,7 +18,7 @@ public class DiamondGolemRenderer extends MobRenderer<DiamondGolem, SkillUsingMo
     }
 
     @Override
-    public ResourceLocation getTextureLocation(SkillUsingMobRenderState renderState) {
+    public Identifier getTextureLocation(SkillUsingMobRenderState renderState) {
         return NarakaTextures.DIAMOND_GOLEM;
     }
 

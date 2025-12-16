@@ -23,7 +23,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.SkyRenderer;
 import net.minecraft.client.renderer.state.SkyRenderState;
 import net.minecraft.client.renderer.texture.AbstractTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.util.Mth;
@@ -49,7 +49,7 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer, ResourceManagerR
     private AbstractTexture eclipseTexture;
     @Nullable
     private AbstractTexture invertedEclipseTexture;
-    private Map<ResourceLocation, AbstractTexture> eclipseTextures = Map.of();
+    private Map<Identifier, AbstractTexture> eclipseTextures = Map.of();
 
     public static NarakaSkyRenderer getInstance() {
         if (instance == null)
@@ -138,7 +138,7 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer, ResourceManagerR
         });
     }
 
-    public void renderEclipse(PoseStack poseStack, ResourceLocation textureLocation, RenderPipeline renderPipeline) {
+    public void renderEclipse(PoseStack poseStack, Identifier textureLocation, RenderPipeline renderPipeline) {
         if (!eclipseTextures.containsKey(textureLocation))
             return;
         AbstractTexture texture = eclipseTextures.get(textureLocation);

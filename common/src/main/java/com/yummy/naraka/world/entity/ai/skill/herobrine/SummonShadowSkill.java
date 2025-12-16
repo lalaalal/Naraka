@@ -2,11 +2,11 @@ package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 
 public class SummonShadowSkill extends Skill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("herobrine.summon_shadow");
+    public static final Identifier LOCATION = createLocation("herobrine.summon_shadow");
 
     public SummonShadowSkill(Herobrine mob) {
         super(LOCATION, mob, 20, 0);

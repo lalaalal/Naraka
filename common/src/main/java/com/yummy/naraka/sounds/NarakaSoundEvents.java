@@ -4,7 +4,7 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 
 public class NarakaSoundEvents {
@@ -22,7 +22,7 @@ public class NarakaSoundEvents {
     public static final Holder<SoundEvent> DIAMOND_GOLEM_SWIPE = register("diamond_golem.swipe");
 
     private static Holder<SoundEvent> register(String name) {
-        ResourceLocation location = NarakaMod.location(name);
+        Identifier location = NarakaMod.location(name);
         return RegistryProxy.register(Registries.SOUND_EVENT, name, () -> SoundEvent.createVariableRangeEvent(location));
     }
 

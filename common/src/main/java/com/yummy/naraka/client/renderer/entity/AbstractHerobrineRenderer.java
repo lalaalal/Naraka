@@ -15,13 +15,14 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -127,7 +128,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
 
     @Override
     protected void submitAfterimageLayer(S renderState, AfterimageRenderState afterimage, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, int alpha) {
-        RenderType renderType = RenderType.entityTranslucent(NarakaTextures.HEROBRINE_EYE);
+        RenderType renderType = RenderTypes.entityTranslucent(NarakaTextures.HEROBRINE_EYE);
         int color = ARGB.white(Mth.clamp(alpha - 25, 0, 255));
 
         submitNodeCollector.submitModel(
@@ -151,12 +152,12 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
     @Nullable
     protected RenderType getRenderType(S renderState, boolean bodyVisible, boolean translucent, boolean glowing) {
         if (renderState.isShadow || renderState.alpha < 0xff)
-            return RenderType.entityTranslucent(getTextureLocation(renderState));
+            return RenderTypes.entityTranslucent(getTextureLocation(renderState));
         return super.getRenderType(renderState, bodyVisible, translucent, glowing);
     }
 
     @Override
-    protected ResourceLocation getAfterimageTexture(S renderState) {
+    protected Identifier getAfterimageTexture(S renderState) {
         return NarakaTextures.HEROBRINE_AFTERIMAGE;
     }
 

@@ -14,7 +14,7 @@ import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Set;
 import java.util.function.Function;
@@ -25,7 +25,7 @@ public abstract class SkillUsingMobControlScreen extends Screen {
     protected final LocationList locationList;
     protected final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this);
 
-    protected SkillUsingMobControlScreen(SkillUsingMob mob, Set<ResourceLocation> locations, Function<ResourceLocation, String> translationKeyGenerator) {
+    protected SkillUsingMobControlScreen(SkillUsingMob mob, Set<Identifier> locations, Function<Identifier, String> translationKeyGenerator) {
         super(Component.literal("Skill Control"));
         this.mob = mob;
         this.locationList = new LocationList(Minecraft.getInstance(), this, locations, translationKeyGenerator);

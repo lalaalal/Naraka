@@ -9,7 +9,7 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.*;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 public class EarthShockSkill extends AttackSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("final_herobrine.earth_shock");
+    public static final Identifier LOCATION = createLocation("final_herobrine.earth_shock");
 
     private static final float HALF_ANGLE = Mth.HALF_PI * 0.125f;
 

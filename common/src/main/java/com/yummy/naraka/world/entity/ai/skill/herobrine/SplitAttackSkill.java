@@ -9,7 +9,7 @@ import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.InstantShadowSpawner;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -17,7 +17,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 
 public class SplitAttackSkill extends ComboSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("final_herobrine.split_attack");
+    public static final Identifier LOCATION = createLocation("final_herobrine.split_attack");
     private InstantShadowSpawner firstShadowSpawner = InstantShadowSpawner.EMPTY;
     private InstantShadowSpawner secondShadowSpawner = InstantShadowSpawner.EMPTY;
 

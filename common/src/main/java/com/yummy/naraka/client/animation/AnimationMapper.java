@@ -6,7 +6,7 @@ import com.yummy.naraka.world.entity.animation.AnimationLocations;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,17 +14,17 @@ import java.util.Set;
 
 @Environment(EnvType.CLIENT)
 public class AnimationMapper {
-    private static final Map<ResourceLocation, AnimationDefinition> MAPPER = new HashMap<>();
+    private static final Map<Identifier, AnimationDefinition> MAPPER = new HashMap<>();
 
-    public static void register(ResourceLocation key, AnimationDefinition animationDefinition) {
+    public static void register(Identifier key, AnimationDefinition animationDefinition) {
         MAPPER.putIfAbsent(key, animationDefinition);
     }
 
-    public static Set<ResourceLocation> keySet() {
+    public static Set<Identifier> keySet() {
         return MAPPER.keySet();
     }
 
-    public static AnimationDefinition get(ResourceLocation key) {
+    public static AnimationDefinition get(Identifier key) {
         return MAPPER.get(key);
     }
 

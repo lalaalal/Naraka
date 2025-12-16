@@ -5,7 +5,7 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -13,9 +13,9 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class SimpleAttackSkill extends AttackSkill<SkillUsingMob> {
-    public static final ResourceLocation BASIC = createLocation("diamond_golem.basic_attack");
-    public static final ResourceLocation SWIPE = createLocation("diamond_golem.swipe_attack");
-    public static final ResourceLocation STRONG = createLocation("diamond_golem.strong_attack");
+    public static final Identifier BASIC = createLocation("diamond_golem.basic_attack");
+    public static final Identifier SWIPE = createLocation("diamond_golem.swipe_attack");
+    public static final Identifier STRONG = createLocation("diamond_golem.strong_attack");
 
     public static SimpleAttackSkill basic(SkillUsingMob mob) {
         return new SimpleAttackSkill(BASIC, mob, 45, 80, 20, 7, 36, NarakaSoundEvents.DIAMOND_GOLEM_BASIC.value());
@@ -34,7 +34,7 @@ public class SimpleAttackSkill extends AttackSkill<SkillUsingMob> {
     private final int usdDistance;
     private final SoundEvent sound;
 
-    protected SimpleAttackSkill(ResourceLocation location, SkillUsingMob mob, int duration, int cooldown, int attackTick, int attackRange, int usdDistance, SoundEvent sound) {
+    protected SimpleAttackSkill(Identifier location, SkillUsingMob mob, int duration, int cooldown, int attackTick, int attackRange, int usdDistance, SoundEvent sound) {
         super(location, mob, duration, cooldown);
         this.attackTick = attackTick;
         this.attackRange = attackRange;

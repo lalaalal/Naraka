@@ -7,10 +7,10 @@ import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.LightTailEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.AABB;
@@ -63,7 +63,7 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
         poseStack.pushPose();
         poseStack.translate(0, 0.25, 0);
         poseStack.translate(translation);
-        submitNodeCollector.submitCustomGeometry(poseStack, RenderType.lightning(), (pose, vertexConsumer) -> {
+        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
             float partSize = 1 / (float) renderState.tailPositions.size();
             for (int index = 0; index < renderState.tailPositions.size() - 1; index++) {
                 Vector3f from = renderState.tailPositions.get(index);

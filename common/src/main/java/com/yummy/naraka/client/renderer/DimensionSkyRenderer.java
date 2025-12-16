@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.SkyRenderer;
 import net.minecraft.client.renderer.state.SkyRenderState;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 @Environment(EnvType.CLIENT)
 public interface DimensionSkyRenderer extends AutoCloseable {
@@ -26,7 +26,7 @@ public interface DimensionSkyRenderer extends AutoCloseable {
         }
     };
 
-    static AbstractTexture getTexture(ResourceLocation location) {
+    static AbstractTexture getTexture(Identifier location) {
         TextureManager textureManager = Minecraft.getInstance().getTextureManager();
         AbstractTexture abstractTexture = textureManager.getTexture(location);
         abstractTexture.setUseMipmaps(false);

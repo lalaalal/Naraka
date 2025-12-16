@@ -8,15 +8,16 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
@@ -65,7 +66,7 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
         this.setupRotations(renderState, poseStack, afterimageRenderState.bodyRot, renderState.scale);
 
-        RenderType renderType = RenderType.entityTranslucent(getAfterimageTexture(renderState), true);
+        RenderType renderType = RenderTypes.entityTranslucent(getAfterimageTexture(renderState), true);
         Color color = afterimageRenderState.color;
         int light = (int) (color.alpha01() * 5);
         int packedLight = LightTexture.pack(light, light);
@@ -89,5 +90,5 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
     protected abstract M getAfterimageModel(S renderState);
 
-    protected abstract ResourceLocation getAfterimageTexture(S renderState);
+    protected abstract Identifier getAfterimageTexture(S renderState);
 }

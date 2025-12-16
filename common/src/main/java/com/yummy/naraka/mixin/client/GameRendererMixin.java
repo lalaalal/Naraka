@@ -6,7 +6,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -20,19 +20,19 @@ import javax.annotation.Nullable;
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
     @Unique
-    private static final ResourceLocation MONOCHROME_POST_EFFECT = NarakaMod.location("monochrome");
+    private static final Identifier MONOCHROME_POST_EFFECT = NarakaMod.location("monochrome");
 
     @Unique @Nullable
-    private ResourceLocation naraka$previousPostEffect;
+    private Identifier naraka$previousPostEffect;
     @Unique
     private boolean naraka$previousEffectActive;
 
-    @Shadow @Nullable private ResourceLocation postEffectId;
+    @Shadow @Nullable private Identifier postEffectId;
 
     @Shadow private boolean effectActive;
 
     @Shadow
-    protected abstract void setPostEffect(ResourceLocation postEffectId);
+    protected abstract void setPostEffect(Identifier postEffectId);
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;doEntityOutline()V", shift = At.Shift.AFTER))
     private void checkMonochromePostEffect(DeltaTracker deltaTracker, boolean renderLevel, CallbackInfo ci) {

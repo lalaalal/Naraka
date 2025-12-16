@@ -6,7 +6,7 @@ import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.NarakaPickaxe;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe.StrikeSkill;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,7 +14,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class SpawnPickaxeSkill extends AttackSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("final_herobrine.pickaxe_strike");
+    public static final Identifier LOCATION = createLocation("final_herobrine.pickaxe_strike");
 
     private static final int SHOOT_TICK = 10;
     private static final int SHOOT_DURATION = 20;

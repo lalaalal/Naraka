@@ -4,7 +4,7 @@ import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.AnimationState;
 
 import java.util.function.BiConsumer;
@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 public class SkillUsingMobRenderState extends LivingEntityRenderState implements AnimationRenderState {
     public boolean isIdle = false;
     public boolean doWalkAnimation = true;
-    private Consumer<BiConsumer<ResourceLocation, AnimationState>> animationVisitor = consumer -> {
+    private Consumer<BiConsumer<Identifier, AnimationState>> animationVisitor = consumer -> {
 
     };
 
@@ -23,7 +23,7 @@ public class SkillUsingMobRenderState extends LivingEntityRenderState implements
     }
 
     @Override
-    public void animations(BiConsumer<ResourceLocation, AnimationState> consumer) {
+    public void animations(BiConsumer<Identifier, AnimationState> consumer) {
         animationVisitor.accept(consumer);
     }
 }

@@ -5,7 +5,7 @@ import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
-    public static final ResourceLocation LOCATION = createLocation("final_herobrine.parrying");
+    public static final Identifier LOCATION = createLocation("final_herobrine.parrying");
 
     private static final int PARRYING_START_TICK = 10;
     private static final int PARRYING_END_TICK = 40;

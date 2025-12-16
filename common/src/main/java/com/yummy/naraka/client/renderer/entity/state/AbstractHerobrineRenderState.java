@@ -9,7 +9,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,7 +27,7 @@ public abstract class AbstractHerobrineRenderState extends SkillUsingMobRenderSt
     public boolean displayPickaxe = true;
     public ItemStackRenderState pickaxe = new ItemStackRenderState();
 
-    public ResourceLocation eyeTexture = NarakaTextures.HEROBRINE_EYE;
+    public Identifier eyeTexture = NarakaTextures.HEROBRINE_EYE;
     public WavingScarfRenderState scarfRenderState = new WavingScarfRenderState();
 
     private Collection<AfterimageRenderState> afterimages = List.of();
@@ -41,7 +41,7 @@ public abstract class AbstractHerobrineRenderState extends SkillUsingMobRenderSt
         scarfRenderState.extract(herobrine, getModelType(), partialTick);
     }
 
-    public ResourceLocation getFixedModelTexture() {
+    public Identifier getFixedModelTexture() {
         if (isShadow)
             return NarakaTextures.SHADOW_HEROBRINE_SCARF;
         return NarakaTextures.HEROBRINE_SCARF;

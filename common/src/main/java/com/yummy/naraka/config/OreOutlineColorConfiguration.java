@@ -2,8 +2,8 @@ package com.yummy.naraka.config;
 
 import com.yummy.naraka.util.Color;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -44,10 +44,10 @@ public class OreOutlineColorConfiguration extends DynamicConfiguration<Color> {
             if (key.equals("default_color")) {
                 defaultColor = configValue.getValue();
             } else if (key.startsWith("#")) {
-                TagKey<Block> tag = TagKey.create(Registries.BLOCK, ResourceLocation.parse(key.substring(1)));
+                TagKey<Block> tag = TagKey.create(Registries.BLOCK, Identifier.parse(key.substring(1)));
                 tagMappings.put(tag, configValue.getValue());
             } else {
-                ResourceKey<Block> block = ResourceKey.create(Registries.BLOCK, ResourceLocation.parse(key));
+                ResourceKey<Block> block = ResourceKey.create(Registries.BLOCK, Identifier.parse(key));
                 blockMappings.put(block, configValue.getValue());
             }
         });

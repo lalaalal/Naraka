@@ -8,10 +8,10 @@ import com.yummy.naraka.client.renderer.entity.state.ColoredLightningBoltRenderS
 import com.yummy.naraka.world.entity.ColoredLightningBolt;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
@@ -32,7 +32,7 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
         super.extractRenderState(entity, reusedState, partialTick);
         reusedState.seed = entity.seed;
         reusedState.color = entity.getColor();
-        reusedState.renderType = entity.isSpaceRenderType() && !NarakaClientContext.SHADER_ENABLED.getValue() ? NarakaRenderTypes.space() : RenderType.lightning();
+        reusedState.renderType = entity.isSpaceRenderType() && !NarakaClientContext.SHADER_ENABLED.getValue() ? NarakaRenderTypes.space() : RenderTypes.lightning();
     }
 
     @Override

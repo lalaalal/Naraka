@@ -7,8 +7,8 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -23,8 +23,8 @@ import net.minecraft.world.level.block.Block;
 import java.util.List;
 
 public class NarakaToolMaterials {
-    public static final ResourceLocation ENTITY_INTERACTION_RANGE_ID = NarakaMod.location("entity_interaction_range");
-    public static final ResourceLocation BLOCK_INTERACTION_RANGE_ID = NarakaMod.location("block_interaction_range");
+    public static final Identifier ENTITY_INTERACTION_RANGE_ID = NarakaMod.location("entity_interaction_range");
+    public static final Identifier BLOCK_INTERACTION_RANGE_ID = NarakaMod.location("block_interaction_range");
 
     public static final ToolMaterial LONGINUS = new ToolMaterial(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, Integer.MAX_VALUE, 12, 65, 22, NarakaItemTags.LONGINUS_TOOL_MATERIALS);
 

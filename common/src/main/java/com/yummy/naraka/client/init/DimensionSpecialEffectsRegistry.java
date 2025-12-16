@@ -4,13 +4,13 @@ import com.yummy.naraka.invoker.MethodInvoker;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 @Environment(EnvType.CLIENT)
 public abstract class DimensionSpecialEffectsRegistry {
-    public static void register(ResourceLocation location, DimensionSpecialEffects effects) {
+    public static void register(Identifier location, DimensionSpecialEffects effects) {
         MethodInvoker.of(DimensionSpecialEffectsRegistry.class, "register")
-                .withParameterTypes(ResourceLocation.class, DimensionSpecialEffects.class)
+                .withParameterTypes(Identifier.class, DimensionSpecialEffects.class)
                 .invoke(location, effects);
     }
 }

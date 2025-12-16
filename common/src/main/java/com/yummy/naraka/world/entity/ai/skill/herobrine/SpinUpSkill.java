@@ -10,7 +10,7 @@ import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -21,7 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class SpinUpSkill extends ComboSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("final_herobrine.spin_up");
+    public static final Identifier LOCATION = createLocation("final_herobrine.spin_up");
 
     public SpinUpSkill(Herobrine mob, @Nullable Skill<?> nextSkill) {
         super(LOCATION, mob, 55, 0, 1, 40, nextSkill);

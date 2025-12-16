@@ -3,7 +3,7 @@ package com.yummy.naraka.world.entity.ai.skill.herobrine;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class UppercutSkill extends ComboSkill<AbstractHerobrine> {
-    public static final ResourceLocation LOCATION = createLocation("herobrine.uppercut");
+    public static final Identifier LOCATION = createLocation("herobrine.uppercut");
 
     public UppercutSkill(AbstractHerobrine mob, @Nullable ComboSkill<AbstractHerobrine> comboSkill) {
         super(LOCATION, mob, 35, 0, 0.1f, 15, comboSkill);

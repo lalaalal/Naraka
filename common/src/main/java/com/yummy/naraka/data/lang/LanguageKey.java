@@ -2,10 +2,10 @@ package com.yummy.naraka.data.lang;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
-import net.minecraft.Util;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -57,7 +57,7 @@ public final class LanguageKey {
         Optional<ResourceKey<ReinforcementEffect>> key = reinforcementEffect.unwrapKey();
         if (key.isEmpty())
             throw new IllegalStateException("Resource key doesn't exists : " + reinforcementEffect);
-        ResourceLocation id = key.get().location();
+        Identifier id = key.get().location();
         return Util.makeDescriptionId("reinforcement_effect", id);
     }
 
@@ -94,13 +94,13 @@ public final class LanguageKey {
         return "message.naraka.ore_see_through." + state;
     }
 
-    public static String animation(ResourceLocation animationLocation) {
+    public static String animation(Identifier animationLocation) {
         return "animation." + animationLocation.getNamespace() + "." + animationLocation.getPath()
                 .replaceAll("animation/", "")
                 .replaceAll("/", ".");
     }
 
-    public static String skill(ResourceLocation skillLocation) {
+    public static String skill(Identifier skillLocation) {
         return "skill." + skillLocation.getNamespace() + "." + skillLocation.getPath().replaceAll("skill/", "");
     }
 }

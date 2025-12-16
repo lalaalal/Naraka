@@ -7,7 +7,7 @@ import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import snownee.jade.api.EntityAccessor;
@@ -20,7 +20,7 @@ public class NarakaEntityDataProvider implements IEntityComponentProvider {
     public static final NarakaEntityDataProvider INSTANCE = new NarakaEntityDataProvider();
 
     @Override
-    public ResourceLocation getUid() {
+    public Identifier getUid() {
         return NarakaJadeProviderComponents.ENTITY_DATA.location;
     }
 

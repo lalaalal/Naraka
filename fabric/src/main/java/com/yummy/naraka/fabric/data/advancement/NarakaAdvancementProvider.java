@@ -19,8 +19,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -59,7 +59,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         return NarakaMod.MOD_ID + ':' + path;
     }
 
-    public ResourceKey<Recipe<?>> recipe(ResourceLocation location) {
+    public ResourceKey<Recipe<?>> recipe(Identifier location) {
         return ResourceKey.create(Registries.RECIPE, location);
     }
 
@@ -152,7 +152,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder soulInfusedMaterials = task(purifiedSoulMetal, NarakaItems.PURIFIED_SOUL_SHARD.get(), AdvancementNarakaComponents.SOUL_INFUSED_MATERIALS,
                 builder -> {
                     NarakaItems.forEachSoulInfusedItemHolder(item -> {
-                        ResourceLocation recipeLocation = item.unwrapKey().orElseThrow().location();
+                        Identifier recipeLocation = item.unwrapKey().orElseThrow().location();
                         builder.addCriterion("craft_" + recipeLocation.getPath(),
                                 RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(recipeLocation))
                         );

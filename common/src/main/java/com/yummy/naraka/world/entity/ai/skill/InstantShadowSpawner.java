@@ -2,7 +2,7 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -20,11 +20,11 @@ public interface InstantShadowSpawner {
 
     Optional<ShadowHerobrine> get();
 
-    default InstantShadowSpawner spawnAndUseSkill(Level level, Herobrine herobrine, ResourceLocation skill) {
+    default InstantShadowSpawner spawnAndUseSkill(Level level, Herobrine herobrine, Identifier skill) {
         return this.spawn(level, herobrine).useSkill(skill);
     }
 
-    default InstantShadowSpawner useSkill(ResourceLocation skill) {
+    default InstantShadowSpawner useSkill(Identifier skill) {
         get().filter(ShadowHerobrine::isAlive)
                 .ifPresent(shadowHerobrine -> shadowHerobrine.useSkill(skill));
         return this;

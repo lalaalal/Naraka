@@ -10,24 +10,25 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
-import java.util.Set;
+import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
     private final Model<Unit> model;
-    private final ResourceLocation texture;
+    private final Identifier texture;
 
-    public SpearSpecialRenderer(Model<Unit> model, ResourceLocation texture) {
+    public SpearSpecialRenderer(Model<Unit> model, Identifier texture) {
         this.model = model;
         this.texture = texture;
     }
@@ -49,7 +50,7 @@ public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
     }
 
     @Override
-    public void getExtents(Set<Vector3f> output) {
+    public void getExtents(Consumer<Vector3fc> output) {
         PoseStack poseStack = new PoseStack();
         poseStack.scale(1, -1, -1);
         model.root().getExtentsForGui(poseStack, output);
@@ -57,23 +58,23 @@ public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
 
     @Environment(EnvType.CLIENT)
     public record Unbaked(ModelLayerLocation modelLayer,
-                          ResourceLocation texture) implements SpecialModelRenderer.Unbaked {
+                          Identifier texture) implements SpecialModelRenderer.Unbaked {
         public static final MapCodec<Unbaked> CODEC = RecordCodecBuilder.mapCodec(
                 instance -> instance.group(
-                        ResourceLocation.CODEC.fieldOf("model_location").forGetter(unbaked -> unbaked.modelLayer.model()),
+                        Identifier.CODEC.fieldOf("model_location").forGetter(unbaked -> unbaked.modelLayer.model()),
                         PrimitiveCodec.STRING.fieldOf("layer").forGetter(unbaked -> unbaked.modelLayer.layer()),
-                        ResourceLocation.CODEC.fieldOf("texture").forGetter(unbaked -> unbaked.texture)
+                        Identifier.CODEC.fieldOf("texture").forGetter(unbaked -> unbaked.texture)
                 ).apply(instance, Unbaked::new)
         );
 
-        private Unbaked(ResourceLocation model, String layer, ResourceLocation texture) {
+        private Unbaked(Identifier model, String layer, Identifier texture) {
             this(new ModelLayerLocation(model, layer), texture);
         }
 
         @Override
         public SpecialModelRenderer<?> bake(BakingContext context) {
             ModelPart root = context.entityModelSet().bakeLayer(modelLayer);
-            Model<Unit> model = new Model.Simple(root, RenderType::entityCutout);
+            Model<Unit> model = new Model.Simple(root, RenderTypes::entityCutout);
             return new SpearSpecialRenderer(model, texture);
         }
 

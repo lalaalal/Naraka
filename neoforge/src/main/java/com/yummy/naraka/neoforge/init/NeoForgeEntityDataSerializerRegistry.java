@@ -4,13 +4,13 @@ import com.yummy.naraka.init.EntityDataSerializerRegistry;
 import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.neoforge.NarakaEventBus;
 import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 public final class NeoForgeEntityDataSerializerRegistry implements NarakaEventBus {
     @MethodProxy(EntityDataSerializerRegistry.class)
-    public static void register(ResourceLocation name, EntityDataSerializer<?> serializer) {
+    public static void register(Identifier name, EntityDataSerializer<?> serializer) {
         NARAKA_BUS.addListener(RegisterEvent.class, event -> {
             event.register(NeoForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, name, () -> serializer);
         });

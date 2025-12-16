@@ -4,7 +4,7 @@ import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Collection;
 
 public class StigmatizeEntitiesSkill extends Skill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("herobrine.stigmatize_entities");
+    public static final Identifier LOCATION = createLocation("herobrine.stigmatize_entities");
 
     public StigmatizeEntitiesSkill(Herobrine mob) {
         super(LOCATION, mob, Integer.MAX_VALUE, 0);

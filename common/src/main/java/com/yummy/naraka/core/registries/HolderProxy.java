@@ -3,8 +3,8 @@ package com.yummy.naraka.core.registries;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,7 +22,7 @@ public class HolderProxy<T, V extends T> extends Holder.Reference<T> implements 
     @Nullable
     private Holder<T> holder;
 
-    public HolderProxy(Registry<T> registry, ResourceLocation name) {
+    public HolderProxy(Registry<T> registry, Identifier name) {
         super(Type.STAND_ALONE, registry, ResourceKey.create(registry.key(), name), null);
     }
 

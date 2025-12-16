@@ -2,7 +2,7 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.SkillUsingMob;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -21,15 +21,15 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T
     protected int shieldCooldown = 0;
     protected int shieldDamage = 0;
 
-    protected AttackSkill(ResourceLocation location, T mob, int duration, int cooldown, @Nullable Skill<?> linkedSkill) {
+    protected AttackSkill(Identifier location, T mob, int duration, int cooldown, @Nullable Skill<?> linkedSkill) {
         super(location, mob, duration, cooldown, linkedSkill);
     }
 
-    protected AttackSkill(ResourceLocation location, T mob, int duration, int cooldown) {
+    protected AttackSkill(Identifier location, T mob, int duration, int cooldown) {
         super(location, mob, duration, cooldown);
     }
 
-    protected AttackSkill(ResourceLocation location, T mob, int duration, int cooldown, int shieldCooldown, int shieldDamage) {
+    protected AttackSkill(Identifier location, T mob, int duration, int cooldown, int shieldCooldown, int shieldDamage) {
         super(location, mob, duration, cooldown);
         this.shieldCooldown = shieldCooldown;
         this.shieldDamage = shieldDamage;

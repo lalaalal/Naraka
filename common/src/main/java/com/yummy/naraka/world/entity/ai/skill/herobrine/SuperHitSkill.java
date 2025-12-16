@@ -6,7 +6,7 @@ import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 public class SuperHitSkill extends ComboSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("herobrine.super_hit");
+    public static final Identifier LOCATION = createLocation("herobrine.super_hit");
     private int onGroundTick = 0;
     private final Set<LivingEntity> hitEntities = new HashSet<>();
 

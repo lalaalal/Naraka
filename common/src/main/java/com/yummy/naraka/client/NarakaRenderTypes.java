@@ -2,88 +2,52 @@ package com.yummy.naraka.client;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.Util;
-import net.minecraft.client.renderer.RenderStateShard;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.AbstractEndPortalRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.rendertype.RenderSetup;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.Util;
 
 import java.util.function.Function;
 
 @Environment(EnvType.CLIENT)
 public final class NarakaRenderTypes {
-    private static final Function<ResourceLocation, RenderType> LONGINUS_CUTOUT = Util.memoize(
-            texture -> RenderType.create(
-                    "longinus_cutout",
-                    1536,
-                    false,
-                    false,
-                    NarakaRenderPipelines.LONGINUS_CUTOUT,
-                    RenderType.CompositeState.builder()
-                            .setTextureState(
-                                    RenderStateShard.MultiTextureStateShard.builder()
-                                            .add(AbstractEndPortalRenderer.END_SKY_LOCATION, false)
-                                            .add(NarakaTextures.LONGINUS, false)
-                                            .add(texture, false)
-                                            .build()
-                            )
-                            .createCompositeState(false)
-            )
-    );
+    private static final Function<Identifier, RenderType> LONGINUS_CUTOUT = Util.memoize(texture -> RenderType.create(
+            "longinus_cutout",
+            RenderSetup.builder(NarakaRenderPipelines.LONGINUS_CUTOUT)
+                    .withTexture("Sampler0", AbstractEndPortalRenderer.END_SKY_LOCATION)
+                    .withTexture("Sampler1", NarakaTextures.LONGINUS)
+                    .withTexture("Sampler2", texture)
+                    .createRenderSetup()
+    ));
 
     private static final RenderType LONGINUS = RenderType.create(
             "longinus",
-            1536,
-            false,
-            false,
-            NarakaRenderPipelines.LONGINUS,
-            RenderType.CompositeState.builder()
-                    .setTextureState(
-                            RenderStateShard.MultiTextureStateShard.builder()
-                                    .add(AbstractEndPortalRenderer.END_SKY_LOCATION, false)
-                                    .add(NarakaTextures.LONGINUS, false)
-                                    .build()
-                    )
-                    .createCompositeState(false)
+            RenderSetup.builder(NarakaRenderPipelines.LONGINUS)
+                    .withTexture("Sampler0", AbstractEndPortalRenderer.END_SKY_LOCATION)
+                    .withTexture("Sampler1", NarakaTextures.LONGINUS)
+                    .createRenderSetup()
     );
 
     private static final RenderType SPACE = RenderType.create(
             "space",
-            1536,
-            false,
-            false,
-            NarakaRenderPipelines.SPACE,
-            RenderType.CompositeState.builder()
-                    .setTextureState(
-                            RenderStateShard.MultiTextureStateShard.builder()
-                                    .add(NarakaTextures.SPACE, false)
-                                    .build()
-                    )
-                    .createCompositeState(false)
+            RenderSetup.builder(NarakaRenderPipelines.SPACE)
+                    .withTexture("Sampler0", NarakaTextures.SPACE)
+                    .createRenderSetup()
     );
 
-    private static final Function<ResourceLocation, RenderType> SPACE_CUTOUT = Util.memoize(
-            texture -> RenderType.create(
-                    "space_cutout",
-                    1536,
-                    false,
-                    false,
-                    NarakaRenderPipelines.SPACE_CUTOUT,
-                    RenderType.CompositeState.builder()
-                            .setTextureState(
-                                    RenderStateShard.MultiTextureStateShard.builder()
-                                            .add(NarakaTextures.SPACE, false)
-                                            .add(texture, false)
-                                            .build()
-                            )
-                            .createCompositeState(false)
-            ));
+    private static final Function<Identifier, RenderType> SPACE_CUTOUT = Util.memoize(texture -> RenderType.create(
+            "space_cutout",
+            RenderSetup.builder(NarakaRenderPipelines.SPACE_CUTOUT)
+                    .withTexture("Sampler0", NarakaTextures.SPACE)
+                    .createRenderSetup()
+    ));
 
     public static RenderType longinus() {
         return LONGINUS;
     }
 
-    public static RenderType longinusCutout(ResourceLocation texture) {
+    public static RenderType longinusCutout(Identifier texture) {
         return LONGINUS_CUTOUT.apply(texture);
     }
 
@@ -91,7 +55,7 @@ public final class NarakaRenderTypes {
         return SPACE;
     }
 
-    public static RenderType spaceCutout(ResourceLocation texture) {
+    public static RenderType spaceCutout(Identifier texture) {
         return SPACE_CUTOUT.apply(texture);
     }
 

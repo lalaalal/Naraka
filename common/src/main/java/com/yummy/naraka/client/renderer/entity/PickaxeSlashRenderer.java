@@ -10,9 +10,9 @@ import com.yummy.naraka.world.entity.PickaxeSlash;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
@@ -50,7 +50,7 @@ public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash, 
         poseStack.mulPose(Axis.YN.rotationDegrees(renderState.yRot));
         poseStack.rotateAround(Axis.ZN.rotationDegrees(renderState.zRot), 0, 0.5f, 0);
         poseStack.translate(0, 0, -0.25);
-        submitNodeCollector.order(1).submitCustomGeometry(poseStack, RenderType.entityTranslucent(NarakaTextures.PICKAXE_SLASH), (pose, vertexConsumer) -> {
+        submitNodeCollector.order(1).submitCustomGeometry(poseStack, RenderTypes.entityTranslucent(NarakaTextures.PICKAXE_SLASH), (pose, vertexConsumer) -> {
             NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, renderState.color, Direction.Axis.X);
         });
         poseStack.popPose();

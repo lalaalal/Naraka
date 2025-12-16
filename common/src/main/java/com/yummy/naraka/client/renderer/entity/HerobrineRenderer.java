@@ -16,12 +16,13 @@ import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import com.yummy.naraka.world.entity.data.BeamEffectsHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
@@ -89,7 +90,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
     }
 
     private RenderType getChzzkRenderType(HerobrineRenderState renderState, float uMultiplier, float vMultiplier) {
-        return RenderType.energySwirl(NarakaTextures.LONGINUS, (renderState.ageInTicks * uMultiplier) % 1, (renderState.ageInTicks * vMultiplier) % 1);
+        return RenderTypes.energySwirl(NarakaTextures.LONGINUS, (renderState.ageInTicks * uMultiplier) % 1, (renderState.ageInTicks * vMultiplier) % 1);
     }
 
     private void submitChzzk(HerobrineRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, RenderType renderType, int order, int tickOffset) {
@@ -120,7 +121,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
     }
 
     @Override
-    public ResourceLocation getTextureLocation(HerobrineRenderState renderState) {
+    public Identifier getTextureLocation(HerobrineRenderState renderState) {
         if (renderState.finalModel)
             return NarakaTextures.FINAL_HEROBRINE;
         return NarakaTextures.HEROBRINE;
@@ -134,7 +135,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
     }
 
     @Override
-    protected ResourceLocation getAfterimageTexture(HerobrineRenderState renderState) {
+    protected Identifier getAfterimageTexture(HerobrineRenderState renderState) {
         if (renderState.finalModel)
             return NarakaTextures.FINAL_HEROBRINE;
         return NarakaTextures.HEROBRINE_AFTERIMAGE;
