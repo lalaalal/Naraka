@@ -1,7 +1,7 @@
 package com.yummy.naraka.core.component;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.advancements.critereon.SingleComponentItemPredicate;
+import net.minecraft.advancements.criterion.SingleComponentItemPredicate;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.item.ItemStack;
 

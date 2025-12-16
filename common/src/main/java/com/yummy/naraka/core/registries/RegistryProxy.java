@@ -35,13 +35,13 @@ public interface RegistryProxy<T> {
     @SuppressWarnings("unchecked")
     @Nullable
     default Registry<T> getRegistry() {
-        return (Registry<T>) BuiltInRegistries.REGISTRY.getValue(getRegistryKey().location());
+        return (Registry<T>) BuiltInRegistries.REGISTRY.getValue(getRegistryKey().identifier());
     }
 
     default Registry<T> getRegistryOrThrow() {
         Registry<T> registry = getRegistry();
         if (registry == null)
-            throw new IllegalStateException("No registry found for " + getRegistryKey().location());
+            throw new IllegalStateException("No registry found for " + getRegistryKey().identifier());
         return registry;
     }
 
