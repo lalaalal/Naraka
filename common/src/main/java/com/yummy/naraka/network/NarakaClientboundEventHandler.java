@@ -9,7 +9,6 @@ import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.sounds.MusicInfo;
 import net.minecraft.sounds.Music;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -39,7 +38,7 @@ public class NarakaClientboundEventHandler {
     );
 
     private static final Music[] HEROBRINE_MUSIC = new Music[]{
-            null,
+            NarakaMusics.HEROBRINE_PHASE_1,
             NarakaMusics.HEROBRINE_PHASE_1,
             NarakaMusics.HEROBRINE_PHASE_2,
             NarakaMusics.HEROBRINE_PHASE_3,
@@ -67,7 +66,7 @@ public class NarakaClientboundEventHandler {
     private static void updateHerobrineMusic(Entity entity, final int phase) {
         BossMusicPlayer bossMusicPlayer = NarakaMusics.bossMusicPlayer();
         if (0 < phase && phase <= 4) {
-            bossMusicPlayer.naraka$playBossMusic(new MusicInfo(HEROBRINE_MUSIC[phase]));
+            bossMusicPlayer.naraka$playBossMusic(HEROBRINE_MUSIC[phase]);
             NarakaClientContext.HEROBRINE_MUSIC_SOURCES.getValue()
                     .add(entity.getUUID());
         }
