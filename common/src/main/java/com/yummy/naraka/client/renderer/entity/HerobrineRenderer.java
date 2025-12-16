@@ -12,7 +12,7 @@ import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.client.renderer.entity.state.HerobrineRenderState;
 import com.yummy.naraka.world.entity.BeamEffect;
 import com.yummy.naraka.world.entity.Herobrine;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import com.yummy.naraka.world.entity.data.BeamEffectsHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -57,7 +57,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
         renderState.phase = herobrine.getPhase();
         renderState.hasRedOverlay = renderState.hasRedOverlay && !herobrine.isDeadOrDying();
         renderState.deathTime = -1;
-        renderState.dead = herobrine.getCurrentAnimation().equals(HerobrineAnimationLocations.CHZZK);
+        renderState.dead = herobrine.getCurrentAnimation().equals(HerobrineAnimationIdentifiers.CHZZK);
         renderState.chzzkAnimationState = herobrine.chzzkAnimationState;
         List<BeamEffect> beamEffects = BeamEffectsHelper.get(herobrine);
         renderState.updateBeamEffects(beamEffects, renderState.ageInTicks);

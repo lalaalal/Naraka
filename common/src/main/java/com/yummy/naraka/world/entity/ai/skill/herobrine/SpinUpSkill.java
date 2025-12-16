@@ -8,7 +8,7 @@ import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -49,7 +49,7 @@ public class SpinUpSkill extends ComboSkill<Herobrine> {
         runBetween(20, 25, () -> hurtEntities(level, this::checkTarget, 3));
         runAt(27, this::stopMoving);
 
-        runAt(40, () -> mob.setAnimation(HerobrineAnimationLocations.FINAL_COMBO_ATTACK_2_RETURN));
+        runAt(40, () -> mob.setAnimation(HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_2_RETURN));
     }
 
     private boolean checkTarget(LivingEntity target) {

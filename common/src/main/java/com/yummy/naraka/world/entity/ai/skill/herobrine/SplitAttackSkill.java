@@ -8,7 +8,7 @@ import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.InstantShadowSpawner;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -55,7 +55,7 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
         runAt(20, this::stopMoving);
         runAt(25, () -> firstShadowSpawner.spawnAndUseSkill(level, mob, SimpleComboAttackSkill.FINAL_COMBO_ATTACK_1));
         run(at(35) && hasLinkedSkill(), () -> secondShadowSpawner.spawnAndUseSkill(level, mob, SimpleComboAttackSkill.FINAL_COMBO_ATTACK_2));
-        runAt(45, () -> mob.setAnimation(HerobrineAnimationLocations.FINAL_COMBO_ATTACK_1_RETURN));
+        runAt(45, () -> mob.setAnimation(HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_1_RETURN));
     }
 
     private boolean checkTarget(LivingEntity target) {

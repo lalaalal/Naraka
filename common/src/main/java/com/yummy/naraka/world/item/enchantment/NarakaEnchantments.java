@@ -24,7 +24,7 @@ public class NarakaEnchantments {
                 Enchantment.enchantment(
                                 Enchantment.definition(
                                         itemHolderGetter.getOrThrow(ItemTags.SHARP_WEAPON_ENCHANTABLE),
-                                        itemHolderGetter.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                        itemHolderGetter.getOrThrow(ItemTags.SWORDS),
                                         10,
                                         5,
                                         Enchantment.dynamicCost(1, 11),
@@ -35,7 +35,7 @@ public class NarakaEnchantments {
                         )
                         .exclusiveWith(enchantmentHolderGetter.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
                         .withEffect(EnchantmentEffectComponents.DAMAGE, new AddValue(LevelBasedValue.perLevel(1.0F, 0.5F)))
-                        .build(Enchantments.SHARPNESS.location())
+                        .build(Enchantments.SHARPNESS.identifier())
         );
         context.register(
                 Enchantments.LOYALTY,
@@ -54,7 +54,7 @@ public class NarakaEnchantments {
                                 EnchantmentEffectComponents.TRIDENT_RETURN_ACCELERATION,
                                 new AddValue(LevelBasedValue.perLevel(1.0F))
                         )
-                        .build(Enchantments.LOYALTY.location())
+                        .build(Enchantments.LOYALTY.identifier())
         );
     }
 }

@@ -51,8 +51,8 @@ public class NarakaTrimMaterials {
             Style style,
             Map<ResourceKey<EquipmentAsset>, String> overrides
     ) {
-        MaterialAssetGroup assets = MaterialAssetGroup.create(resourceKey.location().getPath(), overrides);
-        Component component = Component.translatable(Util.makeDescriptionId("trim_material", resourceKey.location()))
+        MaterialAssetGroup assets = MaterialAssetGroup.create(resourceKey.identifier().getPath(), overrides);
+        Component component = Component.translatable(Util.makeDescriptionId("trim_material", resourceKey.identifier()))
                 .withStyle(style);
         TrimMaterial trimMaterial = new TrimMaterial(assets, component);
         bootstrapContext.register(resourceKey, trimMaterial);

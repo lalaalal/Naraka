@@ -2,7 +2,7 @@ package com.yummy.naraka.client.animation.herobrine;
 
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.animation.NarakaInterpolations;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
@@ -19,14 +19,14 @@ import net.minecraft.client.animation.KeyframeAnimations;
 @Environment(EnvType.CLIENT)
 public class HerobrineAnimation {
     public static void initialize() {
-        AnimationMapper.register(HerobrineAnimationLocations.WALKING, WALKING);
-        AnimationMapper.register(HerobrineAnimationLocations.BLOCKING, BLOCKING);
-        AnimationMapper.register(HerobrineAnimationLocations.STAGGERING, STAGGERING);
-        AnimationMapper.register(HerobrineAnimationLocations.STAGGERING_PHASE_2, STAGGERING_PHASE_2);
-        AnimationMapper.register(HerobrineAnimationLocations.ENTER_PHASE_2, PHASE_2);
-        AnimationMapper.register(HerobrineAnimationLocations.PREPARE_PHASE_3, PREPARE_PHASE_3);
-        AnimationMapper.register(HerobrineAnimationLocations.IDLE, IDLE);
-        AnimationMapper.register(HerobrineAnimationLocations.SHADOW_SUMMONED, SHADOW_SUMMONED);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.WALKING, WALKING);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.BLOCKING, BLOCKING);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.STAGGERING, STAGGERING);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.STAGGERING_PHASE_2, STAGGERING_PHASE_2);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.ENTER_PHASE_2, PHASE_2);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.PREPARE_PHASE_3, PREPARE_PHASE_3);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.IDLE, IDLE);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.SHADOW_SUMMONED, SHADOW_SUMMONED);
     }
 
     public static final AnimationDefinition WALKING = AnimationDefinition.Builder.withLength(2.0F).looping()

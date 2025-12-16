@@ -7,9 +7,9 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.Herobrine;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.advancements.critereon.LocationPredicate;
+import net.minecraft.advancements.criterion.LocationPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
@@ -121,7 +121,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         BlockPos floorPos = NarakaUtils.findFloor(level, pos);
         Herobrine herobrine = new Herobrine(level, new Vec3(floorPos.getX() + 0.5, floorPos.getY() + 1, floorPos.getZ() + 0.5));
         herobrine.setSpawnPosition(pos);
-        herobrine.setAnimation(HerobrineAnimationLocations.BLOCKING);
+        herobrine.setAnimation(HerobrineAnimationIdentifiers.BLOCKING);
         level.addFreshEntity(herobrine);
 
         LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);

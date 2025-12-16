@@ -2,7 +2,7 @@ package com.yummy.naraka.client.animation;
 
 import com.yummy.naraka.client.animation.herobrine.*;
 import com.yummy.naraka.client.animation.naraka_pickaxe.NarakaPickaxeAnimation;
-import com.yummy.naraka.world.entity.animation.AnimationLocations;
+import com.yummy.naraka.world.entity.animation.AnimationIdentifiers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationDefinition;
@@ -41,6 +41,6 @@ public class AnimationMapper {
 
         DiamondGolemAnimation.initialize();
 
-        AnimationLocations.checkMappings(MAPPER.keySet());
+        AnimationIdentifiers.checkMappings(MAPPER.keySet());
     }
 }

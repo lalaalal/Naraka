@@ -1,6 +1,6 @@
 package com.yummy.naraka.client.animation;
 
-import com.yummy.naraka.world.entity.animation.DiamondGolemAnimationLocations;
+import com.yummy.naraka.world.entity.animation.DiamondGolemAnimationIdentifiers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
@@ -11,12 +11,12 @@ import net.minecraft.client.animation.KeyframeAnimations;
 @Environment(EnvType.CLIENT)
 public class DiamondGolemAnimation {
     public static void initialize() {
-        AnimationMapper.register(DiamondGolemAnimationLocations.IDLE, IDLE);
-        AnimationMapper.register(DiamondGolemAnimationLocations.WALKING, WALKING);
-        AnimationMapper.register(DiamondGolemAnimationLocations.BASIC_ATTACK, BASIC_ATTACK);
-        AnimationMapper.register(DiamondGolemAnimationLocations.SWIPE_ATTACK, SWIPE_ATTACK);
-        AnimationMapper.register(DiamondGolemAnimationLocations.STRONG_ATTACK, STRONG_ATTACK);
-        AnimationMapper.register(DiamondGolemAnimationLocations.NOVELTY, NOVELTY);
+        AnimationMapper.register(DiamondGolemAnimationIdentifiers.IDLE, IDLE);
+        AnimationMapper.register(DiamondGolemAnimationIdentifiers.WALKING, WALKING);
+        AnimationMapper.register(DiamondGolemAnimationIdentifiers.BASIC_ATTACK, BASIC_ATTACK);
+        AnimationMapper.register(DiamondGolemAnimationIdentifiers.SWIPE_ATTACK, SWIPE_ATTACK);
+        AnimationMapper.register(DiamondGolemAnimationIdentifiers.STRONG_ATTACK, STRONG_ATTACK);
+        AnimationMapper.register(DiamondGolemAnimationIdentifiers.NOVELTY, NOVELTY);
     }
 
     public static final AnimationDefinition IDLE = AnimationDefinition.Builder.withLength(6.1667F).looping()

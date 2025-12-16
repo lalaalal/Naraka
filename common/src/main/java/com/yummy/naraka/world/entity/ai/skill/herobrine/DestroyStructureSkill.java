@@ -8,7 +8,7 @@ import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -55,7 +55,7 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        runAt(25, () -> mob.playStaticAnimation(HerobrineAnimationLocations.PREPARE_PHASE_3, 95, false, true));
+        runAt(25, () -> mob.playStaticAnimation(HerobrineAnimationIdentifiers.PREPARE_PHASE_3, 95, false, true));
 
         runAt(80, () -> mob.setNoGravity(true));
         runAt(85, mob::startWhiteScreen);
@@ -140,7 +140,7 @@ public class DestroyStructureSkill extends AttackSkill<Herobrine> {
         mob.startHerobrineSky();
         mob.sendMusic(3);
         mob.setFinalModel(true);
-        mob.playStaticAnimation(HerobrineAnimationLocations.ENTER_PHASE_3, 120, false, true);
+        mob.playStaticAnimation(HerobrineAnimationIdentifiers.ENTER_PHASE_3, 120, false, true);
         Skill<?> stormSkill = mob.getSkillManager().getSkill(StormSkill.LOCATION);
         if (stormSkill != null)
             stormSkill.setCooldown();

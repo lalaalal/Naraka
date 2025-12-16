@@ -4,7 +4,7 @@ import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -58,9 +58,9 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         run(succeed, () -> handleSucceed(level));
-        run(at(PARRYING_END_TICK) && !succeed, () -> mob.setAnimation(HerobrineAnimationLocations.PARRYING_FAILED));
+        run(at(PARRYING_END_TICK) && !succeed, () -> mob.setAnimation(HerobrineAnimationIdentifiers.PARRYING_FAILED));
         if (between(PARRYING_START_TICK, PARRYING_END_TICK) && hurtJustNow() && !succeed && mob.getLastHurtByMob() != null) {
-            mob.setAnimation(HerobrineAnimationLocations.PARRYING_SUCCEED);
+            mob.setAnimation(HerobrineAnimationIdentifiers.PARRYING_SUCCEED);
             hurtDamage = originalHealth - mob.getHealth();
             mob.heal(hurtDamage * 2);
             succeed = true;

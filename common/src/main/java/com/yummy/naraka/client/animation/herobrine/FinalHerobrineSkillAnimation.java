@@ -1,7 +1,7 @@
 package com.yummy.naraka.client.animation.herobrine;
 
 import com.yummy.naraka.client.animation.AnimationMapper;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
@@ -9,14 +9,14 @@ import net.minecraft.client.animation.KeyframeAnimations;
 
 public class FinalHerobrineSkillAnimation {
     public static void initialize() {
-        AnimationMapper.register(HerobrineAnimationLocations.STORM, STORM);
-        AnimationMapper.register(HerobrineAnimationLocations.CARPET_BOMBING, CARPET_BOMBING);
-        AnimationMapper.register(HerobrineAnimationLocations.EXPLOSION, EXPLOSION);
-        AnimationMapper.register(HerobrineAnimationLocations.EARTH_SHOCK, EARTH_SHOCK);
-        AnimationMapper.register(HerobrineAnimationLocations.PARRYING, PARRYING);
-        AnimationMapper.register(HerobrineAnimationLocations.PARRYING_SUCCEED, PARRYING_SUCCEED);
-        AnimationMapper.register(HerobrineAnimationLocations.PARRYING_FAILED, PARRYING_FAILED);
-        AnimationMapper.register(HerobrineAnimationLocations.PICKAXE_STRIKE, PICKAXE_STRIKE);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.STORM, STORM);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.CARPET_BOMBING, CARPET_BOMBING);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.EXPLOSION, EXPLOSION);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.EARTH_SHOCK, EARTH_SHOCK);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.PARRYING, PARRYING);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.PARRYING_SUCCEED, PARRYING_SUCCEED);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.PARRYING_FAILED, PARRYING_FAILED);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.PICKAXE_STRIKE, PICKAXE_STRIKE);
     }
 
     public static final AnimationDefinition STORM = AnimationDefinition.Builder.withLength(4.0F)

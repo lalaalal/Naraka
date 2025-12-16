@@ -8,7 +8,6 @@ import com.yummy.naraka.client.renderer.special.SoulStabilizerSpecialRenderer;
 import com.yummy.naraka.client.renderer.special.SpearOfLonginusSpecialRenderer;
 import com.yummy.naraka.client.renderer.special.SpearSpecialRenderer;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
-import com.yummy.naraka.world.block.EbonyLogBlock;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
@@ -118,35 +117,6 @@ public class NarakaModelProvider extends FabricModelProvider {
         TextureMapping textureMapping = TextureMapping.cross(TextureMapping.getBlockTexture(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get(), model_name));
         Identifier model = ModelTemplates.POINTED_DRIPSTONE.createWithSuffix(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get(), model_name, textureMapping, generator.modelOutput);
         return BlockModelGenerators.plainVariant(model);
-    }
-
-    private static void createEbonyLog(BlockModelGenerators generator, Block block) {
-        Identifier model = ModelTemplates.CUBE_COLUMN.create(block, TextureMapping.logColumn(block), generator.modelOutput);
-        MultiVariant plainVariant = BlockModelGenerators.plainVariant(model);
-        generator.blockStateOutput.accept(MultiVariantGenerator
-                .dispatch(block)
-                .with(createEbonyLog(plainVariant, createEbonyBranchModel(generator, block)))
-        );
-    }
-
-    private static Identifier createEbonyBranchModel(BlockModelGenerators generator, Block block) {
-        return TexturedModel.CUBE.createWithSuffix(block, "_branch", generator.modelOutput);
-    }
-
-    private static PropertyDispatch<MultiVariant> createEbonyLog(MultiVariant plainVariant, Identifier branchModel) {
-        return PropertyDispatch.initial(BlockStateProperties.AXIS, EbonyLogBlock.BRANCH)
-                .generate((axis, branch) -> {
-                    if (branch) {
-                        return BlockModelGenerators.plainVariant(branchModel);
-                    } else {
-                        return switch (axis) {
-                            case Y -> plainVariant;
-                            case Z -> plainVariant.with(BlockModelGenerators.X_ROT_90);
-                            case X ->
-                                    plainVariant.with(BlockModelGenerators.X_ROT_90).with(BlockModelGenerators.Y_ROT_90);
-                        };
-                    }
-                });
     }
 
     private static PropertyDispatch<MultiVariant> createIntegerModelDispatch(IntegerProperty property, Identifier[] models) {

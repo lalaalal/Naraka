@@ -29,7 +29,7 @@ public class NarakaJukeboxSongs {
     }
 
     private static Component component(ResourceKey<JukeboxSong> key) {
-        return Component.translatable(Util.makeDescriptionId("jukebox_song", key.location()));
+        return Component.translatable(Util.makeDescriptionId("jukebox_song", key.identifier()));
     }
 
     private static ResourceKey<JukeboxSong> create(String name) {

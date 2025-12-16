@@ -6,7 +6,7 @@ import net.minecraft.resources.Identifier;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AnimationLocations {
+public class AnimationIdentifiers {
     private static final Set<Identifier> REGISTERED = new HashSet<>();
 
     public static Identifier create(String entity, String name) {
@@ -18,7 +18,7 @@ public class AnimationLocations {
     public static void checkMappings(Set<Identifier> locations) {
         REGISTERED.stream()
                 .filter(location -> !locations.contains(location))
-                .forEach(AnimationLocations::warn);
+                .forEach(AnimationIdentifiers::warn);
     }
 
     private static void warn(Identifier location) {

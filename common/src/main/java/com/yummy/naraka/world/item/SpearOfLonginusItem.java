@@ -15,7 +15,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 public class SpearOfLonginusItem extends SpearItem {
     public SpearOfLonginusItem(Properties properties) {
@@ -32,9 +31,9 @@ public class SpearOfLonginusItem extends SpearItem {
         return new SpearOfLonginus(level, position, stack);
     }
 
-    @Nullable
+    @Deprecated
     @Override
-    public DamageSource getDamageSource(LivingEntity entity) {
+    public DamageSource getItemDamageSource(LivingEntity entity) {
         return NarakaDamageSources.longinus(entity);
     }
 

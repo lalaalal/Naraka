@@ -44,7 +44,7 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
 
     public static AttributeModifyingEffect simple(Holder<Attribute> attribute, EquipmentSlotGroup slotGroup, Function<Integer, Integer> modifyingValueByReinforcement, boolean showInTooltip) {
         final String modifierName = attribute.unwrapKey()
-                .map(ResourceKey::location)
+                .map(ResourceKey::identifier)
                 .map(Identifier::getPath)
                 .orElse("unidentified")
                 .replaceAll(".*\\.", "");

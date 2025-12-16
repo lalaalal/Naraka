@@ -7,7 +7,7 @@ import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
 import com.yummy.naraka.world.entity.StunHelper;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
@@ -123,7 +123,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
             return;
         this.duration = tickCount + 40;
         this.failed = true;
-        mob.setAnimation(HerobrineAnimationLocations.RUSH_FAILED);
+        mob.setAnimation(HerobrineAnimationIdentifiers.RUSH_FAILED);
     }
 
     private boolean isTargetInFront(@Nullable LivingEntity target) {
@@ -153,7 +153,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
                 hurtEntity(level, target);
             level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 2, 1);
             level.sendParticles(ParticleTypes.SONIC_BOOM, mob.getX(), mob.getY() + 1, mob.getZ(), 1, 0, 0, 0, 1);
-            mob.setAnimation(HerobrineAnimationLocations.RUSH_SUCCEED);
+            mob.setAnimation(HerobrineAnimationIdentifiers.RUSH_SUCCEED);
         }
     }
 

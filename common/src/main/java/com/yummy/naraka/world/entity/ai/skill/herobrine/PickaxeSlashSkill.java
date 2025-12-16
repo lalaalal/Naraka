@@ -9,7 +9,7 @@ import com.yummy.naraka.world.entity.PickaxeSlash;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.InstantShadowSpawner;
 import com.yummy.naraka.world.entity.ai.skill.TargetSkill;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -90,7 +90,7 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
         shadowHerobrine.setPos(mob.position());
         Vec3 movement = shadowHerobrine.getLookAngle().scale(1.5);
         shadowHerobrine.setDeltaMovement(movement);
-        shadowHerobrine.setAnimation(HerobrineAnimationLocations.PHASE_3_IDLE);
+        shadowHerobrine.setAnimation(HerobrineAnimationIdentifiers.PHASE_3_IDLE);
         shadowHerobrine.setTarget(mob.getTarget());
     }
 

@@ -6,7 +6,7 @@ import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.ai.skill.herobrine.*;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.SoulType;
@@ -324,17 +324,17 @@ public class NarakaLanguageProviders {
         add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_REDSTONE), "Challenger's Blessing", "도전자의 축복");
         add(LanguageKey.mobEffect(NarakaMobEffects.GOD_BLESS), "God Bless", "신의 축복");
 
-        add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_1), "Combo Attack 1", "연계 공격 1");
-        add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_2), "Combo Attack 2", "연계 공격 2");
-        add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_3), "Combo Attack 3", "연계 공격 3");
-        add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_4), "Combo Attack 4", "연계 공격 4");
-        add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_5), "Combo Attack 5", "연계 공격 5");
-        add(LanguageKey.animation(HerobrineAnimationLocations.IDLE), "Idle", "대기");
-        add(LanguageKey.animation(HerobrineAnimationLocations.WALKING), "Walking", "걷기");
-        add(LanguageKey.animation(HerobrineAnimationLocations.PHASE_3_IDLE), "Phase 3 Idle", "3페 걷기");
-        add(LanguageKey.animation(HerobrineAnimationLocations.ENTER_PHASE_2), "Enter Phase 2", "2페 진입");
-        add(LanguageKey.animation(HerobrineAnimationLocations.ENTER_PHASE_3), "Enter Phase 3", "3페 진입");
-        add(LanguageKey.animation(HerobrineAnimationLocations.STAGGERING), "Staggering", "허약");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.COMBO_ATTACK_1), "Combo Attack 1", "연계 공격 1");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.COMBO_ATTACK_2), "Combo Attack 2", "연계 공격 2");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.COMBO_ATTACK_3), "Combo Attack 3", "연계 공격 3");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.COMBO_ATTACK_4), "Combo Attack 4", "연계 공격 4");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.COMBO_ATTACK_5), "Combo Attack 5", "연계 공격 5");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.IDLE), "Idle", "대기");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.WALKING), "Walking", "걷기");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.PHASE_3_IDLE), "Phase 3 Idle", "3페 걷기");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.ENTER_PHASE_2), "Enter Phase 2", "2페 진입");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.ENTER_PHASE_3), "Enter Phase 3", "3페 진입");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.STAGGERING), "Staggering", "허약");
 
         add(LanguageKey.skill(RushSkill.LOCATION), "Rush", "돌진");
         add(LanguageKey.skill(DashSkill.LOCATION), "Dash", "대시");

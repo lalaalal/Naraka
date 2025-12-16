@@ -4,7 +4,7 @@ import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.tags.NarakaItemTags;
-import net.minecraft.advancements.critereon.TagPredicate;
+import net.minecraft.advancements.criterion.TagPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.tags.ItemTags;

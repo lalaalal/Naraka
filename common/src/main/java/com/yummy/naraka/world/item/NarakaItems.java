@@ -6,6 +6,7 @@ import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
 import com.yummy.naraka.tags.NarakaBlockTags;
+import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -121,6 +122,7 @@ public class NarakaItems {
             properties -> new SpearItem(ToolMaterial.IRON,
                     true, 3, -3, 3,
                     properties.fireResistant()
+                            .component(DataComponents.DAMAGE_TYPE, new EitherHolder<>(NarakaDamageTypes.SPEAR))
                             .component(DataComponents.TOOL, TridentItem.createToolProperties()),
                     NarakaEntityTypes.THROWN_SPEAR
             )
@@ -130,6 +132,7 @@ public class NarakaItems {
             properties -> new SpearItem(ToolMaterial.NETHERITE,
                     true, 7, -3, 3,
                     properties.fireResistant()
+                            .component(DataComponents.DAMAGE_TYPE, new EitherHolder<>(NarakaDamageTypes.SPEAR))
                             .component(DataComponents.TOOL, TridentItem.createToolProperties()),
                     NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR
             )
@@ -139,6 +142,7 @@ public class NarakaItems {
             properties -> new SpearOfLonginusItem(properties
                     .fireResistant()
                     .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
+                    .component(DataComponents.DAMAGE_TYPE, new EitherHolder<>(NarakaDamageTypes.SPEAR_OF_LONGINUS))
                     .component(DataComponents.TOOL, TridentItem.createToolProperties())
             )
     );

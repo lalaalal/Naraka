@@ -2,7 +2,7 @@ package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.naraka_pickaxe.StrikeSkill;
-import com.yummy.naraka.world.entity.animation.NarakaPickaxeAnimationLocations;
+import com.yummy.naraka.world.entity.animation.NarakaPickaxeAnimationIdentifiers;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
@@ -44,8 +44,8 @@ public class NarakaPickaxe extends SkillUsingMob {
 
     public NarakaPickaxe(EntityType<NarakaPickaxe> entityType, Level level) {
         super(entityType, level);
-        registerAnimation(NarakaPickaxeAnimationLocations.IDLE);
-        registerSkill(this, StrikeSkill::new, NarakaPickaxeAnimationLocations.STRIKE);
+        registerAnimation(NarakaPickaxeAnimationIdentifiers.IDLE);
+        registerSkill(this, StrikeSkill::new, NarakaPickaxeAnimationIdentifiers.STRIKE);
 
         skillManager.enableOnly(List.of());
         skillManager.runOnSkillEnd(skill -> discard());
@@ -101,7 +101,7 @@ public class NarakaPickaxe extends SkillUsingMob {
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         input.read("Owner", UUIDUtil.CODEC).ifPresent(uuid -> herobrineUUID = uuid);
-        useSkill(NarakaPickaxeAnimationLocations.STRIKE);
+        useSkill(NarakaPickaxeAnimationIdentifiers.STRIKE);
     }
 
     @Override

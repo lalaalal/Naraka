@@ -3,7 +3,7 @@ package com.yummy.naraka.world.entity.ai.skill.herobrine;
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,7 +37,7 @@ public class StigmatizeEntitiesSkill extends Skill<Herobrine> {
         runBefore(40, () -> mob.setDeltaMovement(mob.getDeltaMovement().scale(0.8)));
         runAfter(39, () -> mob.setDeltaMovement(Vec3.ZERO));
         if ((tickCount - 40) % 60 == 0)
-            mob.setAnimation(HerobrineAnimationLocations.STIGMATIZE_ENTITIES);
+            mob.setAnimation(HerobrineAnimationIdentifiers.STIGMATIZE_ENTITIES);
         if ((tickCount - 57) % 60 == 0)
             stigmatize(level, 20);
     }
