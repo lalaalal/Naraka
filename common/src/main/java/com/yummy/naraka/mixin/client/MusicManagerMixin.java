@@ -6,7 +6,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.client.sounds.MusicInfo;
 import net.minecraft.client.sounds.MusicManager;
 import net.minecraft.client.sounds.SoundEngine;
 import net.minecraft.sounds.Music;
@@ -62,16 +61,13 @@ public abstract class MusicManagerMixin implements BossMusicPlayer {
     }
 
     @Override
-    public void naraka$playBossMusic(MusicInfo musicInfo) {
-        Music music = musicInfo.music();
-        if (music != null) {
-            BossMusicSoundInstance bossMusicSoundInstance = new BossMusicSoundInstance(music.event().value());
-            if (naraka$bossMusic == null) {
-                stopPlaying();
-                naraka$playBossMusicInstance(bossMusicSoundInstance);
-            } else {
-                naraka$nextMusic = bossMusicSoundInstance;
-            }
+    public void naraka$playBossMusic(Music music) {
+        BossMusicSoundInstance bossMusicSoundInstance = new BossMusicSoundInstance(music.sound().value());
+        if (naraka$bossMusic == null) {
+            stopPlaying();
+            naraka$playBossMusicInstance(bossMusicSoundInstance);
+        } else {
+            naraka$nextMusic = bossMusicSoundInstance;
         }
     }
 

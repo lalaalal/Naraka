@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -49,7 +50,7 @@ public abstract class HumanoidArmorLayerMixin<S extends HumanoidRenderState> {
 
     @Unique
     private RenderType naraka$getOutsideRenderType(WavingScarfTexture textureInfo) {
-        return RenderType.entityCutout(textureInfo.texture(false));
+        return RenderTypes.entityCutout(textureInfo.texture(false));
     }
 
     @Unique

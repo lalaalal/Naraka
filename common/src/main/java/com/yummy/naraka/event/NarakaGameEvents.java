@@ -74,7 +74,7 @@ public final class NarakaGameEvents {
     }
 
     private static void modifyLootTable(ResourceKey<LootTable> key, LootEvents.Context context) {
-        if (key.location().getPath().contains("chests")) {
+        if (key.identifier().getPath().contains("chests")) {
             context.addPool(LootPool.lootPool()
                     .when(LootItemRandomChanceCondition.randomChance(0.01f))
                     .setRolls(ConstantValue.exactly(1))

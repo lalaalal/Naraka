@@ -26,6 +26,8 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.model.BlockModelPart;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.state.BlockState;
@@ -62,7 +64,7 @@ public abstract class HiddenOreRendererMixin {
     @Shadow
     protected abstract void checkPoseStack(PoseStack poseStack);
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;addLateDebugPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/world/phys/Vec3;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lnet/minecraft/client/renderer/culling/Frustum;)V"))
+    @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;addLateDebugPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/client/renderer/state/CameraRenderState;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lorg/joml/Matrix4f;)V"))
     protected void addHiddenOres(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean bl, Camera camera, Matrix4f matrix4f, Matrix4f matrix4f2, Matrix4f matrix4f3, GpuBufferSlice gpuBufferSlice, Vector4f vector4f, boolean bl2, CallbackInfo ci, @Local FrameGraphBuilder frameGraphBuilder) {
         if (minecraft.player == null || !NarakaItemUtils.canApplyOreSeeThrough(minecraft.player) || NarakaConfig.CLIENT.disableOreSeeThrough.getValue())
             return;
@@ -112,7 +114,7 @@ public abstract class HiddenOreRendererMixin {
         ClientLevel level = minecraft.level;
         if (level == null)
             return;
-        Vec3 cameraPosition = camera.getPosition();
+        Vec3 cameraPosition = camera.position();
         BlockPos cameraBlockPos = NarakaUtils.pos(cameraPosition).offset(0, 0, -1);
         OutlineBufferSource outlineBufferSource = this.renderBuffers.outlineBufferSource();
 
@@ -131,7 +133,7 @@ public abstract class HiddenOreRendererMixin {
                 poseStack.pushPose();
                 poseStack.translate(pos.getX() - cameraPosition.x, pos.getY() - cameraPosition.y, pos.getZ() - cameraPosition.z);
 
-                RenderType renderType = RenderType.outline(NarakaTextures.LOCATION_BLOCKS);
+                RenderType renderType = RenderTypes.outline(NarakaTextures.LOCATION_BLOCKS);
                 VertexConsumer vertexConsumer = outlineBufferSource.getBuffer(renderType);
 
                 List<BlockModelPart> blockModelParts = new ArrayList<>();
