@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
@@ -43,7 +43,7 @@ public class BeamEffectLayer<S extends EntityRenderState & BeamEffectRenderState
         poseStack.pushPose();
         poseStack.scale(scale.x(), scale.y(), scale.z());
         poseStack.translate(offset.x(), offset.y(), offset.z());
-        nodeCollector.submitCustomGeometry(poseStack, RenderType.lightning(), (pose, vertexConsumer) -> {
+        nodeCollector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
             renderState.forEach(beamEffectRenderState -> {
                 for (BeamEffectRenderState.BeamEffectPart part : beamEffectRenderState.parts) {
                     Vec3 position = part.position();

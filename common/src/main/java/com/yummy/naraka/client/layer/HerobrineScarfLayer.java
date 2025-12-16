@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
@@ -46,15 +47,15 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
 
     private RenderType getOutsideRenderType(S renderState, WavingScarfTexture textureInfo) {
         if (renderState.isShadow)
-            return RenderType.entityTranslucent(textureInfo.texture(true));
-        return RenderType.entityCutout(textureInfo.texture(false));
+            return RenderTypes.entityTranslucent(textureInfo.texture(true));
+        return RenderTypes.entityCutout(textureInfo.texture(false));
     }
 
     private RenderType getInsideRenderType(S renderState, WavingScarfTexture textureInfo) {
         if (!renderState.finalModel || NarakaClientContext.SHADER_ENABLED.getValue())
             return getOutsideRenderType(renderState, textureInfo);
         if (renderState.isShadow)
-            return RenderType.entityTranslucent(textureInfo.texture(true));
+            return RenderTypes.entityTranslucent(textureInfo.texture(true));
         return NarakaRenderTypes.longinusCutout(textureInfo.texture(false));
     }
 
@@ -66,7 +67,7 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
         applyTranslateAndRotate(poseStack, getParentModel());
         int color = selectColor(renderState);
         if (renderState.getModelType() != WavingScarfRenderState.ModelType.BIG) {
-            RenderType renderType = RenderType.entitySmoothCutout(renderState.getFixedModelTexture());
+            RenderType renderType = RenderTypes.entitySmoothCutout(renderState.getFixedModelTexture());
             submitNodeCollector.submitModel(scarfModel, renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, color, null, renderState.outlineColor, null);
         }
 

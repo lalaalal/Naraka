@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 
@@ -35,7 +36,7 @@ public class ShadowHerobrineCrackLayer extends RenderLayer<ShadowHerobrineRender
             return;
         poseStack.pushPose();
         AbstractHerobrineModel<ShadowHerobrineRenderState> model = getParentModel();
-        RenderType renderType = RenderType.entityTranslucent(getTexture(renderState));
+        RenderType renderType = RenderTypes.entityTranslucent(getTexture(renderState));
         nodeCollector.submitModel(model, renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, -1, null, 0, null);
         poseStack.popPose();
     }
