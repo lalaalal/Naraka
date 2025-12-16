@@ -14,7 +14,7 @@ import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.*;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.criterion.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
@@ -152,7 +152,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder soulInfusedMaterials = task(purifiedSoulMetal, NarakaItems.PURIFIED_SOUL_SHARD.get(), AdvancementNarakaComponents.SOUL_INFUSED_MATERIALS,
                 builder -> {
                     NarakaItems.forEachSoulInfusedItemHolder(item -> {
-                        Identifier recipeLocation = item.unwrapKey().orElseThrow().location();
+                        Identifier recipeLocation = item.unwrapKey().orElseThrow().identifier();
                         builder.addCriterion("craft_" + recipeLocation.getPath(),
                                 RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(recipeLocation))
                         );
@@ -181,7 +181,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder soulSwords = challenge(challengersBlessing, NarakaItems.RAINBOW_SWORD.get(), AdvancementNarakaComponents.SOUL_SWORDS,
                 builder -> {
                     NarakaItems.forEachSoulInfusedSwordHolder(sword -> {
-                        String name = sword.unwrapKey().orElseThrow().location().getPath();
+                        String name = sword.unwrapKey().orElseThrow().identifier().getPath();
                         builder.addCriterion(
                                 "has" + name,
                                 InventoryChangeTrigger.TriggerInstance.hasItems(sword.value())

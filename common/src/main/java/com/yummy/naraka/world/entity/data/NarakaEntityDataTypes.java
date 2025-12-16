@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.data;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.NarakaRegistries;
@@ -34,7 +35,7 @@ public class NarakaEntityDataTypes {
                     .ticker(NarakaEntityDataTypes::tickPurifiedSoulFire)
     );
     public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<ScarfWavingData, LivingEntity>> SCARF_WAVING_DATA = register(
-            "scarf_waving_data", EntityDataType.living(Codec.unit(ScarfWavingData::new))
+            "scarf_waving_data", EntityDataType.living(MapCodec.unitCodec(ScarfWavingData::new))
                     .defaultValue(ScarfWavingData::new)
                     .ticker(NarakaEntityDataTypes::tickScarfWavingData)
     );

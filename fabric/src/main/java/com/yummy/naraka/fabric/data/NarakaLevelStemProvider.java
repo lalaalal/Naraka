@@ -24,7 +24,7 @@ public class NarakaLevelStemProvider extends FabricCodecDataProvider<LevelStem> 
     protected void configure(BiConsumer<Identifier, LevelStem> provider, HolderLookup.Provider lookup) {
         HolderLookup<DimensionType> dimensionType = lookup.lookupOrThrow(Registries.DIMENSION_TYPE);
         HolderLookup<Biome> biomes = lookup.lookupOrThrow(Registries.BIOME);
-        provider.accept(NarakaLevelStems.NARAKA.location(), new LevelStem(
+        provider.accept(NarakaLevelStems.NARAKA.identifier(), new LevelStem(
                 dimensionType.getOrThrow(NarakaDimensionTypes.NARAKA),
                 new FlatLevelSource(NarakaLevelStems.getNarakaSettings(biomes))
         ));

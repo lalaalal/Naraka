@@ -1,6 +1,5 @@
 package com.yummy.naraka.neoforge.client;
 
-import com.yummy.naraka.client.init.DimensionSpecialEffectsRegistry;
 import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.neoforge.NarakaEventBus;
 import net.minecraft.client.renderer.DimensionSpecialEffects;

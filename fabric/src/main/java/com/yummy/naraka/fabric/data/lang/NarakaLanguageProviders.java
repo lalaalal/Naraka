@@ -416,16 +416,16 @@ public class NarakaLanguageProviders {
     }
 
     public void addJukeboxSound(ResourceKey<JukeboxSong> key, String... translations) {
-        add(Util.makeDescriptionId("jukebox_song", key.location()), translations);
+        add(Util.makeDescriptionId("jukebox_song", key.identifier()), translations);
     }
 
     public void addTrimPattern(ResourceKey<TrimPattern> trimPattern, String... translations) {
-        String key = trimPattern.location().toLanguageKey("trim_pattern");
+        String key = trimPattern.identifier().toLanguageKey("trim_pattern");
         add(key, translations);
     }
 
     public void addTrimMaterial(ResourceKey<TrimMaterial> trimMaterial, String... translations) {
-        String key = trimMaterial.location().toLanguageKey("trim_material");
+        String key = trimMaterial.identifier().toLanguageKey("trim_material");
         add(key, translations);
     }
 
@@ -435,7 +435,7 @@ public class NarakaLanguageProviders {
     }
 
     public void addDamageType(ResourceKey<DamageType> damageType, String... message) {
-        String directKey = "death.attack." + damageType.location().getPath();
+        String directKey = "death.attack." + damageType.identifier().getPath();
         String indirectKey = directKey + ".player";
 
         add(directKey, message);

@@ -13,12 +13,13 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.CloudStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
+import net.minecraft.client.renderer.CloudRenderer;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.LevelTargetBundle;
+import net.minecraft.client.renderer.SkyRenderer;
 import net.minecraft.client.renderer.state.LevelRenderState;
 import net.minecraft.client.renderer.state.SkyRenderState;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.Vec3;
@@ -48,8 +49,10 @@ public abstract class LevelRendererMixin {
 
     @Shadow @Final private LevelTargetBundle targets;
 
-    @Inject(method = "<init>", at = @At("RETURN"))
-    private void prepareDimensionSkyRenderers(Minecraft minecraft, EntityRenderDispatcher entityRenderDispatcher, BlockEntityRenderDispatcher blockEntityRenderDispatcher, RenderBuffers renderBuffers, LevelRenderState levelRenderState, FeatureRenderDispatcher featureRenderDispatcher, CallbackInfo ci) {
+    @Shadow @Final private Minecraft minecraft;
+
+    @Inject(method = "onResourceManagerReload", at = @At("RETURN"))
+    private void prepareDimensionSkyRenderers(ResourceManager resourceManager, CallbackInfo ci) {
         DimensionSkyRendererRegistry.setup(minecraft.getTextureManager(), minecraft.getAtlasManager());
     }
 
