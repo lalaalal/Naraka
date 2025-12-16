@@ -9,6 +9,6 @@ public class NarakaEntityDataSerializers {
     public static final EntityDataSerializer<SoulType> SOUL_TYPE = EntityDataSerializer.forValueType(SoulType.STREAM_CODEC);
 
     public static void initialize() {
-        EntityDataSerializerRegistry.register(NarakaMod.location("soul_type"), SOUL_TYPE);
+        EntityDataSerializerRegistry.register(NarakaMod.identifier("soul_type"), SOUL_TYPE);
     }
 }

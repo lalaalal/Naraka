@@ -50,7 +50,7 @@ public interface RegistryProxy<T> {
     <V extends T> HolderProxy<T, V> register(String name, Supplier<V> value);
 
     default <V extends T> HolderProxy<T, V> createHolder(String name) {
-        return new HolderProxy<>(getRegistryOrThrow(), NarakaMod.location(name));
+        return new HolderProxy<>(getRegistryOrThrow(), NarakaMod.identifier(name));
     }
 
     default void onRegistrationFinished() {

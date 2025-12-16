@@ -9,6 +9,6 @@ public final class NarakaPlacementTags {
     public static final TagKey<PlacedFeature> NECTARIUM = create("nectarium");
 
     public static TagKey<PlacedFeature> create(String name) {
-        return TagKey.create(Registries.PLACED_FEATURE, NarakaMod.location(name));
+        return TagKey.create(Registries.PLACED_FEATURE, NarakaMod.identifier(name));
     }
 }

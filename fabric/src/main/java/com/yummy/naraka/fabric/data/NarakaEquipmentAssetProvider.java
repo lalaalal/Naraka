@@ -21,7 +21,7 @@ public class NarakaEquipmentAssetProvider extends SimpleDataProvider<EquipmentAs
     }
 
     public static EquipmentClientInfo onlyHumanoid(String name) {
-        return EquipmentClientInfo.builder().addHumanoidLayers(NarakaMod.location(name)).build();
+        return EquipmentClientInfo.builder().addHumanoidLayers(NarakaMod.identifier(name)).build();
     }
 
     @Override

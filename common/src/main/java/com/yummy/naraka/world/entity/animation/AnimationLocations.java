@@ -10,7 +10,7 @@ public class AnimationLocations {
     private static final Set<Identifier> REGISTERED = new HashSet<>();
 
     public static Identifier create(String entity, String name) {
-        Identifier location = NarakaMod.location("animation/" + entity, name);
+        Identifier location = NarakaMod.identifier("animation/" + entity, name);
         REGISTERED.add(location);
         return location;
     }

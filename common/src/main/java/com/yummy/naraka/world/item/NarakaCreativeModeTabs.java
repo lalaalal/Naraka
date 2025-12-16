@@ -46,7 +46,7 @@ public class NarakaCreativeModeTabs {
     private static HolderProxy<CreativeModeTab, CreativeModeTab> registerOnlyDev(String name, CreativeModeTab.Builder builder) {
         if (Platform.getInstance().isDevelopmentEnvironment() || NarakaConfig.COMMON.showTestCreativeModeTab.getValue())
             return RegistryProxy.register(Registries.CREATIVE_MODE_TAB, name, builder::build);
-        return new HolderProxy<>(BuiltInRegistries.CREATIVE_MODE_TAB, NarakaMod.location(name));
+        return new HolderProxy<>(BuiltInRegistries.CREATIVE_MODE_TAB, NarakaMod.identifier(name));
     }
 
     public static void initialize() {

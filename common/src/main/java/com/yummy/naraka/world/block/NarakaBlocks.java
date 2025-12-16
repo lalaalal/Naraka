@@ -219,7 +219,7 @@ public class NarakaBlocks {
     }
 
     public static ResourceKey<Block> key(String name) {
-        return ResourceKey.create(Registries.BLOCK, NarakaMod.location(name));
+        return ResourceKey.create(Registries.BLOCK, NarakaMod.identifier(name));
     }
 
     private static <B extends Block> HolderProxy<Block, B> registerBlock(String name, Function<BlockBehaviour.Properties, ? extends B> function, Block propertyBase) {

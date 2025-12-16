@@ -10,7 +10,7 @@ public enum NarakaJadeProviderComponents {
     public final String translationKey;
 
     NarakaJadeProviderComponents() {
-        this.location = NarakaMod.location(name().toLowerCase());
+        this.location = NarakaMod.identifier(name().toLowerCase());
         this.translationKey = "config.jade.plugin_naraka.%s".formatted(location.getPath());
     }
 }

@@ -35,7 +35,7 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
     }
 
     protected static Identifier modifierId(EquipmentSlot slot, String name) {
-        return NarakaMod.location("reinforcement_effect." + slot.name().toLowerCase() + "." + name);
+        return NarakaMod.identifier("reinforcement_effect." + slot.name().toLowerCase() + "." + name);
     }
 
     public static AttributeModifyingEffect simple(Holder<Attribute> attribute, EquipmentSlotGroup slotGroup) {

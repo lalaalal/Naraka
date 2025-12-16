@@ -9,11 +9,11 @@ public interface PiecePositionProvider {
     String name();
 
     default Identifier getPieceLocation(int pieceX, int pieceY, int pieceZ) {
-        return NarakaMod.location(name() + "/" + pieceX + pieceY + pieceZ);
+        return NarakaMod.identifier(name() + "/" + pieceX + pieceY + pieceZ);
     }
 
     default Identifier getPieceLocation(String structureName, int pieceX, int pieceY, int pieceZ) {
-        return NarakaMod.location(structureName + "/" + name() + "-" + pieceX + pieceY + pieceZ);
+        return NarakaMod.identifier(structureName + "/" + name() + "-" + pieceX + pieceY + pieceZ);
     }
 
     default Identifier getPieceLocation(Vec3i piecePosition) {

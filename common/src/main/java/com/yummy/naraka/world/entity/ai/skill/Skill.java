@@ -21,7 +21,7 @@ public abstract class Skill<T extends SkillUsingMob> {
     protected boolean disabled = false;
 
     protected static Identifier createLocation(String name) {
-        return NarakaMod.location("skill", name);
+        return NarakaMod.identifier("skill", name);
     }
 
     @Nullable

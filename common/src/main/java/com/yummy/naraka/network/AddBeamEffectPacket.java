@@ -14,7 +14,7 @@ import java.util.function.BiConsumer;
 
 public record AddBeamEffectPacket(int entityId, BeamEffectType beamEffectType,
                                   int color) implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<AddBeamEffectPacket> TYPE = new Type<>(NarakaMod.location("add_beam_effect"));
+    public static final CustomPacketPayload.Type<AddBeamEffectPacket> TYPE = new Type<>(NarakaMod.identifier("add_beam_effect"));
 
     public static final StreamCodec<ByteBuf, AddBeamEffectPacket> CODEC = StreamCodec.composite(
             ByteBufCodecs.INT,

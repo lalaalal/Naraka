@@ -61,7 +61,7 @@ public final class NarakaTextures {
     public static final Identifier NARAKA_PORTAL_3 = entity("naraka_portal/naraka_portal_waxing_gibbous.png");
 
     private static Identifier texture(String parent, String path) {
-        return NarakaMod.location("textures/%s".formatted(parent), path);
+        return NarakaMod.identifier("textures/%s".formatted(parent), path);
     }
 
     private static Identifier entity(String path) {
@@ -69,7 +69,7 @@ public final class NarakaTextures {
     }
 
     private static Identifier advancements(String path) {
-        return NarakaMod.location("gui/advancements", path);
+        return NarakaMod.identifier("gui/advancements", path);
     }
 
     private static final Map<Item, Identifier> TRIM_TEMPLATE_TEXTURES = new HashMap<>();

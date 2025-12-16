@@ -11,7 +11,7 @@ import net.minecraft.util.StringRepresentable;
 import java.util.List;
 
 public record NarakaClientboundEventPacket(List<Event> events) implements CustomPacketPayload {
-    public static final Type<NarakaClientboundEventPacket> TYPE = new Type<>(NarakaMod.location("clientbound_event_packet"));
+    public static final Type<NarakaClientboundEventPacket> TYPE = new Type<>(NarakaMod.identifier("clientbound_event_packet"));
 
     public static final StreamCodec<ByteBuf, NarakaClientboundEventPacket> CODEC = StreamCodec.composite(
             ByteBufCodecs.<ByteBuf, Event>list().apply(Event.STREAM_CODEC),

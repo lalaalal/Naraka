@@ -23,8 +23,8 @@ import net.minecraft.world.level.block.Block;
 import java.util.List;
 
 public class NarakaToolMaterials {
-    public static final Identifier ENTITY_INTERACTION_RANGE_ID = NarakaMod.location("entity_interaction_range");
-    public static final Identifier BLOCK_INTERACTION_RANGE_ID = NarakaMod.location("block_interaction_range");
+    public static final Identifier ENTITY_INTERACTION_RANGE_ID = NarakaMod.identifier("entity_interaction_range");
+    public static final Identifier BLOCK_INTERACTION_RANGE_ID = NarakaMod.identifier("block_interaction_range");
 
     public static final ToolMaterial LONGINUS = new ToolMaterial(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, Integer.MAX_VALUE, 12, 65, 22, NarakaItemTags.LONGINUS_TOOL_MATERIALS);
 

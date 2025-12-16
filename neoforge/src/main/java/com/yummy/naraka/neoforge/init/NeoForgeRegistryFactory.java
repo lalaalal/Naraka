@@ -27,7 +27,7 @@ public final class NeoForgeRegistryFactory extends RegistryFactory implements Na
         Registry<T> registry = new RegistryBuilder<>(key)
                 .sync(true)
                 .maxId(128)
-                .defaultKey(NarakaMod.location("empty"))
+                .defaultKey(NarakaMod.identifier("empty"))
                 .create();
         NeoForgeRegistryProxyProvider.addNarakaRegistry(key, registry);
         NARAKA_BUS.addListener(NewRegistryEvent.class, event -> event.register(registry));

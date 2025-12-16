@@ -42,7 +42,7 @@ public final class FabricRegistryProxyProvider extends RegistryProxyProvider {
 
         @Override
         public <V extends T> HolderProxy<T, V> register(String name, Supplier<V> value) {
-            Registry.register(getRegistryOrThrow(), NarakaMod.location(name), value.get());
+            Registry.register(getRegistryOrThrow(), NarakaMod.identifier(name), value.get());
             return createHolder(name);
         }
     }

@@ -37,6 +37,6 @@ public class NarakaTrimPatterns {
     }
 
     private static ResourceKey<TrimPattern> create(String name) {
-        return ResourceKey.create(Registries.TRIM_PATTERN, NarakaMod.location(name));
+        return ResourceKey.create(Registries.TRIM_PATTERN, NarakaMod.identifier(name));
     }
 }

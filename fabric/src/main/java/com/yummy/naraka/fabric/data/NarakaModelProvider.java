@@ -58,7 +58,7 @@ import java.util.Optional;
 
 public class NarakaModelProvider extends FabricModelProvider {
     private static final ModelTemplate BLOCK_ENTITY = new ModelTemplate(
-            Optional.of(NarakaMod.location("item", "template_block_entity")),
+            Optional.of(NarakaMod.identifier("item", "template_block_entity")),
             Optional.empty(),
             TextureSlot.PARTICLE
     );

@@ -119,11 +119,11 @@ public final class NarakaMod {
      * @param path Resource path
      * @return {@linkplain Identifier} with namespace {@linkplain #MOD_ID}
      */
-    public static Identifier location(String path) {
+    public static Identifier identifier(String path) {
         return Identifier.fromNamespaceAndPath(MOD_ID, path);
     }
 
-    public static Identifier location(String prefix, String path) {
-        return location("%s/%s".formatted(prefix, path));
+    public static Identifier identifier(String prefix, String path) {
+        return identifier("%s/%s".formatted(prefix, path));
     }
 }

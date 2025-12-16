@@ -9,6 +9,6 @@ public class NarakaDimensions {
     public static final ResourceKey<Level> NARAKA = create("naraka");
 
     private static ResourceKey<Level> create(String name) {
-        return ResourceKey.create(Registries.DIMENSION, NarakaMod.location(name));
+        return ResourceKey.create(Registries.DIMENSION, NarakaMod.identifier(name));
     }
 }

@@ -61,7 +61,7 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer, ResourceManagerR
         if (instance != null)
             throw new IllegalStateException("Naraka sky renderer already initialized");
         instance = this;
-        ResourceReloadListenerRegistry.register(NarakaMod.location("naraka_sky_renderer"), () -> this);
+        ResourceReloadListenerRegistry.register(NarakaMod.identifier("naraka_sky_renderer"), () -> this);
     }
 
     private GpuBuffer buildStars() {

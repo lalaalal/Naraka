@@ -9,6 +9,6 @@ public final class NarakaDamageTypeTags {
     public static final TagKey<DamageType> DEATH_COUNTING_ATTACK = create("death_counting_attack");
 
     public static TagKey<DamageType> create(String name) {
-        return TagKey.create(Registries.DAMAGE_TYPE, NarakaMod.location(name));
+        return TagKey.create(Registries.DAMAGE_TYPE, NarakaMod.identifier(name));
     }
 }

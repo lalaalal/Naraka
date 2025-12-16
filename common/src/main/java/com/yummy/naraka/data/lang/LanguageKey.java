@@ -21,11 +21,11 @@ public final class LanguageKey {
 
     public static final String KEY_TOGGLE_ORE_SEE_THROUGH = keyMapping("naraka.toggle_ore_see_through");
 
-    public static final String PURIFIED_SOUL_UPGRADE_KEY = Util.makeDescriptionId("upgrade", NarakaMod.location("purified_soul_upgrade"));
-    public static final String PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.applies_to"));
-    public static final String PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.ingredients"));
-    public static final String PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.base_slot_description"));
-    public static final String PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.additions_slot_description"));
+    public static final String PURIFIED_SOUL_UPGRADE_KEY = Util.makeDescriptionId("upgrade", NarakaMod.identifier("purified_soul_upgrade"));
+    public static final String PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY = Util.makeDescriptionId("item", NarakaMod.identifier("smithing_template.purified_soul_upgrade.applies_to"));
+    public static final String PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY = Util.makeDescriptionId("item", NarakaMod.identifier("smithing_template.purified_soul_upgrade.ingredients"));
+    public static final String PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.identifier("smithing_template.purified_soul_upgrade.base_slot_description"));
+    public static final String PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.identifier("smithing_template.purified_soul_upgrade.additions_slot_description"));
     public static final String JADE_SOUL_CRAFTING_FUEL_KEY = "jade.naraka.soul_crafting.fuel";
     public static final String JADE_STIGMA_KEY = "jade.naraka.stigma";
     public static final String JADE_DEATH_COUNT_KEY = "jade.naraka.death_count";
@@ -51,18 +51,18 @@ public final class LanguageKey {
 
     public static final String DISABLE_SKILL_USE_KEY = "skill_controller.disable_skill_use";
 
-    public static final String CHALLENGERS_BLESSING = Util.makeDescriptionId("effect", NarakaMod.location("challengers_blessing"));
+    public static final String CHALLENGERS_BLESSING = Util.makeDescriptionId("effect", NarakaMod.identifier("challengers_blessing"));
 
     public static String reinforcementEffect(Holder<ReinforcementEffect> reinforcementEffect) {
         Optional<ResourceKey<ReinforcementEffect>> key = reinforcementEffect.unwrapKey();
         if (key.isEmpty())
             throw new IllegalStateException("Resource key doesn't exists : " + reinforcementEffect);
-        Identifier id = key.get().location();
+        Identifier id = key.get().identifier();
         return Util.makeDescriptionId("reinforcement_effect", id);
     }
 
     public static String mobEffect(Holder<MobEffect> mobEffect) {
-        return Util.makeDescriptionId("effect", mobEffect.unwrapKey().orElseThrow().location());
+        return Util.makeDescriptionId("effect", mobEffect.unwrapKey().orElseThrow().identifier());
     }
 
     public static String tooltip(Block block) {

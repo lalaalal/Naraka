@@ -67,7 +67,7 @@ public class NarakaEntityDataTypes {
     }
 
     private static <T, E extends Entity> HolderProxy<EntityDataType<?, ?>, EntityDataType<T, E>> register(String name, EntityDataType.Builder<T, E> builder) {
-        return RegistryProxy.register(NarakaRegistries.Keys.ENTITY_DATA_TYPE, name, () -> builder.id(NarakaMod.location(name)).build());
+        return RegistryProxy.register(NarakaRegistries.Keys.ENTITY_DATA_TYPE, name, () -> builder.id(NarakaMod.identifier(name)).build());
     }
 
     public static void initialize(NarakaInitializer initializer) {

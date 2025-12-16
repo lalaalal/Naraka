@@ -28,12 +28,12 @@ public class NarakaAttributeModifiers {
     public static final Identifier REDUCE_MAX_HEALTH_ID = reduceMaxHealthId("locked_health");
 
     public static final AttributeModifier FINAL_HEROBRINE_ARMOR_TOUGHNESS = new AttributeModifier(
-            NarakaMod.location("final_herobrine.armor_toughness"), 16, AttributeModifier.Operation.ADD_VALUE
+            NarakaMod.identifier("final_herobrine.armor_toughness"), 16, AttributeModifier.Operation.ADD_VALUE
     );
 
     public static AttributeModifier finalHerobrineArmor(int armor) {
         return new AttributeModifier(
-                NarakaMod.location("final_herobrine.armor"), armor, AttributeModifier.Operation.ADD_VALUE
+                NarakaMod.identifier("final_herobrine.armor"), armor, AttributeModifier.Operation.ADD_VALUE
         );
     }
 
@@ -42,7 +42,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static Identifier reduceMaxHealthId(String identifier) {
-        return NarakaMod.location(identifier + ".reduce_max_health");
+        return NarakaMod.identifier(identifier + ".reduce_max_health");
     }
 
     public static AttributeModifier preventMoving(String identifier) {
@@ -50,7 +50,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static Identifier preventMovingId(String identifier) {
-        return NarakaMod.location(identifier + ".prevent_moving");
+        return NarakaMod.identifier(identifier + ".prevent_moving");
     }
 
     public static AttributeModifier preventJumping(String identifier) {
@@ -58,7 +58,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static Identifier preventJumpingId(String identifier) {
-        return NarakaMod.location(identifier + ".prevent_jumping");
+        return NarakaMod.identifier(identifier + ".prevent_jumping");
     }
 
     public static AttributeModifier preventBlockAttack(String identifier) {
@@ -66,7 +66,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static Identifier preventBlockAttackId(String identifier) {
-        return NarakaMod.location(identifier + ".prevent_block_attack");
+        return NarakaMod.identifier(identifier + ".prevent_block_attack");
     }
 
     public static AttributeModifier preventEntityAttack(String identifier) {
@@ -74,7 +74,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static Identifier preventEntityInteractionId(String identifier) {
-        return NarakaMod.location(identifier + ".prevent_entity_interaction");
+        return NarakaMod.identifier(identifier + ".prevent_entity_interaction");
     }
 
     public static AttributeModifier preventEntityInteraction(String identifier) {
@@ -82,7 +82,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static Identifier preventBlockInteractionId(String identifier) {
-        return NarakaMod.location(identifier + ".prevent_block_interaction");
+        return NarakaMod.identifier(identifier + ".prevent_block_interaction");
     }
 
     public static AttributeModifier preventBlockInteraction(String identifier) {
@@ -90,7 +90,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static Identifier preventEntityAttackId(String identifier) {
-        return NarakaMod.location(identifier + ".prevent_entity_attack");
+        return NarakaMod.identifier(identifier + ".prevent_entity_attack");
     }
 
     /**

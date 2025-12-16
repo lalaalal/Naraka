@@ -28,7 +28,7 @@ import java.util.function.Function;
 public abstract class SkillUsingMob extends PathfinderMob {
     protected final SkillManager skillManager = new SkillManager(this);
     protected final Map<Identifier, AnimationController> animationControllers = new HashMap<>();
-    protected Identifier currentAnimation = NarakaMod.location("empty");
+    protected Identifier currentAnimation = NarakaMod.identifier("empty");
 
     protected int animationTickLeft = Integer.MIN_VALUE;
     protected Runnable animationTickListener = () -> {
@@ -241,7 +241,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
         private static final AnimationController EMPTY = new AnimationController(List.of()) {
             @Override
             protected Identifier select() {
-                return NarakaMod.location("animation", "empty");
+                return NarakaMod.identifier("animation", "empty");
             }
         };
 

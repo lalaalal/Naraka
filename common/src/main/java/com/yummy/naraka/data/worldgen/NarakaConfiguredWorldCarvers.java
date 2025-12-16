@@ -12,6 +12,6 @@ public class NarakaConfiguredWorldCarvers {
     }
 
     private static ResourceKey<ConfiguredWorldCarver<?>> create(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_CARVER, NarakaMod.location(name));
+        return ResourceKey.create(Registries.CONFIGURED_CARVER, NarakaMod.identifier(name));
     }
 }

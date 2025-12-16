@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public record SyncEntityDataPacket(UUID uuid, Action action,
                                    List<EntityData<?, ?>> entityData) implements CustomPacketPayload {
-    public static final Type<SyncEntityDataPacket> TYPE = new Type<>(NarakaMod.location("sync_entity_data"));
+    public static final Type<SyncEntityDataPacket> TYPE = new Type<>(NarakaMod.identifier("sync_entity_data"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncEntityDataPacket> CODEC = StreamCodec.composite(
             UUIDUtil.STREAM_CODEC,

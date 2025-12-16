@@ -51,7 +51,7 @@ public class NarakaBiomes {
     }
 
     private static ResourceKey<Biome> create(String name) {
-        return ResourceKey.create(Registries.BIOME, NarakaMod.location(name));
+        return ResourceKey.create(Registries.BIOME, NarakaMod.identifier(name));
     }
 
     public interface Modifier {

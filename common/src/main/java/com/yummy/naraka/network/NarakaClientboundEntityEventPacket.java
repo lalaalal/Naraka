@@ -10,7 +10,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 
 public record NarakaClientboundEntityEventPacket(Event event, int entityId) implements CustomPacketPayload {
-    public static final Type<NarakaClientboundEntityEventPacket> TYPE = new Type<>(NarakaMod.location("clientbound_entity_event_packet"));
+    public static final Type<NarakaClientboundEntityEventPacket> TYPE = new Type<>(NarakaMod.identifier("clientbound_entity_event_packet"));
 
     public static final StreamCodec<ByteBuf, NarakaClientboundEntityEventPacket> CODEC = StreamCodec.composite(
             Event.STREAM_CODEC,

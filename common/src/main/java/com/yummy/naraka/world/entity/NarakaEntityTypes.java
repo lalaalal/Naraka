@@ -136,7 +136,7 @@ public class NarakaEntityTypes {
     }
 
     private static ResourceKey<EntityType<?>> createKey(String name) {
-        return ResourceKey.create(Registries.ENTITY_TYPE, NarakaMod.location(name));
+        return ResourceKey.create(Registries.ENTITY_TYPE, NarakaMod.identifier(name));
     }
 
     public static void initialize() {

@@ -70,7 +70,7 @@ public final class NeoForgeBiomeModifier implements NarakaBiomes.Modifier {
     }
 
     private static ResourceKey<BiomeModifier> create(String name) {
-        return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, NarakaMod.location(name));
+        return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, NarakaMod.identifier(name));
     }
 
     @FunctionalInterface

@@ -14,6 +14,6 @@ public final class NarakaBlockTags {
     public static final TagKey<Block> MINABLE_WITH_NARAKA_PICKAXE = create("minable_with_naraka_pickaxe");
 
     public static TagKey<Block> create(String name) {
-        return TagKey.create(Registries.BLOCK, NarakaMod.location(name));
+        return TagKey.create(Registries.BLOCK, NarakaMod.identifier(name));
     }
 }

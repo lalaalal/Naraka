@@ -45,6 +45,6 @@ public class NarakaStructureSets {
     }
 
     private static ResourceKey<StructureSet> create(String name) {
-        return ResourceKey.create(Registries.STRUCTURE_SET, NarakaMod.location(name));
+        return ResourceKey.create(Registries.STRUCTURE_SET, NarakaMod.identifier(name));
     }
 }

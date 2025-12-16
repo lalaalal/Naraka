@@ -243,7 +243,7 @@ public class NarakaItems {
     }
 
     public static ResourceKey<Item> key(String name) {
-        return ResourceKey.create(Registries.ITEM, NarakaMod.location(name));
+        return ResourceKey.create(Registries.ITEM, NarakaMod.identifier(name));
     }
 
     private static Item.Properties properties() {

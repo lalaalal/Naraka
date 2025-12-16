@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
     @Unique
-    private static final Identifier MONOCHROME_POST_EFFECT = NarakaMod.location("monochrome");
+    private static final Identifier MONOCHROME_POST_EFFECT = NarakaMod.identifier("monochrome");
 
     @Unique @Nullable
     private Identifier naraka$previousPostEffect;

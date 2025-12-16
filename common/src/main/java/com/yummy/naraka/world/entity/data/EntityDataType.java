@@ -101,7 +101,7 @@ public final class EntityDataType<T, E extends Entity> {
         private BiConsumer<E, T> ticker;
 
         private Builder(Codec<T> codec, Class<E> entityType) {
-            this.id = NarakaMod.location("empty");
+            this.id = NarakaMod.identifier("empty");
             this.codec = codec;
             this.entityType = entityType;
             this.ticker = (livingEntity, value) -> {

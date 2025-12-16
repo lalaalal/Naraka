@@ -33,6 +33,6 @@ public class NarakaJukeboxSongs {
     }
 
     private static ResourceKey<JukeboxSong> create(String name) {
-        return ResourceKey.create(Registries.JUKEBOX_SONG, NarakaMod.location(name));
+        return ResourceKey.create(Registries.JUKEBOX_SONG, NarakaMod.identifier(name));
     }
 }

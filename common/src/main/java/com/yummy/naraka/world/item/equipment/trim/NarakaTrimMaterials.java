@@ -59,6 +59,6 @@ public class NarakaTrimMaterials {
     }
 
     public static ResourceKey<TrimMaterial> create(String name) {
-        return ResourceKey.create(Registries.TRIM_MATERIAL, NarakaMod.location(name));
+        return ResourceKey.create(Registries.TRIM_MATERIAL, NarakaMod.identifier(name));
     }
 }

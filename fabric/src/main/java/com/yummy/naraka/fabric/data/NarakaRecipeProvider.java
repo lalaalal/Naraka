@@ -191,7 +191,7 @@ public class NarakaRecipeProvider extends RecipeProvider {
     }
 
     protected static ResourceKey<Recipe<?>> key(String path) {
-        return ResourceKey.create(Registries.RECIPE, NarakaMod.location(path));
+        return ResourceKey.create(Registries.RECIPE, NarakaMod.identifier(path));
     }
 
     protected static ResourceKey<Recipe<?>> key(ItemLike item) {

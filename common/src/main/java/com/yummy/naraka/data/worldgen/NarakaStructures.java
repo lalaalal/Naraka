@@ -88,6 +88,6 @@ public class NarakaStructures {
     }
 
     private static ResourceKey<Structure> create(String name) {
-        return ResourceKey.create(Registries.STRUCTURE, NarakaMod.location(name));
+        return ResourceKey.create(Registries.STRUCTURE, NarakaMod.identifier(name));
     }
 }

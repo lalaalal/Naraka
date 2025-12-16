@@ -9,6 +9,6 @@ public final class NarakaBiomeTags {
     public static final TagKey<Biome> HEROBRINE_SANCTUARY_BIOMES = create("herobrine_sanctuary_biomes");
 
     public static TagKey<Biome> create(String name) {
-        return TagKey.create(Registries.BIOME, NarakaMod.location(name));
+        return TagKey.create(Registries.BIOME, NarakaMod.identifier(name));
     }
 }

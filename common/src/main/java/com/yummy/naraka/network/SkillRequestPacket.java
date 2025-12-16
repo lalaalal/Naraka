@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 public record SkillRequestPacket(Event event, int entityId, Identifier location) implements CustomPacketPayload {
-    public static final Type<SkillRequestPacket> TYPE = new Type<>(NarakaMod.location("skill_request"));
+    public static final Type<SkillRequestPacket> TYPE = new Type<>(NarakaMod.identifier("skill_request"));
 
     public static final StreamCodec<ByteBuf, SkillRequestPacket> CODEC = StreamCodec.composite(
             Event.STREAM_CODEC,
@@ -34,7 +34,7 @@ public record SkillRequestPacket(Event event, int entityId, Identifier location)
     }
 
     public SkillRequestPacket(Event event, SkillUsingMob mob) {
-        this(event, mob.getId(), NarakaMod.location("empty"));
+        this(event, mob.getId(), NarakaMod.identifier("empty"));
     }
 
     @Override

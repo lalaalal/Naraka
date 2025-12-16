@@ -34,7 +34,7 @@ public final class NarakaModelLayers {
     public static final ModelLayerLocation NARAKA_SWORD = location("naraka_sword");
 
     public static ModelLayerLocation location(String name) {
-        return new ModelLayerLocation(NarakaMod.location(name), "main");
+        return new ModelLayerLocation(NarakaMod.identifier(name), "main");
     }
 
     public static void initialize() {

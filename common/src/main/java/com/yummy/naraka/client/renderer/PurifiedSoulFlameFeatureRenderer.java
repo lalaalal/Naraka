@@ -16,9 +16,9 @@ import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
 public class PurifiedSoulFlameFeatureRenderer {
-    public static final Material PURIFIED_SOUL_FIRE_0 = new Material(NarakaTextures.LOCATION_BLOCKS, NarakaMod.location("block", "purified_soul_fire_0"));
+    public static final Material PURIFIED_SOUL_FIRE_0 = new Material(NarakaTextures.LOCATION_BLOCKS, NarakaMod.identifier("block", "purified_soul_fire_0"));
 
-    public static final Material PURIFIED_SOUL_FIRE_1 = new Material(NarakaTextures.LOCATION_BLOCKS, NarakaMod.location("block", "purified_soul_fire_1"));
+    public static final Material PURIFIED_SOUL_FIRE_1 = new Material(NarakaTextures.LOCATION_BLOCKS, NarakaMod.identifier("block", "purified_soul_fire_1"));
 
 
     public void render(PurifiedSoulFireSubmitNodeCollection purifiedSoulFireSubmitNodeCollection, MultiBufferSource.BufferSource bufferSource, AtlasManager atlasManager) {

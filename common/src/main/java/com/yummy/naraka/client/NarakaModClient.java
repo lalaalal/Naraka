@@ -63,10 +63,10 @@ public final class NarakaModClient {
     }
 
     private static void registerSpecialRenderers() {
-        SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("soul_stabilizer"), SoulStabilizerSpecialRenderer.Unbaked.CODEC);
-        SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("soul_smithing_block"), SoulSmithingBlockSpecialRenderer.Unbaked.CODEC);
-        SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("spear"), SpearSpecialRenderer.Unbaked.CODEC);
-        SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("spear_of_longinus"), SpearOfLonginusSpecialRenderer.Unbaked.CODEC);
+        SpecialModelRendererRegistry.registerCodecId(NarakaMod.identifier("soul_stabilizer"), SoulStabilizerSpecialRenderer.Unbaked.CODEC);
+        SpecialModelRendererRegistry.registerCodecId(NarakaMod.identifier("soul_smithing_block"), SoulSmithingBlockSpecialRenderer.Unbaked.CODEC);
+        SpecialModelRendererRegistry.registerCodecId(NarakaMod.identifier("spear"), SpearSpecialRenderer.Unbaked.CODEC);
+        SpecialModelRendererRegistry.registerCodecId(NarakaMod.identifier("spear_of_longinus"), SpearOfLonginusSpecialRenderer.Unbaked.CODEC);
 
         SpecialModelRendererRegistry.registerBlock(NarakaBlocks.SOUL_STABILIZER, new SoulStabilizerSpecialRenderer.Unbaked());
         SpecialModelRendererRegistry.registerBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, new SoulSmithingBlockSpecialRenderer.Unbaked());
@@ -125,10 +125,10 @@ public final class NarakaModClient {
     }
 
     private static void registerHudRenders() {
-        HudRendererRegistry.registerPostLayer(NarakaMod.location("hud", "death_count"), DeathCountHud::new);
-        HudRendererRegistry.registerPostLayer(NarakaMod.location("hud", "stigma"), StigmaHud::new);
-        HudRendererRegistry.registerPostLayer(NarakaMod.location("hud", "locked_health"), LockedHealthHud::new);
-        HudRendererRegistry.registerPreLayer(NarakaMod.location("hud", "white"), WhiteHud::new);
+        HudRendererRegistry.registerPostLayer(NarakaMod.identifier("hud", "death_count"), DeathCountHud::new);
+        HudRendererRegistry.registerPostLayer(NarakaMod.identifier("hud", "stigma"), StigmaHud::new);
+        HudRendererRegistry.registerPostLayer(NarakaMod.identifier("hud", "locked_health"), LockedHealthHud::new);
+        HudRendererRegistry.registerPreLayer(NarakaMod.identifier("hud", "white"), WhiteHud::new);
     }
 
     private static void registerMenus() {
