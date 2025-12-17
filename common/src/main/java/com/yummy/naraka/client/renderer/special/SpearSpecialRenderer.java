@@ -57,8 +57,7 @@ public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
     }
 
     @Environment(EnvType.CLIENT)
-    public record Unbaked(ModelLayerLocation modelLayer,
-                          Identifier texture) implements SpecialModelRenderer.Unbaked {
+    public record Unbaked(ModelLayerLocation modelLayer, Identifier texture) implements SpecialModelRenderer.Unbaked {
         public static final MapCodec<Unbaked> CODEC = RecordCodecBuilder.mapCodec(
                 instance -> instance.group(
                         Identifier.CODEC.fieldOf("model_location").forGetter(unbaked -> unbaked.modelLayer.model()),
