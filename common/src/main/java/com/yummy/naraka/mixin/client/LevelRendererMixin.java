@@ -75,7 +75,7 @@ public abstract class LevelRendererMixin {
     )
     public Runnable replaceHerobrineSkyPass(Runnable original, @Local(argsOnly = true) GpuBufferSlice gpuBufferSlice, @Local SkyRenderState skyRenderState) {
         if (skyRenderState.skybox == DimensionType.Skybox.OVERWORLD && naraka$isHerobrineSkyEnabled())
-            return () -> HerobrineSkyRenderHelper.renderHerobrineSky(skyRenderer, skyRenderState, gpuBufferSlice);
+            return () -> HerobrineSkyRenderHelper.renderHerobrineSky(skyRenderer, gpuBufferSlice);
         return original;
     }
 

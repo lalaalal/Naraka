@@ -46,11 +46,11 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
 
     public static NarakaSkyRenderer getInstance() {
         if (instance == null)
-            instance = new NarakaSkyRenderer();
+            throw new IllegalStateException("Naraka sky renderer is not initialized");
         return instance;
     }
 
-    private NarakaSkyRenderer() {
+    public NarakaSkyRenderer() {
         if (instance != null)
             throw new IllegalStateException("Naraka sky renderer already initialized");
         instance = this;
@@ -69,19 +69,19 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
             BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
 
             for (int count = 0; count < 1500; count++) {
-                float x = randomSource.nextFloat() * 2.0F - 1.0F;
-                float y = randomSource.nextFloat() * 2.0F - 1.0F;
-                float z = randomSource.nextFloat() * 2.0F - 1.0F;
+                float x = randomSource.nextFloat() * 2 - 1;
+                float y = randomSource.nextFloat() * 2 - 1;
+                float z = randomSource.nextFloat() * 2 - 1;
                 float l = 0.15F + randomSource.nextFloat() * 0.1F;
                 float distanceSquare = Mth.lengthSquared(x, y, z);
-                if (!(distanceSquare <= 0.010000001F) && !(distanceSquare >= 1.0F)) {
-                    Vector3f vector3f = new Vector3f(x, y, z).normalize(100.0F);
+                if (!(distanceSquare <= 0.010000001F) && !(distanceSquare >= 1)) {
+                    Vector3f vector3f = new Vector3f(x, y, z).normalize(100);
                     float zRot = (float) (randomSource.nextDouble() * (float) Math.PI * 2.0);
-                    Matrix3f matrix3f = new Matrix3f().rotateTowards(new Vector3f(vector3f).negate(), new Vector3f(0.0F, 1.0F, 0.0F)).rotateZ(-zRot);
-                    bufferBuilder.addVertex(new Vector3f(l, -l, 0.0F).mul(matrix3f).add(vector3f));
-                    bufferBuilder.addVertex(new Vector3f(l, l, 0.0F).mul(matrix3f).add(vector3f));
-                    bufferBuilder.addVertex(new Vector3f(-l, l, 0.0F).mul(matrix3f).add(vector3f));
-                    bufferBuilder.addVertex(new Vector3f(-l, -l, 0.0F).mul(matrix3f).add(vector3f));
+                    Matrix3f matrix3f = new Matrix3f().rotateTowards(new Vector3f(vector3f).negate(), new Vector3f(0, 1, 0)).rotateZ(-zRot);
+                    bufferBuilder.addVertex(new Vector3f(l, -l, 0).mul(matrix3f).add(vector3f));
+                    bufferBuilder.addVertex(new Vector3f(l, l, 0).mul(matrix3f).add(vector3f));
+                    bufferBuilder.addVertex(new Vector3f(-l, l, 0).mul(matrix3f).add(vector3f));
+                    bufferBuilder.addVertex(new Vector3f(-l, -l, 0).mul(matrix3f).add(vector3f));
                 }
             }
 
@@ -96,13 +96,13 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
         try (ByteBufferBuilder byteBufferBuilder = ByteBufferBuilder.exactlySized(4 * DefaultVertexFormat.POSITION_TEX.getVertexSize())) {
             BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
             Matrix4f matrix4f = new Matrix4f();
-            bufferBuilder.addVertex(matrix4f, -1.0F, 0.0F, 1.0F).setUv(0.0F, 1.0F);
-            bufferBuilder.addVertex(matrix4f, 1.0F, 0.0F, 1.0F).setUv(1.0F, 1.0F);
-            bufferBuilder.addVertex(matrix4f, 1.0F, 0.0F, -1.0F).setUv(1.0F, 0.0F);
-            bufferBuilder.addVertex(matrix4f, -1.0F, 0.0F, -1.0F).setUv(0.0F, 0.0F);
+            bufferBuilder.addVertex(matrix4f, -1, 0, -1).setUv(0, 1);
+            bufferBuilder.addVertex(matrix4f, 1, 0, -1).setUv(1, 1);
+            bufferBuilder.addVertex(matrix4f, 1, 0, 1).setUv(1, 0);
+            bufferBuilder.addVertex(matrix4f, -1, 0, 1).setUv(0, 0);
 
             try (MeshData meshData = bufferBuilder.buildOrThrow()) {
-                return RenderSystem.getDevice().createBuffer(() -> "Eclipse quad", 40, meshData.vertexBuffer());
+                return RenderSystem.getDevice().createBuffer(() -> "Eclipse quad", 32, meshData.vertexBuffer());
             }
         }
     }
@@ -115,7 +115,7 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
             PoseStack poseStack = new PoseStack();
             poseStack.pushPose();
             poseStack.mulPose(Axis.YP.rotationDegrees(-90));
-            poseStack.mulPose(Axis.XP.rotationDegrees(180));
+
             if (NarakaClientContext.SHADER_ENABLED.getValue()) {
                 RenderSystem.setShaderFog(shaderFog);
                 skyRenderer.renderSkyDisc(ARGB.white(0xff));
@@ -134,7 +134,7 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
         Matrix4fStack matrix4fStack = RenderSystem.getModelViewStack();
         matrix4fStack.pushMatrix();
         matrix4fStack.mul(poseStack.last().pose());
-        matrix4fStack.translate(0.0F, -100.0F, 0.0F);
+        matrix4fStack.translate(0, 75, 0);
         matrix4fStack.scale(30, 1, 30);
         GpuBufferSlice gpuBufferSlice = RenderSystem.getDynamicUniforms()
                 .writeTransform(matrix4fStack, new Vector4f(1, 1, 1, 1), new Vector3f(), new Matrix4f());
@@ -187,6 +187,7 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
 
     @Override
     public void close() {
+        instance = null;
         starBuffer.close();
         eclipseBuffer.close();
     }

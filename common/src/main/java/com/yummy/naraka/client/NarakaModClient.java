@@ -51,7 +51,7 @@ public final class NarakaModClient {
         registerHudRenders();
         registerMenus();
         registerKeyMappings();
-        DimensionSkyRendererRegistry.register(NarakaDimensions.NARAKA, NarakaSkyRenderer::getInstance);
+        DimensionSkyRendererRegistry.register(NarakaDimensions.NARAKA, NarakaSkyRenderer::new);
 
         AnimationMapper.initialize();
 
