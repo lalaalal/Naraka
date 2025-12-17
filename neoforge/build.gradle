@@ -47,7 +47,7 @@ loom {
             clientData()
             programArgs "--all", "--mod", "$project.mod_id"
             programArgs "--output", file("src/main/generated.neoforge").absolutePath
-            programArgs "--existing", file("../fabric/src/main/resources").absolutePath
+            programArgs "--existing", file("src/main/resources").absolutePath
         }
     }
 }
@@ -61,7 +61,7 @@ processResources {
 }
 
 sourceSets.main.resources {
-    srcDirs '../fabric/src/main/generated', 'src/main/generated.neoforge'
+    srcDirs 'src/main/generated', 'src/main/generated.neoforge'
 }
 
 shadowJar {

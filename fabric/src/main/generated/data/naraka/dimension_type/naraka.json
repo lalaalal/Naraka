@@ -10,7 +10,10 @@
     "minecraft:gameplay/can_start_raid": false,
     "minecraft:gameplay/nether_portal_spawns_piglin": false,
     "minecraft:gameplay/piglins_zombify": false,
-    "minecraft:gameplay/respawn_anchor_works": false
+    "minecraft:gameplay/respawn_anchor_works": false,
+    "minecraft:visual/cloud_height": 56.0,
+    "minecraft:visual/moon_angle": 0.0,
+    "minecraft:visual/sun_angle": 180.0
   },
   "coordinate_scale": 1.0,
   "has_ceiling": false,

@@ -4,7 +4,6 @@ import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TimelineTags;
@@ -17,7 +16,6 @@ import net.minecraft.world.timeline.Timeline;
 
 public class NarakaDimensionTypes {
     public static final ResourceKey<DimensionType> NARAKA = create("naraka");
-    public static final Identifier NARAKA_EFFECT = NARAKA.identifier();
 
     public static void bootstrap(BootstrapContext<DimensionType> context) {
         HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
@@ -35,6 +33,9 @@ public class NarakaDimensionTypes {
                 DimensionType.Skybox.NONE,
                 DimensionType.CardinalLightType.DEFAULT,
                 EnvironmentAttributeMap.builder()
+                        .set(EnvironmentAttributes.CLOUD_HEIGHT, 56f)
+                        .set(EnvironmentAttributes.MOON_ANGLE, 0f)
+                        .set(EnvironmentAttributes.SUN_ANGLE, 180f)
                         .set(EnvironmentAttributes.BED_RULE, BedRule.EXPLODES)
                         .set(EnvironmentAttributes.CAN_START_RAID, false)
                         .set(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false)

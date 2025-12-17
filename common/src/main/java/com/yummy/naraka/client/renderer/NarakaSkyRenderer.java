@@ -102,7 +102,7 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
             bufferBuilder.addVertex(matrix4f, -1, 0, 1).setUv(0, 0);
 
             try (MeshData meshData = bufferBuilder.buildOrThrow()) {
-                return RenderSystem.getDevice().createBuffer(() -> "Eclipse quad", 32, meshData.vertexBuffer());
+                return RenderSystem.getDevice().createBuffer(() -> "Eclipse quad", 40, meshData.vertexBuffer());
             }
         }
     }
