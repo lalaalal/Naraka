@@ -4,7 +4,6 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.fabric.init.*;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.invoker.MethodInvoker;
-import com.yummy.naraka.world.NarakaBiomes;
 import net.fabricmc.api.ModInitializer;
 
 public final class NarakaModFabric implements ModInitializer, NarakaInitializer {
@@ -16,6 +15,7 @@ public final class NarakaModFabric implements ModInitializer, NarakaInitializer 
         MethodInvoker.register(FabricEventHandler.class);
         MethodInvoker.register(FabricRegistryFactory.class);
         MethodInvoker.register(FabricRegistryProxyProvider.class);
+        MethodInvoker.register(FabricBiomeModificationRegistry.class);
         MethodInvoker.register(FabricSpawnPlacementRegistry.class);
         MethodInvoker.register(FabricCommandRegistry.class);
         MethodInvoker.register(FabricPotionBrewRecipeRegistry.class);
@@ -28,10 +28,5 @@ public final class NarakaModFabric implements ModInitializer, NarakaInitializer 
     @Override
     public void runAfterRegistryLoaded(Runnable runnable) {
         runnable.run();
-    }
-
-    @Override
-    public NarakaBiomes.Modifier getBiomeModifier() {
-        return FabricBiomeModifier.INSTANCE;
     }
 }

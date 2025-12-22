@@ -98,7 +98,7 @@ public final class NarakaMod {
 
         NarakaWorldCarvers.initialize();
         NarakaFeatures.initialize();
-        NarakaBiomes.initialize(initializer);
+        NarakaBiomes.initialize();
 
         NarakaRootPlacerTypes.initialize();
 
