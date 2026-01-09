@@ -59,6 +59,14 @@ public class NarakaEntityTypes {
                     .sized(0.5f, 0.5f)
     );
 
+    public static final HolderProxy<EntityType<?>, EntityType<CorruptedStar>> CORRUPTED_STAR = register(
+            "corrupted_star",
+            EntityType.Builder.<CorruptedStar>of(CorruptedStar::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .fireImmune()
+                    .updateInterval(40)
+    );
+
     public static final HolderProxy<EntityType<?>, EntityType<NarakaFireball>> NARAKA_FIREBALL = register(
             "naraka_fireball",
             EntityType.Builder.<NarakaFireball>of(NarakaFireball::new, MobCategory.MISC)

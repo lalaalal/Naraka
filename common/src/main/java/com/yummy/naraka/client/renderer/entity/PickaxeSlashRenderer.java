@@ -33,12 +33,12 @@ public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash, 
     }
 
     @Override
-    public void extractRenderState(PickaxeSlash entity, PickaxeSlashRenderState reusedState, float partialTick) {
-        super.extractRenderState(entity, reusedState, partialTick);
-        reusedState.yRot = 180 + entity.getYRot(partialTick);
-        reusedState.zRot = entity.getZRot();
-        reusedState.tailWidth = 1;
-        reusedState.color = entity.getColor(partialTick);
+    public void extractRenderState(PickaxeSlash entity, PickaxeSlashRenderState renderState, float partialTick) {
+        super.extractRenderState(entity, renderState, partialTick);
+        renderState.yRot = 180 + entity.getYRot(partialTick);
+        renderState.zRot = entity.getZRot();
+        renderState.tailWidth = 1;
+        renderState.color = entity.getColor(partialTick);
     }
 
     @Override

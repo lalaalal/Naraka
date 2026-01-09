@@ -51,6 +51,12 @@ public class NarakaUtils {
         );
     }
 
+    public static Vec3 quadraticBezier(float delta, Vec3 v1, Vec3 v2, Vec3 v3) {
+        Vec3 m1 = v1.lerp(v2, delta);
+        Vec3 m2 = v2.lerp(v3, delta);
+        return m1.lerp(m2, delta);
+    }
+
     public static float interpolate(float delta, float start, float end, Function<Float, Float> function) {
         float newDelta = function.apply(delta);
         return Mth.lerp(Math.clamp(newDelta, 0, 1), start, end);

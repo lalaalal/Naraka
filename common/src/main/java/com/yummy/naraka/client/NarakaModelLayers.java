@@ -5,6 +5,7 @@ import com.yummy.naraka.client.init.ModelLayerRegistry;
 import com.yummy.naraka.client.model.*;
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulStabilizerBlockEntityRenderer;
+import com.yummy.naraka.client.renderer.entity.CorruptedStarRenderer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -25,6 +26,7 @@ public final class NarakaModelLayers {
 
     public static final ModelLayerLocation NARAKA_FIREBALL = location("naraka_fireball");
     public static final ModelLayerLocation STARDUST = location("stardust");
+    public static final ModelLayerLocation CORRUPTED_STAR = location("corrupted_star");
 
     public static final ModelLayerLocation SOUL_SMITHING_BLOCK = location("soul_smithing_block");
     public static final ModelLayerLocation SOUL_STABILIZER = location("soul_stabilizer");
@@ -49,6 +51,7 @@ public final class NarakaModelLayers {
 
         ModelLayerRegistry.register(NarakaModelLayers.NARAKA_FIREBALL, NarakaFireballModel::createBodyLayer);
         ModelLayerRegistry.register(NarakaModelLayers.STARDUST, StardustModel::createBodyLayer);
+        ModelLayerRegistry.register(NarakaModelLayers.CORRUPTED_STAR, CorruptedStarRenderer::createBodyLayer);
 
         ModelLayerRegistry.register(NarakaModelLayers.DIAMOND_GOLEM, DiamondGolemModel::createBodyLayer);
 

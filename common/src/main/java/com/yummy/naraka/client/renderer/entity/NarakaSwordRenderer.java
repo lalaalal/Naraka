@@ -35,9 +35,9 @@ public class NarakaSwordRenderer extends LightTailEntityRenderer<NarakaSword, Na
     }
 
     @Override
-    public void extractRenderState(NarakaSword entity, NarakaSwordRenderState reusedState, float partialTick) {
-        super.extractRenderState(entity, reusedState, partialTick);
-        reusedState.updateBeamEffects(entity.beamEffects, reusedState.ageInTicks);
+    public void extractRenderState(NarakaSword entity, NarakaSwordRenderState renderState, float partialTick) {
+        super.extractRenderState(entity, renderState, partialTick);
+        renderState.updateBeamEffects(entity.beamEffects, renderState.ageInTicks);
     }
 
     @Override
