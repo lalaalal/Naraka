@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Function;
 
 public class ThrowFireballSkill extends TargetSkill<SkillUsingMob> {
-    public static final Identifier LOCATION = createLocation("herobrine.throw_fireball");
+    public static final Identifier LOCATION = skillIdentifier("herobrine.throw_fireball");
     private final Function<ServerLevel, Fireball> fireballCreator;
     @Nullable
     private Fireball fireball;

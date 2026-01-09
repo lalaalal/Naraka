@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class DashAroundSkill<T extends SkillUsingMob & AfterimageEntity> extends TargetSkill<T> {
-    public static final Identifier LOCATION = createLocation("herobrine.dash_around");
+    public static final Identifier LOCATION = skillIdentifier("herobrine.dash_around");
     private Vec3 prevPosition = Vec3.ZERO;
     private Vec3 deltaMovement = Vec3.ZERO;
     private Vec3 previousTargetPosition = Vec3.ZERO;

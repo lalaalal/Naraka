@@ -22,11 +22,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 
 public class StormSkill extends ComboSkill<Herobrine> {
-    public static final Identifier LOCATION = createLocation("final_herobrine.storm");
+    public static final Identifier LOCATION = skillIdentifier("final_herobrine.storm");
     private final HashMap<LivingEntity, Integer> hurtEntities = new HashMap<>();
 
     public StormSkill(Herobrine mob, Skill<?> parryingSkill) {
-        super(LOCATION, mob, 80, 600, 0.8f, 80, parryingSkill);
+        super(LOCATION, mob, 80, 900, 0.8f, 80, parryingSkill);
     }
 
     @Override

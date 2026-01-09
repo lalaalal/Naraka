@@ -21,7 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class SpinUpSkill extends ComboSkill<Herobrine> {
-    public static final Identifier LOCATION = createLocation("final_herobrine.spin_up");
+    public static final Identifier LOCATION = skillIdentifier("final_herobrine.spin_up");
 
     public SpinUpSkill(Herobrine mob, @Nullable Skill<?> nextSkill) {
         super(LOCATION, mob, 55, 0, 1, 40, nextSkill);

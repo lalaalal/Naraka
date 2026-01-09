@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Collection;
 
 public class StigmatizeEntitiesSkill extends Skill<Herobrine> {
-    public static final Identifier LOCATION = createLocation("herobrine.stigmatize_entities");
+    public static final Identifier LOCATION = skillIdentifier("herobrine.stigmatize_entities");
 
     public StigmatizeEntitiesSkill(Herobrine mob) {
         super(LOCATION, mob, Integer.MAX_VALUE, 0);

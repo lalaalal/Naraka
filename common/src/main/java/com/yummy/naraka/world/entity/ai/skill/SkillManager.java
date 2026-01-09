@@ -30,7 +30,7 @@ public class SkillManager {
     private Skill<?> currentSkill = null;
 
     public void addSkill(int priority, Skill<?> skill) {
-        this.skills.put(skill.location, new Entry(priority, skill));
+        this.skills.put(skill.identifier, new Entry(priority, skill));
     }
 
     public void enableOnly(Collection<Skill<?>> skillsToEnable) {
@@ -85,7 +85,7 @@ public class SkillManager {
     public void setCurrentSkill(@Nullable Skill<?> skill) {
         if (skill == null)
             return;
-        NarakaMod.LOGGER.debug("{} : Setting current skill {}", mob, skill.location);
+        NarakaMod.LOGGER.debug("{} : Setting current skill {}", mob, skill.identifier);
         currentSkill = skill;
         currentSkill.prepare();
         for (Consumer<Skill<?>> listener : skillStartListeners)
@@ -104,7 +104,7 @@ public class SkillManager {
 
     public void interrupt() {
         if (currentSkill != null) {
-            NarakaMod.LOGGER.debug("{} : Interrupting skill {}", mob, currentSkill.location);
+            NarakaMod.LOGGER.debug("{} : Interrupting skill {}", mob, currentSkill.identifier);
             for (Consumer<Skill<?>> listener : skillEndListeners)
                 listener.accept(currentSkill);
             this.currentSkill.interrupt();

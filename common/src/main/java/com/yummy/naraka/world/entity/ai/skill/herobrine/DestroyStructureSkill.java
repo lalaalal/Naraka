@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class DestroyStructureSkill extends AttackSkill<Herobrine> {
-    public static final Identifier LOCATION = createLocation("herobrine.destroy_structure");
+    public static final Identifier LOCATION = skillIdentifier("herobrine.destroy_structure");
     private static final int SPHERE_RADIUS = 10;
     private static final int FLOOR_DESTROY_START_TICK = 100;
     private static final int FLOOR_DESTROY_END_TICK = 117;

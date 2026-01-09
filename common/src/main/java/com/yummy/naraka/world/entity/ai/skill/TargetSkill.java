@@ -13,12 +13,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.UnaryOperator;
 
 public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
-    protected TargetSkill(Identifier location, T mob, int duration, int cooldown, @Nullable Skill<?> linkedSkill) {
-        super(location, mob, duration, cooldown, linkedSkill);
+    protected TargetSkill(Identifier identifier, T mob, int duration, int cooldown, @Nullable Skill<?> linkedSkill) {
+        super(identifier, mob, duration, cooldown, linkedSkill);
     }
 
-    protected TargetSkill(Identifier location, T mob, int duration, int cooldown) {
-        super(location, mob, duration, cooldown);
+    protected TargetSkill(Identifier identifier, T mob, int duration, int cooldown) {
+        super(identifier, mob, duration, cooldown);
     }
 
     @Override

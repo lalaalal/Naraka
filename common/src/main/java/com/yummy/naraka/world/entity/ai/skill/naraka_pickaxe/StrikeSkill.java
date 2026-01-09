@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Supplier;
 
 public class StrikeSkill extends AttackSkill<NarakaPickaxe> {
-    public static final Identifier LOCATION = createLocation("naraka_pickaxe.strike");
+    public static final Identifier LOCATION = skillIdentifier("naraka_pickaxe.strike");
     private static final int STRIKE_TICK = 20;
     private static final int STRIKE_END_TICK = 160;
 

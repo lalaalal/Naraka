@@ -12,9 +12,9 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
-    public static final Identifier FINAL_COMBO_ATTACK_1 = createLocation("final_herobrine.combo_attack_1");
-    public static final Identifier FINAL_COMBO_ATTACK_2 = createLocation("final_herobrine.combo_attack_2");
-    public static final Identifier FINAL_COMBO_ATTACK_3 = createLocation("final_herobrine.combo_attack_3");
+    public static final Identifier FINAL_COMBO_ATTACK_1 = skillIdentifier("final_herobrine.combo_attack_1");
+    public static final Identifier FINAL_COMBO_ATTACK_2 = skillIdentifier("final_herobrine.combo_attack_2");
+    public static final Identifier FINAL_COMBO_ATTACK_3 = skillIdentifier("final_herobrine.combo_attack_3");
 
     protected int attackTick;
     protected int attackRange;

@@ -78,7 +78,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
 
     public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(int priority, S skill, Identifier... animationLocations) {
         this.skillManager.addSkill(priority, skill);
-        registerAnimation(skill.location, List.of(animationLocations));
+        registerAnimation(skill.identifier, List.of(animationLocations));
 
         return skill;
     }
@@ -141,7 +141,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
     }
 
     private void setAnimation(Skill<?> skill) {
-        this.setAnimation(skill.location);
+        this.setAnimation(skill.identifier);
     }
 
     /**
@@ -225,7 +225,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         getCurrentSkill().ifPresent(skill -> {
-            output.store("CurrentSkill", Identifier.CODEC, skill.location);
+            output.store("CurrentSkill", Identifier.CODEC, skill.identifier);
         });
     }
 

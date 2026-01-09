@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class CarpetBombingSkill extends AttackSkill<Herobrine> {
-    public static final Identifier LOCATION = createLocation("final_herobrine.carpet_bombing");
+    public static final Identifier LOCATION = skillIdentifier("final_herobrine.carpet_bombing");
 
     private final Map<Stardust, Integer> stardusts = new HashMap<>();
     private Vec3 deltaMovement = Vec3.ZERO;

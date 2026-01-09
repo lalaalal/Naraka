@@ -12,7 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class SpinningSkill extends ComboSkill<AbstractHerobrine> {
-    public static final Identifier LOCATION = createLocation("herobrine.spinning");
+    public static final Identifier LOCATION = skillIdentifier("herobrine.spinning");
 
     public SpinningSkill(AbstractHerobrine mob, Skill<?> comboSkill) {
         super(LOCATION, mob, 20, 0, 1, 20, comboSkill);

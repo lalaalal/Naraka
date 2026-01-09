@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Predicate;
 
 public class ExplosionSkill extends AttackSkill<Herobrine> {
-    public static final Identifier LOCATION = createLocation("final_herobrine.explosion");
+    public static final Identifier LOCATION = skillIdentifier("final_herobrine.explosion");
 
     @Nullable
     private MagicCircle magicCircle;

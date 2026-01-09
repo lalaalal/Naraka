@@ -13,9 +13,9 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class SimpleAttackSkill extends AttackSkill<SkillUsingMob> {
-    public static final Identifier BASIC = createLocation("diamond_golem.basic_attack");
-    public static final Identifier SWIPE = createLocation("diamond_golem.swipe_attack");
-    public static final Identifier STRONG = createLocation("diamond_golem.strong_attack");
+    public static final Identifier BASIC = skillIdentifier("diamond_golem.basic_attack");
+    public static final Identifier SWIPE = skillIdentifier("diamond_golem.swipe_attack");
+    public static final Identifier STRONG = skillIdentifier("diamond_golem.strong_attack");
 
     public static SimpleAttackSkill basic(SkillUsingMob mob) {
         return new SimpleAttackSkill(BASIC, mob, 45, 80, 20, 7, 36, NarakaSoundEvents.DIAMOND_GOLEM_BASIC.value());

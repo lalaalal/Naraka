@@ -26,12 +26,12 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 public class EarthShockSkill extends AttackSkill<Herobrine> {
-    public static final Identifier LOCATION = createLocation("final_herobrine.earth_shock");
+    public static final Identifier LOCATION = skillIdentifier("final_herobrine.earth_shock");
 
     private static final float HALF_ANGLE = Mth.HALF_PI * 0.125f;
 
     public EarthShockSkill(Herobrine mob) {
-        super(LOCATION, mob, 240, 600);
+        super(LOCATION, mob, 240, 1200);
     }
 
     @Override

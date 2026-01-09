@@ -21,16 +21,16 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T
     protected int shieldCooldown = 0;
     protected int shieldDamage = 0;
 
-    protected AttackSkill(Identifier location, T mob, int duration, int cooldown, @Nullable Skill<?> linkedSkill) {
-        super(location, mob, duration, cooldown, linkedSkill);
+    protected AttackSkill(Identifier identifier, T mob, int duration, int cooldown, @Nullable Skill<?> linkedSkill) {
+        super(identifier, mob, duration, cooldown, linkedSkill);
     }
 
-    protected AttackSkill(Identifier location, T mob, int duration, int cooldown) {
-        super(location, mob, duration, cooldown);
+    protected AttackSkill(Identifier identifier, T mob, int duration, int cooldown) {
+        super(identifier, mob, duration, cooldown);
     }
 
-    protected AttackSkill(Identifier location, T mob, int duration, int cooldown, int shieldCooldown, int shieldDamage) {
-        super(location, mob, duration, cooldown);
+    protected AttackSkill(Identifier identifier, T mob, int duration, int cooldown, int shieldCooldown, int shieldDamage) {
+        super(identifier, mob, duration, cooldown);
         this.shieldCooldown = shieldCooldown;
         this.shieldDamage = shieldDamage;
     }

@@ -18,8 +18,8 @@ public abstract class ComboSkill<T extends SkillUsingMob> extends AttackSkill<T>
     protected final int comboDuration;
     protected final int nonComboDuration;
 
-    protected ComboSkill(Identifier location, T mob, int duration, int cooldown, float linkChance, int comboDuration, @Nullable Skill<?> nextSkill) {
-        super(location, mob, duration, cooldown);
+    protected ComboSkill(Identifier identifier, T mob, int duration, int cooldown, float linkChance, int comboDuration, @Nullable Skill<?> nextSkill) {
+        super(identifier, mob, duration, cooldown);
         this.linkChance = linkChance;
         this.comboSkill = nextSkill;
         this.comboDuration = comboDuration;

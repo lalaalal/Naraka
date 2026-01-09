@@ -14,7 +14,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class SpawnPickaxeSkill extends AttackSkill<Herobrine> {
-    public static final Identifier LOCATION = createLocation("final_herobrine.pickaxe_strike");
+    public static final Identifier LOCATION = skillIdentifier("final_herobrine.pickaxe_strike");
 
     private static final int SHOOT_TICK = 10;
     private static final int SHOOT_DURATION = 20;

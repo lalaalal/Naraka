@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
-    public static final Identifier LOCATION = createLocation("final_herobrine.parrying");
+    public static final Identifier LOCATION = skillIdentifier("final_herobrine.parrying");
 
     private static final int PARRYING_START_TICK = 10;
     private static final int PARRYING_END_TICK = 40;
@@ -71,10 +71,6 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
 
     private int tickCount(int succeedTick) {
         return succeedTick + (duration - PARRYING_DURATION);
-    }
-
-    private Vec3 movement(Vec3 original) {
-        return original.multiply(0.8, 0, 0.8);
     }
 
     private void handleSucceed(ServerLevel level, @Nullable LivingEntity target) {

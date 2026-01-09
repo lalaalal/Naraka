@@ -17,12 +17,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 
 public class SplitAttackSkill extends ComboSkill<Herobrine> {
-    public static final Identifier LOCATION = createLocation("final_herobrine.split_attack");
+    public static final Identifier LOCATION = skillIdentifier("final_herobrine.split_attack");
     private InstantShadowSpawner firstShadowSpawner = InstantShadowSpawner.EMPTY;
     private InstantShadowSpawner secondShadowSpawner = InstantShadowSpawner.EMPTY;
 
     public SplitAttackSkill(Herobrine mob, Skill<?> nextSkill) {
-        super(LOCATION, mob, 60, 100, 0.5f, 45, nextSkill);
+        super(LOCATION, mob, 60, 80, 0.5f, 45, nextSkill);
     }
 
     @Override

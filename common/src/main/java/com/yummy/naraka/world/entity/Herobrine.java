@@ -81,7 +81,7 @@ public class Herobrine extends AbstractHerobrine {
     protected final FlickerSkill<Herobrine> flickerSkill = registerSkill(new FlickerSkill<>(this, dashSkill, punchSkill));
     protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, flickerSkill));
 
-    protected final CarpetBombingSkill carpetBombingSkill = registerSkill(7, this, CarpetBombingSkill::new, HerobrineAnimationIdentifiers.CARPET_BOMBING);
+    protected final StarShootingSkill starShootingSkill = registerSkill(6, this, StarShootingSkill::new, HerobrineAnimationIdentifiers.PHASE_3_IDLE);
     protected final ExplosionSkill explosionSkill = registerSkill(7, this, ExplosionSkill::new, HerobrineAnimationIdentifiers.EXPLOSION);
     protected final EarthShockSkill earthShockSkill = registerSkill(6, this, EarthShockSkill::new, HerobrineAnimationIdentifiers.EARTH_SHOCK);
     protected final ParryingSkill parryingSkill = registerSkill(7, this, ParryingSkill::new, HerobrineAnimationIdentifiers.PARRYING);
@@ -100,7 +100,7 @@ public class Herobrine extends AbstractHerobrine {
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill);
     private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, walkAroundTargetSkill);
     private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, summonShadowSkill, walkAroundTargetSkill);
-    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, splitAttackSkill, stormSkill, carpetBombingSkill, singlePickaxeSlashSkill, triplePickaxeSlashSkill, earthShockSkill, spawnPickaxeSkill);
+    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, splitAttackSkill, stormSkill, starShootingSkill, singlePickaxeSlashSkill, triplePickaxeSlashSkill, earthShockSkill, spawnPickaxeSkill);
 
     private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashAroundSkill, walkAroundTargetSkill, destroyStructureSkill);
     private final List<Identifier> INVULNERABLE_ANIMATIONS = List.of(HerobrineAnimationIdentifiers.ENTER_PHASE_2, HerobrineAnimationIdentifiers.STAGGERING_PHASE_2, HerobrineAnimationIdentifiers.PREPARE_PHASE_3, HerobrineAnimationIdentifiers.ENTER_PHASE_3);

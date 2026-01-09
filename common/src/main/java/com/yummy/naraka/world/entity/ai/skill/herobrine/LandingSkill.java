@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Supplier;
 
 public class LandingSkill extends ComboSkill<Herobrine> {
-    public static final Identifier LOCATION = createLocation("herobrine.landing");
+    public static final Identifier LOCATION = skillIdentifier("herobrine.landing");
 
     private final Supplier<Vec3> floatingBlockMovement = () -> new Vec3(0, mob.getRandom().nextDouble() * 0.3 + 0.3, 0);
 

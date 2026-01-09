@@ -20,8 +20,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<T> {
-    public static final Identifier SINGLE = createLocation("final_herobrine.pickaxe_slash.single");
-    public static final Identifier TRIPLE = createLocation("final_herobrine.pickaxe_slash.triple");
+    public static final Identifier SINGLE = skillIdentifier("final_herobrine.pickaxe_slash.single");
+    public static final Identifier TRIPLE = skillIdentifier("final_herobrine.pickaxe_slash.triple");
     private final List<Integer> pickaxeSlashSpawnTimes;
     private int rotateDirection = 1;
     private final boolean spawnShadow;

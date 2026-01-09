@@ -18,30 +18,30 @@ public class CorruptedStarStaffItem extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         float yRot = (float) Math.toRadians(90 - player.getYRot());
-        level.addFreshEntity(new CorruptedStar(level, player.getEyePosition(), QuadraticBezier.fromZero(
+        level.addFreshEntity(new CorruptedStar(level, player, player.getEyePosition(), QuadraticBezier.fromZero(
                 new Vec3(3, 1.5f, -3),
                 new Vec3(0, 3, 3)
         ).rotated(yRot)));
         TickSchedule.executeAfter(level.getGameTime(), 2, () -> {
-            level.addFreshEntity(new CorruptedStar(level, player.getEyePosition(), QuadraticBezier.fromZero(
+            level.addFreshEntity(new CorruptedStar(level, player, player.getEyePosition(), QuadraticBezier.fromZero(
                     new Vec3(3, 1.5f, -3),
                     new Vec3(0, 4, 1.5)
             ).rotated(yRot)));
         });
         TickSchedule.executeAfter(level.getGameTime(), 4, () -> {
-            level.addFreshEntity(new CorruptedStar(level, player.getEyePosition(), QuadraticBezier.fromZero(
+            level.addFreshEntity(new CorruptedStar(level, player, player.getEyePosition(), QuadraticBezier.fromZero(
                     new Vec3(3, 1.5f, -3),
                     new Vec3(0, 4.5, 0)
             ).rotated(yRot)));
         });
         TickSchedule.executeAfter(level.getGameTime(), 6, () -> {
-            level.addFreshEntity(new CorruptedStar(level, player.getEyePosition(), QuadraticBezier.fromZero(
+            level.addFreshEntity(new CorruptedStar(level, player, player.getEyePosition(), QuadraticBezier.fromZero(
                     new Vec3(3, 1.5f, -3),
                     new Vec3(0, 4, -1.5)
             ).rotated(yRot)));
         });
         TickSchedule.executeAfter(level.getGameTime(), 8, () -> {
-            level.addFreshEntity(new CorruptedStar(level, player.getEyePosition(), QuadraticBezier.fromZero(
+            level.addFreshEntity(new CorruptedStar(level, player, player.getEyePosition(), QuadraticBezier.fromZero(
                     new Vec3(3, 1.5f, -3),
                     new Vec3(0, 3, -3)
             ).rotated(yRot)));

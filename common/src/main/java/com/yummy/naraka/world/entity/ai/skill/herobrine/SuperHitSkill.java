@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 public class SuperHitSkill extends ComboSkill<Herobrine> {
-    public static final Identifier LOCATION = createLocation("herobrine.super_hit");
+    public static final Identifier LOCATION = skillIdentifier("herobrine.super_hit");
     private int onGroundTick = 0;
     private final Set<LivingEntity> hitEntities = new HashSet<>();
 

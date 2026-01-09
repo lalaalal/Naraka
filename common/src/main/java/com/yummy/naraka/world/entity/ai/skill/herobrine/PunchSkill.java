@@ -12,7 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
-    public static final Identifier LOCATION = createLocation("herobrine.punch");
+    public static final Identifier LOCATION = skillIdentifier("herobrine.punch");
 
     private boolean linked = false;
 

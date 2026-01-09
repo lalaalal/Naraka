@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Supplier;
 
 public class StrikeDownSkill extends ComboSkill<Herobrine> {
-    public static final Identifier LOCATION = createLocation("final_herobrine.strike_down");
+    public static final Identifier LOCATION = skillIdentifier("final_herobrine.strike_down");
 
     private final Supplier<Vec3> movementSupplier = () -> new Vec3(0, mob.getRandom().nextFloat() * 0.4 + 0.3, 0);
     private int onGroundTick;
