@@ -26,6 +26,8 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
     public static final EntityDataAccessor<QuadraticBezier> PREPARE_BEZIER = SynchedEntityData.defineId(CorruptedStar.class, NarakaEntityDataSerializers.BEZIER);
     public static final EntityDataAccessor<Integer> PREPARE_DURATION = SynchedEntityData.defineId(CorruptedStar.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Vec3> BASE_POSITION = SynchedEntityData.defineId(CorruptedStar.class, NarakaEntityDataSerializers.VEC3);
+    public static final EntityDataAccessor<Vec3> TARGET_POSITION = SynchedEntityData.defineId(CorruptedStar.class, NarakaEntityDataSerializers.VEC3);
+    public static final EntityDataAccessor<Integer> FOLLOWING_TARGET = SynchedEntityData.defineId(CorruptedStar.class, EntityDataSerializers.INT);
 
     private int hitTick = 0;
     private final boolean verticalShine;
@@ -65,12 +67,38 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
         return shineStartTick;
     }
 
+    public Vec3 getTargetPosition() {
+        return entityData.get(TARGET_POSITION);
+    }
+
+    public Vec3 getTargetPosition(float partialTicks) {
+        int followingTargetId = entityData.get(FOLLOWING_TARGET);
+        Entity entity = level().getEntity(followingTargetId);
+        if (entity != null)
+            return entity.getPosition(partialTicks);
+        return entityData.get(TARGET_POSITION);
+    }
+
+    public void setTargetPosition(Vec3 position) {
+        entityData.set(TARGET_POSITION, position);
+    }
+
+    public void setFollowingTarget(LivingEntity target) {
+        entityData.set(FOLLOWING_TARGET, target.getId());
+    }
+
+    public void removeFollowingTarget() {
+        entityData.set(FOLLOWING_TARGET, -1);
+    }
+
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(PREPARE_BEZIER, QuadraticBezier.ZERO)
                 .define(PREPARE_DURATION, 40)
-                .define(BASE_POSITION, Vec3.ZERO);
+                .define(BASE_POSITION, Vec3.ZERO)
+                .define(TARGET_POSITION, Vec3.ZERO)
+                .define(FOLLOWING_TARGET, -1);
     }
 
     @Override
@@ -108,6 +136,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
             Vec3 hitLocation = result.getLocation();
             level().explode(this, damageSources().explosion(this, getOwner()), null, hitLocation, 2, false, Level.ExplosionInteraction.NONE);
             hitTick = tickCount;
+            setTargetPosition(Vec3.ZERO);
         }
     }
 

@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 
 @Environment(EnvType.CLIENT)
@@ -65,6 +66,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         renderState.verticalShine = entity.isVerticalShine();
         renderState.shineScale = entity.getShineScale();
         renderState.shineStartTick = entity.getShineStartTick();
+        renderState.targetPosition = entity.getTargetPosition(partialTick);
     }
 
     @Override
@@ -89,6 +91,18 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
 
         poseStack.popPose();
 
+        submitShiny(entityRenderState, poseStack, submitNodeCollector);
+        submitTargetPoint(entityRenderState, poseStack, submitNodeCollector);
+
+        super.submit(entityRenderState, poseStack, submitNodeCollector, cameraRenderState);
+    }
+
+    private void submitShiny(CorruptedStarRenderState entityRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+        final int length = 20;
+        float tickPart = entityRenderState.ageInTicks - entityRenderState.shineStartTick;
+        if (tickPart < 0 || tickPart > length)
+            return;
+
         poseStack.pushPose();
         poseStack.scale(entityRenderState.shineScale, entityRenderState.shineScale, entityRenderState.shineScale);
         Player player = NarakaRenderUtils.getCurrentPlayer();
@@ -98,26 +112,18 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         if (entityRenderState.verticalShine)
             poseStack.mulPose(Axis.ZN.rotationDegrees(90));
         submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
-            renderShiny(pose, vertexConsumer, entityRenderState);
+            renderShiny(pose, vertexConsumer, tickPart, length);
         });
 
         poseStack.mulPose(Axis.ZN.rotationDegrees(90));
         poseStack.scale(0.5f, 0.5f, 0.5f);
         submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
-            renderShiny(pose, vertexConsumer, entityRenderState);
+            renderShiny(pose, vertexConsumer, tickPart, length);
         });
         poseStack.popPose();
-
-        super.submit(entityRenderState, poseStack, submitNodeCollector, cameraRenderState);
     }
 
-    private void renderShiny(PoseStack.Pose pose, VertexConsumer vertexConsumer, CorruptedStarRenderState entityRenderState) {
-        int length = 20;
-
-        float tickPart = entityRenderState.ageInTicks - entityRenderState.shineStartTick;
-        if (tickPart < 0 || tickPart > length)
-            return;
-
+    private void renderShiny(PoseStack.Pose pose, VertexConsumer vertexConsumer, float tickPart, int length) {
         float width = NarakaUtils.interpolate(tickPart / length, 0, 20, NarakaUtils::fastStepIn);
         float height = NarakaUtils.interpolate(tickPart / length, 0.1f, 0, NarakaUtils::fastStepOut);
 
@@ -146,6 +152,51 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
                 .setNormal(pose, 0, 1, 0)
                 .setColor(ARGB.color(alpha, color));
         vertexConsumer.addVertex(pose, width, 0, 0)
+                .setNormal(pose, 0, 1, 0)
+                .setColor(ARGB.color(alpha, color));
+    }
+
+    private void submitTargetPoint(CorruptedStarRenderState entityRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+        float tickPart = entityRenderState.ageInTicks - entityRenderState.shineStartTick;
+        if (tickPart < 0 || entityRenderState.targetPosition.equals(Vec3.ZERO))
+            return;
+
+        poseStack.pushPose();
+        Vec3 translation = entityRenderState.targetPosition.subtract(entityRenderState.x, entityRenderState.y, entityRenderState.z);
+        poseStack.translate(translation.x, translation.y, translation.z);
+        Player player = NarakaRenderUtils.getCurrentPlayer();
+
+        poseStack.translate(0, 0.25f, 0);
+        poseStack.mulPose(Axis.YN.rotationDegrees(player.getYRot() + 180));
+        float width = NarakaUtils.interpolate(Math.min(tickPart / 10, 1), 0, 0.05f, NarakaUtils::fastStepOut);
+
+        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
+            renderTargetPoint(pose, vertexConsumer, 0.25f, width, 1.5f, 0xab, SoulType.COPPER.color);
+        });
+
+        poseStack.popPose();
+    }
+
+    private void renderTargetPoint(PoseStack.Pose pose, VertexConsumer vertexConsumer, float interval, float width, float height, int alpha, int color) {
+        renderTriangle(pose, vertexConsumer, 1, 1, interval, width, height, alpha, color);
+        renderTriangle(pose, vertexConsumer, -1, 1, interval, width, height, alpha, color);
+        renderTriangle(pose, vertexConsumer, -1, -1, interval, width, height, alpha, color);
+        renderTriangle(pose, vertexConsumer, 1, -1, interval, width, height, alpha, color);
+    }
+
+    private void renderTriangle(PoseStack.Pose pose, VertexConsumer vertexConsumer, int xDirection, int zDirection, float interval, float width, float height, int alpha, int color) {
+        float x = interval * xDirection;
+        float z = interval * zDirection;
+        vertexConsumer.addVertex(pose, -x, height, -z)
+                .setNormal(pose, 0, 1, 0)
+                .setColor(ARGB.color(alpha, color));
+        vertexConsumer.addVertex(pose, x - (width), 0, z)
+                .setNormal(pose, 0, 1, 0)
+                .setColor(ARGB.color(alpha, color));
+        vertexConsumer.addVertex(pose, x + (width), 0, z)
+                .setNormal(pose, 0, 1, 0)
+                .setColor(ARGB.color(alpha, color));
+        vertexConsumer.addVertex(pose, -x, height, -z)
                 .setNormal(pose, 0, 1, 0)
                 .setColor(ARGB.color(alpha, color));
     }

@@ -5,6 +5,7 @@ import com.yummy.naraka.util.QuadraticBezier;
 import com.yummy.naraka.world.entity.CorruptedStar;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ai.skill.TargetSkill;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -18,6 +19,7 @@ public class StarShootingSkill extends TargetSkill<Herobrine> {
     public static final Identifier IDENTIFIER = skillIdentifier("final_herobrine.star_shooting");
 
     private final List<CorruptedStar> corruptedStars = new ArrayList<>();
+    private final List<CorruptedStar> followingStars = new ArrayList<>();
 
     public StarShootingSkill(Herobrine mob) {
         super(IDENTIFIER, mob, 80, 200);
@@ -27,6 +29,7 @@ public class StarShootingSkill extends TargetSkill<Herobrine> {
     public void prepare() {
         super.prepare();
         corruptedStars.clear();
+        followingStars.clear();
     }
 
     @Override
@@ -38,13 +41,16 @@ public class StarShootingSkill extends TargetSkill<Herobrine> {
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         lookTarget(target);
         rotateTowardTarget(target);
-        runBetween(0, 9, () -> spawnCorruptedStar(level, 10, 15, 8));
-        runBetween(0, 9, () -> spawnCorruptedStar(level, 8, 12, 11));
-        run(at(55) && !corruptedStars.isEmpty(), () -> shootCorruptedStars(level, target, 3, true));
-        run(after(56) && tickCount % 2 == 0 && !corruptedStars.isEmpty(), () -> shootCorruptedStars(level, target, 2, false));
+        runBetween(0, 9, () -> spawnCorruptedStar(level, target, 10, 15, 8, false));
+        runBetween(0, 6, () -> spawnCorruptedStar(level, target, 5, 12, 11, false));
+        runBetween(6, 9, () -> spawnCorruptedStar(level, target, 3, 12, 11, true));
+        runBetween(30, 55, () -> followTargetPosition(target));
+        runAt(55, this::stopFollowingTarget);
+        run(at(55) && !followingStars.isEmpty(), () -> shootCorruptedStars(followingStars, 1.2f, 3));
+        run(after(56) && tickCount % 2 == 0 && !corruptedStars.isEmpty(), () -> shootCorruptedStars(corruptedStars, 1.5f, 2));
     }
 
-    private void spawnCorruptedStar(ServerLevel level, int count, float radius, float height) {
+    private void spawnCorruptedStar(ServerLevel level, LivingEntity target, int count, float radius, float height, boolean followTarget) {
         int index = tickCount;
         float yRot = (float) Math.toRadians(90 - mob.getYRot());
         float angle = Mth.TWO_PI / count * index + level.getRandom().nextFloat() * Mth.TWO_PI / count;
@@ -61,35 +67,49 @@ public class StarShootingSkill extends TargetSkill<Herobrine> {
                 new Vec3(targetX, targetY, targetZ)
         ).rotated(yRot);
         CorruptedStar corruptedStar = new CorruptedStar(level, mob, mob.getEyePosition(), bezier);
+        if (followTarget) {
+            followingStars.add(corruptedStar);
+            corruptedStar.setFollowingTarget(target);
+        } else {
+            corruptedStars.add(corruptedStar);
+            determineTargetPositions(level, corruptedStar, corruptedStar.position().add(bezier.v3()));
+        }
+
         level.addFreshEntity(corruptedStar);
-        corruptedStars.add(corruptedStar);
     }
 
-    private void shootCorruptedStars(ServerLevel level, LivingEntity target, int repeat, boolean followTarget) {
-        for (int i = 0; i < repeat && !corruptedStars.isEmpty(); i++) {
-            int randomIndex = mob.getRandom().nextInt(corruptedStars.size());
-            CorruptedStar corruptedStar = corruptedStars.remove(randomIndex);
-            if (followTarget)
-                shootCorruptedStarToTarget(target, corruptedStar);
-            else
-                shootCorruptedStar(level, corruptedStar);
+    private void followTargetPosition(LivingEntity target) {
+        for (CorruptedStar corruptedStar : followingStars)
+            corruptedStar.setTargetPosition(target.position());
+    }
+
+    private void determineTargetPositions(ServerLevel level, CorruptedStar corruptedStar, Vec3 position) {
+        double x = position.x() + corruptedStar.getRandom().nextFloat() * 16 - 8;
+        double z = position.z() + corruptedStar.getRandom().nextFloat() * 16 - 8;
+        double y = NarakaUtils.findFloor(level, BlockPos.containing(x, mob.getY(), z)).getY() + 1;
+
+        Vec3 targetPosition = new Vec3(x, y, z);
+        corruptedStar.setTargetPosition(targetPosition);
+    }
+
+    private void stopFollowingTarget() {
+        for (CorruptedStar followingStar : followingStars) {
+            followingStar.removeFollowingTarget();
         }
     }
 
-    private void shootCorruptedStar(ServerLevel level, CorruptedStar corruptedStar) {
-        double x = corruptedStar.getX() + corruptedStar.getRandom().nextFloat() * 16 - 8;
-        double z = corruptedStar.getZ() + corruptedStar.getRandom().nextFloat() * 16 - 8;
-        double y = NarakaUtils.findFloor(level, corruptedStar.blockPosition()).getY();
-
-        Vec3 targetPosition = new Vec3(x, y, z);
-        Vec3 direction = targetPosition.subtract(corruptedStar.position())
-                .normalize();
-        corruptedStar.shoot(direction.x, direction.y, direction.z, 1.5f, 0);
+    private void shootCorruptedStars(List<CorruptedStar> stars, float velocity, int repeat) {
+        for (int i = 0; i < repeat && !stars.isEmpty(); i++) {
+            int randomIndex = mob.getRandom().nextInt(stars.size());
+            CorruptedStar corruptedStar = stars.remove(randomIndex);
+            shootCorruptedStar(corruptedStar, velocity);
+        }
     }
 
-    private void shootCorruptedStarToTarget(LivingEntity target, CorruptedStar corruptedStar) {
-        Vec3 direction = target.position().subtract(corruptedStar.position())
+    private void shootCorruptedStar(CorruptedStar corruptedStar, float velocity) {
+        Vec3 targetPosition = corruptedStar.getTargetPosition();
+        Vec3 direction = targetPosition.subtract(corruptedStar.position())
                 .normalize();
-        corruptedStar.shoot(direction.x, direction.y, direction.z, 1.2f, 0);
+        corruptedStar.shoot(direction.x, direction.y, direction.z, velocity, 0);
     }
 }
