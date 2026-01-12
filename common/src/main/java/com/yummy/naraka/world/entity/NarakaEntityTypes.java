@@ -139,6 +139,22 @@ public class NarakaEntityTypes {
                     .sized(0.5f, 0.5f)
     );
 
+    public static final HolderProxy<EntityType<?>, EntityType<ShinyEffect>> SHINY_EFFECT = register(
+            "shiny_effect",
+            EntityType.Builder.<ShinyEffect>of(ShinyEffect::new, MobCategory.MISC)
+                    .fireImmune()
+                    .sized(0, 0)
+                    .noSave()
+    );
+
+    public static final HolderProxy<EntityType<?>, EntityType<AreaEffect>> AREA_EFFECT = register(
+            "area_effect",
+            EntityType.Builder.<AreaEffect>of(AreaEffect::new, MobCategory.MISC)
+                    .fireImmune()
+                    .sized(0, 0)
+                    .noSave()
+    );
+
     private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {
         return RegistryProxy.register(Registries.ENTITY_TYPE, name, () -> builder.build(createKey(name)));
     }

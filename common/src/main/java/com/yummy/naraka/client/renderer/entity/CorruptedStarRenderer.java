@@ -91,69 +91,17 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
 
         poseStack.popPose();
 
-        submitShiny(entityRenderState, poseStack, submitNodeCollector);
+        final int shinyLifetime = 20;
+        float tick = entityRenderState.ageInTicks - entityRenderState.shineStartTick;
+        if (0 <= tick && tick <= shinyLifetime) {
+            poseStack.pushPose();
+            poseStack.translate(0, 0.25f, 0);
+            ShinyEffectRenderer.submitShiny(tick, shinyLifetime, entityRenderState.shineScale, entityRenderState.verticalShine, SoulType.COPPER.color, poseStack, submitNodeCollector);
+            poseStack.popPose();
+        }
         submitTargetPoint(entityRenderState, poseStack, submitNodeCollector);
 
         super.submit(entityRenderState, poseStack, submitNodeCollector, cameraRenderState);
-    }
-
-    private void submitShiny(CorruptedStarRenderState entityRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
-        final int length = 20;
-        float tickPart = entityRenderState.ageInTicks - entityRenderState.shineStartTick;
-        if (tickPart < 0 || tickPart > length)
-            return;
-
-        poseStack.pushPose();
-        poseStack.scale(entityRenderState.shineScale, entityRenderState.shineScale, entityRenderState.shineScale);
-        Player player = NarakaRenderUtils.getCurrentPlayer();
-
-        poseStack.translate(0, 0.25f, 0);
-        poseStack.mulPose(Axis.YN.rotationDegrees(player.getYRot() + 180));
-        if (entityRenderState.verticalShine)
-            poseStack.mulPose(Axis.ZN.rotationDegrees(90));
-        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
-            renderShiny(pose, vertexConsumer, tickPart, length);
-        });
-
-        poseStack.mulPose(Axis.ZN.rotationDegrees(90));
-        poseStack.scale(0.5f, 0.5f, 0.5f);
-        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
-            renderShiny(pose, vertexConsumer, tickPart, length);
-        });
-        poseStack.popPose();
-    }
-
-    private void renderShiny(PoseStack.Pose pose, VertexConsumer vertexConsumer, float tickPart, int length) {
-        float width = NarakaUtils.interpolate(tickPart / length, 0, 20, NarakaUtils::fastStepIn);
-        float height = NarakaUtils.interpolate(tickPart / length, 0.1f, 0, NarakaUtils::fastStepOut);
-
-        renderRhombus(pose, vertexConsumer, width, height, 0xff, 0xffffff);
-
-        float centerWidth = Math.min(0.5f, width);
-        float centerHeight = NarakaUtils.interpolate(tickPart / length, 0.5f, 0, NarakaUtils::fastStepOut);
-        int alpha = 0xff;
-        while (centerWidth < width) {
-            renderRhombus(pose, vertexConsumer, centerWidth, centerHeight, alpha, SoulType.COPPER.color);
-            centerWidth *= 2;
-            alpha = (int) (alpha * 0.75f);
-            centerHeight += 0.05f;
-        }
-        renderRhombus(pose, vertexConsumer, width, centerHeight, 0x11, SoulType.COPPER.color);
-    }
-
-    private void renderRhombus(PoseStack.Pose pose, VertexConsumer vertexConsumer, float width, float height, int alpha, int color) {
-        vertexConsumer.addVertex(pose, 0, height, 0)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(ARGB.color(alpha, color));
-        vertexConsumer.addVertex(pose, -width, 0, 0)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(ARGB.color(alpha, color));
-        vertexConsumer.addVertex(pose, 0, -height, 0)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(ARGB.color(alpha, color));
-        vertexConsumer.addVertex(pose, width, 0, 0)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(ARGB.color(alpha, color));
     }
 
     private void submitTargetPoint(CorruptedStarRenderState entityRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {

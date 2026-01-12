@@ -120,6 +120,9 @@ public final class NarakaModClient {
         EntityRendererRegistry.register(NarakaEntityTypes.LIGHTNING_CIRCLE, LightningCircleRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_PICKAXE, NarakaPickaxeRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_SWORD, NarakaSwordRenderer::new);
+
+        EntityRendererRegistry.register(NarakaEntityTypes.SHINY_EFFECT, ShinyEffectRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.AREA_EFFECT, AreaEffectRenderer::new);
     }
 
     private static void registerHudRenders() {
