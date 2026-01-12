@@ -1,13 +1,11 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
-import com.yummy.naraka.network.AddBeamEffectPacket;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.*;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
-import com.yummy.naraka.world.entity.data.BeamEffectsHelper;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
@@ -47,7 +45,7 @@ public class StormSkill extends ComboSkill<Herobrine> {
         runAt(30, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPull, 0.23));
 
         runAt(20, () -> {
-            ShinyEffect shinyEffect = new ShinyEffect(level, 30, false, 0.5f, 0, SoulType.REDSTONE.color);
+            ShinyEffect shinyEffect = new ShinyEffect(level, 30, false, 1f, 0, SoulType.REDSTONE.color);
             shinyEffect.setPos(mob.getEyePosition());
             level.addFreshEntity(shinyEffect);
         });
@@ -56,7 +54,6 @@ public class StormSkill extends ComboSkill<Herobrine> {
         runFrom(50, () -> stigmatizingWave(level, 50, tickCount - 50));
 
         runBetween(60, 66, () -> createShinySpark(level));
-        runAt(60, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.SIMPLE, mob, 0xffff0000));
         runAt(60, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPush, -3));
         runFrom(65, () -> stigmatizingWave(level, 65, tickCount - 65));
     }
@@ -64,9 +61,9 @@ public class StormSkill extends ComboSkill<Herobrine> {
     private void createAreaEffect(ServerLevel level) {
         float y = NarakaUtils.findFloor(level, mob.blockPosition()).getY() + 1;
         Vec3 position = new Vec3(mob.getX(), y, mob.getZ());
-        level.addFreshEntity(new AreaEffect(level, position, 40, 3, 6, 0xff0000, 0));
-        level.addFreshEntity(new AreaEffect(level, position, 40, 4.5f, 4.5f, 0xff0000, 1));
-        level.addFreshEntity(new AreaEffect(level, position, 40, 6, 3, 0xff0000, 2));
+        level.addFreshEntity(new AreaEffect(level, position, 30, 3, 6, 0xff0000, 0));
+        level.addFreshEntity(new AreaEffect(level, position, 30, 4.5f, 4.5f, 0xff0000, 1));
+        level.addFreshEntity(new AreaEffect(level, position, 30, 6, 3, 0xff0000, 2));
     }
 
     private void createShinySpark(ServerLevel level) {
@@ -77,7 +74,7 @@ public class StormSkill extends ComboSkill<Herobrine> {
         double z = mob.getZ() + mob.getRandom().nextFloat() * 6 - 3;
         double y = NarakaUtils.findFloor(level, mob.blockPosition()).getY() + 1;
 
-        ShinyEffect shinyEffect = new ShinyEffect(level, 40, true, scale, rotation, SoulType.REDSTONE.color);
+        ShinyEffect shinyEffect = new ShinyEffect(level, 60, true, scale, rotation, SoulType.REDSTONE.color);
         shinyEffect.setPos(x, y, z);
 
         level.addFreshEntity(shinyEffect);

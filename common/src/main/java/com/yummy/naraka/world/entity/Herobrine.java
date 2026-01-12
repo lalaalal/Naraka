@@ -565,9 +565,13 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
-        if (isDeadOrDying() && source.getEntity() instanceof LivingEntity sourceEntity
-                && sourceEntity.getMainHandItem().is(NarakaItemTags.ENTER_NARAKA_DIMENSION)) {
-            teleportTargetToNarakaDimension(level, sourceEntity);
+        if (isDeadOrDying() && source.getEntity() instanceof LivingEntity sourceEntity) {
+            if (sourceEntity.getMainHandItem().is(NarakaItemTags.ENTER_NARAKA_DIMENSION)) {
+                teleportTargetToNarakaDimension(level, sourceEntity);
+            } else {
+                NarakaEntityTypes.SHINY_EFFECT.get().spawn(level, blockPosition().above(), EntitySpawnReason.EVENT);
+                remove(RemovalReason.KILLED);
+            }
             return false;
         }
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))

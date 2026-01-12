@@ -22,7 +22,7 @@ public class StarShootingSkill extends TargetSkill<Herobrine> {
     private final List<CorruptedStar> followingStars = new ArrayList<>();
 
     public StarShootingSkill(Herobrine mob) {
-        super(IDENTIFIER, mob, 80, 200);
+        super(IDENTIFIER, mob, 80, 600);
     }
 
     @Override
@@ -111,5 +111,13 @@ public class StarShootingSkill extends TargetSkill<Herobrine> {
         Vec3 direction = targetPosition.subtract(corruptedStar.position())
                 .normalize();
         corruptedStar.shoot(direction.x, direction.y, direction.z, velocity, 0);
+    }
+
+    @Override
+    public void interrupt() {
+        for (CorruptedStar corruptedStar : corruptedStars)
+            corruptedStar.discard();
+        for (CorruptedStar followingStar : followingStars)
+            followingStar.discard();
     }
 }

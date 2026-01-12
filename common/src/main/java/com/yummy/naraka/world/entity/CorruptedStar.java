@@ -37,7 +37,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
     public CorruptedStar(EntityType<? extends CorruptedStar> entityType, Level level) {
         super(entityType, level, 80, 8);
         setTailColor(SoulType.COPPER.color);
-        verticalShine = random.nextBoolean();
+        verticalShine = random.nextFloat() < 0.4f;
         shineScale = random.nextFloat() + 0.5f;
         shineStartTick = random.nextIntBetweenInclusive(20, 35);
     }
