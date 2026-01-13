@@ -33,9 +33,11 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
     public static final EntityDataAccessor<Integer> FOLLOWING_TARGET = SynchedEntityData.defineId(CorruptedStar.class, EntityDataSerializers.INT);
 
     private int hitTick = 0;
+    private int shineLifetime = 20;
     private final boolean verticalShine;
     private float shineScale;
     private int shineStartTick;
+    private float shineRotation = 0;
 
     public CorruptedStar(EntityType<? extends CorruptedStar> entityType, Level level) {
         super(entityType, level, 80, 8);
@@ -43,6 +45,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
         verticalShine = random.nextFloat() < 0.4f;
         shineScale = random.nextFloat() + 0.5f;
         shineStartTick = random.nextIntBetweenInclusive(20, 35);
+        accelerationPower = 0.25;
     }
 
     public CorruptedStar(Level level, @Nullable Entity owner, Vec3 position, QuadraticBezier bezier, int prepareDuration) {
@@ -72,6 +75,14 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
 
     public Vec3 getTargetPosition() {
         return entityData.get(TARGET_POSITION);
+    }
+
+    public int getShineLifetime() {
+        return shineLifetime;
+    }
+
+    public float getShineRotation() {
+        return shineRotation;
     }
 
     public Vec3 getTargetPosition(float partialTicks) {
@@ -111,6 +122,13 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
         else {
             super.tick();
             needsSync = true;
+
+            if (tickCount == entityData.get(PREPARE_DURATION) + 10) {
+                shineLifetime = 80;
+                shineStartTick = tickCount;
+                shineScale = 0.25f;
+                shineRotation = random.nextIntBetweenInclusive(0, 1) * 90;
+            }
         }
 
         if (!level().isClientSide()) {
@@ -139,6 +157,8 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
             addParticles(0.1, 120);
             addParticles(0.3, 60);
             hitTick = tickCount;
+            shineRotation = 0;
+            shineLifetime = 20;
             shineStartTick = tickCount;
             shineScale = 0.5f;
         } else if (hitTick > 0 && tickCount > hitTick + 20) {
@@ -184,7 +204,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
         final int tailUpdateCount = entityData.get(TAIL_UPDATE_COUNT);
         for (float count = 1; count <= tailUpdateCount; count++) {
             float positionDelta = count / (float) tailUpdateCount;
-            float tailDelta = NarakaUtils.interpolate((tickCount + positionDelta - 0.75f) / prepareDuration, 0, 1, NarakaUtils::fastStepIn);
+            float tailDelta = NarakaUtils.interpolate((tickCount + positionDelta - 1.25f) / prepareDuration, 0, 1, NarakaUtils::fastStepIn);
             Vec3 tailPosition = basePosition.add(bezier.interpolate(tailDelta));
             tailPositions.addFirst(tailPosition);
             tailPositions.removeLast();

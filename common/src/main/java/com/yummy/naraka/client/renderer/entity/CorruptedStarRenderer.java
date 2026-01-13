@@ -64,8 +64,10 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
     public void extractRenderState(CorruptedStar entity, CorruptedStarRenderState renderState, float partialTick) {
         super.extractRenderState(entity, renderState, partialTick);
         renderState.verticalShine = entity.isVerticalShine();
+        renderState.shineLifetime = entity.getShineLifetime();
         renderState.shineScale = entity.getShineScale();
         renderState.shineStartTick = entity.getShineStartTick();
+        renderState.shineRotation = entity.getShineRotation();
         renderState.targetPosition = entity.getTargetPosition(partialTick);
     }
 
@@ -91,12 +93,11 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
 
         poseStack.popPose();
 
-        final int shinyLifetime = 20;
         float tick = entityRenderState.ageInTicks - entityRenderState.shineStartTick;
-        if (0 <= tick && tick <= shinyLifetime) {
+        if (0 <= tick && tick <= entityRenderState.shineLifetime) {
             poseStack.pushPose();
             poseStack.translate(0, 0.25f, 0);
-            ShinyEffectRenderer.submitShiny(tick, shinyLifetime, entityRenderState.shineScale, entityRenderState.verticalShine, SoulType.COPPER.color, poseStack, submitNodeCollector);
+            ShinyEffectRenderer.submitShiny(tick, entityRenderState.shineLifetime, entityRenderState.shineScale, entityRenderState.verticalShine, SoulType.COPPER.color, poseStack, submitNodeCollector);
             poseStack.popPose();
         }
         submitTargetPoint(entityRenderState, poseStack, submitNodeCollector);

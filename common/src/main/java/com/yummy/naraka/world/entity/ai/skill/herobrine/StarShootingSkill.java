@@ -43,13 +43,13 @@ public class StarShootingSkill extends TargetSkill<Herobrine> {
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         lookTarget(target);
         rotateTowardTarget(target);
-        runBetween(0, 9, () -> spawnCorruptedStar(level, target, 10, 15, 8, false));
-        runBetween(0, 6, () -> spawnCorruptedStar(level, target, 5, 12, 11, false));
-        runBetween(6, 9, () -> spawnCorruptedStar(level, target, 3, 12, 11, true));
+        runBetween(0, 9, () -> spawnCorruptedStar(level, target, 10, 15, 11, false));
+        runBetween(0, 6, () -> spawnCorruptedStar(level, target, 5, 12, 14, false));
+        runBetween(6, 9, () -> spawnCorruptedStar(level, target, 3, 12, 14, true));
         runBetween(30, 55, () -> followTargetPosition(target));
         runAt(55, this::stopFollowingTarget);
-        run(at(55) && !followingStars.isEmpty(), () -> shootCorruptedStars(followingStars, 1.2f, 3));
-        run(after(56) && tickCount % 2 == 0 && !corruptedStars.isEmpty(), () -> shootCorruptedStars(corruptedStars, 1.5f, 2));
+        run(at(55) && !followingStars.isEmpty(), () -> shootCorruptedStars(followingStars, 0.75f, 3));
+        run(after(56) && tickCount % 2 == 0 && !corruptedStars.isEmpty(), () -> shootCorruptedStars(corruptedStars, 0.35f, 2));
     }
 
     private void spawnCorruptedStar(ServerLevel level, LivingEntity target, int count, float radius, float height, boolean followTarget) {
