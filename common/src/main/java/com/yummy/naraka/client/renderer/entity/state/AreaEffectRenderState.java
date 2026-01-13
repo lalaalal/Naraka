@@ -10,5 +10,6 @@ public class AreaEffectRenderState extends EntityRenderState {
     public float zWidth;
     public int lifetime;
     public int color;
+    public int maxAlpha;
     public int index;
 }

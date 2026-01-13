@@ -53,7 +53,7 @@ public class StormSkill extends ComboSkill<Herobrine> {
         runFrom(40, () -> stigmatizingWave(level, 40, tickCount - 40));
         runFrom(50, () -> stigmatizingWave(level, 50, tickCount - 50));
 
-        runBetween(60, 66, () -> createShinySpark(level));
+        runBetween(60, 66, () -> ShinyEffect.spawnShinySpark(level, mob.position(), mob.getRandom(), 6, 60, SoulType.REDSTONE.color));
         runAt(60, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPush, -3));
         runFrom(65, () -> stigmatizingWave(level, 65, tickCount - 65));
     }
@@ -64,21 +64,6 @@ public class StormSkill extends ComboSkill<Herobrine> {
         level.addFreshEntity(new AreaEffect(level, position, 30, 3, 6, 0xff0000, 0));
         level.addFreshEntity(new AreaEffect(level, position, 30, 4.5f, 4.5f, 0xff0000, 1));
         level.addFreshEntity(new AreaEffect(level, position, 30, 6, 3, 0xff0000, 2));
-    }
-
-    private void createShinySpark(ServerLevel level) {
-        float rotation = mob.getRandom().nextFloat() * 120 - 60;
-        float scale = mob.getRandom().nextFloat() * 0.5f + 0.25f;
-
-        double x = mob.getX() + mob.getRandom().nextFloat() * 6 - 3;
-        double z = mob.getZ() + mob.getRandom().nextFloat() * 6 - 3;
-        double y = NarakaUtils.findFloor(level, mob.blockPosition()).getY() + 1;
-
-        ShinyEffect shinyEffect = new ShinyEffect(level, 60, true, scale, rotation, SoulType.REDSTONE.color);
-        shinyEffect.setPos(x, y, z);
-
-        level.addFreshEntity(shinyEffect);
-        level.playSound(null, mob, SoundEvents.TRIDENT_HIT_GROUND, SoundSource.HOSTILE, 1.0F, 1.0F);
     }
 
     @Override

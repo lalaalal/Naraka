@@ -1,15 +1,21 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.util.NarakaUtils;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 
 public class ShinyEffect extends Entity {
     public static final EntityDataAccessor<Boolean> IS_VERTICAL = SynchedEntityData.defineId(ShinyEffect.class, EntityDataSerializers.BOOLEAN);
@@ -17,6 +23,21 @@ public class ShinyEffect extends Entity {
     public static final EntityDataAccessor<Integer> LIFETIME = SynchedEntityData.defineId(ShinyEffect.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(ShinyEffect.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Float> ROTATION = SynchedEntityData.defineId(ShinyEffect.class, EntityDataSerializers.FLOAT);
+
+    public static void spawnShinySpark(ServerLevel level, Vec3 position, RandomSource random, double range, int lifetime, int color) {
+        float rotation = random.nextFloat() * 120 - 60;
+        float scale = random.nextFloat() * 0.5f + 0.25f;
+
+        double x = position.x() + random.nextFloat() * range - (range / 2);
+        double z = position.z() + random.nextFloat() * range - (range / 2);
+        double y = NarakaUtils.findFloor(level, BlockPos.containing(position)).getY() + 1;
+
+        ShinyEffect shinyEffect = new ShinyEffect(level, lifetime, true, scale, rotation, color);
+        shinyEffect.setPos(x, y, z);
+
+        level.addFreshEntity(shinyEffect);
+        level.playSound(null, position.x(), position.y(), position.z(), SoundEvents.TRIDENT_HIT_GROUND, SoundSource.HOSTILE, 1.0F, 1.0F);
+    }
 
     public ShinyEffect(EntityType<? extends ShinyEffect> entityType, Level level) {
         super(entityType, level);

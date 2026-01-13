@@ -1,6 +1,5 @@
 package com.yummy.naraka.mixin.client;
 
-import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaClientContext;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,9 +18,6 @@ import javax.annotation.Nullable;
 @Environment(EnvType.CLIENT)
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
-    @Unique
-    private static final Identifier MONOCHROME_POST_EFFECT = NarakaMod.identifier("monochrome");
-
     @Unique @Nullable
     private Identifier naraka$previousPostEffect;
     @Unique
@@ -38,8 +34,9 @@ public abstract class GameRendererMixin {
     private void checkMonochromePostEffect(DeltaTracker deltaTracker, boolean renderLevel, CallbackInfo ci) {
         naraka$previousPostEffect = postEffectId;
         naraka$previousEffectActive = effectActive;
-        if (NarakaClientContext.MONOCHROME_EFFECT_TICK.getValue() > 0) {
-            setPostEffect(MONOCHROME_POST_EFFECT);
+        if (NarakaClientContext.POST_EFFECT_TICK.getValue() > 0) {
+            Identifier newPostEffectId = NarakaClientContext.POST_EFFECT.getValue();
+            setPostEffect(newPostEffectId);
         }
     }
 

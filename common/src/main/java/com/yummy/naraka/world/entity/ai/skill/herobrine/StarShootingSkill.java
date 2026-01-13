@@ -57,9 +57,9 @@ public class StarShootingSkill extends TargetSkill<Herobrine> {
         float yRot = (float) Math.toRadians(90 - mob.getYRot());
         float angle = Mth.TWO_PI / count * index + level.getRandom().nextFloat() * Mth.TWO_PI / count;
         float middleAngle = level.getRandom().nextFloat() * Mth.TWO_PI;
-        float middleX = Mth.cos(middleAngle) * radius + level.getRandom().nextFloat() - 0.5f;
+        float middleX = Mth.cos(middleAngle) * radius * 0.75f + level.getRandom().nextFloat() - 0.5f;
         float middleY = mob.getEyeHeight() + level.getRandom().nextFloat();
-        float middleZ = Mth.sin(middleAngle) * radius + level.getRandom().nextFloat() - 0.5f;
+        float middleZ = Mth.sin(middleAngle) * radius * 0.75f + level.getRandom().nextFloat() - 0.5f;
 
         float targetX = Mth.cos(angle) * radius + level.getRandom().nextFloat();
         float targetY = height + level.getRandom().nextFloat() - 0.5f;

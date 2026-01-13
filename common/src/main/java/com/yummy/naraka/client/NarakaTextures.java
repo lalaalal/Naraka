@@ -61,6 +61,8 @@ public final class NarakaTextures {
     public static final Identifier NARAKA_PORTAL_2 = entity("naraka_portal/naraka_portal_first_quarter.png");
     public static final Identifier NARAKA_PORTAL_3 = entity("naraka_portal/naraka_portal_waxing_gibbous.png");
 
+    public static final Identifier AREA_EFFECT = entity("area_effect.png");
+
     private static Identifier texture(String parent, String path) {
         return NarakaMod.identifier("textures/%s".formatted(parent), path);
     }

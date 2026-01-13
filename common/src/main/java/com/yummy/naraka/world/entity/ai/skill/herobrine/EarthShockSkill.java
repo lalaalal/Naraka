@@ -65,6 +65,8 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         runBetween(40, 90, () -> moveToTarget(target, false, applyAcceleration()));
         runBetween(60, 90, () -> rotateTowardTarget(target));
         runBetween(60, 90, () -> lookTarget(target));
+        runAfter(200, () -> rotateTowardTarget(target));
+        runAfter(200, () -> lookTarget(target));
     }
 
     private Predicate<LivingEntity> targetBetween() {
@@ -156,7 +158,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
 
         double x = mob.getX() + mob.getRandom().nextFloat() * 6 - 3;
         double z = mob.getZ() + mob.getRandom().nextFloat() * 6 - 3;
-        double y = mob.getEyeY() + mob.getRandom().nextFloat() * 3 - 1.5f;
+        double y = mob.getEyeY() + mob.getRandom().nextFloat() * 6 - 1.5f;
 
         ShinyEffect shinyEffect = new ShinyEffect(level, 20, vertical, scale, 0, SoulType.AMETHYST.color);
         shinyEffect.setPos(x, y, z);
