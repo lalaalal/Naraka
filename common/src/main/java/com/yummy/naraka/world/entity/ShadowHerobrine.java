@@ -9,7 +9,6 @@ import com.yummy.naraka.world.entity.ai.skill.herobrine.*;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -24,8 +23,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.hurtingprojectile.Fireball;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
@@ -240,23 +237,6 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
             this.herobrineUUID = entity.getUUID();
             updateAnimation(HerobrineAnimationIdentifiers.SHADOW_SUMMONED);
         }
-    }
-
-    @Override
-    public void addAdditionalSaveData(ValueOutput output) {
-        super.addAdditionalSaveData(output);
-        if (herobrine != null)
-            output.store("Herobrine", UUIDUtil.CODEC, herobrine.getUUID());
-        output.putBoolean("ReduceAlpha", reduceAlpha);
-    }
-
-    @Override
-    public void readAdditionalSaveData(ValueInput input) {
-        super.readAdditionalSaveData(input);
-        input.read("Herobrine", UUIDUtil.CODEC).ifPresent(uuid -> this.herobrineUUID = uuid);
-        reduceAlpha = input.getBooleanOr("ReduceAlpha", isFinalModel());
-        if (isFinalModel())
-            discard();
     }
 
     @Override

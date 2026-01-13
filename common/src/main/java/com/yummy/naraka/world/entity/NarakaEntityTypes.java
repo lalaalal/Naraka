@@ -38,6 +38,7 @@ public class NarakaEntityTypes {
                     .eyeHeight(1.62f)
                     .updateInterval(1)
                     .clientTrackingRange(32)
+                    .noSave()
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<Spear>> THROWN_SPEAR = register(
@@ -65,6 +66,7 @@ public class NarakaEntityTypes {
                     .sized(0.5f, 0.5f)
                     .fireImmune()
                     .updateInterval(40)
+                    .noSave()
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<NarakaFireball>> NARAKA_FIREBALL = register(
@@ -130,6 +132,7 @@ public class NarakaEntityTypes {
             EntityType.Builder.<NarakaPickaxe>of(NarakaPickaxe::new, MobCategory.MISC)
                     .fireImmune()
                     .sized(0.5f, 1f)
+                    .noSave()
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<NarakaSword>> NARAKA_SWORD = register(

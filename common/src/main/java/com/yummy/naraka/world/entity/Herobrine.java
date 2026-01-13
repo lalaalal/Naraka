@@ -855,7 +855,6 @@ public class Herobrine extends AbstractHerobrine {
         output.putBoolean("HibernateMode", hibernateMode);
         output.storeNullable("SpawnPosition", BlockPos.CODEC, spawnPosition);
         output.store("WatchingEntities", UUIDUtil.CODEC_SET, watchingEntities);
-        shadowController.save(output);
     }
 
     @Override
@@ -869,6 +868,5 @@ public class Herobrine extends AbstractHerobrine {
             startHibernateMode(level);
         input.read("SpawnPosition", BlockPos.CODEC).ifPresent(pos -> spawnPosition = pos);
         input.read("WatchingEntities", UUIDUtil.CODEC_SET).ifPresent(watchingEntities::addAll);
-        shadowController.load(input);
     }
 }
