@@ -38,7 +38,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static AttributeModifier reduceMaxHealth(ResourceLocation id, double value) {
-        return new AttributeModifier(id, -value, AttributeModifier.Operation.ADD_VALUE);
+        return new AttributeModifier(id, -value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 
     public static ResourceLocation reduceMaxHealthId(String identifier) {
