@@ -7,6 +7,8 @@ import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
@@ -58,6 +60,11 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         run(succeed, () -> handleSucceed(level));
+        runAt(PARRYING_START_TICK, () -> {
+            level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.HOSTILE, 0.8f, 1.8f);
+            level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.HOSTILE, 1, 2);
+            level.playSound(null, mob, SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.HOSTILE, 0.5f, 1.2f);
+        });
         run(at(PARRYING_END_TICK) && !succeed, () -> mob.setAnimation(HerobrineAnimationIdentifiers.PARRYING_FAILED));
         if (between(PARRYING_START_TICK, PARRYING_END_TICK) && hurtJustNow() && !succeed && mob.getLastHurtByMob() != null) {
             mob.setAnimation(HerobrineAnimationIdentifiers.PARRYING_SUCCEED);
@@ -76,6 +83,11 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     private void handleSucceed(ServerLevel level, @Nullable LivingEntity target) {
         if (target == null)
             return;
+        run(at(tickCount(1)), () -> {
+            level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.HOSTILE, 1, 1.75f);
+            level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.HOSTILE, 1, 2);
+            level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.HOSTILE, 1, 1.89f);
+        });
         run(at(tickCount(2)) && targetInLookAngle(target, -Mth.HALF_PI * 0.67f, Mth.HALF_PI * 0.67f), () -> hurtEntity(level, target));
         runAt(tickCount(2), () -> level.sendParticles(NarakaFlameParticleOption.NECTARIUM, mob.getX(), mob.getY() + 1, mob.getZ(), 15, 1, 0.3, 1, 0.1));
         runAt(tickCount(15), () -> movement = target.position().subtract(mob.position()).horizontal().scale(0.2));

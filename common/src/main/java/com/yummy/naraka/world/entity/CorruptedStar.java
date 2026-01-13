@@ -5,11 +5,14 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.util.QuadraticBezier;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.item.SoulType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntityType;
@@ -108,6 +111,14 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
         else {
             super.tick();
             needsSync = true;
+        }
+
+        if (!level().isClientSide()) {
+            if (tickCount == getShineStartTick()) {
+                BlockPos floor = NarakaUtils.findFloor(level(), blockPosition());
+                level().playSound(null, floor, SoundEvents.BEACON_POWER_SELECT, SoundSource.HOSTILE, 1, 2);
+                level().playSound(null, floor, SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.HOSTILE, 1, 2);
+            }
         }
     }
 

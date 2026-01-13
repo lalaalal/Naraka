@@ -55,7 +55,6 @@ public class ShinyEffect extends Entity {
     public void tick() {
         if (tickCount > getLifetime())
             discard();
-        tickCount++;
     }
 
     @Override

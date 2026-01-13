@@ -89,8 +89,9 @@ public class PickaxeSlash extends LightTailEntity {
     @Override
     public void tick() {
         super.tick();
-        if (level() instanceof ServerLevel serverLevel)
+        if (level() instanceof ServerLevel serverLevel) {
             serverTick(serverLevel);
+        }
         prevAlpha = alpha;
         if (alpha < 1f)
             alpha = Math.max(0, alpha - 0.1f);

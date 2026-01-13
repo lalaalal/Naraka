@@ -12,6 +12,8 @@ import com.yummy.naraka.world.entity.ai.skill.TargetSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.Vec3;
@@ -100,6 +102,10 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
 
     private void createPickaxeSlash(ServerLevel level, LivingEntity target) {
         rotateTowardTarget(target);
+        level.playSound(null, mob, SoundEvents.LUNGE_1.value(), SoundSource.HOSTILE, 1.8f, 1.1f);
+        level.playSound(null, mob, SoundEvents.LUNGE_1.value(), SoundSource.HOSTILE, 1.7f, 0.95f);
+        level.playSound(null, mob, SoundEvents.WITCH_THROW, SoundSource.HOSTILE, 2, 2);
+        level.playSound(null, mob, SoundEvents.WITCH_THROW, SoundSource.HOSTILE, 1.7f, 1.85f);
         int zRotDegree = mob.getRandom().nextInt(45, 65) * rotateDirection;
         PickaxeSlash pickaxeSlash = new PickaxeSlash(level, mob, 360);
         pickaxeSlash.setPos(mob.getX(), mob.getEyeY() - 0.75, mob.getZ());

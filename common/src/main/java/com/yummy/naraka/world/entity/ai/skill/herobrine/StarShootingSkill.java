@@ -8,6 +8,8 @@ import com.yummy.naraka.world.entity.ai.skill.TargetSkill;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
@@ -76,6 +78,8 @@ public class StarShootingSkill extends TargetSkill<Herobrine> {
         }
 
         level.addFreshEntity(corruptedStar);
+        level.playSound(null, mob, SoundEvents.IRON_GOLEM_DEATH, SoundSource.HOSTILE, 0.4f, 1.9f);
+        level.playSound(null, mob, SoundEvents.IRON_GOLEM_DEATH, SoundSource.HOSTILE, 0.5f, 2);
     }
 
     private void followTargetPosition(LivingEntity target) {

@@ -52,7 +52,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 
@@ -241,7 +241,11 @@ public class Herobrine extends AbstractHerobrine {
         setDisplayEye(false);
         setDisplayPickaxe(true);
 
-        int armor = bossEvent.getPlayers().size() * 6;
+        int armor = 0;
+        for (ServerPlayer player : bossEvent.getPlayers()) {
+            if (NarakaEntityUtils.isDamageablePlayer(player))
+                armor += 6;
+        }
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR, NarakaAttributeModifiers.finalHerobrineArmor(armor));
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR_TOUGHNESS, NarakaAttributeModifiers.FINAL_HEROBRINE_ARMOR_TOUGHNESS);
     }
@@ -265,6 +269,17 @@ public class Herobrine extends AbstractHerobrine {
             watchingEntities.add(target.getUUID());
             cachedWatchingEntities.put(target.getUUID(), target);
             maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
+        }
+    }
+
+    @Override
+    protected void playHurtSound(DamageSource source) {
+        if (isFinalModel()) {
+            playSound(SoundEvents.IRON_GOLEM_DAMAGE, 1, 0.8f);
+            playSound(SoundEvents.IRON_GOLEM_DAMAGE, 1, 0.95f);
+            playSound(SoundEvents.ANVIL_PLACE, 0.2f, 0.95f);
+        } else {
+            super.playHurtSound(source);
         }
     }
 

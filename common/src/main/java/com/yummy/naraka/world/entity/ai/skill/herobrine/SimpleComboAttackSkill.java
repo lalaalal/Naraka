@@ -78,6 +78,11 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runAt(attackTick, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, attackRange));
+        runAt(attackTick, () -> {
+            level.playSound(null, mob, SoundEvents.WITCH_THROW, SoundSource.HOSTILE, 0.7f, 1);
+            level.playSound(null, mob, SoundEvents.WITCH_THROW, SoundSource.HOSTILE, 1, 1.5f);
+            level.playSound(null, mob, SoundEvents.WITCH_THROW, SoundSource.HOSTILE, 1, 1.2f);
+        });
         if (lookTarget) {
             lookTarget(target);
             runBetween(moveStartTick, moveEndTick, () -> rotateTowardTarget(target));

@@ -66,7 +66,6 @@ public class AreaEffect extends Entity {
     public void tick() {
         if (tickCount > getLifetime())
             discard();
-        tickCount++;
     }
 
     @Override
