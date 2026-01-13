@@ -15,7 +15,6 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -34,15 +33,15 @@ public class LockedHealthHud implements HudRenderer {
             return original;
 
         double heartCount = player.getMaxHealth() / 2;
-        int offsetHeartIndex = tickCount % Mth.ceil(heartCount + 5.0F);
+        long offsetHeartIndex = tickCount % Math.round(heartCount + 5.0F);
         if (offsetHeartIndex > heartCount)
             return -1;
-        return offsetHeartIndex;
+        return (int) offsetHeartIndex;
     }
 
     public static int modifyHeartY(Player player, int heartY, int baseY, int height, int lineCount, int heartIndex) {
-        int originalHeartCount = Mth.ceil(player.getMaxHealth() + LockedHealthHelper.get(player) / 2);
-        int heartCount = Mth.ceil(player.getMaxHealth() / 2);
+        long originalHeartCount = Math.round(player.getMaxHealth() + LockedHealthHelper.get(player) / 2);
+        int heartCount = Math.round(player.getMaxHealth() / 2);
         if (heartCount <= heartIndex && heartIndex < originalHeartCount)
             return baseY - lineCount * height;
         return heartY;
@@ -75,21 +74,21 @@ public class LockedHealthHud implements HudRenderer {
         double lockedHealth = EntityDataHelper.getRawEntityData(player, NarakaEntityDataTypes.LOCKED_HEALTH.get());
         double maxHealth = player.getAttributeValue(Attributes.MAX_HEALTH);
         double originalMaxHealth = maxHealth + lockedHealth;
-        int heartCount = Mth.ceil(originalMaxHealth / 2);
+        int heartCount = (int) Math.round(originalMaxHealth / 2);
         int lockedHeartCount = heartCount - (int) Math.round(maxHealth / 2);
         float absorption = player.getAbsorptionAmount();
 
-        boolean hasRightHalfLockedHeart = Mth.ceil(maxHealth) % 2 != 0;
-        boolean hasLeftHalfLockedHeart = Mth.ceil(originalMaxHealth) % 2 != 0;
+        boolean hasRightHalfLockedHeart = Math.round(maxHealth) % 2 != 0;
+        boolean hasLeftHalfLockedHeart = Math.round(originalMaxHealth) % 2 != 0;
 
         AttributeInstance attributeInstance = player.getAttribute(Attributes.MAX_HEALTH);
         if (attributeInstance == null)
             return;
         AttributeModifier modifier = attributeInstance.getModifier(NarakaAttributeModifiers.REDUCE_MAX_HEALTH_ID);
-        if (modifier == null || modifier.amount() != -lockedHealth)
+        if (modifier == null || modifier.amount() - (lockedHealth / originalMaxHealth) > 1E-5)
             return;
 
-        int totalHeartLineCount = Mth.ceil((originalMaxHealth + absorption) / 20f);
+        int totalHeartLineCount = (int) Math.round((originalMaxHealth + absorption) / 20f);
         int height = Math.max(10 - (totalHeartLineCount - 2), 3);
         boolean blink = (blinkTime / 3) % 2 != 0;
         for (int i = 1; i <= lockedHeartCount; i++) {
