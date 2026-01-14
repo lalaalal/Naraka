@@ -8,8 +8,9 @@ out vec4 fragColor;
 
 void main() {
     vec4 color = texture(InSampler, texCoord);
+    float average = (color.r + color.g + color.b) / 9.0;
     if (color.r + color.b > color.g || color.g < 0.67) {
-        fragColor = vec4(color.r / 3.0, color.g / 3.0, color.b / 2.0, 1.0);
+        fragColor = vec4(vec3(average), 1.0);
     } else {
         fragColor = color;
     }

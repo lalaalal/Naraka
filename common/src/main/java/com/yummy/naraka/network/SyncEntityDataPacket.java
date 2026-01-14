@@ -48,23 +48,17 @@ public record SyncEntityDataPacket(UUID uuid, Action action,
     }
 
     private static void loadEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
-        Entity entity = context.level().getEntity(packet.uuid());
-        if (entity != null) {
-            for (EntityData<?, ?> data : packet.entityData())
-                EntityDataHelper.loadEntityData(entity, data);
-        }
+        for (EntityData<?, ?> data : packet.entityData())
+            EntityDataHelper.loadEntityData(context.level(), packet.uuid(), data);
     }
 
     private static void removeGivenEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
-        Entity entity = context.level().getEntity(packet.uuid());
-        if (entity != null) {
-            for (EntityData<?, ?> data : packet.entityData())
-                EntityDataHelper.removeEntityData(entity, data.type());
-        }
+        for (EntityData<?, ?> data : packet.entityData())
+            EntityDataHelper.removeEntityData(context.level(), packet.uuid(), data.type());
     }
 
     private static void removeAllEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
-        EntityDataHelper.removeEntityData(packet.uuid());
+        EntityDataHelper.removeEntityData(context.level(), packet.uuid());
     }
 
     public enum Action implements StringRepresentable {

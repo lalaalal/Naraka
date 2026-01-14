@@ -35,8 +35,8 @@ public record NarakaClientboundEventPacket(List<Event> events) implements Custom
         STOP_WHITE_FOG,
         SHAKE_CAMERA,
         MONOCHROME_EFFECT,
-        FILTER_GREEN_GRAY_EFFECT,
-        FILTER_GREEN_COLOR_EFFECT;
+        RYOIKI_GRAY_EFFECT,
+        RYOIKI_GREEN_EFFECT;
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
         public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);

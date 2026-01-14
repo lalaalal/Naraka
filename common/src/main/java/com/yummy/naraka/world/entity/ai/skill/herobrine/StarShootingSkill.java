@@ -4,7 +4,8 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.util.QuadraticBezier;
 import com.yummy.naraka.world.entity.CorruptedStar;
 import com.yummy.naraka.world.entity.Herobrine;
-import com.yummy.naraka.world.entity.ai.skill.TargetSkill;
+import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
+import com.yummy.naraka.world.entity.ai.skill.Skill;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -17,14 +18,14 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StarShootingSkill extends TargetSkill<Herobrine> {
+public class StarShootingSkill extends ComboSkill<Herobrine> {
     public static final Identifier IDENTIFIER = skillIdentifier("final_herobrine.star_shooting");
 
     private final List<CorruptedStar> corruptedStars = new ArrayList<>();
     private final List<CorruptedStar> followingStars = new ArrayList<>();
 
-    public StarShootingSkill(Herobrine mob) {
-        super(IDENTIFIER, mob, 80, 600);
+    public StarShootingSkill(Herobrine mob, Skill<?> nextSkill) {
+        super(IDENTIFIER, mob, 80, 600, 0.5f, 75, nextSkill);
     }
 
     @Override
@@ -123,5 +124,10 @@ public class StarShootingSkill extends TargetSkill<Herobrine> {
             corruptedStar.discard();
         for (CorruptedStar followingStar : followingStars)
             followingStar.discard();
+    }
+
+    @Override
+    protected float calculateDamage(LivingEntity target) {
+        return mob.getAttackDamage();
     }
 }

@@ -36,8 +36,8 @@ public class NarakaClientboundEventHandler {
             NarakaClientboundEventPacket.Event.STOP_WHITE_FOG, NarakaClientboundEventHandler::stopWhiteScreen,
             NarakaClientboundEventPacket.Event.SHAKE_CAMERA, NarakaClientboundEventHandler::shakeCamera,
             NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT, NarakaClientboundEventHandler::monochrome,
-            NarakaClientboundEventPacket.Event.FILTER_GREEN_GRAY_EFFECT, NarakaClientboundEventHandler::filterGreenGray,
-            NarakaClientboundEventPacket.Event.FILTER_GREEN_COLOR_EFFECT, NarakaClientboundEventHandler::removeGreenColor
+            NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT, NarakaClientboundEventHandler::filterGreenGray,
+            NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT, NarakaClientboundEventHandler::removeGreenColor
     );
 
     private static final Music[] HEROBRINE_MUSIC = new Music[]{
@@ -119,12 +119,12 @@ public class NarakaClientboundEventHandler {
     }
 
     private static void filterGreenGray() {
-        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.FILTER_GREEN_GRAY);
+        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.RYOIKI_GRAY);
         NarakaClientContext.POST_EFFECT_TICK.set(50);
     }
 
     private static void removeGreenColor() {
-        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.FILTER_GREEN_COLOR);
+        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.RYOIKI_GREEN);
         NarakaClientContext.POST_EFFECT_TICK.set(50);
     }
 }

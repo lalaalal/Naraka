@@ -44,6 +44,10 @@ public class NarakaEntityDataTypes {
                     .defaultValue(List::of)
                     .ticker(NarakaEntityDataTypes::tickBeamEffects)
     );
+    public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<Boolean, Entity>> KEEP_UNFROZEN = register(
+            "keep_unfrozen", EntityDataType.common(Codec.BOOL)
+                    .defaultValue(false)
+    );
 
     private static void tickPurifiedSoulFire(LivingEntity livingEntity, int purifiedSoulFireTick) {
         if (purifiedSoulFireTick > 0 && livingEntity.level() instanceof ServerLevel level) {

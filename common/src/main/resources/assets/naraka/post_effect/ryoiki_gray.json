@@ -5,7 +5,7 @@
   "passes": [
     {
       "vertex_shader": "minecraft:core/screenquad",
-      "fragment_shader": "naraka:post/filter_green_color",
+      "fragment_shader": "naraka:post/ryoiki_gray",
       "inputs": [
         {
           "sampler_name": "In",

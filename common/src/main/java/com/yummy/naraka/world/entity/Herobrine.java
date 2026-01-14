@@ -81,13 +81,13 @@ public class Herobrine extends AbstractHerobrine {
     protected final FlickerSkill<Herobrine> flickerSkill = registerSkill(new FlickerSkill<>(this, dashSkill, punchSkill));
     protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, flickerSkill));
 
-    protected final StarShootingSkill starShootingSkill = registerSkill(6, this, StarShootingSkill::new, HerobrineAnimationIdentifiers.PHASE_3_IDLE);
     protected final CarpetBombingSkill carpetBombingSkill = registerSkill(6, this, CarpetBombingSkill::new, HerobrineAnimationIdentifiers.CARPET_BOMBING);
     protected final ExplosionSkill explosionSkill = registerSkill(7, this, ExplosionSkill::new, HerobrineAnimationIdentifiers.EXPLOSION);
     protected final EarthShockSkill earthShockSkill = registerSkill(6, this, EarthShockSkill::new, HerobrineAnimationIdentifiers.EARTH_SHOCK);
     protected final ParryingSkill parryingSkill = registerSkill(7, this, ParryingSkill::new, HerobrineAnimationIdentifiers.PARRYING);
     protected final StormSkill stormSkill = registerSkill(6, new StormSkill(this, parryingSkill), HerobrineAnimationIdentifiers.STORM);
     protected final RyoikiTenkaiSkill ryoikiTenkaiSkill = registerSkill(7, this, RyoikiTenkaiSkill::new, HerobrineAnimationIdentifiers.PICKAXE_STRIKE);
+    protected final StarShootingSkill starShootingSkill = registerSkill(6, new StarShootingSkill(this, ryoikiTenkaiSkill), HerobrineAnimationIdentifiers.PHASE_3_IDLE);
 
     protected final StrikeDownSkill strikeDownSkill = registerSkill(new StrikeDownSkill(this, parryingSkill), HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_3);
     protected final SpinUpSkill spinUpSkill = registerSkill(new SpinUpSkill(this, strikeDownSkill), HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_2);

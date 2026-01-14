@@ -24,7 +24,7 @@ public class ShinyEffect extends Entity {
     public static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(ShinyEffect.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Float> ROTATION = SynchedEntityData.defineId(ShinyEffect.class, EntityDataSerializers.FLOAT);
 
-    public static void spawnShinySpark(ServerLevel level, Vec3 position, RandomSource random, double range, int lifetime, int color) {
+    public static ShinyEffect spawnShinySpark(ServerLevel level, Vec3 position, RandomSource random, double range, int lifetime, int color) {
         float rotation = random.nextFloat() * 120 - 60;
         float scale = random.nextFloat() * 0.5f + 0.25f;
 
@@ -37,6 +37,7 @@ public class ShinyEffect extends Entity {
 
         level.addFreshEntity(shinyEffect);
         level.playSound(null, position.x(), position.y(), position.z(), SoundEvents.TRIDENT_HIT_GROUND, SoundSource.HOSTILE, 1.0F, 1.0F);
+        return shinyEffect;
     }
 
     public ShinyEffect(EntityType<? extends ShinyEffect> entityType, Level level) {
