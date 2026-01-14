@@ -126,7 +126,7 @@ public class RyoikiTenkaiSkill extends TargetSkill<Herobrine> {
 
     private void handleOnCorrectPosition(ServerLevel level, LivingEntity target) {
         StigmaHelper.removeStigma(target);
-        level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.NEUTRAL, 2, 1);
+        level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.NEUTRAL, 10, 1);
     }
 
     private void handleOnIncorrectPosition(LivingEntity target) {
