@@ -21,6 +21,8 @@ public class NarakaSoundEvents {
     public static final Holder<SoundEvent> DIAMOND_GOLEM_STRONG = register("diamond_golem.strong");
     public static final Holder<SoundEvent> DIAMOND_GOLEM_SWIPE = register("diamond_golem.swipe");
 
+    public static final Holder<SoundEvent> RYOIKI_TENKAI = register("ryoiki_tenkai");
+
     private static Holder<SoundEvent> register(String name) {
         Identifier location = NarakaMod.identifier(name);
         return RegistryProxy.register(Registries.SOUND_EVENT, name, () -> SoundEvent.createVariableRangeEvent(location));

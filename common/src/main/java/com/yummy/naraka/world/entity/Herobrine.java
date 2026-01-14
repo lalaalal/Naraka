@@ -834,6 +834,7 @@ public class Herobrine extends AbstractHerobrine {
             serverLevel.getGameRules().set(GameRules.ADVANCE_TIME, true, serverLevel.getServer());
             serverLevel.getGameRules().set(GameRules.ADVANCE_WEATHER, true, serverLevel.getServer());
         }
+        skillManager.interrupt();
         super.remove(reason);
     }
 

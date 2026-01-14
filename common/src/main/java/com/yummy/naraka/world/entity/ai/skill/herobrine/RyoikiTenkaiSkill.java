@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.*;
 import com.yummy.naraka.world.entity.ai.skill.TargetSkill;
@@ -54,7 +55,8 @@ public class RyoikiTenkaiSkill extends TargetSkill<Herobrine> {
         for (int x = -24; x <= 24; x++) {
             for (int z = -24; z <= 24; z++) {
                 if ((x + z) % 2 == 0) {
-                    AreaEffect areaEffect = new AreaEffect(level, basePosition.add(x * 2, 0, z * 2), 50, 2, 2, 0x00ff00, 0)
+                    int lifetimeOffset = mob.getRandom().nextIntBetweenInclusive(0, 10);
+                    AreaEffect areaEffect = new AreaEffect(level, basePosition.add(x * 2, 0, z * 2), 40 + lifetimeOffset, 2, 2, 0x00ff00, 0)
                             .maxAlpha(0xff);
                     level.addFreshEntity(areaEffect);
                     EntityDataHelper.setEntityData(areaEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
@@ -62,11 +64,8 @@ public class RyoikiTenkaiSkill extends TargetSkill<Herobrine> {
             }
         }
 
-        for (ServerPlayer player : mob.players()) {
-            NarakaClientboundEventPacket.Event event = StigmaHelper.hasStigma(player) ? NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT : NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT;
-            final CustomPacketPayload packet = new NarakaClientboundEventPacket(event);
-            NetworkManager.clientbound().send(player, packet);
-        }
+        sendEffectToPlayers(level);
+
         ShinyEffect shinyEffect = new ShinyEffect(level, 25, false, 1, 0, SoulType.EMERALD.color);
         EntityDataHelper.setEntityData(shinyEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
         shinyEffect.setPos(mob.getEyePosition().add(0, 1.5, 0));
@@ -76,6 +75,18 @@ public class RyoikiTenkaiSkill extends TargetSkill<Herobrine> {
         isFrozenBefore = tickRateManager.isFrozen();
         tickRateManager.setFrozen(true);
         EntityDataHelper.setEntityData(mob, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
+    }
+
+    private void sendEffectToPlayers(ServerLevel level) {
+        for (ServerPlayer player : mob.players()) {
+            boolean hasStigma = StigmaHelper.hasStigma(player);
+            NarakaClientboundEventPacket.Event event = hasStigma ? NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT : NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT;
+            final CustomPacketPayload packet = new NarakaClientboundEventPacket(event);
+            NetworkManager.clientbound().send(player, packet);
+
+            float pitch = hasStigma ? 0.001f : 2f;
+            level.playSound(null, player, NarakaSoundEvents.RYOIKI_TENKAI.value(), SoundSource.HOSTILE, 2, pitch);
+        }
     }
 
     @Override
