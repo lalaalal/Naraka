@@ -14,6 +14,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.Vec3;
@@ -71,6 +72,7 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         lookTarget(target);
         rotateTowardTarget(target);
+        runAt(5, () -> shadowSpawner.spawn(level).control(shadowHerobrine -> setupShadowHerobrine(shadowHerobrine, target)));
         if (!mob.isShadow) {
             runAt(0, () -> NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.TELEPORT.get()));
             runAt(5, () -> teleportToTarget(target, 12));
@@ -82,15 +84,18 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        runAt(5, () -> shadowSpawner.spawn(level).control(this::setupShadowHerobrine));
         runAt(10, this::stopShadowMoving);
         runAt(30, () -> shadowSpawner.useSkill(SINGLE));
     }
 
-    private void setupShadowHerobrine(ShadowHerobrine shadowHerobrine) {
+    private void setupShadowHerobrine(ShadowHerobrine shadowHerobrine, LivingEntity target) {
         shadowHerobrine.forceSetRotation(60, true, 0, false);
         shadowHerobrine.setPos(mob.position());
-        Vec3 movement = shadowHerobrine.getLookAngle().scale(1.5);
+        Vec3 movement = target.position()
+                .subtract(mob.position())
+                .normalize()
+                .yRot(Mth.HALF_PI)
+                .scale(1.5f);
         shadowHerobrine.setDeltaMovement(movement);
         shadowHerobrine.setAnimation(HerobrineAnimationIdentifiers.PHASE_3_IDLE);
         shadowHerobrine.setTarget(mob.getTarget());

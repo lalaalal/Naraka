@@ -29,7 +29,7 @@ public class RyoikiTenkaiSkill extends TargetSkill<Herobrine> {
     private final List<LivingEntity> caughtEntities = new ArrayList<>();
 
     public RyoikiTenkaiSkill(Herobrine mob) {
-        super(IDENTIFIER, mob, 70, 500);
+        super(IDENTIFIER, mob, 70, 800);
     }
 
     @Nullable
