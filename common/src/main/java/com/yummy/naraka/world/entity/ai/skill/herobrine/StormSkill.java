@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
+import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.*;
@@ -84,7 +85,9 @@ public class StormSkill extends ComboSkill<Herobrine> {
     }
 
     private boolean entityToPush(LivingEntity target) {
-        return targetInRange(target, 9) && AbstractHerobrine.isNotHerobrine(target) && NarakaPickaxe.isNotNarakaPickaxe(target);
+        return targetInRange(target, 9) && AbstractHerobrine.isNotHerobrine(target)
+                && NarakaPickaxe.isNotNarakaPickaxe(target)
+                && !NarakaEntityUtils.disableAndHurtShield(target, 200, 5);
     }
 
     private boolean findValidTarget(LivingEntity target, int startTick) {

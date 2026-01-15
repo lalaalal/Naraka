@@ -10,6 +10,7 @@ import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.SoulType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.ServerTickRateManager;
@@ -50,19 +51,6 @@ public class RyoikiTenkaiSkill extends TargetSkill<Herobrine> {
     @Override
     protected void onFirstTick(ServerLevel level) {
         mob.setDeltaMovement(Vec3.ZERO);
-        double y = NarakaUtils.findFloor(level, mob.blockPosition()).getY() + 1.0125f;
-        Vec3 basePosition = new Vec3(mob.getX(), y, mob.getZ());
-        for (int x = -24; x <= 24; x++) {
-            for (int z = -24; z <= 24; z++) {
-                if ((x + z) % 2 == 0) {
-                    int lifetimeOffset = mob.getRandom().nextIntBetweenInclusive(0, 10);
-                    AreaEffect areaEffect = new AreaEffect(level, basePosition.add(x * 2, 0, z * 2), 40 + lifetimeOffset, 2, 2, 0x00ff00, 0)
-                            .maxAlpha(0xff);
-                    level.addFreshEntity(areaEffect);
-                    EntityDataHelper.setEntityData(areaEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
-                }
-            }
-        }
 
         sendEffectToPlayers(level);
 
@@ -75,6 +63,23 @@ public class RyoikiTenkaiSkill extends TargetSkill<Herobrine> {
         isFrozenBefore = tickRateManager.isFrozen();
         tickRateManager.setFrozen(true);
         EntityDataHelper.setEntityData(mob, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
+    }
+
+    private void createField(ServerLevel level, @Nullable LivingEntity target) {
+        BlockPos yCheckPosition = target == null ? mob.blockPosition() : target.blockPosition();
+        double y = NarakaUtils.findFloor(level, yCheckPosition).getY() + 1.0125f;
+        Vec3 basePosition = new Vec3(mob.getX(), y, mob.getZ());
+        for (int x = -24; x <= 24; x++) {
+            for (int z = -24; z <= 24; z++) {
+                if ((x + z) % 2 == 0) {
+                    int lifetimeOffset = mob.getRandom().nextIntBetweenInclusive(0, 10);
+                    AreaEffect areaEffect = new AreaEffect(level, basePosition.add(x * 2, 0, z * 2), 40 + lifetimeOffset, 2, 2, 0x00ff00, 0)
+                            .maxAlpha(0xff);
+                    level.addFreshEntity(areaEffect);
+                    EntityDataHelper.setEntityData(areaEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
+                }
+            }
+        }
     }
 
     private void sendEffectToPlayers(ServerLevel level) {
@@ -91,8 +96,9 @@ public class RyoikiTenkaiSkill extends TargetSkill<Herobrine> {
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
+        runAt(0, () -> createField(level, target));
         runAt(30, () -> checkPlayerPositions(level));
-        runBetween(31, 40, () -> spawnShinySparkAndStigmatize(level));
+        runBetween(31, 35, () -> spawnShinySparkAndStigmatize(level));
         runAt(50, () -> {
             if (tickRateManager != null)
                 tickRateManager.setFrozen(isFrozenBefore);
@@ -101,10 +107,8 @@ public class RyoikiTenkaiSkill extends TargetSkill<Herobrine> {
 
     private void spawnShinySparkAndStigmatize(ServerLevel level) {
         for (LivingEntity target : caughtEntities) {
-            if (tickCount % 2 == 0) {
-                ShinyEffect shinyEffect = ShinyEffect.spawnShinySpark(level, target.position(), mob.getRandom(), 3, 60, SoulType.EMERALD.color);
-                EntityDataHelper.setEntityData(shinyEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
-            }
+            ShinyEffect shinyEffect = ShinyEffect.spawnShinySpark(level, target.position(), mob.getRandom(), 3, 60, SoulType.EMERALD.color);
+            EntityDataHelper.setEntityData(shinyEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
             mob.stigmatizeEntity(level, target);
         }
     }
