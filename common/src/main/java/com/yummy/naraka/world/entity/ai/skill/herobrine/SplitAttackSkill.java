@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
@@ -51,11 +52,7 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
         runBetween(15, 20, () -> moveToTarget(target, true, 1));
         runBetween(15, 20, () -> NarakaSkillUtils.sendTraceParticles(level, mob, NarakaFlameParticleOption.DIAMOND));
         runBetween(15, 20, () -> rotateTowardTarget(target));
-        runAt(18, () -> {
-            level.playSound(null, mob, SoundEvents.WITCH_THROW, SoundSource.HOSTILE, 0.7f, 1);
-            level.playSound(null, mob, SoundEvents.WITCH_THROW, SoundSource.HOSTILE, 1, 1.5f);
-            level.playSound(null, mob, SoundEvents.WITCH_THROW, SoundSource.HOSTILE, 1, 1.2f);
-        });
+        runAt(18, () -> NarakaSoundEvents.playHerobrineSwingSound(level, mob.position()));
         runBetween(18, 20, () -> hurtEntities(level, this::checkTarget, 1.8));
         runAt(20, this::stopMoving);
         runAt(25, () -> firstShadowSpawner.spawnAndUseSkill(level, mob, SimpleComboAttackSkill.FINAL_COMBO_ATTACK_1));

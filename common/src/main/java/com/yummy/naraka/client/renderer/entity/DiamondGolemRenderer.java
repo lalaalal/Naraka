@@ -30,6 +30,6 @@ public class DiamondGolemRenderer extends MobRenderer<DiamondGolem, SkillUsingMo
     @Override
     public void extractRenderState(DiamondGolem livingEntity, SkillUsingMobRenderState livingEntityRenderState, float partialTick) {
         super.extractRenderState(livingEntity, livingEntityRenderState, partialTick);
-        livingEntityRenderState.setAnimationVisitor(livingEntity);
+        livingEntityRenderState.setupAnimationStates(livingEntity);
     }
 }

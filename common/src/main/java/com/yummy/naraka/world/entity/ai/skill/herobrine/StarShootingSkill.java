@@ -1,11 +1,14 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
+import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.util.QuadraticBezier;
+import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.CorruptedStar;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -51,6 +54,15 @@ public class StarShootingSkill extends ComboSkill<Herobrine> {
         runAt(55, this::stopFollowingTarget);
         run(at(55) && !followingStars.isEmpty(), () -> shootCorruptedStars(followingStars, 0.75f, 3));
         run(after(56) && tickCount % 2 == 0 && !corruptedStars.isEmpty(), () -> shootCorruptedStars(corruptedStars, 0.35f, 2));
+
+        runAt(15, () -> hurtOnSpinning(level));
+    }
+
+    private void hurtOnSpinning(ServerLevel level) {
+        if (mob.getCurrentAnimation().equals(HerobrineAnimationIdentifiers.STAR_SHOOTING_2)) {
+            hurtEntities(level, AbstractHerobrine::isNotHerobrine, 4);
+            NarakaSoundEvents.playHerobrineSwingSound(level, mob.position());
+        }
     }
 
     private void spawnCorruptedStar(ServerLevel level, LivingEntity target, int count, float radius, float height, boolean followTarget) {
@@ -116,6 +128,11 @@ public class StarShootingSkill extends ComboSkill<Herobrine> {
         Vec3 direction = targetPosition.subtract(corruptedStar.position())
                 .normalize();
         corruptedStar.shoot(direction.x, direction.y, direction.z, velocity, 0);
+    }
+
+    @Override
+    protected void onHurtEntity(ServerLevel level, LivingEntity target) {
+        mob.stigmatizeEntity(level, target);
     }
 
     @Override

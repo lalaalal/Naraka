@@ -79,7 +79,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
         renderState.alpha = entity.getAlpha();
 
         renderState.setAfterimages(entity, partialTicks);
-        renderState.setAnimationVisitor(entity);
+        renderState.setupAnimationStates(entity);
         renderState.updateScarfRenderState(entity, partialTicks);
 
         if (renderState.finalModel) {

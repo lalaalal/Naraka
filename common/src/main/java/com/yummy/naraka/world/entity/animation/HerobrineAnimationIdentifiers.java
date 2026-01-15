@@ -44,4 +44,8 @@ public class HerobrineAnimationIdentifiers {
     public static final Identifier FINAL_COMBO_ATTACK_2_RETURN = AnimationIdentifiers.create("final_herobrine", "combo_attack_2.return");
     public static final Identifier PICKAXE_SLASH_SINGLE = AnimationIdentifiers.create("final_herobrine", "pickaxe_slash.single");
     public static final Identifier PICKAXE_SLASH_TRIPLE = AnimationIdentifiers.create("final_herobrine", "pickaxe_slash.triple");
+
+    public static final Identifier STAR_SHOOTING_1 = AnimationIdentifiers.create("final_herobrine", "star_shooting_1");
+    public static final Identifier STAR_SHOOTING_2 = AnimationIdentifiers.create("final_herobrine", "star_shooting_2");
+    public static final Identifier STAR_SHOOTING_3 = AnimationIdentifiers.create("final_herobrine", "star_shooting_3");
 }

@@ -87,7 +87,7 @@ public class Herobrine extends AbstractHerobrine {
     protected final ParryingSkill parryingSkill = registerSkill(7, this, ParryingSkill::new, HerobrineAnimationIdentifiers.PARRYING);
     protected final StormSkill stormSkill = registerSkill(6, new StormSkill(this, parryingSkill), HerobrineAnimationIdentifiers.STORM);
     protected final RyoikiTenkaiSkill ryoikiTenkaiSkill = registerSkill(7, this, RyoikiTenkaiSkill::new, HerobrineAnimationIdentifiers.PICKAXE_STRIKE);
-    protected final StarShootingSkill starShootingSkill = registerSkill(6, new StarShootingSkill(this, ryoikiTenkaiSkill), HerobrineAnimationIdentifiers.PHASE_3_IDLE);
+    protected final StarShootingSkill starShootingSkill = registerSkill(6, new StarShootingSkill(this, ryoikiTenkaiSkill), HerobrineAnimationIdentifiers.STAR_SHOOTING_1, HerobrineAnimationIdentifiers.STAR_SHOOTING_2, HerobrineAnimationIdentifiers.STAR_SHOOTING_3);
 
     protected final StrikeDownSkill strikeDownSkill = registerSkill(new StrikeDownSkill(this, parryingSkill), HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_3);
     protected final SpinUpSkill spinUpSkill = registerSkill(new SpinUpSkill(this, strikeDownSkill), HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_2);

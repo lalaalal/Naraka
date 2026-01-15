@@ -42,7 +42,7 @@ public abstract class SkillUsingModModel<T extends SkillUsingMobRenderState> ext
     }
 
     protected void animate(T renderState) {
-        renderState.animations((animationLocation, animationState) -> {
+        renderState.animationStates.forEach((animationLocation, animationState) -> {
             if (animations.containsKey(animationLocation)) {
                 KeyframeAnimation animation = animations.get(animationLocation);
                 animation.apply(animationState, renderState.ageInTicks);
