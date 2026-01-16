@@ -17,7 +17,7 @@ public class FinalHerobrineSkillAnimation {
         AnimationMapper.register(HerobrineAnimationIdentifiers.PARRYING, PARRYING);
         AnimationMapper.register(HerobrineAnimationIdentifiers.PARRYING_SUCCEED, PARRYING_SUCCEED);
         AnimationMapper.register(HerobrineAnimationIdentifiers.PARRYING_FAILED, PARRYING_FAILED);
-        AnimationMapper.register(HerobrineAnimationIdentifiers.PICKAXE_STRIKE, PICKAXE_STRIKE);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.RYOIKI_TENKAI, PICKAXE_STRIKE);
         AnimationMapper.register(HerobrineAnimationIdentifiers.STAR_SHOOTING_1, STAR_SHOOTING_1);
         AnimationMapper.register(HerobrineAnimationIdentifiers.STAR_SHOOTING_2, STAR_SHOOTING_2);
         AnimationMapper.register(HerobrineAnimationIdentifiers.STAR_SHOOTING_3, STAR_SHOOTING_3);

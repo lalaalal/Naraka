@@ -35,7 +35,7 @@ public class HerobrineAnimationIdentifiers {
     public static final Identifier PARRYING = AnimationIdentifiers.create("final_herobrine", "parrying");
     public static final Identifier PARRYING_SUCCEED = AnimationIdentifiers.create("final_herobrine", "parrying.succeed");
     public static final Identifier PARRYING_FAILED = AnimationIdentifiers.create("final_herobrine", "parrying.failed");
-    public static final Identifier PICKAXE_STRIKE = AnimationIdentifiers.create("final_herobrine", "pickaxe_strike");
+    public static final Identifier RYOIKI_TENKAI = AnimationIdentifiers.create("final_herobrine", "ryoiki_tenkai");
 
     public static final Identifier FINAL_COMBO_ATTACK_1 = AnimationIdentifiers.create("final_herobrine", "combo_attack_1");
     public static final Identifier FINAL_COMBO_ATTACK_2 = AnimationIdentifiers.create("final_herobrine", "combo_attack_2");

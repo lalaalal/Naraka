@@ -86,7 +86,7 @@ public class Herobrine extends AbstractHerobrine {
     protected final EarthShockSkill earthShockSkill = registerSkill(6, this, EarthShockSkill::new, HerobrineAnimationIdentifiers.EARTH_SHOCK);
     protected final ParryingSkill parryingSkill = registerSkill(7, this, ParryingSkill::new, HerobrineAnimationIdentifiers.PARRYING);
     protected final StormSkill stormSkill = registerSkill(6, new StormSkill(this, parryingSkill), HerobrineAnimationIdentifiers.STORM);
-    protected final RyoikiTenkaiSkill ryoikiTenkaiSkill = registerSkill(7, this, RyoikiTenkaiSkill::new, HerobrineAnimationIdentifiers.PICKAXE_STRIKE);
+    protected final RyoikiTenkaiSkill ryoikiTenkaiSkill = registerSkill(7, this, RyoikiTenkaiSkill::new, HerobrineAnimationIdentifiers.RYOIKI_TENKAI);
     protected final StarShootingSkill starShootingSkill = registerSkill(6, new StarShootingSkill(this, ryoikiTenkaiSkill), HerobrineAnimationIdentifiers.STAR_SHOOTING_1, HerobrineAnimationIdentifiers.STAR_SHOOTING_2, HerobrineAnimationIdentifiers.STAR_SHOOTING_3);
 
     protected final StrikeDownSkill strikeDownSkill = registerSkill(new StrikeDownSkill(this, parryingSkill), HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_3);
@@ -94,7 +94,7 @@ public class Herobrine extends AbstractHerobrine {
     protected final SplitAttackSkill splitAttackSkill = registerSkill(7, new SplitAttackSkill(this, spinUpSkill), HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_1);
     protected final PickaxeSlashSkill<AbstractHerobrine> singlePickaxeSlashSkill = registerSkill(7, this, PickaxeSlashSkill::single, HerobrineAnimationIdentifiers.PICKAXE_SLASH_SINGLE);
     protected final PickaxeSlashSkill<Herobrine> triplePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::triple, HerobrineAnimationIdentifiers.PICKAXE_SLASH_TRIPLE);
-    protected final SpawnPickaxeSkill spawnPickaxeSkill = registerSkill(7, this, SpawnPickaxeSkill::new, HerobrineAnimationIdentifiers.PICKAXE_STRIKE);
+    protected final SpawnPickaxeSkill spawnPickaxeSkill = registerSkill(7, this, SpawnPickaxeSkill::new, HerobrineAnimationIdentifiers.RYOIKI_TENKAI);
 
     public final AnimationState chzzkAnimationState = new AnimationState();
 
