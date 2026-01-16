@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public record SyncEntityDataPacket(UUID uuid, Action action,
                                    List<EntityData<?, ?>> entityData) implements CustomPacketPayload {
-    public static final Type<SyncEntityDataPacket> TYPE = new Type<>(NarakaMod.location("sync_entity_data"));
+    public static final Type<SyncEntityDataPacket> TYPE = new Type<>(NarakaMod.identifier("sync_entity_data"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncEntityDataPacket> CODEC = StreamCodec.composite(
             UUIDUtil.STREAM_CODEC,
@@ -48,23 +48,17 @@ public record SyncEntityDataPacket(UUID uuid, Action action,
     }
 
     private static void loadEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
-        Entity entity = context.level().getEntity(packet.uuid());
-        if (entity != null) {
-            for (EntityData<?, ?> data : packet.entityData())
-                EntityDataHelper.loadEntityData(entity, data);
-        }
+        for (EntityData<?, ?> data : packet.entityData())
+            EntityDataHelper.loadEntityData(context.level(), packet.uuid(), data);
     }
 
     private static void removeGivenEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
-        Entity entity = context.level().getEntity(packet.uuid());
-        if (entity != null) {
-            for (EntityData<?, ?> data : packet.entityData())
-                EntityDataHelper.removeEntityData(entity, data.type());
-        }
+        for (EntityData<?, ?> data : packet.entityData())
+            EntityDataHelper.removeEntityData(context.level(), packet.uuid(), data.type());
     }
 
     private static void removeAllEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
-        EntityDataHelper.removeEntityData(packet.uuid());
+        EntityDataHelper.removeEntityData(context.level(), packet.uuid());
     }
 
     public enum Action implements StringRepresentable {

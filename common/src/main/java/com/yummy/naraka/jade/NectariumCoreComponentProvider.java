@@ -4,7 +4,7 @@ import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.data.lang.NarakaJadeProviderComponents;
 import com.yummy.naraka.world.block.NectariumCoreBlock;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.state.BlockState;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
@@ -31,7 +31,7 @@ public class NectariumCoreComponentProvider implements IBlockComponentProvider {
     }
 
     @Override
-    public ResourceLocation getUid() {
+    public Identifier getUid() {
         return NarakaJadeProviderComponents.NECTARIUM_CORE.location;
     }
 }

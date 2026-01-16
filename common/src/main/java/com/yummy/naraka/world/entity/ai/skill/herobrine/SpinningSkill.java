@@ -4,7 +4,7 @@ import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -12,7 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class SpinningSkill extends ComboSkill<AbstractHerobrine> {
-    public static final ResourceLocation LOCATION = createLocation("herobrine.spinning");
+    public static final Identifier LOCATION = skillIdentifier("herobrine.spinning");
 
     public SpinningSkill(AbstractHerobrine mob, Skill<?> comboSkill) {
         super(LOCATION, mob, 20, 0, 1, 20, comboSkill);

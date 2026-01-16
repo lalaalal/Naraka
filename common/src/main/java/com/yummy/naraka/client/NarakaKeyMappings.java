@@ -18,6 +18,6 @@ public class NarakaKeyMappings {
     );
 
     public static class Categories {
-        public static final KeyMapping.Category NARAKA = KeyMapping.Category.register(NarakaMod.location("naraka"));
+        public static final KeyMapping.Category NARAKA = KeyMapping.Category.register(NarakaMod.identifier("naraka"));
     }
 }

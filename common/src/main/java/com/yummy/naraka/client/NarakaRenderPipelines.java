@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 public final class NarakaRenderPipelines {
     public static final RenderPipeline INVERTED_ECLIPSE = RenderPipelineRegistry.register(
             RenderPipeline.builder(RenderPipelines.MATRICES_PROJECTION_SNIPPET)
-                    .withLocation(NarakaMod.location("pipeline/eclipse"))
+                    .withLocation(NarakaMod.identifier("pipeline/eclipse"))
                     .withVertexShader("core/position_tex")
                     .withFragmentShader("core/position_tex")
                     .withSampler("Sampler0")
@@ -24,7 +24,7 @@ public final class NarakaRenderPipelines {
 
     public static final RenderPipeline DARK_STARS = RenderPipelineRegistry.register(
             RenderPipeline.builder(RenderPipelines.MATRICES_PROJECTION_SNIPPET)
-                    .withLocation(NarakaMod.location("pipeline/dark_stars"))
+                    .withLocation(NarakaMod.identifier("pipeline/dark_stars"))
                     .withVertexShader("core/stars")
                     .withFragmentShader("core/stars")
                     .withDepthWrite(false)
@@ -37,8 +37,8 @@ public final class NarakaRenderPipelines {
                     RenderPipelines.FOG_SNIPPET,
                     RenderPipelines.GLOBALS_SNIPPET
             )
-            .withVertexShader(NarakaMod.location("core/longinus"))
-            .withFragmentShader(NarakaMod.location("core/longinus"))
+            .withVertexShader(NarakaMod.identifier("core/longinus"))
+            .withFragmentShader(NarakaMod.identifier("core/longinus"))
             .withSampler("Sampler0")
             .withSampler("Sampler1")
             .withShaderDefine("LONGINUS_LAYERS", 16)
@@ -46,7 +46,7 @@ public final class NarakaRenderPipelines {
 
     public static final RenderPipeline LONGINUS_CUTOUT = RenderPipelineRegistry.register(
             RenderPipeline.builder(LONGINUS_SNIPPET)
-                    .withLocation(NarakaMod.location("pipeline/longinus_cutout"))
+                    .withLocation(NarakaMod.identifier("pipeline/longinus_cutout"))
                     .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
                     .withSampler("Sampler2")
                     .withShaderDefine("CUTOUT")
@@ -55,7 +55,7 @@ public final class NarakaRenderPipelines {
 
     public static final RenderPipeline LONGINUS = RenderPipelineRegistry.register(
             RenderPipeline.builder(LONGINUS_SNIPPET)
-                    .withLocation(NarakaMod.location("pipeline/longinus"))
+                    .withLocation(NarakaMod.identifier("pipeline/longinus"))
                     .withVertexFormat(DefaultVertexFormat.POSITION, VertexFormat.Mode.QUADS)
                     .build()
     );
@@ -65,21 +65,21 @@ public final class NarakaRenderPipelines {
                     RenderPipelines.FOG_SNIPPET,
                     RenderPipelines.GLOBALS_SNIPPET
             )
-            .withVertexShader(NarakaMod.location("core/longinus"))
-            .withFragmentShader(NarakaMod.location("core/space"))
+            .withVertexShader(NarakaMod.identifier("core/longinus"))
+            .withFragmentShader(NarakaMod.identifier("core/space"))
             .withSampler("Sampler0")
             .buildSnippet();
 
     public static final RenderPipeline SPACE = RenderPipelineRegistry.register(
             RenderPipeline.builder(SPACE_SNIPPET)
-                    .withLocation(NarakaMod.location("pipeline/space"))
+                    .withLocation(NarakaMod.identifier("pipeline/space"))
                     .withVertexFormat(DefaultVertexFormat.POSITION, VertexFormat.Mode.QUADS)
                     .build()
     );
 
     public static final RenderPipeline SPACE_CUTOUT = RenderPipelineRegistry.register(
             RenderPipeline.builder(SPACE_SNIPPET)
-                    .withLocation(NarakaMod.location("pipeline/space_cutout"))
+                    .withLocation(NarakaMod.identifier("pipeline/space_cutout"))
                     .withSampler("Sampler1")
                     .withShaderDefine("CUTOUT")
                     .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)

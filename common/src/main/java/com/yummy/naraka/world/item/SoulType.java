@@ -7,8 +7,8 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -31,8 +31,8 @@ public enum SoulType implements StringRepresentable {
     public static final StreamCodec<ByteBuf, SoulType> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
     public final int id;
-    private final ResourceLocation itemName;
-    private final ResourceLocation blockItemName;
+    private final Identifier itemName;
+    private final Identifier blockItemName;
     @Nullable
     private Item item;
     @Nullable
@@ -51,8 +51,8 @@ public enum SoulType implements StringRepresentable {
 
     SoulType(ResourceKey<TrimMaterial> material, String itemName, String blockItemName, int color) {
         this.id = ordinal();
-        this.itemName = NarakaMod.location(itemName);
-        this.blockItemName = NarakaMod.location(blockItemName);
+        this.itemName = NarakaMod.identifier(itemName);
+        this.blockItemName = NarakaMod.identifier(blockItemName);
         BuiltInRegistries.ITEM.getOptional(this.itemName)
                 .ifPresent(item -> this.item = item);
         BuiltInRegistries.ITEM.getOptional(this.blockItemName)
@@ -71,12 +71,12 @@ public enum SoulType implements StringRepresentable {
         this.material = NarakaTrimMaterials.create("soul_infused_" + name().toLowerCase());
     }
 
-    private ResourceLocation getDefaultItemName() {
-        return NarakaMod.location("soul_infused_" + name().toLowerCase());
+    private Identifier getDefaultItemName() {
+        return NarakaMod.identifier("soul_infused_" + name().toLowerCase());
     }
 
-    private ResourceLocation getDefaultBlockItemName() {
-        return NarakaMod.location("soul_infused_" + name().toLowerCase() + "_block");
+    private Identifier getDefaultBlockItemName() {
+        return NarakaMod.identifier("soul_infused_" + name().toLowerCase() + "_block");
     }
 
     public int getId() {

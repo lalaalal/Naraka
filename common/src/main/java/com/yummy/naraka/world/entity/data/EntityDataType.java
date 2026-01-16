@@ -4,11 +4,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.NarakaMod;
-import net.minecraft.Util;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
@@ -19,7 +19,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public final class EntityDataType<T, E extends Entity> {
-    private final ResourceLocation id;
+    private final Identifier id;
     private final Supplier<EntityData<T, E>> defaultInstance;
     private final MapCodec<EntityData<T, E>> mapCodec;
     private final StreamCodec<RegistryFriendlyByteBuf, EntityData<T, E>> streamCodec;
@@ -38,7 +38,7 @@ public final class EntityDataType<T, E extends Entity> {
         return builder(codec, LivingEntity.class);
     }
 
-    private EntityDataType(ResourceLocation id, Codec<T> codec, Class<E> entityType, Function<EntityDataType<T, E>, EntityData<T, E>> defaultInstance, BiConsumer<E, T> ticker) {
+    private EntityDataType(Identifier id, Codec<T> codec, Class<E> entityType, Function<EntityDataType<T, E>, EntityData<T, E>> defaultInstance, BiConsumer<E, T> ticker) {
         this.id = id;
         this.defaultInstance = () -> defaultInstance.apply(this);
         this.entityType = entityType;
@@ -51,7 +51,7 @@ public final class EntityDataType<T, E extends Entity> {
         this.ticker = ticker;
     }
 
-    public ResourceLocation getId() {
+    public Identifier getId() {
         return id;
     }
 
@@ -95,20 +95,20 @@ public final class EntityDataType<T, E extends Entity> {
     public static class Builder<T, E extends Entity> {
         private final Codec<T> codec;
         private final Class<E> entityType;
-        private ResourceLocation id;
+        private Identifier id;
         @Nullable
         private Function<EntityDataType<T, E>, EntityData<T, E>> defaultInstance;
         private BiConsumer<E, T> ticker;
 
         private Builder(Codec<T> codec, Class<E> entityType) {
-            this.id = NarakaMod.location("empty");
+            this.id = NarakaMod.identifier("empty");
             this.codec = codec;
             this.entityType = entityType;
             this.ticker = (livingEntity, value) -> {
             };
         }
 
-        public Builder<T, E> id(ResourceLocation id) {
+        public Builder<T, E> id(Identifier id) {
             this.id = id;
             return this;
         }

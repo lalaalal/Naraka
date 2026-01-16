@@ -6,10 +6,9 @@ import com.yummy.naraka.world.entity.ai.goal.FollowOwnerGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.herobrine.*;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -22,13 +21,11 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.projectile.Fireball;
+import net.minecraft.world.entity.projectile.hurtingprojectile.Fireball;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,15 +34,15 @@ import java.util.UUID;
 public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntity {
     protected static final int MAX_ALPHA = 0xaa;
 
-    protected final ShadowPunchSkill punchSkill = registerSkill(1, this, ShadowPunchSkill::new, HerobrineAnimationLocations.COMBO_ATTACK_1);
+    protected final ShadowPunchSkill punchSkill = registerSkill(1, this, ShadowPunchSkill::new, HerobrineAnimationIdentifiers.COMBO_ATTACK_1);
     protected final DashSkill<ShadowHerobrine> dashSkill = registerSkill(this, DashSkill::new);
     protected final ShadowFlickerSkill flickerSkill = registerSkill(10, new ShadowFlickerSkill(this, dashSkill, punchSkill));
 
-    protected final PickaxeSlashSkill<AbstractHerobrine> pickaxeSlashSkill = registerSkill(PickaxeSlashSkill.single(this), HerobrineAnimationLocations.PICKAXE_SLASH_SINGLE);
+    protected final PickaxeSlashSkill<AbstractHerobrine> pickaxeSlashSkill = registerSkill(PickaxeSlashSkill.single(this), HerobrineAnimationIdentifiers.PICKAXE_SLASH_SINGLE);
 
-    protected final SimpleComboAttackSkill finalComboAttack3 = registerSkill(SimpleComboAttackSkill.combo3(this), HerobrineAnimationLocations.FINAL_COMBO_ATTACK_3);
-    protected final SimpleComboAttackSkill finalComboAttack2 = registerSkill(SimpleComboAttackSkill.combo2(this, finalComboAttack3), HerobrineAnimationLocations.FINAL_COMBO_ATTACK_2);
-    protected final SimpleComboAttackSkill finalComboAttack1 = registerSkill(SimpleComboAttackSkill.combo1(this, finalComboAttack2), HerobrineAnimationLocations.FINAL_COMBO_ATTACK_1);
+    protected final SimpleComboAttackSkill finalComboAttack3 = registerSkill(SimpleComboAttackSkill.combo3(this), HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_3);
+    protected final SimpleComboAttackSkill finalComboAttack2 = registerSkill(SimpleComboAttackSkill.combo2(this, finalComboAttack3), HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_2);
+    protected final SimpleComboAttackSkill finalComboAttack1 = registerSkill(SimpleComboAttackSkill.combo1(this, finalComboAttack2), HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_1);
 
     @Nullable
     private Herobrine herobrine;
@@ -79,7 +76,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         entityData.set(DISPLAY_SCARF, true);
         entityData.set(DISPLAY_PICKAXE, false);
         entityData.set(ALPHA, 0x01);
-        registerAnimation(HerobrineAnimationLocations.SHADOW_SUMMONED);
+        registerAnimation(HerobrineAnimationIdentifiers.SHADOW_SUMMONED);
     }
 
     public ShadowHerobrine(Level level, Herobrine herobrine) {
@@ -142,8 +139,10 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     public Optional<Herobrine> getHerobrine() {
         if (herobrineUUID == null)
             return Optional.empty();
-        if (herobrine == null && level() instanceof ServerLevel serverLevel)
-            return Optional.ofNullable(NarakaEntityUtils.findEntityByUUID(serverLevel, herobrineUUID, Herobrine.class));
+        if (herobrine == null && level() instanceof ServerLevel serverLevel) {
+            herobrine = NarakaEntityUtils.findEntityByUUID(serverLevel, herobrineUUID, Herobrine.class);
+            return Optional.ofNullable(herobrine);
+        }
         if (herobrine != null && herobrine.isRemoved()) {
             herobrineUUID = null;
             return Optional.empty();
@@ -236,25 +235,8 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         if (level().getEntity(herobrineId) instanceof Herobrine entity) {
             this.herobrine = entity;
             this.herobrineUUID = entity.getUUID();
-            updateAnimation(HerobrineAnimationLocations.SHADOW_SUMMONED);
+            updateAnimation(HerobrineAnimationIdentifiers.SHADOW_SUMMONED);
         }
-    }
-
-    @Override
-    public void addAdditionalSaveData(ValueOutput output) {
-        super.addAdditionalSaveData(output);
-        if (herobrine != null)
-            output.store("Herobrine", UUIDUtil.CODEC, herobrine.getUUID());
-        output.putBoolean("ReduceAlpha", reduceAlpha);
-    }
-
-    @Override
-    public void readAdditionalSaveData(ValueInput input) {
-        super.readAdditionalSaveData(input);
-        input.read("Herobrine", UUIDUtil.CODEC).ifPresent(uuid -> this.herobrineUUID = uuid);
-        reduceAlpha = input.getBooleanOr("ReduceAlpha", isFinalModel());
-        if (isFinalModel())
-            discard();
     }
 
     @Override

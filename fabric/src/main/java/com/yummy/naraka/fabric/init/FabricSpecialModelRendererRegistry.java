@@ -8,7 +8,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.SpecialBlockRendererRegistry;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderers;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 
 import java.util.function.Supplier;
@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 @Environment(EnvType.CLIENT)
 public final class FabricSpecialModelRendererRegistry {
     @MethodProxy(SpecialModelRendererRegistry.class)
-    public static void registerCodecId(ResourceLocation location, MapCodec<? extends SpecialModelRenderer.Unbaked> codec) {
+    public static void registerCodecId(Identifier location, MapCodec<? extends SpecialModelRenderer.Unbaked> codec) {
         SpecialModelRenderers.ID_MAPPER.put(location, codec);
     }
 

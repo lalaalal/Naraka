@@ -2,10 +2,10 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.SkillUsingMob;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class SkillManager {
     private final SkillUsingMob mob;
     private final RandomSource random;
-    private final Map<ResourceLocation, Entry> skills = new HashMap<>();
+    private final Map<Identifier, Entry> skills = new HashMap<>();
     private final List<Consumer<Skill<?>>> skillStartListeners = new ArrayList<>();
     private final List<Consumer<Skill<?>>> skillEndListeners = new ArrayList<>();
     private final List<Consumer<Skill<?>>> skillSelectListeners = new ArrayList<>();
@@ -30,7 +30,7 @@ public class SkillManager {
     private Skill<?> currentSkill = null;
 
     public void addSkill(int priority, Skill<?> skill) {
-        this.skills.put(skill.location, new Entry(priority, skill));
+        this.skills.put(skill.identifier, new Entry(priority, skill));
     }
 
     public void enableOnly(Collection<Skill<?>> skillsToEnable) {
@@ -85,7 +85,7 @@ public class SkillManager {
     public void setCurrentSkill(@Nullable Skill<?> skill) {
         if (skill == null)
             return;
-        NarakaMod.LOGGER.debug("{} : Setting current skill {}", mob, skill.location);
+        NarakaMod.LOGGER.debug("{} : Setting current skill {}", mob, skill.identifier);
         currentSkill = skill;
         currentSkill.prepare();
         for (Consumer<Skill<?>> listener : skillStartListeners)
@@ -104,7 +104,7 @@ public class SkillManager {
 
     public void interrupt() {
         if (currentSkill != null) {
-            NarakaMod.LOGGER.debug("{} : Interrupting skill {}", mob, currentSkill.location);
+            NarakaMod.LOGGER.debug("{} : Interrupting skill {}", mob, currentSkill.identifier);
             for (Consumer<Skill<?>> listener : skillEndListeners)
                 listener.accept(currentSkill);
             this.currentSkill.interrupt();
@@ -153,13 +153,13 @@ public class SkillManager {
     }
 
     @Nullable
-    public Skill<?> getSkill(ResourceLocation location) {
+    public Skill<?> getSkill(Identifier location) {
         if (skills.containsKey(location))
             return skills.get(location).skill;
         return null;
     }
 
-    public Set<ResourceLocation> getSkillNames() {
+    public Set<Identifier> getSkillNames() {
         return skills.keySet();
     }
 

@@ -17,9 +17,9 @@ import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.Level;
-import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
-import java.util.Set;
+import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class SpearOfLonginusSpecialRenderer implements NoDataSpecialModelRenderer {
@@ -55,7 +55,7 @@ public class SpearOfLonginusSpecialRenderer implements NoDataSpecialModelRendere
     }
 
     @Override
-    public void getExtents(Set<Vector3f> output) {
+    public void getExtents(Consumer<Vector3fc> output) {
         PoseStack poseStack = new PoseStack();
         this.model.root().getExtentsForGui(poseStack, output);
     }

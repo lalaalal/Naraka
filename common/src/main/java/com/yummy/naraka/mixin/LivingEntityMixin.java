@@ -50,9 +50,8 @@ public abstract class LivingEntityMixin extends Entity {
         super(entityType, level);
     }
 
-    @SuppressWarnings("UnresolvedMixinReference")
     @ModifyArg(
-            method = {"travelInFluid(Lnet/minecraft/world/phys/Vec3;)V", "travelInFluid(Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/level/material/FluidState;)V"},
+            method = "travelInWater",
             require = 1,
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V")
     )

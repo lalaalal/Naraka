@@ -6,6 +6,7 @@ import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
 import com.yummy.naraka.tags.NarakaBlockTags;
+import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -40,6 +41,7 @@ public class NarakaItems {
 
     public static final HolderProxy<Item, Item> STIGMA_ROD = registerItem("stigma_rod", StigmaRodItem::new);
     public static final HolderProxy<Item, Item> STARDUST_STAFF = registerItem("stardust_staff", StardustStaffItem::new);
+    public static final HolderProxy<Item, Item> CORRUPTED_STAR_STAFF = registerItem("corrupted_star_staff", CorruptedStarStaffItem::new);
     public static final HolderProxy<Item, Item> NARAKA_FIREBALL_STAFF = registerItem("naraka_fireball_staff", NarakaFireballStaffItem::new);
 
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_1_DISC = registerDiscItem("herobrine_phase_1_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_1);
@@ -121,6 +123,7 @@ public class NarakaItems {
             properties -> new SpearItem(ToolMaterial.IRON,
                     true, 3, -3, 3,
                     properties.fireResistant()
+                            .component(DataComponents.DAMAGE_TYPE, new EitherHolder<>(NarakaDamageTypes.SPEAR))
                             .component(DataComponents.TOOL, TridentItem.createToolProperties()),
                     NarakaEntityTypes.THROWN_SPEAR
             )
@@ -130,6 +133,7 @@ public class NarakaItems {
             properties -> new SpearItem(ToolMaterial.NETHERITE,
                     true, 7, -3, 3,
                     properties.fireResistant()
+                            .component(DataComponents.DAMAGE_TYPE, new EitherHolder<>(NarakaDamageTypes.SPEAR))
                             .component(DataComponents.TOOL, TridentItem.createToolProperties()),
                     NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR
             )
@@ -139,6 +143,7 @@ public class NarakaItems {
             properties -> new SpearOfLonginusItem(properties
                     .fireResistant()
                     .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
+                    .component(DataComponents.DAMAGE_TYPE, new EitherHolder<>(NarakaDamageTypes.SPEAR_OF_LONGINUS))
                     .component(DataComponents.TOOL, TridentItem.createToolProperties())
             )
     );
@@ -243,7 +248,7 @@ public class NarakaItems {
     }
 
     public static ResourceKey<Item> key(String name) {
-        return ResourceKey.create(Registries.ITEM, NarakaMod.location(name));
+        return ResourceKey.create(Registries.ITEM, NarakaMod.identifier(name));
     }
 
     private static Item.Properties properties() {

@@ -22,6 +22,6 @@ public final class NarakaItemTags {
     public static final TagKey<Item> LONGINUS_TOOL_MATERIALS = create("longinus_tool_materials");
 
     public static TagKey<Item> create(String name) {
-        return TagKey.create(Registries.ITEM, NarakaMod.location(name));
+        return TagKey.create(Registries.ITEM, NarakaMod.identifier(name));
     }
 }

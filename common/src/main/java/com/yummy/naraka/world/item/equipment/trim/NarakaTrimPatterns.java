@@ -7,8 +7,8 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.trim.TrimPattern;
@@ -23,10 +23,10 @@ public class NarakaTrimPatterns {
     }
 
     private static ResourceKey<TrimPattern> fromItem(Item template) {
-        ResourceLocation itemLocation = BuiltInRegistries.ITEM.getKey(template);
+        Identifier itemLocation = BuiltInRegistries.ITEM.getKey(template);
         String path = itemLocation.getPath();
         String trimPatternKeyPath = path.replaceFirst(TEMPLATE_ITEM_SUFFIX, "");
-        ResourceLocation trimPatternLocation = ResourceLocation.fromNamespaceAndPath(itemLocation.getNamespace(), trimPatternKeyPath);
+        Identifier trimPatternLocation = Identifier.fromNamespaceAndPath(itemLocation.getNamespace(), trimPatternKeyPath);
         return ResourceKey.create(Registries.TRIM_PATTERN, trimPatternLocation);
     }
 
@@ -37,6 +37,6 @@ public class NarakaTrimPatterns {
     }
 
     private static ResourceKey<TrimPattern> create(String name) {
-        return ResourceKey.create(Registries.TRIM_PATTERN, NarakaMod.location(name));
+        return ResourceKey.create(Registries.TRIM_PATTERN, NarakaMod.identifier(name));
     }
 }

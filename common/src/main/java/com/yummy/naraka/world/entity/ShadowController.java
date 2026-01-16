@@ -5,12 +5,9 @@ import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
 import com.yummy.naraka.world.entity.ai.skill.herobrine.FlickerSkill;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
-import net.minecraft.core.UUIDUtil;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.*;
 
@@ -21,15 +18,6 @@ public class ShadowController {
 
     public ShadowController(Herobrine herobrine) {
         this.herobrine = herobrine;
-    }
-
-    public void save(ValueOutput output) {
-        output.store("ShadowHerobrines", UUIDUtil.CODEC_SET, shadowHerobrines);
-    }
-
-    public void load(ValueInput input) {
-        shadowHerobrines.clear();
-        input.read("ShadowHerobrines", UUIDUtil.CODEC_SET).ifPresent(shadowHerobrines::addAll);
     }
 
     public void addShadowHerobrine(ShadowHerobrine shadowHerobrine) {
@@ -52,7 +40,7 @@ public class ShadowController {
         shadowHerobrines.add(shadowHerobrine.getUUID());
         if (herobrine.isHibernateMode())
             shadowHerobrine.useFlicker();
-        shadowHerobrine.playStaticAnimation(HerobrineAnimationLocations.SHADOW_SUMMONED, 80, true);
+        shadowHerobrine.playStaticAnimation(HerobrineAnimationIdentifiers.SHADOW_SUMMONED, 80, true);
     }
 
     public void broadcastShadowHerobrineHurt(ServerLevel level, ShadowHerobrine shadowHerobrine) {
@@ -66,7 +54,7 @@ public class ShadowController {
             skillManager.interrupt();
             if (herobrine.isHibernateMode()) {
                 herobrine.stopHibernateMode(level);
-                herobrine.startStaggering(HerobrineAnimationLocations.STIGMATIZE_ENTITIES_END, 100, -1);
+                herobrine.startStaggering(HerobrineAnimationIdentifiers.STIGMATIZE_ENTITIES_END, 100, -1);
             } else {
                 herobrine.startStaggering();
             }

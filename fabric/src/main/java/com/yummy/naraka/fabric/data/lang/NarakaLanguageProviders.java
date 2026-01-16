@@ -6,7 +6,7 @@ import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.ai.skill.herobrine.*;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.SoulType;
@@ -17,10 +17,10 @@ import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Util;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -305,6 +305,10 @@ public class NarakaLanguageProviders {
         addEntityType(NarakaEntityTypes.DIAMOND_GOLEM, "Diamond Golem", "다이아몬드 골렘");
         addEntityType(NarakaEntityTypes.MAGIC_CIRCLE, "Magic Circle", "마법진");
         addEntityType(NarakaEntityTypes.NARAKA_PICKAXE, "Naraka Pickaxe", "파멸의 낫");
+        addEntityType(NarakaEntityTypes.AREA_EFFECT, "Area Effect");
+        addEntityType(NarakaEntityTypes.SHINY_EFFECT, "Shiny Effect");
+        addEntityType(NarakaEntityTypes.CORRUPTED_STAR, "Corrupted Star", "부패의 별");
+        addEntityType(NarakaEntityTypes.COLORED_LIGHTNING_BOLT, "Lightning Bolt");
 
         addDamageType(NarakaDamageTypes.SPEAR_OF_LONGINUS, "%1$s's AT Field was torn by %2$s", "%1$s의 AT 필드가 %2$s에 찢어졌습니다");
         addDamageType(NarakaDamageTypes.STIGMA, "%1$s's has been deprived of life due to %2$s's stigma stacking", "%1$s이(가) %2$s의 낙인이 중첩돼 생명을 빼앗겼습니다");
@@ -324,43 +328,78 @@ public class NarakaLanguageProviders {
         add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_REDSTONE), "Challenger's Blessing", "도전자의 축복");
         add(LanguageKey.mobEffect(NarakaMobEffects.GOD_BLESS), "God Bless", "신의 축복");
 
-        add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_1), "Combo Attack 1", "연계 공격 1");
-        add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_2), "Combo Attack 2", "연계 공격 2");
-        add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_3), "Combo Attack 3", "연계 공격 3");
-        add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_4), "Combo Attack 4", "연계 공격 4");
-        add(LanguageKey.animation(HerobrineAnimationLocations.COMBO_ATTACK_5), "Combo Attack 5", "연계 공격 5");
-        add(LanguageKey.animation(HerobrineAnimationLocations.IDLE), "Idle", "대기");
-        add(LanguageKey.animation(HerobrineAnimationLocations.WALKING), "Walking", "걷기");
-        add(LanguageKey.animation(HerobrineAnimationLocations.PHASE_3_IDLE), "Phase 3 Idle", "3페 걷기");
-        add(LanguageKey.animation(HerobrineAnimationLocations.ENTER_PHASE_2), "Enter Phase 2", "2페 진입");
-        add(LanguageKey.animation(HerobrineAnimationLocations.ENTER_PHASE_3), "Enter Phase 3", "3페 진입");
-        add(LanguageKey.animation(HerobrineAnimationLocations.STAGGERING), "Staggering", "허약");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.COMBO_ATTACK_1), "P1 Combo Attack 1", "연계 공격 1");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.COMBO_ATTACK_2), "P1Combo Attack 2", "연계 공격 2");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.COMBO_ATTACK_3), "P1 Combo Attack 3", "연계 공격 3");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.COMBO_ATTACK_4), "P1 Combo Attack 4", "연계 공격 4");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.COMBO_ATTACK_5), "P1 Combo Attack 5", "연계 공격 5");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.IDLE), "P1 Idle", "대기");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.WALKING), "P1 Walking", "걷기");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.PHASE_3_IDLE), "P3 Idle", "3페 걷기");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.ENTER_PHASE_2), "P1 Enter Phase 2", "2페 진입");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.PREPARE_PHASE_3), "P2 Prepare Phase 3", "3페 준비");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.ENTER_PHASE_3), "P3 Enter Phase 3", "3페 진입");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.STAGGERING), "P1 Staggering", "허약");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.STAGGERING_PHASE_2), "P1 Staggering Enter Phase 2", "허약 2페 진입");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.BLOCKING), "P1 Blocking");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.RUSH), "P1 Rush", "돌진");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.RUSH_SUCCEED), "P1 Rush Succeed", "돌진 성공");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.RUSH_FAILED), "P1 Rush Failed", "돌진 실패");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.STIGMATIZE_ENTITIES), "P2 Gimmick", "2 페이즈 기믹");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.STIGMATIZE_ENTITIES_START), "P2 Gimmick Start", "2 페이즈 기믹 시작");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.STIGMATIZE_ENTITIES_END), "P2 Gimmick End", "2 페이즈 기믹 종료");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.THROW_NARAKA_FIREBALL), "P1 Throw Naraka Fireball", "화염구 투척");
 
-        add(LanguageKey.skill(RushSkill.LOCATION), "Rush", "돌진");
-        add(LanguageKey.skill(DashSkill.LOCATION), "Dash", "대시");
-        add(LanguageKey.skill(DashAroundSkill.LOCATION), "Dash Around");
-        add(LanguageKey.skill(PunchSkill.LOCATION), "Combo Attack 1", "연계 공격 1");
-        add(LanguageKey.skill(UppercutSkill.LOCATION), "Combo Attack 2", "연계 공격 2");
-        add(LanguageKey.skill(SpinningSkill.LOCATION), "Combo Attack 3", "연계 공격 3");
-        add(LanguageKey.skill(SuperHitSkill.LOCATION), "Combo Attack 4", "연계 공격 4");
-        add(LanguageKey.skill(LandingSkill.LOCATION), "Combo Attack 5", "연계 공격 5");
-        add(LanguageKey.skill(ThrowFireballSkill.LOCATION), "Throw Fireball", "화염구 투척");
-        add(LanguageKey.skill(StigmatizeEntitiesSkill.LOCATION), "Phase 2 Gimmick", "2페 기믹");
-        add(LanguageKey.skill(WalkAroundTargetSkill.LOCATION), "Walk Around", "정찰");
-        add(LanguageKey.skill(FlickerSkill.LOCATION), "Flicker", "플리커");
-        add(LanguageKey.skill(ExplosionSkill.LOCATION), "Explosion", "폭발");
-        add(LanguageKey.skill(SplitAttackSkill.LOCATION), "P3 Combo Attack 1", "3페 연계공격 1");
-        add(LanguageKey.skill(SpinUpSkill.LOCATION), "P3 Combo Attack 2", "3페 연계공격 2");
-        add(LanguageKey.skill(StrikeDownSkill.LOCATION), "P3 Combo Attack 3", "3페 연계공격 3");
-        add(LanguageKey.skill(StormSkill.LOCATION), "Storm", "폭풍");
-        add(LanguageKey.skill(PickaxeSlashSkill.SINGLE), "Pickaxe Slash Single", "낫 베기 1회");
-        add(LanguageKey.skill(PickaxeSlashSkill.TRIPLE), "Pickaxe Slash Triple", "낫 베기 3회");
-        add(LanguageKey.skill(DestroyStructureSkill.LOCATION), "Destroy Structure (Enter Phase 3)", "구조물 파괴 (3페 진입)");
-        add(LanguageKey.skill(SummonShadowSkill.LOCATION), "Summon Shadow", "그림자 소환");
-        add(LanguageKey.skill(CarpetBombingSkill.LOCATION), "Carpet Bombing", "융단폭격");
-        add(LanguageKey.skill(BlockingSkill.LOCATION), "Blocking");
-        add(LanguageKey.skill(ParryingSkill.LOCATION), "Parrying", "패링");
-        add(LanguageKey.skill(EarthShockSkill.LOCATION), "Earth Shock");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_1), "P3 Combo Attack 1");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_2), "P3 Combo Attack 2");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_3), "P3 Combo Attack 3");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_1_RETURN), "P3 Combo Attack 1 Return");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_2_RETURN), "P3 Combo Attack 2 Return");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.CHZZK), "Chzzk");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.HIDDEN_CHZZK), "Hidden Chzzk");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.CARPET_BOMBING), "P3 Carpet Bombing");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.STAR_SHOOTING_1), "P3 Star Shooting 1");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.STAR_SHOOTING_2), "P3 Star Shooting 2");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.STAR_SHOOTING_3), "P3 Star Shooting 3");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.EXPLOSION), "P3 Explosion");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.DYING), "Dying");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.PARRYING), "P3 Parrying", "패링");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.PARRYING_SUCCEED), "P3 Parrying Succeed", "패링 성공");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.PARRYING_FAILED), "P3 Parrying Failed", "패링 실패");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.RYOIKI_TENKAI), "P3 Ryoiki Tenkai", "영역 전개");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.PICKAXE_SLASH_TRIPLE), "P3 Triple Pickaxe Slash");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.PICKAXE_SLASH_SINGLE), "P3 Single Pickaxe Slash");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.STORM), "P3 Storm", "폭풍");
+        add(LanguageKey.animation(HerobrineAnimationIdentifiers.EARTH_SHOCK), "P3 Earth Shock");
+
+        add(LanguageKey.skill(RushSkill.LOCATION), "P1 Rush");
+        add(LanguageKey.skill(DashSkill.LOCATION), "P1 Dash");
+        add(LanguageKey.skill(DashAroundSkill.LOCATION), "P1 Dash Around");
+        add(LanguageKey.skill(PunchSkill.LOCATION), "P1 Combo Attack 1");
+        add(LanguageKey.skill(UppercutSkill.LOCATION), "P1 Combo Attack 2");
+        add(LanguageKey.skill(SpinningSkill.LOCATION), "P1 Combo Attack 3");
+        add(LanguageKey.skill(SuperHitSkill.LOCATION), "P1 Combo Attack 4");
+        add(LanguageKey.skill(LandingSkill.LOCATION), "P1 Combo Attack 5");
+        add(LanguageKey.skill(ThrowFireballSkill.LOCATION), "P1 Throw Fireball");
+        add(LanguageKey.skill(StigmatizeEntitiesSkill.LOCATION), "P2 Gimmick");
+        add(LanguageKey.skill(WalkAroundTargetSkill.LOCATION), "P1 Walk Around");
+        add(LanguageKey.skill(FlickerSkill.LOCATION), "P1 Flicker");
+        add(LanguageKey.skill(StormSkill.LOCATION), "P3 #1 REDSTONE [Storm]");
+        add(LanguageKey.skill(StarShootingSkill.IDENTIFIER), "P3 #2 COPPER [Star Shooting]");
+        add(LanguageKey.skill(ExplosionSkill.LOCATION), "P3 #3 GOLD [Explosion]");
+        add(LanguageKey.skill(RyoikiTenkaiSkill.IDENTIFIER), "P3 #4 EMERALD [Ryoiki Tenkai]");
+        add(LanguageKey.skill(SplitAttackSkill.LOCATION), "P3 #5 DIAMOND [Combo Attack 1]");
+        add(LanguageKey.skill(SpinUpSkill.LOCATION), "P3 #5 DIAMOND [Combo Attack 2]");
+        add(LanguageKey.skill(StrikeDownSkill.LOCATION), "P3 #5 DIAMOND [Combo Attack 3]");
+        add(LanguageKey.skill(PickaxeSlashSkill.SINGLE), "P3 #6 LAPIS [Pickaxe Slash Single]");
+        add(LanguageKey.skill(PickaxeSlashSkill.TRIPLE), "P3 #6 LAPIS [Pickaxe Slash Triple]");
+        add(LanguageKey.skill(EarthShockSkill.LOCATION), "P3 #7 AMETHYST [Earth Shock]");
+        add(LanguageKey.skill(ParryingSkill.LOCATION), "P3 #8 NECTARIUM [Parrying]");
+        add(LanguageKey.skill(DestroyStructureSkill.LOCATION), "P3 Destroy Structure (Enter Phase 3)");
+        add(LanguageKey.skill(SummonShadowSkill.LOCATION), "P1 Summon Shadow");
+        add(LanguageKey.skill(CarpetBombingSkill.LOCATION), "P3 Carpet Bombing");
+        add(LanguageKey.skill(SpawnPickaxeSkill.LOCATION), "P3 Pickaxe Strike");
+        add(LanguageKey.skill(BlockingSkill.LOCATION), "P1 Blocking");
 
         add(LanguageKey.STIGMA_COMMAND_GET_KEY, "Stigma for entity %s is %d");
         add(LanguageKey.STIGMA_COMMAND_SET_KEY, "Stigma for %d entities set to %d", "%d개의 엔티티의 낙인을 %d로 설정하였습니다");
@@ -416,16 +455,16 @@ public class NarakaLanguageProviders {
     }
 
     public void addJukeboxSound(ResourceKey<JukeboxSong> key, String... translations) {
-        add(Util.makeDescriptionId("jukebox_song", key.location()), translations);
+        add(Util.makeDescriptionId("jukebox_song", key.identifier()), translations);
     }
 
     public void addTrimPattern(ResourceKey<TrimPattern> trimPattern, String... translations) {
-        String key = trimPattern.location().toLanguageKey("trim_pattern");
+        String key = trimPattern.identifier().toLanguageKey("trim_pattern");
         add(key, translations);
     }
 
     public void addTrimMaterial(ResourceKey<TrimMaterial> trimMaterial, String... translations) {
-        String key = trimMaterial.location().toLanguageKey("trim_material");
+        String key = trimMaterial.identifier().toLanguageKey("trim_material");
         add(key, translations);
     }
 
@@ -435,7 +474,7 @@ public class NarakaLanguageProviders {
     }
 
     public void addDamageType(ResourceKey<DamageType> damageType, String... message) {
-        String directKey = "death.attack." + damageType.location().getPath();
+        String directKey = "death.attack." + damageType.identifier().getPath();
         String indirectKey = directKey + ".player";
 
         add(directKey, message);

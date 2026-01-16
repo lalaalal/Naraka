@@ -2,10 +2,11 @@ package com.yummy.naraka.mixin;
 
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.npc.AbstractVillager;
-import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.entity.npc.WanderingTrader;
+import net.minecraft.world.entity.npc.villager.AbstractVillager;
+import net.minecraft.world.entity.npc.villager.VillagerTrades;
+import net.minecraft.world.entity.npc.wanderingtrader.WanderingTrader;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.ItemCost;
@@ -29,7 +30,7 @@ public abstract class WanderingTraderMixin extends AbstractVillager {
 
     @Unique
     private static VillagerTrades.ItemListing naraka$itemTrades(ItemLike costItem, ItemLike item, int cost, int numberOfItems, int maxUses, int villagerXp) {
-        return (trader, random) -> new MerchantOffer(
+        return (level, trader, random) -> new MerchantOffer(
                 new ItemCost(costItem, cost),
                 new ItemStack(item, numberOfItems),
                 maxUses, villagerXp, 0.05f
@@ -46,12 +47,13 @@ public abstract class WanderingTraderMixin extends AbstractVillager {
     }
 
     @Inject(method = "updateTrades", at = @At(value = "RETURN"))
-    protected void addNarakaItemsToTrades(CallbackInfo ci) {
+    protected void addNarakaItemsToTrades(ServerLevel level, CallbackInfo ci) {
         if (random.nextFloat() < 0.1) {
             MerchantOffers merchantOffers = getOffers();
             int index = random.nextInt(naraka$TRADES.length);
-            MerchantOffer merchantOffer = naraka$TRADES[index].getOffer(this, random);
-            merchantOffers.add(merchantOffer);
+            MerchantOffer merchantOffer = naraka$TRADES[index].getOffer(level, this, random);
+            if (merchantOffer != null)
+                merchantOffers.add(merchantOffer);
         }
     }
 }

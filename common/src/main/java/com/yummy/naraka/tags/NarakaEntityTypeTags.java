@@ -17,6 +17,6 @@ public final class NarakaEntityTypeTags {
     public static final TagKey<EntityType<?>> STUN_IMMUNE = create("stun_immune");
 
     public static TagKey<EntityType<?>> create(String name) {
-        return TagKey.create(Registries.ENTITY_TYPE, NarakaMod.location(name));
+        return TagKey.create(Registries.ENTITY_TYPE, NarakaMod.identifier(name));
     }
 }

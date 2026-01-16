@@ -7,10 +7,10 @@ import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
 import com.yummy.naraka.world.entity.StunHelper;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -22,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends AttackSkill<T> {
-    public static final ResourceLocation LOCATION = createLocation("herobrine.rush");
+    public static final Identifier LOCATION = skillIdentifier("herobrine.rush");
 
     private static final int START_RUNNING_TICK = 15;
     private static final int RUSH_TICK = 18;
@@ -123,7 +123,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
             return;
         this.duration = tickCount + 40;
         this.failed = true;
-        mob.setAnimation(HerobrineAnimationLocations.RUSH_FAILED);
+        mob.setAnimation(HerobrineAnimationIdentifiers.RUSH_FAILED);
     }
 
     private boolean isTargetInFront(@Nullable LivingEntity target) {
@@ -153,7 +153,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
                 hurtEntity(level, target);
             level.playSound(mob, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 2, 1);
             level.sendParticles(ParticleTypes.SONIC_BOOM, mob.getX(), mob.getY() + 1, mob.getZ(), 1, 0, 0, 0, 1);
-            mob.setAnimation(HerobrineAnimationLocations.RUSH_SUCCEED);
+            mob.setAnimation(HerobrineAnimationIdentifiers.RUSH_SUCCEED);
         }
     }
 

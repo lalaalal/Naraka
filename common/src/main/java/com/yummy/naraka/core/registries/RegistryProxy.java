@@ -35,13 +35,13 @@ public interface RegistryProxy<T> {
     @SuppressWarnings("unchecked")
     @Nullable
     default Registry<T> getRegistry() {
-        return (Registry<T>) BuiltInRegistries.REGISTRY.getValue(getRegistryKey().location());
+        return (Registry<T>) BuiltInRegistries.REGISTRY.getValue(getRegistryKey().identifier());
     }
 
     default Registry<T> getRegistryOrThrow() {
         Registry<T> registry = getRegistry();
         if (registry == null)
-            throw new IllegalStateException("No registry found for " + getRegistryKey().location());
+            throw new IllegalStateException("No registry found for " + getRegistryKey().identifier());
         return registry;
     }
 
@@ -50,7 +50,7 @@ public interface RegistryProxy<T> {
     <V extends T> HolderProxy<T, V> register(String name, Supplier<V> value);
 
     default <V extends T> HolderProxy<T, V> createHolder(String name) {
-        return new HolderProxy<>(getRegistryOrThrow(), NarakaMod.location(name));
+        return new HolderProxy<>(getRegistryOrThrow(), NarakaMod.identifier(name));
     }
 
     default void onRegistrationFinished() {

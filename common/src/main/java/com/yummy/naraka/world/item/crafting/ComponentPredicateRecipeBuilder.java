@@ -4,7 +4,7 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
@@ -88,6 +88,6 @@ public class ComponentPredicateRecipeBuilder implements RecipeBuilder {
                 .requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(builder::addCriterion);
         ComponentPredicateRecipe recipe = new ComponentPredicateRecipe(result, Objects.requireNonNullElse(group, ""), RecipeBuilder.determineBookCategory(category), showNotification, predicateIngredients);
-        output.accept(resourceKey, recipe, builder.build(resourceKey.location().withPrefix("recipes/" + this.category.getFolderName() + "/")));
+        output.accept(resourceKey, recipe, builder.build(resourceKey.identifier().withPrefix("recipes/" + this.category.getFolderName() + "/")));
     }
 }

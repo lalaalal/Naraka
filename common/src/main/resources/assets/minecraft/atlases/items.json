@@ -1,0 +1,46 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:directory",
+      "prefix": "item/",
+      "source": "item"
+    },
+    {
+      "type": "minecraft:paletted_permutations",
+      "palette_key": "minecraft:trims/color_palettes/trim_palette",
+      "permutations": {
+        "amethyst": "minecraft:trims/color_palettes/amethyst",
+        "copper": "minecraft:trims/color_palettes/copper",
+        "copper_darker": "minecraft:trims/color_palettes/copper_darker",
+        "diamond": "minecraft:trims/color_palettes/diamond",
+        "diamond_darker": "minecraft:trims/color_palettes/diamond_darker",
+        "emerald": "minecraft:trims/color_palettes/emerald",
+        "gold": "minecraft:trims/color_palettes/gold",
+        "gold_darker": "minecraft:trims/color_palettes/gold_darker",
+        "iron": "minecraft:trims/color_palettes/iron",
+        "iron_darker": "minecraft:trims/color_palettes/iron_darker",
+        "lapis": "minecraft:trims/color_palettes/lapis",
+        "netherite": "minecraft:trims/color_palettes/netherite",
+        "netherite_darker": "minecraft:trims/color_palettes/netherite_darker",
+        "quartz": "minecraft:trims/color_palettes/quartz",
+        "redstone": "minecraft:trims/color_palettes/redstone",
+        "resin": "minecraft:trims/color_palettes/resin",
+        "soul_infused_redstone": "naraka:trims/color_palettes/soul_infused_redstone",
+        "soul_infused_copper": "naraka:trims/color_palettes/soul_infused_copper",
+        "soul_infused_gold": "naraka:trims/color_palettes/soul_infused_gold",
+        "soul_infused_emerald": "naraka:trims/color_palettes/soul_infused_emerald",
+        "soul_infused_diamond": "naraka:trims/color_palettes/soul_infused_diamond",
+        "soul_infused_lapis": "naraka:trims/color_palettes/soul_infused_lapis",
+        "soul_infused_amethyst": "naraka:trims/color_palettes/soul_infused_amethyst",
+        "soul_infused_nectarium": "naraka:trims/color_palettes/soul_infused_nectarium",
+        "god_blood": "naraka:trims/color_palettes/god_blood"
+      },
+      "textures": [
+        "minecraft:trims/items/helmet_trim",
+        "minecraft:trims/items/chestplate_trim",
+        "minecraft:trims/items/leggings_trim",
+        "minecraft:trims/items/boots_trim"
+      ]
+    }
+  ]
+}

@@ -9,6 +9,6 @@ public final class NarakaMobEffectTags {
     public static final TagKey<MobEffect> CHALLENGERS_BLESSING = create("challengers_blessing");
 
     private static TagKey<MobEffect> create(String name) {
-        return TagKey.create(Registries.MOB_EFFECT, NarakaMod.location(name));
+        return TagKey.create(Registries.MOB_EFFECT, NarakaMod.identifier(name));
     }
 }

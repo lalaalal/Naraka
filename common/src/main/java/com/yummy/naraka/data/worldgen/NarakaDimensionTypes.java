@@ -1,43 +1,53 @@
 package com.yummy.naraka.data.worldgen;
 
 import com.yummy.naraka.NarakaMod;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TimelineTags;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.world.attribute.BedRule;
+import net.minecraft.world.attribute.EnvironmentAttributeMap;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.dimension.DimensionType;
-
-import java.util.Optional;
-import java.util.OptionalLong;
+import net.minecraft.world.timeline.Timeline;
 
 public class NarakaDimensionTypes {
     public static final ResourceKey<DimensionType> NARAKA = create("naraka");
-    public static final ResourceLocation NARAKA_EFFECT = NARAKA.location();
 
     public static void bootstrap(BootstrapContext<DimensionType> context) {
+        HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
         context.register(NARAKA, new DimensionType(
-                OptionalLong.of(18000),
+                true,
                 true,
                 false,
-                false,
-                false,
                 1.0,
-                false,
-                false,
                 0,
                 256,
                 128,
                 BlockTags.INFINIBURN_OVERWORLD,
-                NARAKA_EFFECT,
                 1,
-                Optional.empty(),
-                new DimensionType.MonsterSettings(false, false, ConstantInt.ZERO, 0)
+                new DimensionType.MonsterSettings(ConstantInt.ZERO, 0),
+                DimensionType.Skybox.NONE,
+                DimensionType.CardinalLightType.DEFAULT,
+                EnvironmentAttributeMap.builder()
+                        .set(EnvironmentAttributes.CLOUD_HEIGHT, 56f)
+                        .set(EnvironmentAttributes.MOON_ANGLE, 0f)
+                        .set(EnvironmentAttributes.SUN_ANGLE, 180f)
+                        .set(EnvironmentAttributes.BED_RULE, BedRule.EXPLODES)
+                        .set(EnvironmentAttributes.CAN_START_RAID, false)
+                        .set(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false)
+                        .set(EnvironmentAttributes.RESPAWN_ANCHOR_WORKS, false)
+                        .set(EnvironmentAttributes.NETHER_PORTAL_SPAWNS_PIGLINS, false)
+                        .set(EnvironmentAttributes.PIGLINS_ZOMBIFY, false)
+                        .build(),
+                timelines.getOrThrow(TimelineTags.UNIVERSAL)
         ));
     }
 
     private static ResourceKey<DimensionType> create(String name) {
-        return ResourceKey.create(Registries.DIMENSION_TYPE, NarakaMod.location(name));
+        return ResourceKey.create(Registries.DIMENSION_TYPE, NarakaMod.identifier(name));
     }
 }

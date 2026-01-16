@@ -31,7 +31,7 @@ public class NarakaRegistries {
         public static final ResourceKey<Registry<EquipmentSet>> EQUIPMENT_SET = create("equipment_set");
 
         private static <T> ResourceKey<Registry<T>> create(String name) {
-            return ResourceKey.createRegistryKey(NarakaMod.location(name));
+            return ResourceKey.createRegistryKey(NarakaMod.identifier(name));
         }
     }
 }

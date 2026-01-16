@@ -2,7 +2,7 @@ package com.yummy.naraka.client.animation.naraka_pickaxe;
 
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.animation.NarakaInterpolations;
-import com.yummy.naraka.world.entity.animation.NarakaPickaxeAnimationLocations;
+import com.yummy.naraka.world.entity.animation.NarakaPickaxeAnimationIdentifiers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
@@ -13,10 +13,10 @@ import net.minecraft.client.animation.KeyframeAnimations;
 @Environment(EnvType.CLIENT)
 public class NarakaPickaxeAnimation {
     public static void initialize() {
-        AnimationMapper.register(NarakaPickaxeAnimationLocations.SWING, SWING);
-        AnimationMapper.register(NarakaPickaxeAnimationLocations.EXPLODE, EXPLODE);
-        AnimationMapper.register(NarakaPickaxeAnimationLocations.STRIKE, STRIKE);
-        AnimationMapper.register(NarakaPickaxeAnimationLocations.IDLE, IDLE);
+        AnimationMapper.register(NarakaPickaxeAnimationIdentifiers.SWING, SWING);
+        AnimationMapper.register(NarakaPickaxeAnimationIdentifiers.EXPLODE, EXPLODE);
+        AnimationMapper.register(NarakaPickaxeAnimationIdentifiers.STRIKE, STRIKE);
+        AnimationMapper.register(NarakaPickaxeAnimationIdentifiers.IDLE, IDLE);
     }
 
     public static final AnimationDefinition SWING = AnimationDefinition.Builder.withLength(7.0F)

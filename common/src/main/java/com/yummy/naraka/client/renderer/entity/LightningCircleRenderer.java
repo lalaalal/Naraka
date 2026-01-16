@@ -8,11 +8,11 @@ import com.yummy.naraka.world.entity.LightningCircle;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
@@ -53,7 +53,7 @@ public class LightningCircleRenderer extends EntityRenderer<LightningCircle, Fla
         poseStack.pushPose();
         poseStack.translate(0, 0.0125, 0);
         poseStack.scale(renderState.scale, renderState.scale, renderState.scale);
-        submitNodeCollector.submitCustomGeometry(poseStack, RenderType.entityTranslucent(NarakaTextures.LIGHTNING_CIRCLE), (pose, vertexConsumer) -> {
+        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entityTranslucent(NarakaTextures.LIGHTNING_CIRCLE), (pose, vertexConsumer) -> {
             NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ARGB.white(renderState.alpha), Direction.Axis.Y);
         });
         poseStack.popPose();

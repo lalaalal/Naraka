@@ -33,13 +33,12 @@
   },
   "accessWidener": "naraka.fabric.accesswidener",
   "mixins": [
-    "naraka.mixins.json",
-    "naraka.fabric.mixins.json"
+    "naraka.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.16.10",
-    "minecraft": "~1.21.9",
+    "minecraft": "~1.21.11",
     "java": ">=21",
-    "fabric-api": ">=0.134.0+1.21.9"
+    "fabric-api": ">=0.139.4+1.21.11"
   }
 }

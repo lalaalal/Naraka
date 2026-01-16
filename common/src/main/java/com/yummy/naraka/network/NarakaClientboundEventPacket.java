@@ -11,7 +11,7 @@ import net.minecraft.util.StringRepresentable;
 import java.util.List;
 
 public record NarakaClientboundEventPacket(List<Event> events) implements CustomPacketPayload {
-    public static final Type<NarakaClientboundEventPacket> TYPE = new Type<>(NarakaMod.location("clientbound_event_packet"));
+    public static final Type<NarakaClientboundEventPacket> TYPE = new Type<>(NarakaMod.identifier("clientbound_event_packet"));
 
     public static final StreamCodec<ByteBuf, NarakaClientboundEventPacket> CODEC = StreamCodec.composite(
             ByteBufCodecs.<ByteBuf, Event>list().apply(Event.STREAM_CODEC),
@@ -34,7 +34,9 @@ public record NarakaClientboundEventPacket(List<Event> events) implements Custom
         START_WHITE_SCREEN,
         STOP_WHITE_FOG,
         SHAKE_CAMERA,
-        MONOCHROME_EFFECT;
+        MONOCHROME_EFFECT,
+        RYOIKI_GRAY_EFFECT,
+        RYOIKI_GREEN_EFFECT;
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
         public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);

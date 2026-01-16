@@ -11,7 +11,7 @@ import com.yummy.naraka.world.entity.MagicCircle;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.data.BeamEffectsHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Predicate;
 
 public class ExplosionSkill extends AttackSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("final_herobrine.explosion");
+    public static final Identifier LOCATION = skillIdentifier("final_herobrine.explosion");
 
     @Nullable
     private MagicCircle magicCircle;

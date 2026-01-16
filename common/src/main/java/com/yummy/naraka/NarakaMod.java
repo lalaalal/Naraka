@@ -41,7 +41,7 @@ import com.yummy.naraka.world.structure.piece.NarakaStructurePieceFactories;
 import com.yummy.naraka.world.structure.piece.NarakaStructurePieceTypes;
 import com.yummy.naraka.world.structure.placement.NarakaStructurePlacementTypes;
 import com.yummy.naraka.world.structure.protection.NarakaProtectionPredicates;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 
 public final class NarakaMod {
@@ -98,7 +98,7 @@ public final class NarakaMod {
 
         NarakaWorldCarvers.initialize();
         NarakaFeatures.initialize();
-        NarakaBiomes.initialize(initializer);
+        NarakaBiomes.initialize();
 
         NarakaRootPlacerTypes.initialize();
 
@@ -109,21 +109,21 @@ public final class NarakaMod {
         RegistryProxyProvider.forEach(RegistryProxy::onRegistrationFinished);
     }
 
-    public static ResourceLocation mcLocation(String path) {
-        return ResourceLocation.withDefaultNamespace(path);
+    public static Identifier mcLocation(String path) {
+        return Identifier.withDefaultNamespace(path);
     }
 
     /**
      * Returns mod's resource animationLocation
      *
      * @param path Resource path
-     * @return {@linkplain ResourceLocation} with namespace {@linkplain #MOD_ID}
+     * @return {@linkplain Identifier} with namespace {@linkplain #MOD_ID}
      */
-    public static ResourceLocation location(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    public static Identifier identifier(String path) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, path);
     }
 
-    public static ResourceLocation location(String prefix, String path) {
-        return location("%s/%s".formatted(prefix, path));
+    public static Identifier identifier(String prefix, String path) {
+        return identifier("%s/%s".formatted(prefix, path));
     }
 }

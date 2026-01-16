@@ -4,8 +4,8 @@ import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.world.item.equipment.NarakaEquipmentAssets;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
@@ -62,7 +62,7 @@ public class NarakaArmorMaterials {
         int defense = material.defense().getOrDefault(armorType, 0);
         ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
         EquipmentSlotGroup equipmentSlotGroup = EquipmentSlotGroup.bySlot(armorType.getSlot());
-        ResourceLocation resourceLocation = ResourceLocation.withDefaultNamespace("armor." + armorType.getName());
+        Identifier resourceLocation = Identifier.withDefaultNamespace("armor." + armorType.getName());
         builder.add(Attributes.ARMOR, new AttributeModifier(resourceLocation, defense, AttributeModifier.Operation.ADD_VALUE), equipmentSlotGroup);
         builder.add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(resourceLocation, material.toughness(), AttributeModifier.Operation.ADD_VALUE), equipmentSlotGroup);
         if (material.knockbackResistance() > 0) {

@@ -40,7 +40,7 @@ public class NarakaClientEvents {
         ComponentStyles.RAINBOW_COLOR.updateColor();
         WhiteFogRenderHelper.tick();
         contextTick(NarakaClientContext.CAMERA_SHAKE_TICK);
-        contextTick(NarakaClientContext.MONOCHROME_EFFECT_TICK);
+        contextTick(NarakaClientContext.POST_EFFECT_TICK);
     }
 
     private static void contextTick(Configuration.ConfigValue<Integer> context) {

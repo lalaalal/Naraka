@@ -30,7 +30,7 @@ public abstract class FogRendererMixin {
     }
 
     @Inject(method = "computeFogColor", at = @At("RETURN"), cancellable = true)
-    private static void computeFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, boolean isFoggy, CallbackInfoReturnable<Vector4f> cir) {
+    private static void computeFogColor(Camera camera, float partialTick, ClientLevel clientLevel, int distance, float g, CallbackInfoReturnable<Vector4f> cir) {
         Vector4f color = cir.getReturnValue();
         if (WhiteFogRenderHelper.shouldApplyWhiteFog()) {
             cir.setReturnValue(WhiteFogRenderHelper.getFogColor(color, partialTick));

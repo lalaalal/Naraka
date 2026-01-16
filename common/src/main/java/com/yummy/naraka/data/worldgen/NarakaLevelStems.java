@@ -30,6 +30,6 @@ public class NarakaLevelStems {
     }
 
     private static ResourceKey<LevelStem> create(String name) {
-        return ResourceKey.create(Registries.LEVEL_STEM, NarakaMod.location(name));
+        return ResourceKey.create(Registries.LEVEL_STEM, NarakaMod.identifier(name));
     }
 }

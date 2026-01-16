@@ -2,7 +2,7 @@ package com.yummy.naraka.world.entity.ai.attribute;
 
 import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -25,72 +25,72 @@ public class NarakaAttributeModifiers {
     public static final AttributeModifier HIBERNATE_PREVENT_MOVING = preventMoving("hibernate");
     public static final AttributeModifier ANIMATION_PREVENT_MOVING = preventMoving("animation");
 
-    public static final ResourceLocation REDUCE_MAX_HEALTH_ID = reduceMaxHealthId("locked_health");
+    public static final Identifier REDUCE_MAX_HEALTH_ID = reduceMaxHealthId("locked_health");
 
     public static final AttributeModifier FINAL_HEROBRINE_ARMOR_TOUGHNESS = new AttributeModifier(
-            NarakaMod.location("final_herobrine.armor_toughness"), 16, AttributeModifier.Operation.ADD_VALUE
+            NarakaMod.identifier("final_herobrine.armor_toughness"), 16, AttributeModifier.Operation.ADD_VALUE
     );
 
     public static AttributeModifier finalHerobrineArmor(int armor) {
         return new AttributeModifier(
-                NarakaMod.location("final_herobrine.armor"), armor, AttributeModifier.Operation.ADD_VALUE
+                NarakaMod.identifier("final_herobrine.armor"), armor, AttributeModifier.Operation.ADD_VALUE
         );
     }
 
-    public static AttributeModifier reduceMaxHealth(ResourceLocation id, double value) {
-        return new AttributeModifier(id, -value, AttributeModifier.Operation.ADD_VALUE);
+    public static AttributeModifier reduceMaxHealth(Identifier id, double value) {
+        return new AttributeModifier(id, -value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 
-    public static ResourceLocation reduceMaxHealthId(String identifier) {
-        return NarakaMod.location(identifier + ".reduce_max_health");
+    public static Identifier reduceMaxHealthId(String identifier) {
+        return NarakaMod.identifier(identifier + ".reduce_max_health");
     }
 
     public static AttributeModifier preventMoving(String identifier) {
         return new AttributeModifier(preventMovingId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 
-    public static ResourceLocation preventMovingId(String identifier) {
-        return NarakaMod.location(identifier + ".prevent_moving");
+    public static Identifier preventMovingId(String identifier) {
+        return NarakaMod.identifier(identifier + ".prevent_moving");
     }
 
     public static AttributeModifier preventJumping(String identifier) {
         return new AttributeModifier(preventJumpingId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 
-    public static ResourceLocation preventJumpingId(String identifier) {
-        return NarakaMod.location(identifier + ".prevent_jumping");
+    public static Identifier preventJumpingId(String identifier) {
+        return NarakaMod.identifier(identifier + ".prevent_jumping");
     }
 
     public static AttributeModifier preventBlockAttack(String identifier) {
         return new AttributeModifier(preventBlockAttackId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 
-    public static ResourceLocation preventBlockAttackId(String identifier) {
-        return NarakaMod.location(identifier + ".prevent_block_attack");
+    public static Identifier preventBlockAttackId(String identifier) {
+        return NarakaMod.identifier(identifier + ".prevent_block_attack");
     }
 
     public static AttributeModifier preventEntityAttack(String identifier) {
         return new AttributeModifier(preventEntityAttackId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 
-    public static ResourceLocation preventEntityInteractionId(String identifier) {
-        return NarakaMod.location(identifier + ".prevent_entity_interaction");
+    public static Identifier preventEntityInteractionId(String identifier) {
+        return NarakaMod.identifier(identifier + ".prevent_entity_interaction");
     }
 
     public static AttributeModifier preventEntityInteraction(String identifier) {
         return new AttributeModifier(preventEntityInteractionId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 
-    public static ResourceLocation preventBlockInteractionId(String identifier) {
-        return NarakaMod.location(identifier + ".prevent_block_interaction");
+    public static Identifier preventBlockInteractionId(String identifier) {
+        return NarakaMod.identifier(identifier + ".prevent_block_interaction");
     }
 
     public static AttributeModifier preventBlockInteraction(String identifier) {
         return new AttributeModifier(preventBlockInteractionId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 
-    public static ResourceLocation preventEntityAttackId(String identifier) {
-        return NarakaMod.location(identifier + ".prevent_entity_attack");
+    public static Identifier preventEntityAttackId(String identifier) {
+        return NarakaMod.identifier(identifier + ".prevent_entity_attack");
     }
 
     /**
@@ -130,7 +130,7 @@ public class NarakaAttributeModifiers {
      * @param attribute    Attribute to remove modifier
      * @param modifierId   ID of attribute modifier
      */
-    public static void removeAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, ResourceLocation modifierId) {
+    public static void removeAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, Identifier modifierId) {
         AttributeInstance instance = livingEntity.getAttribute(attribute);
         if (instance == null)
             return;
@@ -141,7 +141,7 @@ public class NarakaAttributeModifiers {
         return hasAttributeModifier(livingEntity, attribute, modifier.id());
     }
 
-    public static boolean hasAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, ResourceLocation modifierId) {
+    public static boolean hasAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, Identifier modifierId) {
         AttributeInstance instance = livingEntity.getAttribute(attribute);
         if (instance == null)
             return false;

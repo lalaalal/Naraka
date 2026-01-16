@@ -2,7 +2,7 @@ package com.yummy.naraka.world.structure.piece;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Mirror;
@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
 public class JumboPiece extends TemplateStructurePiece {
-    public JumboPiece(StructureTemplateManager structureTemplateManager, ResourceLocation location, BlockPos templatePosition) {
+    public JumboPiece(StructureTemplateManager structureTemplateManager, Identifier location, BlockPos templatePosition) {
         super(NarakaStructurePieceTypes.JUMBO_PIECE.get(), 0, structureTemplateManager, location, location.toString(), makeSettings(location), templatePosition);
     }
 
@@ -23,7 +23,7 @@ public class JumboPiece extends TemplateStructurePiece {
         super(NarakaStructurePieceTypes.JUMBO_PIECE.get(), tag, context.structureTemplateManager(), JumboPiece::makeSettings);
     }
 
-    private static StructurePlaceSettings makeSettings(ResourceLocation location) {
+    private static StructurePlaceSettings makeSettings(Identifier location) {
         return new StructurePlaceSettings()
                 .setMirror(Mirror.NONE)
                 .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)

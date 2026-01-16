@@ -1,31 +1,24 @@
 {
+  "attributes": {
+    "minecraft:audio/ambient_sounds": {},
+    "minecraft:audio/background_music": {
+      "default": {
+        "max_delay": 0,
+        "min_delay": 0,
+        "replace_current_music": true,
+        "sound": "naraka:music.herobrine_phase_4"
+      }
+    },
+    "minecraft:visual/fog_color": "#ffffff",
+    "minecraft:visual/sky_color": "#ffffff",
+    "minecraft:visual/water_fog_color": "#ffffff"
+  },
   "carvers": [],
   "downfall": 0.0,
   "effects": {
-    "fog_color": 16777215,
-    "foliage_color": 16777215,
-    "grass_color": 16777215,
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000
-    },
-    "music": [
-      {
-        "data": {
-          "max_delay": 0,
-          "min_delay": 0,
-          "replace_current_music": true,
-          "sound": "naraka:music.herobrine_phase_4"
-        },
-        "weight": 1
-      }
-    ],
-    "music_volume": 1.0,
-    "sky_color": 16777215,
-    "water_color": 16777215,
-    "water_fog_color": 16777215
+    "foliage_color": "#ffffff",
+    "grass_color": "#ffffff",
+    "water_color": "#ffffff"
   },
   "features": [],
   "has_precipitation": false,

@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.data;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.NarakaRegistries;
@@ -34,7 +35,7 @@ public class NarakaEntityDataTypes {
                     .ticker(NarakaEntityDataTypes::tickPurifiedSoulFire)
     );
     public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<ScarfWavingData, LivingEntity>> SCARF_WAVING_DATA = register(
-            "scarf_waving_data", EntityDataType.living(Codec.unit(ScarfWavingData::new))
+            "scarf_waving_data", EntityDataType.living(MapCodec.unitCodec(ScarfWavingData::new))
                     .defaultValue(ScarfWavingData::new)
                     .ticker(NarakaEntityDataTypes::tickScarfWavingData)
     );
@@ -42,6 +43,10 @@ public class NarakaEntityDataTypes {
             "beam_effects", EntityDataType.common(BeamEffect.CODEC.listOf())
                     .defaultValue(List::of)
                     .ticker(NarakaEntityDataTypes::tickBeamEffects)
+    );
+    public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<Boolean, Entity>> KEEP_UNFROZEN = register(
+            "keep_unfrozen", EntityDataType.common(Codec.BOOL)
+                    .defaultValue(false)
     );
 
     private static void tickPurifiedSoulFire(LivingEntity livingEntity, int purifiedSoulFireTick) {
@@ -67,7 +72,7 @@ public class NarakaEntityDataTypes {
     }
 
     private static <T, E extends Entity> HolderProxy<EntityDataType<?, ?>, EntityDataType<T, E>> register(String name, EntityDataType.Builder<T, E> builder) {
-        return RegistryProxy.register(NarakaRegistries.Keys.ENTITY_DATA_TYPE, name, () -> builder.id(NarakaMod.location(name)).build());
+        return RegistryProxy.register(NarakaRegistries.Keys.ENTITY_DATA_TYPE, name, () -> builder.id(NarakaMod.identifier(name)).build());
     }
 
     public static void initialize(NarakaInitializer initializer) {

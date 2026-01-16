@@ -3,7 +3,7 @@ package com.yummy.naraka.world.entity.ai.skill.herobrine;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.StunHelper;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -12,7 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class PunchSkill<T extends AbstractHerobrine> extends ComboSkill<T> {
-    public static final ResourceLocation LOCATION = createLocation("herobrine.punch");
+    public static final Identifier LOCATION = skillIdentifier("herobrine.punch");
 
     private boolean linked = false;
 

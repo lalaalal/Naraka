@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
@@ -21,10 +21,10 @@ public class NarakaLevelStemProvider extends FabricCodecDataProvider<LevelStem> 
     }
 
     @Override
-    protected void configure(BiConsumer<ResourceLocation, LevelStem> provider, HolderLookup.Provider lookup) {
+    protected void configure(BiConsumer<Identifier, LevelStem> provider, HolderLookup.Provider lookup) {
         HolderLookup<DimensionType> dimensionType = lookup.lookupOrThrow(Registries.DIMENSION_TYPE);
         HolderLookup<Biome> biomes = lookup.lookupOrThrow(Registries.BIOME);
-        provider.accept(NarakaLevelStems.NARAKA.location(), new LevelStem(
+        provider.accept(NarakaLevelStems.NARAKA.identifier(), new LevelStem(
                 dimensionType.getOrThrow(NarakaDimensionTypes.NARAKA),
                 new FlatLevelSource(NarakaLevelStems.getNarakaSettings(biomes))
         ));

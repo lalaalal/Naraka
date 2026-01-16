@@ -55,7 +55,7 @@ public class NarakaPickaxeRenderer extends EntityRenderer<NarakaPickaxe, NarakaP
     @Override
     public void extractRenderState(NarakaPickaxe entity, NarakaPickaxeRenderState reusedState, float partialTick) {
         super.extractRenderState(entity, reusedState, partialTick);
-        reusedState.setAnimationVisitor(entity);
+        reusedState.setupAnimationStates(entity);
         reusedState.yRot = entity.getYRot(partialTick);
         itemModelResolver.updateForNonLiving(reusedState.pickaxe, pickaxe, ItemDisplayContext.NONE, entity);
     }

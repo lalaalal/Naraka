@@ -2,7 +2,7 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.SkillUsingMob;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -13,12 +13,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.UnaryOperator;
 
 public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
-    protected TargetSkill(ResourceLocation location, T mob, int duration, int cooldown, @Nullable Skill<?> linkedSkill) {
-        super(location, mob, duration, cooldown, linkedSkill);
+    protected TargetSkill(Identifier identifier, T mob, int duration, int cooldown, @Nullable Skill<?> linkedSkill) {
+        super(identifier, mob, duration, cooldown, linkedSkill);
     }
 
-    protected TargetSkill(ResourceLocation location, T mob, int duration, int cooldown) {
-        super(location, mob, duration, cooldown);
+    protected TargetSkill(Identifier identifier, T mob, int duration, int cooldown) {
+        super(identifier, mob, duration, cooldown);
     }
 
     @Override

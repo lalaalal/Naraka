@@ -1,7 +1,7 @@
 package com.yummy.naraka.client.particle;
 
 import com.yummy.naraka.world.entity.Herobrine;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -99,7 +99,7 @@ public class TurningParticle extends SingleQuadParticle {
         return particle.level.getEntitiesOfClass(Herobrine.class, AABB.ofSize(new Vec3(particle.x, particle.y, particle.z), 10, 10, 10))
                 .stream()
                 .findAny()
-                .map(herobrine -> herobrine.getCurrentAnimation().equals(HerobrineAnimationLocations.PARRYING_SUCCEED))
+                .map(herobrine -> herobrine.getCurrentAnimation().equals(HerobrineAnimationIdentifiers.PARRYING_SUCCEED))
                 .orElse(false);
     }
 

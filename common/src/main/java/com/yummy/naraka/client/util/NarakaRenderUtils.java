@@ -9,9 +9,9 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -134,6 +134,13 @@ public class NarakaRenderUtils {
 
     public static Vector3f modifyZ(Vector3f vector, float interval) {
         return vector.add(0, 0, interval, new Vector3f());
+    }
+
+    public static Player getCurrentPlayer() {
+        Player player = Minecraft.getInstance().player;
+        if (player == null)
+            throw new IllegalStateException("Current player is null");
+        return player;
     }
 
     public static boolean isCurrentPlayer(LivingEntity livingEntity) {

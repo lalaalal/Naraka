@@ -9,9 +9,12 @@ import com.yummy.naraka.world.entity.PickaxeSlash;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.InstantShadowSpawner;
 import com.yummy.naraka.world.entity.ai.skill.TargetSkill;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
-import net.minecraft.resources.ResourceLocation;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.Vec3;
@@ -20,8 +23,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<T> {
-    public static final ResourceLocation SINGLE = createLocation("final_herobrine.pickaxe_slash.single");
-    public static final ResourceLocation TRIPLE = createLocation("final_herobrine.pickaxe_slash.triple");
+    public static final Identifier SINGLE = skillIdentifier("final_herobrine.pickaxe_slash.single");
+    public static final Identifier TRIPLE = skillIdentifier("final_herobrine.pickaxe_slash.triple");
     private final List<Integer> pickaxeSlashSpawnTimes;
     private int rotateDirection = 1;
     private final boolean spawnShadow;
@@ -37,7 +40,7 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
         return new PickaxeSlashSkill<>(TRIPLE, herobrine, 80, 460, true, 40, 45, 55);
     }
 
-    protected PickaxeSlashSkill(ResourceLocation location, T mob, int duration, int cooldown, boolean spawnShadow, Integer... pickaxeSlashSpawnTimes) {
+    protected PickaxeSlashSkill(Identifier location, T mob, int duration, int cooldown, boolean spawnShadow, Integer... pickaxeSlashSpawnTimes) {
         super(location, mob, duration, cooldown);
         this.pickaxeSlashSpawnTimes = List.of(pickaxeSlashSpawnTimes);
         this.spawnShadow = spawnShadow;
@@ -69,6 +72,7 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         lookTarget(target);
         rotateTowardTarget(target);
+        runAt(5, () -> shadowSpawner.spawn(level).control(shadowHerobrine -> setupShadowHerobrine(shadowHerobrine, target)));
         if (!mob.isShadow) {
             runAt(0, () -> NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.TELEPORT.get()));
             runAt(5, () -> teleportToTarget(target, 12));
@@ -80,17 +84,20 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
-        runAt(5, () -> shadowSpawner.spawn(level).control(this::setupShadowHerobrine));
         runAt(10, this::stopShadowMoving);
         runAt(30, () -> shadowSpawner.useSkill(SINGLE));
     }
 
-    private void setupShadowHerobrine(ShadowHerobrine shadowHerobrine) {
+    private void setupShadowHerobrine(ShadowHerobrine shadowHerobrine, LivingEntity target) {
         shadowHerobrine.forceSetRotation(60, true, 0, false);
         shadowHerobrine.setPos(mob.position());
-        Vec3 movement = shadowHerobrine.getLookAngle().scale(1.5);
+        Vec3 movement = target.position()
+                .subtract(mob.position())
+                .normalize()
+                .yRot(Mth.HALF_PI)
+                .scale(1.5f);
         shadowHerobrine.setDeltaMovement(movement);
-        shadowHerobrine.setAnimation(HerobrineAnimationLocations.PHASE_3_IDLE);
+        shadowHerobrine.setAnimation(HerobrineAnimationIdentifiers.PHASE_3_IDLE);
         shadowHerobrine.setTarget(mob.getTarget());
     }
 
@@ -100,6 +107,10 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
 
     private void createPickaxeSlash(ServerLevel level, LivingEntity target) {
         rotateTowardTarget(target);
+        level.playSound(null, mob, SoundEvents.LUNGE_1.value(), SoundSource.HOSTILE, 1.8f, 1.1f);
+        level.playSound(null, mob, SoundEvents.LUNGE_1.value(), SoundSource.HOSTILE, 1.7f, 0.95f);
+        level.playSound(null, mob, SoundEvents.WITCH_THROW, SoundSource.HOSTILE, 2, 2);
+        level.playSound(null, mob, SoundEvents.WITCH_THROW, SoundSource.HOSTILE, 1.7f, 1.85f);
         int zRotDegree = mob.getRandom().nextInt(45, 65) * rotateDirection;
         PickaxeSlash pickaxeSlash = new PickaxeSlash(level, mob, 360);
         pickaxeSlash.setPos(mob.getX(), mob.getEyeY() - 0.75, mob.getZ());

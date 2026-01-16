@@ -6,8 +6,7 @@ import com.yummy.naraka.network.SyncAnimationPacket;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
-import net.minecraft.network.protocol.game.ClientboundEntityPositionSyncPacket;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
@@ -22,13 +21,13 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public abstract class SkillUsingMob extends PathfinderMob {
     protected final SkillManager skillManager = new SkillManager(this);
-    protected final Map<ResourceLocation, AnimationController> animationControllers = new HashMap<>();
-    protected ResourceLocation currentAnimation = NarakaMod.location("empty");
+    protected final Map<Identifier, AnimationSelector> animationSelectors = new HashMap<>();
+    protected final Map<Identifier, AnimationState> animations = new HashMap<>();
+    protected Identifier currentAnimation = NarakaMod.identifier("empty");
 
     protected int animationTickLeft = Integer.MIN_VALUE;
     protected Runnable animationTickListener = () -> {
@@ -45,20 +44,21 @@ public abstract class SkillUsingMob extends PathfinderMob {
         return skillManager.getCurrentSkill() != null;
     }
 
-    public void forEachAnimations(BiConsumer<ResourceLocation, AnimationState> consumer) {
-        for (AnimationController controller : animationControllers.values())
-            controller.update(consumer);
+    public AnimationState getAnimationState(Identifier animationIdentifier) {
+        if (animations.containsKey(animationIdentifier))
+            return animations.get(animationIdentifier);
+        return new AnimationState();
     }
 
     public SkillManager getSkillManager() {
         return skillManager;
     }
 
-    public Set<ResourceLocation> getAnimations() {
-        return animationControllers.keySet();
+    public Set<Identifier> getAnimations() {
+        return animations.keySet();
     }
 
-    public void useSkill(ResourceLocation location) {
+    public void useSkill(Identifier location) {
         Skill<?> skill = skillManager.getSkill(location);
         if (skill != null)
             skillManager.setCurrentSkillIfAbsence(skill);
@@ -68,30 +68,33 @@ public abstract class SkillUsingMob extends PathfinderMob {
         return Optional.ofNullable(skillManager.getCurrentSkill());
     }
 
-    public void registerAnimation(ResourceLocation animationSetLocation, List<ResourceLocation> animationLocations) {
-        this.animationControllers.put(animationSetLocation, AnimationController.of(random, animationLocations));
+    public void registerAnimation(Identifier animationSetIdentifiers, List<Identifier> animationIdentifiers) {
+        this.animationSelectors.put(animationSetIdentifiers, AnimationSelector.of(random, animationIdentifiers));
+        for (Identifier animationId : animationIdentifiers)
+            animations.put(animationId, new AnimationState());
     }
 
-    public void registerAnimation(ResourceLocation animationLocation) {
-        this.animationControllers.put(animationLocation, AnimationController.simple(animationLocation));
+    public void registerAnimation(Identifier animationIdentifier) {
+        this.animationSelectors.put(animationIdentifier, AnimationSelector.simple(animationIdentifier));
+        this.animations.put(animationIdentifier, new AnimationState());
     }
 
-    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(int priority, S skill, ResourceLocation... animationLocations) {
+    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(int priority, S skill, Identifier... animationLocations) {
         this.skillManager.addSkill(priority, skill);
-        registerAnimation(skill.location, List.of(animationLocations));
+        registerAnimation(skill.identifier, List.of(animationLocations));
 
         return skill;
     }
 
-    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(S skill, ResourceLocation... animationLocations) {
+    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(S skill, Identifier... animationLocations) {
         return registerSkill(Integer.MAX_VALUE, skill, animationLocations);
     }
 
-    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(int priority, T mob, Function<T, S> factory, ResourceLocation... animationLocations) {
+    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(int priority, T mob, Function<T, S> factory, Identifier... animationLocations) {
         return registerSkill(priority, factory.apply(mob), animationLocations);
     }
 
-    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(T mob, Function<T, S> factory, ResourceLocation... animationLocations) {
+    public <T extends SkillUsingMob, S extends Skill<T>> S registerSkill(T mob, Function<T, S> factory, Identifier... animationLocations) {
         return registerSkill(Integer.MAX_VALUE, factory.apply(mob), animationLocations);
     }
 
@@ -126,41 +129,47 @@ public abstract class SkillUsingMob extends PathfinderMob {
     /**
      * For server update
      *
-     * @param animationLocation Animation
+     * @param animationSetIdentifier Animation
      */
-    public void setAnimation(ResourceLocation animationLocation) {
-        NarakaMod.LOGGER.debug("{} : Setting animation {}", this, animationLocation);
+    public void setAnimation(Identifier animationSetIdentifier) {
+        NarakaMod.LOGGER.debug("{} : Setting animation {}", this, animationSetIdentifier);
         if (!isPlayingStaticAnimation()) {
-            currentAnimation = animationLocation;
+            currentAnimation = animationSelectors.getOrDefault(animationSetIdentifier, AnimationSelector.EMPTY)
+                    .select();
             if (level() instanceof ServerLevel serverLevel) {
-                NarakaMod.LOGGER.debug("{} : Sending animation ({}) sync packet", this, animationLocation);
-                SyncAnimationPacket payload = new SyncAnimationPacket(this, animationLocation);
+                NarakaMod.LOGGER.debug("{} : Selecting animation ({}) from animation set ({})", this, currentAnimation, animationSetIdentifier);
+                NarakaMod.LOGGER.debug("{} : Sending animation ({}) sync packet", this, currentAnimation);
+                SyncAnimationPacket payload = new SyncAnimationPacket(this, currentAnimation);
                 NetworkManager.clientbound().send(serverLevel.players(), payload);
             }
         }
     }
 
     private void setAnimation(Skill<?> skill) {
-        this.setAnimation(skill.location);
+        this.setAnimation(skill.identifier);
     }
 
     /**
      * For client update
      *
-     * @param animationLocation Animation
+     * @param animationIdentifier Animation
      */
-    public void updateAnimation(ResourceLocation animationLocation) {
-        NarakaMod.LOGGER.debug("{} : Updating animation {}", this, animationLocation);
-        animationControllers.forEach((location, animationController) -> {
-            if (animationLocation.equals(location))
-                animationController.start(tickCount);
+    public void updateAnimation(Identifier animationIdentifier) {
+        NarakaMod.LOGGER.debug("{} : Updating animation {}", this, animationIdentifier);
+
+        if (!animations.containsKey(animationIdentifier))
+            NarakaMod.LOGGER.debug("{} is not registered animation for {}", animationIdentifier, this);
+        animations.forEach((identifier, state) -> {
+            if (animationIdentifier.equals(identifier))
+                state.start(tickCount);
             else
-                animationController.stop();
+                state.stop();
         });
-        currentAnimation = animationLocation;
+
+        currentAnimation = animationIdentifier;
     }
 
-    public ResourceLocation getCurrentAnimation() {
+    public Identifier getCurrentAnimation() {
         return currentAnimation;
     }
 
@@ -177,15 +186,15 @@ public abstract class SkillUsingMob extends PathfinderMob {
         return animationTickLeft > 0;
     }
 
-    public void playStaticAnimation(ResourceLocation animation, int duration) {
+    public void playStaticAnimation(Identifier animation, int duration) {
         playStaticAnimation(animation, duration, true);
     }
 
-    public void playStaticAnimation(ResourceLocation animation, int duration, boolean interruptSkill) {
+    public void playStaticAnimation(Identifier animation, int duration, boolean interruptSkill) {
         playStaticAnimation(animation, duration, interruptSkill, false);
     }
 
-    public void playStaticAnimation(ResourceLocation animation, int duration, boolean interruptSkill, boolean force) {
+    public void playStaticAnimation(Identifier animation, int duration, boolean interruptSkill, boolean force) {
         if (force)
             stopStaticAnimation();
         if (animationTickLeft > 0)
@@ -218,34 +227,29 @@ public abstract class SkillUsingMob extends PathfinderMob {
     protected void customServerAiStep(ServerLevel level) {
         updateAnimationTick();
         skillManager.tick(level);
-        NetworkManager.clientbound().send(level.players(), ClientboundEntityPositionSyncPacket.of(this));
     }
 
     @Override
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         getCurrentSkill().ifPresent(skill -> {
-            output.store("CurrentSkill", ResourceLocation.CODEC, skill.location);
+            output.store("CurrentSkill", Identifier.CODEC, skill.identifier);
         });
     }
 
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
-        input.read("CurrentSkill", ResourceLocation.CODEC).ifPresent(
+        input.read("CurrentSkill", Identifier.CODEC).ifPresent(
                 this::useSkill
         );
     }
 
-    protected static abstract class AnimationController {
-        private static final AnimationController EMPTY = new AnimationController(List.of()) {
-            @Override
-            protected ResourceLocation select() {
-                return NarakaMod.location("animation", "empty");
-            }
-        };
+    @FunctionalInterface
+    protected interface AnimationSelector {
+        AnimationSelector EMPTY = () -> NarakaMod.identifier("animation", "empty");
 
-        static AnimationController of(final RandomSource random, final List<ResourceLocation> animationLocations) {
+        static AnimationSelector of(final RandomSource random, final List<Identifier> animationLocations) {
             if (animationLocations.isEmpty())
                 return EMPTY;
             if (animationLocations.size() == 1)
@@ -253,52 +257,17 @@ public abstract class SkillUsingMob extends PathfinderMob {
             return random(random, animationLocations);
         }
 
-        static AnimationController simple(final ResourceLocation animationLocation) {
-            return new AnimationController(List.of(animationLocation)) {
-                @Override
-                protected ResourceLocation select() {
-                    return animationLocation;
-                }
+        static AnimationSelector simple(final Identifier animationLocation) {
+            return () -> animationLocation;
+        }
+
+        static AnimationSelector random(final RandomSource random, final List<Identifier> animationLocations) {
+            return () -> {
+                int randomIndex = random.nextInt(animationLocations.size());
+                return animationLocations.get(randomIndex);
             };
         }
 
-        static AnimationController random(final RandomSource random, final List<ResourceLocation> animationLocations) {
-            return new AnimationController(animationLocations) {
-                @Override
-                protected ResourceLocation select() {
-                    int randomIndex = random.nextInt(animationLocations.size());
-                    return animationLocations.get(randomIndex);
-                }
-            };
-        }
-
-        protected final Map<ResourceLocation, AnimationState> animationStates;
-
-        public AnimationController(List<ResourceLocation> animationLocations) {
-            this.animationStates = new HashMap<>();
-            for (ResourceLocation animationLocation : animationLocations)
-                animationStates.put(animationLocation, new AnimationState());
-        }
-
-        protected abstract ResourceLocation select();
-
-        public void start(int tickCount) {
-            final ResourceLocation selected = select();
-            animationStates.forEach((animationLocation, animationState) -> {
-                if (animationLocation.equals(selected))
-                    animationState.start(tickCount);
-                else
-                    animationState.stop();
-            });
-        }
-
-        public void stop() {
-            for (AnimationState animationState : animationStates.values())
-                animationState.stop();
-        }
-
-        public void update(BiConsumer<ResourceLocation, AnimationState> consumer) {
-            animationStates.forEach(consumer);
-        }
+        Identifier select();
     }
 }

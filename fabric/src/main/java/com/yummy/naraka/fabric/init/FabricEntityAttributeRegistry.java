@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 @SuppressWarnings("unused")
 public final class FabricEntityAttributeRegistry {
     @MethodProxy(EntityAttributeRegistry.class)
-    public static void register(Supplier<? extends EntityType<? extends LivingEntity>> entity, Supplier<AttributeSupplier.Builder> builder) {
-        FabricDefaultAttributeRegistry.register(entity.get(), builder.get());
+    public static void register(Supplier<? extends EntityType<? extends LivingEntity>> type, Supplier<AttributeSupplier.Builder> builder) {
+        FabricDefaultAttributeRegistry.register(type.get(), builder.get());
     }
 }

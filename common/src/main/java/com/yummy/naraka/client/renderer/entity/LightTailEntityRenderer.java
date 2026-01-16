@@ -7,12 +7,13 @@ import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.LightTailEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
@@ -24,17 +25,28 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
     }
 
     @Override
-    public void extractRenderState(T entity, S reusedState, float partialTick) {
-        super.extractRenderState(entity, reusedState, partialTick);
-        reusedState.tailPositions = entity.getTailPositions()
+    public void extractRenderState(T entity, S renderState, float partialTick) {
+        super.extractRenderState(entity, renderState, partialTick);
+        renderState.tailPositions = entity.getTailPositions()
                 .stream()
                 .map(position -> position.subtract(entity.position()))
                 .map(NarakaRenderUtils::vector3f)
                 .toList();
-        reusedState.partialTranslation = entity.position()
+        renderState.partialTranslation = entity.position()
                 .subtract(entity.getPosition(partialTick));
-        reusedState.tailColor = entity.getTailColor();
-        reusedState.tailWidth = 0.15f;
+        renderState.tailColor = entity.getTailColor();
+        renderState.tailWidth = 0.15f;
+
+        renderState.tailAlphas.clear();
+        for (int index = 0; index < renderState.tailPositions.size(); index++) {
+            float delta = index / (float) renderState.tailPositions.size();
+            int alpha = calculateAlpha(index / (float) renderState.tailPositions.size());
+            if (delta > 0.4) {
+                int nextAlpha = calculateAlpha((index + 1) / (float) renderState.tailPositions.size());
+                alpha = Mth.lerpInt(partialTick, alpha, nextAlpha);
+            }
+            renderState.tailAlphas.add(alpha);
+        }
     }
 
     @Override
@@ -63,20 +75,26 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
         poseStack.pushPose();
         poseStack.translate(0, 0.25, 0);
         poseStack.translate(translation);
-        submitNodeCollector.submitCustomGeometry(poseStack, RenderType.lightning(), (pose, vertexConsumer) -> {
+        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
             float partSize = 1 / (float) renderState.tailPositions.size();
             for (int index = 0; index < renderState.tailPositions.size() - 1; index++) {
                 Vector3f from = renderState.tailPositions.get(index);
                 Vector3f to = renderState.tailPositions.get(index + 1);
-                float uv = index / (float) renderState.tailPositions.size();
-                int alpha = NarakaRenderUtils.MAX_TAIL_ALPHA;
-                if (uv > 0.5)
-                    alpha = (int) (NarakaRenderUtils.MAX_TAIL_ALPHA * (1 - (uv - 0.5) * 2));
-                renderTailPart(renderState, pose, vertexConsumer, from, to, uv, partSize, ARGB.color(alpha, renderState.tailColor));
+                float delta = index / (float) renderState.tailPositions.size();
+                int alpha = renderState.tailAlphas.get(index);
+
+                renderTailPart(renderState, pose, vertexConsumer, from, to, delta, partSize, ARGB.color(alpha, renderState.tailColor));
             }
         });
 
         poseStack.popPose();
+    }
+
+    private int calculateAlpha(float index) {
+        int alpha = NarakaRenderUtils.MAX_TAIL_ALPHA;
+        if (index > 0.5)
+            alpha = (int) (NarakaRenderUtils.MAX_TAIL_ALPHA * (1 - (index - 0.5) * 2.0));
+        return alpha;
     }
 
     protected void renderTailPart(S renderState, PoseStack.Pose pose, VertexConsumer vertexConsumer, Vector3f from, Vector3f to, float index, float size, int color) {

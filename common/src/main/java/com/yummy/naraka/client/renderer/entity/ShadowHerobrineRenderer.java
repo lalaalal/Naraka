@@ -17,7 +17,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 @Environment(EnvType.CLIENT)
@@ -53,7 +53,7 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ShadowHerobrineRenderState renderState) {
+    public Identifier getTextureLocation(ShadowHerobrineRenderState renderState) {
         if (renderState.finalModel)
             return NarakaTextures.FINAL_HEROBRINE;
         return NarakaTextures.SHADOW_HEROBRINE;

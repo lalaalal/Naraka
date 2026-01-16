@@ -19,7 +19,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -170,12 +171,12 @@ public class Spear extends AbstractArrow {
         if (attributeModifiers == null)
             return 1;
         if (enchantments == null)
-            return (float) attributeModifiers.compute(baseDamage, EquipmentSlot.MAINHAND);
+            return (float) attributeModifiers.compute(Attributes.ATTACK_DAMAGE, baseDamage, EquipmentSlot.MAINHAND);
         Holder<Enchantment> sharpnessEnchantment = registryAccess()
                 .lookupOrThrow(Registries.ENCHANTMENT)
                 .getOrThrow(Enchantments.SHARPNESS);
         int sharpness = enchantments.getLevel(sharpnessEnchantment);
-        return (float) attributeModifiers.compute(baseDamage + sharpness, EquipmentSlot.MAINHAND);
+        return (float) attributeModifiers.compute(Attributes.ATTACK_DAMAGE, baseDamage + sharpness, EquipmentSlot.MAINHAND);
     }
 
     @Override

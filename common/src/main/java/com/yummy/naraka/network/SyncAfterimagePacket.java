@@ -11,7 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
 public record SyncAfterimagePacket(int entityId, Afterimage afterimage) implements CustomPacketPayload {
-    public static final Type<SyncAfterimagePacket> TYPE = new Type<>(NarakaMod.location("sync_afterimage_payload"));
+    public static final Type<SyncAfterimagePacket> TYPE = new Type<>(NarakaMod.identifier("sync_afterimage_payload"));
 
     public static final StreamCodec<ByteBuf, SyncAfterimagePacket> CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT,

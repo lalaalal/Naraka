@@ -8,7 +8,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Comparator;
 import java.util.Set;
@@ -17,9 +17,9 @@ import java.util.function.Function;
 @Environment(EnvType.CLIENT)
 public class LocationList extends ObjectSelectionList<LocationList.Entry> {
     private final Screen screen;
-    private final Function<ResourceLocation, String> translationKeyGenerator;
+    private final Function<Identifier, String> translationKeyGenerator;
 
-    public LocationList(Minecraft minecraft, Screen screen, Set<ResourceLocation> locations, Function<ResourceLocation, String> keyGenerator) {
+    public LocationList(Minecraft minecraft, Screen screen, Set<Identifier> locations, Function<Identifier, String> keyGenerator) {
         super(minecraft, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight() - 50, 38, 18);
         this.screen = screen;
         this.translationKeyGenerator = keyGenerator;
@@ -31,10 +31,10 @@ public class LocationList extends ObjectSelectionList<LocationList.Entry> {
     }
 
     public class Entry extends ObjectSelectionList.Entry<Entry> {
-        public final ResourceLocation location;
+        public final Identifier location;
         private final Component component;
 
-        protected Entry(ResourceLocation location) {
+        protected Entry(Identifier location) {
             this.location = location;
             this.component = Component.translatable(translationKeyGenerator.apply(location));
         }

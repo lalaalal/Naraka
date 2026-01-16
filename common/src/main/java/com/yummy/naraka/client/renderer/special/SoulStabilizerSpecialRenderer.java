@@ -12,8 +12,9 @@ import com.yummy.naraka.world.item.SoulType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
@@ -22,9 +23,9 @@ import net.minecraft.util.ARGB;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
-import java.util.Set;
+import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class SoulStabilizerSpecialRenderer implements SpecialModelRenderer<SoulStabilizerSpecialRenderer.SoulContainer> {
@@ -49,7 +50,7 @@ public class SoulStabilizerSpecialRenderer implements SpecialModelRenderer<SoulS
         poseStack.pushPose();
         poseStack.scale(2.8f, 2.8f, 2.8f);
         poseStack.translate(-0.32, 0, -0.32);
-        RenderType bottleRenderType = RenderType.entityCutout(NarakaTextures.SOUL_STABILIZER);
+        RenderType bottleRenderType = RenderTypes.entityCutout(NarakaTextures.SOUL_STABILIZER);
         submitNodeCollector.submitModelPart(bottle, poseStack, bottleRenderType, light, overlay, null, -1, null);
         poseStack.popPose();
 
@@ -62,13 +63,13 @@ public class SoulStabilizerSpecialRenderer implements SpecialModelRenderer<SoulS
         poseStack.pushPose();
         poseStack.scale(2.8f, soulRatio * 2.8f, 2.8f);
         poseStack.translate(-0.32, 0, -0.32);
-        RenderType liquidRenderType = RenderType.entityTranslucent(SoulStabilizerBlockEntityRenderer.WATER_OVERLAY);
+        RenderType liquidRenderType = RenderTypes.entityTranslucent(SoulStabilizerBlockEntityRenderer.WATER_OVERLAY);
         submitNodeCollector.submitModelPart(liquid, poseStack, liquidRenderType, light, overlay, null, liquidColor, null);
         poseStack.popPose();
     }
 
     @Override
-    public void getExtents(Set<Vector3f> output) {
+    public void getExtents(Consumer<Vector3fc> output) {
         PoseStack poseStack = new PoseStack();
         bottle.getExtentsForGui(poseStack, output);
         liquid.getExtentsForGui(poseStack, output);

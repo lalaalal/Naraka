@@ -4,8 +4,8 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.util.NarakaItemUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,8 +34,8 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
         return Set.copyOf(slots);
     }
 
-    protected static ResourceLocation modifierId(EquipmentSlot slot, String name) {
-        return NarakaMod.location("reinforcement_effect." + slot.name().toLowerCase() + "." + name);
+    protected static Identifier modifierId(EquipmentSlot slot, String name) {
+        return NarakaMod.identifier("reinforcement_effect." + slot.name().toLowerCase() + "." + name);
     }
 
     public static AttributeModifyingEffect simple(Holder<Attribute> attribute, EquipmentSlotGroup slotGroup) {
@@ -44,8 +44,8 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
 
     public static AttributeModifyingEffect simple(Holder<Attribute> attribute, EquipmentSlotGroup slotGroup, Function<Integer, Integer> modifyingValueByReinforcement, boolean showInTooltip) {
         final String modifierName = attribute.unwrapKey()
-                .map(ResourceKey::location)
-                .map(ResourceLocation::getPath)
+                .map(ResourceKey::identifier)
+                .map(Identifier::getPath)
                 .orElse("unidentified")
                 .replaceAll(".*\\.", "");
 

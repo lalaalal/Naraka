@@ -2,7 +2,7 @@ package com.yummy.naraka.client.animation.herobrine;
 
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.animation.NarakaInterpolations;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
@@ -18,13 +18,13 @@ import net.minecraft.client.animation.KeyframeAnimations;
 @Environment(EnvType.CLIENT)
 public class HerobrineSkillAnimation {
     public static void initialize() {
-        AnimationMapper.register(HerobrineAnimationLocations.RUSH, RUSH);
-        AnimationMapper.register(HerobrineAnimationLocations.RUSH_SUCCEED, RUSH_SUCCEED);
-        AnimationMapper.register(HerobrineAnimationLocations.RUSH_FAILED, RUSH_FAILED);
-        AnimationMapper.register(HerobrineAnimationLocations.STIGMATIZE_ENTITIES_START, STIGMATIZE_ENTITIES_START);
-        AnimationMapper.register(HerobrineAnimationLocations.STIGMATIZE_ENTITIES, STIGMATIZE_ENTITIES);
-        AnimationMapper.register(HerobrineAnimationLocations.STIGMATIZE_ENTITIES_END, STIGMATIZE_ENTITIES_END);
-        AnimationMapper.register(HerobrineAnimationLocations.THROW_NARAKA_FIREBALL, THROW_NARAKA_FIREBALL);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.RUSH, RUSH);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.RUSH_SUCCEED, RUSH_SUCCEED);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.RUSH_FAILED, RUSH_FAILED);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.STIGMATIZE_ENTITIES_START, STIGMATIZE_ENTITIES_START);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.STIGMATIZE_ENTITIES, STIGMATIZE_ENTITIES);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.STIGMATIZE_ENTITIES_END, STIGMATIZE_ENTITIES_END);
+        AnimationMapper.register(HerobrineAnimationIdentifiers.THROW_NARAKA_FIREBALL, THROW_NARAKA_FIREBALL);
     }
 
     public static final AnimationDefinition RUSH = AnimationDefinition.Builder.withLength(2.0F)

@@ -6,7 +6,7 @@ import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.Stardust;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class CarpetBombingSkill extends AttackSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("final_herobrine.carpet_bombing");
+    public static final Identifier LOCATION = skillIdentifier("final_herobrine.carpet_bombing");
 
     private final Map<Stardust, Integer> stardusts = new HashMap<>();
     private Vec3 deltaMovement = Vec3.ZERO;

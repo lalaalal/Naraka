@@ -12,8 +12,8 @@ import com.yummy.naraka.world.structure.protection.StructureProtector;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.RegistryFixedCodec;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -87,7 +87,7 @@ public class JumboStructure extends Structure {
 
     private void addPart(StructureTemplateManager templateManager, StructurePiecesBuilder builder, JumboPart part, BlockPos basePos) {
         for (Vec3i piecePosition : part.getPositions()) {
-            ResourceLocation location = part.getPieceLocation(name, piecePosition);
+            Identifier location = part.getPieceLocation(name, piecePosition);
             BlockPos actualPosition = basePos.offset(part.getPiecePosition(piecePosition));
             builder.addPiece(new JumboPiece(templateManager, location, actualPosition));
         }

@@ -2,12 +2,12 @@ package com.yummy.naraka.world.item.equipment.trim;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.item.SoulType;
-import net.minecraft.Util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Util;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.trim.MaterialAssetGroup;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
@@ -51,14 +51,14 @@ public class NarakaTrimMaterials {
             Style style,
             Map<ResourceKey<EquipmentAsset>, String> overrides
     ) {
-        MaterialAssetGroup assets = MaterialAssetGroup.create(resourceKey.location().getPath(), overrides);
-        Component component = Component.translatable(Util.makeDescriptionId("trim_material", resourceKey.location()))
+        MaterialAssetGroup assets = MaterialAssetGroup.create(resourceKey.identifier().getPath(), overrides);
+        Component component = Component.translatable(Util.makeDescriptionId("trim_material", resourceKey.identifier()))
                 .withStyle(style);
         TrimMaterial trimMaterial = new TrimMaterial(assets, component);
         bootstrapContext.register(resourceKey, trimMaterial);
     }
 
     public static ResourceKey<TrimMaterial> create(String name) {
-        return ResourceKey.create(Registries.TRIM_MATERIAL, NarakaMod.location(name));
+        return ResourceKey.create(Registries.TRIM_MATERIAL, NarakaMod.identifier(name));
     }
 }

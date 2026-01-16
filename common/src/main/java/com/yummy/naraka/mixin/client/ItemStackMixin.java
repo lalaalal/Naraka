@@ -36,7 +36,7 @@ public abstract class ItemStackMixin implements DataComponentHolder {
         tooltipProvider.addToTooltip(context, tooltipAdder, tooltipFlag, components);
     }
 
-    @Inject(method = "addDetailsToTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;has(Lnet/minecraft/core/component/DataComponentType;)Z"))
+    @Inject(method = "addDetailsToTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/TooltipFlag;isAdvanced()Z"))
     public void addBlessedTooltip(Item.TooltipContext context, TooltipDisplay tooltipDisplay, Player player, TooltipFlag tooltipFlag, Consumer<Component> tooltipAdder, CallbackInfo ci) {
         if (getOrDefault(NarakaDataComponentTypes.BLESSED.get(), false))
             tooltipAdder.accept(Component.translatable(LanguageKey.BLESSED_KEY).withStyle(ComponentStyles.RAINBOW_COLOR));

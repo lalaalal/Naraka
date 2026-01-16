@@ -8,7 +8,7 @@ import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.InstantShadowSpawner;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Supplier;
 
 public class StrikeDownSkill extends ComboSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("final_herobrine.strike_down");
+    public static final Identifier LOCATION = skillIdentifier("final_herobrine.strike_down");
 
     private final Supplier<Vec3> movementSupplier = () -> new Vec3(0, mob.getRandom().nextFloat() * 0.4 + 0.3, 0);
     private int onGroundTick;

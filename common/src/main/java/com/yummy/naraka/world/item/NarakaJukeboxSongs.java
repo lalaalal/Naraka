@@ -2,13 +2,13 @@ package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
-import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Util;
 import net.minecraft.world.item.JukeboxSong;
 
 public class NarakaJukeboxSongs {
@@ -29,10 +29,10 @@ public class NarakaJukeboxSongs {
     }
 
     private static Component component(ResourceKey<JukeboxSong> key) {
-        return Component.translatable(Util.makeDescriptionId("jukebox_song", key.location()));
+        return Component.translatable(Util.makeDescriptionId("jukebox_song", key.identifier()));
     }
 
     private static ResourceKey<JukeboxSong> create(String name) {
-        return ResourceKey.create(Registries.JUKEBOX_SONG, NarakaMod.location(name));
+        return ResourceKey.create(Registries.JUKEBOX_SONG, NarakaMod.identifier(name));
     }
 }

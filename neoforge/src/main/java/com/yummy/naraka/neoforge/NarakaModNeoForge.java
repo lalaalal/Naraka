@@ -4,7 +4,6 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.invoker.MethodInvoker;
 import com.yummy.naraka.neoforge.init.*;
-import com.yummy.naraka.world.NarakaBiomes;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -35,6 +34,7 @@ public final class NarakaModNeoForge implements NarakaInitializer {
         MethodInvoker.register(NeoForgeEntityAttributeRegistry.class);
         MethodInvoker.register(NeoForgeRegistryFactory.class);
         MethodInvoker.register(NeoForgeRegistryProxyProvider.class);
+        MethodInvoker.register(NeoForgeBiomeModificationRegistry.class);
         MethodInvoker.register(NeoForgeSpawnPlacementRegistry.class);
         MethodInvoker.register(NeoForgeCommandRegistry.class);
         MethodInvoker.register(NeoForgePotionBrewRecipeRegistry.class);
@@ -48,11 +48,6 @@ public final class NarakaModNeoForge implements NarakaInitializer {
     @Override
     public void runAfterRegistryLoaded(Runnable runnable) {
         runAfterRegistryLoaded.add(runnable);
-    }
-
-    @Override
-    public NarakaBiomes.Modifier getBiomeModifier() {
-        return NeoForgeBiomeModifier.INSTANCE;
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

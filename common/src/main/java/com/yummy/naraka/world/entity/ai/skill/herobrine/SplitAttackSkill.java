@@ -2,14 +2,15 @@ package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.InstantShadowSpawner;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
-import net.minecraft.resources.ResourceLocation;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -17,12 +18,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 
 public class SplitAttackSkill extends ComboSkill<Herobrine> {
-    public static final ResourceLocation LOCATION = createLocation("final_herobrine.split_attack");
+    public static final Identifier LOCATION = skillIdentifier("final_herobrine.split_attack");
     private InstantShadowSpawner firstShadowSpawner = InstantShadowSpawner.EMPTY;
     private InstantShadowSpawner secondShadowSpawner = InstantShadowSpawner.EMPTY;
 
     public SplitAttackSkill(Herobrine mob, Skill<?> nextSkill) {
-        super(LOCATION, mob, 60, 100, 0.5f, 45, nextSkill);
+        super(LOCATION, mob, 60, 80, 0.5f, 45, nextSkill);
     }
 
     @Override
@@ -51,11 +52,12 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
         runBetween(15, 20, () -> moveToTarget(target, true, 1));
         runBetween(15, 20, () -> NarakaSkillUtils.sendTraceParticles(level, mob, NarakaFlameParticleOption.DIAMOND));
         runBetween(15, 20, () -> rotateTowardTarget(target));
+        runAt(18, () -> NarakaSoundEvents.playHerobrineSwingSound(level, mob.position()));
         runBetween(18, 20, () -> hurtEntities(level, this::checkTarget, 1.8));
         runAt(20, this::stopMoving);
         runAt(25, () -> firstShadowSpawner.spawnAndUseSkill(level, mob, SimpleComboAttackSkill.FINAL_COMBO_ATTACK_1));
         run(at(35) && hasLinkedSkill(), () -> secondShadowSpawner.spawnAndUseSkill(level, mob, SimpleComboAttackSkill.FINAL_COMBO_ATTACK_2));
-        runAt(45, () -> mob.setAnimation(HerobrineAnimationLocations.FINAL_COMBO_ATTACK_1_RETURN));
+        runAt(45, () -> mob.setAnimation(HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_1_RETURN));
     }
 
     private boolean checkTarget(LivingEntity target) {

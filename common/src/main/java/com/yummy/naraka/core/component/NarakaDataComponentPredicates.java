@@ -16,7 +16,7 @@ public class NarakaDataComponentPredicates {
     );
 
     private static <T extends DataComponentPredicate> HolderProxy<DataComponentPredicate.Type<?>, DataComponentPredicate.Type<T>> register(String name, Codec<T> codec) {
-        return RegistryProxy.register(Registries.DATA_COMPONENT_PREDICATE_TYPE, name, () -> new DataComponentPredicate.Type<>(codec));
+        return RegistryProxy.register(Registries.DATA_COMPONENT_PREDICATE_TYPE, name, () -> new DataComponentPredicate.ConcreteType<>(codec));
     }
 
     public static void initialize() {

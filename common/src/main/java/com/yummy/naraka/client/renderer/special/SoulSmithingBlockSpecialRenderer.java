@@ -9,15 +9,16 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
-import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
-import java.util.Set;
+import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class SoulSmithingBlockSpecialRenderer implements NoDataSpecialModelRenderer {
@@ -37,9 +38,9 @@ public class SoulSmithingBlockSpecialRenderer implements NoDataSpecialModelRende
     }
 
     @Override
-    public void getExtents(Set<Vector3f> output) {
+    public void getExtents(Consumer<Vector3fc> consumer) {
         PoseStack poseStack = new PoseStack();
-        model.root().getExtentsForGui(poseStack, output);
+        model.root().getExtentsForGui(poseStack, consumer);
     }
 
     @Environment(EnvType.CLIENT)
@@ -49,7 +50,7 @@ public class SoulSmithingBlockSpecialRenderer implements NoDataSpecialModelRende
         @Override
         public SpecialModelRenderer<?> bake(BakingContext context) {
             ModelPart root = context.entityModelSet().bakeLayer(NarakaModelLayers.SOUL_SMITHING_BLOCK);
-            Model<?> model = new Model.Simple(root, RenderType::entityTranslucent);
+            Model<?> model = new Model.Simple(root, RenderTypes::entityTranslucent);
             return new SoulSmithingBlockSpecialRenderer(model);
         }
 

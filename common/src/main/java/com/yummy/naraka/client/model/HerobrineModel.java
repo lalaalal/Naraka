@@ -4,10 +4,10 @@ import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.Util;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Util;
 
 @Environment(EnvType.CLIENT)
 public class HerobrineModel<S extends AbstractHerobrineRenderState> extends AbstractHerobrineModel<S> {

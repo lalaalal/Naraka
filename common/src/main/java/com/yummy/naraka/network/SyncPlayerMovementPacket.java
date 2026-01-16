@@ -7,7 +7,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.phys.Vec3;
 
 public record SyncPlayerMovementPacket(Vec3 movement) implements CustomPacketPayload {
-    public static final Type<SyncPlayerMovementPacket> TYPE = new Type<>(NarakaMod.location("sync_player_movement"));
+    public static final Type<SyncPlayerMovementPacket> TYPE = new Type<>(NarakaMod.identifier("sync_player_movement"));
 
     public static final StreamCodec<ByteBuf, SyncPlayerMovementPacket> CODEC = StreamCodec.composite(
             Vec3.STREAM_CODEC,

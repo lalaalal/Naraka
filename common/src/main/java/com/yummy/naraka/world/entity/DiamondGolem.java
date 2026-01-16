@@ -2,7 +2,7 @@ package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.diamond_golem.SimpleAttackSkill;
-import com.yummy.naraka.world.entity.animation.DiamondGolemAnimationLocations;
+import com.yummy.naraka.world.entity.animation.DiamondGolemAnimationIdentifiers;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -18,9 +18,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class DiamondGolem extends SkillUsingMob implements Enemy {
-    private final SimpleAttackSkill basicAttackSkill = registerSkill(this, SimpleAttackSkill::basic, DiamondGolemAnimationLocations.BASIC_ATTACK);
-    private final SimpleAttackSkill swipeAttackSkill = registerSkill(this, SimpleAttackSkill::swipe, DiamondGolemAnimationLocations.SWIPE_ATTACK);
-    private final SimpleAttackSkill strongAttackSkill = registerSkill(this, SimpleAttackSkill::strong, DiamondGolemAnimationLocations.STRONG_ATTACK);
+    private final SimpleAttackSkill basicAttackSkill = registerSkill(this, SimpleAttackSkill::basic, DiamondGolemAnimationIdentifiers.BASIC_ATTACK);
+    private final SimpleAttackSkill swipeAttackSkill = registerSkill(this, SimpleAttackSkill::swipe, DiamondGolemAnimationIdentifiers.SWIPE_ATTACK);
+    private final SimpleAttackSkill strongAttackSkill = registerSkill(this, SimpleAttackSkill::strong, DiamondGolemAnimationIdentifiers.STRONG_ATTACK);
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
@@ -40,10 +40,10 @@ public class DiamondGolem extends SkillUsingMob implements Enemy {
     public DiamondGolem(EntityType<? extends DiamondGolem> entityType, Level level) {
         super(entityType, level);
         setPersistenceRequired();
-        registerAnimation(DiamondGolemAnimationLocations.IDLE);
-        updateAnimation(DiamondGolemAnimationLocations.IDLE);
+        registerAnimation(DiamondGolemAnimationIdentifiers.IDLE);
+        updateAnimation(DiamondGolemAnimationIdentifiers.IDLE);
 
-        skillManager.runOnSkillEnd(skill -> setAnimation(DiamondGolemAnimationLocations.IDLE));
+        skillManager.runOnSkillEnd(skill -> setAnimation(DiamondGolemAnimationIdentifiers.IDLE));
     }
 
 

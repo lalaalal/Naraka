@@ -33,6 +33,6 @@ public class NarakaDamageTypes {
     }
 
     private static ResourceKey<DamageType> create(String name) {
-        return ResourceKey.create(Registries.DAMAGE_TYPE, NarakaMod.location(name));
+        return ResourceKey.create(Registries.DAMAGE_TYPE, NarakaMod.identifier(name));
     }
 }

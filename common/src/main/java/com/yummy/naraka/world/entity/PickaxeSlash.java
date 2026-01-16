@@ -31,7 +31,7 @@ public class PickaxeSlash extends LightTailEntity {
     private boolean stunTarget;
 
     public PickaxeSlash(EntityType<? extends PickaxeSlash> entityType, Level level) {
-        super(entityType, level, 30);
+        super(entityType, level, 30, 2);
         setNoGravity(true);
         setTailColor(0x0000ff);
     }
@@ -89,8 +89,9 @@ public class PickaxeSlash extends LightTailEntity {
     @Override
     public void tick() {
         super.tick();
-        if (level() instanceof ServerLevel serverLevel)
+        if (level() instanceof ServerLevel serverLevel) {
             serverTick(serverLevel);
+        }
         prevAlpha = alpha;
         if (alpha < 1f)
             alpha = Math.max(0, alpha - 0.1f);

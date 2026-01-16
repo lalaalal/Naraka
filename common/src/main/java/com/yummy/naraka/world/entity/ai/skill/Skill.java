@@ -2,7 +2,7 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.SkillUsingMob;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Predicate;
 
 public abstract class Skill<T extends SkillUsingMob> {
-    public final ResourceLocation location;
+    public final Identifier identifier;
     protected final T mob;
     protected int duration;
     protected final int defaultCooldown;
@@ -20,15 +20,15 @@ public abstract class Skill<T extends SkillUsingMob> {
     protected int cooldownTick;
     protected boolean disabled = false;
 
-    protected static ResourceLocation createLocation(String name) {
-        return NarakaMod.location("skill", name);
+    protected static Identifier skillIdentifier(String name) {
+        return NarakaMod.identifier("skill", name);
     }
 
     @Nullable
     protected Skill<?> linkedSkill;
 
-    protected Skill(ResourceLocation location, T mob, int duration, int cooldown, @Nullable Skill<?> linkedSkill) {
-        this.location = location;
+    protected Skill(Identifier identifier, T mob, int duration, int cooldown, @Nullable Skill<?> linkedSkill) {
+        this.identifier = identifier;
         this.mob = mob;
         this.duration = duration;
         this.defaultCooldown = cooldown;
@@ -37,8 +37,8 @@ public abstract class Skill<T extends SkillUsingMob> {
         this.linkedSkill = linkedSkill;
     }
 
-    protected Skill(ResourceLocation location, T mob, int duration, int cooldown) {
-        this(location, mob, duration, cooldown, null);
+    protected Skill(Identifier identifier, T mob, int duration, int cooldown) {
+        this(identifier, mob, duration, cooldown, null);
     }
 
     public abstract boolean canUse(ServerLevel level);

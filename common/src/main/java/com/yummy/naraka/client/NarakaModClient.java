@@ -10,7 +10,6 @@ import com.yummy.naraka.client.gui.hud.WhiteHud;
 import com.yummy.naraka.client.init.*;
 import com.yummy.naraka.client.particle.*;
 import com.yummy.naraka.client.renderer.ItemRenderRegistry;
-import com.yummy.naraka.client.renderer.NarakaDimensionSpecialEffects;
 import com.yummy.naraka.client.renderer.NarakaSkyRenderer;
 import com.yummy.naraka.client.renderer.blockentity.NarakaPortalBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
@@ -23,7 +22,6 @@ import com.yummy.naraka.client.renderer.special.SpearSpecialRenderer;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
-import com.yummy.naraka.data.worldgen.NarakaDimensionTypes;
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.NarakaDimensions;
@@ -53,7 +51,6 @@ public final class NarakaModClient {
         registerHudRenders();
         registerMenus();
         registerKeyMappings();
-        DimensionSpecialEffectsRegistry.register(NarakaDimensionTypes.NARAKA_EFFECT, NarakaDimensionSpecialEffects.NARAKA);
         DimensionSkyRendererRegistry.register(NarakaDimensions.NARAKA, NarakaSkyRenderer::new);
 
         AnimationMapper.initialize();
@@ -63,10 +60,10 @@ public final class NarakaModClient {
     }
 
     private static void registerSpecialRenderers() {
-        SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("soul_stabilizer"), SoulStabilizerSpecialRenderer.Unbaked.CODEC);
-        SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("soul_smithing_block"), SoulSmithingBlockSpecialRenderer.Unbaked.CODEC);
-        SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("spear"), SpearSpecialRenderer.Unbaked.CODEC);
-        SpecialModelRendererRegistry.registerCodecId(NarakaMod.location("spear_of_longinus"), SpearOfLonginusSpecialRenderer.Unbaked.CODEC);
+        SpecialModelRendererRegistry.registerCodecId(NarakaMod.identifier("soul_stabilizer"), SoulStabilizerSpecialRenderer.Unbaked.CODEC);
+        SpecialModelRendererRegistry.registerCodecId(NarakaMod.identifier("soul_smithing_block"), SoulSmithingBlockSpecialRenderer.Unbaked.CODEC);
+        SpecialModelRendererRegistry.registerCodecId(NarakaMod.identifier("spear"), SpearSpecialRenderer.Unbaked.CODEC);
+        SpecialModelRendererRegistry.registerCodecId(NarakaMod.identifier("spear_of_longinus"), SpearOfLonginusSpecialRenderer.Unbaked.CODEC);
 
         SpecialModelRendererRegistry.registerBlock(NarakaBlocks.SOUL_STABILIZER, new SoulStabilizerSpecialRenderer.Unbaked());
         SpecialModelRendererRegistry.registerBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, new SoulSmithingBlockSpecialRenderer.Unbaked());
@@ -85,7 +82,7 @@ public final class NarakaModClient {
         ItemRenderRegistry.registerColor(NarakaItems.RAINBOW_SWORD, ComponentStyles.RAINBOW_COLOR::getCurrentColor);
         ItemRenderRegistry.registerRenderType(NarakaItems.HEROBRINE_SCARF, itemRenderTypeSetter -> {
             if (!NarakaClientContext.SHADER_ENABLED.getValue())
-                itemRenderTypeSetter.naraka$setRenderType(NarakaRenderTypes.longinusCutout(NarakaTextures.LOCATION_BLOCKS));
+                itemRenderTypeSetter.naraka$setRenderType(NarakaRenderTypes.longinusCutout(NarakaTextures.LOCATION_ITEMS));
         });
     }
 
@@ -115,6 +112,7 @@ public final class NarakaModClient {
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, SpearRenderer::longinus);
 
         EntityRendererRegistry.register(NarakaEntityTypes.STARDUST, StardustRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.CORRUPTED_STAR, CorruptedStarRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_FIREBALL, NarakaFireballRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.PICKAXE_SLASH, PickaxeSlashRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.COLORED_LIGHTNING_BOLT, ColoredLightningBoltRenderer::new);
@@ -122,13 +120,16 @@ public final class NarakaModClient {
         EntityRendererRegistry.register(NarakaEntityTypes.LIGHTNING_CIRCLE, LightningCircleRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_PICKAXE, NarakaPickaxeRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_SWORD, NarakaSwordRenderer::new);
+
+        EntityRendererRegistry.register(NarakaEntityTypes.SHINY_EFFECT, ShinyEffectRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.AREA_EFFECT, AreaEffectRenderer::new);
     }
 
     private static void registerHudRenders() {
-        HudRendererRegistry.registerPostLayer(NarakaMod.location("hud", "death_count"), DeathCountHud::new);
-        HudRendererRegistry.registerPostLayer(NarakaMod.location("hud", "stigma"), StigmaHud::new);
-        HudRendererRegistry.registerPostLayer(NarakaMod.location("hud", "locked_health"), LockedHealthHud::new);
-        HudRendererRegistry.registerPreLayer(NarakaMod.location("hud", "white"), WhiteHud::new);
+        HudRendererRegistry.registerPostLayer(NarakaMod.identifier("hud", "death_count"), DeathCountHud::new);
+        HudRendererRegistry.registerPostLayer(NarakaMod.identifier("hud", "stigma"), StigmaHud::new);
+        HudRendererRegistry.registerPostLayer(NarakaMod.identifier("hud", "locked_health"), LockedHealthHud::new);
+        HudRendererRegistry.registerPreLayer(NarakaMod.identifier("hud", "white"), WhiteHud::new);
     }
 
     private static void registerMenus() {

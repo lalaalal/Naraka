@@ -1,11 +1,12 @@
 package com.yummy.naraka.core.component;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.predicates.DataComponentPredicate;
 
 public final class AnyPredicate implements DataComponentPredicate {
-    public static final Codec<AnyPredicate> CODEC = Codec.unit(AnyPredicate::new);
+    public static final Codec<AnyPredicate> CODEC = MapCodec.unitCodec(AnyPredicate::new);
     public static final AnyPredicate INSTANCE = new AnyPredicate();
 
     @Override

@@ -10,6 +10,6 @@ public interface NarakaEquipmentAssets {
     ResourceKey<EquipmentAsset> EBONY = create("ebony");
 
     static ResourceKey<EquipmentAsset> create(String name) {
-        return ResourceKey.create(EquipmentAssets.ROOT_ID, NarakaMod.location(name));
+        return ResourceKey.create(EquipmentAssets.ROOT_ID, NarakaMod.identifier(name));
     }
 }

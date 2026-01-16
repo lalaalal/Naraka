@@ -8,7 +8,7 @@ import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public abstract class SkillUsingModModel<T extends SkillUsingMobRenderState> extends EntityModel<T> {
-    protected final Map<ResourceLocation, KeyframeAnimation> animations = new HashMap<>();
+    protected final Map<Identifier, KeyframeAnimation> animations = new HashMap<>();
     @Nullable
     protected final KeyframeAnimation walkingAnimation;
 
@@ -42,7 +42,7 @@ public abstract class SkillUsingModModel<T extends SkillUsingMobRenderState> ext
     }
 
     protected void animate(T renderState) {
-        renderState.animations((animationLocation, animationState) -> {
+        renderState.animationStates.forEach((animationLocation, animationState) -> {
             if (animations.containsKey(animationLocation)) {
                 KeyframeAnimation animation = animations.get(animationLocation);
                 animation.apply(animationState, renderState.ageInTicks);

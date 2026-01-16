@@ -4,8 +4,12 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.phys.Vec3;
 
 public class NarakaSoundEvents {
     public static final Holder<SoundEvent> HEROBRINE_PHASE_1 = register("music.herobrine_phase_1");
@@ -21,12 +25,20 @@ public class NarakaSoundEvents {
     public static final Holder<SoundEvent> DIAMOND_GOLEM_STRONG = register("diamond_golem.strong");
     public static final Holder<SoundEvent> DIAMOND_GOLEM_SWIPE = register("diamond_golem.swipe");
 
+    public static final Holder<SoundEvent> RYOIKI_TENKAI = register("ryoiki_tenkai");
+
     private static Holder<SoundEvent> register(String name) {
-        ResourceLocation location = NarakaMod.location(name);
+        Identifier location = NarakaMod.identifier(name);
         return RegistryProxy.register(Registries.SOUND_EVENT, name, () -> SoundEvent.createVariableRangeEvent(location));
     }
 
     public static void initialize() {
 
+    }
+
+    public static void playHerobrineSwingSound(ServerLevel level, Vec3 position) {
+        level.playSound(null, position.x(), position.y(), position.z(), SoundEvents.WITCH_THROW, SoundSource.HOSTILE, 0.7f, 1);
+        level.playSound(null, position.x(), position.y(), position.z(), SoundEvents.WITCH_THROW, SoundSource.HOSTILE, 1, 1.5f);
+        level.playSound(null, position.x(), position.y(), position.z(), SoundEvents.WITCH_THROW, SoundSource.HOSTILE, 1, 1.2f);
     }
 }

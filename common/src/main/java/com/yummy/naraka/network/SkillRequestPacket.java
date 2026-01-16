@@ -8,7 +8,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -16,25 +16,25 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.Optional;
 
-public record SkillRequestPacket(Event event, int entityId, ResourceLocation location) implements CustomPacketPayload {
-    public static final Type<SkillRequestPacket> TYPE = new Type<>(NarakaMod.location("skill_request"));
+public record SkillRequestPacket(Event event, int entityId, Identifier location) implements CustomPacketPayload {
+    public static final Type<SkillRequestPacket> TYPE = new Type<>(NarakaMod.identifier("skill_request"));
 
     public static final StreamCodec<ByteBuf, SkillRequestPacket> CODEC = StreamCodec.composite(
             Event.STREAM_CODEC,
             SkillRequestPacket::event,
             ByteBufCodecs.INT,
             SkillRequestPacket::entityId,
-            ResourceLocation.STREAM_CODEC,
+            Identifier.STREAM_CODEC,
             SkillRequestPacket::location,
             SkillRequestPacket::new
     );
 
-    public SkillRequestPacket(Event event, SkillUsingMob mob, ResourceLocation location) {
+    public SkillRequestPacket(Event event, SkillUsingMob mob, Identifier location) {
         this(event, mob.getId(), location);
     }
 
     public SkillRequestPacket(Event event, SkillUsingMob mob) {
-        this(event, mob.getId(), NarakaMod.location("empty"));
+        this(event, mob.getId(), NarakaMod.identifier("empty"));
     }
 
     @Override

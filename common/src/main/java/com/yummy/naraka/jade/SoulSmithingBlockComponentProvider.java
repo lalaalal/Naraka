@@ -5,7 +5,7 @@ import com.yummy.naraka.data.lang.NarakaJadeProviderComponents;
 import com.yummy.naraka.world.block.entity.SoulSmithingBlockEntity;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
@@ -37,7 +37,7 @@ public class SoulSmithingBlockComponentProvider implements IBlockComponentProvid
     }
 
     @Override
-    public ResourceLocation getUid() {
+    public Identifier getUid() {
         return NarakaJadeProviderComponents.SOUL_SMITHING_BLOCK.location;
     }
 }

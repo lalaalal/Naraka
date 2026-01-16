@@ -26,6 +26,6 @@ public class NarakaConfiguredFeatures {
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> create(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, NarakaMod.location(name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, NarakaMod.identifier(name));
     }
 }

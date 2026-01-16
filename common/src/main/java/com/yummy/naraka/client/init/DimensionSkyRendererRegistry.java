@@ -20,12 +20,14 @@ public abstract class DimensionSkyRendererRegistry {
     }
 
     public static void setup() {
+        close();
         RENDERER_FACTORIES.forEach((dimension, factory) -> RENDERERS.put(dimension, factory.get()));
     }
 
     public static void close() {
         for (DimensionSkyRenderer dimensionSkyRenderer : RENDERERS.values())
             dimensionSkyRenderer.close();
+        RENDERERS.clear();
     }
 
     public static DimensionSkyRenderer get(ResourceKey<Level> dimension) {

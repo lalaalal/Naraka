@@ -14,13 +14,13 @@ import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.*;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.criterion.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -59,7 +59,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         return NarakaMod.MOD_ID + ':' + path;
     }
 
-    public ResourceKey<Recipe<?>> recipe(ResourceLocation location) {
+    public ResourceKey<Recipe<?>> recipe(Identifier location) {
         return ResourceKey.create(Registries.RECIPE, location);
     }
 
@@ -140,7 +140,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder purifiedSoulMetal = task(killHerobrine, NarakaItems.PURIFIED_SOUL_METAL.get(), AdvancementNarakaComponents.PURIFIED_SOUL_METAL,
                 builder -> builder.addCriterion(
                         "decompose_purified_soul_metal",
-                        RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(NarakaMod.location("purified_soul_metal_from_purified_soul_metal_block")))
+                        RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(NarakaMod.identifier("purified_soul_metal_from_purified_soul_metal_block")))
                 ).rewards(AdvancementRewards.Builder.experience(6))
         );
         AdvancementHolder purifiedSoulSword = task(purifiedSoulMetal, NarakaItems.PURIFIED_SOUL_SWORD.get(), AdvancementNarakaComponents.PURIFIED_SOUL_SWORD,
@@ -152,7 +152,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder soulInfusedMaterials = task(purifiedSoulMetal, NarakaItems.PURIFIED_SOUL_SHARD.get(), AdvancementNarakaComponents.SOUL_INFUSED_MATERIALS,
                 builder -> {
                     NarakaItems.forEachSoulInfusedItemHolder(item -> {
-                        ResourceLocation recipeLocation = item.unwrapKey().orElseThrow().location();
+                        Identifier recipeLocation = item.unwrapKey().orElseThrow().identifier();
                         builder.addCriterion("craft_" + recipeLocation.getPath(),
                                 RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(recipeLocation))
                         );
@@ -163,7 +163,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder stabilizer = task(soulInfusedMaterials, NarakaBlocks.SOUL_STABILIZER.get(), AdvancementNarakaComponents.STABILIZER,
                 builder -> builder.addCriterion(
                         "craft_soul_stabilizer",
-                        RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(NarakaMod.location("soul_stabilizer")))
+                        RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(NarakaMod.identifier("soul_stabilizer")))
                 ).rewards(AdvancementRewards.Builder.experience(6))
         );
         AdvancementHolder fillSoulStabilizer = task(stabilizer, NarakaBlocks.SOUL_STABILIZER.get(), AdvancementNarakaComponents.FILL_SOUL_STABILIZER,
@@ -181,7 +181,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder soulSwords = challenge(challengersBlessing, NarakaItems.RAINBOW_SWORD.get(), AdvancementNarakaComponents.SOUL_SWORDS,
                 builder -> {
                     NarakaItems.forEachSoulInfusedSwordHolder(sword -> {
-                        String name = sword.unwrapKey().orElseThrow().location().getPath();
+                        String name = sword.unwrapKey().orElseThrow().identifier().getPath();
                         builder.addCriterion(
                                 "has" + name,
                                 InventoryChangeTrigger.TriggerInstance.hasItems(sword.value())
@@ -219,7 +219,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder craftSoulInfusedNectarium = task(eatNectarium, NarakaItems.SOUL_INFUSED_NECTARIUM.get(), AdvancementExtraComponents.CRAFT_SOUL_INFUSED_NECTARIUM,
                 builder -> builder.addCriterion(
                         "craft_soul_infused_nectarium",
-                        RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(NarakaMod.location("soul_infused_nectarium")))
+                        RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(NarakaMod.identifier("soul_infused_nectarium")))
                 )
         );
     }

@@ -8,7 +8,7 @@ import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.NarakaPickaxe;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Supplier;
 
 public class StrikeSkill extends AttackSkill<NarakaPickaxe> {
-    public static final ResourceLocation LOCATION = createLocation("naraka_pickaxe.strike");
+    public static final Identifier LOCATION = skillIdentifier("naraka_pickaxe.strike");
     private static final int STRIKE_TICK = 20;
     private static final int STRIKE_END_TICK = 160;
 

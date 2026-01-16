@@ -33,6 +33,6 @@ public class NarakaPlacements {
     }
 
     public static ResourceKey<PlacedFeature> create(String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, NarakaMod.location(name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, NarakaMod.identifier(name));
     }
 }

@@ -3,11 +3,11 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
-import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -25,7 +25,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Fireball;
+import net.minecraft.world.entity.projectile.hurtingprojectile.Fireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.ValueInput;
@@ -69,11 +69,11 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     protected AbstractHerobrine(EntityType<? extends AbstractHerobrine> entityType, Level level, boolean isShadow) {
         super(entityType, level);
         this.isShadow = isShadow;
-        registerAnimation(HerobrineAnimationLocations.STAGGERING);
-        registerAnimation(HerobrineAnimationLocations.IDLE);
-        registerAnimation(HerobrineAnimationLocations.PHASE_3_IDLE);
+        registerAnimation(HerobrineAnimationIdentifiers.STAGGERING);
+        registerAnimation(HerobrineAnimationIdentifiers.IDLE);
+        registerAnimation(HerobrineAnimationIdentifiers.PHASE_3_IDLE);
 
-        updateAnimation(HerobrineAnimationLocations.IDLE);
+        updateAnimation(HerobrineAnimationIdentifiers.IDLE);
         skillManager.runOnSkillEnd(this::updateAnimationOnSkillEnd);
     }
 
@@ -137,10 +137,10 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         }
     }
 
-    protected ResourceLocation getIdleAnimation() {
+    protected Identifier getIdleAnimation() {
         if (isFinalModel())
-            return HerobrineAnimationLocations.PHASE_3_IDLE;
-        return HerobrineAnimationLocations.IDLE;
+            return HerobrineAnimationIdentifiers.PHASE_3_IDLE;
+        return HerobrineAnimationIdentifiers.IDLE;
     }
 
     @Override

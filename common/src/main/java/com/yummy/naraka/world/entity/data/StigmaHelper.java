@@ -16,6 +16,10 @@ public class StigmaHelper {
         EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.get(), stigma);
     }
 
+    public static boolean hasStigma(LivingEntity livingEntity) {
+        return get(livingEntity).value() > 0;
+    }
+
     public static void increaseStigma(ServerLevel level, LivingEntity target, Entity cause, boolean recordTime) {
         if (target.getType().is(NarakaEntityTypeTags.STIGMA_IMMUNE) || NarakaConfig.COMMON.disableStigma.getValue()
                 || !NarakaEntityUtils.isDamageable(target))
