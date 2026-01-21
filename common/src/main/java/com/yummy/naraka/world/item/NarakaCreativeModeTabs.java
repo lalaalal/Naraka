@@ -155,6 +155,7 @@ public class NarakaCreativeModeTabs {
         output.accept(NarakaItems.SKILL_CONTROLLER.get());
         output.accept(NarakaItems.ANIMATION_CONTROLLER.get());
         output.accept(NarakaItems.STARDUST_STAFF.get());
+        output.accept(NarakaItems.CORRUPTED_STAR_STAFF.get());
         output.accept(NarakaItems.NARAKA_FIREBALL_STAFF.get());
     }
 
