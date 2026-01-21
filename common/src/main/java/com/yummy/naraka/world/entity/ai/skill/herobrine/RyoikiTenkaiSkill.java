@@ -1,11 +1,12 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.*;
-import com.yummy.naraka.world.entity.ai.skill.TargetSkill;
+import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
@@ -25,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RyoikiTenkaiSkill extends TargetSkill<Herobrine> {
+public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
     public static final Identifier IDENTIFIER = skillIdentifier("final_herobrine.ryoiki_tenkai");
     private final List<LivingEntity> caughtEntities = new ArrayList<>();
 
@@ -45,7 +46,7 @@ public class RyoikiTenkaiSkill extends TargetSkill<Herobrine> {
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return true;
+        return mob.getTarget() != null;
     }
 
     @Override
@@ -110,7 +111,15 @@ public class RyoikiTenkaiSkill extends TargetSkill<Herobrine> {
             ShinyEffect shinyEffect = ShinyEffect.spawnShinySpark(level, target.position(), mob.getRandom(), 3, 60, SoulType.EMERALD.color);
             EntityDataHelper.setEntityData(shinyEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
             mob.stigmatizeEntity(level, target);
+
+            if (NarakaConfig.COMMON.disableStigma.getValue())
+                hurtEntity(level, target);
         }
+    }
+
+    @Override
+    protected float calculateDamage(LivingEntity target) {
+        return mob.getAttackDamage() * 0.25f;
     }
 
     private void checkPlayerPositions(ServerLevel level) {
