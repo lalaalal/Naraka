@@ -6,8 +6,9 @@ import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -16,16 +17,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class HerobrineTotem extends BaseEntityBlock {
     private static final MapCodec<HerobrineTotem> CODEC = simpleCodec(HerobrineTotem::new);
 
     public static final int MAX_CRACK = 11;
     public static final IntegerProperty CRACK = IntegerProperty.create("crack", 0, MAX_CRACK);
-
-    private boolean placed = false;
-    private BlockPos placedPos = BlockPos.ZERO;
 
     public static int light(BlockState state) {
         return state.getValue(CRACK);
@@ -59,18 +57,11 @@ public class HerobrineTotem extends BaseEntityBlock {
     }
 
     @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        if (placed && level.getBlockState(placedPos).is(this))
-            return false;
-        placed = false;
-        return true;
-    }
-
-    @Override
-    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
-        super.onPlace(state, level, pos, oldState, movedByPiston);
-        placed = true;
-        placedPos = pos;
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        level.getBlockEntity(pos, NarakaBlockEntityTypes.HEROBRINE_TOTEM.get()).ifPresent(blockEntity -> {
+            blockEntity.setCustomPlaced(true);
+        });
     }
 
     @Nullable
