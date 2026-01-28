@@ -85,5 +85,10 @@
     "sounds": [
       "naraka:diamond_golem/chest"
     ]
+  },
+  "ryoiki_tenkai": {
+    "sounds": [
+      "naraka:ryoiki_tenkai"
+    ]
   }
 }

@@ -6,6 +6,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.entity.AnimationState;
 
 @Environment(EnvType.CLIENT)
 public abstract class SkillUsingModModel<T extends SkillUsingMob> extends HierarchicalModel<T> {
@@ -27,9 +28,10 @@ public abstract class SkillUsingModModel<T extends SkillUsingMob> extends Hierar
     }
 
     protected void playAnimations(T entity, float ageInTicks) {
-        entity.forEachAnimations((location, animationState) -> {
+        entity.getAnimations().forEach(location -> {
+            AnimationState state = entity.getAnimationState(location);
             if (location.getPath().startsWith("animation/" + name))
-                animate(animationState, AnimationMapper.get(location), ageInTicks, 1);
+                animate(state, AnimationMapper.get(location), ageInTicks, 1);
         });
     }
 }

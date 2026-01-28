@@ -8,6 +8,7 @@ import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.*;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
+import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -31,7 +32,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
     private static final float HALF_ANGLE = Mth.HALF_PI * 0.125f;
 
     public EarthShockSkill(Herobrine mob) {
-        super(LOCATION, mob, 240, 600);
+        super(LOCATION, mob, 240, 1200);
     }
 
     @Override
@@ -64,6 +65,8 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         runBetween(40, 90, () -> moveToTarget(target, false, applyAcceleration()));
         runBetween(60, 90, () -> rotateTowardTarget(target));
         runBetween(60, 90, () -> lookTarget(target));
+        runAfter(200, () -> rotateTowardTarget(target));
+        runAfter(200, () -> lookTarget(target));
     }
 
     private Predicate<LivingEntity> targetBetween() {
@@ -78,7 +81,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
             runBetween(40, 90, () -> reduceSpeed(0.8));
         }
 
-        runBetween(60, 90, () -> sendParticles(level));
+        runAt(60, () -> createAreaEffect(level));
         runBetween(90, 95, () -> spawnLightningBolts(level, 3, 9));
         runBetween(90, 100, () -> shockwaveBlocks(level, 90, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
         runAt(90, mob::shakeCamera);
@@ -107,11 +110,14 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         runAt(172, () -> hurtEntities(level, targetBetween(), 7));
         runAt(170, () -> spawnLightningCircle(level));
         runAt(170, () -> NarakaSkillUtils.sendSphereParticles(level, mob, NarakaFlameParticleOption.AMETHYST, 0.75));
+        runBetween(170, 174, () -> createShinySpark(level));
 
         runAt(180, () -> spawnLightningCircle(level));
         runAt(180, () -> NarakaSkillUtils.sendSphereParticles(level, mob, NarakaFlameParticleOption.AMETHYST, 0.75));
+        runBetween(180, 184, () -> createShinySpark(level));
         runAt(200, () -> spawnLightningCircle(level));
         runAt(200, () -> NarakaSkillUtils.sendSphereParticles(level, mob, NarakaFlameParticleOption.AMETHYST, 0.75));
+        runBetween(200, 207, () -> createShinySpark(level));
 
         runAt(200, () -> mob.setDeltaMovement(0, 0.4, 0));
         runAfter(200, () -> reduceSpeed(0.6));
@@ -132,15 +138,32 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         return targetInRange(target, 80 * 80) && AbstractHerobrine.isNotHerobrine(target) && NarakaPickaxe.isNotNarakaPickaxe(target);
     }
 
-    private void sendParticles(ServerLevel level) {
-        float y = NarakaUtils.findFloor(level, mob.blockPosition()).getY() + 1.1f;
-        for (int i = 0; i < 100; i++) {
-            double angle = mob.getRandom().nextFloat() * Math.TAU;
-            double radius = mob.getRandom().nextFloat() * 10 * 2 - 10;
-            double x = Math.cos(angle) * radius + mob.getX();
-            double z = Math.sin(angle) * radius + mob.getZ();
-            level.sendParticles(NarakaFlameParticleOption.AMETHYST, x, y, z, 0, 0, 1, 0, 0.05);
-        }
+    private void createAreaEffect(ServerLevel level) {
+        float y = NarakaUtils.findFloor(level, mob.blockPosition()).getY() + 1;
+        Vec3 position = new Vec3(mob.getX(), y, mob.getZ());
+        int color = 0xff00ff;
+        int lifetime = 60;
+        level.addFreshEntity(new AreaEffect(level, position, lifetime, 5, 20, color, 0));
+        level.addFreshEntity(new AreaEffect(level, position, lifetime, 7.5f, 12.5f, color, 1));
+        level.addFreshEntity(new AreaEffect(level, position, lifetime, 10, 15, color, 2));
+        level.addFreshEntity(new AreaEffect(level, position, lifetime, 12.5f, 2.5f, color, 3));
+        level.addFreshEntity(new AreaEffect(level, position, lifetime, 15, 10, color, 4));
+        level.addFreshEntity(new AreaEffect(level, position, lifetime, 17.5f, 7.5f, color, 5));
+        level.addFreshEntity(new AreaEffect(level, position, lifetime, 20, 5, color, 6));
+    }
+
+    private void createShinySpark(ServerLevel level) {
+        float scale = mob.getRandom().nextFloat() * 0.5f + 0.25f;
+        boolean vertical = mob.getRandom().nextBoolean();
+
+        double x = mob.getX() + mob.getRandom().nextFloat() * 6 - 3;
+        double z = mob.getZ() + mob.getRandom().nextFloat() * 6 - 3;
+        double y = mob.getEyeY() + mob.getRandom().nextFloat() * 6 - 1.5f;
+
+        ShinyEffect shinyEffect = new ShinyEffect(level, 20, vertical, scale, 0, SoulType.AMETHYST.color);
+        shinyEffect.setPos(x, y, z);
+
+        level.addFreshEntity(shinyEffect);
     }
 
     private void spawnLightningBolts(ServerLevel level, int count, int maxRadius) {
@@ -151,7 +174,6 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
             double z = Math.sin(angle) * maxRadius + mob.getZ() + mob.getRandom().nextDouble();
             ColoredLightningBolt lightningBolt = new ColoredLightningBolt(level, new Vec3(x, y, z), 0x669957db);
             lightningBolt.setVisualOnly(true);
-            lightningBolt.setSpaceRenderType(true);
             level.addFreshEntity(lightningBolt);
         }
     }

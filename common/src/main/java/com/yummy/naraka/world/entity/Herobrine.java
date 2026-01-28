@@ -83,11 +83,13 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
     protected final FlickerSkill<Herobrine> flickerSkill = registerSkill(new FlickerSkill<>(this, dashSkill, punchSkill));
     protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, flickerSkill));
 
-    protected final CarpetBombingSkill carpetBombingSkill = registerSkill(7, this, CarpetBombingSkill::new, HerobrineAnimationLocations.CARPET_BOMBING);
+    protected final CarpetBombingSkill carpetBombingSkill = registerSkill(6, this, CarpetBombingSkill::new, HerobrineAnimationLocations.CARPET_BOMBING);
     protected final ExplosionSkill explosionSkill = registerSkill(7, this, ExplosionSkill::new, HerobrineAnimationLocations.EXPLOSION);
     protected final EarthShockSkill earthShockSkill = registerSkill(6, this, EarthShockSkill::new, HerobrineAnimationLocations.EARTH_SHOCK);
     protected final ParryingSkill parryingSkill = registerSkill(7, this, ParryingSkill::new, HerobrineAnimationLocations.PARRYING);
     protected final StormSkill stormSkill = registerSkill(6, new StormSkill(this, parryingSkill), HerobrineAnimationLocations.STORM);
+    protected final RyoikiTenkaiSkill ryoikiTenkaiSkill = registerSkill(7, this, RyoikiTenkaiSkill::new, HerobrineAnimationLocations.RYOIKI_TENKAI);
+    protected final StarShootingSkill starShootingSkill = registerSkill(6, new StarShootingSkill(this, ryoikiTenkaiSkill), HerobrineAnimationLocations.STAR_SHOOTING_1, HerobrineAnimationLocations.STAR_SHOOTING_2, HerobrineAnimationLocations.STAR_SHOOTING_3);
 
     protected final StrikeDownSkill strikeDownSkill = registerSkill(new StrikeDownSkill(this, parryingSkill), HerobrineAnimationLocations.FINAL_COMBO_ATTACK_3);
     protected final SpinUpSkill spinUpSkill = registerSkill(new SpinUpSkill(this, strikeDownSkill), HerobrineAnimationLocations.FINAL_COMBO_ATTACK_2);
@@ -102,7 +104,7 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_2_SKILLS = List.of(stigmatizeEntitiesSkill, blockingSkill, summonShadowSkill);
     private final List<Skill<?>> PHASE_1_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, walkAroundTargetSkill);
     private final List<Skill<?>> PHASE_2_SKILLS = List.of(punchSkill, dashAroundSkill, rushSkill, throwFireballSkill, summonShadowSkill, walkAroundTargetSkill);
-    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, splitAttackSkill, stormSkill, carpetBombingSkill, singlePickaxeSlashSkill, triplePickaxeSlashSkill, earthShockSkill, spawnPickaxeSkill);
+    private final List<Skill<?>> PHASE_3_SKILLS = List.of(explosionSkill, splitAttackSkill, stormSkill, starShootingSkill, singlePickaxeSlashSkill, triplePickaxeSlashSkill, earthShockSkill, ryoikiTenkaiSkill);
 
     private final List<Skill<?>> INVULNERABLE_SKILLS = List.of(dashAroundSkill, walkAroundTargetSkill, destroyStructureSkill);
     private final List<ResourceLocation> INVULNERABLE_ANIMATIONS = List.of(HerobrineAnimationLocations.ENTER_PHASE_2, HerobrineAnimationLocations.STAGGERING_PHASE_2, HerobrineAnimationLocations.PREPARE_PHASE_3, HerobrineAnimationLocations.ENTER_PHASE_3);
@@ -258,7 +260,11 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
         setDisplayEye(false);
         setDisplayPickaxe(true);
 
-        int armor = bossEvent.getPlayers().size() * 6;
+        int armor = 0;
+        for (ServerPlayer player : bossEvent.getPlayers()) {
+            if (NarakaEntityUtils.isDamageablePlayer(player))
+                armor += 6;
+        }
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR, NarakaAttributeModifiers.finalHerobrineArmor(armor));
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR_TOUGHNESS, NarakaAttributeModifiers.FINAL_HEROBRINE_ARMOR_TOUGHNESS);
     }
@@ -282,6 +288,17 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
             watchingEntities.add(target.getUUID());
             cachedWatchingEntities.put(target.getUUID(), target);
             maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
+        }
+    }
+
+    @Override
+    protected void playHurtSound(DamageSource source) {
+        if (isFinalModel()) {
+            playSound(SoundEvents.IRON_GOLEM_DAMAGE, 1, 0.8f);
+            playSound(SoundEvents.IRON_GOLEM_DAMAGE, 1, 0.95f);
+            playSound(SoundEvents.ANVIL_PLACE, 0.2f, 0.95f);
+        } else {
+            super.playHurtSound(source);
         }
     }
 
@@ -586,9 +603,13 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
     @Override
     public boolean hurt(DamageSource source, float damage) {
         if (level() instanceof ServerLevel level) {
-            if (isDeadOrDying() && source.getEntity() instanceof LivingEntity sourceEntity
-                    && sourceEntity.getMainHandItem().is(NarakaItemTags.ENTER_NARAKA_DIMENSION)) {
-                teleportTargetToNarakaDimension(level, sourceEntity);
+            if (isDeadOrDying() && source.getEntity() instanceof LivingEntity sourceEntity) {
+                if (sourceEntity.getMainHandItem().is(NarakaItemTags.ENTER_NARAKA_DIMENSION)) {
+                    teleportTargetToNarakaDimension(level, sourceEntity);
+                } else {
+                    NarakaEntityTypes.SHINY_EFFECT.get().spawn(level, blockPosition().above(), MobSpawnType.EVENT);
+                    remove(RemovalReason.KILLED);
+                }
                 return false;
             }
             if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
@@ -836,6 +857,7 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
             serverLevel.getGameRules().getRule(GameRules.RULE_DAYLIGHT).set(true, serverLevel.getServer());
             serverLevel.getGameRules().getRule(GameRules.RULE_WEATHER_CYCLE).set(true, serverLevel.getServer());
         }
+        skillManager.interrupt();
         super.remove(reason);
     }
 
@@ -861,7 +883,6 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
         if (spawnPosition != null)
             NarakaNbtUtils.store(output, "SpawnPosition", BlockPos.CODEC, spawnPosition);
         NarakaNbtUtils.store(output, "WatchingEntities", UUIDUtil.CODEC_SET, watchingEntities);
-        shadowController.save(output);
     }
 
     @Override
@@ -877,6 +898,5 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
             startHibernateMode(level);
         NarakaNbtUtils.read(input, "SpawnPosition", BlockPos.CODEC).ifPresent(pos -> spawnPosition = pos);
         NarakaNbtUtils.read(input, "WatchingEntities", UUIDUtil.CODEC_SET).ifPresent(watchingEntities::addAll);
-        shadowController.load(input);
     }
 }

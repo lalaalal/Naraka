@@ -37,6 +37,12 @@ public class HerobrineAnimationLocations {
     public static final ResourceLocation PARRYING_FAILED = AnimationLocations.create("final_herobrine", "parrying.failed");
     public static final ResourceLocation PICKAXE_STRIKE = AnimationLocations.create("final_herobrine", "pickaxe_strike");
 
+    public static final ResourceLocation STAR_SHOOTING_1 = AnimationLocations.create("final_herobrine", "star_shooting_1");
+    public static final ResourceLocation STAR_SHOOTING_2 = AnimationLocations.create("final_herobrine", "star_shooting_2");
+    public static final ResourceLocation STAR_SHOOTING_3 = AnimationLocations.create("final_herobrine", "star_shooting_3");
+
+    public static final ResourceLocation RYOIKI_TENKAI = AnimationLocations.create("final_herobrine", "ryoiki_tenkai");
+
     public static final ResourceLocation FINAL_COMBO_ATTACK_1 = AnimationLocations.create("final_herobrine", "combo_attack_1");
     public static final ResourceLocation FINAL_COMBO_ATTACK_2 = AnimationLocations.create("final_herobrine", "combo_attack_2");
     public static final ResourceLocation FINAL_COMBO_ATTACK_3 = AnimationLocations.create("final_herobrine", "combo_attack_3");

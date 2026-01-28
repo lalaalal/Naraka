@@ -1,0 +1,96 @@
+package com.yummy.naraka.world.entity;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+
+public class AreaEffect extends Entity {
+    public static final EntityDataAccessor<Float> X_WIDTH = SynchedEntityData.defineId(AreaEffect.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Float> Z_WIDTH = SynchedEntityData.defineId(AreaEffect.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Integer> LIFETIME = SynchedEntityData.defineId(AreaEffect.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(AreaEffect.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(AreaEffect.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> MAX_ALPHA = SynchedEntityData.defineId(AreaEffect.class, EntityDataSerializers.INT);
+
+    public AreaEffect(EntityType<? extends AreaEffect> entityType, Level level) {
+        super(entityType, level);
+    }
+
+    public AreaEffect(Level level, Vec3 position, int lifetime, float xWidth, float zWidth, int color, int index) {
+        this(NarakaEntityTypes.AREA_EFFECT.get(), level);
+        setPos(position);
+        entityData.set(X_WIDTH, xWidth);
+        entityData.set(Z_WIDTH, zWidth);
+        entityData.set(LIFETIME, lifetime);
+        entityData.set(COLOR, color);
+        entityData.set(INDEX, index);
+    }
+
+    public float getXWidth() {
+        return entityData.get(X_WIDTH);
+    }
+
+    public float getZWidth() {
+        return entityData.get(Z_WIDTH);
+    }
+
+    public int getLifetime() {
+        return entityData.get(LIFETIME);
+    }
+
+    public int getColor() {
+        return entityData.get(COLOR);
+    }
+
+    public int getMaxAlpha() {
+        return entityData.get(MAX_ALPHA);
+    }
+
+    public int getIndex() {
+        return entityData.get(INDEX);
+    }
+
+    public AreaEffect maxAlpha(int alpha) {
+        entityData.set(MAX_ALPHA, alpha);
+        return this;
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(X_WIDTH, 3f)
+                .define(Z_WIDTH, 3f)
+                .define(LIFETIME, 20)
+                .define(COLOR, 0xffffff)
+                .define(INDEX, 0)
+                .define(MAX_ALPHA, 0x88);
+    }
+
+    @Override
+    public void tick() {
+        if (tickCount > getLifetime())
+            discard();
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        return false;
+    }
+
+    @Override
+    protected void readAdditionalSaveData(CompoundTag compound) {
+
+    }
+
+    @Override
+    protected void addAdditionalSaveData(CompoundTag compound) {
+
+    }
+
+
+}

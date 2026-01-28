@@ -1,6 +1,7 @@
 package com.yummy.naraka.network;
 
 import com.yummy.naraka.client.NarakaClientContext;
+import com.yummy.naraka.client.NarakaPostEffects;
 import com.yummy.naraka.client.gui.screen.AnimationControlScreen;
 import com.yummy.naraka.client.gui.screen.SkillControlScreen;
 import com.yummy.naraka.client.sound.BossMusicPlayer;
@@ -34,11 +35,13 @@ public class NarakaClientboundEventHandler {
             NarakaClientboundEventPacket.Event.START_WHITE_SCREEN, NarakaClientboundEventHandler::startWhiteScreen,
             NarakaClientboundEventPacket.Event.STOP_WHITE_FOG, NarakaClientboundEventHandler::stopWhiteScreen,
             NarakaClientboundEventPacket.Event.SHAKE_CAMERA, NarakaClientboundEventHandler::shakeCamera,
-            NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT, NarakaClientboundEventHandler::monochromeColor
+            NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT, NarakaClientboundEventHandler::monochrome,
+            NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT, NarakaClientboundEventHandler::filterGreenGray,
+            NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT, NarakaClientboundEventHandler::removeGreenColor
     );
 
     private static final Music[] HEROBRINE_MUSIC = new Music[]{
-            null,
+            NarakaMusics.HEROBRINE_PHASE_1,
             NarakaMusics.HEROBRINE_PHASE_1,
             NarakaMusics.HEROBRINE_PHASE_2,
             NarakaMusics.HEROBRINE_PHASE_3,
@@ -110,7 +113,18 @@ public class NarakaClientboundEventHandler {
         NarakaClientContext.CAMERA_SHAKE_TICK.set(10);
     }
 
-    private static void monochromeColor() {
-        NarakaClientContext.MONOCHROME_EFFECT_TICK.set(10);
+    private static void monochrome() {
+        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.MONOCHROME);
+        NarakaClientContext.POST_EFFECT_TICK.set(10);
+    }
+
+    private static void filterGreenGray() {
+        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.RYOIKI_GRAY);
+        NarakaClientContext.POST_EFFECT_TICK.set(50);
+    }
+
+    private static void removeGreenColor() {
+        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.RYOIKI_GREEN);
+        NarakaClientContext.POST_EFFECT_TICK.set(50);
     }
 }

@@ -5,6 +5,7 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.data.EntityData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -13,14 +14,15 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 
 import java.util.List;
+import java.util.UUID;
 
-public record SyncEntityDataPacket(int entityId, Action action,
+public record SyncEntityDataPacket(UUID uuid, Action action,
                                    List<EntityData<?, ?>> entityData) implements CustomPacketPayload {
     public static final Type<SyncEntityDataPacket> TYPE = new Type<>(NarakaMod.location("sync_entity_data"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncEntityDataPacket> CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT,
-            SyncEntityDataPacket::entityId,
+            UUIDUtil.STREAM_CODEC,
+            SyncEntityDataPacket::uuid,
             Action.STREAM_CODEC,
             SyncEntityDataPacket::action,
             EntityData.STREAM_CODEC.apply(ByteBufCodecs.list()),
@@ -29,7 +31,7 @@ public record SyncEntityDataPacket(int entityId, Action action,
     );
 
     public static SyncEntityDataPacket sync(Entity entity, Action action, List<EntityData<?, ?>> entityData) {
-        return new SyncEntityDataPacket(entity.getId(), action, entityData);
+        return new SyncEntityDataPacket(entity.getUUID(), action, entityData);
     }
 
     public static SyncEntityDataPacket sync(Entity entity, Action action, EntityData<?, ?> entityData) {
@@ -46,25 +48,17 @@ public record SyncEntityDataPacket(int entityId, Action action,
     }
 
     private static void loadEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
-        Entity entity = context.level().getEntity(packet.entityId());
-        if (entity != null) {
-            for (EntityData<?, ?> data : packet.entityData())
-                EntityDataHelper.loadEntityData(entity, data);
-        }
+        for (EntityData<?, ?> data : packet.entityData())
+            EntityDataHelper.loadEntityData(context.level(), packet.uuid(), data);
     }
 
     private static void removeGivenEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
-        Entity entity = context.level().getEntity(packet.entityId());
-        if (entity != null) {
-            for (EntityData<?, ?> data : packet.entityData())
-                EntityDataHelper.removeEntityData(entity, data.type());
-        }
+        for (EntityData<?, ?> data : packet.entityData())
+            EntityDataHelper.removeEntityData(context.level(), packet.uuid(), data.type());
     }
 
     private static void removeAllEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
-        Entity entity = context.level().getEntity(packet.entityId());
-        if (entity != null)
-            EntityDataHelper.removeEntityData(entity.getUUID());
+        EntityDataHelper.removeEntityData(context.level(), packet.uuid());
     }
 
     public enum Action implements StringRepresentable {

@@ -119,12 +119,16 @@ public final class NarakaModClient {
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, SpearRenderer::longinus);
 
         EntityRendererRegistry.register(NarakaEntityTypes.STARDUST, StardustRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.CORRUPTED_STAR, CorruptedStarRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_FIREBALL, NarakaFireballRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.PICKAXE_SLASH, PickaxeSlashRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.COLORED_LIGHTNING_BOLT, ColoredLightningBoltRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.MASSIVE_LIGHTNING, MassiveLightningRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.LIGHTNING_CIRCLE, LightningCircleRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_PICKAXE, NarakaPickaxeRenderer::new);
+
+        EntityRendererRegistry.register(NarakaEntityTypes.SHINY_EFFECT, ShinyEffectRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.AREA_EFFECT, AreaEffectRenderer::new);
     }
 
     private static void registerHudRenders() {

@@ -136,6 +136,13 @@ public class NarakaRenderUtils {
         return vector.add(0, 0, interval, new Vector3f());
     }
 
+    public static Player getCurrentPlayer() {
+        Player player = Minecraft.getInstance().player;
+        if (player == null)
+            throw new IllegalStateException("Current player is null");
+        return player;
+    }
+
     public static boolean isCurrentPlayer(LivingEntity livingEntity) {
         Player player = Minecraft.getInstance().player;
         if (player == null)

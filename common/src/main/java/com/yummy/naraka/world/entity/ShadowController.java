@@ -2,13 +2,10 @@ package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
 import com.yummy.naraka.world.entity.ai.skill.herobrine.FlickerSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
-import net.minecraft.core.UUIDUtil;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 
@@ -21,15 +18,6 @@ public class ShadowController {
 
     public ShadowController(Herobrine herobrine) {
         this.herobrine = herobrine;
-    }
-
-    public void save(CompoundTag output) {
-        NarakaNbtUtils.store(output, "ShadowHerobrines", UUIDUtil.CODEC_SET, shadowHerobrines);
-    }
-
-    public void load(CompoundTag input) {
-        shadowHerobrines.clear();
-        NarakaNbtUtils.read(input, "ShadowHerobrines", UUIDUtil.CODEC_SET).ifPresent(shadowHerobrines::addAll);
     }
 
     public void addShadowHerobrine(ShadowHerobrine shadowHerobrine) {

@@ -57,6 +57,15 @@ public class NarakaEntityTypes {
                     .sized(0.5f, 0.5f)
     );
 
+    public static final HolderProxy<EntityType<?>, EntityType<CorruptedStar>> CORRUPTED_STAR = register(
+            "corrupted_star",
+            EntityType.Builder.<CorruptedStar>of(CorruptedStar::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .fireImmune()
+                    .updateInterval(40)
+                    .noSave()
+    );
+
     public static final HolderProxy<EntityType<?>, EntityType<NarakaFireball>> NARAKA_FIREBALL = register(
             "naraka_fireball",
             EntityType.Builder.<NarakaFireball>of(NarakaFireball::new, MobCategory.MISC)
@@ -120,6 +129,23 @@ public class NarakaEntityTypes {
             EntityType.Builder.<NarakaPickaxe>of(NarakaPickaxe::new, MobCategory.MISC)
                     .fireImmune()
                     .sized(0.5f, 1f)
+                    .noSave()
+    );
+
+    public static final HolderProxy<EntityType<?>, EntityType<ShinyEffect>> SHINY_EFFECT = register(
+            "shiny_effect",
+            EntityType.Builder.<ShinyEffect>of(ShinyEffect::new, MobCategory.MISC)
+                    .fireImmune()
+                    .sized(0, 0)
+                    .noSave()
+    );
+
+    public static final HolderProxy<EntityType<?>, EntityType<AreaEffect>> AREA_EFFECT = register(
+            "area_effect",
+            EntityType.Builder.<AreaEffect>of(AreaEffect::new, MobCategory.MISC)
+                    .fireImmune()
+                    .sized(0, 0)
+                    .noSave()
     );
 
     private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {
@@ -127,6 +153,8 @@ public class NarakaEntityTypes {
     }
 
     public static void initialize() {
+        NarakaEntityDataSerializers.initialize();
+
         EntityAttributeRegistry.register(HEROBRINE, AbstractHerobrine::getAttributeSupplier);
         EntityAttributeRegistry.register(ABSOLUTE_HEROBRINE, AbstractHerobrine::getAttributeSupplier);
         EntityAttributeRegistry.register(SHADOW_HEROBRINE, ShadowHerobrine::getAttributeSupplier);

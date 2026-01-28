@@ -2,7 +2,6 @@ package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -33,7 +32,7 @@ public class PickaxeSlash extends LightTailEntity {
     private boolean stunTarget;
 
     public PickaxeSlash(EntityType<? extends PickaxeSlash> entityType, Level level) {
-        super(entityType, level, 30);
+        super(entityType, level, 30, 2);
         setNoGravity(true);
         setTailColor(0x0000ff);
     }
@@ -135,10 +134,6 @@ public class PickaxeSlash extends LightTailEntity {
         super.onHitBlock(result);
         if (alpha >= 1)
             alpha = 0.95f;
-    }
-
-    @Override
-    public void recreateFromPacket(ClientboundAddEntityPacket packet) {
-        super.recreateFromPacket(packet);
+        setDeltaMovement(Vec3.ZERO);
     }
 }

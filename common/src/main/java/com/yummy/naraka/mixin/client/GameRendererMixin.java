@@ -1,6 +1,5 @@
 package com.yummy.naraka.mixin.client;
 
-import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaClientContext;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,9 +19,6 @@ import javax.annotation.Nullable;
 @Environment(EnvType.CLIENT)
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
-    @Unique
-    private static final ResourceLocation MONOCHROME_POST_EFFECT = NarakaMod.location("shaders/post/monochrome.json");
-
     @Unique @Nullable
     private PostChain naraka$previousPostEffect;
     @Unique
@@ -40,17 +36,17 @@ public abstract class GameRendererMixin {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;doEntityOutline()V", shift = At.Shift.AFTER))
     private void checkMonochromePostEffect(DeltaTracker deltaTracker, boolean renderLevel, CallbackInfo ci) {
-        if (NarakaClientContext.MONOCHROME_EFFECT_TICK.getValue() > 0 && !naraka$monochromeEffectActive) {
+        if (NarakaClientContext.POST_EFFECT_TICK.getValue() > 0 && !naraka$monochromeEffectActive) {
             naraka$previousPostEffect = postEffect;
             naraka$previousEffectActive = effectActive;
-            loadEffect(MONOCHROME_POST_EFFECT);
+            loadEffect(NarakaClientContext.POST_EFFECT.getValue());
             naraka$monochromeEffectActive = true;
         }
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/pipeline/RenderTarget;bindWrite(Z)V"))
     private void restorePostEffect(DeltaTracker deltaTracker, boolean renderLevel, CallbackInfo ci) {
-        if (NarakaClientContext.MONOCHROME_EFFECT_TICK.getValue() == 0 && naraka$monochromeEffectActive) {
+        if (NarakaClientContext.POST_EFFECT_TICK.getValue() == 0 && naraka$monochromeEffectActive) {
             if (postEffect != null)
                 postEffect.close();
             postEffect = naraka$previousPostEffect;

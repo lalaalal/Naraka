@@ -84,9 +84,9 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "tick", at = @At("RETURN"))
     public void checkScarfEquipment(CallbackInfo ci) {
-        ItemStack itemStack = getItemBySlot(EquipmentSlot.CHEST);
-        if (itemStack.getOrDefault(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), false)) {
-            if (!EntityDataHelper.hasEntityData(naraka$living(), NarakaEntityDataTypes.SCARF_WAVING_DATA.get()))
+        if (!EntityDataHelper.hasEntityData(naraka$living(), NarakaEntityDataTypes.SCARF_WAVING_DATA.get())) {
+            ItemStack itemStack = getItemBySlot(EquipmentSlot.CHEST);
+            if (itemStack.has(NarakaDataComponentTypes.HEROBRINE_SCARF.get()))
                 EntityDataHelper.setEntityData(naraka$living(), NarakaEntityDataTypes.SCARF_WAVING_DATA.get(), new ScarfWavingData());
         }
     }

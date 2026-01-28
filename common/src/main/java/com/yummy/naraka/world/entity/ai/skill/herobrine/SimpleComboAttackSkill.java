@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
+import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
@@ -78,6 +79,7 @@ public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         runAt(attackTick, () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, attackRange));
+        runAt(attackTick, () -> NarakaSoundEvents.playHerobrineSwingSound(level, mob.position()));
         if (lookTarget) {
             lookTarget(target);
             runBetween(moveStartTick, moveEndTick, () -> rotateTowardTarget(target));

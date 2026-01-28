@@ -1,7 +1,6 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.ai.goal.FollowOwnerGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
@@ -10,8 +9,6 @@ import com.yummy.naraka.world.entity.ai.skill.herobrine.*;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
-import net.minecraft.core.UUIDUtil;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -142,8 +139,10 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     public Optional<Herobrine> getHerobrine() {
         if (herobrineUUID == null)
             return Optional.empty();
-        if (herobrine == null && level() instanceof ServerLevel serverLevel)
-            return Optional.ofNullable(NarakaEntityUtils.findEntityByUUID(serverLevel, herobrineUUID, Herobrine.class));
+        if (herobrine == null && level() instanceof ServerLevel serverLevel) {
+            herobrine = NarakaEntityUtils.findEntityByUUID(serverLevel, herobrineUUID, Herobrine.class);
+            return Optional.ofNullable(herobrine);
+        }
         if (herobrine != null && herobrine.isRemoved()) {
             herobrineUUID = null;
             return Optional.empty();
@@ -241,23 +240,6 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
             this.herobrineUUID = entity.getUUID();
             updateAnimation(HerobrineAnimationLocations.SHADOW_SUMMONED);
         }
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag output) {
-        super.addAdditionalSaveData(output);
-        if (herobrine != null)
-            NarakaNbtUtils.store(output, "Herobrine", UUIDUtil.CODEC, herobrine.getUUID());
-        output.putBoolean("ReduceAlpha", reduceAlpha);
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag input) {
-        super.readAdditionalSaveData(input);
-        NarakaNbtUtils.read(input, "Herobrine", UUIDUtil.CODEC).ifPresent(uuid -> this.herobrineUUID = uuid);
-        reduceAlpha = input.getBoolean("ReduceAlpha");
-        if (isFinalModel())
-            discard();
     }
 
     @Override
