@@ -49,7 +49,7 @@ loom {
             data()
             programArgs "--all", "--mod", "$project.mod_id"
             programArgs "--output", file("src/main/generated.neoforge").absolutePath
-            programArgs "--existing", file("../fabric/src/main/resources").absolutePath
+            programArgs "--existing", file("src/main/resources").absolutePath
         }
     }
 }
