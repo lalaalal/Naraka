@@ -68,8 +68,10 @@ public record SkillRequestPacket(Event event, int entityId, ResourceLocation loc
     private static void enableOnly(SkillRequestPacket packet, NetworkManager.Context context) {
         packet.getEntity(context.level()).ifPresent(mob -> {
             Skill<?> skill = mob.getSkillManager().getSkill(packet.location);
-            if (skill != null)
+            if (skill != null) {
                 mob.getSkillManager().enableOnly(List.of(skill));
+                skill.changeCooldown(40);
+            }
         });
     }
 
