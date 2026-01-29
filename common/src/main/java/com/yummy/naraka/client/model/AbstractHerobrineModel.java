@@ -52,11 +52,13 @@ public abstract class AbstractHerobrineModel<T extends AbstractHerobrine> extend
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        if (forShadow) {
-            color = NarakaConfig.CLIENT.shadowHerobrineColor.getValue().pack();
-            packedOverlay = OverlayTexture.NO_OVERLAY;
+        if (FastColor.ARGB32.alpha(color) == 0xff) {
+            if (forShadow) {
+                color = NarakaConfig.CLIENT.shadowHerobrineColor.getValue().pack();
+                packedOverlay = OverlayTexture.NO_OVERLAY;
+            }
+            color = FastColor.ARGB32.color(alpha, color);
         }
-        color = FastColor.ARGB32.color(alpha, color);
         root().render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 
