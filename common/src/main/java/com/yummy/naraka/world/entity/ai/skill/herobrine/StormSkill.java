@@ -38,7 +38,8 @@ public class StormSkill extends ComboSkill<Herobrine> {
     public boolean canUse(ServerLevel level) {
         BlockPos blockPos = mob.blockPosition();
         BlockPos floor = NarakaUtils.findFloor(level, blockPos);
-        return mob.getTarget() != null && blockPos.getY() - floor.getY() <= 2;
+        double floorDistance = blockPos.getY() - floor.getY();
+        return mob.getTarget() != null && floorDistance <= 2 && floorDistance > 1;
     }
 
     @Override
@@ -50,7 +51,7 @@ public class StormSkill extends ComboSkill<Herobrine> {
             shinyEffect.setPos(mob.getEyePosition());
             level.addFreshEntity(shinyEffect);
         });
-        runAt(55, () -> createAreaEffect(level));
+        runAt(30, () -> createAreaEffect(level));
         runFrom(40, () -> stigmatizingWave(level, 40, tickCount - 40));
         runFrom(50, () -> stigmatizingWave(level, 50, tickCount - 50));
 
@@ -62,9 +63,9 @@ public class StormSkill extends ComboSkill<Herobrine> {
     private void createAreaEffect(ServerLevel level) {
         float y = NarakaUtils.findFloor(level, mob.blockPosition()).getY() + 1;
         Vec3 position = new Vec3(mob.getX(), y, mob.getZ());
-        level.addFreshEntity(new AreaEffect(level, position, 30, 3, 6, 0xff0000, 0));
-        level.addFreshEntity(new AreaEffect(level, position, 30, 4.5f, 4.5f, 0xff0000, 1));
-        level.addFreshEntity(new AreaEffect(level, position, 30, 6, 3, 0xff0000, 2));
+        level.addFreshEntity(new AreaEffect(level, position, 50, 3, 6, 0xff0000, 0));
+        level.addFreshEntity(new AreaEffect(level, position, 50, 4.5f, 4.5f, 0xff0000, 1));
+        level.addFreshEntity(new AreaEffect(level, position, 50, 6, 3, 0xff0000, 2));
     }
 
     @Override

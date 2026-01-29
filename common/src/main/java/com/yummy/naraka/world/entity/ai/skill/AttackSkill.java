@@ -4,6 +4,7 @@ import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import org.jetbrains.annotations.Nullable;
@@ -71,10 +72,14 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T
         if (tryDisableShield(target))
             return false;
 
-        boolean hurtSucceed = target.hurtServer(level, mob.getDefaultDamageSource(), calculateDamage(target));
+        boolean hurtSucceed = target.hurtServer(level, getDamageSource(), calculateDamage(target));
         if (hurtSucceed)
             onHurtEntity(level, target);
         return hurtSucceed;
+    }
+
+    protected DamageSource getDamageSource() {
+        return mob.getDefaultDamageSource();
     }
 
     protected void onHurtEntity(ServerLevel level, LivingEntity target) {
