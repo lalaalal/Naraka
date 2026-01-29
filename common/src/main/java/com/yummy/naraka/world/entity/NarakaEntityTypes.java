@@ -101,6 +101,7 @@ public class NarakaEntityTypes {
             EntityType.Builder.<PickaxeSlash>of(PickaxeSlash::new, MobCategory.MISC)
                     .fireImmune()
                     .sized(5f, 3f)
+                    .noSave()
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<MassiveLightning>> MASSIVE_LIGHTNING = register(
@@ -122,6 +123,7 @@ public class NarakaEntityTypes {
             EntityType.Builder.<LightningCircle>of(LightningCircle::new, MobCategory.MISC)
                     .fireImmune()
                     .sized(0, 0)
+                    .noSave()
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<NarakaPickaxe>> NARAKA_PICKAXE = register(
