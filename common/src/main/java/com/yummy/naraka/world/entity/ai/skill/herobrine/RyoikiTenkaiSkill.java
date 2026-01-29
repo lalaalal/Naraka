@@ -5,6 +5,7 @@ import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.*;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
@@ -19,6 +20,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -120,6 +122,11 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
     @Override
     protected float calculateDamage(LivingEntity target) {
         return mob.getAttackDamage() * 0.25f;
+    }
+
+    @Override
+    protected DamageSource getDamageSource() {
+        return NarakaDamageSources.stigma(mob);
     }
 
     private void checkPlayerPositions(ServerLevel level) {
