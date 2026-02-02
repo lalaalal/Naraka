@@ -39,6 +39,8 @@ public class NarakaItems {
     private static final Set<HolderProxy<Item, Item>> SOUL_INFUSED_SWORDS = new LinkedHashSet<>();
     private static final Map<SoulType, HolderProxy<Item, Item>> SWORD_BY_SOUL_TYPE = new HashMap<>();
 
+    public static final HolderProxy<Item, Item> LOCKED_HEALTH = registerItem("locked_health", Item::new);
+
     public static final HolderProxy<Item, Item> STIGMA_ROD = registerItem("stigma_rod", StigmaRodItem::new);
     public static final HolderProxy<Item, Item> STARDUST_STAFF = registerItem("stardust_staff", StardustStaffItem::new);
     public static final HolderProxy<Item, Item> CORRUPTED_STAR_STAFF = registerItem("corrupted_star_staff", CorruptedStarStaffItem::new);

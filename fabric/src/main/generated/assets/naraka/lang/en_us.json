@@ -247,6 +247,7 @@
   "itemGroup.naraka.soul_materials": "Soul Materials",
   "itemGroup.naraka.test": "Naraka Test",
   "jade.naraka.death_count": "Death Count: %d",
+  "jade.naraka.locked_health": ": %d",
   "jade.naraka.nectarium_core.activated": "Activated",
   "jade.naraka.nectarium_core.deactivated": "Inactivated",
   "jade.naraka.nectarium_core.honey": "(%d left)",

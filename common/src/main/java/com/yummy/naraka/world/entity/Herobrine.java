@@ -605,7 +605,7 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     protected void actuallyHurt(ServerLevel level, DamageSource damageSource, float damageAmount) {
-        if (!isHibernateMode())
+        if (!isHibernateMode() || damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             super.actuallyHurt(level, damageSource, damageAmount);
         updateHurtDamageLimit(level);
         if (phaseManager.isPhaseChanged() && !isHibernateMode() && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {

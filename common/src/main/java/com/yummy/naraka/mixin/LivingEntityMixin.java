@@ -5,6 +5,7 @@ import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import com.yummy.naraka.world.entity.data.LockedHealthHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
@@ -73,9 +74,10 @@ public abstract class LivingEntityMixin extends Entity {
      * Using {@linkplain Float#MAX_VALUE} for damage may occur setting health as Nan!
      */
     @Inject(method = "setHealth", at = @At("HEAD"), cancellable = true)
-    public void fixNanHealth(float health, CallbackInfo ci) {
+    public void limitHealth(float health, CallbackInfo ci) {
         if (Float.isNaN(health))
             health = 0;
+        health = (float) Math.min(health, getMaxHealth() - LockedHealthHelper.get(naraka$living()));
         this.entityData.set(DATA_HEALTH_ID, Mth.clamp(health, 0.0F, this.getMaxHealth()));
         ci.cancel();
     }

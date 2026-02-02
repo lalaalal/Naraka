@@ -83,16 +83,12 @@ public record Stigma(int value, long lastMarkedTime) {
 
     private void lockHealth(ServerLevel level, LivingEntity livingEntity, Entity cause) {
         double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
-        double lockedHealth = EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.LOCKED_HEALTH.get());
-        double originalMaxHealth = maxHealth + lockedHealth;
-        double reducingHealth = originalMaxHealth * NarakaConfig.COMMON.lockHealthRatio.getValue();
-        lockedHealth += reducingHealth;
-
-        if (lockedHealth >= originalMaxHealth) {
+        double reducingHealth = maxHealth * NarakaConfig.COMMON.lockHealthRatio.getValue();
+        if (reducingHealth >= livingEntity.getHealth()) {
             DamageSource source = NarakaDamageSources.stigma(cause);
             livingEntity.hurtServer(level, source, 6.66e6f);
         } else {
-            LockedHealthHelper.lock(livingEntity, lockedHealth);
+            LockedHealthHelper.lock(livingEntity, reducingHealth);
         }
     }
 }
