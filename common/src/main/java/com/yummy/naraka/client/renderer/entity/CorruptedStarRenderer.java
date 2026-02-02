@@ -72,7 +72,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         if (0 <= tick && tick <= entity.getShineLifetime()) {
             poseStack.pushPose();
             poseStack.translate(0, 0.25f, 0);
-            ShinyEffectRenderer.submitShiny(tick, entity.getShineLifetime(), entity.getShineScale(), entity.isVerticalShine(), SoulType.COPPER.color, poseStack, bufferSource);
+            ShinyEffectRenderer.renderShiny(tick, entity.getShineLifetime(), entity.getShineScale(), entity.isVerticalShine(), SoulType.COPPER.color, poseStack, bufferSource);
             poseStack.popPose();
         }
         submitTargetPoint(entity, poseStack, partialTick, vertexConsumer);

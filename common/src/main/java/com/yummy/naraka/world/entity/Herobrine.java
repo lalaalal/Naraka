@@ -98,6 +98,8 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
     protected final PickaxeSlashSkill<Herobrine> triplePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::triple, HerobrineAnimationLocations.PICKAXE_SLASH_TRIPLE);
     protected final SpawnPickaxeSkill spawnPickaxeSkill = registerSkill(7, this, SpawnPickaxeSkill::new, HerobrineAnimationLocations.PICKAXE_STRIKE);
 
+    protected final DespawnSkill despawnSkill = registerSkill(this, DespawnSkill::new, HerobrineAnimationLocations.PHASE_3_IDLE);
+
     public final AnimationState chzzkAnimationState = new AnimationState();
 
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
@@ -439,8 +441,9 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
             phaseManager.updatePhase(bossEvent);
 
             if (NarakaConfig.COMMON.despawnHerobrineWhenTargetIsDead.getValue()
+                    && skillManager.getCurrentSkill() != despawnSkill
                     && watchingEntities.isEmpty() && maxWatchedEntities > 0) {
-                discard();
+                skillManager.setCurrentSkill(despawnSkill);
             }
             if (getPhase() == 2 && tickCount % 100 == 0) {
                 shadowController.increaseFlickerStack(3);
@@ -616,7 +619,7 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
                 return super.hurt(source, damage);
             if (source.getEntity() == this || isUsingInvulnerableSkill()) {
                 level.playSound(null, getX(), getY(), getZ(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.HOSTILE, 4, 0.3f);
-                return true;
+                return false;
             }
             float limitedDamage = Math.min(damage, hurtDamageLimit);
             return super.hurt(source, limitedDamage);
@@ -699,6 +702,7 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
         hibernateMode = false;
         resetDamageLimit();
         skillManager.enableOnly(SKILLS_BY_PHASE.get(getPhase()));
+        skillManager.interrupt();
         shadowController.deactivateFlickerSkill(level);
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
 

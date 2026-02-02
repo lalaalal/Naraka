@@ -43,6 +43,14 @@ public class NarakaUtils {
         }
     }
 
+    public static float fadeInOut(float x) {
+        if (x < 0.125f)
+            return Mth.sin(4 * Mth.PI * x);
+        if (x > 0.875f)
+            return -Mth.sin(4 * Mth.PI * x);
+        return 1;
+    }
+
     public static Vector3f easeInOut(float delta, float partition, Vector3fc start, Vector3fc end, Vector3f dest) {
         return dest.set(
                 easeInOut(delta, partition, start.x(), end.x()),

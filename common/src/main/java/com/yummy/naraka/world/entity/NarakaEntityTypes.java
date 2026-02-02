@@ -36,6 +36,7 @@ public class NarakaEntityTypes {
                     .eyeHeight(1.62f)
                     .updateInterval(1)
                     .clientTrackingRange(32)
+                    .noSave()
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<Spear>> THROWN_SPEAR = register(
@@ -147,6 +148,14 @@ public class NarakaEntityTypes {
             EntityType.Builder.<AreaEffect>of(AreaEffect::new, MobCategory.MISC)
                     .fireImmune()
                     .sized(0, 0)
+                    .noSave()
+    );
+
+    public static final HolderProxy<EntityType<?>, EntityType<NarakaPortal>> NARAKA_PORTAL = register(
+            "naraka_portal",
+            EntityType.Builder.<NarakaPortal>of(NarakaPortal::new, MobCategory.MISC)
+                    .fireImmune()
+                    .sized(2, 3)
                     .noSave()
     );
 

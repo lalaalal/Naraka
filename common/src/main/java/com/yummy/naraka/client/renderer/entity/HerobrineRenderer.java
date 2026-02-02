@@ -22,7 +22,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.util.List;
@@ -54,9 +53,11 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Abst
             renderChzzk(entity, partialTicks, poseStack, buffer, getChzzkRenderType(entity, partialTicks, 0.0015f, 0.0025f), packedLight);
             packedLight = 0;
         }
+        if (entity.isDeadOrDying() && !NarakaClientContext.SHADER_ENABLED.getValue()) {
+            renderChzzk(entity, partialTicks + 10, poseStack, buffer, NarakaRenderTypes.longinusCutout(NarakaTextures.FINAL_HEROBRINE), packedLight);
+            renderChzzk(entity, partialTicks + 30, poseStack, buffer, NarakaRenderTypes.longinusCutout(NarakaTextures.FINAL_HEROBRINE), packedLight);
+        }
         poseStack.pushPose();
-        Vec3 translation = entity.getAlpha() < 0xff ? randomTranslation(entity) : Vec3.ZERO;
-        poseStack.translate(translation.x, translation.y, translation.z);
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
         poseStack.popPose();
     }
@@ -90,16 +91,6 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Abst
         if (herobrine.isFinalModel())
             return 0.7f * herobrine.getScale();
         return super.getShadowRadius(herobrine);
-    }
-
-    @Override
-    protected @Nullable RenderType getRenderType(Herobrine herobrine, boolean bodyVisible, boolean translucent, boolean glowing) {
-        if (herobrine.isDeadOrDying()) {
-            if (NarakaClientContext.SHADER_ENABLED.getValue())
-                return RenderType.entitySolid(NarakaTextures.LONGINUS);
-            return NarakaRenderTypes.longinusCutout(NarakaTextures.FINAL_HEROBRINE);
-        }
-        return super.getRenderType(herobrine, bodyVisible, translucent, glowing);
     }
 
     @Override

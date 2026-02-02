@@ -129,6 +129,7 @@ public final class NarakaModClient {
 
         EntityRendererRegistry.register(NarakaEntityTypes.SHINY_EFFECT, ShinyEffectRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.AREA_EFFECT, AreaEffectRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_PORTAL, NarakaPortalRenderer::new);
     }
 
     private static void registerHudRenders() {

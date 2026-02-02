@@ -8,6 +8,8 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.layer.HerobrineEyeLayer;
 import com.yummy.naraka.client.layer.HerobrineScarfLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
+import com.yummy.naraka.client.renderer.CustomRenderManager;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.item.NarakaItems;
@@ -101,7 +103,9 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, M e
         poseStack.mulPose(Axis.ZP.rotationDegrees(225));
         poseStack.translate(0.5, 0.5, 0);
         poseStack.scale(4, 4, 1);
+        CustomRenderManager.renderColored(pickaxe.getItem(), () -> new Color(entity.getAlpha(), 0xff, 0xff, 0xff));
         itemRenderer.renderStatic(pickaxe, ItemDisplayContext.NONE, getPickaxeLight(entity), OverlayTexture.NO_OVERLAY, poseStack, bufferSource, null, 0);
+        CustomRenderManager.restoreColor(pickaxe.getItem());
         poseStack.popPose();
     }
 

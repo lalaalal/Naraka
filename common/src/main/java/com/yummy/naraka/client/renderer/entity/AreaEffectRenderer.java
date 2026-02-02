@@ -17,7 +17,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
-import net.minecraft.util.Mth;
 
 @Environment(EnvType.CLIENT)
 public class AreaEffectRenderer extends EntityRenderer<AreaEffect> {
@@ -43,7 +42,7 @@ public class AreaEffectRenderer extends EntityRenderer<AreaEffect> {
     public void render(AreaEffect entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         float ageInTicks = entity.tickCount + partialTick;
 
-        int alpha = (int) NarakaUtils.interpolate(ageInTicks / entity.getLifetime(), 0, entity.getMaxAlpha(), this::fadeInOut);
+        int alpha = (int) NarakaUtils.interpolate(ageInTicks / entity.getLifetime(), 0, entity.getMaxAlpha(), NarakaUtils::fadeInOut);
         poseStack.pushPose();
 
         float x = entity.getXWidth() / 2;
@@ -84,13 +83,5 @@ public class AreaEffectRenderer extends EntityRenderer<AreaEffect> {
     @Override
     public ResourceLocation getTextureLocation(AreaEffect entity) {
         return NarakaTextures.AREA_EFFECT;
-    }
-
-    private float fadeInOut(float x) {
-        if (x < 0.125f)
-            return Mth.sin(4 * Mth.PI * x);
-        if (x > 0.875f)
-            return -Mth.sin(4 * Mth.PI * x);
-        return 1;
     }
 }

@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -159,5 +160,20 @@ public class NarakaRenderUtils {
         poseStack.mulPose(new Quaternionf().setAngleAxis(Mth.PI / 3, SIN_45, 0, SIN_45));
         poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
         poseStack.mulPose(Axis.ZP.rotationDegrees(rotation * 2));
+    }
+
+    public static void renderRhombus(PoseStack.Pose pose, VertexConsumer vertexConsumer, float width, float height, int alpha, int color) {
+        vertexConsumer.addVertex(pose, 0, height, 0)
+                .setNormal(pose, 0, 1, 0)
+                .setColor(FastColor.ARGB32.color(alpha, color));
+        vertexConsumer.addVertex(pose, -width, 0, 0)
+                .setNormal(pose, 0, 1, 0)
+                .setColor(FastColor.ARGB32.color(alpha, color));
+        vertexConsumer.addVertex(pose, 0, -height, 0)
+                .setNormal(pose, 0, 1, 0)
+                .setColor(FastColor.ARGB32.color(alpha, color));
+        vertexConsumer.addVertex(pose, width, 0, 0)
+                .setNormal(pose, 0, 1, 0)
+                .setColor(FastColor.ARGB32.color(alpha, color));
     }
 }

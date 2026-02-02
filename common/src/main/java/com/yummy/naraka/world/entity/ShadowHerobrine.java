@@ -83,6 +83,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         this(NarakaEntityTypes.SHADOW_HEROBRINE.get(), level);
         this.herobrine = herobrine;
         this.herobrineUUID = herobrine.getUUID();
+        this.setTarget(herobrine.getTarget());
     }
 
     public ShadowHerobrine(Level level, Mob spawner, boolean finalModel, boolean instant) {

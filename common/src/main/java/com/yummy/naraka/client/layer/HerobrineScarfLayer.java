@@ -110,9 +110,7 @@ public class HerobrineScarfLayer<T extends AbstractHerobrine, M extends Abstract
     }
 
     private int selectColor(T entity) {
-        if (entity.isShadow)
-            return NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(entity.getAlpha()).pack();
-        return -1;
+        return NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(entity.getAlpha()).pack();
     }
 
     public static void renderScarf(PoseStack poseStack, RenderType insideRenderType, RenderType outsideRenderType, MultiBufferSource bufferSource, int packedLight, int color, float partialTick, float rotationDegree, ScarfWavingData waveData, WavingScarfRenderState.ModelData modelData) {

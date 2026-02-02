@@ -9,14 +9,14 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.ShinyEffect;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
 
 @Environment(EnvType.CLIENT)
 public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect> {
@@ -35,7 +35,7 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect> {
 
         poseStack.pushPose();
         poseStack.mulPose(Axis.ZP.rotationDegrees(entity.getRotation()));
-        submitShiny(ageInTicks, entity.getLifetime(), entity.getScale(), entity.isVertical(), entity.getColor(), poseStack, bufferSource);
+        renderShiny(ageInTicks, entity.getLifetime(), entity.getScale(), entity.isVertical(), entity.getColor(), poseStack, bufferSource);
         poseStack.popPose();
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
@@ -46,15 +46,24 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect> {
     }
 
 
-    public static void submitShiny(float tick, int lifetime, float scale, boolean isVertical, int color, PoseStack poseStack, MultiBufferSource bufferSource) {
+    public static void renderShiny(float tick, int lifetime, float scale, boolean isVertical, int color, PoseStack poseStack, MultiBufferSource bufferSource) {
+        if (tick < 0 || tick > lifetime)
+            return;
+
+        Minecraft minecraft = Minecraft.getInstance();
+        Entity camera = minecraft.getCameraEntity();
+        if (camera != null)
+            renderShiny(tick, lifetime, scale, camera.getYRot() + 180, isVertical, color, poseStack, bufferSource);
+    }
+
+    public static void renderShiny(float tick, int lifetime, float scale, float yRot, boolean isVertical, int color, PoseStack poseStack, MultiBufferSource bufferSource) {
         if (tick < 0 || tick > lifetime)
             return;
 
         poseStack.pushPose();
         poseStack.scale(scale, scale, scale);
-        Player player = NarakaRenderUtils.getCurrentPlayer();
 
-        poseStack.mulPose(Axis.YN.rotationDegrees(player.getYRot() + 180));
+        poseStack.mulPose(Axis.YN.rotationDegrees(yRot));
         if (isVertical)
             poseStack.mulPose(Axis.ZN.rotationDegrees(90));
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.lightning());
@@ -70,32 +79,17 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect> {
         float width = NarakaUtils.interpolate(tick / lifetime, 0, 20, NarakaUtils::fastStepIn);
         float height = NarakaUtils.interpolate(tick / lifetime, 0.1f, 0, NarakaUtils::fastStepOut);
 
-        renderRhombus(pose, vertexConsumer, width, height, 0xff, 0xffffff);
+        NarakaRenderUtils.renderRhombus(pose, vertexConsumer, width, height, 0xff, 0xffffff);
 
         float centerWidth = Math.min(0.5f, width);
         float centerHeight = NarakaUtils.interpolate(tick / lifetime, 0.5f, 0, NarakaUtils::fastStepOut);
         int alpha = 0xff;
         while (centerWidth < width) {
-            renderRhombus(pose, vertexConsumer, centerWidth, centerHeight, alpha, color);
+            NarakaRenderUtils.renderRhombus(pose, vertexConsumer, centerWidth, centerHeight, alpha, color);
             centerWidth *= 2;
             alpha = (int) (alpha * 0.75f);
             centerHeight += 0.05f;
         }
-        renderRhombus(pose, vertexConsumer, width, centerHeight, 0x11, color);
-    }
-
-    private static void renderRhombus(PoseStack.Pose pose, VertexConsumer vertexConsumer, float width, float height, int alpha, int color) {
-        vertexConsumer.addVertex(pose, 0, height, 0)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(FastColor.ARGB32.color(alpha, color));
-        vertexConsumer.addVertex(pose, -width, 0, 0)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(FastColor.ARGB32.color(alpha, color));
-        vertexConsumer.addVertex(pose, 0, -height, 0)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(FastColor.ARGB32.color(alpha, color));
-        vertexConsumer.addVertex(pose, width, 0, 0)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(FastColor.ARGB32.color(alpha, color));
+        NarakaRenderUtils.renderRhombus(pose, vertexConsumer, width, centerHeight, 0x11, color);
     }
 }

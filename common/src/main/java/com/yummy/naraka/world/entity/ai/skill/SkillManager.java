@@ -120,7 +120,7 @@ public class SkillManager {
     public void tick(ServerLevel level) {
         if (currentSkill != null) {
             currentSkill.tick(level);
-            if (currentSkill.isEnded()) {
+            if (currentSkill != null && currentSkill.isEnded()) {
                 currentSkill.setCooldown();
                 for (Consumer<Skill<?>> listener : skillEndListeners)
                     listener.accept(currentSkill);
