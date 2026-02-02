@@ -96,6 +96,8 @@ public class Herobrine extends AbstractHerobrine {
     protected final PickaxeSlashSkill<Herobrine> triplePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::triple, HerobrineAnimationIdentifiers.PICKAXE_SLASH_TRIPLE);
     protected final SpawnPickaxeSkill spawnPickaxeSkill = registerSkill(7, this, SpawnPickaxeSkill::new, HerobrineAnimationIdentifiers.RYOIKI_TENKAI);
 
+    protected final DespawnSkill despawnSkill = registerSkill(this, DespawnSkill::new, HerobrineAnimationIdentifiers.PHASE_3_IDLE);
+
     public final AnimationState chzzkAnimationState = new AnimationState();
 
     private final List<Skill<?>> HIBERNATED_MODE_PHASE_1_SKILLS = List.of(throwFireballSkill, blockingSkill);
@@ -419,8 +421,9 @@ public class Herobrine extends AbstractHerobrine {
         phaseManager.updatePhase(bossEvent);
 
         if (NarakaConfig.COMMON.despawnHerobrineWhenTargetIsDead.getValue()
+                && skillManager.getCurrentSkill() != despawnSkill
                 && watchingEntities.isEmpty() && maxWatchedEntities > 0) {
-            discard();
+            skillManager.setCurrentSkill(despawnSkill);
         }
         if (getPhase() == 2 && tickCount % 100 == 0) {
             shadowController.increaseFlickerStack(3);
@@ -673,6 +676,7 @@ public class Herobrine extends AbstractHerobrine {
         hibernateMode = false;
         resetDamageLimit();
         skillManager.enableOnly(SKILLS_BY_PHASE.get(getPhase()));
+        skillManager.interrupt();
         shadowController.deactivateFlickerSkill(level);
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
 
@@ -754,6 +758,9 @@ public class Herobrine extends AbstractHerobrine {
         if (damageSource.getEntity() instanceof LivingEntity livingEntity)
             rewardChallenger(livingEntity);
         super.die(damageSource);
+        setFinalModel(true);
+        setDisplayPickaxe(true);
+        entityData.set(DISPLAY_SCARF, true);
         if (!level().isClientSide()) {
             bossEvent.getPlayers().forEach(this::sendStopPacket);
             bossEvent.removeAllPlayers();

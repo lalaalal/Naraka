@@ -3,7 +3,6 @@ package com.yummy.naraka.client.renderer.entity.state;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,6 @@ import java.util.function.Consumer;
 public class HerobrineRenderState extends AbstractHerobrineRenderState implements BeamEffectRenderStateControl {
     public int phase;
     public boolean dead;
-    public Vec3 translation = Vec3.ZERO;
     public AnimationState chzzkAnimationState = new AnimationState();
     public final List<BeamEffectRenderState> beamEffectRenderStates = new ArrayList<>();
 

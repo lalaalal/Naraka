@@ -160,6 +160,14 @@ public class NarakaEntityTypes {
                     .noSave()
     );
 
+    public static final HolderProxy<EntityType<?>, EntityType<NarakaPortal>> NARAKA_PORTAL = register(
+            "naraka_portal",
+            EntityType.Builder.<NarakaPortal>of(NarakaPortal::new, MobCategory.MISC)
+                    .fireImmune()
+                    .sized(2, 3)
+                    .noSave()
+    );
+
     private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {
         return RegistryProxy.register(Registries.ENTITY_TYPE, name, () -> builder.build(createKey(name)));
     }
