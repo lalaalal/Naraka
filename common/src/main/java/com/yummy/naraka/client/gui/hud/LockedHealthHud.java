@@ -52,13 +52,13 @@ public class LockedHealthHud implements LayeredDraw.Layer {
         double originalMaxHealth = player.getAttributeValue(Attributes.MAX_HEALTH);
         double maxHealth = originalMaxHealth - lockedHealth;
         int heartCount = (int) Math.round(originalMaxHealth / 2);
-        int lockedHeartCount = heartCount - (int) Math.round(maxHealth / 2);
+        int lockedHeartCount = (int) Math.round(heartCount - (maxHealth / 2));
         float absorption = player.getAbsorptionAmount();
 
         boolean hasRightHalfLockedHeart = Math.round(maxHealth) % 2 != 0;
         boolean hasLeftHalfLockedHeart = Math.round(originalMaxHealth) % 2 != 0;
 
-        int totalHeartLineCount = (int) Math.round((originalMaxHealth + absorption) / 20f);
+        int totalHeartLineCount = (int) Math.ceil((originalMaxHealth + absorption) / 20f);
         int height = Math.max(10 - (totalHeartLineCount - 2), 3);
         boolean blink = (blinkTime / 3) % 2 != 0;
         for (int i = 1; i <= lockedHeartCount; i++) {
