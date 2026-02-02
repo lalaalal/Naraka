@@ -52,7 +52,7 @@ public class LockedHealthHud implements HudRenderer {
         double originalMaxHealth = player.getAttributeValue(Attributes.MAX_HEALTH);
         double maxHealth = originalMaxHealth - lockedHealth;
         int heartCount = (int) Math.round(originalMaxHealth / 2);
-        int lockedHeartCount = heartCount - (int) Math.round(maxHealth / 2);
+        int lockedHeartCount = (int) Math.round(heartCount - (maxHealth / 2));
         float absorption = player.getAbsorptionAmount();
 
         boolean hasRightHalfLockedHeart = Math.round(maxHealth) % 2 != 0;
