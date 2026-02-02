@@ -616,21 +616,9 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
                 return super.hurt(source, damage);
             if (source.getEntity() == this || isUsingInvulnerableSkill()) {
                 level.playSound(null, getX(), getY(), getZ(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.HOSTILE, 4, 0.3f);
-                return false;
+                return true;
             }
             float limitedDamage = Math.min(damage, hurtDamageLimit);
-            if (updateHibernateMode(level, source, getActualDamage(source, limitedDamage)))
-                return true;
-            if (hibernateMode)
-                return true;
-
-            if (source.is(DamageTypeTags.IS_PROJECTILE)) {
-                if (source.getDirectEntity() != null)
-                    lookAt(source.getDirectEntity(), 360, 0);
-                if (!isFinalModel())
-                    skillManager.setCurrentSkillIfAbsence(blockingSkill);
-                return false;
-            }
             return super.hurt(source, limitedDamage);
         }
         return super.hurt(source, damage);
@@ -638,14 +626,16 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
 
     @Override
     protected void actuallyHurt(DamageSource damageSource, float damageAmount) {
-        if (!damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)
-                && phaseManager.getCurrentPhaseHealth() - damageAmount < 0 && getPhase() < 3) {
-            setHealth(phaseManager.getActualPhaseMaxHealth(getPhase() + 1) + 1);
-            return;
-        }
-        super.actuallyHurt(damageSource, damageAmount);
-        if (level() instanceof ServerLevel level)
+        if (!isHibernateMode())
+            super.actuallyHurt(damageSource, damageAmount);
+        if (level() instanceof ServerLevel level) {
             updateHurtDamageLimit(level);
+            if (phaseManager.isPhaseChanged() && !isHibernateMode() && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+                setHealth(phaseManager.getActualPhaseMaxHealth(getPhase()) + 1);
+                startHibernateMode(level);
+            }
+            updateHibernateMode(level, damageSource);
+        }
         accumulatedHurtDamage += damageAmount;
         if (getPhase() == 2 && (accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f))
             shadowController.increaseFlickerStack();
@@ -655,7 +645,7 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
         return phaseManager.getActualPhaseMaxHealth(getPhase() + 1) + 1;
     }
 
-    private boolean updateHibernateMode(ServerLevel level, DamageSource source, float actualDamage) {
+    private void updateHibernateMode(ServerLevel level, DamageSource source) {
         if (source.getDirectEntity() instanceof NarakaFireball fireball && !fireball.hasTarget()) {
             if (getHealth() > getPhaseMinimumHealth())
                 startStaggering();
@@ -664,28 +654,7 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
             resetDamageLimit();
             if (hibernateMode)
                 stopHibernateMode(level);
-            return true;
         }
-
-        return preserveCurrentPhaseMinimumHealth(level, actualDamage);
-    }
-
-    private boolean preserveCurrentPhaseMinimumHealth(ServerLevel level, float actualDamage) {
-        if (getPhase() == phaseManager.getMaxPhase())
-            return false;
-        float healthAfterHurt = phaseManager.getCurrentPhaseHealth() + getAbsorptionAmount() - actualDamage;
-        if (healthAfterHurt < 2) {
-            setHealth(getPhaseMinimumHealth());
-            startHibernateMode(level);
-            return true;
-        }
-
-        return false;
-    }
-
-    private float getActualDamage(DamageSource source, float damage) {
-        damage = getDamageAfterArmorAbsorb(source, damage);
-        return getDamageAfterMagicAbsorb(source, damage);
     }
 
     private float calculateHurtDamageLimitByLockedHealth() {
