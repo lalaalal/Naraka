@@ -11,11 +11,13 @@ import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.NarakaPortal;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
 @Environment(EnvType.CLIENT)
@@ -53,9 +55,9 @@ public class NarakaPortalRenderer extends EntityRenderer<NarakaPortal> {
         poseStack.mulPose(Axis.YN.rotationDegrees(entity.getViewYRot(partialTick)));
 
         VertexConsumer vertexConsumer = bufferSource.getBuffer(getRenderType());
-        NarakaRenderUtils.renderRhombus(poseStack.last(), vertexConsumer, width, height, 0xbb, 0xffffff);
+        NarakaRenderUtils.renderRhombus(poseStack.last(), vertexConsumer, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY, width, height, 0xbb, 0);
         poseStack.mulPose(Axis.YP.rotationDegrees(180));
-        NarakaRenderUtils.renderRhombus(poseStack.last(), vertexConsumer, width, height, 0xbb, 0xffffff);
+        NarakaRenderUtils.renderRhombus(poseStack.last(), vertexConsumer, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY, width, height, 0xbb, 0);
         poseStack.popPose();
 
         ShinyEffectRenderer.renderShiny(tick, lifetime - 10, 1, false, 0x888888, poseStack, bufferSource);

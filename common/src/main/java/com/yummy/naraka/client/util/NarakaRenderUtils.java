@@ -162,6 +162,33 @@ public class NarakaRenderUtils {
         poseStack.mulPose(Axis.ZP.rotationDegrees(rotation * 2));
     }
 
+    public static void renderRhombus(PoseStack.Pose pose, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float width, float height, int alpha, int color) {
+        vertexConsumer.addVertex(pose, 0, height, 0)
+                .setUv(0, 1)
+                .setLight(packedLight)
+                .setOverlay(packedOverlay)
+                .setNormal(pose, 0, 1, 0)
+                .setColor(FastColor.ARGB32.color(alpha, color));
+        vertexConsumer.addVertex(pose, -width, 0, 0)
+                .setUv(0, 0)
+                .setLight(packedLight)
+                .setOverlay(packedOverlay)
+                .setNormal(pose, 0, 1, 0)
+                .setColor(FastColor.ARGB32.color(alpha, color));
+        vertexConsumer.addVertex(pose, 0, -height, 0)
+                .setUv(1, 0)
+                .setLight(packedLight)
+                .setOverlay(packedOverlay)
+                .setNormal(pose, 0, 1, 0)
+                .setColor(FastColor.ARGB32.color(alpha, color));
+        vertexConsumer.addVertex(pose, width, 0, 0)
+                .setUv(1, 1)
+                .setLight(packedLight)
+                .setOverlay(packedOverlay)
+                .setNormal(pose, 0, 1, 0)
+                .setColor(FastColor.ARGB32.color(alpha, color));
+    }
+
     public static void renderRhombus(PoseStack.Pose pose, VertexConsumer vertexConsumer, float width, float height, int alpha, int color) {
         vertexConsumer.addVertex(pose, 0, height, 0)
                 .setNormal(pose, 0, 1, 0)
