@@ -12,6 +12,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
@@ -19,6 +20,11 @@ import net.minecraft.resources.ResourceLocation;
 public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHerobrine, AbstractHerobrineModel<ShadowHerobrine>> {
     public ShadowHerobrineRenderer(EntityRendererProvider.Context context) {
         super(context, defaultModel(context, true, HerobrineModel::new), finalModel(context, true, FinalHerobrineModel::new), 0.5f);
+    }
+
+    @Override
+    public boolean shouldRender(ShadowHerobrine entity, Frustum camera, double camX, double camY, double camZ) {
+        return true;
     }
 
     @Override
