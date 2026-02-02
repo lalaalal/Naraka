@@ -133,11 +133,12 @@ public class SkillManager {
             }
         } else {
             Skill<?> usable = selectSkill(level);
-            if (usable != null)
+            if (usable != null) {
                 setCurrentSkill(usable);
-            if (!paused) {
-                for (Consumer<Skill<?>> listener : skillSelectListeners)
-                    listener.accept(usable);
+                if (!paused) {
+                    for (Consumer<Skill<?>> listener : skillSelectListeners)
+                        listener.accept(usable);
+                }
             }
         }
 
