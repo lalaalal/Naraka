@@ -20,8 +20,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
 import java.util.List;
@@ -47,31 +45,22 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Abst
     public void render(Herobrine entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         List<BeamEffect> beamEffects = BeamEffectsHelper.get(entity);
         entity.updateBeamEffects(beamEffects, entity.tickCount + partialTicks);
-        if (entity.isDeadOrDying() && NarakaClientContext.SHADER_ENABLED.getValue()) {
-            renderChzzk(entity, partialTicks, poseStack, buffer, getChzzkRenderType(entity, partialTicks, 0.001f, 0.01f), packedLight);
-            renderChzzk(entity, partialTicks, poseStack, buffer, getChzzkRenderType(entity, partialTicks, 0.002f, 0.005f), packedLight);
-            renderChzzk(entity, partialTicks, poseStack, buffer, getChzzkRenderType(entity, partialTicks, 0.0015f, 0.0025f), packedLight);
-            packedLight = 0;
-        }
-        if (entity.isDeadOrDying() && !NarakaClientContext.SHADER_ENABLED.getValue()) {
-            renderChzzk(entity, partialTicks + 10, poseStack, buffer, NarakaRenderTypes.longinusCutout(NarakaTextures.FINAL_HEROBRINE), packedLight);
-            renderChzzk(entity, partialTicks + 30, poseStack, buffer, NarakaRenderTypes.longinusCutout(NarakaTextures.FINAL_HEROBRINE), packedLight);
+        if (entity.isDeadOrDying() && entity.deathTime > 60) {
+            if (NarakaClientContext.SHADER_ENABLED.getValue())
+                packedLight = 0;
+            renderChzzk(entity, partialTicks + 10, poseStack, buffer, getChzzkRenderType(entity, partialTicks, 0.001f, 0.01f), packedLight);
+            renderChzzk(entity, partialTicks + 30, poseStack, buffer, getChzzkRenderType(entity, partialTicks, 0.002f, 0.005f), packedLight);
         }
         poseStack.pushPose();
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
         poseStack.popPose();
     }
 
-    private Vec3 randomTranslation(Herobrine herobrine) {
-        RandomSource random = RandomSource.create(herobrine.tickCount);
-        double x = random.nextDouble() * 0.5;
-        double z = random.nextDouble() * 0.5;
-        return new Vec3(x, 0, z);
-    }
-
     private RenderType getChzzkRenderType(Herobrine herobrine, float partialTick, float uMultiplier, float vMultiplier) {
         float ageInTicks = herobrine.tickCount + partialTick;
-        return RenderType.energySwirl(NarakaTextures.LONGINUS, (ageInTicks * uMultiplier) % 1, (ageInTicks * vMultiplier) % 1);
+        if (NarakaClientContext.SHADER_ENABLED.getValue())
+            return RenderType.energySwirl(NarakaTextures.LONGINUS, (ageInTicks * uMultiplier) % 1, (ageInTicks * vMultiplier) % 1);
+        return NarakaRenderTypes.longinusCutout(NarakaTextures.FINAL_HEROBRINE);
     }
 
     private void renderChzzk(Herobrine herobrine, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, RenderType renderType, int packedLight) {
@@ -80,7 +69,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Abst
         dyingModel.setupChzzkAnimation(herobrine.chzzkAnimationState, herobrine.tickCount + partialTick);
         this.setupRotations(herobrine, poseStack, getBob(herobrine, partialTick), herobrine.getViewYRot(partialTick), partialTick, herobrine.getScale());
         poseStack.scale(-1, -1, 1);
-        poseStack.translate(0, -1.501F, 0);
+        poseStack.translate(0, -1.401F, 0);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
         dyingModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();

@@ -82,7 +82,7 @@ public class FinalHerobrineModel<T extends AbstractHerobrine> extends AbstractHe
 
     public void setupChzzkAnimation(AnimationState chzzkAnimationState, float ageInTicks) {
         resetPose();
-        animate(chzzkAnimationState, FinalHerobrineAnimation.CHZZK, ageInTicks);
+        animate(chzzkAnimationState, FinalHerobrineAnimation.HIDDEN_CHZZK, ageInTicks);
     }
 
     @Override

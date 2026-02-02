@@ -783,6 +783,9 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
         if (damageSource.getEntity() instanceof LivingEntity livingEntity)
             rewardChallenger(livingEntity);
         super.die(damageSource);
+        setFinalModel(true);
+        setDisplayPickaxe(true);
+        entityData.set(DISPLAY_SCARF, true);
         if (!level().isClientSide()) {
             bossEvent.getPlayers().forEach(this::sendStopPacket);
             bossEvent.removeAllPlayers();
