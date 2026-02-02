@@ -46,8 +46,6 @@ public class FollowOwnerGoal<T extends Mob & TraceableEntity> extends Goal {
             this.timeToRecalculatePath = this.adjustedTickDelay(10);
             if (entity.distanceToSqr(owner) >= (TELEPORT_DISTANCE * TELEPORT_DISTANCE)) {
                 teleportTo(owner);
-            } else {
-                entity.getNavigation().moveTo(owner, 1);
             }
         }
     }
