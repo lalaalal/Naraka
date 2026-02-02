@@ -825,6 +825,11 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     @Override
+    public boolean shouldBeSaved() {
+        return skillManager.getCurrentSkill() != despawnSkill && super.shouldBeSaved();
+    }
+
+    @Override
     public void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         output.putFloat("HurtDamageLimit", hurtDamageLimit);
