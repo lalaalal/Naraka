@@ -1,10 +1,7 @@
 package com.yummy.naraka.world.entity.data;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class LockedHealthHelper {
     public static double get(LivingEntity livingEntity) {
@@ -20,11 +17,8 @@ public class LockedHealthHelper {
     public static void lock(LivingEntity target, double amount) {
         if (NarakaEntityUtils.isDamageable(target)) {
             double lockedHealth = get(target);
-            double originalMaxHealth = target.getMaxHealth() + lockedHealth;
-            double lockRatio = amount / originalMaxHealth;
-            AttributeModifier maxHealthModifier = NarakaAttributeModifiers.reduceMaxHealth(NarakaAttributeModifiers.REDUCE_MAX_HEALTH_ID, lockRatio);
-            NarakaAttributeModifiers.addPermanentModifier(target, Attributes.MAX_HEALTH, maxHealthModifier);
-            EntityDataHelper.setEntityData(target, NarakaEntityDataTypes.LOCKED_HEALTH.get(), amount);
+            EntityDataHelper.setEntityData(target, NarakaEntityDataTypes.LOCKED_HEALTH.get(), lockedHealth + amount);
+            target.setHealth((float) Math.min(target.getHealth(), target.getMaxHealth() - (lockedHealth + amount)));
         }
     }
 
@@ -34,7 +28,6 @@ public class LockedHealthHelper {
      * @param target Target entity to restore max health
      */
     public static void release(LivingEntity target) {
-        NarakaAttributeModifiers.removeAttributeModifier(target, Attributes.MAX_HEALTH, NarakaAttributeModifiers.REDUCE_MAX_HEALTH_ID);
         EntityDataHelper.setEntityData(target, NarakaEntityDataTypes.LOCKED_HEALTH.get(), 0.0);
     }
 }

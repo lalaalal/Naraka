@@ -28,6 +28,7 @@ public final class LanguageKey {
     public static final String PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.location("smithing_template.purified_soul_upgrade.additions_slot_description"));
     public static final String JADE_SOUL_CRAFTING_FUEL_KEY = "jade.naraka.soul_crafting.fuel";
     public static final String JADE_STIGMA_KEY = "jade.naraka.stigma";
+    public static final String JADE_LOCKED_HEALTH_KEY = "jade.naraka.locked_health";
     public static final String JADE_DEATH_COUNT_KEY = "jade.naraka.death_count";
     public static final String JADE_SOUL_STABILIZER_KEY = "jade.naraka.soul_stabilizer";
     public static final String JADE_NECTARIUM_CORE_ACTIVATED_KEY = "jade.naraka.nectarium_core.activated";

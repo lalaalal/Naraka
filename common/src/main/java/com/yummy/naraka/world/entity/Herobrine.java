@@ -629,7 +629,7 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
 
     @Override
     protected void actuallyHurt(DamageSource damageSource, float damageAmount) {
-        if (!isHibernateMode())
+        if (!isHibernateMode() || damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             super.actuallyHurt(damageSource, damageAmount);
         if (level() instanceof ServerLevel level) {
             updateHurtDamageLimit(level);

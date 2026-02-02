@@ -71,7 +71,7 @@ public record Stigma(int value, long lastMarkedTime) {
      */
     public Stigma consume(ServerLevel level, LivingEntity livingEntity, Entity cause) {
         int stunDuration = NarakaConfig.COMMON.stigmaStunDuration.getValue();
-        lockHealth(level, livingEntity, cause);
+        lockHealth(livingEntity, cause);
         StunHelper.stunEntity(livingEntity, stunDuration);
         livingEntity.level().playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.TOTEM_USE, livingEntity.getSoundSource(), 1.0F, 1.0F);
 
@@ -81,18 +81,14 @@ public record Stigma(int value, long lastMarkedTime) {
         return new Stigma(0, lastMarkedTime);
     }
 
-    private void lockHealth(ServerLevel level, LivingEntity livingEntity, Entity cause) {
+    private void lockHealth(LivingEntity livingEntity, Entity cause) {
         double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
-        double lockedHealth = EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.LOCKED_HEALTH.get());
-        double originalMaxHealth = maxHealth + lockedHealth;
-        double reducingHealth = originalMaxHealth * NarakaConfig.COMMON.lockHealthRatio.getValue();
-        lockedHealth += reducingHealth;
-
-        if (lockedHealth >= originalMaxHealth) {
+        double reducingHealth = maxHealth * NarakaConfig.COMMON.lockHealthRatio.getValue();
+        if (reducingHealth >= livingEntity.getHealth()) {
             DamageSource source = NarakaDamageSources.stigma(cause);
             livingEntity.hurt(source, 6.66e6f);
         } else {
-            LockedHealthHelper.lock(livingEntity, lockedHealth);
+            LockedHealthHelper.lock(livingEntity, reducingHealth);
         }
     }
 }

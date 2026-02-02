@@ -4,10 +4,8 @@ import com.yummy.naraka.client.NarakaSprites;
 import com.yummy.naraka.client.event.ClientEvents;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.EntityDataType;
-import com.yummy.naraka.world.entity.data.LockedHealthHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -16,8 +14,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 
@@ -27,25 +23,6 @@ public class LockedHealthHud implements LayeredDraw.Layer {
     public static final int HEART_WIDTH = 8;
 
     private int blinkTime;
-
-    public static int modifyOffsetHeartIndex(Player player, int tickCount, int original) {
-        if (original == -1)
-            return original;
-
-        double heartCount = player.getMaxHealth() / 2;
-        long offsetHeartIndex = tickCount % Math.round(heartCount + 5.0F);
-        if (offsetHeartIndex > heartCount)
-            return -1;
-        return (int) offsetHeartIndex;
-    }
-
-    public static int modifyHeartY(Player player, int heartY, int baseY, int height, int lineCount, int heartIndex) {
-        long originalHeartCount = Math.round(player.getMaxHealth() + LockedHealthHelper.get(player) / 2);
-        int heartCount = Math.round(player.getMaxHealth() / 2);
-        if (heartCount <= heartIndex && heartIndex < originalHeartCount)
-            return baseY - lineCount * height;
-        return heartY;
-    }
 
     public LockedHealthHud() {
         EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.LOCKED_HEALTH.get(), this::onLockedHealthChanged);
@@ -72,21 +49,14 @@ public class LockedHealthHud implements LayeredDraw.Layer {
         int baseX = graphics.guiWidth() / 2 - 91;
         int baseY = graphics.guiHeight() - 39;
         double lockedHealth = EntityDataHelper.getRawEntityData(player, NarakaEntityDataTypes.LOCKED_HEALTH.get());
-        double maxHealth = player.getAttributeValue(Attributes.MAX_HEALTH);
-        double originalMaxHealth = maxHealth + lockedHealth;
+        double originalMaxHealth = player.getAttributeValue(Attributes.MAX_HEALTH);
+        double maxHealth = originalMaxHealth - lockedHealth;
         int heartCount = (int) Math.round(originalMaxHealth / 2);
         int lockedHeartCount = heartCount - (int) Math.round(maxHealth / 2);
         float absorption = player.getAbsorptionAmount();
 
         boolean hasRightHalfLockedHeart = Math.round(maxHealth) % 2 != 0;
         boolean hasLeftHalfLockedHeart = Math.round(originalMaxHealth) % 2 != 0;
-
-        AttributeInstance attributeInstance = player.getAttribute(Attributes.MAX_HEALTH);
-        if (attributeInstance == null)
-            return;
-        AttributeModifier modifier = attributeInstance.getModifier(NarakaAttributeModifiers.REDUCE_MAX_HEALTH_ID);
-        if (modifier == null || modifier.amount() - (lockedHealth / originalMaxHealth) > 1E-5)
-            return;
 
         int totalHeartLineCount = (int) Math.round((originalMaxHealth + absorption) / 20f);
         int height = Math.max(10 - (totalHeartLineCount - 2), 3);
