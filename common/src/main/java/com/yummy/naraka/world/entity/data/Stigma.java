@@ -6,7 +6,6 @@ import com.yummy.naraka.config.NarakaCommonConfig;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
-import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;

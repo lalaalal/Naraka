@@ -1,18 +1,12 @@
-package com.yummy.naraka.world.entity;
+package com.yummy.naraka.world.entity.data;
 
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
-import com.yummy.naraka.util.TickSchedule;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public final class StunHelper {
-    private static final Map<LivingEntity, TickSchedule> STUN_RELEASE_SCHEDULES = new HashMap<>();
-
     public static void holdEntity(LivingEntity livingEntity) {
         NarakaAttributeModifiers.addAttributeModifier(
                 livingEntity,
@@ -81,16 +75,10 @@ public final class StunHelper {
         );
         if (livingEntity instanceof Mob mob)
             mob.setNoAi(false);
-        STUN_RELEASE_SCHEDULES.remove(livingEntity);
-    }
-
-    private static TickSchedule createReleaseSchedule(LivingEntity livingEntity, int tickAfter) {
-        long gameTime = livingEntity.level().getGameTime();
-        return TickSchedule.executeAfter(gameTime, tickAfter, () -> releaseEntity(livingEntity));
     }
 
     public static boolean isStun(LivingEntity livingEntity) {
-        return NarakaAttributeModifiers.hasAttributeModifier(livingEntity, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STUN_PREVENT_MOVING);
+        return EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.get()) > 0;
     }
 
     /**
@@ -104,17 +92,12 @@ public final class StunHelper {
     }
 
     public static void stunEntity(LivingEntity livingEntity, int duration, boolean update) {
-        if (livingEntity.getType().is(NarakaEntityTypeTags.STUN_IMMUNE))
+        if (update)
+            duration = EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.get()) + duration;
+        if (livingEntity.getType().is(NarakaEntityTypeTags.STUN_IMMUNE) || duration == 0)
             return;
         holdEntity(livingEntity);
         livingEntity.stopUsingItem();
-        long gameTime = livingEntity.level().getGameTime();
-        TickSchedule schedule = STUN_RELEASE_SCHEDULES.computeIfAbsent(livingEntity, key -> createReleaseSchedule(key, duration));
-        if (schedule.isExpired(gameTime)) {
-            schedule = createReleaseSchedule(livingEntity, duration);
-        } else if (update && schedule.getTimeToRun() < gameTime + duration) {
-            schedule.update(gameTime + duration);
-        }
-        STUN_RELEASE_SCHEDULES.put(livingEntity, schedule);
+        EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.get(), duration);
     }
 }
