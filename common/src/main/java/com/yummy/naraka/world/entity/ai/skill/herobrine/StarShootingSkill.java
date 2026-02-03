@@ -137,10 +137,8 @@ public class StarShootingSkill extends ComboSkill<Herobrine> {
 
     @Override
     public void interrupt() {
-        for (CorruptedStar corruptedStar : corruptedStars)
-            corruptedStar.discard();
-        for (CorruptedStar followingStar : followingStars)
-            followingStar.discard();
+        shootCorruptedStars(corruptedStars, 0.75f, corruptedStars.size());
+        shootCorruptedStars(followingStars, 0.35f, followingStars.size());
     }
 
     @Override

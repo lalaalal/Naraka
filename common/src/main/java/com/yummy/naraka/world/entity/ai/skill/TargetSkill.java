@@ -65,7 +65,7 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
     protected void teleportToTarget(LivingEntity target, double distance) {
         Vec3 delta = target.getLookAngle().scale(distance);
         Vec3 position = target.position().add(delta);
-        mob.teleportTo(position.x, mob.getY(), position.z);
+        mob.teleportTo(position.x, position.y + 0.75, position.z);
         mob.level().playSound(null, mob, SoundEvents.PLAYER_TELEPORT, SoundSource.HOSTILE, 1, 1);
     }
 

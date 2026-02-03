@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 
@@ -42,6 +43,11 @@ public class LockedHealthParticle extends TextureSheetParticle {
             else
                 y -= 0.1;
         }
+    }
+
+    @Override
+    protected int getLightColor(float partialTick) {
+        return LightTexture.FULL_BRIGHT;
     }
 
     @Override
