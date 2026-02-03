@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.tags.ConventionalTags;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
@@ -163,10 +164,14 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         return navigation;
     }
 
+    private static boolean selectTarget(LivingEntity livingEntity) {
+        return isNotHerobrine(livingEntity) && (livingEntity.getType().is(ConventionalTags.Entities.BOSSES) || livingEntity.getType() == EntityType.PLAYER);
+    }
+
     @Override
     protected void registerGoals() {
         targetSelector.addGoal(1, new HurtByTargetGoal(this, Herobrine.class));
-        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, (target, level) -> isNotHerobrine(target)));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, (target, level) -> selectTarget(target)));
 
         goalSelector.addGoal(2, new LookAtTargetGoal(this));
     }

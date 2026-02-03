@@ -215,6 +215,14 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        if (getTarget() instanceof Mob mob) {
+            getHerobrine().ifPresent(mob::setTarget);
+        }
+    }
+
+    @Override
     protected AABB makeBoundingBox(Vec3 position) {
         if (isFinalModel()) {
             AABB boundingBox = super.makeBoundingBox(position);

@@ -8,6 +8,7 @@ import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAfterimagePacket;
 import com.yummy.naraka.sounds.NarakaMusics;
+import com.yummy.naraka.tags.ConventionalTags;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
@@ -245,6 +246,10 @@ public class Herobrine extends AbstractHerobrine {
         setDisplayPickaxe(true);
 
         int armor = 0;
+        for (LivingEntity livingEntity : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(20, 5, 20), AbstractHerobrine::isNotHerobrine)) {
+            if (livingEntity.getType().is(ConventionalTags.Entities.BOSSES))
+                armor += 12;
+        }
         for (ServerPlayer player : bossEvent.getPlayers()) {
             if (NarakaEntityUtils.isDamageablePlayer(player))
                 armor += 6;
