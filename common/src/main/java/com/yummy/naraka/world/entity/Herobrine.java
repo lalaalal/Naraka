@@ -428,6 +428,7 @@ public class Herobrine extends AbstractHerobrine {
         if (NarakaConfig.COMMON.despawnHerobrineWhenTargetIsDead.getValue()
                 && skillManager.getCurrentSkill() != despawnSkill
                 && watchingEntities.isEmpty() && maxWatchedEntities > 0) {
+            skillManager.interrupt();
             skillManager.setCurrentSkill(despawnSkill);
         }
         if (getPhase() == 2 && tickCount % 100 == 0) {
