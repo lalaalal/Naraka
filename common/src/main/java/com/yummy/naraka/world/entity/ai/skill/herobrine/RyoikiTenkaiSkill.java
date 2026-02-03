@@ -4,6 +4,7 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
+import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
@@ -25,6 +26,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -58,6 +60,9 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
     @Override
     protected void onFirstTick(ServerLevel level) {
         mob.setDeltaMovement(Vec3.ZERO);
+        Entity vehicle = mob.getVehicle();
+        if (vehicle != null)
+            EntityDataHelper.setEntityData(vehicle, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
 
         sendEffectToPlayers(level);
 
@@ -154,8 +159,10 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
     }
 
     private void handleOnIncorrectPosition(LivingEntity target) {
-        StunHelper.stunEntity(target, 20);
-        caughtEntities.add(target);
+        if (NarakaEntityUtils.isDamageable(target)) {
+            StunHelper.stunEntity(target, 20);
+            caughtEntities.add(target);
+        }
     }
 
     @Override

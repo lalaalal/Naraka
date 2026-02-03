@@ -85,7 +85,9 @@ public class SkillManager {
     public void setCurrentSkill(@Nullable Skill<?> skill) {
         if (skill == null)
             return;
-        NarakaMod.LOGGER.debug("{} : Setting current skill {}", mob, skill.identifier);
+        if (currentSkill != null)
+            currentSkill.interrupt();
+        NarakaMod.LOGGER.debug("{} : Setting current skill {}", mob, skill.location);
         currentSkill = skill;
         currentSkill.prepare();
         for (Consumer<Skill<?>> listener : skillStartListeners)
