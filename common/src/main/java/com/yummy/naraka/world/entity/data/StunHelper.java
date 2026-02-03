@@ -92,10 +92,13 @@ public final class StunHelper {
     }
 
     public static void stunEntity(LivingEntity livingEntity, int duration, boolean update) {
-        if (update)
-            duration = EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.get()) + duration;
         if (livingEntity.getType().is(NarakaEntityTypeTags.STUN_IMMUNE) || duration == 0)
             return;
+
+        int previousStunTick = EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.get());
+        if (previousStunTick > duration || (previousStunTick > 0 && !update))
+            return;
+
         holdEntity(livingEntity);
         livingEntity.stopUsingItem();
         EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.get(), duration);
