@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.config.NarakaCommonConfig;
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
 import net.minecraft.server.level.ServerLevel;
@@ -70,6 +71,7 @@ public record Stigma(int value, long lastMarkedTime) {
      */
     public Stigma consume(ServerLevel level, LivingEntity livingEntity, Entity cause) {
         int stunDuration = NarakaConfig.COMMON.stigmaStunDuration.getValue();
+        level.sendParticles(NarakaParticleTypes.LOCKED_HEALTH.get(), livingEntity.getX(), livingEntity.getEyeY(), livingEntity.getZ(), 0, 0, 0, 0, 1);
         lockHealth(level, livingEntity, cause);
         StunHelper.stunEntity(livingEntity, stunDuration);
         livingEntity.level().playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.TOTEM_USE, livingEntity.getSoundSource(), 1.0F, 1.0F);

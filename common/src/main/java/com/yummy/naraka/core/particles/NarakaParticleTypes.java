@@ -23,6 +23,8 @@ public class NarakaParticleTypes {
     public static final HolderProxy<ParticleType<?>, SimpleParticleType> TELEPORT = register("teleport", true);
     public static final HolderProxy<ParticleType<?>, SimpleParticleType> STARDUST = register("stardust", true);
 
+    public static final HolderProxy<ParticleType<?>, SimpleParticleType> LOCKED_HEALTH = register("locked_health", true);
+
     private static <T extends ParticleType<?>> HolderProxy<ParticleType<?>, T> register(String name, boolean force, Function<Boolean, T> factory) {
         return RegistryProxy.register(Registries.PARTICLE_TYPE, name, () -> factory.apply(force));
     }
