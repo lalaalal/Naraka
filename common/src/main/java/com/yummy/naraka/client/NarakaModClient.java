@@ -154,6 +154,7 @@ public final class NarakaModClient {
         ParticleProviderRegistry.register(NarakaParticleTypes.FLICKER, BlinkParticle.Provider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.STARDUST, BlinkParticle.Provider::withGlowing);
         ParticleProviderRegistry.register(NarakaParticleTypes.TELEPORT, BlinkParticle.Provider::withGlowing);
+        ParticleProviderRegistry.register(NarakaParticleTypes.LOCKED_HEALTH, LockedHealthParticle.Provider::new);
     }
 
     private static void registerKeyMappings() {

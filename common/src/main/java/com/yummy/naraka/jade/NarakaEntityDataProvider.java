@@ -40,7 +40,7 @@ public class NarakaEntityDataProvider implements IEntityComponentProvider {
             double lockedHealth = LockedHealthHelper.get(livingEntity);
             if (lockedHealth > 0) {
                 tooltip.add(elements.smallItem(NarakaItems.LOCKED_HEALTH.get().getDefaultInstance()));
-                tooltip.append(Component.translatable(LanguageKey.JADE_STIGMA_KEY, lockedHealth));
+                tooltip.append(Component.translatable(LanguageKey.JADE_STIGMA_KEY, (int) lockedHealth));
             }
         }
     }

@@ -9,7 +9,6 @@ import net.minecraft.core.registries.Registries;
 import java.util.function.Function;
 
 public class NarakaParticleTypes {
-    public static final HolderProxy<ParticleType<?>, SimpleParticleType> EBONY_LEAVES = register("ebony_leaves", false);
     public static final HolderProxy<ParticleType<?>, SimpleParticleType> DRIPPING_NECTARIUM = register("dripping_nectarium", false);
     public static final HolderProxy<ParticleType<?>, SimpleParticleType> FALLING_NECTARIUM = register("falling_nectarium", false);
     public static final HolderProxy<ParticleType<?>, SimpleParticleType> LANDING_NECTARIUM = register("landing_nectarium", false);
@@ -23,6 +22,8 @@ public class NarakaParticleTypes {
     public static final HolderProxy<ParticleType<?>, SimpleParticleType> FLICKER = register("flicker", true);
     public static final HolderProxy<ParticleType<?>, SimpleParticleType> TELEPORT = register("teleport", true);
     public static final HolderProxy<ParticleType<?>, SimpleParticleType> STARDUST = register("stardust", true);
+
+    public static final HolderProxy<ParticleType<?>, SimpleParticleType> LOCKED_HEALTH = register("locked_health", true);
 
     private static <T extends ParticleType<?>> HolderProxy<ParticleType<?>, T> register(String name, boolean force, Function<Boolean, T> factory) {
         return RegistryProxy.register(Registries.PARTICLE_TYPE, name, () -> factory.apply(force));
