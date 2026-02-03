@@ -3,10 +3,13 @@ package com.yummy.naraka.client.renderer.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaModelLayers;
+import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.world.block.SoulSmithingBlock;
 import com.yummy.naraka.world.block.entity.SoulSmithingBlockEntity;
+import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
@@ -114,9 +117,18 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
 
         poseStack.pushPose();
         poseStack.rotateAround(rotation, 0.5f, 0.5f, 0.5f);
-        RenderType renderType = RenderType.entityCutout(NarakaTextures.getTemplateTexture(templateItem));
-        trimTemplate.render(poseStack, bufferSource.getBuffer(renderType), packedLight, OverlayTexture.NO_OVERLAY);
+        RenderType renderType = getRenderTypeForTrim(templateItem);
+        trimTemplate.render(poseStack, bufferSource.getBuffer(renderType), packedLight, OverlayTexture.NO_OVERLAY, 0x88000000);
         poseStack.popPose();
+    }
+
+    private RenderType getRenderTypeForTrim(ItemStack templateItem) {
+        if (templateItem.is(NarakaItems.HEROBRINE_SCARF)) {
+            if (NarakaClientContext.SHADER_ENABLED.getValue())
+                return RenderType.entityTranslucent(NarakaTextures.AREA_EFFECT);
+            return NarakaRenderTypes.longinus();
+        }
+        return RenderType.entityCutout(NarakaTextures.getTemplateTexture(templateItem));
     }
 
     private void renderItem(SoulSmithingBlockEntity blockEntity, PoseStack poseStack, MultiBufferSource bufferSource, Quaternionf rotation, int packedLight) {

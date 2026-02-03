@@ -261,6 +261,8 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.HEROBRINE_SCARF, "Herobrine Scarf", "히로빈 스카프");
         addItem(NarakaItems.NARAKA_PICKAXE, "Naraka Pickaxe", "파멸의 낫");
 
+        addItem(NarakaItems.LOCKED_HEALTH, "Locked Health");
+
         addBlock(NarakaBlocks.AMETHYST_ORE, "Amethyst Ore", "자수정 광석");
         addBlock(NarakaBlocks.DEEPSLATE_AMETHYST_ORE, "Deepslate Amethyst Ore", "심층암 자수정 광석");
         addBlock(NarakaBlocks.NECTARIUM_ORE, "Nectarium Ore", "넥타륨 광석");
@@ -306,6 +308,13 @@ public class NarakaLanguageProviders {
         addEntityType(NarakaEntityTypes.DIAMOND_GOLEM, "Diamond Golem", "다이아몬드 골렘");
         addEntityType(NarakaEntityTypes.MAGIC_CIRCLE, "Magic Circle", "마법진");
         addEntityType(NarakaEntityTypes.NARAKA_PICKAXE, "Naraka Pickaxe", "파멸의 낫");
+        addEntityType(NarakaEntityTypes.COLORED_LIGHTNING_BOLT, "Colored Lightning Bolt");
+        addEntityType(NarakaEntityTypes.MASSIVE_LIGHTNING, "Massive Lightning");
+        addEntityType(NarakaEntityTypes.CORRUPTED_STAR, "Corrupted Star", "부패의 별");
+        addEntityType(NarakaEntityTypes.SHINY_EFFECT, "Shiny Effect");
+        addEntityType(NarakaEntityTypes.AREA_EFFECT, "Area Effect");
+        addEntityType(NarakaEntityTypes.NARAKA_PORTAL, "Naraka Portal");
+        addEntityType(NarakaEntityTypes.LIGHTNING_CIRCLE, "Lightning Circle");
 
         addDamageType(NarakaDamageTypes.SPEAR_OF_LONGINUS, "%1$s's AT Field was torn by %2$s", "%1$s의 AT 필드가 %2$s에 찢어졌습니다");
         addDamageType(NarakaDamageTypes.STIGMA, "%1$s's has been deprived of life due to %2$s's stigma stacking", "%1$s이(가) %2$s의 낙인이 중첩돼 생명을 빼앗겼습니다");
