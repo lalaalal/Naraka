@@ -139,7 +139,7 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
     }
 
     private void checkPlayerPositions(ServerLevel level) {
-        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, mob.getBoundingBox().inflate(40, 5, 40), AbstractHerobrine::isNotHerobrine);
+        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, mob.getBoundingBox().inflate(40), AbstractHerobrine::isNotHerobrine);
         for (LivingEntity target : entities) {
             Vec3 check = target.position()
                     .subtract(mob.position())

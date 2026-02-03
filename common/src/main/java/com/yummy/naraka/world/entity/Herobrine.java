@@ -9,6 +9,7 @@ import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAfterimagePacket;
 import com.yummy.naraka.sounds.NarakaMusics;
+import com.yummy.naraka.tags.ConventionalTags;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
@@ -45,6 +46,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -263,6 +265,10 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
         setDisplayPickaxe(true);
 
         int armor = 0;
+        for (LivingEntity livingEntity : level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), this, getBoundingBox().inflate(20, 5, 20))) {
+            if (livingEntity.getType().is(ConventionalTags.Entities.BOSSES))
+                armor += 12;
+        }
         for (ServerPlayer player : bossEvent.getPlayers()) {
             if (NarakaEntityUtils.isDamageablePlayer(player))
                 armor += 6;

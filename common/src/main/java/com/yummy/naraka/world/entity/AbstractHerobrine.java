@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.tags.ConventionalTags;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
@@ -25,7 +26,6 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
@@ -162,10 +162,14 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         return navigation;
     }
 
+    private static boolean selectTarget(LivingEntity livingEntity) {
+        return isNotHerobrine(livingEntity) && (livingEntity.getType().is(ConventionalTags.Entities.BOSSES) || livingEntity.getType() == EntityType.PLAYER);
+    }
+
     @Override
     protected void registerGoals() {
         targetSelector.addGoal(1, new HurtByTargetGoal(this, Herobrine.class));
-        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, AbstractHerobrine::isNotHerobrine));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, false, AbstractHerobrine::selectTarget));
 
         goalSelector.addGoal(2, new LookAtTargetGoal(this));
     }

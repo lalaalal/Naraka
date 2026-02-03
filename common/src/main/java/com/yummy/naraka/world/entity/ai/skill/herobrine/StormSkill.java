@@ -44,6 +44,7 @@ public class StormSkill extends ComboSkill<Herobrine> {
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
+        mob.setDeltaMovement(Vec3.ZERO);
         runAt(30, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPull, 0.23));
 
         runAt(20, () -> {
