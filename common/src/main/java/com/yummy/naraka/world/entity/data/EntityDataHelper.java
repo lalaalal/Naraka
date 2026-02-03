@@ -123,7 +123,7 @@ public class EntityDataHelper {
 
     public static void removeEntityData(Entity entity, EntityDataType<?, ?> entityDataType) {
         removeEntityData(entity.level(), entity.getUUID(), entityDataType);
-        syncEntityData(entity, SyncEntityDataPacket.Action.REMOVE_GIVEN);
+        syncEntityData(entity, entityDataType, SyncEntityDataPacket.Action.REMOVE_GIVEN);
     }
 
     public static boolean hasEntityData(Entity entity) {

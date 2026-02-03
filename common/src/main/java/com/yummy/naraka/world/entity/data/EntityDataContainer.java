@@ -40,6 +40,6 @@ public class EntityDataContainer {
     }
 
     public Set<EntityDataType<?, ?>> getEntityDataTypes() {
-        return entityDataMap.keySet();
+        return Set.copyOf(entityDataMap.keySet());
     }
 }

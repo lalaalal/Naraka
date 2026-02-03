@@ -1,8 +1,8 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.world.entity.AbstractHerobrine;
-import com.yummy.naraka.world.entity.StunHelper;
 import com.yummy.naraka.world.entity.ai.skill.ComboSkill;
+import com.yummy.naraka.world.entity.data.StunHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
