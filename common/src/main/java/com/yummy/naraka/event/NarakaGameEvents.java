@@ -74,9 +74,9 @@ public final class NarakaGameEvents {
     }
 
     private static void modifyLootTable(ResourceKey<LootTable> key, LootEvents.Context context) {
-        if (key.identifier().getPath().contains("chests")) {
+        if (key.identifier().getPath().contains("chests/village/village_cartographer")) {
             context.addPool(LootPool.lootPool()
-                    .when(LootItemRandomChanceCondition.randomChance(0.01f))
+                    .when(LootItemRandomChanceCondition.randomChance(0.8f))
                     .setRolls(ConstantValue.exactly(1))
                     .add(LootItem.lootTableItem(NarakaItems.SANCTUARY_COMPASS.get()).setWeight(1))
             );
