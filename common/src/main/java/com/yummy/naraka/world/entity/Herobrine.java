@@ -613,12 +613,12 @@ public class Herobrine extends AbstractHerobrine {
     protected void actuallyHurt(ServerLevel level, DamageSource damageSource, float damageAmount) {
         if (!isHibernateMode() || damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             super.actuallyHurt(level, damageSource, damageAmount);
-        updateHurtDamageLimit(level);
         if (phaseManager.isPhaseChanged() && !isHibernateMode() && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             setHealth(phaseManager.getActualPhaseMaxHealth(getPhase()) + 1);
             startHibernateMode(level);
         }
         updateHibernateMode(level, damageSource);
+        updateHurtDamageLimit(level);
         accumulatedHurtDamage += damageAmount;
         if (getPhase() == 2 && (accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f))
             shadowController.increaseFlickerStack();
@@ -635,7 +635,7 @@ public class Herobrine extends AbstractHerobrine {
             if (getHealth() == getPhaseMinimumHealth() && getPhase() == 1)
                 startStaggering(HerobrineAnimationIdentifiers.STAGGERING_PHASE_2, 125, 100);
             resetDamageLimit();
-            if (hibernateMode)
+            if (hibernateMode && getPhase() == 1)
                 stopHibernateMode(level);
         }
     }
