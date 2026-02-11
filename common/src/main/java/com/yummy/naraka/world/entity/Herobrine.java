@@ -639,12 +639,12 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
         if (!isHibernateMode() || damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             super.actuallyHurt(damageSource, damageAmount);
         if (level() instanceof ServerLevel level) {
-            updateHurtDamageLimit(level);
             if (phaseManager.isPhaseChanged() && !isHibernateMode() && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
                 setHealth(phaseManager.getActualPhaseMaxHealth(getPhase()) + 1);
                 startHibernateMode(level);
             }
             updateHibernateMode(level, damageSource);
+            updateHurtDamageLimit(level);
         }
         accumulatedHurtDamage += damageAmount;
         if (getPhase() == 2 && (accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f))
@@ -662,7 +662,7 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
             if (getHealth() == getPhaseMinimumHealth() && getPhase() == 1)
                 startStaggering(HerobrineAnimationLocations.STAGGERING_PHASE_2, 125, 100);
             resetDamageLimit();
-            if (hibernateMode)
+            if (hibernateMode && getPhase() == 1)
                 stopHibernateMode(level);
         }
     }
