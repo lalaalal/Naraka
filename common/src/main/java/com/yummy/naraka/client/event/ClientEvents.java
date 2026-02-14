@@ -1,6 +1,7 @@
 package com.yummy.naraka.client.event;
 
 import com.yummy.naraka.event.Event;
+import com.yummy.naraka.event.PlatformInvokeRequired;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
@@ -10,8 +11,11 @@ import net.minecraft.world.level.BlockGetter;
 
 @Environment(EnvType.CLIENT)
 public class ClientEvents {
+    @PlatformInvokeRequired
     public static final Event<ClientState<Minecraft>> TICK_PRE = create();
+    @PlatformInvokeRequired
     public static final Event<ClientState<Minecraft>> TICK_POST = create();
+
     public static final Event<ClientState<Minecraft>> CLIENT_STOPPING = create();
     public static final Event<CameraSetup> CAMERA_SETUP = Event.create(listeners -> (context, level, entity, detached, thirdPersonReverse, partialTick) -> {
         for (CameraSetup listener : listeners)
