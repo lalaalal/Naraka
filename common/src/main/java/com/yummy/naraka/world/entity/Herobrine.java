@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.entity;
 
-import com.yummy.naraka.client.renderer.entity.state.BeamEffectRenderState;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
@@ -58,9 +57,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.function.Consumer;
 
-public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStateControl {
+public class Herobrine extends AbstractHerobrine {
     private static final float[] HEALTH_BY_PHASE = {106, 210, 350};
 
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.BLUE, BossEvent.BossBarColor.YELLOW, BossEvent.BossBarColor.RED};
@@ -124,7 +122,6 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
             walkAroundTargetSkill, 0.5f
     );
 
-    private final List<BeamEffectRenderState> beamEffectRenderStates = new ArrayList<>();
     private final List<Projectile> ignoredProjectiles = new ArrayList<>();
     private int maxWatchedEntities = 0;
     @Nullable
@@ -210,22 +207,6 @@ public class Herobrine extends AbstractHerobrine implements BeamEffectRenderStat
                     .findFirst()
                     .ifPresent(livingEntity -> selectedTarget = livingEntity);
         }
-    }
-
-    @Override
-    public void addBeamEffectRenderState(BeamEffectRenderState beamEffectRenderState) {
-        this.beamEffectRenderStates.add(beamEffectRenderState);
-    }
-
-    @Override
-    public void forEachBeamEffectRenderStates(Consumer<BeamEffectRenderState> consumer) {
-        this.beamEffectRenderStates.forEach(consumer);
-    }
-
-    @Override
-    public void updateBeamEffects(List<BeamEffect> beamEffects, float ageInTicks) {
-        this.beamEffectRenderStates.clear();
-        BeamEffectRenderStateControl.super.updateBeamEffects(beamEffects, ageInTicks);
     }
 
     public Optional<ShadowController> getShadowController() {

@@ -10,9 +10,7 @@ import com.yummy.naraka.client.layer.BeamEffectLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.model.FinalHerobrineModel;
 import com.yummy.naraka.client.model.HerobrineModel;
-import com.yummy.naraka.world.entity.BeamEffect;
 import com.yummy.naraka.world.entity.Herobrine;
-import com.yummy.naraka.world.entity.data.BeamEffectsHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -21,8 +19,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Vector3f;
-
-import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, AbstractHerobrineModel<Herobrine>> {
@@ -43,8 +39,6 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Abst
 
     @Override
     public void render(Herobrine entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
-        List<BeamEffect> beamEffects = BeamEffectsHelper.get(entity);
-        entity.updateBeamEffects(beamEffects, entity.tickCount + partialTicks);
         if (entity.isDeadOrDying() && entity.deathTime > 60) {
             if (NarakaClientContext.SHADER_ENABLED.getValue())
                 packedLight = 0;
