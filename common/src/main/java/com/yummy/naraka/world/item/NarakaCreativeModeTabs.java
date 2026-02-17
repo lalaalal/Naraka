@@ -159,6 +159,7 @@ public class NarakaCreativeModeTabs {
     private static ItemStack blessed(Item item) {
         ItemStack itemStack = new ItemStack(item);
         itemStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
+        itemStack.set(DataComponents.RARITY, Rarity.EPIC);
         itemStack.set(DataComponents.ITEM_NAME, Component.literal("Blessed ")
                 .append(Component.translatable(item.getDescriptionId())));
         return itemStack;

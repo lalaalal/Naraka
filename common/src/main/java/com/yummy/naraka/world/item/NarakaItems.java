@@ -34,9 +34,9 @@ public class NarakaItems {
 
     public static final HolderProxy<Item, Item> LOCKED_HEALTH = registerItem("locked_health", Item::new);
 
-    public static final HolderProxy<Item, Item> STIGMA_ROD = registerItem("stigma_rod", StigmaRodItem::new);
-    public static final HolderProxy<Item, Item> STARDUST_STAFF = registerItem("stardust_staff", StardustStaffItem::new);
-    public static final HolderProxy<Item, Item> NARAKA_FIREBALL_STAFF = registerItem("naraka_fireball_staff", NarakaFireballStaffItem::new);
+    public static final HolderProxy<Item, Item> STIGMA_ROD = registerItem("stigma_rod", StigmaRodItem::new, properties().rarity(Rarity.EPIC));
+    public static final HolderProxy<Item, Item> STARDUST_STAFF = registerItem("stardust_staff", StardustStaffItem::new, properties().rarity(Rarity.EPIC));
+    public static final HolderProxy<Item, Item> NARAKA_FIREBALL_STAFF = registerItem("naraka_fireball_staff", NarakaFireballStaffItem::new, properties().rarity(Rarity.EPIC));
 
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_1_DISC = registerDiscItem("herobrine_phase_1_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_1);
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_2_DISC = registerDiscItem("herobrine_phase_2_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_2);
@@ -92,10 +92,11 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> GOD_BLOOD = registerSimpleItem(
             "god_blood",
             properties -> properties.stacksTo(1)
+                    .rarity(Rarity.EPIC)
                     .fireResistant()
     );
 
-    public static final HolderProxy<Item, SanctuaryCompassItem> SANCTUARY_COMPASS = registerItem("sanctuary_compass", SanctuaryCompassItem::new);
+    public static final HolderProxy<Item, SanctuaryCompassItem> SANCTUARY_COMPASS = registerItem("sanctuary_compass", SanctuaryCompassItem::new, properties().rarity(Rarity.RARE));
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = registerSimpleItem("purified_soul_upgrade_smithing_template");
 
@@ -123,6 +124,7 @@ public class NarakaItems {
             properties -> new SpearItem(Tiers.NETHERITE,
                     true, 7, -3, 3,
                     properties.fireResistant()
+                            .rarity(Rarity.RARE)
                             .component(DataComponents.TOOL, TridentItem.createToolProperties()),
                     NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR
             )
@@ -131,6 +133,7 @@ public class NarakaItems {
             "spear_of_longinus",
             properties -> new SpearOfLonginusItem(properties
                     .fireResistant()
+                    .rarity(Rarity.EPIC)
                     .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
                     .component(DataComponents.TOOL, TridentItem.createToolProperties())
             )
@@ -155,7 +158,7 @@ public class NarakaItems {
     );
 
     public static final HolderProxy<Item, Item> HEROBRINE_SCARF = registerItem(
-            "herobrine_scarf", HerobrineScarfItem::new
+            "herobrine_scarf", HerobrineScarfItem::new, properties().rarity(Rarity.EPIC)
     );
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_HELMET = registerPurifiedSoulArmorItem("purified_soul_helmet", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.HELMET);
@@ -207,6 +210,7 @@ public class NarakaItems {
         HolderProxy<Item, Item> item = registerItem(
                 SOUL_INFUSED_PREFIX + type.getSerializedName(),
                 properties -> new Item(properties
+                        .rarity(Rarity.UNCOMMON)
                         .component(NarakaDataComponentTypes.SOUL.get(), type)
                         .fireResistant()
                 )
