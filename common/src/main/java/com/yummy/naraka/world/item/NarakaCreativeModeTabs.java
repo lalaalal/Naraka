@@ -163,6 +163,7 @@ public class NarakaCreativeModeTabs {
         ItemStack itemStack = new ItemStack(item);
         itemStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
         itemStack.set(DataComponents.ENCHANTABLE, new Enchantable(9));
+        itemStack.set(DataComponents.RARITY, Rarity.EPIC);
         return itemStack;
     }
 
