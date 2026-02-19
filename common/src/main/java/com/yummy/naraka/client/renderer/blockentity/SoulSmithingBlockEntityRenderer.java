@@ -140,12 +140,13 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
         poseStack.pushPose();
         poseStack.rotateAround(rotation, 0.5f, 0.5f, 0.5f);
         RenderType renderType = getRenderTypeForTrim(renderState.templateItem);
-        submitNodeCollector.submitModelPart(trimTemplate, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, -1, null);
+        int color = renderState.templateItem.is(NarakaItems.HEROBRINE_SCARF.value()) ? 0x88000000 : -1;
+        submitNodeCollector.submitModelPart(trimTemplate, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, color, null);
         poseStack.popPose();
     }
 
     private RenderType getRenderTypeForTrim(ItemStack templateItem) {
-        if (templateItem.is(NarakaItems.HEROBRINE_SCARF)) {
+        if (templateItem.is(NarakaItems.HEROBRINE_SCARF.value())) {
             if (NarakaClientContext.SHADER_ENABLED.getValue())
                 return RenderTypes.entityTranslucent(NarakaTextures.AREA_EFFECT);
             return NarakaRenderTypes.longinus();
