@@ -1,5 +1,7 @@
 package com.yummy.naraka.mixin.client;
 
+import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaTextures;
@@ -35,29 +37,31 @@ import javax.annotation.Nullable;
 @Environment(EnvType.CLIENT)
 @Mixin(value = LevelRenderer.class)
 public abstract class HiddenOreRendererMixin {
-    @Shadow @Final
+    @Shadow
+    @Final
     private RenderBuffers renderBuffers;
 
-    @Shadow @Final
+    @Shadow
+    @Final
     private Minecraft minecraft;
 
     @Shadow
     protected abstract void checkPoseStack(PoseStack poseStack);
 
-    @Shadow @Nullable
+    @Shadow
+    @Nullable
     private PostChain entityEffect;
 
+
     @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;entitiesForRendering()Ljava/lang/Iterable;"))
-    protected void renderHiddenOres(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo ci) {
+    protected void renderHiddenOres(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo ci, @Local(ordinal = 3) LocalBooleanRef localRef) {
         if (minecraft.player == null || entityEffect == null || !NarakaItemUtils.canApplyOreSeeThrough(minecraft.player) || NarakaConfig.CLIENT.disableOreSeeThrough.getValue())
             return;
 
         PoseStack poseStack = new PoseStack();
         naraka$renderHiddenOres(poseStack, camera);
         this.checkPoseStack(poseStack);
-        this.renderBuffers.outlineBufferSource().endOutlineBatch();
-        entityEffect.process(deltaTracker.getGameTimeDeltaTicks());
-        minecraft.getMainRenderTarget().bindWrite(false);
+        localRef.set(true);
     }
 
     @Unique
