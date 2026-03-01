@@ -1,14 +1,21 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
+import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaUtils;
-import com.yummy.naraka.world.entity.*;
-import com.yummy.naraka.world.entity.ai.skill.TargetSkill;
+import com.yummy.naraka.world.damagesource.NarakaDamageSources;
+import com.yummy.naraka.world.entity.AbstractHerobrine;
+import com.yummy.naraka.world.entity.AreaEffect;
+import com.yummy.naraka.world.entity.Herobrine;
+import com.yummy.naraka.world.entity.ShinyEffect;
+import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
+import com.yummy.naraka.world.entity.data.StunHelper;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -18,6 +25,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -25,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RyoikiTenkaiSkill extends TargetSkill<Herobrine> {
+public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
     public static final Identifier IDENTIFIER = skillIdentifier("final_herobrine.ryoiki_tenkai");
     private final List<LivingEntity> caughtEntities = new ArrayList<>();
 
@@ -45,12 +54,15 @@ public class RyoikiTenkaiSkill extends TargetSkill<Herobrine> {
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return true;
+        return mob.getTarget() != null;
     }
 
     @Override
     protected void onFirstTick(ServerLevel level) {
         mob.setDeltaMovement(Vec3.ZERO);
+        Entity vehicle = mob.getVehicle();
+        if (vehicle != null)
+            EntityDataHelper.setEntityData(vehicle, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
 
         sendEffectToPlayers(level);
 
@@ -110,11 +122,24 @@ public class RyoikiTenkaiSkill extends TargetSkill<Herobrine> {
             ShinyEffect shinyEffect = ShinyEffect.spawnShinySpark(level, target.position(), mob.getRandom(), 3, 60, SoulType.EMERALD.color);
             EntityDataHelper.setEntityData(shinyEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
             mob.stigmatizeEntity(level, target);
+
+            if (NarakaConfig.COMMON.disableStigma.getValue())
+                hurtEntity(level, target);
         }
     }
 
+    @Override
+    protected float calculateDamage(LivingEntity target) {
+        return mob.getAttackDamage() * 0.25f;
+    }
+
+    @Override
+    protected DamageSource getDamageSource() {
+        return NarakaDamageSources.stigma(mob);
+    }
+
     private void checkPlayerPositions(ServerLevel level) {
-        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, mob.getBoundingBox().inflate(40, 5, 40), AbstractHerobrine::isNotHerobrine);
+        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, mob.getBoundingBox().inflate(40), AbstractHerobrine::isNotHerobrine);
         for (LivingEntity target : entities) {
             Vec3 check = target.position()
                     .subtract(mob.position())
@@ -134,8 +159,10 @@ public class RyoikiTenkaiSkill extends TargetSkill<Herobrine> {
     }
 
     private void handleOnIncorrectPosition(LivingEntity target) {
-        StunHelper.stunEntity(target, 20);
-        caughtEntities.add(target);
+        if (NarakaEntityUtils.isDamageable(target)) {
+            StunHelper.stunEntity(target, 20);
+            caughtEntities.add(target);
+        }
     }
 
     @Override

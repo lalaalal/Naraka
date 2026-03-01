@@ -23,8 +23,6 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
 import java.util.List;
@@ -61,14 +59,6 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
         renderState.chzzkAnimationState = herobrine.chzzkAnimationState;
         List<BeamEffect> beamEffects = BeamEffectsHelper.get(herobrine);
         renderState.updateBeamEffects(beamEffects, renderState.ageInTicks);
-        renderState.translation = renderState.alpha == 0xff ? Vec3.ZERO : randomTranslation(herobrine);
-    }
-
-    private Vec3 randomTranslation(Herobrine herobrine) {
-        RandomSource random = RandomSource.create(herobrine.tickCount);
-        double x = random.nextDouble() * 0.5;
-        double z = random.nextDouble() * 0.5;
-        return new Vec3(x, 0, z);
     }
 
     @Override
@@ -83,10 +73,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
                 submitChzzk(renderState, poseStack, submitNodeCollector, NarakaRenderTypes.longinusCutout(getTextureLocation(renderState)), 1, 10);
             }
         }
-        poseStack.pushPose();
-        poseStack.translate(renderState.translation);
         super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
-        poseStack.popPose();
     }
 
     private RenderType getChzzkRenderType(HerobrineRenderState renderState, float uMultiplier, float vMultiplier) {

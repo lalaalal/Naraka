@@ -123,6 +123,7 @@ public final class NarakaModClient {
 
         EntityRendererRegistry.register(NarakaEntityTypes.SHINY_EFFECT, ShinyEffectRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.AREA_EFFECT, AreaEffectRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_PORTAL, NarakaPortalRenderer::new);
     }
 
     private static void registerHudRenders() {
@@ -147,6 +148,7 @@ public final class NarakaModClient {
         ParticleProviderRegistry.register(NarakaParticleTypes.FLICKER, BlinkParticle.Provider::new);
         ParticleProviderRegistry.register(NarakaParticleTypes.STARDUST, BlinkParticle.Provider::withGlowing);
         ParticleProviderRegistry.register(NarakaParticleTypes.TELEPORT, BlinkParticle.Provider::withGlowing);
+        ParticleProviderRegistry.register(NarakaParticleTypes.LOCKED_HEALTH, LockedHealthParticle.Provider::new);
     }
 
     private static void registerKeyMappings() {

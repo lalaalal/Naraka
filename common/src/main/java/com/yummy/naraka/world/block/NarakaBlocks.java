@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
@@ -79,7 +80,8 @@ public class NarakaBlocks {
             NectariumCoreBlock::new,
             from(Blocks.AMETHYST_CLUSTER)
                     .requiresCorrectToolForDrops()
-                    .lightLevel(NectariumCoreBlock::lightLevel)
+                    .lightLevel(NectariumCoreBlock::lightLevel),
+            item().rarity(Rarity.RARE)
     );
     public static final HolderProxy<Block, NectariumCrystalBlock> NECTARIUM_CRYSTAL_BLOCK = registerBlockWithItem(
             "nectarium_crystal",
@@ -122,19 +124,19 @@ public class NarakaBlocks {
             "soul_smithing_block",
             SoulSmithingBlock::new,
             from(Blocks.SMITHING_TABLE),
-            item().component(
-                    DataComponents.LORE, new ItemLore(
+            item().rarity(Rarity.EPIC)
+                    .component(DataComponents.LORE, new ItemLore(
                             List.of(Component.translatable(
                                     LanguageKey.tooltip("soul_smithing_block"))
                             )
-                    )
-            )
+                    ))
     );
 
     public static final HolderProxy<Block, Block> IMITATION_GOLD_BLOCK = registerBlockWithItem(
             "imitation_gold_block",
             properties -> new EncroachingBlock(properties.strength(5, 6), Blocks.IRON_BLOCK),
-            Blocks.GOLD_BLOCK
+            Blocks.GOLD_BLOCK,
+            item().rarity(Rarity.UNCOMMON)
     );
     public static final HolderProxy<Block, Block> AMETHYST_SHARD_BLOCK = registerSimpleBlockWithItem(
             "amethyst_shard_block",
@@ -160,7 +162,10 @@ public class NarakaBlocks {
                     .strength(50, 1200)
                     .requiresCorrectToolForDrops()
                     .lightLevel(HerobrineTotem::light),
-            item().component(DataComponents.LORE, new ItemLore(List.of(Component.translatable(LanguageKey.tooltip("herobrine_totem")))))
+            item().rarity(Rarity.EPIC)
+                    .component(DataComponents.LORE, new ItemLore(
+                            List.of(Component.translatable(LanguageKey.tooltip("herobrine_totem")))
+                    ))
     );
 
     public static final HolderProxy<Block, SoulStabilizer> SOUL_STABILIZER = registerBlockWithItem(
@@ -211,11 +216,11 @@ public class NarakaBlocks {
     }
 
     private static HolderProxy<Block, Block> registerSoulInfusedBlock(String name, Block baseBlock) {
-        return registerSimpleBlockWithItem(SOUL_INFUSED_PREFIX + name, baseBlock, item().fireResistant());
+        return registerSimpleBlockWithItem(SOUL_INFUSED_PREFIX + name, baseBlock, item().fireResistant().rarity(Rarity.RARE));
     }
 
     private static HolderProxy<Block, Block> registerSoulInfusedBlock(String name, Supplier<Block> baseBlock) {
-        return registerBlockWithItem(SOUL_INFUSED_PREFIX + name, Block::new, baseBlock, item().fireResistant());
+        return registerBlockWithItem(SOUL_INFUSED_PREFIX + name, Block::new, baseBlock, item().fireResistant().rarity(Rarity.RARE));
     }
 
     public static ResourceKey<Block> key(String name) {

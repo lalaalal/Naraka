@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ARGB;
-import net.minecraft.util.Mth;
 
 @Environment(EnvType.CLIENT)
 public class AreaEffectRenderer extends EntityRenderer<AreaEffect, AreaEffectRenderState> {
@@ -63,7 +62,7 @@ public class AreaEffectRenderer extends EntityRenderer<AreaEffect, AreaEffectRen
 
     @Override
     public void submit(AreaEffectRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
-        int alpha = (int) NarakaUtils.interpolate(renderState.ageInTicks / renderState.lifetime, 0, renderState.maxAlpha, this::fadeInOut);
+        int alpha = (int) NarakaUtils.interpolate(renderState.ageInTicks / renderState.lifetime, 0, renderState.maxAlpha, NarakaUtils::fadeInOut);
         poseStack.pushPose();
         nodeCollector.order(renderState.index).submitCustomGeometry(poseStack, getRenderType(renderState), (pose, vertexConsumer) -> {
             float x = renderState.xWidth / 2;
@@ -97,13 +96,5 @@ public class AreaEffectRenderer extends EntityRenderer<AreaEffect, AreaEffectRen
         poseStack.popPose();
 
         super.submit(renderState, poseStack, nodeCollector, cameraRenderState);
-    }
-
-    private float fadeInOut(float x) {
-        if (x < 0.125f)
-            return Mth.sin(4 * Mth.PI * x);
-        if (x > 0.875f)
-            return -Mth.sin(4 * Mth.PI * x);
-        return 1;
     }
 }

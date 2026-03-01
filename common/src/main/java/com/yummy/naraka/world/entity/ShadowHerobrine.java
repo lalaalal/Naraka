@@ -83,6 +83,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
         this(NarakaEntityTypes.SHADOW_HEROBRINE.get(), level);
         this.herobrine = herobrine;
         this.herobrineUUID = herobrine.getUUID();
+        this.setTarget(herobrine.getTarget());
     }
 
     public ShadowHerobrine(Level level, Mob spawner, boolean finalModel, boolean instant) {
@@ -211,6 +212,14 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     protected void actuallyHurt(ServerLevel level, DamageSource damageSource, float damageAmount) {
         super.actuallyHurt(level, damageSource, damageAmount);
         getShadowController().ifPresent(controller -> controller.broadcastShadowHerobrineHurt(level, this));
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        if (getTarget() instanceof Mob mob) {
+            getHerobrine().ifPresent(mob::setTarget);
+        }
     }
 
     @Override

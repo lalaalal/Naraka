@@ -120,7 +120,7 @@ public class SkillManager {
     public void tick(ServerLevel level) {
         if (currentSkill != null) {
             currentSkill.tick(level);
-            if (currentSkill.isEnded()) {
+            if (currentSkill != null && currentSkill.isEnded()) {
                 currentSkill.setCooldown();
                 for (Consumer<Skill<?>> listener : skillEndListeners)
                     listener.accept(currentSkill);
@@ -133,11 +133,12 @@ public class SkillManager {
             }
         } else {
             Skill<?> usable = selectSkill(level);
-            if (usable != null)
+            if (usable != null) {
                 setCurrentSkill(usable);
-            if (!paused) {
-                for (Consumer<Skill<?>> listener : skillSelectListeners)
-                    listener.accept(usable);
+                if (!paused) {
+                    for (Consumer<Skill<?>> listener : skillSelectListeners)
+                        listener.accept(usable);
+                }
             }
         }
 

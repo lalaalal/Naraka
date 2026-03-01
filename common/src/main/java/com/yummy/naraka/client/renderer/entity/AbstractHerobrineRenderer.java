@@ -7,6 +7,7 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.layer.HerobrineEyeLayer;
 import com.yummy.naraka.client.layer.HerobrineScarfLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
+import com.yummy.naraka.client.renderer.ItemRenderRegistry;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import com.yummy.naraka.client.renderer.entity.state.AfterimageRenderState;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
@@ -88,6 +89,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
             renderState.eyeTexture = NarakaTextures.HEROBRINE_EYE;
         }
 
+        ItemRenderRegistry.setTemporaryColor(renderState.pickaxe, ARGB.white(renderState.alpha));
         itemModelResolver.updateForLiving(renderState.pickaxe, pickaxe, ItemDisplayContext.NONE, entity);
     }
 

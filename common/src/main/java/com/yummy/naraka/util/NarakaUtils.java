@@ -51,6 +51,14 @@ public class NarakaUtils {
         );
     }
 
+    public static float fadeInOut(float x) {
+        if (x < 0.125f)
+            return Mth.sin(4 * Mth.PI * x);
+        if (x > 0.875f)
+            return -Mth.sin(4 * Mth.PI * x);
+        return 1;
+    }
+
     public static Vec3 quadraticBezier(float delta, Vec3 v1, Vec3 v2, Vec3 v3) {
         Vec3 m1 = v1.lerp(v2, delta);
         Vec3 m2 = v2.lerp(v3, delta);

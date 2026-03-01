@@ -2,7 +2,7 @@ package com.yummy.naraka.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.yummy.naraka.world.entity.StunHelper;
+import com.yummy.naraka.world.entity.data.StunHelper;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffectHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;

@@ -60,6 +60,7 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         run(succeed, () -> handleSucceed(level));
+        run(!succeed, () -> mob.setDeltaMovement(Vec3.ZERO));
         runAt(PARRYING_START_TICK, () -> {
             level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.HOSTILE, 0.8f, 1.8f);
             level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.HOSTILE, 1, 2);

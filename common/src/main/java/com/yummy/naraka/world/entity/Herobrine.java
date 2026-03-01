@@ -8,6 +8,7 @@ import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAfterimagePacket;
 import com.yummy.naraka.sounds.NarakaMusics;
+import com.yummy.naraka.tags.ConventionalTags;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
@@ -95,6 +96,8 @@ public class Herobrine extends AbstractHerobrine {
     protected final PickaxeSlashSkill<AbstractHerobrine> singlePickaxeSlashSkill = registerSkill(7, this, PickaxeSlashSkill::single, HerobrineAnimationIdentifiers.PICKAXE_SLASH_SINGLE);
     protected final PickaxeSlashSkill<Herobrine> triplePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::triple, HerobrineAnimationIdentifiers.PICKAXE_SLASH_TRIPLE);
     protected final SpawnPickaxeSkill spawnPickaxeSkill = registerSkill(7, this, SpawnPickaxeSkill::new, HerobrineAnimationIdentifiers.RYOIKI_TENKAI);
+
+    protected final DespawnSkill despawnSkill = registerSkill(this, DespawnSkill::new, HerobrineAnimationIdentifiers.PHASE_3_IDLE);
 
     public final AnimationState chzzkAnimationState = new AnimationState();
 
@@ -243,6 +246,10 @@ public class Herobrine extends AbstractHerobrine {
         setDisplayPickaxe(true);
 
         int armor = 0;
+        for (LivingEntity livingEntity : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(20, 5, 20), AbstractHerobrine::isNotHerobrine)) {
+            if (livingEntity.getType().is(ConventionalTags.Entities.BOSSES))
+                armor += 12;
+        }
         for (ServerPlayer player : bossEvent.getPlayers()) {
             if (NarakaEntityUtils.isDamageablePlayer(player))
                 armor += 6;
@@ -419,8 +426,10 @@ public class Herobrine extends AbstractHerobrine {
         phaseManager.updatePhase(bossEvent);
 
         if (NarakaConfig.COMMON.despawnHerobrineWhenTargetIsDead.getValue()
+                && skillManager.getCurrentSkill() != despawnSkill
                 && watchingEntities.isEmpty() && maxWatchedEntities > 0) {
-            discard();
+            skillManager.interrupt();
+            skillManager.setCurrentSkill(despawnSkill);
         }
         if (getPhase() == 2 && tickCount % 100 == 0) {
             shadowController.increaseFlickerStack(3);
@@ -596,31 +605,19 @@ public class Herobrine extends AbstractHerobrine {
             level.playSound(null, getX(), getY(), getZ(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.HOSTILE, 4, 0.3f);
             return false;
         }
-
         float limitedDamage = Math.min(damage, hurtDamageLimit);
-        if (updateHibernateMode(level, source, getActualDamage(source, limitedDamage)))
-            return true;
-        if (hibernateMode)
-            return true;
-
-        if (source.is(DamageTypeTags.IS_PROJECTILE)) {
-            if (source.getDirectEntity() != null)
-                lookAt(source.getDirectEntity(), 360, 0);
-            if (!isFinalModel())
-                skillManager.setCurrentSkillIfAbsence(blockingSkill);
-            return false;
-        }
         return super.hurtServer(level, source, limitedDamage);
     }
 
     @Override
     protected void actuallyHurt(ServerLevel level, DamageSource damageSource, float damageAmount) {
-        if (!damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)
-                && phaseManager.getCurrentPhaseHealth() - damageAmount < 0 && getPhase() < 3) {
-            setHealth(phaseManager.getActualPhaseMaxHealth(getPhase() + 1) + 1);
-            return;
+        if (!isHibernateMode() || damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+            super.actuallyHurt(level, damageSource, damageAmount);
+        if (phaseManager.isPhaseChanged() && !isHibernateMode() && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            setHealth(phaseManager.getActualPhaseMaxHealth(getPhase()) + 1);
+            startHibernateMode(level);
         }
-        super.actuallyHurt(level, damageSource, damageAmount);
+        updateHibernateMode(level, damageSource);
         updateHurtDamageLimit(level);
         accumulatedHurtDamage += damageAmount;
         if (getPhase() == 2 && (accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f))
@@ -631,37 +628,16 @@ public class Herobrine extends AbstractHerobrine {
         return phaseManager.getActualPhaseMaxHealth(getPhase() + 1) + 1;
     }
 
-    private boolean updateHibernateMode(ServerLevel level, DamageSource source, float actualDamage) {
+    private void updateHibernateMode(ServerLevel level, DamageSource source) {
         if (source.getDirectEntity() instanceof NarakaFireball fireball && !fireball.hasTarget()) {
             if (getHealth() > getPhaseMinimumHealth())
                 startStaggering();
             if (getHealth() == getPhaseMinimumHealth() && getPhase() == 1)
                 startStaggering(HerobrineAnimationIdentifiers.STAGGERING_PHASE_2, 125, 100);
             resetDamageLimit();
-            if (hibernateMode)
+            if (hibernateMode && getPhase() == 1)
                 stopHibernateMode(level);
-            return true;
         }
-
-        return preserveCurrentPhaseMinimumHealth(level, actualDamage);
-    }
-
-    private boolean preserveCurrentPhaseMinimumHealth(ServerLevel level, float actualDamage) {
-        if (getPhase() == phaseManager.getMaxPhase())
-            return false;
-        float healthAfterHurt = phaseManager.getCurrentPhaseHealth() + getAbsorptionAmount() - actualDamage;
-        if (healthAfterHurt < 2) {
-            setHealth(getPhaseMinimumHealth());
-            startHibernateMode(level);
-            return true;
-        }
-
-        return false;
-    }
-
-    private float getActualDamage(DamageSource source, float damage) {
-        damage = getDamageAfterArmorAbsorb(source, damage);
-        return getDamageAfterMagicAbsorb(source, damage);
     }
 
     private float calculateHurtDamageLimitByLockedHealth() {
@@ -706,6 +682,7 @@ public class Herobrine extends AbstractHerobrine {
         hibernateMode = false;
         resetDamageLimit();
         skillManager.enableOnly(SKILLS_BY_PHASE.get(getPhase()));
+        skillManager.interrupt();
         shadowController.deactivateFlickerSkill(level);
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
 
@@ -787,6 +764,9 @@ public class Herobrine extends AbstractHerobrine {
         if (damageSource.getEntity() instanceof LivingEntity livingEntity)
             rewardChallenger(livingEntity);
         super.die(damageSource);
+        setFinalModel(true);
+        setDisplayPickaxe(true);
+        entityData.set(DISPLAY_SCARF, true);
         if (!level().isClientSide()) {
             bossEvent.getPlayers().forEach(this::sendStopPacket);
             bossEvent.removeAllPlayers();
@@ -848,6 +828,11 @@ public class Herobrine extends AbstractHerobrine {
             ItemStack weaponStack = livingEntity.getMainHandItem();
             weaponStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
         });
+    }
+
+    @Override
+    public boolean shouldBeSaved() {
+        return skillManager.getCurrentSkill() != despawnSkill && super.shouldBeSaved();
     }
 
     @Override

@@ -4,9 +4,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.config.NarakaCommonConfig;
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
-import com.yummy.naraka.world.entity.StunHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -71,6 +71,7 @@ public record Stigma(int value, long lastMarkedTime) {
      */
     public Stigma consume(ServerLevel level, LivingEntity livingEntity, Entity cause) {
         int stunDuration = NarakaConfig.COMMON.stigmaStunDuration.getValue();
+        level.sendParticles(NarakaParticleTypes.LOCKED_HEALTH.get(), livingEntity.getX(), livingEntity.getEyeY(), livingEntity.getZ(), 0, 0, 0, 0, 1);
         lockHealth(level, livingEntity, cause);
         StunHelper.stunEntity(livingEntity, stunDuration);
         livingEntity.level().playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.TOTEM_USE, livingEntity.getSoundSource(), 1.0F, 1.0F);
@@ -83,16 +84,12 @@ public record Stigma(int value, long lastMarkedTime) {
 
     private void lockHealth(ServerLevel level, LivingEntity livingEntity, Entity cause) {
         double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
-        double lockedHealth = EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.LOCKED_HEALTH.get());
-        double originalMaxHealth = maxHealth + lockedHealth;
-        double reducingHealth = originalMaxHealth * NarakaConfig.COMMON.lockHealthRatio.getValue();
-        lockedHealth += reducingHealth;
-
-        if (lockedHealth >= originalMaxHealth) {
+        double reducingHealth = maxHealth * NarakaConfig.COMMON.lockHealthRatio.getValue();
+        if (reducingHealth >= livingEntity.getHealth()) {
             DamageSource source = NarakaDamageSources.stigma(cause);
             livingEntity.hurtServer(level, source, 6.66e6f);
         } else {
-            LockedHealthHelper.lock(livingEntity, lockedHealth);
+            LockedHealthHelper.lock(livingEntity, reducingHealth);
         }
     }
 }

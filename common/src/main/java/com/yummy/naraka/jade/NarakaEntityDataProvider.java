@@ -3,6 +3,7 @@ package com.yummy.naraka.jade;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.data.lang.NarakaJadeProviderComponents;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
+import com.yummy.naraka.world.entity.data.LockedHealthHelper;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.item.NarakaItems;
@@ -35,6 +36,11 @@ public class NarakaEntityDataProvider implements IEntityComponentProvider {
             }
             if (DeathCountHelper.isDeathCounted(livingEntity))
                 tooltip.add(Component.translatable(LanguageKey.JADE_DEATH_COUNT_KEY, DeathCountHelper.get(livingEntity)));
+            double lockedHealth = LockedHealthHelper.get(livingEntity);
+            if (lockedHealth > 0) {
+                tooltip.add(JadeUI.smallItem(NarakaItems.LOCKED_HEALTH.get().getDefaultInstance()));
+                tooltip.append(Component.translatable(LanguageKey.JADE_STIGMA_KEY, (int) lockedHealth));
+            }
         }
     }
 }

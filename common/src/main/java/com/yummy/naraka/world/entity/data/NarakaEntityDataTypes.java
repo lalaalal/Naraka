@@ -10,6 +10,7 @@ import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.BeamEffect;
 import com.yummy.naraka.world.entity.ScarfWavingData;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,6 +49,11 @@ public class NarakaEntityDataTypes {
             "keep_unfrozen", EntityDataType.common(Codec.BOOL)
                     .defaultValue(false)
     );
+    public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<Integer, LivingEntity>> STUN_TICK = register(
+            "stun_tick", EntityDataType.living(Codec.INT)
+                    .defaultValue(0)
+                    .ticker(NarakaEntityDataTypes::tickStun)
+    );
 
     private static void tickPurifiedSoulFire(LivingEntity livingEntity, int purifiedSoulFireTick) {
         if (purifiedSoulFireTick > 0 && livingEntity.level() instanceof ServerLevel level) {
@@ -68,6 +74,23 @@ public class NarakaEntityDataTypes {
                     .filter(beamEffect -> beamEffect.isFinished(entity.tickCount))
                     .toList();
             BeamEffectsHelper.remove(entity, finished);
+        }
+    }
+
+    private static void tickStun(LivingEntity livingEntity, int stunTick) {
+        if (!livingEntity.level().isClientSide()) {
+            if (stunTick > 0) {
+                EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.get(), stunTick - 1);
+            } else {
+                EntityDataHelper.removeEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.get());
+                StunHelper.releaseEntity(livingEntity);
+            }
+        } else if (livingEntity.tickCount % 2 == 0) {
+            double width = livingEntity.getBbWidth();
+            double x = livingEntity.getX() + Math.cos(livingEntity.tickCount * 0.5) * width * 0.5;
+            double z = livingEntity.getZ() + Math.sin(livingEntity.tickCount * 0.5) * width * 0.5;
+            double y = livingEntity.getBoundingBox().maxY + 0.25;
+            livingEntity.level().addParticle(ParticleTypes.FIREWORK, x, y, z, 0, 0, 0);
         }
     }
 

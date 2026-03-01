@@ -5,6 +5,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 public final class LootEvents {
+    @PlatformInvokeRequired
     public static final Event<ModifyLootTable> MODIFY_LOOT_TABLE = Event.create(listeners -> (key, context) -> {
         for (ModifyLootTable listener : listeners)
             listener.modify(key, context);

@@ -1,14 +1,9 @@
 package com.yummy.naraka.mixin.client;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import com.mojang.blaze3d.framegraph.FrameGraphBuilder;
-import com.mojang.blaze3d.framegraph.FramePass;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
 import com.mojang.blaze3d.resource.ResourceHandle;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.textures.GpuTexture;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaTextures;
@@ -23,13 +18,17 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.OutlineBufferSource;
+import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.LevelRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.Vec3;
@@ -49,64 +48,35 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 @Mixin(value = LevelRenderer.class)
 public abstract class HiddenOreRendererMixin {
-    @Shadow @Final
+    @Shadow
+    @Final
     private RenderBuffers renderBuffers;
 
-    @Shadow @Final
-    private Minecraft minecraft;
-
-    @Shadow @Final
-    private LevelTargetBundle targets;
-
     @Shadow
-    public abstract void doEntityOutline();
+    @Final
+    private Minecraft minecraft;
 
     @Shadow
     protected abstract void checkPoseStack(PoseStack poseStack);
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;addLateDebugPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/client/renderer/state/CameraRenderState;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lorg/joml/Matrix4f;)V"))
-    protected void addHiddenOres(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean bl, Camera camera, Matrix4f matrix4f, Matrix4f matrix4f2, Matrix4f matrix4f3, GpuBufferSlice gpuBufferSlice, Vector4f vector4f, boolean bl2, CallbackInfo ci, @Local FrameGraphBuilder frameGraphBuilder) {
+    @Shadow
+    @Final
+    private LevelRenderState levelRenderState;
+
+    @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;extractVisibleEntities(Lnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/culling/Frustum;Lnet/minecraft/client/DeltaTracker;Lnet/minecraft/client/renderer/state/LevelRenderState;)V"))
+    private void checkOreSeeThrough(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, Matrix4f frustumMatrix, Matrix4f projectionMatrix, Matrix4f cullingProjectionMatrix, GpuBufferSlice shaderFog, Vector4f fogColor, boolean renderSky, CallbackInfo ci) {
+        boolean haveOreSeeThrough = minecraft.player != null && NarakaItemUtils.canApplyOreSeeThrough(minecraft.player) && !NarakaConfig.CLIENT.disableOreSeeThrough.getValue();
+        this.levelRenderState.haveGlowingEntities |= haveOreSeeThrough;
+    }
+
+    @Inject(method = "method_62214", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/feature/FeatureRenderDispatcher;renderAllFeatures()V"))
+    protected void addHiddenOres(GpuBufferSlice gpuBufferSlice, LevelRenderState levelRenderState, ProfilerFiller profilerFiller, Matrix4f matrix4f, ResourceHandle<RenderTarget> resourceHandle, ResourceHandle<RenderTarget> resourceHandle2, boolean bl, ResourceHandle<RenderTarget> resourceHandle3, ResourceHandle<RenderTarget> resourceHandle4, CallbackInfo ci) {
         if (minecraft.player == null || !NarakaItemUtils.canApplyOreSeeThrough(minecraft.player) || NarakaConfig.CLIENT.disableOreSeeThrough.getValue())
             return;
 
-        int width = this.minecraft.getMainRenderTarget().width;
-        int height = this.minecraft.getMainRenderTarget().height;
-        naraka$addHiddenOresPass(frameGraphBuilder, camera);
-        PostChain postChain = this.minecraft.getShaderManager().getPostChain(LevelTargetBundle.ENTITY_OUTLINE_TARGET_ID, LevelTargetBundle.OUTLINE_TARGETS);
-        if (postChain != null) {
-            postChain.addToFrame(frameGraphBuilder, width, height, this.targets);
-        }
-        doEntityOutline();
-    }
-
-    @Unique
-    private void naraka$addHiddenOresPass(FrameGraphBuilder frameGraphBuilder, Camera camera) {
-        FramePass framePass = frameGraphBuilder.addPass("hidden_ores");
-        this.targets.main = framePass.readsAndWrites(this.targets.main);
-        if (this.targets.entityOutline != null) {
-            this.targets.entityOutline = framePass.readsAndWrites(this.targets.entityOutline);
-        }
-        ResourceHandle<RenderTarget> outlineHandler = this.targets.entityOutline;
-
-        framePass.executes(() -> {
-            if (outlineHandler != null) {
-                RenderTarget renderTarget = outlineHandler.get();
-                GpuTexture colorTexture = renderTarget.getColorTexture();
-                GpuTexture depthTexture = renderTarget.getDepthTexture();
-                if (colorTexture != null && depthTexture != null) {
-                    RenderSystem.getDevice()
-                            .createCommandEncoder()
-                            .clearColorAndDepthTextures(colorTexture, 0, depthTexture, 1.0);
-                }
-            }
-
-            PoseStack poseStack = new PoseStack();
-            MultiBufferSource.BufferSource bufferSource = this.renderBuffers.bufferSource();
-            naraka$renderHiddenOres(poseStack, camera);
-            this.checkPoseStack(poseStack);
-            bufferSource.endLastBatch();
-            this.renderBuffers.outlineBufferSource().endOutlineBatch();
-        });
+        PoseStack poseStack = new PoseStack();
+        naraka$renderHiddenOres(poseStack, minecraft.gameRenderer.getMainCamera());
+        this.checkPoseStack(poseStack);
     }
 
     @Unique

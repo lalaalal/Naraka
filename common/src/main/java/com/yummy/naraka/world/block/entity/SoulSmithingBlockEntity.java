@@ -20,6 +20,7 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SmithingTemplateItem;
 import net.minecraft.world.item.enchantment.Enchantable;
 import net.minecraft.world.item.equipment.Equippable;
@@ -159,8 +160,12 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     private boolean reinforceArmor(SoulType soulType, int requiredSoul) {
         if (!forgingItem.is(NarakaItemTags.PURIFIED_SOUL_ARMOR) || level == null)
             return false;
-        if (soulType == SoulType.GOD_BLOOD)
+        if (soulType == SoulType.GOD_BLOOD) {
             forgingItem.set(NarakaDataComponentTypes.BLESSED.get(), true);
+            forgingItem.set(DataComponents.RARITY, Rarity.EPIC);
+        } else if (forgingItem.getRarity() != Rarity.EPIC) {
+            forgingItem.set(DataComponents.RARITY, Rarity.RARE);
+        }
         forgingItem.set(DataComponents.ENCHANTABLE, new Enchantable(9));
 
         soulStabilizer.consumeSoul(requiredSoul);

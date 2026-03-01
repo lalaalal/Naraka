@@ -179,6 +179,7 @@ public class NarakaModelProvider extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerators generator) {
         generator.generateFlatItem(NarakaItems.STARDUST_STAFF.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        generator.generateFlatItem(NarakaItems.CORRUPTED_STAR_STAFF.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         generator.generateFlatItem(NarakaItems.NARAKA_FIREBALL_STAFF.get(), ModelTemplates.FLAT_ITEM);
 
         generateSpear(generator, NarakaItems.SPEAR_ITEM.get(), NarakaModelLayers.SPEAR, NarakaTextures.SPEAR);
@@ -238,6 +239,7 @@ public class NarakaModelProvider extends FabricModelProvider {
 
         generator.itemModelOutput.accept(NarakaItems.NARAKA_PICKAXE.get(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(NarakaItems.NARAKA_PICKAXE.get())));
         generator.generateFlatItem(NarakaItems.HEROBRINE_SCARF.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.LOCKED_HEALTH.get(), ModelTemplates.FLAT_ITEM);
 
         NarakaItems.forEachSoulInfusedItem(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_ITEM));
         NarakaItems.forEachSoulInfusedSword(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM));

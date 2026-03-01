@@ -32,7 +32,6 @@ public abstract class HerobrineTotemActivatingItemMixin {
         BlockState totem = level.getBlockState(pos.below());
         if (blockState.is(Blocks.NETHERRACK)
                 && HerobrineTotemBlockEntity.isTotemStructure(level, pos.below())
-                && HerobrineTotemBlockEntity.isSanctuaryExists(level, pos)
                 && HerobrineTotemBlockEntity.isSleeping(totem)
         ) {
             ItemStack itemStack = context.getItemInHand();
