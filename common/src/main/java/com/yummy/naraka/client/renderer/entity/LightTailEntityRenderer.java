@@ -7,16 +7,20 @@ import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.LightTailEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
+
+import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
 public abstract class LightTailEntityRenderer<T extends LightTailEntity, S extends LightTailEntityRenderState> extends EntityRenderer<T, S> {
@@ -31,7 +35,8 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
                 .stream()
                 .map(position -> position.subtract(entity.position()))
                 .map(NarakaRenderUtils::vector3f)
-                .toList();
+                .collect(Collectors.toList());
+        renderState.tailPositions.addFirst(new Vector3f());
         renderState.partialTranslation = entity.position()
                 .subtract(entity.getPosition(partialTick));
         renderState.tailColor = entity.getTailColor();
@@ -98,6 +103,17 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
     }
 
     protected void renderTailPart(S renderState, PoseStack.Pose pose, VertexConsumer vertexConsumer, Vector3f from, Vector3f to, float index, float size, int color) {
-        NarakaRenderUtils.renderTailPart(pose, vertexConsumer, from, to, renderState.tailWidth, index, size, color);
+        NarakaRenderUtils.renderFlatImage(pose, vertexConsumer,
+                NarakaRenderUtils.createVertices(from, to, renderState.tailWidth, NarakaRenderUtils::modifyX), index, index, size, size,
+                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
+        );
+        NarakaRenderUtils.renderFlatImage(pose, vertexConsumer,
+                NarakaRenderUtils.createVertices(from, to, renderState.tailWidth, NarakaRenderUtils::modifyY), index, index, size, size,
+                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
+        );
+        NarakaRenderUtils.renderFlatImage(pose, vertexConsumer,
+                NarakaRenderUtils.createVertices(from, to, renderState.tailWidth, NarakaRenderUtils::modifyZ), index, index, size, size,
+                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
+        );
     }
 }

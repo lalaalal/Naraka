@@ -58,10 +58,7 @@ public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash, 
 
     @Override
     protected void submitTail(PickaxeSlashRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, Vec3 translation) {
-        Vector3f vector3f = new Vector3f(0, 0, 1)
-                .rotate(Axis.ZN.rotationDegrees(renderState.zRot))
-                .rotate(Axis.YN.rotationDegrees(renderState.yRot));
-        super.submitTail(renderState, poseStack, submitNodeCollector, new Vec3(vector3f).add(translation).add(0, 1.2, 0));
+        super.submitTail(renderState, poseStack, submitNodeCollector, translation.add(0, 1.2, 0));
     }
 
     @Override
