@@ -2,28 +2,46 @@ package com.yummy.naraka.client.renderer.entity;
 
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
-import com.yummy.naraka.client.model.AbsoluteHerobrineModel;
+import com.yummy.naraka.client.layer.HerobrineEyeLayer;
+import com.yummy.naraka.client.model.HerobrineModel;
+import com.yummy.naraka.client.renderer.entity.state.AbsoluteHerobrineRenderState;
 import com.yummy.naraka.world.entity.AbsoluteHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
 
 @Environment(EnvType.CLIENT)
-public class AbsoluteHerobrineRenderer extends LivingEntityRenderer<AbsoluteHerobrine, LivingEntityRenderState, AbsoluteHerobrineModel> {
+public class AbsoluteHerobrineRenderer extends LivingEntityRenderer<AbsoluteHerobrine, AbsoluteHerobrineRenderState, HerobrineModel<AbsoluteHerobrineRenderState>> {
     public AbsoluteHerobrineRenderer(EntityRendererProvider.Context context) {
-        super(context, new AbsoluteHerobrineModel(context.bakeLayer(NarakaModelLayers.ABSOLUTE_HEROBRINE)), 0);
+        super(context, new HerobrineModel<>(context.bakeLayer(NarakaModelLayers.HEROBRINE)), 0);
+        addLayer(new HerobrineEyeLayer<>(this));
     }
 
     @Override
-    public Identifier getTextureLocation(LivingEntityRenderState renderState) {
+    public Identifier getTextureLocation(AbsoluteHerobrineRenderState renderState) {
         return NarakaTextures.ABSOLUTE_HEROBRINE;
     }
 
     @Override
-    public LivingEntityRenderState createRenderState() {
-        return new LivingEntityRenderState();
+    public AbsoluteHerobrineRenderState createRenderState() {
+        return new AbsoluteHerobrineRenderState();
+    }
+
+    @Override
+    public void extractRenderState(AbsoluteHerobrine livingEntity, AbsoluteHerobrineRenderState livingEntityRenderState, float f) {
+        super.extractRenderState(livingEntity, livingEntityRenderState, f);
+        livingEntityRenderState.lightCoords = 0;
+    }
+
+    @Override
+    protected int getModelTint(AbsoluteHerobrineRenderState renderState) {
+        return 0;
+    }
+
+    @Override
+    protected boolean shouldShowName(AbsoluteHerobrine livingEntity, double d) {
+        return false;
     }
 }

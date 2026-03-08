@@ -37,6 +37,8 @@ public class AnimationMapper {
         FinalHerobrineSkillAnimation.initialize();
         FinalHerobrineComboAnimation.initialize();
 
+        AbsoluteHerobrineAnimation.initialize();
+
         NarakaPickaxeAnimation.initialize();
 
         DiamondGolemAnimation.initialize();
