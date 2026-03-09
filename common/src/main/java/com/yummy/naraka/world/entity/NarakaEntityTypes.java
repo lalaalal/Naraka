@@ -142,6 +142,7 @@ public class NarakaEntityTypes {
             EntityType.Builder.<NarakaSword>of(NarakaSword::new, MobCategory.MISC)
                     .fireImmune()
                     .sized(0.5f, 0.5f)
+                    .updateInterval(1200)
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<ShinyEffect>> SHINY_EFFECT = register(

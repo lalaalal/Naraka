@@ -3,7 +3,6 @@ package com.yummy.naraka.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.renderer.entity.state.NarakaSwordRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.NarakaSword;
@@ -22,6 +21,7 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,14 +51,17 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
     public void extractRenderState(NarakaSword entity, NarakaSwordRenderState renderState, float partialTick) {
         super.extractRenderState(entity, renderState, partialTick);
         renderState.color = entity.getColor();
-        renderState.yRot = entity.getYRot(partialTick);
-        renderState.zRot = entity.getZRot(partialTick);
+        Vector3fc rotation = entity.getRotation(partialTick);
+        renderState.xRot = rotation.x();
+        renderState.zRot = rotation.z();
+        renderState.yRot = rotation.y();
+
         Vec3 offset = entity.getPosition(partialTick).scale(-1);
         renderState.swordEffectData = entity.getSwordEffectData()
                 .stream()
                 .map(swordEffectData -> swordEffectData.offset(offset))
                 .collect(Collectors.toList());
-        renderState.swordEffectData.addFirst(SwordEffectData.of(Vec3.ZERO, NarakaSword.DIRECTION, NarakaSword.LENGTH, renderState.zRot, renderState.yRot));
+        renderState.swordEffectData.addFirst(SwordEffectData.of(Vec3.ZERO, NarakaSword.DIRECTION, rotation, NarakaSword.LENGTH));
     }
 
     @Override
@@ -66,15 +69,15 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
         poseStack.pushPose();
         ShinyEffectRenderer.submitShiny(1, 2, 0.125f, false, entityRenderState.color, poseStack, submitNodeCollector);
 
-        submitNodeCollector.order(0).submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
+        submitNodeCollector.order(1).submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
             renderSwordEffect(pose, vertexConsumer, entityRenderState);
         });
 
-        poseStack.mulPose(Axis.YP.rotationDegrees(entityRenderState.yRot));
-        poseStack.mulPose(Axis.ZN.rotationDegrees(entityRenderState.zRot));
-        poseStack.mulPose(Axis.YP.rotationDegrees(90));
+        poseStack.mulPose(Axis.XN.rotation(entityRenderState.xRot));
+        poseStack.mulPose(Axis.YP.rotation(entityRenderState.yRot));
+        poseStack.mulPose(Axis.ZN.rotation(entityRenderState.zRot));
 
-        submitNodeCollector.order(1).submitCustomGeometry(poseStack, RenderTypes.entityTranslucent(NarakaTextures.AREA_EFFECT), (pose, vertexConsumer) -> {
+        submitNodeCollector.order(0).submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
             renderBody(pose, vertexConsumer, -0.2f, 0.2f, 3, 0.25f, 0xaa, entityRenderState.color);
             renderBody(pose, vertexConsumer, 0.1f, 0.2f, 3, 0.0625f, 0xff, entityRenderState.color);
             renderHandle(pose, vertexConsumer, 0, 0, -1.5f, 0.5f, 0.15f, 0.15f, 1.5f, ARGB.color(0xab, entityRenderState.color));
@@ -89,30 +92,13 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
     }
 
     private void renderBody(PoseStack.Pose pose, VertexConsumer vertexConsumer, float x1, float x2, float height, float headCut, int alpha, int color) {
-        vertexConsumer.addVertex(pose, x1, height - headCut, 0)
-                .setUv(0, 1)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(ARGB.color(alpha, color));
-        vertexConsumer.addVertex(pose, x1, 0, 0)
-                .setUv(0, 0)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(ARGB.color(alpha, color));
-        vertexConsumer.addVertex(pose, x2, 0, 0)
-                .setUv(1, 0)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(ARGB.color(alpha, color));
-        vertexConsumer.addVertex(pose, x2, height, 0)
-                .setUv(1, 1)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(ARGB.color(alpha, color));
+        List<Vector3f> vertices = List.of(
+                new Vector3f(x1, height - headCut, 0),
+                new Vector3f(x1, 0, 0),
+                new Vector3f(x2, 0, 0),
+                new Vector3f(x2, height, 0)
+        );
+        NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, vertices, 0, 0, 1, 1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ARGB.color(alpha, color));
     }
 
     private void renderHandle(PoseStack.Pose pose, VertexConsumer vertexConsumer, float angleOffset, float xOffset, float yOffset, float handleHeight, float height, float scale, float length, int color) {
@@ -135,30 +121,13 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
     }
 
     private void renderWithHeight(PoseStack.Pose pose, VertexConsumer vertexConsumer, float x1, float y1, float z1, float x2, float y2, float z2, float height, int color) {
-        vertexConsumer.addVertex(pose, x1, y1 + height, z1)
-                .setUv(0, 1)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(color);
-        vertexConsumer.addVertex(pose, x1, y1, z1)
-                .setUv(0, 0)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(color);
-        vertexConsumer.addVertex(pose, x2, y2, z2)
-                .setUv(1, 0)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(color);
-        vertexConsumer.addVertex(pose, x2, y2 + height, z2)
-                .setUv(1, 1)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(color);
+        List<Vector3f> vertices = List.of(
+                new Vector3f(x1, y1 + height, z1),
+                new Vector3f(x1, y1, z1),
+                new Vector3f(x2, y2, z2),
+                new Vector3f(x2, y2 + height, z2)
+        );
+        NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, vertices, 0, 0, 1, 1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color);
     }
 
     private void renderSwordEffect(PoseStack.Pose pose, VertexConsumer vertexConsumer, NarakaSwordRenderState renderState) {
@@ -176,7 +145,7 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
             );
             NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, vertices, 0, 0, 1, 1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ARGB.color(alpha, renderState.color));
 
-            alpha *= 0.9f;
+            alpha *= 0.95f;
         }
     }
 }

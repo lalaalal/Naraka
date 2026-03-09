@@ -104,15 +104,7 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
 
     protected void renderTailPart(S renderState, PoseStack.Pose pose, VertexConsumer vertexConsumer, Vector3f from, Vector3f to, float index, float size, int color) {
         NarakaRenderUtils.renderFlatImage(pose, vertexConsumer,
-                NarakaRenderUtils.createVertices(from, to, renderState.tailWidth, NarakaRenderUtils::modifyX), index, index, size, size,
-                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
-        );
-        NarakaRenderUtils.renderFlatImage(pose, vertexConsumer,
                 NarakaRenderUtils.createVertices(from, to, renderState.tailWidth, NarakaRenderUtils::modifyY), index, index, size, size,
-                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
-        );
-        NarakaRenderUtils.renderFlatImage(pose, vertexConsumer,
-                NarakaRenderUtils.createVertices(from, to, renderState.tailWidth, NarakaRenderUtils::modifyZ), index, index, size, size,
                 LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
         );
     }
