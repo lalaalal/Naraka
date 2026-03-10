@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import java.util.function.BiFunction;
 
@@ -69,7 +70,7 @@ public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash, 
         );
     }
 
-    protected BiFunction<Vector3f, Float, Vector3f> modifier(float yRot, float zRot) {
+    protected BiFunction<Vector3fc, Float, Vector3fc> modifier(float yRot, float zRot) {
         return (vector, interval) -> {
             Vector3f result = new Vector3f(0, interval, 0)
                     .rotate(Axis.ZN.rotationDegrees(zRot))

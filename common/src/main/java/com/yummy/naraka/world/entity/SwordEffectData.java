@@ -1,23 +1,20 @@
 package com.yummy.naraka.world.entity;
 
-import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionfc;
+import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
-public record SwordEffectData(Vec3 head, Vec3 tail, Vec3 base, Vector3fc rotation) {
-    public static SwordEffectData of(Vec3 base, Vec3 direction, Vector3fc rotation, float length) {
-        Vec3 tail = direction
-                .zRot(rotation.z())
-                .yRot(rotation.y())
-                .xRot(rotation.x());
+public record SwordEffectData(Vector3fc head, Vector3fc tail, Vector3fc base, Quaternionfc rotation) {
+    public static SwordEffectData of(Vector3fc base, Vector3fc direction, Quaternionfc rotation, float length, float scale) {
+        Vector3f tail = direction.rotate(rotation, new Vector3f())
+                .mul(scale);
+        Vector3f head = direction.normalize(length * scale, new Vector3f());
+        head.rotate(rotation);
 
-        Vec3 head = tail.add(direction.normalize().scale(length))
-                .zRot(rotation.z())
-                .yRot(rotation.y())
-                .xRot(rotation.x());
         return new SwordEffectData(head, tail, base, rotation).offset(base);
     }
 
-    public SwordEffectData offset(Vec3 offset) {
-        return new SwordEffectData(head.add(offset), tail.add(offset), base, rotation);
+    public SwordEffectData offset(Vector3fc offset) {
+        return new SwordEffectData(head.add(offset, new Vector3f()), tail.add(offset, new Vector3f()), base, rotation);
     }
 }

@@ -2,30 +2,28 @@ package com.yummy.naraka.world.entity.motion;
 
 import com.yummy.naraka.world.entity.NarakaSword;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionfc;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SwordMotionChannel {
+public class SwordMotionChannel<T> {
     private int tickCount = 0;
-    private final List<MotionKeyframe> keyframes;
+    private final List<MotionKeyframe<T>> keyframes;
     private int currentKeyframeIndex = -1;
-    private Vec3 original = Vec3.ZERO;
-    private final MotionApplier motionApplier;
 
-    public static Builder builder(MotionApplier motionApplier) {
-        return new Builder(motionApplier);
+    private T original;
+    private final MotionApplier<T> motionApplier;
+
+    public static Builder<Vec3> translation(boolean relative) {
+        return new Builder<>(MotionApplier.position(relative));
     }
 
-    public static Builder translation() {
-        return new Builder(MotionApplier.POSITION);
+    public static Builder<Quaternionfc> rotation(boolean relative) {
+        return new Builder<>(MotionApplier.rotation(relative));
     }
 
-    public static Builder rotation() {
-        return new Builder(MotionApplier.ROTATION);
-    }
-
-    private SwordMotionChannel(List<MotionKeyframe> keyframes, MotionApplier motionApplier) {
+    private SwordMotionChannel(List<MotionKeyframe<T>> keyframes, MotionApplier<T> motionApplier) {
         this.keyframes = List.copyOf(keyframes);
         this.motionApplier = motionApplier;
     }
@@ -36,8 +34,8 @@ public class SwordMotionChannel {
         if (isCurrentKeyframeFinished())
             currentKeyframeIndex += 1;
 
-        MotionKeyframe currentKeyframe = keyframes.get(currentKeyframeIndex);
-        MotionKeyframe nextKeyframe = getNextKeyframe();
+        MotionKeyframe<T> currentKeyframe = keyframes.get(currentKeyframeIndex);
+        MotionKeyframe<T> nextKeyframe = getNextKeyframe();
         apply(entity, currentKeyframe, nextKeyframe);
 
         tickCount += 1;
@@ -47,48 +45,44 @@ public class SwordMotionChannel {
         return currentKeyframeIndex + 1 < keyframes.size() && keyframes.get(currentKeyframeIndex + 1).tick() <= tickCount;
     }
 
-    private MotionKeyframe getNextKeyframe() {
+    private MotionKeyframe<T> getNextKeyframe() {
         if (currentKeyframeIndex + 1 < keyframes.size())
             return keyframes.get(currentKeyframeIndex + 1);
         return keyframes.get(currentKeyframeIndex);
     }
 
-    private void apply(NarakaSword entity, MotionKeyframe current, MotionKeyframe next) {
+    private void apply(NarakaSword entity, MotionKeyframe<T> current, MotionKeyframe<T> next) {
         float length = next.tick() - current.tick();
         float delta = (tickCount - current.tick()) / length;
         if (length <= 0)
             delta = 1;
 
-        Vec3 value = next.interpolate(delta, current.value(), next.value());
-        motionApplier.apply(entity, original.add(value));
+        T value = next.interpolation().interpolate(delta, current.value(), next.value());
+        motionApplier.apply(entity, original, value);
     }
 
-    public static class Builder {
-        private final MotionApplier motionApplier;
-        private final List<MotionKeyframe> keyframes = new ArrayList<>();
+    public static class Builder<T> {
+        private final MotionApplier<T> motionApplier;
+        private final List<MotionKeyframe<T>> keyframes = new ArrayList<>();
 
-        public Builder(MotionApplier motionApplier) {
+        public Builder(MotionApplier<T> motionApplier) {
             this.motionApplier = motionApplier;
         }
 
-        public Builder add(MotionKeyframe keyframe) {
+        public Builder<T> keyframe(MotionKeyframe<T> keyframe) {
             keyframes.add(keyframe);
             return this;
         }
 
-        public MotionKeyframe.Builder keyframe(int tick) {
-            return MotionKeyframe.builder(this, tick);
+        public Builder<T> keyframe(MotionKeyframe.Builder<T> builder) {
+            return keyframe(builder.build());
         }
 
-        public MotionApplier getMotionApplier() {
-            return motionApplier;
-        }
-
-        public SwordMotionChannel build() {
+        public SwordMotionChannel<T> build() {
             if (keyframes.isEmpty())
                 throw new IllegalStateException("Creating empty motion");
 
-            return new SwordMotionChannel(keyframes, motionApplier);
+            return new SwordMotionChannel<>(keyframes, motionApplier);
         }
     }
 }

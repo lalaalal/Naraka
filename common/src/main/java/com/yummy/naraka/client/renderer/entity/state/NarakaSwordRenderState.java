@@ -4,6 +4,8 @@ import com.yummy.naraka.world.entity.SwordEffectData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import org.joml.Quaternionf;
+import org.joml.Quaternionfc;
 
 import java.util.List;
 
@@ -11,7 +13,6 @@ import java.util.List;
 public class NarakaSwordRenderState extends EntityRenderState {
     public List<SwordEffectData> swordEffectData = List.of();
     public int color;
-    public float xRot;
-    public float zRot;
-    public float yRot;
+    public float scale;
+    public Quaternionfc rotation = new Quaternionf();
 }

@@ -59,6 +59,12 @@ public class NarakaUtils {
         return 1;
     }
 
+    public static float quadraticBezier(float delta, float v1, float v2, float v3) {
+        float m1 = Mth.lerp(delta, v1, v2);
+        float m2 = Mth.lerp(delta, v2, v3);
+        return Mth.lerp(delta, m1, m2);
+    }
+
     public static Vec3 quadraticBezier(float delta, Vec3 v1, Vec3 v2, Vec3 v3) {
         Vec3 m1 = v1.lerp(v2, delta);
         Vec3 m2 = v2.lerp(v3, delta);

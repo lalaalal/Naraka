@@ -1,46 +1,45 @@
 package com.yummy.naraka.world.entity.motion;
 
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
+import org.joml.Quaternionfc;
 
-public record MotionKeyframe(int tick, Vec3 value, Interpolation interpolation) implements Interpolation {
-    public static final MotionKeyframe DEFAULT = new MotionKeyframe(0, Vec3.ZERO, Interpolation.LINEAR);
-
-    public static Builder builder(SwordMotionChannel.Builder parent, int tick) {
-        return new Builder(parent, tick);
+public record MotionKeyframe<T>(int tick, T value, Interpolation<T> interpolation) {
+    public static Builder<Vec3> position(int tick) {
+        return new Builder<>(tick, Vec3.ZERO, Interpolation.V_LINEAR);
     }
 
-    @Override
-    public Vec3 interpolate(float delta, Vec3 from, Vec3 to) {
-        return interpolation.interpolate(delta, from, to);
+    public static Builder<Vec3> position(int tick, double x, double y, double z) {
+        return new Builder<>(tick, new Vec3(x, y, z), Interpolation.V_LINEAR);
     }
 
-    public static class Builder {
-        private final SwordMotionChannel.Builder parent;
+    public static Builder<Quaternionfc> rotation(int tick) {
+        return new Builder<>(tick, new Quaternionf(), Interpolation.Q_LINEAR);
+    }
+
+    public static class Builder<T> {
         private final int tick;
-        private Vec3 value = Vec3.ZERO;
-        private Interpolation interpolation = DEFAULT;
+        private T value;
+        private Interpolation<T> interpolation;
 
-        public Builder(SwordMotionChannel.Builder parent, int tick) {
-            this.parent = parent;
+        public Builder(int tick, T value, Interpolation<T> interpolation) {
             this.tick = tick;
+            this.value = value;
+            this.interpolation = interpolation;
         }
 
-        public Builder value(Vec3 value) {
+        public Builder<T> value(T value) {
             this.value = value;
             return this;
         }
 
-        public Builder value(double x, double y, double z) {
-            return value(new Vec3(x, y, z));
-        }
-
-        public Builder interpolation(Interpolation interpolation) {
+        public Builder<T> interpolation(Interpolation<T> interpolation) {
             this.interpolation = interpolation;
             return this;
         }
 
-        public SwordMotionChannel.Builder build() {
-            return parent.add(new MotionKeyframe(tick, value, interpolation));
+        public MotionKeyframe<T> build() {
+            return new MotionKeyframe<>(tick, value, interpolation);
         }
     }
 }

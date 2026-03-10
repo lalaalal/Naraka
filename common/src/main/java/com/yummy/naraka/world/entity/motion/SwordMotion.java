@@ -2,40 +2,40 @@ package com.yummy.naraka.world.entity.motion;
 
 import com.yummy.naraka.world.entity.NarakaSword;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class SwordMotion {
-    private final Map<MotionApplier, SwordMotionChannel> channels;
+    private final Set<SwordMotionChannel<?>> channels;
 
     public static Builder builder() {
         return new Builder();
     }
 
-    public SwordMotion(Map<MotionApplier, SwordMotionChannel> channels) {
-        this.channels = Map.copyOf(channels);
+    public SwordMotion(Set<SwordMotionChannel<?>> channels) {
+        this.channels = Set.copyOf(channels);
     }
 
     public void tick(NarakaSword entity) {
-        for (SwordMotionChannel channel : channels.values()) {
+        for (SwordMotionChannel<?> channel : channels)
             channel.tick(entity);
-        }
     }
 
     public static class Builder {
-        private final Map<MotionApplier, SwordMotionChannel.Builder> builders = new HashMap<>();
+        private final Set<SwordMotionChannel.Builder<?>> builders = new HashSet<>();
 
-        public Builder channel(SwordMotionChannel.Builder channel) {
-            this.builders.put(channel.getMotionApplier(), channel);
+        public Builder channel(SwordMotionChannel.Builder<?> channel) {
+            this.builders.add(channel);
             return this;
         }
 
         public SwordMotion build() {
-            Map<MotionApplier, SwordMotionChannel> channels = new HashMap<>();
-            this.builders.forEach((applier, builder) -> {
-                channels.put(applier, builder.build());
-            });
-            return new SwordMotion(channels);
+            return new SwordMotion(
+                    builders.stream()
+                            .map(SwordMotionChannel.Builder::build)
+                            .collect(Collectors.toUnmodifiableSet())
+            );
         }
     }
 }
