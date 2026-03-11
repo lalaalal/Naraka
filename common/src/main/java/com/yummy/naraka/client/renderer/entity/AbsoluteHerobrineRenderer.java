@@ -15,13 +15,13 @@ import net.minecraft.resources.Identifier;
 @Environment(EnvType.CLIENT)
 public class AbsoluteHerobrineRenderer extends LivingEntityRenderer<AbsoluteHerobrine, AbsoluteHerobrineRenderState, HerobrineModel<AbsoluteHerobrineRenderState>> {
     public AbsoluteHerobrineRenderer(EntityRendererProvider.Context context) {
-        super(context, new HerobrineModel<>(context.bakeLayer(NarakaModelLayers.HEROBRINE)), 0);
+        super(context, new HerobrineModel<>(context.bakeLayer(NarakaModelLayers.HEROBRINE), "absolute_herobrine"), 0);
         addLayer(new HerobrineEyeLayer<>(this));
     }
 
     @Override
     public Identifier getTextureLocation(AbsoluteHerobrineRenderState renderState) {
-        return NarakaTextures.ABSOLUTE_HEROBRINE;
+        return NarakaTextures.HEROBRINE;
     }
 
     @Override
@@ -30,9 +30,10 @@ public class AbsoluteHerobrineRenderer extends LivingEntityRenderer<AbsoluteHero
     }
 
     @Override
-    public void extractRenderState(AbsoluteHerobrine livingEntity, AbsoluteHerobrineRenderState livingEntityRenderState, float f) {
-        super.extractRenderState(livingEntity, livingEntityRenderState, f);
-        livingEntityRenderState.lightCoords = 0;
+    public void extractRenderState(AbsoluteHerobrine livingEntity, AbsoluteHerobrineRenderState renderState, float partialTicks) {
+        super.extractRenderState(livingEntity, renderState, partialTicks);
+        renderState.setupAnimationStates(livingEntity);
+        renderState.lightCoords = 0;
     }
 
     @Override

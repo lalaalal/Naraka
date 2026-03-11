@@ -49,6 +49,7 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
     public void extractRenderState(NarakaSword entity, NarakaSwordRenderState renderState, float partialTick) {
         super.extractRenderState(entity, renderState, partialTick);
         renderState.color = entity.getColor();
+        renderState.maxAlpha = entity.getAlpha(partialTick);
         renderState.rotation = entity.getRotation(partialTick);
         renderState.scale = entity.getScale();
 
@@ -64,28 +65,31 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
 
     @Override
     public void submit(NarakaSwordRenderState entityRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+        if (entityRenderState.maxAlpha <= 0.01f)
+            return;
+
         poseStack.pushPose();
         submitNodeCollector.order(1).submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
             renderSwordEffect(pose, vertexConsumer, entityRenderState);
         });
 
         poseStack.scale(entityRenderState.scale, entityRenderState.scale, entityRenderState.scale);
-        ShinyEffectRenderer.submitShiny(1, 2, 0.125f, false, entityRenderState.color, poseStack, submitNodeCollector);
+        ShinyEffectRenderer.submitShiny(entityRenderState.maxAlpha * 50, 100, 0.125f, false, entityRenderState.color, poseStack, submitNodeCollector);
 
         poseStack.mulPose(entityRenderState.rotation);
 
         submitNodeCollector.order(0).submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
-            renderBody(pose, vertexConsumer, -0.2f, 0.2f, 3, 0.25f, 0xaa, entityRenderState.color);
-            renderBody(pose, vertexConsumer, 0.1f, 0.2f, 3, 0.0625f, 0xff, entityRenderState.color);
-            renderHandle(pose, vertexConsumer, 0, 0, -1.5f, 0.5f, 0.15f, 0.15f, 1.5f, ARGB.color(0xab, entityRenderState.color));
-            renderHandle(pose, vertexConsumer, Mth.PI, 0, -1.5f, 0.5f, 0.15f, 0.15f, 1.5f, ARGB.color(0xab, entityRenderState.color));
+            renderBody(pose, vertexConsumer, -0.2f, 0.2f, 3, 0.25f, 0.67f * entityRenderState.maxAlpha, entityRenderState.color);
+            renderBody(pose, vertexConsumer, 0.1f, 0.2f, 3, 0.0625f, entityRenderState.maxAlpha, entityRenderState.color);
+            renderHandle(pose, vertexConsumer, 0, 0, -1.5f, 0.5f, 0.15f, 0.15f, 1.5f, 0x67f * entityRenderState.maxAlpha, entityRenderState.color);
+            renderHandle(pose, vertexConsumer, Mth.PI, 0, -1.5f, 0.5f, 0.15f, 0.15f, 1.5f, 0x67f * entityRenderState.maxAlpha, entityRenderState.color);
         });
         poseStack.popPose();
 
         super.submit(entityRenderState, poseStack, submitNodeCollector, cameraRenderState);
     }
 
-    private void renderBody(PoseStack.Pose pose, VertexConsumer vertexConsumer, float x1, float x2, float height, float headCut, int alpha, int color) {
+    private void renderBody(PoseStack.Pose pose, VertexConsumer vertexConsumer, float x1, float x2, float height, float headCut, float alpha, int color) {
         List<Vector3fc> vertices = List.of(
                 new Vector3f(x1, height - headCut, 0),
                 new Vector3f(x1, 0, 0),
@@ -95,7 +99,7 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
         NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, vertices, 0, 0, 1, 1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ARGB.color(alpha, color));
     }
 
-    private void renderHandle(PoseStack.Pose pose, VertexConsumer vertexConsumer, float angleOffset, float xOffset, float yOffset, float handleHeight, float height, float scale, float length, int color) {
+    private void renderHandle(PoseStack.Pose pose, VertexConsumer vertexConsumer, float angleOffset, float xOffset, float yOffset, float handleHeight, float height, float scale, float length, float alpha, int color) {
         final float delta = Mth.PI * 0.01f;
         float prevX = Mth.cos(angleOffset) * scale + xOffset;
         float prevZ = Mth.sin(angleOffset) * scale;
@@ -106,7 +110,7 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
             float z = Mth.sin(angle + angleOffset) * scale;
             float y = angle / Mth.PI * handleHeight + yOffset;
 
-            renderWithHeight(pose, vertexConsumer, prevX, prevY, prevZ, x, y, z, height, color);
+            renderWithHeight(pose, vertexConsumer, prevX, prevY, prevZ, x, y, z, height, ARGB.color(alpha, color));
 
             prevX = x;
             prevZ = z;

@@ -13,6 +13,7 @@ import java.util.List;
 public class NarakaSwordRenderState extends EntityRenderState {
     public List<SwordEffectData> swordEffectData = List.of();
     public int color;
+    public float maxAlpha;
     public float scale;
     public Quaternionfc rotation = new Quaternionf();
 }
