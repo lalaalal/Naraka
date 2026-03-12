@@ -51,7 +51,10 @@ public abstract class LightTailEntity extends AbstractHurtingProjectile {
         Collections.fill(tailPositions, this.position());
     }
 
-    public List<Vec3> getTailPositions() {
+    public List<Vec3> getTailPositions(float partialTicks) {
+        int startIndex = (int) (getTailUpdateCount() * (1 - partialTicks));
+        if (tailPositions.size() > startIndex)
+            return tailPositions.subList(startIndex, tailPositions.size() - 1);
         return tailPositions;
     }
 
@@ -66,9 +69,13 @@ public abstract class LightTailEntity extends AbstractHurtingProjectile {
         }
     }
 
+    public int getTailUpdateCount() {
+        return entityData.get(TAIL_UPDATE_COUNT);
+    }
+
     @Override
     public void tick() {
-        updateTailPositions();
         super.tick();
+        updateTailPositions();
     }
 }

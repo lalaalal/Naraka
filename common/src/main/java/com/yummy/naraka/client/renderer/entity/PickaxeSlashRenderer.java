@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
@@ -58,8 +57,12 @@ public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash, 
     }
 
     @Override
-    protected void submitTail(PickaxeSlashRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, Vec3 translation) {
-        super.submitTail(renderState, poseStack, submitNodeCollector, translation.add(0, 1.2, 0));
+    protected void submitTail(PickaxeSlashRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+        poseStack.pushPose();
+        poseStack.translate(0, 1.2, 0);
+        super.submitTail(renderState, poseStack, submitNodeCollector);
+
+        poseStack.popPose();
     }
 
     @Override

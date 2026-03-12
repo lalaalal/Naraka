@@ -31,14 +31,12 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
     @Override
     public void extractRenderState(T entity, S renderState, float partialTick) {
         super.extractRenderState(entity, renderState, partialTick);
-        renderState.tailPositions = entity.getTailPositions()
+        renderState.tailPositions = entity.getTailPositions(partialTick)
                 .stream()
-                .map(position -> position.subtract(entity.position()))
-                .map(NarakaRenderUtils::vector3f)
+                .map(position -> position.subtract(entity.getPosition(partialTick)))
+                .map(Vec3::toVector3f)
                 .collect(Collectors.toList());
         renderState.tailPositions.addFirst(new Vector3f());
-        renderState.partialTranslation = entity.position()
-                .subtract(entity.getPosition(partialTick));
         renderState.tailColor = entity.getTailColor();
         renderState.tailWidth = 0.15f;
 
@@ -59,7 +57,7 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
         AABB boundingBox = super.getBoundingBoxForCulling(entity);
         double maxX = boundingBox.maxX, maxY = boundingBox.maxY, maxZ = boundingBox.maxZ;
         double minX = boundingBox.minX, minY = boundingBox.minY, minZ = boundingBox.minZ;
-        for (Vec3 position : entity.getTailPositions()) {
+        for (Vec3 position : entity.getTailPositions(1)) {
             maxX = Math.max(position.x, maxX);
             maxY = Math.max(position.y, maxY);
             maxZ = Math.max(position.z, maxZ);
@@ -73,13 +71,12 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
     @Override
     public void submit(S entityRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         super.submit(entityRenderState, poseStack, submitNodeCollector, cameraRenderState);
-        submitTail(entityRenderState, poseStack, submitNodeCollector, entityRenderState.partialTranslation);
+        submitTail(entityRenderState, poseStack, submitNodeCollector);
     }
 
-    protected void submitTail(S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, Vec3 translation) {
+    protected void submitTail(S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
         poseStack.pushPose();
         poseStack.translate(0, 0.25, 0);
-        poseStack.translate(translation);
         submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
             float partSize = 1 / (float) renderState.tailPositions.size();
             for (int index = 0; index < renderState.tailPositions.size() - 1; index++) {
