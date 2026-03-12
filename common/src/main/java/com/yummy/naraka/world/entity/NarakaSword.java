@@ -40,7 +40,10 @@ public class NarakaSword extends MotionEntity {
         setPos(position);
     }
 
-    public List<SwordEffectData> getSwordEffectData() {
+    public List<SwordEffectData> getSwordEffectData(float partialTicks) {
+        int startIndex = (int) (getSwordEffectUpdateCount() * (1 - partialTicks));
+        if (swordEffectData.size() > startIndex)
+            return swordEffectData.subList(startIndex, swordEffectData.size() - 1);
         return swordEffectData;
     }
 
@@ -51,6 +54,10 @@ public class NarakaSword extends MotionEntity {
                 .define(ALPHA, 0f);
     }
 
+    public int getSwordEffectUpdateCount() {
+        return 8;
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -58,18 +65,18 @@ public class NarakaSword extends MotionEntity {
 
         if (tickCount == 5) {
             for (int i = 0; i < 64; i++)
-                swordEffectData.add(SwordEffectData.of(position().toVector3f(), DIRECTION, getRotation(), 0, 0));
+                swordEffectData.add(new SwordEffectData(position().toVector3f(), DIRECTION, getRotation(), 0, 0));
         }
 
         if (level().isClientSide() && tickCount > 10) {
-            final int updateCount = 4;
+            final int updateCount = getSwordEffectUpdateCount();
             SwordEffectData prevData = swordEffectData.getFirst();
             for (float count = 1; count <= updateCount; count++) {
-                float delta = Mth.lerp(count / (float) updateCount, 0, 1);
+                float delta = count / (float) updateCount;
                 Vector3fc base = prevData.base().lerp(position().toVector3f(), delta, new Vector3f());
                 Quaternionfc rotation = prevData.rotation().slerp(getRotation(), delta, new Quaternionf());
                 swordEffectData.removeLast();
-                swordEffectData.addFirst(SwordEffectData.of(base, DIRECTION, rotation, LENGTH, getScale()));
+                swordEffectData.addFirst(new SwordEffectData(base, DIRECTION, rotation, LENGTH, getScale()));
             }
         }
     }

@@ -21,8 +21,8 @@ import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
 public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSwordRenderState> {
@@ -53,14 +53,20 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
         renderState.rotation = entity.getRotation(partialTick);
         renderState.scale = entity.getScale();
 
-        Vector3fc offset = entity.getPosition(partialTick)
-                .scale(-1)
-                .toVector3f();
-        renderState.swordEffectData = entity.getSwordEffectData()
-                .stream()
-                .map(swordEffectData -> swordEffectData.offset(offset))
-                .collect(Collectors.toList());
-        renderState.swordEffectData.addFirst(SwordEffectData.of(new Vector3f(), NarakaSword.DIRECTION, renderState.rotation, NarakaSword.LENGTH, renderState.scale));
+        Vector3fc position = entity.getPosition(partialTick).toVector3f();
+        renderState.swordEffectOffset = position.mul(-1, new Vector3f());
+        renderState.swordEffectUpdateCount = entity.getSwordEffectUpdateCount();
+
+        renderState.swordEffectData = new ArrayList<>(entity.getSwordEffectData(partialTick));
+        renderState.swordEffectData.addFirst(new SwordEffectData(position, NarakaSword.DIRECTION, renderState.rotation, NarakaSword.LENGTH, entity.getScale()));
+
+        float alpha = 1;
+        for (float index = 0; index < renderState.swordEffectData.size() - 1; index++) {
+            float nextAlpha = alpha * 0.95f;
+            renderState.swordEffectAlpha.add(Mth.lerp(partialTick, alpha, nextAlpha));
+
+            alpha = nextAlpha;
+        }
     }
 
     @Override
@@ -130,20 +136,21 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
 
     private void renderSwordEffect(PoseStack.Pose pose, VertexConsumer vertexConsumer, NarakaSwordRenderState renderState) {
         List<SwordEffectData> swordEffectData = renderState.swordEffectData;
-        float alpha = 1;
-        for (int index = 0; index < swordEffectData.size() - 1; index++) {
+        for (int index = 0; index < renderState.swordEffectAlpha.size() - 1; index++) {
+            float alpha = renderState.swordEffectAlpha.get(index);
             SwordEffectData current = swordEffectData.get(index);
             SwordEffectData next = swordEffectData.get(index + 1);
 
+            if (alpha < 0.01f || next.length() <= 0)
+                return;
+
             List<Vector3fc> vertices = List.of(
-                    current.head(),
-                    current.tail(),
-                    next.tail(),
-                    next.head()
+                    current.head(renderState.swordEffectOffset),
+                    current.tail(renderState.swordEffectOffset),
+                    next.tail(renderState.swordEffectOffset),
+                    next.head(renderState.swordEffectOffset)
             );
             NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, vertices, 0, 0, 1, 1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ARGB.color(alpha, renderState.color));
-
-            alpha *= 0.95f;
         }
     }
 }
