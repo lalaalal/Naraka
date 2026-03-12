@@ -26,7 +26,6 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.hurtingprojectile.Fireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.ValueInput;
@@ -204,8 +203,6 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         output.putBoolean("FinalModel", isFinalModel());
         output.putBoolean("DisplayPickaxe", displayPickaxe());
     }
-
-    protected abstract Fireball createFireball(ServerLevel level);
 
     public abstract Optional<ShadowController> getShadowController();
 

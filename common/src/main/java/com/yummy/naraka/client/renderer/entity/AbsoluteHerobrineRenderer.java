@@ -1,5 +1,6 @@
 package com.yummy.naraka.client.renderer.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.layer.HerobrineEyeLayer;
@@ -8,8 +9,10 @@ import com.yummy.naraka.client.renderer.entity.state.AbsoluteHerobrineRenderStat
 import com.yummy.naraka.world.entity.AbsoluteHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.resources.Identifier;
 
 @Environment(EnvType.CLIENT)
@@ -37,8 +40,20 @@ public class AbsoluteHerobrineRenderer extends LivingEntityRenderer<AbsoluteHero
     }
 
     @Override
+    public void submit(AbsoluteHerobrineRenderState livingEntityRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+        poseStack.pushPose();
+        poseStack.translate(0, 2.5, -1);
+        ShinyEffectRenderer.submitShiny(1, 2, 0.25f, livingEntityRenderState.yRot + 180, false, 0xffffff, poseStack, submitNodeCollector);
+        ShinyEffectRenderer.submitShiny(1, 2, 0.25f, livingEntityRenderState.yRot, false, 0xffffff, poseStack, submitNodeCollector);
+
+        poseStack.popPose();
+
+        super.submit(livingEntityRenderState, poseStack, submitNodeCollector, cameraRenderState);
+    }
+
+    @Override
     protected int getModelTint(AbsoluteHerobrineRenderState renderState) {
-        return 0;
+        return 0xff000000;
     }
 
     @Override

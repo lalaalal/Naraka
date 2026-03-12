@@ -706,7 +706,6 @@ public class Herobrine extends AbstractHerobrine {
         startStaggering(HerobrineAnimationIdentifiers.STAGGERING, 70, -1);
     }
 
-    @Override
     public Fireball createFireball(ServerLevel level) {
         NarakaFireball fireball = new NarakaFireball(this, Vec3.ZERO, level(), false);
         fireball.setDamageCalculator(this::calculateFireballDamage);

@@ -49,6 +49,7 @@ public class SwordSwingSkill extends AttackSkill<AbsoluteHerobrine> {
         level.addFreshEntity(narakaSword);
         narakaSword.setRotation(Axis.YN.rotationDegrees(mob.getYRot() - 90)
                 .rotateX(Mth.PI));
+        narakaSword.setScale(5);
     }
 
     @Override
