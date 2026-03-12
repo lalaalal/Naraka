@@ -4,6 +4,7 @@ import com.mojang.math.Axis;
 import com.yummy.naraka.world.entity.AbsoluteHerobrine;
 import com.yummy.naraka.world.entity.NarakaSword;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
+import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import com.yummy.naraka.world.entity.motion.MotionTypes;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.resources.Identifier;
@@ -44,21 +45,26 @@ public class SwordSwingSkill extends AttackSkill<AbsoluteHerobrine> {
         Vec3 position = mob.getLookAngle()
                 .horizontal()
                 .scale(2)
-                .add(mob.position());
+                .add(mob.position().add(0, -2, 0));
         narakaSword = new NarakaSword(level, position, SoulType.NONE);
         level.addFreshEntity(narakaSword);
         narakaSword.setRotation(Axis.YN.rotationDegrees(mob.getYRot() - 90)
                 .rotateX(Mth.PI));
-        narakaSword.setScale(5);
     }
 
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         if (narakaSword != null) {
-            runAt(5, () -> narakaSword.setMotion(MotionTypes.SWORD_SWING));
+            runAt(5, () -> narakaSword.setMotion(getMotionIdentifier()));
             runBetween(5, 26, () -> narakaSword.setAlpha((tickCount - 5) / 20f));
             runBetween(110, 141, () -> narakaSword.setAlpha(1 - (tickCount - 110) / 30f));
         }
+    }
+
+    private Identifier getMotionIdentifier() {
+        if (mob.getCurrentAnimation().equals(HerobrineAnimationIdentifiers.SWORD_ATTACK_SPIN))
+            return MotionTypes.SWORD_SWING;
+        return MotionTypes.SWORD_STRIKE;
     }
 
     @Override
