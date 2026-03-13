@@ -113,13 +113,15 @@ public class NarakaSword extends MotionEntity {
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
-        SoulType soulType = input.read("SoulType", SoulType.CODEC).orElse(SoulType.NONE);
-        setSoulType(soulType);
+        input.read("SoulType", SoulType.CODEC)
+                .ifPresent(this::setSoulType);
+        setAlpha(input.getFloatOr("Alpha", 0));
     }
 
     @Override
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         output.store("SoulType", SoulType.CODEC, getSoulType());
+        output.putFloat("Alpha", getAlpha());
     }
 }

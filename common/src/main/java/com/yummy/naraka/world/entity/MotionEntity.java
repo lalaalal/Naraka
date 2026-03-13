@@ -9,6 +9,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -61,8 +62,7 @@ public abstract class MotionEntity extends Entity implements Motionable {
         MotionData motionData = EntityDataHelper.getRawEntityData(this, NarakaEntityDataTypes.MOTION_DATA.get());
         if (!motion.getId().equals(motionData.id()))
             motion = MotionTypes.create(motionData);
-        if (!motion.getId().equals(MotionTypes.EMPTY))
-            motion.tick(this);
+        motion.tick(this);
     }
 
     @Override
@@ -101,11 +101,14 @@ public abstract class MotionEntity extends Entity implements Motionable {
 
     @Override
     protected void addAdditionalSaveData(ValueOutput output) {
-
+        output.putFloat("Scale", getScale());
+        output.store("Rotation", ExtraCodecs.QUATERNIONF, getRotation());
     }
 
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
-
+        setScale(input.getFloatOr("Scale", 1));
+        input.read("Rotation", ExtraCodecs.QUATERNIONF)
+                .ifPresent(this::setRotation);
     }
 }

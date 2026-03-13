@@ -16,12 +16,7 @@ public class MotionTypes {
     private static final Map<Identifier, MotionType> REGISTRY = new HashMap<>();
 
     public static final MotionType EMPTY_TYPE = (positions, rotations) -> Motion.builder()
-            .channel(MotionChannel.rotation(true)
-                    .keyframe(MotionKeyframe.rotation(0))
-            )
-            .channel(MotionChannel.translation(true)
-                    .keyframe(MotionKeyframe.position(0))
-            ).build(NarakaMod.identifier("empty"));
+            .build(NarakaMod.identifier("empty"));
 
     public static final Identifier EMPTY = register(NarakaMod.identifier("empty"), EMPTY_TYPE);
 
@@ -116,8 +111,7 @@ public class MotionTypes {
     }
 
     private static Identifier register(Identifier id, Motion.Builder builder) {
-        REGISTRY.put(id, (positions, rotations) -> builder.build(id));
-        return id;
+        return register(id, (positions, rotations) -> builder.build(id));
     }
 
     public static Motion create(Identifier id) {
