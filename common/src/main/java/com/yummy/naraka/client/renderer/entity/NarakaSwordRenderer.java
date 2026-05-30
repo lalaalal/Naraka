@@ -75,7 +75,7 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
             return;
 
         poseStack.pushPose();
-        submitNodeCollector.order(1).submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
+        submitNodeCollector.order(2).submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
             renderSwordEffect(pose, vertexConsumer, entityRenderState);
         });
 
@@ -83,16 +83,23 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
         ShinyEffectRenderer.submitShiny(entityRenderState.maxAlpha * 50, 100, 0.125f, false, entityRenderState.color, poseStack, submitNodeCollector);
 
         poseStack.mulPose(entityRenderState.rotation);
-
-        submitNodeCollector.order(0).submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
-            renderBody(pose, vertexConsumer, -0.2f, 0.2f, 3, 0.25f, 0.67f * entityRenderState.maxAlpha, entityRenderState.color);
-            renderBody(pose, vertexConsumer, 0.1f, 0.2f, 3, 0.0625f, entityRenderState.maxAlpha, entityRenderState.color);
-            renderHandle(pose, vertexConsumer, 0, 0, -1.5f, 0.5f, 0.15f, 0.15f, 1.5f, 0x67f * entityRenderState.maxAlpha, entityRenderState.color);
-            renderHandle(pose, vertexConsumer, Mth.PI, 0, -1.5f, 0.5f, 0.15f, 0.15f, 1.5f, 0x67f * entityRenderState.maxAlpha, entityRenderState.color);
-        });
+        submitSword(entityRenderState, poseStack, submitNodeCollector);
         poseStack.popPose();
 
         super.submit(entityRenderState, poseStack, submitNodeCollector, cameraRenderState);
+    }
+
+    private void submitSword(NarakaSwordRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+        submitNodeCollector.order(1).submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
+            renderBody(pose, vertexConsumer, -0.2f, 0.2f, 3, 0.25f, 0.67f * renderState.maxAlpha, renderState.color);
+            renderBody(pose, vertexConsumer, 0.1f, 0.2f, 3, 0.0625f, renderState.maxAlpha, renderState.color);
+            renderHandle(pose, vertexConsumer, 0, 0, -1.5f, 0.5f, 0.15f, 0.15f, 1.5f, 0x67f * renderState.maxAlpha, renderState.color);
+            renderHandle(pose, vertexConsumer, Mth.PI, 0, -1.5f, 0.5f, 0.15f, 0.15f, 1.5f, 0x67f * renderState.maxAlpha, renderState.color);
+        });
+        submitNodeCollector.order(0).submitCustomGeometry(poseStack, RenderTypes.lines(), (pose, vertexConsumer) -> {
+            renderBody(pose, vertexConsumer, -0.2f, 0.2f, 3, 0.25f, 0.67f * renderState.maxAlpha, renderState.color);
+            renderBody(pose, vertexConsumer, 0.1f, 0.2f, 3, 0.0625f, renderState.maxAlpha, renderState.color);
+        });
     }
 
     private void renderBody(PoseStack.Pose pose, VertexConsumer vertexConsumer, float x1, float x2, float height, float headCut, float alpha, int color) {

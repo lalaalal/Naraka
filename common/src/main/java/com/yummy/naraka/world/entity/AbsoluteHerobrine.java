@@ -15,6 +15,8 @@ import net.minecraft.world.level.Level;
 public class AbsoluteHerobrine extends SkillUsingMob implements Enemy {
     private final SwordSwingSkill swordSwingSkill = registerSkill(this, SwordSwingSkill::new, HerobrineAnimationIdentifiers.SWORD_ATTACK, HerobrineAnimationIdentifiers.SWORD_ATTACK_SPIN);
 
+    private int colorStack = 0;
+
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.ATTACK_DAMAGE, 10)
@@ -45,6 +47,14 @@ public class AbsoluteHerobrine extends SkillUsingMob implements Enemy {
         if (!skill.hasLinkedSkill()) {
             setAnimation(HerobrineAnimationIdentifiers.PHASE_4_IDLE);
         }
+    }
+
+    public int getColorStack() {
+        return colorStack;
+    }
+
+    public void increaseColorStack() {
+        colorStack += 1;
     }
 
     @Override

@@ -32,7 +32,7 @@ public class SwordSwingSkill extends AttackSkill<AbsoluteHerobrine> {
 
     @Override
     protected float calculateDamage(LivingEntity target) {
-        return 0;
+        return mob.getColorStack() * target.getMaxHealth() * 0.2f;
     }
 
     @Override
@@ -58,7 +58,13 @@ public class SwordSwingSkill extends AttackSkill<AbsoluteHerobrine> {
             runAt(5, () -> narakaSword.setMotion(getMotionIdentifier()));
             runBetween(5, 26, () -> narakaSword.setAlpha((tickCount - 5) / 20f));
             runBetween(110, 141, () -> narakaSword.setAlpha(1 - (tickCount - 110) / 30f));
+
+            runAt(110, () -> hurtEntities(level, this::selectTarget, 10));
         }
+    }
+
+    private boolean selectTarget(LivingEntity target) {
+        return target != mob;
     }
 
     private Identifier getMotionIdentifier() {
