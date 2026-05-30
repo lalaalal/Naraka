@@ -130,7 +130,7 @@ public class Herobrine extends AbstractHerobrine {
     protected final List<Afterimage> afterimages = new ArrayList<>();
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
-    private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this, bossEvent);
+    private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, BossEvent.BossBarColor.WHITE, this, bossEvent);
     private final ShadowController shadowController = new ShadowController(this);
 
     private float hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;

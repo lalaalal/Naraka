@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill.absolute_herobrine;
 
 import com.mojang.math.Axis;
+import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.AbsoluteHerobrine;
 import com.yummy.naraka.world.entity.NarakaSword;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
@@ -10,6 +11,7 @@ import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +34,16 @@ public class SwordSwingSkill extends AttackSkill<AbsoluteHerobrine> {
 
     @Override
     protected float calculateDamage(LivingEntity target) {
-        return mob.getColorStack() * target.getMaxHealth() * 0.2f;
+        if (mob.getSoulStack() >= 8)
+            return target.getMaxHealth();
+        return Math.max(8, (mob.getSoulStack() + 1) * 0.1f * target.getMaxHealth());
+    }
+
+    @Override
+    protected DamageSource getDamageSource() {
+        if (mob.getSoulStack() > 0)
+            return NarakaDamageSources.soulAttack(mob);
+        return super.getDamageSource();
     }
 
     @Override
@@ -59,7 +70,10 @@ public class SwordSwingSkill extends AttackSkill<AbsoluteHerobrine> {
             runBetween(5, 26, () -> narakaSword.setAlpha((tickCount - 5) / 20f));
             runBetween(110, 141, () -> narakaSword.setAlpha(1 - (tickCount - 110) / 30f));
 
-            runAt(110, () -> hurtEntities(level, this::selectTarget, 10));
+            runAt(110, () -> {
+                hurtEntities(level, this::selectTarget, 50);
+                mob.removeProtection(mob.getSoulStack());
+            });
         }
     }
 

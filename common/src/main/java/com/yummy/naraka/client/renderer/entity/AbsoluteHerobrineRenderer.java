@@ -37,6 +37,8 @@ public class AbsoluteHerobrineRenderer extends LivingEntityRenderer<AbsoluteHero
         super.extractRenderState(livingEntity, renderState, partialTicks);
         renderState.setupAnimationStates(livingEntity);
         renderState.lightCoords = 0;
+        renderState.absorbedSoulTypes = livingEntity.getAbsorbedSoulTypes();
+        renderState.outlineColor = 0xffffffff;
     }
 
     @Override

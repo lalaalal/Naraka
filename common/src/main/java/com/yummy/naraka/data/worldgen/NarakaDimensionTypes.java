@@ -30,9 +30,12 @@ public class NarakaDimensionTypes {
                 BlockTags.INFINIBURN_OVERWORLD,
                 1,
                 new DimensionType.MonsterSettings(ConstantInt.ZERO, 0),
-                DimensionType.Skybox.NONE,
+                DimensionType.Skybox.OVERWORLD,
                 DimensionType.CardinalLightType.DEFAULT,
                 EnvironmentAttributeMap.builder()
+                        .set(EnvironmentAttributes.FOG_COLOR, 0x333333)
+                        .set(EnvironmentAttributes.SKY_COLOR, 0)
+                        .set(EnvironmentAttributes.WATER_FOG_COLOR, 0x666666)
                         .set(EnvironmentAttributes.CLOUD_HEIGHT, 56f)
                         .set(EnvironmentAttributes.MOON_ANGLE, 0f)
                         .set(EnvironmentAttributes.SUN_ANGLE, 180f)
@@ -42,6 +45,7 @@ public class NarakaDimensionTypes {
                         .set(EnvironmentAttributes.RESPAWN_ANCHOR_WORKS, false)
                         .set(EnvironmentAttributes.NETHER_PORTAL_SPAWNS_PIGLINS, false)
                         .set(EnvironmentAttributes.PIGLINS_ZOMBIFY, false)
+                        .set(EnvironmentAttributes.STAR_BRIGHTNESS, 1f)
                         .build(),
                 timelines.getOrThrow(TimelineTags.UNIVERSAL)
         ));

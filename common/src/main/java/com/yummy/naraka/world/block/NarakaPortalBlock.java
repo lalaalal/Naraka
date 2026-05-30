@@ -33,7 +33,7 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
     public static final MapCodec<NarakaPortalBlock> CODEC = simpleCodec(NarakaPortalBlock::new);
     private static final VoxelShape SHAPE = Shapes.box(0.25, 0, -1, 0.75, 3, 2);
 
-    public static final BlockPos BASE_POSITION = new BlockPos(0, 63, 0);
+    public static final BlockPos BASE_POSITION = new BlockPos(0, 64, 0);
 
     public static BlockPos createRandomNarakaSpawnPosition(RandomSource random) {
         int x = random.nextInt(3, 7);

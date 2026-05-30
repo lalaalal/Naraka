@@ -143,6 +143,7 @@ public class NarakaEntityTypes {
                     .fireImmune()
                     .sized(0.5f, 0.5f)
                     .updateInterval(1200)
+                    .noSave()
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<ShinyEffect>> SHINY_EFFECT = register(

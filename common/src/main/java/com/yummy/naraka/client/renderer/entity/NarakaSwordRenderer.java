@@ -96,7 +96,7 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
             renderHandle(pose, vertexConsumer, 0, 0, -1.5f, 0.5f, 0.15f, 0.15f, 1.5f, 0x67f * renderState.maxAlpha, renderState.color);
             renderHandle(pose, vertexConsumer, Mth.PI, 0, -1.5f, 0.5f, 0.15f, 0.15f, 1.5f, 0x67f * renderState.maxAlpha, renderState.color);
         });
-        submitNodeCollector.order(0).submitCustomGeometry(poseStack, RenderTypes.lines(), (pose, vertexConsumer) -> {
+        submitNodeCollector.order(0).submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
             renderBody(pose, vertexConsumer, -0.2f, 0.2f, 3, 0.25f, 0.67f * renderState.maxAlpha, renderState.color);
             renderBody(pose, vertexConsumer, 0.1f, 0.2f, 3, 0.0625f, renderState.maxAlpha, renderState.color);
         });
