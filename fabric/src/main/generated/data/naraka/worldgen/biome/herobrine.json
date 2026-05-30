@@ -8,17 +8,14 @@
         "replace_current_music": true,
         "sound": "naraka:music.herobrine_phase_4"
       }
-    },
-    "minecraft:visual/fog_color": "#ffffff",
-    "minecraft:visual/sky_color": "#ffffff",
-    "minecraft:visual/water_fog_color": "#ffffff"
+    }
   },
   "carvers": [],
   "downfall": 0.0,
   "effects": {
-    "foliage_color": "#ffffff",
-    "grass_color": "#ffffff",
-    "water_color": "#ffffff"
+    "foliage_color": "#666666",
+    "grass_color": "#666666",
+    "water_color": "#333333"
   },
   "features": [],
   "has_precipitation": false,

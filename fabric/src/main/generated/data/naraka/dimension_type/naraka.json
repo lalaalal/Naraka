@@ -12,8 +12,12 @@
     "minecraft:gameplay/piglins_zombify": false,
     "minecraft:gameplay/respawn_anchor_works": false,
     "minecraft:visual/cloud_height": 56.0,
+    "minecraft:visual/fog_color": "#333333",
     "minecraft:visual/moon_angle": 0.0,
-    "minecraft:visual/sun_angle": 180.0
+    "minecraft:visual/sky_color": "#000000",
+    "minecraft:visual/star_brightness": 1.0,
+    "minecraft:visual/sun_angle": 180.0,
+    "minecraft:visual/water_fog_color": "#666666"
   },
   "coordinate_scale": 1.0,
   "has_ceiling": false,
@@ -25,6 +29,5 @@
   "min_y": 0,
   "monster_spawn_block_light_limit": 0,
   "monster_spawn_light_level": 0,
-  "skybox": "none",
   "timelines": "#minecraft:universal"
 }
