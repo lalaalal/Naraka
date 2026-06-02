@@ -33,7 +33,7 @@ public class NarakaDimensionTypes {
                 DimensionType.Skybox.OVERWORLD,
                 DimensionType.CardinalLightType.DEFAULT,
                 EnvironmentAttributeMap.builder()
-                        .set(EnvironmentAttributes.FOG_COLOR, 0x333333)
+                        .set(EnvironmentAttributes.FOG_COLOR, 0x121212)
                         .set(EnvironmentAttributes.SKY_COLOR, 0)
                         .set(EnvironmentAttributes.WATER_FOG_COLOR, 0x666666)
                         .set(EnvironmentAttributes.CLOUD_HEIGHT, 56f)

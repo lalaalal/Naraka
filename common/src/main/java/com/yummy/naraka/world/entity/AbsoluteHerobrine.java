@@ -29,8 +29,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class AbsoluteHerobrine extends SkillUsingMob implements Enemy {
     public static final EntityDataAccessor<List<SoulType>> ABSORBED_SOUL_TYPES = SynchedEntityData.defineId(AbsoluteHerobrine.class, NarakaEntityDataSerializers.SOUL_TYPES);
@@ -46,6 +45,7 @@ public class AbsoluteHerobrine extends SkillUsingMob implements Enemy {
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, BossEvent.BossBarColor.YELLOW, this, bossEvent);
     private boolean hurtByStar;
     private final List<SoulType> absorbedSoulTypes = new ArrayList<>();
+    private final Map<SoulType, Float> soulTypeAlpha = new LinkedHashMap<>();
 
     private int protectedHealth = 66 * 7;
 
@@ -95,8 +95,13 @@ public class AbsoluteHerobrine extends SkillUsingMob implements Enemy {
         entityData.set(ABSORBED_SOUL_TYPES, List.copyOf(absorbedSoulTypes));
     }
 
+    public void resetAbsorbedSouls() {
+        absorbedSoulTypes.clear();
+        entityData.set(ABSORBED_SOUL_TYPES, List.of());
+    }
+
     public List<SoulType> getAbsorbedSoulTypes() {
-        return absorbedSoulTypes;
+        return entityData.get(ABSORBED_SOUL_TYPES);
     }
 
     public boolean isHurtByStar() {
@@ -142,6 +147,31 @@ public class AbsoluteHerobrine extends SkillUsingMob implements Enemy {
     public void tick() {
         super.tick();
         setNoGravity(true);
+        if (level().isClientSide())
+            updateSoulTypeAlpha();
+    }
+
+    private void updateSoulTypeAlpha() {
+        List<SoulType> absorbedSoulTypes = getAbsorbedSoulTypes();
+        for (SoulType soulType : absorbedSoulTypes) {
+            float alpha = soulTypeAlpha.computeIfAbsent(soulType, key -> 0f);
+            soulTypeAlpha.put(soulType, Math.min(alpha + 0.01f, 1f));
+        }
+
+        for (SoulType soulType : Set.copyOf(soulTypeAlpha.keySet())) {
+            if (!absorbedSoulTypes.contains(soulType)) {
+                float alpha = soulTypeAlpha.computeIfAbsent(soulType, key -> 0f);
+                float newAlpha = Math.max(alpha - 0.04f, 0);
+                if (newAlpha > 0)
+                    soulTypeAlpha.put(soulType, newAlpha);
+                else
+                    soulTypeAlpha.remove(soulType);
+            }
+        }
+    }
+
+    public Map<SoulType, Float> getSoulTypeAlpha() {
+        return soulTypeAlpha;
     }
 
     @Override

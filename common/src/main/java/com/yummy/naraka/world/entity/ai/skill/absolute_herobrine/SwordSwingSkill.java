@@ -16,6 +16,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -85,6 +87,7 @@ public class SwordSwingSkill extends AttackSkill<AbsoluteHerobrine> {
             runAt(110, () -> {
                 hurtEntities(level, this::selectTarget, 50);
                 mob.removeProtection(mob.getSoulStack());
+                mob.resetAbsorbedSouls();
             });
 
             runAt(110, () -> {
@@ -97,6 +100,8 @@ public class SwordSwingSkill extends AttackSkill<AbsoluteHerobrine> {
                         NarakaUtils.CIRCLE,
                         () -> new Vec3(0, mob.getRandom().nextDouble() * 0.3, 0)
                 );
+                level.playSound(null, mob.blockPosition(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE, 10000.0F, 0.8F + mob.getRandom().nextFloat() * 0.2F);
+                level.playSound(null, mob.blockPosition(), SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.HOSTILE, 2.0F, 0.5F + mob.getRandom().nextFloat() * 0.2F);
             });
             run(between(110, 125), () -> {
                 CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.SHAKE_CAMERA);

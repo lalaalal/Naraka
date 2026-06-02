@@ -71,7 +71,6 @@ public class ChargingSkill extends Skill<AbsoluteHerobrine> {
     protected void onLastTick(ServerLevel level) {
         chargingStack += 1;
         if (chargingStack < SOUL_TYPES.length) {
-
             setLinkedSkill(this);
         } else {
             chargingStack = 0;
@@ -99,8 +98,8 @@ public class ChargingSkill extends Skill<AbsoluteHerobrine> {
     private void updateAndDisplayParticles(ServerLevel level) {
         SoulType soulType = SoulType.GOD_BLOOD;
         if (mob.isHurtByStar()) {
-            mob.absorbSoul(soulType);
             soulType = getCurrentSoulType();
+            mob.absorbSoul(soulType);
         }
         NarakaSkillUtils.sendSphereParticles(level, mob, NarakaFlameParticleOption.fromSoulType(soulType), 1);
     }
