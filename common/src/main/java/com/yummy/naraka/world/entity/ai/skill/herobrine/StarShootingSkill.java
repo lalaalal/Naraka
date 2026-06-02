@@ -82,6 +82,7 @@ public class StarShootingSkill extends ComboSkill<Herobrine> {
                 new Vec3(targetX, targetY, targetZ)
         ).rotated(yRot);
         CorruptedStar corruptedStar = new CorruptedStar(level, mob, mob.getEyePosition(), bezier);
+        corruptedStar.setVerticalShine(corruptedStar.getRandom().nextDouble() < 0.4);
         if (followTarget) {
             followingStars.add(corruptedStar);
             corruptedStar.setFollowingTarget(target);

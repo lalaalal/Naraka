@@ -10,6 +10,7 @@ import com.yummy.naraka.client.gui.hud.WhiteHud;
 import com.yummy.naraka.client.init.*;
 import com.yummy.naraka.client.particle.*;
 import com.yummy.naraka.client.renderer.ItemRenderRegistry;
+import com.yummy.naraka.client.renderer.NarakaSkyRenderer;
 import com.yummy.naraka.client.renderer.blockentity.NarakaPortalBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulStabilizerBlockEntityRenderer;
@@ -23,6 +24,7 @@ import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.util.ComponentStyles;
+import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
@@ -49,6 +51,7 @@ public final class NarakaModClient {
         registerHudRenders();
         registerMenus();
         registerKeyMappings();
+        DimensionSkyRendererRegistry.register(NarakaDimensions.NARAKA, NarakaSkyRenderer::new);
 
         AnimationMapper.initialize();
 

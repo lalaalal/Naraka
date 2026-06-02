@@ -39,7 +39,7 @@ public class ChargingSkill extends Skill<AbsoluteHerobrine> {
 
     @Override
     public boolean canUse(ServerLevel level) {
-        return true;
+        return mob.tickCount > 100;
     }
 
     @Override
@@ -115,6 +115,7 @@ public class ChargingSkill extends Skill<AbsoluteHerobrine> {
 
     @Override
     public void interrupt() {
-        super.interrupt();
+        if (corruptedStar != null)
+            corruptedStar.discard();
     }
 }

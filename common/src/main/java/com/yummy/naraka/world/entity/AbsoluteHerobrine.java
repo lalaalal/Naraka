@@ -1,10 +1,13 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.world.block.NarakaBlocks;
+import com.yummy.naraka.world.block.NarakaPortalBlock;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.absolute_herobrine.ChargingSkill;
 import com.yummy.naraka.world.entity.ai.skill.absolute_herobrine.SwordSwingSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import com.yummy.naraka.world.item.SoulType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
@@ -22,6 +25,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
@@ -33,6 +37,7 @@ public class AbsoluteHerobrine extends SkillUsingMob implements Enemy {
 
     public static final float[] HEALTH_BY_PHASE = {528};
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.WHITE};
+    public static final BlockPos SPAWN_POSITION = new BlockPos(0, 68, 0);
 
     private final SwordSwingSkill swordSwingSkill = registerSkill(this, SwordSwingSkill::new, HerobrineAnimationIdentifiers.SWORD_ATTACK, HerobrineAnimationIdentifiers.SWORD_ATTACK_SPIN);
     private final ChargingSkill chargingSkill = registerSkill(9, new ChargingSkill(this, swordSwingSkill), HerobrineAnimationIdentifiers.CHARGING);
@@ -67,8 +72,6 @@ public class AbsoluteHerobrine extends SkillUsingMob implements Enemy {
         updateAnimation(HerobrineAnimationIdentifiers.PHASE_4_IDLE);
 
         skillManager.runOnSkillEnd(this::updateAnimationOnSkillEnd);
-
-        setDeltaMovement(0, -1, 0);
     }
 
     @Override
@@ -123,7 +126,16 @@ public class AbsoluteHerobrine extends SkillUsingMob implements Enemy {
     @Override
     protected void actuallyHurt(ServerLevel level, DamageSource damageSource, float amount) {
         super.actuallyHurt(level, damageSource, amount);
-        setHealth(Math.max(getHealth(), protectedHealth));
+        if (!damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+            setHealth(Math.max(getHealth(), protectedHealth));
+    }
+
+    @Override
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
+        if (!level().isClientSide()) {
+            level().setBlock(NarakaPortalBlock.IN_NARAKA_DIMENSION_POSITION, NarakaBlocks.NARAKA_PORTAL.get().defaultBlockState(), Block.UPDATE_ALL);
+        }
     }
 
     @Override

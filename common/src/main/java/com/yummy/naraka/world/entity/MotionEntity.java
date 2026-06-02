@@ -60,9 +60,15 @@ public abstract class MotionEntity extends Entity implements Motionable {
 
     private void updateMotion() {
         MotionData motionData = EntityDataHelper.getRawEntityData(this, NarakaEntityDataTypes.MOTION_DATA.get());
-        if (!motion.getId().equals(motionData.id()))
+        if (!motion.getId().equals(motionData.id())) {
             motion = MotionTypes.create(motionData);
+            onMotionUpdated(motionData);
+        }
         motion.tick(this);
+    }
+
+    protected void onMotionUpdated(MotionData motionData) {
+
     }
 
     @Override

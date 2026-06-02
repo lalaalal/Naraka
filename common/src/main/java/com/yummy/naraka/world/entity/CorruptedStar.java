@@ -35,9 +35,9 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
 
     public static final EntityDataAccessor<Integer> SHINE_LIFETIME = SynchedEntityData.defineId(CorruptedStar.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> SHINE_START_TICK = SynchedEntityData.defineId(CorruptedStar.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Boolean> VERTICAL_SHINE = SynchedEntityData.defineId(CorruptedStar.class, EntityDataSerializers.BOOLEAN);
 
     private int hitTick = 0;
-    private final boolean verticalShine;
     private float shineScale;
     private float shineRotation = 0;
     private boolean canBeDeflectedByPlayer = false;
@@ -45,7 +45,6 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
     public CorruptedStar(EntityType<? extends CorruptedStar> entityType, Level level) {
         super(entityType, level, 80, 8);
         setTailColor(SoulType.COPPER.color);
-        verticalShine = random.nextFloat() < 0.4f;
         shineScale = random.nextFloat() + 0.5f;
         entityData.set(SHINE_START_TICK, random.nextIntBetweenInclusive(20, 35));
         accelerationPower = 0.25;
@@ -75,7 +74,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
     }
 
     public boolean isVerticalShine() {
-        return verticalShine;
+        return entityData.get(VERTICAL_SHINE);
     }
 
     public float getShineScale() {
@@ -104,6 +103,10 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
         if (entity != null)
             return entity.getPosition(partialTicks);
         return entityData.get(TARGET_POSITION);
+    }
+
+    public void setVerticalShine(boolean verticalShine) {
+        entityData.set(VERTICAL_SHINE, verticalShine);
     }
 
     public void setCanBeDeflectedByPlayer(boolean canBeDeflectedByPlayer) {
@@ -137,7 +140,8 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
                 .define(FOLLOWING_TARGET, -1)
                 .define(SOUL_TYPE, SoulType.COPPER)
                 .define(SHINE_START_TICK, 0)
-                .define(SHINE_LIFETIME, 20);
+                .define(SHINE_LIFETIME, 20)
+                .define(VERTICAL_SHINE, false);
     }
 
     @Override
