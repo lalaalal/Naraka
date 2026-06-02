@@ -65,6 +65,7 @@ public class AbsoluteHerobrine extends SkillUsingMob implements Enemy {
 
     public AbsoluteHerobrine(EntityType<? extends AbsoluteHerobrine> entityType, Level level) {
         super(entityType, level);
+        this.xpReward = 12000;
 
         registerAnimation(HerobrineAnimationIdentifiers.PHASE_4_IDLE);
         registerAnimation(HerobrineAnimationIdentifiers.PHASE_4_SPAWN);

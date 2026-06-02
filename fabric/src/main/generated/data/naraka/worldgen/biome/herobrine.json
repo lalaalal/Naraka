@@ -17,7 +17,17 @@
     "grass_color": "#666666",
     "water_color": "#333333"
   },
-  "features": [],
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "naraka:purified_soul_lantern"
+    ]
+  ],
   "has_precipitation": false,
   "spawn_costs": {},
   "spawners": {

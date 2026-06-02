@@ -12,7 +12,6 @@
     "minecraft:gameplay/piglins_zombify": false,
     "minecraft:gameplay/respawn_anchor_works": false,
     "minecraft:visual/cloud_height": 56.0,
-    "minecraft:visual/fog_color": "#121212",
     "minecraft:visual/moon_angle": 180.0,
     "minecraft:visual/sky_color": "#000000",
     "minecraft:visual/star_brightness": 1.0,
