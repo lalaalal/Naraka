@@ -8,6 +8,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
@@ -49,6 +50,23 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T
      */
     protected void hurtEntities(ServerLevel level, Predicate<LivingEntity> predicate, double size) {
         level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(size))
+                .stream()
+                .filter(predicate)
+                .forEach(target -> hurtEntity(level, target));
+    }
+
+    /**
+     * Hurt entities satisfying given predicate and collide with mob.
+     * Applying {@link #hurtEntity(ServerLevel, LivingEntity)} for selected targets.
+     *
+     * @param level     Server level
+     * @param predicate Predicate to select target
+     * @param size      Collision size
+     * @see AttackSkill#hurtEntity(ServerLevel, LivingEntity)
+     * @see AttackSkill#onHurtEntity(ServerLevel, LivingEntity)
+     */
+    protected void hurtEntities(ServerLevel level, Predicate<LivingEntity> predicate, Vec3 size) {
+        level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(size.x, size.y, size.z))
                 .stream()
                 .filter(predicate)
                 .forEach(target -> hurtEntity(level, target));
