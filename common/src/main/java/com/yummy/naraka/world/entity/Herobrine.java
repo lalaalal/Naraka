@@ -767,7 +767,7 @@ public class Herobrine extends AbstractHerobrine {
         setDisplayPickaxe(true);
         entityData.set(DISPLAY_SCARF, true);
         if (level() instanceof ServerLevel level) {
-            spawnAbsoluteHerobrine(level.getServer());
+            spawnOriginHerobrine(level.getServer());
             bossEvent.getPlayers().forEach(this::sendStopPacket);
             bossEvent.removeAllPlayers();
             releaseStigma();
@@ -776,21 +776,21 @@ public class Herobrine extends AbstractHerobrine {
             deathTime = 1180;
     }
 
-    private void spawnAbsoluteHerobrine(MinecraftServer server) {
+    private void spawnOriginHerobrine(MinecraftServer server) {
         ServerLevel narakaLevel = server.getLevel(NarakaDimensions.NARAKA);
         if (narakaLevel != null) {
             narakaLevel.removeBlock(NarakaPortalBlock.IN_NARAKA_DIMENSION_POSITION, false);
-            AbsoluteHerobrine.SpawnData absoluteHerobrineSpawnData = narakaLevel.getDataStorage()
-                    .computeIfAbsent(AbsoluteHerobrine.SpawnData.TYPE);
-            if (absoluteHerobrineSpawnData.isSpawned())
+            OriginHerobrine.SpawnData originHerobrineSpawnData = narakaLevel.getDataStorage()
+                    .computeIfAbsent(OriginHerobrine.SpawnData.TYPE);
+            if (originHerobrineSpawnData.isSpawned())
                 return;
-            NarakaEntityTypes.ABSOLUTE_HEROBRINE.get().spawn(
+            NarakaEntityTypes.ORIGIN_HEROBRINE.get().spawn(
                     narakaLevel,
                     absoluteHerobrine -> absoluteHerobrine.setYRot(0),
-                    AbsoluteHerobrine.SPAWN_POSITION, EntitySpawnReason.TRIGGERED,
+                    OriginHerobrine.SPAWN_POSITION, EntitySpawnReason.TRIGGERED,
                     false, false
             );
-            absoluteHerobrineSpawnData.setSpawned(true);
+            originHerobrineSpawnData.setSpawned(true);
         }
     }
 

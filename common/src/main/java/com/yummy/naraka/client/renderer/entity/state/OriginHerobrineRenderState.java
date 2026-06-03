@@ -5,7 +5,7 @@ import com.yummy.naraka.world.item.SoulType;
 import java.util.List;
 import java.util.Map;
 
-public class AbsoluteHerobrineRenderState extends AbstractHerobrineRenderState {
+public class OriginHerobrineRenderState extends AbstractHerobrineRenderState {
     public List<SoulType> absorbedSoulTypes = List.of();
     public Map<SoulType, Float> soulTypeAlpha = Map.of();
 }

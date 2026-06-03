@@ -1,4 +1,4 @@
-package com.yummy.naraka.world.entity.ai.skill.absolute_herobrine;
+package com.yummy.naraka.world.entity.ai.skill.origin_herobrine;
 
 import com.mojang.math.Axis;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
@@ -6,8 +6,8 @@ import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
-import com.yummy.naraka.world.entity.AbsoluteHerobrine;
 import com.yummy.naraka.world.entity.NarakaSword;
+import com.yummy.naraka.world.entity.OriginHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import com.yummy.naraka.world.entity.motion.MotionTypes;
@@ -27,15 +27,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 
-public class SwordSwingSkill extends AttackSkill<AbsoluteHerobrine> {
-    public static final Identifier IDENTIFIER = skillIdentifier("absolute_herobrine.sword_swing");
+public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
+    public static final Identifier IDENTIFIER = skillIdentifier("origin_herobrine.sword_swing");
 
     private static final float HALF_ANGLE = Mth.HALF_PI * 0.125f;
 
     @Nullable
     private NarakaSword narakaSword;
 
-    public SwordSwingSkill(AbsoluteHerobrine mob) {
+    public SwordSwingSkill(OriginHerobrine mob) {
         super(IDENTIFIER, mob, 160, 0);
     }
 

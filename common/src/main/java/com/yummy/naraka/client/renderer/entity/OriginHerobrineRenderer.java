@@ -5,8 +5,8 @@ import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.layer.HerobrineEyeLayer;
 import com.yummy.naraka.client.model.HerobrineModel;
-import com.yummy.naraka.client.renderer.entity.state.AbsoluteHerobrineRenderState;
-import com.yummy.naraka.world.entity.AbsoluteHerobrine;
+import com.yummy.naraka.client.renderer.entity.state.OriginHerobrineRenderState;
+import com.yummy.naraka.world.entity.OriginHerobrine;
 import com.yummy.naraka.world.item.SoulType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,24 +20,24 @@ import net.minecraft.util.Mth;
 import java.util.LinkedHashMap;
 
 @Environment(EnvType.CLIENT)
-public class AbsoluteHerobrineRenderer extends LivingEntityRenderer<AbsoluteHerobrine, AbsoluteHerobrineRenderState, HerobrineModel<AbsoluteHerobrineRenderState>> {
-    public AbsoluteHerobrineRenderer(EntityRendererProvider.Context context) {
-        super(context, new HerobrineModel<>(context.bakeLayer(NarakaModelLayers.HEROBRINE), "absolute_herobrine"), 0);
+public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrine, OriginHerobrineRenderState, HerobrineModel<OriginHerobrineRenderState>> {
+    public OriginHerobrineRenderer(EntityRendererProvider.Context context) {
+        super(context, new HerobrineModel<>(context.bakeLayer(NarakaModelLayers.HEROBRINE), "origin_herobrine"), 0);
         addLayer(new HerobrineEyeLayer<>(this));
     }
 
     @Override
-    public Identifier getTextureLocation(AbsoluteHerobrineRenderState renderState) {
+    public Identifier getTextureLocation(OriginHerobrineRenderState renderState) {
         return NarakaTextures.HEROBRINE;
     }
 
     @Override
-    public AbsoluteHerobrineRenderState createRenderState() {
-        return new AbsoluteHerobrineRenderState();
+    public OriginHerobrineRenderState createRenderState() {
+        return new OriginHerobrineRenderState();
     }
 
     @Override
-    public void extractRenderState(AbsoluteHerobrine livingEntity, AbsoluteHerobrineRenderState renderState, float partialTicks) {
+    public void extractRenderState(OriginHerobrine livingEntity, OriginHerobrineRenderState renderState, float partialTicks) {
         super.extractRenderState(livingEntity, renderState, partialTicks);
         renderState.setupAnimationStates(livingEntity);
         renderState.lightCoords = 0;
@@ -47,7 +47,7 @@ public class AbsoluteHerobrineRenderer extends LivingEntityRenderer<AbsoluteHero
     }
 
     @Override
-    public void submit(AbsoluteHerobrineRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+    public void submit(OriginHerobrineRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
         poseStack.translate(0, 2.5, -1);
         ShinyEffectRenderer.submitShiny(1, 2, 0.25f, renderState.yRot + 180, false, 0xffffff, poseStack, submitNodeCollector);
@@ -59,7 +59,7 @@ public class AbsoluteHerobrineRenderer extends LivingEntityRenderer<AbsoluteHero
         super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
     }
 
-    private void submitColors(AbsoluteHerobrineRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+    private void submitColors(OriginHerobrineRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
         int index = 0;
         for (SoulType soulType : renderState.soulTypeAlpha.keySet()) {
             float alpha = renderState.soulTypeAlpha.getOrDefault(soulType, 0f);
@@ -82,12 +82,12 @@ public class AbsoluteHerobrineRenderer extends LivingEntityRenderer<AbsoluteHero
     }
 
     @Override
-    protected int getModelTint(AbsoluteHerobrineRenderState renderState) {
+    protected int getModelTint(OriginHerobrineRenderState renderState) {
         return 0xff000000;
     }
 
     @Override
-    protected boolean shouldShowName(AbsoluteHerobrine livingEntity, double d) {
+    protected boolean shouldShowName(OriginHerobrine livingEntity, double d) {
         return false;
     }
 }

@@ -1,11 +1,11 @@
-package com.yummy.naraka.world.entity.ai.skill.absolute_herobrine;
+package com.yummy.naraka.world.entity.ai.skill.origin_herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.SoulParticleOption;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.QuadraticBezier;
-import com.yummy.naraka.world.entity.AbsoluteHerobrine;
 import com.yummy.naraka.world.entity.CorruptedStar;
+import com.yummy.naraka.world.entity.OriginHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.resources.Identifier;
@@ -13,8 +13,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class ChargingSkill extends Skill<AbsoluteHerobrine> {
-    public static final Identifier IDENTIFIER = skillIdentifier("absolute_herobrine.charging");
+public class ChargingSkill extends Skill<OriginHerobrine> {
+    public static final Identifier IDENTIFIER = skillIdentifier("origin_herobrine.charging");
 
     private static final SoulType[] SOUL_TYPES = {SoulType.REDSTONE, SoulType.COPPER, SoulType.GOLD, SoulType.EMERALD, SoulType.DIAMOND, SoulType.LAPIS, SoulType.AMETHYST, SoulType.NECTARIUM};
     private static final float[] ROTATIONS = {-30, -60, -120, -150, 150, 120, 60, 30};
@@ -24,7 +24,7 @@ public class ChargingSkill extends Skill<AbsoluteHerobrine> {
     @Nullable
     private CorruptedStar corruptedStar;
 
-    public ChargingSkill(AbsoluteHerobrine mob, SwordSwingSkill swordSwingSkill) {
+    public ChargingSkill(OriginHerobrine mob, SwordSwingSkill swordSwingSkill) {
         super(IDENTIFIER, mob, 100, 0);
         this.swordSwingSkill = swordSwingSkill;
         setLinkedSkill(this);

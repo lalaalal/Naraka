@@ -5,8 +5,8 @@ import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.NarakaPortalBlock;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
-import com.yummy.naraka.world.entity.ai.skill.absolute_herobrine.ChargingSkill;
-import com.yummy.naraka.world.entity.ai.skill.absolute_herobrine.SwordSwingSkill;
+import com.yummy.naraka.world.entity.ai.skill.origin_herobrine.ChargingSkill;
+import com.yummy.naraka.world.entity.ai.skill.origin_herobrine.SwordSwingSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
@@ -36,8 +36,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.*;
 
-public class AbsoluteHerobrine extends SkillUsingMob implements Enemy {
-    public static final EntityDataAccessor<List<SoulType>> ABSORBED_SOUL_TYPES = SynchedEntityData.defineId(AbsoluteHerobrine.class, NarakaEntityDataSerializers.SOUL_TYPES);
+public class OriginHerobrine extends SkillUsingMob implements Enemy {
+    public static final EntityDataAccessor<List<SoulType>> ABSORBED_SOUL_TYPES = SynchedEntityData.defineId(OriginHerobrine.class, NarakaEntityDataSerializers.SOUL_TYPES);
 
     public static final float[] HEALTH_BY_PHASE = {528};
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.WHITE};
@@ -68,7 +68,7 @@ public class AbsoluteHerobrine extends SkillUsingMob implements Enemy {
                 .add(Attributes.MAX_HEALTH, 528);
     }
 
-    public AbsoluteHerobrine(EntityType<? extends AbsoluteHerobrine> entityType, Level level) {
+    public OriginHerobrine(EntityType<? extends OriginHerobrine> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 12000;
 
@@ -266,7 +266,7 @@ public class AbsoluteHerobrine extends SkillUsingMob implements Enemy {
                 .xmap(SpawnData::new, SpawnData::isSpawned);
 
         public static final SavedDataType<SpawnData> TYPE = new SavedDataType<>(
-                "herobrine_totem_placeable", SpawnData::new, CODEC, DataFixTypes.STRUCTURE
+                "origin_herobrine_spawned", SpawnData::new, CODEC, DataFixTypes.LEVEL
         );
 
         private boolean spawned;

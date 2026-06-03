@@ -10,7 +10,7 @@ import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
 
 @Environment(EnvType.CLIENT)
-public class AbsoluteHerobrineAnimation {
+public class OriginHerobrineAnimation {
     public static void initialize() {
         AnimationMapper.register(HerobrineAnimationIdentifiers.PHASE_4_SPAWN, SPAWN);
         AnimationMapper.register(HerobrineAnimationIdentifiers.PHASE_4_IDLE, IDLE);

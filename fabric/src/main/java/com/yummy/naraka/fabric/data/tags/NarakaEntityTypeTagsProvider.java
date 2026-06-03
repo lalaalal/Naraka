@@ -24,7 +24,7 @@ public class NarakaEntityTypeTagsProvider extends FabricTagProvider.EntityTypeTa
         valueLookupBuilder(NarakaEntityTypeTags.HEROBRINE)
                 .add(NarakaEntityTypes.HEROBRINE.get())
                 .add(NarakaEntityTypes.SHADOW_HEROBRINE.get())
-                .add(NarakaEntityTypes.ABSOLUTE_HEROBRINE.get());
+                .add(NarakaEntityTypes.ORIGIN_HEROBRINE.get());
         valueLookupBuilder(NarakaEntityTypeTags.DEATH_COUNTING)
                 .addTag(NarakaEntityTypeTags.HEROBRINE);
 

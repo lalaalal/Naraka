@@ -22,9 +22,9 @@ public class NarakaEntityTypes {
                     .clientTrackingRange(32)
     );
 
-    public static final HolderProxy<EntityType<?>, EntityType<AbsoluteHerobrine>> ABSOLUTE_HEROBRINE = register(
-            "absolute_herobrine",
-            EntityType.Builder.of(AbsoluteHerobrine::new, MobCategory.MONSTER)
+    public static final HolderProxy<EntityType<?>, EntityType<OriginHerobrine>> ORIGIN_HEROBRINE = register(
+            "origin_herobrine",
+            EntityType.Builder.of(OriginHerobrine::new, MobCategory.MONSTER)
                     .fireImmune()
                     .sized(0.5f, 1.8f)
                     .updateInterval(1)
@@ -183,7 +183,7 @@ public class NarakaEntityTypes {
         NarakaEntityDataSerializers.initialize();
 
         EntityAttributeRegistry.register(HEROBRINE, AbstractHerobrine::getAttributeSupplier);
-        EntityAttributeRegistry.register(ABSOLUTE_HEROBRINE, AbsoluteHerobrine::getAttributeSupplier);
+        EntityAttributeRegistry.register(ORIGIN_HEROBRINE, OriginHerobrine::getAttributeSupplier);
         EntityAttributeRegistry.register(SHADOW_HEROBRINE, ShadowHerobrine::getAttributeSupplier);
         EntityAttributeRegistry.register(DIAMOND_GOLEM, DiamondGolem::getAttributeSupplier);
         EntityAttributeRegistry.register(NARAKA_PICKAXE, NarakaPickaxe::getAttributeSupplier);
