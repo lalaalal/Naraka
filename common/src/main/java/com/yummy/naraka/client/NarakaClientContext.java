@@ -19,6 +19,8 @@ public final class NarakaClientContext {
     public static final Configuration.ConfigValue<Integer> POST_EFFECT_TICK = context(0);
     public static final Configuration.ConfigValue<Identifier> POST_EFFECT = context(NarakaMod.identifier("empty"));
     public static final Configuration.ConfigValue<Set<UUID>> HEROBRINE_MUSIC_SOURCES = context(new HashSet<>());
+    public static final Configuration.ConfigValue<Integer> MUTE_MUSIC_TICK = context(0);
+    public static final Configuration.ConfigValue<Float> MUSIC_VOLUME = context(1f);
 
     private static <T> Configuration.ConfigValue<T> context(T defaultValue) {
         return context(defaultValue, true);

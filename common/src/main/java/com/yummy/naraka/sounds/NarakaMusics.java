@@ -23,7 +23,7 @@ public final class NarakaMusics {
     }
 
     private static final NarakaClientboundEntityEventPacket.Event[] HEROBRINE_MUSIC_EVENT = new NarakaClientboundEntityEventPacket.Event[]{
-            null,
+            NarakaClientboundEntityEventPacket.Event.PLAY_HEROBRINE_PHASE_1,
             NarakaClientboundEntityEventPacket.Event.PLAY_HEROBRINE_PHASE_1,
             NarakaClientboundEntityEventPacket.Event.PLAY_HEROBRINE_PHASE_2,
             NarakaClientboundEntityEventPacket.Event.PLAY_HEROBRINE_PHASE_3,
@@ -33,7 +33,7 @@ public final class NarakaMusics {
     public static NarakaClientboundEntityEventPacket.Event musicEventByPhase(int phase) {
         if (0 < phase && phase <= 4)
             return HEROBRINE_MUSIC_EVENT[phase];
-        return NarakaClientboundEntityEventPacket.Event.STOP_MUSIC;
+        return NarakaClientboundEntityEventPacket.Event.STOP_BOSS_MUSIC;
     }
 
     public static BossMusicPlayer bossMusicPlayer() {

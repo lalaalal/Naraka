@@ -324,7 +324,7 @@ public class Herobrine extends AbstractHerobrine {
     private void updateMusic(int prevPhase, int currentPhase) {
         if (currentPhase == 3)
             NetworkManager.sendToClient(bossEvent.getPlayers(), new NarakaClientboundEntityEventPacket(
-                    NarakaClientboundEntityEventPacket.Event.STOP_MUSIC, this
+                    NarakaClientboundEntityEventPacket.Event.STOP_BOSS_MUSIC, this
             ));
         else
             sendMusic(currentPhase);
@@ -576,7 +576,7 @@ public class Herobrine extends AbstractHerobrine {
                 NarakaClientboundEventPacket.Event.STOP_WHITE_FOG
         );
         CustomPacketPayload entityEventPacket = new NarakaClientboundEntityEventPacket(
-                NarakaClientboundEntityEventPacket.Event.STOP_MUSIC,
+                NarakaClientboundEntityEventPacket.Event.STOP_BOSS_MUSIC,
                 this
         );
         NetworkManager.clientbound().send(serverPlayer, packet);

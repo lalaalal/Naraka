@@ -84,6 +84,17 @@ public class SwordSwingSkill extends AttackSkill<AbsoluteHerobrine> {
             runBetween(5, 26, () -> narakaSword.setAlpha((tickCount - 5) / 20f));
             runBetween(110, 141, () -> narakaSword.setAlpha(1 - (tickCount - 110) / 30f));
 
+            run(at(62) || at(72) || at(90), () -> {
+                level.playSound(null, mob.blockPosition(), SoundEvents.END_PORTAL_SPAWN, SoundSource.HOSTILE, 5.0F, 0.75f);
+            });
+            runAt(97, () -> level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 5.0F, 1));
+            runAt(90, () -> {
+                CustomPacketPayload packet = new NarakaClientboundEventPacket(
+                        NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY
+                );
+                NetworkManager.clientbound().send(mob.players(), packet);
+            });
+
             runAt(110, () -> {
                 hurtEntities(level, this::selectTarget, 50);
                 mob.removeProtection(mob.getSoulStack());
@@ -101,7 +112,7 @@ public class SwordSwingSkill extends AttackSkill<AbsoluteHerobrine> {
                         () -> new Vec3(0, mob.getRandom().nextDouble() * 0.3, 0)
                 );
                 level.playSound(null, mob.blockPosition(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE, 10000.0F, 0.8F + mob.getRandom().nextFloat() * 0.2F);
-                level.playSound(null, mob.blockPosition(), SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.HOSTILE, 2.0F, 0.5F + mob.getRandom().nextFloat() * 0.2F);
+                level.playSound(null, mob.blockPosition(), SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.HOSTILE, 5.0F, 0.5F + mob.getRandom().nextFloat() * 0.2F);
             });
             run(between(110, 125), () -> {
                 CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.SHAKE_CAMERA);
@@ -110,6 +121,10 @@ public class SwordSwingSkill extends AttackSkill<AbsoluteHerobrine> {
                 floatLine(level, 3, waveTick,
                         () -> new Vec3(0, mob.getRandom().nextDouble() * waveTick * 0.05 * 0.5 + 0.5, 0)
                 );
+            });
+
+            run(between(110, 125) && tickCount % 3 == 0, () -> {
+                level.playSound(null, mob.blockPosition(), SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.HOSTILE, 5.0F, 0.5F + mob.getRandom().nextFloat() * 0.2F);
             });
         }
     }
