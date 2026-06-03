@@ -2,6 +2,7 @@ package com.yummy.naraka.world.block;
 
 import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.core.particles.SoulParticleOption;
+import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.block.entity.NarakaPortalBlockEntity;
@@ -96,7 +97,7 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
 
     @Override
     protected void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier, boolean bl) {
-        if (entity.canUsePortal(false) && !level.isClientSide()) {
+        if (!level.isClientSide() && entity.canUsePortal(false) && !entity.getType().is(NarakaEntityTypeTags.NARAKA_PORTAL_IGNORE)) {
             if (!entity.isOnPortalCooldown()) {
                 level.getBlockEntity(blockPos, NarakaBlockEntityTypes.NARAKA_PORTAL.get())
                         .ifPresent(NarakaPortalBlockEntity::use);
@@ -113,7 +114,7 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
         boolean toRespawn = currentDimension == NarakaDimensions.NARAKA;
         ResourceKey<Level> destinationDimension = toRespawn ? respawnData.dimension() : NarakaDimensions.NARAKA;
         ServerLevel destinationLevel = level.getServer().getLevel(destinationDimension);
-        float yRot = toRespawn ? respawnData.yaw() : 0;
+        float yRot = toRespawn ? respawnData.yaw() : 180;
         float xRot = toRespawn ? respawnData.pitch() : 0;
         if (destinationLevel == null)
             return null;

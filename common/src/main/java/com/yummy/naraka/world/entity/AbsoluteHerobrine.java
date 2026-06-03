@@ -1,5 +1,7 @@
 package com.yummy.naraka.world.entity;
 
+import com.mojang.serialization.Codec;
+import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.NarakaPortalBlock;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
@@ -14,6 +16,7 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -26,6 +29,8 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
@@ -139,8 +144,14 @@ public class AbsoluteHerobrine extends SkillUsingMob implements Enemy {
     @Override
     public void die(DamageSource damageSource) {
         super.die(damageSource);
-        if (!level().isClientSide()) {
+        if (level() instanceof ServerLevel level) {
             level().setBlock(NarakaPortalBlock.IN_NARAKA_DIMENSION_POSITION, NarakaBlocks.NARAKA_PORTAL.get().defaultBlockState(), Block.UPDATE_ALL);
+
+            if (level.dimension().equals(NarakaDimensions.NARAKA)) {
+                SpawnData spawnData = level.getDataStorage()
+                        .computeIfAbsent(SpawnData.TYPE);
+                spawnData.setSpawned(false);
+            }
         }
     }
 
@@ -248,5 +259,33 @@ public class AbsoluteHerobrine extends SkillUsingMob implements Enemy {
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         protectedHealth = input.getIntOr("ProtectedHealth", 66 * 7);
+    }
+
+    public static class SpawnData extends SavedData {
+        public static final Codec<SpawnData> CODEC = Codec.BOOL
+                .xmap(SpawnData::new, SpawnData::isSpawned);
+
+        public static final SavedDataType<SpawnData> TYPE = new SavedDataType<>(
+                "herobrine_totem_placeable", SpawnData::new, CODEC, DataFixTypes.STRUCTURE
+        );
+
+        private boolean spawned;
+
+        public SpawnData() {
+            this.spawned = false;
+        }
+
+        public SpawnData(boolean spawned) {
+            this.spawned = spawned;
+        }
+
+        public boolean isSpawned() {
+            return spawned;
+        }
+
+        public void setSpawned(boolean spawned) {
+            this.spawned = spawned;
+            setDirty();
+        }
     }
 }

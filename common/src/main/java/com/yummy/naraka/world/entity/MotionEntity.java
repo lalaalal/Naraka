@@ -43,7 +43,8 @@ public abstract class MotionEntity extends Entity implements Motionable {
         super.tick();
         prevRotation.set(getRotation());
 
-        updateMotion();
+        if (level().isClientSide())
+            updateMotion();
     }
 
     public void setMotion(Identifier id, List<Vec3> positions, List<Quaternionfc> rotations) {

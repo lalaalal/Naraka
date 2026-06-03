@@ -737,7 +737,7 @@ public class Herobrine extends AbstractHerobrine {
             if (narakaDimension != null) {
                 BlockPos blockPos = NarakaPortalBlock.createRandomNarakaSpawnPosition(random);
                 Vec3 pos = blockPos.getBottomCenter();
-                target.teleport(new TeleportTransition(narakaDimension, pos, Vec3.ZERO, 0, 0, TeleportTransition.PLAY_PORTAL_SOUND));
+                target.teleport(new TeleportTransition(narakaDimension, pos, Vec3.ZERO, 180, 0, TeleportTransition.PLAY_PORTAL_SOUND));
             }
         }
     }
@@ -780,16 +780,17 @@ public class Herobrine extends AbstractHerobrine {
         ServerLevel narakaLevel = server.getLevel(NarakaDimensions.NARAKA);
         if (narakaLevel != null) {
             narakaLevel.removeBlock(NarakaPortalBlock.IN_NARAKA_DIMENSION_POSITION, false);
-            narakaLevel.getEntitiesOfClass(AbsoluteHerobrine.class,
-                    AABB.ofSize(Vec3.atBottomCenterOf(AbsoluteHerobrine.SPAWN_POSITION), 30, 30, 30)
-            ).forEach(Entity::discard);
-
+            AbsoluteHerobrine.SpawnData absoluteHerobrineSpawnData = narakaLevel.getDataStorage()
+                    .computeIfAbsent(AbsoluteHerobrine.SpawnData.TYPE);
+            if (absoluteHerobrineSpawnData.isSpawned())
+                return;
             NarakaEntityTypes.ABSOLUTE_HEROBRINE.get().spawn(
                     narakaLevel,
                     absoluteHerobrine -> absoluteHerobrine.setYRot(0),
                     AbsoluteHerobrine.SPAWN_POSITION, EntitySpawnReason.TRIGGERED,
                     false, false
             );
+            absoluteHerobrineSpawnData.setSpawned(true);
         }
     }
 
