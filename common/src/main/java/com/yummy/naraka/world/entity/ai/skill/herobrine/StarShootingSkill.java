@@ -92,8 +92,8 @@ public class StarShootingSkill extends ComboSkill<Herobrine> {
         }
 
         level.addFreshEntity(corruptedStar);
-        level.playSound(null, mob, SoundEvents.IRON_GOLEM_DEATH, SoundSource.HOSTILE, 0.4f, 1.9f);
-        level.playSound(null, mob, SoundEvents.IRON_GOLEM_DEATH, SoundSource.HOSTILE, 0.5f, 2);
+        level.playSound(null, mob, SoundEvents.IRON_GOLEM_DEATH, SoundSource.HOSTILE, 5f, 1.9f);
+        level.playSound(null, mob, SoundEvents.IRON_GOLEM_DEATH, SoundSource.HOSTILE, 5f, 2);
     }
 
     private void followTargetPosition(LivingEntity target) {

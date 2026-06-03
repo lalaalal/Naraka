@@ -171,8 +171,8 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
         if (!level().isClientSide()) {
             if (tickCount == getShineStartTick()) {
                 BlockPos floor = NarakaUtils.findFloor(level(), blockPosition());
-                level().playSound(null, floor, SoundEvents.BEACON_POWER_SELECT, SoundSource.HOSTILE, 1, 2);
-                level().playSound(null, floor, SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.HOSTILE, 1, 2);
+                level().playSound(null, floor, SoundEvents.BEACON_POWER_SELECT, SoundSource.HOSTILE, 5, 2);
+                level().playSound(null, floor, SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.HOSTILE, 5, 2);
             }
         }
     }
