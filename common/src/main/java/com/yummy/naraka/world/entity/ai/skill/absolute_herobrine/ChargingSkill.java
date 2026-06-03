@@ -63,6 +63,7 @@ public class ChargingSkill extends Skill<AbsoluteHerobrine> {
         corruptedStar.setCanBeDeflectedByPlayer(true);
         corruptedStar.setSoulType(getCurrentSoulType());
         corruptedStar.startShine(20);
+        corruptedStar.setStopOnEntityHit(true);
 
         level.addFreshEntity(corruptedStar);
     }

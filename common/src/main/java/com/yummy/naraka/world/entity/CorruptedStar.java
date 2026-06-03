@@ -32,6 +32,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
     public static final EntityDataAccessor<Vec3> TARGET_POSITION = SynchedEntityData.defineId(CorruptedStar.class, NarakaEntityDataSerializers.VEC3);
     public static final EntityDataAccessor<Integer> FOLLOWING_TARGET = SynchedEntityData.defineId(CorruptedStar.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<SoulType> SOUL_TYPE = SynchedEntityData.defineId(CorruptedStar.class, NarakaEntityDataSerializers.SOUL_TYPE);
+    public static final EntityDataAccessor<Boolean> STOP_ON_ENTITY_HIT = SynchedEntityData.defineId(CorruptedStar.class, EntityDataSerializers.BOOLEAN);
 
     public static final EntityDataAccessor<Integer> SHINE_LIFETIME = SynchedEntityData.defineId(CorruptedStar.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> SHINE_START_TICK = SynchedEntityData.defineId(CorruptedStar.class, EntityDataSerializers.INT);
@@ -105,6 +106,10 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
         return entityData.get(TARGET_POSITION);
     }
 
+    public void setStopOnEntityHit(boolean stopOnEntityHit) {
+        this.entityData.set(STOP_ON_ENTITY_HIT, stopOnEntityHit);
+    }
+
     public void setVerticalShine(boolean verticalShine) {
         entityData.set(VERTICAL_SHINE, verticalShine);
     }
@@ -141,7 +146,8 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
                 .define(SOUL_TYPE, SoulType.COPPER)
                 .define(SHINE_START_TICK, 0)
                 .define(SHINE_LIFETIME, 20)
-                .define(VERTICAL_SHINE, false);
+                .define(VERTICAL_SHINE, false)
+                .define(STOP_ON_ENTITY_HIT, false);
     }
 
     @Override
@@ -217,7 +223,8 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
         if (level() instanceof ServerLevel serverLevel && result.getEntity() instanceof LivingEntity livingEntity) {
             stigmatizeEntity(serverLevel, livingEntity);
         }
-        setDeltaMovement(Vec3.ZERO);
+        if (entityData.get(STOP_ON_ENTITY_HIT))
+            setDeltaMovement(Vec3.ZERO);
     }
 
     private void preparingTick() {
