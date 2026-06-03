@@ -151,7 +151,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     private void restoreFloor(ServerLevel level, BlockPos pos) {
         BlockPos base = pos.below(5);
         NarakaUtils.square(base, 33, NarakaUtils.circleBetween(25, 34), blockPos -> {
-            if (level.getBlockState(blockPos).isAir())
+            if (level.getBlockState(blockPos).isAir() && level.getBlockState(blockPos.below()).isAir())
                 level.setBlockAndUpdate(blockPos, Blocks.BLACKSTONE.defaultBlockState());
         });
     }
