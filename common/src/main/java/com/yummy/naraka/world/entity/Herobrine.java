@@ -130,7 +130,7 @@ public class Herobrine extends AbstractHerobrine {
     protected final List<Afterimage> afterimages = new ArrayList<>();
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
-    private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, this, bossEvent);
+    private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, BossEvent.BossBarColor.WHITE, this, bossEvent);
     private final ShadowController shadowController = new ShadowController(this);
 
     private float hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
@@ -324,7 +324,7 @@ public class Herobrine extends AbstractHerobrine {
     private void updateMusic(int prevPhase, int currentPhase) {
         if (currentPhase == 3)
             NetworkManager.sendToClient(bossEvent.getPlayers(), new NarakaClientboundEntityEventPacket(
-                    NarakaClientboundEntityEventPacket.Event.STOP_MUSIC, this
+                    NarakaClientboundEntityEventPacket.Event.STOP_BOSS_MUSIC, this
             ));
         else
             sendMusic(currentPhase);
@@ -576,7 +576,7 @@ public class Herobrine extends AbstractHerobrine {
                 NarakaClientboundEventPacket.Event.STOP_WHITE_FOG
         );
         CustomPacketPayload entityEventPacket = new NarakaClientboundEntityEventPacket(
-                NarakaClientboundEntityEventPacket.Event.STOP_MUSIC,
+                NarakaClientboundEntityEventPacket.Event.STOP_BOSS_MUSIC,
                 this
         );
         NetworkManager.clientbound().send(serverPlayer, packet);
@@ -706,7 +706,6 @@ public class Herobrine extends AbstractHerobrine {
         startStaggering(HerobrineAnimationIdentifiers.STAGGERING, 70, -1);
     }
 
-    @Override
     public Fireball createFireball(ServerLevel level) {
         NarakaFireball fireball = new NarakaFireball(this, Vec3.ZERO, level(), false);
         fireball.setDamageCalculator(this::calculateFireballDamage);
@@ -738,7 +737,7 @@ public class Herobrine extends AbstractHerobrine {
             if (narakaDimension != null) {
                 BlockPos blockPos = NarakaPortalBlock.createRandomNarakaSpawnPosition(random);
                 Vec3 pos = blockPos.getBottomCenter();
-                target.teleport(new TeleportTransition(narakaDimension, pos, Vec3.ZERO, 0, 0, TeleportTransition.PLAY_PORTAL_SOUND));
+                target.teleport(new TeleportTransition(narakaDimension, pos, Vec3.ZERO, 180, 0, TeleportTransition.PLAY_PORTAL_SOUND));
             }
         }
     }
@@ -767,7 +766,8 @@ public class Herobrine extends AbstractHerobrine {
         setFinalModel(true);
         setDisplayPickaxe(true);
         entityData.set(DISPLAY_SCARF, true);
-        if (!level().isClientSide()) {
+        if (level() instanceof ServerLevel level) {
+            spawnOriginHerobrine(level.getServer());
             bossEvent.getPlayers().forEach(this::sendStopPacket);
             bossEvent.removeAllPlayers();
             releaseStigma();
@@ -776,10 +776,22 @@ public class Herobrine extends AbstractHerobrine {
             deathTime = 1180;
     }
 
-    private void spawnAbsoluteHerobrine(MinecraftServer server) {
+    private void spawnOriginHerobrine(MinecraftServer server) {
         ServerLevel narakaLevel = server.getLevel(NarakaDimensions.NARAKA);
-        if (narakaLevel != null)
-            NarakaEntityTypes.ABSOLUTE_HEROBRINE.get().spawn(narakaLevel, BlockPos.ZERO.above(10), EntitySpawnReason.TRIGGERED);
+        if (narakaLevel != null) {
+            narakaLevel.removeBlock(NarakaPortalBlock.IN_NARAKA_DIMENSION_POSITION, false);
+            OriginHerobrine.SpawnData originHerobrineSpawnData = narakaLevel.getDataStorage()
+                    .computeIfAbsent(OriginHerobrine.SpawnData.TYPE);
+            if (originHerobrineSpawnData.isSpawned())
+                return;
+            NarakaEntityTypes.ORIGIN_HEROBRINE.get().spawn(
+                    narakaLevel,
+                    absoluteHerobrine -> absoluteHerobrine.setYRot(0),
+                    OriginHerobrine.SPAWN_POSITION, EntitySpawnReason.TRIGGERED,
+                    false, false
+            );
+            originHerobrineSpawnData.setSpawned(true);
+        }
     }
 
     @Override

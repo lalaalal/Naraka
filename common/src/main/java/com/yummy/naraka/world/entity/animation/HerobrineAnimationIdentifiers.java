@@ -48,4 +48,10 @@ public class HerobrineAnimationIdentifiers {
     public static final Identifier STAR_SHOOTING_1 = AnimationIdentifiers.create("final_herobrine", "star_shooting_1");
     public static final Identifier STAR_SHOOTING_2 = AnimationIdentifiers.create("final_herobrine", "star_shooting_2");
     public static final Identifier STAR_SHOOTING_3 = AnimationIdentifiers.create("final_herobrine", "star_shooting_3");
+
+    public static final Identifier PHASE_4_SPAWN = AnimationIdentifiers.create("origin_herobrine", "spawn");
+    public static final Identifier PHASE_4_IDLE = AnimationIdentifiers.create("origin_herobrine", "idle");
+    public static final Identifier SWORD_ATTACK = AnimationIdentifiers.create("origin_herobrine", "sword_attack");
+    public static final Identifier SWORD_ATTACK_SPIN = AnimationIdentifiers.create("origin_herobrine", "sword_attack_spin");
+    public static final Identifier CHARGING = AnimationIdentifiers.create("origin_herobrine", "charging");
 }

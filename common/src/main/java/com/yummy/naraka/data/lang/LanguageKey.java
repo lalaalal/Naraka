@@ -1,9 +1,7 @@
 package com.yummy.naraka.data.lang;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.client.NarakaKeyMappings;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -19,7 +17,7 @@ public final class LanguageKey {
     public static final String ITEM_GROUP_TEST = itemGroup("naraka.test");
     public static final String ITEM_GROUP_SOUL_MATERIALS = itemGroup("naraka.soul_materials");
 
-    public static final String KEY_CATEGORIES_NARAKA = keyMappingCategory(NarakaKeyMappings.Categories.NARAKA);
+    public static final String KEY_CATEGORIES_NARAKA = keyMappingCategory(NarakaMod.identifier("naraka"));
     public static final String KEY_TOGGLE_ORE_SEE_THROUGH = keyMapping("naraka.toggle_ore_see_through");
 
     public static final String PURIFIED_SOUL_UPGRADE_KEY = Util.makeDescriptionId("upgrade", NarakaMod.identifier("purified_soul_upgrade"));
@@ -87,8 +85,8 @@ public final class LanguageKey {
         return "key." + path;
     }
 
-    public static String keyMappingCategory(KeyMapping.Category category) {
-        return Util.makeDescriptionId("key.categories", category.id());
+    public static String keyMappingCategory(Identifier id) {
+        return Util.makeDescriptionId("key.categories", id);
     }
 
     public static String toggleOreSeeThroughMessage(boolean disabled) {

@@ -22,11 +22,11 @@ public class NarakaEntityTypes {
                     .clientTrackingRange(32)
     );
 
-    public static final HolderProxy<EntityType<?>, EntityType<AbsoluteHerobrine>> ABSOLUTE_HEROBRINE = register(
-            "absolute_herobrine",
-            EntityType.Builder.of(AbsoluteHerobrine::new, MobCategory.MONSTER)
+    public static final HolderProxy<EntityType<?>, EntityType<OriginHerobrine>> ORIGIN_HEROBRINE = register(
+            "origin_herobrine",
+            EntityType.Builder.of(OriginHerobrine::new, MobCategory.MONSTER)
                     .fireImmune()
-                    .sized(0.5f, 1.5f)
+                    .sized(0.5f, 1.8f)
                     .updateInterval(1)
     );
 
@@ -87,6 +87,7 @@ public class NarakaEntityTypes {
     public static final HolderProxy<EntityType<?>, EntityType<DiamondGolem>> DIAMOND_GOLEM = register(
             "diamond_golem",
             EntityType.Builder.of(DiamondGolem::new, MobCategory.MONSTER)
+                    .fireImmune()
                     .sized(1.8f, 3f)
                     .updateInterval(1)
                     .clientTrackingRange(10)
@@ -142,6 +143,8 @@ public class NarakaEntityTypes {
             EntityType.Builder.<NarakaSword>of(NarakaSword::new, MobCategory.MISC)
                     .fireImmune()
                     .sized(0.5f, 0.5f)
+                    .updateInterval(1200)
+                    .noSave()
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<ShinyEffect>> SHINY_EFFECT = register(
@@ -180,7 +183,7 @@ public class NarakaEntityTypes {
         NarakaEntityDataSerializers.initialize();
 
         EntityAttributeRegistry.register(HEROBRINE, AbstractHerobrine::getAttributeSupplier);
-        EntityAttributeRegistry.register(ABSOLUTE_HEROBRINE, AbstractHerobrine::getAttributeSupplier);
+        EntityAttributeRegistry.register(ORIGIN_HEROBRINE, OriginHerobrine::getAttributeSupplier);
         EntityAttributeRegistry.register(SHADOW_HEROBRINE, ShadowHerobrine::getAttributeSupplier);
         EntityAttributeRegistry.register(DIAMOND_GOLEM, DiamondGolem::getAttributeSupplier);
         EntityAttributeRegistry.register(NARAKA_PICKAXE, NarakaPickaxe::getAttributeSupplier);

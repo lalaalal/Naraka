@@ -47,13 +47,13 @@ public class BeamEffectLayer<S extends EntityRenderState & BeamEffectRenderState
             renderState.forEach(beamEffectRenderState -> {
                 for (BeamEffectRenderState.BeamEffectPart part : beamEffectRenderState.parts) {
                     Vec3 position = part.position();
-                    List<Vector3f> vertices1 = List.of(
+                    List<Vector3fc> vertices1 = List.of(
                             position.toVector3f().add(0, -0.01f, -0.01f),
                             position.toVector3f().add(0, 0.01f, -0.01f),
                             position.toVector3f().add(0, 0.01f, 0.01f),
                             position.toVector3f().add(0, -0.01f, 0.01f)
                     );
-                    List<Vector3f> vertices2 = List.of(
+                    List<Vector3fc> vertices2 = List.of(
                             position.toVector3f().add(-0.01f, -0.01f, 0),
                             position.toVector3f().add(-0.01f, 0.01f, 0),
                             position.toVector3f().add(0.01f, 0.01f, 0),

@@ -12,6 +12,7 @@ public class PhaseManager {
     private float prevHealth;
     private int prevPhase;
     private final BossEvent.BossBarColor[] bossBarColors;
+    private final BossEvent.BossBarColor absorptionBarColor;
     private final ArrayList<PhaseChangeListener> phaseChangeListeners = new ArrayList<>();
     private final ArrayList<HealthChangeListener> healthChangeListeners = new ArrayList<>();
     private Runnable onAbsorptionDisappear = () -> {
@@ -19,9 +20,10 @@ public class PhaseManager {
     private float maxAbsorption = 0;
     private float prevAbsorption = 0;
 
-    public PhaseManager(float[] phaseHealthArray, BossEvent.BossBarColor[] bossBarColors, LivingEntity entity, BossEvent bossEvent) {
+    public PhaseManager(float[] phaseHealthArray, BossEvent.BossBarColor[] bossBarColors, BossEvent.BossBarColor absorptionBarColor, LivingEntity entity, BossEvent bossEvent) {
         this.entity = entity;
         this.phaseHealthArray = phaseHealthArray;
+        this.absorptionBarColor = absorptionBarColor;
         this.bossBarColors = bossBarColors;
         this.prevHealth = entity.getHealth();
         updatePhaseValueOnly(bossEvent);
@@ -116,9 +118,9 @@ public class PhaseManager {
         }
 
         if (entity.getAbsorptionAmount() > 0) {
-            if (maxAbsorption == 0)
+            if (maxAbsorption == 0 || prevAbsorption < entity.getAbsorptionAmount())
                 maxAbsorption = entity.getAbsorptionAmount();
-            bossEvent.setColor(BossEvent.BossBarColor.WHITE);
+            bossEvent.setColor(absorptionBarColor);
             bossEvent.setProgress(entity.getAbsorptionAmount() / maxAbsorption);
             prevAbsorption = entity.getAbsorptionAmount();
         } else {

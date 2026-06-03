@@ -21,7 +21,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.projectile.hurtingprojectile.Fireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -149,13 +148,6 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
             return Optional.empty();
         }
         return Optional.ofNullable(herobrine);
-    }
-
-    @Override
-    protected Fireball createFireball(ServerLevel level) {
-        return getHerobrine()
-                .map(herobrine -> herobrine.createFireball(level))
-                .orElseGet(() -> new NarakaFireball(this, Vec3.ZERO, level()));
     }
 
     @Override

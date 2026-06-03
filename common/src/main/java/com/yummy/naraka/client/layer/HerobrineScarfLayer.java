@@ -25,8 +25,9 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Vector2f;
+import org.joml.Vector2fc;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import java.util.List;
 
@@ -130,7 +131,7 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
                 float bottomLeft_y = waveData.getVerticalPosition(verticalIndex, partialTick) + waveData.getHorizontalPosition(horizontal - 1, partialTick);
                 float bottomRight_y = waveData.getVerticalPosition(verticalIndex, partialTick) + waveData.getHorizontalPosition(horizontal, partialTick);
 
-                List<Vector3f> vertices = List.of(
+                List<Vector3fc> vertices = List.of(
                         new Vector3f(partShift, bottomLeft_y, partHeight),
                         new Vector3f(0, topLeft_y, 0),
                         new Vector3f(partWidth, topRight_y, 0),
@@ -140,7 +141,7 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
                 float currentU = u + partWidth * horizontal;
                 float currentV = v + partHeight * vertical;
 
-                List<Vector2f> uvs = NarakaRenderUtils.createUVList(currentU, currentV, partWidth, partHeight);
+                List<Vector2fc> uvs = NarakaRenderUtils.createUVList(currentU, currentV, partWidth, partHeight);
                 submitNodeCollector.submitCustomGeometry(poseStack, insideRenderType, (pose, vertexConsumer) -> {
                     NarakaRenderUtils.vertices(pose, vertexConsumer, vertices, uvs, packedLight, OverlayTexture.NO_OVERLAY, color, Direction.UP, false);
                 });

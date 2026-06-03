@@ -20,10 +20,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Quaternionf;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
+import org.joml.*;
 
+import java.lang.Math;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -33,36 +32,36 @@ public class NarakaRenderUtils {
     public static final int MAX_TAIL_ALPHA = 0xff;
     public static final float SIN_45 = (float) Math.sin(Math.PI / 4);
 
-    private static final List<Vector3f> VERTICAL = List.of(
+    private static final List<Vector3fc> VERTICAL = List.of(
             new Vector3f(0.5f, 0, 0.5f),
             new Vector3f(0.5f, 0, -0.5f),
             new Vector3f(-0.5f, 0, -0.5f),
             new Vector3f(-0.5f, 0, 0.5f)
     );
 
-    private static final List<Vector3f> HORIZONTAL_X = List.of(
+    private static final List<Vector3fc> HORIZONTAL_X = List.of(
             new Vector3f(0, 0, -0.5f),
             new Vector3f(0, 1, -0.5f),
             new Vector3f(0, 1, 0.5f),
             new Vector3f(0, 0, 0.5f)
     );
 
-    private static final List<Vector3f> HORIZONTAL_Z = List.of(
+    private static final List<Vector3fc> HORIZONTAL_Z = List.of(
             new Vector3f(-0.5f, 0, 0),
             new Vector3f(-0.5f, 1, 0),
             new Vector3f(0.5f, 1, 0),
             new Vector3f(0.5f, 0, 0)
     );
 
-    private static final Map<Direction.Axis, List<Vector3f>> VERTEX_MAPPINGS = Map.of(
+    private static final Map<Direction.Axis, List<Vector3fc>> VERTEX_MAPPINGS = Map.of(
             Direction.Axis.Y, VERTICAL,
             Direction.Axis.X, HORIZONTAL_X,
             Direction.Axis.Z, HORIZONTAL_Z
     );
 
-    public static final List<Vector2f> DEFAULT_UVS = createUVList(0, 0, 1, 1);
+    public static final List<Vector2fc> DEFAULT_UVS = createUVList(0, 0, 1, 1);
 
-    public static List<Vector2f> createUVList(float u, float v, float width, float height) {
+    public static List<Vector2fc> createUVList(float u, float v, float width, float height) {
         return List.of(
                 new Vector2f(u, v + height),
                 new Vector2f(u, v),
@@ -71,14 +70,14 @@ public class NarakaRenderUtils {
         );
     }
 
-    public static void vertices(PoseStack.Pose pose, VertexConsumer vertexConsumer, List<Vector3f> vertices, List<Vector2f> uvs, int packedLight, int packedOverlay, int color, Direction direction, boolean reverse) {
+    public static void vertices(PoseStack.Pose pose, VertexConsumer vertexConsumer, List<Vector3fc> vertices, List<Vector2fc> uvs, int packedLight, int packedOverlay, int color, Direction direction, boolean reverse) {
         Vec3i normal = direction.getUnitVec3i();
         NarakaUtils.iterate(vertices, uvs, (vertex, uv) -> {
-            vertexConsumer.addVertex(pose, vertex)
+            vertexConsumer.addVertex(pose, vertex.x(), vertex.y(), vertex.z())
                     .setColor(color)
                     .setLight(packedLight)
                     .setOverlay(packedOverlay)
-                    .setUv(uv.x, uv.y)
+                    .setUv(uv.x(), uv.y())
                     .setNormal(pose, normal.getX(), normal.getY(), normal.getZ());
         }, reverse);
     }
@@ -99,8 +98,8 @@ public class NarakaRenderUtils {
         vertices(pose, vertexConsumer, VERTEX_MAPPINGS.get(face), DEFAULT_UVS, packedLight, packedOverlay, color, getNormal(face), reverse);
     }
 
-    public static void renderFlatImage(PoseStack.Pose pose, VertexConsumer vertexConsumer, List<Vector3f> vertices, float u, float v, float width, float height, int packedLight, int packedOverlay, int color) {
-        List<Vector2f> uvs = createUVList(u, v, width, height);
+    public static void renderFlatImage(PoseStack.Pose pose, VertexConsumer vertexConsumer, List<Vector3fc> vertices, float u, float v, float width, float height, int packedLight, int packedOverlay, int color) {
+        List<Vector2fc> uvs = createUVList(u, v, width, height);
         vertices(pose, vertexConsumer, vertices, uvs, packedLight, packedOverlay, color, Direction.UP, false);
         vertices(pose, vertexConsumer, vertices, uvs, packedLight, packedOverlay, color, Direction.UP, true);
     }
@@ -109,14 +108,14 @@ public class NarakaRenderUtils {
         return new Vector3f((float) vec3.x, (float) vec3.y, (float) vec3.z);
     }
 
-    public static void renderTailPart(PoseStack.Pose pose, VertexConsumer vertexConsumer, Vector3f from, Vector3f to, float tailWidth, float index, float size, int color) {
+    public static void renderTailPart(PoseStack.Pose pose, VertexConsumer vertexConsumer, Vector3fc from, Vector3fc to, float tailWidth, float index, float size, int color) {
         NarakaRenderUtils.renderFlatImage(pose, vertexConsumer,
                 createVertices(from, to, tailWidth, NarakaRenderUtils::modifyY), index, index, size, size,
                 LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
         );
     }
 
-    public static List<Vector3f> createVertices(Vector3f from, Vector3f to, float interval, BiFunction<Vector3f, Float, Vector3f> modifier) {
+    public static List<Vector3fc> createVertices(Vector3fc from, Vector3fc to, float interval, BiFunction<Vector3fc, Float, Vector3fc> modifier) {
         return List.of(
                 modifier.apply(from, interval),
                 modifier.apply(from, -interval),
@@ -125,15 +124,15 @@ public class NarakaRenderUtils {
         );
     }
 
-    public static Vector3f modifyX(Vector3f vector, float interval) {
+    public static Vector3fc modifyX(Vector3fc vector, float interval) {
         return vector.add(interval, 0, 0, new Vector3f());
     }
 
-    public static Vector3f modifyY(Vector3f vector, float interval) {
+    public static Vector3fc modifyY(Vector3fc vector, float interval) {
         return vector.add(0, interval, 0, new Vector3f());
     }
 
-    public static Vector3f modifyZ(Vector3f vector, float interval) {
+    public static Vector3fc modifyZ(Vector3fc vector, float interval) {
         return vector.add(0, 0, interval, new Vector3f());
     }
 

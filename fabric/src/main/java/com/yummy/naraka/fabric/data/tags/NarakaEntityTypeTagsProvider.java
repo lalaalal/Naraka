@@ -23,7 +23,8 @@ public class NarakaEntityTypeTagsProvider extends FabricTagProvider.EntityTypeTa
                 .add(EntityType.PLAYER);
         valueLookupBuilder(NarakaEntityTypeTags.HEROBRINE)
                 .add(NarakaEntityTypes.HEROBRINE.get())
-                .add(NarakaEntityTypes.SHADOW_HEROBRINE.get());
+                .add(NarakaEntityTypes.SHADOW_HEROBRINE.get())
+                .add(NarakaEntityTypes.ORIGIN_HEROBRINE.get());
         valueLookupBuilder(NarakaEntityTypeTags.DEATH_COUNTING)
                 .addTag(NarakaEntityTypeTags.HEROBRINE);
 
@@ -35,6 +36,7 @@ public class NarakaEntityTypeTagsProvider extends FabricTagProvider.EntityTypeTa
                 .add(NarakaEntityTypes.HEROBRINE.get());
 
         valueLookupBuilder(EntityTypeTags.REDIRECTABLE_PROJECTILE)
+                .add(NarakaEntityTypes.CORRUPTED_STAR.get())
                 .add(NarakaEntityTypes.NARAKA_FIREBALL.get());
 
         valueLookupBuilder(NarakaEntityTypeTags.STIGMA_IMMUNE)
@@ -43,5 +45,9 @@ public class NarakaEntityTypeTagsProvider extends FabricTagProvider.EntityTypeTa
         valueLookupBuilder(NarakaEntityTypeTags.STUN_IMMUNE)
                 .addTag(NarakaEntityTypeTags.HEROBRINE)
                 .add(NarakaEntityTypes.NARAKA_PICKAXE.get());
+
+        valueLookupBuilder(NarakaEntityTypeTags.NARAKA_PORTAL_IGNORE)
+                .add(EntityType.EXPERIENCE_ORB)
+                .addTag(NarakaEntityTypeTags.HEROBRINE);
     }
 }

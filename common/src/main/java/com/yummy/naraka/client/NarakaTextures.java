@@ -17,7 +17,6 @@ public final class NarakaTextures {
     public static final Identifier LOCATION_ITEMS = Identifier.withDefaultNamespace("textures/atlas/items.png");
 
     public static final Identifier HEROBRINE = entity("herobrine/herobrine.png");
-    public static final Identifier ABSOLUTE_HEROBRINE = entity("herobrine/absolute_herobrine.png");
     public static final Identifier FINAL_HEROBRINE = entity("herobrine/final_herobrine.png");
     public static final Identifier HEROBRINE_EYE = entity("herobrine/herobrine_eye.png");
     public static final Identifier HEROBRINE_AFTERIMAGE = entity("herobrine/herobrine_afterimage.png");
@@ -49,7 +48,6 @@ public final class NarakaTextures {
     public static final Identifier STARDUST = entity("stardust_core.png");
     public static final Identifier MAGIC_CIRCLE = entity("magic_circle.png");
     public static final Identifier PICKAXE_SLASH = entity("pickaxe_slash.png");
-    public static final Identifier NARAKA_SWORD = entity("naraka_sword.png");
 
     public static final Identifier SOUL_STABILIZER = entity("soul_stabilizer.png");
     public static final Identifier SOUL_SMITHING_BLOCK = entity("soul_smithing_block.png");

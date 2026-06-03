@@ -34,7 +34,7 @@ public record NarakaClientboundEntityEventPacket(Event event, int entityId) impl
         PLAY_HEROBRINE_PHASE_2,
         PLAY_HEROBRINE_PHASE_3,
         PLAY_HEROBRINE_PHASE_4,
-        STOP_MUSIC,
+        STOP_BOSS_MUSIC,
         SHOW_SKILL_CONTROL_SCREEN,
         SHOW_ANIMATION_CONTROL_SCREEN;
 

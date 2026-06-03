@@ -4,9 +4,11 @@ import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
@@ -53,6 +55,23 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T
                 .forEach(target -> hurtEntity(level, target));
     }
 
+    /**
+     * Hurt entities satisfying given predicate and collide with mob.
+     * Applying {@link #hurtEntity(ServerLevel, LivingEntity)} for selected targets.
+     *
+     * @param level     Server level
+     * @param predicate Predicate to select target
+     * @param size      Collision size
+     * @see AttackSkill#hurtEntity(ServerLevel, LivingEntity)
+     * @see AttackSkill#onHurtEntity(ServerLevel, LivingEntity)
+     */
+    protected void hurtEntities(ServerLevel level, Predicate<LivingEntity> predicate, Vec3 size) {
+        level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(size.x, size.y, size.z))
+                .stream()
+                .filter(predicate)
+                .forEach(target -> hurtEntity(level, target));
+    }
+
     protected boolean canDisableShield() {
         return shieldCooldown > 0 && shieldDamage > 0;
     }
@@ -69,10 +88,11 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T
      * @see AttackSkill#onHurtEntity(ServerLevel, LivingEntity)
      */
     protected boolean hurtEntity(ServerLevel level, LivingEntity target) {
-        if (tryDisableShield(target))
+        DamageSource damageSource = getDamageSource();
+        if (!damageSource.is(DamageTypeTags.BYPASSES_SHIELD) && tryDisableShield(target))
             return false;
 
-        boolean hurtSucceed = target.hurtServer(level, getDamageSource(), calculateDamage(target));
+        boolean hurtSucceed = target.hurtServer(level, damageSource, calculateDamage(target));
         if (hurtSucceed)
             onHurtEntity(level, target);
         return hurtSucceed;

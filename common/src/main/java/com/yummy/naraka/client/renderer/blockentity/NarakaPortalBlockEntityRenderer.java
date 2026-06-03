@@ -61,9 +61,9 @@ public class NarakaPortalBlockEntityRenderer implements BlockEntityRenderer<Nara
         poseStack.scale(3, 3, 3);
         RenderType renderType = getRenderType(renderState);
         nodeCollector.submitCustomGeometry(poseStack, renderType, (pose, vertexConsumer) -> {
-            NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xbbffffff, Direction.Axis.X, false);
+            NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xbbffffff, Direction.Axis.Z, false);
             if (!NarakaClientContext.SHADER_ENABLED.getValue())
-                NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.Axis.X, true);
+                NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.Axis.Z, true);
         });
         poseStack.popPose();
     }

@@ -20,7 +20,11 @@ public class HerobrineModel<S extends AbstractHerobrineRenderState> extends Abst
     private final ModelPart rightHand;
 
     public HerobrineModel(ModelPart root) {
-        super(root, HerobrineAnimation.WALKING, "herobrine");
+        this(root, "herobrine");
+    }
+
+    public HerobrineModel(ModelPart root, String entityName) {
+        super(root, HerobrineAnimation.WALKING, entityName);
         this.main = root.getChild("main");
         this.upperBody = main.getChild("upper_body");
         this.head = upperBody.getChild("head");

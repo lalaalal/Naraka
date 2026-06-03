@@ -8,7 +8,6 @@ import com.yummy.naraka.client.renderer.entity.state.CorruptedStarRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.CorruptedStar;
-import com.yummy.naraka.world.item.SoulType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
@@ -89,7 +88,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         poseStack.rotateAround(Axis.YP.rotationDegrees(rotation), 0, 0.25f, 0);
         poseStack.rotateAround(Axis.ZP.rotationDegrees(rotation), 0, 0.25f, 0);
         submitNodeCollector.order(0).submitModelPart(inner, poseStack, RenderTypes.lightning(), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, 0xaaffffff, null);
-        submitNodeCollector.order(1).submitModelPart(outer, poseStack, RenderTypes.lightning(), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.color(0xbb, SoulType.COPPER.color), null);
+        submitNodeCollector.order(1).submitModelPart(outer, poseStack, RenderTypes.lightning(), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.color(0xbb, entityRenderState.tailColor), null);
 
         poseStack.popPose();
 
@@ -97,7 +96,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         if (0 <= tick && tick <= entityRenderState.shineLifetime) {
             poseStack.pushPose();
             poseStack.translate(0, 0.25f, 0);
-            ShinyEffectRenderer.submitShiny(tick, entityRenderState.shineLifetime, entityRenderState.shineScale, entityRenderState.verticalShine, SoulType.COPPER.color, poseStack, submitNodeCollector);
+            ShinyEffectRenderer.submitShiny(tick, entityRenderState.shineLifetime, entityRenderState.shineScale, entityRenderState.verticalShine, entityRenderState.tailColor, poseStack, submitNodeCollector);
             poseStack.popPose();
         }
         submitTargetPoint(entityRenderState, poseStack, submitNodeCollector);
@@ -120,7 +119,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         float width = NarakaUtils.interpolate(Math.min(tickPart / 10, 1), 0, 0.05f, NarakaUtils::fastStepOut);
 
         submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
-            renderTargetPoint(pose, vertexConsumer, 0.25f, width, 1.5f, 0xab, SoulType.COPPER.color);
+            renderTargetPoint(pose, vertexConsumer, 0.25f, width, 1.5f, 0xab, entityRenderState.tailColor);
         });
 
         poseStack.popPose();

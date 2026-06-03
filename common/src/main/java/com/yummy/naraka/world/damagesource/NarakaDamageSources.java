@@ -74,6 +74,10 @@ public class NarakaDamageSources {
         return source(NarakaDamageTypes.NARAKA_FIREBALL, fireball, fireball.getOwner());
     }
 
+    public static DamageSource soulAttack(LivingEntity livingEntity) {
+        return source(NarakaDamageTypes.SOUL_ATTACK, livingEntity);
+    }
+
     public static DamageSource pickaxeSlash(PickaxeSlash pickaxeSlash) {
         return source(NarakaDamageTypes.PICKAXE_SLASH, pickaxeSlash, pickaxeSlash.getOwner());
     }

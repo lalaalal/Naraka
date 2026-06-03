@@ -82,6 +82,7 @@ public class StarShootingSkill extends ComboSkill<Herobrine> {
                 new Vec3(targetX, targetY, targetZ)
         ).rotated(yRot);
         CorruptedStar corruptedStar = new CorruptedStar(level, mob, mob.getEyePosition(), bezier);
+        corruptedStar.setVerticalShine(corruptedStar.getRandom().nextDouble() < 0.4);
         if (followTarget) {
             followingStars.add(corruptedStar);
             corruptedStar.setFollowingTarget(target);
@@ -91,8 +92,8 @@ public class StarShootingSkill extends ComboSkill<Herobrine> {
         }
 
         level.addFreshEntity(corruptedStar);
-        level.playSound(null, mob, SoundEvents.IRON_GOLEM_DEATH, SoundSource.HOSTILE, 0.4f, 1.9f);
-        level.playSound(null, mob, SoundEvents.IRON_GOLEM_DEATH, SoundSource.HOSTILE, 0.5f, 2);
+        level.playSound(null, mob, SoundEvents.IRON_GOLEM_DEATH, SoundSource.HOSTILE, 5f, 1.9f);
+        level.playSound(null, mob, SoundEvents.IRON_GOLEM_DEATH, SoundSource.HOSTILE, 5f, 2);
     }
 
     private void followTargetPosition(LivingEntity target) {
