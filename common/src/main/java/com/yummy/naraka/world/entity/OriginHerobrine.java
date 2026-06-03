@@ -53,6 +53,7 @@ public class OriginHerobrine extends SkillUsingMob implements Enemy {
     private final Map<SoulType, Float> soulTypeAlpha = new LinkedHashMap<>();
 
     private int protectedHealth = 66 * 7;
+    private int alpha = 0xff;
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
@@ -144,15 +145,7 @@ public class OriginHerobrine extends SkillUsingMob implements Enemy {
     @Override
     public void die(DamageSource damageSource) {
         super.die(damageSource);
-        if (level() instanceof ServerLevel level) {
-            level().setBlock(NarakaPortalBlock.IN_NARAKA_DIMENSION_POSITION, NarakaBlocks.NARAKA_PORTAL.get().defaultBlockState(), Block.UPDATE_ALL);
-
-            if (level.dimension().equals(NarakaDimensions.NARAKA)) {
-                SpawnData spawnData = level.getDataStorage()
-                        .computeIfAbsent(SpawnData.TYPE);
-                spawnData.setSpawned(false);
-            }
-        }
+        resetAbsorbedSouls();
     }
 
     @Override
@@ -161,6 +154,27 @@ public class OriginHerobrine extends SkillUsingMob implements Enemy {
         setNoGravity(true);
         if (level().isClientSide())
             updateSoulTypeAlpha();
+    }
+
+    @Override
+    protected void tickDeath() {
+        this.deathTime += 1;
+        alpha = Math.max(alpha - 2, 0);
+        if (this.deathTime >= 200 && level() instanceof ServerLevel level && !this.isRemoved()) {
+            level.setBlock(NarakaPortalBlock.IN_NARAKA_DIMENSION_POSITION, NarakaBlocks.NARAKA_PORTAL.get().defaultBlockState(), Block.UPDATE_ALL);
+
+            if (level.dimension().equals(NarakaDimensions.NARAKA)) {
+                SpawnData spawnData = level.getDataStorage()
+                        .computeIfAbsent(SpawnData.TYPE);
+                spawnData.setSpawned(false);
+            }
+            this.level().broadcastEntityEvent(this, (byte) 60);
+            this.remove(Entity.RemovalReason.KILLED);
+        }
+    }
+
+    public int getAlpha() {
+        return alpha;
     }
 
     private void updateSoulTypeAlpha() {
