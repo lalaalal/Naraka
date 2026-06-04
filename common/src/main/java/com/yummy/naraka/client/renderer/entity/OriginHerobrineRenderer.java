@@ -6,6 +6,7 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.layer.HerobrineEyeLayer;
 import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.client.renderer.entity.state.OriginHerobrineRenderState;
+import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.entity.OriginHerobrine;
 import com.yummy.naraka.world.item.SoulType;
 import net.fabricmc.api.EnvType;
@@ -91,7 +92,7 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
                 (pose, vertexConsumer) -> {
                     float alpha = Math.min(deathProgress > 0.8F ? (deathProgress - 0.8F) / 0.2F : 0.0F, 1.0F);
                     int white = ARGB.colorFromFloat(1.0F - alpha, 1, 1, 1);
-                    int redstoneColor = ARGB.color(0.01f, SoulType.REDSTONE.color);
+                    int color = ComponentStyles.RAINBOW_COLOR.getCurrentColor().withAlpha(2).pack();
                     RandomSource randomSource = RandomSource.create(432L);
                     Vector3f v1 = new Vector3f();
                     Vector3f v2 = new Vector3f();
@@ -116,14 +117,14 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
                         v3.set(HALF_SQRT_3 * z, y, -0.5F * z);
                         v4.set(0.0F, y, z);
                         vertexConsumer.addVertex(pose, v1).setColor(white);
-                        vertexConsumer.addVertex(pose, v2).setColor(redstoneColor);
-                        vertexConsumer.addVertex(pose, v3).setColor(redstoneColor);
+                        vertexConsumer.addVertex(pose, v2).setColor(color);
+                        vertexConsumer.addVertex(pose, v3).setColor(color);
                         vertexConsumer.addVertex(pose, v1).setColor(white);
-                        vertexConsumer.addVertex(pose, v3).setColor(redstoneColor);
-                        vertexConsumer.addVertex(pose, v4).setColor(redstoneColor);
+                        vertexConsumer.addVertex(pose, v3).setColor(color);
+                        vertexConsumer.addVertex(pose, v4).setColor(color);
                         vertexConsumer.addVertex(pose, v1).setColor(white);
-                        vertexConsumer.addVertex(pose, v4).setColor(redstoneColor);
-                        vertexConsumer.addVertex(pose, v2).setColor(redstoneColor);
+                        vertexConsumer.addVertex(pose, v4).setColor(color);
+                        vertexConsumer.addVertex(pose, v2).setColor(color);
                     }
                 }
         );
