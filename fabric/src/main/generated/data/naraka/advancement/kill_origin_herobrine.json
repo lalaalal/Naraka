@@ -1,0 +1,38 @@
+{
+  "parent": "naraka:kill_herobrine",
+  "criteria": {
+    "kill_origin_herobrine": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "naraka:origin_herobrine"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.naraka.kill_origin_herobrine.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "naraka:stigma_rod"
+    },
+    "title": {
+      "translate": "advancements.naraka.kill_origin_herobrine.title"
+    }
+  },
+  "requirements": [
+    [
+      "kill_origin_herobrine"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
