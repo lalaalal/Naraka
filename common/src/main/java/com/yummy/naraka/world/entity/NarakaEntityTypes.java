@@ -26,7 +26,7 @@ public class NarakaEntityTypes {
             "origin_herobrine",
             EntityType.Builder.of(OriginHerobrine::new, MobCategory.MONSTER)
                     .fireImmune()
-                    .sized(0.5f, 1.8f)
+                    .sized(0.75f, 1.8f)
                     .updateInterval(1)
     );
 
