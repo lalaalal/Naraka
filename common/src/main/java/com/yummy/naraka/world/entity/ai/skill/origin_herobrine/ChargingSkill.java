@@ -64,6 +64,7 @@ public class ChargingSkill extends Skill<OriginHerobrine> {
         corruptedStar.setSoulType(getCurrentSoulType());
         corruptedStar.startShine(20);
         corruptedStar.setStopOnEntityHit(true);
+        corruptedStar.setShootingAcceleration(0.075f);
 
         level.addFreshEntity(corruptedStar);
     }
@@ -108,7 +109,6 @@ public class ChargingSkill extends Skill<OriginHerobrine> {
     private void shootStar() {
         if (corruptedStar != null) {
             Vec3 shootVector = mob.getEyePosition().subtract(corruptedStar.position());
-            corruptedStar.accelerationPower = 0.075f;
             corruptedStar.shoot(shootVector.x, shootVector.y, shootVector.z, 0.01f, 0);
         }
     }

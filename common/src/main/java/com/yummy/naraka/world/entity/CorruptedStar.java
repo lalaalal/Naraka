@@ -33,6 +33,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
     public static final EntityDataAccessor<Integer> FOLLOWING_TARGET = SynchedEntityData.defineId(CorruptedStar.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<SoulType> SOUL_TYPE = SynchedEntityData.defineId(CorruptedStar.class, NarakaEntityDataSerializers.SOUL_TYPE);
     public static final EntityDataAccessor<Boolean> STOP_ON_ENTITY_HIT = SynchedEntityData.defineId(CorruptedStar.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Float> SHOOTING_ACCELERATION = SynchedEntityData.defineId(CorruptedStar.class, EntityDataSerializers.FLOAT);
 
     public static final EntityDataAccessor<Integer> SHINE_LIFETIME = SynchedEntityData.defineId(CorruptedStar.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> SHINE_START_TICK = SynchedEntityData.defineId(CorruptedStar.class, EntityDataSerializers.INT);
@@ -123,6 +124,10 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
         entityData.set(SHINE_LIFETIME, lifetime);
     }
 
+    public void setShootingAcceleration(float shootingAcceleration) {
+        entityData.set(SHOOTING_ACCELERATION, shootingAcceleration);
+    }
+
     public void setTargetPosition(Vec3 position) {
         entityData.set(TARGET_POSITION, position);
     }
@@ -144,6 +149,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
                 .define(TARGET_POSITION, Vec3.ZERO)
                 .define(FOLLOWING_TARGET, -1)
                 .define(SOUL_TYPE, SoulType.COPPER)
+                .define(SHOOTING_ACCELERATION, 0.25f)
                 .define(SHINE_START_TICK, 0)
                 .define(SHINE_LIFETIME, 20)
                 .define(VERTICAL_SHINE, false)
@@ -155,8 +161,8 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
         if (tickCount <= entityData.get(PREPARE_DURATION))
             preparingTick();
         else {
-            super.tick();
             needsSync = true;
+            super.tick();
 
             if (tickCount == entityData.get(PREPARE_DURATION) + 10) {
                 startShine(80);
@@ -171,8 +177,8 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
         if (!level().isClientSide()) {
             if (tickCount == getShineStartTick()) {
                 BlockPos floor = NarakaUtils.findFloor(level(), blockPosition());
-                level().playSound(null, floor, SoundEvents.BEACON_POWER_SELECT, SoundSource.HOSTILE, 5, 2);
-                level().playSound(null, floor, SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.HOSTILE, 5, 2);
+                level().playSound(null, floor, SoundEvents.BEACON_POWER_SELECT, SoundSource.HOSTILE, 3, 2);
+                level().playSound(null, floor, SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.HOSTILE, 3, 2);
             }
         }
     }
@@ -249,6 +255,12 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
 
     private boolean canBeDeflected() {
         return canBeDeflectedByPlayer && tickCount > entityData.get(PREPARE_DURATION);
+    }
+
+    @Override
+    public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
+        accelerationPower = entityData.get(SHOOTING_ACCELERATION);
+        super.shoot(x, y, z, velocity, inaccuracy);
     }
 
     @Override
