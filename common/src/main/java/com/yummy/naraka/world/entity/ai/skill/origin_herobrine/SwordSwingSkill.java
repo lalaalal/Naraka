@@ -49,7 +49,7 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
     protected float calculateDamage(LivingEntity target) {
         if (mob.getSoulStack() >= 8)
             return target.getMaxHealth();
-        return Math.max(8, (mob.getSoulStack() + 1) * 0.1f * target.getMaxHealth());
+        return Math.max(8, (mob.getSoulStack() + 1) * 0.2f * target.getMaxHealth());
     }
 
     @Override
