@@ -37,6 +37,7 @@
     "client.WorldOpenFlowsMixin"
   ],
   "mixins": [
+    "ConcretePowderBlockMixin",
     "EntityMixin",
     "FeatureMixin",
     "HerobrineTotemActivatingItemMixin",

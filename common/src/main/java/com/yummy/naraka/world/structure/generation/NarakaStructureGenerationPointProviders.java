@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class NarakaStructureGenerationPointProviders {
     public static final Holder<StructureGenerationPointProvider> NARAKA_PLATFORM = register(
-            "naraka_platform", (context, base) -> Optional.of(base.atY(63))
+            "naraka_platform", (context, base) -> Optional.of(base.atY(62))
     );
 
     public static final Holder<StructureGenerationPointProvider> HEROBRINE_SANCTUARY = register(

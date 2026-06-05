@@ -35,7 +35,7 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
     private static final VoxelShape SHAPE = Shapes.box(-1, 0, 0.25, 2, 3, 0.75);
 
     public static final BlockPos BASE_POSITION = new BlockPos(0, 64, 0);
-    public static final BlockPos IN_NARAKA_DIMENSION_POSITION = new BlockPos(0, 66, 0);
+    public static final BlockPos IN_NARAKA_DIMENSION_POSITION = new BlockPos(0, 65, 0);
 
     public static BlockPos createRandomNarakaSpawnPosition(RandomSource random) {
         int z = random.nextInt(3, 7);
