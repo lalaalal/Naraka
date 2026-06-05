@@ -4,6 +4,7 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.data.EntityDataType;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
+import com.yummy.naraka.world.overlay.ProgressOverlayExtensionType;
 import com.yummy.naraka.world.structure.generation.StructureGenerationPointProvider;
 import com.yummy.naraka.world.structure.piece.StructurePieceFactory;
 import com.yummy.naraka.world.structure.protection.ProtectionPredicate;
@@ -17,6 +18,7 @@ public class NarakaRegistries {
     public static final Registry<EntityDataType<?, ?>> ENTITY_DATA_TYPE = RegistryFactory.create(Keys.ENTITY_DATA_TYPE);
     public static final Registry<ReinforcementEffect> REINFORCEMENT_EFFECT = RegistryFactory.create(Keys.REINFORCEMENT_EFFECT);
     public static final Registry<EquipmentSet> EQUIPMENT_SET = RegistryFactory.create(Keys.EQUIPMENT_SET);
+    public static final Registry<ProgressOverlayExtensionType<?>> PROGRESS_OVERLAY_EXTENSION_TYPE = RegistryFactory.create(Keys.PROGRESS_OVERLAY_EXTENSION_TYPE);
 
     public static void initialize() {
 
@@ -29,6 +31,7 @@ public class NarakaRegistries {
         public static final ResourceKey<Registry<EntityDataType<?, ?>>> ENTITY_DATA_TYPE = create("entity_data_type");
         public static final ResourceKey<Registry<ReinforcementEffect>> REINFORCEMENT_EFFECT = create("reinforcement_effect");
         public static final ResourceKey<Registry<EquipmentSet>> EQUIPMENT_SET = create("equipment_set");
+        public static final ResourceKey<Registry<ProgressOverlayExtensionType<?>>> PROGRESS_OVERLAY_EXTENSION_TYPE = create("progress_overlay_extension_type");
 
         private static <T> ResourceKey<Registry<T>> create(String name) {
             return ResourceKey.createRegistryKey(NarakaMod.identifier(name));
