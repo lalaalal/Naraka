@@ -13,5 +13,5 @@ public final class NarakaSprites {
     public static final Identifier DEATH_COUNT_HEART = NarakaMod.identifier("hud/death_count_heart");
     public static final Identifier STIGMA_CONSUME = NarakaMod.identifier("hud/stigma_consume");
 
-    public static final Identifier HEART_CONTAINER = Identifier.withDefaultNamespace("hud/heart/container");
+    public static final Identifier PROGRESS_SLOT_SEPARATOR = NarakaMod.identifier("hud/progress_slot_separator");
 }

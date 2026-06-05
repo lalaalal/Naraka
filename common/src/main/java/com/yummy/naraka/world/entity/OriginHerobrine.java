@@ -1,6 +1,8 @@
 package com.yummy.naraka.world.entity;
 
 import com.mojang.serialization.Codec;
+import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.SyncProgressOverlayExtensionPacket;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.NarakaPortalBlock;
@@ -9,7 +11,9 @@ import com.yummy.naraka.world.entity.ai.skill.origin_herobrine.ChargingSkill;
 import com.yummy.naraka.world.entity.ai.skill.origin_herobrine.SwordSwingSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import com.yummy.naraka.world.item.SoulType;
+import com.yummy.naraka.world.overlay.NarakaProgressOverlayExtensionTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
@@ -42,6 +46,7 @@ public class OriginHerobrine extends SkillUsingMob implements Enemy {
     public static final float[] HEALTH_BY_PHASE = {528};
     public static final BossEvent.BossBarColor[] PROGRESS_COLOR_BY_PHASE = {BossEvent.BossBarColor.WHITE};
     public static final BlockPos SPAWN_POSITION = new BlockPos(0, 68, 0);
+    public static final int PROTECTION_PER_LEVEL = 66;
 
     private final SwordSwingSkill swordSwingSkill = registerSkill(this, SwordSwingSkill::new, HerobrineAnimationIdentifiers.SWORD_ATTACK, HerobrineAnimationIdentifiers.SWORD_ATTACK_SPIN);
     private final ChargingSkill chargingSkill = registerSkill(9, new ChargingSkill(this, swordSwingSkill), HerobrineAnimationIdentifiers.CHARGING);
@@ -52,7 +57,7 @@ public class OriginHerobrine extends SkillUsingMob implements Enemy {
     private final List<SoulType> absorbedSoulTypes = new ArrayList<>();
     private final Map<SoulType, Float> soulTypeAlpha = new LinkedHashMap<>();
 
-    private int protectedHealth = 66 * 7;
+    private int protectionLevel = 7;
     private int alpha = 0xff;
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
@@ -120,7 +125,11 @@ public class OriginHerobrine extends SkillUsingMob implements Enemy {
     }
 
     public void removeProtection(int protectionCount) {
-        protectedHealth = Math.max(protectedHealth - protectionCount * 66, 0);
+        protectionLevel = Math.max(protectionLevel - protectionCount, 0);
+        CustomPacketPayload payload = SyncProgressOverlayExtensionPacket.update(
+                bossEvent, NarakaProgressOverlayExtensionTypes.ORIGIN_HEROBRINE.get().createData(protectionLevel)
+        );
+        NetworkManager.clientbound().send(players, payload);
     }
 
     @Override
@@ -139,13 +148,15 @@ public class OriginHerobrine extends SkillUsingMob implements Enemy {
     protected void actuallyHurt(ServerLevel level, DamageSource damageSource, float amount) {
         super.actuallyHurt(level, damageSource, amount);
         if (!damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
-            setHealth(Math.max(getHealth(), protectedHealth));
+            setHealth(Math.max(getHealth(), protectionLevel * PROTECTION_PER_LEVEL));
     }
 
     @Override
     public void die(DamageSource damageSource) {
         super.die(damageSource);
         resetAbsorbedSouls();
+        CustomPacketPayload payload = SyncProgressOverlayExtensionPacket.remove(bossEvent);
+        NetworkManager.clientbound().send(players(), payload);
     }
 
     @Override
@@ -255,6 +266,11 @@ public class OriginHerobrine extends SkillUsingMob implements Enemy {
     public void startSeenByPlayer(ServerPlayer serverPlayer) {
         super.startSeenByPlayer(serverPlayer);
         bossEvent.addPlayer(serverPlayer);
+
+        CustomPacketPayload payload = SyncProgressOverlayExtensionPacket.register(
+                bossEvent, NarakaProgressOverlayExtensionTypes.ORIGIN_HEROBRINE.get().createData(protectionLevel)
+        );
+        NetworkManager.clientbound().send(serverPlayer, payload);
     }
 
     @Override
@@ -266,13 +282,13 @@ public class OriginHerobrine extends SkillUsingMob implements Enemy {
     @Override
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
-        output.putInt("ProtectedHealth", protectedHealth);
+        output.putInt("ProtectionLevel", protectionLevel);
     }
 
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
-        protectedHealth = input.getIntOr("ProtectedHealth", 66 * 7);
+        protectionLevel = input.getIntOr("ProtectionLevel", 7);
     }
 
     public static class SpawnData extends SavedData {

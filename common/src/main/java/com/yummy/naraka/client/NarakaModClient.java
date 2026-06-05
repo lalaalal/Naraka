@@ -3,6 +3,7 @@ package com.yummy.naraka.client;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.event.ClientEventHandler;
+import com.yummy.naraka.client.gui.components.HealthSlotOverlayExtension;
 import com.yummy.naraka.client.gui.hud.DeathCountHud;
 import com.yummy.naraka.client.gui.hud.LockedHealthHud;
 import com.yummy.naraka.client.gui.hud.StigmaHud;
@@ -22,6 +23,7 @@ import com.yummy.naraka.client.renderer.special.SpearSpecialRenderer;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
+import com.yummy.naraka.init.ProgressOverlayExtensionFactoryRegistry;
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.NarakaDimensions;
@@ -29,6 +31,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.overlay.NarakaProgressOverlayExtensionTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
@@ -72,6 +75,7 @@ public final class NarakaModClient {
     private static void onRegistryLoaded() {
         initializeItems();
         initializeBlocks();
+        ProgressOverlayExtensionFactoryRegistry.register(NarakaProgressOverlayExtensionTypes.ORIGIN_HEROBRINE, () -> new HealthSlotOverlayExtension(7));
 
         NarakaClientEvents.initialize();
 
