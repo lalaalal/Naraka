@@ -25,7 +25,8 @@ public class NarakaSkillUtils {
         NarakaUtils.square(base, radius, positionPredicate, blockPos -> {
             BlockPos floor = NarakaUtils.findFloor(level, blockPos);
             BlockState floorState = level.getBlockState(floor);
-            if (floorState.isFaceSturdy(level, floor, Direction.UP))
+            BlockState aboveState = level.getBlockState(floor.above());
+            if (aboveState.canBeReplaced() && floorState.isFaceSturdy(level, floor, Direction.UP))
                 NarakaEntityUtils.createFloatingBlock(level, floor.above(), floorState, movementSupplier.get());
         });
     }
