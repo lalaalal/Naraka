@@ -16,4 +16,8 @@ public class NarakaProgressOverlayExtensionTypes {
                 name, () -> new ProgressOverlayExtensionType<>(classType, codec)
         );
     }
+
+    public static void initialize() {
+
+    }
 }
