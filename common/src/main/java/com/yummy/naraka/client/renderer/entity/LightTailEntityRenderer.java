@@ -43,9 +43,10 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
         renderState.tailAlphas.clear();
         for (int index = 0; index < renderState.tailPositions.size(); index++) {
             float delta = index / (float) renderState.tailPositions.size();
-            int alpha = calculateAlpha(index / (float) renderState.tailPositions.size());
+            int alpha = calculateAlpha(delta);
             if (delta > 0.4) {
-                int nextAlpha = calculateAlpha((index + 1) / (float) renderState.tailPositions.size());
+                float nextDelta = (index + entity.getTailUpdateCount()) / (float) renderState.tailPositions.size();
+                int nextAlpha = calculateAlpha(nextDelta);
                 alpha = Mth.lerpInt(partialTick, alpha, nextAlpha);
             }
             renderState.tailAlphas.add(alpha);
@@ -92,10 +93,12 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
         poseStack.popPose();
     }
 
-    private int calculateAlpha(float index) {
+    private int calculateAlpha(float delta) {
         int alpha = NarakaRenderUtils.MAX_TAIL_ALPHA;
-        if (index > 0.5)
-            alpha = (int) (NarakaRenderUtils.MAX_TAIL_ALPHA * (1 - (index - 0.5) * 2.0));
+        if (delta > 0.5)
+            alpha = (int) (NarakaRenderUtils.MAX_TAIL_ALPHA * (1 - (delta - 0.5) * 2.0));
+        if (delta >= 1)
+            return 0;
         return alpha;
     }
 
