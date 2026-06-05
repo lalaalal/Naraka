@@ -60,13 +60,16 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
         renderState.swordEffectData = new ArrayList<>(entity.getSwordEffectData(partialTick));
         renderState.swordEffectData.addFirst(new SwordEffectData(position, NarakaSword.DIRECTION, renderState.rotation, NarakaSword.LENGTH, entity.getScale()));
 
-        float alpha = 1;
-        for (float index = 0; index < renderState.swordEffectData.size() - 1; index++) {
-            float nextAlpha = alpha * 0.95f;
-            renderState.swordEffectAlpha.add(Mth.lerp(partialTick, alpha, nextAlpha));
-
-            alpha = nextAlpha;
+        for (float index = 0; index < renderState.swordEffectData.size(); index++) {
+            float currentAlpha = calculateAlpha(index / renderState.swordEffectData.size());
+            float nextAlpha = calculateAlpha((index + renderState.swordEffectUpdateCount) / renderState.swordEffectData.size());
+            renderState.swordEffectAlpha.add(Mth.lerp(partialTick, currentAlpha, nextAlpha));
         }
+    }
+
+    private float calculateAlpha(float delta) {
+        delta = Mth.clamp(delta, 0, 1);
+        return Mth.lerp(delta, 1, 0);
     }
 
     @Override

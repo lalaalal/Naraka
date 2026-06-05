@@ -64,7 +64,7 @@ public class NarakaSword extends MotionEntity {
         prevAlpha = getAlpha();
 
         if (tickCount == 5) {
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 128; i++)
                 swordEffectData.add(new SwordEffectData(position().toVector3f(), DIRECTION, getRotation(), 0, 0));
         }
 
