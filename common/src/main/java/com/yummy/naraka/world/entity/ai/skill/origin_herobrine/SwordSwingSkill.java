@@ -130,10 +130,10 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
     }
 
     private void floatLine(ServerLevel level, int radius, int waveTick, Supplier<Vec3> movement) {
-        BiPredicate<BlockPos, Integer> predicate = (position, r) -> {
-            BlockPos actualPosition = mob.blockPosition().offset(position);
+        BiPredicate<BlockPos, Integer> predicate = (blockPos, r) -> {
+            BlockPos actualPosition = mob.blockPosition().offset(blockPos);
             return targetInLookAngle(new Vec3(actualPosition.getX() + 0.5, mob.getY(), actualPosition.getZ() + 0.5), -HALF_ANGLE, HALF_ANGLE)
-                    && NarakaUtils.CIRCLE_OUTLINE.test(position, r);
+                    && NarakaUtils.CIRCLE_OUTLINE.test(blockPos, r);
         };
         NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), radius + waveTick, predicate, movement);
     }

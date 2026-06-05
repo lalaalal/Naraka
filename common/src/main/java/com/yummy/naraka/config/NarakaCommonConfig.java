@@ -24,6 +24,7 @@ public class NarakaCommonConfig extends StaticConfiguration {
 
     public final ConfigValue<Integer> soulStabilizerCapacity = define("soul_stabilizer_capacity", 10);
     public final ConfigValue<Integer> soulStabilizerConsume = define("soul_stabilizer_consume", 2);
+    public final ConfigValue<Float> narakaDimensionInLiquidSpeedMultiplier = define("naraka_dimension_in_liquid_speed_multiplier", 0.5f);
 
     public NarakaCommonConfig() {
         super("naraka-common", PropertiesConfigFile::new);
