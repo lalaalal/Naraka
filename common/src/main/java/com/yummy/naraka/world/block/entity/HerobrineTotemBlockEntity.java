@@ -3,7 +3,6 @@ package com.yummy.naraka.world.block.entity;
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
-import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.block.HerobrineTotem;
@@ -11,11 +10,9 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.RegistryOps;
@@ -33,7 +30,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.entity.EntityTypeTest;
-import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -128,18 +124,6 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
                 && level.getBlockState(totemPos.below(2)).is(NarakaBlocks.IMITATION_GOLD_BLOCK);
     }
 
-    public static boolean isSanctuaryExists(Level level, BlockPos pos) {
-        if (level instanceof ServerLevel serverLevel) {
-            HolderLookup<Structure> structures = serverLevel.holderLookup(Registries.STRUCTURE);
-            LocationPredicate predicate = LocationPredicate.Builder.inStructure(
-                            structures.getOrThrow(NarakaStructures.HEROBRINE_SANCTUARY)
-                    )
-                    .build();
-            return predicate.matches(serverLevel, pos.getX(), pos.getY(), pos.getZ());
-        }
-        return false;
-    }
-
     private void summonHerobrine(ServerLevel level, BlockPos pos) {
         BlockPos floorPos = NarakaUtils.findFloor(level, pos);
         Herobrine herobrine = new Herobrine(level, new Vec3(floorPos.getX() + 0.5, floorPos.getY() + 1, floorPos.getZ() + 0.5));
@@ -169,7 +153,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     private void restoreFloor(ServerLevel level, BlockPos pos) {
         BlockPos base = pos.below(5);
         NarakaUtils.square(base, 33, NarakaUtils.circleBetween(25, 34), blockPos -> {
-            if (level.getBlockState(blockPos).isAir())
+            if (level.getBlockState(blockPos).isAir() && level.getBlockState(blockPos.below()).isAir())
                 level.setBlockAndUpdate(blockPos, Blocks.BLACKSTONE.defaultBlockState());
         });
     }
