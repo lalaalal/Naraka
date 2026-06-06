@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" factoryName="Application" name="Minecraft Client Data (:neoforge)" type="Application">
+    <option name="MAIN_CLASS_NAME" value="dev.architectury.transformer.TransformerRuntime"/>
+    <module name="naraka.neoforge.main"/>
+    <option name="PROGRAM_PARAMETERS" value="--all --mod naraka --output $PROJECT_DIR$/neoforge/src/main/generated.neoforge --existing $PROJECT_DIR$/neoforge/src/main/resources"/>
+    <option name="VM_PARAMETERS" value="-Dfabric.dli.config=$PROJECT_DIR$/neoforge/.gradle/loom-cache/launch.cfg -Dfabric.dli.env=dataclient --add-opens java.base/java.lang.invoke=ALL-UNNAMED --add-exports jdk.naming.dns/com.sun.jndi.dns=java.naming -Dfabric.dli.main=net.neoforged.fml.startup.DataClient -Darchitectury.main.class=$PROJECT_DIR$/neoforge/.gradle/architectury/.main_class -Darchitectury.runtime.transformer=$PROJECT_DIR$/neoforge/.gradle/architectury/.transforms -Darchitectury.properties=$PROJECT_DIR$/neoforge/.gradle/architectury/.properties -Djdk.attach.allowAttachSelf=true -javaagent:$PROJECT_DIR$/.gradle/architectury/architectury-transformer-agent.jar"/>
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/neoforge/run/21.11"/>
+    <method v="2">
+      <option enabled="true" name="Make"/>
+    </method>
+    <envs>
+      <env name="MOD_CLASSES" value="main%%$PROJECT_DIR$/neoforge/build/resources/main:main%%$PROJECT_DIR$/neoforge/build/classes/java/main:main%%$PROJECT_DIR$/neoforge/out/production/classes:main%%$PROJECT_DIR$/neoforge/out/production/resources"/>
+    </envs>
+    <shortenClasspath name="ARGS_FILE"/>
+  <classpathModifications/></configuration>
+</component>
