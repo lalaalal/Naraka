@@ -50,4 +50,10 @@ public class HerobrineAnimationLocations {
     public static final ResourceLocation FINAL_COMBO_ATTACK_2_RETURN = AnimationLocations.create("final_herobrine", "combo_attack_2.return");
     public static final ResourceLocation PICKAXE_SLASH_SINGLE = AnimationLocations.create("final_herobrine", "pickaxe_slash.single");
     public static final ResourceLocation PICKAXE_SLASH_TRIPLE = AnimationLocations.create("final_herobrine", "pickaxe_slash.triple");
+
+    public static final ResourceLocation PHASE_4_SPAWN = AnimationLocations.create("origin_herobrine", "spawn");
+    public static final ResourceLocation PHASE_4_IDLE = AnimationLocations.create("origin_herobrine", "idle");
+    public static final ResourceLocation SWORD_ATTACK = AnimationLocations.create("origin_herobrine", "sword_attack");
+    public static final ResourceLocation SWORD_ATTACK_SPIN = AnimationLocations.create("origin_herobrine", "sword_attack_spin");
+    public static final ResourceLocation CHARGING = AnimationLocations.create("origin_herobrine", "charging");
 }

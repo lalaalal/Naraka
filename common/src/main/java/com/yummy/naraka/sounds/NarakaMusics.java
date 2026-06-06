@@ -33,7 +33,7 @@ public final class NarakaMusics {
     public static NarakaClientboundEntityEventPacket.Event musicEventByPhase(int phase) {
         if (0 < phase && phase <= 4)
             return HEROBRINE_MUSIC_EVENT[phase];
-        return NarakaClientboundEntityEventPacket.Event.STOP_MUSIC;
+        return NarakaClientboundEntityEventPacket.Event.STOP_BOSS_MUSIC;
     }
 
     public static BossMusicPlayer bossMusicPlayer() {

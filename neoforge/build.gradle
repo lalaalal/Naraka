@@ -63,7 +63,7 @@ processResources {
 }
 
 sourceSets.main.resources {
-    srcDirs 'src/main/generated', 'src/main/generated.neoforge'
+    srcDirs project(':fabric').file('src/main/generated'), 'src/main/generated.neoforge'
 }
 
 shadowJar {

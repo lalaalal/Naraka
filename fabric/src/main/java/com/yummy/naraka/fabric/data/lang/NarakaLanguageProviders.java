@@ -297,7 +297,7 @@ public class NarakaLanguageProviders {
         addTooltip(NarakaBlocks.HEROBRINE_TOTEM, "It seems like it would only work in sacred places", "신성한 곳에서만 작동할 것 같다");
 
         addEntityType(NarakaEntityTypes.HEROBRINE, "Naraka Tyrant: Herobrine", "나락의 폭군: 히로빈");
-        addEntityType(NarakaEntityTypes.ABSOLUTE_HEROBRINE, "Absolute Herobrine");
+        addEntityType(NarakaEntityTypes.ORIGIN_HEROBRINE, "The Origin of Naraka: Herobrine", "나락의 근원: 히로빈");
         addEntityType(NarakaEntityTypes.SHADOW_HEROBRINE, "Shadow Herobrine", "그림자 히로빈");
         addEntityType(NarakaEntityTypes.THROWN_SPEAR, "Spear", "창");
         addEntityType(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, "Mighty Holy Spear", "강력한 성스러운 창");

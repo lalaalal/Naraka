@@ -58,15 +58,13 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
             poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
             poseStack.mulPose(Axis.XP.rotationDegrees(level.getTimeOfDay(partialTick) * 360.0F));
 
-            RenderSystem.setShaderColor(0, 0, 0, 1);
+            RenderSystem.setShaderColor(1, 1, 1, 1);
             renderStars(poseStack, projectionMatrix, positionShader);
             RenderSystem.blendFuncSeparate(
                     GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO
             );
             RenderSystem.setShaderColor(1, 1, 1, 1);
             renderEclipse(poseStack, Tesselator.getInstance(), NarakaTextures.ECLIPSE);
-            RenderSystem.defaultBlendFunc();
-            renderEclipse(poseStack, Tesselator.getInstance(), NarakaTextures.INVERTED_ECLIPSE);
 
             poseStack.popPose();
             RenderSystem.disableBlend();

@@ -35,6 +35,7 @@ public class NarakaEntityTypeTagsProvider extends FabricTagProvider.EntityTypeTa
                 .add(NarakaEntityTypes.HEROBRINE.get());
 
         getOrCreateTagBuilder(EntityTypeTags.REDIRECTABLE_PROJECTILE)
+                .add(NarakaEntityTypes.CORRUPTED_STAR.get())
                 .add(NarakaEntityTypes.NARAKA_FIREBALL.get());
 
         getOrCreateTagBuilder(NarakaEntityTypeTags.STIGMA_IMMUNE)
@@ -43,5 +44,9 @@ public class NarakaEntityTypeTagsProvider extends FabricTagProvider.EntityTypeTa
         getOrCreateTagBuilder(NarakaEntityTypeTags.STUN_IMMUNE)
                 .addTag(NarakaEntityTypeTags.HEROBRINE)
                 .add(NarakaEntityTypes.NARAKA_PICKAXE.get());
+
+        getOrCreateTagBuilder(NarakaEntityTypeTags.NARAKA_PORTAL_IGNORE)
+                .add(EntityType.EXPERIENCE_ORB)
+                .addTag(NarakaEntityTypeTags.HEROBRINE);
     }
 }

@@ -18,6 +18,7 @@ public class NarakaDamageTypes {
     public static final ResourceKey<DamageType> NARAKA_FIREBALL = create("naraka_fireball");
     public static final ResourceKey<DamageType> PICKAXE_SLASH = create("pickaxe_slash");
     public static final ResourceKey<DamageType> PURIFIED_SOUL_FIRE = create("purified_soul_fire");
+    public static final ResourceKey<DamageType> SOUL_ATTACK = create("soul_attack");
 
     public static void bootstrap(BootstrapContext<DamageType> context) {
         context.register(STIGMA, new DamageType("stigma", DamageScaling.NEVER, 0.1f));
@@ -30,6 +31,7 @@ public class NarakaDamageTypes {
         context.register(NARAKA_FIREBALL, new DamageType("naraka_fireball", 1));
         context.register(PICKAXE_SLASH, new DamageType("pickaxe_slash", 0.5f));
         context.register(PURIFIED_SOUL_FIRE, new DamageType("purified_soul_fire", 0.25f));
+        context.register(SOUL_ATTACK, new DamageType("soul_attack", DamageScaling.NEVER, 0.45f));
     }
 
     private static ResourceKey<DamageType> create(String name) {

@@ -45,9 +45,9 @@ public class NarakaPortalBlockEntityRenderer implements BlockEntityRenderer<Nara
         poseStack.scale(3, 3, 3);
         RenderType renderType = getRenderType(blockEntity);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-        NarakaRenderUtils.renderFlatImage(poseStack.last(), vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xbbffffff, Direction.Axis.X, false);
+        NarakaRenderUtils.renderFlatImage(poseStack.last(), vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xbbffffff, Direction.Axis.Z, false);
         if (!NarakaClientContext.SHADER_ENABLED.getValue())
-            NarakaRenderUtils.renderFlatImage(poseStack.last(), vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xbbffffff, Direction.Axis.X, true);
+            NarakaRenderUtils.renderFlatImage(poseStack.last(), vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xbbffffff, Direction.Axis.Z, true);
         poseStack.popPose();
     }
 }

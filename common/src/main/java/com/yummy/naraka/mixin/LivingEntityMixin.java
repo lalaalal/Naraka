@@ -1,8 +1,10 @@
 package com.yummy.naraka.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.LockedHealthHelper;
@@ -50,6 +52,9 @@ public abstract class LivingEntityMixin extends Entity {
     @Shadow
     public abstract ItemStack getItemBySlot(EquipmentSlot slot);
 
+    @Shadow
+    public abstract float getSpeed();
+
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
@@ -60,6 +65,8 @@ public abstract class LivingEntityMixin extends Entity {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V")
     )
     public float increaseSpeedInLiquid(float scale) {
+        if (level().dimension().equals(NarakaDimensions.NARAKA))
+            return NarakaConfig.COMMON.narakaDimensionInLiquidSpeedMultiplier.getValue() * getSpeed();
         return ReinforcementEffectHelper.increaseSpeedInLiquid(naraka$living(), scale);
     }
 

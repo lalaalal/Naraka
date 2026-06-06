@@ -18,8 +18,8 @@ public class HerobrineModel<T extends AbstractHerobrine> extends AbstractHerobri
     private final ModelPart leftHand;
     private final ModelPart rightHand;
 
-    public HerobrineModel(ModelPart root, boolean forShadow) {
-        super(root, "herobrine", forShadow);
+    public HerobrineModel(ModelPart root, String entityName, boolean forShadow) {
+        super(root, entityName, forShadow);
         this.main = root.getChild("main");
         this.upperBody = main.getChild("upper_body");
         this.head = upperBody.getChild("head");
@@ -27,6 +27,10 @@ public class HerobrineModel<T extends AbstractHerobrine> extends AbstractHerobri
         this.rightArm = upperBody.getChild("right_arm");
         this.leftHand = leftArm.getChild("left_arm_lower");
         this.rightHand = rightArm.getChild("right_arm_lower");
+    }
+
+    public HerobrineModel(ModelPart root, boolean forShadow) {
+        this(root, "herobrine", forShadow);
     }
 
     public static LayerDefinition createForHerobrine() {

@@ -91,6 +91,4 @@ public class AreaEffect extends Entity {
     protected void addAdditionalSaveData(CompoundTag compound) {
 
     }
-
-
 }

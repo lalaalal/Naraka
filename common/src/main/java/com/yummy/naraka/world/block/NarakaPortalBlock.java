@@ -2,6 +2,7 @@ package com.yummy.naraka.world.block;
 
 import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.core.particles.SoulParticleOption;
+import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.block.entity.NarakaPortalBlockEntity;
@@ -30,13 +31,14 @@ import org.jetbrains.annotations.Nullable;
 
 public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
     public static final MapCodec<NarakaPortalBlock> CODEC = simpleCodec(NarakaPortalBlock::new);
-    private static final VoxelShape SHAPE = Shapes.box(0.25, 0, -1, 0.75, 3, 2);
+    private static final VoxelShape SHAPE = Shapes.box(-1, 0, 0.25, 2, 3, 0.75);
 
-    public static final BlockPos BASE_POSITION = new BlockPos(0, 63, 0);
+    public static final BlockPos BASE_POSITION = new BlockPos(0, 64, 0);
+    public static final BlockPos IN_NARAKA_DIMENSION_POSITION = new BlockPos(0, 65, 0);
 
     public static BlockPos createRandomNarakaSpawnPosition(RandomSource random) {
-        int x = random.nextInt(3, 7);
-        return new BlockPos(x, BASE_POSITION.getY(), 0);
+        int z = random.nextInt(3, 7);
+        return new BlockPos(0, BASE_POSITION.getY(), z);
     }
 
     public NarakaPortalBlock(Properties properties) {
@@ -94,7 +96,7 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
 
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        if (entity.canUsePortal(false) && !level.isClientSide()) {
+        if (entity.canUsePortal(false) && !level.isClientSide() && !entity.getType().is(NarakaEntityTypeTags.NARAKA_PORTAL_IGNORE)) {
             if (!entity.isOnPortalCooldown()) {
                 level.getBlockEntity(pos, NarakaBlockEntityTypes.NARAKA_PORTAL.get())
                         .ifPresent(NarakaPortalBlockEntity::use);
@@ -121,6 +123,6 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
             return null;
         BlockPos destinationPosition = createRandomNarakaSpawnPosition(level.getRandom());
         Vec3 destinationPositionVec = Vec3.atBottomCenterOf(destinationPosition);
-        return new DimensionTransition(destinationLevel, destinationPositionVec, Vec3.ZERO, 0, 0, dimensionTransition);
+        return new DimensionTransition(destinationLevel, destinationPositionVec, Vec3.ZERO, 180, 0, dimensionTransition);
     }
 }

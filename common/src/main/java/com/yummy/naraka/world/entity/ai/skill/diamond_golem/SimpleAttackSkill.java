@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class SimpleAttackSkill extends AttackSkill<SkillUsingMob> {
@@ -18,27 +19,27 @@ public class SimpleAttackSkill extends AttackSkill<SkillUsingMob> {
     public static final ResourceLocation STRONG = createLocation("diamond_golem.strong_attack");
 
     public static SimpleAttackSkill basic(SkillUsingMob mob) {
-        return new SimpleAttackSkill(BASIC, mob, 45, 80, 20, 7, 36, NarakaSoundEvents.DIAMOND_GOLEM_BASIC.value());
+        return new SimpleAttackSkill(BASIC, mob, 45, 80, 20, new Vec3(5, 1, 5), 36, NarakaSoundEvents.DIAMOND_GOLEM_BASIC.value());
     }
 
     public static SimpleAttackSkill swipe(SkillUsingMob mob) {
-        return new SimpleAttackSkill(SWIPE, mob, 25, 80, 5, 5, 25, NarakaSoundEvents.DIAMOND_GOLEM_SWIPE.value());
+        return new SimpleAttackSkill(SWIPE, mob, 25, 80, 5, new Vec3(3, 1, 3), 25, NarakaSoundEvents.DIAMOND_GOLEM_SWIPE.value());
     }
 
     public static SimpleAttackSkill strong(SkillUsingMob mob) {
-        return new SimpleAttackSkill(STRONG, mob, 85, 80, 40, 9, 64, NarakaSoundEvents.DIAMOND_GOLEM_STRONG.value());
+        return new SimpleAttackSkill(STRONG, mob, 85, 80, 40, new Vec3(7, 1, 7), 64, NarakaSoundEvents.DIAMOND_GOLEM_STRONG.value());
     }
 
     private final int attackTick;
-    private final int attackRange;
+    private final Vec3 attackRange;
     private final int usdDistance;
     private final SoundEvent sound;
 
-    protected SimpleAttackSkill(ResourceLocation location, SkillUsingMob mob, int duration, int cooldown, int attackTick, int attackRange, int usdDistance, SoundEvent sound) {
+    protected SimpleAttackSkill(ResourceLocation location, SkillUsingMob mob, int duration, int cooldown, int attackTick, Vec3 attackRange, int useDistance, SoundEvent sound) {
         super(location, mob, duration, cooldown);
         this.attackTick = attackTick;
         this.attackRange = attackRange;
-        this.usdDistance = usdDistance;
+        this.usdDistance = useDistance;
         this.sound = sound;
     }
 

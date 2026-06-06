@@ -88,7 +88,7 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect> {
             NarakaRenderUtils.renderRhombus(pose, vertexConsumer, centerWidth, centerHeight, alpha, color);
             centerWidth *= 2;
             alpha = (int) (alpha * 0.75f);
-            centerHeight += 0.05f;
+            centerHeight += height * 0.5f;
         }
         NarakaRenderUtils.renderRhombus(pose, vertexConsumer, width, centerHeight, 0x11, color);
     }

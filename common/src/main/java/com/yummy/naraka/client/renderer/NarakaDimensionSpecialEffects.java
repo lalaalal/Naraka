@@ -13,7 +13,7 @@ public class NarakaDimensionSpecialEffects {
 
         @Override
         public Vec3 getBrightnessDependentFogColor(Vec3 fogColor, float brightness) {
-            return new Vec3(1, 1, 1);
+            return Vec3.ZERO;
         }
 
         @Override

@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.FastColor;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
@@ -51,14 +52,27 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity> extends
         for (int index = 0; index < tailPositions.size() - 1; index++) {
             Vector3f from = tailPositions.get(index);
             Vector3f to = tailPositions.get(index + 1);
-            float uv = index / (float) tailPositions.size();
-            int alpha = NarakaRenderUtils.MAX_TAIL_ALPHA;
-            if (uv > 0.5)
-                alpha = (int) (NarakaRenderUtils.MAX_TAIL_ALPHA * (1 - (uv - 0.5) * 2));
-            renderTailPart(entity, partialTick, poseStack.last(), vertexConsumer, from, to, uv, partSize, FastColor.ARGB32.color(alpha, entity.getTailColor()));
+            float delta = index / (float) tailPositions.size();
+            int alpha = calculateAlpha(delta);
+            if (alpha > 0.4) {
+                float nextDelta = (index + entity.getTailUpdateCount()) / (float) tailPositions.size();
+                int nextAlpha = calculateAlpha(nextDelta);
+                alpha = Mth.lerpInt(partialTick, alpha, nextAlpha);
+            }
+
+            renderTailPart(entity, partialTick, poseStack.last(), vertexConsumer, from, to, delta, partSize, FastColor.ARGB32.color(alpha, entity.getTailColor()));
         }
 
         poseStack.popPose();
+    }
+
+    private int calculateAlpha(float delta) {
+        int alpha = NarakaRenderUtils.MAX_TAIL_ALPHA;
+        if (delta > 0.5)
+            alpha = (int) (NarakaRenderUtils.MAX_TAIL_ALPHA * (1 - (delta - 0.5) * 2.0));
+        if (delta >= 1)
+            return 0;
+        return alpha;
     }
 
     protected void renderTailPart(T entity, float partialTick, PoseStack.Pose pose, VertexConsumer vertexConsumer, Vector3f from, Vector3f to, float index, float size, int color) {

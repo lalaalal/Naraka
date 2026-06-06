@@ -26,7 +26,7 @@ public class NarakaClientboundEventHandler {
             NarakaClientboundEntityEventPacket.Event.PLAY_HEROBRINE_PHASE_2, (entity) -> NarakaClientboundEventHandler.updateHerobrineMusic(entity, 2),
             NarakaClientboundEntityEventPacket.Event.PLAY_HEROBRINE_PHASE_3, (entity) -> NarakaClientboundEventHandler.updateHerobrineMusic(entity, 3),
             NarakaClientboundEntityEventPacket.Event.PLAY_HEROBRINE_PHASE_4, (entity) -> NarakaClientboundEventHandler.updateHerobrineMusic(entity, 4),
-            NarakaClientboundEntityEventPacket.Event.STOP_MUSIC, NarakaClientboundEventHandler::stopHerobrineMusic
+            NarakaClientboundEntityEventPacket.Event.STOP_BOSS_MUSIC, NarakaClientboundEventHandler::stopHerobrineMusic
     );
 
     private static final Map<NarakaClientboundEventPacket.Event, Runnable> EVENT_MAP = Map.of(
@@ -36,8 +36,9 @@ public class NarakaClientboundEventHandler {
             NarakaClientboundEventPacket.Event.STOP_WHITE_FOG, NarakaClientboundEventHandler::stopWhiteScreen,
             NarakaClientboundEventPacket.Event.SHAKE_CAMERA, NarakaClientboundEventHandler::shakeCamera,
             NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT, NarakaClientboundEventHandler::monochrome,
-            NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT, NarakaClientboundEventHandler::filterGreenGray,
-            NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT, NarakaClientboundEventHandler::removeGreenColor
+            NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT, NarakaClientboundEventHandler::ryoikiGrayEffect,
+            NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT, NarakaClientboundEventHandler::ryoikiGreenEffect,
+            NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY, NarakaClientboundEventHandler::muteMusicCategory
     );
 
     private static final Music[] HEROBRINE_MUSIC = new Music[]{
@@ -118,13 +119,17 @@ public class NarakaClientboundEventHandler {
         NarakaClientContext.POST_EFFECT_TICK.set(10);
     }
 
-    private static void filterGreenGray() {
+    private static void ryoikiGrayEffect() {
         NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.RYOIKI_GRAY);
         NarakaClientContext.POST_EFFECT_TICK.set(50);
     }
 
-    private static void removeGreenColor() {
+    private static void ryoikiGreenEffect() {
         NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.RYOIKI_GREEN);
         NarakaClientContext.POST_EFFECT_TICK.set(50);
+    }
+
+    private static void muteMusicCategory() {
+        NarakaClientContext.MUTE_MUSIC_TICK.set(60);
     }
 }

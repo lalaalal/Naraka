@@ -1,8 +1,7 @@
-package com.yummy.naraka.world.entity;
+package com.yummy.naraka.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yummy.naraka.util.NarakaUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;

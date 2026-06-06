@@ -3,6 +3,7 @@ package com.yummy.naraka.client;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.event.ClientEventHandler;
+import com.yummy.naraka.client.gui.components.HealthSlotOverlayExtension;
 import com.yummy.naraka.client.gui.hud.DeathCountHud;
 import com.yummy.naraka.client.gui.hud.LockedHealthHud;
 import com.yummy.naraka.client.gui.hud.StigmaHud;
@@ -19,6 +20,7 @@ import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.data.worldgen.NarakaDimensionTypes;
+import com.yummy.naraka.init.ProgressOverlayExtensionFactoryRegistry;
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.NarakaBlocks;
@@ -26,6 +28,7 @@ import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.component.SanctuaryTracker;
+import com.yummy.naraka.world.overlay.NarakaProgressOverlayExtensionTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;
@@ -64,6 +67,7 @@ public final class NarakaModClient {
     private static void onRegistryLoaded() {
         initializeItems();
         initializeBlocks();
+        ProgressOverlayExtensionFactoryRegistry.register(NarakaProgressOverlayExtensionTypes.ORIGIN_HEROBRINE, () -> new HealthSlotOverlayExtension(7));
 
         NarakaClientEvents.initialize();
 
@@ -108,7 +112,7 @@ public final class NarakaModClient {
 
     private static void registerEntityRenderers() {
         EntityRendererRegistry.register(NarakaEntityTypes.HEROBRINE, HerobrineRenderer::new);
-        EntityRendererRegistry.register(NarakaEntityTypes.ABSOLUTE_HEROBRINE, AbsoluteHerobrineRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.ORIGIN_HEROBRINE, OriginHerobrineRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.SHADOW_HEROBRINE, ShadowHerobrineRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.DIAMOND_GOLEM, DiamondGolemRenderer::new);
 
@@ -126,6 +130,7 @@ public final class NarakaModClient {
         EntityRendererRegistry.register(NarakaEntityTypes.MASSIVE_LIGHTNING, MassiveLightningRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.LIGHTNING_CIRCLE, LightningCircleRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_PICKAXE, NarakaPickaxeRenderer::new);
+        EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_SWORD, NarakaSwordRenderer::new);
 
         EntityRendererRegistry.register(NarakaEntityTypes.SHINY_EFFECT, ShinyEffectRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.AREA_EFFECT, AreaEffectRenderer::new);

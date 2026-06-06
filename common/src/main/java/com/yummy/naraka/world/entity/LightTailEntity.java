@@ -45,6 +45,10 @@ public abstract class LightTailEntity extends AbstractHurtingProjectile {
         return entityData.get(TAIL_COLOR);
     }
 
+    public int getTailUpdateCount() {
+        return entityData.get(TAIL_UPDATE_COUNT);
+    }
+
     @Override
     public void recreateFromPacket(ClientboundAddEntityPacket packet) {
         super.recreateFromPacket(packet);

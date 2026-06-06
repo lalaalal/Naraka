@@ -8,7 +8,6 @@ import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.CorruptedStar;
-import com.yummy.naraka.world.item.SoulType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
@@ -64,7 +63,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         poseStack.rotateAround(Axis.ZP.rotationDegrees(rotation), 0, 0.25f, 0);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.lightning());
         inner.render(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xaaffffff);
-        outer.render(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.color(0xbb, SoulType.COPPER.color));
+        outer.render(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.color(0xbb, entity.getTailColor()));
 
         poseStack.popPose();
 
@@ -72,7 +71,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         if (0 <= tick && tick <= entity.getShineLifetime()) {
             poseStack.pushPose();
             poseStack.translate(0, 0.25f, 0);
-            ShinyEffectRenderer.renderShiny(tick, entity.getShineLifetime(), entity.getShineScale(), entity.isVerticalShine(), SoulType.COPPER.color, poseStack, bufferSource);
+            ShinyEffectRenderer.renderShiny(tick, entity.getShineLifetime(), entity.getShineScale(), entity.isVerticalShine(), entity.getTailColor(), poseStack, bufferSource);
             poseStack.popPose();
         }
         submitTargetPoint(entity, poseStack, partialTick, vertexConsumer);
@@ -101,7 +100,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         poseStack.mulPose(Axis.YN.rotationDegrees(player.getYRot() + 180));
         float width = NarakaUtils.interpolate(Math.min(tickPart / 10, 1), 0, 0.05f, NarakaUtils::fastStepOut);
 
-        renderTargetPoint(poseStack.last(), vertexConsumer, 0.25f, width, 1.5f, 0xab, SoulType.COPPER.color);
+        renderTargetPoint(poseStack.last(), vertexConsumer, 0.25f, width, 1.5f, 0xab, entity.getTailColor());
 
         poseStack.popPose();
     }

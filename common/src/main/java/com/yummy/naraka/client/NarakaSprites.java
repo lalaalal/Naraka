@@ -13,5 +13,5 @@ public final class NarakaSprites {
     public static final ResourceLocation DEATH_COUNT_HEART = NarakaMod.location("hud/death_count_heart");
     public static final ResourceLocation STIGMA_CONSUME = NarakaMod.location("hud/stigma_consume");
 
-    public static final ResourceLocation HEART_CONTAINER = ResourceLocation.withDefaultNamespace("hud/heart/container");
+    public static final ResourceLocation PROGRESS_SLOT_SEPARATOR = NarakaMod.location("hud/progress_slot_separator");
 }

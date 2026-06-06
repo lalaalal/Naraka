@@ -32,6 +32,7 @@ public class AnimationMapper {
         HerobrineAnimation.initialize();
         HerobrineSkillAnimation.initialize();
         HerobrineComboAttackAnimation.initialize();
+        OriginHerobrineAnimation.initialize();
 
         FinalHerobrineAnimation.initialize();
         FinalHerobrineSkillAnimation.initialize();
