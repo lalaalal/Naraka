@@ -55,7 +55,7 @@ public class NarakaSword extends MotionEntity {
     }
 
     public int getSwordEffectUpdateCount() {
-        return 8;
+        return 16;
     }
 
     @Override
