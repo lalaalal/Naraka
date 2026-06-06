@@ -121,4 +121,9 @@ public class NarakaSword extends MotionEntity {
         NarakaNbtUtils.store(output, "SoulType", SoulType.CODEC, getSoulType());
         output.putFloat("Alpha", getAlpha());
     }
+
+    @Override
+    public boolean shouldRender(double x, double y, double z) {
+        return true;
+    }
 }

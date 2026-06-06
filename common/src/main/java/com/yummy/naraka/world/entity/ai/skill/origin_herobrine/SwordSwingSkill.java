@@ -79,14 +79,21 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
     @Override
     protected void tickAlways(ServerLevel level, @Nullable LivingEntity target) {
         if (narakaSword != null) {
+            runAt(10, () -> {
+                level.playSound(null, mob.blockPosition(), SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.HOSTILE, 3, 1.25f);
+            });
             runAt(5, () -> narakaSword.setMotion(getMotionIdentifier()));
             runBetween(5, 26, () -> narakaSword.setAlpha((tickCount - 5) / 20f));
             runBetween(110, 141, () -> narakaSword.setAlpha(1 - (tickCount - 110) / 30f));
 
-            run(at(62) || at(72) || at(90), () -> {
-                level.playSound(null, mob.blockPosition(), SoundEvents.END_PORTAL_SPAWN, SoundSource.HOSTILE, 5.0F, 0.75f);
+            run(at(70), () -> {
+                level.playSound(null, mob.blockPosition(), SoundEvents.WARDEN_SONIC_CHARGE, SoundSource.HOSTILE, 5, 1);
+                level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_VILLAGER_CONVERTED, SoundSource.HOSTILE, 5.0F, 0.5F + mob.getRandom().nextFloat() * 0.2F);
             });
-            runAt(97, () -> level.playSound(null, mob.blockPosition(), SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 5.0F, 1));
+            runAt(97, () -> {
+                level.playSound(null, mob.blockPosition(), SoundEvents.ENDER_EYE_DEATH, SoundSource.HOSTILE, 5, 0.24f);
+                level.playSound(null, mob.blockPosition(), SoundEvents.ENDER_EYE_DEATH, SoundSource.HOSTILE, 10, 0.55f);
+            });
             runAt(90, () -> {
                 CustomPacketPayload packet = new NarakaClientboundEventPacket(
                         NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY
@@ -122,8 +129,13 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
                 );
             });
 
-            run(between(110, 125) && tickCount % 3 == 0, () -> {
-                level.playSound(null, mob.blockPosition(), SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.HOSTILE, 5.0F, 0.5F + mob.getRandom().nextFloat() * 0.2F);
+            runAt(110, () -> {
+                level.playSound(null, mob.blockPosition(), SoundEvents.TRIDENT_THUNDER.value(), SoundSource.HOSTILE, 5.0F, 0.25f);
+                level.playSound(null, mob.blockPosition(), SoundEvents.TRIDENT_THUNDER.value(), SoundSource.HOSTILE, 1.5f, 1.2f);
+                level.playSound(null, mob.blockPosition(), SoundEvents.TRIDENT_THUNDER.value(), SoundSource.HOSTILE, 3f, 2);
+                level.playSound(null, mob.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM, SoundSource.HOSTILE, 5.0F, 0.25f);
+                level.playSound(null, mob.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM, SoundSource.HOSTILE, 3.0F, 0.2f);
+                level.playSound(null, mob.blockPosition(), SoundEvents.WARDEN_DEATH, SoundSource.HOSTILE, 3.0F, 0.473f + 0.632f);
             });
         }
     }

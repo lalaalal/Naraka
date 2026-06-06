@@ -51,7 +51,7 @@ public class NarakaClientEvents {
         float originalVolume = NarakaClientContext.MUSIC_VOLUME.getValue();
         SoundManager soundManager = minecraft.getSoundManager();
         if (NarakaClientContext.MUTE_MUSIC_TICK.getValue() > 0) {
-            float newVolume = Math.max(originalVolume - 0.1f, 0);
+            float newVolume = Math.max(originalVolume - 0.1f, 0.01f);
             soundManager.updateSourceVolume(SoundSource.MUSIC, newVolume);
             NarakaClientContext.MUSIC_VOLUME.set(newVolume);
         } else if (originalVolume < 1) {
