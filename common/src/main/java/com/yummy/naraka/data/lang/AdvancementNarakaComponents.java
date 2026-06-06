@@ -8,6 +8,7 @@ public enum AdvancementNarakaComponents implements AdvancementComponent {
     FIND_HEROBRINE_SANCTUARY,
     SUMMON_HEROBRINE,
     KILL_HEROBRINE,
+    KILL_ORIGIN_HEROBRINE,
     PURIFIED_SOUL_METAL,
     PURIFIED_SOUL_SWORD,
     GOD_BLOOD,

@@ -6,6 +6,8 @@ import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.ai.skill.herobrine.*;
+import com.yummy.naraka.world.entity.ai.skill.origin_herobrine.ChargingSkill;
+import com.yummy.naraka.world.entity.ai.skill.origin_herobrine.SwordSwingSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.NarakaJukeboxSongs;
@@ -144,6 +146,10 @@ public class NarakaLanguageProviders {
         addAdvancement(AdvancementNarakaComponents.KILL_HEROBRINE,
                 List.of("Purified Soul", "정화된 영혼"),
                 List.of("Defeat the lord of Naraka", "나락의 군주를 쓰러트리세요")
+        );
+        addAdvancement(AdvancementNarakaComponents.KILL_ORIGIN_HEROBRINE,
+                List.of("Naraka Conqueror", "나락의 정복자"),
+                List.of("Defeat the origin of Naraka", "나락의 근원을 쓰러트리세요")
         );
         addAdvancement(AdvancementNarakaComponents.PURIFIED_SOUL_METAL,
                 List.of("Soap...?", "비누...?"),
@@ -323,6 +329,7 @@ public class NarakaLanguageProviders {
         addDamageType(NarakaDamageTypes.NARAKA_FIREBALL, "%1$s was blown by naraka fireball thrown by %2$s", "%1$s이(가) %2$s이(가) 던진 나락 화염구에 폭발했습니다");
         addDamageType(NarakaDamageTypes.STARDUST, "%1$s was exploded by %2$s", "%1$s이(가) %2$s에 폭사했습니다");
         addDamageType(NarakaDamageTypes.PURIFIED_SOUL_FIRE, "%1$s went up in black flames", "%1$s이(가) 검은 불 속에서 타 죽었습니다");
+        addDamageType(NarakaDamageTypes.SOUL_ATTACK, "%2$s executed %1$s");
 
         add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_AMETHYST), "Challenger's Blessing", "도전자의 축복");
         add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_COPPER), "Challenger's Blessing", "도전자의 축복");
@@ -378,6 +385,10 @@ public class NarakaLanguageProviders {
         add(LanguageKey.animation(HerobrineAnimationLocations.STORM), "P3 Storm", "폭풍");
         add(LanguageKey.animation(HerobrineAnimationLocations.EARTH_SHOCK), "P3 Earth Shock");
 
+        add(LanguageKey.animation(HerobrineAnimationLocations.CHARGING), "Charging", "충전");
+        add(LanguageKey.animation(HerobrineAnimationLocations.SWORD_ATTACK), "Sword Attack");
+        add(LanguageKey.animation(HerobrineAnimationLocations.SWORD_ATTACK_SPIN), "Sword Attack Spin");
+
         add(LanguageKey.skill(RushSkill.LOCATION), "P1 Rush");
         add(LanguageKey.skill(DashSkill.LOCATION), "P1 Dash");
         add(LanguageKey.skill(DashAroundSkill.LOCATION), "P1 Dash Around");
@@ -406,6 +417,8 @@ public class NarakaLanguageProviders {
         add(LanguageKey.skill(CarpetBombingSkill.LOCATION), "P3 Carpet Bombing");
         add(LanguageKey.skill(SpawnPickaxeSkill.LOCATION), "P3 Pickaxe Strike");
         add(LanguageKey.skill(BlockingSkill.LOCATION), "P1 Blocking");
+        add(LanguageKey.skill(ChargingSkill.LOCATION), "Charging");
+        add(LanguageKey.skill(SwordSwingSkill.LOCATION), "Sword Swing");
 
         add(LanguageKey.STIGMA_COMMAND_GET_KEY, "Stigma for entity %s is %d");
         add(LanguageKey.STIGMA_COMMAND_SET_KEY, "Stigma for %d entities set to %d", "%d개의 엔티티의 낙인을 %d로 설정하였습니다");

@@ -125,6 +125,12 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
                         KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(NarakaEntityTypes.HEROBRINE.get()))
                 ).rewards(AdvancementRewards.Builder.experience(66))
         );
+        AdvancementHolder killOriginHerobrine = challenge(killHerobrine, NarakaItems.STIGMA_ROD.get(), AdvancementNarakaComponents.KILL_ORIGIN_HEROBRINE,
+                builder -> builder.addCriterion(
+                        "kill_origin_herobrine",
+                        KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(NarakaEntityTypes.ORIGIN_HEROBRINE.get()))
+                )
+        );
         AdvancementHolder godBlood = challenge(killHerobrine, NarakaItems.GOD_BLOOD.get(), AdvancementNarakaComponents.GOD_BLOOD,
                 builder -> builder.addCriterion(
                         "has_god_blood",
