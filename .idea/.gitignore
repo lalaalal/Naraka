@@ -8,6 +8,7 @@
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+/runConfigurations/
 
 material_theme_project_new.xml
 misc.xml
