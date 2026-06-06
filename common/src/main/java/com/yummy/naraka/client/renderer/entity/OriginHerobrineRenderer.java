@@ -43,7 +43,7 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
         poseStack.translate(0, 2.5, -1);
 
         int alpha = entity.getAlpha();
-        float yRot = entity.getViewYRot(partialTicks);
+        float yRot = 0;
         float shinyTick = 0x80;
         if (alpha < 0xff)
             shinyTick += (0xff - alpha) / 2f;
@@ -108,7 +108,7 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
 
     private void renderColors(OriginHerobrine originHerobrine, PoseStack poseStack, MultiBufferSource bufferSource, float partialTick) {
         int index = 0;
-        float yRot = originHerobrine.getViewYRot(partialTick);
+        float yRot = 0;
         for (SoulType soulType : originHerobrine.getSoulTypeAlpha().keySet()) {
             float alpha = originHerobrine.getSoulTypeAlpha().getOrDefault(soulType, 0f);
             int halfIndex = index / 2;

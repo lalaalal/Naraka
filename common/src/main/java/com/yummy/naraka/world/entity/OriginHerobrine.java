@@ -95,6 +95,11 @@ public class OriginHerobrine extends AbstractHerobrine {
         builder.define(ABSORBED_SOUL_TYPES, List.of());
     }
 
+    @Override
+    protected void registerGoals() {
+
+    }
+
     protected void updateAnimationOnSkillEnd(Skill<?> skill) {
         if (!skill.hasLinkedSkill()) {
             setAnimation(HerobrineAnimationLocations.PHASE_4_IDLE);
