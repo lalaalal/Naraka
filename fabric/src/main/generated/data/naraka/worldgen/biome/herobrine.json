@@ -2,9 +2,9 @@
   "carvers": {},
   "downfall": 0.0,
   "effects": {
-    "fog_color": 16777215,
-    "foliage_color": 16777215,
-    "grass_color": 16777215,
+    "fog_color": 0,
+    "foliage_color": 6710886,
+    "grass_color": 6710886,
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,
@@ -17,11 +17,21 @@
       "replace_current_music": true,
       "sound": "naraka:music.herobrine_phase_4"
     },
-    "sky_color": 16777215,
-    "water_color": 16777215,
-    "water_fog_color": 16777215
+    "sky_color": 0,
+    "water_color": 3355443,
+    "water_fog_color": 6710886
   },
-  "features": [],
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "naraka:purified_soul_lantern"
+    ]
+  ],
   "has_precipitation": false,
   "spawn_costs": {},
   "spawners": {
