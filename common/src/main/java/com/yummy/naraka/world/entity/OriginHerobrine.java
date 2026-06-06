@@ -6,7 +6,6 @@ import com.yummy.naraka.network.SyncProgressOverlayExtensionPacket;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.NarakaPortalBlock;
-import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.origin_herobrine.ChargingSkill;
 import com.yummy.naraka.world.entity.ai.skill.origin_herobrine.SwordSwingSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
@@ -81,21 +80,13 @@ public class OriginHerobrine extends SkillUsingMob implements Enemy {
         registerAnimation(HerobrineAnimationIdentifiers.PHASE_4_IDLE);
         registerAnimation(HerobrineAnimationIdentifiers.PHASE_4_SPAWN);
 
-        updateAnimation(HerobrineAnimationIdentifiers.PHASE_4_IDLE);
-
-        skillManager.runOnSkillEnd(this::updateAnimationOnSkillEnd);
+        updateAnimation(HerobrineAnimationIdentifiers.PHASE_4_SPAWN);
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(ABSORBED_SOUL_TYPES, List.of());
-    }
-
-    protected void updateAnimationOnSkillEnd(Skill<?> skill) {
-        if (!skill.hasLinkedSkill()) {
-            setAnimation(HerobrineAnimationIdentifiers.PHASE_4_IDLE);
-        }
     }
 
     public int getSoulStack() {

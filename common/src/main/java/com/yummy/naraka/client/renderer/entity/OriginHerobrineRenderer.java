@@ -53,8 +53,9 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
         renderState.alpha = livingEntity.getAlpha();
         renderState.soulTypeAlpha = new LinkedHashMap<>(livingEntity.getSoulTypeAlpha());
         renderState.hasRedOverlay = false;
-        if (renderState.deathTime == 0)
-            renderState.outlineColor = 0xffffffff;
+        renderState.yRot = 0;
+        renderState.bodyRot = 0;
+        renderState.outlineColor = 0xffffffff;
     }
 
     @Override
@@ -81,8 +82,7 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
         }
 
         renderState.deathTime = 0;
-        if (renderState.alpha > 0)
-            super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
+        super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
     }
 
     private static void submitRays(PoseStack poseStack, float deathProgress, SubmitNodeCollector submitNodeCollector, RenderType renderType) {
