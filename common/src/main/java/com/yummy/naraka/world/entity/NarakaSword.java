@@ -40,6 +40,11 @@ public class NarakaSword extends MotionEntity {
         setPos(position);
     }
 
+    @Override
+    public boolean shouldRender(double x, double y, double z) {
+        return true;
+    }
+
     public List<SwordEffectData> getSwordEffectData(float partialTicks) {
         int startIndex = (int) (getSwordEffectUpdateCount() * (1 - partialTicks));
         if (swordEffectData.size() > startIndex)
