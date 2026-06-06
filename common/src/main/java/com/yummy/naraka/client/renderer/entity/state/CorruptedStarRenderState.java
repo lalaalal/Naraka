@@ -9,4 +9,5 @@ public class CorruptedStarRenderState extends LightTailEntityRenderState {
     public int shineLifetime;
     public float shineRotation;
     public Vec3 targetPosition = Vec3.ZERO;
+    public float alphaMultiplier;
 }

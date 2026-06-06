@@ -13,6 +13,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntityType;
@@ -43,6 +44,8 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
     private float shineScale;
     private float shineRotation = 0;
     private boolean canBeDeflectedByPlayer = false;
+    private float alphaMultiplier = 1;
+    private float prevAlphaMultiplier = 1;
 
     public CorruptedStar(EntityType<? extends CorruptedStar> entityType, Level level) {
         super(entityType, level, 80, 8);
@@ -68,6 +71,10 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
     public void setSoulType(SoulType soulType) {
         entityData.set(SOUL_TYPE, soulType);
         setTailColor(soulType.color);
+    }
+
+    public float getAlphaMultiplier(float partialTick) {
+        return Mth.lerp(partialTick, prevAlphaMultiplier, alphaMultiplier);
     }
 
     @Override
@@ -174,6 +181,11 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
             }
         }
 
+        if (alphaMultiplier < 1) {
+            prevAlphaMultiplier = alphaMultiplier;
+            alphaMultiplier = Math.max(alphaMultiplier - 0.05f, 0);
+        }
+
         if (!level().isClientSide()) {
             if (tickCount == getShineStartTick()) {
                 BlockPos floor = NarakaUtils.findFloor(level(), blockPosition());
@@ -203,6 +215,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
             shineRotation = 0;
             startShine(20);
             shineScale = 0.5f;
+            alphaMultiplier = 0.95f;
         } else if (hitTick == 0) {
             Vec3 hitLocation = result.getLocation();
             level().explode(this, damageSources().explosion(this, getOwner()), null, hitLocation, 2, false, Level.ExplosionInteraction.NONE);

@@ -115,7 +115,6 @@ public class ChargingSkill extends Skill<OriginHerobrine> {
 
     @Override
     public void interrupt() {
-        if (corruptedStar != null)
-            corruptedStar.discard();
+        shootStar();
     }
 }

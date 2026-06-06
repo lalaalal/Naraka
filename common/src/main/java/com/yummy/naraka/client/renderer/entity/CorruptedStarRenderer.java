@@ -68,6 +68,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         renderState.shineStartTick = entity.getShineStartTick();
         renderState.shineRotation = entity.getShineRotation();
         renderState.targetPosition = entity.getTargetPosition(partialTick);
+        renderState.alphaMultiplier = entity.getAlphaMultiplier(partialTick);
     }
 
     @Override
@@ -87,8 +88,8 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         poseStack.rotateAround(new Quaternionf().setAngleAxis(Mth.PI / 3, NarakaRenderUtils.SIN_45, 0, NarakaRenderUtils.SIN_45), 0, 0.25f, 0);
         poseStack.rotateAround(Axis.YP.rotationDegrees(rotation), 0, 0.25f, 0);
         poseStack.rotateAround(Axis.ZP.rotationDegrees(rotation), 0, 0.25f, 0);
-        submitNodeCollector.order(0).submitModelPart(inner, poseStack, RenderTypes.lightning(), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, 0xaaffffff, null);
-        submitNodeCollector.order(1).submitModelPart(outer, poseStack, RenderTypes.lightning(), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.color(0xbb, entityRenderState.tailColor), null);
+        submitNodeCollector.order(0).submitModelPart(inner, poseStack, RenderTypes.lightning(), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.white(0.67f * entityRenderState.alphaMultiplier), null);
+        submitNodeCollector.order(1).submitModelPart(outer, poseStack, RenderTypes.lightning(), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.color(0.73f * entityRenderState.alphaMultiplier, entityRenderState.tailColor), null);
 
         poseStack.popPose();
 
