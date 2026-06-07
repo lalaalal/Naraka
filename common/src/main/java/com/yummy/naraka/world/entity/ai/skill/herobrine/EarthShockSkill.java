@@ -143,13 +143,10 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         Vec3 position = new Vec3(mob.getX(), y, mob.getZ());
         int color = 0xff00ff;
         int lifetime = 60;
-        level.addFreshEntity(new AreaEffect(level, position, lifetime, 5, 20, color, 0));
-        level.addFreshEntity(new AreaEffect(level, position, lifetime, 7.5f, 12.5f, color, 1));
-        level.addFreshEntity(new AreaEffect(level, position, lifetime, 10, 15, color, 2));
-        level.addFreshEntity(new AreaEffect(level, position, lifetime, 12.5f, 2.5f, color, 3));
-        level.addFreshEntity(new AreaEffect(level, position, lifetime, 15, 10, color, 4));
-        level.addFreshEntity(new AreaEffect(level, position, lifetime, 17.5f, 7.5f, color, 5));
-        level.addFreshEntity(new AreaEffect(level, position, lifetime, 20, 5, color, 6));
+        AreaEffect areaEffect = new AreaEffect(level, position, lifetime, 20, 20, color, 0);
+        areaEffect.setShape(AreaShape.CIRCLE);
+        areaEffect.setMaxAlpha(0xfe);
+        level.addFreshEntity(areaEffect);
     }
 
     private void createShinySpark(ServerLevel level) {

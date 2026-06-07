@@ -64,9 +64,10 @@ public class StormSkill extends ComboSkill<Herobrine> {
     private void createAreaEffect(ServerLevel level) {
         float y = NarakaUtils.findFloor(level, mob.blockPosition()).getY() + 1;
         Vec3 position = new Vec3(mob.getX(), y, mob.getZ());
-        level.addFreshEntity(new AreaEffect(level, position, 50, 3, 6, 0xff0000, 0));
-        level.addFreshEntity(new AreaEffect(level, position, 50, 4.5f, 4.5f, 0xff0000, 1));
-        level.addFreshEntity(new AreaEffect(level, position, 50, 6, 3, 0xff0000, 2));
+        AreaEffect areaEffect = new AreaEffect(level, position, 50, 6, 6, 0xff0000, 0);
+        areaEffect.setShape(AreaShape.CIRCLE);
+        areaEffect.setMaxAlpha(0xfe);
+        level.addFreshEntity(areaEffect);
     }
 
     @Override

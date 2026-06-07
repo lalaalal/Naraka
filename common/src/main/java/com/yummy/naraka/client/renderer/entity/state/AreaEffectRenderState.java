@@ -1,5 +1,6 @@
 package com.yummy.naraka.client.renderer.entity.state;
 
+import com.yummy.naraka.world.entity.AreaShape;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
@@ -12,4 +13,5 @@ public class AreaEffectRenderState extends EntityRenderState {
     public int color;
     public int maxAlpha;
     public int index;
+    public AreaShape shape = AreaShape.RECTANGLE;
 }
