@@ -62,9 +62,9 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
         poseStack.pushPose();
         poseStack.translate(translation.x, translation.y + 1.5, translation.z);
-        poseStack.scale(1, -1, 1);
 
         this.setupRotations(renderState, poseStack, afterimageRenderState.bodyRot, renderState.scale);
+        poseStack.scale(-1, -1, 1);
 
         RenderType renderType = RenderTypes.entityTranslucent(getAfterimageTexture(renderState), true);
         Color color = afterimageRenderState.color;

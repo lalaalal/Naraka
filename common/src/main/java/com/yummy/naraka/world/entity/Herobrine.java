@@ -499,10 +499,10 @@ public class Herobrine extends AbstractHerobrine {
     private void tryAvoidProjectile() {
         List<Projectile> projectiles = level().getEntitiesOfClass(Projectile.class, getBoundingBox().inflate(5), this::shouldCheckProjectile);
         for (Projectile projectile : projectiles) {
-            if (projectile.getOwner() == this)
+            if (projectile.getOwner() == this || projectile instanceof NarakaFireball)
                 continue;
             ignoredProjectiles.add(projectile);
-            if (!projectile.position().equals(new Vec3(projectile.xo, projectile.yo, projectile.zo)) && random.nextBoolean()) {
+            if (!projectile.position().equals(new Vec3(projectile.xo, projectile.yo, projectile.zo))) {
                 lookAt(projectile, 360, 0);
                 skillManager.setCurrentSkillIfAbsence(dashAroundSkill);
                 return;
