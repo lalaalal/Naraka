@@ -1,11 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "building",
-  "ingredients": [
-    "minecraft:blaze_rod",
-    "minecraft:blaze_rod",
-    "minecraft:blaze_rod",
-    "minecraft:blaze_rod"
+  "key": {
+    "B": "minecraft:blaze_rod",
+    "I": "minecraft:iron_block"
+  },
+  "pattern": [
+    " B ",
+    "BIB",
+    " B "
   ],
   "result": {
     "count": 1,

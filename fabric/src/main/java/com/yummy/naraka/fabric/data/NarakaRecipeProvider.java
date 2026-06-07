@@ -87,8 +87,12 @@ public class NarakaRecipeProvider extends RecipeProvider {
                 .pattern("GGG")
                 .unlockedBy(getHasName(NarakaBlocks.IMITATION_GOLD_BLOCK.get()), has(NarakaBlocks.IMITATION_GOLD_BLOCK.get()))
                 .save(output, key(NarakaBlocks.HEROBRINE_TOTEM.get(), "_from_chiseled_nether_bricks"));
-        ShapelessRecipeBuilder.shapeless(items, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.IMITATION_GOLD_BLOCK.get())
-                .requires(Items.BLAZE_ROD, 4)
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.IMITATION_GOLD_BLOCK.get())
+                .define('B', Items.BLAZE_ROD)
+                .define('I', Blocks.IRON_BLOCK)
+                .pattern(" B ")
+                .pattern("BIB")
+                .pattern(" B ")
                 .unlockedBy(getHasName(Items.BLAZE_ROD), has(Items.BLAZE_ROD))
                 .save(output);
 
