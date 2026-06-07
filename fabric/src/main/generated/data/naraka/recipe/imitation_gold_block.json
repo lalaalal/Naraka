@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "minecraft:blaze_rod",
+    "minecraft:blaze_rod",
+    "minecraft:blaze_rod",
+    "minecraft:blaze_rod"
+  ],
+  "result": {
+    "count": 1,
+    "id": "naraka:imitation_gold_block"
+  }
+}
