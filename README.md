@@ -6,10 +6,6 @@ This is a mod that adds a new boss Herobrine in Minecraft. Find the Herobrine Sa
 - [Wiki](https://github.com/lalaalal/Naraka/wiki)
 
 ## 🛠️ Build
-
-> [!Note]
-> Check symbolic link at `neoforge/src/main/generated` if you are using Windows.
-
 ``` shell
 ./gradlew build
 ```
@@ -19,6 +15,7 @@ Jar files in
 - neoforge/build/libs/
 
 ## 📜 Contents
-New Structure | Herobrine ||
-:----- | :----- | :-----
-<img src="https://cdn.modrinth.com/data/2InS5Swi/images/b438022bb3324e7a68ca7ad39b0e8c95e008560c.png" width="256"/> | <img src="https://cdn.modrinth.com/data/2InS5Swi/images/5916b4ae5a4ba1a4487e054857f440b7978b2e35.png" width="256"/> | <img src="https://cdn.modrinth.com/data/2InS5Swi/images/ea156b4ad4fe25b5b6854949403c0ebb3acaa492.gif" width="256"/>
+
+| Sanctuary                                                                                                           | Herobrine                                                                                                           |                                                                                                                     |
+|:--------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------|
+| <img src="https://cdn.modrinth.com/data/2InS5Swi/images/b438022bb3324e7a68ca7ad39b0e8c95e008560c.png" width="256"/> | <img src="https://cdn.modrinth.com/data/2InS5Swi/images/5916b4ae5a4ba1a4487e054857f440b7978b2e35.png" width="256"/> | <img src="https://cdn.modrinth.com/data/2InS5Swi/images/ea156b4ad4fe25b5b6854949403c0ebb3acaa492.gif" width="256"/> |
