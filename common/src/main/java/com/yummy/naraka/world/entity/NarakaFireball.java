@@ -1,13 +1,11 @@
 package com.yummy.naraka.world.entity;
 
-import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.projectile.ItemSupplier;
@@ -34,10 +32,10 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     private final List<HurtTargetListener> listeners = new ArrayList<>();
     private int timeToLive = Integer.MAX_VALUE;
 
-
     public NarakaFireball(EntityType<? extends NarakaFireball> entityType, Level level) {
         super(entityType, level);
         setItem(NarakaItems.NARAKA_FIREBALL_STAFF.get().getDefaultInstance());
+        accelerationPower = -0.1f;
     }
 
     public NarakaFireball(Mob owner, Vec3 movement, Level level) {
@@ -139,46 +137,14 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
 
     private void traceTarget() {
         Entity target = getTarget();
-        int tracingLevel = NarakaConfig.COMMON.narakaFireballTargetTracingLevel.getValue();
-        if (canRotateMovement(tracingLevel) && target != null) {
-            if (!alwaysTrace(tracingLevel) && this.distanceToSqr(target) > 12 * 12)
-                return;
-
-            boolean canReduceSpeed = canReduceSpeed(tracingLevel);
-            Vec3 targetVector = target.getEyePosition().subtract(position());
-            Vec3 movingVector = getDeltaMovement().normalize();
-            if (movingVector.equals(Vec3.ZERO))
-                return;
-            Vec3 projectionVector = targetVector.projectedOn(movingVector);
-            Vec3 tracingVector = targetVector.subtract(projectionVector);
-            double tracingVectorLength = tracingVector.length();
-
-            Vec3 deltaMovement = getDeltaMovement();
-            double length = deltaMovement.length();
-            if (canReduceSpeed && tracingVectorLength > 8 && length > 0.7)
-                setDeltaMovement(deltaMovement.scale(0.9));
-            if (canReduceSpeed && tracingVectorLength < 8 && length < 1)
-                setDeltaMovement(deltaMovement.scale(1.1));
-            double scale = Mth.clamp(tracingVectorLength, 0, 0.03);
-
-            setDeltaMovement(
-                    deltaMovement.add(tracingVector.scale(scale))
-                            .normalize()
-                            .scale(length)
-            );
-        }
-    }
-
-    private boolean canReduceSpeed(int tracingLevel) {
-        return tracingLevel >= 3;
-    }
-
-    private boolean alwaysTrace(int tracingLevel) {
-        return tracingLevel >= 2;
-    }
-
-    private boolean canRotateMovement(int tracingLevel) {
-        return tracingLevel >= 1;
+        if (target == null)
+            return;
+        Vec3 direction = target.getEyePosition().add(0, -0.25, 0)
+                .subtract(position())
+                .normalize();
+        double currentSpeed = getDeltaMovement().length();
+        double multiplier = Math.clamp(distanceTo(target) / 3, 0.2f, 1);
+        setDeltaMovement(direction.scale(currentSpeed * multiplier));
     }
 
     @Override
