@@ -9,6 +9,7 @@ public class NarakaCommonConfig extends StaticConfiguration {
     public final ConfigValue<Float> fasterLiquidSwimmingSpeed = define("faster_liquid_swimming_speed", 5f);
     public final ConfigValue<Boolean> disableHerobrineDestroyingStructure = define("disable_herobrine_destroying_structure", false);
     public final ConfigValue<Boolean> despawnHerobrineWhenTargetIsDead = define("despawn_herobrine_when_target_is_dead", true);
+    public final ConfigValue<Integer> narakaFireballDirectionUpdateInterval = define("naraka_fireball_direction_update_interval", 2);
 
     public final ConfigValue<Boolean> breakComboWhenSkillDisabled = define("break_combo_when_skill_disabled", false);
     public final ConfigValue<Boolean> alwaysCombo = define("always_combo", false);

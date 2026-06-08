@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.core.BlockPos;
@@ -134,7 +135,8 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
             level().explode(this, NarakaDamageSources.narakaFireball(this), null, position(), 1.5f, false, Level.ExplosionInteraction.TRIGGER);
             discard();
         }
-        traceTarget();
+        if (tickCount % NarakaConfig.COMMON.narakaFireballDirectionUpdateInterval.getValue() == 0)
+            traceTarget();
         super.tick();
     }
 
@@ -145,8 +147,16 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         Vec3 direction = target.getEyePosition().add(0, -0.25, 0)
                 .subtract(position())
                 .normalize();
-        double currentSpeed = getDeltaMovement().length();
+        Vec3 currentMovement = getDeltaMovement();
+        double currentSpeed = currentMovement.length();
         double multiplier = Math.clamp(distanceTo(target) / 3, 0.2f, 1);
+        double currentMovementScaler = Math.max(NarakaConfig.COMMON.narakaFireballDirectionUpdateInterval.getValue() - 1, 0);
+        if (currentMovement.dot(direction) > 0) {
+            direction = currentMovement.scale(currentMovementScaler)
+                    .add(direction).normalize();
+        } else {
+            direction = currentMovement.normalize();
+        }
         setDeltaMovement(direction.scale(currentSpeed * multiplier));
     }
 

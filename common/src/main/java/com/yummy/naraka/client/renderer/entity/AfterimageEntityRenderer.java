@@ -61,9 +61,9 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
 
         poseStack.pushPose();
         poseStack.translate(translation.x, translation.y + 1.5, translation.z);
-        poseStack.scale(1, -1, 1);
 
         this.setupRotations(entity, poseStack, getBob(entity, partialTick), afterimage.getYRot(), partialTick, entity.getScale());
+        poseStack.scale(-1, -1, 1);
 
         Color color = getAfterimageColor(afterimage, partialTick);
         int light = (int) (color.alpha01() * 5);
