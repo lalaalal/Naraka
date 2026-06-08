@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_imitation_gold_block": {
+      "conditions": {
+        "items": [
+          {
+            "items": "naraka:imitation_gold_block"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "naraka:herobrine_totem_from_chiseled_nether_bricks"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_imitation_gold_block"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "naraka:herobrine_totem_from_chiseled_nether_bricks"
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "item": "minecraft:blaze_rod"
+    },
+    "I": {
+      "item": "minecraft:iron_block"
+    }
+  },
+  "pattern": [
+    " B ",
+    "BIB",
+    " B "
+  ],
+  "result": {
+    "count": 1,
+    "id": "naraka:imitation_gold_block"
+  }
+}
