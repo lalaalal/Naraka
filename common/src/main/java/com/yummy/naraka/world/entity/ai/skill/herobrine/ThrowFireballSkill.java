@@ -75,6 +75,6 @@ public class ThrowFireballSkill extends TargetSkill<SkillUsingMob> {
         Vec3 vec = mob.getLookAngle();
         if (target != null)
             vec = NarakaEntityUtils.getDirectionNormalVector(fireball.position(), target.getEyePosition());
-        fireball.shoot(vec.x, vec.y, vec.z, 1.5f, 0);
+        fireball.shoot(vec.x, vec.y, vec.z, 0.25f, 0);
     }
 }
