@@ -84,9 +84,7 @@ public class OriginHerobrine extends AbstractHerobrine {
         registerAnimation(HerobrineAnimationLocations.PHASE_4_IDLE);
         registerAnimation(HerobrineAnimationLocations.PHASE_4_SPAWN);
 
-        updateAnimation(HerobrineAnimationLocations.PHASE_4_IDLE);
-
-        skillManager.runOnSkillEnd(this::updateAnimationOnSkillEnd);
+        updateAnimation(HerobrineAnimationLocations.PHASE_4_SPAWN);
     }
 
     @Override
@@ -101,9 +99,7 @@ public class OriginHerobrine extends AbstractHerobrine {
     }
 
     protected void updateAnimationOnSkillEnd(Skill<?> skill) {
-        if (!skill.hasLinkedSkill()) {
-            setAnimation(HerobrineAnimationLocations.PHASE_4_IDLE);
-        }
+
     }
 
     public int getSoulStack() {

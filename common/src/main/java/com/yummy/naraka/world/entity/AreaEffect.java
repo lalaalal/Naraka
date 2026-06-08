@@ -17,6 +17,7 @@ public class AreaEffect extends Entity {
     public static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(AreaEffect.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(AreaEffect.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> MAX_ALPHA = SynchedEntityData.defineId(AreaEffect.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<AreaShape> SHAPE = SynchedEntityData.defineId(AreaEffect.class, NarakaEntityDataSerializers.AREA_SHAPE);
 
     public AreaEffect(EntityType<? extends AreaEffect> entityType, Level level) {
         super(entityType, level);
@@ -56,7 +57,15 @@ public class AreaEffect extends Entity {
         return entityData.get(INDEX);
     }
 
-    public AreaEffect maxAlpha(int alpha) {
+    public AreaShape getShape() {
+        return entityData.get(SHAPE);
+    }
+
+    public void setShape(AreaShape shape) {
+        entityData.set(SHAPE, shape);
+    }
+
+    public AreaEffect setMaxAlpha(int alpha) {
         entityData.set(MAX_ALPHA, alpha);
         return this;
     }
@@ -68,7 +77,8 @@ public class AreaEffect extends Entity {
                 .define(LIFETIME, 20)
                 .define(COLOR, 0xffffff)
                 .define(INDEX, 0)
-                .define(MAX_ALPHA, 0x88);
+                .define(MAX_ALPHA, 0x88)
+                .define(SHAPE, AreaShape.RECTANGLE);
     }
 
     @Override

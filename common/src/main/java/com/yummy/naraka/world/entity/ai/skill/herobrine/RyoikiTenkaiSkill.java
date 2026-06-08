@@ -86,7 +86,7 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
                 if ((x + z) % 2 == 0) {
                     int lifetimeOffset = mob.getRandom().nextIntBetweenInclusive(0, 10);
                     AreaEffect areaEffect = new AreaEffect(level, basePosition.add(x * 2, 0, z * 2), 40 + lifetimeOffset, 2, 2, 0x00ff00, 0)
-                            .maxAlpha(0xff);
+                            .setMaxAlpha(0xff);
                     level.addFreshEntity(areaEffect);
                     EntityDataHelper.setEntityData(areaEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
                 }
