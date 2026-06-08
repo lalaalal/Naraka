@@ -72,7 +72,8 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         lookTarget(target);
         rotateTowardTarget(target);
-        runAt(5, () -> shadowSpawner.spawn(level).control(shadowHerobrine -> setupShadowHerobrine(shadowHerobrine, target)));
+        runAt(5, () -> shadowSpawner.control(shadowHerobrine -> setupShadowHerobrine(shadowHerobrine, target))
+                .spawn(level));
         if (!mob.isShadow) {
             runAt(0, () -> NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.TELEPORT.get()));
             runAt(5, () -> teleportToTarget(target, 12));

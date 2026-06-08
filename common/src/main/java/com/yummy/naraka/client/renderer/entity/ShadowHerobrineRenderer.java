@@ -11,7 +11,6 @@ import com.yummy.naraka.world.entity.ShadowHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -39,11 +38,6 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
         if (shadowHerobrine.isFinalModel())
             return NarakaTextures.FINAL_HEROBRINE;
         return NarakaTextures.SHADOW_HEROBRINE;
-    }
-
-    @Override
-    protected RenderType getRenderType(ShadowHerobrine livingEntity, boolean bodyVisible, boolean translucent, boolean glowing) {
-        return RenderType.entityTranslucent(getTextureLocation(livingEntity));
     }
 
     @Override
