@@ -2,16 +2,13 @@ package com.yummy.naraka.client.gui.hud;
 
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.renderer.WhiteFogRenderHelper;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.util.ARGB;
 
-@Environment(EnvType.CLIENT)
 public class WhiteHud implements HudRenderer {
     @Override
-    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public void render(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker) {
         if (NarakaClientContext.SHADER_ENABLED.getValue()) {
             float partialTick = deltaTracker.getGameTimeDeltaPartialTick(true);
             float alpha = WhiteFogRenderHelper.getProgress(partialTick);

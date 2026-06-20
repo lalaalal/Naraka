@@ -5,8 +5,6 @@ import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SkillRequestPacket;
 import com.yummy.naraka.world.entity.SkillUsingMob;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
@@ -19,7 +17,6 @@ import net.minecraft.resources.Identifier;
 import java.util.Set;
 import java.util.function.Function;
 
-@Environment(EnvType.CLIENT)
 public abstract class SkillUsingMobControlScreen extends Screen {
     protected final SkillUsingMob mob;
     protected final LocationList locationList;
@@ -54,13 +51,13 @@ public abstract class SkillUsingMobControlScreen extends Screen {
     }
 
     private void disableSkills(Button button) {
-        minecraft.setScreen(null);
+        minecraft.gui.setScreen(null);
         SkillRequestPacket payload = new SkillRequestPacket(SkillRequestPacket.Event.DISABLE, mob);
         NetworkManager.serverbound().send(payload);
     }
 
     private void onDone(Button button) {
-        minecraft.setScreen(null);
+        minecraft.gui.setScreen(null);
         LocationList.Entry entry = locationList.getSelected();
         if (entry != null)
             select(entry);
@@ -68,7 +65,7 @@ public abstract class SkillUsingMobControlScreen extends Screen {
 
     private Button.OnPress action(SkillRequestPacket.Event event) {
         return button -> {
-            minecraft.setScreen(null);
+            minecraft.gui.setScreen(null);
             if (locationList.getSelected() == null)
                 return;
             SkillRequestPacket payload = new SkillRequestPacket(event, mob, locationList.getSelected().location);

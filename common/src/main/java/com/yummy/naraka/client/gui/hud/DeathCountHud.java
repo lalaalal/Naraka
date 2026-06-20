@@ -5,16 +5,13 @@ import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.EntityDataType;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
-@Environment(EnvType.CLIENT)
 public class DeathCountHud implements HudRenderer {
     public static final int HEART_WIDTH = 14;
     public static final int HEART_HEIGHT = 7;
@@ -42,7 +39,7 @@ public class DeathCountHud implements HudRenderer {
         return player.getUUID().equals(livingEntity.getUUID());
     }
 
-    private static void drawHeart(GuiGraphics guiGraphics, int x, int y, boolean fill, boolean blink) {
+    private static void drawHeart(GuiGraphicsExtractor guiGraphics, int x, int y, boolean fill, boolean blink) {
         if (fill) {
             int u = blink ? HEART_PURPLE_X : HEART_PINK_X;
             guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, NarakaSprites.DEATH_COUNT_HEART, HEART_WIDTH, HEART_HEIGHT,
@@ -63,7 +60,7 @@ public class DeathCountHud implements HudRenderer {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, DeltaTracker tickCounter) {
+    public void render(GuiGraphicsExtractor guiGraphics, DeltaTracker tickCounter) {
         Player player = Minecraft.getInstance().player;
         if (player == null)
             return;

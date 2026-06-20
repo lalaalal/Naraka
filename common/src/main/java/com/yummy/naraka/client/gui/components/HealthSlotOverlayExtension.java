@@ -3,13 +3,10 @@ package com.yummy.naraka.client.gui.components;
 import com.yummy.naraka.client.NarakaSprites;
 import com.yummy.naraka.world.overlay.NarakaProgressOverlayExtensionTypes;
 import com.yummy.naraka.world.overlay.ProgressOverlayExtensionType;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.util.Mth;
 
-@Environment(EnvType.CLIENT)
 public class HealthSlotOverlayExtension implements ProgressOverlayExtension<Integer> {
     public static final int PROGRESS_BAR_WIDTH = 182;
 
@@ -32,7 +29,7 @@ public class HealthSlotOverlayExtension implements ProgressOverlayExtension<Inte
     }
 
     @Override
-    public void render(int x, int y, GuiGraphics graphics) {
+    public void render(int x, int y, GuiGraphicsExtractor graphics) {
         int baseY = y + 1;
         for (int count = 1; count <= separatorCount; count++) {
             int baseX = Math.round(x + 1 + slotWidth * count);

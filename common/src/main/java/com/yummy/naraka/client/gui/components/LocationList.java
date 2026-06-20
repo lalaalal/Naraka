@@ -1,10 +1,8 @@
 package com.yummy.naraka.client.gui.components;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -14,7 +12,6 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.function.Function;
 
-@Environment(EnvType.CLIENT)
 public class LocationList extends ObjectSelectionList<LocationList.Entry> {
     private final Screen screen;
     private final Function<Identifier, String> translationKeyGenerator;
@@ -40,16 +37,18 @@ public class LocationList extends ObjectSelectionList<LocationList.Entry> {
         }
 
         @Override
-        public void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean hovered, float partialTick) {
-            Font font = minecraft.font;
-            int entryWidth = screen.width / 2;
-            int entryHeight = getContentY() + getContentHeight() / 2;
-            guiGraphics.drawCenteredString(font, component, entryWidth, entryHeight - 9 / 2, -1);
+        public Component getNarration() {
+            return component;
         }
 
         @Override
-        public Component getNarration() {
-            return component;
+        public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float a) {
+            Font font = minecraft.font;
+            int entryWidth = screen.width / 2;
+            int entryHeight = getContentY() + getContentHeight() / 2;
+
+            graphics.centeredText(font, component, entryWidth, entryHeight - 9 / 2, -1);
+
         }
     }
 }
