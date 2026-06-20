@@ -1,8 +1,5 @@
 package com.yummy.naraka.network;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 public class NarakaNetworks {
     public static void initialize() {
         NetworkManager.clientbound().define(SyncEntityDataPacket.TYPE, SyncEntityDataPacket.CODEC);
@@ -19,7 +16,6 @@ public class NarakaNetworks {
         initializeServer();
     }
 
-    @Environment(EnvType.CLIENT)
     public static void initializeClient() {
         NetworkManager.clientbound().register(SyncEntityDataPacket.TYPE, SyncEntityDataPacket.CODEC, SyncEntityDataPacket::handle);
         NetworkManager.clientbound().register(SyncAnimationPacket.TYPE, SyncAnimationPacket.CODEC, SyncAnimationPacket::handle);
