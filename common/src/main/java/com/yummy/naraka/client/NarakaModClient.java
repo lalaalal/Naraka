@@ -23,7 +23,6 @@ import com.yummy.naraka.client.renderer.special.SpearSpecialRenderer;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
-import com.yummy.naraka.init.ProgressOverlayExtensionFactoryRegistry;
 import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.NarakaDimensions;

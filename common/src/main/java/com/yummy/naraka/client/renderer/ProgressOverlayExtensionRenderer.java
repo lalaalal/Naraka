@@ -1,7 +1,7 @@
 package com.yummy.naraka.client.renderer;
 
 import com.yummy.naraka.client.gui.components.ProgressOverlayExtension;
-import com.yummy.naraka.init.ProgressOverlayExtensionFactoryRegistry;
+import com.yummy.naraka.client.init.ProgressOverlayExtensionFactoryRegistry;
 import com.yummy.naraka.world.overlay.ProgressOverlayData;
 import com.yummy.naraka.world.overlay.ProgressOverlayExtensionType;
 import net.minecraft.client.gui.GuiGraphicsExtractor;

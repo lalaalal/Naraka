@@ -1,15 +1,12 @@
-package com.yummy.naraka.init;
+package com.yummy.naraka.client.init;
 
 import com.yummy.naraka.client.gui.components.ProgressOverlayExtension;
 import com.yummy.naraka.world.overlay.ProgressOverlayExtensionType;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@Environment(EnvType.CLIENT)
 public abstract class ProgressOverlayExtensionFactoryRegistry {
     private static final Map<ProgressOverlayExtensionType<?>, Supplier<? extends ProgressOverlayExtension<?>>> FACTORIES = new HashMap<>();
 
