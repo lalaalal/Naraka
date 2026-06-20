@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "naraka:item/naraka_pickaxe"
+    "model": "naraka:item/naraka_pickaxe",
+    "tints": [
+      {
+        "type": "minecraft:custom_model_data",
+        "default": 16777215
+      }
+    ]
   }
 }

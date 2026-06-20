@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "M": "naraka:nectarium",
     "P": "naraka:purified_soul_shard"

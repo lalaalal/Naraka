@@ -1,0 +1,10 @@
+{
+  "gives": {
+    "id": "naraka:nectarium_core"
+  },
+  "max_uses": 1.0,
+  "reputation_discount": 0.05,
+  "wants": {
+    "id": "minecraft:bee_nest"
+  }
+}

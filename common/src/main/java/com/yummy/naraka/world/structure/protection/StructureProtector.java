@@ -2,6 +2,7 @@ package com.yummy.naraka.world.structure.protection;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
@@ -11,7 +12,7 @@ import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
-import net.minecraft.world.level.storage.DimensionDataStorage;
+import net.minecraft.world.level.storage.SavedDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class StructureProtector {
     }
 
     public static void initialize(ServerLevel level) {
-        DimensionDataStorage storage = level.getDataStorage();
+        SavedDataStorage storage = level.getDataStorage();
         Container.instance = storage.computeIfAbsent(Container.factory);
     }
 
@@ -69,7 +70,7 @@ public class StructureProtector {
                 ).apply(instance, Container::new)
         );
         private static final SavedDataType<Container> factory = new SavedDataType<>(
-                "structure_protectors", Container::new, CODEC, DataFixTypes.LEVEL
+                NarakaMod.identifier("structure_protectors"), Container::new, CODEC, DataFixTypes.LEVEL
         );
         private static Container instance = new Container();
 

@@ -8,7 +8,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "naraka:herobrine"
+              "minecraft:entity_type": "naraka:herobrine"
             }
           }
         ]
@@ -22,7 +22,6 @@
     },
     "frame": "challenge",
     "icon": {
-      "count": 1,
       "id": "naraka:purified_soul_metal_block"
     },
     "title": {

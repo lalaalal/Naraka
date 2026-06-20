@@ -8,7 +8,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "location": {
+              "minecraft:location": {
                 "structures": "naraka:herobrine_sanctuary"
               }
             }
@@ -23,7 +23,6 @@
       "translate": "advancements.naraka.find_herobrine_sanctuary.description"
     },
     "icon": {
-      "count": 1,
       "id": "naraka:sanctuary_compass"
     },
     "title": {

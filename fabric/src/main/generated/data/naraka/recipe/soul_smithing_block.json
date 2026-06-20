@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "#": "minecraft:heavy_core",
     "B": "minecraft:smithing_table"
@@ -11,7 +10,6 @@
     "BB"
   ],
   "result": {
-    "count": 1,
     "id": "naraka:soul_smithing_block"
   }
 }
