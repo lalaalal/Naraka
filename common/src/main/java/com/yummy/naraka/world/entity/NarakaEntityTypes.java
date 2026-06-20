@@ -6,10 +6,10 @@ import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.init.EntityAttributeRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.block.Blocks;
 
 public class NarakaEntityTypes {
     public static final HolderProxy<EntityType<?>, EntityType<Herobrine>> HEROBRINE = register(
@@ -81,7 +81,7 @@ public class NarakaEntityTypes {
                     .sized(0.5f, 1.0f)
                     .updateInterval(1)
                     .fireImmune()
-                    .immuneTo(Blocks.CACTUS)
+                    .immuneTo(BlockTags.GRASS_BLOCKS)
     );
 
     public static final HolderProxy<EntityType<?>, EntityType<DiamondGolem>> DIAMOND_GOLEM = register(

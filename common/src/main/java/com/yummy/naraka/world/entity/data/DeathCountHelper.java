@@ -15,8 +15,8 @@ public class DeathCountHelper {
     private static final List<DeathCountingEntity> DEATH_COUNTING_ENTITIES = new ArrayList<>();
 
     private static boolean isDeathCountable(LivingEntity livingEntity) {
-        return livingEntity.getType().is(NarakaEntityTypeTags.DEATH_COUNTABLE)
-                && !livingEntity.getType().is(NarakaEntityTypeTags.DEATH_COUNTING);
+        return livingEntity.is(NarakaEntityTypeTags.DEATH_COUNTABLE)
+                && !livingEntity.is(NarakaEntityTypeTags.DEATH_COUNTING);
     }
 
     public static void attachCountingEntity(DeathCountingEntity deathCountingEntity) {

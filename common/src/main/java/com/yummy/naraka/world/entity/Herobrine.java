@@ -39,6 +39,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.clock.ClockTimeMarkers;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -129,7 +130,7 @@ public class Herobrine extends AbstractHerobrine {
     private final Map<UUID, LivingEntity> cachedWatchingEntities = new HashMap<>();
     protected final List<Afterimage> afterimages = new ArrayList<>();
 
-    private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
+    private final ServerBossEvent bossEvent = new ServerBossEvent(UUID.randomUUID(), getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, BossEvent.BossBarColor.WHITE, this, bossEvent);
     private final ShadowController shadowController = new ShadowController(this);
 
@@ -247,7 +248,7 @@ public class Herobrine extends AbstractHerobrine {
 
         int armor = 0;
         for (LivingEntity livingEntity : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(20, 5, 20), AbstractHerobrine::isNotHerobrine)) {
-            if (livingEntity.getType().is(ConventionalTags.Entities.BOSSES))
+            if (livingEntity.is(ConventionalTags.Entities.BOSSES))
                 armor += 12;
         }
         for (ServerPlayer player : bossEvent.getPlayers()) {
@@ -367,7 +368,7 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void stigmatizeEntity(ServerLevel level, LivingEntity target) {
-        if (!target.getType().is(NarakaEntityTypeTags.HEROBRINE) && getPhase() > 1) {
+        if (!target.is(NarakaEntityTypeTags.HEROBRINE) && getPhase() > 1) {
             StigmaHelper.increaseStigma(level, target, this, true);
             watchingEntities.add(target.getUUID());
             cachedWatchingEntities.put(target.getUUID(), target);
@@ -544,7 +545,9 @@ public class Herobrine extends AbstractHerobrine {
     public void fixTimeAndWeather(ServerLevel level) {
         level.getGameRules().set(GameRules.ADVANCE_TIME, false, level.getServer());
         level.getGameRules().set(GameRules.ADVANCE_WEATHER, false, level.getServer());
-        level.setDayTime(18000);
+        level.dimensionType().defaultClock().ifPresent(
+                clock -> level.clockManager().moveToTimeMarker(clock, ClockTimeMarkers.MIDNIGHT)
+        );
         level.resetWeatherCycle();
     }
 
@@ -736,7 +739,7 @@ public class Herobrine extends AbstractHerobrine {
             ServerLevel narakaDimension = level.getServer().getLevel(NarakaDimensions.NARAKA);
             if (narakaDimension != null) {
                 BlockPos blockPos = NarakaPortalBlock.createRandomNarakaSpawnPosition(random);
-                Vec3 pos = blockPos.getBottomCenter();
+                Vec3 pos = Vec3.atBottomCenterOf(blockPos);
                 target.teleport(new TeleportTransition(narakaDimension, pos, Vec3.ZERO, 180, 0, TeleportTransition.PLAY_PORTAL_SOUND));
             }
         }

@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity;
 
 import com.mojang.serialization.Codec;
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncProgressOverlayExtensionPacket;
 import com.yummy.naraka.world.NarakaDimensions;
@@ -50,7 +51,7 @@ public class OriginHerobrine extends SkillUsingMob implements Enemy {
     private final SwordSwingSkill swordSwingSkill = registerSkill(this, SwordSwingSkill::new, HerobrineAnimationIdentifiers.SWORD_ATTACK, HerobrineAnimationIdentifiers.SWORD_ATTACK_SPIN);
     private final ChargingSkill chargingSkill = registerSkill(9, new ChargingSkill(this, swordSwingSkill), HerobrineAnimationIdentifiers.CHARGING);
 
-    private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
+    private final ServerBossEvent bossEvent = new ServerBossEvent(UUID.randomUUID(), getName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, BossEvent.BossBarColor.YELLOW, this, bossEvent);
     private boolean hurtByStar;
     private final List<SoulType> absorbedSoulTypes = new ArrayList<>();
@@ -287,7 +288,7 @@ public class OriginHerobrine extends SkillUsingMob implements Enemy {
                 .xmap(SpawnData::new, SpawnData::isSpawned);
 
         public static final SavedDataType<SpawnData> TYPE = new SavedDataType<>(
-                "origin_herobrine_spawned", SpawnData::new, CODEC, DataFixTypes.LEVEL
+                NarakaMod.identifier("origin_herobrine_spawned"), SpawnData::new, CODEC, DataFixTypes.LEVEL
         );
 
         private boolean spawned;

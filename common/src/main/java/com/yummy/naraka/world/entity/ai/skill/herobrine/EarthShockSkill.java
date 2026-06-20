@@ -196,7 +196,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
                     return;
                 BlockState state = level.getBlockState(floor);
                 double speed = random.nextDouble() * 0.2 + 0.4;
-                Vec3 movement = mob.position().subtract(floor.getBottomCenter())
+                Vec3 movement = mob.position().subtract(Vec3.atBottomCenterOf(floor))
                         .multiply(0.05, 0, 0.05)
                         .add(0, speed, 0);
                 NarakaEntityUtils.createFloatingBlock(level, floor.above(), state, movement);

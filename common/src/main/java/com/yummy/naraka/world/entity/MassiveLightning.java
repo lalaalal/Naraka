@@ -19,8 +19,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 
 public class MassiveLightning extends Entity {
     public static final EntityDataAccessor<Integer> MAX_SIZE = SynchedEntityData.defineId(MassiveLightning.class, EntityDataSerializers.INT);

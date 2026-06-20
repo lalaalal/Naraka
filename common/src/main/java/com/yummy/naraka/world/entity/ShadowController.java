@@ -91,7 +91,7 @@ public class ShadowController {
                 .toArray(ShadowHerobrine[]::new);
         if (shadows.length == 0)
             return Optional.empty();
-        int randomIndex = level.random.nextInt(shadows.length);
+        int randomIndex = level.getRandom().nextInt(shadows.length);
 
         return Optional.of(shadows[randomIndex]);
     }
