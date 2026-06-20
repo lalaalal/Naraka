@@ -2,8 +2,6 @@ package com.yummy.naraka.mixin.client;
 
 import com.yummy.naraka.client.sound.BossMusicPlayer;
 import com.yummy.naraka.client.sound.BossMusicSoundInstance;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.MusicManager;
@@ -19,12 +17,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Environment(EnvType.CLIENT)
 @Mixin(MusicManager.class)
 public abstract class MusicManagerMixin implements BossMusicPlayer {
-    @Shadow @Nullable
+    @Shadow
+    @Nullable
     private SoundInstance currentMusic;
-    @Shadow @Final
+    @Shadow
+    @Final
     private Minecraft minecraft;
     @Shadow
     private boolean toastShown;
@@ -36,9 +35,11 @@ public abstract class MusicManagerMixin implements BossMusicPlayer {
     @Shadow
     public abstract void stopPlaying();
 
-    @Unique @Nullable
+    @Unique
+    @Nullable
     private BossMusicSoundInstance naraka$bossMusic;
-    @Unique @Nullable
+    @Unique
+    @Nullable
     private BossMusicSoundInstance naraka$nextMusic;
     @Unique
     private boolean naraka$stopBossMusic = false;
@@ -85,7 +86,7 @@ public abstract class MusicManagerMixin implements BossMusicPlayer {
         naraka$stopBossMusic = false;
         SoundEngine.PlayResult result = this.minecraft.getSoundManager().play(bossMusicSoundInstance);
         if (result == SoundEngine.PlayResult.STARTED) {
-            this.minecraft.getToastManager().showNowPlayingToast();
+            this.minecraft.gui.toastManager().showNowPlayingToast();
             this.toastShown = true;
         } else {
             this.toastShown = false;

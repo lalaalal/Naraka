@@ -132,17 +132,17 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "decreaseAirSupply", at = @At("HEAD"), cancellable = true)
-    protected void preserveAirSupply(int currentAir, CallbackInfoReturnable<Integer> cir) {
+    protected void preserveAirSupply(int currentSupply, CallbackInfoReturnable<Integer> cir) {
         if (NarakaItemUtils.canApplyWaterBreathing(naraka$living())) {
             cir.cancel();
-            cir.setReturnValue(currentAir);
+            cir.setReturnValue(currentSupply);
         }
     }
 
     @Inject(method = "handleEquipmentChanges", at = @At(value = "HEAD"))
-    private void handleEquipmentChanges(Map<EquipmentSlot, ItemStack> equipments, CallbackInfo ci) {
-        for (EquipmentSlot slot : equipments.keySet()) {
-            ItemStack currentStack = equipments.get(slot);
+    private void handleEquipmentChanges(Map<EquipmentSlot, ItemStack> changedItems, CallbackInfo ci) {
+        for (EquipmentSlot slot : changedItems.keySet()) {
+            ItemStack currentStack = changedItems.get(slot);
             ItemStack previousStack = naraka$getPreviousStack(slot);
 
             naraka$handleEquipmentSetEffect(naraka$living(), slot, previousStack, currentStack);

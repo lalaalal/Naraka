@@ -8,8 +8,6 @@ import com.yummy.naraka.client.renderer.entity.state.HerobrineScarfRenderState;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfPose;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfRenderState;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfTexture;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
@@ -22,12 +20,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Environment(EnvType.CLIENT)
 @Mixin(HumanoidArmorLayer.class)
 public abstract class HumanoidArmorLayerMixin<S extends HumanoidRenderState> {
     @Inject(method = "submit(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/client/renderer/entity/state/HumanoidRenderState;FF)V", at = @At("RETURN"))
-    public void submitHerobrineScarf(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, S renderState, float yRot, float xRot, CallbackInfo ci) {
-        if (renderState instanceof HerobrineScarfRenderState herobrineScarfRenderState) {
+    public void submitHerobrineScarf(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, S state, float yRot, float xRot, CallbackInfo ci) {
+        if (state instanceof HerobrineScarfRenderState herobrineScarfRenderState) {
             WavingScarfRenderState wavingScarfRenderState = herobrineScarfRenderState.naraka$getScarfRenderState();
             if (!wavingScarfRenderState.display)
                 return;
@@ -42,7 +39,7 @@ public abstract class HumanoidArmorLayerMixin<S extends HumanoidRenderState> {
                 poseStack.scale(-scale, -scale, scale);
                 poseStack.translate(translation);
 
-                HerobrineScarfLayer.submitScarf(poseStack, insideRenderType, outsideRenderType, nodeCollector, packedLight, -1, wavingScarfRenderState, modelData);
+                HerobrineScarfLayer.submitScarf(poseStack, insideRenderType, outsideRenderType, submitNodeCollector, lightCoords, -1, wavingScarfRenderState, modelData);
                 poseStack.popPose();
             }
         }
@@ -50,7 +47,7 @@ public abstract class HumanoidArmorLayerMixin<S extends HumanoidRenderState> {
 
     @Unique
     private RenderType naraka$getOutsideRenderType(WavingScarfTexture textureInfo) {
-        return RenderTypes.entityCutout(textureInfo.texture(false));
+        return RenderTypes.entityCutoutCull(textureInfo.texture(false));
     }
 
     @Unique

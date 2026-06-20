@@ -4,8 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.yummy.naraka.client.renderer.ItemColorSetter;
 import com.yummy.naraka.client.renderer.ItemRenderTypeSetter;
 import com.yummy.naraka.client.renderer.LayerRenderStateSetter;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
@@ -17,14 +15,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Environment(EnvType.CLIENT)
 @Mixin(ItemStackRenderState.class)
 public abstract class ItemStackRenderStateMixin implements ItemColorSetter, ItemRenderTypeSetter {
     @Shadow
     private ItemStackRenderState.LayerRenderState[] layers;
     @Shadow
     ItemDisplayContext displayContext;
-    @Shadow private boolean animated;
+    @Shadow
+    private boolean animated;
     @Unique
     private int naraka$color = -1;
 
@@ -36,14 +34,11 @@ public abstract class ItemStackRenderStateMixin implements ItemColorSetter, Item
 
     @Override
     public void naraka$setRenderType(RenderType renderType) {
-        for (ItemStackRenderState.LayerRenderState layer : layers)
-            layer.setRenderType(renderType);
         this.animated = true;
     }
 
     @Override
     public void naraka$setRenderType(RenderType renderType, int layer) {
-        layers[layer].setRenderType(renderType);
         this.animated = true;
     }
 

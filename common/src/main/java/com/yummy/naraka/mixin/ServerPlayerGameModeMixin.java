@@ -30,7 +30,7 @@ public abstract class ServerPlayerGameModeMixin {
     }
 
     @Inject(method = "useItem", at = @At("HEAD"), cancellable = true)
-    public void preventItemUseDuringStun(ServerPlayer player, Level level, ItemStack stack, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
+    public void preventItemUseDuringStun(ServerPlayer player, Level level, ItemStack itemStack, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         if (NarakaAttributeModifiers.hasAttributeModifier(player, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STUN_PREVENT_MOVING)) {
             player.stopUsingItem();
             cir.cancel();
