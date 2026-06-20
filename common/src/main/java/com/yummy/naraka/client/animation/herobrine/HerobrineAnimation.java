@@ -3,8 +3,6 @@ package com.yummy.naraka.client.animation.herobrine;
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.animation.NarakaInterpolations;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
@@ -16,7 +14,6 @@ import net.minecraft.client.animation.KeyframeAnimations;
  *
  * @author joachimbeen, noon414
  */
-@Environment(EnvType.CLIENT)
 public class HerobrineAnimation {
     public static void initialize() {
         AnimationMapper.register(HerobrineAnimationIdentifiers.WALKING, WALKING);
