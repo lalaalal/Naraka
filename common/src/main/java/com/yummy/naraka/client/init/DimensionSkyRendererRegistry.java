@@ -1,8 +1,6 @@
 package com.yummy.naraka.client.init;
 
 import com.yummy.naraka.client.renderer.DimensionSkyRenderer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 
@@ -10,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@Environment(EnvType.CLIENT)
 public abstract class DimensionSkyRendererRegistry {
     private static final Map<ResourceKey<Level>, Supplier<DimensionSkyRenderer>> RENDERER_FACTORIES = new HashMap<>();
     private static final Map<ResourceKey<Level>, DimensionSkyRenderer> RENDERERS = new HashMap<>();
