@@ -35,8 +35,8 @@ import java.util.function.UnaryOperator;
 public class NarakaItems {
     private static final String SOUL_INFUSED_PREFIX = "soul_infused_";
 
-    private static final Set<HolderProxy<Item, Item>> SOUL_INFUSED_ITEMS = new LinkedHashSet<>();
-    private static final Set<HolderProxy<Item, Item>> SOUL_INFUSED_SWORDS = new LinkedHashSet<>();
+    public static final Set<HolderProxy<Item, Item>> SOUL_INFUSED_ITEMS = new LinkedHashSet<>();
+    public static final Set<HolderProxy<Item, Item>> SOUL_INFUSED_SWORDS = new LinkedHashSet<>();
     private static final Map<SoulType, HolderProxy<Item, Item>> SWORD_BY_SOUL_TYPE = new HashMap<>();
 
     public static final HolderProxy<Item, Item> LOCKED_HEALTH = registerItem("locked_health", Item::new);
@@ -126,7 +126,7 @@ public class NarakaItems {
             properties -> new SpearItem(ToolMaterial.IRON,
                     true, 3, -3, 3,
                     properties.fireResistant()
-                            .component(DataComponents.DAMAGE_TYPE, new EitherHolder<>(NarakaDamageTypes.SPEAR))
+                            .delayedHolderComponent(DataComponents.DAMAGE_TYPE, NarakaDamageTypes.SPEAR)
                             .component(DataComponents.TOOL, TridentItem.createToolProperties()),
                     NarakaEntityTypes.THROWN_SPEAR
             )
@@ -137,7 +137,7 @@ public class NarakaItems {
                     true, 7, -3, 3,
                     properties.fireResistant()
                             .rarity(Rarity.RARE)
-                            .component(DataComponents.DAMAGE_TYPE, new EitherHolder<>(NarakaDamageTypes.SPEAR))
+                            .delayedHolderComponent(DataComponents.DAMAGE_TYPE, NarakaDamageTypes.SPEAR)
                             .component(DataComponents.TOOL, TridentItem.createToolProperties()),
                     NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR
             )
@@ -148,7 +148,7 @@ public class NarakaItems {
                     .fireResistant()
                     .rarity(Rarity.EPIC)
                     .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
-                    .component(DataComponents.DAMAGE_TYPE, new EitherHolder<>(NarakaDamageTypes.SPEAR_OF_LONGINUS))
+                    .delayedHolderComponent(DataComponents.DAMAGE_TYPE, NarakaDamageTypes.SPEAR_OF_LONGINUS)
                     .component(DataComponents.TOOL, TridentItem.createToolProperties())
             )
     );

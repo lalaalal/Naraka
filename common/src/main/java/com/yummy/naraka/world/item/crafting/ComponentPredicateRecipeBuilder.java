@@ -3,11 +3,12 @@ package com.yummy.naraka.world.item.crafting;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
+import net.minecraft.advancements.triggers.Criterion;
+import net.minecraft.advancements.triggers.RecipeUnlockedTrigger;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.predicates.DataComponentPredicate;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeBuilder;
@@ -16,16 +17,16 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
 public class ComponentPredicateRecipeBuilder implements RecipeBuilder {
     private final HolderGetter<Item> items;
-    private final ItemStack result;
+    private final ItemStackTemplate result;
     @Nullable
     private String group;
     private final RecipeCategory category;
@@ -34,10 +35,10 @@ public class ComponentPredicateRecipeBuilder implements RecipeBuilder {
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
     public static ComponentPredicateRecipeBuilder predicate(HolderGetter<Item> items, RecipeCategory category, Holder<Item> result) {
-        return new ComponentPredicateRecipeBuilder(items, category, result.value().getDefaultInstance());
+        return new ComponentPredicateRecipeBuilder(items, category, new ItemStackTemplate(result, 1, DataComponentPatch.EMPTY));
     }
 
-    public ComponentPredicateRecipeBuilder(HolderGetter<Item> items, RecipeCategory category, ItemStack result) {
+    public ComponentPredicateRecipeBuilder(HolderGetter<Item> items, RecipeCategory category, ItemStackTemplate result) {
         this.items = items;
         this.result = result;
         this.category = category;
@@ -76,8 +77,8 @@ public class ComponentPredicateRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public Item getResult() {
-        return result.getItem();
+    public ResourceKey<Recipe<?>> defaultId() {
+        return RecipeBuilder.getDefaultRecipeId(this.result);
     }
 
     @Override
@@ -87,7 +88,7 @@ public class ComponentPredicateRecipeBuilder implements RecipeBuilder {
                 .rewards(AdvancementRewards.Builder.recipe(resourceKey))
                 .requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(builder::addCriterion);
-        ComponentPredicateRecipe recipe = new ComponentPredicateRecipe(result, Objects.requireNonNullElse(group, ""), RecipeBuilder.determineBookCategory(category), showNotification, predicateIngredients);
+        ComponentPredicateRecipe recipe = new ComponentPredicateRecipe(result, Objects.requireNonNullElse(group, ""), RecipeBuilder.determineCraftingBookCategory(category), showNotification, predicateIngredients);
         output.accept(resourceKey, recipe, builder.build(resourceKey.identifier().withPrefix("recipes/" + this.category.getFolderName() + "/")));
     }
 }

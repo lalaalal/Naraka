@@ -13,6 +13,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.HolderSetCodec;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 
@@ -59,6 +60,6 @@ public record ComponentPredicateIngredient(int row, int column, HolderSet<Item> 
         if (predicate.predicate() instanceof ComponentItemApply componentItemApply) {
             componentItemApply.apply(itemStack);
         }
-        return new SlotDisplay.ItemStackSlotDisplay(itemStack);
+        return new SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate.fromNonEmptyStack(itemStack));
     }
 }

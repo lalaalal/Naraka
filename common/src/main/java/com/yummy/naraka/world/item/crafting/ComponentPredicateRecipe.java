@@ -4,22 +4,45 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.world.item.crafting.display.ComponentPredicateRecipeDisplay;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ComponentPredicateRecipe implements CraftingRecipe {
-    private final ItemStack result;
+    public static final MapCodec<ComponentPredicateRecipe> CODEC = RecordCodecBuilder.mapCodec(
+            instance -> instance.group(
+                    ItemStackTemplate.CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                    Codec.STRING.fieldOf("group").forGetter(ComponentPredicateRecipe::group),
+                    CraftingBookCategory.CODEC.fieldOf("category").forGetter(ComponentPredicateRecipe::category),
+                    Codec.BOOL.fieldOf("show_notification").forGetter(ComponentPredicateRecipe::showNotification),
+                    ComponentPredicateIngredient.CODEC.listOf(0, 9).fieldOf("ingredients").forGetter(recipe -> recipe.predicateIngredients)
+            ).apply(instance, ComponentPredicateRecipe::new)
+    );
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, ComponentPredicateRecipe> STREAM_CODEC = StreamCodec.composite(
+            ItemStackTemplate.STREAM_CODEC,
+            recipe -> recipe.result,
+            ByteBufCodecs.STRING_UTF8,
+            ComponentPredicateRecipe::group,
+            CraftingBookCategory.STREAM_CODEC,
+            ComponentPredicateRecipe::category,
+            ByteBufCodecs.BOOL,
+            ComponentPredicateRecipe::showNotification,
+            ComponentPredicateIngredient.STREAM_CODEC.apply(ByteBufCodecs.list()),
+            recipe -> recipe.predicateIngredients,
+            ComponentPredicateRecipe::new
+    );
+
+    private final ItemStackTemplate result;
     private final String group;
     private final CraftingBookCategory category;
     private final boolean showNotification;
@@ -28,7 +51,7 @@ public class ComponentPredicateRecipe implements CraftingRecipe {
     @Nullable
     private PlacementInfo placementInfo;
 
-    public ComponentPredicateRecipe(ItemStack result, String group, CraftingBookCategory category, boolean showNotification, List<ComponentPredicateIngredient> predicateIngredients) {
+    public ComponentPredicateRecipe(ItemStackTemplate result, String group, CraftingBookCategory category, boolean showNotification, List<ComponentPredicateIngredient> predicateIngredients) {
         this.result = result;
         this.group = group;
         this.category = category;
@@ -56,8 +79,8 @@ public class ComponentPredicateRecipe implements CraftingRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
-        return result.copy();
+    public ItemStack assemble(CraftingInput input) {
+        return result.create();
     }
 
     @Override
@@ -97,41 +120,5 @@ public class ComponentPredicateRecipe implements CraftingRecipe {
                         new SlotDisplay.ItemStackSlotDisplay(result)
                 )
         );
-    }
-
-    public static class Serializer implements RecipeSerializer<ComponentPredicateRecipe> {
-        private static final MapCodec<ComponentPredicateRecipe> CODEC = RecordCodecBuilder.mapCodec(
-                instance -> instance.group(
-                        ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                        Codec.STRING.fieldOf("group").forGetter(ComponentPredicateRecipe::group),
-                        CraftingBookCategory.CODEC.fieldOf("category").forGetter(ComponentPredicateRecipe::category),
-                        Codec.BOOL.fieldOf("show_notification").forGetter(ComponentPredicateRecipe::showNotification),
-                        ComponentPredicateIngredient.CODEC.listOf(0, 9).fieldOf("ingredients").forGetter(recipe -> recipe.predicateIngredients)
-                ).apply(instance, ComponentPredicateRecipe::new)
-        );
-
-        private static final StreamCodec<RegistryFriendlyByteBuf, ComponentPredicateRecipe> STREAM_CODEC = StreamCodec.composite(
-                ItemStack.STREAM_CODEC,
-                recipe -> recipe.result,
-                ByteBufCodecs.STRING_UTF8,
-                ComponentPredicateRecipe::group,
-                CraftingBookCategory.STREAM_CODEC,
-                ComponentPredicateRecipe::category,
-                ByteBufCodecs.BOOL,
-                ComponentPredicateRecipe::showNotification,
-                ByteBufCodecs.collection(ArrayList::new, ComponentPredicateIngredient.STREAM_CODEC),
-                recipe -> recipe.predicateIngredients,
-                ComponentPredicateRecipe::new
-        );
-
-        @Override
-        public MapCodec<ComponentPredicateRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, ComponentPredicateRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
     }
 }

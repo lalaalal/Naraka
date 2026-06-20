@@ -11,7 +11,9 @@ import java.util.function.Supplier;
 
 public class NarakaRecipeSerializers {
     public static final HolderProxy<RecipeSerializer<?>, RecipeSerializer<ComponentPredicateRecipe>> COMPONENT_PREDICATE_RECIPE = register(
-            "component_predicate_recipe", ComponentPredicateRecipe.Serializer::new
+            "component_predicate_recipe", () -> new RecipeSerializer<>(
+                    ComponentPredicateRecipe.CODEC, ComponentPredicateRecipe.STREAM_CODEC
+            )
     );
 
     private static <I extends RecipeInput, T extends Recipe<I>> HolderProxy<RecipeSerializer<?>, RecipeSerializer<T>> register(String name, Supplier<RecipeSerializer<T>> serializer) {

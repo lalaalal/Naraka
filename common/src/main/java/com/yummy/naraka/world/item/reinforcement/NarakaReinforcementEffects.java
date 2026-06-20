@@ -4,7 +4,7 @@ import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.tags.NarakaItemTags;
-import net.minecraft.advancements.criterion.TagPredicate;
+import net.minecraft.advancements.predicates.TagPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.tags.ItemTags;
@@ -95,7 +95,7 @@ public class NarakaReinforcementEffects {
 
     @SafeVarargs
     public static void addEffectsByItem(TagPredicate<Item> predicate, Holder<ReinforcementEffect>... effects) {
-        ITEM_REINFORCEMENT_EFFECTS.put(itemStack -> predicate.matches(itemStack.getItemHolder()), List.of(effects));
+        ITEM_REINFORCEMENT_EFFECTS.put(itemStack -> predicate.matches(itemStack.typeHolder()), List.of(effects));
     }
 
     public static HolderSet<ReinforcementEffect> byItem(ItemStack itemStack) {
