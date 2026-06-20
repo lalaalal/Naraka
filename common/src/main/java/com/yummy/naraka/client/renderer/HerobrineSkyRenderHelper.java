@@ -6,12 +6,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.util.Color;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.SkyRenderer;
 
-@Environment(EnvType.CLIENT)
 public class HerobrineSkyRenderHelper {
     private static final Color SKY_COLOR = Color.of(1, 0.04f, 0.04f, 0.04f);
 

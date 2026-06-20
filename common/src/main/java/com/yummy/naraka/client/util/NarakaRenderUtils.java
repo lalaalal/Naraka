@@ -4,18 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.util.NarakaUtils;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.Model;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -27,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-@Environment(EnvType.CLIENT)
 public class NarakaRenderUtils {
     public static final int MAX_TAIL_ALPHA = 0xff;
     public static final float SIN_45 = (float) Math.sin(Math.PI / 4);
@@ -111,7 +104,7 @@ public class NarakaRenderUtils {
     public static void renderTailPart(PoseStack.Pose pose, VertexConsumer vertexConsumer, Vector3fc from, Vector3fc to, float tailWidth, float index, float size, int color) {
         NarakaRenderUtils.renderFlatImage(pose, vertexConsumer,
                 createVertices(from, to, tailWidth, NarakaRenderUtils::modifyY), index, index, size, size,
-                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
+                LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
         );
     }
 
@@ -148,22 +141,6 @@ public class NarakaRenderUtils {
         if (player == null)
             return false;
         return player.getUUID().equals(livingEntity.getUUID());
-    }
-
-    public static <S> void submitModelWithFoilRenderTypes(Model<? super S> model, S renderState, PoseStack poseStack, RenderType renderType, SubmitNodeCollector submitNodeCollector, int packedLight, boolean hasFoil) {
-        List<RenderType> renderTypes = ItemRenderer.getFoilRenderTypes(renderType, false, hasFoil);
-        for (int index = 0; index < renderTypes.size(); index++) {
-            submitNodeCollector.order(index).submitModel(
-                    model,
-                    renderState,
-                    poseStack,
-                    renderTypes.get(index),
-                    packedLight, OverlayTexture.NO_OVERLAY, -1,
-                    null,
-                    0,
-                    null
-            );
-        }
     }
 
     public static void applyYZSpin(PoseStack poseStack, float rotation) {

@@ -4,9 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.PrimitiveCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yummy.naraka.client.util.NarakaRenderUtils;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,16 +11,15 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Unit;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3fc;
 
 import java.util.function.Consumer;
 
-@Environment(EnvType.CLIENT)
 public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
     private final Model<Unit> model;
     private final Identifier texture;
@@ -39,13 +35,15 @@ public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
     }
 
     @Override
-    public void submit(@Nullable Boolean hasFoil, ItemDisplayContext itemDisplayContext, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, int overlay, boolean bl, int outlineColor) {
+    public void submit(@Nullable Boolean hasFoil, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, int overlay, boolean bl, int outlineColor) {
         if (hasFoil == null)
             return;
         poseStack.pushPose();
         poseStack.scale(1, -1, -1);
         RenderType renderType = model.renderType(texture);
-        NarakaRenderUtils.submitModelWithFoilRenderTypes(model, Unit.INSTANCE, poseStack, renderType, submitNodeCollector, light, hasFoil);
+        submitNodeCollector.order(0).submitModel(model, Unit.INSTANCE, poseStack, renderType, light, OverlayTexture.NO_OVERLAY, outlineColor, null);
+        if (hasFoil)
+            submitNodeCollector.order(1).submitModel(model, Unit.INSTANCE, poseStack, RenderTypes.entityGlint(), light, OverlayTexture.NO_OVERLAY, outlineColor, null);
         poseStack.popPose();
     }
 
@@ -56,8 +54,8 @@ public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
         model.root().getExtentsForGui(poseStack, output);
     }
 
-    @Environment(EnvType.CLIENT)
-    public record Unbaked(ModelLayerLocation modelLayer, Identifier texture) implements SpecialModelRenderer.Unbaked {
+    public record Unbaked(ModelLayerLocation modelLayer,
+                          Identifier texture) implements SpecialModelRenderer.Unbaked<Boolean> {
         public static final MapCodec<Unbaked> CODEC = RecordCodecBuilder.mapCodec(
                 instance -> instance.group(
                         Identifier.CODEC.fieldOf("model_location").forGetter(unbaked -> unbaked.modelLayer.model()),
@@ -71,14 +69,14 @@ public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
         }
 
         @Override
-        public SpecialModelRenderer<?> bake(BakingContext context) {
+        public SpecialModelRenderer<Boolean> bake(BakingContext context) {
             ModelPart root = context.entityModelSet().bakeLayer(modelLayer);
             Model<Unit> model = new Model.Simple(root, RenderTypes::entityCutout);
             return new SpearSpecialRenderer(model, texture);
         }
 
         @Override
-        public MapCodec<? extends SpecialModelRenderer.Unbaked> type() {
+        public MapCodec<? extends SpecialModelRenderer.Unbaked<Boolean>> type() {
             return CODEC;
         }
     }

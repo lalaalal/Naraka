@@ -8,7 +8,6 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.SpearModel;
 import com.yummy.naraka.client.model.SpearOfLonginusModel;
 import com.yummy.naraka.client.renderer.entity.state.SpearRenderState;
-import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.Spear;
 import net.minecraft.client.model.EntityModel;
@@ -88,7 +87,9 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
             if (renderState.isLonginus)
                 renderState.lightCoords = LightCoordsUtil.FULL_BRIGHT;
             RenderType renderType = model.renderType(getTextureLocation(renderState));
-            NarakaRenderUtils.submitModelWithFoilRenderTypes(model, renderState, poseStack, renderType, submitNodeCollector, renderState.lightCoords, renderState.hasFoil);
+            submitNodeCollector.order(0).submitModel(model, renderState, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.outlineColor, null);
+            if (renderState.hasFoil)
+                submitNodeCollector.order(1).submitModel(model, renderState, poseStack, RenderTypes.entityGlint(), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.outlineColor, null);
         }
 
         poseStack.popPose();

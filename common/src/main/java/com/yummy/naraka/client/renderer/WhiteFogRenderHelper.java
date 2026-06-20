@@ -1,13 +1,10 @@
 package com.yummy.naraka.client.renderer;
 
 import com.yummy.naraka.client.NarakaClientContext;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.fog.FogData;
 import net.minecraft.util.Mth;
 import org.joml.Vector4f;
 
-@Environment(EnvType.CLIENT)
 public class WhiteFogRenderHelper {
     private static final int MAX_WHITE_SCREEN_TICK = 20;
 

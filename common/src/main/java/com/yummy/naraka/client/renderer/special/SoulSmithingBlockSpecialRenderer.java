@@ -5,8 +5,6 @@ import com.mojang.math.Axis;
 import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -15,12 +13,10 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemDisplayContext;
 import org.joml.Vector3fc;
 
 import java.util.function.Consumer;
 
-@Environment(EnvType.CLIENT)
 public class SoulSmithingBlockSpecialRenderer implements NoDataSpecialModelRenderer {
     private final Model<?> model;
 
@@ -29,11 +25,11 @@ public class SoulSmithingBlockSpecialRenderer implements NoDataSpecialModelRende
     }
 
     @Override
-    public void submit(ItemDisplayContext itemDisplayContext, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, int packedOverlay, boolean bl, int color) {
+    public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, boolean hasFoil, int outlineColor) {
         poseStack.pushPose();
         poseStack.rotateAround(Axis.XP.rotation(Mth.PI), 0.5f, 0.5f, 0.5f);
         RenderType renderType = model.renderType(NarakaTextures.SOUL_SMITHING_BLOCK);
-        submitNodeCollector.submitModelPart(model.root(), poseStack, renderType, packedLight, packedOverlay, null, -1, null);
+        submitNodeCollector.submitModelPart(model.root(), poseStack, renderType, lightCoords, overlayCoords, null, -1, null);
         poseStack.popPose();
     }
 
@@ -43,19 +39,18 @@ public class SoulSmithingBlockSpecialRenderer implements NoDataSpecialModelRende
         model.root().getExtentsForGui(poseStack, consumer);
     }
 
-    @Environment(EnvType.CLIENT)
-    public record Unbaked() implements SpecialModelRenderer.Unbaked {
+    public record Unbaked() implements NoDataSpecialModelRenderer.Unbaked {
         public static final MapCodec<Unbaked> CODEC = MapCodec.unit(new Unbaked());
 
         @Override
-        public SpecialModelRenderer<?> bake(BakingContext context) {
+        public SpecialModelRenderer<Void> bake(BakingContext context) {
             ModelPart root = context.entityModelSet().bakeLayer(NarakaModelLayers.SOUL_SMITHING_BLOCK);
             Model<?> model = new Model.Simple(root, RenderTypes::entityTranslucent);
             return new SoulSmithingBlockSpecialRenderer(model);
         }
 
         @Override
-        public MapCodec<? extends SpecialModelRenderer.Unbaked> type() {
+        public MapCodec<? extends NoDataSpecialModelRenderer.Unbaked> type() {
             return CODEC;
         }
     }

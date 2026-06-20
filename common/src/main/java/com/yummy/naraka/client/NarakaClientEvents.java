@@ -6,8 +6,6 @@ import com.yummy.naraka.config.Configuration;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.sounds.SoundSource;
@@ -15,7 +13,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 
-@Environment(EnvType.CLIENT)
 public class NarakaClientEvents {
     public static void initialize() {
         ClientEvents.TICK_PRE.register(NarakaClientEvents::onClientTick);

@@ -1,8 +1,6 @@
 package com.yummy.naraka.client.renderer;
 
 import com.yummy.naraka.util.Color;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -19,7 +17,6 @@ import java.util.function.Supplier;
  * @see com.yummy.naraka.mixin.client.LayerRenderStateMixin
  * @see com.yummy.naraka.mixin.client.SubmitNodeCollectionMixin
  */
-@Environment(EnvType.CLIENT)
 public class ItemRenderRegistry {
     private static final Map<Item, Supplier<Color>> ITEM_COLORS = new HashMap<>();
     private static final Map<ItemStackRenderState, Integer> TEMPORARY_COLORS = new HashMap<>();

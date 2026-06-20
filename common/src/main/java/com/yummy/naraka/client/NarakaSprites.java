@@ -1,11 +1,8 @@
 package com.yummy.naraka.client;
 
 import com.yummy.naraka.NarakaMod;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.resources.Identifier;
 
-@Environment(EnvType.CLIENT)
 public final class NarakaSprites {
     public static final Identifier STIGMA_BACKGROUND = NarakaMod.identifier("hud/stigma_background");
     public static final Identifier STIGMA = NarakaMod.identifier("hud/stigma");

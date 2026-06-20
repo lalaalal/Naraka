@@ -32,12 +32,9 @@ import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.overlay.NarakaProgressOverlayExtensionTypes;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.network.chat.Component;
 
-@Environment(EnvType.CLIENT)
 public final class NarakaModClient {
     public static void initialize(NarakaClientInitializer initializer) {
         ClientEventHandler.prepare();
@@ -162,7 +159,7 @@ public final class NarakaModClient {
                 NarakaConfig.CLIENT.disableOreSeeThrough.set(disabled);
                 NarakaConfig.CLIENT.saveValues();
                 if (minecraft.player != null)
-                    minecraft.player.displayClientMessage(Component.translatable(LanguageKey.toggleOreSeeThroughMessage(disabled)), false);
+                    minecraft.player.sendOverlayMessage(Component.translatable(LanguageKey.toggleOreSeeThroughMessage(disabled)));
             }
         });
     }
