@@ -2,14 +2,11 @@ package com.yummy.naraka.client.model;
 
 import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.renderer.entity.state.NarakaSwordRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
-@Environment(EnvType.CLIENT)
 public class NarakaSwordModel extends EntityModel<NarakaSwordRenderState> {
     private final ModelPart body;
     private final ModelPart core;

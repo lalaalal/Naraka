@@ -1,14 +1,11 @@
 package com.yummy.naraka.client.model;
 
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 
-@Environment(EnvType.CLIENT)
 public abstract class AbstractHerobrineModel<S extends AbstractHerobrineRenderState> extends SkillUsingModModel<S> {
     protected AbstractHerobrineModel(ModelPart root, AnimationDefinition walkAnimationDefinition, String entityName) {
         super(root, walkAnimationDefinition, entityName);

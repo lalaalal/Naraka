@@ -1,14 +1,11 @@
 package com.yummy.naraka.client.model;
 
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
-@Environment(EnvType.CLIENT)
 public class HerobrineScarfModel extends EntityModel<AbstractHerobrineRenderState> {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();

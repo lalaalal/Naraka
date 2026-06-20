@@ -2,19 +2,16 @@ package com.yummy.naraka.client.model;
 
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.renderer.entity.state.SkillUsingMobRenderState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.resources.Identifier;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-@Environment(EnvType.CLIENT)
 public abstract class SkillUsingModModel<T extends SkillUsingMobRenderState> extends EntityModel<T> {
     protected final Map<Identifier, KeyframeAnimation> animations = new HashMap<>();
     @Nullable
