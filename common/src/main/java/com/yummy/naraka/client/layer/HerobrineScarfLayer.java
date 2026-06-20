@@ -14,8 +14,6 @@ import com.yummy.naraka.client.renderer.entity.state.WavingScarfTexture;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.entity.ScarfWavingData;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -31,7 +29,6 @@ import org.joml.Vector3fc;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M extends AbstractHerobrineModel<S>> extends RenderLayer<S, M> {
     private final HerobrineScarfModel scarfModel;
 
@@ -68,7 +65,7 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
         applyTranslateAndRotate(poseStack, getParentModel());
         int color = selectColor(renderState);
         if (renderState.getModelType() != WavingScarfRenderState.ModelType.BIG) {
-            RenderType renderType = RenderTypes.entitySmoothCutout(renderState.getFixedModelTexture());
+            RenderType renderType = RenderTypes.entityCutoutCull(renderState.getFixedModelTexture());
             submitNodeCollector.submitModel(scarfModel, renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, color, null, renderState.outlineColor, null);
         }
 
