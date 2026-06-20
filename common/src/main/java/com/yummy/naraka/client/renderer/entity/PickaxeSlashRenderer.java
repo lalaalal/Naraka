@@ -7,21 +7,18 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.renderer.entity.state.PickaxeSlashRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.PickaxeSlash;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
+import net.minecraft.util.LightCoordsUtil;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
 import java.util.function.BiFunction;
 
-@Environment(EnvType.CLIENT)
 public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash, PickaxeSlashRenderState> {
     public PickaxeSlashRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -51,7 +48,7 @@ public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash, 
         poseStack.rotateAround(Axis.ZN.rotationDegrees(renderState.zRot), 0, 0.5f, 0);
         poseStack.translate(0, 0, -0.25);
         submitNodeCollector.order(1).submitCustomGeometry(poseStack, RenderTypes.entityTranslucent(NarakaTextures.PICKAXE_SLASH), (pose, vertexConsumer) -> {
-            NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, renderState.color, Direction.Axis.X);
+            NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, renderState.color, Direction.Axis.X);
         });
         poseStack.popPose();
     }
@@ -69,7 +66,7 @@ public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash, 
     protected void renderTailPart(PickaxeSlashRenderState renderState, PoseStack.Pose pose, VertexConsumer vertexConsumer, Vector3f from, Vector3f to, float index, float size, int color) {
         NarakaRenderUtils.renderFlatImage(pose, vertexConsumer,
                 NarakaRenderUtils.createVertices(from, to, 1.5f, modifier(renderState.yRot, renderState.zRot)), index, index, size, size,
-                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
+                LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
         );
     }
 

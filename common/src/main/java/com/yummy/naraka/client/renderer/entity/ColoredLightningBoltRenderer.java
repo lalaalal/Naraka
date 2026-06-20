@@ -6,17 +6,14 @@ import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.renderer.entity.state.ColoredLightningBoltRenderState;
 import com.yummy.naraka.world.entity.ColoredLightningBolt;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
 
-@Environment(EnvType.CLIENT)
 public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightningBolt, ColoredLightningBoltRenderState> {
     public ColoredLightningBoltRenderer(EntityRendererProvider.Context context) {
         super(context);

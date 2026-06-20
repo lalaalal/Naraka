@@ -1,14 +1,11 @@
 package com.yummy.naraka.client.renderer.entity.state;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.world.entity.AnimationState;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-@Environment(EnvType.CLIENT)
 public class HerobrineRenderState extends AbstractHerobrineRenderState implements BeamEffectRenderStateControl {
     public int phase;
     public boolean dead;

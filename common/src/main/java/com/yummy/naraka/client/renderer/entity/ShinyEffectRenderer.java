@@ -7,18 +7,15 @@ import com.yummy.naraka.client.renderer.entity.state.ShinyEffectRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.ShinyEffect;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.world.entity.Entity;
 
-@Environment(EnvType.CLIENT)
 public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect, ShinyEffectRenderState> {
     public ShinyEffectRenderer(EntityRendererProvider.Context context) {
         super(context);

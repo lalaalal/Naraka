@@ -5,23 +5,20 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Afterimage;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.LightCoordsUtil;
 
 import java.util.Collection;
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public abstract class AbstractHerobrineRenderState extends SkillUsingMobRenderState implements AfterimageRenderState.Provider {
     public boolean isShadow = false;
     public boolean finalModel = false;
     public boolean renderScarf = false;
     public float eyeAlpha = 1;
     public int scarfAlpha = 0xff;
-    public int pickaxeLight = LightTexture.FULL_BRIGHT;
+    public int pickaxeLight = LightCoordsUtil.FULL_BRIGHT;
     public int alpha = 0xff;
 
     public boolean displayPickaxe = true;

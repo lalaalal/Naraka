@@ -7,22 +7,19 @@ import com.yummy.naraka.client.model.NarakaPickaxeModel;
 import com.yummy.naraka.client.renderer.entity.state.NarakaPickaxeRenderState;
 import com.yummy.naraka.world.entity.NarakaPickaxe;
 import com.yummy.naraka.world.item.NarakaItems;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemModelResolver;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import org.joml.Quaternionf;
 
-@Environment(EnvType.CLIENT)
 public class NarakaPickaxeRenderer extends EntityRenderer<NarakaPickaxe, NarakaPickaxeRenderState> {
     private final ItemModelResolver itemModelResolver;
     private final ItemStack pickaxe = NarakaItems.NARAKA_PICKAXE.get().getDefaultInstance();
@@ -69,7 +66,7 @@ public class NarakaPickaxeRenderer extends EntityRenderer<NarakaPickaxe, NarakaP
         poseStack.mulPose(Axis.ZP.rotationDegrees(45));
         poseStack.translate(0.5, 0.5, 0);
         poseStack.scale(4, 4, 1);
-        renderState.pickaxe.submit(poseStack, submitNodeCollector, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0);
+        renderState.pickaxe.submit(poseStack, submitNodeCollector, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
     }
 

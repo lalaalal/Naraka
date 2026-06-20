@@ -5,16 +5,14 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.renderer.entity.state.LightTailEntityRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.LightTailEntity;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -22,7 +20,6 @@ import org.joml.Vector3f;
 
 import java.util.stream.Collectors;
 
-@Environment(EnvType.CLIENT)
 public abstract class LightTailEntityRenderer<T extends LightTailEntity, S extends LightTailEntityRenderState> extends EntityRenderer<T, S> {
     protected LightTailEntityRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -105,7 +102,7 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
     protected void renderTailPart(S renderState, PoseStack.Pose pose, VertexConsumer vertexConsumer, Vector3f from, Vector3f to, float index, float size, int color) {
         NarakaRenderUtils.renderFlatImage(pose, vertexConsumer,
                 NarakaRenderUtils.createVertices(from, to, renderState.tailWidth, NarakaRenderUtils::modifyY), index, index, size, size,
-                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
+                LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color
         );
     }
 }

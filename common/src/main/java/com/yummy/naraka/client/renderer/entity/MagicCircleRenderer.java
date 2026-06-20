@@ -6,18 +6,15 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.renderer.entity.state.FlatImageRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.MagicCircle;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
+import net.minecraft.util.LightCoordsUtil;
 
-@Environment(EnvType.CLIENT)
 public class MagicCircleRenderer extends EntityRenderer<MagicCircle, FlatImageRenderState> {
     public MagicCircleRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -43,7 +40,7 @@ public class MagicCircleRenderer extends EntityRenderer<MagicCircle, FlatImageRe
         poseStack.scale(renderState.scale, renderState.scale, renderState.scale);
         poseStack.mulPose(Axis.YN.rotation(renderState.yRot));
         submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entityCutout(NarakaTextures.MAGIC_CIRCLE), (pose, vertexConsumer) -> {
-            NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.Axis.Y);
+            NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.Axis.Y);
         });
         poseStack.popPose();
     }

@@ -9,18 +9,15 @@ import com.yummy.naraka.client.renderer.entity.state.NarakaPortalRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.NarakaPortal;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.util.LightCoordsUtil;
 
-@Environment(EnvType.CLIENT)
 public class NarakaPortalRenderer extends EntityRenderer<NarakaPortal, NarakaPortalRenderState> {
     public NarakaPortalRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -58,11 +55,11 @@ public class NarakaPortalRenderer extends EntityRenderer<NarakaPortal, NarakaPor
         poseStack.pushPose();
         poseStack.mulPose(Axis.YN.rotationDegrees(renderState.yRot));
         nodeCollector.submitCustomGeometry(poseStack, getRenderType(), (pose, vertexConsumer) -> {
-            NarakaRenderUtils.renderRhombus(pose, vertexConsumer, renderState.width, renderState.height, LightTexture.FULL_BRIGHT, 0xbb, 0xffffff);
+            NarakaRenderUtils.renderRhombus(pose, vertexConsumer, renderState.width, renderState.height, LightCoordsUtil.FULL_BRIGHT, 0xbb, 0xffffff);
         });
         poseStack.mulPose(Axis.YP.rotationDegrees(180));
         nodeCollector.submitCustomGeometry(poseStack, getRenderType(), (pose, vertexConsumer) -> {
-            NarakaRenderUtils.renderRhombus(pose, vertexConsumer, renderState.width, renderState.height, LightTexture.FULL_BRIGHT, 0xbb, 0xffffff);
+            NarakaRenderUtils.renderRhombus(pose, vertexConsumer, renderState.width, renderState.height, LightCoordsUtil.FULL_BRIGHT, 0xbb, 0xffffff);
         });
         poseStack.popPose();
 

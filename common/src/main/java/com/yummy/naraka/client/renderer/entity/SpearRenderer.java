@@ -11,24 +11,21 @@ import com.yummy.naraka.client.renderer.entity.state.SpearRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.Spear;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.entity.EntityType;
 
 import java.util.Map;
 
-@Environment(EnvType.CLIENT)
 public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
     private static final Map<EntityType<? extends Spear>, Identifier> TEXTURE_MAP = Map.of(
             NarakaEntityTypes.THROWN_SPEAR.get(), NarakaTextures.SPEAR,
@@ -89,7 +86,7 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
             renderNonShaderLonginus(model, renderState.ageInTicks, poseStack, submitNodeCollector);
         } else {
             if (renderState.isLonginus)
-                renderState.lightCoords = LightTexture.FULL_BRIGHT;
+                renderState.lightCoords = LightCoordsUtil.FULL_BRIGHT;
             RenderType renderType = model.renderType(getTextureLocation(renderState));
             NarakaRenderUtils.submitModelWithFoilRenderTypes(model, renderState, poseStack, renderType, submitNodeCollector, renderState.lightCoords, renderState.hasFoil);
         }
@@ -98,11 +95,11 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
     }
 
     public static void renderShaderLonginus(EntityModel<SpearRenderState> model, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
-        submitNodeCollector.submitModelPart(model.root(), poseStack, NarakaRenderTypes.longinus(), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, -1, null);
+        submitNodeCollector.submitModelPart(model.root(), poseStack, NarakaRenderTypes.longinus(), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, -1, null);
     }
 
     public static void renderNonShaderLonginus(EntityModel<SpearRenderState> model, float ageInTicks, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
-        submitNodeCollector.submitModelPart(model.root(), poseStack, RenderTypes.entityCutout(NarakaTextures.LONGINUS), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, 0xff000000, null);
+        submitNodeCollector.submitModelPart(model.root(), poseStack, RenderTypes.entityCutout(NarakaTextures.LONGINUS), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, 0xff000000, null);
         renderLonginus(model, ageInTicks, 0.001f, 0.01f, poseStack, submitNodeCollector, 1);
         renderLonginus(model, ageInTicks, 0.002f, 0.005f, poseStack, submitNodeCollector, 2);
         renderLonginus(model, ageInTicks, 0.0015f, 0.0025f, poseStack, submitNodeCollector, 3);
@@ -110,6 +107,6 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
 
     private static void renderLonginus(EntityModel<SpearRenderState> model, float ageInTicks, float uMultiplier, float vMultiplier, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int order) {
         RenderType renderType = RenderTypes.energySwirl(NarakaTextures.LONGINUS, (ageInTicks * uMultiplier) % 1, (ageInTicks * vMultiplier) % 1);
-        submitNodeCollector.order(order).submitModelPart(model.root(), poseStack, renderType, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, -1, null);
+        submitNodeCollector.order(order).submitModelPart(model.root(), poseStack, renderType, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, -1, null);
     }
 }

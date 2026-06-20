@@ -1,13 +1,10 @@
 package com.yummy.naraka.client.renderer.entity.state;
 
 import com.yummy.naraka.world.entity.BeamEffect;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-@Environment(EnvType.CLIENT)
 public interface BeamEffectRenderStateControl {
     void add(BeamEffectRenderState beamEffectRenderState);
 

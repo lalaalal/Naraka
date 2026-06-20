@@ -1,11 +1,8 @@
 package com.yummy.naraka.client.renderer.entity.state;
 
 import com.yummy.naraka.world.entity.AreaShape;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 
-@Environment(EnvType.CLIENT)
 public class AreaEffectRenderState extends EntityRenderState {
     public float xWidth;
     public float zWidth;

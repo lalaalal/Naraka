@@ -8,22 +8,19 @@ import com.yummy.naraka.client.renderer.entity.state.AreaEffectRenderState;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AreaEffect;
 import com.yummy.naraka.world.entity.AreaShape;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 
-@Environment(EnvType.CLIENT)
 public class AreaEffectRenderer extends EntityRenderer<AreaEffect, AreaEffectRenderState> {
     public AreaEffectRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -86,25 +83,25 @@ public class AreaEffectRenderer extends EntityRenderer<AreaEffect, AreaEffectRen
         vertexConsumer.addVertex(pose, x, 0.1f, z)
                 .setUv(0, 1)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(LightTexture.FULL_BRIGHT)
+                .setLight(LightCoordsUtil.FULL_BRIGHT)
                 .setColor(ARGB.color(alpha, color))
                 .setNormal(pose, 0, 1, 0);
         vertexConsumer.addVertex(pose, x, 0.1f, -z)
                 .setUv(0, 0)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(LightTexture.FULL_BRIGHT)
+                .setLight(LightCoordsUtil.FULL_BRIGHT)
                 .setColor(ARGB.color(alpha, color))
                 .setNormal(pose, 0, 1, 0);
         vertexConsumer.addVertex(pose, -x, 0.1f, -z)
                 .setUv(1, 0)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(LightTexture.FULL_BRIGHT)
+                .setLight(LightCoordsUtil.FULL_BRIGHT)
                 .setColor(ARGB.color(alpha, color))
                 .setNormal(pose, 0, 1, 0);
         vertexConsumer.addVertex(pose, -x, 0.1f, z)
                 .setUv(1, 1)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(LightTexture.FULL_BRIGHT)
+                .setLight(LightCoordsUtil.FULL_BRIGHT)
                 .setColor(ARGB.color(alpha, color))
                 .setNormal(pose, 0, 1, 0);
     }
@@ -136,7 +133,7 @@ public class AreaEffectRenderer extends EntityRenderer<AreaEffect, AreaEffectRen
         vertexConsumer.addVertex(pose, vector)
                 .setUv(u, v)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(LightTexture.FULL_BRIGHT)
+                .setLight(LightCoordsUtil.FULL_BRIGHT)
                 .setColor(ARGB.color(alpha, color))
                 .setNormal(pose, 0, 1, 0);
     }

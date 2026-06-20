@@ -9,14 +9,13 @@ import com.yummy.naraka.client.renderer.entity.state.OriginHerobrineRenderState;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.entity.OriginHerobrine;
 import com.yummy.naraka.world.item.SoulType;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.EnderDragonRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
@@ -26,7 +25,6 @@ import org.joml.Vector3f;
 
 import java.util.LinkedHashMap;
 
-@Environment(EnvType.CLIENT)
 public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrine, OriginHerobrineRenderState, HerobrineModel<OriginHerobrineRenderState>> {
     private static final float HALF_SQRT_3 = (float) (Math.sqrt(3.0) / 2.0);
 
@@ -77,7 +75,7 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
             poseStack.pushPose();
             poseStack.translate(0, 1, 0);
             submitRays(poseStack, deathProgress, submitNodeCollector, RenderTypes.dragonRays());
-            submitRays(poseStack, deathProgress, submitNodeCollector, RenderTypes.dragonRaysDepth());
+            submitRays(poseStack, deathProgress, submitNodeCollector, RenderTypes.endCrystalBeam(EnderDragonRenderer.CRYSTAL_BEAM_LOCATION));
             poseStack.popPose();
         }
 

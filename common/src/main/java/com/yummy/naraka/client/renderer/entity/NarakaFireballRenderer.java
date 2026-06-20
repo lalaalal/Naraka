@@ -6,16 +6,13 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.NarakaFireballModel;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.NarakaFireball;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 
-@Environment(EnvType.CLIENT)
 public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball, EntityRenderState> {
     private final NarakaFireballModel model;
 

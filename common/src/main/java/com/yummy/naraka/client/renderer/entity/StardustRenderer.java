@@ -7,16 +7,13 @@ import com.yummy.naraka.client.model.StardustModel;
 import com.yummy.naraka.client.renderer.entity.state.LightTailEntityRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.Stardust;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.LightCoordsUtil;
 
-@Environment(EnvType.CLIENT)
 public class StardustRenderer extends LightTailEntityRenderer<Stardust, LightTailEntityRenderState> {
     private final StardustModel model;
 
@@ -41,7 +38,7 @@ public class StardustRenderer extends LightTailEntityRenderer<Stardust, LightTai
                 renderState,
                 poseStack,
                 RenderTypes.entityCutout(NarakaTextures.STARDUST),
-                LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1,
+                LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1,
                 null,
                 renderState.outlineColor,
                 null);

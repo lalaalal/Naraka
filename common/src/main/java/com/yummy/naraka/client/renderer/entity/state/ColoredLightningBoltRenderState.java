@@ -1,12 +1,9 @@
 package com.yummy.naraka.client.renderer.entity.state;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.state.LightningBoltRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 
-@Environment(EnvType.CLIENT)
 public class ColoredLightningBoltRenderState extends LightningBoltRenderState {
     public int color;
     public RenderType renderType = RenderTypes.lightning();
