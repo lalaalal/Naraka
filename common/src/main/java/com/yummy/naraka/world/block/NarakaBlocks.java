@@ -5,7 +5,7 @@ import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.world.item.NarakaItems;
-import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -15,7 +15,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.component.ItemLore;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -85,7 +84,7 @@ public class NarakaBlocks {
     );
     public static final HolderProxy<Block, NectariumCrystalBlock> NECTARIUM_CRYSTAL_BLOCK = registerBlockWithItem(
             "nectarium_crystal",
-            NectariumCrystalBlock::new,
+            properties -> new NectariumCrystalBlock(NECTARIUM_CORE_BLOCK.get().defaultBlockState(), properties),
             from(Blocks.AMETHYST_BLOCK).requiresCorrectToolForDrops()
     );
 
@@ -146,7 +145,7 @@ public class NarakaBlocks {
     );
 
     public static final HolderProxy<Block, Block> SOUL_INFUSED_REDSTONE_BLOCK = registerSoulInfusedBlock("redstone_block", Blocks.REDSTONE_BLOCK);
-    public static final HolderProxy<Block, Block> SOUL_INFUSED_COPPER_BLOCK = registerSoulInfusedBlock("copper_block", Blocks.COPPER_BLOCK);
+    public static final HolderProxy<Block, Block> SOUL_INFUSED_COPPER_BLOCK = registerSoulInfusedBlock("copper_block", Blocks.COPPER_BLOCK.weathering().unaffected());
     public static final HolderProxy<Block, Block> SOUL_INFUSED_GOLD_BLOCK = registerSoulInfusedBlock("gold_block", Blocks.GOLD_BLOCK);
     public static final HolderProxy<Block, Block> SOUL_INFUSED_EMERALD_BLOCK = registerSoulInfusedBlock("emerald_block", Blocks.EMERALD_BLOCK);
     public static final HolderProxy<Block, Block> SOUL_INFUSED_DIAMOND_BLOCK = registerSoulInfusedBlock("diamond_block", Blocks.DIAMOND_BLOCK);
@@ -186,7 +185,7 @@ public class NarakaBlocks {
                     .noLootTable()
     );
 
-    public static final List<Supplier<Block>> SOUL_INFUSED_BLOCKS = List.of(
+    public static final List<HolderProxy<Block, Block>> SOUL_INFUSED_BLOCKS = List.of(
             SOUL_INFUSED_REDSTONE_BLOCK,
             SOUL_INFUSED_COPPER_BLOCK,
             SOUL_INFUSED_GOLD_BLOCK,
@@ -198,10 +197,9 @@ public class NarakaBlocks {
     );
 
     public static void forEachSoulInfusedBlock(Consumer<Block> consumer) {
-        for (Supplier<Block> soulInfusedBlock : SOUL_INFUSED_BLOCKS)
-            consumer.accept(soulInfusedBlock.get());
+        for (Holder<Block> soulInfusedBlock : SOUL_INFUSED_BLOCKS)
+            consumer.accept(soulInfusedBlock.value());
     }
-
 
     private static BlockBehaviour.Properties from(Block block) {
         return BlockBehaviour.Properties.ofFullCopy(block);
@@ -284,7 +282,7 @@ public class NarakaBlocks {
         return registerBlockWithItem(name, Block::new, from(propertyBase));
     }
 
-    private static boolean always(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+    private static boolean always(BlockState state) {
         return true;
     }
 

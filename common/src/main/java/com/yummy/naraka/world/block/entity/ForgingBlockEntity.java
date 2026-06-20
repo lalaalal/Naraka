@@ -64,7 +64,7 @@ public abstract class ForgingBlockEntity extends BlockEntity {
                 || level == null || level.isClientSide()
                 || cooldownTick > 0)
             return false;
-        if (level.random.nextFloat() < successChance) {
+        if (level.getRandom().nextFloat() < successChance) {
             if (Reinforcement.increase(forgingItem, NarakaReinforcementEffects.byItem(forgingItem)))
                 level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
             setChanged();
@@ -91,20 +91,20 @@ public abstract class ForgingBlockEntity extends BlockEntity {
     public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         CompoundTag compoundTag = new CompoundTag();
         if (!forgingItem.isEmpty())
-            compoundTag.store("ForgingItem", ItemStack.STRICT_CODEC, RegistryOps.create(NbtOps.INSTANCE, provider), forgingItem);
+            compoundTag.store("ForgingItem", ItemStack.CODEC, RegistryOps.create(NbtOps.INSTANCE, provider), forgingItem);
         return compoundTag;
     }
 
     @Override
     protected void loadAdditional(ValueInput input) {
-        forgingItem = input.read("ForgingItem", ItemStack.STRICT_CODEC)
+        forgingItem = input.read("ForgingItem", ItemStack.CODEC)
                 .orElse(ItemStack.EMPTY);
     }
 
     @Override
     protected void saveAdditional(ValueOutput output) {
         if (!forgingItem.isEmpty())
-            output.store("ForgingItem", ItemStack.STRICT_CODEC, forgingItem);
+            output.store("ForgingItem", ItemStack.CODEC, forgingItem);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ForgingBlockEntity blockEntity) {

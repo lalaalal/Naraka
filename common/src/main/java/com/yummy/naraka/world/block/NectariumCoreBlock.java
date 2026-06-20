@@ -17,8 +17,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.DripstoneThickness;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.SpeleothemThickness;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class NectariumCoreBlock extends Block {
@@ -52,7 +52,7 @@ public class NectariumCoreBlock extends Block {
             BlockPos growingPos = pos.below();
             BlockState crystal = NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get().defaultBlockState()
                     .setValue(NectariumCrystalBlock.TIP_DIRECTION, Direction.DOWN)
-                    .setValue(NectariumCrystalBlock.THICKNESS, DripstoneThickness.TIP);
+                    .setValue(NectariumCrystalBlock.THICKNESS, SpeleothemThickness.TIP);
             level.setBlock(growingPos, crystal, UPDATE_ALL);
             level.setBlock(pos, state.setValue(HONEY, honey - 1), UPDATE_ALL);
         } else if (belowState.is(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get())) {
@@ -61,7 +61,7 @@ public class NectariumCoreBlock extends Block {
                 return;
             BlockState crystal = NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get().defaultBlockState()
                     .setValue(NectariumCrystalBlock.TIP_DIRECTION, Direction.UP)
-                    .setValue(NectariumCrystalBlock.THICKNESS, DripstoneThickness.TIP);
+                    .setValue(NectariumCrystalBlock.THICKNESS, SpeleothemThickness.TIP);
             level.setBlock(growingPos, crystal, UPDATE_ALL);
             level.setBlock(pos, state.setValue(HONEY, honey - 1), UPDATE_ALL);
         }

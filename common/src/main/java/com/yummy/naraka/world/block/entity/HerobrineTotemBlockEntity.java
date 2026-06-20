@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.block.entity;
 
 import com.mojang.serialization.Codec;
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.util.NarakaUtils;
@@ -8,7 +9,7 @@ import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -16,7 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.datafix.DataFixTypes;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -93,7 +94,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
             } else {
                 HerobrineTotem.crack(level, pos, state);
             }
-            if (level.random.nextFloat() < 0.9f) {
+            if (level.getRandom().nextFloat() < 0.9f) {
                 level.sendParticles(ParticleTypes.SMOKE,
                         pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 10,
                         0.5, 0.5, 0.5, 0
@@ -118,8 +119,8 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     public static boolean isTotemStructure(Level level, BlockPos totemPos) {
         return level.getBlockState(totemPos).is(NarakaBlocks.HEROBRINE_TOTEM.get())
                 && level.getBlockState(totemPos.above()).is(Blocks.NETHERRACK)
-                && level.getBlockState(totemPos.below(1)).is(NarakaBlocks.IMITATION_GOLD_BLOCK)
-                && level.getBlockState(totemPos.below(2)).is(NarakaBlocks.IMITATION_GOLD_BLOCK);
+                && level.getBlockState(totemPos.below(1)).is(NarakaBlocks.IMITATION_GOLD_BLOCK.get())
+                && level.getBlockState(totemPos.below(2)).is(NarakaBlocks.IMITATION_GOLD_BLOCK.get());
     }
 
     private void summonHerobrine(ServerLevel level, BlockPos pos) {
@@ -129,7 +130,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         herobrine.setAnimation(HerobrineAnimationIdentifiers.BLOCKING);
         level.addFreshEntity(herobrine);
 
-        LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
+        LightningBolt lightningBolt = new LightningBolt(EntityTypes.LIGHTNING_BOLT, level);
         lightningBolt.setVisualOnly(true);
         lightningBolt.setPos(herobrine.position());
         level.addFreshEntity(lightningBolt);
@@ -184,7 +185,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
                 .xmap(HerobrineTotemPlaceable::new, HerobrineTotemPlaceable::getPositions);
 
         public static final SavedDataType<HerobrineTotemPlaceable> FACTORY = new SavedDataType<>(
-                "herobrine_totem_placeable", HerobrineTotemPlaceable::new, CODEC, DataFixTypes.STRUCTURE
+                NarakaMod.identifier("herobrine_totem_placeable"), HerobrineTotemPlaceable::new, CODEC, DataFixTypes.STRUCTURE
         );
 
         private final List<BlockPos> positions;

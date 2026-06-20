@@ -97,7 +97,7 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
 
     @Override
     protected void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier, boolean bl) {
-        if (!level.isClientSide() && entity.canUsePortal(false) && !entity.getType().is(NarakaEntityTypeTags.NARAKA_PORTAL_IGNORE)) {
+        if (!level.isClientSide() && entity.canUsePortal(false) && !entity.is(NarakaEntityTypeTags.NARAKA_PORTAL_IGNORE)) {
             if (!entity.isOnPortalCooldown()) {
                 level.getBlockEntity(blockPos, NarakaBlockEntityTypes.NARAKA_PORTAL.get())
                         .ifPresent(NarakaPortalBlockEntity::use);

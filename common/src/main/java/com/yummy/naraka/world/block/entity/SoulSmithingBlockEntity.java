@@ -26,7 +26,6 @@ import net.minecraft.world.item.enchantment.Enchantable;
 import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
-import net.minecraft.world.item.equipment.trim.TrimMaterials;
 import net.minecraft.world.item.equipment.trim.TrimPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -175,7 +174,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
         cooldownTick = COOLDOWN;
 
-        Optional<Holder<TrimMaterial>> material = TrimMaterials.getFromIngredient(level.registryAccess(), soulType.getItem().getDefaultInstance());
+        Optional<Holder<TrimMaterial>> material = Optional.ofNullable(soulType.getItem().getDefaultInstance().get(DataComponents.PROVIDES_TRIM_MATERIAL));
         Optional<Holder.Reference<TrimPattern>> pattern = NarakaTrimPatterns.fromItem(level.registryAccess(), templateItem);
         if (material.isPresent() && pattern.isPresent()) {
             ArmorTrim armorTrim = new ArmorTrim(material.get(), pattern.get());
@@ -214,7 +213,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
                 soulStabilizer.setLevel(level);
         }
         if (!templateItem.isEmpty())
-            tag.store("TemplateItem", ItemStack.STRICT_CODEC, templateItem);
+            tag.store("TemplateItem", ItemStack.CODEC, templateItem);
         return tag;
     }
 
@@ -225,7 +224,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         if (isStabilizerAttached)
             soulStabilizer.saveAdditional(output);
         if (!templateItem.isEmpty())
-            output.store("TemplateItem", ItemStack.STRICT_CODEC, templateItem);
+            output.store("TemplateItem", ItemStack.CODEC, templateItem);
     }
 
     @Override
@@ -237,7 +236,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
             if (level != null)
                 soulStabilizer.setLevel(level);
         }
-        input.read("TemplateItem", ItemStack.STRICT_CODEC)
+        input.read("TemplateItem", ItemStack.CODEC)
                 .ifPresent(item -> templateItem = item);
     }
 }
