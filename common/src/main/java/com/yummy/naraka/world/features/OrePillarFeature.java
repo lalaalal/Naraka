@@ -81,7 +81,7 @@ public class OrePillarFeature extends Feature<OrePillarConfiguration> {
         }
 
         for (Direction direction : Direction.Plane.HORIZONTAL) {
-            float scale = 0.67f * (height / (float) config.heightProvider().getMaxValue());
+            float scale = 0.67f * (height / (float) config.heightProvider().maxInclusive());
             int subPillarHeight = (int) Math.min(config.sampleHeight(random) * scale, height - 1);
             if (spreadDirection.getOpposite() != direction && random.nextFloat() < config.spreadChance())
                 placeSubPillar(level, random, start.relative(direction), oreSelector, config, maxRadius, radius + 1, subPillarHeight, direction, growingDirection);
