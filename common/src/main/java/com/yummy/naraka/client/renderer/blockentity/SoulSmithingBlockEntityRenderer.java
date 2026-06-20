@@ -11,8 +11,6 @@ import com.yummy.naraka.world.block.SoulSmithingBlock;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.block.entity.SoulSmithingBlockEntity;
 import com.yummy.naraka.world.item.NarakaItems;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -24,7 +22,7 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -34,7 +32,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 
-@Environment(EnvType.CLIENT)
 public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<SoulSmithingBlockEntity, SoulSmithingBlockRenderState> {
     private final ModelPart main;
     private final ModelPart trimTemplate;
@@ -107,7 +104,7 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
     }
 
     @Override
-    public void submit(SoulSmithingBlockRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+    public void submit(SoulSmithingBlockRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
         poseStack.pushPose();
         Direction direction = renderState.direction;
         Quaternionf rotation = Axis.YN.rotationDegrees(direction.toYRot());
@@ -118,7 +115,7 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
         poseStack.popPose();
 
         submitTrim(renderState, poseStack, submitNodeCollector, rotation);
-        submitSoulStabilizer(renderState, poseStack, submitNodeCollector, cameraRenderState, rotation);
+        submitSoulStabilizer(renderState, poseStack, submitNodeCollector, camera, rotation);
         submitItem(renderState, poseStack, submitNodeCollector, rotation);
     }
 

@@ -7,23 +7,20 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.renderer.blockentity.state.NarakaPortalRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.block.entity.NarakaPortalBlockEntity;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-@Environment(EnvType.CLIENT)
 public class NarakaPortalBlockEntityRenderer implements BlockEntityRenderer<NarakaPortalBlockEntity, NarakaPortalRenderState> {
     private static final Identifier[] TEXTURE_MAPPING = {
             NarakaTextures.NARAKA_PORTAL_1, NarakaTextures.NARAKA_PORTAL_1, NarakaTextures.NARAKA_PORTAL_2, NarakaTextures.NARAKA_PORTAL_3,
@@ -54,16 +51,17 @@ public class NarakaPortalBlockEntityRenderer implements BlockEntityRenderer<Nara
         return NarakaRenderTypes.longinusCutout(getTextureLocation(renderState));
     }
 
+
     @Override
-    public void submit(NarakaPortalRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
+    public void submit(NarakaPortalRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.translate(0.5, 0, 0.5);
         poseStack.scale(3, 3, 3);
         RenderType renderType = getRenderType(renderState);
-        nodeCollector.submitCustomGeometry(poseStack, renderType, (pose, vertexConsumer) -> {
-            NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xbbffffff, Direction.Axis.Z, false);
+        submitNodeCollector.submitCustomGeometry(poseStack, renderType, (pose, vertexConsumer) -> {
+            NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xbbffffff, Direction.Axis.Z, false);
             if (!NarakaClientContext.SHADER_ENABLED.getValue())
-                NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.Axis.Z, true);
+                NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.Axis.Z, true);
         });
         poseStack.popPose();
     }
