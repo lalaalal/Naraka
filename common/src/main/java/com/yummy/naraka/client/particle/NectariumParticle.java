@@ -1,15 +1,12 @@
 package com.yummy.naraka.client.particle;
 
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.DripParticle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 
-@Environment(EnvType.CLIENT)
 public class NectariumParticle {
     public static ParticleProvider<SimpleParticleType> createNectariumHangParticle(SpriteSet sprite) {
         return (particleOptions, clientLevel, x, y, z, xSpeed, ySpeed, zSpeed, randomSource) -> {

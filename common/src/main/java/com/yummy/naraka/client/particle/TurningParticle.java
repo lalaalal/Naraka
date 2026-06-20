@@ -2,16 +2,14 @@ package com.yummy.naraka.client.particle;
 
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
@@ -20,7 +18,6 @@ import net.minecraft.world.phys.Vec3;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-@Environment(EnvType.CLIENT)
 public class TurningParticle extends SingleQuadParticle {
     private final Predicate<TurningParticle> spreadPredicate;
     private boolean spread = false;
@@ -70,8 +67,8 @@ public class TurningParticle extends SingleQuadParticle {
     }
 
     @Override
-    protected int getLightColor(float partialTick) {
-        return LightTexture.pack(15, 15);
+    protected int getLightCoords(float a) {
+        return LightCoordsUtil.FULL_BRIGHT;
     }
 
     public static Provider herobrineSpawn(SpriteSet sprites) {
@@ -111,7 +108,8 @@ public class TurningParticle extends SingleQuadParticle {
     public static class Provider implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprites;
         private final Predicate<TurningParticle> spreadPredicate;
-        private Consumer<TurningParticle> modifier = particle -> {};
+        private Consumer<TurningParticle> modifier = particle -> {
+        };
         private final int baseLifetime;
 
         public Provider(SpriteSet sprites, int baseLifetime, Predicate<TurningParticle> spreadPredicate) {

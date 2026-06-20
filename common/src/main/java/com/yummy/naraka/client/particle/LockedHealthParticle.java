@@ -1,19 +1,16 @@
 package com.yummy.naraka.client.particle;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.RandomSource;
 import org.jspecify.annotations.Nullable;
 
-@Environment(EnvType.CLIENT)
 public class LockedHealthParticle extends SingleQuadParticle {
     private final SpriteSet sprites;
 
@@ -50,8 +47,8 @@ public class LockedHealthParticle extends SingleQuadParticle {
     }
 
     @Override
-    protected int getLightColor(float partialTick) {
-        return LightTexture.FULL_BRIGHT;
+    protected int getLightCoords(float partialTick) {
+        return LightCoordsUtil.FULL_BRIGHT;
     }
 
     @Override

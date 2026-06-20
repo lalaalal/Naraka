@@ -5,8 +5,8 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.RandomSource;
 
 public class BlinkParticle extends SingleQuadParticle {
@@ -32,10 +32,10 @@ public class BlinkParticle extends SingleQuadParticle {
     }
 
     @Override
-    protected int getLightColor(float partialTick) {
-        if (withGlowing)
-            return LightTexture.FULL_BRIGHT;
-        return super.getLightColor(partialTick);
+    protected int getLightCoords(float partialTick) {
+        if (this.withGlowing)
+            return LightCoordsUtil.FULL_BRIGHT;
+        return super.getLightCoords(partialTick);
     }
 
     @Override
