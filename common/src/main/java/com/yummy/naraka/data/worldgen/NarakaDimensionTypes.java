@@ -11,27 +11,33 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.attribute.BedRule;
 import net.minecraft.world.attribute.EnvironmentAttributeMap;
 import net.minecraft.world.attribute.EnvironmentAttributes;
+import net.minecraft.world.level.CardinalLighting;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.timeline.Timeline;
+
+import java.util.Optional;
 
 public class NarakaDimensionTypes {
     public static final ResourceKey<DimensionType> NARAKA = create("naraka");
 
     public static void bootstrap(BootstrapContext<DimensionType> context) {
         HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
+        HolderGetter<Block> blocks = context.lookup(Registries.BLOCK);
         context.register(NARAKA, new DimensionType(
                 true,
                 true,
+                false,
                 false,
                 1.0,
                 0,
                 256,
                 128,
-                BlockTags.INFINIBURN_OVERWORLD,
+                blocks.getOrThrow(BlockTags.INFINIBURN_OVERWORLD),
                 1,
                 new DimensionType.MonsterSettings(ConstantInt.ZERO, 0),
                 DimensionType.Skybox.OVERWORLD,
-                DimensionType.CardinalLightType.DEFAULT,
+                CardinalLighting.Type.DEFAULT,
                 EnvironmentAttributeMap.builder()
                         .set(EnvironmentAttributes.SKY_COLOR, 0)
                         .set(EnvironmentAttributes.WATER_FOG_COLOR, 0x666666)
@@ -46,7 +52,8 @@ public class NarakaDimensionTypes {
                         .set(EnvironmentAttributes.PIGLINS_ZOMBIFY, false)
                         .set(EnvironmentAttributes.STAR_BRIGHTNESS, 1f)
                         .build(),
-                timelines.getOrThrow(TimelineTags.UNIVERSAL)
+                timelines.getOrThrow(TimelineTags.UNIVERSAL),
+                Optional.empty()
         ));
     }
 

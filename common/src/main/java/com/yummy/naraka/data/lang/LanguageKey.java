@@ -96,11 +96,11 @@ public final class LanguageKey {
 
     public static String animation(Identifier animationLocation) {
         return "animation." + animationLocation.getNamespace() + "." + animationLocation.getPath()
-                .replaceAll("animation/", "")
-                .replaceAll("/", ".");
+                .replace("animation/", "")
+                .replace("/", ".");
     }
 
     public static String skill(Identifier skillLocation) {
-        return "skill." + skillLocation.getNamespace() + "." + skillLocation.getPath().replaceAll("skill/", "");
+        return "skill." + skillLocation.getNamespace() + "." + skillLocation.getPath().replace("skill/", "");
     }
 }
