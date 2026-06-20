@@ -11,7 +11,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * @see com.yummy.naraka.mixin.client.FeatureRenderDispatcherMixin
  * @see com.yummy.naraka.mixin.client.ItemModelResolverMixin
  * @see com.yummy.naraka.mixin.client.ItemStackRenderStateMixin
  * @see com.yummy.naraka.mixin.client.LayerRenderStateMixin
@@ -22,6 +21,7 @@ public class ItemRenderRegistry {
     private static final Map<ItemStackRenderState, Integer> TEMPORARY_COLORS = new HashMap<>();
     private static final Map<Item, Consumer<ItemRenderTypeSetter>> ITEM_RENDER_TYPES = new HashMap<>();
 
+    @Deprecated
     public static void registerColor(Supplier<Item> item, Supplier<Color> color) {
         ITEM_COLORS.put(item.get(), color);
     }
@@ -30,6 +30,7 @@ public class ItemRenderRegistry {
         ITEM_RENDER_TYPES.put(item.get(), renderTypeSetter);
     }
 
+    @Deprecated
     public static boolean hasColorOverride(ItemStack itemStack) {
         return ITEM_COLORS.containsKey(itemStack.getItem());
     }
@@ -38,18 +39,22 @@ public class ItemRenderRegistry {
         return ITEM_RENDER_TYPES.containsKey(itemStack.getItem());
     }
 
+    @Deprecated
     public static void setTemporaryColor(ItemStackRenderState renderState, int color) {
         TEMPORARY_COLORS.put(renderState, color);
     }
 
+    @Deprecated
     public static int getTemporaryColor(ItemStackRenderState renderState) {
         return TEMPORARY_COLORS.get(renderState);
     }
 
+    @Deprecated
     public static boolean hasTemporaryColor(ItemStackRenderState renderState) {
         return TEMPORARY_COLORS.containsKey(renderState);
     }
 
+    @Deprecated
     public static int getColor(ItemStack itemStack) {
         return ITEM_COLORS.get(itemStack.getItem()).get()
                 .withAlpha(0xff).pack();

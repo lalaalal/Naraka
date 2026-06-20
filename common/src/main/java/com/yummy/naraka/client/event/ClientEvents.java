@@ -3,9 +3,9 @@ package com.yummy.naraka.client.event;
 import com.yummy.naraka.event.Event;
 import com.yummy.naraka.event.PlatformInvokeRequired;
 import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.BlockGetter;
 
 public class ClientEvents {
     @PlatformInvokeRequired
@@ -14,9 +14,9 @@ public class ClientEvents {
     public static final Event<ClientState<Minecraft>> TICK_POST = create();
 
     public static final Event<ClientState<Minecraft>> CLIENT_STOPPING = create();
-    public static final Event<CameraSetup> CAMERA_SETUP = Event.create(listeners -> (context, level, entity, detached, thirdPersonReverse, partialTick) -> {
+    public static final Event<CameraSetup> CAMERA_SETUP = Event.create(listeners -> (context, entity, deltaTracker) -> {
         for (CameraSetup listener : listeners)
-            listener.setup(context, level, entity, detached, thirdPersonReverse, partialTick);
+            listener.setup(context, entity, deltaTracker);
     });
 
     /**
@@ -38,7 +38,7 @@ public class ClientEvents {
 
     @FunctionalInterface
     public interface CameraSetup {
-        void setup(Context context, BlockGetter level, Entity entity, boolean detached, boolean thirdPersonReverse, float partialTick);
+        void setup(Context context, Entity entity, DeltaTracker deltaTracker);
 
         interface Context {
             Camera getCamera();

@@ -10,7 +10,6 @@ import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.entity.OriginHerobrine;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.entity.EnderDragonRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.rendertype.RenderType;
@@ -75,7 +74,7 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
             poseStack.pushPose();
             poseStack.translate(0, 1, 0);
             submitRays(poseStack, deathProgress, submitNodeCollector, RenderTypes.dragonRays());
-            submitRays(poseStack, deathProgress, submitNodeCollector, RenderTypes.endCrystalBeam(EnderDragonRenderer.CRYSTAL_BEAM_LOCATION));
+            submitRays(poseStack, deathProgress, submitNodeCollector, RenderTypes.dragonRays());
             poseStack.popPose();
         }
 

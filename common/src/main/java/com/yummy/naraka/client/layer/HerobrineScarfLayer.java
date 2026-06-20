@@ -46,7 +46,7 @@ public class HerobrineScarfLayer<S extends AbstractHerobrineRenderState, M exten
     private RenderType getOutsideRenderType(S renderState, WavingScarfTexture textureInfo) {
         if (renderState.isShadow)
             return RenderTypes.entityTranslucent(textureInfo.texture(true));
-        return RenderTypes.entityCutout(textureInfo.texture(false));
+        return RenderTypes.entityCutoutCull(textureInfo.texture(false));
     }
 
     private RenderType getInsideRenderType(S renderState, WavingScarfTexture textureInfo) {

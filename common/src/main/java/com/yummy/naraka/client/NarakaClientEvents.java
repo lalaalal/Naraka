@@ -6,12 +6,12 @@ import com.yummy.naraka.config.Configuration;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.BlockGetter;
 
 public class NarakaClientEvents {
     public static void initialize() {
@@ -22,10 +22,10 @@ public class NarakaClientEvents {
         ClientEvents.LOGIN.register(NarakaClientEvents::onClientLogin);
     }
 
-    private static void shakeCamera(ClientEvents.CameraSetup.Context context, BlockGetter level, Entity entity, boolean detached, boolean thirdPersonReverse, float partialTick) {
+    private static void shakeCamera(ClientEvents.CameraSetup.Context context, Entity entity, DeltaTracker deltaTracker) {
         int cameraShakeTick = NarakaClientContext.CAMERA_SHAKE_TICK.getValue();
         if (cameraShakeTick > 0) {
-            float ageInTicks = entity.tickCount + partialTick;
+            float ageInTicks = entity.tickCount + deltaTracker.getGameTimeDeltaTicks();
             float dy = Mth.sin(ageInTicks * NarakaConfig.CLIENT.cameraShakingSpeed.getValue()) * cameraShakeTick * NarakaConfig.CLIENT.cameraShakingStrength.getValue();
             context.move(0, dy, 0);
         }

@@ -2,8 +2,6 @@ package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.yummy.naraka.client.NarakaClientContext;
-import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.renderer.entity.state.ColoredLightningBoltRenderState;
 import com.yummy.naraka.world.entity.ColoredLightningBolt;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -29,7 +27,6 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
         super.extractRenderState(entity, reusedState, partialTick);
         reusedState.seed = entity.seed;
         reusedState.color = entity.getColor();
-        reusedState.renderType = entity.isSpaceRenderType() && !NarakaClientContext.SHADER_ENABLED.getValue() ? NarakaRenderTypes.space() : RenderTypes.lightning();
     }
 
     @Override
@@ -50,7 +47,7 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
         float ff = f;
         float gg = g;
 
-        submitNodeCollector.submitCustomGeometry(poseStack, renderState.renderType, (pose, vertexConsumer) -> {
+        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
             for (int k = 0; k < 4; k++) {
                 RandomSource random2 = RandomSource.create(renderState.seed);
                 for (int l = 0; l < 3; l++) {

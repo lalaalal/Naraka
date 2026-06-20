@@ -22,7 +22,6 @@ import org.joml.Quaternionf;
 
 public class NarakaPickaxeRenderer extends EntityRenderer<NarakaPickaxe, NarakaPickaxeRenderState> {
     private final ItemModelResolver itemModelResolver;
-    private final ItemStack pickaxe = NarakaItems.NARAKA_PICKAXE.get().getDefaultInstance();
     private final NarakaPickaxeModel model;
 
     public static void applyTransformAndRotate(PoseStack poseStack, ModelPart part) {
@@ -51,6 +50,8 @@ public class NarakaPickaxeRenderer extends EntityRenderer<NarakaPickaxe, NarakaP
 
     @Override
     public void extractRenderState(NarakaPickaxe entity, NarakaPickaxeRenderState reusedState, float partialTick) {
+        ItemStack pickaxe = NarakaItems.NARAKA_PICKAXE.get().getDefaultInstance();
+
         super.extractRenderState(entity, reusedState, partialTick);
         reusedState.setupAnimationStates(entity);
         reusedState.yRot = entity.getYRot(partialTick);
