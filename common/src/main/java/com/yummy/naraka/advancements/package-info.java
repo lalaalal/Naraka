@@ -1,7 +1,4 @@
-@MethodsReturnNonnullByDefault
-@FieldsAreNonnullByDefault
-
+@NullMarked
 package com.yummy.naraka.advancements;
 
-import com.mojang.logging.annotations.FieldsAreNonnullByDefault;
-import com.mojang.logging.annotations.MethodsReturnNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
