@@ -2,8 +2,8 @@ package com.yummy.naraka.fabric.data.tags;
 
 import com.yummy.naraka.tags.NarakaDamageTypeTags;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -13,8 +13,8 @@ import net.minecraft.world.damagesource.DamageType;
 
 import java.util.concurrent.CompletableFuture;
 
-public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> {
-    public NarakaDamageTypeTagsProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+public class NarakaDamageTypeTagsProvider extends FabricTagsProvider<DamageType> {
+    public NarakaDamageTypeTagsProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, Registries.DAMAGE_TYPE, registriesFuture);
     }
 

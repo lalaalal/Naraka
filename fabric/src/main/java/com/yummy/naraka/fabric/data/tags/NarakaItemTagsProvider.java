@@ -1,9 +1,10 @@
 package com.yummy.naraka.fabric.data.tags;
 
+import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.world.item.NarakaItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.tags.TagAppender;
 import net.minecraft.tags.ItemTags;
@@ -11,88 +12,94 @@ import net.minecraft.world.item.Item;
 
 import java.util.concurrent.CompletableFuture;
 
-public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
-    public NarakaItemTagsProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+public class NarakaItemTagsProvider extends FabricTagsProvider.ItemTagsProvider {
+    public NarakaItemTagsProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        valueLookupBuilder(ItemTags.PICKAXES)
-                .add(NarakaItems.NARAKA_PICKAXE.get());
-        valueLookupBuilder(ItemTags.AXES)
-                .add(NarakaItems.NARAKA_PICKAXE.get());
+        builder(ItemTags.PICKAXES)
+                .add(NarakaItems.NARAKA_PICKAXE.key());
+        builder(ItemTags.AXES)
+                .add(NarakaItems.NARAKA_PICKAXE.key());
 
-        valueLookupBuilder(ItemTags.CLUSTER_MAX_HARVESTABLES)
-                .add(NarakaItems.NARAKA_PICKAXE.get());
+        builder(ItemTags.CLUSTER_MAX_HARVESTABLES)
+                .add(NarakaItems.NARAKA_PICKAXE.key());
 
-        valueLookupBuilder(NarakaItemTags.SPEAR)
-                .add(NarakaItems.SPEAR_ITEM.get())
-                .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get())
-                .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
+        builder(NarakaItemTags.SPEAR)
+                .add(NarakaItems.SPEAR_ITEM.key())
+                .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.key())
+                .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.key());
 
-        valueLookupBuilder(NarakaItemTags.ALWAYS_RENDER_ITEM_ENTITY)
-                .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
+        builder(NarakaItemTags.ALWAYS_RENDER_ITEM_ENTITY)
+                .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.key());
 
-        valueLookupBuilder(NarakaItemTags.SPEAR_ENCHANTABLE)
-                .add(NarakaItems.SPEAR_ITEM.get())
-                .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get());
-        valueLookupBuilder(NarakaItemTags.LOYALTY_ENCHANTABLE)
+        builder(NarakaItemTags.SPEAR_ENCHANTABLE)
+                .add(NarakaItems.SPEAR_ITEM.key())
+                .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.key());
+        builder(NarakaItemTags.LOYALTY_ENCHANTABLE)
                 .addTag(NarakaItemTags.SPEAR_ENCHANTABLE)
                 .forceAddTag(ItemTags.TRIDENT_ENCHANTABLE);
 
-        valueLookupBuilder(ItemTags.DURABILITY_ENCHANTABLE)
+        builder(ItemTags.DURABILITY_ENCHANTABLE)
                 .addTag(NarakaItemTags.SPEAR_ENCHANTABLE);
-        valueLookupBuilder(ItemTags.VANISHING_ENCHANTABLE)
+        builder(ItemTags.VANISHING_ENCHANTABLE)
                 .addTag(NarakaItemTags.SPEAR_ENCHANTABLE);
-        valueLookupBuilder(ItemTags.SHARP_WEAPON_ENCHANTABLE)
+        builder(ItemTags.SHARP_WEAPON_ENCHANTABLE)
                 .addTag(NarakaItemTags.SPEAR_ENCHANTABLE);
 
-        valueLookupBuilder(ItemTags.COMPASSES)
-                .add(NarakaItems.SANCTUARY_COMPASS.get());
+        builder(ItemTags.COMPASSES)
+                .add(NarakaItems.SANCTUARY_COMPASS.key());
 
-        valueLookupBuilder(ItemTags.HEAD_ARMOR_ENCHANTABLE)
-                .add(NarakaItems.PURIFIED_SOUL_HELMET.get());
-        valueLookupBuilder(ItemTags.CHEST_ARMOR_ENCHANTABLE)
-                .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get());
-        valueLookupBuilder(ItemTags.LEG_ARMOR_ENCHANTABLE)
-                .add(NarakaItems.PURIFIED_SOUL_LEGGINGS.get());
-        valueLookupBuilder(ItemTags.FOOT_ARMOR_ENCHANTABLE)
-                .add(NarakaItems.PURIFIED_SOUL_BOOTS.get());
+        builder(ItemTags.HEAD_ARMOR_ENCHANTABLE)
+                .add(NarakaItems.PURIFIED_SOUL_HELMET.key());
+        builder(ItemTags.CHEST_ARMOR_ENCHANTABLE)
+                .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE.key());
+        builder(ItemTags.LEG_ARMOR_ENCHANTABLE)
+                .add(NarakaItems.PURIFIED_SOUL_LEGGINGS.key());
+        builder(ItemTags.FOOT_ARMOR_ENCHANTABLE)
+                .add(NarakaItems.PURIFIED_SOUL_BOOTS.key());
 
-        valueLookupBuilder(NarakaItemTags.ENTER_NARAKA_DIMENSION)
-                .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get())
-                .add(NarakaItems.PURIFIED_SOUL_SWORD.get())
+        builder(NarakaItemTags.ENTER_NARAKA_DIMENSION)
+                .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.key())
+                .add(NarakaItems.PURIFIED_SOUL_SWORD.key())
                 .addTag(NarakaItemTags.SOUL_SWORDS);
 
-        valueLookupBuilder(NarakaItemTags.PURIFIED_SOUL_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_HELMET.get())
-                .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get())
-                .add(NarakaItems.PURIFIED_SOUL_LEGGINGS.get())
-                .add(NarakaItems.PURIFIED_SOUL_BOOTS.get());
+        builder(NarakaItemTags.PURIFIED_SOUL_ARMOR)
+                .add(NarakaItems.PURIFIED_SOUL_HELMET.key())
+                .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE.key())
+                .add(NarakaItems.PURIFIED_SOUL_LEGGINGS.key())
+                .add(NarakaItems.PURIFIED_SOUL_BOOTS.key());
 
-        TagAppender<Item, Item> soulReinforceable = valueLookupBuilder(NarakaItemTags.SOUL_REINFORCEABLE)
+        TagAppender<Item> soulReinforceable = builder(NarakaItemTags.SOUL_REINFORCEABLE)
                 .addTag(NarakaItemTags.PURIFIED_SOUL_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_SWORD.get());
-        NarakaItems.forEachSoulInfusedSword(soulReinforceable::add);
+                .add(NarakaItems.PURIFIED_SOUL_SWORD.key());
+        NarakaItems.SOUL_INFUSED_SWORDS.stream()
+                .map(HolderProxy::key)
+                .forEach(soulReinforceable::add);
 
-        TagAppender<Item, Item> soulMaterials = valueLookupBuilder(NarakaItemTags.SOUL_MATERIALS);
-        NarakaItems.forEachSoulInfusedItem(soulMaterials::add);
+        TagAppender<Item> soulMaterials = builder(NarakaItemTags.SOUL_MATERIALS);
+        NarakaItems.SOUL_INFUSED_ITEMS.stream()
+                .map(HolderProxy::key)
+                .forEach(soulMaterials::add);
 
-        TagAppender<Item, Item> soulSwords = valueLookupBuilder(NarakaItemTags.SOUL_SWORDS);
-        NarakaItems.forEachSoulInfusedSword(soulSwords::add);
+        TagAppender<Item> soulSwords = builder(NarakaItemTags.SOUL_SWORDS);
+        NarakaItems.SOUL_INFUSED_SWORDS.stream()
+                .map(HolderProxy::key)
+                .forEach(soulSwords::add);
 
-        valueLookupBuilder(ItemTags.SWORDS)
-                .add(NarakaItems.NARAKA_PICKAXE.get())
+        builder(ItemTags.SWORDS)
+                .add(NarakaItems.NARAKA_PICKAXE.key())
                 .addTag(NarakaItemTags.SOUL_SWORDS);
 
-        valueLookupBuilder(ItemTags.HEAD_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_HELMET.get());
-        valueLookupBuilder(ItemTags.CHEST_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get());
-        valueLookupBuilder(ItemTags.LEG_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_LEGGINGS.get());
-        valueLookupBuilder(ItemTags.FOOT_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_BOOTS.get());
+        builder(ItemTags.HEAD_ARMOR)
+                .add(NarakaItems.PURIFIED_SOUL_HELMET.key());
+        builder(ItemTags.CHEST_ARMOR)
+                .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE.key());
+        builder(ItemTags.LEG_ARMOR)
+                .add(NarakaItems.PURIFIED_SOUL_LEGGINGS.key());
+        builder(ItemTags.FOOT_ARMOR)
+                .add(NarakaItems.PURIFIED_SOUL_BOOTS.key());
     }
 }

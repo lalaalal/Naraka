@@ -3,51 +3,51 @@ package com.yummy.naraka.fabric.data.tags;
 import com.yummy.naraka.tags.ConventionalTags;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypeIds;
 
 import java.util.concurrent.CompletableFuture;
 
-public class NarakaEntityTypeTagsProvider extends FabricTagProvider.EntityTypeTagProvider {
-    public NarakaEntityTypeTagsProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+public class NarakaEntityTypeTagsProvider extends FabricTagsProvider.EntityTypeTagsProvider {
+    public NarakaEntityTypeTagsProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        valueLookupBuilder(NarakaEntityTypeTags.DEATH_COUNTABLE)
+        builder(NarakaEntityTypeTags.DEATH_COUNTABLE)
                 .addTag(ConventionalTags.Entities.BOSSES)
-                .add(EntityType.PLAYER);
-        valueLookupBuilder(NarakaEntityTypeTags.HEROBRINE)
-                .add(NarakaEntityTypes.HEROBRINE.get())
-                .add(NarakaEntityTypes.SHADOW_HEROBRINE.get())
-                .add(NarakaEntityTypes.ORIGIN_HEROBRINE.get());
-        valueLookupBuilder(NarakaEntityTypeTags.DEATH_COUNTING)
+                .add(EntityTypeIds.PLAYER);
+        builder(NarakaEntityTypeTags.HEROBRINE)
+                .add(NarakaEntityTypes.HEROBRINE.key())
+                .add(NarakaEntityTypes.SHADOW_HEROBRINE.key())
+                .add(NarakaEntityTypes.ORIGIN_HEROBRINE.key());
+        builder(NarakaEntityTypeTags.DEATH_COUNTING)
                 .addTag(NarakaEntityTypeTags.HEROBRINE);
 
-        valueLookupBuilder(ConventionalTags.Entities.BOSSES)
-                .add(NarakaEntityTypes.HEROBRINE.get());
-        valueLookupBuilder(EntityTypeTags.CAN_BREATHE_UNDER_WATER)
-                .add(NarakaEntityTypes.HEROBRINE.get());
-        valueLookupBuilder(EntityTypeTags.FALL_DAMAGE_IMMUNE)
-                .add(NarakaEntityTypes.HEROBRINE.get());
+        builder(ConventionalTags.Entities.BOSSES)
+                .add(NarakaEntityTypes.HEROBRINE.key());
+        builder(EntityTypeTags.CAN_BREATHE_UNDER_WATER)
+                .add(NarakaEntityTypes.HEROBRINE.key());
+        builder(EntityTypeTags.FALL_DAMAGE_IMMUNE)
+                .add(NarakaEntityTypes.HEROBRINE.key());
 
-        valueLookupBuilder(EntityTypeTags.REDIRECTABLE_PROJECTILE)
-                .add(NarakaEntityTypes.CORRUPTED_STAR.get())
-                .add(NarakaEntityTypes.NARAKA_FIREBALL.get());
+        builder(EntityTypeTags.REDIRECTABLE_PROJECTILE)
+                .add(NarakaEntityTypes.CORRUPTED_STAR.key())
+                .add(NarakaEntityTypes.NARAKA_FIREBALL.key());
 
-        valueLookupBuilder(NarakaEntityTypeTags.STIGMA_IMMUNE)
+        builder(NarakaEntityTypeTags.STIGMA_IMMUNE)
                 .addTag(NarakaEntityTypeTags.HEROBRINE)
-                .add(NarakaEntityTypes.NARAKA_PICKAXE.get());
-        valueLookupBuilder(NarakaEntityTypeTags.STUN_IMMUNE)
+                .add(NarakaEntityTypes.NARAKA_PICKAXE.key());
+        builder(NarakaEntityTypeTags.STUN_IMMUNE)
                 .addTag(NarakaEntityTypeTags.HEROBRINE)
-                .add(NarakaEntityTypes.NARAKA_PICKAXE.get());
+                .add(NarakaEntityTypes.NARAKA_PICKAXE.key());
 
-        valueLookupBuilder(NarakaEntityTypeTags.NARAKA_PORTAL_IGNORE)
-                .add(EntityType.EXPERIENCE_ORB)
+        builder(NarakaEntityTypeTags.NARAKA_PORTAL_IGNORE)
+                .add(EntityTypeIds.EXPERIENCE_ORB)
                 .addTag(NarakaEntityTypeTags.HEROBRINE);
     }
 }

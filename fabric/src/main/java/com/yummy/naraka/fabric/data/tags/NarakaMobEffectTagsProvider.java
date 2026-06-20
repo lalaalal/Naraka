@@ -2,16 +2,16 @@ package com.yummy.naraka.fabric.data.tags;
 
 import com.yummy.naraka.tags.NarakaMobEffectTags;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 
 import java.util.concurrent.CompletableFuture;
 
-public class NarakaMobEffectTagsProvider extends FabricTagProvider<MobEffect> {
-    public NarakaMobEffectTagsProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+public class NarakaMobEffectTagsProvider extends FabricTagsProvider<MobEffect> {
+    public NarakaMobEffectTagsProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, Registries.MOB_EFFECT, registriesFuture);
     }
 

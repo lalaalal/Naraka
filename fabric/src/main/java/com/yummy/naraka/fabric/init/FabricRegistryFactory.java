@@ -22,7 +22,7 @@ public final class FabricRegistryFactory extends RegistryFactory {
 
     @Override
     public <T> Registry<T> createSimple(ResourceKey<Registry<T>> key) {
-        return FabricRegistryBuilder.createSimple(key)
+        return FabricRegistryBuilder.create(key)
                 .attribute(RegistryAttribute.SYNCED)
                 .buildAndRegister();
     }

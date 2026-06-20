@@ -3,8 +3,8 @@ package com.yummy.naraka.fabric.data.loot;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableSubProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Items;
@@ -25,11 +25,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-public class NarakaEntityLootProvider extends SimpleFabricLootTableProvider {
+public class NarakaEntityLootProvider extends SimpleFabricLootTableSubProvider {
     @Nullable
     private HolderLookup.Provider registries;
 
-    public NarakaEntityLootProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
+    public NarakaEntityLootProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(output, registryLookup, LootContextParamSets.ENTITY);
 
         registryLookup.thenApply(provider -> this.registries = provider);

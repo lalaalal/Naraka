@@ -8,7 +8,8 @@ import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimPatterns;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import com.yummy.naraka.world.item.trading.NarakaVillagerTrades;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -30,11 +31,12 @@ public class NarakaDatapackProvider extends RegistriesDatapackGenerator {
             .add(Registries.JUKEBOX_SONG, NarakaJukeboxSongs::bootstrap)
             .add(Registries.CONFIGURED_CARVER, NarakaConfiguredWorldCarvers::bootstrap)
             .add(Registries.BIOME, NarakaBiomeData::bootstrap)
-            .add(Registries.DIMENSION_TYPE, NarakaDimensionTypes::bootstrap);
+            .add(Registries.DIMENSION_TYPE, NarakaDimensionTypes::bootstrap)
+            .add(Registries.VILLAGER_TRADE, NarakaVillagerTrades::bootstrap);
 
     private final CompletableFuture<HolderLookup.Provider> fullRegistries;
 
-    public NarakaDatapackProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+    public NarakaDatapackProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, RegistryPatchGenerator.createLookup(registries, BUILDER)
                 .thenApply(RegistrySetBuilder.PatchedRegistries::patches)
         );

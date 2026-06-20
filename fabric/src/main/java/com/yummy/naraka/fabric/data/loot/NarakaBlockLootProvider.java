@@ -2,9 +2,10 @@ package com.yummy.naraka.fabric.data.loot;
 
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
-import net.minecraft.advancements.criterion.ItemPredicate;
+
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootSubProvider;
+import net.minecraft.advancements.predicates.ItemPredicate;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -26,11 +27,11 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 import java.util.concurrent.CompletableFuture;
 
-public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
+public class NarakaBlockLootProvider extends FabricBlockLootSubProvider {
     private final HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
     private final LootItemCondition.Builder NECTARIUM_CRYSTAL_TOOLS = MatchTool.toolMatches(ItemPredicate.Builder.item().of(items, ItemTags.PICKAXES));
 
-    public NarakaBlockLootProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
+    public NarakaBlockLootProvider(FabricPackOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(dataOutput, registryLookup);
     }
 

@@ -14,6 +14,7 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
@@ -55,10 +56,10 @@ public class NarakaRecipeProvider extends RecipeProvider {
         purifiedSoulArmor(Items.CHAINMAIL_LEGGINGS, NarakaItems.PURIFIED_SOUL_LEGGINGS.get());
         purifiedSoulArmor(Items.CHAINMAIL_BOOTS, NarakaItems.PURIFIED_SOUL_BOOTS.get());
 
-        oreSmelting(NECTARIUM_SMELTABLES, RecipeCategory.MISC, NarakaItems.NECTARIUM.get(), 0.7f, 200, "nectarium");
-        oreBlasting(NECTARIUM_SMELTABLES, RecipeCategory.MISC, NarakaItems.NECTARIUM.get(), 0.7f, 100, "nectarium");
-        oreSmelting(AMETHYST_SMELTABLES, RecipeCategory.MISC, Items.AMETHYST_SHARD, 0.7f, 200, "amethyst");
-        oreBlasting(AMETHYST_SMELTABLES, RecipeCategory.MISC, Items.AMETHYST_SHARD, 0.7f, 100, "amethyst");
+        oreSmelting(NECTARIUM_SMELTABLES, RecipeCategory.MISC, CookingBookCategory.MISC, NarakaItems.NECTARIUM.get(), 0.7f, 200, "nectarium");
+        oreBlasting(NECTARIUM_SMELTABLES, RecipeCategory.MISC, CookingBookCategory.MISC, NarakaItems.NECTARIUM.get(), 0.7f, 100, "nectarium");
+        oreSmelting(AMETHYST_SMELTABLES, RecipeCategory.MISC, CookingBookCategory.MISC, Items.AMETHYST_SHARD, 0.7f, 200, "amethyst");
+        oreBlasting(AMETHYST_SMELTABLES, RecipeCategory.MISC, CookingBookCategory.MISC, Items.AMETHYST_SHARD, 0.7f, 100, "amethyst");
 
         nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_SHARD.get(), RecipeCategory.BUILDING_BLOCKS, NarakaItems.PURIFIED_SOUL_METAL.get());
 

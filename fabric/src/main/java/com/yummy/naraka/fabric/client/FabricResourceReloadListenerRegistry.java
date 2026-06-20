@@ -16,6 +16,6 @@ public final class FabricResourceReloadListenerRegistry {
     @MethodProxy(value = ResourceReloadListenerRegistry.class, allowDelayedCall = true)
     public static void register(Identifier location, Supplier<PreparableReloadListener> listener) {
         ResourceLoader.get(PackType.CLIENT_RESOURCES)
-                .registerReloader(location, listener.get());
+                .registerReloadListener(location, listener.get());
     }
 }

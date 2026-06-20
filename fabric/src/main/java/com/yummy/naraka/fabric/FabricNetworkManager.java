@@ -30,7 +30,7 @@ public class FabricNetworkManager {
     private static class FabricServerboundNetworkManager implements ServerboundNetworkManager {
         @Override
         public <T extends CustomPacketPayload> void define(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
-            PayloadTypeRegistry.playC2S().register(type, codec);
+            PayloadTypeRegistry.serverboundPlay().register(type, codec);
         }
 
         @Override
@@ -49,7 +49,7 @@ public class FabricNetworkManager {
     private static class FabricClientboundNetworkManager implements ClientboundNetworkManager {
         @Override
         public <T extends CustomPacketPayload> void define(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
-            PayloadTypeRegistry.playS2C().register(type, codec);
+            PayloadTypeRegistry.clientboundPlay().register(type, codec);
         }
 
         @Override

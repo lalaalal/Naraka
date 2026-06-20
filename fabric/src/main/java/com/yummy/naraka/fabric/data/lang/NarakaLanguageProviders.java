@@ -17,7 +17,7 @@ import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -508,8 +508,8 @@ public class NarakaLanguageProviders {
     private class LanguageProvider extends FabricLanguageProvider {
         private final int languageCodeIndex;
 
-        protected LanguageProvider(FabricDataOutput dataOutput, int languageCodeIndex, CompletableFuture<HolderLookup.Provider> registryLookup) {
-            super(dataOutput, languageCodes[languageCodeIndex], registryLookup);
+        protected LanguageProvider(FabricPackOutput output, int languageCodeIndex, CompletableFuture<HolderLookup.Provider> registryLookup) {
+            super(output, languageCodes[languageCodeIndex], registryLookup);
             this.languageCodeIndex = languageCodeIndex;
         }
 
