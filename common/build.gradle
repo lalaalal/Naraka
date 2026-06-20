@@ -3,20 +3,6 @@ plugins {
     id 'net.fabricmc.fabric-loom'
 }
 
-repositories {
-    exclusiveContent {
-        forRepository {
-            maven {
-                name = "Modrinth"
-                url = "https://api.modrinth.com/maven"
-            }
-        }
-        filter {
-            includeGroup "maven.modrinth"
-        }
-    }
-}
-
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
 
