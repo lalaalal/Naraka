@@ -1,18 +1,17 @@
-#version 150
+#version 330
 
-#moj_import <minecraft:fog.glsl>
 #moj_import <minecraft:matrix.glsl>
 #moj_import <minecraft:globals.glsl>
 
 uniform sampler2D Sampler0;
 uniform sampler2D Sampler1;
-#ifdef CUTOUT
+#if defined(CUTOUT)
 uniform sampler2D Sampler2;
 #endif
 
 in vec4 texProj0;
 
-#ifdef CUTOUT
+#if defined(CUTOUT)
 in vec2 texCoord0;
 #endif
 
@@ -42,7 +41,7 @@ const mat4 SCALE_TRANSLATE = mat4(
     0.0, 0.0, 0.0, 1.0
 );
 
-mat4 end_portal_layer(float layer) {
+mat4 longinus_layer(float layer) {
     mat4 translate = mat4(
         1.0, 0.0, 0.0, 17.0 / layer,
         0.0, 1.0, 0.0, (2.0 + layer / 1.5) * (GameTime * 1.5),
@@ -60,12 +59,12 @@ mat4 end_portal_layer(float layer) {
 out vec4 fragColor;
 
 void main() {
-#ifdef CUTOUT
+#if defined(CUTOUT)
     if (texture(Sampler2, texCoord0).a < 0.1)
         discard;
 #endif
     vec3 color = textureProj(Sampler0, texProj0).rgb * COLORS[0];
     for (int i = 0; i < LONGINUS_LAYERS; i++)
-        color += textureProj(Sampler1, texProj0 * end_portal_layer(float(i + 1))).rgb * COLORS[i];
+        color += textureProj(Sampler1, texProj0 * longinus_layer(float(i + 1))).rgb * COLORS[i];
     fragColor = vec4(color, 1.0);
 }

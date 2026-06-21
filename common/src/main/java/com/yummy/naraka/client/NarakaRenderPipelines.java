@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.RenderPipelines;
 public final class NarakaRenderPipelines {
     public static final RenderPipeline.Snippet LONGINUS_SNIPPET = RenderPipeline.builder(RenderPipelines.GLOBALS_SNIPPET)
             .withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
-            .withBindGroupLayout(BindGroupLayouts.FOG)
             .withVertexShader(NarakaMod.identifier("core/longinus"))
             .withFragmentShader(NarakaMod.identifier("core/longinus"))
             .withBindGroupLayout(BindGroupLayouts.SAMPLER0_SAMPLER1)
@@ -36,7 +35,6 @@ public final class NarakaRenderPipelines {
                     .withVertexBinding(0, DefaultVertexFormat.POSITION)
                     .withPrimitiveTopology(PrimitiveTopology.QUADS)
                     .withDepthStencilState(DepthStencilState.DEFAULT)
-
                     .build()
     );
 

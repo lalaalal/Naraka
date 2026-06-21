@@ -1,7 +1,7 @@
 {
   "gui_light": "front",
   "textures": {
-    "particle": "naraka:item/spear_of_loginus"
+    "particle": "naraka:item/spear"
   },
   "display": {
     "thirdperson_righthand": {
