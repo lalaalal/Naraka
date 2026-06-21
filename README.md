@@ -1,16 +1,27 @@
-# <img src="common/src/main/resources/assets/naraka/textures/item/stigma_rod.png" width="24"> Naraka 
-<a href="https://modrinth.com/mod/naraka"><img src="https://img.shields.io/modrinth/dt/naraka?style=for-the-badge&logo=Modrinth&label=Modrinth"/></a> <a href="https://www.curseforge.com/minecraft/mc-mods/naraka"><img src="https://img.shields.io/curseforge/dt/1292603?style=for-the-badge&logo=CurseForge&label=CurseForge&color=%23ff6600"/></a> ![Modrinth Game Versions](https://img.shields.io/modrinth/game-versions/naraka?style=for-the-badge)
+# <img src="common/src/main/resources/assets/naraka/textures/item/stigma_rod.png" width="24"> Naraka
 
-This is a mod that adds a new boss Herobrine in Minecraft. Find the Herobrine Sanctuary and defeat the Naraka Tyrant!
+<a href="https://modrinth.com/mod/naraka"><img src="https://img.shields.io/modrinth/dt/naraka?style=for-the-badge&logo=Modrinth&label=Modrinth"/></a> <a href="https://www.curseforge.com/minecraft/mc-mods/naraka"><img src="https://img.shields.io/curseforge/dt/1292603?style=for-the-badge&logo=CurseForge&label=CurseForge&color=%23ff6600"/></a> ![Modrinth Game Versions](https://img.shields.io/modrinth/v/naraka?style=for-the-badge&color=blue)
+
+Naraka is a Minecraft mod that introduces the legendary boss, **Herobrine**, to your world. Journey into the world,
+locate the hidden Herobrine Sanctuary, and prepare yourself to face and defeat the formidable Naraka Tyrant!
 
 - [Wiki](https://github.com/lalaalal/Naraka/wiki)
 
+## Minecraft Versions
+
+| Version | Status |
+|:-------:|:------:|
+|  26.2   |   ✅    |
+| 1.21.1  |   ✅    |
+
 ## 🛠️ Build
+
 ``` shell
 ./gradlew build
 ```
 
-Jar files in
+You can find the generated Jar files in the following directories:
+
 - fabric/build/libs/
 - neoforge/build/libs/
 
