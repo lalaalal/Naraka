@@ -1,7 +1,7 @@
 package com.yummy.naraka.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.yummy.naraka.client.renderer.FlameFeatureExtension;
+import com.yummy.naraka.client.renderer.FlameFeatureSubmitExtension;
 import com.yummy.naraka.client.renderer.PurifiedSoulFireSubmitNodeCollection;
 import net.minecraft.client.renderer.SubmitNodeCollection;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
@@ -21,7 +21,7 @@ public abstract class SubmitNodeCollectionMixin implements PurifiedSoulFireSubmi
     @Override
     public void naraka$submitPurifiedSoulFlame(PoseStack poseStack, EntityRenderState entityRenderState, Quaternionf quaternionf) {
         FlameFeatureRenderer.Submit submit = new FlameFeatureRenderer.Submit(poseStack.last().copy(), entityRenderState, quaternionf);
-        ((FlameFeatureExtension) (Object) submit).naraka$setPurifiedSoulFire();
+        ((FlameFeatureSubmitExtension) (Object) submit).naraka$setPurifiedSoulFire();
         this.solid.submit(submit);
     }
 }

@@ -2,7 +2,7 @@ package com.yummy.naraka.mixin.client;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaSprites;
-import com.yummy.naraka.client.renderer.FlameFeatureExtension;
+import com.yummy.naraka.client.renderer.FlameFeatureSubmitExtension;
 import net.minecraft.client.renderer.feature.FeatureFrameContext;
 import net.minecraft.client.renderer.feature.FlameFeatureRenderer;
 import net.minecraft.client.renderer.feature.RenderTypeFeatureRenderer;
@@ -30,7 +30,7 @@ public abstract class FlameFeatureRendererMixin extends RenderTypeFeatureRendere
         TextureAtlasSprite purifiedSoulFire1 = context.atlasManager().get(NarakaSprites.PURIFIED_SOUL_FIRE_1);
 
         for (FlameFeatureRenderer.Submit submit : submits) {
-            if (((FlameFeatureExtension) (Object) submit).naraka$isPurifiedSoulFire()) {
+            if (((FlameFeatureSubmitExtension) (Object) submit).naraka$isPurifiedSoulFire()) {
                 this.prepare(submit, builder, purifiedSoulFire0, purifiedSoulFire1);
             } else {
                 this.prepare(submit, builder, fire0, fire1);

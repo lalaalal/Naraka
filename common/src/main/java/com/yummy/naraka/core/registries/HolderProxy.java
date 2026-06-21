@@ -2,6 +2,7 @@ package com.yummy.naraka.core.registries;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -65,6 +66,13 @@ public class HolderProxy<T, V extends T> extends Holder.Reference<T> implements 
         if (holder == null)
             bind(true);
         return holder.value();
+    }
+
+    @Override
+    public DataComponentMap components() {
+        if (holder == null)
+            bind(true);
+        return holder.components();
     }
 
     @Override

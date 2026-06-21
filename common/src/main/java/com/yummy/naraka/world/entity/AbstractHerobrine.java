@@ -5,11 +5,14 @@ import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.entity.ai.goal.LookAtTargetGoal;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
+import com.yummy.naraka.world.item.NarakaItems;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -27,12 +30,15 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 
 public abstract class AbstractHerobrine extends SkillUsingMob implements StigmatizingEntity, AfterimageEntity, Enemy {
@@ -44,6 +50,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
     public final boolean isShadow;
     private final ScarfWavingData scarfWavingData = new ScarfWavingData();
+    protected final ItemStack pickaxe = new ItemStack(NarakaItems.NARAKA_PICKAXE);
 
     private float eyeAlpha = 1;
 
@@ -86,6 +93,20 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
                 .define(DISPLAY_EYE, true)
                 .define(DISPLAY_PICKAXE, false)
                 .define(ALPHA, 0xff);
+    }
+
+    public ItemStack getPickaxe() {
+        return pickaxe;
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
+        super.onSyncedDataUpdated(accessor);
+        if (accessor == ALPHA) {
+            pickaxe.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(), List.of(
+                    ARGB.color(getAlpha(), 0)
+            )));
+        }
     }
 
     public void setAlpha(int alpha) {
