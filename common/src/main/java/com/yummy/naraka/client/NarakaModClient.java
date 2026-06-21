@@ -2,6 +2,7 @@ package com.yummy.naraka.client;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.animation.AnimationMapper;
+import com.yummy.naraka.client.color.NarakaItemTintSources;
 import com.yummy.naraka.client.event.ClientEventHandler;
 import com.yummy.naraka.client.gui.components.HealthSlotOverlayExtension;
 import com.yummy.naraka.client.gui.hud.DeathCountHud;
@@ -24,19 +25,19 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.network.NarakaNetworks;
-import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.overlay.NarakaProgressOverlayExtensionTypes;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.network.chat.Component;
 
 public final class NarakaModClient {
     public static void initialize(NarakaClientInitializer initializer) {
         ClientEventHandler.prepare();
+        NarakaItemTintSources.initialize();
         NarakaModelLayers.initialize();
         NarakaRenderPipelines.initialize();
         NarakaRenderTypes.initialize();
@@ -79,18 +80,13 @@ public final class NarakaModClient {
     }
 
     private static void initializeItems() {
-        ItemRenderRegistry.registerColor(NarakaItems.RAINBOW_SWORD, ComponentStyles.RAINBOW_COLOR::getCurrentColor);
-        ItemRenderRegistry.registerRenderType(NarakaItems.HEROBRINE_SCARF, itemRenderTypeSetter -> {
-            if (!NarakaClientContext.SHADER_ENABLED.getValue())
-                itemRenderTypeSetter.naraka$setRenderType(NarakaRenderTypes.longinusCutout(NarakaTextures.LOCATION_ITEMS));
-        });
+        ItemRenderRegistry.registerAnimatedItem(NarakaItems.RAINBOW_SWORD);
+        ItemRenderRegistry.registerRenderType(NarakaItems.HEROBRINE_SCARF, NarakaRenderTypes.longinusCutout(NarakaTextures.LOCATION_ITEMS));
+        ItemRenderRegistry.registerRenderType(NarakaItems.NARAKA_PICKAXE, RenderTypes.itemTranslucent(NarakaTextures.LOCATION_ITEMS));
     }
 
     private static void initializeBlocks() {
-        BlockRenderTypeRegistry.register(ChunkSectionLayer.CUTOUT,
-                NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(),
-                NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get()
-        );
+
     }
 
     private static void registerBlockEntityRenderers() {

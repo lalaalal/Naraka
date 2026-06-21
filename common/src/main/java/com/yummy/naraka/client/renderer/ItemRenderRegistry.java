@@ -1,71 +1,40 @@
 package com.yummy.naraka.client.renderer;
 
-import com.yummy.naraka.util.Color;
-import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.Set;
 import java.util.function.Supplier;
 
 /**
  * @see com.yummy.naraka.mixin.client.ItemModelResolverMixin
- * @see com.yummy.naraka.mixin.client.ItemStackRenderStateMixin
- * @see com.yummy.naraka.mixin.client.LayerRenderStateMixin
- * @see com.yummy.naraka.mixin.client.SubmitNodeCollectionMixin
  */
 public class ItemRenderRegistry {
-    private static final Map<Item, Supplier<Color>> ITEM_COLORS = new HashMap<>();
-    private static final Map<ItemStackRenderState, Integer> TEMPORARY_COLORS = new HashMap<>();
-    private static final Map<Item, Consumer<ItemRenderTypeSetter>> ITEM_RENDER_TYPES = new HashMap<>();
+    private static final Map<Item, RenderType> ITEM_RENDER_TYPES = new HashMap<>();
+    private static final Set<Item> ANIMATED_ITEMS = new HashSet<>();
 
-    @Deprecated
-    public static void registerColor(Supplier<Item> item, Supplier<Color> color) {
-        ITEM_COLORS.put(item.get(), color);
+    public static void registerRenderType(Supplier<Item> item, RenderType renderType) {
+        ITEM_RENDER_TYPES.put(item.get(), renderType);
+        registerAnimatedItem(item);
     }
 
-    public static void registerRenderType(Supplier<Item> item, Consumer<ItemRenderTypeSetter> renderTypeSetter) {
-        ITEM_RENDER_TYPES.put(item.get(), renderTypeSetter);
+    public static void registerAnimatedItem(Supplier<Item> item) {
+        ANIMATED_ITEMS.add(item.get());
     }
 
-    @Deprecated
-    public static boolean hasColorOverride(ItemStack itemStack) {
-        return ITEM_COLORS.containsKey(itemStack.getItem());
+    public static boolean shouldBeAnimated(Item item) {
+        return ANIMATED_ITEMS.contains(item);
     }
 
     public static boolean hasRenderTypeOverride(ItemStack itemStack) {
         return ITEM_RENDER_TYPES.containsKey(itemStack.getItem());
     }
 
-    @Deprecated
-    public static void setTemporaryColor(ItemStackRenderState renderState, int color) {
-        TEMPORARY_COLORS.put(renderState, color);
-    }
-
-    @Deprecated
-    public static int getTemporaryColor(ItemStackRenderState renderState) {
-        return TEMPORARY_COLORS.get(renderState);
-    }
-
-    @Deprecated
-    public static boolean hasTemporaryColor(ItemStackRenderState renderState) {
-        return TEMPORARY_COLORS.containsKey(renderState);
-    }
-
-    @Deprecated
-    public static int getColor(ItemStack itemStack) {
-        return ITEM_COLORS.get(itemStack.getItem()).get()
-                .withAlpha(0xff).pack();
-    }
-
-    public static void setRenderType(ItemStack itemStack, ItemRenderTypeSetter itemRenderTypeSetter) {
-        ITEM_RENDER_TYPES.get(itemStack.getItem())
-                .accept(itemRenderTypeSetter);
-    }
-
-    public static void clearTemporary() {
-        TEMPORARY_COLORS.clear();
+    public static RenderType getRenderType(ItemStack itemStack) {
+        return ITEM_RENDER_TYPES.get(itemStack.getItem());
     }
 }

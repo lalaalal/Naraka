@@ -7,11 +7,9 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.layer.HerobrineEyeLayer;
 import com.yummy.naraka.client.layer.HerobrineScarfLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
-import com.yummy.naraka.client.renderer.ItemRenderRegistry;
 import com.yummy.naraka.client.renderer.entity.state.AbstractHerobrineRenderState;
 import com.yummy.naraka.client.renderer.entity.state.AfterimageRenderState;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
-import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -25,7 +23,6 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
@@ -66,8 +63,6 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
 
     @Override
     public void extractRenderState(T entity, S renderState, float partialTicks) {
-        ItemStack pickaxe = NarakaItems.NARAKA_PICKAXE.get().getDefaultInstance();
-
         super.extractRenderState(entity, renderState, partialTicks);
         renderState.finalModel = entity.isFinalModel();
         renderState.isShadow = entity.isShadow;
@@ -87,8 +82,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
             renderState.eyeTexture = NarakaTextures.HEROBRINE_EYE;
         }
 
-        ItemRenderRegistry.setTemporaryColor(renderState.pickaxe, ARGB.white(renderState.alpha));
-        itemModelResolver.updateForLiving(renderState.pickaxe, pickaxe, ItemDisplayContext.NONE, entity);
+        itemModelResolver.updateForLiving(renderState.pickaxe, entity.getPickaxe(), ItemDisplayContext.NONE, entity);
     }
 
     protected void setupModelByRenderState(S renderState) {

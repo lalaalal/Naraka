@@ -23,6 +23,7 @@ public final class NarakaModFabricClient implements ClientModInitializer, Naraka
         MethodInvoker.register(FabricRenderPipelineRegistry.class);
         MethodInvoker.register(FabricSpecialModelRendererRegistry.class);
         MethodInvoker.register(FabricResourceReloadListenerRegistry.class);
+        MethodInvoker.register(FabricItemTintSourceRegistry.class);
 
         NarakaModClient.initialize(this);
     }

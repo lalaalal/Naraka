@@ -7,10 +7,8 @@ import com.yummy.naraka.client.layer.ShadowHerobrineHeadLayer;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.model.FinalHerobrineModel;
 import com.yummy.naraka.client.model.HerobrineModel;
-import com.yummy.naraka.client.renderer.ItemRenderRegistry;
 import com.yummy.naraka.client.renderer.entity.state.ShadowHerobrineRenderState;
 import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -38,8 +36,6 @@ public class ShadowHerobrineRenderer extends AbstractHerobrineRenderer<ShadowHer
     @Override
     public void extractRenderState(ShadowHerobrine entity, ShadowHerobrineRenderState renderState, float partialTicks) {
         renderState.alpha = entity.getAlpha();
-        if (entity.displayPickaxe())
-            ItemRenderRegistry.setTemporaryColor(renderState.pickaxe, Color.of(0).withAlpha(renderState.alpha).pack());
         super.extractRenderState(entity, renderState, partialTicks);
 
         renderState.hasRedOverlay = false;
