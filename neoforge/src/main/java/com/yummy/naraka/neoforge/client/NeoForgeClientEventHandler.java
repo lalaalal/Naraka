@@ -5,12 +5,9 @@ import com.yummy.naraka.client.event.ClientEvents;
 import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.neoforge.NarakaEventBus;
 import net.minecraft.client.Minecraft;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 @SuppressWarnings("unused")
-@OnlyIn(Dist.CLIENT)
 public final class NeoForgeClientEventHandler implements NarakaEventBus {
     @MethodProxy(ClientEventHandler.class)
     public static void prepare() {

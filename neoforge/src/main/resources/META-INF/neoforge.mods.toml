@@ -30,7 +30,7 @@ side = "BOTH"
 [[dependencies.naraka]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.11,)"
+versionRange = "[26.2,)"
 ordering = "NONE"
 side = "BOTH"
 
@@ -39,3 +39,8 @@ config = "naraka.mixins.json"
 
 [[mixins]]
 config = "naraka.mixins.neoforge.json"
+
+[[accessTransformers]]
+file = "META-INF/accesstransformer.cfg"
+
+

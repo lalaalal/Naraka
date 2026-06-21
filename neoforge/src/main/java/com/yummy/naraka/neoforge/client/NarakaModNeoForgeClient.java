@@ -5,7 +5,6 @@ import com.yummy.naraka.client.NarakaModClient;
 import com.yummy.naraka.client.init.NarakaClientInitializer;
 import com.yummy.naraka.invoker.MethodInvoker;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -14,7 +13,6 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import java.util.ArrayList;
 import java.util.List;
 
-@OnlyIn(Dist.CLIENT)
 @Mod(value = NarakaMod.MOD_ID, dist = Dist.CLIENT)
 public final class NarakaModNeoForgeClient implements NarakaClientInitializer, IClientItemExtensions {
     private final List<Runnable> runAfterRegistryLoaded = new ArrayList<>();
@@ -31,6 +29,7 @@ public final class NarakaModNeoForgeClient implements NarakaClientInitializer, I
         MethodInvoker.register(NeoForgeRenderPipelineRegistry.class);
         MethodInvoker.register(NeoForgeSpecialModelRendererRegistry.class);
         MethodInvoker.register(NeoForgeResourceReloadListenerRegistry.class);
+        MethodInvoker.register(NeoForgeItemTintSourceRegistry.class);
 
         NarakaModClient.initialize(this);
 
