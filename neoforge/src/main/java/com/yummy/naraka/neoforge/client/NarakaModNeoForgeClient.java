@@ -3,7 +3,6 @@ package com.yummy.naraka.neoforge.client;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModClient;
 import com.yummy.naraka.client.init.NarakaClientInitializer;
-import com.yummy.naraka.invoker.MethodInvoker;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -18,19 +17,6 @@ public final class NarakaModNeoForgeClient implements NarakaClientInitializer, I
     private final List<Runnable> runAfterRegistryLoaded = new ArrayList<>();
 
     public NarakaModNeoForgeClient(IEventBus modBus) {
-        MethodInvoker.register(NeoForgeClientEventHandler.class);
-        MethodInvoker.register(NeoForgeModelLayerRegistry.class);
-        MethodInvoker.register(NeoForgeParticleProviderRegistry.class);
-        MethodInvoker.register(NeoForgeBlockEntityRendererRegistry.class);
-        MethodInvoker.register(NeoForgeEntityRendererRegistry.class);
-        MethodInvoker.register(NeoForgeScreenFactoryRegistry.class);
-        MethodInvoker.register(NeoForgeHudRendererRegistry.class);
-        MethodInvoker.register(NeoForgeKeyMappingRegistry.class);
-        MethodInvoker.register(NeoForgeRenderPipelineRegistry.class);
-        MethodInvoker.register(NeoForgeSpecialModelRendererRegistry.class);
-        MethodInvoker.register(NeoForgeResourceReloadListenerRegistry.class);
-        MethodInvoker.register(NeoForgeItemTintSourceRegistry.class);
-
         NarakaModClient.initialize(this);
 
         modBus.addListener(this::clientSetup);

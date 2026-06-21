@@ -2,25 +2,20 @@ package com.yummy.naraka.fabric.client;
 
 import com.yummy.naraka.client.gui.hud.HudRenderer;
 import com.yummy.naraka.client.init.HudRendererRegistry;
-import com.yummy.naraka.invoker.MethodProxy;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.resources.Identifier;
 
 import java.util.function.Supplier;
 
-@SuppressWarnings("unused")
-@Environment(EnvType.CLIENT)
-public final class FabricHudRendererRegistry {
-    @MethodProxy(HudRendererRegistry.class)
-    public static void registerPreLayer(Identifier id, Supplier<HudRenderer> factory) {
+public final class FabricHudRendererRegistry implements HudRendererRegistry.Registrar {
+    @Override
+    public void registerPreLayer(Identifier id, Supplier<HudRenderer> factory) {
         HudElementRegistry.attachElementBefore(VanillaHudElements.MISC_OVERLAYS, id, factory.get()::render);
     }
 
-    @MethodProxy(HudRendererRegistry.class)
-    public static void registerPostLayer(Identifier id, Supplier<HudRenderer> factory) {
+    @Override
+    public void registerPostLayer(Identifier id, Supplier<HudRenderer> factory) {
         HudElementRegistry.addLast(id, factory.get()::render);
     }
 }

@@ -2,7 +2,6 @@ package com.yummy.naraka.neoforge.init;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.init.BiomeModificationRegistry;
-import com.yummy.naraka.invoker.MethodProxy;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public final class NeoForgeBiomeModificationRegistry {
+public class NeoForgeBiomeModificationRegistry implements BiomeModificationRegistry.Registrar {
     private static final List<BiomeModifierRecord> modifiers = new ArrayList<>();
 
     public static void bootstrap(BootstrapContext<BiomeModifier> context) {
@@ -33,8 +32,8 @@ public final class NeoForgeBiomeModificationRegistry {
             modifier.register(context);
     }
 
-    @MethodProxy(BiomeModificationRegistry.class)
-    public static void addFeatures(String name, TagKey<Biome> biomes, GenerationStep.Decoration generationStep, List<ResourceKey<PlacedFeature>> features) {
+    @Override
+    public void addFeatures(String name, TagKey<Biome> biomes, GenerationStep.Decoration generationStep, List<ResourceKey<PlacedFeature>> features) {
         modifiers.add(context -> {
             HolderGetter<Biome> biomeGetter = context.lookup(Registries.BIOME);
             HolderGetter<PlacedFeature> featureGetter = context.lookup(Registries.PLACED_FEATURE);
@@ -51,8 +50,8 @@ public final class NeoForgeBiomeModificationRegistry {
         });
     }
 
-    @MethodProxy(BiomeModificationRegistry.class)
-    public static <T extends Mob> void addSpawns(String name, TagKey<Biome> biomes, MobCategory spawnGroup, Supplier<EntityType<T>> entityType, int weight, int minGroupSize, int maxGroupSize) {
+    @Override
+    public <T extends Mob> void addSpawns(String name, TagKey<Biome> biomes, MobCategory spawnGroup, Supplier<EntityType<T>> entityType, int weight, int minGroupSize, int maxGroupSize) {
         modifiers.add(context -> {
             HolderGetter<Biome> biomeGetter = context.lookup(Registries.BIOME);
             HolderSet<Biome> targetBiomes = biomeGetter.getOrThrow(biomes);

@@ -4,25 +4,12 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.core.registries.RegistryProxyProvider;
-import com.yummy.naraka.invoker.MethodProxy;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 
 import java.util.function.Supplier;
 
 public final class FabricRegistryProxyProvider extends RegistryProxyProvider {
-    private static final FabricRegistryProxyProvider INSTANCE = new FabricRegistryProxyProvider();
-
-    @SuppressWarnings("unused")
-    @MethodProxy(RegistryProxyProvider.class)
-    public static RegistryProxyProvider getInstance() {
-        return INSTANCE;
-    }
-
-    private FabricRegistryProxyProvider() {
-
-    }
-
     @Override
     protected <T> RegistryProxy<T> create(ResourceKey<Registry<T>> key) {
         return new FabricRegistryProxy<>(key);

@@ -1,7 +1,6 @@
 package com.yummy.naraka.neoforge.client;
 
 import com.yummy.naraka.client.init.BlockEntityRendererRegistry;
-import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.neoforge.NarakaEventBus;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
@@ -11,10 +10,9 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
 import java.util.function.Supplier;
 
-@SuppressWarnings("unused")
-public final class NeoForgeBlockEntityRendererRegistry implements NarakaEventBus {
-    @MethodProxy(BlockEntityRendererRegistry.class)
-    public static <T extends BlockEntity, S extends BlockEntityRenderState> void register(Supplier<? extends BlockEntityType<? extends T>> blockEntity, BlockEntityRendererProvider<T, S> rendererProvider) {
+public final class NeoForgeBlockEntityRendererRegistry implements BlockEntityRendererRegistry.Registrar, NarakaEventBus {
+    @Override
+    public <T extends BlockEntity, S extends BlockEntityRenderState> void register(Supplier<? extends BlockEntityType<? extends T>> blockEntity, BlockEntityRendererProvider<T, S> rendererProvider) {
         NARAKA_BUS.addListener(EntityRenderersEvent.RegisterRenderers.class, event -> {
             event.registerBlockEntityRenderer(blockEntity.get(), rendererProvider);
         });

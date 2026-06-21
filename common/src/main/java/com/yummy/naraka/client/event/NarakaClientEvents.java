@@ -1,6 +1,6 @@
-package com.yummy.naraka.client;
+package com.yummy.naraka.client.event;
 
-import com.yummy.naraka.client.event.ClientEvents;
+import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.renderer.WhiteFogRenderHelper;
 import com.yummy.naraka.config.Configuration;
 import com.yummy.naraka.config.NarakaConfig;

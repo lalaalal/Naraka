@@ -1,6 +1,5 @@
 package com.yummy.naraka.fabric;
 
-import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.network.ClientboundNetworkManager;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.ServerboundNetworkManager;
@@ -14,20 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 @SuppressWarnings("unused")
 public class FabricNetworkManager {
-    private static final ClientboundNetworkManager CLIENTBOUND = new FabricClientboundNetworkManager();
-    private static final ServerboundNetworkManager SERVERBOUND = new FabricServerboundNetworkManager();
-
-    @MethodProxy(NetworkManager.class)
-    public static ClientboundNetworkManager clientbound() {
-        return CLIENTBOUND;
-    }
-
-    @MethodProxy(NetworkManager.class)
-    public static ServerboundNetworkManager serverbound() {
-        return SERVERBOUND;
-    }
-
-    private static class FabricServerboundNetworkManager implements ServerboundNetworkManager {
+    public static class FabricServerboundNetworkManager implements ServerboundNetworkManager {
         @Override
         public <T extends CustomPacketPayload> void define(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
             PayloadTypeRegistry.serverboundPlay().register(type, codec);
@@ -46,7 +32,7 @@ public class FabricNetworkManager {
         }
     }
 
-    private static class FabricClientboundNetworkManager implements ClientboundNetworkManager {
+    public static class FabricClientboundNetworkManager implements ClientboundNetworkManager {
         @Override
         public <T extends CustomPacketPayload> void define(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
             PayloadTypeRegistry.clientboundPlay().register(type, codec);

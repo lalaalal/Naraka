@@ -1,6 +1,6 @@
 package com.yummy.naraka.init;
 
-import com.yummy.naraka.invoker.MethodInvoker;
+import com.yummy.naraka.service.NarakaServices;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -15,14 +15,16 @@ import java.util.function.Supplier;
 
 public abstract class BiomeModificationRegistry {
     public static void addFeatures(String name, TagKey<Biome> biomes, GenerationStep.Decoration step, List<ResourceKey<PlacedFeature>> features) {
-        MethodInvoker.of(BiomeModificationRegistry.class, "addFeatures")
-                .withParameterTypes(String.class, TagKey.class, GenerationStep.Decoration.class, List.class)
-                .invoke(name, biomes, step, features);
+        NarakaServices.BIOME_MODIFIER.addFeatures(name, biomes, step, features);
     }
 
     public static <T extends Mob> void addSpawns(String name, TagKey<Biome> target, MobCategory spawnGroup, Supplier<EntityType<T>> entityType, int weight, int minGroupSize, int maxGroupSize) {
-        MethodInvoker.of(BiomeModificationRegistry.class, "addSpawns")
-                .withParameterTypes(String.class, TagKey.class, MobCategory.class, Supplier.class, int.class, int.class, int.class)
-                .invoke(name, target, spawnGroup, entityType, weight, minGroupSize, maxGroupSize);
+        NarakaServices.BIOME_MODIFIER.addSpawns(name, target, spawnGroup, entityType, weight, minGroupSize, maxGroupSize);
+    }
+
+    public interface Registrar {
+        void addFeatures(String name, TagKey<Biome> biomes, GenerationStep.Decoration step, List<ResourceKey<PlacedFeature>> features);
+
+        <T extends Mob> void addSpawns(String name, TagKey<Biome> target, MobCategory spawnGroup, Supplier<EntityType<T>> entityType, int weight, int minGroupSize, int maxGroupSize);
     }
 }

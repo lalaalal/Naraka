@@ -1,7 +1,6 @@
 package com.yummy.naraka.neoforge;
 
 import com.yummy.naraka.Platform;
-import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.network.ClientboundNetworkManager;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.ServerboundNetworkManager;
@@ -18,19 +17,6 @@ import net.neoforged.neoforge.network.handling.IPayloadHandler;
 public final class NeoForgeNetworkManager implements NarakaEventBus {
     public static final String VERSION = "3";
 
-    private static final ClientboundNetworkManager CLIENTBOUND = new NeoForgeClientboundNetworkManager();
-    private static final ServerboundNetworkManager SERVERBOUND = new NeoForgeServerboundNetworkManager();
-
-    @MethodProxy(NetworkManager.class)
-    public static ClientboundNetworkManager clientbound() {
-        return CLIENTBOUND;
-    }
-
-    @MethodProxy(NetworkManager.class)
-    public static ServerboundNetworkManager serverbound() {
-        return SERVERBOUND;
-    }
-
     private static <T extends CustomPacketPayload> IPayloadHandler<T> wrap(NetworkManager.PacketHandler<T> handler) {
         return (payload, context) -> {
             handler.handle(payload, context::player);
@@ -42,7 +28,7 @@ public final class NeoForgeNetworkManager implements NarakaEventBus {
         };
     }
 
-    private static class NeoForgeServerboundNetworkManager implements ServerboundNetworkManager {
+    public static class NeoForgeServerboundNetworkManager implements ServerboundNetworkManager {
         @Override
         public <T extends CustomPacketPayload> void define(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
 
@@ -61,7 +47,7 @@ public final class NeoForgeNetworkManager implements NarakaEventBus {
         }
     }
 
-    private static class NeoForgeClientboundNetworkManager implements ClientboundNetworkManager {
+    public static class NeoForgeClientboundNetworkManager implements ClientboundNetworkManager {
         @Override
         public <T extends CustomPacketPayload> void define(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
             if (Platform.getInstance().getSide() == Platform.Side.SERVER) {
