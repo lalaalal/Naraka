@@ -21,6 +21,6 @@ public final class FabricSpecialModelRendererRegistry {
 
     @MethodProxy(SpecialModelRendererRegistry.class)
     public static void registerBlock(Supplier<? extends Block> block, SpecialModelRenderer.Unbaked<?> unbaked) {
-//        SpecialBlockRendererRegistry.register(block.get(), unbaked);
+
     }
 }

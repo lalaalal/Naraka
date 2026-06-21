@@ -48,6 +48,7 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
         renderState.setupAnimationStates(livingEntity);
         renderState.lightCoords = 0;
         renderState.alpha = livingEntity.getAlpha();
+        renderState.eyeAlpha = renderState.alpha / 255f;
         renderState.soulTypeAlpha = new LinkedHashMap<>(livingEntity.getSoulTypeAlpha());
         renderState.hasRedOverlay = false;
         renderState.yRot = 0;
@@ -73,7 +74,6 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
             float deathProgress = renderState.deathTime / 200.0F;
             poseStack.pushPose();
             poseStack.translate(0, 1, 0);
-            submitRays(poseStack, deathProgress, submitNodeCollector, RenderTypes.dragonRays());
             submitRays(poseStack, deathProgress, submitNodeCollector, RenderTypes.dragonRays());
             poseStack.popPose();
         }
