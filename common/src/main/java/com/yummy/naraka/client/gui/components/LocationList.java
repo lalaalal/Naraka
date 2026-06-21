@@ -20,7 +20,8 @@ public class LocationList extends ObjectSelectionList<LocationList.Entry> {
     private final Function<ResourceLocation, String> translationKeyGenerator;
 
     public LocationList(Minecraft minecraft, Screen screen, Set<ResourceLocation> locations, Function<ResourceLocation, String> keyGenerator) {
-        super(minecraft, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight() - 50, 38, 18);
+
+        super(minecraft, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight() - 50, 38, 38, 18);
         this.screen = screen;
         this.translationKeyGenerator = keyGenerator;
         locations.stream()

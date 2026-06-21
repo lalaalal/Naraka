@@ -39,6 +39,6 @@ public abstract class Platform {
     }
 
     public enum ModLoader {
-        FABRIC, NEO_FORGE
+        FABRIC, FORGE
     }
 }

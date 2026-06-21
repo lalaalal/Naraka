@@ -18,7 +18,8 @@ public class NarakaNbtUtils {
 
     public static <T> void store(CompoundTag compoundTag, String key, Codec<T> codec, DynamicOps<Tag> ops, T value) {
         Tag tag = codec.encodeStart(ops, value)
-                .getOrThrow();
+                .getOrThrow(false, message -> {
+                });
         compoundTag.put(key, tag);
     }
 
@@ -29,9 +30,7 @@ public class NarakaNbtUtils {
     public static <T> Optional<T> read(CompoundTag compoundTag, String key, Codec<T> codec, DynamicOps<Tag> ops) {
         Tag tag = compoundTag.get(key);
         DataResult<Pair<T, Tag>> result = codec.decode(ops, tag);
-        if (result.isSuccess())
-            return Optional.of(result.getOrThrow().getFirst());
-        return Optional.empty();
+        return result.result().map(Pair::getFirst);
     }
 
     public static <T> T readOr(CompoundTag compoundTag, String key, Codec<T> codec, T defaultValue) {

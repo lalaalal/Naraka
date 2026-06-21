@@ -111,7 +111,7 @@ public final class NarakaMod {
     }
 
     public static ResourceLocation mcLocation(String path) {
-        return ResourceLocation.withDefaultNamespace(path);
+        return new ResourceLocation(path);
     }
 
     /**
@@ -121,7 +121,7 @@ public final class NarakaMod {
      * @return {@linkplain ResourceLocation} with namespace {@linkplain #MOD_ID}
      */
     public static ResourceLocation location(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+        return new ResourceLocation(MOD_ID, path);
     }
 
     public static ResourceLocation location(String prefix, String path) {

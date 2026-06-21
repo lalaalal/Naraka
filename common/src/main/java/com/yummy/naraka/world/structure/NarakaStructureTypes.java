@@ -8,7 +8,7 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 
 public class NarakaStructureTypes {
     public static final HolderProxy<StructureType<?>, StructureType<JumboStructure>> JUMBO = register(
-            "jumbo_structure", () -> JumboStructure.CODEC
+            "jumbo_structure", JumboStructure.CODEC::codec
     );
 
     private static <T extends Structure> HolderProxy<StructureType<?>, StructureType<T>> register(String name, StructureType<T> type) {

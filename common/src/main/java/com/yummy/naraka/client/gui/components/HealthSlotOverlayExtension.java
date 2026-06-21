@@ -35,7 +35,7 @@ public class HealthSlotOverlayExtension implements ProgressOverlayExtension<Inte
         int baseY = y + 1;
         for (int count = 1; count <= separatorCount; count++) {
             int baseX = Math.round(x + 1 + slotWidth * count);
-            graphics.blitSprite(NarakaSprites.PROGRESS_SLOT_SEPARATOR, baseX, baseY, SEPARATOR_WIDTH, SEPARATOR_HEIGHT);
+            graphics.blit(NarakaSprites.PROGRESS_SLOT_SEPARATOR, baseX, baseY, 0, 0, SEPARATOR_WIDTH, SEPARATOR_HEIGHT);
         }
     }
 
