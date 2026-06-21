@@ -11,6 +11,7 @@ import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
@@ -118,6 +119,8 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
         float xRot = toRespawn ? respawnData.pitch() : 0;
         if (destinationLevel == null)
             return null;
+        if (toRespawn && entity instanceof ServerPlayer player)
+            return player.findRespawnPositionAndUseSpawnBlock(false, TeleportTransition.PLAY_PORTAL_SOUND);
         BlockPos destinationPosition = toRespawn ? respawnData.pos() : createRandomNarakaSpawnPosition(level.getRandom());
         Vec3 destinationPositionVec = Vec3.atBottomCenterOf(destinationPosition);
         return new TeleportTransition(destinationLevel, destinationPositionVec, Vec3.ZERO, yRot, xRot, TeleportTransition.PLAY_PORTAL_SOUND);
