@@ -16,7 +16,7 @@ publisher {
     setVersion("$project.version")
     setProjectVersion("$project.version")
     setJavaVersions(List.of(JavaVersion.VERSION_25))
-    setGameVersions("$project.supporting_minecraft_version")
+    setGameVersions("$project.minecraft_version")
     setDisplayName("${base.archivesName.get()}-${project.version}")
     setCurseEnvironment("both")
     setArtifact("build/libs/${base.archivesName.get()}-${project.version}.jar")
