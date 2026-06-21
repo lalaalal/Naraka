@@ -1,36 +1,28 @@
 modLoader = "javafml"
-loaderVersion = "[2,)"
+loaderVersion = "${neoforge_loader_version_range}"
 #issueTrackerURL = ""
-license = "All Rights Reserved"
+license = "MIT License"
 
 [[mods]]
 modId = "naraka"
 version = "${version}"
 displayName = "Naraka"
-authors = "lalaalal, joachimbeen, noon414, GuEunso, Gyeon___"
-description = '''
-This mod adds Herobrine boss, new ores, and some more powerful materials which needs vanilla ores to make.
-
-Players can get reward from boss and make new tools with added new materials.
-
-
-
-This mod is still WIP and there will be more contents to make out. Thank You.
-'''
+authors = "${mod_author}"
+description = "${description}"
 logoFile = "naraka.png"
 displayURL = "https://github.com/lalaalal/Naraka"
 
 [[dependencies.naraka]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.11,)"
+versionRange = "[${neoforge_version},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.naraka]]
 modId = "minecraft"
 type = "required"
-versionRange = "[26.2,)"
+versionRange = "[${minecraft_version},)"
 ordering = "NONE"
 side = "BOTH"
 

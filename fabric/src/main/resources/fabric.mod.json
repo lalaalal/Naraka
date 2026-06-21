@@ -3,18 +3,12 @@
   "id": "naraka",
   "version": "${version}",
   "name": "Naraka",
-  "description": "This mod adds Herobrine boss, new ores, and some more powerful materials which needs vanilla ores to make.\n\nPlayers can get reward from boss and make new tools with added new materials.\n\n \n\nThis mod is still WIP and there will be more contents to make out. Thank You.",
-  "authors": [
-    "lalaalal",
-    "joachimbeen",
-    "noon414",
-    "GuEunso",
-    "Gyeon___"
-  ],
+  "description": "${description}",
+  "authors": "${mod_author}",
   "contact": {
     "homepage": "https://github.com/lalaalal/Naraka"
   },
-  "license": "All-Rights-Reserved",
+  "license": "MIT License",
   "icon": "naraka.png",
   "environment": "*",
   "entrypoints": {
@@ -36,9 +30,9 @@
     "naraka.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.16.10",
-    "minecraft": "~26.2",
+    "fabricloader": ">=${fabric_loader_version}",
+    "minecraft": "~${minecraft_version}",
     "java": ">=21",
-    "fabric-api": ">=0.139.4+1.21.11"
+    "fabric-api": ">=${fabric_version}"
   }
 }
