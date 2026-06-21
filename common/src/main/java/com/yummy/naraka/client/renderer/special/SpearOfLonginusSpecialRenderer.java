@@ -38,7 +38,6 @@ public class SpearOfLonginusSpecialRenderer implements NoDataSpecialModelRendere
     @Override
     public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, boolean hasFoil, int outlineColor) {
         poseStack.pushPose();
-        poseStack.scale(1, -1, 1);
 
         if (NarakaClientContext.SHADER_ENABLED.getValue())
             SpearRenderer.renderNonShaderLonginus(model, getAgeInTicks(), poseStack, submitNodeCollector);

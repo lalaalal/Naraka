@@ -4,8 +4,9 @@
     "model": "naraka:item/naraka_pickaxe",
     "tints": [
       {
-        "type": "minecraft:custom_model_data",
-        "default": 16777215
+        "type": "naraka:custom_model_tint",
+        "default": -1,
+        "index": 0
       }
     ]
   }

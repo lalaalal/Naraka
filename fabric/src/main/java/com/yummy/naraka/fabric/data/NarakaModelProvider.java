@@ -3,6 +3,8 @@ package com.yummy.naraka.fabric.data;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
+import com.yummy.naraka.client.color.CustomModelTintSource;
+import com.yummy.naraka.client.color.RainbowTintSource;
 import com.yummy.naraka.client.renderer.special.SoulSmithingBlockSpecialRenderer;
 import com.yummy.naraka.client.renderer.special.SoulStabilizerSpecialRenderer;
 import com.yummy.naraka.client.renderer.special.SpearOfLonginusSpecialRenderer;
@@ -16,7 +18,6 @@ import com.yummy.naraka.world.item.equipment.NarakaEquipmentAssets;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
-import net.minecraft.client.color.item.CustomModelDataSource;
 import net.minecraft.client.color.item.Dye;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
@@ -35,6 +36,7 @@ import net.minecraft.client.renderer.item.properties.numeric.CompassAngleState;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.client.renderer.item.properties.select.TrimMaterialProperty;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
+import net.minecraft.client.renderer.special.TridentSpecialRenderer;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
@@ -62,6 +64,12 @@ public class NarakaModelProvider extends FabricModelProvider {
             Optional.of(NarakaMod.identifier("item", "template_block_entity")),
             Optional.empty(),
             TextureSlot.PARTICLE
+    );
+
+    private static final ModelTemplate SPEAR = new ModelTemplate(
+            Optional.of(NarakaMod.identifier("item", "template_spear")),
+            Optional.empty(),
+            TextureSlot.LAYER0
     );
 
     public NarakaModelProvider(FabricPackOutput output) {
@@ -196,7 +204,8 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_METAL.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SHARD.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-        generator.generateFlatItem(NarakaItems.RAINBOW_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        Identifier rainbowSwordModel = generator.createFlatItemModel(NarakaItems.RAINBOW_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        generator.itemModelOutput.accept(NarakaItems.RAINBOW_SWORD.get(), ItemModelUtils.tintedModel(rainbowSwordModel, RainbowTintSource.INSTANCE));
         generator.generateFlatItem(NarakaItems.HEROBRINE_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
 
         generateTrimmableItem(generator, Items.LEATHER_HELMET, EquipmentAssets.LEATHER, "helmet", true);
@@ -239,7 +248,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_3_DISC.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.HEROBRINE_PHASE_4_DISC.get(), ModelTemplates.FLAT_ITEM);
 
-        generator.itemModelOutput.accept(NarakaItems.NARAKA_PICKAXE.get(), ItemModelUtils.tintedModel(ModelLocationUtils.getModelLocation(NarakaItems.NARAKA_PICKAXE.get()), new CustomModelDataSource(0, 0xffffff)));
+        generator.itemModelOutput.accept(NarakaItems.NARAKA_PICKAXE.get(), ItemModelUtils.tintedModel(ModelLocationUtils.getModelLocation(NarakaItems.NARAKA_PICKAXE.get()), CustomModelTintSource.of(0)));
         generator.generateFlatItem(NarakaItems.HEROBRINE_SCARF.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.LOCKED_HEALTH.get(), ModelTemplates.FLAT_ITEM);
 
@@ -265,18 +274,19 @@ public class NarakaModelProvider extends FabricModelProvider {
     public static void generateSpearOfLonginus(ItemModelGenerators generator, SpearItem spearItem) {
         ItemModel.Unbaked plainModel = ItemModelUtils.plainModel(generator.createFlatItemModel(spearItem, ModelTemplates.FLAT_ITEM));
         ItemModel.Unbaked inHandModel = ItemModelUtils.specialModel(
-                ModelLocationUtils.getModelLocation(Items.TRIDENT, "_in_hand"), new SpearOfLonginusSpecialRenderer.Unbaked()
+                ModelLocationUtils.getModelLocation(spearItem, "_in_hand"), new SpearOfLonginusSpecialRenderer.Unbaked()
         );
         ItemModel.Unbaked throwingModel = ItemModelUtils.specialModel(
                 ModelLocationUtils.getModelLocation(Items.TRIDENT, "_throwing"), new SpearOfLonginusSpecialRenderer.Unbaked()
         );
-        ItemModel.Unbaked entityModel = ItemModelUtils.conditional(ItemModelUtils.isUsingItem(), throwingModel, inHandModel);
+        ItemModel.Unbaked entityModel = ItemModelUtils.conditional(TridentSpecialRenderer.DEFAULT_TRANSFORMATION, ItemModelUtils.isUsingItem(), throwingModel, inHandModel);
         generator.itemModelOutput.accept(spearItem, createSpearOfLonginusModelDispatch(plainModel, entityModel));
     }
 
-    public static ItemModel.Unbaked createSpearOfLonginusModelDispatch(ItemModel.Unbaked itemModel, ItemModel.Unbaked holdingModel) {
+    public static ItemModel.Unbaked createSpearOfLonginusModelDispatch(ItemModel.Unbaked itemModel, ItemModel.Unbaked entityModel) {
         return ItemModelUtils.select(
-                new DisplayContext(), holdingModel, ItemModelUtils.when(List.of(ItemDisplayContext.GUI, ItemDisplayContext.FIXED), itemModel)
+                new DisplayContext(), entityModel,
+                ItemModelUtils.when(List.of(ItemDisplayContext.GUI, ItemDisplayContext.FIXED, ItemDisplayContext.ON_SHELF), itemModel)
         );
     }
 

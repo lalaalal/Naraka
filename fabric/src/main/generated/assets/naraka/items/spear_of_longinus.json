@@ -9,7 +9,8 @@
         },
         "when": [
           "gui",
-          "fixed"
+          "fixed",
+          "on_shelf"
         ]
       }
     ],
@@ -17,7 +18,7 @@
       "type": "minecraft:condition",
       "on_false": {
         "type": "minecraft:special",
-        "base": "minecraft:item/trident_in_hand",
+        "base": "naraka:item/spear_of_longinus_in_hand",
         "model": {
           "type": "naraka:spear_of_longinus"
         }
@@ -29,7 +30,31 @@
           "type": "naraka:spear_of_longinus"
         }
       },
-      "property": "minecraft:using_item"
+      "property": "minecraft:using_item",
+      "transformation": {
+        "left_rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "right_rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          -1.0,
+          -1.0
+        ],
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
     },
     "property": "minecraft:display_context"
   }
