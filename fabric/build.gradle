@@ -1,7 +1,10 @@
+import com.hypherionmc.modpublisher.properties.ModLoader
+
 plugins {
     id 'multiloader-loader'
     id 'net.fabricmc.fabric-loom'
 }
+
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
@@ -33,6 +36,18 @@ loom {
 fabricApi {
     configureDataGeneration() {
         client = true
+    }
+}
+
+publisher {
+    setLoaders(ModLoader.FABRIC)
+
+    modrinthDepends {
+        required "fabric-api"
+    }
+
+    curseDepends {
+        required "fabric-api"
     }
 }
 

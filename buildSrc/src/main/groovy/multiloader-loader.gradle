@@ -1,5 +1,26 @@
 plugins {
     id 'multiloader-common'
+    id "com.hypherionmc.modutils.modpublisher"
+}
+
+publisher {
+    apiKeys {
+        modrinth System.getenv("MODRINTH_TOKEN")
+        curseforge System.getenv("CURSE_TOKEN")
+    }
+
+    setDebug(true)
+    setModrinthID("2InS5Swi")
+    setCurseID("1292603")
+    setVersionType("$project.mod_version_type")
+    setChangelog(rootProject.projectDir.toPath().resolve("change.md").toFile())
+    setVersion("$project.version")
+    setProjectVersion("$project.version")
+    setJavaVersions(List.of(JavaVersion.VERSION_25))
+    setGameVersions("$project.supporting_minecraft_version")
+    setDisplayName("${base.archivesName.get()}-${project.version}")
+    setCurseEnvironment("both")
+    setArtifact("build/libs/${base.archivesName.get()}-${project.version}.jar")
 }
 
 configurations {
@@ -20,6 +41,14 @@ dependencies {
     }
     commonJava project(path: ':common', configuration: 'commonJava')
     commonResources project(path: ':common', configuration: 'commonResources')
+}
+
+tasks.named('publishModrinth') {
+    dependsOn('build')
+}
+
+tasks.named('publishCurseforge') {
+    dependsOn('build')
 }
 
 tasks.named('compileJava', JavaCompile) {
