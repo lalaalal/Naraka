@@ -4,7 +4,13 @@
   "version": "${version}",
   "name": "Naraka",
   "description": "${description}",
-  "authors": "${mod_author}",
+  "authors": [
+    "lalaalal",
+    "joachimbeen",
+    "noon414",
+    "GuEunso",
+    "Gyeon___"
+  ],
   "contact": {
     "homepage": "https://github.com/lalaalal/Naraka"
   },
