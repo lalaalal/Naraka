@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.block.entity.SoulStabilizerBlockEntity;
 import com.yummy.naraka.world.item.SoulType;
 import net.fabricmc.api.EnvType;
@@ -17,7 +18,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 
 @Environment(EnvType.CLIENT)
 public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<SoulStabilizerBlockEntity> {
@@ -72,13 +72,13 @@ public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<So
 
         int souls = blockEntity.getSouls();
         float soulRatio = (float) souls / SoulStabilizerBlockEntity.getCapacity();
-        int color = FastColor.ARGB32.color(0x99, blockEntity.getSoulType().getColor());
+        Color color = Color.of(blockEntity.getSoulType().getColor()).withAlpha(0x99);
 
         poseStack.pushPose();
         poseStack.scale(1, soulRatio, 1);
         RenderType liquidRenderType = RenderType.entityCutout(WATER_OVERLAY);
         VertexConsumer liquidVertexConsumer = bufferSource.getBuffer(liquidRenderType);
-        liquid.render(poseStack, liquidVertexConsumer, packedLight, packedOverlay, color);
+        liquid.render(poseStack, liquidVertexConsumer, packedLight, packedOverlay, color.red01(), color.green01(), color.blue01(), color.alpha01());
         poseStack.popPose();
     }
 }

@@ -44,15 +44,15 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
             packedLight = Math.max(LightTexture.pack(blockLight, skyLight), packedLight);
         }
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
-        renderAfterimages(entity, partialTicks, poseStack, buffer);
+        renderAfterimages(entity, entityYaw, partialTicks, poseStack, buffer);
     }
 
-    protected void renderAfterimages(T entity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource) {
+    protected void renderAfterimages(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource) {
         for (Afterimage afterimage : entity.getAfterimages())
-            this.renderAfterimage(entity, afterimage, partialTick, poseStack, bufferSource);
+            this.renderAfterimage(entity, afterimage, entityYaw, partialTick, poseStack, bufferSource);
     }
 
-    protected void renderAfterimage(T entity, Afterimage afterimage, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource) {
+    protected void renderAfterimage(T entity, Afterimage afterimage, float yaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource) {
         int alpha = afterimage.getAlpha(partialTick);
         if (alpha == 0 && afterimage.getPartialTicks() < partialTick)
             return;
@@ -62,7 +62,7 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
         poseStack.pushPose();
         poseStack.translate(translation.x, translation.y + 1.5, translation.z);
 
-        this.setupRotations(entity, poseStack, getBob(entity, partialTick), afterimage.getYRot(), partialTick, entity.getScale());
+        this.setupRotations(entity, poseStack, entity.tickCount + partialTick, yaw, partialTick);
         poseStack.scale(-1, -1, 1);
 
         Color color = getAfterimageColor(afterimage, partialTick);
@@ -71,9 +71,7 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
         RenderType renderType = RenderType.entityTranslucent(getAfterimageTexture(entity));
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
-        getAfterimageModel(entity).renderToBuffer(
-                poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color.pack()
-        );
+        getAfterimageModel(entity).renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color.red01(), color.green01(), color.blue01(), color.alpha01());
         renderAfterimageLayer(entity, afterimage, poseStack, bufferSource, packedLight, color.alpha());
 
         poseStack.popPose();

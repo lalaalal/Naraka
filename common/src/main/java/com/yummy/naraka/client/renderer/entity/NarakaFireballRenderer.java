@@ -40,7 +40,7 @@ public class NarakaFireballRenderer extends EntityRenderer<NarakaFireball> {
         NarakaRenderUtils.applyYZSpin(poseStack, rotation);
         RenderType renderType = model.renderType(getTextureLocation(entity));
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-        model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
+        model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
         poseStack.popPose();

@@ -123,33 +123,33 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
             boolean addThicknessRightSideX,
             boolean addThicknessRightSideZ
     ) {
-        buffer.addVertex(
-                        pose,
+        buffer.vertex(
+                        pose.pose(),
                         x1 + (addThicknessLeftSideX ? outerThickness : -outerThickness),
                         (float) (sectionY * 16),
                         z1 + (addThicknessLeftSideZ ? outerThickness : -outerThickness)
                 )
-                .setColor(red, green, blue, alpha);
-        buffer.addVertex(
-                        pose,
+                .color(red, green, blue, alpha);
+        buffer.vertex(
+                        pose.pose(),
                         x2 + (addThicknessLeftSideX ? innerThickness : -innerThickness),
                         (float) ((sectionY + 1) * 16),
                         z2 + (addThicknessLeftSideZ ? innerThickness : -innerThickness)
                 )
-                .setColor(red, green, blue, alpha);
-        buffer.addVertex(
-                        pose,
+                .color(red, green, blue, alpha);
+        buffer.vertex(
+                        pose.pose(),
                         x2 + (addThicknessRightSideX ? innerThickness : -innerThickness),
                         (float) ((sectionY + 1) * 16),
                         z2 + (addThicknessRightSideZ ? innerThickness : -innerThickness)
                 )
-                .setColor(red, green, blue, alpha);
-        buffer.addVertex(
-                        pose,
+                .color(red, green, blue, alpha);
+        buffer.vertex(
+                        pose.pose(),
                         x1 + (addThicknessRightSideX ? outerThickness : -outerThickness),
                         (float) (sectionY * 16),
                         z1 + (addThicknessRightSideZ ? outerThickness : -outerThickness)
                 )
-                .setColor(red, green, blue, alpha);
+                .color(red, green, blue, alpha);
     }
 }

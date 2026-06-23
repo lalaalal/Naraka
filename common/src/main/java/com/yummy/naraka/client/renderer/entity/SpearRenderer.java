@@ -94,7 +94,7 @@ public class SpearRenderer<T extends Spear> extends EntityRenderer<T> {
     public static void renderNonShaderLonginus(EntityModel<? extends Spear> model, float ageInTicks, PoseStack poseStack, MultiBufferSource bufferSource) {
         poseStack.pushPose();
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityCutout(NarakaTextures.LONGINUS));
-        model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0xff000000);
+        model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0, 0, 0, 1);
         poseStack.popPose();
 
         renderLonginus(model, ageInTicks, 0.001f, 0.01f, poseStack, bufferSource);
@@ -106,7 +106,7 @@ public class SpearRenderer<T extends Spear> extends EntityRenderer<T> {
         poseStack.pushPose();
         RenderType renderType = RenderType.energySwirl(NarakaTextures.LONGINUS, (ageInTicks * uMultiplier) % 1, (ageInTicks * vMultiplier) % 1);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-        model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
+        model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         poseStack.popPose();
     }
 }

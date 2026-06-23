@@ -4,12 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 
 @Environment(EnvType.CLIENT)
@@ -47,19 +47,20 @@ public abstract class AbstractHerobrineModel<T extends AbstractHerobrine> extend
     }
 
     public void renderForEye(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float alpha) {
-        root().render(poseStack, buffer, packedLight, packedOverlay, FastColor.ARGB32.colorFromFloat(alpha, 1, 1, 1));
+        root().render(poseStack, buffer, packedLight, packedOverlay, 1, 1, 1, alpha);
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        if (FastColor.ARGB32.alpha(color) == 0xff) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        Color color = Color.of(red, green, blue, alpha);
+        if (color.alpha() == 0xff) {
             if (forShadow) {
-                color = NarakaConfig.CLIENT.shadowHerobrineColor.getValue().pack();
+                color = NarakaConfig.CLIENT.shadowHerobrineColor.getValue();
                 packedOverlay = OverlayTexture.NO_OVERLAY;
             }
-            color = FastColor.ARGB32.color(alpha, color);
+            color = color.withAlpha(this.alpha);
         }
-        root().render(poseStack, buffer, packedLight, packedOverlay, color);
+        root().render(poseStack, buffer, packedLight, packedOverlay, color.red01(), color.green01(), color.blue01(), color.alpha01());
     }
 
     public void applyHeadRotation(float headYaw, float headPitch) {

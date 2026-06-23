@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.NarakaSword;
 import com.yummy.naraka.world.entity.SwordEffectData;
 import net.fabricmc.api.EnvType;
@@ -16,7 +17,6 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -93,7 +93,7 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword> {
                 new Vector3f(x2, 0, 0),
                 new Vector3f(x2, height, 0)
         );
-        NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, vertices, 0, 0, 1, 1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.color((int) (alpha * 255), color));
+        NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, vertices, 0, 0, 1, 1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, Color.combine((int) (alpha * 255), color));
     }
 
     private void renderHandle(PoseStack.Pose pose, VertexConsumer vertexConsumer, float angleOffset, float xOffset, float yOffset, float handleHeight, float height, float scale, float length, float alpha, int color) {
@@ -107,7 +107,7 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword> {
             float z = Mth.sin(angle + angleOffset) * scale;
             float y = angle / Mth.PI * handleHeight + yOffset;
 
-            renderWithHeight(pose, vertexConsumer, prevX, prevY, prevZ, x, y, z, height, FastColor.ARGB32.color((int) (alpha * 255), color));
+            renderWithHeight(pose, vertexConsumer, prevX, prevY, prevZ, x, y, z, height, Color.combine((int) (alpha * 255), color));
 
             prevX = x;
             prevZ = z;
@@ -150,7 +150,7 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword> {
                     next.tail(swordEffectOffset),
                     next.head(swordEffectOffset)
             );
-            NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, vertices, 0, 0, 1, 1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.color((int) (alpha * 255), narakaSword.getColor()));
+            NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, vertices, 0, 0, 1, 1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, Color.combine((int) (alpha * 255), narakaSword.getColor()));
         }
     }
 }

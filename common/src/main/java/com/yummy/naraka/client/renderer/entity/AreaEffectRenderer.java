@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaTextures;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AreaEffect;
 import com.yummy.naraka.world.entity.AreaShape;
@@ -17,7 +18,6 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 
@@ -68,30 +68,31 @@ public class AreaEffectRenderer extends EntityRenderer<AreaEffect> {
     public static void renderRectangle(PoseStack.Pose pose, VertexConsumer vertexConsumer, float xWidth, float zWidth, int alpha, int color) {
         float x = xWidth / 2;
         float z = zWidth / 2;
-        vertexConsumer.addVertex(pose, x, 0.1f, z)
-                .setUv(0, 1)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setColor(FastColor.ARGB32.color(alpha, color))
-                .setNormal(pose, 0, 1, 0);
-        vertexConsumer.addVertex(pose, x, 0.1f, -z)
-                .setUv(0, 0)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setColor(FastColor.ARGB32.color(alpha, color))
-                .setNormal(pose, 0, 1, 0);
-        vertexConsumer.addVertex(pose, -x, 0.1f, -z)
-                .setUv(1, 0)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setColor(FastColor.ARGB32.color(alpha, color))
-                .setNormal(pose, 0, 1, 0);
-        vertexConsumer.addVertex(pose, -x, 0.1f, z)
-                .setUv(1, 1)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setColor(FastColor.ARGB32.color(alpha, color))
-                .setNormal(pose, 0, 1, 0);
+        color = Color.of(color).withAlpha(alpha).pack();
+        vertexConsumer.vertex(pose.pose(), x, 0.1f, z)
+                .uv(0, 1)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                .uv2(LightTexture.FULL_BRIGHT)
+                .color(color)
+                .normal(pose.normal(), 0, 1, 0);
+        vertexConsumer.vertex(pose.pose(), x, 0.1f, -z)
+                .uv(0, 0)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                .uv2(LightTexture.FULL_BRIGHT)
+                .color(color)
+                .normal(pose.normal(), 0, 1, 0);
+        vertexConsumer.vertex(pose.pose(), -x, 0.1f, -z)
+                .uv(1, 0)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                .uv2(LightTexture.FULL_BRIGHT)
+                .color(color)
+                .normal(pose.normal(), 0, 1, 0);
+        vertexConsumer.vertex(pose.pose(), -x, 0.1f, z)
+                .uv(1, 1)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                .uv2(LightTexture.FULL_BRIGHT)
+                .color(color)
+                .normal(pose.normal(), 0, 1, 0);
     }
 
     public static void renderCircle(PoseStack.Pose pose, VertexConsumer vertexConsumer, Vector3f base, float radius, int alpha, int color) {
@@ -118,12 +119,13 @@ public class AreaEffectRenderer extends EntityRenderer<AreaEffect> {
     }
 
     private static void addVertex(PoseStack.Pose pose, VertexConsumer vertexConsumer, Vector3f vector, float u, float v, int alpha, int color) {
-        vertexConsumer.addVertex(pose, vector)
-                .setUv(u, v)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setColor(FastColor.ARGB32.color(alpha, color))
-                .setNormal(pose, 0, 1, 0);
+        color = Color.of(color).withAlpha(alpha).pack();
+        vertexConsumer.vertex(pose.pose(), vector.x, vector.y, vector.z)
+                .uv(u, v)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                .uv2(LightTexture.FULL_BRIGHT)
+                .color(color)
+                .normal(pose.normal(), 0, 1, 0);
     }
 
     @Override

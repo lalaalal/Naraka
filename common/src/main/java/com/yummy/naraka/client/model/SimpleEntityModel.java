@@ -28,7 +28,7 @@ public abstract class SimpleEntityModel<T extends Entity> extends EntityModel<T>
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        root.render(poseStack, buffer, packedLight, packedOverlay, color);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        root.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

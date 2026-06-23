@@ -3,6 +3,7 @@ package com.yummy.naraka.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.LightTailEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -11,7 +12,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
@@ -60,7 +60,8 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity> extends
                 alpha = Mth.lerpInt(partialTick, alpha, nextAlpha);
             }
 
-            renderTailPart(entity, partialTick, poseStack.last(), vertexConsumer, from, to, delta, partSize, FastColor.ARGB32.color(alpha, entity.getTailColor()));
+            Color color = Color.of(entity.getTailColor()).withAlpha(alpha);
+            renderTailPart(entity, partialTick, poseStack.last(), vertexConsumer, from, to, delta, partSize, color.pack());
         }
 
         poseStack.popPose();

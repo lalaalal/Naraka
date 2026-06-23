@@ -85,7 +85,7 @@ public abstract class SkillUsingMobControlScreen extends Screen {
     protected void repositionElements() {
         super.repositionElements();
         layout.arrangeElements();
-        locationList.updateSize(width, layout);
+        locationList.updateSize(width, height, layout.getY(), layout.getY() + height);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.LightningCircle;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -16,7 +17,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 
 @Environment(EnvType.CLIENT)
@@ -47,7 +47,7 @@ public class LightningCircleRenderer extends EntityRenderer<LightningCircle> {
 
         RenderType renderType = RenderType.entityCutout(getTextureLocation(entity));
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-        NarakaRenderUtils.renderFlatImage(poseStack.last(), vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(alpha, 1, 1, 1), Direction.Axis.Y);
+        NarakaRenderUtils.renderFlatImage(poseStack.last(), vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, Color.of(alpha, 1, 1, 1).pack(), Direction.Axis.Y);
         poseStack.popPose();
     }
 }

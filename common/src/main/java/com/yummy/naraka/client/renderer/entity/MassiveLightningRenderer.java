@@ -65,6 +65,6 @@ public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning> {
     }
 
     private void vertex(VertexConsumer vertexConsumer, PoseStack.Pose pose, Vector3f position, int color) {
-        vertexConsumer.addVertex(pose, position).setColor(color);
+        vertexConsumer.vertex(pose.pose(), position.x, position.y, position.z).color(color);
     }
 }

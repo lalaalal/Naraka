@@ -39,7 +39,7 @@ public class StardustRenderer extends LightTailEntityRenderer<Stardust> {
         NarakaRenderUtils.applyYZSpin(poseStack, rotation);
         RenderType renderType = RenderType.entityCutout(getTextureLocation(entity));
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-        model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
+        model.renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         poseStack.popPose();
 
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);

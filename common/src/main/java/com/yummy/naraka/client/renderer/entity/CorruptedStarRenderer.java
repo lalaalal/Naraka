@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.CorruptedStar;
 import net.fabricmc.api.EnvType;
@@ -19,7 +20,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
@@ -63,8 +63,11 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         poseStack.rotateAround(Axis.ZP.rotationDegrees(rotation), 0, 0.25f, 0);
         float alphaMultiplier = entity.getAlphaMultiplier(partialTick);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.lightning());
-        inner.render(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.color((int) (0xaa * alphaMultiplier), 0xffffff));
-        outer.render(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.color((int) (0xbb * alphaMultiplier), entity.getTailColor()));
+
+        Color innerColor = Color.white((int) (0xaa * alphaMultiplier));
+        inner.render(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, innerColor.red01(), innerColor.green01(), innerColor.blue01(), innerColor.alpha01());
+        Color outerColor = Color.of(entity.getTailColor()).withAlpha((int) (0xaa * alphaMultiplier));
+        outer.render(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, outerColor.red01(), outerColor.green01(), outerColor.blue01(), outerColor.alpha01());
 
         poseStack.popPose();
 
@@ -116,17 +119,17 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
     private void renderTriangle(PoseStack.Pose pose, VertexConsumer vertexConsumer, int xDirection, int zDirection, float interval, float width, float height, int alpha, int color) {
         float x = interval * xDirection;
         float z = interval * zDirection;
-        vertexConsumer.addVertex(pose, -x, height, -z)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(FastColor.ARGB32.color(alpha, color));
-        vertexConsumer.addVertex(pose, x - (width), 0, z)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(FastColor.ARGB32.color(alpha, color));
-        vertexConsumer.addVertex(pose, x + (width), 0, z)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(FastColor.ARGB32.color(alpha, color));
-        vertexConsumer.addVertex(pose, -x, height, -z)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(FastColor.ARGB32.color(alpha, color));
+        vertexConsumer.vertex(pose.pose(), -x, height, -z)
+                .normal(pose.normal(), 0, 1, 0)
+                .color(Color.combine(alpha, color));
+        vertexConsumer.vertex(pose.pose(), x - (width), 0, z)
+                .normal(pose.normal(), 0, 1, 0)
+                .color(Color.combine(alpha, color));
+        vertexConsumer.vertex(pose.pose(), x + (width), 0, z)
+                .normal(pose.normal(), 0, 1, 0)
+                .color(Color.combine(alpha, color));
+        vertexConsumer.vertex(pose.pose(), -x, height, -z)
+                .normal(pose.normal(), 0, 1, 0)
+                .color(Color.combine(alpha, color));
     }
 }

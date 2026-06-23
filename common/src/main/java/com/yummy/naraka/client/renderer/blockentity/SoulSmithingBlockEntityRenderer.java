@@ -7,6 +7,7 @@ import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.NarakaTextures;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.block.SoulSmithingBlock;
 import com.yummy.naraka.world.block.entity.SoulSmithingBlockEntity;
 import com.yummy.naraka.world.item.NarakaItems;
@@ -118,8 +119,8 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
         poseStack.pushPose();
         poseStack.rotateAround(rotation, 0.5f, 0.5f, 0.5f);
         RenderType renderType = getRenderTypeForTrim(templateItem);
-        int color = templateItem.is(NarakaItems.HEROBRINE_SCARF.value()) ? 0x88000000 : -1;
-        trimTemplate.render(poseStack, bufferSource.getBuffer(renderType), packedLight, OverlayTexture.NO_OVERLAY, color);
+        Color color = Color.of(templateItem.is(NarakaItems.HEROBRINE_SCARF.value()) ? 0x88000000 : -1);
+        trimTemplate.render(poseStack, bufferSource.getBuffer(renderType), packedLight, OverlayTexture.NO_OVERLAY, color.red01(), color.green01(), color.blue01(), color.alpha01());
         poseStack.popPose();
     }
 

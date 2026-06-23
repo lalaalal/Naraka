@@ -101,7 +101,7 @@ public class SpearItemRenderer implements CustomRenderManager.CustomItemRenderer
                 renderNonShaderLonginus(model, poseStack, bufferSource);
             RenderType renderType = model.renderType(textureLocation);
             VertexConsumer vertexConsumer = getBuffer(bufferSource, renderType, stack);
-            model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 0xffffffff);
+            model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, 1, 1, 1, 1);
             poseStack.popPose();
         }
     }
@@ -110,7 +110,7 @@ public class SpearItemRenderer implements CustomRenderManager.CustomItemRenderer
         if (minecraft.player == null)
             return;
         int tickCount = minecraft.player.tickCount;
-        float partialTicks = minecraft.getTimer().getGameTimeDeltaPartialTick(true);
+        float partialTicks = minecraft.getFrameTime();
         SpearRenderer.renderNonShaderLonginus(model, tickCount + partialTicks, poseStack, bufferSource);
     }
 

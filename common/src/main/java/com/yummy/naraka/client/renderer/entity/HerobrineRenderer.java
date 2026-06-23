@@ -42,8 +42,8 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Abst
         if (entity.isDeadOrDying() && entity.deathTime > 60) {
             if (NarakaClientContext.SHADER_ENABLED.getValue())
                 packedLight = 0;
-            renderChzzk(entity, partialTicks + 10, poseStack, buffer, getChzzkRenderType(entity, partialTicks, 0.001f, 0.01f), packedLight);
-            renderChzzk(entity, partialTicks + 30, poseStack, buffer, getChzzkRenderType(entity, partialTicks, 0.002f, 0.005f), packedLight);
+            renderChzzk(entity, entityYaw, partialTicks + 10, poseStack, buffer, getChzzkRenderType(entity, partialTicks, 0.001f, 0.01f), packedLight);
+            renderChzzk(entity, entityYaw, partialTicks + 30, poseStack, buffer, getChzzkRenderType(entity, partialTicks, 0.002f, 0.005f), packedLight);
         }
         poseStack.pushPose();
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
@@ -57,23 +57,16 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Abst
         return NarakaRenderTypes.longinusCutout(NarakaTextures.FINAL_HEROBRINE);
     }
 
-    private void renderChzzk(Herobrine herobrine, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, RenderType renderType, int packedLight) {
+    private void renderChzzk(Herobrine herobrine, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, RenderType renderType, int packedLight) {
         poseStack.pushPose();
         dyingModel.applyHeadRotation(herobrine.getYHeadRot(), herobrine.getViewXRot(partialTick));
         dyingModel.setupChzzkAnimation(herobrine.chzzkAnimationState, herobrine.tickCount + partialTick);
-        this.setupRotations(herobrine, poseStack, getBob(herobrine, partialTick), herobrine.getViewYRot(partialTick), partialTick, herobrine.getScale());
+        this.setupRotations(herobrine, poseStack, herobrine.tickCount + partialTick, entityYaw, partialTick);
         poseStack.scale(-1, -1, 1);
         poseStack.translate(0, -1.401F, 0);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-        dyingModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+        dyingModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         poseStack.popPose();
-    }
-
-    @Override
-    protected float getShadowRadius(Herobrine herobrine) {
-        if (herobrine.isFinalModel())
-            return 0.7f * herobrine.getScale();
-        return super.getShadowRadius(herobrine);
     }
 
     @Override

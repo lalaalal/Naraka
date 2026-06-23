@@ -6,6 +6,7 @@ import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.layer.HerobrineEyeLayer;
 import com.yummy.naraka.client.model.HerobrineModel;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.entity.OriginHerobrine;
 import com.yummy.naraka.world.item.SoulType;
@@ -16,7 +17,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
@@ -57,8 +57,8 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
             float deathProgress = (entity.deathTime + partialTicks) / 200.0F;
             poseStack.pushPose();
             poseStack.translate(0, 1, 0);
-            renderRays(poseStack, deathProgress, buffer.getBuffer(RenderType.dragonRays()));
-            renderRays(poseStack, deathProgress, buffer.getBuffer(RenderType.dragonRaysDepth()));
+            renderRays(poseStack, deathProgress, buffer.getBuffer(RenderType.lightning()));
+            renderRays(poseStack, deathProgress, buffer.getBuffer(RenderType.lightning()));
             poseStack.popPose();
         }
 
@@ -73,7 +73,7 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
     private static void renderRays(PoseStack poseStack, float dragonDeathCompletion, VertexConsumer buffer) {
         poseStack.pushPose();
         float alpha = Math.min(dragonDeathCompletion > 0.8F ? (dragonDeathCompletion - 0.8F) / 0.2F : 0.0F, 1.0F);
-        int white = FastColor.ARGB32.colorFromFloat(1.0F - alpha, 1.0F, 1.0F, 1.0F);
+        int white = Color.of(1.0F - alpha, 1.0F, 1.0F, 1.0F).pack();
         int color = ComponentStyles.RAINBOW_COLOR.getCurrentColor().withAlpha(2).pack();
         RandomSource randomSource = RandomSource.create(432L);
         Vector3f vector3f = new Vector3f();
@@ -92,15 +92,15 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
             vector3f3.set(HALF_SQRT_3 * h, g, -0.5F * h);
             vector3f4.set(0.0F, g, h);
             PoseStack.Pose pose = poseStack.last();
-            buffer.addVertex(pose, vector3f).setColor(white);
-            buffer.addVertex(pose, vector3f2).setColor(color);
-            buffer.addVertex(pose, vector3f3).setColor(color);
-            buffer.addVertex(pose, vector3f).setColor(white);
-            buffer.addVertex(pose, vector3f3).setColor(color);
-            buffer.addVertex(pose, vector3f4).setColor(color);
-            buffer.addVertex(pose, vector3f).setColor(white);
-            buffer.addVertex(pose, vector3f4).setColor(color);
-            buffer.addVertex(pose, vector3f2).setColor(color);
+            buffer.vertex(pose.pose(), vector3f.x, vector3f.y, vector3f.z).color(white);
+            buffer.vertex(pose.pose(), vector3f2.x, vector3f2.y, vector3f2.z).color(color);
+            buffer.vertex(pose.pose(), vector3f3.x, vector3f3.y, vector3f3.z).color(color);
+            buffer.vertex(pose.pose(), vector3f.x, vector3f.y, vector3f.z).color(white);
+            buffer.vertex(pose.pose(), vector3f3.x, vector3f3.y, vector3f3.z).color(color);
+            buffer.vertex(pose.pose(), vector3f4.x, vector3f4.y, vector3f4.z).color(color);
+            buffer.vertex(pose.pose(), vector3f.x, vector3f.y, vector3f.z).color(white);
+            buffer.vertex(pose.pose(), vector3f4.x, vector3f4.y, vector3f4.z).color(color);
+            buffer.vertex(pose.pose(), vector3f2.x, vector3f2.y, vector3f2.z).color(color);
         }
 
         poseStack.popPose();

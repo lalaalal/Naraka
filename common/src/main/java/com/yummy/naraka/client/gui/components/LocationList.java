@@ -5,17 +5,20 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ObjectSelectionList;
+import net.minecraft.client.gui.layouts.LayoutElement;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Comparator;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 @Environment(EnvType.CLIENT)
-public class LocationList extends ObjectSelectionList<LocationList.Entry> {
+public class LocationList extends ObjectSelectionList<LocationList.Entry> implements LayoutElement {
     private final Screen screen;
     private final Function<ResourceLocation, String> translationKeyGenerator;
 
@@ -29,6 +32,41 @@ public class LocationList extends ObjectSelectionList<LocationList.Entry> {
                 .sorted(Comparator.comparing(entry -> entry.component.getString()))
                 .forEach(this::addEntry);
         setSelected(children().getFirst());
+    }
+
+    @Override
+    public void setX(int x) {
+        this.x0 = x;
+    }
+
+    @Override
+    public void setY(int y) {
+        this.y0 = y;
+    }
+
+    @Override
+    public int getX() {
+        return x0;
+    }
+
+    @Override
+    public int getY() {
+        return y0;
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
+    @Override
+    public void visitWidgets(Consumer<AbstractWidget> consumer) {
+
     }
 
     public class Entry extends ObjectSelectionList.Entry<Entry> {

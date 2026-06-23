@@ -23,7 +23,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -121,8 +120,8 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, M e
         RenderType renderType = RenderType.entityTranslucent(NarakaTextures.HEROBRINE_EYE);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
-        int color = FastColor.ARGB32.color(Mth.clamp(alpha - 25, 0, 255), 0xffffff);
-        getAfterimageModel(entity).renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color);
+        Color color = Color.of(0xffffff).withAlpha(Mth.clamp(alpha - 25, 0, 255));
+        getAfterimageModel(entity).renderToBuffer(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color.red01(), color.green01(), color.blue01(), color.alpha01());
         poseStack.popPose();
     }
 
