@@ -16,7 +16,6 @@ import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRende
 import com.yummy.naraka.client.renderer.blockentity.SoulStabilizerBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.entity.*;
 import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.data.worldgen.NarakaDimensionTypes;
@@ -27,7 +26,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
-import com.yummy.naraka.world.item.component.SanctuaryTracker;
+import com.yummy.naraka.world.item.SanctuaryCompassItem;
 import com.yummy.naraka.world.overlay.NarakaProgressOverlayExtensionTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -86,12 +85,11 @@ public final class NarakaModClient {
             return NarakaRenderTypes.longinusCutout(NarakaTextures.LOCATION_BLOCKS);
         });
 
-        ItemPropertyRegistry.register(NarakaItems.SANCTUARY_COMPASS.get(), NarakaMod.location("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) -> {
-            SanctuaryTracker tracker = itemStack.get(NarakaDataComponentTypes.SANCTUARY_TRACKER.get());
-            if (tracker == null)
-                return null;
-            return tracker.sanctuaryPos().orElse(null);
-        }));
+        ItemPropertyRegistry.register(NarakaItems.SANCTUARY_COMPASS.get(),
+                NarakaMod.location("angle"),
+                new CompassItemPropertyFunction((clientLevel, itemStack, entity)
+                        -> SanctuaryCompassItem.getGlobalPos(itemStack))
+        );
     }
 
     private static void initializeBlocks() {
