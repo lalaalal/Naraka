@@ -9,16 +9,14 @@ import com.yummy.naraka.world.entity.data.EntityDataType;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 
 @Environment(EnvType.CLIENT)
-public class LockedHealthHud implements LayeredDraw.Layer {
+public class LockedHealthHud implements HudRenderer {
     public static final int HEARTS_PER_LINE = 10;
     public static final int HEART_WIDTH = 8;
 
@@ -41,7 +39,7 @@ public class LockedHealthHud implements LayeredDraw.Layer {
     }
 
     @Override
-    public void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
+    public void render(GuiGraphics graphics, float partialTicks) {
         Player player = Minecraft.getInstance().player;
         if (player == null || !NarakaEntityUtils.isDamageablePlayer(player))
             return;
@@ -78,16 +76,16 @@ public class LockedHealthHud implements LayeredDraw.Layer {
 
     private void renderLockedHeart(GuiGraphics graphics, int x, int y, boolean blink) {
         int u = blink ? 7 : 0;
-        graphics.blitSprite(NarakaSprites.DEATH_COUNT_HEART, 14, 7, u, 0, x + 1, y + 1, 7, 7);
+        graphics.blit(NarakaSprites.DEATH_COUNT_HEART, 14, 7, u, 0, x + 1, y + 1, 7, 7);
     }
 
     private void renderRightHalfLockedHeart(GuiGraphics graphics, int x, int y, boolean blink) {
         int u = blink ? 7 : 0;
-        graphics.blitSprite(NarakaSprites.DEATH_COUNT_HEART, 14, 7, u + 4, 0, x + 5, y + 1, 3, 7);
+        graphics.blit(NarakaSprites.DEATH_COUNT_HEART, 14, 7, u + 4, 0, x + 5, y + 1, 3, 7);
     }
 
     private void renderLeftHalfLockedHeart(GuiGraphics graphics, int x, int y, boolean blink) {
         int u = blink ? 7 : 0;
-        graphics.blitSprite(NarakaSprites.DEATH_COUNT_HEART, 14, 7, u, 0, x + 1, y + 1, 4, 7);
+        graphics.blit(NarakaSprites.DEATH_COUNT_HEART, 14, 7, u, 0, x + 1, y + 1, 4, 7);
     }
 }

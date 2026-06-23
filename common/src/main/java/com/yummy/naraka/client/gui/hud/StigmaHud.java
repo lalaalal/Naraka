@@ -7,17 +7,16 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.entity.data.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.InventoryMenu;
 
 @Environment(EnvType.CLIENT)
-public class StigmaHud implements LayeredDraw.Layer {
+public class StigmaHud implements HudRenderer {
     public static final int BACKGROUND_WIDTH = 15;
     public static final int BACKGROUND_HEIGHT = 5;
     public static final int STIGMA_SIZE = 5;
@@ -55,12 +54,12 @@ public class StigmaHud implements LayeredDraw.Layer {
 
         float tick = Math.max(Mth.lerp(partialTick, consumeIconDisplayTick, consumeIconDisplayTick - 1), 0);
         float alpha = tick / (float) CONSUME_ICON_DISPLAYING_TIME;
-        TextureAtlasSprite sprite = Minecraft.getInstance().getGuiSprites().getSprite(NarakaSprites.STIGMA_CONSUME);
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(NarakaSprites.STIGMA_CONSUME);
         guiGraphics.blit(x, y, 0, CONSUME_ICON_WIDTH, CONSUME_ICON_HEIGHT, sprite, 1, 1, 1, alpha);
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, DeltaTracker tickCounter) {
+    public void render(GuiGraphics guiGraphics, float partialTicks) {
         Player player = Minecraft.getInstance().player;
         if (player == null)
             return;
@@ -76,7 +75,7 @@ public class StigmaHud implements LayeredDraw.Layer {
         int deathCount = DeathCountHelper.get(player);
 
         if (consumeIconDisplayTick > 0)
-            renderStigmaConsumeIcon(guiGraphics, tickCounter.getGameTimeDeltaPartialTick(true));
+            renderStigmaConsumeIcon(guiGraphics, partialTicks);
 
         if (deathCount <= 0 && stigma.value() < 1)
             return;
@@ -84,11 +83,11 @@ public class StigmaHud implements LayeredDraw.Layer {
         if (stigma.lastMarkedTime() != 0 && stigmatizedTime > herobrineTakingStigmaTick / 6 * 5)
             baseX += (int) (stigmatizedTime % 4 / 2) * 2 - 1;
 
-        guiGraphics.blitSprite(NarakaSprites.STIGMA_BACKGROUND, baseX, baseY, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+        guiGraphics.blit(NarakaSprites.STIGMA_BACKGROUND, baseX, baseY, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
         for (int i = 0; i < stigma.value(); i++) {
             int x = baseX + STIGMA_START_X + i * (STIGMA_OFFSET_INTERVAL + STIGMA_SIZE);
             int y = baseY + STIGMA_START_Y;
-            guiGraphics.blitSprite(NarakaSprites.STIGMA, x, y, STIGMA_SIZE, STIGMA_SIZE);
+            guiGraphics.blit(NarakaSprites.STIGMA, x, y, 0, 0, STIGMA_SIZE, STIGMA_SIZE);
         }
     }
 }
