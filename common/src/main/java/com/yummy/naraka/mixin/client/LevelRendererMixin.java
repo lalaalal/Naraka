@@ -1,9 +1,7 @@
 package com.yummy.naraka.mixin.client;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.init.DimensionSkyRendererRegistry;
@@ -68,14 +66,14 @@ public abstract class LevelRendererMixin {
     }
 
     @Inject(method = "renderSky", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getStarBrightness(F)F"))
-    private void renderEclipse(Matrix4f frustumMatrix, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo ci, @Local Tesselator tesselator, @Local PoseStack poseStack) {
+    private void renderEclipse(PoseStack poseStack, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo ci) {
         if (naraka$isHerobrineSkyEnabled()) {
             NarakaSkyRenderer.renderEclipse(poseStack, tesselator, NarakaTextures.ECLIPSE);
         }
     }
 
     @Inject(method = "renderSky", at = @At("RETURN"))
-    private void renderDimensionSky(Matrix4f frustumMatrix, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo ci) {
+    private void renderDimensionSky(PoseStack poseStack, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo ci) {
         if (level == null)
             return;
         DimensionSkyRendererRegistry.get(level.dimension())

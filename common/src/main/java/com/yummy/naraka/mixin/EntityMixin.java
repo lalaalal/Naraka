@@ -24,23 +24,23 @@ public abstract class EntityMixin {
     public abstract Level level();
 
     @Inject(method = "saveWithoutId", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;addAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V"))
-    public void saveEntityData(CompoundTag output, CallbackInfoReturnable<CompoundTag> cir) {
+    public void saveEntityData(CompoundTag compound, CallbackInfoReturnable<CompoundTag> cir) {
         if (EntityDataHelper.hasEntityData(naraka$self())) {
             List<EntityData<?, ?>> data = EntityDataHelper.getEntityDataList(naraka$self());
-            NarakaNbtUtils.store(output, "EntityData", EntityData.CODEC.listOf(), RegistryOps.create(NbtOps.INSTANCE, level().registryAccess()), data);
+            NarakaNbtUtils.store(compound, "EntityData", EntityData.CODEC.listOf(), RegistryOps.create(NbtOps.INSTANCE, level().registryAccess()), data);
         }
     }
 
     @Inject(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;readAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V"))
-    public void readEntityData(CompoundTag input, CallbackInfo ci) {
-        List<EntityData<?, ?>> data = NarakaNbtUtils.read(input, "EntityData", EntityData.CODEC.listOf(), RegistryOps.create(NbtOps.INSTANCE, level().registryAccess()))
+    public void readEntityData(CompoundTag compound, CallbackInfo ci) {
+        List<EntityData<?, ?>> data = NarakaNbtUtils.read(compound, "EntityData", EntityData.CODEC.listOf(), RegistryOps.create(NbtOps.INSTANCE, level().registryAccess()))
                 .orElse(List.of());
         EntityDataHelper.loadEntityDataList(naraka$self(), data);
     }
 
     @Inject(method = "remove", at = @At("RETURN"))
-    public void removeEntityData(Entity.RemovalReason removalReason, CallbackInfo ci) {
-        if (removalReason.shouldDestroy())
+    public void removeEntityData(Entity.RemovalReason reason, CallbackInfo ci) {
+        if (reason.shouldDestroy())
             EntityDataHelper.removeEntityData(naraka$self());
     }
 

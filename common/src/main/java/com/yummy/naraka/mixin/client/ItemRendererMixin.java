@@ -29,16 +29,16 @@ import java.util.List;
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    public void renderCustom(ItemStack itemStack, ItemDisplayContext itemDisplayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, int overlay, BakedModel bakedModel, CallbackInfo ci) {
+    public void renderCustom(ItemStack itemStack, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, CallbackInfo ci) {
         if (CustomRenderManager.hasCustomRenderer(itemStack)) {
             CustomRenderManager.CustomItemRenderer itemRenderer = CustomRenderManager.getCustomRenderer(itemStack);
-            if (itemRenderer.shouldRenderCustom(itemStack, itemDisplayContext)) {
+            if (itemRenderer.shouldRenderCustom(itemStack, displayContext)) {
                 poseStack.pushPose();
                 if (itemRenderer.applyTransform()) {
-                    bakedModel.getTransforms().getTransform(itemDisplayContext).apply(leftHand, poseStack);
+                    model.getTransforms().getTransform(displayContext).apply(leftHand, poseStack);
                     poseStack.translate(-0.5F, -0.5F, -0.5F);
                 }
-                itemRenderer.render(itemStack, itemDisplayContext, poseStack, multiBufferSource, light, overlay);
+                itemRenderer.render(itemStack, displayContext, poseStack, buffer, combinedLight, combinedOverlay);
                 poseStack.popPose();
                 ci.cancel();
             }
@@ -53,10 +53,10 @@ public abstract class ItemRendererMixin {
     }
 
     @Inject(method = "renderModelLists", at = @At("HEAD"), cancellable = true)
-    public void renderCustom(BakedModel model, ItemStack itemStack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer buffer, CallbackInfo ci) {
-        if (CustomRenderManager.shouldRenderColored(itemStack)) {
+    public void renderCustom(BakedModel model, ItemStack stack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer buffer, CallbackInfo ci) {
+        if (CustomRenderManager.shouldRenderColored(stack)) {
             ci.cancel();
-            naraka$renderColoredModelLists(model, itemStack, combinedLight, combinedOverlay, poseStack, buffer);
+            naraka$renderColoredModelLists(model, stack, combinedLight, combinedOverlay, poseStack, buffer);
         }
     }
 

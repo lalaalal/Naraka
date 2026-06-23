@@ -13,7 +13,6 @@ import com.yummy.naraka.util.NarakaUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.*;
@@ -54,11 +53,9 @@ public abstract class HiddenOreRendererMixin {
 
 
     @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;entitiesForRendering()Ljava/lang/Iterable;"))
-    protected void renderHiddenOres(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo ci, @Local(ordinal = 3) LocalBooleanRef localRef) {
+    protected void renderHiddenOres(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo ci, @Local(ordinal = 3) LocalBooleanRef localRef) {
         if (minecraft.player == null || entityEffect == null || !NarakaItemUtils.canApplyOreSeeThrough(minecraft.player) || NarakaConfig.CLIENT.disableOreSeeThrough.getValue())
             return;
-
-        PoseStack poseStack = new PoseStack();
         naraka$renderHiddenOres(poseStack, camera);
         this.checkPoseStack(poseStack);
         localRef.set(true);
@@ -92,7 +89,7 @@ public abstract class HiddenOreRendererMixin {
                 VertexConsumer vertexConsumer = outlineBufferSource.getBuffer(renderType);
 
                 BlockRenderDispatcher blockRenderer = minecraft.getBlockRenderer();
-                blockRenderer.renderBatched(state, pos, level, poseStack, vertexConsumer, false, camera.getEntity().getRandom());
+                blockRenderer.renderBatched(state, pos, level, poseStack, vertexConsumer, false, camera.getEntity().level().random);
 
                 poseStack.popPose();
             }

@@ -45,8 +45,8 @@ public abstract class SoundEngineMixin implements VolumeController {
     }
 
     @ModifyExpressionValue(method = "getVolume", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;getSoundSourceVolume(Lnet/minecraft/sounds/SoundSource;)F"))
-    private float overrideMusicVolume(float original, @Local(argsOnly = true) SoundSource soundSource) {
-        if (soundSource == SoundSource.MUSIC && NarakaClientContext.MUSIC_VOLUME.getValue() < 1)
+    private float overrideMusicVolume(float original, @Local(argsOnly = true) SoundSource category) {
+        if (category == SoundSource.MUSIC && NarakaClientContext.MUSIC_VOLUME.getValue() < 1)
             return original * NarakaClientContext.MUSIC_VOLUME.getValue();
         return original;
     }

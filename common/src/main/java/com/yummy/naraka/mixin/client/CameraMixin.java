@@ -21,7 +21,7 @@ public abstract class CameraMixin {
     private ClientEvents.CameraSetup.Context naraka$context;
 
     @Shadow
-    protected abstract void move(float zoom, float dy, float dx);
+    protected abstract void move(double distanceOffset, double verticalOffset, double horizontalOffset);
 
     @Shadow
     protected abstract void setRotation(float yRot, float xRot);

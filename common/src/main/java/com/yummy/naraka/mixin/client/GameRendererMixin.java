@@ -3,7 +3,6 @@ package com.yummy.naraka.mixin.client;
 import com.yummy.naraka.client.NarakaClientContext;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.resources.ResourceLocation;
@@ -19,23 +18,26 @@ import javax.annotation.Nullable;
 @Environment(EnvType.CLIENT)
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
-    @Unique @Nullable
+    @Unique
+    @Nullable
     private PostChain naraka$previousPostEffect;
     @Unique
     private boolean naraka$previousEffectActive;
     @Unique
     private boolean naraka$monochromeEffectActive = false;
 
-    @Shadow private boolean effectActive;
+    @Shadow
+    private boolean effectActive;
 
-    @Shadow @Nullable
+    @Shadow
+    @Nullable
     PostChain postEffect;
 
     @Shadow
-    protected abstract void loadEffect(ResourceLocation resourceLocation);
+    abstract void loadEffect(ResourceLocation resourceLocation);
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;doEntityOutline()V", shift = At.Shift.AFTER))
-    private void checkMonochromePostEffect(DeltaTracker deltaTracker, boolean renderLevel, CallbackInfo ci) {
+    private void checkMonochromePostEffect(float partialTicks, long nanoTime, boolean renderLevel, CallbackInfo ci) {
         if (NarakaClientContext.POST_EFFECT_TICK.getValue() > 0 && !naraka$monochromeEffectActive) {
             naraka$previousPostEffect = postEffect;
             naraka$previousEffectActive = effectActive;
@@ -45,7 +47,7 @@ public abstract class GameRendererMixin {
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/pipeline/RenderTarget;bindWrite(Z)V"))
-    private void restorePostEffect(DeltaTracker deltaTracker, boolean renderLevel, CallbackInfo ci) {
+    private void restorePostEffect(float partialTicks, long nanoTime, boolean renderLevel, CallbackInfo ci) {
         if (NarakaClientContext.POST_EFFECT_TICK.getValue() == 0 && naraka$monochromeEffectActive) {
             if (postEffect != null)
                 postEffect.close();

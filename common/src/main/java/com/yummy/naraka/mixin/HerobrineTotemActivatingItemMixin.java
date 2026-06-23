@@ -36,7 +36,8 @@ public abstract class HerobrineTotemActivatingItemMixin {
         ) {
             ItemStack itemStack = context.getItemInHand();
             if (player != null)
-                itemStack.hurtAndBreak(1, player, player.getEquipmentSlotForItem(itemStack));
+                itemStack.hurtAndBreak(1, player, entity -> {
+                });
             if (itemStack.is(Items.FIRE_CHARGE))
                 itemStack.shrink(1);
 

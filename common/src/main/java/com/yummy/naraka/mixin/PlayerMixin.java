@@ -2,7 +2,6 @@ package com.yummy.naraka.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.sugar.Local;
 import com.yummy.naraka.world.entity.data.StunHelper;
 import com.yummy.naraka.world.item.ItemDamageSourceProvider;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffectHelper;
@@ -24,7 +23,8 @@ public abstract class PlayerMixin extends LivingEntity {
     }
 
     @ModifyExpressionValue(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSources;playerAttack(Lnet/minecraft/world/entity/player/Player;)Lnet/minecraft/world/damagesource/DamageSource;"))
-    public DamageSource modifyDamageSourceByItemStack(DamageSource original, @Local ItemStack itemStack) {
+    public DamageSource modifyDamageSourceByItemStack(DamageSource original) {
+        ItemStack itemStack = this.getMainHandItem();
         Item item = itemStack.getItem();
         if (item instanceof ItemDamageSourceProvider itemDamageSourceProvider)
             return itemDamageSourceProvider.naraka$getDamageSource(this);

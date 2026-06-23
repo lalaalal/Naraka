@@ -8,7 +8,6 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.ItemLike;
@@ -30,7 +29,7 @@ public abstract class WanderingTraderMixin extends AbstractVillager {
     @Unique
     private static VillagerTrades.ItemListing naraka$itemTrades(ItemLike costItem, ItemLike item, int cost, int numberOfItems, int maxUses, int villagerXp) {
         return (trader, random) -> new MerchantOffer(
-                new ItemCost(costItem, cost),
+                new ItemStack(costItem, cost),
                 new ItemStack(item, numberOfItems),
                 maxUses, villagerXp, 0.05f
         );
