@@ -1,45 +1,80 @@
 package com.yummy.naraka.advancements.criterion;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
-import net.minecraft.advancements.Criterion;
+import com.google.gson.JsonObject;
+import com.yummy.naraka.NarakaMod;
+import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
-import java.util.Optional;
+import java.util.Objects;
 
 public class SimpleTrigger extends SimpleCriterionTrigger<SimpleTrigger.TriggerInstance> {
     public static final String CHALLENGERS_BLESSING = "challengers_blessing";
     public static final String ACTIVATE_NECTARIUM_CORE = "activate_nectarium_core";
 
-    @Override
-    public Codec<TriggerInstance> codec() {
-        return TriggerInstance.CODEC;
-    }
+    public static final ResourceLocation ID = NarakaMod.location("simple_trigger");
 
     public void trigger(ServerPlayer player, String name) {
         super.trigger(player, instance -> instance.test(name));
     }
 
-    public record TriggerInstance(Optional<ContextAwarePredicate> player, String name) implements SimpleInstance {
-        public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(
-                instance -> instance.group(
-                        EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
-                        Codec.STRING.fieldOf("name").forGetter(TriggerInstance::name)
-                ).apply(instance, instance.stable(TriggerInstance::new))
-        );
+    @Override
+    protected TriggerInstance createInstance(JsonObject json, ContextAwarePredicate predicate, DeserializationContext deserializationContext) {
+        return new TriggerInstance(predicate, deserializeName(json));
+    }
 
-        public static Criterion<TriggerInstance> simple(String name) {
-            return NarakaCriteriaTriggers.SIMPLE_TRIGGER.get().createCriterion(
-                    new TriggerInstance(Optional.empty(), name)
-            );
+    private static String deserializeName(JsonObject json) {
+        if (json.has("name"))
+            return json.get("name").getAsString();
+        return "empty";
+    }
+
+    @Override
+    public ResourceLocation getId() {
+        return ID;
+    }
+
+    public static class TriggerInstance extends AbstractCriterionTriggerInstance {
+        private final ContextAwarePredicate player;
+        private final String name;
+
+        public TriggerInstance(ContextAwarePredicate player, String name) {
+            super(ID, player);
+            this.player = player;
+            this.name = name;
+        }
+
+        public static TriggerInstance simple(String name) {
+            return new TriggerInstance(ContextAwarePredicate.ANY, name);
         }
 
         public boolean test(String name) {
             return name.equals(this.name);
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) return true;
+            if (obj == null || obj.getClass() != this.getClass()) return false;
+            var that = (TriggerInstance) obj;
+            return Objects.equals(this.player, that.player) &&
+                    Objects.equals(this.name, that.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(player, name);
+        }
+
+        @Override
+        public String toString() {
+            return "TriggerInstance[" +
+                    "player=" + player + ", " +
+                    "name=" + name + ']';
+        }
+
     }
 }

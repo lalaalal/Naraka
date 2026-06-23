@@ -78,7 +78,7 @@ public class NectariumCoreBlock extends Block {
                 player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));
             }
             if (player instanceof ServerPlayer serverPlayer)
-                NarakaCriteriaTriggers.SIMPLE_TRIGGER.get().trigger(serverPlayer, SimpleTrigger.ACTIVATE_NECTARIUM_CORE);
+                NarakaCriteriaTriggers.SIMPLE_TRIGGER.trigger(serverPlayer, SimpleTrigger.ACTIVATE_NECTARIUM_CORE);
             return ItemInteractionResult.CONSUME;
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);

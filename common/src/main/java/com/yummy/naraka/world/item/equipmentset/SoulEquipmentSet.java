@@ -75,7 +75,7 @@ public class SoulEquipmentSet extends EquipmentSet {
                     return;
                 livingEntity.addEffect(new MobEffectInstance(effect, -1));
                 if (livingEntity instanceof ServerPlayer serverPlayer)
-                    NarakaCriteriaTriggers.SIMPLE_TRIGGER.get().trigger(serverPlayer, SimpleTrigger.CHALLENGERS_BLESSING);
+                    NarakaCriteriaTriggers.SIMPLE_TRIGGER.trigger(serverPlayer, SimpleTrigger.CHALLENGERS_BLESSING);
                 livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, -1, 1));
             }
         }

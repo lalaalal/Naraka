@@ -82,7 +82,7 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     public int tryInject(Player player, ItemStack itemStack, boolean injectAll) {
         int count = inject(itemStack, injectAll);
         if (player instanceof ServerPlayer serverPlayer)
-            NarakaCriteriaTriggers.FILL_SOUL_STABILIZER.get().trigger(serverPlayer, souls == getCapacity());
+            NarakaCriteriaTriggers.FILL_SOUL_STABILIZER.trigger(serverPlayer, souls == getCapacity());
         return count;
     }
 
