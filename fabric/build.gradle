@@ -23,6 +23,7 @@ loom {
             setConfigName('Fabric Client')
             ideConfigGenerated(true)
             runDir("run/${minecraft_version}")
+            programArgs('--username', 'Dev')
         }
         server {
             server()
@@ -51,7 +52,6 @@ publisher {
     }
 }
 
-// Implement mcgradleconventions loader attribute
 def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
 ['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements', 'includeInternal', 'modCompileClasspath'].each { variant ->
     configurations.named("$variant") {
