@@ -1,29 +1,27 @@
 package com.yummy.naraka.network;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.data.BeamEffectsHelper;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 
 import java.util.function.BiConsumer;
 
-public record AddBeamEffectPacket(int entityId, BeamEffectType beamEffectType,
-                                  int color) implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<AddBeamEffectPacket> TYPE = new Type<>(NarakaMod.location("add_beam_effect"));
+public record AddBeamEffectPacket(int entityId, BeamEffectType beamEffectType, int color)
+        implements CustomPacketPayload<AddBeamEffectPacket> {
+    public static final Codec<AddBeamEffectPacket> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                    Codec.INT.fieldOf("entity_id").forGetter(AddBeamEffectPacket::entityId),
+                    BeamEffectType.CODEC.fieldOf("beam_effect_type").forGetter(AddBeamEffectPacket::beamEffectType),
+                    Codec.INT.fieldOf("color").forGetter(AddBeamEffectPacket::color)
+            ).apply(instance, AddBeamEffectPacket::new)
+    );
 
-    public static final StreamCodec<ByteBuf, AddBeamEffectPacket> CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT,
-            AddBeamEffectPacket::entityId,
-            BeamEffectType.STREAM_CODEC,
-            AddBeamEffectPacket::beamEffectType,
-            ByteBufCodecs.INT,
-            AddBeamEffectPacket::color,
-            AddBeamEffectPacket::new
+    public static final CustomPacketPayload.Type<AddBeamEffectPacket> TYPE = new CodecType<>(NarakaMod.location("add_beam_effect"),
+            AddBeamEffectPacket.class,
+            CODEC
     );
 
     public AddBeamEffectPacket(BeamEffectType beamEffectType, Entity entity, int color) {
@@ -31,7 +29,7 @@ public record AddBeamEffectPacket(int entityId, BeamEffectType beamEffectType,
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public Type<AddBeamEffectPacket> type() {
         return TYPE;
     }
 
@@ -47,7 +45,6 @@ public record AddBeamEffectPacket(int entityId, BeamEffectType beamEffectType,
         PUSH(BeamEffectsHelper::addPushSet);
 
         public static final Codec<BeamEffectType> CODEC = StringRepresentable.fromEnum(BeamEffectType::values);
-        public static final StreamCodec<ByteBuf, BeamEffectType> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
         private final BiConsumer<Entity, Integer> effectAdder;
 
@@ -57,7 +54,7 @@ public record AddBeamEffectPacket(int entityId, BeamEffectType beamEffectType,
 
         @Override
         public String getSerializedName() {
-            return name().toLowerCase();
+            return name();
         }
     }
 }

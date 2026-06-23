@@ -1,24 +1,25 @@
 package com.yummy.naraka.network;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.entity.AfterimageEntity;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
-public record SyncAfterimagePacket(int entityId, Afterimage afterimage) implements CustomPacketPayload {
-    public static final Type<SyncAfterimagePacket> TYPE = new Type<>(NarakaMod.location("sync_afterimage_payload"));
+public record SyncAfterimagePacket(int entityId, Afterimage afterimage)
+        implements CustomPacketPayload<SyncAfterimagePacket> {
+    public static final Codec<SyncAfterimagePacket> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                    Codec.INT.fieldOf("entity_id").forGetter(SyncAfterimagePacket::entityId),
+                    Afterimage.CODEC.fieldOf("afterimage").forGetter(SyncAfterimagePacket::afterimage)
+            ).apply(instance, SyncAfterimagePacket::new)
+    );
 
-    public static final StreamCodec<ByteBuf, SyncAfterimagePacket> CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT,
-            SyncAfterimagePacket::entityId,
-            Afterimage.STREAM_CODEC,
-            SyncAfterimagePacket::afterimage,
-            SyncAfterimagePacket::new
+    public static final Type<SyncAfterimagePacket> TYPE = new CodecType<>(NarakaMod.location("sync_afterimage_payload"),
+            SyncAfterimagePacket.class,
+            CODEC
     );
 
     public SyncAfterimagePacket(Entity entity, Afterimage afterimage) {
@@ -26,7 +27,7 @@ public record SyncAfterimagePacket(int entityId, Afterimage afterimage) implemen
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public Type<SyncAfterimagePacket> type() {
         return TYPE;
     }
 

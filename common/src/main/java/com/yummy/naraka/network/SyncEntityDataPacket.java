@@ -1,33 +1,30 @@
 package com.yummy.naraka.network;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.data.EntityData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 
 import java.util.List;
 import java.util.UUID;
 
-public record SyncEntityDataPacket(UUID uuid, Action action,
-                                   List<EntityData<?, ?>> entityData) implements CustomPacketPayload {
-    public static final Type<SyncEntityDataPacket> TYPE = new Type<>(NarakaMod.location("sync_entity_data"));
+public record SyncEntityDataPacket(UUID uuid, Action action, List<EntityData<?, ?>> entityData)
+        implements CustomPacketPayload<SyncEntityDataPacket> {
+    public static final Codec<SyncEntityDataPacket> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                    UUIDUtil.CODEC.fieldOf("uuid").forGetter(SyncEntityDataPacket::uuid),
+                    Action.CODEC.fieldOf("action").forGetter(SyncEntityDataPacket::action),
+                    EntityData.CODEC.listOf().fieldOf("entity_data").forGetter(SyncEntityDataPacket::entityData)
+            ).apply(instance, SyncEntityDataPacket::new)
+    );
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, SyncEntityDataPacket> CODEC = StreamCodec.composite(
-            UUIDUtil.STREAM_CODEC,
-            SyncEntityDataPacket::uuid,
-            Action.STREAM_CODEC,
-            SyncEntityDataPacket::action,
-            EntityData.STREAM_CODEC.apply(ByteBufCodecs.list()),
-            SyncEntityDataPacket::entityData,
-            SyncEntityDataPacket::new
+    public static final Type<SyncEntityDataPacket> TYPE = new CodecType<>(NarakaMod.location("sync_entity_data"),
+            SyncEntityDataPacket.class,
+            CODEC
     );
 
     public static SyncEntityDataPacket sync(Entity entity, Action action, List<EntityData<?, ?>> entityData) {
@@ -39,7 +36,7 @@ public record SyncEntityDataPacket(UUID uuid, Action action,
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public Type<SyncEntityDataPacket> type() {
         return TYPE;
     }
 
@@ -67,7 +64,6 @@ public record SyncEntityDataPacket(UUID uuid, Action action,
         REMOVE_ALL(SyncEntityDataPacket::removeAllEntityData);
 
         public static final Codec<Action> CODEC = StringRepresentable.fromEnum(Action::values);
-        public static final StreamCodec<ByteBuf, Action> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
         private final NetworkManager.PacketHandler<SyncEntityDataPacket> action;
 

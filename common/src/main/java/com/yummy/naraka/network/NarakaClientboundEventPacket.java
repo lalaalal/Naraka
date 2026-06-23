@@ -1,22 +1,24 @@
 package com.yummy.naraka.network;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.NarakaMod;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.util.StringRepresentable;
 
 import java.util.List;
 
-public record NarakaClientboundEventPacket(List<Event> events) implements CustomPacketPayload {
-    public static final Type<NarakaClientboundEventPacket> TYPE = new Type<>(NarakaMod.location("clientbound_event_packet"));
+public record NarakaClientboundEventPacket(List<Event> events)
+        implements CustomPacketPayload<NarakaClientboundEventPacket> {
+    public static final Codec<NarakaClientboundEventPacket> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                    Event.CODEC.listOf().fieldOf("events").forGetter(NarakaClientboundEventPacket::events)
+            ).apply(instance, NarakaClientboundEventPacket::new)
+    );
 
-    public static final StreamCodec<ByteBuf, NarakaClientboundEventPacket> CODEC = StreamCodec.composite(
-            ByteBufCodecs.<ByteBuf, Event>list().apply(Event.STREAM_CODEC),
-            NarakaClientboundEventPacket::events,
-            NarakaClientboundEventPacket::new
+    public static final Type<NarakaClientboundEventPacket> TYPE = new CodecType<>(
+            NarakaMod.location("clientbound_event_packet"),
+            NarakaClientboundEventPacket.class,
+            CODEC
     );
 
     public NarakaClientboundEventPacket(Event... events) {
@@ -24,7 +26,7 @@ public record NarakaClientboundEventPacket(List<Event> events) implements Custom
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public Type<NarakaClientboundEventPacket> type() {
         return TYPE;
     }
 
@@ -40,7 +42,6 @@ public record NarakaClientboundEventPacket(List<Event> events) implements Custom
         MUTE_MUSIC_CATEGORY;
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
-        public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
         @Override
         public String getSerializedName() {

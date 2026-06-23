@@ -1,37 +1,38 @@
 package com.yummy.naraka.network;
 
+import com.yummy.naraka.Platform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 public class NarakaNetworks {
     public static void initialize() {
-        NetworkManager.clientbound().define(SyncEntityDataPacket.TYPE, SyncEntityDataPacket.CODEC);
-        NetworkManager.clientbound().define(SyncAnimationPacket.TYPE, SyncAnimationPacket.CODEC);
-        NetworkManager.clientbound().define(SyncAfterimagePacket.TYPE, SyncAfterimagePacket.CODEC);
-        NetworkManager.clientbound().define(SyncPlayerMovementPacket.TYPE, SyncPlayerMovementPacket.CODEC);
-        NetworkManager.clientbound().define(NarakaClientboundEntityEventPacket.TYPE, NarakaClientboundEntityEventPacket.CODEC);
-        NetworkManager.clientbound().define(NarakaClientboundEventPacket.TYPE, NarakaClientboundEventPacket.CODEC);
-        NetworkManager.clientbound().define(AddBeamEffectPacket.TYPE, AddBeamEffectPacket.CODEC);
-        NetworkManager.clientbound().define(SyncProgressOverlayExtensionPacket.TYPE, SyncProgressOverlayExtensionPacket.CODEC);
-
-        NetworkManager.serverbound().define(SkillRequestPacket.TYPE, SkillRequestPacket.CODEC);
+        if (Platform.getInstance().getSide() == Platform.Side.SERVER) {
+            NetworkManager.clientbound().define(SyncEntityDataPacket.TYPE);
+            NetworkManager.clientbound().define(SyncAnimationPacket.TYPE);
+            NetworkManager.clientbound().define(SyncAfterimagePacket.TYPE);
+            NetworkManager.clientbound().define(SyncPlayerMovementPacket.TYPE);
+            NetworkManager.clientbound().define(NarakaClientboundEntityEventPacket.TYPE);
+            NetworkManager.clientbound().define(NarakaClientboundEventPacket.TYPE);
+            NetworkManager.clientbound().define(AddBeamEffectPacket.TYPE);
+            NetworkManager.clientbound().define(SyncProgressOverlayExtensionPacket.TYPE);
+        }
 
         initializeServer();
     }
 
     @Environment(EnvType.CLIENT)
     public static void initializeClient() {
-        NetworkManager.clientbound().register(SyncEntityDataPacket.TYPE, SyncEntityDataPacket.CODEC, SyncEntityDataPacket::handle);
-        NetworkManager.clientbound().register(SyncAnimationPacket.TYPE, SyncAnimationPacket.CODEC, SyncAnimationPacket::handle);
-        NetworkManager.clientbound().register(SyncAfterimagePacket.TYPE, SyncAfterimagePacket.CODEC, SyncAfterimagePacket::handle);
-        NetworkManager.clientbound().register(SyncPlayerMovementPacket.TYPE, SyncPlayerMovementPacket.CODEC, SyncPlayerMovementPacket::handle);
-        NetworkManager.clientbound().register(NarakaClientboundEntityEventPacket.TYPE, NarakaClientboundEntityEventPacket.CODEC, NarakaClientboundEventHandler::handleEntityEvent);
-        NetworkManager.clientbound().register(NarakaClientboundEventPacket.TYPE, NarakaClientboundEventPacket.CODEC, NarakaClientboundEventHandler::handleEvent);
-        NetworkManager.clientbound().register(AddBeamEffectPacket.TYPE, AddBeamEffectPacket.CODEC, AddBeamEffectPacket::handle);
-        NetworkManager.clientbound().register(SyncProgressOverlayExtensionPacket.TYPE, SyncProgressOverlayExtensionPacket.CODEC, SyncProgressOverlayExtensionHandler::handle);
+        NetworkManager.clientbound().register(SyncEntityDataPacket.TYPE, SyncEntityDataPacket::handle);
+        NetworkManager.clientbound().register(SyncAnimationPacket.TYPE, SyncAnimationPacket::handle);
+        NetworkManager.clientbound().register(SyncAfterimagePacket.TYPE, SyncAfterimagePacket::handle);
+        NetworkManager.clientbound().register(SyncPlayerMovementPacket.TYPE, SyncPlayerMovementPacket::handle);
+        NetworkManager.clientbound().register(NarakaClientboundEntityEventPacket.TYPE, NarakaClientboundEventHandler::handleEntityEvent);
+        NetworkManager.clientbound().register(NarakaClientboundEventPacket.TYPE, NarakaClientboundEventHandler::handleEvent);
+        NetworkManager.clientbound().register(AddBeamEffectPacket.TYPE, AddBeamEffectPacket::handle);
+        NetworkManager.clientbound().register(SyncProgressOverlayExtensionPacket.TYPE, SyncProgressOverlayExtensionHandler::handle);
     }
 
     public static void initializeServer() {
-        NetworkManager.serverbound().register(SkillRequestPacket.TYPE, SkillRequestPacket.CODEC, SkillRequestPacket::handle);
+        NetworkManager.serverbound().register(SkillRequestPacket.TYPE, SkillRequestPacket::handle);
     }
 }

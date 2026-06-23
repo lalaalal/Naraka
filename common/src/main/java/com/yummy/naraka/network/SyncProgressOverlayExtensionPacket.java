@@ -1,32 +1,30 @@
 package com.yummy.naraka.network;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.overlay.ProgressOverlayData;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.BossEvent;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public record SyncProgressOverlayExtensionPacket(UUID uuid, Action action,
-                                                 Optional<ProgressOverlayData<?>> data) implements CustomPacketPayload {
-    public static final Type<SyncProgressOverlayExtensionPacket> TYPE = new Type<>(NarakaMod.location("sync_progress_overlay_extension"));
+public record SyncProgressOverlayExtensionPacket(UUID uuid, Action action, Optional<ProgressOverlayData<?>> data)
+        implements CustomPacketPayload<SyncProgressOverlayExtensionPacket> {
+    public static final Codec<SyncProgressOverlayExtensionPacket> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                    UUIDUtil.CODEC.fieldOf("uuid").forGetter(SyncProgressOverlayExtensionPacket::uuid),
+                    Action.CODEC.fieldOf("action").forGetter(SyncProgressOverlayExtensionPacket::action),
+                    ProgressOverlayData.CODEC.optionalFieldOf("data").forGetter(SyncProgressOverlayExtensionPacket::data)
+            ).apply(instance, SyncProgressOverlayExtensionPacket::new)
+    );
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, SyncProgressOverlayExtensionPacket> CODEC = StreamCodec.composite(
-            UUIDUtil.STREAM_CODEC,
-            SyncProgressOverlayExtensionPacket::uuid,
-            Action.STREAM_CODEC,
-            SyncProgressOverlayExtensionPacket::action,
-            ByteBufCodecs.optional(ProgressOverlayData.STREAM_CODEC),
-            SyncProgressOverlayExtensionPacket::data,
-            SyncProgressOverlayExtensionPacket::new
+    public static final Type<SyncProgressOverlayExtensionPacket> TYPE = new CodecType<>(
+            NarakaMod.location("sync_progress_overlay_extension"),
+            SyncProgressOverlayExtensionPacket.class,
+            CODEC
     );
 
     public static SyncProgressOverlayExtensionPacket register(BossEvent bossEvent, ProgressOverlayData<?> data) {
@@ -42,7 +40,7 @@ public record SyncProgressOverlayExtensionPacket(UUID uuid, Action action,
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public Type<SyncProgressOverlayExtensionPacket> type() {
         return TYPE;
     }
 
@@ -51,8 +49,7 @@ public record SyncProgressOverlayExtensionPacket(UUID uuid, Action action,
         REMOVE,
         UPDATE;
 
-        public static final Codec<Action> CODEC = StringRepresentable.fromValues(Action::values);
-        public static final StreamCodec<ByteBuf, Action> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
+        public static final Codec<Action> CODEC = StringRepresentable.fromEnum(Action::values);
 
         @Override
         public String getSerializedName() {

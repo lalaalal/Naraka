@@ -1,13 +1,10 @@
 package com.yummy.naraka.network;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
@@ -16,17 +13,19 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.Optional;
 
-public record SkillRequestPacket(Event event, int entityId, ResourceLocation location) implements CustomPacketPayload {
-    public static final Type<SkillRequestPacket> TYPE = new Type<>(NarakaMod.location("skill_request"));
+public record SkillRequestPacket(Event event, int entityId, ResourceLocation location)
+        implements CustomPacketPayload<SkillRequestPacket> {
+    public static final Codec<SkillRequestPacket> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                    Event.CODEC.fieldOf("event").forGetter(SkillRequestPacket::event),
+                    Codec.INT.fieldOf("entity_id").forGetter(SkillRequestPacket::entityId),
+                    ResourceLocation.CODEC.fieldOf("location").forGetter(SkillRequestPacket::location)
+            ).apply(instance, SkillRequestPacket::new)
+    );
 
-    public static final StreamCodec<ByteBuf, SkillRequestPacket> CODEC = StreamCodec.composite(
-            Event.STREAM_CODEC,
-            SkillRequestPacket::event,
-            ByteBufCodecs.INT,
-            SkillRequestPacket::entityId,
-            ResourceLocation.STREAM_CODEC,
-            SkillRequestPacket::location,
-            SkillRequestPacket::new
+    public static final Type<SkillRequestPacket> TYPE = new CodecType<>(NarakaMod.location("skill_request"),
+            SkillRequestPacket.class,
+            CODEC
     );
 
     public SkillRequestPacket(Event event, SkillUsingMob mob, ResourceLocation location) {
@@ -38,7 +37,7 @@ public record SkillRequestPacket(Event event, int entityId, ResourceLocation loc
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public Type<SkillRequestPacket> type() {
         return TYPE;
     }
 
@@ -86,7 +85,6 @@ public record SkillRequestPacket(Event event, int entityId, ResourceLocation loc
         USE(SkillRequestPacket::use);
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
-        public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
         public final NetworkManager.PacketHandler<SkillRequestPacket> handler;
 

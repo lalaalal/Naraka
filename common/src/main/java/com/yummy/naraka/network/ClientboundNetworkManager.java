@@ -1,15 +1,16 @@
 package com.yummy.naraka.network;
 
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Collection;
 
 public interface ClientboundNetworkManager extends PacketHandlerRegistrar {
-    void send(ServerPlayer player, CustomPacketPayload payload);
+    <T extends CustomPacketPayload<T>> void define(CustomPacketPayload.Type<T> type);
 
-    default void send(Collection<ServerPlayer> players, CustomPacketPayload payload) {
+    <T extends CustomPacketPayload<T>> void send(ServerPlayer player, T payload);
+
+    default <T extends CustomPacketPayload<T>> void send(Collection<ServerPlayer> players, T payload) {
         for (ServerPlayer player : players)
             send(player, payload);
     }

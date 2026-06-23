@@ -1,24 +1,32 @@
 package com.yummy.naraka.network;
 
 import com.yummy.naraka.NarakaMod;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
 
-public record SyncPlayerMovementPacket(Vec3 movement) implements CustomPacketPayload {
-    public static final Type<SyncPlayerMovementPacket> TYPE = new Type<>(NarakaMod.location("sync_player_movement"));
-
-    public static final StreamCodec<ByteBuf, SyncPlayerMovementPacket> CODEC = StreamCodec.composite(
-            ByteBufCodecs.fromCodec(Vec3.CODEC),
-            SyncPlayerMovementPacket::movement,
-            SyncPlayerMovementPacket::new
+public record SyncPlayerMovementPacket(Vec3 movement) implements CustomPacketPayload<SyncPlayerMovementPacket> {
+    public static final Type<SyncPlayerMovementPacket> TYPE = new SimpleType<>(NarakaMod.location("sync_player_movement"),
+            SyncPlayerMovementPacket.class,
+            SyncPlayerMovementPacket::encode,
+            SyncPlayerMovementPacket::decode
     );
 
+    private static SyncPlayerMovementPacket decode(FriendlyByteBuf buffer) {
+        double x = buffer.readDouble();
+        double y = buffer.readDouble();
+        double z = buffer.readDouble();
+        return new SyncPlayerMovementPacket(new Vec3(x, y, z));
+    }
+
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public Type<SyncPlayerMovementPacket> type() {
         return TYPE;
+    }
+
+    private void encode(FriendlyByteBuf buffer) {
+        buffer.writeDouble(movement.x);
+        buffer.writeDouble(movement.y);
+        buffer.writeDouble(movement.z);
     }
 
     public void handle(NetworkManager.Context context) {

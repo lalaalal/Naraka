@@ -1,23 +1,24 @@
 package com.yummy.naraka.network;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.NarakaMod;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 
-public record NarakaClientboundEntityEventPacket(Event event, int entityId) implements CustomPacketPayload {
-    public static final Type<NarakaClientboundEntityEventPacket> TYPE = new Type<>(NarakaMod.location("clientbound_entity_event_packet"));
+public record NarakaClientboundEntityEventPacket(Event event, int entityId)
+        implements CustomPacketPayload<NarakaClientboundEntityEventPacket> {
+    public static final Codec<NarakaClientboundEntityEventPacket> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                    Event.CODEC.fieldOf("event").forGetter(NarakaClientboundEntityEventPacket::event),
+                    Codec.INT.fieldOf("entityId").forGetter(NarakaClientboundEntityEventPacket::entityId)
+            ).apply(instance, NarakaClientboundEntityEventPacket::new)
+    );
 
-    public static final StreamCodec<ByteBuf, NarakaClientboundEntityEventPacket> CODEC = StreamCodec.composite(
-            Event.STREAM_CODEC,
-            NarakaClientboundEntityEventPacket::event,
-            ByteBufCodecs.INT,
-            NarakaClientboundEntityEventPacket::entityId,
-            NarakaClientboundEntityEventPacket::new
+    public static final Type<NarakaClientboundEntityEventPacket> TYPE = new CodecType<>(
+            NarakaMod.location("clientbound_entity_event_packet"),
+            NarakaClientboundEntityEventPacket.class,
+            CODEC
     );
 
     public NarakaClientboundEntityEventPacket(Event event, Entity entity) {
@@ -25,7 +26,7 @@ public record NarakaClientboundEntityEventPacket(Event event, int entityId) impl
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public Type<NarakaClientboundEntityEventPacket> type() {
         return TYPE;
     }
 
@@ -39,7 +40,6 @@ public record NarakaClientboundEntityEventPacket(Event event, int entityId) impl
         SHOW_ANIMATION_CONTROL_SCREEN;
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
-        public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
         @Override
         public String getSerializedName() {
