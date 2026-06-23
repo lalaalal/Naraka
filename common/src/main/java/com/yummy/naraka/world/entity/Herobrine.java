@@ -30,7 +30,6 @@ import com.yummy.naraka.world.entity.data.StigmaHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
@@ -323,7 +322,7 @@ public class Herobrine extends AbstractHerobrine {
 
     private void updateMusic(int prevPhase, int currentPhase) {
         if (currentPhase == 3) {
-            NetworkManager.sendToClient(bossEvent.getPlayers(), new NarakaClientboundEntityEventPacket(
+            NetworkManager.clientbound().send(bossEvent.getPlayers(), new NarakaClientboundEntityEventPacket(
                     NarakaClientboundEntityEventPacket.Event.STOP_BOSS_MUSIC, this
             ));
         } else {
@@ -333,8 +332,8 @@ public class Herobrine extends AbstractHerobrine {
 
     public void sendMusic(int phase) {
         NarakaClientboundEntityEventPacket.Event event = NarakaMusics.musicEventByPhase(phase);
-        CustomPacketPayload packet = new NarakaClientboundEntityEventPacket(event, this);
-        NetworkManager.sendToClient(bossEvent.getPlayers(), packet);
+        NarakaClientboundEntityEventPacket packet = new NarakaClientboundEntityEventPacket(event, this);
+        NetworkManager.clientbound().send(bossEvent.getPlayers(), packet);
     }
 
     private void updateUsingSkills(int prevPhase, int currentPhase) {
@@ -400,7 +399,7 @@ public class Herobrine extends AbstractHerobrine {
     public void addAfterimage(Afterimage afterimage) {
         if (!level().isClientSide()) {
             SyncAfterimagePacket payload = new SyncAfterimagePacket(this, afterimage);
-            NetworkManager.sendToClient(bossEvent.getPlayers(), payload);
+            NetworkManager.clientbound().send(bossEvent.getPlayers(), payload);
         }
         this.afterimages.add(afterimage);
     }
@@ -526,11 +525,11 @@ public class Herobrine extends AbstractHerobrine {
         super.startSeenByPlayer(serverPlayer);
         if (isAlive()) {
             bossEvent.addPlayer(serverPlayer);
-            CustomPacketPayload packet = new NarakaClientboundEntityEventPacket(
+            NarakaClientboundEntityEventPacket packet = new NarakaClientboundEntityEventPacket(
                     NarakaMusics.musicEventByPhase(getPhase()),
                     this
             );
-            NetworkManager.sendToClient(serverPlayer, packet);
+            NetworkManager.clientbound().send(serverPlayer, packet);
             if (isFinalModel()) {
                 this.startHerobrineSky();
             }
@@ -548,7 +547,6 @@ public class Herobrine extends AbstractHerobrine {
         level.getGameRules().getRule(GameRules.RULE_DAYLIGHT).set(false, level.getServer());
         level.getGameRules().getRule(GameRules.RULE_WEATHER_CYCLE).set(false, level.getServer());
         level.setDayTime(18000);
-        level.resetWeatherCycle();
     }
 
     public void startWhiteScreen() {
@@ -574,11 +572,11 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void sendStopPacket(ServerPlayer serverPlayer) {
-        CustomPacketPayload packet = new NarakaClientboundEventPacket(
+        NarakaClientboundEventPacket packet = new NarakaClientboundEventPacket(
                 NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY,
                 NarakaClientboundEventPacket.Event.STOP_WHITE_FOG
         );
-        CustomPacketPayload entityEventPacket = new NarakaClientboundEntityEventPacket(
+        NarakaClientboundEntityEventPacket entityEventPacket = new NarakaClientboundEntityEventPacket(
                 NarakaClientboundEntityEventPacket.Event.STOP_BOSS_MUSIC,
                 this
         );
@@ -879,6 +877,6 @@ public class Herobrine extends AbstractHerobrine {
         if (hibernateMode)
             startHibernateMode(level);
         NarakaNbtUtils.read(input, "SpawnPosition", BlockPos.CODEC).ifPresent(pos -> spawnPosition = pos);
-        NarakaNbtUtils.read(input, "WatchingEntities", UUIDUtil.CODEC_SET).ifPresent(watchingEntities::addAll);
+        NarakaNbtUtils.read(input, "WatchingEntities", UUIDUtil.CODEC.listOf()).ifPresent(watchingEntities::addAll);
     }
 }

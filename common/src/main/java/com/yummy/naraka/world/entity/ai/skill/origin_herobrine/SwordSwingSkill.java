@@ -13,7 +13,6 @@ import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import com.yummy.naraka.world.entity.motion.MotionTypes;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -95,7 +94,7 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
                 level.playSound(null, mob.blockPosition(), SoundEvents.ENDER_EYE_DEATH, SoundSource.HOSTILE, 10, 0.55f);
             });
             runAt(90, () -> {
-                CustomPacketPayload packet = new NarakaClientboundEventPacket(
+                NarakaClientboundEventPacket packet = new NarakaClientboundEventPacket(
                         NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY
                 );
                 NetworkManager.clientbound().send(mob.players(), packet);
@@ -108,7 +107,7 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
             });
 
             runAt(110, () -> {
-                CustomPacketPayload packet = new NarakaClientboundEventPacket(
+                NarakaClientboundEventPacket packet = new NarakaClientboundEventPacket(
                         NarakaClientboundEventPacket.Event.SHAKE_CAMERA,
                         NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT
                 );
@@ -121,7 +120,7 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
                 level.playSound(null, mob.blockPosition(), SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.HOSTILE, 5.0F, 0.5F + mob.getRandom().nextFloat() * 0.2F);
             });
             run(between(110, 125), () -> {
-                CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.SHAKE_CAMERA);
+                NarakaClientboundEventPacket packet = new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.SHAKE_CAMERA);
                 NetworkManager.clientbound().send(mob.players(), packet);
                 int waveTick = tickCount - 105;
                 floatLine(level, 3, waveTick,
@@ -130,9 +129,9 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
             });
 
             runAt(110, () -> {
-                level.playSound(null, mob.blockPosition(), SoundEvents.TRIDENT_THUNDER.value(), SoundSource.HOSTILE, 5.0F, 0.25f);
-                level.playSound(null, mob.blockPosition(), SoundEvents.TRIDENT_THUNDER.value(), SoundSource.HOSTILE, 1.5f, 1.2f);
-                level.playSound(null, mob.blockPosition(), SoundEvents.TRIDENT_THUNDER.value(), SoundSource.HOSTILE, 3f, 2);
+                level.playSound(null, mob.blockPosition(), SoundEvents.TRIDENT_THUNDER, SoundSource.HOSTILE, 5.0F, 0.25f);
+                level.playSound(null, mob.blockPosition(), SoundEvents.TRIDENT_THUNDER, SoundSource.HOSTILE, 1.5f, 1.2f);
+                level.playSound(null, mob.blockPosition(), SoundEvents.TRIDENT_THUNDER, SoundSource.HOSTILE, 3f, 2);
                 level.playSound(null, mob.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM, SoundSource.HOSTILE, 5.0F, 0.25f);
                 level.playSound(null, mob.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM, SoundSource.HOSTILE, 3.0F, 0.2f);
                 level.playSound(null, mob.blockPosition(), SoundEvents.WARDEN_DEATH, SoundSource.HOSTILE, 3.0F, 0.473f + 0.632f);

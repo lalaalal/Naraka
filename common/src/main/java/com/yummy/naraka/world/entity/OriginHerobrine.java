@@ -16,7 +16,6 @@ import com.yummy.naraka.world.overlay.NarakaProgressOverlayExtensionTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
@@ -130,7 +129,7 @@ public class OriginHerobrine extends AbstractHerobrine {
 
     public void removeProtection(int protectionCount) {
         protectionLevel = Math.max(protectionLevel - protectionCount, 0);
-        CustomPacketPayload payload = SyncProgressOverlayExtensionPacket.update(
+        SyncProgressOverlayExtensionPacket payload = SyncProgressOverlayExtensionPacket.update(
                 bossEvent, NarakaProgressOverlayExtensionTypes.ORIGIN_HEROBRINE.get().createData(protectionLevel)
         );
         NetworkManager.clientbound().send(players, payload);
@@ -160,7 +159,7 @@ public class OriginHerobrine extends AbstractHerobrine {
     public void die(DamageSource damageSource) {
         super.die(damageSource);
         resetAbsorbedSouls();
-        CustomPacketPayload payload = SyncProgressOverlayExtensionPacket.remove(bossEvent);
+        SyncProgressOverlayExtensionPacket payload = SyncProgressOverlayExtensionPacket.remove(bossEvent);
         NetworkManager.clientbound().send(players(), payload);
     }
 
@@ -252,7 +251,7 @@ public class OriginHerobrine extends AbstractHerobrine {
         super.startSeenByPlayer(serverPlayer);
         bossEvent.addPlayer(serverPlayer);
 
-        CustomPacketPayload payload = SyncProgressOverlayExtensionPacket.register(
+        SyncProgressOverlayExtensionPacket payload = SyncProgressOverlayExtensionPacket.register(
                 bossEvent, NarakaProgressOverlayExtensionTypes.ORIGIN_HEROBRINE.get().createData(protectionLevel)
         );
         NetworkManager.clientbound().send(serverPlayer, payload);

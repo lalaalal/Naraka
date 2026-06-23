@@ -26,10 +26,10 @@ public abstract class ServerEntityMixin {
      * Synchronize entity data
      */
     @Inject(method = "addPairing", at = @At("RETURN"))
-    public void addParingEntityData(ServerPlayer serverPlayer, CallbackInfo ci) {
+    public void addParingEntityData(ServerPlayer player, CallbackInfo ci) {
         if (entity instanceof LivingEntity livingEntity) {
             List<EntityData<?, ? extends Entity>> data = EntityDataHelper.getEntityDataList(livingEntity);
-            NetworkManager.sendToClient(serverPlayer, SyncEntityDataPacket.sync(livingEntity, SyncEntityDataPacket.Action.LOAD, data));
+            NetworkManager.clientbound().send(player, SyncEntityDataPacket.sync(livingEntity, SyncEntityDataPacket.Action.LOAD, data));
         }
     }
 }

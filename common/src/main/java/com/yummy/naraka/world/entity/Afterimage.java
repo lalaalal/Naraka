@@ -1,23 +1,19 @@
 package com.yummy.naraka.world.entity;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
 public class Afterimage {
-    public static final StreamCodec<ByteBuf, Afterimage> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.fromCodec(Vec3.CODEC),
-            Afterimage::getPosition,
-            ByteBufCodecs.FLOAT,
-            Afterimage::getYRot,
-            ByteBufCodecs.VAR_INT,
-            Afterimage::getMaxTickCount,
-            ByteBufCodecs.FLOAT,
-            afterimage -> afterimage.tickCount,
-            Afterimage::new
+    public static final Codec<Afterimage> CODEC = RecordCodecBuilder.create(instance ->
+            instance.group(
+                    Vec3.CODEC.fieldOf("position").forGetter(Afterimage::getPosition),
+                    Codec.FLOAT.fieldOf("yRot").forGetter(Afterimage::getYRot),
+                    Codec.INT.fieldOf("maxTickCount").forGetter(Afterimage::getMaxTickCount),
+                    Codec.FLOAT.fieldOf("tickCount").forGetter(afterimage -> afterimage.tickCount)
+            ).apply(instance, Afterimage::new)
     );
 
     private final Vec3 position;

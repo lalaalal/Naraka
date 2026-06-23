@@ -18,7 +18,6 @@ import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.entity.data.StunHelper;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.ServerTickRateManager;
 import net.minecraft.server.level.ServerLevel;
@@ -98,7 +97,7 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         for (ServerPlayer player : mob.players()) {
             boolean hasStigma = StigmaHelper.hasStigma(player);
             NarakaClientboundEventPacket.Event event = hasStigma ? NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT : NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT;
-            final CustomPacketPayload packet = new NarakaClientboundEventPacket(event);
+            final NarakaClientboundEventPacket packet = new NarakaClientboundEventPacket(event);
             NetworkManager.clientbound().send(player, packet);
 
             float pitch = hasStigma ? 0.001f : 2f;
