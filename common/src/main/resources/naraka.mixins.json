@@ -41,8 +41,7 @@
     "TickRateManagerMixin",
     "WanderingTraderMixin",
     "invoker.MangroveRootsBlockInvoker",
-    "invoker.MobEffectInvoker",
-    "invoker.RootPlacerTypeInvoker"
+    "invoker.MobEffectInvoker"
   ],
   "injectors": {
     "defaultRequire": 1
