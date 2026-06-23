@@ -8,7 +8,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.phys.Vec3;
 
-public class HerobrineFlyMoveControl extends MoveControl {
+public class HerobrineFlyMoveControl extends MoveControl<Herobrine> {
     private final double hoverHeight;
 
     public HerobrineFlyMoveControl(Herobrine mob, double hoverHeight) {

@@ -56,6 +56,8 @@ public class NarakaBlockTagsProvider extends FabricTagsProvider.BlockTagsProvide
         builder(NarakaBlockTags.HEROBRINE_SANCTUARY_LAVA_WRAP_TARGETS)
                 .forceAddTag(BlockTags.AIR)
                 .add(BlockIds.WATER);
+        builder(BlockTags.SPELEOTHEMS)
+                .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.key());
 
         builder(BlockTags.NEEDS_STONE_TOOL)
                 .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.key())
