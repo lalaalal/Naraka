@@ -20,7 +20,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.level.Level;
@@ -36,6 +35,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class HerobrineTotemBlockEntity extends BlockEntity {
     private static final IntegerProperty CRACK = HerobrineTotem.CRACK;
@@ -63,8 +63,11 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
 
     public void serverTick(ServerLevel level, BlockPos pos, BlockState state) {
         if (customPlaced) {
-            HerobrineTotemBlockEntity.HerobrineTotemPlaceable totemPlaceable = level.getDataStorage()
-                    .computeIfAbsent(HerobrineTotemBlockEntity.HerobrineTotemPlaceable.FACTORY, "HerobrineTotemPlaceable");
+            HerobrineTotemPlaceable totemPlaceable = level.getDataStorage().computeIfAbsent(
+                    HerobrineTotemPlaceable.factory(level.registryAccess()),
+                    HerobrineTotemPlaceable::new,
+                    "HerobrineTotemPlaceable"
+            );
             if (!totemPlaceable.isValid(pos)) {
                 level.destroyBlock(pos, true);
                 return;
@@ -120,8 +123,8 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     public static boolean isTotemStructure(Level level, BlockPos totemPos) {
         return level.getBlockState(totemPos).is(NarakaBlocks.HEROBRINE_TOTEM.get())
                 && level.getBlockState(totemPos.above()).is(Blocks.NETHERRACK)
-                && level.getBlockState(totemPos.below(1)).is(NarakaBlocks.IMITATION_GOLD_BLOCK)
-                && level.getBlockState(totemPos.below(2)).is(NarakaBlocks.IMITATION_GOLD_BLOCK);
+                && level.getBlockState(totemPos.below(1)).is(NarakaBlocks.IMITATION_GOLD_BLOCK.get())
+                && level.getBlockState(totemPos.below(2)).is(NarakaBlocks.IMITATION_GOLD_BLOCK.get());
     }
 
     private void summonHerobrine(ServerLevel level, BlockPos pos) {
@@ -145,7 +148,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
                 1, 1, 1, 0.05
         );
 
-        List<ServerPlayer> players = level.getEntities(EntityTypeTest.forExactClass(ServerPlayer.class), AABB.ofSize(NarakaUtils.vec3(pos), 16, 16, 16), entity -> true);
+        List<ServerPlayer> players = level.getEntities(EntityTypeTest.forClass(ServerPlayer.class), AABB.ofSize(NarakaUtils.vec3(pos), 16, 16, 16), entity -> true);
         for (ServerPlayer player : players)
             CriteriaTriggers.SUMMONED_ENTITY.trigger(player, herobrine);
     }
@@ -165,19 +168,23 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
             level.destroyBlock(pos.below(2), false);
         }
         level.destroyBlock(pos, false);
-        HerobrineTotemPlaceable totemPlaceable = level.getDataStorage().computeIfAbsent(HerobrineTotemPlaceable.FACTORY, "HerobrineTotemPlaceable");
+        HerobrineTotemPlaceable totemPlaceable = level.getDataStorage().computeIfAbsent(
+                HerobrineTotemPlaceable.factory(level.registryAccess()),
+                HerobrineTotemPlaceable::new,
+                "HerobrineTotemPlaceable"
+        );
         totemPlaceable.addPosition(pos);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         tag.putBoolean("CustomPlaced", customPlaced);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+    public void load(CompoundTag tag) {
+        super.load(tag);
         if (tag.contains("CustomPlaced"))
             customPlaced = tag.getBoolean("CustomPlaced");
         else customPlaced = false;
@@ -187,13 +194,13 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         public static final Codec<HerobrineTotemPlaceable> CODEC = BlockPos.CODEC.listOf()
                 .xmap(HerobrineTotemPlaceable::new, HerobrineTotemPlaceable::getPositions);
 
-        public static final Factory<HerobrineTotemPlaceable> FACTORY = new Factory<>(
-                HerobrineTotemPlaceable::new, HerobrineTotemPlaceable::create, DataFixTypes.LEVEL
-        );
-
         private static HerobrineTotemPlaceable create(CompoundTag tag, HolderLookup.Provider registries) {
             return NarakaNbtUtils.read(tag, "HerobrineTotemPlaceable", CODEC, RegistryOps.create(NbtOps.INSTANCE, registries))
                     .orElse(new HerobrineTotemPlaceable());
+        }
+
+        public static Function<CompoundTag, HerobrineTotemPlaceable> factory(HolderLookup.Provider registries) {
+            return tag -> create(tag, registries);
         }
 
         private final List<BlockPos> positions;
@@ -203,7 +210,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         }
 
         @Override
-        public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
+        public CompoundTag save(CompoundTag tag) {
             NarakaNbtUtils.store(tag, "HerobrineTotemPlaceable", CODEC, this);
             return tag;
         }

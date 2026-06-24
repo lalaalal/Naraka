@@ -2,7 +2,6 @@ package com.yummy.naraka.world.block.entity;
 
 import com.yummy.naraka.world.NarakaDimensions;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -41,8 +40,8 @@ public class NarakaPortalBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        CompoundTag compoundTag = super.getUpdateTag(registries);
+    public CompoundTag getUpdateTag() {
+        CompoundTag compoundTag = super.getUpdateTag();
         compoundTag.putInt("Usage", usage);
         return compoundTag;
     }
@@ -53,12 +52,13 @@ public class NarakaPortalBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+    protected void saveAdditional(CompoundTag tag) {
         tag.putInt("Usage", usage);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+    public void load(CompoundTag tag) {
+        super.load(tag);
         if (tag.contains("Usage")) {
             usage = tag.getInt("Usage");
         } else {

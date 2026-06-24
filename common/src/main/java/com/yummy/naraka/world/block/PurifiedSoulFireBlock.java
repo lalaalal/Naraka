@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.block;
 
-import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import net.minecraft.core.BlockPos;
@@ -16,15 +15,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class PurifiedSoulFireBlock extends BaseFireBlock {
-    public static final MapCodec<PurifiedSoulFireBlock> CODEC = simpleCodec(PurifiedSoulFireBlock::new);
-
     public PurifiedSoulFireBlock(Properties properties) {
         super(properties, 5f);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseFireBlock> codec() {
-        return CODEC;
     }
 
     @Override
@@ -32,13 +24,15 @@ public class PurifiedSoulFireBlock extends BaseFireBlock {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (canSurvive(state, level, pos))
             return state;
         return Blocks.AIR.defaultBlockState();
@@ -50,7 +44,7 @@ public class PurifiedSoulFireBlock extends BaseFireBlock {
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (entity instanceof LivingEntity livingEntity)
             EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get(), 120);
     }

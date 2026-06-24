@@ -5,7 +5,6 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -119,21 +118,22 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        CompoundTag compoundTag = super.getUpdateTag(registries);
+    public CompoundTag getUpdateTag() {
+        CompoundTag compoundTag = super.getUpdateTag();
         NarakaNbtUtils.store(compoundTag, "SoulType", SoulType.CODEC, soulType);
         compoundTag.putInt("Souls", souls);
         return compoundTag;
     }
 
     @Override
-    protected void saveAdditional(CompoundTag output, HolderLookup.Provider registries) {
+    protected void saveAdditional(CompoundTag output) {
         NarakaNbtUtils.store(output, "SoulType", SoulType.CODEC, soulType);
         output.putInt("Souls", souls);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag input, HolderLookup.Provider registries) {
+    public void load(CompoundTag input) {
+        super.load(input);
         soulType = NarakaNbtUtils.read(input, "SoulType", SoulType.CODEC).orElse(SoulType.NONE);
         souls = input.getInt("Souls");
     }

@@ -1,20 +1,18 @@
 package com.yummy.naraka.world.block;
 
-import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.world.block.entity.ForgingBlockEntity;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.block.entity.SoulSmithingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -29,7 +27,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class SoulSmithingBlock extends ForgingBlock {
-    private static final MapCodec<SoulSmithingBlock> CODEC = simpleCodec(SoulSmithingBlock::new);
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public SoulSmithingBlock(Properties properties) {
@@ -43,8 +40,9 @@ public class SoulSmithingBlock extends ForgingBlock {
         builder.add(FACING);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return box(0, 0.1, 0, 16, 16, 16);
     }
 
@@ -62,33 +60,29 @@ public class SoulSmithingBlock extends ForgingBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
+        ItemStack stack = player.getItemInHand(hand);
         if (stack.is(Items.MACE))
-            return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+            return super.use(state, level, pos, player, hand, hitResult);
         if (blockEntity instanceof SoulSmithingBlockEntity soulSmithingBlockEntity) {
             if (isStabilizerSide(state, hitResult.getDirection())
                     && soulSmithingBlockEntity.isStabilizerAttached()) {
                 soulSmithingBlockEntity.detachSoulStabilizer();
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             } else if (isTemplatedSide(state, hitResult.getDirection())
                     && !soulSmithingBlockEntity.getTemplateItem().isEmpty()) {
                 soulSmithingBlockEntity.detachTemplateItem();
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             } else if (soulSmithingBlockEntity.tryAttachSoulStabilizer(stack)) {
-                stack.consume(1, player);
-                return ItemInteractionResult.SUCCESS;
+                stack.shrink(1);
+                return InteractionResult.SUCCESS;
             } else if (soulSmithingBlockEntity.tryAttachTemplate(stack)) {
-                stack.consume(1, player);
-                return ItemInteractionResult.SUCCESS;
+                stack.shrink(1);
+                return InteractionResult.SUCCESS;
             }
         }
-        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
+        return super.use(state, level, pos, player, hand, hitResult);
     }
 
     @Override

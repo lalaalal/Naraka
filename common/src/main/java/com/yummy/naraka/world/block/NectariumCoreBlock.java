@@ -9,7 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -42,8 +42,9 @@ public class NectariumCoreBlock extends Block {
         builder.add(HONEY);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         int honey = state.getValue(HONEY);
         if (honey < 1)
             return;
@@ -67,9 +68,10 @@ public class NectariumCoreBlock extends Block {
         }
     }
 
-
+    @SuppressWarnings("deprecation")
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        ItemStack stack = player.getItemInHand(hand);
         if (stack.is(Items.HONEY_BOTTLE)) {
             BlockState activatedState = state.setValue(HONEY, MAX_HONEY);
             level.setBlock(pos, activatedState, UPDATE_ALL_IMMEDIATE);
@@ -79,9 +81,9 @@ public class NectariumCoreBlock extends Block {
             }
             if (player instanceof ServerPlayer serverPlayer)
                 NarakaCriteriaTriggers.SIMPLE_TRIGGER.trigger(serverPlayer, SimpleTrigger.ACTIVATE_NECTARIUM_CORE);
-            return ItemInteractionResult.CONSUME;
+            return InteractionResult.CONSUME;
         }
-        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+        return super.use(state, level, pos, player, hand, hit);
     }
 
     @Override

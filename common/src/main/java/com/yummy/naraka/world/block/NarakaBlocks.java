@@ -34,7 +34,7 @@ public class NarakaBlocks {
             TransparentBlock::new,
             from(Blocks.BEDROCK)
                     .forceSolidOn()
-                    .noTerrainParticles()
+                    .noParticlesOnBreak()
                     .noLootTable()
     );
 
@@ -43,29 +43,29 @@ public class NarakaBlocks {
             DiamondGolemSpawner::new,
             from(Blocks.SPAWNER)
                     .noLootTable()
-                    .noTerrainParticles()
+                    .noParticlesOnBreak()
                     .noCollission()
     );
 
     public static final HolderProxy<Block, DropExperienceBlock> AMETHYST_ORE = registerBlockWithItem(
             "amethyst_ore",
-            properties -> new DropExperienceBlock(UniformInt.of(0, 2), properties),
+            properties -> new DropExperienceBlock(properties, UniformInt.of(0, 2)),
             from(Blocks.STONE).requiresCorrectToolForDrops()
     );
     public static final HolderProxy<Block, DropExperienceBlock> DEEPSLATE_AMETHYST_ORE = registerBlockWithItem(
             "deepslate_amethyst_ore",
-            properties -> new DropExperienceBlock(UniformInt.of(1, 2), properties),
+            properties -> new DropExperienceBlock(properties, UniformInt.of(1, 2)),
             from(Blocks.DEEPSLATE).requiresCorrectToolForDrops()
     );
 
     public static final HolderProxy<Block, DropExperienceBlock> NECTARIUM_ORE = registerBlockWithItem(
             "nectarium_ore",
-            properties -> new DropExperienceBlock(UniformInt.of(3, 7), properties),
+            properties -> new DropExperienceBlock(properties, UniformInt.of(3, 7)),
             Blocks.IRON_ORE
     );
     public static final HolderProxy<Block, DropExperienceBlock> DEEPSLATE_NECTARIUM_ORE = registerBlockWithItem(
             "deepslate_nectarium_ore",
-            properties -> new DropExperienceBlock(UniformInt.of(3, 7), properties),
+            properties -> new DropExperienceBlock(properties, UniformInt.of(3, 7)),
             Blocks.DEEPSLATE_IRON_ORE
     );
     public static final HolderProxy<Block, Block> NECTARIUM_BLOCK = registerBlockWithItem(
@@ -203,7 +203,7 @@ public class NarakaBlocks {
 
 
     private static BlockBehaviour.Properties from(Block block) {
-        return BlockBehaviour.Properties.ofFullCopy(block);
+        return BlockBehaviour.Properties.copy(block);
     }
 
     private static BlockBehaviour.Properties from(String name, Block block) {
@@ -227,7 +227,7 @@ public class NarakaBlocks {
     }
 
     private static <B extends Block> HolderProxy<Block, B> registerBlock(String name, Function<BlockBehaviour.Properties, ? extends B> function, Block propertyBase) {
-        BlockBehaviour.Properties properties = BlockBehaviour.Properties.ofFullCopy(propertyBase);
+        BlockBehaviour.Properties properties = BlockBehaviour.Properties.copy(propertyBase);
         return RegistryProxy.register(Registries.BLOCK, name, () -> function.apply(properties));
     }
 
@@ -260,7 +260,7 @@ public class NarakaBlocks {
     }
 
     private static <B extends Block> HolderProxy<Block, B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, Block propertyBase) {
-        return registerBlockWithItem(name, function, BlockBehaviour.Properties.ofFullCopy(propertyBase));
+        return registerBlockWithItem(name, function, BlockBehaviour.Properties.copy(propertyBase));
     }
 
     private static HolderProxy<Block, Block> registerSimpleBlockWithItem(String name, BlockBehaviour.Properties blockProperties, Item.Properties itemProperties) {

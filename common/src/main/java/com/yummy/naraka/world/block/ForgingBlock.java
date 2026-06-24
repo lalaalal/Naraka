@@ -3,8 +3,7 @@ package com.yummy.naraka.world.block;
 import com.yummy.naraka.world.block.entity.ForgingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -20,24 +19,26 @@ public abstract class ForgingBlock extends BaseEntityBlock {
         super(properties);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        BlockEntity blockEntity = level.getBlockEntity(blockPos);
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        ItemStack itemStack = player.getItemInHand(hand);
         if (blockEntity instanceof ForgingBlockEntity forgingBlockEntity) {
             if (itemStack.is(Items.MACE)) {
                 if (forgingBlockEntity.tryReinforce())
-                    itemStack.hurtAndBreak(5, player, EquipmentSlot.MAINHAND);
-                return ItemInteractionResult.SUCCESS;
+                    itemStack.hurtAndBreak(5, player, entity -> entity.broadcastBreakEvent(hand));
+                return InteractionResult.SUCCESS;
             } else if (!forgingBlockEntity.getForgingItem().isEmpty()) {
                 forgingBlockEntity.dropForgingItem();
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             } else if (forgingBlockEntity.canReinforce(itemStack)) {
                 forgingBlockEntity.setForgingItem(itemStack);
-                itemStack.consume(1, player);
-                return ItemInteractionResult.SUCCESS;
+                itemStack.shrink(1);
+                return InteractionResult.SUCCESS;
             }
         }
-        return ItemInteractionResult.CONSUME;
+        return InteractionResult.CONSUME;
     }
 
     @Override

@@ -45,8 +45,9 @@ public class NectariumCrystalBlock extends Block {
         builder.add(TIP_DIRECTION, THICKNESS);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return switch (state.getValue(THICKNESS)) {
             case TIP_MERGE -> TIP_MERGE_SHAPE;
             case TIP -> state.getValue(TIP_DIRECTION) == Direction.UP ? TIP_SHAPE_UP : TIP_SHAPE_DOWN;
@@ -56,8 +57,9 @@ public class NectariumCrystalBlock extends Block {
         };
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (state.is(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get())
                 && !canSurvive(state, level, pos)
                 && !level.getBlockTicks().hasScheduledTick(pos, this))
@@ -138,14 +140,16 @@ public class NectariumCrystalBlock extends Block {
         return null;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!canSurvive(state, level, pos))
             level.destroyBlock(pos, true);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         Direction tipDirection = state.getValue(TIP_DIRECTION);
         BlockPos basePos = pos.relative(tipDirection.getOpposite());
         BlockState baseState = level.getBlockState(basePos);

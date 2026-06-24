@@ -17,8 +17,9 @@ public class EncroachingBlock extends Block {
         this.targetBlock = targetBlock;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction direction : UPDATE_SHAPE_ORDER) {
             mutablePos.setWithOffset(pos, direction);

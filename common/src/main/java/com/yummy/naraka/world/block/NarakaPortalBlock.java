@@ -50,13 +50,14 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
         return CODEC;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
     @Override
-    protected RenderShape getRenderShape(BlockState state) {
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
@@ -65,15 +66,17 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
         return new NarakaPortalBlockEntity(pos, state);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+    public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
         if (player.getMainHandItem().is(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get()))
             return 1;
         return super.getDestroyProgress(state, player, level, pos);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (random.nextDouble() < 0.5) {
             level.getBlockEntity(pos, NarakaBlockEntityTypes.NARAKA_PORTAL.get())
                     .ifPresent(NarakaPortalBlockEntity::use);
@@ -94,14 +97,18 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        if (entity.canUsePortal(false) && !level.isClientSide() && !entity.getType().is(NarakaEntityTypeTags.NARAKA_PORTAL_IGNORE)) {
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        if (entity.canChangeDimensions() && level instanceof ServerLevel serverLevel && !entity.getType().is(NarakaEntityTypeTags.NARAKA_PORTAL_IGNORE)) {
             if (!entity.isOnPortalCooldown()) {
                 level.getBlockEntity(pos, NarakaBlockEntityTypes.NARAKA_PORTAL.get())
                         .ifPresent(NarakaPortalBlockEntity::use);
+
+                ServerLevel narakaLevel = serverLevel.getServer().getLevel(NarakaDimensions.NARAKA);
+                if (narakaLevel != null)
+                    entity.changeDimension(narakaLevel);
             }
-            entity.setAsInsidePortal(this, pos);
         }
     }
 
@@ -114,7 +121,7 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
         DimensionTransition.PostDimensionTransition dimensionTransition = DimensionTransition.PLAY_PORTAL_SOUND
                 .then(DimensionTransition.PLACE_PORTAL_TICKET);
         if (toRespawn && entity instanceof ServerPlayer serverPlayer) {
-            return serverPlayer.findRespawnPositionAndUseSpawnBlock(false, dimensionTransition);
+            return Player.findRespawnPositionAndUseSpawnBlock(false, dimensionTransition);
         }
 
         ResourceKey<Level> destinationDimension = NarakaDimensions.NARAKA;

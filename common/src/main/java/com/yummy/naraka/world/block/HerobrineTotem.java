@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.block;
 
-import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.block.entity.HerobrineTotemBlockEntity;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
@@ -24,8 +23,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.Nullable;
 
 public class HerobrineTotem extends BaseEntityBlock {
-    private static final MapCodec<HerobrineTotem> CODEC = simpleCodec(HerobrineTotem::new);
-
     public static final int MAX_CRACK = 11;
     public static final IntegerProperty CRACK = IntegerProperty.create("crack", 0, MAX_CRACK);
 
@@ -50,11 +47,6 @@ public class HerobrineTotem extends BaseEntityBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
     protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(CRACK);
@@ -70,7 +62,7 @@ public class HerobrineTotem extends BaseEntityBlock {
     }
 
     @Override
-    protected RenderShape getRenderShape(BlockState state) {
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
     }
 
@@ -85,7 +77,11 @@ public class HerobrineTotem extends BaseEntityBlock {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
         if (level instanceof ServerLevel serverLevel) {
             HerobrineTotemBlockEntity.HerobrineTotemPlaceable totemPlaceable = serverLevel.getDataStorage()
-                    .computeIfAbsent(HerobrineTotemBlockEntity.HerobrineTotemPlaceable.FACTORY, "HerobrineTotemPlaceable");
+                    .computeIfAbsent(
+                            HerobrineTotemBlockEntity.HerobrineTotemPlaceable.factory(level.registryAccess()),
+                            HerobrineTotemBlockEntity.HerobrineTotemPlaceable::new,
+                            "HerobrineTotemPlaceable"
+                    );
             totemPlaceable.addPosition(pos);
         }
     }

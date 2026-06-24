@@ -12,7 +12,6 @@ import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -172,7 +171,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         Optional<Holder.Reference<TrimPattern>> pattern = NarakaTrimPatterns.fromItem(level.registryAccess(), templateItem);
         if (material.isPresent() && pattern.isPresent()) {
             ArmorTrim armorTrim = new ArmorTrim(material.get(), pattern.get());
-            forgingItem.set(DataComponents.TRIM, armorTrim);
+            ArmorTrim.setTrim(level.registryAccess(), forgingItem, armorTrim);
         }
         setChanged();
         return true;
@@ -198,36 +197,37 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
-        CompoundTag tag = super.getUpdateTag(provider);
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = super.getUpdateTag();
         tag.putBoolean("IsStabilizerAttached", isStabilizerAttached);
         if (isStabilizerAttached)
-            tag.merge(soulStabilizer.getUpdateTag(provider));
-        if (!templateItem.isEmpty())
-            NarakaNbtUtils.store(tag, "TemplateItem", ItemStack.STRICT_CODEC, RegistryOps.create(NbtOps.INSTANCE, provider), templateItem);
+            tag.merge(soulStabilizer.getUpdateTag());
+        if (!templateItem.isEmpty() && level != null)
+            NarakaNbtUtils.store(tag, "TemplateItem", ItemStack.CODEC, RegistryOps.create(NbtOps.INSTANCE, level.registryAccess()), templateItem);
         return tag;
     }
 
     @Override
-    protected void saveAdditional(CompoundTag output, HolderLookup.Provider provider) {
-        super.saveAdditional(output, provider);
+    protected void saveAdditional(CompoundTag output) {
+        super.saveAdditional(output);
         output.putBoolean("IsStabilizerAttached", isStabilizerAttached);
         if (isStabilizerAttached)
-            soulStabilizer.saveAdditional(output, provider);
-        if (!templateItem.isEmpty())
-            NarakaNbtUtils.store(output, "TemplateItem", ItemStack.STRICT_CODEC, RegistryOps.create(NbtOps.INSTANCE, provider), templateItem);
+            soulStabilizer.saveAdditional(output);
+        if (!templateItem.isEmpty() && level != null)
+            NarakaNbtUtils.store(output, "TemplateItem", ItemStack.CODEC, RegistryOps.create(NbtOps.INSTANCE, level.registryAccess()), templateItem);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag input, HolderLookup.Provider provider) {
-        super.loadAdditional(input, provider);
+    public void load(CompoundTag input) {
+        super.load(input);
         isStabilizerAttached = input.getBoolean("IsStabilizerAttached");
         if (isStabilizerAttached) {
-            soulStabilizer.loadAdditional(input, provider);
+            soulStabilizer.load(input);
             if (level != null)
                 soulStabilizer.setLevel(level);
         }
-        NarakaNbtUtils.read(input, "TemplateItem", ItemStack.STRICT_CODEC, RegistryOps.create(NbtOps.INSTANCE, provider))
-                .ifPresent(item -> templateItem = item);
+        if (level != null)
+            NarakaNbtUtils.read(input, "TemplateItem", ItemStack.CODEC, RegistryOps.create(NbtOps.INSTANCE, level.registryAccess()))
+                    .ifPresent(item -> templateItem = item);
     }
 }

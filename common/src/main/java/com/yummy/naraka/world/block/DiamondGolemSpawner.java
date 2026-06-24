@@ -32,8 +32,9 @@ public class DiamondGolemSpawner extends Block {
         builder.add(SPAWN_COUNT);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         final int maxCount = state.getValue(SPAWN_COUNT);
         AtomicInteger count = new AtomicInteger();
         NarakaUtils.square(pos, 4, NarakaUtils.CIRCLE_OUTLINE, current -> {
@@ -46,13 +47,15 @@ public class DiamondGolemSpawner extends Block {
         level.destroyBlock(pos, false);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected RenderShape getRenderShape(BlockState state) {
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.INVISIBLE;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return Shapes.empty();
     }
 }

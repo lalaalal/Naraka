@@ -5,7 +5,6 @@ import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
@@ -87,23 +86,25 @@ public abstract class ForgingBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+    public CompoundTag getUpdateTag() {
         CompoundTag compoundTag = new CompoundTag();
-        if (!forgingItem.isEmpty())
-            NarakaNbtUtils.store(compoundTag, "ForgingItem", ItemStack.STRICT_CODEC, RegistryOps.create(NbtOps.INSTANCE, provider), forgingItem);
+        if (!forgingItem.isEmpty() && level != null)
+            NarakaNbtUtils.store(compoundTag, "ForgingItem", ItemStack.CODEC, RegistryOps.create(NbtOps.INSTANCE, level.registryAccess()), forgingItem);
         return compoundTag;
     }
 
     @Override
-    protected void loadAdditional(CompoundTag input, HolderLookup.Provider provider) {
-        forgingItem = NarakaNbtUtils.read(input, "ForgingItem", ItemStack.STRICT_CODEC, RegistryOps.create(NbtOps.INSTANCE, provider))
-                .orElse(ItemStack.EMPTY);
+    public void load(CompoundTag input) {
+        super.load(input);
+        if (level != null)
+            forgingItem = NarakaNbtUtils.read(input, "ForgingItem", ItemStack.CODEC, RegistryOps.create(NbtOps.INSTANCE, level.registryAccess()))
+                    .orElse(ItemStack.EMPTY);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag output, HolderLookup.Provider provider) {
-        if (!forgingItem.isEmpty())
-            NarakaNbtUtils.store(output, "ForgingItem", ItemStack.STRICT_CODEC, RegistryOps.create(NbtOps.INSTANCE, provider), forgingItem);
+    protected void saveAdditional(CompoundTag output) {
+        if (!forgingItem.isEmpty() && level != null)
+            NarakaNbtUtils.store(output, "ForgingItem", ItemStack.CODEC, RegistryOps.create(NbtOps.INSTANCE, level.registryAccess()), forgingItem);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ForgingBlockEntity blockEntity) {

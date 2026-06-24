@@ -2,7 +2,7 @@ package com.yummy.naraka.world.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -37,8 +37,9 @@ public class TransparentBlock extends Block {
         builder.add(VISIBLE).add(COLLISION);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         if (state.getValue(VISIBLE))
             return super.getShape(state, level, pos, context);
         if (context instanceof EntityCollisionContext entityCollisionContext
@@ -49,8 +50,9 @@ public class TransparentBlock extends Block {
         return Shapes.empty();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         if (state.getValue(COLLISION))
             return Shapes.block();
         return Shapes.empty();
@@ -61,8 +63,11 @@ public class TransparentBlock extends Block {
         return defaultBlockState().setValue(VISIBLE, true).setValue(COLLISION, true);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand pHand, BlockHitResult pHitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        ItemStack itemStack = player.getItemInHand(hand);
+        BlockState blockState = level.getBlockState(pos);
         if (player.isCreative() && itemStack.is(NarakaBlocks.TRANSPARENT_BLOCK.get().asItem())) {
             if (player.onGround()) {
                 level.setBlock(pos, blockState.cycle(VISIBLE), 10);
@@ -70,9 +75,9 @@ public class TransparentBlock extends Block {
                 level.setBlock(pos, blockState.cycle(VISIBLE).cycle(COLLISION), 10);
             }
 
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return super.useItemOn(itemStack, blockState, level, pos, player, pHand, pHitResult);
+        return super.use(state, level, pos, player, hand, hit);
     }
 
     @Override
@@ -81,8 +86,9 @@ public class TransparentBlock extends Block {
             super.spawnDestroyParticles(level, player, pos, state);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    protected RenderShape getRenderShape(BlockState state) {
+    public RenderShape getRenderShape(BlockState state) {
         if (state.getValue(VISIBLE))
             return super.getRenderShape(state);
         return RenderShape.INVISIBLE;
