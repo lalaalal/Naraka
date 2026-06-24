@@ -37,8 +37,8 @@
     "PlayerListMixin",
     "PlayerMixin",
     "ServerEntityMixin",
+    "ServerLevelMixin",
     "ServerPlayerGameModeMixin",
-    "TickRateManagerMixin",
     "WanderingTraderMixin",
     "invoker.MangroveRootsBlockInvoker",
     "invoker.MobEffectInvoker"
