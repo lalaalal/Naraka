@@ -3,10 +3,7 @@ package com.yummy.naraka.world.item;
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
@@ -28,7 +25,6 @@ public enum SoulType implements StringRepresentable {
     GOD_BLOOD(NarakaTrimMaterials.GOD_BLOOD, "god_blood", "god_blood", 0x625859);
 
     public static final Codec<SoulType> CODEC = StringRepresentable.fromEnum(SoulType::values);
-    public static final StreamCodec<ByteBuf, SoulType> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
     public final int id;
     private final ResourceLocation itemName;
