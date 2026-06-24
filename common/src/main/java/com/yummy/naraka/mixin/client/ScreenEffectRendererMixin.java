@@ -33,6 +33,7 @@ public abstract class ScreenEffectRendererMixin {
 
     @Unique
     private static void naraka$renderPurifiedSoulFire(Minecraft minecraft, PoseStack poseStack) {
+        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.depthFunc(519);
         RenderSystem.depthMask(false);
@@ -56,12 +57,12 @@ public abstract class ScreenEffectRendererMixin {
             poseStack.translate((-(i * 2 - 1)) * 0.24F, -0.3F, 0.0F);
             poseStack.mulPose(Axis.YP.rotationDegrees((i * 2 - 1) * 10));
             Matrix4f matrix4f = poseStack.last().pose();
-            BufferBuilder bufferBuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-            bufferBuilder.addVertex(matrix4f, -0.5F, -0.5F, -0.5F).setUv(lowU, lowV).setColor(1.0F, 1.0F, 1.0F, 0.9F);
-            bufferBuilder.addVertex(matrix4f, 0.5F, -0.5F, -0.5F).setUv(highU, lowV).setColor(1.0F, 1.0F, 1.0F, 0.9F);
-            bufferBuilder.addVertex(matrix4f, 0.5F, 0.5F, -0.5F).setUv(highU, highV).setColor(1.0F, 1.0F, 1.0F, 0.9F);
-            bufferBuilder.addVertex(matrix4f, -0.5F, 0.5F, -0.5F).setUv(lowU, highV).setColor(1.0F, 1.0F, 1.0F, 0.9F);
-            BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
+            bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
+            bufferBuilder.vertex(matrix4f, -0.5F, -0.5F, -0.5F).uv(lowU, lowV).color(1.0F, 1.0F, 1.0F, 0.9F);
+            bufferBuilder.vertex(matrix4f, 0.5F, -0.5F, -0.5F).uv(highU, lowV).color(1.0F, 1.0F, 1.0F, 0.9F);
+            bufferBuilder.vertex(matrix4f, 0.5F, 0.5F, -0.5F).uv(highU, highV).color(1.0F, 1.0F, 1.0F, 0.9F);
+            bufferBuilder.vertex(matrix4f, -0.5F, 0.5F, -0.5F).uv(lowU, highV).color(1.0F, 1.0F, 1.0F, 0.9F);
+            BufferUploader.drawWithShader(bufferBuilder.end());
             poseStack.popPose();
         }
 

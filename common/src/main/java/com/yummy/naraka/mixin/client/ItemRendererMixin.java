@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.renderer.CustomRenderManager;
+import com.yummy.naraka.client.renderer.VertexConsumerExtension;
 import com.yummy.naraka.util.Color;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -85,7 +86,9 @@ public abstract class ItemRendererMixin {
             return;
         PoseStack.Pose pose = poseStack.last();
 
-        for (BakedQuad bakedQuad : quads)
-            buffer.putBulkData(pose, bakedQuad, color.red01(), color.green01(), color.blue01(), color.alpha01(), combinedLight, combinedOverlay);
+        if (buffer instanceof VertexConsumerExtension extension) {
+            for (BakedQuad bakedQuad : quads)
+                extension.naraka$putBulkData(pose, bakedQuad, color.red01(), color.green01(), color.blue01(), color.alpha01(), combinedLight, combinedOverlay);
+        }
     }
 }

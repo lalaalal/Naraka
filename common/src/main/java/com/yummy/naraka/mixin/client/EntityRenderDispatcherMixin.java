@@ -2,16 +2,17 @@ package com.yummy.naraka.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import com.yummy.naraka.client.renderer.PurifiedSoulFlameRenderMaterial;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.joml.Quaternionf;
@@ -33,15 +34,18 @@ public abstract class EntityRenderDispatcherMixin {
     @Shadow
     private Quaternionf cameraOrientation;
 
+    @Shadow
+    public Camera camera;
+
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/EntityRenderer;render(Lnet/minecraft/world/entity/Entity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", shift = At.Shift.AFTER))
     private <E extends Entity> void submitNarakaFlame(E entity, double x, double y, double z, float rotationYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo ci) {
         if (entity instanceof LivingEntity livingEntity && EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get()) > 0) {
-            naraka$renderPurifiedSoulFire(poseStack, buffer, entity, Mth.rotationAroundAxis(Mth.Y_AXIS, cameraOrientation, new Quaternionf()));
+            naraka$renderPurifiedSoulFire(poseStack, buffer, entity);
         }
     }
 
     @Unique
-    private void naraka$renderPurifiedSoulFire(PoseStack poseStack, MultiBufferSource buffer, Entity entity, Quaternionf quaternion) {
+    private void naraka$renderPurifiedSoulFire(PoseStack poseStack, MultiBufferSource buffer, Entity entity) {
         TextureAtlasSprite textureAtlasSprite = PurifiedSoulFlameRenderMaterial.PURIFIED_SOUL_FIRE_0.sprite();
         TextureAtlasSprite textureAtlasSprite2 = PurifiedSoulFlameRenderMaterial.PURIFIED_SOUL_FIRE_1.sprite();
         poseStack.pushPose();
@@ -50,7 +54,7 @@ public abstract class EntityRenderDispatcherMixin {
         float x = 0.5F;
         float i = entity.getBbHeight() / scale;
         float y = 0.0F;
-        poseStack.mulPose(quaternion);
+        poseStack.mulPose(Axis.YP.rotationDegrees(-this.camera.getYRot()));
         poseStack.translate(0.0F, 0.0F, 0.3F - i * 0.02F);
         float z = 0.0F;
         int l = 0;
