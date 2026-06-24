@@ -1,8 +1,8 @@
 package com.yummy.naraka.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.mojang.serialization.Codec;
 import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.entity.ScarfWavingData;
@@ -37,7 +37,8 @@ import java.util.Map;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
-    @Shadow @Final
+    @Shadow
+    @Final
     private static EntityDataAccessor<Float> DATA_HEALTH_ID;
 
     @Shadow
@@ -95,7 +96,7 @@ public abstract class LivingEntityMixin extends Entity {
     public void checkScarfEquipment(CallbackInfo ci) {
         if (!EntityDataHelper.hasEntityData(naraka$living(), NarakaEntityDataTypes.SCARF_WAVING_DATA.get())) {
             ItemStack itemStack = getItemBySlot(EquipmentSlot.CHEST);
-            if (itemStack.has(NarakaDataComponentTypes.HEROBRINE_SCARF.get()))
+            if (NarakaItemUtils.readNbtDataOrDefault(itemStack, "HerobrineScarf", Codec.BOOL, false))
                 EntityDataHelper.setEntityData(naraka$living(), NarakaEntityDataTypes.SCARF_WAVING_DATA.get(), new ScarfWavingData());
         }
     }
@@ -103,7 +104,7 @@ public abstract class LivingEntityMixin extends Entity {
     @Unique
     protected boolean naraka$isUnderLiquid() {
         FluidState fluidState = level().getFluidState(BlockPos.containing(getEyePosition()));
-        return !fluidState.isEmpty() && isInLiquid();
+        return !fluidState.isEmpty() && naraka$isInLiquid();
     }
 
     @Override
@@ -117,7 +118,7 @@ public abstract class LivingEntityMixin extends Entity {
     public void updateSwimming() {
         if (NarakaItemUtils.canApplyFasterLiquidSwimming(naraka$living())) {
             if (isSwimming()) {
-                this.setSwimming(this.isSprinting() && this.isInLiquid() && !this.isPassenger());
+                this.setSwimming(this.isSprinting() && this.naraka$isInLiquid() && !this.isPassenger());
             } else {
                 this.setSwimming(this.isSprinting() && this.naraka$isUnderLiquid() && !this.isPassenger() && !level().getFluidState(blockPosition()).isEmpty());
             }
@@ -153,17 +154,22 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Unique
+    private boolean naraka$isInLiquid() {
+        return isInWater() || isInLava();
+    }
+
+    @Unique
     private ItemStack naraka$getPreviousStack(EquipmentSlot slot) {
         if (slot.getType() == EquipmentSlot.Type.HAND)
             return getLastHandItem(slot);
-        if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR)
+        if (slot.getType() == EquipmentSlot.Type.ARMOR)
             return getLastArmorItem(slot);
         return ItemStack.EMPTY;
     }
 
     @Unique
     private static void naraka$handleReinforcementEffect(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack previousStack, ItemStack currentStack) {
-        if (Reinforcement.get(previousStack) == Reinforcement.get(currentStack)) {
+        if (Reinforcement.get(previousStack, livingEntity.level().registryAccess()) == Reinforcement.get(currentStack, livingEntity.level().registryAccess())) {
             NarakaItemUtils.checkAndUpdateReinforcementEffects(livingEntity, equipmentSlot, currentStack,
                     ReinforcementEffect::onEquippedItemChanged);
             return;
