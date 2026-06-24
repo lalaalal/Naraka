@@ -8,9 +8,7 @@ import com.yummy.naraka.world.block.entity.NarakaPortalBlockEntity;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -20,12 +18,10 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 
 public class NarakaPortalBlock extends BaseEntityBlock {
     private static final VoxelShape SHAPE = Shapes.box(-1, 0, 0.25, 2, 3, 0.75);
@@ -102,26 +98,5 @@ public class NarakaPortalBlock extends BaseEntityBlock {
                     entity.changeDimension(narakaLevel);
             }
         }
-    }
-
-
-    @Override
-    @Nullable
-    public DimensionTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
-        ResourceKey<Level> currentDimension = level.dimension();
-        boolean toRespawn = currentDimension == NarakaDimensions.NARAKA;
-        DimensionTransition.PostDimensionTransition dimensionTransition = DimensionTransition.PLAY_PORTAL_SOUND
-                .then(DimensionTransition.PLACE_PORTAL_TICKET);
-        if (toRespawn && entity instanceof ServerPlayer serverPlayer) {
-            return Player.findRespawnPositionAndUseSpawnBlock(false, dimensionTransition);
-        }
-
-        ResourceKey<Level> destinationDimension = NarakaDimensions.NARAKA;
-        ServerLevel destinationLevel = level.getServer().getLevel(destinationDimension);
-        if (destinationLevel == null)
-            return null;
-        BlockPos destinationPosition = createRandomNarakaSpawnPosition(level.getRandom());
-        Vec3 destinationPositionVec = Vec3.atBottomCenterOf(destinationPosition);
-        return new DimensionTransition(destinationLevel, destinationPositionVec, Vec3.ZERO, 180, 0, dimensionTransition);
     }
 }

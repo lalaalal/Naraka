@@ -55,7 +55,7 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
                 return new AttributeModifier(
                         modifierId(slot, modifierName),
                         modifyingValueByReinforcement.apply(reinforcement),
-                        AttributeModifier.Operation.ADD_VALUE
+                        AttributeModifier.Operation.ADDITION
                 );
             }
 
