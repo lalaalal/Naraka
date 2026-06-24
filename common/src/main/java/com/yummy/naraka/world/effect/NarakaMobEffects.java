@@ -5,6 +5,7 @@ import com.yummy.naraka.mixin.invoker.MobEffectInvoker;
 import com.yummy.naraka.tags.NarakaMobEffectTags;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -62,8 +63,12 @@ public class NarakaMobEffects {
 
     public static Optional<MobEffectInstance> getChallengersBlessing(LivingEntity livingEntity) {
         for (MobEffectInstance instance : livingEntity.getActiveEffects()) {
-            Holder<MobEffect> effect = instance.getEffect();
-            if (effect.is(NarakaMobEffectTags.CHALLENGERS_BLESSING))
+            MobEffect effect = instance.getEffect();
+            boolean result = BuiltInRegistries.MOB_EFFECT.getResourceKey(effect)
+                    .flatMap(BuiltInRegistries.MOB_EFFECT::getHolder)
+                    .map(holder -> holder.is(NarakaMobEffectTags.CHALLENGERS_BLESSING))
+                    .orElse(false);
+            if (result)
                 return Optional.of(instance);
         }
         return Optional.empty();

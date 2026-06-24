@@ -19,12 +19,12 @@ public class NarakaDamageSources {
     }
 
     public static DamageSource source(ResourceKey<DamageType> key, Entity causingEntity) {
-        HolderLookup.RegistryLookup<DamageType> damageTypes = causingEntity.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE);
+        HolderLookup.RegistryLookup<DamageType> damageTypes = causingEntity.level().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE);
         return new DamageSource(damageTypes.getOrThrow(key), causingEntity);
     }
 
     public static DamageSource source(ResourceKey<DamageType> key, Entity directEntity, @Nullable Entity causingEntity) {
-        HolderLookup.RegistryLookup<DamageType> damageTypes = directEntity.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE);
+        HolderLookup.RegistryLookup<DamageType> damageTypes = directEntity.level().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE);
         return new DamageSource(damageTypes.getOrThrow(key), directEntity, causingEntity);
     }
 

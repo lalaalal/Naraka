@@ -2,7 +2,7 @@ package com.yummy.naraka.world.damagesource;
 
 import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageScaling;
 import net.minecraft.world.damagesource.DamageType;
@@ -20,7 +20,7 @@ public class NarakaDamageTypes {
     public static final ResourceKey<DamageType> PURIFIED_SOUL_FIRE = create("purified_soul_fire");
     public static final ResourceKey<DamageType> SOUL_ATTACK = create("soul_attack");
 
-    public static void bootstrap(BootstrapContext<DamageType> context) {
+    public static void bootstrap(BootstapContext<DamageType> context) {
         context.register(STIGMA, new DamageType("stigma", DamageScaling.NEVER, 0.1f));
         context.register(STIGMA_CONSUME, new DamageType("stigma_consume", DamageScaling.NEVER, 0.1f));
         context.register(SPEAR, new DamageType("spear", 0.1f));
