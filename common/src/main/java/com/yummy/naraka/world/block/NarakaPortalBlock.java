@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.block;
 
-import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.core.particles.SoulParticleOption;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.world.NarakaDimensions;
@@ -18,7 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Portal;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,8 +27,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
-    public static final MapCodec<NarakaPortalBlock> CODEC = simpleCodec(NarakaPortalBlock::new);
+public class NarakaPortalBlock extends BaseEntityBlock {
     private static final VoxelShape SHAPE = Shapes.box(-1, 0, 0.25, 2, 3, 0.75);
 
     public static final BlockPos BASE_POSITION = new BlockPos(0, 64, 0);
@@ -43,11 +40,6 @@ public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
 
     public NarakaPortalBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @SuppressWarnings("deprecation")

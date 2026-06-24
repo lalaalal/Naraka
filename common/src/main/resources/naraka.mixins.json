@@ -26,7 +26,7 @@
     "client.ScreenEffectRendererMixin",
     "client.SoundEngineMixin",
     "client.SoundManagerMixin",
-    "client.WorldOpenFlowsMixin"
+    "client.VertexConsumerMixin"
   ],
   "mixins": [
     "ConcretePowderBlockMixin",
