@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.item.reinforcement;
 
-import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -8,9 +7,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 public class MobEffectReinforcementEffect extends SimpleReinforcementEffect {
-    protected final Holder<MobEffect> mobEffect;
+    protected final MobEffect mobEffect;
 
-    public MobEffectReinforcementEffect(Holder<MobEffect> mobEffect, int requiredReinforcement, EquipmentSlot... slots) {
+    public MobEffectReinforcementEffect(MobEffect mobEffect, int requiredReinforcement, EquipmentSlot... slots) {
         super(requiredReinforcement, slots);
         this.mobEffect = mobEffect;
     }

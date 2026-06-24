@@ -2,18 +2,16 @@ package com.yummy.naraka.world.item.equipmentset;
 
 import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
 import com.yummy.naraka.advancements.criterion.SimpleTrigger;
-import com.yummy.naraka.core.component.NarakaDataComponentTypes;
+import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.armortrim.ArmorTrim;
@@ -25,19 +23,19 @@ import java.util.Optional;
 public class SoulEquipmentSet extends EquipmentSet {
     private static boolean test(LivingEntity livingEntity) {
         ItemStack handItem = livingEntity.getMainHandItem();
-        SoulType soulType = handItem.getOrDefault(NarakaDataComponentTypes.SOUL.get(), SoulType.NONE);
+        SoulType soulType = NarakaItemUtils.readNbtDataOrDefault(handItem, "SoulType", SoulType.CODEC, SoulType.NONE);
         if (soulType == SoulType.NONE)
             return false;
 
         for (EquipmentSlot slot : EquipmentSlot.values()) {
-            if (slot.getType() != EquipmentSlot.Type.HUMANOID_ARMOR || !EquipmentSlotGroup.ARMOR.test(slot))
+            if (slot.getType() != EquipmentSlot.Type.ARMOR)
                 continue;
             ItemStack armorItemStack = livingEntity.getItemBySlot(slot);
-            ArmorTrim armorTrim = armorItemStack.get(DataComponents.TRIM);
-            if (armorTrim == null)
+            Optional<ArmorTrim> armorTrim = ArmorTrim.getTrim(livingEntity.level().registryAccess(), armorItemStack);
+            if (armorTrim.isEmpty())
                 return false;
 
-            Optional<ResourceKey<TrimMaterial>> material = armorTrim.material().unwrapKey();
+            Optional<ResourceKey<TrimMaterial>> material = armorTrim.get().material().unwrapKey();
             if (material.isPresent() && !soulType.material.equals(material.get()))
                 return false;
         }
@@ -68,9 +66,9 @@ public class SoulEquipmentSet extends EquipmentSet {
         @Override
         public void activate(LivingEntity livingEntity) {
             ItemStack handItem = livingEntity.getMainHandItem();
-            SoulType soulType = handItem.getOrDefault(NarakaDataComponentTypes.SOUL.get(), SoulType.NONE);
+            SoulType soulType = NarakaItemUtils.readNbtDataOrDefault(handItem, "SoulType", SoulType.CODEC, SoulType.NONE);
             if (SOUL_EFFECT_MAP.containsKey(soulType)) {
-                Holder<MobEffect> effect = SOUL_EFFECT_MAP.get(soulType);
+                MobEffect effect = SOUL_EFFECT_MAP.get(soulType).value();
                 if (livingEntity.hasEffect(effect))
                     return;
                 livingEntity.addEffect(new MobEffectInstance(effect, -1));

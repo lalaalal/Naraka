@@ -1,15 +1,14 @@
 package com.yummy.naraka.world.item.reinforcement;
 
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
 public class KnockbackResistance extends AttributeModifyingEffect {
-    public KnockbackResistance(EquipmentSlotGroup slotGroup) {
-        super(Attributes.KNOCKBACK_RESISTANCE, slotGroup);
+    public KnockbackResistance(EquipmentSlot.Type slotType) {
+        super(Attributes.KNOCKBACK_RESISTANCE, slotType);
     }
 
     @Override
@@ -27,7 +26,7 @@ public class KnockbackResistance extends AttributeModifyingEffect {
         return new AttributeModifier(
                 modifierId(slot, "knockback_resistance"),
                 1,
-                AttributeModifier.Operation.ADD_VALUE
+                AttributeModifier.Operation.ADDITION
         );
     }
 

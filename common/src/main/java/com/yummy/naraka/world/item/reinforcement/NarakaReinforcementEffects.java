@@ -1,9 +1,10 @@
 package com.yummy.naraka.world.item.reinforcement;
 
-import com.yummy.naraka.core.component.NarakaDataComponentTypes;
+import com.mojang.serialization.Codec;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.tags.NarakaItemTags;
+import com.yummy.naraka.util.NarakaItemUtils;
 import net.minecraft.advancements.critereon.TagPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -11,7 +12,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,19 +21,19 @@ import java.util.function.Predicate;
 
 public class NarakaReinforcementEffects {
     public static final Holder<ReinforcementEffect> INCREASE_ATTACK_DAMAGE = register(
-            "increase_attack_damage", AttributeModifyingEffect.simple(Attributes.ATTACK_DAMAGE, EquipmentSlotGroup.MAINHAND)
+            "increase_attack_damage", AttributeModifyingEffect.simple(Attributes.ATTACK_DAMAGE, EquipmentSlot.Type.HAND)
     );
 
     public static final Holder<ReinforcementEffect> INCREASE_ARMOR = register(
-            "increase_armor", AttributeModifyingEffect.simple(Attributes.ARMOR, EquipmentSlotGroup.ARMOR, reinforcement -> 8, false)
+            "increase_armor", AttributeModifyingEffect.simple(Attributes.ARMOR, EquipmentSlot.Type.ARMOR, reinforcement -> 8, false)
     );
 
     public static final Holder<ReinforcementEffect> INCREASE_ARMOR_TOUGHNESS = register(
-            "increase_armor_toughness", AttributeModifyingEffect.simple(Attributes.ARMOR_TOUGHNESS, EquipmentSlotGroup.ARMOR, reinforcement -> 3, false)
+            "increase_armor_toughness", AttributeModifyingEffect.simple(Attributes.ARMOR_TOUGHNESS, EquipmentSlot.Type.ARMOR, reinforcement -> 3, false)
     );
 
     public static final Holder<ReinforcementEffect> KNOCKBACK_RESISTANCE = register(
-            "increase_knockback_resistance", new KnockbackResistance(EquipmentSlotGroup.ARMOR)
+            "increase_knockback_resistance", new KnockbackResistance(EquipmentSlot.Type.ARMOR)
     );
 
     public static final Holder<ReinforcementEffect> FASTER_LIQUID_SWIMMING = register(
@@ -109,17 +109,17 @@ public class NarakaReinforcementEffects {
 
     public static void initialize() {
         addEffectsByItem(ItemTags.SWORDS, INCREASE_ATTACK_DAMAGE);
-        addEffectsByItem(ItemTags.TRIDENT_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
+        addEffectsByItem(ItemTags.TRIMMABLE_ARMOR, INCREASE_ATTACK_DAMAGE);
         addEffectsByItem(NarakaItemTags.SPEAR_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
-        addEffectsByItem(ItemTags.ARMOR_ENCHANTABLE, INCREASE_ARMOR, INCREASE_ARMOR_TOUGHNESS);
-        addEffectsByItem(and(isBlessed(), is(ItemTags.HEAD_ARMOR_ENCHANTABLE)), ORE_SEE_THROUGH, LAVA_VISION, EFFICIENT_MINING_IN_WATER, WATER_BREATHING);
-        addEffectsByItem(and(isBlessed(), is(ItemTags.CHEST_ARMOR_ENCHANTABLE)), FLYING, FIRE_RESISTANCE);
-        addEffectsByItem(and(isBlessed(), is(ItemTags.LEG_ARMOR_ENCHANTABLE)), KNOCKBACK_RESISTANCE, IGNORE_LIQUID_PUSHING);
-        addEffectsByItem(and(isBlessed(), is(ItemTags.FOOT_ARMOR_ENCHANTABLE)), FASTER_LIQUID_SWIMMING, EFFICIENT_MINING_IN_AIR);
+        addEffectsByItem(ItemTags.TRIMMABLE_ARMOR, INCREASE_ARMOR, INCREASE_ARMOR_TOUGHNESS);
+        addEffectsByItem(and(isBlessed(), is(ItemTags.TRIMMABLE_ARMOR)), ORE_SEE_THROUGH, LAVA_VISION, EFFICIENT_MINING_IN_WATER, WATER_BREATHING);
+        addEffectsByItem(and(isBlessed(), is(ItemTags.TRIMMABLE_ARMOR)), FLYING, FIRE_RESISTANCE);
+        addEffectsByItem(and(isBlessed(), is(ItemTags.TRIMMABLE_ARMOR)), KNOCKBACK_RESISTANCE, IGNORE_LIQUID_PUSHING);
+        addEffectsByItem(and(isBlessed(), is(ItemTags.TRIMMABLE_ARMOR)), FASTER_LIQUID_SWIMMING, EFFICIENT_MINING_IN_AIR);
     }
 
     private static Predicate<ItemStack> isBlessed() {
-        return itemStack -> itemStack.getOrDefault(NarakaDataComponentTypes.BLESSED.get(), false);
+        return itemStack -> NarakaItemUtils.readNbtDataOrDefault(itemStack, "Blessed", Codec.BOOL, false);
     }
 
     private static Predicate<ItemStack> and(Predicate<ItemStack> left, Predicate<ItemStack> right) {

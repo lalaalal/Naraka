@@ -17,7 +17,7 @@ public class ReinforcementEffectHelper {
 
     public static boolean considerLiquidAsWater(LivingEntity entity, boolean original) {
         if (NarakaItemUtils.canApplyFasterLiquidSwimming(entity))
-            return entity.isInLiquid();
+            return entity.isInWater() || entity.isInLava();
         return original;
     }
 
