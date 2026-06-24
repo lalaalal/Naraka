@@ -1,5 +1,6 @@
 package com.yummy.naraka.util;
 
+import com.mojang.serialization.Codec;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
@@ -49,6 +50,16 @@ public class NarakaItemUtils {
         }
     }
 
+    public static <T> T readNbtDataOrDefault(ItemStack itemStack, String key, Codec<T> codec, T defaultValue) {
+        CompoundTag tag = itemStack.getOrCreateTag();
+        return NarakaNbtUtils.readOr(tag, key, codec, defaultValue);
+    }
+
+    public static <T> void storeNbtData(ItemStack itemStack, String key, Codec<T> codec, T value) {
+        CompoundTag tag = itemStack.getOrCreateTag();
+        NarakaNbtUtils.store(tag, key, codec, value);
+    }
+
     public static void saveBlockEntity(ItemStack itemStack, BlockEntity blockEntity, HolderLookup.Provider provider) {
         itemStack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(blockEntity.saveWithFullMetadata(provider)));
     }
@@ -66,7 +77,7 @@ public class NarakaItemUtils {
     public static boolean canApplyReinforcementEffect(LivingEntity livingEntity, Holder<ReinforcementEffect> effect) {
         for (EquipmentSlot slot : effect.value().getAvailableSlots()) {
             ItemStack itemStack = livingEntity.getItemBySlot(slot);
-            Reinforcement reinforcement = Reinforcement.get(itemStack);
+            Reinforcement reinforcement = Reinforcement.get(itemStack, livingEntity.level().registryAccess());
             if (reinforcement.canApplyEffect(effect, livingEntity, slot, itemStack))
                 return true;
         }
@@ -106,7 +117,7 @@ public class NarakaItemUtils {
     }
 
     public static void checkAndUpdateReinforcementEffects(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack itemStack, EquippedItemChangeListener listener) {
-        Reinforcement reinforcement = Reinforcement.get(itemStack);
+        Reinforcement reinforcement = Reinforcement.get(itemStack, livingEntity.level().registryAccess());
         for (Holder<ReinforcementEffect> holder : reinforcement.effects()) {
             ReinforcementEffect effect = holder.value();
             if (effect.canApply(livingEntity, equipmentSlot, itemStack, reinforcement.value()))
@@ -115,7 +126,7 @@ public class NarakaItemUtils {
     }
 
     public static void updateReinforcementEffects(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack itemStack, EquippedItemChangeListener listener) {
-        Reinforcement reinforcement = Reinforcement.get(itemStack);
+        Reinforcement reinforcement = Reinforcement.get(itemStack, livingEntity.level().registryAccess());
         for (Holder<ReinforcementEffect> holder : reinforcement.effects()) {
             ReinforcementEffect effect = holder.value();
             listener.onChange(effect, livingEntity, equipmentSlot, itemStack);

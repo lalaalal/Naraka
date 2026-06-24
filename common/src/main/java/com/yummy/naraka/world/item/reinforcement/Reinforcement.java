@@ -3,25 +3,22 @@ package com.yummy.naraka.world.item.reinforcement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryCodecs;
-import net.minecraft.core.component.DataComponentHolder;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipProvider;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -33,8 +30,8 @@ import java.util.function.Consumer;
  * @param effects Reinforcement effect holders
  * @see NarakaItemUtils
  */
-public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) implements TooltipProvider {
-    public static final Reinforcement ZERO = new Reinforcement(0, HolderSet.empty());
+public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) {
+    public static final Reinforcement ZERO = new Reinforcement(0, HolderSet.direct());
     public static final int MAX_VALUE = 10;
 
     private static final Component HEADER = Component.literal("@ ").withStyle(ChatFormatting.GRAY);
@@ -48,14 +45,6 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
             ).apply(instance, Reinforcement::new)
     );
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, Reinforcement> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT,
-            Reinforcement::value,
-            ByteBufCodecs.holderSet(NarakaRegistries.Keys.REINFORCEMENT_EFFECT),
-            Reinforcement::effects,
-            Reinforcement::new
-    );
-
     public static Reinforcement zero(HolderSet<ReinforcementEffect> effects) {
         return new Reinforcement(0, effects);
     }
@@ -64,14 +53,20 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
         return new Reinforcement(0, HolderSet.direct(effect));
     }
 
-    public static Reinforcement get(DataComponentHolder itemStack) {
-        return itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT.get(), ZERO);
+    public static Reinforcement get(ItemStack itemStack, HolderLookup.Provider registries) {
+        CompoundTag tag = itemStack.getOrCreateTag();
+        return NarakaNbtUtils.readOr(tag, "Reinforcement", CODEC, RegistryOps.create(NbtOps.INSTANCE, registries), ZERO);
     }
 
-    public static boolean canReinforce(ItemStack itemStack) {
+    public static void set(ItemStack itemStack, Reinforcement reinforcement, HolderLookup.Provider registries) {
+        CompoundTag tag = itemStack.getOrCreateTag();
+        NarakaNbtUtils.store(tag, "Reinforcement", CODEC, RegistryOps.create(NbtOps.INSTANCE, registries), reinforcement);
+    }
+
+    public static boolean canReinforce(ItemStack itemStack, HolderLookup.Provider registries) {
         if (itemStack.isEmpty() || itemStack.isStackable())
             return false;
-        return get(itemStack).value < MAX_VALUE;
+        return get(itemStack, registries).value < MAX_VALUE;
     }
 
     /**
@@ -81,26 +76,26 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
      * @param itemStack Item to increase reinforcement
      * @param effects   Applying effects if item doesn't have reinforcement
      * @return True if succeeded, false if value is bigger than {@linkplain #MAX_VALUE}
-     * @see Reinforcement#increase(ItemStack, Holder)
+     * @see Reinforcement#increase(ItemStack, Holder, HolderLookup.Provider)
      */
-    public static boolean increase(ItemStack itemStack, HolderSet<ReinforcementEffect> effects) {
-        Reinforcement original = itemStack.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT.get(), zero(effects));
+    public static boolean increase(ItemStack itemStack, HolderSet<ReinforcementEffect> effects, HolderLookup.Provider registries) {
+        Reinforcement original = get(itemStack, registries);
         if (original.value >= MAX_VALUE)
             return false;
 
         Reinforcement increased = original.increase();
-        itemStack.set(NarakaDataComponentTypes.REINFORCEMENT.get(), increased);
+        set(itemStack, increased, registries);
         for (Holder<ReinforcementEffect> effect : effects)
             effect.value().onReinforcementIncreased(itemStack, original.value, increased.value);
         return true;
     }
 
-    public static boolean increase(ItemStack itemStack, Holder<ReinforcementEffect> effect) {
-        return increase(itemStack, HolderSet.direct(effect));
+    public static boolean increase(ItemStack itemStack, Holder<ReinforcementEffect> effect, HolderLookup.Provider registries) {
+        return increase(itemStack, HolderSet.direct(effect), registries);
     }
 
     /**
-     * Use {@link Reinforcement#increase(ItemStack, HolderSet)} to update effects
+     * Use {@link Reinforcement#increase(ItemStack, HolderSet, HolderLookup.Provider)}
      *
      * @return Increased reinforcement
      */
@@ -112,8 +107,7 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
         return effects.contains(effect) && effect.value().canApply(entity, slot, itemStack, MAX_VALUE);
     }
 
-    @Override
-    public void addToTooltip(Item.TooltipContext context, Consumer<Component> appender, TooltipFlag tooltipFlag) {
+    public void addToTooltip(Consumer<Component> appender) {
         if (value > 0) {
             Component reinforcementComponent = Component.translatable(LanguageKey.REINFORCEMENT_KEY, value)
                     .withStyle(ChatFormatting.YELLOW);
