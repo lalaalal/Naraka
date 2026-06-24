@@ -1,7 +1,6 @@
 package com.yummy.naraka.world.entity.ai.attribute;
 
 import com.yummy.naraka.NarakaMod;
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -10,7 +9,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 /**
  * Mod {@linkplain AttributeModifier}s and helping methods<br>
- * To prevent overflow use {@link AttributeModifier.Operation#ADD_VALUE}
+ * To prevent overflow use {@link AttributeModifier.Operation#ADDITION}
  *
  * @author lalaalal
  */
@@ -28,17 +27,17 @@ public class NarakaAttributeModifiers {
     public static final ResourceLocation REDUCE_MAX_HEALTH_ID = reduceMaxHealthId("locked_health");
 
     public static final AttributeModifier FINAL_HEROBRINE_ARMOR_TOUGHNESS = new AttributeModifier(
-            NarakaMod.location("final_herobrine.armor_toughness"), 16, AttributeModifier.Operation.ADD_VALUE
+            "final_herobrine.armor_toughness", 16, AttributeModifier.Operation.ADDITION
     );
 
     public static AttributeModifier finalHerobrineArmor(int armor) {
         return new AttributeModifier(
-                NarakaMod.location("final_herobrine.armor"), armor, AttributeModifier.Operation.ADD_VALUE
+                "final_herobrine.armor", armor, AttributeModifier.Operation.ADDITION
         );
     }
 
     public static AttributeModifier reduceMaxHealth(ResourceLocation id, double value) {
-        return new AttributeModifier(id, -value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        return new AttributeModifier(id.getPath(), -value, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
     public static ResourceLocation reduceMaxHealthId(String identifier) {
@@ -46,7 +45,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static AttributeModifier preventMoving(String identifier) {
-        return new AttributeModifier(preventMovingId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        return new AttributeModifier(preventMovingId(identifier).getPath(), -1, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
     public static ResourceLocation preventMovingId(String identifier) {
@@ -54,7 +53,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static AttributeModifier preventJumping(String identifier) {
-        return new AttributeModifier(preventJumpingId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        return new AttributeModifier(preventJumpingId(identifier).getPath(), -1, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
     public static ResourceLocation preventJumpingId(String identifier) {
@@ -62,7 +61,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static AttributeModifier preventBlockAttack(String identifier) {
-        return new AttributeModifier(preventBlockAttackId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        return new AttributeModifier(preventBlockAttackId(identifier).getPath(), -1, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
     public static ResourceLocation preventBlockAttackId(String identifier) {
@@ -70,7 +69,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static AttributeModifier preventEntityAttack(String identifier) {
-        return new AttributeModifier(preventEntityAttackId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        return new AttributeModifier(preventEntityAttackId(identifier).getPath(), -1, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
     public static ResourceLocation preventEntityInteractionId(String identifier) {
@@ -78,7 +77,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static AttributeModifier preventEntityInteraction(String identifier) {
-        return new AttributeModifier(preventEntityInteractionId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        return new AttributeModifier(preventEntityInteractionId(identifier).getPath(), -1, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
     public static ResourceLocation preventBlockInteractionId(String identifier) {
@@ -86,7 +85,7 @@ public class NarakaAttributeModifiers {
     }
 
     public static AttributeModifier preventBlockInteraction(String identifier) {
-        return new AttributeModifier(preventBlockInteractionId(identifier), -1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        return new AttributeModifier(preventBlockInteractionId(identifier).getPath(), -1, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
     public static ResourceLocation preventEntityAttackId(String identifier) {
@@ -100,16 +99,16 @@ public class NarakaAttributeModifiers {
      * @param attribute    Attribute to add modifier
      * @param modifier     Attribute modifier
      */
-    public static void addAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, AttributeModifier modifier) {
+    public static void addAttributeModifier(LivingEntity livingEntity, Attribute attribute, AttributeModifier modifier) {
         AttributeInstance instance = livingEntity.getAttribute(attribute);
         if (instance != null)
-            instance.addOrUpdateTransientModifier(modifier);
+            instance.addTransientModifier(modifier);
     }
 
-    public static void addPermanentModifier(LivingEntity livingEntity, Holder<Attribute> attribute, AttributeModifier modifier) {
+    public static void addPermanentModifier(LivingEntity livingEntity, Attribute attribute, AttributeModifier modifier) {
         AttributeInstance instance = livingEntity.getAttribute(attribute);
         if (instance != null)
-            instance.addOrReplacePermanentModifier(modifier);
+            instance.addTransientModifier(modifier);
     }
 
     /**
@@ -119,32 +118,17 @@ public class NarakaAttributeModifiers {
      * @param attribute    Attribute to remove modifier
      * @param modifier     Attribute modifier
      */
-    public static void removeAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, AttributeModifier modifier) {
-        removeAttributeModifier(livingEntity, attribute, modifier.id());
-    }
-
-    /**
-     * Remove {@linkplain AttributeModifier} of given entity
-     *
-     * @param livingEntity Entity to remove modifier
-     * @param attribute    Attribute to remove modifier
-     * @param modifierId   ID of attribute modifier
-     */
-    public static void removeAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, ResourceLocation modifierId) {
+    public static void removeAttributeModifier(LivingEntity livingEntity, Attribute attribute, AttributeModifier modifier) {
         AttributeInstance instance = livingEntity.getAttribute(attribute);
         if (instance == null)
             return;
-        instance.removeModifier(modifierId);
+        instance.removeModifier(modifier);
     }
 
-    public static boolean hasAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, AttributeModifier modifier) {
-        return hasAttributeModifier(livingEntity, attribute, modifier.id());
-    }
-
-    public static boolean hasAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, ResourceLocation modifierId) {
+    public static boolean hasAttributeModifier(LivingEntity livingEntity, Attribute attribute, AttributeModifier modifier) {
         AttributeInstance instance = livingEntity.getAttribute(attribute);
         if (instance == null)
             return false;
-        return instance.hasModifier(modifierId);
+        return instance.hasModifier(modifier);
     }
 }

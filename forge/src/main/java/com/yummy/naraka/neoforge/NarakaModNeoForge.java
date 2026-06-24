@@ -5,7 +5,7 @@ import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.invoker.MethodInvoker;
 import com.yummy.naraka.neoforge.init.*;
 import com.yummy.naraka.world.NarakaBiomes;
-import net.neoforged.bus.api.IEventBus;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.jetbrains.annotations.Nullable;
@@ -30,7 +30,7 @@ public final class NarakaModNeoForge implements NarakaInitializer {
         MOD_BUS = bus;
 
         MethodInvoker.register(NeoForgePlatform.class);
-        MethodInvoker.register(NeoForgeNetworkManager.class);
+        MethodInvoker.register(ForgeNetworkManager.class);
         MethodInvoker.register(NeoForgeEventHandler.class);
         MethodInvoker.register(NeoForgeEntityAttributeRegistry.class);
         MethodInvoker.register(NeoForgeRegistryFactory.class);
