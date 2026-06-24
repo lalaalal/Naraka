@@ -20,7 +20,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -94,7 +93,7 @@ public class JumboStructure extends Structure {
     }
 
     @Override
-    public @NotNull StructureType<?> type() {
+    public StructureType<?> type() {
         return NarakaStructureTypes.JUMBO.get();
     }
 }

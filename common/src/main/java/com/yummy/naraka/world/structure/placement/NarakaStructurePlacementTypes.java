@@ -9,12 +9,12 @@ import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement
 public class NarakaStructurePlacementTypes {
     public static final HolderProxy<StructurePlacementType<?>, StructurePlacementType<ExclusiveRandomSpreadStructurePlacement>> EXCLUSIVE_RANDOM_SPREAD = register(
             "exclusive_random_spread",
-            () -> ExclusiveRandomSpreadStructurePlacement.CODEC
+            ExclusiveRandomSpreadStructurePlacement.CODEC::codec
     );
 
     public static final HolderProxy<StructurePlacementType<?>, StructurePlacementType<ExactPositionStructurePlacement>> EXACT_POSITION = register(
             "exact_position",
-            () -> ExactPositionStructurePlacement.CODEC
+            ExactPositionStructurePlacement.CODEC::codec
     );
 
     private static <T extends StructurePlacement> HolderProxy<StructurePlacementType<?>, StructurePlacementType<T>> register(String name, StructurePlacementType<T> type) {

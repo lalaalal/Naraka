@@ -12,13 +12,15 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 public class StructureProtector {
     public static final Codec<StructureProtector> CODEC = RecordCodecBuilder.create(
@@ -49,12 +51,17 @@ public class StructureProtector {
     }
 
     public static void addProtector(StructureProtector protector) {
-        Container.instance.protectors.add(protector);
-        Container.instance.setDirty();
+        Container.instance().ifPresent(instance -> {
+            instance.protectors.add(protector);
+            instance.setDirty();
+        });
     }
 
     public static boolean checkProtected(Vec3i pos) {
-        for (StructureProtector protector : Container.instance.protectors) {
+        List<StructureProtector> protectors = Container.instance()
+                .map(instance -> instance.protectors)
+                .orElse(List.of());
+        for (StructureProtector protector : protectors) {
             if (protector.isProtected(pos))
                 return true;
         }
@@ -63,35 +70,44 @@ public class StructureProtector {
 
     public static void initialize(ServerLevel level) {
         DimensionDataStorage storage = level.getDataStorage();
-        Container.instance = storage.computeIfAbsent(Container.factory, "structure_protectors");
+        Container.instance = storage.computeIfAbsent(Container.factory(level.registryAccess()), () -> new Container(level.registryAccess()), "structure_protectors");
     }
 
     private static class Container extends SavedData {
-        private static final Factory<Container> factory = new Factory<>(
-                Container::new, Container::create, DataFixTypes.LEVEL
-        );
-        private static Container instance = new Container();
+        @Nullable
+        private static Container instance;
+
+        public static Optional<Container> instance() {
+            return Optional.ofNullable(instance);
+        }
 
         private static Container create(CompoundTag tag, HolderLookup.Provider registries) {
             return NarakaNbtUtils.read(tag, "structure_protectors", StructureProtector.CODEC.listOf(), RegistryOps.create(NbtOps.INSTANCE, registries))
-                    .map(Container::new)
-                    .orElse(new Container());
+                    .map(protectors -> new Container(registries, protectors))
+                    .orElse(new Container(registries));
         }
 
+        public static Function<CompoundTag, Container> factory(HolderLookup.Provider registries) {
+            return tag -> create(tag, registries);
+        }
+
+        private final HolderLookup.Provider registries;
         private final List<StructureProtector> protectors;
 
-        private Container() {
+        private Container(HolderLookup.Provider registries) {
+            this.registries = registries;
             protectors = new ArrayList<>();
         }
 
-        @Override
-        public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
-            NarakaNbtUtils.store(tag, "structure_protectors", StructureProtector.CODEC.listOf(), RegistryOps.create(NbtOps.INSTANCE, registries), protectors);
-            return tag;
+        private Container(HolderLookup.Provider registries, List<StructureProtector> protectors) {
+            this.registries = registries;
+            this.protectors = new ArrayList<>(protectors);
         }
 
-        private Container(List<StructureProtector> protectors) {
-            this.protectors = new ArrayList<>(protectors);
+        @Override
+        public CompoundTag save(CompoundTag tag) {
+            NarakaNbtUtils.store(tag, "structure_protectors", StructureProtector.CODEC.listOf(), RegistryOps.create(NbtOps.INSTANCE, registries), protectors);
+            return tag;
         }
     }
 }

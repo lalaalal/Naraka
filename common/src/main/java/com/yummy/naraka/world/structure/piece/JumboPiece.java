@@ -10,7 +10,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
@@ -28,7 +27,7 @@ public class JumboPiece extends TemplateStructurePiece {
                 .setMirror(Mirror.NONE)
                 .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
                 .addProcessor(BlockIgnoreProcessor.AIR)
-                .setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
+                .setKeepLiquids(true);
     }
 
     @Override
