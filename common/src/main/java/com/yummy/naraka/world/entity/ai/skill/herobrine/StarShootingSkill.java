@@ -82,7 +82,7 @@ public class StarShootingSkill extends ComboSkill<Herobrine> {
                 new Vec3(targetX, targetY, targetZ)
         ).rotated(yRot);
         CorruptedStar corruptedStar = new CorruptedStar(level, mob, mob.getEyePosition(), bezier);
-        corruptedStar.setVerticalShine(corruptedStar.getRandom().nextDouble() < 0.4);
+        corruptedStar.setVerticalShine(level.random.nextDouble() < 0.4);
         if (followTarget) {
             followingStars.add(corruptedStar);
             corruptedStar.setFollowingTarget(target);
@@ -102,8 +102,8 @@ public class StarShootingSkill extends ComboSkill<Herobrine> {
     }
 
     private void determineTargetPositions(ServerLevel level, CorruptedStar corruptedStar, Vec3 position) {
-        double x = position.x() + corruptedStar.getRandom().nextFloat() * 16 - 8;
-        double z = position.z() + corruptedStar.getRandom().nextFloat() * 16 - 8;
+        double x = position.x() + level.random.nextFloat() * 16 - 8;
+        double z = position.z() + level.random.nextFloat() * 16 - 8;
         double y = NarakaUtils.findFloor(level, BlockPos.containing(x, mob.getY(), z)).getY() + 1;
 
         Vec3 targetPosition = new Vec3(x, y, z);

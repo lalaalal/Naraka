@@ -40,8 +40,7 @@ public class CarpetBombingSkill extends AttackSkill<Herobrine> {
 
     private void addStardust(ServerLevel level, float yRot, int basePower, boolean followTarget) {
         int spawnTick = mob.getRandom().nextIntBetweenInclusive(1, 10);
-        float xRot = mob.getRandom().nextFloat() * 30 + 15;
-        Vec3 shootingVector = mob.calculateViewVector(-xRot, yRot);
+        Vec3 shootingVector = mob.getLookAngle();
         int power = mob.getRandom().nextIntBetweenInclusive(basePower, basePower + 1);
         int waitingTick = mob.getRandom().nextIntBetweenInclusive(2, 3) * 10 - 5;
         Stardust stardust = new Stardust(level, mob, shootingVector, power, waitingTick, followTarget);

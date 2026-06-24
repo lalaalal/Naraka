@@ -51,7 +51,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
 
         runAt(60, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.SIMPLE, mob, 0xffffff00));
         runAt(60, () -> mob.setDeltaMovement(0, 0.4, 0));
-        runAt(60, () -> level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE));
+        runAt(60, () -> level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE, 1, 1));
 
         runAt(70, () -> BeamEffectsHelper.send(mob.players(), AddBeamEffectPacket.BeamEffectType.SIMPLE, mob, 0xffffff00));
         runBetween(85, 90, () -> scaleMagicCircle(30, 0, 85, 89));

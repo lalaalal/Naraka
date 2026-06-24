@@ -6,6 +6,7 @@ import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.world.TickFreezeManager;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.AreaEffect;
@@ -19,7 +20,6 @@ import com.yummy.naraka.world.entity.data.StunHelper;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.ServerTickRateManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -41,9 +41,7 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         super(LOCATION, mob, 70, 800);
     }
 
-    @Nullable
-    private ServerTickRateManager tickRateManager;
-    private boolean isFrozenBefore;
+    private final TickFreezeManager tickFreezeManager = TickFreezeManager.INSTANCE;
 
     @Override
     public void prepare() {
@@ -70,9 +68,7 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         shinyEffect.setPos(mob.getEyePosition().add(0, 1.5, 0));
         level.addFreshEntity(shinyEffect);
 
-        tickRateManager = level.getServer().tickRateManager();
-        isFrozenBefore = tickRateManager.isFrozen();
-        tickRateManager.setFrozen(true);
+        tickFreezeManager.freeze(level);
         EntityDataHelper.setEntityData(mob, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
     }
 
@@ -110,10 +106,7 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         runAt(0, () -> createField(level, target));
         runAt(30, () -> checkPlayerPositions(level));
         runBetween(31, 35, () -> spawnShinySparkAndStigmatize(level));
-        runAt(50, () -> {
-            if (tickRateManager != null)
-                tickRateManager.setFrozen(isFrozenBefore);
-        });
+        runAt(50, () -> tickFreezeManager.unfreeze(level));
     }
 
     private void spawnShinySparkAndStigmatize(ServerLevel level) {
@@ -166,8 +159,7 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
 
     @Override
     public void interrupt() {
-        if (tickRateManager != null)
-            tickRateManager.setFrozen(isFrozenBefore);
+        tickFreezeManager.unfreeze(mob.level());
         EntityDataHelper.removeEntityData(mob, NarakaEntityDataTypes.KEEP_UNFROZEN.get());
     }
 }

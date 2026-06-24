@@ -68,7 +68,7 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
         Vec3 position = target.getEyePosition().add(delta);
         double y = NarakaUtils.findFloor(target.level(), BlockPos.containing(position)).getY() + 1.75;
         mob.teleportTo(position.x, y, position.z);
-        mob.level().playSound(null, mob, SoundEvents.PLAYER_TELEPORT, SoundSource.HOSTILE, 1, 1);
+        mob.level().playSound(null, mob, SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 1, 1);
     }
 
     protected final boolean targetInRange(float distanceSquare) {
