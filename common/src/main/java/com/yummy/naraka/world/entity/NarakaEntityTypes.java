@@ -15,7 +15,6 @@ public class NarakaEntityTypes {
             EntityType.Builder.<Herobrine>of(Herobrine::new, MobCategory.MONSTER)
                     .fireImmune()
                     .sized(0.6f, 1.8f)
-                    .eyeHeight(1.62f)
                     .updateInterval(1)
                     .clientTrackingRange(32)
     );
@@ -33,7 +32,6 @@ public class NarakaEntityTypes {
             EntityType.Builder.<ShadowHerobrine>of(ShadowHerobrine::new, MobCategory.MONSTER)
                     .fireImmune()
                     .sized(0.6f, 1.8f)
-                    .eyeHeight(1.62f)
                     .updateInterval(1)
                     .clientTrackingRange(32)
                     .noSave()

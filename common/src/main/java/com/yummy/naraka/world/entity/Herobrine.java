@@ -50,7 +50,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -125,7 +124,7 @@ public class Herobrine extends AbstractHerobrine {
     private int maxWatchedEntities = 0;
     @Nullable
     private LivingEntity selectedTarget;
-    private final Set<UUID> watchingEntities = new HashSet<>();
+    private final List<UUID> watchingEntities = new ArrayList<>();
     private final Map<UUID, LivingEntity> cachedWatchingEntities = new HashMap<>();
     protected final List<Afterimage> afterimages = new ArrayList<>();
 
@@ -255,12 +254,6 @@ public class Herobrine extends AbstractHerobrine {
         }
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR, NarakaAttributeModifiers.finalHerobrineArmor(armor));
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR_TOUGHNESS, NarakaAttributeModifiers.FINAL_HEROBRINE_ARMOR_TOUGHNESS);
-    }
-
-    @Override
-    public void push(Vec3 vector) {
-        if (getPhase() < 3)
-            super.push(vector);
     }
 
     @Override
@@ -743,19 +736,15 @@ public class Herobrine extends AbstractHerobrine {
             ServerLevel narakaDimension = level.getServer().getLevel(NarakaDimensions.NARAKA);
             if (narakaDimension != null) {
                 BlockPos blockPos = NarakaPortalBlock.createRandomNarakaSpawnPosition(random);
-                Vec3 pos = blockPos.getBottomCenter();
+                Vec3 pos = Vec3.atBottomCenterOf(blockPos);
                 target.teleportTo(narakaDimension, pos.x, pos.y, pos.z, Set.of(), 180, 0);
             }
         }
     }
 
     @Override
-    public @Nullable Entity changeDimension(DimensionTransition transition) {
-        if (level() instanceof ServerLevel level) {
-            for (ShadowHerobrine shadowHerobrine : shadowController.getShadows(level))
-                shadowHerobrine.changeDimension(transition);
-        }
-        return super.changeDimension(transition);
+    public boolean canChangeDimensions() {
+        return false;
     }
 
     public void shakeCamera() {
@@ -787,15 +776,15 @@ public class Herobrine extends AbstractHerobrine {
         if (narakaLevel != null) {
             narakaLevel.removeBlock(NarakaPortalBlock.IN_NARAKA_DIMENSION_POSITION, false);
             OriginHerobrine.SpawnData originHerobrineSpawnData = narakaLevel.getDataStorage()
-                    .computeIfAbsent(OriginHerobrine.SpawnData.TYPE, "origin_herobrine_spawn_data");
+                    .computeIfAbsent(OriginHerobrine.SpawnData::create, OriginHerobrine.SpawnData::new, "origin_herobrine_spawn_data");
             if (originHerobrineSpawnData.isSpawned())
                 return;
-            NarakaEntityTypes.ORIGIN_HEROBRINE.get().spawn(
+            OriginHerobrine originHerobrine = NarakaEntityTypes.ORIGIN_HEROBRINE.get().spawn(
                     narakaLevel,
-                    absoluteHerobrine -> absoluteHerobrine.setYRot(0),
-                    OriginHerobrine.SPAWN_POSITION, MobSpawnType.TRIGGERED,
-                    false, false
+                    OriginHerobrine.SPAWN_POSITION, MobSpawnType.TRIGGERED
             );
+            if (originHerobrine != null)
+                originHerobrine.setYRot(0);
             originHerobrineSpawnData.setSpawned(true);
         }
     }
@@ -840,9 +829,9 @@ public class Herobrine extends AbstractHerobrine {
         NarakaMobEffects.getChallengersBlessing(livingEntity).ifPresent(instance -> {
             livingEntity.removeEffect(instance.getEffect());
             for (EquipmentSlot slot : EquipmentSlot.values()) {
-                if (EquipmentSlotGroup.ARMOR.test(slot)) {
+                if (slot.isArmor()) {
                     ItemStack stack = livingEntity.getItemBySlot(slot);
-                    stack.consume(1, livingEntity);
+                    stack.shrink(1);
                 }
             }
             ItemStack weaponStack = livingEntity.getMainHandItem();
@@ -862,7 +851,7 @@ public class Herobrine extends AbstractHerobrine {
         output.putBoolean("HibernateMode", hibernateMode);
         if (spawnPosition != null)
             NarakaNbtUtils.store(output, "SpawnPosition", BlockPos.CODEC, spawnPosition);
-        NarakaNbtUtils.store(output, "WatchingEntities", UUIDUtil.CODEC_SET, watchingEntities);
+        NarakaNbtUtils.store(output, "WatchingEntities", UUIDUtil.CODEC.listOf(), watchingEntities);
     }
 
     @Override

@@ -24,10 +24,10 @@ public class ColoredLightningBolt extends LightningBolt {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(COLOR, -1)
-                .define(SPACE_RENDER_TYPE, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(COLOR, -1);
+        entityData.define(SPACE_RENDER_TYPE, false);
     }
 
     public int getColor() {

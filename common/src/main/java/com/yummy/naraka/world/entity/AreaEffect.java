@@ -71,14 +71,14 @@ public class AreaEffect extends Entity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(X_WIDTH, 3f)
-                .define(Z_WIDTH, 3f)
-                .define(LIFETIME, 20)
-                .define(COLOR, 0xffffff)
-                .define(INDEX, 0)
-                .define(MAX_ALPHA, 0x88)
-                .define(SHAPE, AreaShape.RECTANGLE);
+    protected void defineSynchedData() {
+        entityData.define(X_WIDTH, 3f);
+        entityData.define(Z_WIDTH, 3f);
+        entityData.define(LIFETIME, 20);
+        entityData.define(COLOR, 0xffffff);
+        entityData.define(INDEX, 0);
+        entityData.define(MAX_ALPHA, 0x88);
+        entityData.define(SHAPE, AreaShape.RECTANGLE);
     }
 
     @Override

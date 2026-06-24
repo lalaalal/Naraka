@@ -33,9 +33,9 @@ public abstract class MotionEntity extends Entity implements Motionable {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(SCALE, 1.0f)
-                .define(ROTATION, new Quaternionf());
+    protected void defineSynchedData() {
+        entityData.define(SCALE, 1.0f);
+        entityData.define(ROTATION, new Quaternionf());
     }
 
     @Override

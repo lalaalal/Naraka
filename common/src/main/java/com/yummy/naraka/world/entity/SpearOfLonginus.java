@@ -94,7 +94,7 @@ public class SpearOfLonginus extends Spear {
     }
 
     @Override
-    public boolean canUsePortal(boolean allowPassengers) {
+    public boolean canChangeDimensions() {
         return false;
     }
 

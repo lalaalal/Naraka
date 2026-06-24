@@ -12,7 +12,6 @@ import com.yummy.naraka.world.entity.data.StigmaHelper;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -180,7 +179,7 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
             return;
 
         StigmaHelper.removeStigma(target);
-        level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.HOSTILE);
+        level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.BEACON_DEACTIVATE, SoundSource.HOSTILE, 1, 1);
 
         float baseDamage = target.getMaxHealth() * 0.25f;
         target.hurt(NarakaDamageSources.stigmaConsume(this), baseDamage * stigma.value());
@@ -235,9 +234,9 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         int data = getHerobrine().map(Herobrine::getId).orElse(-1);
-        return new ClientboundAddEntityPacket(this, entity, data);
+        return new ClientboundAddEntityPacket(this, data, blockPosition());
     }
 
     @Override

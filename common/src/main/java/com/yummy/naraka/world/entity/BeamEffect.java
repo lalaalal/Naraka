@@ -89,7 +89,7 @@ public record BeamEffect(long startTick, double tickLength, double beamLength,
         PULL(BeamEffect::pull),
         PUSH(BeamEffect::push);
 
-        public static final Codec<PositionFunction> CODEC = StringRepresentable.fromValues(PositionFunction::values);
+        public static final Codec<PositionFunction> CODEC = StringRepresentable.fromEnum(PositionFunction::values);
 
         private final BiFunction<BeamEffect, Double, Vec3> function;
 

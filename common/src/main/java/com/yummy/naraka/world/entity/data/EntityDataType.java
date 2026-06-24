@@ -1,13 +1,9 @@
 package com.yummy.naraka.world.entity.data;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.NarakaMod;
 import net.minecraft.Util;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,8 +17,7 @@ import java.util.function.Supplier;
 public final class EntityDataType<T, E extends Entity> {
     private final ResourceLocation id;
     private final Supplier<EntityData<T, E>> defaultInstance;
-    private final MapCodec<EntityData<T, E>> mapCodec;
-    private final StreamCodec<RegistryFriendlyByteBuf, EntityData<T, E>> streamCodec;
+    private final Codec<EntityData<T, E>> codec;
     private final BiConsumer<E, T> ticker;
     private final Class<E> entityType;
 
@@ -42,12 +37,10 @@ public final class EntityDataType<T, E extends Entity> {
         this.id = id;
         this.defaultInstance = () -> defaultInstance.apply(this);
         this.entityType = entityType;
-        this.mapCodec = RecordCodecBuilder.mapCodec(instance -> instance.group(
+        this.codec = RecordCodecBuilder.create(instance -> instance.group(
                         codec.fieldOf("value").forGetter(EntityData::value)
                 ).apply(instance, value -> new EntityData<>(this, value))
         );
-        this.streamCodec = ByteBufCodecs.fromCodecWithRegistries(codec)
-                .map(value -> new EntityData<>(this, value), EntityData::value);
         this.ticker = ticker;
     }
 
@@ -67,12 +60,8 @@ public final class EntityDataType<T, E extends Entity> {
         return getId().getPath();
     }
 
-    public MapCodec<EntityData<T, E>> mapCodec() {
-        return mapCodec;
-    }
-
-    public StreamCodec<RegistryFriendlyByteBuf, EntityData<T, E>> streamCodec() {
-        return streamCodec;
+    public Codec<EntityData<T, E>> codec() {
+        return codec;
     }
 
     public void tick(Entity entity) {

@@ -3,6 +3,7 @@ package com.yummy.naraka.world.entity;
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncProgressOverlayExtensionPacket;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.NarakaPortalBlock;
@@ -14,7 +15,6 @@ import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.overlay.NarakaProgressOverlayExtensionTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -22,8 +22,6 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.util.FastColor;
-import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -64,13 +62,8 @@ public class OriginHerobrine extends AbstractHerobrine {
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_ABSORPTION, 1024)
                 .add(Attributes.ATTACK_DAMAGE, 10)
-                .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 1)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
-                .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, 1)
-                .add(Attributes.SAFE_FALL_DISTANCE, 256)
-                .add(Attributes.FALL_DAMAGE_MULTIPLIER, 0)
                 .add(Attributes.JUMP_STRENGTH, 0)
                 .add(Attributes.FLYING_SPEED, 0.5f)
                 .add(Attributes.MAX_HEALTH, 528);
@@ -87,9 +80,9 @@ public class OriginHerobrine extends AbstractHerobrine {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(ABSORBED_SOUL_TYPES, List.of());
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(ABSORBED_SOUL_TYPES, List.of());
     }
 
     @Override
@@ -180,7 +173,7 @@ public class OriginHerobrine extends AbstractHerobrine {
 
             if (level.dimension().equals(NarakaDimensions.NARAKA)) {
                 SpawnData spawnData = level.getDataStorage()
-                        .computeIfAbsent(SpawnData.TYPE, "origin_herobrine_spawn_data");
+                        .computeIfAbsent(SpawnData::create, SpawnData::new, "origin_herobrine_spawn_data");
                 spawnData.setSpawned(false);
             }
             this.level().broadcastEntityEvent(this, (byte) 60);
@@ -195,7 +188,7 @@ public class OriginHerobrine extends AbstractHerobrine {
 
     @Override
     public int getTeamColor() {
-        return FastColor.ARGB32.color(alpha, 0xffffff);
+        return Color.combine(alpha, 0xffffff);
     }
 
     public int getAlpha() {
@@ -233,7 +226,7 @@ public class OriginHerobrine extends AbstractHerobrine {
 
     @Override
     public boolean canBeAffected(MobEffectInstance effectInstance) {
-        return effectInstance.is(MobEffects.ABSORPTION);
+        return effectInstance.getEffect() == MobEffects.ABSORPTION;
     }
 
     @Override
@@ -312,23 +305,19 @@ public class OriginHerobrine extends AbstractHerobrine {
         public static final Codec<SpawnData> CODEC = Codec.BOOL
                 .xmap(SpawnData::new, SpawnData::isSpawned);
 
-        public static final Factory<SpawnData> TYPE = new Factory<>(
-                SpawnData::new, SpawnData::create, DataFixTypes.LEVEL
-        );
-
-        private boolean spawned;
-
-        private static SpawnData create(CompoundTag tag, HolderLookup.Provider registries) {
+        public static SpawnData create(CompoundTag tag) {
             boolean spawned = tag.getBoolean("Spawned");
             return new SpawnData(spawned);
         }
+
+        private boolean spawned;
 
         public SpawnData() {
             this.spawned = false;
         }
 
         @Override
-        public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
+        public CompoundTag save(CompoundTag tag) {
             tag.putBoolean("Spawned", spawned);
             return tag;
         }

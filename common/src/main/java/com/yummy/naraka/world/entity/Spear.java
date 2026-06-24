@@ -1,16 +1,13 @@
 package com.yummy.naraka.world.entity;
 
+import com.google.common.collect.Multimap;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.item.NarakaItems;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Position;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.network.syncher.SynchedEntityData.Builder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -20,13 +17,14 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -45,30 +43,36 @@ public class Spear extends AbstractArrow {
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(Spear.class, EntityDataSerializers.BOOLEAN);
     protected boolean dealtDamage = false;
     private int clientSideReturnTickCount = 0;
+    private final ItemStack pickupItem;
 
     protected Spear(EntityType<? extends Spear> entityType, Level level) {
         super(entityType, level);
-        entityData.set(ID_LOYALTY, 0);
-        entityData.set(ID_FOIL, false);
+        pickupItem = ItemStack.EMPTY;
     }
 
     public Spear(EntityType<? extends Spear> type, Level level, Position position, ItemStack pickupItem) {
-        super(type, position.x(), position.y(), position.z(), level, pickupItem, null);
+        super(type, position.x(), position.y(), position.z(), level);
+        this.pickup = Pickup.ALLOWED;
+        this.pickupItem = pickupItem.copy();
+
         entityData.set(ID_LOYALTY, getLoyaltyFromItem(pickupItem));
         entityData.set(ID_FOIL, pickupItem.hasFoil());
     }
 
     public Spear(EntityType<? extends Spear> type, Level level, LivingEntity owner, ItemStack pickupItem) {
-        super(type, owner, level, pickupItem, null);
+        super(type, owner, level);
+        this.pickup = Pickup.ALLOWED;
+        this.pickupItem = pickupItem.copy();
+
         entityData.set(ID_LOYALTY, getLoyaltyFromItem(pickupItem));
         entityData.set(ID_FOIL, pickupItem.hasFoil());
     }
 
     @Override
-    protected void defineSynchedData(Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(ID_LOYALTY, 0);
-        builder.define(ID_FOIL, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(ID_LOYALTY, 0);
+        entityData.define(ID_FOIL, false);
     }
 
     @Override
@@ -85,10 +89,15 @@ public class Spear extends AbstractArrow {
         entityData.set(ID_FOIL, getPickupItem().hasFoil());
     }
 
+    @Override
+    public ItemStack getPickupItem() {
+        if (pickupItem.isEmpty())
+            return ITEM_BY_TYPE.getOrDefault(getType(), () -> ItemStack.EMPTY).get();
+        return pickupItem;
+    }
+
     protected int getLoyaltyFromItem(ItemStack stack) {
-        if (level() instanceof ServerLevel serverLevel)
-            return EnchantmentHelper.getTridentReturnToOwnerAcceleration(serverLevel, stack, this);
-        return 0;
+        return EnchantmentHelper.getLoyalty(stack);
     }
 
     public int getLoyalty() {
@@ -97,11 +106,6 @@ public class Spear extends AbstractArrow {
 
     public boolean hasFoil() {
         return entityData.get(ID_FOIL);
-    }
-
-    @Override
-    protected ItemStack getDefaultPickupItem() {
-        return ITEM_BY_TYPE.get(getType()).get();
     }
 
     @Override
@@ -163,18 +167,14 @@ public class Spear extends AbstractArrow {
 
     protected float getAttackDamage() {
         ItemStack spearItem = getPickupItem();
-        float baseDamage = 1;
-        ItemAttributeModifiers attributeModifiers = spearItem.get(DataComponents.ATTRIBUTE_MODIFIERS);
-        ItemEnchantments enchantments = spearItem.get(DataComponents.ENCHANTMENTS);
-        if (attributeModifiers == null)
-            return 1;
-        if (enchantments == null)
-            return (float) attributeModifiers.compute(baseDamage, EquipmentSlot.MAINHAND);
-        Holder<Enchantment> sharpnessEnchantment = registryAccess()
-                .lookupOrThrow(Registries.ENCHANTMENT)
-                .getOrThrow(Enchantments.SHARPNESS);
-        int sharpness = enchantments.getLevel(sharpnessEnchantment);
-        return (float) attributeModifiers.compute(baseDamage + sharpness, EquipmentSlot.MAINHAND);
+        double baseDamage = 1;
+        Multimap<Attribute, AttributeModifier> attributeModifiers = spearItem.getAttributeModifiers(EquipmentSlot.MAINHAND);
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(spearItem);
+
+        int sharpness = enchantments.getOrDefault(Enchantments.SHARPNESS, 0);
+        for (AttributeModifier modifier : attributeModifiers.get(Attributes.ATTACK_DAMAGE))
+            baseDamage += modifier.getAmount();
+        return (float) baseDamage + sharpness;
     }
 
     @Override

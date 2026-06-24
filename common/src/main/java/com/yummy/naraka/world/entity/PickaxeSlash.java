@@ -1,19 +1,16 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.StunHelper;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -43,7 +40,6 @@ public class PickaxeSlash extends LightTailEntity {
         this.setOwner(owner);
         this.stigmatizingEntity = owner;
         this.lifetime = lifetime;
-        this.accelerationPower = 0.05;
     }
 
     public void setStunTarget(boolean stunTarget) {
@@ -55,10 +51,10 @@ public class PickaxeSlash extends LightTailEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(Z_ROT, 60f)
-                .define(COLOR, 0xffffff);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(Z_ROT, 60f);
+        entityData.define(COLOR, 0xffffff);
     }
 
     public void setColor(int color) {
@@ -66,7 +62,7 @@ public class PickaxeSlash extends LightTailEntity {
     }
 
     public int getColor(float partialTick) {
-        return FastColor.ARGB32.color((int) (getAlpha(partialTick) * 255), entityData.get(COLOR));
+        return Color.combine((int) (getAlpha(partialTick) * 255), entityData.get(COLOR));
     }
 
     public void setZRot(float zRot) {
@@ -80,12 +76,6 @@ public class PickaxeSlash extends LightTailEntity {
     @Override
     protected boolean shouldBurn() {
         return false;
-    }
-
-    @Override
-    @Nullable
-    protected ParticleOptions getTrailParticle() {
-        return null;
     }
 
     @Override
@@ -108,11 +98,6 @@ public class PickaxeSlash extends LightTailEntity {
 
     protected boolean checkTarget(LivingEntity target) {
         return super.canHitEntity(target) && AbstractHerobrine.isNotHerobrine(target);
-    }
-
-    @Override
-    public boolean deflect(ProjectileDeflection deflection, @Nullable Entity entity, @Nullable Entity owner, boolean deflectedByPlayer) {
-        return false;
     }
 
     @Override

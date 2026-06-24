@@ -155,9 +155,9 @@ public class MagicCircle extends Entity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(SCALE, 0f)
-                .define(LIFETIME, 1200);
+    protected void defineSynchedData() {
+        entityData.define(SCALE, 0f);
+        entityData.define(LIFETIME, 1200);
     }
 
     @Override

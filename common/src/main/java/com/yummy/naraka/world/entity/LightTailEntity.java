@@ -28,13 +28,9 @@ public abstract class LightTailEntity extends AbstractHurtingProjectile {
         super(entityType, level);
         entityData.set(TAIL_UPDATE_COUNT, tailUpdateCount);
         tailPositions = new LinkedList<>(Collections.nCopies(tailLength, Vec3.ZERO));
-    }
 
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(TAIL_COLOR, 0)
-                .define(TAIL_UPDATE_COUNT, 2);
+        entityData.define(TAIL_COLOR, 0);
+        entityData.define(TAIL_UPDATE_COUNT, 2);
     }
 
     public void setTailColor(int color) {

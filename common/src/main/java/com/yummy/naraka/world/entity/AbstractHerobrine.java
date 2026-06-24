@@ -49,13 +49,8 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         return Monster.createMonsterAttributes()
                 .add(Attributes.ATTACK_DAMAGE, 10)
                 .add(Attributes.FOLLOW_RANGE, 128)
-                .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 1)
-                .add(Attributes.STEP_HEIGHT, 1.25)
                 .add(Attributes.MOVEMENT_SPEED, 0.17f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
-                .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, 1)
-                .add(Attributes.SAFE_FALL_DISTANCE, 256)
-                .add(Attributes.FALL_DAMAGE_MULTIPLIER, 0)
                 .add(Attributes.JUMP_STRENGTH, 0)
                 .add(Attributes.FLYING_SPEED, 0.5f)
                 .add(Attributes.MAX_HEALTH, 666);
@@ -77,13 +72,13 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(FINAL_MODEL, false)
-                .define(DISPLAY_SCARF, false)
-                .define(DISPLAY_EYE, true)
-                .define(DISPLAY_PICKAXE, false)
-                .define(ALPHA, 0xff);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(FINAL_MODEL, false);
+        entityData.define(DISPLAY_SCARF, false);
+        entityData.define(DISPLAY_EYE, true);
+        entityData.define(DISPLAY_PICKAXE, false);
+        entityData.define(ALPHA, 0xff);
     }
 
     public void setAlpha(int alpha) {
@@ -228,11 +223,6 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     @Override
-    public boolean canBeLeashed() {
-        return false;
-    }
-
-    @Override
     public boolean isPushable() {
         return false;
     }
@@ -263,7 +253,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     @Override
-    public boolean canUsePortal(boolean allowPassengers) {
+    public boolean canChangeDimensions() {
         return false;
     }
 }

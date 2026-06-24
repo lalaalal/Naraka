@@ -47,10 +47,9 @@ public class NarakaSword extends MotionEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(SOUL_TYPE, SoulType.NONE)
-                .define(ALPHA, 0f);
+    protected void defineSynchedData() {
+        entityData.define(SOUL_TYPE, SoulType.NONE);
+        entityData.define(ALPHA, 0f);
     }
 
     public int getSwordEffectUpdateCount() {

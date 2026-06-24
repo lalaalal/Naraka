@@ -8,9 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public interface DeathCountingEntity {
     LivingEntity living();
@@ -42,7 +40,7 @@ public interface DeathCountingEntity {
     void onEntityUseDeathCount(LivingEntity livingEntity);
 
     class DeathCountingInstance {
-        private final Set<UUID> countedEntities = new HashSet<>();
+        private final List<UUID> countedEntities = new ArrayList<>();
 
         public void add(LivingEntity livingEntity) {
             countedEntities.add(livingEntity.getUUID());
@@ -68,11 +66,11 @@ public interface DeathCountingEntity {
         }
 
         public void save(CompoundTag compoundTag) {
-            NarakaNbtUtils.store(compoundTag, "DeathCountedEntities", UUIDUtil.CODEC_SET, countedEntities);
+            NarakaNbtUtils.store(compoundTag, "DeathCountedEntities", UUIDUtil.CODEC.listOf(), countedEntities);
         }
 
         public void load(CompoundTag compoundTag) {
-            NarakaNbtUtils.read(compoundTag, "DeathCountedEntities", UUIDUtil.CODEC_SET).ifPresent(countedEntities::addAll);
+            NarakaNbtUtils.read(compoundTag, "DeathCountedEntities", UUIDUtil.CODEC.listOf()).ifPresent(countedEntities::addAll);
         }
     }
 }

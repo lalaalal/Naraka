@@ -6,7 +6,6 @@ import com.yummy.naraka.util.QuadraticBezier;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -17,8 +16,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -52,7 +49,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
         setTailColor(SoulType.COPPER.color);
         shineScale = random.nextFloat() + 0.5f;
         entityData.set(SHINE_START_TICK, random.nextIntBetweenInclusive(20, 35));
-        accelerationPower = 0.25;
+        xPower = yPower = zPower = 0.25;
     }
 
     public CorruptedStar(Level level, @Nullable Entity owner, Vec3 position, QuadraticBezier bezier, int prepareDuration) {
@@ -148,19 +145,19 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(PREPARE_BEZIER, QuadraticBezier.ZERO)
-                .define(PREPARE_DURATION, 40)
-                .define(BASE_POSITION, Vec3.ZERO)
-                .define(TARGET_POSITION, Vec3.ZERO)
-                .define(FOLLOWING_TARGET, -1)
-                .define(SOUL_TYPE, SoulType.COPPER)
-                .define(SHOOTING_ACCELERATION, 0.25f)
-                .define(SHINE_START_TICK, 0)
-                .define(SHINE_LIFETIME, 20)
-                .define(VERTICAL_SHINE, false)
-                .define(STOP_ON_ENTITY_HIT, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(PREPARE_BEZIER, QuadraticBezier.ZERO);
+        entityData.define(PREPARE_DURATION, 40);
+        entityData.define(BASE_POSITION, Vec3.ZERO);
+        entityData.define(TARGET_POSITION, Vec3.ZERO);
+        entityData.define(FOLLOWING_TARGET, -1);
+        entityData.define(SOUL_TYPE, SoulType.COPPER);
+        entityData.define(SHOOTING_ACCELERATION, 0.25f);
+        entityData.define(SHINE_START_TICK, 0);
+        entityData.define(SHINE_LIFETIME, 20);
+        entityData.define(VERTICAL_SHINE, false);
+        entityData.define(STOP_ON_ENTITY_HIT, false);
     }
 
     @Override
@@ -198,11 +195,6 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
     @Override
     protected boolean shouldBurn() {
         return false;
-    }
-
-    @Override
-    protected @Nullable ParticleOptions getTrailParticle() {
-        return null;
     }
 
     @Override
@@ -272,20 +264,9 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
 
     @Override
     public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
-        accelerationPower = entityData.get(SHOOTING_ACCELERATION);
+        xPower = yPower = zPower = entityData.get(SHOOTING_ACCELERATION);
+
         super.shoot(x, y, z, velocity, inaccuracy);
-    }
-
-    @Override
-    public ProjectileDeflection deflection(Projectile projectile) {
-        return ProjectileDeflection.NONE;
-    }
-
-    @Override
-    public boolean deflect(ProjectileDeflection deflection, @Nullable Entity entity, @Nullable Entity owner, boolean deflectedByPlayer) {
-        if (canBeDeflected() && deflectedByPlayer)
-            super.deflect(deflection, entity, owner, true);
-        return false;
     }
 
     @Override

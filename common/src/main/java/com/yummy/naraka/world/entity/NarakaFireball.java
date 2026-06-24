@@ -14,8 +14,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.ItemSupplier;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
@@ -39,7 +37,6 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     public NarakaFireball(EntityType<? extends NarakaFireball> entityType, Level level) {
         super(entityType, level);
         setItem(NarakaItems.NARAKA_FIREBALL_STAFF.get().getDefaultInstance());
-        accelerationPower = -0.1f;
     }
 
     public NarakaFireball(Mob owner, Vec3 movement, Level level) {
@@ -52,7 +49,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     }
 
     public NarakaFireball(LivingEntity owner, @Nullable Entity target, Vec3 movement, Level level) {
-        super(NarakaEntityTypes.NARAKA_FIREBALL.get(), owner, movement, level);
+        super(NarakaEntityTypes.NARAKA_FIREBALL.get(), owner.getX(), owner.getEyeY(), owner.getZ(), movement.x, movement.y, movement.z, level);
         setTarget(target);
         setItem(NarakaItems.NARAKA_FIREBALL_STAFF.get().getDefaultInstance());
     }
@@ -62,11 +59,11 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(TARGET_ID, -1)
-                .define(FIXED_DAMAGE, false)
-                .define(CAN_DEFLECT, true);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(TARGET_ID, -1);
+        entityData.define(FIXED_DAMAGE, false);
+        entityData.define(CAN_DEFLECT, true);
     }
 
     public void setCanDeflect(boolean canDeflect) {
@@ -77,20 +74,6 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
         super.shoot(x, y, z, velocity, inaccuracy);
         setCanDeflect(true);
-    }
-
-    @Override
-    public boolean deflect(ProjectileDeflection deflection, @Nullable Entity entity, @Nullable Entity owner, boolean deflectedByPlayer) {
-        if (entityData.get(CAN_DEFLECT))
-            return super.deflect(deflection, entity, owner, deflectedByPlayer);
-        return false;
-    }
-
-    @Override
-    public ProjectileDeflection deflection(Projectile projectile) {
-        if (entityData.get(CAN_DEFLECT))
-            return super.deflection(projectile);
-        return ProjectileDeflection.NONE;
     }
 
     public void setDamageCalculator(DamageCalculator damageCalculator) {
@@ -132,7 +115,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     @Override
     public void tick() {
         if (timeToLive < tickCount) {
-            level().explode(this, NarakaDamageSources.narakaFireball(this), null, position(), 1.5f, false, Level.ExplosionInteraction.TRIGGER);
+            level().explode(this, NarakaDamageSources.narakaFireball(this), null, position(), 1.5f, false, Level.ExplosionInteraction.MOB);
             discard();
         }
         if (tickCount % NarakaConfig.COMMON.narakaFireballDirectionUpdateInterval.getValue() == 0)
@@ -161,12 +144,6 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     }
 
     @Override
-    protected void onDeflection(@Nullable Entity entity, boolean deflectedByPlayer) {
-        super.onDeflection(entity, deflectedByPlayer);
-        setTarget(null);
-    }
-
-    @Override
     protected void onHit(HitResult result) {
         super.onHit(result);
         discard();
@@ -184,17 +161,13 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         Entity owner = getOwner();
         if (hitEntity != owner && hitEntity instanceof LivingEntity livingEntity && !level().isClientSide()) {
             float damage = damageCalculator.calculateDamage(this);
-            ExplosionDamageCalculator explosionDamageCalculator = new EntityBasedExplosionDamageCalculator(this) {
-                @Override
-                public float getEntityDamageAmount(Explosion explosion, Entity entity) {
-                    return damage;
-                }
-            };
-            level().explode(this, getDamageSource(owner), explosionDamageCalculator, position(), 1.5f, false, Level.ExplosionInteraction.TRIGGER);
+            ExplosionDamageCalculator explosionDamageCalculator = new EntityBasedExplosionDamageCalculator(this);
+            level().explode(this, getDamageSource(owner), explosionDamageCalculator, position(), 1.5f, false, Level.ExplosionInteraction.MOB);
             for (HurtTargetListener listener : listeners)
                 listener.onHurtTarget(livingEntity, damage);
         }
     }
+
 
     protected DamageSource getDamageSource(@Nullable Entity owner) {
         if (entityData.get(FIXED_DAMAGE))

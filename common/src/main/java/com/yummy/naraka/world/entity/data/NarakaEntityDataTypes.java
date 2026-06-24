@@ -61,7 +61,7 @@ public class NarakaEntityDataTypes {
     private static void tickPurifiedSoulFire(LivingEntity livingEntity, int purifiedSoulFireTick) {
         if (purifiedSoulFireTick > 0 && !livingEntity.level().isClientSide()) {
             if (purifiedSoulFireTick % 20 == 0)
-                livingEntity.hurt(NarakaDamageSources.purifiedSoulFire(livingEntity.registryAccess()), 6);
+                livingEntity.hurt(NarakaDamageSources.purifiedSoulFire(livingEntity.level().registryAccess()), 6);
             EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get(), purifiedSoulFireTick - 1);
         }
     }

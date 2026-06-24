@@ -73,18 +73,18 @@ public class ShinyEffect extends Entity {
     }
 
     @Override
-    public void tick() {
-        if (tickCount > getLifetime())
-            discard();
+    protected void defineSynchedData() {
+        entityData.define(IS_VERTICAL, false);
+        entityData.define(SCALE, 1.0f);
+        entityData.define(LIFETIME, 20);
+        entityData.define(COLOR, 0xffffff);
+        entityData.define(ROTATION, 0.0f);
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(IS_VERTICAL, false)
-                .define(SCALE, 1.0f)
-                .define(LIFETIME, 20)
-                .define(COLOR, 0xffffff)
-                .define(ROTATION, 0.0f);
+    public void tick() {
+        if (tickCount > getLifetime())
+            discard();
     }
 
     @Override

@@ -28,12 +28,8 @@ public class DiamondGolem extends SkillUsingMob implements Enemy {
                 .add(Attributes.ATTACK_DAMAGE, 20)
                 .add(Attributes.MAX_HEALTH, 100)
                 .add(Attributes.FOLLOW_RANGE, 128)
-                .add(Attributes.STEP_HEIGHT, 2)
                 .add(Attributes.MOVEMENT_SPEED, 0.2f)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 1)
-                .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, 1)
-                .add(Attributes.SAFE_FALL_DISTANCE, 256)
-                .add(Attributes.FALL_DAMAGE_MULTIPLIER, 0);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1);
     }
 
     public DiamondGolem(EntityType<? extends DiamondGolem> entityType, Level level) {

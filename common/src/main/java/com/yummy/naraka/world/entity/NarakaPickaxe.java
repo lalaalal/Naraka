@@ -28,8 +28,6 @@ public class NarakaPickaxe extends SkillUsingMob {
         return Monster.createMonsterAttributes()
                 .add(Attributes.ATTACK_DAMAGE, 6)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
-                .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, 1)
-                .add(Attributes.SAFE_FALL_DISTANCE, 256)
                 .add(Attributes.FLYING_SPEED, 0.5f)
                 .add(Attributes.FOLLOW_RANGE, 128)
                 .add(Attributes.MAX_HEALTH, 1);

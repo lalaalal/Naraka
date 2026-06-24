@@ -15,7 +15,6 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -24,8 +23,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -64,10 +61,9 @@ public class Stardust extends LightTailEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(WAITING_TICK, 10)
-                .define(HIT_BLOCK, false);
+    protected void defineSynchedData() {
+        entityData.define(WAITING_TICK, 10);
+        entityData.define(HIT_BLOCK, false);
     }
 
     private void handleOnHitBlock() {
@@ -95,7 +91,7 @@ public class Stardust extends LightTailEntity {
             setDeltaMovement(getDeltaMovement().scale(0.75));
         }
         if (tickCount > 40) {
-            HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, entity -> entity.getClass() != Stardust.class, ClipContext.Block.COLLIDER);
+            HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, entity -> entity.getClass() != Stardust.class);
             this.onHit(hitResult);
         }
         setPos(position().add(getDeltaMovement()));
@@ -176,13 +172,7 @@ public class Stardust extends LightTailEntity {
     }
 
     @Override
-    @Nullable
-    protected ParticleOptions getTrailParticle() {
-        return null;
-    }
-
-    @Override
-    public boolean ignoreExplosion(Explosion explosion) {
+    public boolean ignoreExplosion() {
         return true;
     }
 
@@ -212,9 +202,9 @@ public class Stardust extends LightTailEntity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         int data = owner == null ? 0 : owner.getId();
-        return new ClientboundAddEntityPacket(this, entity, data);
+        return new ClientboundAddEntityPacket(this, data, this.blockPosition());
     }
 
     @Override
