@@ -1,0 +1,32 @@
+{
+  "parent": "naraka:eat_nectarium",
+  "criteria": {
+    "craft_soul_infused_nectarium": {
+      "conditions": {
+        "recipe_id": "naraka:soul_infused_nectarium"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.naraka.extra.craft_soul_infused_nectarium.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "naraka:soul_infused_nectarium"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.naraka.extra.craft_soul_infused_nectarium.title"
+    }
+  },
+  "requirements": [
+    [
+      "craft_soul_infused_nectarium"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

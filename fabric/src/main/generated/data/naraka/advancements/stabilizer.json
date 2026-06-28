@@ -1,0 +1,35 @@
+{
+  "parent": "naraka:soul_infused_materials",
+  "criteria": {
+    "craft_soul_stabilizer": {
+      "conditions": {
+        "recipe_id": "naraka:soul_stabilizer"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.naraka.stabilizer.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "naraka:soul_stabilizer"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.naraka.stabilizer.title"
+    }
+  },
+  "requirements": [
+    [
+      "craft_soul_stabilizer"
+    ]
+  ],
+  "rewards": {
+    "experience": 6
+  },
+  "sends_telemetry_event": true
+}

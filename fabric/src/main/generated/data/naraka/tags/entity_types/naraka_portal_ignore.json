@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:experience_orb",
+    "#naraka:herobrine"
+  ]
+}

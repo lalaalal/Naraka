@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "naraka:god_blood"
+  },
+  "base": {
+    "item": "naraka:spear"
+  },
+  "result": {
+    "item": "naraka:mighty_holy_spear"
+  },
+  "template": {
+    "item": "naraka:purified_soul_upgrade_smithing_template"
+  }
+}

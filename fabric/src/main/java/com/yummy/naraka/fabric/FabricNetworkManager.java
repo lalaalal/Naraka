@@ -5,6 +5,8 @@ import com.yummy.naraka.network.ClientboundNetworkManager;
 import com.yummy.naraka.network.CustomPacketPayload;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.ServerboundNetworkManager;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
@@ -72,7 +74,7 @@ public class FabricNetworkManager {
     private static class FabricClientboundNetworkManager implements ClientboundNetworkManager {
         @Override
         public <T extends CustomPacketPayload<T>> void define(CustomPacketPayload.Type<T> type) {
-            ClientPlayNetworking.registerGlobalReceiver(FabricPacketProxy.createType(type), (proxy, player, sender) -> {
+            ServerPlayNetworking.registerGlobalReceiver(FabricPacketProxy.createType(type), (proxy, player, sender) -> {
             });
         }
 

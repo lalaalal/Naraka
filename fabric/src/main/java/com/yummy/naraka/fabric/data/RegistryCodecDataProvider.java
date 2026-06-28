@@ -4,12 +4,14 @@ import com.google.gson.JsonElement;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
@@ -37,18 +39,19 @@ public abstract class RegistryCodecDataProvider<T> implements DataProvider {
     @Override
     public CompletableFuture<?> run(CachedOutput output) {
         Map<ResourceLocation, T> map = new HashMap<>();
-        return registries.thenApply(provider -> {
+        return registries.thenCompose(provider -> {
+            DynamicOps<JsonElement> dynamicOps = RegistryOps.create(JsonOps.INSTANCE, provider);
             configure(map::putIfAbsent, provider);
             return CompletableFuture.allOf(
                     map.entrySet().stream()
-                            .map(entry -> save(output, entry.getKey(), entry.getValue()))
+                            .map(entry -> save(output, dynamicOps, entry.getKey(), entry.getValue()))
                             .toArray(CompletableFuture[]::new)
             );
         });
     }
 
-    private CompletableFuture<?> save(CachedOutput output, ResourceLocation location, T value) {
-        DataResult<JsonElement> result = codec.encodeStart(JsonOps.INSTANCE, value);
+    private CompletableFuture<?> save(CachedOutput output, DynamicOps<JsonElement> ops, ResourceLocation location, T value) {
+        DataResult<JsonElement> result = codec.encodeStart(ops, value);
         JsonElement json = result.getOrThrow(false, LOGGER::error);
         Path path = pathProvider.json(location);
         return DataProvider.saveStable(output, json, path);

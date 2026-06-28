@@ -7,6 +7,6 @@
   "ingredient": "minecraft:gold_ingot",
   "item_model_index": 0.312,
   "override_armor_materials": {
-    "minecraft:gold": "gold_darker"
+    "gold": "gold_darker"
   }
 }

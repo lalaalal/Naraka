@@ -1,8 +1,0 @@
-{
-  "comparator_output": 13,
-  "description": {
-    "translate": "jukebox_song.naraka.herobrine_phase_3"
-  },
-  "length_in_seconds": 200.0,
-  "sound_event": "naraka:music.herobrine_phase_3"
-}

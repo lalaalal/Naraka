@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "naraka:purified_soul_metal"
+  },
+  "base": {
+    "item": "minecraft:chainmail_helmet"
+  },
+  "result": {
+    "item": "naraka:purified_soul_helmet"
+  },
+  "template": {
+    "item": "naraka:purified_soul_upgrade_smithing_template"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "G": {
+      "item": "naraka:imitation_gold_block"
+    },
+    "T": {
+      "item": "minecraft:chiseled_nether_bricks"
+    }
+  },
+  "pattern": [
+    "GGG",
+    "GTG",
+    "GGG"
+  ],
+  "result": {
+    "item": "naraka:herobrine_totem"
+  },
+  "show_notification": true
+}

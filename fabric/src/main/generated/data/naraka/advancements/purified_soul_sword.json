@@ -1,0 +1,42 @@
+{
+  "parent": "naraka:purified_soul_metal",
+  "criteria": {
+    "has_purified_soul_sword": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "naraka:purified_soul_sword"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.naraka.purified_soul_sword.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "naraka:purified_soul_sword",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.naraka.purified_soul_sword.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_purified_soul_sword"
+    ]
+  ],
+  "rewards": {
+    "experience": 6
+  },
+  "sends_telemetry_event": true
+}

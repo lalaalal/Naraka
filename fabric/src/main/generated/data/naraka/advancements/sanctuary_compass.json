@@ -1,0 +1,41 @@
+{
+  "parent": "naraka:root",
+  "criteria": {
+    "has_sanctuary_compass": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "naraka:sanctuary_compass"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.naraka.sanctuary_compass.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "naraka:sanctuary_compass"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.naraka.sanctuary_compass.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_sanctuary_compass"
+    ]
+  ],
+  "rewards": {
+    "experience": 6
+  },
+  "sends_telemetry_event": true
+}

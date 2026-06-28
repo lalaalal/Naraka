@@ -1,0 +1,33 @@
+{
+  "parent": "naraka:stabilizer",
+  "criteria": {
+    "fill_soul_stabilizer": {
+      "conditions": {},
+      "trigger": "naraka:fill_soul_stabilizer"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.naraka.fill_soul_stabilizer.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "naraka:soul_stabilizer"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.naraka.fill_soul_stabilizer.title"
+    }
+  },
+  "requirements": [
+    [
+      "fill_soul_stabilizer"
+    ]
+  ],
+  "rewards": {
+    "experience": 9
+  },
+  "sends_telemetry_event": true
+}
