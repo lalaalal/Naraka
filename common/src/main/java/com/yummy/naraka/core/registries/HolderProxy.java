@@ -1,6 +1,8 @@
 package com.yummy.naraka.core.registries;
 
+import com.mojang.datafixers.util.Either;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderOwner;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -9,21 +11,25 @@ import net.minecraft.tags.TagKey;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
- * A {@link Holder.Reference} supplying derived value for neoforge registration
+ * A {@link Holder.Reference} supplying derived value for forge registration
  *
  * @param <T> Registry value type
  * @param <V> Derived value type
  */
-public class HolderProxy<T, V extends T> extends Holder.Reference<T> implements Supplier<V> {
+public class HolderProxy<T, V extends T> implements Holder<T>, Supplier<V> {
     @Nullable
     private Holder<T> holder;
+    private final ResourceKey<T> key;
+    private final HolderOwner<T> owner;
 
     public HolderProxy(Registry<T> registry, ResourceLocation name) {
-        super(Type.STAND_ALONE, registry.holderOwner(), ResourceKey.create(registry.key(), name), null);
+        this.key = ResourceKey.create(registry.key(), name);
+        this.owner = registry.holderOwner();
     }
 
     protected void bind(boolean throwOnMissing) {
@@ -35,22 +41,21 @@ public class HolderProxy<T, V extends T> extends Holder.Reference<T> implements 
         Optional<Reference<T>> found = findReference(registry.get(), throwOnMissing);
         found.ifPresent(reference -> {
             this.holder = reference;
-            bindValue(holder.value());
         });
     }
 
     @SuppressWarnings("unchecked")
     private Optional<Registry<T>> findRegistry(boolean throwOnMissing) {
-        Optional<Registry<T>> registry = (Optional<Registry<T>>) BuiltInRegistries.REGISTRY.getOptional(key().registry());
+        Optional<Registry<T>> registry = (Optional<Registry<T>>) BuiltInRegistries.REGISTRY.getOptional(key.registry());
         if (registry.isEmpty() && throwOnMissing)
-            throw new IllegalStateException(key().registry() + " does not exist");
+            throw new IllegalStateException(key.registry() + " does not exist");
         return registry;
     }
 
     private Optional<Reference<T>> findReference(Registry<T> registry, boolean throwOnMissing) {
-        Optional<Reference<T>> found = registry.getHolder(key());
+        Optional<Reference<T>> found = registry.getHolder(key);
         if (found.isEmpty() && throwOnMissing)
-            throw new IllegalStateException(key() + " is not registered");
+            throw new IllegalStateException(key + " is not registered");
         return found;
     }
 
@@ -79,11 +84,22 @@ public class HolderProxy<T, V extends T> extends Holder.Reference<T> implements 
         return holder != null && holder.is(tagKey);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public boolean is(Holder<T> other) {
+    public boolean is(Predicate<ResourceKey<T>> predicate) {
         bind(false);
-        return this.holder != null && this.holder.is(other);
+        return holder != null && holder.is(predicate);
+    }
+
+    @Override
+    public boolean is(ResourceKey<T> resourceKey) {
+        bind(false);
+        return holder != null && holder.is(resourceKey);
+    }
+
+    @Override
+    public boolean is(ResourceLocation location) {
+        bind(false);
+        return holder != null && holder.is(location);
     }
 
     @Override
@@ -93,13 +109,33 @@ public class HolderProxy<T, V extends T> extends Holder.Reference<T> implements 
     }
 
     @Override
+    public Either<ResourceKey<T>, T> unwrap() {
+        return Either.left(key);
+    }
+
+    @Override
+    public Optional<ResourceKey<T>> unwrapKey() {
+        return Optional.of(key);
+    }
+
+    @Override
+    public Kind kind() {
+        return Kind.REFERENCE;
+    }
+
+    @Override
+    public boolean canSerializeIn(HolderOwner<T> owner) {
+        return this.owner.canSerializeIn(owner);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         bind(false);
         if (holder != null) return holder.equals(obj);
         return obj instanceof Holder<?> h
                 && h.kind() == this.kind()
-                && h.unwrapKey().orElse(null) == key();
+                && h.unwrapKey().orElse(null) == key;
     }
 
     @Override
@@ -107,6 +143,6 @@ public class HolderProxy<T, V extends T> extends Holder.Reference<T> implements 
         bind(false);
         if (holder != null)
             return holder.hashCode();
-        return key().hashCode();
+        return key.hashCode();
     }
 }
