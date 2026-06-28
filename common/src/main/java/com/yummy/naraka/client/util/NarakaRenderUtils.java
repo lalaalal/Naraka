@@ -3,6 +3,7 @@ package com.yummy.naraka.client.util;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.util.NarakaUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -15,7 +16,6 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -74,12 +74,12 @@ public class NarakaRenderUtils {
     public static void vertices(PoseStack.Pose pose, VertexConsumer vertexConsumer, List<Vector3f> vertices, List<Vector2f> uvs, int packedLight, int packedOverlay, int color, Direction direction, boolean reverse) {
         Vec3i normal = direction.getNormal();
         NarakaUtils.iterate(vertices, uvs, (vertex, uv) -> {
-            vertexConsumer.addVertex(pose, vertex)
-                    .setColor(color)
-                    .setLight(packedLight)
-                    .setOverlay(packedOverlay)
-                    .setUv(uv.x, uv.y)
-                    .setNormal(pose, normal.getX(), normal.getY(), normal.getZ());
+            vertexConsumer.vertex(pose.pose(), vertex.x, vertex.y, vertex.z)
+                    .color(color)
+                    .uv2(packedLight)
+                    .overlayCoords(packedOverlay)
+                    .uv(uv.x, uv.y)
+                    .normal(pose.normal(), normal.getX(), normal.getY(), normal.getZ());
         }, reverse);
     }
 
@@ -153,7 +153,7 @@ public class NarakaRenderUtils {
 
     public static <T> void submitModelWithFoilRenderTypes(EntityModel<? super T> model, PoseStack poseStack, RenderType renderType, MultiBufferSource bufferSource, int packedLight, boolean hasFoil) {
         VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferSource, renderType, false, hasFoil);
-        model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+        model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
     }
 
     public static void applyYZSpin(PoseStack poseStack, float rotation) {
@@ -163,44 +163,44 @@ public class NarakaRenderUtils {
     }
 
     public static void renderRhombus(PoseStack.Pose pose, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float width, float height, int alpha, int color) {
-        vertexConsumer.addVertex(pose, 0, height, 0)
-                .setUv(0, 1)
-                .setLight(packedLight)
-                .setOverlay(packedOverlay)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(FastColor.ARGB32.color(alpha, color));
-        vertexConsumer.addVertex(pose, -width, 0, 0)
-                .setUv(0, 0)
-                .setLight(packedLight)
-                .setOverlay(packedOverlay)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(FastColor.ARGB32.color(alpha, color));
-        vertexConsumer.addVertex(pose, 0, -height, 0)
-                .setUv(1, 0)
-                .setLight(packedLight)
-                .setOverlay(packedOverlay)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(FastColor.ARGB32.color(alpha, color));
-        vertexConsumer.addVertex(pose, width, 0, 0)
-                .setUv(1, 1)
-                .setLight(packedLight)
-                .setOverlay(packedOverlay)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(FastColor.ARGB32.color(alpha, color));
+        vertexConsumer.vertex(pose.pose(), 0, height, 0)
+                .uv(0, 1)
+                .uv2(packedLight)
+                .overlayCoords(packedOverlay)
+                .normal(pose.normal(), 0, 1, 0)
+                .color(Color.of(alpha, color));
+        vertexConsumer.vertex(pose.pose(), -width, 0, 0)
+                .uv(0, 0)
+                .uv2(packedLight)
+                .overlayCoords(packedOverlay)
+                .normal(pose.normal(), 0, 1, 0)
+                .color(Color.of(alpha, color));
+        vertexConsumer.vertex(pose.pose(), 0, -height, 0)
+                .uv(1, 0)
+                .uv2(packedLight)
+                .overlayCoords(packedOverlay)
+                .normal(pose.normal(), 0, 1, 0)
+                .color(Color.of(alpha, color));
+        vertexConsumer.vertex(pose.pose(), width, 0, 0)
+                .uv(1, 1)
+                .uv2(packedLight)
+                .overlayCoords(packedOverlay)
+                .normal(pose.normal(), 0, 1, 0)
+                .color(Color.of(alpha, color));
     }
 
     public static void renderRhombus(PoseStack.Pose pose, VertexConsumer vertexConsumer, float width, float height, int alpha, int color) {
-        vertexConsumer.addVertex(pose, 0, height, 0)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(FastColor.ARGB32.color(alpha, color));
-        vertexConsumer.addVertex(pose, -width, 0, 0)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(FastColor.ARGB32.color(alpha, color));
-        vertexConsumer.addVertex(pose, 0, -height, 0)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(FastColor.ARGB32.color(alpha, color));
-        vertexConsumer.addVertex(pose, width, 0, 0)
-                .setNormal(pose, 0, 1, 0)
-                .setColor(FastColor.ARGB32.color(alpha, color));
+        vertexConsumer.vertex(pose.pose(), 0, height, 0)
+                .normal(pose.normal(), 0, 1, 0)
+                .color(Color.of(alpha, color));
+        vertexConsumer.vertex(pose.pose(), -width, 0, 0)
+                .normal(pose.normal(), 0, 1, 0)
+                .color(Color.of(alpha, color));
+        vertexConsumer.vertex(pose.pose(), 0, -height, 0)
+                .normal(pose.normal(), 0, 1, 0)
+                .color(Color.of(alpha, color));
+        vertexConsumer.vertex(pose.pose(), width, 0, 0)
+                .normal(pose.normal(), 0, 1, 0)
+                .color(Color.of(alpha, color));
     }
 }

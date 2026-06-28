@@ -6,6 +6,7 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.renderer.entity.ShadowHerobrineRenderer;
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -25,10 +26,10 @@ public class ShadowHerobrineHeadLayer extends RenderLayer<ShadowHerobrine, Abstr
         if (livingEntity.isFinalModel())
             return;
         poseStack.pushPose();
-        int color = NarakaConfig.CLIENT.shadowHerobrineColor.getValue().pack();
+        Color color = NarakaConfig.CLIENT.shadowHerobrineColor.getValue();
         RenderType renderType = RenderType.entityCutout(NarakaTextures.SHADOW_HEROBRINE_HEAD);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-        getParentModel().renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color);
+        getParentModel().renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color.red01(), color.green01(), color.blue01(), color.alpha01());
         poseStack.popPose();
     }
 }

@@ -121,15 +121,15 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         float z = interval * zDirection;
         vertexConsumer.vertex(pose.pose(), -x, height, -z)
                 .normal(pose.normal(), 0, 1, 0)
-                .color(Color.combine(alpha, color));
+                .color(Color.of(alpha, color));
         vertexConsumer.vertex(pose.pose(), x - (width), 0, z)
                 .normal(pose.normal(), 0, 1, 0)
-                .color(Color.combine(alpha, color));
+                .color(Color.of(alpha, color));
         vertexConsumer.vertex(pose.pose(), x + (width), 0, z)
                 .normal(pose.normal(), 0, 1, 0)
-                .color(Color.combine(alpha, color));
+                .color(Color.of(alpha, color));
         vertexConsumer.vertex(pose.pose(), -x, height, -z)
                 .normal(pose.normal(), 0, 1, 0)
-                .color(Color.combine(alpha, color));
+                .color(Color.of(alpha, color));
     }
 }

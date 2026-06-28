@@ -14,6 +14,7 @@ import com.yummy.naraka.client.renderer.entity.state.WavingScarfRenderState;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfTexture;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import net.fabricmc.api.EnvType;
@@ -82,11 +83,11 @@ public class HerobrineScarfLayer<T extends AbstractHerobrine, M extends Abstract
 
         WavingScarfRenderState.ModelType modelType = selectModelType(livingEntity);
 
-        int color = selectColor(livingEntity);
+        Color color = selectColor(livingEntity);
         if (modelType != WavingScarfRenderState.ModelType.BIG) {
             RenderType renderType = RenderType.entitySmoothCutout(getFixedModelTexture(livingEntity));
             VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-            scarfModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color);
+            scarfModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color.red01(), color.green01(), color.blue01(), color.alpha01());
         }
 
         for (WavingScarfRenderState.ModelData modelData : modelType.modelData) {
@@ -102,15 +103,15 @@ public class HerobrineScarfLayer<T extends AbstractHerobrine, M extends Abstract
             poseStack.scale(-scale, -scale, scale);
             poseStack.translate(translation.x, translation.y, translation.z);
 
-            renderScarf(poseStack, insideRenderType, outsideRenderType, bufferSource, packedLight, color, partialTick, rotationDegree, waveData, modelData);
+            renderScarf(poseStack, insideRenderType, outsideRenderType, bufferSource, packedLight, color.pack(), partialTick, rotationDegree, waveData, modelData);
             poseStack.popPose();
         }
 
         poseStack.popPose();
     }
 
-    private int selectColor(T entity) {
-        return NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(entity.getAlpha()).pack();
+    private Color selectColor(T entity) {
+        return NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(entity.getAlpha());
     }
 
     public static void renderScarf(PoseStack poseStack, RenderType insideRenderType, RenderType outsideRenderType, MultiBufferSource bufferSource, int packedLight, int color, float partialTick, float rotationDegree, ScarfWavingData waveData, WavingScarfRenderState.ModelData modelData) {
