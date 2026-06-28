@@ -5,6 +5,7 @@
   "minVersion": "0.8",
   "client": [
     "client.BossHealthOverlayMixin",
+    "client.BufferBuilderMixin",
     "client.CameraMixin",
     "client.ClientHandshakePacketListenerImplMixin",
     "client.DripParticleMixin$DripHangParticleMixin",
@@ -25,8 +26,7 @@
     "client.MusicManagerMixin",
     "client.ScreenEffectRendererMixin",
     "client.SoundEngineMixin",
-    "client.SoundManagerMixin",
-    "client.VertexConsumerMixin"
+    "client.SoundManagerMixin"
   ],
   "mixins": [
     "ConcretePowderBlockMixin",

@@ -17,16 +17,19 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
     @Inject(method = "getTooltipLines", at = @At(value = "RETURN"))
-    public void addBlessedTooltip(Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir) {
+    public void addBlessedTooltip(@Nullable Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir) {
         List<Component> components = cir.getReturnValue();
-        Reinforcement reinforcement = Reinforcement.get(naraka$self(), player.level().registryAccess());
-        reinforcement.addToTooltip(components::add);
+        if (player != null) {
+            Reinforcement reinforcement = Reinforcement.get(naraka$self(), player.level().registryAccess());
+            reinforcement.addToTooltip(components::add);
+        }
 
         if (NarakaItemUtils.readNbtDataOrDefault(naraka$self(), "Blessed", Codec.BOOL, false))
             components.add(Component.translatable(LanguageKey.BLESSED_KEY).withStyle(ComponentStyles.RAINBOW_COLOR));
