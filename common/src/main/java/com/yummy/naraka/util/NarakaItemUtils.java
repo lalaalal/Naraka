@@ -52,6 +52,13 @@ public class NarakaItemUtils {
         }
     }
 
+    public static ItemStack makeUnbreakable(ItemStack itemStack) {
+        CompoundTag tag = itemStack.getOrCreateTag();
+        tag.putBoolean(NarakaItemUtils.TAG_UNBREAKABLE, true);
+
+        return itemStack;
+    }
+
     public static <T> T readNbtDataOrDefault(ItemStack itemStack, String key, Codec<T> codec, T defaultValue) {
         CompoundTag tag = itemStack.getOrCreateTag();
         return NarakaNbtUtils.readOr(tag, key, codec, defaultValue);

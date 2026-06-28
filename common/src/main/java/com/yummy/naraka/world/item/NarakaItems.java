@@ -46,9 +46,7 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> NARAKA_PICKAXE = registerItem(
             "naraka_pickaxe",
             NarakaPickaxeItem::new,
-            properties().component(DataComponents.UNBREAKABLE, new Unbreakable(true))
-                    .attributes(NarakaTiers.createWeaponAttributes(NarakaTiers.LONGINUS, 0, -2.4f).build())
-                    .rarity(Rarity.EPIC)
+            properties().rarity(Rarity.EPIC)
                     .fireResistant()
     );
 
