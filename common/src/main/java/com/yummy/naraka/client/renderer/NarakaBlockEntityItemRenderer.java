@@ -75,9 +75,8 @@ public class NarakaBlockEntityItemRenderer implements CustomRenderManager.Custom
                 NarakaBlocks.SOUL_STABILIZER.get().asItem(), soulStabilizerBlockEntity,
                 NarakaBlocks.SOUL_SMITHING_BLOCK.get().asItem(), soulSmithingBlockEntity
         );
-        RegistryAccess registries = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
         defaultDataByItem = Map.of(
-                NarakaBlocks.SOUL_STABILIZER.get().asItem(), soulStabilizerBlockEntity.getUpdateTag(registries)
+                NarakaBlocks.SOUL_STABILIZER.get().asItem(), soulStabilizerBlockEntity.getUpdateTag()
         );
         scales = Map.of(
                 NarakaBlocks.SOUL_STABILIZER.get().asItem(), 2.75f
