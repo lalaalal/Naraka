@@ -34,7 +34,6 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> LOCKED_HEALTH = registerItem("locked_health", Item::new);
 
     public static final HolderProxy<Item, Item> STIGMA_ROD = registerItem("stigma_rod", StigmaRodItem::new, properties().rarity(Rarity.EPIC));
-    public static final HolderProxy<Item, Item> STARDUST_STAFF = registerItem("stardust_staff", StardustStaffItem::new, properties().rarity(Rarity.EPIC));
     public static final HolderProxy<Item, Item> NARAKA_FIREBALL_STAFF = registerItem("naraka_fireball_staff", NarakaFireballStaffItem::new, properties().rarity(Rarity.EPIC));
 
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_1_DISC = registerDiscItem("herobrine_phase_1_disc", NarakaSoundEvents.HEROBRINE_PHASE_1.value(), 115);

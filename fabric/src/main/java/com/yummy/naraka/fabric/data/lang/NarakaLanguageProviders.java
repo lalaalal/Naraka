@@ -217,7 +217,6 @@ public class NarakaLanguageProviders {
         addPotion(Items.LINGERING_POTION, NarakaPotions.BLESS, "Lingering Potion of Bless", "잔류형 축복의 물약");
 
         addItem(NarakaItems.STIGMA_ROD, "Stigma Rod", "낙인 막대기");
-        addItem(NarakaItems.STARDUST_STAFF, "Stardust Staff");
         addItem(NarakaItems.NARAKA_FIREBALL_STAFF, "Naraka Fireball Staff");
         addItem(NarakaItems.RAINBOW_SWORD, "Rainbow Sword", "무지개 검");
         addItem(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard", "정화된 영혼 조각");
