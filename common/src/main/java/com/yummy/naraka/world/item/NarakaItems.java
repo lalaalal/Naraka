@@ -4,10 +4,12 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
+import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -35,10 +37,10 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> STARDUST_STAFF = registerItem("stardust_staff", StardustStaffItem::new, properties().rarity(Rarity.EPIC));
     public static final HolderProxy<Item, Item> NARAKA_FIREBALL_STAFF = registerItem("naraka_fireball_staff", NarakaFireballStaffItem::new, properties().rarity(Rarity.EPIC));
 
-    public static final HolderProxy<Item, Item> HEROBRINE_PHASE_1_DISC = registerDiscItem("herobrine_phase_1_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_1);
-    public static final HolderProxy<Item, Item> HEROBRINE_PHASE_2_DISC = registerDiscItem("herobrine_phase_2_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_2);
-    public static final HolderProxy<Item, Item> HEROBRINE_PHASE_3_DISC = registerDiscItem("herobrine_phase_3_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_3);
-    public static final HolderProxy<Item, Item> HEROBRINE_PHASE_4_DISC = registerDiscItem("herobrine_phase_4_disc", NarakaJukeboxSongs.HEROBRINE_PHASE_4);
+    public static final HolderProxy<Item, Item> HEROBRINE_PHASE_1_DISC = registerDiscItem("herobrine_phase_1_disc", NarakaSoundEvents.HEROBRINE_PHASE_1.value(), 115);
+    public static final HolderProxy<Item, Item> HEROBRINE_PHASE_2_DISC = registerDiscItem("herobrine_phase_2_disc", NarakaSoundEvents.HEROBRINE_PHASE_2.value(), 159);
+    public static final HolderProxy<Item, Item> HEROBRINE_PHASE_3_DISC = registerDiscItem("herobrine_phase_3_disc", NarakaSoundEvents.HEROBRINE_PHASE_3.value(), 200);
+    public static final HolderProxy<Item, Item> HEROBRINE_PHASE_4_DISC = registerDiscItem("herobrine_phase_4_disc", NarakaSoundEvents.HEROBRINE_PHASE_4.value(), 148);
 
     public static final HolderProxy<Item, Item> NARAKA_PICKAXE = registerItem(
             "naraka_pickaxe",
@@ -222,10 +224,9 @@ public class NarakaItems {
         return item;
     }
 
-    private static HolderProxy<Item, Item> registerDiscItem(String name, ResourceKey<JukeboxSong> song) {
-        return registerSimpleItem(name, properties -> properties.stacksTo(1)
-                .rarity(Rarity.RARE)
-                .jukeboxPlayable(song)
+    private static HolderProxy<Item, Item> registerDiscItem(String name, SoundEvent song, int lengthInSeconds) {
+        return registerItem(name, properties -> new RecordItem(12, song, properties.stacksTo(1)
+                .rarity(Rarity.RARE), lengthInSeconds)
         );
     }
 

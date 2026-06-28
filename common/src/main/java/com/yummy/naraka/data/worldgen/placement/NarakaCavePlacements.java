@@ -3,7 +3,7 @@ package com.yummy.naraka.data.worldgen.placement;
 import com.yummy.naraka.data.worldgen.features.NarakaCaveFeatures;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -14,7 +14,7 @@ public class NarakaCavePlacements {
     public static final ResourceKey<PlacedFeature> DIAMOND_ORE_PILLAR = NarakaPlacements.create("diamond_ore_pillar");
     public static final ResourceKey<PlacedFeature> DEEPSLATE_DIAMOND_ORE_PILLAR = NarakaPlacements.create("deepslate_diamond_ore_pillar");
 
-    public static void bootstrap(BootstrapContext<PlacedFeature> context) {
+    public static void bootstrap(BootstapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
 
         PlacementUtils.register(

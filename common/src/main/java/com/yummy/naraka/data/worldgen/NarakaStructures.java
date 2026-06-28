@@ -12,7 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
@@ -34,7 +34,7 @@ public class NarakaStructures {
 
     public static final BlockPos NARAKA_PLATFORM_OFFSET = new BlockPos(-25, 0, -25);
 
-    public static void bootstrap(BootstrapContext<Structure> context) {
+    public static void bootstrap(BootstapContext<Structure> context) {
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 
         HolderSet<Biome> herobrineSanctuaryBiomes = biomes.getOrThrow(ConventionalTags.Biomes.IS_PLAINS);

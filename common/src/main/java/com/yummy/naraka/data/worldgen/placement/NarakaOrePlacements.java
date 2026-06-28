@@ -3,7 +3,7 @@ package com.yummy.naraka.data.worldgen.placement;
 import com.yummy.naraka.data.worldgen.features.NarakaOreFeatures;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -20,7 +20,7 @@ public class NarakaOrePlacements {
     public static final ResourceKey<PlacedFeature> AMETHYST_ORE = NarakaPlacements.create("amethyst_ore");
 
 
-    protected static void bootstrap(BootstrapContext<PlacedFeature> context) {
+    protected static void bootstrap(BootstapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
 
         PlacementUtils.register(

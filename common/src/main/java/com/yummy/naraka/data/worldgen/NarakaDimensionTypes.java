@@ -2,7 +2,7 @@ package com.yummy.naraka.data.worldgen;
 
 import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -15,7 +15,7 @@ public class NarakaDimensionTypes {
     public static final ResourceKey<DimensionType> NARAKA = create("naraka");
     public static final ResourceLocation NARAKA_EFFECT = NARAKA.location();
 
-    public static void bootstrap(BootstrapContext<DimensionType> context) {
+    public static void bootstrap(BootstapContext<DimensionType> context) {
         context.register(NARAKA, new DimensionType(
                 OptionalLong.of(18000),
                 true,

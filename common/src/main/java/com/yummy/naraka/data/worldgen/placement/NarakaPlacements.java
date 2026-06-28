@@ -4,7 +4,7 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.data.worldgen.features.NarakaConfiguredFeatures;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -17,7 +17,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 public class NarakaPlacements {
     public static final ResourceKey<PlacedFeature> PURIFIED_SOUL_LANTERN = create("purified_soul_lantern");
 
-    public static void bootstrap(BootstrapContext<PlacedFeature> context) {
+    public static void bootstrap(BootstapContext<PlacedFeature> context) {
         NarakaOrePlacements.bootstrap(context);
         NarakaCavePlacements.bootstrap(context);
 

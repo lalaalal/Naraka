@@ -1,7 +1,7 @@
 package com.yummy.naraka.data.worldgen.features;
 
 import com.yummy.naraka.world.block.NarakaBlocks;
-import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
@@ -20,7 +20,7 @@ public class NarakaOreFeatures {
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> AMETHYST_ORE = NarakaConfiguredFeatures.create("amethyst_ore");
 
-    protected static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+    protected static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
         RuleTest stone = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
         RuleTest deepslate = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
         List<OreConfiguration.TargetBlockState> nectariumTargetStates = List.of(
