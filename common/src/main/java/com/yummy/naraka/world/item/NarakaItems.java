@@ -168,13 +168,12 @@ public class NarakaItems {
 
     public static final HolderProxy<Item, Item> HEROBRINE_SPAWN_EGG = registerItem("herobrine_spawn_egg", properties -> new SpawnEggItem(NarakaEntityTypes.HEROBRINE.get(), 0, 0xff0000, properties));
 
-    public static HolderProxy<Item, Item> registerPurifiedSoulArmorItem(String name, Holder<ArmorMaterial> armorMaterial, ArmorItem.Type armorType) {
+    public static HolderProxy<Item, Item> registerPurifiedSoulArmorItem(String name, ArmorMaterial armorMaterial, ArmorItem.Type armorType) {
         return registerItem(name, properties ->
-                new ArmorItem(
+                new PurifiedSoulArmorItem(
                         armorMaterial,
                         armorType,
                         properties.durability(1)
-                                .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
                 )
         );
     }

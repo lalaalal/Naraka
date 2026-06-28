@@ -20,6 +20,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class NarakaItemUtils {
+    public static final String TAG_UNBREAKABLE = "Unbreakable";
+
     /**
      * @return Get item attribute modifiers, item's default modifier if null or empty
      */
