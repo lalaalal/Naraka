@@ -110,19 +110,17 @@ public class NarakaItems {
     public static final HolderProxy<Item, SpearItem> SPEAR_ITEM = registerItem(
             "spear",
             properties -> new SpearItem(Tiers.IRON,
-                    true, 3, -3, 3,
-                    properties.fireResistant()
-                            .component(DataComponents.TOOL, TridentItem.createToolProperties()),
+                    true, 3, -3,
+                    properties.fireResistant(),
                     NarakaEntityTypes.THROWN_SPEAR
             )
     );
     public static final HolderProxy<Item, SpearItem> MIGHTY_HOLY_SPEAR_ITEM = registerItem(
             "mighty_holy_spear",
             properties -> new SpearItem(Tiers.NETHERITE,
-                    true, 7, -3, 3,
+                    true, 7, -3,
                     properties.fireResistant()
-                            .rarity(Rarity.RARE)
-                            .component(DataComponents.TOOL, TridentItem.createToolProperties()),
+                            .rarity(Rarity.RARE),
                     NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR
             )
     );
@@ -131,8 +129,6 @@ public class NarakaItems {
             properties -> new SpearOfLonginusItem(properties
                     .fireResistant()
                     .rarity(Rarity.EPIC)
-                    .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
-                    .component(DataComponents.TOOL, TridentItem.createToolProperties())
             )
     );
 

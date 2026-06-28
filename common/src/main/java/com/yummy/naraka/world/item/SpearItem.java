@@ -1,9 +1,9 @@
 package com.yummy.naraka.world.item;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.yummy.naraka.world.entity.Spear;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Position;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -11,23 +11,30 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.Supplier;
 
-public class SpearItem extends TieredItem implements ProjectileItem {
+public class SpearItem extends TieredItem {
     protected final Supplier<? extends EntityType<? extends Spear>> spearType;
     private final boolean enchantable;
+    private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
-    public SpearItem(Tier tier, boolean enchantable, float attackDamage, float attackSpeed, float interactionRange, Properties properties, Supplier<? extends EntityType<? extends Spear>> spearType) {
-        super(tier, NarakaTiers.applySpearProperties(properties, tier, attackDamage, attackSpeed, interactionRange));
+    public SpearItem(Tier tier, boolean enchantable, float attackDamage, float attackSpeed, Properties properties, Supplier<? extends EntityType<? extends Spear>> spearType) {
+        super(tier, properties);
         this.spearType = spearType;
         this.enchantable = enchantable;
+        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", attackDamage, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", attackSpeed, AttributeModifier.Operation.ADDITION));
+        this.defaultModifiers = builder.build();
     }
 
     @Override
@@ -41,13 +48,13 @@ public class SpearItem extends TieredItem implements ProjectileItem {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack, LivingEntity livingEntity) {
+    public int getUseDuration(ItemStack stack) {
         return 72000;
     }
 
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeCharged) {
-        if (getUseDuration(stack, livingEntity) - timeCharged >= TridentItem.THROW_THRESHOLD_TIME) {
+        if (getUseDuration(stack) - timeCharged >= TridentItem.THROW_THRESHOLD_TIME) {
             throwSpear(level, livingEntity, stack);
         }
     }
@@ -56,15 +63,15 @@ public class SpearItem extends TieredItem implements ProjectileItem {
         if (level.isClientSide())
             return;
         if (livingEntity instanceof Player player) {
-            stack.hurtAndBreak(1, player, livingEntity.getEquipmentSlotForItem(stack));
+            stack.hurtAndBreak(1, player, entity -> entity.broadcastBreakEvent(LivingEntity.getEquipmentSlotForItem(stack)));
             Spear spear = createSpear(level, player, stack);
             spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0, 2.5f, 1);
-            if (player.hasInfiniteMaterials())
+            if (player.isCreative())
                 spear.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 
             level.addFreshEntity(spear);
-            level.playSound(null, spear, SoundEvents.TRIDENT_THROW.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
-            if (!player.hasInfiniteMaterials())
+            level.playSound(null, spear, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
+            if (!player.isCreative())
                 player.getInventory().removeItem(stack);
         }
     }
@@ -80,19 +87,20 @@ public class SpearItem extends TieredItem implements ProjectileItem {
     }
 
     @Override
-    public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.hurtAndBreak(1, attacker, EquipmentSlot.MAINHAND);
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        stack.hurtAndBreak(1, attacker, entity -> entity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        return true;
     }
 
     @Override
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miningEntity) {
         if (state.getDestroySpeed(level, pos) != 0)
-            stack.hurtAndBreak(2, miningEntity, EquipmentSlot.MAINHAND);
+            stack.hurtAndBreak(2, miningEntity, entity -> entity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
         return true;
     }
 
     @Override
-    public Projectile asProjectile(Level level, Position position, ItemStack stack, Direction direction) {
-        return new Spear(spearType.get(), level, position, stack);
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
+        return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(slot);
     }
 }
