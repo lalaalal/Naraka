@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 public class NarakaPotions {
     public static final Holder<Potion> CHALLENGER = register("challenger", () -> new Potion(
             "challenger",
-                    new MobEffectInstance(NarakaMobEffects.GOD_BLESS, 3600, 255),
+            new MobEffectInstance(NarakaMobEffects.GOD_BLESS.value(), 3600, 255),
             new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3600),
             new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3600),
             new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 3600),
