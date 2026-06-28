@@ -253,8 +253,8 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
             float positionDelta = count / (float) tailUpdateCount;
             float tailDelta = NarakaUtils.interpolate((tickCount + positionDelta - 1.5f) / prepareDuration, 0, 1, NarakaUtils::fastStepIn);
             Vec3 tailPosition = basePosition.add(bezier.interpolate(tailDelta));
-            tailPositions.addFirst(tailPosition);
-            tailPositions.removeLast();
+            tailPositions.add(0, tailPosition);
+            tailPositions.remove(tailPositions.size() - 1);
         }
     }
 

@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -132,7 +133,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
                 .normalize();
         Vec3 currentMovement = getDeltaMovement();
         double currentSpeed = currentMovement.length();
-        double multiplier = Math.clamp(distanceTo(target) / 3, 0.2f, 1);
+        double multiplier = Mth.clamp(distanceTo(target) / 3, 0.2f, 1);
         double currentMovementScaler = Math.max(NarakaConfig.COMMON.narakaFireballDirectionUpdateInterval.getValue() - 1, 0);
         if (currentMovement.dot(direction) > 0) {
             direction = currentMovement.scale(currentMovementScaler)

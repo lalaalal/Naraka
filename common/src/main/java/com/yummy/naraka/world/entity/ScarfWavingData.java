@@ -56,18 +56,18 @@ public class ScarfWavingData {
         float verticalAngle = (float) Math.toRadians(verticalDegree);
 
         float verticalY = Mth.sin(verticalAngle) * 0.02f;
-        verticalPositions.removeLast();
-        verticalPositions.addFirst(verticalY + this.ySpeed);
+        verticalPositions.remove(verticalPositions.size() - 1);
+        verticalPositions.add(0, verticalY + this.ySpeed);
 
         float horizontalY = Mth.sin(verticalAngle) * 0.005f;
-        horizontalPositions.removeFirst();
-        horizontalPositions.addLast(horizontalY);
+        horizontalPositions.remove(0);
+        horizontalPositions.add(horizontalPositions.size() - 1, horizontalY);
 
-        float prevShift = verticalShifts.getFirst();
+        float prevShift = verticalShifts.get(0);
         rotationSpeed = Mth.clamp(rotationSpeed, -30, 30);
         float shift = Mth.lerp(0.2f, prevShift, (rotationSpeed / 180) * 0.075f);
-        verticalShifts.removeLast();
-        verticalShifts.addFirst(shift);
+        verticalShifts.remove(verticalShifts.size() - 1);
+        verticalShifts.add(0, shift);
     }
 
     public float getScarfRotationDegree(float partialTicks) {

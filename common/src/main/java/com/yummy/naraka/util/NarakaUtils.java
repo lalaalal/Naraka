@@ -12,6 +12,8 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
@@ -36,10 +38,10 @@ public class NarakaUtils {
         float middle = (start + end) * partition;
         if (delta < partition) {
             float newDelta = fastStepOut(delta * (1 / partition));
-            return Mth.lerp(Math.clamp(newDelta, 0, 1), start, middle);
+            return Mth.lerp(Mth.clamp(newDelta, 0, 1), start, middle);
         } else {
             float newDelta = fastStepIn((delta - partition) * (1 / (1 - partition)));
-            return Mth.lerp(Math.clamp(newDelta, 0, 1), middle, end);
+            return Mth.lerp(Mth.clamp(newDelta, 0, 1), middle, end);
         }
     }
 
@@ -73,15 +75,15 @@ public class NarakaUtils {
 
     public static float interpolate(float delta, float start, float end, Function<Float, Float> function) {
         float newDelta = function.apply(delta);
-        return Mth.lerp(Math.clamp(newDelta, 0, 1), start, end);
+        return Mth.lerp(Mth.clamp(newDelta, 0, 1), start, end);
     }
 
     public static Vec3 interpolateVec3(float delta, Vec3 start, Vec3 end, Function<Float, Float> function) {
         float newDelta = function.apply(delta);
         return new Vec3(
-                Mth.lerp(Math.clamp(newDelta, 0, 1), start.x, end.x),
-                Mth.lerp(Math.clamp(newDelta, 0, 1), start.y, end.y),
-                Mth.lerp(Math.clamp(newDelta, 0, 1), start.z, end.z)
+                Mth.lerp(Mth.clamp(newDelta, 0, 1), start.x, end.x),
+                Mth.lerp(Mth.clamp(newDelta, 0, 1), start.y, end.y),
+                Mth.lerp(Mth.clamp(newDelta, 0, 1), start.z, end.z)
         );
     }
 
@@ -139,13 +141,13 @@ public class NarakaUtils {
     }
 
     public static double wrapRadians(double angle) {
-        double result = angle % Math.TAU;
+        double result = angle % Math.PI * 2;
         if (result >= Math.PI) {
-            result -= Math.TAU;
+            result -= Math.PI * 2;
         }
 
         if (result < -Math.PI) {
-            result += Math.TAU;
+            result += Math.PI * 2;
         }
 
         return result;
@@ -261,10 +263,16 @@ public class NarakaUtils {
     }
 
     public static <T, U> void iterate(List<T> list1, List<U> list2, BiConsumer<T, U> consumer, boolean reversed) {
-        if (reversed)
-            iterate(list1.reversed(), list2.reversed(), consumer);
-        else
+
+        if (reversed) {
+            List<T> reversedList1 = new ArrayList<>(list1);
+            Collections.reverse(reversedList1);
+            List<U> reversedList2 = new ArrayList<>(list2);
+            Collections.reverse(reversedList2);
+            iterate(reversedList1, reversedList2, consumer);
+        } else {
             iterate(list1, list2, consumer);
+        }
     }
 
     public static Vec3 projection(Vec3 target, Vec3 base) {

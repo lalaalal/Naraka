@@ -10,7 +10,7 @@ public interface AfterimageEntity {
             addAfterimage(afterimage);
             return;
         }
-        Afterimage previous = getAfterimages().getLast();
+        Afterimage previous = getAfterimages().get(getAfterimages().size() - 1);
         for (int i = 1; i < count; i++) {
             float partialTick = 1f / count * i;
             addAfterimage(Afterimage.lerp(partialTick, previous, afterimage));

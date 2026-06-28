@@ -4,6 +4,7 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -33,7 +34,7 @@ public abstract class ComboSkill<T extends SkillUsingMob> extends AttackSkill<T>
 
     private boolean canCombo() {
         boolean checkDisabled = NarakaConfig.COMMON.breakComboWhenSkillDisabled.getValue();
-        boolean randomResult = mob.getRandom().nextFloat() < Math.clamp(linkChance + getBonusChance(), 0, 1);
+        boolean randomResult = mob.getRandom().nextFloat() < Mth.clamp(linkChance + getBonusChance(), 0, 1);
         if (checkDisabled)
             return randomResult && (comboSkill == null || comboSkill.isEnabled());
         return comboSkill != null && randomResult;

@@ -1,7 +1,7 @@
 import com.hypherionmc.modpublisher.properties.CurseEnvironment
 
 plugins {
-    id 'dev.architectury.loom' version '1.13-SNAPSHOT' apply false
+    id 'dev.architectury.loom' version '1.9-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
     id "com.hypherionmc.modutils.modpublisher" version "2.1.7"
@@ -70,12 +70,12 @@ subprojects {
         // If you remove this line, sources will not be generated.
         withSourcesJar()
 
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     tasks.withType(JavaCompile).configureEach {
-        it.options.release = 21
+        it.options.release = 17
     }
 
     ext.setupPublisher = {
@@ -91,8 +91,8 @@ subprojects {
             setChangelog(rootProject.projectDir.toPath().resolve("change.md").toFile())
             setVersion("$rootProject.mod_version")
             setProjectVersion("$rootProject.mod_version")
-            setJavaVersions(List.of(JavaVersion.VERSION_21))
-            setGameVersions("1.21", "1.21.1")
+            setJavaVersions(List.of(JavaVersion.VERSION_17))
+            setGameVersions("1.20.1")
             setDisplayName("${base.archivesName.get()}-${rootProject.mod_version}")
             setCurseEnvironment(CurseEnvironment.BOTH)
             setArtifact("build/libs/${base.archivesName.get()}-${rootProject.mod_version}.jar")

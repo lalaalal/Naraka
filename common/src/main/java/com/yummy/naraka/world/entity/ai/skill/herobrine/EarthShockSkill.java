@@ -166,7 +166,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
     private void spawnLightningBolts(ServerLevel level, int count, int maxRadius) {
         float y = NarakaUtils.findFloor(level, mob.blockPosition()).getY() + 1.1f;
         for (int i = 0; i < count; i++) {
-            double angle = mob.getRandom().nextFloat() * Math.TAU;
+            double angle = mob.getRandom().nextFloat() * Math.PI * 2;
             double x = Math.cos(angle) * maxRadius + mob.getX() + mob.getRandom().nextDouble();
             double z = Math.sin(angle) * maxRadius + mob.getZ() + mob.getRandom().nextDouble();
             ColoredLightningBolt lightningBolt = new ColoredLightningBolt(level, new Vec3(x, y, z), 0x669957db);

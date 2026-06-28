@@ -254,7 +254,7 @@ public abstract class SkillUsingMob extends PathfinderMob {
             if (animationLocations.isEmpty())
                 return EMPTY;
             if (animationLocations.size() == 1)
-                return simple(animationLocations.getFirst());
+                return simple(animationLocations.get(0));
             return random(random, animationLocations);
         }
 

@@ -52,7 +52,7 @@ public final class CreativeModeTabEvents {
         @Override
         public EntryModifier invoker() {
             if (listeners.size() == 1)
-                return listeners.getFirst();
+                return listeners.get(0);
             return entries -> {
                 for (EntryModifier listener : listeners)
                     listener.modify(entries);

@@ -1,15 +1,13 @@
 {
   "required": true,
   "package": "com.yummy.naraka.fabric.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [
-    "EffectInstanceMixin"
   ],
   "mixins": [
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "plugin": "com.yummy.naraka.fabric.mixin.NarakaMixinConfigPlugin"
+  }
 }

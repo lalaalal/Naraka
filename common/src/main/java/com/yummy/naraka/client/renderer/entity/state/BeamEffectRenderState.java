@@ -4,6 +4,7 @@ import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.BeamEffect;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
@@ -20,15 +21,15 @@ public class BeamEffectRenderState {
 
     public void update(float ageInTicks) {
         parts.clear();
-        double current = Math.clamp(ageInTicks - beamEffect.startTick(), 0, beamEffect.tickLength());
-        double tail = Math.clamp(ageInTicks - beamEffect.startTick() - beamEffect.beamLength(), 0, beamEffect.tickLength());
+        double current = Mth.clamp(ageInTicks - beamEffect.startTick(), 0, beamEffect.tickLength());
+        double tail = Mth.clamp(ageInTicks - beamEffect.startTick() - beamEffect.beamLength(), 0, beamEffect.tickLength());
 
-        double maxTheta = (current / beamEffect.tickLength()) * Math.TAU * beamEffect.stretch();
-        double minTheta = (tail / beamEffect.tickLength()) * Math.TAU * beamEffect.stretch();
+        double maxTheta = (current / beamEffect.tickLength()) * Math.PI * 2 * beamEffect.stretch();
+        double minTheta = (tail / beamEffect.tickLength()) * Math.PI * 2 * beamEffect.stretch();
 
         double actualBeamLength = maxTheta - minTheta;
         for (double theta = minTheta; theta <= maxTheta; theta += beamEffect.rotationInterval()) {
-            double delta = (theta - minTheta) / actualBeamLength * Math.TAU;
+            double delta = (theta - minTheta) / actualBeamLength * Math.PI * 2;
             float alpha = (float) (Math.cos(delta - Math.PI) + 1) / 2;
 
             Vec3 position = beamEffect.calculatePosition(theta);

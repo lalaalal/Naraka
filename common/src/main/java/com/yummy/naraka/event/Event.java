@@ -63,7 +63,7 @@ public abstract class Event<T> {
 
         public T invoker() {
             if (listeners.size() == 1)
-                return listeners.getFirst();
+                return listeners.get(0);
             return this.invoker;
         }
     }

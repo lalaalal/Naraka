@@ -57,12 +57,12 @@ public abstract class LightTailEntity extends AbstractHurtingProjectile {
 
     protected void updateTailPositions() {
         final int tailUpdateCount = entityData.get(TAIL_UPDATE_COUNT);
-        Vec3 prevPosition = tailPositions.getFirst();
+        Vec3 prevPosition = tailPositions.get(0);
         for (float count = 1; count <= tailUpdateCount; count++) {
             float tailDelta = Mth.lerp(count / (float) tailUpdateCount, 0, 1);
             Vec3 position = prevPosition.lerp(position(), tailDelta);
-            tailPositions.addFirst(position);
-            tailPositions.removeLast();
+            tailPositions.add(0, position);
+            tailPositions.remove(tailPositions.size() - 1);
         }
     }
 

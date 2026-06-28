@@ -31,7 +31,7 @@ public class LocationList extends ObjectSelectionList<LocationList.Entry> implem
                 .map(Entry::new)
                 .sorted(Comparator.comparing(entry -> entry.component.getString()))
                 .forEach(this::addEntry);
-        setSelected(children().getFirst());
+        setSelected(children().get(0));
     }
 
     @Override

@@ -68,13 +68,13 @@ public class NarakaSword extends MotionEntity {
 
         if (level().isClientSide() && tickCount > 10) {
             final int updateCount = getSwordEffectUpdateCount();
-            SwordEffectData prevData = swordEffectData.getFirst();
+            SwordEffectData prevData = swordEffectData.get(0);
             for (float count = 1; count <= updateCount; count++) {
                 float delta = count / (float) updateCount;
                 Vector3fc base = prevData.base().lerp(position().toVector3f(), delta, new Vector3f());
                 Quaternionfc rotation = prevData.rotation().slerp(getRotation(), delta, new Quaternionf());
-                swordEffectData.removeLast();
-                swordEffectData.addFirst(new SwordEffectData(base, DIRECTION, rotation, LENGTH, getScale()));
+                swordEffectData.remove(swordEffectData.size() - 1);
+                swordEffectData.add(0, new SwordEffectData(base, DIRECTION, rotation, LENGTH, getScale()));
             }
         }
     }

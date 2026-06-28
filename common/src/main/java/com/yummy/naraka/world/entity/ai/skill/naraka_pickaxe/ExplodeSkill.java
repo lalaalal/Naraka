@@ -72,7 +72,7 @@ public class ExplodeSkill extends AttackSkill<NarakaPickaxe> {
     private void sendCircleParticles(ServerLevel level, int count, double y, double ySpeed) {
         for (int i = 0; i < count; i++) {
             double distance = mob.getRandom().nextDouble() * 8;
-            double yRot = mob.getRandom().nextDouble() * Math.TAU;
+            double yRot = mob.getRandom().nextDouble() * Math.PI * 2;
             double x = Math.cos(yRot) * distance + mob.getX();
             double z = Math.sin(yRot) * distance + mob.getZ();
             double ySpeedMultiplier = mob.getRandom().nextDouble() * 0.5 + 0.5;

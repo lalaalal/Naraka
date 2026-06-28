@@ -29,7 +29,7 @@ public class ComponentStyles {
         public ColorTransforming(List<Color> colors, long transformTime) {
             this.colors = colors;
             this.transformTime = transformTime;
-            previousColor = colors.getFirst();
+            previousColor = colors.get(0);
             currentColor = previousColor;
         }
 
