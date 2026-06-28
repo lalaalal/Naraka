@@ -30,6 +30,7 @@
   ],
   "mixins": [
     "ConcretePowderBlockMixin",
+    "DiggerItemMixin",
     "EntityMixin",
     "FeatureMixin",
     "HerobrineTotemActivatingItemMixin",

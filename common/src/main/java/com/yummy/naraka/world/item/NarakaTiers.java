@@ -2,7 +2,6 @@ package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -16,7 +15,7 @@ import net.minecraft.world.level.block.Block;
 import java.util.function.Supplier;
 
 public class NarakaTiers implements Tier {
-    public static final NarakaTiers LONGINUS = new NarakaTiers(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, Integer.MAX_VALUE, 12, 65, 22, () -> Ingredient.EMPTY);
+    public static final NarakaTiers LONGINUS = new NarakaTiers(4, Integer.MAX_VALUE, 12, 65, 22, () -> Ingredient.EMPTY);
 
     public static final ResourceLocation ENTITY_INTERACTION_RANGE_ID = NarakaMod.location("entity_interaction_range");
     public static final ResourceLocation BLOCK_INTERACTION_RANGE_ID = NarakaMod.location("block_interaction_range");
@@ -53,15 +52,15 @@ public class NarakaTiers implements Tier {
                 );
     }
 
-    private final TagKey<Block> incorrectBlocksForDrops;
+    private final int tierLevel;
     private final int uses;
     private final float speed;
     private final float damage;
     private final int enchantmentValue;
     private final Supplier<Ingredient> repairIngredient;
 
-    private NarakaTiers(TagKey<Block> incorrectBlockForDrops, int uses, float speed, float damage, int enchantmentValue, Supplier<Ingredient> repairIngredient) {
-        this.incorrectBlocksForDrops = incorrectBlockForDrops;
+    private NarakaTiers(int tierLevel, int uses, float speed, float damage, int enchantmentValue, Supplier<Ingredient> repairIngredient) {
+        this.tierLevel = tierLevel;
         this.uses = uses;
         this.speed = speed;
         this.damage = damage;
@@ -79,6 +78,11 @@ public class NarakaTiers implements Tier {
 
     public float getAttackDamageBonus() {
         return this.damage;
+    }
+
+    @Override
+    public int getLevel() {
+        return tierLevel;
     }
 
     public TagKey<Block> getIncorrectBlocksForDrops() {
