@@ -9,7 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class NarakaCommands {
     private static final DynamicCommandExceptionType ERROR_NOT_LIVING_ENTITY = new DynamicCommandExceptionType(
-            object -> Component.translatableEscape("commands.attribute.failed.entity", object)
+            object -> Component.translatable("commands.attribute.failed.entity", object)
     );
 
     public static void initialize() {

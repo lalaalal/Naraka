@@ -2,9 +2,6 @@ package com.yummy.naraka.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.phys.Vec3;
 
 public record QuadraticBezier(Vec3 v1, Vec3 v2, Vec3 v3) {
@@ -15,17 +12,6 @@ public record QuadraticBezier(Vec3 v1, Vec3 v2, Vec3 v3) {
             Vec3.CODEC.fieldOf("v2").forGetter(QuadraticBezier::v2),
             Vec3.CODEC.fieldOf("v3").forGetter(QuadraticBezier::v3)
     ).apply(instance, QuadraticBezier::new));
-
-    private static final StreamCodec<ByteBuf, Vec3> VEC3_STREAM_CODEC = ByteBufCodecs.fromCodec(Vec3.CODEC);
-    public static final StreamCodec<ByteBuf, QuadraticBezier> STREAM_CODEC = StreamCodec.composite(
-            VEC3_STREAM_CODEC,
-            QuadraticBezier::v1,
-            VEC3_STREAM_CODEC,
-            QuadraticBezier::v2,
-            VEC3_STREAM_CODEC,
-            QuadraticBezier::v3,
-            QuadraticBezier::new
-    );
 
     public static QuadraticBezier fromZero(Vec3 v2, Vec3 v3) {
         return new QuadraticBezier(Vec3.ZERO, v2, v3);
