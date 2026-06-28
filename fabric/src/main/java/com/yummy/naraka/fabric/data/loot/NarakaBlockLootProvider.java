@@ -5,12 +5,10 @@ import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -23,13 +21,11 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
-import java.util.concurrent.CompletableFuture;
-
 public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
     private final LootItemCondition.Builder NECTARIUM_CRYSTAL_TOOLS = MatchTool.toolMatches(ItemPredicate.Builder.item().of(ItemTags.PICKAXES));
 
-    public NarakaBlockLootProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
-        super(dataOutput, registryLookup);
+    public NarakaBlockLootProvider(FabricDataOutput dataOutput) {
+        super(dataOutput);
     }
 
     @Override
@@ -61,15 +57,14 @@ public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
     }
 
     protected LootTable.Builder createNectariumCrystalDrops(Block block) {
-        HolderLookup.RegistryLookup<Enchantment> enchantments = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(block)
-                                .when(hasSilkTouch())
+                                .when(BlockLootSubProvider.HAS_SILK_TOUCH)
                                 .otherwise(
                                         LootItem.lootTableItem(NarakaItems.NECTARIUM.get())
                                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5)))
-                                                .apply(ApplyBonusCount.addUniformBonusCount(enchantments.getOrThrow(Enchantments.FORTUNE)))
+                                                .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE))
                                                 .when(NECTARIUM_CRYSTAL_TOOLS)
                                                 .otherwise(
                                                         LootItem.lootTableItem(NarakaItems.NECTARIUM.get())

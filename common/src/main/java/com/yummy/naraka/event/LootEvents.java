@@ -1,8 +1,7 @@
 package com.yummy.naraka.event;
 
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
 
 public final class LootEvents {
     public static final Event<ModifyLootTable> MODIFY_LOOT_TABLE = Event.create(listeners -> (key, context) -> {
@@ -12,7 +11,7 @@ public final class LootEvents {
 
     @FunctionalInterface
     public interface ModifyLootTable {
-        void modify(ResourceKey<LootTable> key, Context context);
+        void modify(ResourceLocation location, Context context);
     }
 
     @FunctionalInterface

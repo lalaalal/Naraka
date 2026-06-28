@@ -11,7 +11,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
+import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.minecraft.Util;
 import net.minecraft.world.level.ItemLike;
 
@@ -27,8 +27,8 @@ public final class FabricEventHandler {
         ServerTickEvents.START_SERVER_TICK.register(server -> ServerEvents.SERVER_TICK_PRE.invoker().run(server));
         ServerTickEvents.END_SERVER_TICK.register(server -> ServerEvents.SERVER_TICK_POST.invoker().run(server));
 
-        LootTableEvents.MODIFY.register((key, builder, lootTableSource, provider) -> {
-            LootEvents.MODIFY_LOOT_TABLE.invoker().modify(key, builder::withPool);
+        LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
+            LootEvents.MODIFY_LOOT_TABLE.invoker().modify(id, tableBuilder::withPool);
         });
     }
 

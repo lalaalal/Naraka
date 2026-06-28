@@ -22,7 +22,6 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
     protected void addTags(HolderLookup.Provider provider) {
         addTags(NarakaDamageTypes.STIGMA,
                 DamageTypeTags.BYPASSES_INVULNERABILITY,
-                DamageTypeTags.BYPASSES_WOLF_ARMOR,
                 DamageTypeTags.BYPASSES_ARMOR,
                 DamageTypeTags.BYPASSES_EFFECTS,
                 DamageTypeTags.BYPASSES_ENCHANTMENTS,
@@ -31,7 +30,6 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
                 DamageTypeTags.BYPASSES_COOLDOWN
         );
         addTags(NarakaDamageTypes.STIGMA_CONSUME,
-                DamageTypeTags.BYPASSES_WOLF_ARMOR,
                 DamageTypeTags.BYPASSES_ARMOR,
                 DamageTypeTags.BYPASSES_SHIELD,
                 DamageTypeTags.BYPASSES_COOLDOWN
@@ -43,7 +41,6 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
         );
         addTags(NarakaDamageTypes.SPEAR_OF_LONGINUS,
                 DamageTypeTags.BYPASSES_INVULNERABILITY,
-                DamageTypeTags.BYPASSES_WOLF_ARMOR,
                 DamageTypeTags.BYPASSES_ARMOR,
                 DamageTypeTags.BYPASSES_EFFECTS,
                 DamageTypeTags.BYPASSES_ENCHANTMENTS,
@@ -53,7 +50,6 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
         );
         addTags(NarakaDamageTypes.MOB_ATTACK_FIXED,
                 DamageTypeTags.BYPASSES_ARMOR,
-                DamageTypeTags.BYPASSES_WOLF_ARMOR,
                 DamageTypeTags.BYPASSES_EFFECTS,
                 DamageTypeTags.BYPASSES_RESISTANCE,
                 DamageTypeTags.BYPASSES_ENCHANTMENTS,
@@ -61,7 +57,6 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
         );
         addTags(NarakaDamageTypes.PROJECTILE_FIXED,
                 DamageTypeTags.BYPASSES_ARMOR,
-                DamageTypeTags.BYPASSES_WOLF_ARMOR,
                 DamageTypeTags.BYPASSES_EFFECTS,
                 DamageTypeTags.BYPASSES_RESISTANCE,
                 DamageTypeTags.BYPASSES_ENCHANTMENTS,
@@ -72,7 +67,6 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
                 DamageTypeTags.BYPASSES_EFFECTS,
                 DamageTypeTags.BYPASSES_RESISTANCE,
                 DamageTypeTags.BYPASSES_ARMOR,
-                DamageTypeTags.BYPASSES_WOLF_ARMOR,
                 DamageTypeTags.BYPASSES_ENCHANTMENTS
         );
 

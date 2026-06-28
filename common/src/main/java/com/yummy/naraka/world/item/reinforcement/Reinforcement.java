@@ -126,13 +126,6 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Reinforcement(int value1, HolderSet<ReinforcementEffect> effects1))) return false;
-        return value == value1 && Objects.equals(effects, effects1);
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(value, effects);
     }

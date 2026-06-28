@@ -10,7 +10,7 @@ import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,7 +18,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -72,8 +71,8 @@ public final class NarakaGameEvents {
         TickSchedule.tick(server.overworld());
     }
 
-    private static void modifyLootTable(ResourceKey<LootTable> key, LootEvents.Context context) {
-        if (key.location().getPath().contains("chests/village/village_cartographer")) {
+    private static void modifyLootTable(ResourceLocation location, LootEvents.Context context) {
+        if (location.getPath().contains("chests/village/village_cartographer")) {
             context.addPool(LootPool.lootPool()
                     .when(LootItemRandomChanceCondition.randomChance(0.8f))
                     .setRolls(ConstantValue.exactly(1))

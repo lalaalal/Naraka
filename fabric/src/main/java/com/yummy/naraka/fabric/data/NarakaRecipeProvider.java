@@ -1,20 +1,11 @@
 package com.yummy.naraka.fabric.data;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.core.component.BlessApplier;
-import com.yummy.naraka.core.component.DataComponentApplier;
-import com.yummy.naraka.core.component.NarakaDataComponentAppliers;
-import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentPredicate;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
-import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -23,18 +14,18 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 public class NarakaRecipeProvider extends FabricRecipeProvider {
     private static final List<ItemLike> NECTARIUM_SMELTABLES = List.of(NarakaBlocks.NECTARIUM_ORE.get(), NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
     private static final List<ItemLike> AMETHYST_SMELTABLES = List.of(NarakaBlocks.AMETHYST_ORE.get(), NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
 
-    protected NarakaRecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-        super(output, registriesFuture);
+    protected NarakaRecipeProvider(FabricDataOutput output) {
+        super(output);
     }
 
     @Override
-    public void buildRecipes(RecipeOutput output) {
+    public void buildRecipes(Consumer<FinishedRecipe> output) {
         nineBlockStorageRecipes(output, RecipeCategory.MISC, NarakaItems.NECTARIUM.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.NECTARIUM_BLOCK.get());
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, NarakaItems.SPEAR_ITEM.get())
                 .define('/', Items.STICK)
@@ -116,14 +107,6 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .pattern("##")
                 .unlockedBy(getHasName(Blocks.GLASS_PANE), has(Blocks.GLASS_PANE))
                 .save(output);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NarakaBlocks.SOUL_SMITHING_BLOCK.get())
-                .define('#', Items.HEAVY_CORE)
-                .define('B', Blocks.SMITHING_TABLE)
-                .pattern("##")
-                .pattern("BB")
-                .pattern("BB")
-                .unlockedBy(getHasName(Items.HEAVY_CORE), has(Items.HEAVY_CORE))
-                .save(output);
 
         soulInfusedMaterial(output, Items.REDSTONE, NarakaItems.SOUL_INFUSED_REDSTONE.get());
         soulInfusedMaterial(output, Items.COPPER_INGOT, NarakaItems.SOUL_INFUSED_COPPER.get());
@@ -133,27 +116,9 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
         soulInfusedMaterial(output, Items.LAPIS_LAZULI, NarakaItems.SOUL_INFUSED_LAPIS.get());
         soulInfusedMaterial(output, Items.AMETHYST_SHARD, NarakaItems.SOUL_INFUSED_AMETHYST.get());
         soulInfusedMaterial(output, NarakaItems.NECTARIUM.get(), NarakaItems.SOUL_INFUSED_NECTARIUM.get());
-
-        DataComponentPredicate blessedPredicate = DataComponentPredicate.builder()
-                .expect(NarakaDataComponentTypes.BLESSED.get(), true)
-                .build();
-        DataComponentApplier.Single<?> blessApplier = new DataComponentApplier.Single<>(NarakaDataComponentAppliers.BLESS.get(), BlessApplier.bless());
-        ComponentPredicateRecipeBuilder.predicate(RecipeCategory.COMBAT, NarakaItems.SPEAR_OF_LONGINUS_ITEM)
-                .requires(0, 0, NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get(), blessedPredicate, blessApplier)
-                .requires(0, 1, NarakaItems.SOUL_INFUSED_COPPER_SWORD.get(), blessedPredicate, blessApplier)
-                .requires(0, 2, NarakaItems.SOUL_INFUSED_GOLD_SWORD.get(), blessedPredicate, blessApplier)
-                .requires(1, 0, NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get(), blessedPredicate, blessApplier)
-                .requires(1, 1, NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), DataComponentPredicate.EMPTY)
-                .requires(1, 2, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get(), blessedPredicate, blessApplier)
-                .requires(2, 0, NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get(), blessedPredicate, blessApplier)
-                .requires(2, 1, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get(), blessedPredicate, blessApplier)
-                .requires(2, 2, NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get(), blessedPredicate, blessApplier)
-                .showNotification()
-                .unlockedBy(getHasName(NarakaItems.GOD_BLOOD.get()), has(NarakaItems.GOD_BLOOD.get()))
-                .save(output);
     }
 
-    protected void soulInfusedMaterial(RecipeOutput output, ItemLike material, ItemLike result) {
+    protected void soulInfusedMaterial(Consumer<FinishedRecipe> output, ItemLike material, ItemLike result) {
         Item purifiedSoulShard = NarakaItems.PURIFIED_SOUL_SHARD.get();
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, 8)
                 .define('P', purifiedSoulShard)
@@ -165,7 +130,7 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .save(output);
     }
 
-    protected void purifiedSoulArmor(RecipeOutput output, ItemLike base, Item result) {
+    protected void purifiedSoulArmor(Consumer<FinishedRecipe> output, ItemLike base, Item result) {
         smithing(
                 output,
                 NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(),
@@ -176,7 +141,7 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
         );
     }
 
-    protected void helmet(RecipeOutput output, ItemLike material, Item helmet) {
+    protected void helmet(Consumer<FinishedRecipe> output, ItemLike material, Item helmet) {
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, helmet)
                 .define('X', material)
                 .pattern("XXX")
@@ -185,7 +150,7 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .save(output);
     }
 
-    protected void chestplate(RecipeOutput output, ItemLike material, Item chestplate) {
+    protected void chestplate(Consumer<FinishedRecipe> output, ItemLike material, Item chestplate) {
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, chestplate)
                 .define('X', material)
                 .pattern("X X")
@@ -195,7 +160,7 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .save(output);
     }
 
-    protected void legging(RecipeOutput output, ItemLike material, Item legging) {
+    protected void legging(Consumer<FinishedRecipe> output, ItemLike material, Item legging) {
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, legging)
                 .define('X', material)
                 .pattern("XXX")
@@ -205,7 +170,7 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .save(output);
     }
 
-    protected void boots(RecipeOutput output, ItemLike material, Item boots) {
+    protected void boots(Consumer<FinishedRecipe> output, ItemLike material, Item boots) {
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, boots)
                 .define('X', material)
                 .pattern("X X")
@@ -226,7 +191,7 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
         return location(getItemName(item) + suffix);
     }
 
-    public void copySmithingTemplate(RecipeOutput output, ItemLike templateItem, ItemLike ingredient, ItemLike core) {
+    public void copySmithingTemplate(Consumer<FinishedRecipe> output, ItemLike templateItem, ItemLike ingredient, ItemLike core) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, templateItem, 2)
                 .define('#', ingredient)
                 .define('C', core)
@@ -238,7 +203,7 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .save(output);
     }
 
-    public void sword(RecipeOutput output, ItemLike material, ItemLike result) {
+    public void sword(Consumer<FinishedRecipe> output, ItemLike material, ItemLike result) {
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, result)
                 .define('/', Items.STICK)
                 .define('M', material)
@@ -249,14 +214,14 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .save(output);
     }
 
-    public void smithing(RecipeOutput output, ItemLike template, ItemLike base, ItemLike ingredient, RecipeCategory category, Item result) {
+    public void smithing(Consumer<FinishedRecipe> output, ItemLike template, ItemLike base, ItemLike ingredient, RecipeCategory category, Item result) {
         SmithingTransformRecipeBuilder.smithing(Ingredient.of(template), Ingredient.of(base), Ingredient.of(ingredient), category, result)
                 .unlocks(getHasName(ingredient), has(ingredient))
                 .save(output, location(result, "_smithing"));
     }
 
     public static void nineBlockStorageRecipes(
-            RecipeOutput recipeOutput,
+            Consumer<FinishedRecipe> recipeOutput,
             RecipeCategory unpackedCategory,
             ItemLike unpacked,
             RecipeCategory packedCategory,

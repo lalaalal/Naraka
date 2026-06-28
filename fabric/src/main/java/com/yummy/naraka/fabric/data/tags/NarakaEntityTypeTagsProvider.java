@@ -30,12 +30,10 @@ public class NarakaEntityTypeTagsProvider extends FabricTagProvider.EntityTypeTa
 
         getOrCreateTagBuilder(ConventionalTags.Entities.BOSSES)
                 .add(NarakaEntityTypes.HEROBRINE.get());
-        getOrCreateTagBuilder(EntityTypeTags.CAN_BREATHE_UNDER_WATER)
-                .add(NarakaEntityTypes.HEROBRINE.get());
         getOrCreateTagBuilder(EntityTypeTags.FALL_DAMAGE_IMMUNE)
                 .add(NarakaEntityTypes.HEROBRINE.get());
 
-        getOrCreateTagBuilder(EntityTypeTags.REDIRECTABLE_PROJECTILE)
+        getOrCreateTagBuilder(EntityTypeTags.IMPACT_PROJECTILES)
                 .add(NarakaEntityTypes.CORRUPTED_STAR.get())
                 .add(NarakaEntityTypes.NARAKA_FIREBALL.get());
 

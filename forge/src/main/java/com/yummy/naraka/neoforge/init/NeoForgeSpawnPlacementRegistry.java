@@ -1,6 +1,5 @@
 package com.yummy.naraka.neoforge.init;
 
-import com.yummy.naraka.init.SpawnPlacementRegistry;
 import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.neoforge.NarakaEventBus;
 import net.minecraft.world.entity.EntityType;

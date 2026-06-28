@@ -36,27 +36,10 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
                 .add(NarakaItems.SPEAR_ITEM.get())
                 .add(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get());
         getOrCreateTagBuilder(NarakaItemTags.LOYALTY_ENCHANTABLE)
-                .addTag(NarakaItemTags.SPEAR_ENCHANTABLE)
-                .forceAddTag(ItemTags.TRIDENT_ENCHANTABLE);
-
-        getOrCreateTagBuilder(ItemTags.DURABILITY_ENCHANTABLE)
-                .addTag(NarakaItemTags.SPEAR_ENCHANTABLE);
-        getOrCreateTagBuilder(ItemTags.VANISHING_ENCHANTABLE)
-                .addTag(NarakaItemTags.SPEAR_ENCHANTABLE);
-        getOrCreateTagBuilder(ItemTags.SHARP_WEAPON_ENCHANTABLE)
                 .addTag(NarakaItemTags.SPEAR_ENCHANTABLE);
 
         getOrCreateTagBuilder(ItemTags.COMPASSES)
                 .add(NarakaItems.SANCTUARY_COMPASS.get());
-
-        getOrCreateTagBuilder(ItemTags.HEAD_ARMOR_ENCHANTABLE)
-                .add(NarakaItems.PURIFIED_SOUL_HELMET.get());
-        getOrCreateTagBuilder(ItemTags.CHEST_ARMOR_ENCHANTABLE)
-                .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get());
-        getOrCreateTagBuilder(ItemTags.LEG_ARMOR_ENCHANTABLE)
-                .add(NarakaItems.PURIFIED_SOUL_LEGGINGS.get());
-        getOrCreateTagBuilder(ItemTags.FOOT_ARMOR_ENCHANTABLE)
-                .add(NarakaItems.PURIFIED_SOUL_BOOTS.get());
 
         getOrCreateTagBuilder(NarakaItemTags.ENTER_NARAKA_DIMENSION)
                 .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get())
@@ -83,14 +66,5 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
         getOrCreateTagBuilder(ItemTags.SWORDS)
                 .add(NarakaItems.NARAKA_PICKAXE.get())
                 .addTag(NarakaItemTags.SOUL_SWORDS);
-
-        getOrCreateTagBuilder(ItemTags.HEAD_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_HELMET.get());
-        getOrCreateTagBuilder(ItemTags.CHEST_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get());
-        getOrCreateTagBuilder(ItemTags.LEG_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_LEGGINGS.get());
-        getOrCreateTagBuilder(ItemTags.FOOT_ARMOR)
-                .add(NarakaItems.PURIFIED_SOUL_BOOTS.get());
     }
 }

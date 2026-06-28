@@ -18,15 +18,12 @@ import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-import net.minecraft.Util;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.JukeboxSong;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.armortrim.TrimMaterial;
 import net.minecraft.world.item.armortrim.TrimPattern;
@@ -35,7 +32,6 @@ import net.minecraft.world.level.block.Block;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -203,11 +199,6 @@ public class NarakaLanguageProviders {
                 List.of("Not eatable", "먹을 수 없잖아?!"),
                 List.of("Don't eat, give it to your soul", "먹지 마세요, 영혼에 양보하세요")
         );
-
-        addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_1, "Herobrine Phase 1", "히로빈 1 페이즈");
-        addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_2, "Herobrine Phase 2", "히로빈 2 페이즈");
-        addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_3, "Herobrine Phase 3", "히로빈 3 페이즈");
-        addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_4, "Herobrine Phase 4", "히로빈 4 페이즈");
 
         addPotion(Items.POTION, NarakaPotions.CHALLENGER, "Challenger's Potion", "도전자의 물약");
         addPotion(Items.SPLASH_POTION, NarakaPotions.CHALLENGER, "Challenger's Splash Potion", "도전자의 물약");
@@ -433,7 +424,7 @@ public class NarakaLanguageProviders {
     public void addProvidersTo(Consumer<FabricDataGenerator.Pack.RegistryDependentFactory<FabricLanguageProvider>> consumer) {
         for (int index = 0; index < languageCodes.length; index++) {
             final int languageCodeIndex = index;
-            consumer.accept(((output, registriesFuture) -> new LanguageProvider(output, languageCodeIndex, registriesFuture)));
+            consumer.accept(((output, registriesFuture) -> new LanguageProvider(output, languageCodeIndex)));
         }
     }
 
@@ -467,10 +458,6 @@ public class NarakaLanguageProviders {
         add(entityType.get().getDescriptionId(), translations);
     }
 
-    public void addJukeboxSound(ResourceKey<JukeboxSong> key, String... translations) {
-        add(Util.makeDescriptionId("jukebox_song", key.location()), translations);
-    }
-
     public void addTrimPattern(ResourceKey<TrimPattern> trimPattern, String... translations) {
         String key = trimPattern.location().toLanguageKey("trim_pattern");
         add(key, translations);
@@ -501,13 +488,13 @@ public class NarakaLanguageProviders {
     private class LanguageProvider extends FabricLanguageProvider {
         private final int languageCodeIndex;
 
-        protected LanguageProvider(FabricDataOutput dataOutput, int languageCodeIndex, CompletableFuture<HolderLookup.Provider> registryLookup) {
-            super(dataOutput, languageCodes[languageCodeIndex], registryLookup);
+        protected LanguageProvider(FabricDataOutput dataOutput, int languageCodeIndex) {
+            super(dataOutput, languageCodes[languageCodeIndex]);
             this.languageCodeIndex = languageCodeIndex;
         }
 
         @Override
-        public void generateTranslations(HolderLookup.Provider registryLookup, TranslationBuilder builder) {
+        public void generateTranslations(TranslationBuilder builder) {
             for (String key : translationMap.keySet())
                 builder.add(key, getTranslation(key));
         }

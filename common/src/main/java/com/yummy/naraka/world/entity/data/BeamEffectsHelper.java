@@ -52,14 +52,14 @@ public class BeamEffectsHelper {
 
     public static void addPullSet(Entity entity, int color) {
         List<BeamEffect> beamEffects = new ArrayList<>();
-        for (double yRot = 0; yRot < Math.TAU; yRot += Math.PI / 16)
+        for (double yRot = 0; yRot < Math.PI * 2; yRot += Math.PI / 16)
             beamEffects.add(BeamEffect.pull(entity.tickCount, BeamEffect.Speed.FAST, 2, yRot, color));
         BeamEffectsHelper.add(entity, beamEffects);
     }
 
     public static void addPushSet(Entity entity, int color) {
         List<BeamEffect> beamEffects = new ArrayList<>();
-        for (double yRot = 0; yRot < Math.TAU; yRot += Math.PI / 12)
+        for (double yRot = 0; yRot < Math.PI * 2; yRot += Math.PI / 12)
             beamEffects.add(BeamEffect.push(entity.tickCount, BeamEffect.Speed.NORMAL, 1, yRot, color));
         BeamEffectsHelper.add(entity, beamEffects);
     }

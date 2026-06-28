@@ -9,7 +9,6 @@ import com.yummy.naraka.world.item.NarakaItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.data.models.blockstates.*;
@@ -202,7 +201,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         ResourceLocation modelLocation = ModelLocationUtils.getModelLocation(armorItem);
         ResourceLocation texture = TextureMapping.getItemTexture(armorItem);
         ResourceLocation textureOverlay = TextureMapping.getItemTexture(armorItem, "_overlay");
-        if (armorItem.getMaterial().is(ArmorMaterials.LEATHER.unwrapKey().orElseThrow())) {
+        if (armorItem.getMaterial() == ArmorMaterials.LEATHER) {
             ModelTemplates.TWO_LAYERED_ITEM
                     .create(
                             modelLocation,
@@ -226,7 +225,7 @@ public class NarakaModelProvider extends FabricModelProvider {
             String armorName = armorItem.getType().getName();
             String trimmedArmorName = armorName + "_trim_" + materialName;
             ResourceLocation trimmedArmorModel = NarakaMod.mcLocation(trimmedArmorName).withPrefix("trims/items/");
-            if (armorItem.getMaterial().is(ArmorMaterials.LEATHER.unwrapKey().orElseThrow())) {
+            if (armorItem.getMaterial() == ArmorMaterials.LEATHER) {
                 generator.generateLayeredItem(trimMaterialModel, texture, textureOverlay, trimmedArmorModel);
             } else {
                 generator.generateLayeredItem(trimMaterialModel, texture, trimmedArmorModel);
@@ -234,7 +233,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         }
     }
 
-    public static JsonObject generateBaseArmorTrimTemplate(ItemModelGenerators generator, ResourceLocation modelLocation, Map<TextureSlot, ResourceLocation> modelGetter, Holder<ArmorMaterial> armorMaterial) {
+    public static JsonObject generateBaseArmorTrimTemplate(ItemModelGenerators generator, ResourceLocation modelLocation, Map<TextureSlot, ResourceLocation> modelGetter, ArmorMaterial armorMaterial) {
         JsonObject jsonObject = ModelTemplates.TWO_LAYERED_ITEM.createBaseTemplate(modelLocation, modelGetter);
         JsonArray overrides = new JsonArray();
 

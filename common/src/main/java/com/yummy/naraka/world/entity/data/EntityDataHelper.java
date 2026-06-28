@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import java.util.*;
 
 public class EntityDataHelper {
-    private static final Map<Containerkey, Map<UUID, EntityDataContainer>> LEVEL_ENTITY_DATA_MAP = new HashMap<>();
+    private static final Map<ContainerKey, Map<UUID, EntityDataContainer>> LEVEL_ENTITY_DATA_MAP = new HashMap<>();
     private static final Map<EntityDataType<?, ?>, List<DataChangeListener<?, ?>>> DATA_CHANGE_LISTENERS = new HashMap<>();
 
     public static void clear() {
@@ -19,7 +19,7 @@ public class EntityDataHelper {
     }
 
     private static Map<UUID, EntityDataContainer> getEntityDataMap(Level level) {
-        return LEVEL_ENTITY_DATA_MAP.computeIfAbsent(Containerkey.of(level), _level -> new HashMap<>());
+        return LEVEL_ENTITY_DATA_MAP.computeIfAbsent(ContainerKey.of(level), _level -> new HashMap<>());
     }
 
     public static <T, E extends Entity> void registerDataChangeListener(EntityDataType<T, E> entityDataType, DataChangeListener<T, E> listener) {
@@ -144,15 +144,15 @@ public class EntityDataHelper {
         void onChange(E entity, EntityDataType<T, E> entityDataType, T from, T to);
     }
 
-    private record Containerkey(ResourceKey<Level> dimension, boolean isClient) {
-        public static Containerkey of(Level level) {
-            return new Containerkey(level.dimension(), level.isClientSide());
+    private record ContainerKey(ResourceKey<Level> dimension, boolean isClient) {
+        public static ContainerKey of(Level level) {
+            return new ContainerKey(level.dimension(), level.isClientSide());
         }
 
         @Override
         public boolean equals(Object o) {
-            if (!(o instanceof Containerkey(ResourceKey<Level> _dimension, boolean client))) return false;
-            return isClient == client && dimension.equals(_dimension);
+            if (!(o instanceof ContainerKey containerKey)) return false;
+            return isClient == containerKey.isClient() && dimension.equals(containerKey.dimension());
         }
 
         @Override
