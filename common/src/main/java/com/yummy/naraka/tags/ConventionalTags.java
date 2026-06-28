@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.Block;
 public final class ConventionalTags {
     public static final class Blocks {
         public static final TagKey<Block> ORES = get("ores");
-        public static final TagKey<Block> NEEDS_NETHERITE_TOOL = get("needs_netherite_tool");
 
         public static TagKey<Block> get(String name) {
             return ConventionalTags.get(Registries.BLOCK, name);
@@ -37,6 +36,6 @@ public final class ConventionalTags {
     }
 
     public static <T> TagKey<T> get(ResourceKey<Registry<T>> registryKey, String name) {
-        return TagKey.create(registryKey, ResourceLocation.fromNamespaceAndPath("c", name));
+        return TagKey.create(registryKey, new ResourceLocation("c", name));
     }
 }
