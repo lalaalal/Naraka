@@ -50,11 +50,12 @@ public class NarakaStructures {
         context.register(
                 HEROBRINE_SANCTUARY,
                 new JumboStructure(
-                        new Structure.StructureSettings.Builder(herobrineSanctuaryBiomes)
-                                .spawnOverrides(herobrineSanctuarySpawnOverrides)
-                                .generationStep(GenerationStep.Decoration.STRONGHOLDS)
-                                .terrainAdapation(TerrainAdjustment.NONE)
-                                .build(),
+                        new Structure.StructureSettings(
+                                herobrineSanctuaryBiomes,
+                                herobrineSanctuarySpawnOverrides,
+                                GenerationStep.Decoration.STRONGHOLDS,
+                                TerrainAdjustment.NONE
+                        ),
                         "herobrine_sanctuary",
                         NarakaProtectionPredicates.HEROBRINE_SANCTUARY_PROTECTION,
                         NarakaStructureGenerationPointProviders.HEROBRINE_SANCTUARY,
@@ -71,10 +72,12 @@ public class NarakaStructures {
         context.register(
                 NARAKA_PLATFORM,
                 new JumboStructure(
-                        new Structure.StructureSettings.Builder(narakaPlatformBiomes)
-                                .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
-                                .terrainAdapation(TerrainAdjustment.NONE)
-                                .build(),
+                        new Structure.StructureSettings(
+                                narakaPlatformBiomes,
+                                Map.of(),
+                                GenerationStep.Decoration.SURFACE_STRUCTURES,
+                                TerrainAdjustment.NONE
+                        ),
                         "naraka_platform",
                         NarakaProtectionPredicates.NOTHING,
                         NarakaStructureGenerationPointProviders.NARAKA_PLATFORM,
