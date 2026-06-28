@@ -63,7 +63,7 @@ public class SoulSmithingBlock extends ForgingBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         ItemStack stack = player.getItemInHand(hand);
-        if (stack.is(Items.MACE))
+        if (stack.is(Items.NETHERITE_PICKAXE))
             return super.use(state, level, pos, player, hand, hitResult);
         if (blockEntity instanceof SoulSmithingBlockEntity soulSmithingBlockEntity) {
             if (isStabilizerSide(state, hitResult.getDirection())

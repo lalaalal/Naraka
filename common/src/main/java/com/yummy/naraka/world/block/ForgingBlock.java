@@ -25,7 +25,7 @@ public abstract class ForgingBlock extends BaseEntityBlock {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         ItemStack itemStack = player.getItemInHand(hand);
         if (blockEntity instanceof ForgingBlockEntity forgingBlockEntity) {
-            if (itemStack.is(Items.MACE)) {
+            if (itemStack.is(Items.NETHERITE_PICKAXE)) {
                 if (forgingBlockEntity.tryReinforce())
                     itemStack.hurtAndBreak(5, player, entity -> entity.broadcastBreakEvent(hand));
                 return InteractionResult.SUCCESS;

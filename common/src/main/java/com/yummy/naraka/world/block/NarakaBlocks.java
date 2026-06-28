@@ -3,17 +3,13 @@ package com.yummy.naraka.world.block;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.data.lang.LanguageKey;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -124,11 +120,6 @@ public class NarakaBlocks {
             SoulSmithingBlock::new,
             from(Blocks.SMITHING_TABLE),
             item().rarity(Rarity.EPIC)
-                    .component(DataComponents.LORE, new ItemLore(
-                            List.of(Component.translatable(
-                                    LanguageKey.blockTooltip("soul_smithing_block"))
-                            )
-                    ))
     );
 
     public static final HolderProxy<Block, Block> IMITATION_GOLD_BLOCK = registerBlockWithItem(
@@ -162,9 +153,6 @@ public class NarakaBlocks {
                     .requiresCorrectToolForDrops()
                     .lightLevel(HerobrineTotem::light),
             item().rarity(Rarity.EPIC)
-                    .component(DataComponents.LORE, new ItemLore(
-                            List.of(Component.translatable(LanguageKey.blockTooltip("herobrine_totem")))
-                    ))
     );
 
     public static final HolderProxy<Block, SoulStabilizer> SOUL_STABILIZER = registerBlockWithItem(

@@ -1,6 +1,6 @@
 package com.yummy.naraka.world.block.entity;
 
-import com.yummy.naraka.core.component.NarakaDataComponentTypes;
+import com.mojang.serialization.Codec;
 import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.util.NarakaNbtUtils;
@@ -12,14 +12,16 @@ import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Equipable;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SmithingTemplateItem;
 import net.minecraft.world.item.armortrim.ArmorTrim;
 import net.minecraft.world.item.armortrim.TrimMaterial;
 import net.minecraft.world.item.armortrim.TrimMaterials;
@@ -144,7 +146,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
     private boolean attachScarf() {
         if (forgingItem.getItem() instanceof Equipable equipable && equipable.getEquipmentSlot() == EquipmentSlot.CHEST) {
-            forgingItem.set(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), true);
+            NarakaItemUtils.storeNbtData(forgingItem, "HerobrineScarf", Codec.BOOL, true);
             return true;
         }
         return false;
@@ -154,15 +156,12 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         if (!forgingItem.is(NarakaItemTags.PURIFIED_SOUL_ARMOR) || level == null)
             return false;
         if (soulType == SoulType.GOD_BLOOD) {
-            forgingItem.set(NarakaDataComponentTypes.BLESSED.get(), true);
-            forgingItem.set(DataComponents.RARITY, Rarity.EPIC);
-        } else if (forgingItem.getRarity() != Rarity.EPIC) {
-            forgingItem.set(DataComponents.RARITY, Rarity.RARE);
+            NarakaItemUtils.storeNbtData(forgingItem, "Blessed", Codec.BOOL, true);
         }
 
         soulStabilizer.consumeSoul(requiredSoul);
-        while (Reinforcement.canReinforce(forgingItem))
-            Reinforcement.increase(forgingItem, NarakaReinforcementEffects.byItem(forgingItem));
+        while (Reinforcement.canReinforce(forgingItem, level.registryAccess()))
+            Reinforcement.increase(forgingItem, NarakaReinforcementEffects.byItem(forgingItem), level.registryAccess());
 
         level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
         cooldownTick = COOLDOWN;
