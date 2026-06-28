@@ -1,56 +1,12 @@
 package com.yummy.naraka.world.item;
 
-import com.yummy.naraka.NarakaMod;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.Block;
 
 import java.util.function.Supplier;
 
 public class NarakaTiers implements Tier {
     public static final NarakaTiers LONGINUS = new NarakaTiers(4, Integer.MAX_VALUE, 12, 65, 22, () -> Ingredient.EMPTY);
-
-    public static final ResourceLocation ENTITY_INTERACTION_RANGE_ID = NarakaMod.location("entity_interaction_range");
-    public static final ResourceLocation BLOCK_INTERACTION_RANGE_ID = NarakaMod.location("block_interaction_range");
-
-    public static Item.Properties applySpearProperties(Item.Properties properties, Tier base, float attackDamage, float attackSpeed, float interactionRange) {
-        return properties.attributes(createSpearAttributes(base, attackDamage, attackSpeed, interactionRange).build());
-    }
-
-    public static ItemAttributeModifiers.Builder createWeaponAttributes(Tier tier, float attackDamage, float attackSpeed) {
-        return ItemAttributeModifiers.builder()
-                .add(
-                        Attributes.ATTACK_DAMAGE,
-                        new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, attackDamage + tier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE),
-                        EquipmentSlotGroup.MAINHAND
-                )
-                .add(
-                        Attributes.ATTACK_SPEED,
-                        new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, attackSpeed, AttributeModifier.Operation.ADD_VALUE),
-                        EquipmentSlotGroup.MAINHAND
-                );
-    }
-
-    public static ItemAttributeModifiers.Builder createSpearAttributes(Tier tier, float attackDamage, float attackSpeed, float interactionRange) {
-        return createWeaponAttributes(tier, attackDamage, attackSpeed)
-                .add(
-                        Attributes.ENTITY_INTERACTION_RANGE,
-                        new AttributeModifier(ENTITY_INTERACTION_RANGE_ID, interactionRange, AttributeModifier.Operation.ADD_VALUE),
-                        EquipmentSlotGroup.MAINHAND
-                )
-                .add(
-                        Attributes.BLOCK_INTERACTION_RANGE,
-                        new AttributeModifier(BLOCK_INTERACTION_RANGE_ID, interactionRange, AttributeModifier.Operation.ADD_VALUE),
-                        EquipmentSlotGroup.MAINHAND
-                );
-    }
 
     private final int tierLevel;
     private final int uses;
@@ -83,10 +39,6 @@ public class NarakaTiers implements Tier {
     @Override
     public int getLevel() {
         return tierLevel;
-    }
-
-    public TagKey<Block> getIncorrectBlocksForDrops() {
-        return this.incorrectBlocksForDrops;
     }
 
     public int getEnchantmentValue() {

@@ -1,17 +1,18 @@
 package com.yummy.naraka.world.item;
 
+import com.mojang.serialization.Codec;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.Platform;
 import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.CreativeModeTabEvents;
+import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -157,24 +158,20 @@ public class NarakaCreativeModeTabs {
 
     private static ItemStack blessed(Item item) {
         ItemStack itemStack = new ItemStack(item);
-        itemStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
-        itemStack.set(DataComponents.RARITY, Rarity.EPIC);
-        itemStack.set(DataComponents.ITEM_NAME, Component.literal("Blessed ")
-                .append(Component.translatable(item.getDescriptionId())));
+        NarakaItemUtils.storeNbtData(itemStack, "Blessed", Codec.BOOL, true);
         return itemStack;
     }
 
     private static ItemStack reinforced(Item item) {
         ItemStack itemStack = blessed(item);
-        while (Reinforcement.canReinforce(itemStack))
-            Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack));
-        itemStack.set(DataComponents.ITEM_NAME, Component.literal("Reinforced ")
-                .append(Component.translatable(item.getDescriptionId())));
+        RegistryAccess registryAccess = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
+        while (Reinforcement.canReinforce(itemStack, registryAccess))
+            Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack), registryAccess);
         return itemStack;
     }
 
     private static ItemStack scarfAttached(ItemStack itemStack) {
-        itemStack.set(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), true);
+        NarakaItemUtils.storeNbtData(itemStack, "HerobrineScarf", Codec.BOOL, true);
         return itemStack;
     }
 
@@ -199,7 +196,7 @@ public class NarakaCreativeModeTabs {
     }
 
     private static void modifySpawnEggsTab(TabEntries entries) {
-        entries.addAfter(Blocks.TRIAL_SPAWNER, NarakaBlocks.HEROBRINE_TOTEM.get());
+        entries.addAfter(Blocks.SPAWNER, NarakaBlocks.HEROBRINE_TOTEM.get());
     }
 
     public interface TabEntries {
