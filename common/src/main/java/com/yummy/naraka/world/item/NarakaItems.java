@@ -1,20 +1,17 @@
 package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.Unbreakable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -200,10 +197,11 @@ public class NarakaItems {
     private static HolderProxy<Item, Item> registerSoulInfusedItem(SoulType type) {
         HolderProxy<Item, Item> item = registerItem(
                 SOUL_INFUSED_PREFIX + type.getSerializedName(),
-                properties -> new Item(properties
-                        .rarity(Rarity.UNCOMMON)
-                        .component(NarakaDataComponentTypes.SOUL.get(), type)
-                        .fireResistant()
+                properties -> new SoulInfusedItem(
+                        properties
+                                .rarity(Rarity.UNCOMMON)
+                                .fireResistant(),
+                        type
                 )
         );
         SOUL_INFUSED_ITEMS.add(item);
@@ -215,12 +213,7 @@ public class NarakaItems {
                 properties -> new SoulInfusedSwordItem(
                         Tiers.IRON,
                         properties.fireResistant()
-                                .rarity(Rarity.RARE)
-                                .component(NarakaDataComponentTypes.SOUL.get(), type)
-                                .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
-                                .component(DataComponents.ATTRIBUTE_MODIFIERS,
-                                        NarakaTiers.createWeaponAttributes(Tiers.IRON, 5, -2.4f).build()
-                                ),
+                                .rarity(Rarity.RARE),
                         type.color
                 )
         );

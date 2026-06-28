@@ -64,9 +64,10 @@ public class NarakaItemUtils {
         return NarakaNbtUtils.readOr(tag, key, codec, defaultValue);
     }
 
-    public static <T> void storeNbtData(ItemStack itemStack, String key, Codec<T> codec, T value) {
+    public static <T> ItemStack storeNbtData(ItemStack itemStack, String key, Codec<T> codec, T value) {
         CompoundTag tag = itemStack.getOrCreateTag();
         NarakaNbtUtils.store(tag, key, codec, value);
+        return itemStack;
     }
 
     public static void saveBlockEntity(ItemStack itemStack, BlockEntity blockEntity, HolderLookup.Provider provider) {
