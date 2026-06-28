@@ -6,15 +6,15 @@ import com.yummy.naraka.invoker.MethodInvoker;
 import com.yummy.naraka.neoforge.init.*;
 import com.yummy.naraka.world.NarakaBiomes;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Mod(NarakaMod.MOD_ID)
-public final class NarakaModNeoForge implements NarakaInitializer {
+public final class NarakaModForge implements NarakaInitializer {
     @Nullable
     private static IEventBus MOD_BUS;
 
@@ -26,7 +26,7 @@ public final class NarakaModNeoForge implements NarakaInitializer {
         return MOD_BUS;
     }
 
-    public NarakaModNeoForge(IEventBus bus) {
+    public NarakaModForge(IEventBus bus) {
         MOD_BUS = bus;
 
         MethodInvoker.register(NeoForgePlatform.class);
@@ -37,7 +37,6 @@ public final class NarakaModNeoForge implements NarakaInitializer {
         MethodInvoker.register(NeoForgeRegistryProxyProvider.class);
         MethodInvoker.register(NeoForgeSpawnPlacementRegistry.class);
         MethodInvoker.register(NeoForgeCommandRegistry.class);
-        MethodInvoker.register(NeoForgePotionBrewRecipeRegistry.class);
         MethodInvoker.register(NeoForgeEntityDataSerializerRegistry.class);
 
         NarakaMod.initialize(this);

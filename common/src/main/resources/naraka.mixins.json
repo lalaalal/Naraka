@@ -42,7 +42,8 @@
     "ServerPlayerGameModeMixin",
     "WanderingTraderMixin",
     "invoker.MangroveRootsBlockInvoker",
-    "invoker.MobEffectInvoker"
+    "invoker.MobEffectInvoker",
+    "invoker.PotionBrewingInvoker"
   ],
   "injectors": {
     "defaultRequire": 1
