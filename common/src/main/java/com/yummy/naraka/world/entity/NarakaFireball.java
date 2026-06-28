@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -89,6 +90,15 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         return entityData.get(TARGET_ID) != -1;
     }
 
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (source.getEntity() instanceof LivingEntity)
+            setTarget(null);
+        if (entityData.get(CAN_DEFLECT) || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+            return super.hurt(source, amount);
+        return false;
+    }
+
     public void setTarget(@Nullable Entity target) {
         this.cachedTarget = target;
         int targetId = target == null ? -1 : target.getId();
@@ -168,7 +178,6 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
                 listener.onHurtTarget(livingEntity, damage);
         }
     }
-
 
     protected DamageSource getDamageSource(@Nullable Entity owner) {
         if (entityData.get(FIXED_DAMAGE))
