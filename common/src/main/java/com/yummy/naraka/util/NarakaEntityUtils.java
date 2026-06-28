@@ -83,8 +83,8 @@ public class NarakaEntityUtils {
         if (livingEntity instanceof Player player && livingEntity.isBlocking()) {
             InteractionHand hand = player.getUsedItemHand();
             ItemStack usedItem = player.getItemInHand(hand);
-            EquipmentSlot slot = player.getEquipmentSlotForItem(usedItem);
-            usedItem.hurtAndBreak(damage, player, slot);
+            EquipmentSlot slot = LivingEntity.getEquipmentSlotForItem(usedItem);
+            usedItem.hurtAndBreak(damage, player, entity -> entity.broadcastBreakEvent(slot));
             player.getCooldowns().addCooldown(usedItem.getItem(), cooldown);
             player.stopUsingItem();
             player.level().broadcastEntityEvent(livingEntity, (byte) 30);

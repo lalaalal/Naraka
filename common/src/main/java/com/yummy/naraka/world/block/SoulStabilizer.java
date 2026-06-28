@@ -68,7 +68,7 @@ public class SoulStabilizer extends BaseEntityBlock {
         if (blockEntity instanceof SoulStabilizerBlockEntity soulStabilizerBlockEntity) {
             return super.getDrops(state, params)
                     .stream().peek(
-                            itemStack -> NarakaItemUtils.saveBlockEntity(itemStack, soulStabilizerBlockEntity, level.registryAccess())
+                            itemStack -> NarakaItemUtils.saveBlockEntity(itemStack, soulStabilizerBlockEntity)
                     ).toList();
         }
         return super.getDrops(state, params);

@@ -33,7 +33,9 @@ public abstract class ForgingBlockEntity extends BlockEntity {
     }
 
     public boolean canReinforce(ItemStack stack) {
-        return Reinforcement.canReinforce(stack);
+        if (level == null)
+            return false;
+        return Reinforcement.canReinforce(stack, level.registryAccess());
     }
 
     public void setForgingItem(ItemStack forgingItem) {
@@ -58,12 +60,12 @@ public abstract class ForgingBlockEntity extends BlockEntity {
     }
 
     public boolean tryReinforce() {
-        if (!Reinforcement.canReinforce(forgingItem)
-                || level == null || level.isClientSide()
+        if (level == null || level.isClientSide()
+                || !Reinforcement.canReinforce(forgingItem, level.registryAccess())
                 || cooldownTick > 0)
             return false;
         if (level.random.nextFloat() < successChance) {
-            if (Reinforcement.increase(forgingItem, NarakaReinforcementEffects.byItem(forgingItem)))
+            if (Reinforcement.increase(forgingItem, NarakaReinforcementEffects.byItem(forgingItem), level.registryAccess()))
                 level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
             setChanged();
         } else {

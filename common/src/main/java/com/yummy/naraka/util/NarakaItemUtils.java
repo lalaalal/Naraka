@@ -6,19 +6,22 @@ import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+import java.util.Objects;
+
 public class NarakaItemUtils {
     public static final String TAG_UNBREAKABLE = "Unbreakable";
+    public static final String TAG_BLOCK_DATA = "BlockData";
+    public static final String TAG_BLESSED = "Blessed";
+    public static final String TAG_HEROBRINE_SCARF = "HerobrineScarf";
 
     public static void summonItemEntity(Level level, ItemStack itemStack, BlockPos pos) {
         if (!level.isClientSide()) {
@@ -50,18 +53,19 @@ public class NarakaItemUtils {
         return itemStack;
     }
 
-    public static void saveBlockEntity(ItemStack itemStack, BlockEntity blockEntity, HolderLookup.Provider provider) {
-        itemStack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(blockEntity.saveWithFullMetadata(provider)));
+    public static void saveBlockEntity(ItemStack itemStack, BlockEntity blockEntity) {
+        blockEntity.saveToItem(itemStack);
     }
 
-    public static void loadBlockEntity(ItemStack itemStack, BlockEntity blockEntity, HolderLookup.Provider provider) {
-        CustomData customData = itemStack.getOrDefault(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(new CompoundTag()));
-        customData.loadInto(blockEntity, provider);
+    public static void loadBlockEntity(ItemStack itemStack, BlockEntity blockEntity) {
+        CompoundTag result = BlockItem.getBlockEntityData(itemStack);
+        if (result != null)
+            blockEntity.load(result);
     }
 
-    public static void loadBlockEntity(ItemStack itemStack, BlockEntity blockEntity, CompoundTag defaultValue, HolderLookup.Provider provider) {
-        CustomData customData = itemStack.getOrDefault(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(defaultValue));
-        customData.loadInto(blockEntity, provider);
+    public static void loadBlockEntity(ItemStack itemStack, BlockEntity blockEntity, CompoundTag defaultValue) {
+        CompoundTag result = BlockItem.getBlockEntityData(itemStack);
+        blockEntity.load(Objects.requireNonNullElse(result, defaultValue));
     }
 
     public static boolean canApplyReinforcementEffect(LivingEntity livingEntity, Holder<ReinforcementEffect> effect) {

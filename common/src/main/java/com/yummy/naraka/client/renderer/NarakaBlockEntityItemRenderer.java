@@ -11,8 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -59,7 +57,7 @@ public class NarakaBlockEntityItemRenderer implements CustomRenderManager.Custom
             float scale = scales.getOrDefault(item, 1f);
             poseStack.translate(translation.x, translation.y, translation.z);
             poseStack.scale(scale, scale, scale);
-            NarakaItemUtils.loadBlockEntity(stack, blockEntity, defaultData, RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY));
+            NarakaItemUtils.loadBlockEntity(stack, blockEntity, defaultData);
             blockEntityRenderDispatcher.renderItem(blockEntity, poseStack, bufferSource, light, overlay);
             poseStack.popPose();
         }

@@ -70,7 +70,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
     public boolean tryAttachSoulStabilizer(ItemStack stack) {
         if (level != null && !isStabilizerAttached && stack.is(NarakaBlocks.SOUL_STABILIZER.get().asItem())) {
-            NarakaItemUtils.loadBlockEntity(stack, soulStabilizer, level.registryAccess());
+            NarakaItemUtils.loadBlockEntity(stack, soulStabilizer);
             soulStabilizer.setLevel(level);
             isStabilizerAttached = true;
             setChanged();
@@ -82,7 +82,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     public void detachSoulStabilizer() {
         if (isStabilizerAttached && level != null) {
             ItemStack itemStack = new ItemStack(NarakaBlocks.SOUL_STABILIZER.get());
-            NarakaItemUtils.saveBlockEntity(itemStack, soulStabilizer, level.registryAccess());
+            NarakaItemUtils.saveBlockEntity(itemStack, soulStabilizer);
             NarakaItemUtils.summonItemEntity(level, itemStack, getBlockPos());
             soulStabilizer.clear();
             isStabilizerAttached = false;
