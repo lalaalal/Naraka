@@ -79,12 +79,11 @@ public class NarakaItems {
             "nectarium", properties -> properties.food(
                     new FoodProperties.Builder()
                             .nutrition(20)
-                            .saturationModifier(1f)
-                            .alwaysEdible()
+                            .saturationMod(1f)
+                            .alwaysEat()
                             .effect(new MobEffectInstance(MobEffects.HEAL, 1, 10), 1)
                             .build()
             )
-
     );
 
     public static final HolderProxy<Item, Item> GOD_BLOOD = registerSimpleItem(
@@ -151,7 +150,6 @@ public class NarakaItems {
                     Tiers.IRON,
                     -2, -2.4f,
                     properties.fireResistant()
-                            .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
             )
     );
 
