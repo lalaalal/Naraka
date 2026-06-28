@@ -2,6 +2,7 @@ package com.yummy.naraka.mixin.client;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.init.DimensionSkyRendererRegistry;
@@ -30,7 +31,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Environment(EnvType.CLIENT)
 @Mixin(LevelRenderer.class)
 public abstract class LevelRendererMixin {
-    @Shadow private @Nullable ClientLevel level;
+    @Shadow
+    private @Nullable ClientLevel level;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void prepareDimensionSkyRenderers(Minecraft minecraft, EntityRenderDispatcher entityRenderDispatcher, BlockEntityRenderDispatcher blockEntityRenderDispatcher, RenderBuffers renderBuffers, CallbackInfo ci) {
@@ -38,10 +40,10 @@ public abstract class LevelRendererMixin {
     }
 
     @ModifyVariable(method = "renderClouds", at = @At(value = "STORE"), ordinal = 4)
-    private static double speedUpClouds(double original) {
+    private static double speedUpClouds(double e) {
         if (naraka$isHerobrineSkyEnabled())
-            return original * NarakaConfig.CLIENT.herobrineSkyCloudSpeed.getValue();
-        return original;
+            return e * NarakaConfig.CLIENT.herobrineSkyCloudSpeed.getValue();
+        return e;
     }
 
     @ModifyExpressionValue(method = "renderClouds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getCloudColor(F)Lnet/minecraft/world/phys/Vec3;"))
@@ -68,7 +70,7 @@ public abstract class LevelRendererMixin {
     @Inject(method = "renderSky", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getStarBrightness(F)F"))
     private void renderEclipse(PoseStack poseStack, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo ci) {
         if (naraka$isHerobrineSkyEnabled()) {
-            NarakaSkyRenderer.renderEclipse(poseStack, tesselator, NarakaTextures.ECLIPSE);
+            NarakaSkyRenderer.renderEclipse(poseStack, Tesselator.getInstance(), NarakaTextures.ECLIPSE);
         }
     }
 
@@ -77,7 +79,7 @@ public abstract class LevelRendererMixin {
         if (level == null)
             return;
         DimensionSkyRendererRegistry.get(level.dimension())
-                .renderSky(level, frustumMatrix, projectionMatrix, partialTick, camera, isFoggy, skyFogSetup);
+                .renderSky(level, projectionMatrix, partialTick, camera, isFoggy, skyFogSetup);
     }
 
     @Unique
