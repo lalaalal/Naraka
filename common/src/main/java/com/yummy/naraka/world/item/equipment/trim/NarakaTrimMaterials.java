@@ -3,13 +3,11 @@ package com.yummy.naraka.world.item.equipment.trim;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.Util;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -29,7 +27,7 @@ public class NarakaTrimMaterials {
     public static final ResourceKey<TrimMaterial> SOUL_INFUSED_NECTARIUM = create("soul_infused_nectarium");
     public static final ResourceKey<TrimMaterial> GOD_BLOOD = create("god_blood");
 
-    public static void bootstrap(BootstrapContext<TrimMaterial> context) {
+    public static void bootstrap(BootstapContext<TrimMaterial> context) {
         register(context, TrimMaterials.QUARTZ, Items.QUARTZ, 14931140, 0.052f);
         register(context, TrimMaterials.IRON, Items.IRON_INGOT, 15527148, 0.104f, Map.of(ArmorMaterials.IRON, "iron_darker"));
         register(context, TrimMaterials.NETHERITE, Items.NETHERITE_INGOT, 6445145, 0.156f, Map.of(ArmorMaterials.NETHERITE, "netherite_darker"));
@@ -51,32 +49,32 @@ public class NarakaTrimMaterials {
         register(context, GOD_BLOOD, SoulType.GOD_BLOOD, 1.0f);
     }
 
-    private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimMaterialKey, SoulType type, float itemModelIndex) {
+    private static void register(BootstapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimMaterialKey, SoulType type, float itemModelIndex) {
         register(context, trimMaterialKey, type.getItem(), type.getColor(), itemModelIndex);
     }
 
-    private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimMaterialKey, Item item, int color, float itemModelIndex) {
+    private static void register(BootstapContext<TrimMaterial> context, ResourceKey<TrimMaterial> trimMaterialKey, Item item, int color, float itemModelIndex) {
         register(context, trimMaterialKey, item, Style.EMPTY.withColor(color), itemModelIndex, Map.of());
     }
 
     private static void register(
-            BootstrapContext<TrimMaterial> context,
+            BootstapContext<TrimMaterial> context,
             ResourceKey<TrimMaterial> trimMaterialKey,
             Item ingredient,
             int color,
             float itemModelIndex,
-            Map<Holder<ArmorMaterial>, String> overrides
+            Map<ArmorMaterials, String> overrides
     ) {
         register(context, trimMaterialKey, ingredient, Style.EMPTY.withColor(color), itemModelIndex, overrides);
     }
 
     private static void register(
-            BootstrapContext<TrimMaterial> context,
+            BootstapContext<TrimMaterial> context,
             ResourceKey<TrimMaterial> trimMaterialKey,
             Item ingredient,
             Style style,
             float itemModelIndex,
-            Map<Holder<ArmorMaterial>, String> overrides
+            Map<ArmorMaterials, String> overrides
     ) {
         TrimMaterial trimMaterial = TrimMaterial.create(
                 trimMaterialKey.location().getPath(),
