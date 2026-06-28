@@ -27,7 +27,7 @@ public class JumboPiece extends TemplateStructurePiece {
                 .setMirror(Mirror.NONE)
                 .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
                 .addProcessor(BlockIgnoreProcessor.AIR)
-                .setKeepLiquids(true);
+                .setKeepLiquids(false);
     }
 
     @Override

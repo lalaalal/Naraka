@@ -20,7 +20,7 @@ public final class ConventionalTags {
 
     public static final class Biomes {
         public static final TagKey<Biome> IS_OVERWORLD = get("is_overworld");
-        public static final TagKey<Biome> IS_PLAINS = get("is_plains");
+        public static final TagKey<Biome> IS_PLAINS = get("plains");
 
         public static TagKey<Biome> get(String name) {
             return ConventionalTags.get(Registries.BIOME, name);

@@ -2,6 +2,7 @@ package com.yummy.naraka.data.worldgen;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.tags.ConventionalTags;
+import com.yummy.naraka.tags.NarakaBiomeTags;
 import com.yummy.naraka.world.NarakaBiomes;
 import com.yummy.naraka.world.structure.JumboPart;
 import com.yummy.naraka.world.structure.JumboStructure;
@@ -37,7 +38,7 @@ public class NarakaStructures {
     public static void bootstrap(BootstapContext<Structure> context) {
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 
-        HolderSet<Biome> herobrineSanctuaryBiomes = biomes.getOrThrow(ConventionalTags.Biomes.IS_PLAINS);
+        HolderSet<Biome> herobrineSanctuaryBiomes = biomes.getOrThrow(NarakaBiomeTags.HEROBRINE_SANCTUARY_BIOMES);
         HolderSet<Biome> narakaPlatformBiomes = HolderSet.direct(biomes.getOrThrow(NarakaBiomes.HEROBRINE));
 
         Map<MobCategory, StructureSpawnOverride> herobrineSanctuarySpawnOverrides = Map.of(

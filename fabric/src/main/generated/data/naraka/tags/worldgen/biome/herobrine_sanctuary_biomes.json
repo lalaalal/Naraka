@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#c:is_plains",
+    "#c:plains",
     "minecraft:forest",
     "minecraft:birch_forest"
   ]
