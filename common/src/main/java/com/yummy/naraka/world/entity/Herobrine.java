@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.entity;
 
+import com.mojang.serialization.Codec;
 import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
@@ -11,10 +11,7 @@ import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.tags.ConventionalTags;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.tags.NarakaItemTags;
-import com.yummy.naraka.util.NarakaEntityUtils;
-import com.yummy.naraka.util.NarakaNbtUtils;
-import com.yummy.naraka.util.NarakaSkillUtils;
-import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.util.*;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.NarakaPortalBlock;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
@@ -742,11 +739,6 @@ public class Herobrine extends AbstractHerobrine {
         }
     }
 
-    @Override
-    public boolean canChangeDimensions() {
-        return false;
-    }
-
     public void shakeCamera() {
         NetworkManager.clientbound().send(bossEvent.getPlayers(), new NarakaClientboundEventPacket(
                 NarakaClientboundEventPacket.Event.SHAKE_CAMERA
@@ -835,7 +827,7 @@ public class Herobrine extends AbstractHerobrine {
                 }
             }
             ItemStack weaponStack = livingEntity.getMainHandItem();
-            weaponStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
+            NarakaItemUtils.storeNbtData(weaponStack, "Blessed", Codec.BOOL, true);
         });
     }
 
