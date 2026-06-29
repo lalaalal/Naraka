@@ -64,7 +64,7 @@ processResources {
 }
 
 sourceSets.main.resources {
-    srcDirs project(':fabric').file('src/main/generated'), 'src/main/generated.forge'
+    srcDirs project(':fabric').file('src/main/generated'), file('src/main/generated.forge')
 }
 
 shadowJar {

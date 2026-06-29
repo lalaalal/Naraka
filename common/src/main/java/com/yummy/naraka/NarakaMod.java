@@ -6,10 +6,7 @@ import com.yummy.naraka.client.init.NarakaClientInitializer;
 import com.yummy.naraka.commands.NarakaCommands;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
-import com.yummy.naraka.core.registries.NarakaRegistries;
-import com.yummy.naraka.core.registries.RegistryFactory;
-import com.yummy.naraka.core.registries.RegistryWriter;
-import com.yummy.naraka.core.registries.RegistryWriterProvider;
+import com.yummy.naraka.core.registries.*;
 import com.yummy.naraka.event.EventHandler;
 import com.yummy.naraka.event.NarakaGameEvents;
 import com.yummy.naraka.init.NarakaInitializer;
@@ -55,7 +52,7 @@ public final class NarakaMod {
     public static void initialize(NarakaInitializer initializer) {
         Platform.getInstance();
         EventHandler.prepare();
-        RegistryWriterProvider.initialize();
+        RegistryProxyProvider.initialize();
         NarakaConfig.initialize();
 
         RegistryFactory.initialize();
@@ -100,10 +97,10 @@ public final class NarakaMod {
         NarakaRootPlacerTypes.initialize();
 
         NarakaGameEvents.initialize();
-        NarakaNetworks.initialize();
         NarakaCommands.initialize();
 
-        RegistryWriterProvider.forEach(RegistryWriter::onRegistrationFinished);
+        initializer.runAfterRegistryLoaded(NarakaNetworks::initialize);
+        RegistryProxyProvider.forEach(RegistryWriter::onRegistrationFinished);
     }
 
     public static ResourceLocation mcLocation(String path) {

@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +23,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 public class NarakaItems {
@@ -156,8 +156,6 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_CHESTPLATE = registerPurifiedSoulArmorItem("purified_soul_chestplate", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.CHESTPLATE);
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_LEGGINGS = registerPurifiedSoulArmorItem("purified_soul_leggings", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.LEGGINGS);
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_BOOTS = registerPurifiedSoulArmorItem("purified_soul_boots", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.BOOTS);
-
-    public static final HolderProxy<Item, Item> HEROBRINE_SPAWN_EGG = registerItem("herobrine_spawn_egg", properties -> new SpawnEggItem(NarakaEntityTypes.HEROBRINE.get(), 0, 0xff0000, properties));
 
     public static HolderProxy<Item, Item> registerPurifiedSoulArmorItem(String name, ArmorMaterial armorMaterial, ArmorItem.Type armorType) {
         return registerItem(name, properties ->

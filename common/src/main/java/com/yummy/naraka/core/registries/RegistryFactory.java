@@ -20,9 +20,9 @@ public abstract class RegistryFactory {
         getInstance();
     }
 
-    public static <T> RegistryProxy<T> create(ResourceKey<Registry<T>> key) {
+    public static <T> RegistryReader<T> create(ResourceKey<Registry<T>> key) {
         return getInstance().createSimple(key);
     }
 
-    protected abstract <T> RegistryProxy<T> createSimple(ResourceKey<Registry<T>> key);
+    protected abstract <T> RegistryReader<T> createSimple(ResourceKey<Registry<T>> key);
 }

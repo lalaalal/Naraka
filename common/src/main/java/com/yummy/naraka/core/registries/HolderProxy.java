@@ -25,40 +25,57 @@ public class HolderProxy<T, V extends T> implements Holder<T>, Supplier<V> {
     @Nullable
     private Holder<T> holder;
     private final ResourceKey<T> key;
-    private final Supplier<V> valueSupplier;
     @Nullable
     private HolderOwner<T> owner;
 
-    public HolderProxy(Registry<T> registry, ResourceLocation name, Supplier<V> valueSupplier) {
+    public HolderProxy(Registry<T> registry, ResourceLocation name) {
         this.key = ResourceKey.create(registry.key(), name);
         this.owner = registry.holderOwner();
-        this.valueSupplier = valueSupplier;
     }
 
-    public HolderProxy(ResourceKey<T> key, Supplier<V> valueSupplier) {
+    public HolderProxy(ResourceKey<T> key) {
         this.key = key;
-        this.valueSupplier = valueSupplier;
     }
 
     protected void bind(boolean throwOnMissing) {
         if (holder != null)
             return;
-        Optional<Registry<T>> optionalRegistry = findRegistry(throwOnMissing);
-        if (optionalRegistry.isEmpty())
-            return;
-        optionalRegistry.ifPresent(registry -> owner = registry.holderOwner());
-        Optional<Reference<T>> found = findReference(optionalRegistry.get(), throwOnMissing);
+        Optional<Registry<T>> optionalRegistry = findRegistry();
+        optionalRegistry.ifPresentOrElse(registry -> bindFromRegistry(registry, throwOnMissing), () -> {
+            findRegistryReader(throwOnMissing).ifPresent(registryReader -> {
+                bindFromRegistryReader(registryReader, throwOnMissing);
+            });
+        });
+    }
+
+    private void bindFromRegistry(Registry<T> registry, boolean throwOnMissing) {
+        owner = registry.holderOwner();
+        Optional<Reference<T>> found = findReference(registry, throwOnMissing);
+        found.ifPresent(reference -> {
+            this.holder = reference;
+        });
+    }
+
+    private void bindFromRegistryReader(RegistryReader<T> registry, boolean throwOnMissing) {
+        registry.owner().ifPresent(owner -> this.owner = owner);
+        Optional<Reference<T>> found = registry.getHolder(key);
+        if (found.isEmpty() && throwOnMissing)
+            throw new IllegalStateException("No registry found for key " + key);
         found.ifPresent(reference -> {
             this.holder = reference;
         });
     }
 
     @SuppressWarnings("unchecked")
-    private Optional<Registry<T>> findRegistry(boolean throwOnMissing) {
-        Optional<Registry<T>> registry = (Optional<Registry<T>>) BuiltInRegistries.REGISTRY.getOptional(key.registry());
-        if (registry.isEmpty() && throwOnMissing)
-            throw new IllegalStateException(key.registry() + " does not exist");
-        return registry;
+    private Optional<Registry<T>> findRegistry() {
+        return (Optional<Registry<T>>) BuiltInRegistries.REGISTRY.getOptional(key.registry());
+    }
+
+    private Optional<RegistryReader<T>> findRegistryReader(boolean throwOnMissing) {
+        Optional<RegistryReader<T>> reader = RegistryProxyProvider.getInstance().getRegistryReader(ResourceKey.createRegistryKey(key.registry()));
+        if (reader.isEmpty() && throwOnMissing)
+            throw new IllegalStateException("No registry found for key " + key.registry());
+        return reader;
     }
 
     private Optional<Reference<T>> findReference(Registry<T> registry, boolean throwOnMissing) {
@@ -71,11 +88,7 @@ public class HolderProxy<T, V extends T> implements Holder<T>, Supplier<V> {
     @SuppressWarnings("unchecked")
     @Override
     public V get() {
-        if (holder == null)
-            bind(false);
-        if (holder == null)
-            return valueSupplier.get();
-        return (V) holder.value();
+        return (V) value();
     }
 
     @Override

@@ -12,13 +12,13 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 
 public class NarakaRegistries {
-    public static final RegistryProxy<StructurePieceFactory> STRUCTURE_PIECE_FACTORY = RegistryFactory.create(Keys.STRUCTURE_PIECE_FACTORY);
-    public static final RegistryProxy<StructureGenerationPointProvider> STRUCTURE_GENERATION_POINT_PROVIDER = RegistryFactory.create(Keys.STRUCTURE_GENERATION_POINT_PROVIDER);
-    public static final RegistryProxy<ProtectionPredicate> PROTECTION_PREDICATE = RegistryFactory.create(Keys.PROTECTION_PREDICATE);
-    public static final RegistryProxy<EntityDataType<?, ?>> ENTITY_DATA_TYPE = RegistryFactory.create(Keys.ENTITY_DATA_TYPE);
-    public static final RegistryProxy<ReinforcementEffect> REINFORCEMENT_EFFECT = RegistryFactory.create(Keys.REINFORCEMENT_EFFECT);
-    public static final RegistryProxy<EquipmentSet> EQUIPMENT_SET = RegistryFactory.create(Keys.EQUIPMENT_SET);
-    public static final RegistryProxy<ProgressOverlayExtensionType<?>> PROGRESS_OVERLAY_EXTENSION_TYPE = RegistryFactory.create(Keys.PROGRESS_OVERLAY_EXTENSION_TYPE);
+    public static final RegistryReader<StructurePieceFactory> STRUCTURE_PIECE_FACTORY = RegistryFactory.create(Keys.STRUCTURE_PIECE_FACTORY);
+    public static final RegistryReader<StructureGenerationPointProvider> STRUCTURE_GENERATION_POINT_PROVIDER = RegistryFactory.create(Keys.STRUCTURE_GENERATION_POINT_PROVIDER);
+    public static final RegistryReader<ProtectionPredicate> PROTECTION_PREDICATE = RegistryFactory.create(Keys.PROTECTION_PREDICATE);
+    public static final RegistryReader<EntityDataType<?, ?>> ENTITY_DATA_TYPE = RegistryFactory.create(Keys.ENTITY_DATA_TYPE);
+    public static final RegistryReader<ReinforcementEffect> REINFORCEMENT_EFFECT = RegistryFactory.create(Keys.REINFORCEMENT_EFFECT);
+    public static final RegistryReader<EquipmentSet> EQUIPMENT_SET = RegistryFactory.create(Keys.EQUIPMENT_SET);
+    public static final RegistryReader<ProgressOverlayExtensionType<?>> PROGRESS_OVERLAY_EXTENSION_TYPE = RegistryFactory.create(Keys.PROGRESS_OVERLAY_EXTENSION_TYPE);
 
 
     public static void initialize() {

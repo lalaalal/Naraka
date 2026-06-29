@@ -91,6 +91,7 @@ public final class ForgeNetworkManager implements NarakaEventBus {
         public <T extends CustomPacketPayload<T>> void define(CustomPacketPayload.Type<T> type) {
             INSTANCE.registerMessage(id++, type.classType(), type::encode, type::decode,
                     (msg, context) -> {
+                        context.get().setPacketHandled(true);
                     },
                     Optional.of(NetworkDirection.PLAY_TO_CLIENT)
             );

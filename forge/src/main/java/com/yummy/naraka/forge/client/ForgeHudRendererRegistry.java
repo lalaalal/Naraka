@@ -18,14 +18,14 @@ public final class ForgeHudRendererRegistry implements NarakaEventBus {
     @MethodProxy(HudRendererRegistry.class)
     public static void registerPreLayer(ResourceLocation id, Supplier<HudRenderer> factory) {
         NARAKA_BUS.addListener(EventPriority.NORMAL, false, RegisterGuiOverlaysEvent.class, event -> {
-            event.registerBelowAll(id.toString(), (gui, graphics, partialTick, screenWidth, screenHeight) -> factory.get().render(graphics, partialTick));
+            event.registerBelowAll(id.getPath(), (gui, graphics, partialTick, screenWidth, screenHeight) -> factory.get().render(graphics, partialTick));
         });
     }
 
     @MethodProxy(HudRendererRegistry.class)
     public static void registerPostLayer(ResourceLocation id, Supplier<HudRenderer> factory) {
         NARAKA_BUS.addListener(EventPriority.NORMAL, false, RegisterGuiOverlaysEvent.class, event -> {
-            event.registerAboveAll(id.toString(), (gui, graphics, partialTick, screenWidth, screenHeight) -> factory.get().render(graphics, partialTick));
+            event.registerAboveAll(id.getPath(), (gui, graphics, partialTick, screenWidth, screenHeight) -> factory.get().render(graphics, partialTick));
         });
     }
 }

@@ -41,7 +41,7 @@ public final class NarakaModClient {
         NarakaModelLayers.initialize();
         NarakaShaders.initialize();
         NarakaRenderTypes.initialize();
-        NarakaNetworks.initializeClient();
+        initializer.runAfterRegistryLoaded(NarakaNetworks::initializeClient);
 
         registerParticles();
 

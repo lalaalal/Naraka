@@ -28,7 +28,7 @@ public interface RegistryWriter<T> {
      * @see HolderProxy
      */
     static <T, V extends T> HolderProxy<T, V> register(ResourceKey<Registry<T>> key, String name, Supplier<V> value) {
-        return RegistryWriterProvider.get(key)
+        return RegistryProxyProvider.get(key)
                 .register(name, value);
     }
 
@@ -50,7 +50,7 @@ public interface RegistryWriter<T> {
     <V extends T> HolderProxy<T, V> register(String name, Supplier<V> value);
 
     default <V extends T> HolderProxy<T, V> createHolder(String name, Supplier<V> value) {
-        return new HolderProxy<>(getRegistryOrThrow(), NarakaMod.location(name), value);
+        return new HolderProxy<>(getRegistryOrThrow(), NarakaMod.location(name));
     }
 
     default void onRegistrationFinished() {
