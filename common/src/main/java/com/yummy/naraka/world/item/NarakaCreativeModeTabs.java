@@ -5,7 +5,7 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.Platform;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.registries.HolderProxy;
-import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryWriter;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.CreativeModeTabEvents;
 import com.yummy.naraka.util.NarakaItemUtils;
@@ -19,6 +19,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unused")
 public class NarakaCreativeModeTabs {
@@ -32,6 +33,7 @@ public class NarakaCreativeModeTabs {
             .icon(() -> NarakaItems.RAINBOW_SWORD.get().getDefaultInstance())
             .displayItems(NarakaCreativeModeTabs::createSoulMaterialsTab)
     );
+    @Nullable
     public static final HolderProxy<CreativeModeTab, CreativeModeTab> NARAKA_TEST_TAB = registerOnlyDev("naraka_test", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
             .title(Component.translatable(LanguageKey.ITEM_GROUP_TEST))
             .icon(() -> NarakaItems.NARAKA_FIREBALL_STAFF.get().getDefaultInstance())
@@ -39,13 +41,14 @@ public class NarakaCreativeModeTabs {
     );
 
     private static HolderProxy<CreativeModeTab, CreativeModeTab> register(String name, CreativeModeTab.Builder builder) {
-        return RegistryProxy.register(Registries.CREATIVE_MODE_TAB, name, builder::build);
+        return RegistryWriter.register(Registries.CREATIVE_MODE_TAB, name, builder::build);
     }
 
+    @Nullable
     private static HolderProxy<CreativeModeTab, CreativeModeTab> registerOnlyDev(String name, CreativeModeTab.Builder builder) {
         if (Platform.getInstance().isDevelopmentEnvironment() || NarakaConfig.COMMON.showTestCreativeModeTab.getValue())
-            return RegistryProxy.register(Registries.CREATIVE_MODE_TAB, name, builder::build);
-        return new HolderProxy<>(BuiltInRegistries.CREATIVE_MODE_TAB, NarakaMod.location(name));
+            return RegistryWriter.register(Registries.CREATIVE_MODE_TAB, name, builder::build);
+        return null;
     }
 
     public static void initialize() {

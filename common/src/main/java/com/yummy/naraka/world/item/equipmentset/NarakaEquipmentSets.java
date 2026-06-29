@@ -2,7 +2,7 @@ package com.yummy.naraka.world.item.equipmentset;
 
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.NarakaRegistries;
-import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryWriter;
 import net.minecraft.world.entity.LivingEntity;
 
 public class NarakaEquipmentSets {
@@ -12,11 +12,11 @@ public class NarakaEquipmentSets {
     );
 
     public static void updateAllSetEffects(LivingEntity livingEntity) {
-        NarakaRegistries.EQUIPMENT_SET.forEach(equipmentSet -> equipmentSet.updateEffect(livingEntity));
+        NarakaRegistries.EQUIPMENT_SET.values().forEach(equipmentSet -> equipmentSet.updateEffect(livingEntity));
     }
 
     private static HolderProxy<EquipmentSet, EquipmentSet> register(String name, EquipmentSet equipmentSet) {
-        return RegistryProxy.register(NarakaRegistries.Keys.EQUIPMENT_SET, name, () -> equipmentSet);
+        return RegistryWriter.register(NarakaRegistries.Keys.EQUIPMENT_SET, name, () -> equipmentSet);
     }
 
     public static void initialize() {

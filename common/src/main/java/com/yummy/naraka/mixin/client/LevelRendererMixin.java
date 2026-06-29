@@ -40,28 +40,28 @@ public abstract class LevelRendererMixin {
     }
 
     @ModifyVariable(method = "renderClouds", at = @At(value = "STORE"), ordinal = 4)
-    private static double speedUpClouds(double e) {
+    private double speedUpClouds(double e) {
         if (naraka$isHerobrineSkyEnabled())
             return e * NarakaConfig.CLIENT.herobrineSkyCloudSpeed.getValue();
         return e;
     }
 
     @ModifyExpressionValue(method = "renderClouds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getCloudColor(F)Lnet/minecraft/world/phys/Vec3;"))
-    private static Vec3 modifyCloudColor(Vec3 original) {
+    private Vec3 modifyCloudColor(Vec3 original) {
         if (naraka$isHerobrineSkyEnabled())
             return new Vec3(1, 1, 1);
         return original;
     }
 
     @ModifyExpressionValue(method = "renderSky", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getMoonPhase()I"))
-    private static int modifyMoonPhase(int original) {
+    private int modifyMoonPhase(int original) {
         if (naraka$isHerobrineSkyEnabled())
             return 4;
         return original;
     }
 
     @ModifyExpressionValue(method = "renderSky", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getStarBrightness(F)F"))
-    private static float modifyStarBrightness(float original) {
+    private float modifyStarBrightness(float original) {
         if (naraka$isHerobrineSkyEnabled())
             return 0;
         return original;

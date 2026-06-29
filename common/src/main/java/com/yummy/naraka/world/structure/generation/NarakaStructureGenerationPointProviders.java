@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.structure.generation;
 
 import com.yummy.naraka.core.registries.NarakaRegistries;
-import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryWriter;
 import net.minecraft.core.Holder;
 
 import java.util.Optional;
@@ -16,7 +16,7 @@ public class NarakaStructureGenerationPointProviders {
     );
 
     private static Holder<StructureGenerationPointProvider> register(String name, StructureGenerationPointProvider type) {
-        return RegistryProxy.register(NarakaRegistries.Keys.STRUCTURE_GENERATION_POINT_PROVIDER, name, () -> type);
+        return RegistryWriter.register(NarakaRegistries.Keys.STRUCTURE_GENERATION_POINT_PROVIDER, name, () -> type);
     }
 
     public static void initialize() {

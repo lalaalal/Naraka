@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.core.registries.HolderProxy;
-import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryWriter;
 import com.yummy.naraka.init.EntityAttributeRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
@@ -168,7 +168,7 @@ public class NarakaEntityTypes {
     );
 
     private static <T extends Entity> HolderProxy<EntityType<?>, EntityType<T>> register(String name, EntityType.Builder<T> builder) {
-        return RegistryProxy.register(Registries.ENTITY_TYPE, name, () -> builder.build(name));
+        return RegistryWriter.register(Registries.ENTITY_TYPE, name, () -> builder.build(name));
     }
 
     public static void initialize() {

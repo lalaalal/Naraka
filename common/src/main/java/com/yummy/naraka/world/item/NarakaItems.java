@@ -2,7 +2,7 @@ package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
-import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryWriter;
 import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 public class NarakaItems {
@@ -36,10 +37,10 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> STIGMA_ROD = registerItem("stigma_rod", StigmaRodItem::new, properties().rarity(Rarity.EPIC));
     public static final HolderProxy<Item, Item> NARAKA_FIREBALL_STAFF = registerItem("naraka_fireball_staff", NarakaFireballStaffItem::new, properties().rarity(Rarity.EPIC));
 
-    public static final HolderProxy<Item, Item> HEROBRINE_PHASE_1_DISC = registerDiscItem("herobrine_phase_1_disc", NarakaSoundEvents.HEROBRINE_PHASE_1.value(), 115);
-    public static final HolderProxy<Item, Item> HEROBRINE_PHASE_2_DISC = registerDiscItem("herobrine_phase_2_disc", NarakaSoundEvents.HEROBRINE_PHASE_2.value(), 159);
-    public static final HolderProxy<Item, Item> HEROBRINE_PHASE_3_DISC = registerDiscItem("herobrine_phase_3_disc", NarakaSoundEvents.HEROBRINE_PHASE_3.value(), 200);
-    public static final HolderProxy<Item, Item> HEROBRINE_PHASE_4_DISC = registerDiscItem("herobrine_phase_4_disc", NarakaSoundEvents.HEROBRINE_PHASE_4.value(), 148);
+    public static final HolderProxy<Item, Item> HEROBRINE_PHASE_1_DISC = registerDiscItem("herobrine_phase_1_disc", NarakaSoundEvents.HEROBRINE_PHASE_1, 115);
+    public static final HolderProxy<Item, Item> HEROBRINE_PHASE_2_DISC = registerDiscItem("herobrine_phase_2_disc", NarakaSoundEvents.HEROBRINE_PHASE_2, 159);
+    public static final HolderProxy<Item, Item> HEROBRINE_PHASE_3_DISC = registerDiscItem("herobrine_phase_3_disc", NarakaSoundEvents.HEROBRINE_PHASE_3, 200);
+    public static final HolderProxy<Item, Item> HEROBRINE_PHASE_4_DISC = registerDiscItem("herobrine_phase_4_disc", NarakaSoundEvents.HEROBRINE_PHASE_4, 148);
 
     public static final HolderProxy<Item, Item> NARAKA_PICKAXE = registerItem(
             "naraka_pickaxe",
@@ -223,8 +224,8 @@ public class NarakaItems {
         return item;
     }
 
-    private static HolderProxy<Item, Item> registerDiscItem(String name, SoundEvent song, int lengthInSeconds) {
-        return registerItem(name, properties -> new RecordItem(12, song, properties.stacksTo(1)
+    private static HolderProxy<Item, Item> registerDiscItem(String name, Holder<SoundEvent> song, int lengthInSeconds) {
+        return registerItem(name, properties -> new RecordItem(12, song.value(), properties.stacksTo(1)
                 .rarity(Rarity.RARE), lengthInSeconds)
         );
     }
@@ -238,7 +239,7 @@ public class NarakaItems {
     }
 
     private static <I extends Item> HolderProxy<Item, I> registerItem(String name, Function<Item.Properties, I> factory, Item.Properties properties) {
-        return RegistryProxy.register(Registries.ITEM, name, () -> factory.apply(properties));
+        return RegistryWriter.register(Registries.ITEM, name, () -> factory.apply(properties));
     }
 
     private static <I extends Item> HolderProxy<Item, I> registerItem(String name, Function<Item.Properties, I> factory) {

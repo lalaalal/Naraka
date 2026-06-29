@@ -1,7 +1,7 @@
 package com.yummy.naraka.sounds;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryWriter;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -29,7 +29,7 @@ public class NarakaSoundEvents {
 
     private static Holder<SoundEvent> register(String name) {
         ResourceLocation location = NarakaMod.location(name);
-        return RegistryProxy.register(Registries.SOUND_EVENT, name, () -> SoundEvent.createVariableRangeEvent(location));
+        return RegistryWriter.register(Registries.SOUND_EVENT, name, () -> SoundEvent.createVariableRangeEvent(location));
     }
 
     public static void initialize() {

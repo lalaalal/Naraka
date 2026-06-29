@@ -2,7 +2,7 @@ package com.yummy.naraka.world.item.reinforcement;
 
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.core.registries.NarakaRegistries;
-import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryWriter;
 import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.util.NarakaItemUtils;
 import net.minecraft.advancements.critereon.TagPredicate;
@@ -73,7 +73,7 @@ public class NarakaReinforcementEffects {
     );
 
     private static Holder<ReinforcementEffect> register(String name, ReinforcementEffect effect) {
-        return RegistryProxy.register(NarakaRegistries.Keys.REINFORCEMENT_EFFECT, name, () -> effect);
+        return RegistryWriter.register(NarakaRegistries.Keys.REINFORCEMENT_EFFECT, name, () -> effect);
     }
 
     private static final Map<Predicate<ItemStack>, List<Holder<ReinforcementEffect>>> ITEM_REINFORCEMENT_EFFECTS = new LinkedHashMap<>();

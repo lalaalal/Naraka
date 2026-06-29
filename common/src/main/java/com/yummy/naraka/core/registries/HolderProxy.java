@@ -25,20 +25,29 @@ public class HolderProxy<T, V extends T> implements Holder<T>, Supplier<V> {
     @Nullable
     private Holder<T> holder;
     private final ResourceKey<T> key;
-    private final HolderOwner<T> owner;
+    private final Supplier<V> valueSupplier;
+    @Nullable
+    private HolderOwner<T> owner;
 
-    public HolderProxy(Registry<T> registry, ResourceLocation name) {
+    public HolderProxy(Registry<T> registry, ResourceLocation name, Supplier<V> valueSupplier) {
         this.key = ResourceKey.create(registry.key(), name);
         this.owner = registry.holderOwner();
+        this.valueSupplier = valueSupplier;
+    }
+
+    public HolderProxy(ResourceKey<T> key, Supplier<V> valueSupplier) {
+        this.key = key;
+        this.valueSupplier = valueSupplier;
     }
 
     protected void bind(boolean throwOnMissing) {
         if (holder != null)
             return;
-        Optional<Registry<T>> registry = findRegistry(throwOnMissing);
-        if (registry.isEmpty())
+        Optional<Registry<T>> optionalRegistry = findRegistry(throwOnMissing);
+        if (optionalRegistry.isEmpty())
             return;
-        Optional<Reference<T>> found = findReference(registry.get(), throwOnMissing);
+        optionalRegistry.ifPresent(registry -> owner = registry.holderOwner());
+        Optional<Reference<T>> found = findReference(optionalRegistry.get(), throwOnMissing);
         found.ifPresent(reference -> {
             this.holder = reference;
         });
@@ -62,7 +71,11 @@ public class HolderProxy<T, V extends T> implements Holder<T>, Supplier<V> {
     @SuppressWarnings("unchecked")
     @Override
     public V get() {
-        return (V) value();
+        if (holder == null)
+            bind(false);
+        if (holder == null)
+            return valueSupplier.get();
+        return (V) holder.value();
     }
 
     @Override
@@ -125,6 +138,8 @@ public class HolderProxy<T, V extends T> implements Holder<T>, Supplier<V> {
 
     @Override
     public boolean canSerializeIn(HolderOwner<T> owner) {
+        if (this.owner == null)
+            return false;
         return this.owner.canSerializeIn(owner);
     }
 

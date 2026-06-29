@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#c:is_overworld",
+  "features": "naraka:amethyst_ore",
+  "step": "underground_ores"
+}

@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.structure;
 
 import com.yummy.naraka.core.registries.HolderProxy;
-import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryWriter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -12,7 +12,7 @@ public class NarakaStructureTypes {
     );
 
     private static <T extends Structure> HolderProxy<StructureType<?>, StructureType<T>> register(String name, StructureType<T> type) {
-        return RegistryProxy.register(Registries.STRUCTURE_TYPE, name, () -> type);
+        return RegistryWriter.register(Registries.STRUCTURE_TYPE, name, () -> type);
     }
 
     public static void initialize() {

@@ -1,7 +1,8 @@
 package com.yummy.naraka.world.item.alchemy;
 
 import com.yummy.naraka.core.registries.HolderProxy;
-import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryWriter;
+import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.init.PotionBrewRecipeRegistry;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import net.minecraft.core.Holder;
@@ -56,10 +57,12 @@ public class NarakaPotions {
     ));
 
     private static HolderProxy<Potion, Potion> register(String name, Supplier<Potion> potion) {
-        return RegistryProxy.register(Registries.POTION, name, potion);
+        return RegistryWriter.register(Registries.POTION, name, potion);
     }
 
-    public static void initialize() {
-        PotionBrewRecipeRegistry.register(NarakaPotionBrew::bootstrap);
+    public static void initialize(NarakaInitializer initializer) {
+        initializer.runAfterRegistryLoaded(() -> {
+            PotionBrewRecipeRegistry.register(NarakaPotionBrew::bootstrap);
+        });
     }
 }

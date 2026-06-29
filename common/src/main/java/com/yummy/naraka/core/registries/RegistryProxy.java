@@ -1,59 +1,40 @@
 package com.yummy.naraka.core.registries;
 
-import com.yummy.naraka.NarakaMod;
+import com.mojang.serialization.Codec;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Supplier;
+import java.util.Optional;
+import java.util.stream.Stream;
 
-/**
- * Proxy to delegate registration for fabric, neoforge
- *
- * @param <T> Registry value type
- * @see RegistryProxy#register(ResourceKey, String, Supplier)
- * @see HolderProxy
- */
 public interface RegistryProxy<T> {
-    /**
-     * Register value for given registry key
-     *
-     * @param key   Registry key
-     * @param name  Name of value
-     * @param value Supplier of value
-     * @param <T>   Registry value type
-     * @param <V>   Derived registry value type
-     * @return Holder for given value
-     * @see HolderProxy
-     */
-    static <T, V extends T> HolderProxy<T, V> register(ResourceKey<Registry<T>> key, String name, Supplier<V> value) {
-        return RegistryProxyProvider.get(key)
-                .register(name, value);
-    }
+    Codec<T> codec();
 
-    @SuppressWarnings("unchecked")
-    @Nullable
-    default Registry<T> getRegistry() {
-        return (Registry<T>) BuiltInRegistries.REGISTRY.get(getRegistryKey().location());
-    }
+    Optional<? extends Holder<T>> getHolder(ResourceKey<T> key);
 
-    default Registry<T> getRegistryOrThrow() {
-        Registry<T> registry = getRegistry();
-        if (registry == null)
-            throw new IllegalStateException("No registry found for " + getRegistryKey().location());
-        return registry;
-    }
+    Stream<T> values();
 
-    ResourceKey<? extends Registry<T>> getRegistryKey();
+    class Simple<T> implements RegistryProxy<T> {
+        private final Registry<T> registry;
 
-    <V extends T> HolderProxy<T, V> register(String name, Supplier<V> value);
+        public Simple(Registry<T> registry) {
+            this.registry = registry;
+        }
 
-    default <V extends T> HolderProxy<T, V> createHolder(String name) {
-        return new HolderProxy<>(getRegistryOrThrow(), NarakaMod.location(name));
-    }
+        @Override
+        public Codec<T> codec() {
+            return registry.byNameCodec();
+        }
 
-    default void onRegistrationFinished() {
+        @Override
+        public Optional<? extends Holder<T>> getHolder(ResourceKey<T> key) {
+            return registry.getHolder(key);
+        }
 
+        @Override
+        public Stream<T> values() {
+            return Stream.empty();
+        }
     }
 }

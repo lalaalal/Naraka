@@ -1,6 +1,6 @@
 package com.yummy.naraka.world.effect;
 
-import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryWriter;
 import com.yummy.naraka.mixin.invoker.MobEffectInvoker;
 import com.yummy.naraka.tags.NarakaMobEffectTags;
 import com.yummy.naraka.world.item.SoulType;
@@ -79,6 +79,6 @@ public class NarakaMobEffects {
     }
 
     private static Holder<MobEffect> register(String name, Supplier<MobEffect> effect) {
-        return RegistryProxy.register(Registries.MOB_EFFECT, name, effect);
+        return RegistryWriter.register(Registries.MOB_EFFECT, name, effect);
     }
 }

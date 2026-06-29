@@ -2,7 +2,7 @@ package com.yummy.naraka.world.block;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
-import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryWriter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -216,26 +216,26 @@ public class NarakaBlocks {
 
     private static <B extends Block> HolderProxy<Block, B> registerBlock(String name, Function<BlockBehaviour.Properties, ? extends B> function, Block propertyBase) {
         BlockBehaviour.Properties properties = BlockBehaviour.Properties.copy(propertyBase);
-        return RegistryProxy.register(Registries.BLOCK, name, () -> function.apply(properties));
+        return RegistryWriter.register(Registries.BLOCK, name, () -> function.apply(properties));
     }
 
     private static <B extends Block> HolderProxy<Block, B> registerBlock(String name, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties properties) {
-        return RegistryProxy.register(Registries.BLOCK, name, () -> function.apply(properties));
+        return RegistryWriter.register(Registries.BLOCK, name, () -> function.apply(properties));
     }
 
     private static <B extends Block> HolderProxy<Block, B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties blockProperties, Item.Properties itemProperties) {
-        HolderProxy<Block, B> block = RegistryProxy.register(Registries.BLOCK, name, () -> function.apply(blockProperties));
-        RegistryProxy.register(Registries.ITEM, name, () -> new BlockItem(block.get(), itemProperties));
+        HolderProxy<Block, B> block = RegistryWriter.register(Registries.BLOCK, name, () -> function.apply(blockProperties));
+        RegistryWriter.register(Registries.ITEM, name, () -> new BlockItem(block.get(), itemProperties));
         return block;
     }
 
     private static <B extends Block> HolderProxy<Block, B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, Supplier<Block> blockSupplier, Item.Properties itemProperties) {
-        HolderProxy<Block, B> block = RegistryProxy.register(Registries.BLOCK, name,
+        HolderProxy<Block, B> block = RegistryWriter.register(Registries.BLOCK, name,
                 () -> function.apply(
                         from(name, blockSupplier.get())
                 )
         );
-        RegistryProxy.register(Registries.ITEM, name, () -> new BlockItem(block.get(), itemProperties));
+        RegistryWriter.register(Registries.ITEM, name, () -> new BlockItem(block.get(), itemProperties));
         return block;
     }
 

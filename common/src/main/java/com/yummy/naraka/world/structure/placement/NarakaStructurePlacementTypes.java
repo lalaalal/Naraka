@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.structure.placement;
 
 import com.yummy.naraka.core.registries.HolderProxy;
-import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryWriter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
@@ -18,7 +18,7 @@ public class NarakaStructurePlacementTypes {
     );
 
     private static <T extends StructurePlacement> HolderProxy<StructurePlacementType<?>, StructurePlacementType<T>> register(String name, StructurePlacementType<T> type) {
-        return RegistryProxy.register(Registries.STRUCTURE_PLACEMENT, name, () -> type);
+        return RegistryWriter.register(Registries.STRUCTURE_PLACEMENT, name, () -> type);
     }
 
     public static void initialize() {

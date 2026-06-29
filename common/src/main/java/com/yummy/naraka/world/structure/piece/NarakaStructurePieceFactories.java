@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.structure.piece;
 
 import com.yummy.naraka.core.registries.NarakaRegistries;
-import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryWriter;
 import net.minecraft.core.Holder;
 
 public class NarakaStructurePieceFactories {
@@ -11,7 +11,7 @@ public class NarakaStructurePieceFactories {
     );
 
     private static Holder<StructurePieceFactory> register(String name, StructurePieceFactory factory) {
-        return RegistryProxy.register(NarakaRegistries.Keys.STRUCTURE_PIECE_FACTORY, name, () -> factory);
+        return RegistryWriter.register(NarakaRegistries.Keys.STRUCTURE_PIECE_FACTORY, name, () -> factory);
     }
 
     public static void initialize() {
