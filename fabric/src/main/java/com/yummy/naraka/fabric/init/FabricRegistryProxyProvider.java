@@ -3,23 +3,23 @@ package com.yummy.naraka.fabric.init;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryWriter;
-import com.yummy.naraka.core.registries.RegistryWriterProvider;
+import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.invoker.MethodProxy;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 
 import java.util.function.Supplier;
 
-public final class FabricRegistryWriterProvider extends RegistryWriterProvider {
-    private static final FabricRegistryWriterProvider INSTANCE = new FabricRegistryWriterProvider();
+public final class FabricRegistryProxyProvider extends RegistryProxyProvider {
+    private static final FabricRegistryProxyProvider INSTANCE = new FabricRegistryProxyProvider();
 
     @SuppressWarnings("unused")
-    @MethodProxy(RegistryWriterProvider.class)
-    public static RegistryWriterProvider getInstance() {
+    @MethodProxy(RegistryProxyProvider.class)
+    public static RegistryProxyProvider getInstance() {
         return INSTANCE;
     }
 
-    private FabricRegistryWriterProvider() {
+    private FabricRegistryProxyProvider() {
 
     }
 

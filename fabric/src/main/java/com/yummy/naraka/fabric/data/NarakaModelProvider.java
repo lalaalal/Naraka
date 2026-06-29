@@ -174,7 +174,6 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SHARD.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.PURIFIED_SOUL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         generator.generateFlatItem(NarakaItems.RAINBOW_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-        generator.generateFlatItem(NarakaItems.HEROBRINE_SPAWN_EGG.get(), SPAWN_EGG);
         generator.generateFlatItem(NarakaItems.HEROBRINE_SCARF.get(), ModelTemplates.FLAT_ITEM);
 
         for (Item item : armorItems) {

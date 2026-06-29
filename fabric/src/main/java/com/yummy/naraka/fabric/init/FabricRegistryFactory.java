@@ -1,7 +1,7 @@
 package com.yummy.naraka.fabric.init;
 
 import com.yummy.naraka.core.registries.RegistryFactory;
-import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.core.registries.RegistryReader;
 import com.yummy.naraka.invoker.MethodProxy;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
@@ -22,8 +22,8 @@ public final class FabricRegistryFactory extends RegistryFactory {
     }
 
     @Override
-    public <T> RegistryProxy<T> createSimple(ResourceKey<Registry<T>> key) {
-        return new RegistryProxy.Simple<>(FabricRegistryBuilder.createSimple(key)
+    public <T> RegistryReader<T> createSimple(ResourceKey<Registry<T>> key) {
+        return new RegistryReader.Simple<>(FabricRegistryBuilder.createSimple(key)
                 .attribute(RegistryAttribute.SYNCED)
                 .buildAndRegister()
         );
