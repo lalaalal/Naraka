@@ -1,7 +1,5 @@
 package com.yummy.naraka.mixin.client;
 
-import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaTextures;
@@ -51,14 +49,26 @@ public abstract class HiddenOreRendererMixin {
     @Nullable
     private PostChain entityEffect;
 
+    @Unique
+    private boolean naraka$outlineUsed = false;
 
     @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;entitiesForRendering()Ljava/lang/Iterable;"))
-    protected void renderHiddenOres(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo ci, @Local(ordinal = 3) LocalBooleanRef localRef) {
-        if (minecraft.player == null || entityEffect == null || !NarakaItemUtils.canApplyOreSeeThrough(minecraft.player) || NarakaConfig.CLIENT.disableOreSeeThrough.getValue())
+    protected void renderHiddenOres(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo ci) {
+        if (minecraft.player == null || entityEffect == null || !NarakaItemUtils.canApplyOreSeeThrough(minecraft.player) || NarakaConfig.CLIENT.disableOreSeeThrough.getValue()) {
+            naraka$outlineUsed = false;
             return;
+        }
         naraka$renderHiddenOres(poseStack, camera);
         this.checkPoseStack(poseStack);
-        localRef.set(true);
+        naraka$outlineUsed = true;
+    }
+
+    @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/OutlineBufferSource;endOutlineBatch()V", shift = At.Shift.AFTER))
+    private void endOutline(PoseStack poseStack, float partialTick, long finishNanoTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo ci) {
+        if (naraka$outlineUsed && entityEffect != null) {
+            this.entityEffect.process(partialTick);
+            this.minecraft.getMainRenderTarget().bindWrite(false);
+        }
     }
 
     @Unique
