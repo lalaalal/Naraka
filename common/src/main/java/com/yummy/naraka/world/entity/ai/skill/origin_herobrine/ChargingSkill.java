@@ -110,7 +110,7 @@ public class ChargingSkill extends Skill<OriginHerobrine> {
     private void shootStar() {
         if (corruptedStar != null) {
             Vec3 shootVector = mob.getEyePosition().subtract(corruptedStar.position());
-            corruptedStar.shoot(shootVector.x, shootVector.y, shootVector.z, 0.01f, 0);
+            corruptedStar.shoot(shootVector.x, shootVector.y, shootVector.z, 0.5f, 0);
         }
     }
 

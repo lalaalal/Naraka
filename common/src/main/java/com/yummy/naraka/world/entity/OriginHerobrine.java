@@ -80,6 +80,21 @@ public class OriginHerobrine extends AbstractHerobrine {
     }
 
     @Override
+    public float getViewYRot(float partialTick) {
+        return 0;
+    }
+
+    @Override
+    public float getYRot() {
+        return 0;
+    }
+
+    @Override
+    public float getYHeadRot() {
+        return 0;
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(ABSORBED_SOUL_TYPES, List.of());

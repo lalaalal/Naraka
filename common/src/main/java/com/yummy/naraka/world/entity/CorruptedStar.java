@@ -211,7 +211,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
             alphaMultiplier = 0.95f;
         } else if (hitTick == 0) {
             Vec3 hitLocation = result.getLocation();
-            level().explode(this, damageSources().explosion(this, getOwner()), null, hitLocation, 2, false, Level.ExplosionInteraction.NONE);
+            level().explode(this, damageSources().explosion(this, getOwner()), null, hitLocation.x, hitLocation.y, hitLocation.z, 2, false, Level.ExplosionInteraction.NONE, false);
             hitTick = tickCount;
             setTargetPosition(Vec3.ZERO);
         }

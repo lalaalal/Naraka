@@ -58,7 +58,6 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
             poseStack.pushPose();
             poseStack.translate(0, 1, 0);
             renderRays(poseStack, deathProgress, buffer.getBuffer(RenderType.lightning()));
-            renderRays(poseStack, deathProgress, buffer.getBuffer(RenderType.lightning()));
             poseStack.popPose();
         }
 

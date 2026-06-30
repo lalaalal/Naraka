@@ -48,6 +48,7 @@ public class NarakaSword extends MotionEntity {
 
     @Override
     protected void defineSynchedData() {
+        super.defineSynchedData();
         entityData.define(SOUL_TYPE, SoulType.NONE);
         entityData.define(ALPHA, 0f);
     }

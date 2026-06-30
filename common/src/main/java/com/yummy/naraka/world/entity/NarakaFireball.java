@@ -15,7 +15,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Fireball;
-import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
@@ -26,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NarakaFireball extends Fireball implements ItemSupplier {
+public class NarakaFireball extends Fireball {
     protected static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(NarakaFireball.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Boolean> FIXED_DAMAGE = SynchedEntityData.defineId(NarakaFireball.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> CAN_DEFLECT = SynchedEntityData.defineId(NarakaFireball.class, EntityDataSerializers.BOOLEAN);
@@ -126,7 +125,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     @Override
     public void tick() {
         if (timeToLive < tickCount) {
-            level().explode(this, NarakaDamageSources.narakaFireball(this), null, position(), 1.5f, false, Level.ExplosionInteraction.MOB);
+            level().explode(this, NarakaDamageSources.narakaFireball(this), null, getX(), getY(), getZ(), 1.5f, false, Level.ExplosionInteraction.MOB, false);
             discard();
         }
         if (tickCount % NarakaConfig.COMMON.narakaFireballDirectionUpdateInterval.getValue() == 0)
@@ -173,7 +172,7 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         if (hitEntity != owner && hitEntity instanceof LivingEntity livingEntity && !level().isClientSide()) {
             float damage = damageCalculator.calculateDamage(this);
             ExplosionDamageCalculator explosionDamageCalculator = new EntityBasedExplosionDamageCalculator(this);
-            level().explode(this, getDamageSource(owner), explosionDamageCalculator, position(), 1.5f, false, Level.ExplosionInteraction.MOB);
+            level().explode(this, getDamageSource(owner), explosionDamageCalculator, getX(), getY(), getZ(), 1.5f, false, Level.ExplosionInteraction.MOB, false);
             for (HurtTargetListener listener : listeners)
                 listener.onHurtTarget(livingEntity, damage);
         }

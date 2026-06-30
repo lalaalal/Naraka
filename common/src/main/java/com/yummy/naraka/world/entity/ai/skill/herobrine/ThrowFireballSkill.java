@@ -66,6 +66,7 @@ public class ThrowFireballSkill extends TargetSkill<SkillUsingMob> {
 
         fireball = fireballCreator.apply(level);
         fireball.setPos(fireballPosition);
+        fireball.setOwner(mob);
         level.addFreshEntity(fireball);
     }
 
