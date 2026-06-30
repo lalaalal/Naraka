@@ -6,7 +6,7 @@ import com.yummy.naraka.world.entity.data.StunHelper;
 import com.yummy.naraka.world.item.ItemDamageSourceProvider;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffectHelper;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -15,6 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity {
@@ -22,13 +24,17 @@ public abstract class PlayerMixin extends LivingEntity {
         super(entityType, level);
     }
 
-    @ModifyExpressionValue(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSources;playerAttack(Lnet/minecraft/world/entity/player/Player;)Lnet/minecraft/world/damagesource/DamageSource;"))
-    public DamageSource modifyDamageSourceByItemStack(DamageSource original) {
-        ItemStack itemStack = this.getMainHandItem();
-        Item item = itemStack.getItem();
-        if (item instanceof ItemDamageSourceProvider itemDamageSourceProvider)
-            return itemDamageSourceProvider.naraka$getDamageSource(this);
-        return original;
+    @Inject(method = "attack", at = @At(value = "HEAD"), cancellable = true)
+    public void attackWithCustomDamageSource(Entity target, CallbackInfo ci) {
+        if (target.isAttackable()) {
+            if (!target.skipAttackInteraction(this)) {
+                ItemStack itemStack = this.getMainHandItem();
+                Item item = itemStack.getItem();
+                if (item instanceof ItemDamageSourceProvider itemDamageSourceProvider)
+                    target.hurt(itemDamageSourceProvider.naraka$getDamageSource(this), itemDamageSourceProvider.naraka$getBonusDamage());
+                ci.cancel();
+            }
+        }
     }
 
     @ModifyReturnValue(method = "isPushedByFluid", at = @At("RETURN"))

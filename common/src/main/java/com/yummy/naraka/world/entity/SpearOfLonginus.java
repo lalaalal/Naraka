@@ -75,7 +75,7 @@ public class SpearOfLonginus extends Spear {
     @Override
     protected void hurtHitEntity(ServerLevel serverLevel, Entity entity) {
         DamageSource source = NarakaDamageSources.longinus(this);
-        entity.hurt(source, 6.66e6f);
+        entity.hurt(source, 6.66e16f);
         if (entity.isAlive())
             entity.kill();
     }

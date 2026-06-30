@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 
 public class SpearOfLonginusItem extends SpearItem implements ItemDamageSourceProvider {
     public SpearOfLonginusItem(Properties properties) {
-        super(NarakaTiers.LONGINUS, false, 6.66e6f, -3, properties, NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS);
+        super(NarakaTiers.LONGINUS, false, 0, -3, properties, NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS);
     }
 
     @Override
@@ -26,6 +26,11 @@ public class SpearOfLonginusItem extends SpearItem implements ItemDamageSourcePr
     @Override
     public DamageSource naraka$getDamageSource(LivingEntity user) {
         return NarakaDamageSources.longinus(user);
+    }
+
+    @Override
+    public float naraka$getBonusDamage() {
+        return 6.66e16f;
     }
 
     @Override

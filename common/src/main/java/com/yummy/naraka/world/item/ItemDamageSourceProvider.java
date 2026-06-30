@@ -5,4 +5,6 @@ import net.minecraft.world.entity.LivingEntity;
 
 public interface ItemDamageSourceProvider {
     DamageSource naraka$getDamageSource(LivingEntity livingEntity);
+
+    float naraka$getBonusDamage();
 }
