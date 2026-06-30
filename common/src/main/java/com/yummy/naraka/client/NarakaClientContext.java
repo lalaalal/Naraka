@@ -21,6 +21,8 @@ public final class NarakaClientContext {
     public static final Configuration.ConfigValue<Set<UUID>> HEROBRINE_MUSIC_SOURCES = context(new HashSet<>());
     public static final Configuration.ConfigValue<Integer> MUTE_MUSIC_TICK = context(0);
     public static final Configuration.ConfigValue<Float> MUSIC_VOLUME = context(1f);
+    public static final Configuration.ConfigValue<Boolean> TICK_FROZEN = context(false);
+    public static final Configuration.ConfigValue<Float> FROZEN_PARTIAL_TICK = context(1f);
 
     private static <T> Configuration.ConfigValue<T> context(T defaultValue) {
         return context(defaultValue, true);

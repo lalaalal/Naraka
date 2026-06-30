@@ -30,18 +30,31 @@ public record NarakaClientboundEventPacket(List<Event> events)
         return TYPE;
     }
 
-    public enum Event implements StringRepresentable {
-        START_HEROBRINE_SKY,
-        STOP_HEROBRINE_SKY,
-        START_WHITE_SCREEN,
-        STOP_WHITE_FOG,
-        SHAKE_CAMERA,
-        MONOCHROME_EFFECT,
-        RYOIKI_GRAY_EFFECT,
-        RYOIKI_GREEN_EFFECT,
-        MUTE_MUSIC_CATEGORY;
+    public enum Event implements StringRepresentable, Runnable {
+        START_HEROBRINE_SKY(NarakaClientboundEventHandler::startHerobrineSky),
+        STOP_HEROBRINE_SKY(NarakaClientboundEventHandler::stopHerobrineSky),
+        START_WHITE_SCREEN(NarakaClientboundEventHandler::startWhiteScreen),
+        STOP_WHITE_FOG(NarakaClientboundEventHandler::stopWhiteScreen),
+        SHAKE_CAMERA(NarakaClientboundEventHandler::shakeCamera),
+        MONOCHROME_EFFECT(NarakaClientboundEventHandler::monochrome),
+        RYOIKI_GRAY_EFFECT(NarakaClientboundEventHandler::ryoikiGrayEffect),
+        RYOIKI_GREEN_EFFECT(NarakaClientboundEventHandler::ryoikiGreenEffect),
+        MUTE_MUSIC_CATEGORY(NarakaClientboundEventHandler::muteMusicCategory),
+        FREEZE_TICK(NarakaClientboundEventHandler::freezeTick),
+        UNFREEZE_TICK(NarakaClientboundEventHandler::unfreezeTick),
+        ;
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
+        private final Runnable action;
+
+        Event(Runnable action) {
+            this.action = action;
+        }
+
+        @Override
+        public void run() {
+            action.run();
+        }
 
         @Override
         public String getSerializedName() {

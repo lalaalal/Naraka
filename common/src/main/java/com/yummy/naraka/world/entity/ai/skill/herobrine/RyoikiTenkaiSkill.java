@@ -159,7 +159,8 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
 
     @Override
     public void interrupt() {
-        tickFreezeManager.unfreeze(mob.level());
+        if (mob.level() instanceof ServerLevel serverLevel)
+            tickFreezeManager.unfreeze(serverLevel);
         EntityDataHelper.removeEntityData(mob, NarakaEntityDataTypes.KEEP_UNFROZEN.get());
     }
 }

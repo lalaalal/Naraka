@@ -7,8 +7,6 @@ import com.yummy.naraka.client.gui.screen.SkillControlScreen;
 import com.yummy.naraka.client.sound.BossMusicPlayer;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.world.entity.SkillUsingMob;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.Music;
 import net.minecraft.world.entity.Entity;
@@ -17,7 +15,6 @@ import net.minecraft.world.level.Level;
 import java.util.Map;
 import java.util.function.Consumer;
 
-@Environment(EnvType.CLIENT)
 public class NarakaClientboundEventHandler {
     private static final Map<NarakaClientboundEntityEventPacket.Event, Consumer<Entity>> ENTITY_EVENT_MAP = Map.of(
             NarakaClientboundEntityEventPacket.Event.SHOW_SKILL_CONTROL_SCREEN, NarakaClientboundEventHandler::showSkillControlScreen,
@@ -41,7 +38,7 @@ public class NarakaClientboundEventHandler {
             NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY, NarakaClientboundEventHandler::muteMusicCategory
     );
 
-    private static final Music[] HEROBRINE_MUSIC = new Music[]{
+    public static final Music[] HEROBRINE_MUSIC = new Music[]{
             NarakaMusics.HEROBRINE_PHASE_1,
             NarakaMusics.HEROBRINE_PHASE_1,
             NarakaMusics.HEROBRINE_PHASE_2,
@@ -62,12 +59,11 @@ public class NarakaClientboundEventHandler {
     public static void handleEvent(NarakaClientboundEventPacket packet, NetworkManager.Context context) {
         Minecraft.getInstance().execute(() -> {
             for (NarakaClientboundEventPacket.Event event : packet.events())
-                EVENT_MAP.getOrDefault(event, () -> {
-                }).run();
+                event.run();
         });
     }
 
-    private static void updateHerobrineMusic(Entity entity, final int phase) {
+    public static void updateHerobrineMusic(Entity entity, final int phase) {
         BossMusicPlayer bossMusicPlayer = NarakaMusics.bossMusicPlayer();
         if (0 < phase && phase <= 4) {
             bossMusicPlayer.naraka$playBossMusic(HEROBRINE_MUSIC[phase]);
@@ -76,7 +72,7 @@ public class NarakaClientboundEventHandler {
         }
     }
 
-    private static void stopHerobrineMusic(Entity entity) {
+    public static void stopHerobrineMusic(Entity entity) {
         BossMusicPlayer bossMusicPlayer = NarakaMusics.bossMusicPlayer();
         NarakaClientContext.HEROBRINE_MUSIC_SOURCES.getValue()
                 .remove(entity.getUUID());
@@ -84,52 +80,61 @@ public class NarakaClientboundEventHandler {
             bossMusicPlayer.naraka$stopBossMusic();
     }
 
-    private static void showSkillControlScreen(Entity entity) {
+    public static void showSkillControlScreen(Entity entity) {
         if (entity instanceof SkillUsingMob mob)
             Minecraft.getInstance().setScreen(new SkillControlScreen(mob));
     }
 
-    private static void showAnimationControlScreen(Entity entity) {
+    public static void showAnimationControlScreen(Entity entity) {
         if (entity instanceof SkillUsingMob mob)
             Minecraft.getInstance().setScreen(new AnimationControlScreen(mob));
     }
 
-    private static void startHerobrineSky() {
+    public static void startHerobrineSky() {
         NarakaClientContext.ENABLE_HEROBRINE_SKY.set(true);
     }
 
-    private static void stopHerobrineSky() {
+    public static void stopHerobrineSky() {
         NarakaClientContext.ENABLE_HEROBRINE_SKY.set(false);
     }
 
-    private static void startWhiteScreen() {
+    public static void startWhiteScreen() {
         NarakaClientContext.ENABLE_WHITE_SCREEN.set(true);
     }
 
-    private static void stopWhiteScreen() {
+    public static void stopWhiteScreen() {
         NarakaClientContext.ENABLE_WHITE_SCREEN.set(false);
     }
 
-    private static void shakeCamera() {
+    public static void shakeCamera() {
         NarakaClientContext.CAMERA_SHAKE_TICK.set(10);
     }
 
-    private static void monochrome() {
+    public static void monochrome() {
         NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.MONOCHROME);
         NarakaClientContext.POST_EFFECT_TICK.set(10);
     }
 
-    private static void ryoikiGrayEffect() {
+    public static void ryoikiGrayEffect() {
         NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.RYOIKI_GRAY);
         NarakaClientContext.POST_EFFECT_TICK.set(50);
     }
 
-    private static void ryoikiGreenEffect() {
+    public static void ryoikiGreenEffect() {
         NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.RYOIKI_GREEN);
         NarakaClientContext.POST_EFFECT_TICK.set(50);
     }
 
-    private static void muteMusicCategory() {
+    public static void muteMusicCategory() {
         NarakaClientContext.MUTE_MUSIC_TICK.set(60);
+    }
+
+    public static void freezeTick() {
+        NarakaClientContext.TICK_FROZEN.set(true);
+        NarakaClientContext.FROZEN_PARTIAL_TICK.set(Minecraft.getInstance().getFrameTime());
+    }
+
+    public static void unfreezeTick() {
+        NarakaClientContext.TICK_FROZEN.set(false);
     }
 }

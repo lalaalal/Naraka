@@ -6,6 +6,7 @@ import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncEntityDataPacket;
 import com.yummy.naraka.util.TickSchedule;
+import com.yummy.naraka.world.TickFreezeManager;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.item.NarakaItems;
@@ -40,9 +41,17 @@ public final class NarakaGameEvents {
         EntityDataHelper.syncEntityData(player, SyncEntityDataPacket.Action.LOAD);
         NarakaClientboundEventPacket payload = new NarakaClientboundEventPacket(
                 NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY,
-                NarakaClientboundEventPacket.Event.STOP_WHITE_FOG
+                NarakaClientboundEventPacket.Event.STOP_WHITE_FOG,
+                getEventByTickFreezeState(player.serverLevel())
         );
+
         NetworkManager.clientbound().send(player, payload);
+    }
+
+    private static NarakaClientboundEventPacket.Event getEventByTickFreezeState(ServerLevel level) {
+        if (TickFreezeManager.INSTANCE.shouldFreezeLevel(level))
+            return NarakaClientboundEventPacket.Event.FREEZE_TICK;
+        return NarakaClientboundEventPacket.Event.UNFREEZE_TICK;
     }
 
     private static boolean useDeathCount(LivingEntity livingEntity, DamageSource source) {

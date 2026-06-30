@@ -39,6 +39,12 @@ public abstract class LevelRendererMixin {
         DimensionSkyRendererRegistry.setup();
     }
 
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    private void tick(CallbackInfo ci) {
+        if (NarakaClientContext.TICK_FROZEN.getValue())
+            ci.cancel();
+    }
+
     @ModifyVariable(method = "renderClouds", at = @At(value = "STORE"), ordinal = 4)
     private double speedUpClouds(double e) {
         if (naraka$isHerobrineSkyEnabled())

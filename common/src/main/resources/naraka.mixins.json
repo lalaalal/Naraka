@@ -8,6 +8,7 @@
     "client.BufferBuilderMixin",
     "client.CameraMixin",
     "client.ClientHandshakePacketListenerImplMixin",
+    "client.ClientLevelMixin",
     "client.DripParticleMixin$DripHangParticleMixin",
     "client.DripParticleMixin$HoneyFallAndLandParticleMixin",
     "client.EntityRenderDispatcherMixin",
@@ -24,6 +25,7 @@
     "client.MinecraftMixin",
     "client.MouseHandlerMixin",
     "client.MusicManagerMixin",
+    "client.ParticleEngineMixin",
     "client.ScreenEffectRendererMixin",
     "client.SoundEngineMixin",
     "client.SoundManagerMixin"
