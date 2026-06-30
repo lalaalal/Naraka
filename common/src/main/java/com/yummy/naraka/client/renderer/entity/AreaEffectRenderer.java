@@ -70,29 +70,33 @@ public class AreaEffectRenderer extends EntityRenderer<AreaEffect> {
         float z = zWidth / 2;
         color = Color.of(color).withAlpha(alpha).pack();
         vertexConsumer.vertex(pose.pose(), x, 0.1f, z)
+                .color(color)
                 .uv(0, 1)
                 .overlayCoords(OverlayTexture.NO_OVERLAY)
                 .uv2(LightTexture.FULL_BRIGHT)
-                .color(color)
-                .normal(pose.normal(), 0, 1, 0);
+                .normal(pose.normal(), 0, 1, 0)
+                .endVertex();
         vertexConsumer.vertex(pose.pose(), x, 0.1f, -z)
+                .color(color)
                 .uv(0, 0)
                 .overlayCoords(OverlayTexture.NO_OVERLAY)
                 .uv2(LightTexture.FULL_BRIGHT)
-                .color(color)
-                .normal(pose.normal(), 0, 1, 0);
+                .normal(pose.normal(), 0, 1, 0)
+                .endVertex();
         vertexConsumer.vertex(pose.pose(), -x, 0.1f, -z)
+                .color(color)
                 .uv(1, 0)
                 .overlayCoords(OverlayTexture.NO_OVERLAY)
                 .uv2(LightTexture.FULL_BRIGHT)
-                .color(color)
-                .normal(pose.normal(), 0, 1, 0);
+                .normal(pose.normal(), 0, 1, 0)
+                .endVertex();
         vertexConsumer.vertex(pose.pose(), -x, 0.1f, z)
+                .color(color)
                 .uv(1, 1)
                 .overlayCoords(OverlayTexture.NO_OVERLAY)
                 .uv2(LightTexture.FULL_BRIGHT)
-                .color(color)
-                .normal(pose.normal(), 0, 1, 0);
+                .normal(pose.normal(), 0, 1, 0)
+                .endVertex();
     }
 
     public static void renderCircle(PoseStack.Pose pose, VertexConsumer vertexConsumer, Vector3f base, float radius, int alpha, int color) {
@@ -121,11 +125,12 @@ public class AreaEffectRenderer extends EntityRenderer<AreaEffect> {
     private static void addVertex(PoseStack.Pose pose, VertexConsumer vertexConsumer, Vector3f vector, float u, float v, int alpha, int color) {
         color = Color.of(color).withAlpha(alpha).pack();
         vertexConsumer.vertex(pose.pose(), vector.x, vector.y, vector.z)
+                .color(color)
                 .uv(u, v)
                 .overlayCoords(OverlayTexture.NO_OVERLAY)
                 .uv2(LightTexture.FULL_BRIGHT)
-                .color(color)
-                .normal(pose.normal(), 0, 1, 0);
+                .normal(pose.normal(), 0, 1, 0)
+                .endVertex();
     }
 
     @Override

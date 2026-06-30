@@ -76,10 +76,11 @@ public class NarakaRenderUtils {
         NarakaUtils.iterate(vertices, uvs, (vertex, uv) -> {
             vertexConsumer.vertex(pose.pose(), vertex.x, vertex.y, vertex.z)
                     .color(color)
-                    .uv2(packedLight)
-                    .overlayCoords(packedOverlay)
                     .uv(uv.x, uv.y)
-                    .normal(pose.normal(), normal.getX(), normal.getY(), normal.getZ());
+                    .overlayCoords(packedOverlay)
+                    .uv2(packedLight)
+                    .normal(pose.normal(), normal.getX(), normal.getY(), normal.getZ())
+                    .endVertex();
         }, reverse);
     }
 
@@ -164,43 +165,51 @@ public class NarakaRenderUtils {
 
     public static void renderRhombus(PoseStack.Pose pose, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float width, float height, int alpha, int color) {
         vertexConsumer.vertex(pose.pose(), 0, height, 0)
+                .color(Color.of(alpha, color))
                 .uv(0, 1)
-                .uv2(packedLight)
                 .overlayCoords(packedOverlay)
+                .uv2(packedLight)
                 .normal(pose.normal(), 0, 1, 0)
-                .color(Color.of(alpha, color));
+                .endVertex();
         vertexConsumer.vertex(pose.pose(), -width, 0, 0)
+                .color(Color.of(alpha, color))
                 .uv(0, 0)
-                .uv2(packedLight)
                 .overlayCoords(packedOverlay)
+                .uv2(packedLight)
                 .normal(pose.normal(), 0, 1, 0)
-                .color(Color.of(alpha, color));
+                .endVertex();
         vertexConsumer.vertex(pose.pose(), 0, -height, 0)
+                .color(Color.of(alpha, color))
                 .uv(1, 0)
-                .uv2(packedLight)
                 .overlayCoords(packedOverlay)
+                .uv2(packedLight)
                 .normal(pose.normal(), 0, 1, 0)
-                .color(Color.of(alpha, color));
+                .endVertex();
         vertexConsumer.vertex(pose.pose(), width, 0, 0)
+                .color(Color.of(alpha, color))
                 .uv(1, 1)
-                .uv2(packedLight)
                 .overlayCoords(packedOverlay)
+                .uv2(packedLight)
                 .normal(pose.normal(), 0, 1, 0)
-                .color(Color.of(alpha, color));
+                .endVertex();
     }
 
     public static void renderRhombus(PoseStack.Pose pose, VertexConsumer vertexConsumer, float width, float height, int alpha, int color) {
         vertexConsumer.vertex(pose.pose(), 0, height, 0)
                 .normal(pose.normal(), 0, 1, 0)
-                .color(Color.of(alpha, color));
+                .color(Color.of(alpha, color))
+                .endVertex();
         vertexConsumer.vertex(pose.pose(), -width, 0, 0)
                 .normal(pose.normal(), 0, 1, 0)
-                .color(Color.of(alpha, color));
+                .color(Color.of(alpha, color))
+                .endVertex();
         vertexConsumer.vertex(pose.pose(), 0, -height, 0)
                 .normal(pose.normal(), 0, 1, 0)
-                .color(Color.of(alpha, color));
+                .color(Color.of(alpha, color))
+                .endVertex();
         vertexConsumer.vertex(pose.pose(), width, 0, 0)
                 .normal(pose.normal(), 0, 1, 0)
-                .color(Color.of(alpha, color));
+                .color(Color.of(alpha, color))
+                .endVertex();
     }
 }

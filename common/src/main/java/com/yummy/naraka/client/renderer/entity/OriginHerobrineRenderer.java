@@ -92,15 +92,15 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
             vector3f3.set(HALF_SQRT_3 * h, g, -0.5F * h);
             vector3f4.set(0.0F, g, h);
             PoseStack.Pose pose = poseStack.last();
-            buffer.vertex(pose.pose(), vector3f.x, vector3f.y, vector3f.z).color(white);
-            buffer.vertex(pose.pose(), vector3f2.x, vector3f2.y, vector3f2.z).color(color);
-            buffer.vertex(pose.pose(), vector3f3.x, vector3f3.y, vector3f3.z).color(color);
-            buffer.vertex(pose.pose(), vector3f.x, vector3f.y, vector3f.z).color(white);
-            buffer.vertex(pose.pose(), vector3f3.x, vector3f3.y, vector3f3.z).color(color);
-            buffer.vertex(pose.pose(), vector3f4.x, vector3f4.y, vector3f4.z).color(color);
-            buffer.vertex(pose.pose(), vector3f.x, vector3f.y, vector3f.z).color(white);
-            buffer.vertex(pose.pose(), vector3f4.x, vector3f4.y, vector3f4.z).color(color);
-            buffer.vertex(pose.pose(), vector3f2.x, vector3f2.y, vector3f2.z).color(color);
+            buffer.vertex(pose.pose(), vector3f.x, vector3f.y, vector3f.z).color(white).endVertex();
+            buffer.vertex(pose.pose(), vector3f2.x, vector3f2.y, vector3f2.z).color(color).endVertex();
+            buffer.vertex(pose.pose(), vector3f3.x, vector3f3.y, vector3f3.z).color(color).endVertex();
+            buffer.vertex(pose.pose(), vector3f.x, vector3f.y, vector3f.z).color(white).endVertex();
+            buffer.vertex(pose.pose(), vector3f3.x, vector3f3.y, vector3f3.z).color(color).endVertex();
+            buffer.vertex(pose.pose(), vector3f4.x, vector3f4.y, vector3f4.z).color(color).endVertex();
+            buffer.vertex(pose.pose(), vector3f.x, vector3f.y, vector3f.z).color(white).endVertex();
+            buffer.vertex(pose.pose(), vector3f4.x, vector3f4.y, vector3f4.z).color(color).endVertex();
+            buffer.vertex(pose.pose(), vector3f2.x, vector3f2.y, vector3f2.z).color(color).endVertex();
         }
 
         poseStack.popPose();

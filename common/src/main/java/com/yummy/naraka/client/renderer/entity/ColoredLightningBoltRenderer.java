@@ -129,27 +129,31 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
                         (float) (sectionY * 16),
                         z1 + (addThicknessLeftSideZ ? outerThickness : -outerThickness)
                 )
-                .color(red, green, blue, alpha);
+                .color(red, green, blue, alpha)
+                .endVertex();
         buffer.vertex(
                         pose.pose(),
                         x2 + (addThicknessLeftSideX ? innerThickness : -innerThickness),
                         (float) ((sectionY + 1) * 16),
                         z2 + (addThicknessLeftSideZ ? innerThickness : -innerThickness)
                 )
-                .color(red, green, blue, alpha);
+                .color(red, green, blue, alpha)
+                .endVertex();
         buffer.vertex(
                         pose.pose(),
                         x2 + (addThicknessRightSideX ? innerThickness : -innerThickness),
                         (float) ((sectionY + 1) * 16),
                         z2 + (addThicknessRightSideZ ? innerThickness : -innerThickness)
                 )
-                .color(red, green, blue, alpha);
+                .color(red, green, blue, alpha)
+                .endVertex();
         buffer.vertex(
                         pose.pose(),
                         x1 + (addThicknessRightSideX ? outerThickness : -outerThickness),
                         (float) (sectionY * 16),
                         z1 + (addThicknessRightSideZ ? outerThickness : -outerThickness)
                 )
-                .color(red, green, blue, alpha);
+                .color(red, green, blue, alpha)
+                .endVertex();
     }
 }
