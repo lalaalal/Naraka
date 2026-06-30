@@ -30,9 +30,10 @@ public abstract class PlayerMixin extends LivingEntity {
             if (!target.skipAttackInteraction(this)) {
                 ItemStack itemStack = this.getMainHandItem();
                 Item item = itemStack.getItem();
-                if (item instanceof ItemDamageSourceProvider itemDamageSourceProvider)
+                if (item instanceof ItemDamageSourceProvider itemDamageSourceProvider) {
                     target.hurt(itemDamageSourceProvider.naraka$getDamageSource(this), itemDamageSourceProvider.naraka$getBonusDamage());
-                ci.cancel();
+                    ci.cancel();
+                }
             }
         }
     }
