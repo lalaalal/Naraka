@@ -25,6 +25,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -51,6 +52,28 @@ public abstract class LevelRendererMixin {
             return e * NarakaConfig.CLIENT.herobrineSkyCloudSpeed.getValue();
         return e;
     }
+
+    @ModifyArg(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;renderClouds(Lcom/mojang/blaze3d/vertex/PoseStack;Lorg/joml/Matrix4f;FDDD)V"))
+    private float fixCloudPartialTickOnTickFreeze(float partialTicks) {
+        if (NarakaClientContext.TICK_FROZEN.getValue())
+            return NarakaClientContext.FROZEN_PARTIAL_TICK.getValue();
+        return partialTicks;
+    }
+
+    @ModifyArg(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;renderEntity(Lnet/minecraft/world/entity/Entity;DDDFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;)V"))
+    private float fixEntityPartialTickOnTickFreeze(float partialTicks) {
+        if (NarakaClientContext.TICK_FROZEN.getValue())
+            return NarakaClientContext.FROZEN_PARTIAL_TICK.getValue();
+        return partialTicks;
+    }
+
+    @ModifyArg(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleEngine;render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;F)V"))
+    private float fixParticlePartialTickOnTickFreeze(float partialTicks) {
+        if (NarakaClientContext.TICK_FROZEN.getValue())
+            return NarakaClientContext.FROZEN_PARTIAL_TICK.getValue();
+        return partialTicks;
+    }
+
 
     @ModifyExpressionValue(method = "renderClouds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getCloudColor(F)Lnet/minecraft/world/phys/Vec3;"))
     private Vec3 modifyCloudColor(Vec3 original) {

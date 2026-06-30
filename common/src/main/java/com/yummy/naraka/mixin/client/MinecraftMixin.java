@@ -1,6 +1,5 @@
 package com.yummy.naraka.mixin.client;
 
-import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.event.ClientEvents;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -21,8 +20,8 @@ public abstract class MinecraftMixin {
 
     @ModifyArg(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;render(FJZ)V"))
     public float replacePartialTick(float partialTicks) {
-        if (NarakaClientContext.TICK_FROZEN.getValue())
-            return NarakaClientContext.FROZEN_PARTIAL_TICK.getValue();
+//        if (NarakaClientContext.TICK_FROZEN.getValue())
+//            return NarakaClientContext.FROZEN_PARTIAL_TICK.getValue();
         return partialTicks;
     }
 }
