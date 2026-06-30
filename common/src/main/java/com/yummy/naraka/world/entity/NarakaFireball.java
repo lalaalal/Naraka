@@ -125,12 +125,13 @@ public class NarakaFireball extends Fireball {
     @Override
     public void tick() {
         if (timeToLive < tickCount) {
-            level().explode(this, NarakaDamageSources.narakaFireball(this), null, getX(), getY(), getZ(), 1.5f, false, Level.ExplosionInteraction.MOB, false);
+            level().explode(this, NarakaDamageSources.narakaFireball(this), null, getX(), getY(), getZ(), 1.5f, false, Level.ExplosionInteraction.MOB, true);
             discard();
         }
         if (tickCount % NarakaConfig.COMMON.narakaFireballDirectionUpdateInterval.getValue() == 0)
             traceTarget();
         super.tick();
+        setDeltaMovement(getDeltaMovement().scale(1.1f));
     }
 
     private void traceTarget() {
@@ -156,6 +157,7 @@ public class NarakaFireball extends Fireball {
     @Override
     protected void onHit(HitResult result) {
         super.onHit(result);
+        level().explode(this, damageSources().explosion(getOwner(), this), null, getX(), getY(), getZ(), 1.5f, false, Level.ExplosionInteraction.MOB, true);
         discard();
     }
 
@@ -172,7 +174,7 @@ public class NarakaFireball extends Fireball {
         if (hitEntity != owner && hitEntity instanceof LivingEntity livingEntity && !level().isClientSide()) {
             float damage = damageCalculator.calculateDamage(this);
             ExplosionDamageCalculator explosionDamageCalculator = new EntityBasedExplosionDamageCalculator(this);
-            level().explode(this, getDamageSource(owner), explosionDamageCalculator, getX(), getY(), getZ(), 1.5f, false, Level.ExplosionInteraction.MOB, false);
+            level().explode(this, getDamageSource(owner), explosionDamageCalculator, getX(), getY(), getZ(), 1.5f, false, Level.ExplosionInteraction.MOB, true);
             for (HurtTargetListener listener : listeners)
                 listener.onHurtTarget(livingEntity, damage);
         }

@@ -12,7 +12,9 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -201,23 +203,23 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
     @Override
     protected void onHit(HitResult result) {
         super.onHit(result);
-        if (level().isClientSide() && hitTick == 0) {
-            addParticles(0.1, 120);
-            addParticles(0.3, 60);
-            hitTick = tickCount;
-            shineRotation = 0;
-            startShine(20);
-            shineScale = 0.5f;
-            alphaMultiplier = 0.95f;
-        } else if (hitTick == 0) {
+        if (hitTick == 0) {
             Vec3 hitLocation = result.getLocation();
-            level().explode(this, damageSources().explosion(this, getOwner()), null, hitLocation.x, hitLocation.y, hitLocation.z, 2, false, Level.ExplosionInteraction.NONE, false);
+            level().explode(this, damageSources().explosion(getOwner(), this), null, hitLocation.x(), hitLocation.y(), hitLocation.z(), 1.5f, false, Level.ExplosionInteraction.NONE, false);
             hitTick = tickCount;
             setTargetPosition(Vec3.ZERO);
+            if (level().isClientSide()) {
+                addParticles(hitLocation, 0.1, 120);
+                addParticles(hitLocation, 0.3, 60);
+                shineRotation = 0;
+                startShine(20);
+                shineScale = 0.5f;
+                alphaMultiplier = 0.95f;
+            }
         }
     }
 
-    private void addParticles(double baseSpeed, int count) {
+    private void addParticles(Vec3 hitLocation, double baseSpeed, int count) {
         for (int i = 0; i < count; i++) {
             double yRot = random.nextDouble() * 360;
             double xRot = random.nextDouble() * 180;
@@ -225,7 +227,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
             double xSpeed = Math.cos(Math.toRadians(yRot)) * speed;
             double zSpeed = Math.sin(Math.toRadians(yRot)) * speed;
             double ySpeed = Math.sin(Math.toRadians(xRot)) * speed;
-            level().addParticle(NarakaFlameParticleOption.fromSoulType(entityData.get(SOUL_TYPE)), getX(), getY(), getZ(), xSpeed, ySpeed, zSpeed);
+            level().addParticle(NarakaFlameParticleOption.fromSoulType(entityData.get(SOUL_TYPE)), hitLocation.x, hitLocation.y, hitLocation.z, xSpeed, ySpeed, zSpeed);
         }
     }
 
@@ -261,6 +263,13 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
 
     private boolean canBeDeflected() {
         return canBeDeflectedByPlayer && tickCount > entityData.get(PREPARE_DURATION);
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (canBeDeflected() || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+            return super.hurt(source, amount);
+        return false;
     }
 
     @Override

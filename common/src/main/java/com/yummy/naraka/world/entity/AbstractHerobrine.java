@@ -177,6 +177,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         eyeAlpha = Mth.clamp(eyeAlpha + alphaAddition, 0, 1);
 
         scarfWavingData.update(getDeltaMovement(), yBodyRot - yBodyRotO, onGround());
+        hasImpulse = true;
     }
 
     @Override
