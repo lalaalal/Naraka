@@ -68,14 +68,13 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
     }
 
     @Override
-    public void renderSky(ClientLevel level, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup) {
+    public void renderSky(PoseStack poseStack, ClientLevel level, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup) {
         ShaderInstance positionShader = GameRenderer.getPositionShader();
         if (positionShader != null) {
             RenderSystem.depthMask(false);
             RenderSystem.enableBlend();
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
 
-            PoseStack poseStack = new PoseStack();
             poseStack.pushPose();
             poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
             poseStack.mulPose(Axis.XP.rotationDegrees(level.getTimeOfDay(partialTick) * 360.0F));
@@ -108,10 +107,10 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
         RenderSystem.setShaderTexture(0, texture);
         BufferBuilder bufferBuilder = tesselator.getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferBuilder.vertex(pose.pose(), -30, -95, 30).uv(1, 1);
-        bufferBuilder.vertex(pose.pose(), 30, -95, 30).uv(0, 1);
-        bufferBuilder.vertex(pose.pose(), 30, -95, -30).uv(0, 0);
-        bufferBuilder.vertex(pose.pose(), -30, -95, -30).uv(1, 0);
+        bufferBuilder.vertex(pose.pose(), -30, -95, 30).uv(1, 1).endVertex();
+        bufferBuilder.vertex(pose.pose(), 30, -95, 30).uv(0, 1).endVertex();
+        bufferBuilder.vertex(pose.pose(), 30, -95, -30).uv(0, 0).endVertex();
+        bufferBuilder.vertex(pose.pose(), -30, -95, -30).uv(1, 0).endVertex();
         BufferUploader.drawWithShader(bufferBuilder.end());
     }
 }

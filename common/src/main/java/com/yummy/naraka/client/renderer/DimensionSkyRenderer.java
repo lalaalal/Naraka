@@ -2,6 +2,7 @@ package com.yummy.naraka.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexBuffer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -12,7 +13,7 @@ import org.joml.Matrix4f;
 
 @Environment(EnvType.CLIENT)
 public interface DimensionSkyRenderer {
-    DimensionSkyRenderer EMPTY = (level, projectionMatrix, partialTick, camera, isFoggy, skyFogSetup) -> {
+    DimensionSkyRenderer EMPTY = (poseStack, level, projectionMatrix, partialTick, camera, isFoggy, skyFogSetup) -> {
     };
 
     static VertexBuffer createBuffer(BufferBuilder.RenderedBuffer renderedBuffer) {
@@ -26,5 +27,5 @@ public interface DimensionSkyRenderer {
         return vertexBuffer;
     }
 
-    void renderSky(ClientLevel level, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup);
+    void renderSky(PoseStack poseStack, ClientLevel level, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup);
 }

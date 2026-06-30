@@ -79,7 +79,7 @@ public abstract class LevelRendererMixin {
         if (level == null)
             return;
         DimensionSkyRendererRegistry.get(level.dimension())
-                .renderSky(level, projectionMatrix, partialTick, camera, isFoggy, skyFogSetup);
+                .renderSky(poseStack, level, projectionMatrix, partialTick, camera, isFoggy, skyFogSetup);
     }
 
     @Unique
