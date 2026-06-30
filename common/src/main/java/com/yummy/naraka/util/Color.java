@@ -15,7 +15,7 @@ public record Color(int alpha, int red, int green, int blue) {
     }
 
     public static int of(int alpha, int color) {
-        return alpha << 24 | (color & 0x00ffffff);
+        return (alpha << 24) | (color & 0x00ffffff);
     }
 
     public static Color white(int alpha) {

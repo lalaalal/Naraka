@@ -8,9 +8,9 @@ import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
-import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -33,24 +33,34 @@ public abstract class SkillUsingMobControlScreen extends Screen {
 
     @Override
     protected void init() {
-        layout.addToContents(locationList);
-        layout.setHeaderHeight(10);
-        layout.setFooterHeight(45);
+        locationList.updateSize(width, height, 32, height - 65 + 4);
+        addWidget(locationList);
+        addRenderableWidget(
+                Button.builder(Component.literal("enable selected only"), action(SkillRequestPacket.Event.ENABLE_ONLY))
+                        .bounds(this.width / 2 - 152, this.height - 25 - 25, 150, 20)
+                        .build()
+        );
+        addRenderableWidget(
+                Button.builder(Component.literal("stop current skill"), action(SkillRequestPacket.Event.STOP))
+                        .bounds(this.width / 2 - 2, this.height - 25 - 25, 150, 20)
+                        .build()
+        );
+        addRenderableWidget(
+                Button.builder(Component.translatable(LanguageKey.DISABLE_SKILL_USE_KEY), this::disableSkills)
+                        .bounds(this.width / 2 - 152, this.height - 25, 150, 20)
+                        .build()
+        );
+        addRenderableWidget(
+                Button.builder(CommonComponents.GUI_DONE, this::onDone)
+                        .bounds(this.width / 2 - 2, this.height - 25, 150, 20)
+                        .build()
+        );
+    }
 
-        LinearLayout footerLayout = new LinearLayout(layout.getWidth(), layout.getFooterHeight(), LinearLayout.Orientation.VERTICAL);
-        LinearLayout firstLayout = new LinearLayout(layout.getWidth(), layout.getFooterHeight(), LinearLayout.Orientation.HORIZONTAL);
-        firstLayout.addChild(Button.builder(Component.literal("enable selected only"), action(SkillRequestPacket.Event.ENABLE_ONLY)).build());
-        firstLayout.addChild(Button.builder(Component.literal("stop current skill"), action(SkillRequestPacket.Event.STOP)).build());
-
-        LinearLayout secondLayout = new LinearLayout(layout.getWidth(), layout.getFooterHeight(), LinearLayout.Orientation.HORIZONTAL);
-        secondLayout.addChild(Button.builder(Component.translatable(LanguageKey.DISABLE_SKILL_USE_KEY), this::disableSkills).build());
-        secondLayout.addChild(Button.builder(CommonComponents.GUI_DONE, this::onDone).build());
-
-        footerLayout.addChild(firstLayout);
-        footerLayout.addChild(secondLayout);
-        layout.addToFooter(footerLayout);
-        layout.arrangeElements();
-        layout.visitWidgets(this::addRenderableWidget);
+    @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        locationList.render(guiGraphics, mouseX, mouseY, partialTick);
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
     }
 
     private void disableSkills(Button button) {
@@ -80,13 +90,6 @@ public abstract class SkillUsingMobControlScreen extends Screen {
     }
 
     protected abstract void select(LocationList.Entry selected);
-
-    @Override
-    protected void repositionElements() {
-        super.repositionElements();
-        layout.arrangeElements();
-        locationList.updateSize(width, height, layout.getY(), layout.getY() + height);
-    }
 
     @Override
     public boolean isPauseScreen() {
