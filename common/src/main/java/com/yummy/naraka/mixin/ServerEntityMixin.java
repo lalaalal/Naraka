@@ -29,7 +29,7 @@ public abstract class ServerEntityMixin {
     public void addParingEntityData(ServerPlayer player, CallbackInfo ci) {
         if (entity instanceof LivingEntity livingEntity) {
             List<EntityData<?, ? extends Entity>> data = EntityDataHelper.getEntityDataList(livingEntity);
-            NetworkManager.sendToClient(player, SyncEntityDataPacket.sync(livingEntity, SyncEntityDataPacket.Action.LOAD, data));
+            NetworkManager.clientbound().send(player, SyncEntityDataPacket.sync(livingEntity, SyncEntityDataPacket.Action.LOAD, data));
         }
     }
 }
