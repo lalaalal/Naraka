@@ -2,14 +2,32 @@ package com.yummy.naraka.client.particle;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.FlameParticle;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.LightTexture;
 
-public class NarakaFlame extends FlameParticle {
+public class NarakaFlame extends RisingParticle {
     public NarakaFlame(ClientLevel clientLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
         super(clientLevel, x, y, z, xSpeed, ySpeed, zSpeed);
+    }
+
+    public void move(double x, double y, double z) {
+        this.setBoundingBox(this.getBoundingBox().move(x, y, z));
+        this.setLocationFromBoundingbox();
+    }
+
+    public float getQuadSize(float scaleFactor) {
+        float scale = ((float) this.age + scaleFactor) / (float) this.lifetime;
+        return this.quadSize * (1.0F - scale * scale * 0.5F);
+    }
+
+    @Override
+    public ParticleRenderType getRenderType() {
+        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+    }
+
+    @Override
+    public int getLightColor(float partialTick) {
+        return LightTexture.FULL_BRIGHT;
     }
 
     public static class Provider implements ParticleProvider<NarakaFlameParticleOption> {

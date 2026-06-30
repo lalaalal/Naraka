@@ -3,9 +3,9 @@ package com.yummy.naraka.forge;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.Platform;
 import com.yummy.naraka.forge.client.NarakaModForgeClient;
+import com.yummy.naraka.forge.init.*;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.invoker.MethodInvoker;
-import com.yummy.naraka.forge.init.*;
 import com.yummy.naraka.world.NarakaBiomes;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -22,6 +22,7 @@ public final class NarakaModForge implements NarakaInitializer {
     private static IEventBus MOD_BUS;
 
     private final List<Runnable> runAfterRegistryLoaded = new ArrayList<>();
+
     public static IEventBus getModEventBus() {
         if (MOD_BUS == null)
             throw new IllegalStateException("Mod is not initialized!");

@@ -67,14 +67,6 @@ public abstract class LevelRendererMixin {
         return partialTicks;
     }
 
-    @ModifyArg(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleEngine;render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;F)V"))
-    private float fixParticlePartialTickOnTickFreeze(float partialTicks) {
-        if (NarakaClientContext.TICK_FROZEN.getValue())
-            return NarakaClientContext.FROZEN_PARTIAL_TICK.getValue();
-        return partialTicks;
-    }
-
-
     @ModifyExpressionValue(method = "renderClouds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getCloudColor(F)Lnet/minecraft/world/phys/Vec3;"))
     private Vec3 modifyCloudColor(Vec3 original) {
         if (naraka$isHerobrineSkyEnabled())
