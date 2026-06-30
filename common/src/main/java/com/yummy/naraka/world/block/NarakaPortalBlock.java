@@ -22,6 +22,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 public class NarakaPortalBlock extends BaseEntityBlock {
     private static final VoxelShape SHAPE = Shapes.box(-1, 0, 0.25, 2, 3, 0.75);
@@ -92,11 +93,19 @@ public class NarakaPortalBlock extends BaseEntityBlock {
             if (!entity.isOnPortalCooldown()) {
                 level.getBlockEntity(pos, NarakaBlockEntityTypes.NARAKA_PORTAL.get())
                         .ifPresent(NarakaPortalBlockEntity::use);
-
-                ServerLevel narakaLevel = serverLevel.getServer().getLevel(NarakaDimensions.NARAKA);
-                if (narakaLevel != null)
-                    entity.changeDimension(narakaLevel);
+                ServerLevel destinationLevel = getDestinationLevel(serverLevel);
+                if (destinationLevel != null) {
+                    entity.setPortalCooldown();
+                    entity.changeDimension(destinationLevel);
+                }
             }
         }
+    }
+
+    @Nullable
+    private ServerLevel getDestinationLevel(ServerLevel currentLevel) {
+        if (currentLevel.dimension() == NarakaDimensions.NARAKA)
+            return currentLevel.getServer().overworld();
+        return currentLevel.getServer().getLevel(NarakaDimensions.NARAKA);
     }
 }

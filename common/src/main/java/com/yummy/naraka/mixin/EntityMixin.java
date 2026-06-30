@@ -13,8 +13,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,6 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
+import java.util.Objects;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin {
@@ -67,45 +68,22 @@ public abstract class EntityMixin {
                 .forEach(type -> type.tick(naraka$self()));
     }
 
-    @Inject(method = "changeDimension", at = @At("HEAD"), cancellable = true)
-    public void changeDimensionToNaraka(ServerLevel destination, CallbackInfoReturnable<Entity> cir) {
-        if (level() instanceof ServerLevel currentLevel) {
-            if (destination.dimension() == NarakaDimensions.NARAKA) {
-                naraka$moveToNaraka(destination);
-                cir.cancel();
-            }
-
-            if (currentLevel.dimension() == NarakaDimensions.NARAKA && destination.dimension() == Level.OVERWORLD) {
-                naraka$moveToOverworldFromNaraka(destination);
-                cir.cancel();
-            }
+    @Inject(method = "findDimensionEntryPoint", at = @At("HEAD"), cancellable = true)
+    public void findDimensionEntryPoint(ServerLevel destination, CallbackInfoReturnable<PortalInfo> cir) {
+        if (destination.dimension() == NarakaDimensions.NARAKA) {
+            BlockPos destinationPosition = NarakaPortalBlock.createRandomNarakaSpawnPosition(level.getRandom());
+            Vec3 destinationPositionVec = Vec3.atBottomCenterOf(destinationPosition);
+            cir.setReturnValue(new PortalInfo(destinationPositionVec, Vec3.ZERO, 180, 0));
+            cir.cancel();
         }
-    }
+        if (destination.dimension() == Level.OVERWORLD && level.dimension() == NarakaDimensions.NARAKA) {
+            BlockPos spawnBlockPos = destination.getSharedSpawnPos();
+            if (naraka$self() instanceof ServerPlayer player)
+                spawnBlockPos = Objects.requireNonNullElse(player.getRespawnPosition(), spawnBlockPos);
 
-    @Unique
-    private void naraka$moveToNaraka(ServerLevel naraka) {
-        BlockPos destinationPosition = NarakaPortalBlock.createRandomNarakaSpawnPosition(level.getRandom());
-        Vec3 destinationPositionVec = Vec3.atBottomCenterOf(destinationPosition);
-        naraka$spawnEntityToDestination(naraka, destinationPositionVec);
-    }
-
-    @Unique
-    private void naraka$moveToOverworldFromNaraka(ServerLevel overworld) {
-        if (naraka$self() instanceof ServerPlayer player) {
-            BlockPos spawnBlockPos = player.getRespawnPosition();
-            if (spawnBlockPos == null)
-                spawnBlockPos = overworld.getSharedSpawnPos();
-            Player.findRespawnPositionAndUseSpawnBlock(overworld, spawnBlockPos, player.getRespawnAngle(), player.isRespawnForced(), true);
-        }
-    }
-
-    @Unique
-    private void naraka$spawnEntityToDestination(ServerLevel destination, Vec3 position) {
-        Entity entity = getType().create(destination);
-        if (entity != null) {
-            entity.restoreFrom(naraka$self());
-            entity.moveTo(position.x, position.y, position.z, 180, entity.getXRot());
-            entity.setDeltaMovement(getDeltaMovement());
+            Vec3 destinationPositionVec = Vec3.atBottomCenterOf(spawnBlockPos);
+            cir.setReturnValue(new PortalInfo(destinationPositionVec, Vec3.ZERO, 180, 0));
+            cir.cancel();
         }
     }
 
