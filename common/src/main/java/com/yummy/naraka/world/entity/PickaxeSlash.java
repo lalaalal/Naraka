@@ -87,6 +87,7 @@ public class PickaxeSlash extends LightTailEntity {
         prevAlpha = alpha;
         if (alpha < 1f)
             alpha = Math.max(0, alpha - 0.1f);
+        setDeltaMovement(getDeltaMovement().scale(1.05f));
     }
 
     private void serverTick(ServerLevel level) {

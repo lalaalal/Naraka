@@ -1,48 +1,16 @@
 package com.yummy.naraka.world.entity.data;
 
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
-import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public final class StunHelper {
     public static void holdEntity(LivingEntity livingEntity) {
-        NarakaAttributeModifiers.addAttributeModifier(
-                livingEntity,
-                Attributes.MOVEMENT_SPEED,
-                NarakaAttributeModifiers.STUN_PREVENT_MOVING
-        );
-        NarakaAttributeModifiers.addAttributeModifier(
-                livingEntity,
-                Attributes.JUMP_STRENGTH,
-                NarakaAttributeModifiers.STUN_PREVENT_JUMPING
-        );
-        NarakaAttributeModifiers.addAttributeModifier(
-                livingEntity,
-                Attributes.ATTACK_DAMAGE,
-                NarakaAttributeModifiers.STUN_PREVENT_ENTITY_ATTACK
-        );
         if (livingEntity instanceof Mob mob)
             mob.setNoAi(true);
     }
 
     public static void releaseEntity(LivingEntity livingEntity) {
-        NarakaAttributeModifiers.removeAttributeModifier(
-                livingEntity,
-                Attributes.MOVEMENT_SPEED,
-                NarakaAttributeModifiers.STUN_PREVENT_MOVING
-        );
-        NarakaAttributeModifiers.removeAttributeModifier(
-                livingEntity,
-                Attributes.JUMP_STRENGTH,
-                NarakaAttributeModifiers.STUN_PREVENT_JUMPING
-        );
-        NarakaAttributeModifiers.removeAttributeModifier(
-                livingEntity,
-                Attributes.ATTACK_DAMAGE,
-                NarakaAttributeModifiers.STUN_PREVENT_ENTITY_ATTACK
-        );
         if (livingEntity instanceof Mob mob)
             mob.setNoAi(false);
     }

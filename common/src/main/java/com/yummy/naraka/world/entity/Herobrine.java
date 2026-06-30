@@ -42,6 +42,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -198,6 +199,7 @@ public class Herobrine extends AbstractHerobrine {
         if (!cachedWatchingEntities.isEmpty()) {
             int randomSkip = random.nextInt(cachedWatchingEntities.size());
             cachedWatchingEntities.values().stream()
+                    .filter(livingEntity -> livingEntity instanceof Player)
                     .skip(randomSkip)
                     .findFirst()
                     .ifPresent(livingEntity -> selectedTarget = livingEntity);

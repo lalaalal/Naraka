@@ -49,7 +49,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
         setTailColor(SoulType.COPPER.color);
         shineScale = random.nextFloat() + 0.5f;
         entityData.set(SHINE_START_TICK, random.nextIntBetweenInclusive(20, 35));
-        xPower = yPower = zPower = 0.25;
+        xPower = yPower = zPower = 0;
     }
 
     public CorruptedStar(Level level, @Nullable Entity owner, Vec3 position, QuadraticBezier bezier, int prepareDuration) {
@@ -166,6 +166,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
             preparingTick();
         else {
             super.tick();
+            setDeltaMovement(getDeltaMovement().scale(1 + entityData.get(SHOOTING_ACCELERATION)));
             hasImpulse = true;
 
             if (tickCount == entityData.get(PREPARE_DURATION) + 10) {
@@ -260,13 +261,6 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
 
     private boolean canBeDeflected() {
         return canBeDeflectedByPlayer && tickCount > entityData.get(PREPARE_DURATION);
-    }
-
-    @Override
-    public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
-        xPower = yPower = zPower = entityData.get(SHOOTING_ACCELERATION);
-
-        super.shoot(x, y, z, velocity, inaccuracy);
     }
 
     @Override
