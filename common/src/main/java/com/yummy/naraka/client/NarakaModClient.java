@@ -4,7 +4,6 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.event.ClientEventHandler;
 import com.yummy.naraka.client.gui.components.HealthSlotOverlayExtension;
-import com.yummy.naraka.client.gui.hud.DeathCountHud;
 import com.yummy.naraka.client.gui.hud.LockedHealthHud;
 import com.yummy.naraka.client.gui.hud.StigmaHud;
 import com.yummy.naraka.client.gui.hud.WhiteHud;
@@ -135,7 +134,6 @@ public final class NarakaModClient {
     }
 
     private static void registerHudRenders() {
-        HudRendererRegistry.registerPostLayer(NarakaMod.location("hud", "death_count"), DeathCountHud::new);
         HudRendererRegistry.registerPostLayer(NarakaMod.location("hud", "stigma"), StigmaHud::new);
         HudRendererRegistry.registerPostLayer(NarakaMod.location("hud", "locked_health"), LockedHealthHud::new);
         HudRendererRegistry.registerPreLayer(NarakaMod.location("hud", "white"), WhiteHud::new);

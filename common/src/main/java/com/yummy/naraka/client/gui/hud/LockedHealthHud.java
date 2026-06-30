@@ -76,16 +76,16 @@ public class LockedHealthHud implements HudRenderer {
 
     private void renderLockedHeart(GuiGraphics graphics, int x, int y, boolean blink) {
         int u = blink ? 7 : 0;
-        graphics.blit(NarakaSprites.DEATH_COUNT_HEART, 14, 7, u, 0, x + 1, y + 1, 7, 7);
+        graphics.blit(NarakaSprites.DEATH_COUNT_HEART, x + 1, y + 1, u, 0, 7, 7, 14, 7);
     }
 
     private void renderRightHalfLockedHeart(GuiGraphics graphics, int x, int y, boolean blink) {
         int u = blink ? 7 : 0;
-        graphics.blit(NarakaSprites.DEATH_COUNT_HEART, 14, 7, u + 4, 0, x + 5, y + 1, 3, 7);
+        graphics.blit(NarakaSprites.DEATH_COUNT_HEART, x + 5, y + 1, u + 4, 0, 3, 7, 14, 7);
     }
 
     private void renderLeftHalfLockedHeart(GuiGraphics graphics, int x, int y, boolean blink) {
         int u = blink ? 7 : 0;
-        graphics.blit(NarakaSprites.DEATH_COUNT_HEART, 14, 7, u, 0, x + 1, y + 1, 4, 7);
+        graphics.blit(NarakaSprites.DEATH_COUNT_HEART, x + 1, y + 1, u, 0, 4, 7, 14, 7);
     }
 }

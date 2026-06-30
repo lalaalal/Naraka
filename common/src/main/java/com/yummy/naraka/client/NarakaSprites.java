@@ -7,11 +7,15 @@ import net.minecraft.resources.ResourceLocation;
 
 @Environment(EnvType.CLIENT)
 public final class NarakaSprites {
-    public static final ResourceLocation STIGMA_BACKGROUND = NarakaMod.location("hud/stigma_background");
-    public static final ResourceLocation STIGMA = NarakaMod.location("hud/stigma");
-    public static final ResourceLocation DEATH_COUNT_BACKGROUND = NarakaMod.location("hud/death_count_background");
-    public static final ResourceLocation DEATH_COUNT_HEART = NarakaMod.location("hud/death_count_heart");
-    public static final ResourceLocation STIGMA_CONSUME = NarakaMod.location("hud/stigma_consume");
+    public static final ResourceLocation STIGMA_BACKGROUND = hud("stigma_background.png");
+    public static final ResourceLocation STIGMA = hud("stigma.png");
+    public static final ResourceLocation DEATH_COUNT_BACKGROUND = hud("death_count_background.png");
+    public static final ResourceLocation DEATH_COUNT_HEART = hud("death_count_heart.png");
+    public static final ResourceLocation STIGMA_CONSUME = hud("stigma_consume.png");
 
-    public static final ResourceLocation PROGRESS_SLOT_SEPARATOR = NarakaMod.location("hud/progress_slot_separator");
+    public static final ResourceLocation PROGRESS_SLOT_SEPARATOR = hud("progress_slot_separator.png");
+
+    public static ResourceLocation hud(String name) {
+        return NarakaMod.location("textures/gui/sprites/hud", name);
+    }
 }
