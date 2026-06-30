@@ -68,8 +68,8 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         shinyEffect.setPos(mob.getEyePosition().add(0, 1.5, 0));
         level.addFreshEntity(shinyEffect);
 
-        tickFreezeManager.freeze(level);
         EntityDataHelper.setEntityData(mob, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
+        tickFreezeManager.freeze(level);
     }
 
     private void createField(ServerLevel level, @Nullable LivingEntity target) {

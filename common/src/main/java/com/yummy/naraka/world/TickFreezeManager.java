@@ -4,6 +4,7 @@ import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import java.util.HashSet;
@@ -31,7 +32,7 @@ public class TickFreezeManager {
     }
 
     public boolean shouldFreezeEntity(Entity entity) {
-        return EntityDataHelper.getRawEntityData(entity, NarakaEntityDataTypes.KEEP_UNFROZEN.get());
+        return !EntityDataHelper.getRawEntityData(entity, NarakaEntityDataTypes.KEEP_UNFROZEN.get()) && !(entity instanceof Player);
     }
 
     public void reset() {

@@ -154,6 +154,7 @@ public class NarakaEntityTypes {
     public static final HolderProxy<EntityType<?>, EntityType<AreaEffect>> AREA_EFFECT = register(
             "area_effect",
             EntityType.Builder.<AreaEffect>of(AreaEffect::new, MobCategory.MISC)
+                    .clientTrackingRange(128)
                     .fireImmune()
                     .sized(0, 0)
                     .noSave()
