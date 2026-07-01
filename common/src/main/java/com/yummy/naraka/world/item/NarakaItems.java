@@ -46,6 +46,7 @@ public class NarakaItems {
             NarakaPickaxeItem::new,
             properties().rarity(Rarity.EPIC)
                     .fireResistant()
+                    .durability(-1)
     );
 
     public static final HolderProxy<Item, Item> SKILL_CONTROLLER = registerItem(
@@ -132,6 +133,7 @@ public class NarakaItems {
             properties -> new SpearOfLonginusItem(properties
                     .fireResistant()
                     .rarity(Rarity.EPIC)
+                    .durability(-1)
             )
     );
 
@@ -166,7 +168,7 @@ public class NarakaItems {
                 new PurifiedSoulArmorItem(
                         armorMaterial,
                         armorType,
-                        properties.durability(1)
+                        properties.durability(-1)
                 )
         );
     }

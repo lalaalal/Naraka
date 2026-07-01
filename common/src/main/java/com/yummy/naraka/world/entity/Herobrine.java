@@ -515,6 +515,7 @@ public class Herobrine extends AbstractHerobrine {
     public void fixTimeAndWeather(ServerLevel level) {
         level.getGameRules().getRule(GameRules.RULE_DAYLIGHT).set(false, level.getServer());
         level.getGameRules().getRule(GameRules.RULE_WEATHER_CYCLE).set(false, level.getServer());
+        level.setWeatherParameters(-1, 0, false, false);
         level.setDayTime(18000);
     }
 

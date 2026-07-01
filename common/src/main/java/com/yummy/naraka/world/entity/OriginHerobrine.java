@@ -152,7 +152,7 @@ public class OriginHerobrine extends AbstractHerobrine {
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (source.getDirectEntity() instanceof CorruptedStar)
-            hurtByStar = true;
+            return hurtByStar = true;
         return super.hurt(source, amount);
     }
 
