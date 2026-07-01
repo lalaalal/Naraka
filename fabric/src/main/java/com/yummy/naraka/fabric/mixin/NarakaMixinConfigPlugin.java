@@ -5,7 +5,6 @@ import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,13 +27,7 @@ public class NarakaMixinConfigPlugin implements IMixinConfigPlugin {
 
     @Override
     public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
-        Set<String> shouldBeRemoved = new HashSet<>();
-        for (String otherTarget : otherTargets) {
-            if (myTargets.contains(otherTarget)) {
-                shouldBeRemoved.add(otherTarget);
-            }
-        }
-        myTargets.removeAll(shouldBeRemoved);
+
     }
 
     @Override

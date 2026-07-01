@@ -1,4 +1,4 @@
-package com.yummy.naraka.fabric.mixin;
+package com.yummy.naraka.fabric.mixin.client;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.shaders.Program;
