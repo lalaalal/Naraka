@@ -256,6 +256,7 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.NARAKA_PICKAXE, "Naraka Pickaxe", "파멸의 낫");
 
         addItem(NarakaItems.LOCKED_HEALTH, "Locked Health");
+        addItem(NarakaItems.HEROBRINE_SPAWN_EGG, "Herobrine Spawn Egg", "히로빈 생성 알");
 
         addBlock(NarakaBlocks.AMETHYST_ORE, "Amethyst Ore", "자수정 광석");
         addBlock(NarakaBlocks.DEEPSLATE_AMETHYST_ORE, "Deepslate Amethyst Ore", "심층암 자수정 광석");

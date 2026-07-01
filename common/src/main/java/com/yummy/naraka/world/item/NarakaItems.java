@@ -12,7 +12,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import org.jetbrains.annotations.Nullable;
@@ -104,6 +103,11 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> SOUL_INFUSED_LAPIS = registerSoulInfusedItem(SoulType.LAPIS);
     public static final HolderProxy<Item, Item> SOUL_INFUSED_AMETHYST = registerSoulInfusedItem(SoulType.AMETHYST);
     public static final HolderProxy<Item, Item> SOUL_INFUSED_NECTARIUM = registerSoulInfusedItem(SoulType.NECTARIUM);
+
+    public static final HolderProxy<Item, Item> HEROBRINE_SPAWN_EGG = registerItem(
+            "herobrine_spawn_egg",
+            properties -> SpawnEggItemProvider.create(NarakaEntityTypes.HEROBRINE, 0, 0xff0000, properties)
+    );
 
     // Spears
     public static final HolderProxy<Item, SpearItem> SPEAR_ITEM = registerItem(

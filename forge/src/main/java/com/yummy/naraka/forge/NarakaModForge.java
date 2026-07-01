@@ -40,6 +40,7 @@ public final class NarakaModForge implements NarakaInitializer {
         MethodInvoker.register(ForgeRegistryProxyProvider.class);
         MethodInvoker.register(ForgeCommandRegistry.class);
         MethodInvoker.register(ForgeEntityDataSerializerRegistry.class);
+        MethodInvoker.register(ForgeSpawnEggItemProvider.class);
 
         NarakaMod.initialize(this);
 
