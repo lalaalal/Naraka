@@ -13,6 +13,8 @@ public class NarakaNetworks {
     }
 
     public static void initialize() {
+        SERVER_PACKET_REGISTRAR.register(SkillRequestPacket.TYPE, SkillRequestPacket::handle);
+
         if (Platform.getInstance().getSide() == Platform.Side.SERVER) {
             SERVER_PACKET_REGISTRAR.define(SyncEntityDataPacket.TYPE);
             SERVER_PACKET_REGISTRAR.define(SyncAnimationPacket.TYPE);
@@ -24,7 +26,5 @@ public class NarakaNetworks {
             SERVER_PACKET_REGISTRAR.define(SyncProgressOverlayExtensionPacket.TYPE);
             SERVER_PACKET_REGISTRAR.define(SyncEntityMotionPacket.TYPE);
         }
-
-        SERVER_PACKET_REGISTRAR.register(SkillRequestPacket.TYPE, SkillRequestPacket::handle);
     }
 }
