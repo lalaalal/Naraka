@@ -52,7 +52,7 @@ public abstract class AbstractHerobrineModel<T extends AbstractHerobrine> extend
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        Color color = Color.of(red, green, blue, alpha);
+        Color color = Color.of(alpha, red, green, blue);
         if (color.alpha() == 0xff) {
             if (forShadow) {
                 color = NarakaConfig.CLIENT.shadowHerobrineColor.getValue();
