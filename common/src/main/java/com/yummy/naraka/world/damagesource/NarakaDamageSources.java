@@ -66,8 +66,8 @@ public class NarakaDamageSources {
         return source(NarakaDamageTypes.SPEAR_OF_LONGINUS, livingEntity);
     }
 
-    public static DamageSource stardust(Stardust stardust) {
-        return source(NarakaDamageTypes.STARDUST, stardust, stardust.getOwner());
+    public static DamageSource corruptedStar(LightTailEntity corruptedStar) {
+        return source(NarakaDamageTypes.CORRUPTED_STAR, corruptedStar, corruptedStar.getOwner());
     }
 
     public static DamageSource narakaFireball(NarakaFireball fireball) {

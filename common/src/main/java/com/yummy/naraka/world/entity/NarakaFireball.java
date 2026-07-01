@@ -15,7 +15,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Fireball;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -157,7 +159,8 @@ public class NarakaFireball extends Fireball {
     @Override
     protected void onHit(HitResult result) {
         super.onHit(result);
-        level().explode(this, damageSources().explosion(getOwner(), this), null, getX(), getY(), getZ(), 1.5f, false, Level.ExplosionInteraction.MOB, true);
+        level().explode(this, damageSources().explosion(getOwner(), this), null, position(), 1.5f, false, Level.ExplosionInteraction.MOB);
+        setDeltaMovement(Vec3.ZERO);
         discard();
     }
 
@@ -173,8 +176,7 @@ public class NarakaFireball extends Fireball {
         Entity owner = getOwner();
         if (hitEntity != owner && hitEntity instanceof LivingEntity livingEntity && !level().isClientSide()) {
             float damage = damageCalculator.calculateDamage(this);
-            ExplosionDamageCalculator explosionDamageCalculator = new EntityBasedExplosionDamageCalculator(this);
-            level().explode(this, getDamageSource(owner), explosionDamageCalculator, getX(), getY(), getZ(), 1.5f, false, Level.ExplosionInteraction.MOB, true);
+            livingEntity.hurt(getDamageSource(owner), damageCalculator.calculateDamage(this));
             for (HurtTargetListener listener : listeners)
                 listener.onHurtTarget(livingEntity, damage);
         }

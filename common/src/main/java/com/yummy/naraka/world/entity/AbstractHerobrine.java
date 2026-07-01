@@ -81,6 +81,11 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         entityData.define(ALPHA, 0xff);
     }
 
+    @Override
+    public boolean ignoreExplosion() {
+        return true;
+    }
+
     public void setAlpha(int alpha) {
         entityData.set(ALPHA, alpha);
     }

@@ -138,7 +138,7 @@ public class Stardust extends LightTailEntity {
             Entity source = owner == null ? this : owner;
             explode(1);
             if (entityHitResult.getEntity() instanceof Player livingEntity
-                    && !livingEntity.isInvulnerableTo(NarakaDamageSources.stardust(this))) {
+                    && !livingEntity.isInvulnerableTo(NarakaDamageSources.corruptedStar(this))) {
                 StigmaHelper.increaseStigma(serverLevel, livingEntity, source);
             }
         }
@@ -162,7 +162,7 @@ public class Stardust extends LightTailEntity {
             addParticles(NarakaFlameParticleOption.COPPER, 0.1, 120 * radius);
             addParticles(NarakaFlameParticleOption.COPPER, 0.3, 60 * radius);
         } else {
-            level().explode(source, NarakaDamageSources.stardust(this), null, position(), radius, false, Level.ExplosionInteraction.NONE);
+            level().explode(source, NarakaDamageSources.corruptedStar(this), null, position(), radius, false, Level.ExplosionInteraction.NONE);
         }
     }
 

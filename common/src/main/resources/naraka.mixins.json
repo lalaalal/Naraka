@@ -34,7 +34,6 @@
     "ConcretePowderBlockMixin",
     "DiggerItemMixin",
     "EntityMixin",
-    "ExplosionMixin",
     "FeatureMixin",
     "HerobrineTotemActivatingItemMixin",
     "LivingEntityMixin",

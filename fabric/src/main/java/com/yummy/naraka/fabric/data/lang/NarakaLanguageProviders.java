@@ -315,7 +315,7 @@ public class NarakaLanguageProviders {
         addDamageType(NarakaDamageTypes.STIGMA_CONSUME, "%2$s has been consumed %1$s's stigma", "%2$s이(가) %1$s의 낙인을 소모해 생명을 앗아갔습니다");
         addDamageType(NarakaDamageTypes.PICKAXE_SLASH, "%1$s was slain by %2$s", "%1$s이(가) %2$s에 썰렸습니다");
         addDamageType(NarakaDamageTypes.NARAKA_FIREBALL, "%1$s was blown by naraka fireball thrown by %2$s", "%1$s이(가) %2$s이(가) 던진 나락 화염구에 폭발했습니다");
-        addDamageType(NarakaDamageTypes.STARDUST, "%1$s was exploded by %2$s", "%1$s이(가) %2$s에 폭사했습니다");
+        addDamageType(NarakaDamageTypes.CORRUPTED_STAR, "%1$s was exploded by %2$s", "%1$s이(가) %2$s에 폭사했습니다");
         addDamageType(NarakaDamageTypes.PURIFIED_SOUL_FIRE, "%1$s went up in black flames", "%1$s이(가) 검은 불 속에서 타 죽었습니다");
         addDamageType(NarakaDamageTypes.SOUL_ATTACK, "%2$s executed %1$s");
 

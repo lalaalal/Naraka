@@ -3,6 +3,7 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.util.QuadraticBezier;
+import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
@@ -205,7 +206,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
         super.onHit(result);
         if (hitTick == 0) {
             Vec3 hitLocation = result.getLocation();
-            level().explode(this, damageSources().explosion(getOwner(), this), null, hitLocation.x(), hitLocation.y(), hitLocation.z(), 1.5f, false, Level.ExplosionInteraction.NONE, false);
+            level().explode(this, damageSources().explosion(this, getOwner()), null, hitLocation.x(), hitLocation.y(), hitLocation.z(), 1.5f, false, Level.ExplosionInteraction.NONE, false);
             hitTick = tickCount;
             setTargetPosition(Vec3.ZERO);
             if (level().isClientSide()) {
@@ -236,6 +237,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
         super.onHitEntity(result);
         if (level() instanceof ServerLevel serverLevel && result.getEntity() instanceof LivingEntity livingEntity) {
             stigmatizeEntity(serverLevel, livingEntity);
+            livingEntity.hurt(NarakaDamageSources.corruptedStar(this), 6);
         }
         if (entityData.get(STOP_ON_ENTITY_HIT))
             setDeltaMovement(Vec3.ZERO);
