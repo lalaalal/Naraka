@@ -42,7 +42,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -120,8 +119,6 @@ public class Herobrine extends AbstractHerobrine {
 
     private final List<Projectile> ignoredProjectiles = new ArrayList<>();
     private int maxWatchedEntities = 0;
-    @Nullable
-    private LivingEntity selectedTarget;
     private final List<UUID> watchingEntities = new ArrayList<>();
     private final Map<UUID, LivingEntity> cachedWatchingEntities = new HashMap<>();
     protected final List<Afterimage> afterimages = new ArrayList<>();
@@ -152,7 +149,6 @@ public class Herobrine extends AbstractHerobrine {
         skillManager.runOnSkillStart(this::enableEyeOnPhase3);
         skillManager.runOnSkillEnd(this::disableEyeOnPhase3);
         skillManager.runOnSkillEnd(this::useShadowFlicker);
-        skillManager.runOnSkillSelect(this::changeTarget);
         skillManager.enableOnly(PHASE_1_SKILLS);
         skillManager.shareCooldown(List.of(singlePickaxeSlashSkill, triplePickaxeSlashSkill));
 
@@ -193,17 +189,6 @@ public class Herobrine extends AbstractHerobrine {
     private void disableEyeOnPhase3(Skill<?> skill) {
         if (getPhase() == 3)
             setDisplayEye(false);
-    }
-
-    private void changeTarget(Skill<?> skill) {
-        if (!cachedWatchingEntities.isEmpty()) {
-            int randomSkip = random.nextInt(cachedWatchingEntities.size());
-            cachedWatchingEntities.values().stream()
-                    .filter(livingEntity -> livingEntity instanceof Player)
-                    .skip(randomSkip)
-                    .findFirst()
-                    .ifPresent(livingEntity -> selectedTarget = livingEntity);
-        }
     }
 
     public Optional<ShadowController> getShadowController() {
@@ -280,14 +265,6 @@ public class Herobrine extends AbstractHerobrine {
         } else {
             super.playHurtSound(source);
         }
-    }
-
-    @Override
-    @Nullable
-    public LivingEntity getTarget() {
-        if (selectedTarget != null && selectedTarget.isAlive())
-            return selectedTarget;
-        return super.getTarget();
     }
 
     @Override
