@@ -141,7 +141,7 @@ public class NarakaUtils {
     }
 
     public static double wrapRadians(double angle) {
-        double result = angle % Math.PI * 2;
+        double result = angle % (Math.PI * 2);
         if (result >= Math.PI) {
             result -= Math.PI * 2;
         }
