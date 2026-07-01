@@ -20,5 +20,4 @@ public abstract class FogRendererMixin {
             return true;
         return original;
     }
-
 }

@@ -40,6 +40,7 @@ public final class ForgePlatform extends Platform {
 
     @Override
     public boolean modExists(String id) {
-        return false;
+        return FMLLoader.getLoadingModList().getMods().stream()
+                .anyMatch(modInfo -> modInfo.getModId().equals(id));
     }
 }
