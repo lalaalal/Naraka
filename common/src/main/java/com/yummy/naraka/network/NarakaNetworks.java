@@ -15,6 +15,7 @@ public class NarakaNetworks {
             NetworkManager.clientbound().define(NarakaClientboundEventPacket.TYPE);
             NetworkManager.clientbound().define(AddBeamEffectPacket.TYPE);
             NetworkManager.clientbound().define(SyncProgressOverlayExtensionPacket.TYPE);
+            NetworkManager.clientbound().define(SyncEntityMotionPacket.TYPE);
         }
 
         initializeServer();
@@ -30,6 +31,7 @@ public class NarakaNetworks {
         NetworkManager.clientbound().register(NarakaClientboundEventPacket.TYPE, NarakaClientboundEventHandler::handleEvent);
         NetworkManager.clientbound().register(AddBeamEffectPacket.TYPE, AddBeamEffectPacket::handle);
         NetworkManager.clientbound().register(SyncProgressOverlayExtensionPacket.TYPE, SyncProgressOverlayExtensionHandler::handle);
+        NetworkManager.clientbound().register(SyncEntityMotionPacket.TYPE, SyncEntityMotionPacket::handle);
     }
 
     public static void initializeServer() {
