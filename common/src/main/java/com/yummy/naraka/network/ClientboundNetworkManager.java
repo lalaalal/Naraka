@@ -5,9 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Collection;
 
-public interface ClientboundNetworkManager extends PacketHandlerRegistrar {
-    <T extends CustomPacketPayload<T>> void define(CustomPacketPayload.Type<T> type);
-
+public interface ClientboundNetworkManager {
     <T extends CustomPacketPayload<T>> void send(ServerPlayer player, T payload);
 
     default <T extends CustomPacketPayload<T>> void send(Collection<ServerPlayer> players, T payload) {

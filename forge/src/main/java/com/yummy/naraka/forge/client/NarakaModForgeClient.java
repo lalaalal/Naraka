@@ -5,10 +5,9 @@ import com.yummy.naraka.client.init.NarakaClientInitializer;
 import com.yummy.naraka.invoker.MethodInvoker;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.registries.IdMappingEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +18,8 @@ public final class NarakaModForgeClient implements NarakaClientInitializer {
     private final IEventBus bus;
     private final List<Runnable> runAfterRegistryLoaded = new ArrayList<>();
 
-    public NarakaModForgeClient(IEventBus bus) {
-        this.bus = bus;
+    public NarakaModForgeClient(FMLJavaModLoadingContext context) {
+        this.bus = context.getModEventBus();
 
         MethodInvoker.register(ForgeClientEventHandler.class);
         MethodInvoker.register(ForgeModelLayerRegistry.class);
@@ -33,6 +32,7 @@ public final class NarakaModForgeClient implements NarakaClientInitializer {
         MethodInvoker.register(ForgeShaderRegistry.class);
         MethodInvoker.register(ForgeItemPropertiesRegistry.class);
         MethodInvoker.register(ForgeDimensionSpecialEffectsRegistry.class);
+        MethodInvoker.register(ForgeClientNetworkManager.class);
 
         NarakaModClient.initialize(this);
 

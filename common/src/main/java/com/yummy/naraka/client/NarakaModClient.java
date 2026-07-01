@@ -19,7 +19,6 @@ import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.data.worldgen.NarakaDimensionTypes;
 import com.yummy.naraka.init.ProgressOverlayExtensionFactoryRegistry;
-import com.yummy.naraka.network.NarakaNetworks;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
@@ -40,7 +39,7 @@ public final class NarakaModClient {
         NarakaModelLayers.initialize();
         NarakaShaders.initialize();
         NarakaRenderTypes.initialize();
-        initializer.runAfterRegistryLoaded(NarakaNetworks::initializeClient);
+        initializer.runAfterRegistryLoaded(NarakaClientNetworks::initialize);
 
         registerParticles();
 

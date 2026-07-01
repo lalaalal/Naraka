@@ -1,8 +1,8 @@
 package com.yummy.naraka.client.gui.screen;
 
+import com.yummy.naraka.client.NarakaClientNetworks;
 import com.yummy.naraka.client.gui.components.LocationList;
 import com.yummy.naraka.data.lang.LanguageKey;
-import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SkillRequestPacket;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.fabricmc.api.EnvType;
@@ -67,7 +67,7 @@ public abstract class SkillUsingMobControlScreen extends Screen {
         if (minecraft != null)
             minecraft.setScreen(null);
         SkillRequestPacket payload = new SkillRequestPacket(SkillRequestPacket.Event.DISABLE, mob);
-        NetworkManager.serverbound().send(payload);
+        NarakaClientNetworks.serverbound().send(payload);
     }
 
     private void onDone(Button button) {
@@ -85,7 +85,7 @@ public abstract class SkillUsingMobControlScreen extends Screen {
             if (locationList.getSelected() == null)
                 return;
             SkillRequestPacket payload = new SkillRequestPacket(event, mob, locationList.getSelected().location);
-            NetworkManager.serverbound().send(payload);
+            NarakaClientNetworks.serverbound().send(payload);
         };
     }
 

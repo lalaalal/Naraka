@@ -6,18 +6,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public abstract class NetworkManager {
-    private static final ServerboundNetworkManager SERVERBOUND = MethodInvoker.of(NetworkManager.class, "serverbound")
-            .invoke().result(ServerboundNetworkManager.class);
-
     private static final ClientboundNetworkManager CLIENTBOUND = MethodInvoker.of(NetworkManager.class, "clientbound")
             .invoke().result(ClientboundNetworkManager.class);
 
-    public static ServerboundNetworkManager serverbound() {
-        return SERVERBOUND;
-    }
-
     public static ClientboundNetworkManager clientbound() {
         return CLIENTBOUND;
+    }
+
+    public static void initialize() {
+
     }
 
     @FunctionalInterface

@@ -1,7 +1,10 @@
 package com.yummy.naraka.forge.init;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.core.registries.*;
+import com.yummy.naraka.core.registries.HolderProxy;
+import com.yummy.naraka.core.registries.RegistryProxyProvider;
+import com.yummy.naraka.core.registries.RegistryReader;
+import com.yummy.naraka.core.registries.RegistryWriter;
 import com.yummy.naraka.forge.NarakaEventBus;
 import com.yummy.naraka.invoker.MethodProxy;
 import net.minecraft.core.Registry;
@@ -50,7 +53,7 @@ public final class ForgeRegistryProxyProvider extends RegistryProxyProvider impl
         return registryWriter;
     }
 
-    protected class ForgeRegistryWriter<T> implements RegistryWriter<T> {
+    protected static class ForgeRegistryWriter<T> implements RegistryWriter<T> {
         private final ResourceKey<Registry<T>> registryKey;
         private final Map<ResourceLocation, Supplier<? extends T>> entries = new HashMap<>();
 

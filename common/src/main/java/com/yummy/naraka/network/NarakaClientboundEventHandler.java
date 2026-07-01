@@ -7,11 +7,13 @@ import com.yummy.naraka.client.gui.screen.SkillControlScreen;
 import com.yummy.naraka.client.sound.BossMusicPlayer;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.world.entity.SkillUsingMob;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.Music;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -26,17 +28,21 @@ public class NarakaClientboundEventHandler {
             NarakaClientboundEntityEventPacket.Event.STOP_BOSS_MUSIC, NarakaClientboundEventHandler::stopHerobrineMusic
     );
 
-    private static final Map<NarakaClientboundEventPacket.Event, Runnable> EVENT_MAP = Map.of(
-            NarakaClientboundEventPacket.Event.START_HEROBRINE_SKY, NarakaClientboundEventHandler::startHerobrineSky,
-            NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY, NarakaClientboundEventHandler::stopHerobrineSky,
-            NarakaClientboundEventPacket.Event.START_WHITE_SCREEN, NarakaClientboundEventHandler::startWhiteScreen,
-            NarakaClientboundEventPacket.Event.STOP_WHITE_FOG, NarakaClientboundEventHandler::stopWhiteScreen,
-            NarakaClientboundEventPacket.Event.SHAKE_CAMERA, NarakaClientboundEventHandler::shakeCamera,
-            NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT, NarakaClientboundEventHandler::monochrome,
-            NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT, NarakaClientboundEventHandler::ryoikiGrayEffect,
-            NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT, NarakaClientboundEventHandler::ryoikiGreenEffect,
-            NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY, NarakaClientboundEventHandler::muteMusicCategory
-    );
+    private static final Map<NarakaClientboundEventPacket.Event, Runnable> EVENT_MAP = Util.make(() -> {
+        Map<NarakaClientboundEventPacket.Event, Runnable> map = new HashMap<>();
+        map.put(NarakaClientboundEventPacket.Event.START_HEROBRINE_SKY, NarakaClientboundEventHandler::startHerobrineSky);
+        map.put(NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY, NarakaClientboundEventHandler::stopHerobrineSky);
+        map.put(NarakaClientboundEventPacket.Event.START_WHITE_SCREEN, NarakaClientboundEventHandler::startWhiteScreen);
+        map.put(NarakaClientboundEventPacket.Event.STOP_WHITE_FOG, NarakaClientboundEventHandler::stopWhiteScreen);
+        map.put(NarakaClientboundEventPacket.Event.SHAKE_CAMERA, NarakaClientboundEventHandler::shakeCamera);
+        map.put(NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT, NarakaClientboundEventHandler::monochrome);
+        map.put(NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT, NarakaClientboundEventHandler::ryoikiGrayEffect);
+        map.put(NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT, NarakaClientboundEventHandler::ryoikiGreenEffect);
+        map.put(NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY, NarakaClientboundEventHandler::muteMusicCategory);
+        map.put(NarakaClientboundEventPacket.Event.FREEZE_TICK, NarakaClientboundEventHandler::freezeTick);
+        map.put(NarakaClientboundEventPacket.Event.UNFREEZE_TICK, NarakaClientboundEventHandler::unfreezeTick);
+        return map;
+    });
 
     public static final Music[] HEROBRINE_MUSIC = new Music[]{
             NarakaMusics.HEROBRINE_PHASE_1,
@@ -59,7 +65,8 @@ public class NarakaClientboundEventHandler {
     public static void handleEvent(NarakaClientboundEventPacket packet, NetworkManager.Context context) {
         Minecraft.getInstance().execute(() -> {
             for (NarakaClientboundEventPacket.Event event : packet.events())
-                event.run();
+                EVENT_MAP.getOrDefault(event, () -> {
+                }).run();
         });
     }
 

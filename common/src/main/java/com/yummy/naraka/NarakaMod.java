@@ -6,11 +6,15 @@ import com.yummy.naraka.client.init.NarakaClientInitializer;
 import com.yummy.naraka.commands.NarakaCommands;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
-import com.yummy.naraka.core.registries.*;
+import com.yummy.naraka.core.registries.NarakaRegistries;
+import com.yummy.naraka.core.registries.RegistryFactory;
+import com.yummy.naraka.core.registries.RegistryProxyProvider;
+import com.yummy.naraka.core.registries.RegistryWriter;
 import com.yummy.naraka.event.EventHandler;
 import com.yummy.naraka.event.NarakaGameEvents;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.network.NarakaNetworks;
+import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.world.NarakaBiomes;
 import com.yummy.naraka.world.block.NarakaBlocks;
@@ -53,6 +57,7 @@ public final class NarakaMod {
         Platform.getInstance();
         EventHandler.prepare();
         RegistryProxyProvider.initialize();
+        NetworkManager.initialize();
         NarakaConfig.initialize();
 
         RegistryFactory.initialize();

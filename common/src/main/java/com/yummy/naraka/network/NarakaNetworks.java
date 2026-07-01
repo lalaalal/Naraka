@@ -1,40 +1,30 @@
 package com.yummy.naraka.network;
 
 import com.yummy.naraka.Platform;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.yummy.naraka.invoker.MethodInvoker;
 
 public class NarakaNetworks {
+    private static final PacketRegistrar SERVER_PACKET_REGISTRAR = getServerPacketRegistrar();
+
+    public static PacketRegistrar getServerPacketRegistrar() {
+        return MethodInvoker.of(NarakaNetworks.class, "getServerPacketRegistrar")
+                .invoke()
+                .result(PacketRegistrar.class);
+    }
+
     public static void initialize() {
         if (Platform.getInstance().getSide() == Platform.Side.SERVER) {
-            NetworkManager.clientbound().define(SyncEntityDataPacket.TYPE);
-            NetworkManager.clientbound().define(SyncAnimationPacket.TYPE);
-            NetworkManager.clientbound().define(SyncAfterimagePacket.TYPE);
-            NetworkManager.clientbound().define(SyncPlayerMovementPacket.TYPE);
-            NetworkManager.clientbound().define(NarakaClientboundEntityEventPacket.TYPE);
-            NetworkManager.clientbound().define(NarakaClientboundEventPacket.TYPE);
-            NetworkManager.clientbound().define(AddBeamEffectPacket.TYPE);
-            NetworkManager.clientbound().define(SyncProgressOverlayExtensionPacket.TYPE);
-            NetworkManager.clientbound().define(SyncEntityMotionPacket.TYPE);
+            SERVER_PACKET_REGISTRAR.define(SyncEntityDataPacket.TYPE);
+            SERVER_PACKET_REGISTRAR.define(SyncAnimationPacket.TYPE);
+            SERVER_PACKET_REGISTRAR.define(SyncAfterimagePacket.TYPE);
+            SERVER_PACKET_REGISTRAR.define(SyncPlayerMovementPacket.TYPE);
+            SERVER_PACKET_REGISTRAR.define(NarakaClientboundEntityEventPacket.TYPE);
+            SERVER_PACKET_REGISTRAR.define(NarakaClientboundEventPacket.TYPE);
+            SERVER_PACKET_REGISTRAR.define(AddBeamEffectPacket.TYPE);
+            SERVER_PACKET_REGISTRAR.define(SyncProgressOverlayExtensionPacket.TYPE);
+            SERVER_PACKET_REGISTRAR.define(SyncEntityMotionPacket.TYPE);
         }
 
-        initializeServer();
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static void initializeClient() {
-        NetworkManager.clientbound().register(SyncEntityDataPacket.TYPE, SyncEntityDataPacket::handle);
-        NetworkManager.clientbound().register(SyncAnimationPacket.TYPE, SyncAnimationPacket::handle);
-        NetworkManager.clientbound().register(SyncAfterimagePacket.TYPE, SyncAfterimagePacket::handle);
-        NetworkManager.clientbound().register(SyncPlayerMovementPacket.TYPE, SyncPlayerMovementPacket::handle);
-        NetworkManager.clientbound().register(NarakaClientboundEntityEventPacket.TYPE, NarakaClientboundEventHandler::handleEntityEvent);
-        NetworkManager.clientbound().register(NarakaClientboundEventPacket.TYPE, NarakaClientboundEventHandler::handleEvent);
-        NetworkManager.clientbound().register(AddBeamEffectPacket.TYPE, AddBeamEffectPacket::handle);
-        NetworkManager.clientbound().register(SyncProgressOverlayExtensionPacket.TYPE, SyncProgressOverlayExtensionHandler::handle);
-        NetworkManager.clientbound().register(SyncEntityMotionPacket.TYPE, SyncEntityMotionPacket::handle);
-    }
-
-    public static void initializeServer() {
-        NetworkManager.serverbound().register(SkillRequestPacket.TYPE, SkillRequestPacket::handle);
+        SERVER_PACKET_REGISTRAR.register(SkillRequestPacket.TYPE, SkillRequestPacket::handle);
     }
 }

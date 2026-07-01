@@ -45,7 +45,7 @@ public final class NarakaModForge implements NarakaInitializer {
         NarakaMod.initialize(this);
 
         if (Platform.getInstance().getSide() == Platform.Side.CLIENT) {
-            new NarakaModForgeClient(context.getModEventBus());
+            new NarakaModForgeClient(context);
         }
 
         context.getModEventBus().addListener(this::commonSetup);
