@@ -59,6 +59,7 @@ loom {
 }
 
 processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     inputs.property 'version', project.version
 
     filesMatching('META-INF/mods.toml') {
@@ -77,6 +78,10 @@ shadowJar {
 
 remapJar {
     input.set shadowJar.archiveFile
+}
+
+sourcesJar {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 publisher {

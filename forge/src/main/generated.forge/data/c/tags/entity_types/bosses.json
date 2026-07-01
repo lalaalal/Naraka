@@ -1,6 +1,6 @@
 {
-  "replace": false,
   "values": [
+    "#forge:bosses",
     "naraka:herobrine",
     "naraka:origin_herobrine"
   ]
