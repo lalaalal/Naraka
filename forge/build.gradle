@@ -34,6 +34,11 @@ repositories {
 dependencies {
     forge "net.minecraftforge:forge:${project.forge_version}"
 
+    implementation("io.github.llamalad7:mixinextras-forge:0.5.4")
+    annotationProcessor("io.github.llamalad7:mixinextras-forge:0.5.4")
+
+    include("io.github.llamalad7:mixinextras-forge:0.5.4")
+
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionForge')
 }
