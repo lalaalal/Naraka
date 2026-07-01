@@ -215,6 +215,7 @@ public class NarakaLanguageProviders {
         addItem(NarakaItems.GOD_BLOOD, "§lGod Blood", "§l신의 피");
         addItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE, "Soul Smithing Template", "영혼 대장장이 형판");
 
+        addItem(NarakaItems.NETHERITE_HAMMER, "Netherite Hammer", "네더라이트 해머");
         addItem(NarakaItems.SPEAR_ITEM, "Spear", "창");
         addItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM, "Mighty Holy Spear", "강력한 성스러운 창");
         addItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM, "Spear of Longinus", "롱기누스의 창");

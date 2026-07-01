@@ -3,13 +3,13 @@ package com.yummy.naraka.world.block;
 import com.yummy.naraka.world.block.entity.ForgingBlockEntity;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.block.entity.SoulSmithingBlockEntity;
+import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -63,7 +63,7 @@ public class SoulSmithingBlock extends ForgingBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         ItemStack stack = player.getItemInHand(hand);
-        if (stack.is(Items.NETHERITE_PICKAXE))
+        if (stack.is(NarakaItems.NETHERITE_HAMMER.get()))
             return super.use(state, level, pos, player, hand, hitResult);
         if (blockEntity instanceof SoulSmithingBlockEntity soulSmithingBlockEntity) {
             if (isStabilizerSide(state, hitResult.getDirection())

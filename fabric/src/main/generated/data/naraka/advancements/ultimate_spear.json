@@ -22,8 +22,7 @@
     "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "naraka:spear_of_longinus",
-      "nbt": "{Damage:0}"
+      "item": "naraka:spear_of_longinus"
     },
     "show_toast": true,
     "title": {

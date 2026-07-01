@@ -10,6 +10,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -47,6 +48,13 @@ public class NarakaItems {
             properties().rarity(Rarity.EPIC)
                     .fireResistant()
                     .durability(-1)
+    );
+
+    public static final HolderProxy<Item, Item> NETHERITE_HAMMER = registerItem(
+            "netherite_hammer",
+            properties -> new HammerItem(15, -3.6f, Tiers.NETHERITE, BlockTags.CRYSTAL_SOUND_BLOCKS, properties),
+            properties().rarity(Rarity.EPIC)
+                    .fireResistant()
     );
 
     public static final HolderProxy<Item, Item> SKILL_CONTROLLER = registerItem(

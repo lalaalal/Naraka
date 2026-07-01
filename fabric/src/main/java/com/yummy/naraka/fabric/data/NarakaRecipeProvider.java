@@ -89,6 +89,24 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .unlockedBy(getHasName(Items.BLAZE_ROD), has(Items.BLAZE_ROD))
                 .save(output);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, NarakaItems.NETHERITE_HAMMER.get())
+                .define('N', Items.NETHERITE_BLOCK)
+                .define('/', Items.STICK)
+                .pattern("NNN")
+                .pattern(" / ")
+                .pattern(" / ")
+                .unlockedBy(getHasName(Items.NETHERITE_BLOCK), has(Items.NETHERITE_BLOCK))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, NarakaBlocks.SOUL_SMITHING_BLOCK.get())
+                .define('N', Items.NETHERITE_BLOCK)
+                .define('S', Items.SMITHING_TABLE)
+                .pattern("NN ")
+                .pattern("SS ")
+                .pattern("SS ")
+                .unlockedBy(getHasName(Items.SMITHING_TABLE), has(Items.SMITHING_TABLE))
+                .save(output);
+
         nineBlockStorageRecipes(output, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_REDSTONE.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK.get());
         nineBlockStorageRecipes(output, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_COPPER.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK.get());
         nineBlockStorageRecipes(output, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_GOLD.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK.get());

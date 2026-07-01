@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "N": {
+      "item": "minecraft:netherite_block"
+    },
+    "S": {
+      "item": "minecraft:smithing_table"
+    }
+  },
+  "pattern": [
+    "NN ",
+    "SS ",
+    "SS "
+  ],
+  "result": {
+    "item": "naraka:soul_smithing_block"
+  },
+  "show_notification": true
+}

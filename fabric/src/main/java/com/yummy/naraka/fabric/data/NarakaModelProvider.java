@@ -191,6 +191,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         generator.generateFlatItem(NarakaItems.NARAKA_FIREBALL_STAFF.get(), ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
         generator.generateFlatItem(NarakaItems.LOCKED_HEALTH.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.HEROBRINE_SPAWN_EGG.get(), SPAWN_EGG);
+        generator.generateFlatItem(NarakaItems.NETHERITE_HAMMER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 
         NarakaItems.forEachSoulInfusedItem(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_ITEM));
         NarakaItems.forEachSoulInfusedSword(item -> generator.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM));

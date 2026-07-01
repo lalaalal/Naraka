@@ -20,6 +20,7 @@ accessible field net/minecraft/world/item/CreativeModeTabs NATURAL_BLOCKS Lnet/m
 accessible field net/minecraft/world/item/CreativeModeTabs FOOD_AND_DRINKS Lnet/minecraft/resources/ResourceKey;
 accessible field net/minecraft/world/item/CreativeModeTabs INGREDIENTS Lnet/minecraft/resources/ResourceKey;
 accessible field net/minecraft/world/item/CreativeModeTabs SPAWN_EGGS Lnet/minecraft/resources/ResourceKey;
+accessible field net/minecraft/world/item/CreativeModeTabs COMBAT Lnet/minecraft/resources/ResourceKey;
 
 accessible method net/minecraft/client/particle/FlameParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)V
 accessible method net/minecraft/client/particle/DripParticle$DripHangParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;Lnet/minecraft/core/particles/ParticleOptions;)V

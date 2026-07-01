@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "/": {
+      "item": "minecraft:stick"
+    },
+    "N": {
+      "item": "minecraft:netherite_block"
+    }
+  },
+  "pattern": [
+    "NNN",
+    " / ",
+    " / "
+  ],
+  "result": {
+    "item": "naraka:netherite_hammer"
+  },
+  "show_notification": true
+}

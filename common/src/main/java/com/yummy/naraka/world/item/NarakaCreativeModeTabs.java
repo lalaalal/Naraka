@@ -56,6 +56,7 @@ public class NarakaCreativeModeTabs {
         CreativeModeTabEvents.modifyEntries(CreativeModeTabs.FOOD_AND_DRINKS, NarakaCreativeModeTabs::modifyFoodAndDrinksTab);
         CreativeModeTabEvents.modifyEntries(CreativeModeTabs.INGREDIENTS, NarakaCreativeModeTabs::modifyIngredientsTab);
         CreativeModeTabEvents.modifyEntries(CreativeModeTabs.SPAWN_EGGS, NarakaCreativeModeTabs::modifySpawnEggsTab);
+        CreativeModeTabEvents.modifyEntries(CreativeModeTabs.COMBAT, NarakaCreativeModeTabs::modifyCombatTab);
     }
 
     private static void createNarakaTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
@@ -83,7 +84,7 @@ public class NarakaCreativeModeTabs {
         output.accept(NarakaItems.NARAKA_PICKAXE.get());
         output.accept(NarakaItems.SPEAR_ITEM.get());
         output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get());
-        output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
+        output.accept(NarakaItems.NETHERITE_HAMMER.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_1_DISC.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_2_DISC.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_3_DISC.get());
@@ -157,6 +158,7 @@ public class NarakaCreativeModeTabs {
         output.accept(NarakaItems.SKILL_CONTROLLER.get());
         output.accept(NarakaItems.ANIMATION_CONTROLLER.get());
         output.accept(NarakaItems.NARAKA_FIREBALL_STAFF.get());
+        output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
     }
 
     private static ItemStack blessed(Item item) {
@@ -200,6 +202,10 @@ public class NarakaCreativeModeTabs {
 
     private static void modifySpawnEggsTab(TabEntries entries) {
         entries.addAfter(Blocks.SPAWNER, NarakaBlocks.HEROBRINE_TOTEM.get());
+    }
+
+    private static void modifyCombatTab(TabEntries entries) {
+        entries.addAfter(Items.NETHERITE_AXE, NarakaItems.NETHERITE_HAMMER.get());
     }
 
     public interface TabEntries {
