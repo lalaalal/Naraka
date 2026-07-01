@@ -52,6 +52,8 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
                 .add(NarakaItems.PURIFIED_SOUL_LEGGINGS.get())
                 .add(NarakaItems.PURIFIED_SOUL_BOOTS.get());
 
+        getOrCreateTagBuilder(ItemTags.TRIMMABLE_ARMOR)
+                .addTag(NarakaItemTags.PURIFIED_SOUL_ARMOR);
         FabricTagBuilder soulReinforceable = getOrCreateTagBuilder(NarakaItemTags.SOUL_REINFORCEABLE)
                 .addTag(NarakaItemTags.PURIFIED_SOUL_ARMOR)
                 .add(NarakaItems.PURIFIED_SOUL_SWORD.get());

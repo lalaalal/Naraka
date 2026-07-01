@@ -5,6 +5,7 @@ import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryWriter;
 import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.advancements.critereon.TagPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -109,13 +110,12 @@ public class NarakaReinforcementEffects {
 
     public static void initialize() {
         addEffectsByItem(ItemTags.SWORDS, INCREASE_ATTACK_DAMAGE);
-        addEffectsByItem(ItemTags.TRIMMABLE_ARMOR, INCREASE_ATTACK_DAMAGE);
         addEffectsByItem(NarakaItemTags.SPEAR_ENCHANTABLE, INCREASE_ATTACK_DAMAGE);
         addEffectsByItem(ItemTags.TRIMMABLE_ARMOR, INCREASE_ARMOR, INCREASE_ARMOR_TOUGHNESS);
-        addEffectsByItem(and(isBlessed(), is(ItemTags.TRIMMABLE_ARMOR)), ORE_SEE_THROUGH, LAVA_VISION, EFFICIENT_MINING_IN_WATER, WATER_BREATHING);
-        addEffectsByItem(and(isBlessed(), is(ItemTags.TRIMMABLE_ARMOR)), FLYING, FIRE_RESISTANCE);
-        addEffectsByItem(and(isBlessed(), is(ItemTags.TRIMMABLE_ARMOR)), KNOCKBACK_RESISTANCE, IGNORE_LIQUID_PUSHING);
-        addEffectsByItem(and(isBlessed(), is(ItemTags.TRIMMABLE_ARMOR)), FASTER_LIQUID_SWIMMING, EFFICIENT_MINING_IN_AIR);
+        addEffectsByItem(and(isBlessed(), is(NarakaItems.PURIFIED_SOUL_HELMET)), ORE_SEE_THROUGH, LAVA_VISION, EFFICIENT_MINING_IN_WATER, WATER_BREATHING);
+        addEffectsByItem(and(isBlessed(), is(NarakaItems.PURIFIED_SOUL_CHESTPLATE)), FLYING, FIRE_RESISTANCE);
+        addEffectsByItem(and(isBlessed(), is(NarakaItems.PURIFIED_SOUL_LEGGINGS)), KNOCKBACK_RESISTANCE, IGNORE_LIQUID_PUSHING);
+        addEffectsByItem(and(isBlessed(), is(NarakaItems.PURIFIED_SOUL_BOOTS)), FASTER_LIQUID_SWIMMING, EFFICIENT_MINING_IN_AIR);
     }
 
     private static Predicate<ItemStack> isBlessed() {
@@ -128,5 +128,9 @@ public class NarakaReinforcementEffects {
 
     private static Predicate<ItemStack> is(TagKey<Item> tag) {
         return itemStack -> itemStack.is(tag);
+    }
+
+    private static Predicate<ItemStack> is(Holder<Item> item) {
+        return itemStack -> itemStack.is(item.value());
     }
 }

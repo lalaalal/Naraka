@@ -74,7 +74,7 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
 
     @Override
     public void onReinforcementIncreased(ItemStack itemStack, int previousReinforcement, int currentReinforcement) {
-        if (itemStack.getItem() instanceof Equipable equipable) {
+        if (currentReinforcement >= 10 && itemStack.getItem() instanceof Equipable equipable) {
             EquipmentSlot slot = equipable.getEquipmentSlot();
             itemStack.addAttributeModifier(attribute, createModifier(slot, currentReinforcement), slot);
         }

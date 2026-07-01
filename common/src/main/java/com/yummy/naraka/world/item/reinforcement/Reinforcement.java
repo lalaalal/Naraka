@@ -58,6 +58,11 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) {
         return NarakaNbtUtils.readOr(tag, "Reinforcement", CODEC, RegistryOps.create(NbtOps.INSTANCE, registries), ZERO);
     }
 
+    public static Reinforcement getOrDefault(ItemStack itemStack, HolderSet<ReinforcementEffect> effects, HolderLookup.Provider registries) {
+        CompoundTag tag = itemStack.getOrCreateTag();
+        return NarakaNbtUtils.readOr(tag, "Reinforcement", CODEC, RegistryOps.create(NbtOps.INSTANCE, registries), zero(effects));
+    }
+
     public static void set(ItemStack itemStack, Reinforcement reinforcement, HolderLookup.Provider registries) {
         CompoundTag tag = itemStack.getOrCreateTag();
         NarakaNbtUtils.store(tag, "Reinforcement", CODEC, RegistryOps.create(NbtOps.INSTANCE, registries), reinforcement);
@@ -79,7 +84,7 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) {
      * @see Reinforcement#increase(ItemStack, Holder, HolderLookup.Provider)
      */
     public static boolean increase(ItemStack itemStack, HolderSet<ReinforcementEffect> effects, HolderLookup.Provider registries) {
-        Reinforcement original = get(itemStack, registries);
+        Reinforcement original = getOrDefault(itemStack, effects, registries);
         if (original.value >= MAX_VALUE)
             return false;
 
