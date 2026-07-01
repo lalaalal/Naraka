@@ -5,12 +5,15 @@
     "/": {
       "item": "minecraft:stick"
     },
-    "N": {
+    "B": {
       "item": "minecraft:netherite_block"
+    },
+    "I": {
+      "item": "minecraft:netherite_ingot"
     }
   },
   "pattern": [
-    "NNN",
+    "IBI",
     " / ",
     " / "
   ],

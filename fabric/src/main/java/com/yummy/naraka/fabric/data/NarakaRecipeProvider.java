@@ -90,9 +90,10 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .save(output);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, NarakaItems.NETHERITE_HAMMER.get())
-                .define('N', Items.NETHERITE_BLOCK)
+                .define('B', Items.NETHERITE_BLOCK)
+                .define('I', Items.NETHERITE_INGOT)
                 .define('/', Items.STICK)
-                .pattern("NNN")
+                .pattern("IBI")
                 .pattern(" / ")
                 .pattern(" / ")
                 .unlockedBy(getHasName(Items.NETHERITE_BLOCK), has(Items.NETHERITE_BLOCK))
