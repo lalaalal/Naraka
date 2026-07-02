@@ -166,6 +166,14 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     @Override
     protected void onHit(HitResult result) {
         super.onHit(result);
+        float damage = damageCalculator.calculateDamage(this);
+        ExplosionDamageCalculator explosionDamageCalculator = new EntityBasedExplosionDamageCalculator(this) {
+            @Override
+            public float getEntityDamageAmount(Explosion explosion, Entity entity, float seenPercent) {
+                return damage;
+            }
+        };
+        level().explode(this, getDamageSource(getOwner()), explosionDamageCalculator, position(), 1.5f, false, Level.ExplosionInteraction.TRIGGER);
         discard();
     }
 
@@ -181,13 +189,6 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         Entity owner = getOwner();
         if (hitEntity != owner && hitEntity instanceof LivingEntity livingEntity && !level().isClientSide()) {
             float damage = damageCalculator.calculateDamage(this);
-            ExplosionDamageCalculator explosionDamageCalculator = new EntityBasedExplosionDamageCalculator(this) {
-                @Override
-                public float getEntityDamageAmount(Explosion explosion, Entity entity, float seenPercent) {
-                    return damage;
-                }
-            };
-            level().explode(this, getDamageSource(owner), explosionDamageCalculator, position(), 1.5f, false, Level.ExplosionInteraction.TRIGGER);
             for (HurtTargetListener listener : listeners)
                 listener.onHurtTarget(livingEntity, damage);
         }
