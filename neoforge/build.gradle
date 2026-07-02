@@ -23,6 +23,7 @@ neoForge {
         client {
             client()
             gameDirectory = this.mkdir(this.file("run/${minecraft_version}"))
+            programArguments.addAll '--username', "${System.getProperty("user.name")}"
         }
         data {
             clientData()
@@ -33,7 +34,6 @@ neoForge {
         }
         server {
             server()
-            this.file("runs/server").createParentDirectories()
             gameDirectory = this.mkdir(this.file("run/${minecraft_version}"))
         }
     }
