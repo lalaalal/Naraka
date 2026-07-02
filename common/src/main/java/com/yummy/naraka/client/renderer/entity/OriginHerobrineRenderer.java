@@ -1,6 +1,7 @@
 package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.layer.HerobrineEyeLayer;
@@ -64,9 +65,8 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
         float shinyTick = 0x80;
         if (renderState.alpha < 0xff)
             shinyTick += (0xff - renderState.alpha) / 2f;
-        ShinyEffectRenderer.submitShiny(shinyTick, 0xff, 0.25f, renderState.yRot + 180, false, 0xffffff, poseStack, submitNodeCollector);
-        ShinyEffectRenderer.submitShiny(shinyTick, 0xff, 0.25f, renderState.yRot, false, 0xffffff, poseStack, submitNodeCollector);
-        submitColors(renderState, poseStack, submitNodeCollector);
+        ShinyEffectRenderer.submitShiny(shinyTick, 0xff, 0.25f, false, 0xffffff, poseStack, submitNodeCollector, cameraRenderState);
+        submitColors(renderState, poseStack, submitNodeCollector, cameraRenderState);
 
         poseStack.popPose();
 
@@ -127,7 +127,7 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
         );
     }
 
-    private void submitColors(OriginHerobrineRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+    private void submitColors(OriginHerobrineRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         int index = 0;
         for (SoulType soulType : renderState.soulTypeAlpha.keySet()) {
             float alpha = renderState.soulTypeAlpha.getOrDefault(soulType, 0f);
@@ -138,11 +138,10 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
             float scale = 0.066f - Mth.log2(halfIndex) * 0.03f;
 
             poseStack.pushPose();
-            poseStack.translate(xOffset, 0, 0);
+            poseStack.mulPose(Axis.YN.rotationDegrees(cameraRenderState.yRot + 180));
+            poseStack.translate(xOffset, 0, -0.005);
             poseStack.scale(4 + halfIndex, 1, 1);
-            ShinyEffectRenderer.submitShiny(alpha * 50, 100, scale, renderState.yRot + 180, true, soulType.color, poseStack, submitNodeCollector);
-            ShinyEffectRenderer.submitShiny(alpha * 50, 100, scale, renderState.yRot, true, soulType.color, poseStack, submitNodeCollector);
-
+            ShinyEffectRenderer.submitShiny(alpha * 50, 100, scale, 0, true, soulType.color, poseStack, submitNodeCollector);
             poseStack.popPose();
 
             index++;

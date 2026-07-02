@@ -85,8 +85,8 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         poseStack.rotateAround(new Quaternionf().setAngleAxis(Mth.PI / 3, NarakaRenderUtils.SIN_45, 0, NarakaRenderUtils.SIN_45), 0, 0.25f, 0);
         poseStack.rotateAround(Axis.YP.rotationDegrees(rotation), 0, 0.25f, 0);
         poseStack.rotateAround(Axis.ZP.rotationDegrees(rotation), 0, 0.25f, 0);
-        submitNodeCollector.submitModelPart(inner, poseStack, RenderTypes.lightning(), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.white(0.67f * entityRenderState.alphaMultiplier), null);
-        submitNodeCollector.submitModelPart(outer, poseStack, RenderTypes.lightning(), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.color(0.73f * entityRenderState.alphaMultiplier, entityRenderState.tailColor), null);
+        submitNodeCollector.order(10).submitModelPart(inner, poseStack, RenderTypes.lightning(), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.white(0.67f * entityRenderState.alphaMultiplier), null);
+        submitNodeCollector.order(10).submitModelPart(outer, poseStack, RenderTypes.lightning(), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.color(0.73f * entityRenderState.alphaMultiplier, entityRenderState.tailColor), null);
 
         poseStack.popPose();
 
@@ -94,7 +94,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         if (0 <= tick && tick <= entityRenderState.shineLifetime) {
             poseStack.pushPose();
             poseStack.translate(0, 0.25f, 0);
-            ShinyEffectRenderer.submitShiny(tick, entityRenderState.shineLifetime, entityRenderState.shineScale, entityRenderState.verticalShine, entityRenderState.tailColor, poseStack, submitNodeCollector);
+            ShinyEffectRenderer.submitShiny(tick, entityRenderState.shineLifetime, entityRenderState.shineScale, entityRenderState.verticalShine, entityRenderState.tailColor, poseStack, submitNodeCollector, cameraRenderState);
             poseStack.popPose();
         }
         submitTargetPoint(entityRenderState, poseStack, submitNodeCollector);

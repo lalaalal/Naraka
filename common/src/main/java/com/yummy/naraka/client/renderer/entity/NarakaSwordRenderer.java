@@ -80,7 +80,7 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
         });
 
         poseStack.scale(entityRenderState.scale, entityRenderState.scale, entityRenderState.scale);
-        ShinyEffectRenderer.submitShiny(entityRenderState.maxAlpha * 50, 100, 0.125f, false, entityRenderState.color, poseStack, submitNodeCollector);
+        ShinyEffectRenderer.submitShiny(entityRenderState.maxAlpha * 50, 100, 0.125f, false, entityRenderState.color, poseStack, submitNodeCollector, cameraRenderState);
 
         poseStack.mulPose(entityRenderState.rotation);
         submitSword(entityRenderState, poseStack, submitNodeCollector);

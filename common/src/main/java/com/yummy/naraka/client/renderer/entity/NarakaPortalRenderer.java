@@ -63,7 +63,7 @@ public class NarakaPortalRenderer extends EntityRenderer<NarakaPortal, NarakaPor
         });
         poseStack.popPose();
 
-        ShinyEffectRenderer.submitShiny(renderState.ageInTicks, renderState.lifetime - 10, 1, false, 0x888888, poseStack, nodeCollector);
+        ShinyEffectRenderer.submitShiny(renderState.ageInTicks, renderState.lifetime - 10, 1, false, 0x888888, poseStack, nodeCollector, cameraRenderState);
         super.submit(renderState, poseStack, nodeCollector, cameraRenderState);
     }
 
