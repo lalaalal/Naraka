@@ -143,7 +143,7 @@ public class NarakaRecipeProvider extends RecipeProvider {
                 .requires(2, 1, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
                 .requires(2, 2, NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
                 .showNotification()
-                .unlockedBy(getHasName(NarakaItems.GOD_BLOOD.get()), has(NarakaItems.GOD_BLOOD.get()))
+                .unlockedBy(getHasName(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()), has(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()))
                 .save(output);
     }
 

@@ -2,7 +2,7 @@ package com.yummy.naraka.world.item.crafting;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yummy.naraka.core.component.ComponentItemApply;
+import com.yummy.naraka.core.component.ItemComponentApplier;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.predicates.DataComponentPredicate;
@@ -57,8 +57,8 @@ public record ComponentPredicateIngredient(int row, int column, HolderSet<Item> 
 
     private SlotDisplay displayForSingleItem(Holder<Item> item) {
         ItemStack itemStack = new ItemStack(item);
-        if (predicate.predicate() instanceof ComponentItemApply componentItemApply) {
-            componentItemApply.apply(itemStack);
+        if (predicate.predicate() instanceof ItemComponentApplier itemComponentApplier) {
+            itemComponentApplier.apply(itemStack);
         }
         return new SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate.fromNonEmptyStack(itemStack));
     }

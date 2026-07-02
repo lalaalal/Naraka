@@ -11,7 +11,7 @@ publisher {
 
     setModrinthID("2InS5Swi")
     setCurseID("1292603")
-    setVersionType("$project.mod_version_type")
+    setVersionType("$project.version_type")
     setChangelog(rootProject.projectDir.toPath().resolve("change.md").toFile())
     setVersion("$project.version")
     setProjectVersion("$project.version")
