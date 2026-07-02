@@ -1,0 +1,71 @@
+{
+  "type": "naraka:nbt_predicate_recipe",
+  "category": "equipment",
+  "count": 1,
+  "group": "equipment",
+  "id": "naraka:spear_of_longinus",
+  "ingredients": [
+    {
+      "item_id": "naraka:soul_infused_redstone_sword",
+      "slot": 0,
+      "tag": {
+        "Blessed": 1
+      }
+    },
+    {
+      "item_id": "naraka:soul_infused_copper_sword",
+      "slot": 1,
+      "tag": {
+        "Blessed": 1
+      }
+    },
+    {
+      "item_id": "naraka:soul_infused_gold_sword",
+      "slot": 2,
+      "tag": {
+        "Blessed": 1
+      }
+    },
+    {
+      "item_id": "naraka:soul_infused_emerald_sword",
+      "slot": 3,
+      "tag": {
+        "Blessed": 1
+      }
+    },
+    {
+      "item_id": "naraka:mighty_holy_spear",
+      "slot": 4,
+      "tag": {}
+    },
+    {
+      "item_id": "naraka:soul_infused_diamond_sword",
+      "slot": 5,
+      "tag": {
+        "Blessed": 1
+      }
+    },
+    {
+      "item_id": "naraka:soul_infused_lapis_sword",
+      "slot": 6,
+      "tag": {
+        "Blessed": 1
+      }
+    },
+    {
+      "item_id": "naraka:soul_infused_amethyst_sword",
+      "slot": 7,
+      "tag": {
+        "Blessed": 1
+      }
+    },
+    {
+      "item_id": "naraka:soul_infused_nectarium_sword",
+      "slot": 8,
+      "tag": {
+        "Blessed": 1
+      }
+    }
+  ],
+  "result": "naraka:spear_of_longinus"
+}

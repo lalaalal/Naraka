@@ -1,11 +1,16 @@
 package com.yummy.naraka.fabric.data;
 
+import com.mojang.serialization.Codec;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.crafting.NbtPredicateRecipeBuilder;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.recipes.*;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -106,6 +111,20 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .pattern("SS ")
                 .pattern("SS ")
                 .unlockedBy(getHasName(Items.SMITHING_TABLE), has(Items.SMITHING_TABLE))
+                .save(output);
+        CompoundTag blessed = new CompoundTag();
+        NarakaNbtUtils.store(blessed, NarakaItemUtils.TAG_BLESSED, Codec.BOOL, true);
+        NbtPredicateRecipeBuilder.predicate(RecipeCategory.COMBAT, NarakaItems.SPEAR_OF_LONGINUS_ITEM)
+                .add(0, NarakaItems.SOUL_INFUSED_REDSTONE_SWORD, blessed)
+                .add(1, NarakaItems.SOUL_INFUSED_COPPER_SWORD, blessed)
+                .add(2, NarakaItems.SOUL_INFUSED_GOLD_SWORD, blessed)
+                .add(3, NarakaItems.SOUL_INFUSED_EMERALD_SWORD, blessed)
+                .add(4, NarakaItems.MIGHTY_HOLY_SPEAR_ITEM)
+                .add(5, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD, blessed)
+                .add(6, NarakaItems.SOUL_INFUSED_LAPIS_SWORD, blessed)
+                .add(7, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD, blessed)
+                .add(8, NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD, blessed)
+                .unlockedBy(getHasName(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()), has(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()))
                 .save(output);
 
         nineBlockStorageRecipes(output, RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_REDSTONE.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK.get());

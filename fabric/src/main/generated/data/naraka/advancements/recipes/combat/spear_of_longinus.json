@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_mighty_holy_spear": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "naraka:mighty_holy_spear"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "naraka:spear_of_longinus"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_mighty_holy_spear",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "naraka:spear_of_longinus"
+    ]
+  },
+  "sends_telemetry_event": false
+}

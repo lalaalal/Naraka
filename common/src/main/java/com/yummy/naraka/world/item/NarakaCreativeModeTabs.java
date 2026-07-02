@@ -90,6 +90,7 @@ public class NarakaCreativeModeTabs {
         output.accept(NarakaItems.HEROBRINE_PHASE_3_DISC.get());
         output.accept(NarakaItems.HEROBRINE_PHASE_4_DISC.get());
 
+        output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
         output.accept(NarakaItems.HEROBRINE_SPAWN_EGG.get());
 
         output.accept(NarakaItems.GOD_BLOOD.get());
@@ -158,7 +159,6 @@ public class NarakaCreativeModeTabs {
         output.accept(NarakaItems.SKILL_CONTROLLER.get());
         output.accept(NarakaItems.ANIMATION_CONTROLLER.get());
         output.accept(NarakaItems.NARAKA_FIREBALL_STAFF.get());
-        output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
     }
 
     private static ItemStack blessed(Item item) {

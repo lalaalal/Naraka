@@ -2,6 +2,7 @@ package com.yummy.naraka.world.item.crafting;
 
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryWriter;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
@@ -10,6 +11,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import java.util.function.Supplier;
 
 public class NarakaRecipeSerializers {
+    public static final Holder<RecipeSerializer<?>> NBT_PREDICATE_RECIPE = register("nbt_predicate_recipe", NbtPredicateRecipe.Serializer::new);
+
     private static <C extends Container, T extends Recipe<C>> HolderProxy<RecipeSerializer<?>, RecipeSerializer<T>> register(String name, Supplier<RecipeSerializer<T>> serializer) {
         return RegistryWriter.register(Registries.RECIPE_SERIALIZER, name, serializer);
     }
