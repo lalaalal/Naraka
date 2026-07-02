@@ -22,6 +22,7 @@
     "client.ItemEntityRendererMixin",
     "client.ItemModelResolverMixin",
     "client.ItemStackMixin",
+    "client.KeyboardInputMixin",
     "client.LavaFogEnvironmentMixin",
     "client.LevelExtractorMixin",
     "client.LevelRendererMixin",
