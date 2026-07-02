@@ -75,7 +75,7 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect, ShinyEffect
         float centerHeight = NarakaUtils.interpolate(tick / lifetime, 0.5f, 0, NarakaUtils::fastStepOut);
         int alpha = 0xff;
         int index = 1;
-        float alphaMultiplier = 0.4f;
+        float alphaMultiplier = 0.3f;
         if (color == 0xffffff)
             alphaMultiplier = 0.25f;
         while (centerWidth < width) {
@@ -84,7 +84,7 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect, ShinyEffect
             centerWidth *= 2;
             alpha = (int) (alpha * alphaMultiplier);
             centerHeight += height * 0.5f;
-            alphaMultiplier = Math.min(1, alphaMultiplier + (1 - alphaMultiplier) * 0.8f);
+            alphaMultiplier = Math.min(1, alphaMultiplier + (1 - alphaMultiplier) * 0.7f);
             index += 1;
         }
 

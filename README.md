@@ -9,11 +9,11 @@ locate the hidden Herobrine Sanctuary, and prepare yourself to face and defeat t
 
 ## Minecraft Versions
 
-| Version | Status |
-|:-------:|:------:|
-|  26.2   |  beta  |
-| 1.21.1  |  beta  |
-| 1.20.1  | alpha  |
+| Version | Naraka  |
+|:-------:|:-------:|
+|  26.2   | release |
+| 1.21.1  |  beta   |
+| 1.20.1  |  alpha  |
 
 ## 🛠️ Build
 
