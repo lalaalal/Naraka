@@ -117,6 +117,10 @@ public class NbtPredicateRecipe implements CraftingRecipe {
                 .collect(Collectors.toCollection(NonNullList::create));
     }
 
+    public List<RecipeSlot> getRecipeSlots() {
+        return ingredients;
+    }
+
     public record RecipeSlot(int slot, ResourceLocation itemId, CompoundTag tag) {
         public static final Codec<RecipeSlot> CODEC = RecordCodecBuilder.create(
                 instance -> instance.group(

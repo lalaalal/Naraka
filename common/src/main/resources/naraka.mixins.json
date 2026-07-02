@@ -42,6 +42,7 @@
     "PlayerMixin",
     "ServerEntityMixin",
     "ServerLevelMixin",
+    "ServerPlaceRecipeMixin",
     "ServerPlayerGameModeMixin",
     "WanderingTraderMixin",
     "invoker.MangroveRootsBlockInvoker",
