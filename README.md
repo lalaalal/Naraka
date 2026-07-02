@@ -11,8 +11,9 @@ locate the hidden Herobrine Sanctuary, and prepare yourself to face and defeat t
 
 | Version | Status |
 |:-------:|:------:|
-|  26.2   |   ✅    |
-| 1.21.1  |   ✅    |
+|  26.2   |  beta  |
+| 1.21.1  |  beta  |
+| 1.20.1  | alpha  |
 
 ## 🛠️ Build
 
