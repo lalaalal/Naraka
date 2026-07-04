@@ -11,6 +11,8 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Predicate;
 
 /**
@@ -23,6 +25,10 @@ import java.util.function.Predicate;
 public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T> {
     protected int shieldCooldown = 0;
     protected int shieldDamage = 0;
+    protected final Set<LivingEntity> hurtEntities = new HashSet<>();
+    protected final Set<LivingEntity> attackedEntities = new HashSet<>();
+    protected boolean alwaysHurt = false;
+    protected boolean alwaysAttack = false;
 
     protected AttackSkill(Identifier identifier, T mob, int duration, int cooldown, @Nullable Skill<?> linkedSkill) {
         super(identifier, mob, duration, cooldown, linkedSkill);
@@ -36,6 +42,13 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T
         super(identifier, mob, duration, cooldown);
         this.shieldCooldown = shieldCooldown;
         this.shieldDamage = shieldDamage;
+    }
+
+    @Override
+    public void prepare() {
+        super.prepare();
+        hurtEntities.clear();
+        attackedEntities.clear();
     }
 
     /**
@@ -52,7 +65,11 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T
         level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(size))
                 .stream()
                 .filter(predicate)
-                .forEach(target -> hurtEntity(level, target));
+                .filter(livingEntity -> !attackedEntities.contains(livingEntity) || alwaysAttack)
+                .filter(attackedEntities::add)
+                .filter(livingEntity -> !hurtEntities.contains(livingEntity) || alwaysHurt)
+                .filter(target -> hurtEntity(level, target))
+                .forEach(hurtEntities::add);
     }
 
     /**
@@ -69,7 +86,11 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T
         level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(size.x, size.y, size.z))
                 .stream()
                 .filter(predicate)
-                .forEach(target -> hurtEntity(level, target));
+                .filter(livingEntity -> !attackedEntities.contains(livingEntity) || alwaysAttack)
+                .filter(attackedEntities::add)
+                .filter(livingEntity -> !hurtEntities.contains(livingEntity) || alwaysHurt)
+                .filter(target -> hurtEntity(level, target))
+                .forEach(hurtEntities::add);
     }
 
     protected boolean canDisableShield() {

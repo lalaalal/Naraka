@@ -27,6 +27,8 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
 
     public ParryingSkill(AbstractHerobrine mob) {
         super(LOCATION, mob, 60, 300, 100, 5);
+        alwaysAttack = true;
+        alwaysHurt = true;
     }
 
     @Override
