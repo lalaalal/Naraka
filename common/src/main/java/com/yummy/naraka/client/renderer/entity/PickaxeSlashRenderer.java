@@ -46,7 +46,7 @@ public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash, 
         poseStack.translate(0, -0.25, 0);
         poseStack.mulPose(Axis.YN.rotationDegrees(renderState.yRot));
         poseStack.rotateAround(Axis.ZN.rotationDegrees(renderState.zRot), 0, 0.5f, 0);
-        poseStack.translate(0, 0, -0.25);
+        poseStack.translate(0, 0, -0.3);
         submitNodeCollector.order(1).submitCustomGeometry(poseStack, RenderTypes.entityTranslucent(NarakaTextures.PICKAXE_SLASH), (pose, vertexConsumer) -> {
             NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, renderState.color, Direction.Axis.X);
         });

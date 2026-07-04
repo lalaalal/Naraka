@@ -10,6 +10,7 @@ import com.yummy.naraka.world.entity.ShadowHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.InstantShadowSpawner;
 import com.yummy.naraka.world.entity.ai.skill.TargetSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
+import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -29,7 +30,7 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
     private int rotateDirection = 1;
     private final boolean spawnShadow;
     private InstantShadowSpawner shadowSpawner = InstantShadowSpawner.EMPTY;
-    private int tailColor = 0x0000ff;
+    private int tailColor = SoulType.LAPIS.color;
     private int slashColor = 0xffffff;
 
     public static PickaxeSlashSkill<AbstractHerobrine> single(AbstractHerobrine mob) {
@@ -45,8 +46,8 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
         this.pickaxeSlashSpawnTimes = List.of(pickaxeSlashSpawnTimes);
         this.spawnShadow = spawnShadow;
         if (mob.isShadow) {
-            tailColor = 0x505050;
-            slashColor = 0x505050;
+            tailColor = 0;
+            slashColor = 0;
         }
     }
 
