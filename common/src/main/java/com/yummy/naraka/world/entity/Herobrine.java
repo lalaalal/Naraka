@@ -44,7 +44,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.hurtingprojectile.Fireball;
 import net.minecraft.world.item.ItemStack;
@@ -350,9 +349,11 @@ public class Herobrine extends AbstractHerobrine {
     public void stigmatizeEntity(ServerLevel level, LivingEntity target) {
         if (!target.is(NarakaEntityTypeTags.HEROBRINE) && getPhase() > 1) {
             StigmaHelper.increaseStigma(level, target, this, true);
-            watchingEntities.add(target.getUUID());
-            cachedWatchingEntities.put(target.getUUID(), target);
-            maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
+            if (target.is(ConventionalTags.Entities.BOSSES) || target.is(EntityTypes.PLAYER)) {
+                watchingEntities.add(target.getUUID());
+                cachedWatchingEntities.put(target.getUUID(), target);
+                maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
+            }
         }
     }
 
