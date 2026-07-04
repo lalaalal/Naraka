@@ -29,7 +29,7 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
     private int rotateDirection = 1;
     private final boolean spawnShadow;
     private InstantShadowSpawner shadowSpawner = InstantShadowSpawner.EMPTY;
-    private int tailColor = 0x0000ff;
+    private int tailColor = SoulType.LAPIS.color;
     private int slashColor = 0xffffff;
 
     public static PickaxeSlashSkill<AbstractHerobrine> single(AbstractHerobrine mob) {
@@ -46,7 +46,7 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
         this.spawnShadow = spawnShadow;
         if (mob.isShadow) {
             tailColor = 0x505050;
-            slashColor = 0x505050;
+            slashColor = 0;
         }
     }
 
