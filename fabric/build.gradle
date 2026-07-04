@@ -67,7 +67,6 @@ remapJar {
 }
 
 publisher {
-    setupPublisher()
     setLoaders(ModLoader.FABRIC)
 
     modrinthDepends {
