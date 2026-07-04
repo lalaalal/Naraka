@@ -145,7 +145,7 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
         int lifetime = 60;
         AreaEffect areaEffect = new AreaEffect(level, position, lifetime, 20, 20, color, 0);
         areaEffect.setShape(AreaShape.CIRCLE);
-        areaEffect.setMaxAlpha(0xfe);
+        areaEffect.setMaxAlpha(0xaa);
         level.addFreshEntity(areaEffect);
     }
 

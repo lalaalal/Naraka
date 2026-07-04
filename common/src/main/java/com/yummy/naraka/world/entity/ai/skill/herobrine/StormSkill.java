@@ -66,7 +66,7 @@ public class StormSkill extends ComboSkill<Herobrine> {
         Vec3 position = new Vec3(mob.getX(), y, mob.getZ());
         AreaEffect areaEffect = new AreaEffect(level, position, 50, 6, 6, 0xff0000, 0);
         areaEffect.setShape(AreaShape.CIRCLE);
-        areaEffect.setMaxAlpha(0xfe);
+        areaEffect.setMaxAlpha(0xaa);
         level.addFreshEntity(areaEffect);
     }
 
