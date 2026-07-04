@@ -124,8 +124,6 @@ public class Herobrine extends AbstractHerobrine {
 
     private final List<Projectile> ignoredProjectiles = new ArrayList<>();
     private int maxWatchedEntities = 0;
-    @Nullable
-    private LivingEntity selectedTarget;
     private final Set<UUID> watchingEntities = new HashSet<>();
     private final Map<UUID, LivingEntity> cachedWatchingEntities = new HashMap<>();
     protected final List<Afterimage> afterimages = new ArrayList<>();
@@ -156,7 +154,6 @@ public class Herobrine extends AbstractHerobrine {
         skillManager.runOnSkillStart(this::enableEyeOnPhase3);
         skillManager.runOnSkillEnd(this::disableEyeOnPhase3);
         skillManager.runOnSkillEnd(this::useShadowFlicker);
-        skillManager.runOnSkillSelect(this::changeTarget);
         skillManager.enableOnly(PHASE_1_SKILLS);
         skillManager.shareCooldown(List.of(singlePickaxeSlashSkill, triplePickaxeSlashSkill));
 
@@ -178,11 +175,6 @@ public class Herobrine extends AbstractHerobrine {
         registerAnimation(HerobrineAnimationLocations.CHZZK);
     }
 
-    public Herobrine(Level level, Vec3 pos) {
-        this(NarakaEntityTypes.HEROBRINE.get(), level);
-        setPos(pos);
-    }
-
     private void useShadowFlicker(Skill<?> skill) {
         if (getPhase() == 2 && level() instanceof ServerLevel serverLevel) {
             shadowController.consumeFlickerStack(serverLevel);
@@ -199,14 +191,9 @@ public class Herobrine extends AbstractHerobrine {
             setDisplayEye(false);
     }
 
-    private void changeTarget(Skill<?> skill) {
-        if (!cachedWatchingEntities.isEmpty()) {
-            int randomSkip = random.nextInt(cachedWatchingEntities.size());
-            cachedWatchingEntities.values().stream()
-                    .skip(randomSkip)
-                    .findFirst()
-                    .ifPresent(livingEntity -> selectedTarget = livingEntity);
-        }
+    public Herobrine(Level level, Vec3 pos) {
+        this(NarakaEntityTypes.HEROBRINE.get(), level);
+        setPos(pos);
     }
 
     public Optional<ShadowController> getShadowController() {
@@ -292,14 +279,6 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     @Override
-    @Nullable
-    public LivingEntity getTarget() {
-        if (selectedTarget != null && selectedTarget.isAlive())
-            return selectedTarget;
-        return super.getTarget();
-    }
-
-    @Override
     protected AABB makeBoundingBox() {
         if (!firstTick && isFinalModel())
             return super.makeBoundingBox().expandTowards(0, 0.5, 0);
@@ -370,9 +349,11 @@ public class Herobrine extends AbstractHerobrine {
     public void stigmatizeEntity(ServerLevel level, LivingEntity target) {
         if (!target.getType().is(NarakaEntityTypeTags.HEROBRINE) && getPhase() > 1) {
             StigmaHelper.increaseStigma(level, target, this, true);
-            watchingEntities.add(target.getUUID());
-            cachedWatchingEntities.put(target.getUUID(), target);
-            maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
+            if (target.getType().is(ConventionalTags.Entities.BOSSES) || target.getType() == EntityType.PLAYER) {
+                watchingEntities.add(target.getUUID());
+                cachedWatchingEntities.put(target.getUUID(), target);
+                maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
+            }
         }
     }
 
