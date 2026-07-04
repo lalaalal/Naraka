@@ -67,29 +67,36 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect> {
         if (isVertical)
             poseStack.mulPose(Axis.ZN.rotationDegrees(90));
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.lightning());
-        renderShiny(poseStack.last(), vertexConsumer, tick, lifetime, color);
+        renderShiny(poseStack, vertexConsumer, tick, lifetime, color);
 
         poseStack.mulPose(Axis.ZN.rotationDegrees(90));
         poseStack.scale(0.5f, 0.5f, 0.5f);
-        renderShiny(poseStack.last(), vertexConsumer, tick, lifetime, color);
+        renderShiny(poseStack, vertexConsumer, tick, lifetime, color);
         poseStack.popPose();
     }
 
-    private static void renderShiny(PoseStack.Pose pose, VertexConsumer vertexConsumer, float tick, int lifetime, int color) {
+    private static void renderShiny(PoseStack poseStack, VertexConsumer vertexConsumer, float tick, int lifetime, int color) {
+        poseStack.pushPose();
         float width = NarakaUtils.interpolate(tick / lifetime, 0, 20, NarakaUtils::fastStepIn);
         float height = NarakaUtils.interpolate(tick / lifetime, 0.1f, 0, NarakaUtils::fastStepOut);
 
-        NarakaRenderUtils.renderRhombus(pose, vertexConsumer, width, height, 0xff, 0xffffff);
+        NarakaRenderUtils.renderRhombus(poseStack.last(), vertexConsumer, width, height, 0xff, 0xffffff);
 
         float centerWidth = Math.min(0.5f, width);
         float centerHeight = NarakaUtils.interpolate(tick / lifetime, 0.5f, 0, NarakaUtils::fastStepOut);
         int alpha = 0xff;
+        float alphaMultiplier = 0.3f;
+        if (color == 0xffffff)
+            alphaMultiplier = 0.25f;
         while (centerWidth < width) {
-            NarakaRenderUtils.renderRhombus(pose, vertexConsumer, centerWidth, centerHeight, alpha, color);
+            poseStack.translate(0, 0, 0.01);
+            NarakaRenderUtils.renderRhombus(poseStack.last(), vertexConsumer, centerWidth, centerHeight, alpha, color);
             centerWidth *= 2;
-            alpha = (int) (alpha * 0.75f);
+            alpha = (int) (alpha * alphaMultiplier);
             centerHeight += height * 0.5f;
+            alphaMultiplier = Math.min(1, alphaMultiplier + (1 - alphaMultiplier) * 0.7f);
         }
-        NarakaRenderUtils.renderRhombus(pose, vertexConsumer, width, centerHeight, 0x11, color);
+        NarakaRenderUtils.renderRhombus(poseStack.last(), vertexConsumer, width, centerHeight, 0x11, color);
+        poseStack.popPose();
     }
 }
