@@ -46,7 +46,7 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
         this.pickaxeSlashSpawnTimes = List.of(pickaxeSlashSpawnTimes);
         this.spawnShadow = spawnShadow;
         if (mob.isShadow) {
-            tailColor = 0;
+            tailColor = 0x505050;
             slashColor = 0;
         }
     }
