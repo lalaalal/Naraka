@@ -1,17 +1,24 @@
 <component name="ProjectDictionaryState">
-  <dictionary name="project">
-    <words>
-      <w>Clientbound</w>
-      <w>Netherite</w>
-      <w>Ryoiki</w>
-      <w>Tenkai</w>
-      <w>clientbound</w>
-      <w>herobrine</w>
-      <w>naraka</w>
-      <w>netherite</w>
-      <w>ryoiki</w>
-      <w>serverbound</w>
-      <w>tenkai</w>
-    </words>
-  </dictionary>
+      <dictionary name="project">
+            <words>
+                  <w>Curseforge</w>
+                  <w>Gyeon</w>
+                  <w>Modrinth</w>
+                  <w>Ryoiki</w>
+                  <w>Tenkai</w>
+                  <w>accesstransformer</w>
+                  <w>gueunso</w>
+                  <w>joachimbeen</w>
+                  <w>lalaalal</w>
+                  <w>lapis</w>
+                  <w>llamalad</w>
+                  <w>longinus</w>
+                  <w>mcgradleconventions</w>
+                  <w>mineable</w>
+                  <w>moddev</w>
+                  <w>modrinth</w>
+                  <w>multiloader</w>
+                  <w>neoforge</w>
+            </words>
+      </dictionary>
 </component>

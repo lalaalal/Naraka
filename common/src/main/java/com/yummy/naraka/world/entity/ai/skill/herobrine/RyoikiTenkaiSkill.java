@@ -109,6 +109,11 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         runAt(50, () -> tickFreezeManager.unfreeze(level));
     }
 
+    @Override
+    protected void onLastTick(ServerLevel level) {
+        EntityDataHelper.removeEntityData(mob, NarakaEntityDataTypes.KEEP_UNFROZEN.get());
+    }
+
     private void spawnShinySparkAndStigmatize(ServerLevel level) {
         for (LivingEntity target : caughtEntities) {
             ShinyEffect shinyEffect = ShinyEffect.spawnShinySpark(level, target.position(), mob.getRandom(), 3, 60, SoulType.EMERALD.color);
