@@ -33,6 +33,8 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
 
     public EarthShockSkill(Herobrine mob) {
         super(LOCATION, mob, 240, 1200);
+        alwaysAttack = true;
+        alwaysHurt = true;
     }
 
     @Override
