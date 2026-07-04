@@ -102,7 +102,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         super.onSyncedDataUpdated(accessor);
-        if (accessor == ALPHA) {
+        if (accessor == ALPHA && isShadow) {
             pickaxe.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(), List.of(
                     ARGB.color(getAlpha(), 0)
             )));
