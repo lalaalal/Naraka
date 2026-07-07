@@ -232,13 +232,9 @@ public class Herobrine extends AbstractHerobrine {
         setDisplayEye(false);
         setDisplayPickaxe(true);
 
-        int armor = 0;
+        int armor = 12;
         for (LivingEntity livingEntity : level().getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), this, getBoundingBox().inflate(20, 5, 20))) {
             if (livingEntity.getType().is(ConventionalTags.Entities.BOSSES))
-                armor += 12;
-        }
-        for (ServerPlayer player : bossEvent.getPlayers()) {
-            if (NarakaEntityUtils.isDamageablePlayer(player))
                 armor += 6;
         }
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR, NarakaAttributeModifiers.finalHerobrineArmor(armor));
@@ -265,6 +261,12 @@ public class Herobrine extends AbstractHerobrine {
             cachedWatchingEntities.put(target.getUUID(), target);
             maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
         }
+    }
+
+    @Override
+    public void setLastHurtByMob(@Nullable LivingEntity livingEntity) {
+        super.setLastHurtByMob(livingEntity);
+        setTarget(livingEntity);
     }
 
     @Override
@@ -370,7 +372,7 @@ public class Herobrine extends AbstractHerobrine {
     public void heal(float healAmount) {
         float maxHealth = phaseManager.getActualCurrentPhaseMaxHealth();
         float healthAfterHeal = Mth.clamp(getHealth() + healAmount, getHealth(), maxHealth);
-        setHealth(healthAfterHeal);
+        super.setHealth(healthAfterHeal);
     }
 
     public int getShadowCount() {
@@ -591,6 +593,10 @@ public class Herobrine extends AbstractHerobrine {
                 return false;
             }
             float limitedDamage = Math.min(damage, hurtDamageLimit);
+            float maxAccumulatedDamage = NarakaConfig.COMMON.herobrinePhase3DpsLimit.getValue() * 2;
+            float limitByDps = Math.max(maxAccumulatedDamage - accumulatedHurtDamage, 0);
+            if (getPhase() == 3)
+                limitedDamage = Math.min(limitedDamage, limitByDps);
             return super.hurt(source, limitedDamage);
         }
         return super.hurt(source, damage);
@@ -598,19 +604,39 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     protected void actuallyHurt(DamageSource damageSource, float damageAmount) {
-        if (!isHibernateMode() || damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
-            super.actuallyHurt(damageSource, damageAmount);
-        if (level() instanceof ServerLevel level) {
-            if (phaseManager.isPhaseChanged() && !isHibernateMode() && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-                setHealth(phaseManager.getActualPhaseMaxHealth(getPhase()) + 1);
+        if (isInvulnerableTo(damageSource) || !(level() instanceof ServerLevel level))
+            return;
+        float currentHealth = getHealth();
+        if (!damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            damageAmount = getDamageAfterArmorAbsorb(damageSource, damageAmount);
+            float healthAfterHurt = currentHealth - damageAmount;
+            float phaseMinimumHealth = getPhaseMinimumHealth();
+            if (healthAfterHurt < phaseMinimumHealth && getPhase() < 3) {
+                damageAmount = currentHealth - phaseMinimumHealth;
                 startHibernateMode(level);
             }
-            updateHibernateMode(level, damageSource);
-            updateHurtDamageLimit(level);
         }
+        getCombatTracker().recordDamage(damageSource, damageAmount);
+        super.setHealth(currentHealth - damageAmount);
+
+        updateHibernateMode(level, damageSource);
+        updateHurtDamageLimit(level);
         accumulatedHurtDamage += damageAmount;
         if (getPhase() == 2 && (accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f))
             shadowController.increaseFlickerStack();
+    }
+
+    @Override
+    public void setHealth(float health) {
+        if (tickCount > 0 && health < getHealth() && level() instanceof ServerLevel level) {
+            health = Math.max(getHealth() - hurtDamageLimit, health);
+            if (health < getPhaseMinimumHealth() && getPhase() < 3) {
+                health = getPhaseMinimumHealth();
+                startHibernateMode(level);
+            }
+            updateHurtDamageLimit(level);
+        }
+        super.setHealth(health);
     }
 
     private float getPhaseMinimumHealth() {
@@ -675,7 +701,7 @@ public class Herobrine extends AbstractHerobrine {
         shadowController.deactivateFlickerSkill(level);
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
 
-        setHealth(getHealth() - 1);
+        super.setHealth(getHealth() - 1);
     }
 
     protected void startStaggering(ResourceLocation animation, int duration, int showParticleTick) {
