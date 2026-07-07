@@ -22,7 +22,9 @@ public class HerobrineEyeLayer<T extends AbstractHerobrine, M extends AbstractHe
     }
 
     private RenderType getRenderType(T entity) {
-        return RenderType.eyes(getEyeTexture(entity));
+        if (entity.displayEye())
+            return RenderType.eyes(getEyeTexture(entity));
+        return RenderType.entityTranslucentEmissive(getEyeTexture(entity));
     }
 
     private ResourceLocation getEyeTexture(T entity) {
