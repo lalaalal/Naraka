@@ -23,6 +23,8 @@ public class HerobrineEyeLayer<T extends AbstractHerobrine, M extends AbstractHe
     }
 
     private RenderType getRenderType(T entity) {
+        if (entity.displayEye())
+            return RenderType.eyes(getEyeTexture(entity));
         if (Platform.getInstance().getModLoader() == Platform.ModLoader.NEO_FORGE)
             return RenderType.entityTranslucent(getEyeTexture(entity));
         return RenderType.entityTranslucentEmissive(getEyeTexture(entity));
