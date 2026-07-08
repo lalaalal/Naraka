@@ -588,6 +588,10 @@ public class Herobrine extends AbstractHerobrine {
             return false;
         }
         float limitedDamage = Math.min(damage, hurtDamageLimit);
+        float maxAccumulatedDamage = NarakaConfig.COMMON.herobrinePhase3DpsLimit.getValue() * 2;
+        float limitByDps = Math.max(maxAccumulatedDamage - accumulatedHurtDamage, 0);
+        if (getPhase() == 3)
+            limitedDamage = Math.min(limitedDamage, limitByDps);
         return super.hurtServer(level, source, limitedDamage);
     }
 
