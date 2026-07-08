@@ -85,6 +85,7 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
         if (target == null)
             return;
         lookTarget(target);
+        runBetween(tickCount(0), tickCount(20), () -> rotateTowardTarget(target));
         run(at(tickCount(1)), () -> {
             level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.HOSTILE, 1, 1.75f);
             level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.HOSTILE, 1, 2);

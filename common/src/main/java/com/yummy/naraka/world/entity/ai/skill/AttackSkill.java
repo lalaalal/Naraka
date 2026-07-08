@@ -65,8 +65,7 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T
         level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(size))
                 .stream()
                 .filter(predicate)
-                .filter(livingEntity -> !attackedEntities.contains(livingEntity) || alwaysAttack)
-                .filter(attackedEntities::add)
+                .filter(livingEntity -> attackedEntities.add(livingEntity) || alwaysAttack)
                 .filter(livingEntity -> !hurtEntities.contains(livingEntity) || alwaysHurt)
                 .filter(target -> hurtEntity(level, target))
                 .forEach(hurtEntities::add);
@@ -86,8 +85,7 @@ public abstract class AttackSkill<T extends SkillUsingMob> extends TargetSkill<T
         level.getNearbyEntities(LivingEntity.class, TargetingConditions.forCombat(), mob, mob.getBoundingBox().inflate(size.x, size.y, size.z))
                 .stream()
                 .filter(predicate)
-                .filter(livingEntity -> !attackedEntities.contains(livingEntity) || alwaysAttack)
-                .filter(attackedEntities::add)
+                .filter(livingEntity -> attackedEntities.add(livingEntity) || alwaysAttack)
                 .filter(livingEntity -> !hurtEntities.contains(livingEntity) || alwaysHurt)
                 .filter(target -> hurtEntity(level, target))
                 .forEach(hurtEntities::add);
