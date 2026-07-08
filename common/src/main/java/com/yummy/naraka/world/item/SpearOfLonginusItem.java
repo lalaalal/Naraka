@@ -30,7 +30,7 @@ public class SpearOfLonginusItem extends SpearItem implements ItemDamageSourcePr
 
     @Override
     public float naraka$getBonusDamage() {
-        return 6.66e16f;
+        return SpearOfLonginus.DAMAGE;
     }
 
     @Override
