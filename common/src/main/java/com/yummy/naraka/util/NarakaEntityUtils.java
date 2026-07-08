@@ -5,7 +5,6 @@ import com.yummy.naraka.network.SyncPlayerMovementPacket;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -21,41 +20,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 public class NarakaEntityUtils {
-    private static final Map<UUID, Entity> CACHED_ENTITIES = new HashMap<>();
-
-    @Nullable
-    private static Entity findEntityByUUID(ServerLevel serverLevel, UUID uuid) {
-        if (CACHED_ENTITIES.containsKey(uuid)) {
-            Entity entity = CACHED_ENTITIES.get(uuid);
-            if (!entity.isRemoved())
-                return entity;
-            CACHED_ENTITIES.remove(uuid);
-        }
-        Entity entity = serverLevel.getEntity(uuid);
-        if (entity != null)
-            return entity;
-        return findEntityFromAllLevels(serverLevel.getServer(), uuid);
-    }
-
-    @Nullable
-    private static Entity findEntityFromAllLevels(MinecraftServer server, UUID uuid) {
-        Entity entity;
-        for (ServerLevel level : server.getAllLevels()) {
-            if ((entity = level.getEntity(uuid)) != null)
-                return entity;
-        }
-        return null;
-    }
-
     @Nullable
     public static <T> T findEntityByUUID(Level level, UUID uuid, Class<T> type) {
         if (level instanceof ServerLevel serverLevel) {
-            Entity entity = findEntityByUUID(serverLevel, uuid);
-            if (entity != null)
-                CACHED_ENTITIES.put(uuid, entity);
+            Entity entity = serverLevel.getEntity(uuid);
             if (type.isInstance(entity))
                 return type.cast(entity);
         }
