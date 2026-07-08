@@ -113,7 +113,7 @@
   "block.naraka.transparent_block": "Block of Transparent",
   "commands.lockhealth.lock.success": "Locked %2$s health %1$d",
   "commands.lockhealth.remove.success": "Removed %1$s locked healths",
-  "commands.stigma.consume.success": "%2$s consumed %$1d entities stigma",
+  "commands.stigma.consume.success": "%2$s consumed %1$d entities' stigma",
   "commands.stigma.disable.success": "Disabled stigma",
   "commands.stigma.enable.success": "Enabled stigma",
   "commands.stigma.get.success": "Stigma for entity %s is %d",
