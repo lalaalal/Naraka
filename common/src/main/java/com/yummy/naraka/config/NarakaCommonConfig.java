@@ -13,6 +13,9 @@ public class NarakaCommonConfig extends StaticConfiguration {
     public final ConfigValue<Float> herobrinePhase3DpsLimit = define("herobrine_phase_3_dps_limit", 15f)
             .comment("Update every 2 sec");
 
+    public final ConfigValue<Float> narakaPickaxeDamage = define("naraka_pickaxe_damage", 66f)
+            .comment("Need to restart game");
+
     public final ConfigValue<Boolean> breakComboWhenSkillDisabled = define("break_combo_when_skill_disabled", false);
     public final ConfigValue<Boolean> alwaysCombo = define("always_combo", false);
     public final ConfigValue<Integer> stigmaStunDuration = define("stigma_stun_duration", 0)
