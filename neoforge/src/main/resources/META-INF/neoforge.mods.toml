@@ -1,13 +1,14 @@
 modLoader = "javafml"
 loaderVersion = "${neoforge_loader_version_range}"
 #issueTrackerURL = ""
-license = "MIT License"
+license = "${license}"
 
 [[mods]]
 modId = "naraka"
 version = "${version}"
 displayName = "Naraka"
 authors = "${mod_author}"
+credits = "${credits}"
 description = "${description}"
 logoFile = "naraka.png"
 displayURL = "https://github.com/lalaalal/Naraka"

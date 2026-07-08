@@ -11,10 +11,13 @@
     "GuEunso",
     "Gyeon___"
   ],
+  "contributors": [
+    "Qiye_Duyu"
+  ],
   "contact": {
     "homepage": "https://github.com/lalaalal/Naraka"
   },
-  "license": "MIT License",
+  "license": "${license}",
   "icon": "naraka.png",
   "environment": "*",
   "entrypoints": {
