@@ -55,10 +55,15 @@ loom {
 }
 
 processResources {
-    inputs.property 'version', project.version
+    var expandProps = [
+            'version'    : version,
+            'description': project.description
+    ]
+
+    inputs.properties(expandProps)
 
     filesMatching('META-INF/neoforge.mods.toml') {
-        expand version: project.version
+        expand expandProps
     }
 }
 

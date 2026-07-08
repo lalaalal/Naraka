@@ -357,7 +357,7 @@ public class Herobrine extends AbstractHerobrine {
                 maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
             }
             if (NarakaConfig.COMMON.disableStigma.getValue() && !isHibernateMode())
-                this.heal(0.5f);
+                this.heal(3.5f);
         }
     }
 
