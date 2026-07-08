@@ -368,7 +368,7 @@ public class Herobrine extends AbstractHerobrine {
     public void heal(float healAmount) {
         float maxHealth = phaseManager.getActualCurrentPhaseMaxHealth();
         float healthAfterHeal = Mth.clamp(getHealth() + healAmount, getHealth(), maxHealth);
-        setHealth(healthAfterHeal);
+        super.setHealth(healthAfterHeal);
     }
 
     public int getShadowCount() {
@@ -690,7 +690,7 @@ public class Herobrine extends AbstractHerobrine {
         shadowController.deactivateFlickerSkill(level);
         NarakaAttributeModifiers.removeAttributeModifier(this, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.HIBERNATE_PREVENT_MOVING);
 
-        setHealth(getHealth() - 1);
+        super.setHealth(getHealth() - 1);
     }
 
     protected void startStaggering(Identifier animation, int duration, int showParticleTick) {
