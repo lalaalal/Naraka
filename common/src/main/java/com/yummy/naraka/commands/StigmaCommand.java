@@ -180,7 +180,7 @@ public class StigmaCommand {
                 succeed += 1;
             }
         }
-        Component component = Component.translatable(LanguageKey.STIGMA_COMMAND_CONSUME_KEY, succeed, cause.getName(), cause.getName());
+        Component component = Component.translatable(LanguageKey.STIGMA_COMMAND_CONSUME_KEY, succeed, cause.getName());
         source.sendSuccess(() -> component, false);
         return Command.SINGLE_SUCCESS;
     }
