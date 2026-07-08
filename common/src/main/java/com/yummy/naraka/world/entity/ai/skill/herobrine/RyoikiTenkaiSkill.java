@@ -83,7 +83,7 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         Vec3 basePosition = new Vec3(mob.getX(), y, mob.getZ());
         for (int x = -24; x <= 24; x++) {
             for (int z = -24; z <= 24; z++) {
-                if ((x + z) % 2 == 0) {
+                if ((x + z) % 2 == 0 && x * x + z * z < 24 * 24 + 0.5) {
                     int lifetimeOffset = mob.getRandom().nextIntBetweenInclusive(0, 10);
                     AreaEffect areaEffect = new AreaEffect(level, basePosition.add(x * 2, 0, z * 2), 40 + lifetimeOffset, 2, 2, 0x00ff00, 0)
                             .setMaxAlpha(0xff);
