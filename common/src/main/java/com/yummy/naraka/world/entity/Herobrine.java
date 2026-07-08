@@ -349,13 +349,15 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void stigmatizeEntity(ServerLevel level, LivingEntity target) {
-        if (!target.getType().is(NarakaEntityTypeTags.HEROBRINE) && getPhase() > 1) {
+        if (isAlive() && !target.getType().is(NarakaEntityTypeTags.HEROBRINE) && getPhase() > 1) {
             StigmaHelper.increaseStigma(level, target, this, true);
             if (target.getType().is(ConventionalTags.Entities.BOSSES) || target.getType() == EntityType.PLAYER) {
                 watchingEntities.add(target.getUUID());
                 cachedWatchingEntities.put(target.getUUID(), target);
                 maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
             }
+            if (NarakaConfig.COMMON.disableStigma.getValue() && !isHibernateMode())
+                this.heal(0.5f);
         }
     }
 
@@ -606,9 +608,21 @@ public class Herobrine extends AbstractHerobrine {
     protected void actuallyHurt(DamageSource damageSource, float damageAmount) {
         if (isInvulnerableTo(damageSource) || !(level() instanceof ServerLevel level))
             return;
-        super.actuallyHurt(damageSource, damageAmount);
+        float currentHealth = getHealth();
+        if (!damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            damageAmount = getDamageAfterArmorAbsorb(damageSource, damageAmount);
+            float healthAfterHurt = currentHealth - damageAmount;
+            float phaseMinimumHealth = getPhaseMinimumHealth();
+            if (healthAfterHurt < phaseMinimumHealth && getPhase() < 3) {
+                damageAmount = currentHealth - phaseMinimumHealth;
+                startHibernateMode(level);
+            }
+        }
+        getCombatTracker().recordDamage(damageSource, damageAmount);
+        super.setHealth(currentHealth - damageAmount);
 
         updateHibernateMode(level, damageSource);
+        updateHurtDamageLimit(level);
         accumulatedHurtDamage += damageAmount;
         if (getPhase() == 2 && (accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f))
             shadowController.increaseFlickerStack();
