@@ -122,10 +122,8 @@
   "commands.stigma.set.success": "Stigma for %d entities set to %d",
   "config.jade.plugin_naraka.entity_data": "Stigma",
   "config.jade.plugin_naraka.nectarium_core": "Nectarium Core",
-  "config.jade.plugin_naraka.soul_crafting_block": "Soul Crafting Block",
   "config.jade.plugin_naraka.soul_smithing_block": "Soul Smithing Block",
   "config.jade.plugin_naraka.soul_stabilizer": "Soul Stabilizer",
-  "container.soul_crafting": "Soul Crafter",
   "death.attack.corrupted_star": "%1$s was exploded by %2$s",
   "death.attack.corrupted_star.player": "%1$s was exploded by %2$s",
   "death.attack.naraka_fireball": "%1$s was blown by naraka fireball thrown by %2$s",
@@ -204,10 +202,6 @@
   "item.naraka.rainbow_sword": "Rainbow Sword",
   "item.naraka.sanctuary_compass": "Sanctuary Compass",
   "item.naraka.skill_controller": "Skill Controller",
-  "item.naraka.smithing_template.purified_soul_upgrade.additions_slot_description": "Add Purified Soul Metal, Soul Infused Materials",
-  "item.naraka.smithing_template.purified_soul_upgrade.applies_to": "Ebony Tools, Purified Soul Weapons",
-  "item.naraka.smithing_template.purified_soul_upgrade.base_slot_description": "Add Ebony Sword, Soul Weapon",
-  "item.naraka.smithing_template.purified_soul_upgrade.ingredients": "Purified Soul Metal, Soul Infused Materials",
   "item.naraka.soul_infused_amethyst": "Soul Infused Amethyst",
   "item.naraka.soul_infused_amethyst_sword": "Soul Infused Amethyst Sword",
   "item.naraka.soul_infused_copper": "Soul Infused Copper",
@@ -236,7 +230,6 @@
   "jade.naraka.nectarium_core.activated": "Activated",
   "jade.naraka.nectarium_core.deactivated": "Inactivated",
   "jade.naraka.nectarium_core.honey": "(%d left)",
-  "jade.naraka.soul_crafting.fuel": "Fuel: %d",
   "jade.naraka.soul_stabilizer": "%d",
   "jade.naraka.stigma": ": %d",
   "key.categories.naraka": "Naraka",
@@ -304,6 +297,5 @@
   "trim_material.naraka.soul_infused_gold": "Soul Infused Gold Material",
   "trim_material.naraka.soul_infused_lapis": "Soul Infused Lapis Material",
   "trim_material.naraka.soul_infused_nectarium": "Soul Infused Nectarium Material",
-  "trim_material.naraka.soul_infused_redstone": "Soul Infused Redstone Material",
-  "upgrade.naraka.purified_soul_upgrade": "Purified Soul Upgrade"
+  "trim_material.naraka.soul_infused_redstone": "Soul Infused Redstone Material"
 }

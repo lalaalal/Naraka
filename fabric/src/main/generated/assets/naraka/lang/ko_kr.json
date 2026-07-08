@@ -122,10 +122,8 @@
   "commands.stigma.set.success": "%d개의 엔티티의 낙인을 %d로 설정하였습니다",
   "config.jade.plugin_naraka.entity_data": "낙인",
   "config.jade.plugin_naraka.nectarium_core": "넥타륨 코어",
-  "config.jade.plugin_naraka.soul_crafting_block": "영혼 세공기",
   "config.jade.plugin_naraka.soul_smithing_block": "영혼 대장장이 블록",
   "config.jade.plugin_naraka.soul_stabilizer": "영혼 안정기",
-  "container.soul_crafting": "영혼 세공기",
   "death.attack.corrupted_star": "%1$s이(가) %2$s에 폭사했습니다",
   "death.attack.corrupted_star.player": "%1$s이(가) %2$s에 폭사했습니다",
   "death.attack.naraka_fireball": "%1$s이(가) %2$s이(가) 던진 나락 화염구에 폭발했습니다",
@@ -204,10 +202,6 @@
   "item.naraka.rainbow_sword": "무지개 검",
   "item.naraka.sanctuary_compass": "생츄어리 나침반",
   "item.naraka.skill_controller": "스킬 컨트롤러",
-  "item.naraka.smithing_template.purified_soul_upgrade.additions_slot_description": "정화된 영혼 금속, 영혼이 주입된 재료 또는 신의 피를 놓으세요",
-  "item.naraka.smithing_template.purified_soul_upgrade.applies_to": "흑단나무 검, 정화된 영혼 무기",
-  "item.naraka.smithing_template.purified_soul_upgrade.base_slot_description": "흑단나무 무기, 정화된 영혼 검 또는 창를 놓으세요",
-  "item.naraka.smithing_template.purified_soul_upgrade.ingredients": "정화된 영혼 금속, 영혼이 주입된 재료",
   "item.naraka.soul_infused_amethyst": "영혼이 주입된 자수정",
   "item.naraka.soul_infused_amethyst_sword": "영혼이 주입된 자수정 검",
   "item.naraka.soul_infused_copper": "영혼이 주입된 구리",
@@ -236,7 +230,6 @@
   "jade.naraka.nectarium_core.activated": "활성화됨",
   "jade.naraka.nectarium_core.deactivated": "비활성화됨",
   "jade.naraka.nectarium_core.honey": "(%d 남음)",
-  "jade.naraka.soul_crafting.fuel": "연료: %d",
   "jade.naraka.soul_stabilizer": "%d",
   "jade.naraka.stigma": ": %d",
   "key.categories.naraka": "Naraka",
@@ -304,6 +297,5 @@
   "trim_material.naraka.soul_infused_gold": "영혼이 주입된 금 소재",
   "trim_material.naraka.soul_infused_lapis": "영혼이 주입된 청금석 소재",
   "trim_material.naraka.soul_infused_nectarium": "영혼이 주입된 넥타륨 소재",
-  "trim_material.naraka.soul_infused_redstone": "영혼이 주입된 레드스톤 소재",
-  "upgrade.naraka.purified_soul_upgrade": "정화된 영혼 강화"
+  "trim_material.naraka.soul_infused_redstone": "영혼이 주입된 레드스톤 소재"
 }
