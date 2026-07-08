@@ -233,13 +233,9 @@ public class Herobrine extends AbstractHerobrine {
         setDisplayEye(false);
         setDisplayPickaxe(true);
 
-        int armor = 0;
+        int armor = 12;
         for (LivingEntity livingEntity : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(20, 5, 20), AbstractHerobrine::isNotHerobrine)) {
             if (livingEntity.is(ConventionalTags.Entities.BOSSES))
-                armor += 12;
-        }
-        for (ServerPlayer player : bossEvent.getPlayers()) {
-            if (NarakaEntityUtils.isDamageablePlayer(player))
                 armor += 6;
         }
         NarakaAttributeModifiers.addAttributeModifier(this, Attributes.ARMOR, NarakaAttributeModifiers.finalHerobrineArmor(armor));
@@ -595,17 +591,39 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     protected void actuallyHurt(ServerLevel level, DamageSource damageSource, float damageAmount) {
-        if (!isHibernateMode() || damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
-            super.actuallyHurt(level, damageSource, damageAmount);
-        if (phaseManager.isPhaseChanged() && !isHibernateMode() && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-            setHealth(phaseManager.getActualPhaseMaxHealth(getPhase()) + 1);
-            startHibernateMode(level);
+        if (isInvulnerableTo(level, damageSource))
+            return;
+        float currentHealth = getHealth();
+        if (!damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            damageAmount = getDamageAfterArmorAbsorb(damageSource, damageAmount);
+            float healthAfterHurt = currentHealth - damageAmount;
+            float phaseMinimumHealth = getPhaseMinimumHealth();
+            if (healthAfterHurt < phaseMinimumHealth && getPhase() < 3) {
+                damageAmount = currentHealth - phaseMinimumHealth;
+                startHibernateMode(level);
+            }
         }
+        getCombatTracker().recordDamage(damageSource, damageAmount);
+        super.setHealth(currentHealth - damageAmount);
+
         updateHibernateMode(level, damageSource);
         updateHurtDamageLimit(level);
         accumulatedHurtDamage += damageAmount;
         if (getPhase() == 2 && (accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f))
             shadowController.increaseFlickerStack();
+    }
+
+    @Override
+    public void setHealth(float health) {
+        if (tickCount > 0 && health < getHealth() && level() instanceof ServerLevel level) {
+            health = Math.max(getHealth() - hurtDamageLimit, health);
+            if (health < getPhaseMinimumHealth() && getPhase() < 3) {
+                health = getPhaseMinimumHealth();
+                startHibernateMode(level);
+            }
+            updateHurtDamageLimit(level);
+        }
+        super.setHealth(health);
     }
 
     private float getPhaseMinimumHealth() {
