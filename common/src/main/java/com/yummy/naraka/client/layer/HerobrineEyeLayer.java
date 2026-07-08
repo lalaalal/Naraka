@@ -18,6 +18,8 @@ public class HerobrineEyeLayer<S extends AbstractHerobrineRenderState, M extends
     }
 
     private RenderType getRenderType(S renderState) {
+        if (renderState.eyeAlpha < 0xff)
+            return RenderTypes.entityTranslucentEmissive(renderState.eyeTexture);
         return RenderTypes.eyes(renderState.eyeTexture);
     }
 
