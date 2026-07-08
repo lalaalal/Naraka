@@ -47,7 +47,7 @@ public class NarakaItems {
             "naraka_pickaxe",
             NarakaPickaxeItem::new,
             properties().component(DataComponents.UNBREAKABLE, new Unbreakable(true))
-                    .attributes(NarakaTiers.createWeaponAttributes(NarakaTiers.LONGINUS, 0, -2.4f).build())
+                    .attributes(NarakaTiers.createWeaponAttributes(NarakaTiers.LONGINUS, NarakaPickaxeItem.calculateAttackDamageModifier(), -2.4f).build())
                     .rarity(Rarity.EPIC)
                     .fireResistant()
     );
