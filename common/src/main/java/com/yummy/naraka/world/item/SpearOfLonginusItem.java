@@ -39,7 +39,7 @@ public class SpearOfLonginusItem extends SpearItem {
 
     @Override
     public float getAttackDamageBonus(Entity target, float damage, DamageSource damageSource) {
-        return 6.66e6f;
+        return SpearOfLonginus.DAMAGE;
     }
 
     @Override
