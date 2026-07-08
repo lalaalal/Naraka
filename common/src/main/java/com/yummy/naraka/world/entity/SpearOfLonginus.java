@@ -21,6 +21,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class SpearOfLonginus extends Spear {
+    public static final Float DAMAGE = 666e16f;
+
     private boolean spawnPortal;
 
     protected SpearOfLonginus(EntityType<? extends SpearOfLonginus> entityType, Level level) {
@@ -75,7 +77,7 @@ public class SpearOfLonginus extends Spear {
     @Override
     protected void hurtHitEntity(ServerLevel serverLevel, Entity entity) {
         DamageSource source = NarakaDamageSources.longinus(this);
-        entity.hurt(source, 6.66e6f);
+        entity.hurt(source, DAMAGE);
         if (entity.isAlive())
             entity.kill();
     }
