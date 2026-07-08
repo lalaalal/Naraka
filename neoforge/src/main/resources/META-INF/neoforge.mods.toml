@@ -9,7 +9,7 @@ version = "${version}"
 displayName = "Naraka"
 authors = "${mod_author}"
 credits = "${credits}"
-description = "${description}"
+description = '''${description}'''
 logoFile = "naraka.png"
 displayURL = "https://github.com/lalaalal/Naraka"
 
