@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
@@ -54,10 +55,14 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> NARAKA_PICKAXE = registerSimpleItem(
             "naraka_pickaxe",
             properties -> properties.fireResistant()
-                    .tool(NarakaToolMaterials.LONGINUS, NarakaBlockTags.MINABLE_WITH_NARAKA_PICKAXE, 0, -2.8f, 5)
+                    .tool(NarakaToolMaterials.LONGINUS, NarakaBlockTags.MINABLE_WITH_NARAKA_PICKAXE, calculateAttackDamageModifier(), -2.8f, 5)
                     .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
                     .rarity(Rarity.EPIC)
     );
+
+    private static float calculateAttackDamageModifier() {
+        return NarakaConfig.COMMON.narakaPickaxeDamage.getValue() - (NarakaToolMaterials.LONGINUS.attackDamageBonus() + 1);
+    }
 
     public static final HolderProxy<Item, Item> SKILL_CONTROLLER = registerItem(
             "skill_controller",
