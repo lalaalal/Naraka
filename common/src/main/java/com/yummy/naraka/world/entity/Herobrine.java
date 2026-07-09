@@ -256,7 +256,8 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     public void setLastHurtByMob(@Nullable LivingEntity livingEntity) {
         super.setLastHurtByMob(livingEntity);
-        setTarget(livingEntity);
+        if (livingEntity != null && NarakaEntityUtils.isDamageable(livingEntity))
+            setTarget(livingEntity);
     }
 
     @Override
