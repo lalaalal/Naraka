@@ -141,7 +141,7 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
         poseStack.rotateAround(rotation.rotateX(Mth.HALF_PI), 0.5f, 0.5f, 0.5f);
         poseStack.translate(0.5, 0.5, 0);
         poseStack.scale(0.8f, 0.8f, 0.8f);
-        itemRenderer.renderStatic(forgingItem, ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, null, blockEntity.getSouls());
+        itemRenderer.renderStatic(forgingItem, ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), blockEntity.getSouls());
         poseStack.popPose();
     }
 }
