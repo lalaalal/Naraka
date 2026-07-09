@@ -110,7 +110,7 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
         Quaternionf rotation = Axis.YN.rotationDegrees(direction.toYRot());
         poseStack.rotateAround(rotation, 0.5f, 0.5f, 0.5f);
         poseStack.rotateAround(Axis.ZP.rotation(Mth.PI), 0.5f, 0.5f, 0.5f);
-        RenderType renderType = RenderTypes.entityCutout(NarakaTextures.SOUL_SMITHING_BLOCK);
+        RenderType renderType = RenderTypes.entityCutoutCull(NarakaTextures.SOUL_SMITHING_BLOCK);
         submitNodeCollector.submitModelPart(main, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, -1, null);
         poseStack.popPose();
 
