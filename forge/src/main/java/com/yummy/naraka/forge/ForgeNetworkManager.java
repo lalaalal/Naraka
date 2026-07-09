@@ -4,13 +4,13 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.network.*;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -23,7 +23,7 @@ public final class ForgeNetworkManager implements NarakaEventBus {
             VERSION::equals,
             VERSION::equals
     );
-    private static int id = 0;
+    private static int id = 1;
 
     private static final ClientboundNetworkManager CLIENTBOUND = new ForgeClientboundNetworkManager();
     private static final PacketRegistrar SERVER_PACKET_REGISTRAR = new ForgeServerPacketRegistrar();
@@ -54,9 +54,7 @@ public final class ForgeNetworkManager implements NarakaEventBus {
     private static class ForgeServerPacketRegistrar implements PacketRegistrar {
         private <T extends CustomPacketPayload<T>> BiConsumer<T, Supplier<NetworkEvent.Context>> handleMessage(NetworkManager.PacketHandler<T> handler) {
             return (msg, context) -> {
-                context.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                    handler.handle(msg, createContext(context));
-                }));
+                context.get().enqueueWork(() -> handler.handle(msg, createContext(context)));
                 context.get().setPacketHandled(true);
             };
         }
@@ -66,14 +64,16 @@ public final class ForgeNetworkManager implements NarakaEventBus {
             INSTANCE.registerMessage(getNextId(), type.classType(), type::encode, type::decode,
                     (msg, context) -> {
                         context.get().setPacketHandled(true);
-                    }
+                    },
+                    Optional.of(NetworkDirection.PLAY_TO_CLIENT)
             );
         }
 
         @Override
         public <T extends CustomPacketPayload<T>> void register(CustomPacketPayload.Type<T> type, NetworkManager.PacketHandler<T> handler) {
             INSTANCE.registerMessage(getNextId(), type.classType(), type::encode, type::decode,
-                    handleMessage(handler)
+                    handleMessage(handler),
+                    Optional.of(NetworkDirection.PLAY_TO_SERVER)
             );
         }
     }

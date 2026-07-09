@@ -10,8 +10,11 @@ import com.yummy.naraka.network.ServerboundNetworkManager;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -51,7 +54,9 @@ public class ForgeClientNetworkManager {
     private static class ForgeClientPacketRegistrar implements PacketRegistrar {
         private <T extends CustomPacketPayload<T>> BiConsumer<T, Supplier<NetworkEvent.Context>> handleMessage(NetworkManager.PacketHandler<T> handler) {
             return (msg, context) -> {
-                context.get().enqueueWork(() -> handler.handle(msg, createContext(context)));
+                context.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+                    handler.handle(msg, createContext(context));
+                }));
                 context.get().setPacketHandled(true);
             };
         }
@@ -64,7 +69,8 @@ public class ForgeClientNetworkManager {
         @Override
         public <T extends CustomPacketPayload<T>> void register(CustomPacketPayload.Type<T> type, NetworkManager.PacketHandler<T> handler) {
             ForgeNetworkManager.INSTANCE.registerMessage(ForgeNetworkManager.getNextId(), type.classType(), type::encode, type::decode,
-                    handleMessage(handler)
+                    handleMessage(handler),
+                    Optional.of(NetworkDirection.PLAY_TO_CLIENT)
             );
         }
     }
