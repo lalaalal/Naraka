@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaModelLayers;
+import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.renderer.entity.state.CorruptedStarRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.util.NarakaUtils;
@@ -85,8 +86,8 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         poseStack.rotateAround(new Quaternionf().setAngleAxis(Mth.PI / 3, NarakaRenderUtils.SIN_45, 0, NarakaRenderUtils.SIN_45), 0, 0.25f, 0);
         poseStack.rotateAround(Axis.YP.rotationDegrees(rotation), 0, 0.25f, 0);
         poseStack.rotateAround(Axis.ZP.rotationDegrees(rotation), 0, 0.25f, 0);
-        submitNodeCollector.order(10).submitModelPart(inner, poseStack, RenderTypes.lightning(), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.white(0.67f * entityRenderState.alphaMultiplier), null);
-        submitNodeCollector.order(10).submitModelPart(outer, poseStack, RenderTypes.lightning(), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.color(0.73f * entityRenderState.alphaMultiplier, entityRenderState.tailColor), null);
+        submitNodeCollector.order(10).submitModelPart(inner, poseStack, NarakaRenderTypes.emissive(), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.white(0.67f * entityRenderState.alphaMultiplier), null);
+        submitNodeCollector.order(10).submitModelPart(outer, poseStack, NarakaRenderTypes.emissive(), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.color(0.73f * entityRenderState.alphaMultiplier, entityRenderState.tailColor), null);
 
         poseStack.popPose();
 

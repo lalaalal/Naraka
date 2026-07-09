@@ -1,8 +1,10 @@
 package com.yummy.naraka.client;
 
+import com.yummy.naraka.config.NarakaConfig;
 import net.minecraft.client.renderer.blockentity.AbstractEndPortalRenderer;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
 
@@ -32,6 +34,12 @@ public final class NarakaRenderTypes {
 
     public static RenderType longinusCutout(Identifier texture) {
         return LONGINUS_CUTOUT.apply(texture);
+    }
+
+    public static RenderType emissive() {
+        if (NarakaClientContext.SHADER_ENABLED.getValue() && !NarakaConfig.CLIENT.disableEmissiveRenderType.getValue())
+            return RenderTypes.entityTranslucentEmissive(NarakaTextures.AREA_EFFECT);
+        return RenderTypes.lightning();
     }
 
     public static void initialize() {

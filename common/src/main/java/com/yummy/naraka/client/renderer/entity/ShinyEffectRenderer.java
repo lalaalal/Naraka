@@ -2,6 +2,7 @@ package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.renderer.entity.state.ShinyEffectRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.util.NarakaUtils;
@@ -10,8 +11,9 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.util.LightCoordsUtil;
 
 public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect, ShinyEffectRenderState> {
     public ShinyEffectRenderer(EntityRendererProvider.Context context) {
@@ -69,7 +71,8 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect, ShinyEffect
         float width = NarakaUtils.interpolate(tick / lifetime, 0, 20, NarakaUtils::fastStepIn);
         float height = NarakaUtils.interpolate(tick / lifetime, 0.1f, 0, NarakaUtils::fastStepOut);
 
-        submitNodeCollector.order(0).submitCustomGeometry(poseStack, RenderTypes.lightning(), renderRhombus(width, height, 0xff, 0xffffff));
+        RenderType renderType = NarakaRenderTypes.emissive();
+        submitNodeCollector.order(0).submitCustomGeometry(poseStack, renderType, renderRhombus(width, height, 0xff, 0xffffff));
 
         float centerWidth = Math.min(0.5f, width);
         float centerHeight = NarakaUtils.interpolate(tick / lifetime, 0.5f, 0, NarakaUtils::fastStepOut);
@@ -80,7 +83,7 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect, ShinyEffect
             alphaMultiplier = 0.25f;
         while (centerWidth < width) {
             poseStack.translate(0, 0, 0.01);
-            submitNodeCollector.order(index).submitCustomGeometry(poseStack, RenderTypes.lightning(), renderRhombus(centerWidth, centerHeight, alpha, color));
+            submitNodeCollector.order(index).submitCustomGeometry(poseStack, renderType, renderRhombus(centerWidth, centerHeight, alpha, color));
             centerWidth *= 2;
             alpha = (int) (alpha * alphaMultiplier);
             centerHeight += height * 0.5f;
@@ -88,12 +91,12 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect, ShinyEffect
             index += 1;
         }
 
-        submitNodeCollector.order(index).submitCustomGeometry(poseStack, RenderTypes.lightning(), renderRhombus(width, centerHeight, 0x11, color));
+        submitNodeCollector.order(index).submitCustomGeometry(poseStack, renderType, renderRhombus(width, centerHeight, 0x11, color));
         poseStack.popPose();
     }
 
     private static SubmitNodeCollector.CustomGeometryRenderer renderRhombus(final float width, final float height, final int alpha, final int color) {
-        return (pose, vertexConsumer) -> NarakaRenderUtils.renderRhombus(pose, vertexConsumer, width, height, alpha, color);
+        return (pose, vertexConsumer) -> NarakaRenderUtils.renderRhombus(pose, vertexConsumer, width, height, LightCoordsUtil.FULL_BRIGHT, alpha, color);
     }
 
     @Override

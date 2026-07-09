@@ -2,13 +2,13 @@ package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.renderer.entity.state.LightTailEntityRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.LightTailEntity;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ARGB;
@@ -75,7 +75,7 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
     protected void submitTail(S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
         poseStack.pushPose();
         poseStack.translate(0, 0.25, 0);
-        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
+        submitNodeCollector.submitCustomGeometry(poseStack, NarakaRenderTypes.emissive(), (pose, vertexConsumer) -> {
             float partSize = 1 / (float) renderState.tailPositions.size();
             for (int index = 0; index < renderState.tailPositions.size() - 1; index++) {
                 Vector3f from = renderState.tailPositions.get(index);
