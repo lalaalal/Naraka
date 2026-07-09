@@ -11,10 +11,15 @@
     "GuEunso",
     "Gyeon___"
   ],
+  "contributors": [
+    "Qiye_Duyu",
+    "Player_7",
+    "h2o/aoinnman"
+  ],
   "contact": {
     "homepage": "https://github.com/lalaalal/Naraka"
   },
-  "license": "All-Rights-Reserved",
+  "license": "MIT",
   "icon": "naraka.png",
   "environment": "*",
   "entrypoints": {
