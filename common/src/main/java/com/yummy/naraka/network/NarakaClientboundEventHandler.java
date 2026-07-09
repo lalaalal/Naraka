@@ -5,6 +5,7 @@ import com.yummy.naraka.client.NarakaPostEffects;
 import com.yummy.naraka.client.gui.screen.AnimationControlScreen;
 import com.yummy.naraka.client.gui.screen.SkillControlScreen;
 import com.yummy.naraka.client.sound.BossMusicPlayer;
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.client.Minecraft;
@@ -65,6 +66,9 @@ public class NarakaClientboundEventHandler {
     }
 
     private static void updateHerobrineMusic(Entity entity, final int phase) {
+        if (NarakaConfig.CLIENT.disableHerobrineBossMusic.getValue())
+            return;
+
         BossMusicPlayer bossMusicPlayer = NarakaMusics.bossMusicPlayer();
         if (0 < phase && phase <= 4) {
             bossMusicPlayer.naraka$playBossMusic(HEROBRINE_MUSIC[phase]);
