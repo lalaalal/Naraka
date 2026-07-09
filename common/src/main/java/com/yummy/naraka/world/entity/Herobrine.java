@@ -3,6 +3,7 @@ package com.yummy.naraka.world.entity;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
+import com.yummy.naraka.event.EntityEvents;
 import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
@@ -594,12 +595,6 @@ public class Herobrine extends AbstractHerobrine {
                 level.playSound(null, getX(), getY(), getZ(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.HOSTILE, 4, 0.3f);
                 return false;
             }
-            float limitedDamage = Math.min(damage, hurtDamageLimit);
-            float maxAccumulatedDamage = NarakaConfig.COMMON.herobrinePhase3DpsLimit.getValue() * 2;
-            float limitByDps = Math.max(maxAccumulatedDamage - accumulatedHurtDamage, 0);
-            if (getPhase() == 3)
-                limitedDamage = Math.min(limitedDamage, limitByDps);
-            return super.hurt(source, limitedDamage);
         }
         return super.hurt(source, damage);
     }
@@ -609,29 +604,41 @@ public class Herobrine extends AbstractHerobrine {
         if (isInvulnerableTo(damageSource) || !(level() instanceof ServerLevel level))
             return;
         float currentHealth = getHealth();
+        damageAmount = EntityEvents.LIVING_HURT.invoker().modifyDamage(this, damageSource, damageAmount);
+        if (damageAmount <= 0) return;
         if (!damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-            damageAmount = getDamageAfterArmorAbsorb(damageSource, damageAmount);
-            float healthAfterHurt = currentHealth - damageAmount;
-            float phaseMinimumHealth = getPhaseMinimumHealth();
-            if (healthAfterHurt < phaseMinimumHealth && getPhase() < 3) {
-                damageAmount = currentHealth - phaseMinimumHealth;
-                startHibernateMode(level);
-            }
-        }
-        getCombatTracker().recordDamage(damageSource, damageAmount);
-        super.setHealth(currentHealth - damageAmount);
+            damageAmount = this.getDamageAfterArmorAbsorb(damageSource, damageAmount);
+            damageAmount = this.getDamageAfterMagicAbsorb(damageSource, damageAmount);
+            damageAmount = EntityEvents.LIVING_DAMAGE.invoker().modifyDamage(this, damageSource, damageAmount);
 
+            getCombatTracker().recordDamage(damageSource, damageAmount);
+            this.setHealth(currentHealth - damageAmount);
+        } else {
+            getCombatTracker().recordDamage(damageSource, damageAmount);
+            super.setHealth(currentHealth - damageAmount);
+        }
         updateHibernateMode(level, damageSource);
-        updateHurtDamageLimit(level);
-        accumulatedHurtDamage += damageAmount;
-        if (getPhase() == 2 && (accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f))
-            shadowController.increaseFlickerStack();
     }
 
     @Override
     public void setHealth(float health) {
         if (tickCount > 0 && health < getHealth() && level() instanceof ServerLevel level) {
-            health = Math.max(getHealth() - hurtDamageLimit, health);
+            if (isUsingInvulnerableSkill()) {
+                level.playSound(null, this.getX(), getY(), getZ(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.HOSTILE, 4, 0.3f);
+                return;
+            }
+            float damage = this.getHealth() - health;
+            float limitedDamage = Math.min(damage, hurtDamageLimit);
+            float maxAccumulatedDamage = NarakaConfig.COMMON.herobrinePhase3DpsLimit.getValue() * 2;
+            float limitByDps = Math.max(maxAccumulatedDamage - accumulatedHurtDamage, 0);
+            if (getPhase() == 3)
+                limitedDamage = Math.min(limitedDamage, limitByDps);
+
+            accumulatedHurtDamage += limitedDamage;
+            if (getPhase() == 2 && (accumulatedHurtDamage > 15 || random.nextDouble() < 0.25f))
+                shadowController.increaseFlickerStack();
+
+            health = Math.max(getHealth() - limitedDamage, health);
             if (health < getPhaseMinimumHealth() && getPhase() < 3) {
                 health = getPhaseMinimumHealth();
                 startHibernateMode(level);
