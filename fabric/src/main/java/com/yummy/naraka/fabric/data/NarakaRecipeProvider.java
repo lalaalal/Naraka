@@ -114,6 +114,7 @@ public class NarakaRecipeProvider extends FabricRecipeProvider {
                 .save(output);
         CompoundTag blessed = new CompoundTag();
         NarakaNbtUtils.store(blessed, NarakaItemUtils.TAG_BLESSED, Codec.BOOL, true);
+        blessed.putBoolean(NarakaItemUtils.TAG_UNBREAKABLE, true);
         NbtPredicateRecipeBuilder.predicate(RecipeCategory.COMBAT, NarakaItems.SPEAR_OF_LONGINUS_ITEM)
                 .add(0, NarakaItems.SOUL_INFUSED_REDSTONE_SWORD, blessed)
                 .add(1, NarakaItems.SOUL_INFUSED_COPPER_SWORD, blessed)

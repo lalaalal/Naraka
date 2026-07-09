@@ -164,6 +164,7 @@ public class NarakaCreativeModeTabs {
     private static ItemStack blessed(Item item) {
         ItemStack itemStack = new ItemStack(item);
         NarakaItemUtils.storeNbtData(itemStack, "Blessed", Codec.BOOL, true);
+        NarakaItemUtils.makeUnbreakable(itemStack);
         return itemStack;
     }
 
