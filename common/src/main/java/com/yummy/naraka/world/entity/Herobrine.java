@@ -266,6 +266,13 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     @Override
+    public void setLastHurtByMob(@Nullable LivingEntity livingEntity) {
+        super.setLastHurtByMob(livingEntity);
+        if (livingEntity != null && NarakaEntityUtils.isDamageable(livingEntity))
+            setTarget(livingEntity);
+    }
+
+    @Override
     protected void playHurtSound(DamageSource source) {
         if (isFinalModel()) {
             playSound(SoundEvents.IRON_GOLEM_DAMAGE, 1, 0.8f);
