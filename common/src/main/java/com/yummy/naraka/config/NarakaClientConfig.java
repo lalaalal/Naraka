@@ -10,6 +10,7 @@ public class NarakaClientConfig extends StaticConfiguration {
             .comment("Divide scarf with given number")
             .comment("Bigger value, short wave cycle")
             .comment("!! Editing while playing game may cause crash");
+    public final ConfigValue<Boolean> disableHerobrineBossMusic = define("disable_herobrine_boss_music", false);
 
     public final ConfigValue<Integer> oreSeeThroughRange = define("ore_see_through_range", 20);
     public final ConfigValue<Boolean> disableOreSeeThrough = define("disable_ore_see_through", false);
