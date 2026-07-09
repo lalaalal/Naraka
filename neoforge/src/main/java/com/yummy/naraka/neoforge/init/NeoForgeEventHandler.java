@@ -1,9 +1,6 @@
 package com.yummy.naraka.neoforge.init;
 
-import com.yummy.naraka.event.CreativeModeTabEvents;
-import com.yummy.naraka.event.EventHandler;
-import com.yummy.naraka.event.LootEvents;
-import com.yummy.naraka.event.ServerEvents;
+import com.yummy.naraka.event.*;
 import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.neoforge.NarakaEventBus;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
@@ -15,8 +12,12 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -28,7 +29,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public final class NeoForgeEventHandler implements NarakaEventBus {
     @MethodProxy(EventHandler.class)
-    public static void prepare() {
+    public static void prepare(EventHandler.PlatformEventAccess events) {
         NEOFORGE_BUS.addListener(ServerStartingEvent.class, event -> ServerEvents.SERVER_STARTING.invoker().run(event.getServer()));
         NEOFORGE_BUS.addListener(ServerStartedEvent.class, event -> ServerEvents.SERVER_STARTED.invoker().run(event.getServer()));
         NEOFORGE_BUS.addListener(ServerStoppingEvent.class, event -> ServerEvents.SERVER_STOPPING.invoker().run(event.getServer()));
@@ -46,6 +47,29 @@ public final class NeoForgeEventHandler implements NarakaEventBus {
                 event.getTable().addPool(pool.build());
             });
         });
+
+        final EntityEvents.LivingHurt livingHurt = events.getNarakaInvoker(EntityEvents.LIVING_HURT);
+        NEOFORGE_BUS.addListener(LivingIncomingDamageEvent.class, event -> {
+            float amount = livingHurt.modifyDamage(event.getEntity(), event.getSource(), event.getAmount());
+            event.setAmount(amount);
+        });
+        final EntityEvents.LivingDamage livingDamage = events.getNarakaInvoker(EntityEvents.LIVING_DAMAGE);
+        NEOFORGE_BUS.addListener(LivingDamageEvent.Pre.class, event -> {
+            float amount = livingDamage.modifyDamage(event.getEntity(), event.getSource(), event.getOriginalDamage());
+            event.setNewDamage(amount);
+        });
+
+        events.setPlatformInvoker(EntityEvents.LIVING_HURT, (entity, source, amount) -> {
+            DamageContainer damageContainer = new DamageContainer(source, amount);
+            CommonHooks.onEntityIncomingDamage(entity, damageContainer);
+            return damageContainer.getNewDamage();
+        });
+        events.setPlatformInvoker(EntityEvents.LIVING_DAMAGE, (entity, source, amount) -> {
+            DamageContainer damageContainer = new DamageContainer(source, amount);
+            CommonHooks.onLivingDamagePre(entity, damageContainer);
+            return damageContainer.getNewDamage();
+        });
+
     }
 
     @MethodProxy(CreativeModeTabEvents.class)

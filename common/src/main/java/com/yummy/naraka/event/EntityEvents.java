@@ -17,6 +17,24 @@ public final class EntityEvents {
             listener.join(player);
     });
 
+    /**
+     * On LivingEntity hurt
+     */
+    public static final Event<LivingHurt> LIVING_HURT = Event.forPlatform(listeners -> (entity, source, amount) -> {
+        for (LivingHurt listener : listeners)
+            amount = listener.modifyDamage(entity, source, amount);
+        return amount;
+    });
+
+    /**
+     * On LivingEntity actually accept the damage
+     */
+    public static final Event<LivingDamage> LIVING_DAMAGE = Event.forPlatform(listeners -> (entity, source, amount) -> {
+        for (LivingDamage listener : listeners)
+            amount = listener.modifyDamage(entity, source, amount);
+        return amount;
+    });
+
     @FunctionalInterface
     public interface LivingDeath {
         /**
@@ -32,5 +50,15 @@ public final class EntityEvents {
     @FunctionalInterface
     public interface PlayerJoin {
         void join(ServerPlayer player);
+    }
+
+    @FunctionalInterface
+    public interface LivingHurt {
+        float modifyDamage(LivingEntity entity, DamageSource source, float amount);
+    }
+
+    @FunctionalInterface
+    public interface LivingDamage {
+        float modifyDamage(LivingEntity entity, DamageSource source, float amount);
     }
 }
