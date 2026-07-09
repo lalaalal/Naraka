@@ -9,7 +9,6 @@ publisher {
         curseforge System.getenv("CURSE_TOKEN")
     }
 
-    setDebug(true)
     setModrinthID("2InS5Swi")
     setCurseID("1292603")
     setVersionType("$project.version_type")
