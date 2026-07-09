@@ -19,7 +19,6 @@ public class NarakaConfig {
     private static @Nullable WatchService watchService;
 
     private static final Set<Configuration> configurations = new HashSet<>();
-    private static final File IRIS_CONFIG_FILE = ConfigFile.CONFIG_PATH.resolve("iris.properties").toFile();
 
     public static final NarakaCommonConfig COMMON = register(NarakaCommonConfig::new);
     public static final NarakaClientConfig CLIENT = registerForClient(NarakaClientConfig::new);
@@ -55,13 +54,21 @@ public class NarakaConfig {
     }
 
     public static void checkIris() {
-        if (!IRIS_CONFIG_FILE.exists())
+        if (Platform.getInstance().getModLoader() == Platform.ModLoader.FABRIC)
+            check("iris");
+        else
+            check("oculus");
+    }
+
+    public static void check(String name) {
+        File configFile = ConfigFile.CONFIG_PATH.resolve(name + ".properties").toFile();
+        if (!configFile.exists())
             return;
-        try (BufferedReader reader = new BufferedReader(new FileReader(IRIS_CONFIG_FILE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(configFile))) {
             Properties properties = new Properties();
             properties.load(reader);
             String value = properties.getProperty("enableShaders", "false");
-            boolean irisLoaded = Platform.getInstance().modExists("iris");
+            boolean irisLoaded = Platform.getInstance().modExists(name);
             boolean shaderEnabled = Boolean.parseBoolean(value) && irisLoaded;
             NarakaClientContext.SHADER_ENABLED.set(shaderEnabled);
         } catch (IOException ignore) {
