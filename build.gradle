@@ -23,7 +23,7 @@ subprojects {
 
     base {
         // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
-        archivesName = "$rootProject.archives_name-$project.name-$rootProject.supporting_minecraft_version"
+        archivesName = "$rootProject.archives_name-$project.name-$rootProject.minecraft_version"
     }
 
     loom {
@@ -112,13 +112,12 @@ subprojects {
                 modrinth System.getenv("MODRINTH_TOKEN")
                 curseforge System.getenv("CURSE_TOKEN")
             }
-
+            
             setModrinthID("2InS5Swi")
             setCurseID("1292603")
             setVersionType("$rootProject.mod_version_type")
             setChangelog(rootProject.projectDir.toPath().resolve("change.md").toFile())
-            setVersion("$rootProject.mod_version")
-            setProjectVersion("$rootProject.mod_version")
+            setProjectVersion("$project.name-$rootProject.minecraft_version-$rootProject.mod_version")
             setJavaVersions(List.of(JavaVersion.VERSION_17))
             setGameVersions("1.20.1")
             setDisplayName("${base.archivesName.get()}-${rootProject.mod_version}")
