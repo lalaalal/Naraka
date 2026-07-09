@@ -1,5 +1,7 @@
 package com.yummy.naraka.event;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -28,6 +30,10 @@ public abstract class Event<T> {
      */
     public static <T> Event<T> create(Function<List<T>, T> invokerFactory) {
         return new SimpleEvent<>(invokerFactory);
+    }
+
+    public static <T> Event<T> forPlatform(Function<List<T>, T> invokerFactory) {
+        return new PlatformEvent<>(invokerFactory);
     }
 
     public static Event<Runnable> simple() {
@@ -62,9 +68,32 @@ public abstract class Event<T> {
         }
 
         public T invoker() {
-            if (listeners.size() == 1)
-                return listeners.getFirst();
             return this.invoker;
+        }
+    }
+
+    static class PlatformEvent<T> extends Event<T> {
+        private final T narakaInvoker;
+        @Nullable
+        private T platformInvoker;
+
+        public PlatformEvent(Function<List<T>, T> invokerFactory) {
+            this.narakaInvoker = invokerFactory.apply(listeners);
+        }
+
+        public void setPlatformInvoker(T invoker) {
+            this.platformInvoker = invoker;
+        }
+
+        public T getNarakaInvoker() {
+            return narakaInvoker;
+        }
+
+        @Override
+        public T invoker() {
+            if (platformInvoker == null)
+                return narakaInvoker;
+            return platformInvoker;
         }
     }
 }

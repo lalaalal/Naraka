@@ -10,8 +10,12 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -22,11 +26,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class NeoForgeEventHandler implements EventInitializer, CreativeModeTabEvents.ModifyEntriesEventFactory, NarakaEventBus {
+public final class NeoForgeEventInitializer implements EventInitializer, CreativeModeTabEvents.ModifyEntriesEventFactory, NarakaEventBus {
     private final Map<ResourceKey<CreativeModeTab>, Event<CreativeModeTabEvents.EntryModifier>> cache = new HashMap<>();
 
     @Override
-    public void initialize() {
+    public void initialize(PlatformEventAccess events) {
         NEOFORGE_BUS.addListener(ServerStartingEvent.class, event -> ServerEvents.SERVER_STARTING.invoker().run(event.getServer()));
         NEOFORGE_BUS.addListener(ServerStartedEvent.class, event -> ServerEvents.SERVER_STARTED.invoker().run(event.getServer()));
         NEOFORGE_BUS.addListener(ServerStoppingEvent.class, event -> ServerEvents.SERVER_STOPPING.invoker().run(event.getServer()));
@@ -43,6 +47,28 @@ public final class NeoForgeEventHandler implements EventInitializer, CreativeMod
             LootEvents.MODIFY_LOOT_TABLE.invoker().modify(key, pool -> {
                 event.getTable().addPool(pool.build());
             });
+        });
+
+        final EntityEvents.LivingHurt livingHurt = events.getNarakaInvoker(EntityEvents.LIVING_HURT);
+        NEOFORGE_BUS.addListener(LivingIncomingDamageEvent.class, event -> {
+            float amount = livingHurt.modifyDamage(event.getEntity(), event.getSource(), event.getAmount());
+            event.setAmount(amount);
+        });
+        final EntityEvents.LivingDamage livingDamage = events.getNarakaInvoker(EntityEvents.LIVING_DAMAGE);
+        NEOFORGE_BUS.addListener(LivingDamageEvent.Pre.class, event -> {
+            float amount = livingDamage.modifyDamage(event.getEntity(), event.getSource(), event.getOriginalDamage());
+            event.setNewDamage(amount);
+        });
+
+        events.setPlatformInvoker(EntityEvents.LIVING_HURT, (entity, source, amount) -> {
+            DamageContainer damageContainer = new DamageContainer(source, amount);
+            CommonHooks.onEntityIncomingDamage(entity, damageContainer);
+            return damageContainer.getNewDamage();
+        });
+        events.setPlatformInvoker(EntityEvents.LIVING_DAMAGE, (entity, source, amount) -> {
+            DamageContainer damageContainer = new DamageContainer(source, amount);
+            CommonHooks.onLivingDamagePre(entity, damageContainer);
+            return damageContainer.getNewDamage();
         });
     }
 

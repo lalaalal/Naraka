@@ -11,6 +11,7 @@ import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.core.registries.RegistryProxyProvider;
+import com.yummy.naraka.event.EventInitializer;
 import com.yummy.naraka.event.NarakaGameEvents;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.network.NarakaNetworks;
@@ -57,7 +58,7 @@ public final class NarakaMod {
     public static void initialize(NarakaInitializer initializer) {
         NarakaServices.initialize();
 
-        NarakaServices.EVENT_INITIALIZER.initialize();
+        EventInitializer.initialize();
         NarakaConfig.initialize();
 
         NarakaRegistries.initialize();
