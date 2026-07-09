@@ -89,7 +89,7 @@ public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<So
 
         poseStack.pushPose();
         poseStack.scale(1, soulRatio, 1);
-        RenderType liquidRenderType = RenderTypes.entityCutoutCull(WATER_OVERLAY);
+        RenderType liquidRenderType = RenderTypes.entityTranslucent(WATER_OVERLAY);
         submitNodeCollector.submitModelPart(liquid, poseStack, liquidRenderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, color, null);
         poseStack.popPose();
     }
