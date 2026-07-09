@@ -18,7 +18,7 @@ import net.minecraft.world.level.ItemLike;
 @SuppressWarnings("unused")
 public final class FabricEventHandler {
     @MethodProxy(EventHandler.class)
-    public static void prepare() {
+    public static void prepare(EventHandler.PlatformEventAccess events) {
         ServerLifecycleEvents.SERVER_STARTING.register(server -> ServerEvents.SERVER_STARTING.invoker().run(server));
         ServerLifecycleEvents.SERVER_STARTED.register(server -> ServerEvents.SERVER_STARTED.invoker().run(server));
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> ServerEvents.SERVER_STOPPING.invoker().run(server));

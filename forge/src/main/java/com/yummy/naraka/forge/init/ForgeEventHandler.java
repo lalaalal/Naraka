@@ -1,20 +1,20 @@
 package com.yummy.naraka.forge.init;
 
-import com.yummy.naraka.event.CreativeModeTabEvents;
-import com.yummy.naraka.event.EventHandler;
-import com.yummy.naraka.event.LootEvents;
-import com.yummy.naraka.event.ServerEvents;
-import com.yummy.naraka.invoker.MethodProxy;
+import com.yummy.naraka.event.*;
 import com.yummy.naraka.forge.NarakaEventBus;
+import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import net.minecraft.Util;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
@@ -27,7 +27,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public final class ForgeEventHandler implements NarakaEventBus {
     @MethodProxy(EventHandler.class)
-    public static void prepare() {
+    public static void prepare(EventHandler.PlatformEventAccess events) {
         FORGE_BUS.addListener(EventPriority.NORMAL, false, ServerStartedEvent.class, event -> ServerEvents.SERVER_STARTING.invoker().run(event.getServer()));
         FORGE_BUS.addListener(EventPriority.NORMAL, false, ServerStartedEvent.class, event -> ServerEvents.SERVER_STARTED.invoker().run(event.getServer()));
         FORGE_BUS.addListener(EventPriority.NORMAL, false, ServerStoppingEvent.class, event -> ServerEvents.SERVER_STOPPING.invoker().run(event.getServer()));
@@ -50,6 +50,20 @@ public final class ForgeEventHandler implements NarakaEventBus {
                 event.getTable().addPool(pool.build());
             });
         });
+
+        final EntityEvents.LivingHurt livingHurt = events.getNarakaInvoker(EntityEvents.LIVING_HURT);
+        FORGE_BUS.addListener(EventPriority.NORMAL, false, LivingHurtEvent.class, event -> {
+            float amount = livingHurt.modifyDamage(event.getEntity(), event.getSource(), event.getAmount());
+            event.setAmount(amount);
+        });
+        final EntityEvents.LivingDamage livingDamage = events.getNarakaInvoker(EntityEvents.LIVING_DAMAGE);
+        FORGE_BUS.addListener(EventPriority.NORMAL, false, LivingDamageEvent.class, event -> {
+            float amount = livingDamage.modifyDamage(event.getEntity(), event.getSource(), event.getAmount());
+            event.setAmount(amount);
+        });
+
+        events.setPlatformInvoker(EntityEvents.LIVING_HURT, ForgeHooks::onLivingHurt);
+        events.setPlatformInvoker(EntityEvents.LIVING_DAMAGE, ForgeHooks::onLivingDamage);
     }
 
     @MethodProxy(CreativeModeTabEvents.class)
