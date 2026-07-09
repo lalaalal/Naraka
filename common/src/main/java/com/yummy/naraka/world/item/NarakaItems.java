@@ -121,7 +121,7 @@ public class NarakaItems {
     // Spears
     public static final HolderProxy<Item, SpearItem> SPEAR_ITEM = registerItem(
             "spear",
-            properties -> new SpearItem(Tiers.IRON,
+            properties -> new SpearItem(NarakaTiers.PURIFIED_SOUL,
                     true, 3, -3,
                     properties.fireResistant(),
                     NarakaEntityTypes.THROWN_SPEAR
@@ -156,7 +156,7 @@ public class NarakaItems {
     public static final HolderProxy<Item, PurifiedSoulSwordItem> PURIFIED_SOUL_SWORD = registerItem(
             "purified_soul_sword",
             properties -> new PurifiedSoulSwordItem(
-                    Tiers.IRON,
+                    NarakaTiers.PURIFIED_SOUL,
                     -2, -2.4f,
                     properties.fireResistant()
             )
@@ -225,8 +225,9 @@ public class NarakaItems {
     private static HolderProxy<Item, Item> registerSoulInfusedSword(SoulType type) {
         HolderProxy<Item, Item> item = registerItem(SOUL_INFUSED_PREFIX + type.getSerializedName() + "_sword",
                 properties -> new SoulInfusedSwordItem(
-                        Tiers.IRON,
+                        NarakaTiers.PURIFIED_SOUL,
                         properties.fireResistant()
+                                .durability(-1)
                                 .rarity(Rarity.RARE),
                         type.color
                 )

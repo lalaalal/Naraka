@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 public class NarakaTiers implements Tier {
     public static final NarakaTiers LONGINUS = new NarakaTiers(4, Integer.MAX_VALUE, 12, 65, 22, () -> Ingredient.EMPTY);
+    public static final NarakaTiers PURIFIED_SOUL = new NarakaTiers(2, 250, 6.0F, 2.0F, 14, () -> Ingredient.EMPTY);
 
     private final int tierLevel;
     private final int uses;
