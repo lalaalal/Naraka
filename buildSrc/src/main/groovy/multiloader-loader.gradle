@@ -9,12 +9,12 @@ publisher {
         curseforge System.getenv("CURSE_TOKEN")
     }
 
+    setDebug(true)
     setModrinthID("2InS5Swi")
     setCurseID("1292603")
     setVersionType("$project.version_type")
     setChangelog(rootProject.projectDir.toPath().resolve("change.md").toFile())
-    setVersion("$project.version")
-    setProjectVersion("$project.version")
+    setProjectVersion("${project.name}-${minecraft_version}-${project.version}")
     setJavaVersions(List.of(JavaVersion.VERSION_25))
     setGameVersions("$project.minecraft_version")
     setDisplayName("${base.archivesName.get()}-${project.version}")
