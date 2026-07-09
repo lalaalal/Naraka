@@ -5,10 +5,13 @@
   "minVersion": "0.8",
   "client": [
     "client.EffectInstanceMixin",
+    "client.GameRendererMixin",
     "client.LevelRendererMixin"
   ],
   "mixins": [
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "ServerGamePacketListenerImplMixin",
+    "ServerPlayerGameModeMixin"
   ],
   "injectors": {
     "defaultRequire": 1
