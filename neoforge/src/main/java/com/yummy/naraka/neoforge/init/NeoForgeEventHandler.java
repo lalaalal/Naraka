@@ -55,7 +55,7 @@ public final class NeoForgeEventHandler implements NarakaEventBus {
         });
         final EntityEvents.LivingDamage livingDamage = events.getNarakaInvoker(EntityEvents.LIVING_DAMAGE);
         NEOFORGE_BUS.addListener(LivingDamageEvent.Pre.class, event -> {
-            float amount = livingDamage.modifyDamage(event.getEntity(), event.getSource(), event.getOriginalDamage());
+            float amount = livingDamage.modifyDamage(event.getEntity(), event.getSource(), event.getNewDamage());
             event.setNewDamage(amount);
         });
 
