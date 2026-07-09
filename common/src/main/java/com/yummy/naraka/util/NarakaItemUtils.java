@@ -22,6 +22,7 @@ public class NarakaItemUtils {
     public static final String TAG_BLOCK_DATA = "BlockData";
     public static final String TAG_BLESSED = "Blessed";
     public static final String TAG_HEROBRINE_SCARF = "HerobrineScarf";
+    public static final String TAG_SOUL_TYPE = "SoulType";
 
     public static void summonItemEntity(Level level, ItemStack itemStack, BlockPos pos) {
         if (!level.isClientSide()) {

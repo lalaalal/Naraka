@@ -8,22 +8,23 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 
 public class SoulInfusedSwordItem extends SwordItem {
-    private final int color;
+    private final SoulType type;
 
-    public SoulInfusedSwordItem(Tier tier, Item.Properties properties, int color) {
+    public SoulInfusedSwordItem(Tier tier, Item.Properties properties, SoulType soulType) {
         super(tier, 5, -2.4f, properties);
-        this.color = color;
+        this.type = soulType;
     }
 
     @Override
     public Component getName(ItemStack itemStack) {
         return super.getName(itemStack)
                 .copy()
-                .withStyle(style -> style.withColor(color));
+                .withStyle(style -> style.withColor(type.color));
     }
 
     @Override
     public ItemStack getDefaultInstance() {
-        return NarakaItemUtils.makeUnbreakable(super.getDefaultInstance());
+        ItemStack itemStack = NarakaItemUtils.makeUnbreakable(super.getDefaultInstance());
+        return NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_SOUL_TYPE, SoulType.CODEC, type);
     }
 }

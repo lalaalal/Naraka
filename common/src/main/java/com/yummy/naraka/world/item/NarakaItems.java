@@ -229,7 +229,7 @@ public class NarakaItems {
                         properties.fireResistant()
                                 .durability(-1)
                                 .rarity(Rarity.RARE),
-                        type.color
+                        type
                 )
         );
         SOUL_INFUSED_SWORDS.add(item);

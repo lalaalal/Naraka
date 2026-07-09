@@ -104,14 +104,14 @@ public class NarakaCreativeModeTabs {
     }
 
     private static void createSoulMaterialsTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-        output.accept(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get());
-        output.accept(NarakaItems.SOUL_INFUSED_COPPER_SWORD.get());
-        output.accept(NarakaItems.SOUL_INFUSED_GOLD_SWORD.get());
-        output.accept(NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get());
-        output.accept(NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get());
-        output.accept(NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get());
-        output.accept(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get());
-        output.accept(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get());
+        output.accept(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get().getDefaultInstance().copy());
+        output.accept(NarakaItems.SOUL_INFUSED_COPPER_SWORD.get().getDefaultInstance().copy());
+        output.accept(NarakaItems.SOUL_INFUSED_GOLD_SWORD.get().getDefaultInstance().copy());
+        output.accept(NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get().getDefaultInstance().copy());
+        output.accept(NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get().getDefaultInstance().copy());
+        output.accept(NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get().getDefaultInstance().copy());
+        output.accept(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get().getDefaultInstance().copy());
+        output.accept(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get().getDefaultInstance().copy());
         output.accept(NarakaItems.PURIFIED_SOUL_SWORD.get());
 
         output.accept(NarakaItems.SOUL_INFUSED_REDSTONE.get());

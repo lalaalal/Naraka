@@ -135,6 +135,8 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         if (swordItem == null)
             return false;
         forgingItem = new ItemStack(swordItem);
+        NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_BLESSED, SoulType.CODEC, soulType);
+        NarakaItemUtils.makeUnbreakable(forgingItem);
         soulStabilizer.consumeSoul(requiredSoul);
         cooldownTick = COOLDOWN;
         if (level != null)
@@ -172,6 +174,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
             ArmorTrim armorTrim = new ArmorTrim(material.get(), pattern.get());
             ArmorTrim.setTrim(level.registryAccess(), forgingItem, armorTrim);
         }
+        NarakaItemUtils.makeUnbreakable(forgingItem);
         setChanged();
         return true;
     }
