@@ -13,7 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class SpearOfLonginusItem extends SpearItem implements ItemDamageSourceProvider {
+public class SpearOfLonginusItem extends SpearItem implements ItemDamageSourceProvider, PickRangeModifiable {
     public SpearOfLonginusItem(Properties properties) {
         super(NarakaTiers.LONGINUS, false, 0, -3, properties, NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS);
     }
@@ -43,5 +43,10 @@ public class SpearOfLonginusItem extends SpearItem implements ItemDamageSourcePr
         return super.getName(stack).copy()
                 .withStyle(ChatFormatting.BOLD)
                 .withStyle(ComponentStyles.RAINBOW_COLOR);
+    }
+
+    @Override
+    public float getPickRange() {
+        return 66;
     }
 }

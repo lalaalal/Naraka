@@ -41,6 +41,7 @@
     "PlayerListMixin",
     "PlayerMixin",
     "ServerEntityMixin",
+    "ServerGamePacketListenerImplMixin",
     "ServerLevelMixin",
     "ServerPlaceRecipeMixin",
     "ServerPlayerGameModeMixin",

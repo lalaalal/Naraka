@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-public class SkillUsingMobControllerItem extends Item {
+public class SkillUsingMobControllerItem extends Item implements PickRangeModifiable {
     private final NarakaClientboundEntityEventPacket.Event event;
 
     public SkillUsingMobControllerItem(Properties properties, NarakaClientboundEntityEventPacket.Event event) {
@@ -25,5 +25,10 @@ public class SkillUsingMobControllerItem extends Item {
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public float getPickRange() {
+        return 64;
     }
 }
