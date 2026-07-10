@@ -19,6 +19,7 @@ public final class NarakaClientServices {
     public static final ResourceReloadListenerRegistry.Registrar RESOURCE_RELOAD_LISTENER_REGISTRY = load(ResourceReloadListenerRegistry.Registrar.class);
     public static final ScreenFactoryRegistry.Registrar SCREEN_FACTORY_REGISTRY = load(ScreenFactoryRegistry.Registrar.class);
     public static final SpecialModelRendererRegistry.Registrar SPECIAL_MODEL_RENDERER_REGISTRY = load(SpecialModelRendererRegistry.Registrar.class);
+    public static final BuiltinResourcePackRegistry.Registrar BUILTIN_RESOURCE_PACK_REGISTRY = load(BuiltinResourcePackRegistry.Registrar.class);
 
     private NarakaClientServices() {
     }

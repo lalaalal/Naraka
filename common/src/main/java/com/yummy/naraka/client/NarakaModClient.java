@@ -54,6 +54,7 @@ public final class NarakaModClient {
         registerMenus();
         registerKeyMappings();
         DimensionSkyRendererRegistry.register(NarakaDimensions.NARAKA, NarakaSkyRenderer::new);
+        BuiltinResourcePackRegistry.register(NarakaMod.identifier("naraka_alternative"), Component.literal("Naraka Alternative"));
 
         AnimationMapper.initialize();
 
