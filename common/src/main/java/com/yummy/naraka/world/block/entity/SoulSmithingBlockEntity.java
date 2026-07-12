@@ -26,6 +26,7 @@ import net.minecraft.world.item.armortrim.ArmorTrim;
 import net.minecraft.world.item.armortrim.TrimMaterial;
 import net.minecraft.world.item.armortrim.TrimMaterials;
 import net.minecraft.world.item.armortrim.TrimPattern;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -154,9 +155,26 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         return false;
     }
 
+    private boolean hasSameMaterialAndPattern(Level level, ArmorTrim compare) {
+        Optional<ArmorTrim> optional = ArmorTrim.getTrim(level.registryAccess(), forgingItem);
+        return optional.map(armorTrim -> armorTrim.equals(compare))
+                .orElse(false);
+    }
+
     private boolean reinforceArmor(SoulType soulType, int requiredSoul) {
         if (!forgingItem.is(NarakaItemTags.PURIFIED_SOUL_ARMOR) || level == null)
             return false;
+
+        Optional<Holder.Reference<TrimMaterial>> material = TrimMaterials.getFromIngredient(level.registryAccess(), soulType.getItem().getDefaultInstance());
+        Optional<Holder.Reference<TrimPattern>> pattern = NarakaTrimPatterns.fromItem(level.registryAccess(), templateItem);
+        if (material.isPresent() && pattern.isPresent()) {
+            ArmorTrim armorTrim = new ArmorTrim(material.get(), pattern.get());
+            if (hasSameMaterialAndPattern(level, armorTrim))
+                return false;
+            ArmorTrim.setTrim(level.registryAccess(), forgingItem, armorTrim);
+        }
+        NarakaItemUtils.makeUnbreakable(forgingItem);
+
         if (soulType == SoulType.GOD_BLOOD) {
             NarakaItemUtils.storeNbtData(forgingItem, "Blessed", Codec.BOOL, true);
         }
@@ -168,13 +186,6 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
         cooldownTick = COOLDOWN;
 
-        Optional<Holder.Reference<TrimMaterial>> material = TrimMaterials.getFromIngredient(level.registryAccess(), soulType.getItem().getDefaultInstance());
-        Optional<Holder.Reference<TrimPattern>> pattern = NarakaTrimPatterns.fromItem(level.registryAccess(), templateItem);
-        if (material.isPresent() && pattern.isPresent()) {
-            ArmorTrim armorTrim = new ArmorTrim(material.get(), pattern.get());
-            ArmorTrim.setTrim(level.registryAccess(), forgingItem, armorTrim);
-        }
-        NarakaItemUtils.makeUnbreakable(forgingItem);
         setChanged();
         return true;
     }
