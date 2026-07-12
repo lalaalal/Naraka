@@ -21,7 +21,8 @@ public class PurifiedSoulSwordItem extends SwordItem {
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         BlockState state = level.getBlockState(pos);
-        if (state.isFaceSturdy(level, pos, Direction.UP)) {
+        BlockState upperBlock = level.getBlockState(pos.above());
+        if (state.isFaceSturdy(level, pos, Direction.UP) && upperBlock.canBeReplaced()) {
             level.setBlock(pos.above(), NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get().defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
             return InteractionResult.SUCCESS;
         }
