@@ -785,6 +785,8 @@ public class Herobrine extends AbstractHerobrine {
 
     @Override
     public void die(DamageSource damageSource) {
+        if (isAlive())
+            return;
         if (damageSource.getEntity() instanceof LivingEntity livingEntity)
             rewardChallenger(livingEntity);
         super.die(damageSource);
