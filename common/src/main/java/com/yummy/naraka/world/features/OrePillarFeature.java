@@ -9,7 +9,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
@@ -51,9 +50,8 @@ public class OrePillarFeature extends Feature<OrePillarConfiguration> {
         Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(context.random());
         BlockPos spawnerPos = origin.relative(direction, 2);
 
-        int spawnCount = Mth.clamp(7 - config.maxHeight() / height, 1, 3);
         BlockState spawnerState = NarakaBlocks.DIAMOND_GOLEM_SPAWNER.get().defaultBlockState();
-        level.setBlock(spawnerPos, spawnerState.setValue(DiamondGolemSpawner.SPAWN_COUNT, spawnCount), Block.UPDATE_ALL);
+        level.setBlock(spawnerPos, spawnerState.setValue(DiamondGolemSpawner.SPAWN_COUNT, 1), Block.UPDATE_ALL);
         level.scheduleTick(spawnerPos, NarakaBlocks.DIAMOND_GOLEM_SPAWNER.get(), 1);
 
         return true;
