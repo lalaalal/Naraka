@@ -42,7 +42,7 @@ public interface RegistryReader<T> {
 
         @Override
         public Stream<T> values() {
-            return Stream.empty();
+            return registry.stream();
         }
     }
 }
