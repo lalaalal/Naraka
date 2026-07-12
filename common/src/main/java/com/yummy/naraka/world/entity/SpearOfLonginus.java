@@ -102,7 +102,7 @@ public class SpearOfLonginus extends Spear {
 
     @Override
     public void remove(RemovalReason reason) {
-        if (getY() <= -60 && reason.shouldDestroy()) {
+        if (getY() < level().getMinBuildHeight() && reason.shouldDestroy()) {
             if (dealtDamage)
                 return;
             dealtDamage = true;
