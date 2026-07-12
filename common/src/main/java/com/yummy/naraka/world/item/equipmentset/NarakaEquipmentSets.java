@@ -11,6 +11,11 @@ public class NarakaEquipmentSets {
             new SoulEquipmentSet()
     );
 
+    public static final HolderProxy<EquipmentSet, EquipmentSet> BLESSED_SOUL_ARMOR = register(
+            "blessed_soul_armor",
+            new BlessedSoulEquipmentSet()
+    );
+
     public static void updateAllSetEffects(LivingEntity livingEntity) {
         NarakaRegistries.EQUIPMENT_SET.forEach(equipmentSet -> equipmentSet.updateEffect(livingEntity));
     }

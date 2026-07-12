@@ -25,6 +25,8 @@ import java.util.Optional;
 public class SoulEquipmentSet extends EquipmentSet {
     private static boolean test(LivingEntity livingEntity) {
         ItemStack handItem = livingEntity.getMainHandItem();
+        if (handItem.getOrDefault(NarakaDataComponentTypes.BLESSED.get(), false))
+            return false;
         SoulType soulType = handItem.getOrDefault(NarakaDataComponentTypes.SOUL.get(), SoulType.NONE);
         if (soulType == SoulType.NONE)
             return false;
@@ -34,7 +36,7 @@ public class SoulEquipmentSet extends EquipmentSet {
                 continue;
             ItemStack armorItemStack = livingEntity.getItemBySlot(slot);
             ArmorTrim armorTrim = armorItemStack.get(DataComponents.TRIM);
-            if (armorTrim == null)
+            if (armorItemStack.getOrDefault(NarakaDataComponentTypes.BLESSED.get(), false) || armorTrim == null)
                 return false;
 
             Optional<ResourceKey<TrimMaterial>> material = armorTrim.material().unwrapKey();
