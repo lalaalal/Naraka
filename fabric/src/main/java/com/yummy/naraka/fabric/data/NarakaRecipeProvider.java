@@ -1,14 +1,13 @@
 package com.yummy.naraka.fabric.data;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.core.component.AnyPredicate;
-import com.yummy.naraka.core.component.BlessedPredicate;
-import com.yummy.naraka.core.component.NarakaDataComponentPredicates;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.crafting.ComponentPredicateRecipeBuilder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceKey;
@@ -132,16 +131,18 @@ public class NarakaRecipeProvider extends RecipeProvider {
         soulInfusedMaterial(Items.AMETHYST_SHARD, NarakaItems.SOUL_INFUSED_AMETHYST.get());
         soulInfusedMaterial(NarakaItems.NECTARIUM.get(), NarakaItems.SOUL_INFUSED_NECTARIUM.get());
 
-        ComponentPredicateRecipeBuilder.predicate(items, RecipeCategory.COMBAT, NarakaItems.SPEAR_OF_LONGINUS_ITEM)
-                .requires(0, 0, NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
-                .requires(0, 1, NarakaItems.SOUL_INFUSED_COPPER_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
-                .requires(0, 2, NarakaItems.SOUL_INFUSED_GOLD_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
-                .requires(1, 0, NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
-                .requires(1, 1, NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), NarakaDataComponentPredicates.ANY.get(), AnyPredicate.INSTANCE)
-                .requires(1, 2, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
-                .requires(2, 0, NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
-                .requires(2, 1, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
-                .requires(2, 2, NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get(), NarakaDataComponentPredicates.BLESSED.get(), BlessedPredicate.BLESSED)
+        DataComponentPatch.Builder blessed = DataComponentPatch.builder()
+                .set(NarakaDataComponentTypes.BLESSED.get(), true);
+        ComponentPredicateRecipeBuilder.component(items, RecipeCategory.COMBAT, NarakaItems.SPEAR_OF_LONGINUS_ITEM)
+                .requires(0, 0, NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get(), blessed)
+                .requires(0, 1, NarakaItems.SOUL_INFUSED_COPPER_SWORD.get(), blessed)
+                .requires(0, 2, NarakaItems.SOUL_INFUSED_GOLD_SWORD.get(), blessed)
+                .requires(1, 0, NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get(), blessed)
+                .requires(1, 1, NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), blessed)
+                .requires(1, 2, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get(), blessed)
+                .requires(2, 0, NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get(), blessed)
+                .requires(2, 1, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get(), blessed)
+                .requires(2, 2, NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get(), blessed)
                 .showNotification()
                 .unlockedBy(getHasName(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()), has(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()))
                 .save(output);

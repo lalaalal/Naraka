@@ -9,7 +9,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentPatch;
-import net.minecraft.core.component.predicates.DataComponentPredicate;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -34,7 +33,7 @@ public class ComponentPredicateRecipeBuilder implements RecipeBuilder {
     private final List<ComponentPredicateIngredient> predicateIngredients = new ArrayList<>();
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-    public static ComponentPredicateRecipeBuilder predicate(HolderGetter<Item> items, RecipeCategory category, Holder<Item> result) {
+    public static ComponentPredicateRecipeBuilder component(HolderGetter<Item> items, RecipeCategory category, Holder<Item> result) {
         return new ComponentPredicateRecipeBuilder(items, category, new ItemStackTemplate(result, 1, DataComponentPatch.EMPTY));
     }
 
@@ -44,18 +43,18 @@ public class ComponentPredicateRecipeBuilder implements RecipeBuilder {
         this.category = category;
     }
 
-    public <T extends DataComponentPredicate> ComponentPredicateRecipeBuilder requires(int row, int column, ItemLike item, DataComponentPredicate.Type<T> type, T predicate) {
+    public ComponentPredicateRecipeBuilder requires(int row, int column, ItemLike item, DataComponentPatch.Builder components) {
         ComponentPredicateIngredient ingredient = new ComponentPredicateIngredient(
                 row, column,
                 HolderSet.direct(BuiltInRegistries.ITEM::wrapAsHolder, item.asItem()),
-                new DataComponentPredicate.Single<>(type, predicate)
+                components.build()
         );
         predicateIngredients.add(ingredient);
         return this;
     }
 
-    public <T extends DataComponentPredicate> ComponentPredicateRecipeBuilder requires(int row, int column, TagKey<Item> tag, DataComponentPredicate.Type<T> type, T predicate) {
-        predicateIngredients.add(new ComponentPredicateIngredient(row, column, items.getOrThrow(tag), new DataComponentPredicate.Single<>(type, predicate)));
+    public ComponentPredicateRecipeBuilder requires(int row, int column, TagKey<Item> tag, DataComponentPatch.Builder components) {
+        predicateIngredients.add(new ComponentPredicateIngredient(row, column, items.getOrThrow(tag), components.build()));
         return this;
     }
 

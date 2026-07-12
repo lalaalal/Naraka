@@ -50,6 +50,7 @@ public class ComponentPredicateRecipe implements CraftingRecipe {
     private final List<Ingredient> ingredients;
     @Nullable
     private PlacementInfo placementInfo;
+    private final ComponentPredicateRecipeDisplay display;
 
     public ComponentPredicateRecipe(ItemStackTemplate result, String group, CraftingBookCategory category, boolean showNotification, List<ComponentPredicateIngredient> predicateIngredients) {
         this.result = result;
@@ -61,6 +62,12 @@ public class ComponentPredicateRecipe implements CraftingRecipe {
                 .map(ComponentPredicateIngredient::ingredient)
                 .map(Ingredient::of)
                 .toList();
+        this.display = new ComponentPredicateRecipeDisplay(
+                predicateIngredients.stream()
+                        .map(ComponentPredicateIngredient::display)
+                        .toList(),
+                new SlotDisplay.ItemStackSlotDisplay(result)
+        );
     }
 
     public List<Ingredient> ingredients() {
@@ -112,13 +119,10 @@ public class ComponentPredicateRecipe implements CraftingRecipe {
 
     @Override
     public List<RecipeDisplay> display() {
-        return List.of(
-                new ComponentPredicateRecipeDisplay(
-                        predicateIngredients.stream()
-                                .map(ComponentPredicateIngredient::display)
-                                .toList(),
-                        new SlotDisplay.ItemStackSlotDisplay(result)
-                )
-        );
+        return List.of(display);
+    }
+
+    public ComponentPredicateRecipeDisplay getRecipeDisplay() {
+        return display;
     }
 }
