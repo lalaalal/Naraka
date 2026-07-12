@@ -64,6 +64,7 @@ public class NarakaItemTagsProvider extends FabricTagsProvider.ItemTagsProvider 
         builder(NarakaItemTags.ENTER_NARAKA_DIMENSION)
                 .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.key())
                 .add(NarakaItems.PURIFIED_SOUL_SWORD.key())
+                .add(NarakaItems.NARAKA_PICKAXE.key())
                 .addTag(NarakaItemTags.SOUL_SWORDS);
 
         builder(NarakaItemTags.PURIFIED_SOUL_ARMOR)
