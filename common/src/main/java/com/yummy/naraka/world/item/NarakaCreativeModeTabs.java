@@ -91,6 +91,7 @@ public class NarakaCreativeModeTabs {
         output.accept(NarakaItems.HEROBRINE_PHASE_4_DISC.get());
 
         output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
+        output.accept(NarakaItems.DIAMOND_GOLEM_SPAWN_EGG.get());
         output.accept(NarakaItems.HEROBRINE_SPAWN_EGG.get());
 
         output.accept(NarakaItems.GOD_BLOOD.get());
@@ -203,6 +204,7 @@ public class NarakaCreativeModeTabs {
 
     private static void modifySpawnEggsTab(TabEntries entries) {
         entries.addAfter(Blocks.SPAWNER, NarakaBlocks.HEROBRINE_TOTEM.get());
+        entries.addAfter(Items.SHULKER_SPAWN_EGG, NarakaItems.DIAMOND_GOLEM_SPAWN_EGG.get(), NarakaItems.HEROBRINE_SPAWN_EGG.get());
     }
 
     private static void modifyCombatTab(TabEntries entries) {

@@ -117,6 +117,10 @@ public class NarakaItems {
             "herobrine_spawn_egg",
             properties -> SpawnEggItemProvider.create(NarakaEntityTypes.HEROBRINE, 0, 0xff0000, properties)
     );
+    public static final HolderProxy<Item, Item> DIAMOND_GOLEM_SPAWN_EGG = registerItem(
+            "diamond_golem_spawn_egg",
+            properties -> SpawnEggItemProvider.create(NarakaEntityTypes.DIAMOND_GOLEM, 0, SoulType.DIAMOND.getColor(), properties)
+    );
 
     // Spears
     public static final HolderProxy<Item, SpearItem> SPEAR_ITEM = registerItem(

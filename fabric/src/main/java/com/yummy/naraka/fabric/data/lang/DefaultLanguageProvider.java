@@ -233,6 +233,8 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
 
         addItem(NarakaItems.LOCKED_HEALTH, "Locked Health");
         addItem(NarakaItems.HEROBRINE_SPAWN_EGG, "Herobrine Spawn Egg", "히로빈 생성 알");
+        addItem(NarakaItems.DIAMOND_GOLEM_SPAWN_EGG, "Diamond Golem Spawn Egg", "다이아몬드 골렘 생성 알");
+
 
         addBlock(NarakaBlocks.AMETHYST_ORE, "Amethyst Ore", "자수정 광석");
         addBlock(NarakaBlocks.DEEPSLATE_AMETHYST_ORE, "Deepslate Amethyst Ore", "심층암 자수정 광석");
