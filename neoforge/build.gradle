@@ -6,7 +6,9 @@ plugins {
 }
 
 dependencies {
-    compileOnly "maven.modrinth:jade:26.2.3+neoforge"
+    implementation "maven.modrinth:jade:26.2.3+neoforge"
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 }
 
 neoForge {
