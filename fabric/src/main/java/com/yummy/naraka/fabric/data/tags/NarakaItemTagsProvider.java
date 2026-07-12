@@ -44,6 +44,7 @@ public class NarakaItemTagsProvider extends FabricTagProvider.ItemTagProvider {
         getOrCreateTagBuilder(NarakaItemTags.ENTER_NARAKA_DIMENSION)
                 .add(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get())
                 .add(NarakaItems.PURIFIED_SOUL_SWORD.get())
+                .add(NarakaItems.NARAKA_PICKAXE.get())
                 .addTag(NarakaItemTags.SOUL_SWORDS);
 
         getOrCreateTagBuilder(NarakaItemTags.PURIFIED_SOUL_ARMOR)
