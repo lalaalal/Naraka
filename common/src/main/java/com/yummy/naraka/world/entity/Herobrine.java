@@ -854,11 +854,11 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void rewardChallenger(LivingEntity livingEntity) {
-        NarakaMobEffects.getChallengersBlessing(livingEntity).ifPresent(instance -> {
-            livingEntity.removeEffect(instance.getEffect());
+        NarakaMobEffects.getChallengersBlessing(livingEntity).ifPresent(_ -> {
             for (EquipmentSlot slot : EquipmentSlotGroup.ARMOR.slots()) {
                 ItemStack stack = livingEntity.getItemBySlot(slot);
                 stack.consume(1, livingEntity);
+                livingEntity.onEquippedItemBroken(stack.getItem(), slot);
             }
             ItemStack weaponStack = livingEntity.getMainHandItem();
             weaponStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
