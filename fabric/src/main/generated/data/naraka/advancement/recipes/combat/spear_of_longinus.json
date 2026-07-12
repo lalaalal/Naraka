@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_god_blood": {
+    "has_mighty_holy_spear": {
       "conditions": {
         "items": [
           {
-            "items": "naraka:god_blood"
+            "items": "naraka:mighty_holy_spear"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_god_blood"
+      "has_mighty_holy_spear"
     ]
   ],
   "rewards": {

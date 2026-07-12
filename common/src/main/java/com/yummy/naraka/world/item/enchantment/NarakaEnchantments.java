@@ -41,7 +41,7 @@ public class NarakaEnchantments {
                 Enchantments.LOYALTY,
                 Enchantment.enchantment(
                                 Enchantment.definition(
-                                        itemHolderGetter.getOrThrow(NarakaItemTags.SPEAR_ENCHANTABLE),
+                                        itemHolderGetter.getOrThrow(NarakaItemTags.LOYALTY_ENCHANTABLE),
                                         5,
                                         3,
                                         Enchantment.dynamicCost(12, 7),

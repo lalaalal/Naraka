@@ -29,6 +29,6 @@
   "slots": [
     "mainhand"
   ],
-  "supported_items": "#naraka:enchantable/spear",
+  "supported_items": "#naraka:enchantable/loyalty",
   "weight": 5
 }
