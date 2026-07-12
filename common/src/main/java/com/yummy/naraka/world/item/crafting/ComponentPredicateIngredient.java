@@ -48,9 +48,9 @@ public record ComponentPredicateIngredient(int row, int column, HolderSet<Item> 
         ItemStack itemStack = input.getItem(column, row);
         return itemStack.is(ingredient) && components.entrySet().stream().allMatch(entry -> {
             DataComponentType<?> type = entry.getKey();
-            Object value = entry.getValue();
-
-            return Objects.equals(itemStack.get(type), value);
+            return entry.getValue()
+                    .filter(value -> Objects.equals(itemStack.get(type), value))
+                    .isPresent();
         });
     }
 

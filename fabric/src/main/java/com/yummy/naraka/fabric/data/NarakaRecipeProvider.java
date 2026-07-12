@@ -138,7 +138,7 @@ public class NarakaRecipeProvider extends RecipeProvider {
                 .requires(0, 1, NarakaItems.SOUL_INFUSED_COPPER_SWORD.get(), blessed)
                 .requires(0, 2, NarakaItems.SOUL_INFUSED_GOLD_SWORD.get(), blessed)
                 .requires(1, 0, NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get(), blessed)
-                .requires(1, 1, NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), blessed)
+                .requires(1, 1, NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get())
                 .requires(1, 2, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get(), blessed)
                 .requires(2, 0, NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get(), blessed)
                 .requires(2, 1, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get(), blessed)

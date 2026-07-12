@@ -37,9 +37,7 @@
     },
     {
       "column": 1,
-      "components": {
-        "naraka:blessed": true
-      },
+      "components": {},
       "ingredient": "naraka:mighty_holy_spear",
       "row": 1
     },

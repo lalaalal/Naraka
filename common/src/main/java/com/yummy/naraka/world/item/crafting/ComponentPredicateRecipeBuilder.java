@@ -43,6 +43,10 @@ public class ComponentPredicateRecipeBuilder implements RecipeBuilder {
         this.category = category;
     }
 
+    public ComponentPredicateRecipeBuilder requires(int row, int column, ItemLike item) {
+        return requires(row, column, item, DataComponentPatch.builder());
+    }
+
     public ComponentPredicateRecipeBuilder requires(int row, int column, ItemLike item, DataComponentPatch.Builder components) {
         ComponentPredicateIngredient ingredient = new ComponentPredicateIngredient(
                 row, column,
