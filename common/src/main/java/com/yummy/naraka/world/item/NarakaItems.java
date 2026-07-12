@@ -167,6 +167,7 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_BOOTS = registerPurifiedSoulArmorItem("purified_soul_boots", NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.BOOTS);
 
     public static final HolderProxy<Item, Item> HEROBRINE_SPAWN_EGG = registerItem("herobrine_spawn_egg", properties -> new SpawnEggItem(NarakaEntityTypes.HEROBRINE.get(), 0, 0xff0000, properties));
+    public static final HolderProxy<Item, Item> DIAMOND_GOLEM_SPAWN_EGG = registerItem("diamond_golem_spawn_egg", properties -> new SpawnEggItem(NarakaEntityTypes.DIAMOND_GOLEM.get(), 0, SoulType.DIAMOND.color, properties));
 
     public static HolderProxy<Item, Item> registerPurifiedSoulArmorItem(String name, Holder<ArmorMaterial> armorMaterial, ArmorItem.Type armorType) {
         return registerItem(name, properties ->

@@ -228,6 +228,7 @@ public class JapaneseLanguageProvider extends NarakaLanguageProviders {
 
         addItem(NarakaItems.LOCKED_HEALTH, "ロックヘルス");
         addItem(NarakaItems.HEROBRINE_SPAWN_EGG, "へロブラインのスポーンエッグ");
+        addItem(NarakaItems.DIAMOND_GOLEM_SPAWN_EGG, "ダイヤモンドゴーレムのスポーンエッグ");
 
         addBlock(NarakaBlocks.AMETHYST_ORE, "アメジスト鉱石");
         addBlock(NarakaBlocks.DEEPSLATE_AMETHYST_ORE, "深層アメジスト鉱石");
