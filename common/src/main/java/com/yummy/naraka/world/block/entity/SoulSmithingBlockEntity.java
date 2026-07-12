@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class SoulSmithingBlockEntity extends ForgingBlockEntity {
@@ -156,9 +157,24 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         return false;
     }
 
+    private boolean hasSameMaterialAndPattern(ArmorTrim compare) {
+        ArmorTrim armorTrim = forgingItem.get(DataComponents.TRIM);
+        return Objects.equals(armorTrim, compare);
+    }
+
     private boolean reinforceArmor(SoulType soulType, int requiredSoul) {
         if (!forgingItem.is(NarakaItemTags.PURIFIED_SOUL_ARMOR) || level == null)
             return false;
+
+        Optional<Holder<TrimMaterial>> material = Optional.ofNullable(soulType.getItem().getDefaultInstance().get(DataComponents.PROVIDES_TRIM_MATERIAL));
+        Optional<Holder.Reference<TrimPattern>> pattern = NarakaTrimPatterns.fromItem(level.registryAccess(), templateItem);
+        if (material.isPresent() && pattern.isPresent()) {
+            ArmorTrim armorTrim = new ArmorTrim(material.get(), pattern.get());
+            if (hasSameMaterialAndPattern(armorTrim))
+                return false;
+            forgingItem.set(DataComponents.TRIM, armorTrim);
+        }
+
         if (soulType == SoulType.GOD_BLOOD) {
             forgingItem.set(NarakaDataComponentTypes.BLESSED.get(), true);
             forgingItem.set(DataComponents.RARITY, Rarity.EPIC);
@@ -174,12 +190,6 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
         cooldownTick = COOLDOWN;
 
-        Optional<Holder<TrimMaterial>> material = Optional.ofNullable(soulType.getItem().getDefaultInstance().get(DataComponents.PROVIDES_TRIM_MATERIAL));
-        Optional<Holder.Reference<TrimPattern>> pattern = NarakaTrimPatterns.fromItem(level.registryAccess(), templateItem);
-        if (material.isPresent() && pattern.isPresent()) {
-            ArmorTrim armorTrim = new ArmorTrim(material.get(), pattern.get());
-            forgingItem.set(DataComponents.TRIM, armorTrim);
-        }
         setChanged();
         return true;
     }
