@@ -53,6 +53,7 @@ public final class NarakaModClient {
         registerKeyMappings();
         DimensionSpecialEffectsRegistry.register(NarakaDimensionTypes.NARAKA_EFFECT, NarakaDimensionSpecialEffects.NARAKA);
         DimensionSkyRendererRegistry.register(NarakaDimensions.NARAKA, NarakaSkyRenderer::new);
+        BuiltinResourcePackRegistry.register(NarakaMod.location("naraka_alternative"), Component.literal("Naraka Alternative"));
 
         AnimationMapper.initialize();
 

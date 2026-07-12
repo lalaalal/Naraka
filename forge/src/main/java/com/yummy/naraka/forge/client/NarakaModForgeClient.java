@@ -33,6 +33,7 @@ public final class NarakaModForgeClient implements NarakaClientInitializer {
         MethodInvoker.register(ForgeItemPropertiesRegistry.class);
         MethodInvoker.register(ForgeDimensionSpecialEffectsRegistry.class);
         MethodInvoker.register(ForgeClientNetworkManager.class);
+        MethodInvoker.register(ForgeBuiltinResourcePackRegistry.class);
 
         NarakaModClient.initialize(this);
 
