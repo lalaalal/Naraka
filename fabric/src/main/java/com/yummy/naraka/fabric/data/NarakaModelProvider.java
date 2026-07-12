@@ -207,6 +207,7 @@ public class NarakaModelProvider extends FabricModelProvider {
         Identifier rainbowSwordModel = generator.createFlatItemModel(NarakaItems.RAINBOW_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         generator.itemModelOutput.accept(NarakaItems.RAINBOW_SWORD.get(), ItemModelUtils.tintedModel(rainbowSwordModel, RainbowTintSource.INSTANCE));
         generator.generateFlatItem(NarakaItems.HEROBRINE_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        generator.generateFlatItem(NarakaItems.DIAMOND_GOLEM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
 
         generateTrimmableItem(generator, Items.LEATHER_HELMET, EquipmentAssets.LEATHER, "helmet", true);
         generateTrimmableItem(generator, Items.LEATHER_CHESTPLATE, EquipmentAssets.LEATHER, "chestplate", true);

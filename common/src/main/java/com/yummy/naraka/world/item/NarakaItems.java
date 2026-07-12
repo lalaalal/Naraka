@@ -199,6 +199,16 @@ public class NarakaItems {
             )
     );
 
+    public static final HolderProxy<Item, Item> DIAMOND_GOLEM_SPAWN_EGG = registerItem(
+            "diamond_golem_spawn_egg",
+            properties -> new SpawnEggItem(
+                    properties.component(
+                            DataComponents.ENTITY_DATA,
+                            TypedEntityData.of(NarakaEntityTypes.DIAMOND_GOLEM.get(), new CompoundTag())
+                    )
+            )
+    );
+
     public static HolderProxy<Item, Item> registerPurifiedSoulArmorItem(String name, ArmorMaterial armorMaterial, ArmorType armorType) {
         return registerSimpleItem(name, properties -> NarakaArmorMaterials.humanoidPropertiesWithoutEnchantable(properties, armorMaterial, armorType)
                 .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
