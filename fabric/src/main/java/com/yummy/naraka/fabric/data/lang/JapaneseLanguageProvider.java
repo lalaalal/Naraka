@@ -12,6 +12,7 @@ import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.alchemy.NarakaPotions;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSetHelper;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.world.item.Items;
@@ -30,7 +31,7 @@ public class JapaneseLanguageProvider extends NarakaLanguageProviders {
     @Override
     protected void generate() {
         add(LanguageKey.ITEM_GROUP_NARAKA, "Naraka");
-        add(LanguageKey.ITEM_GROUP_SOUL_MATERIALS, "魂の宿った物");
+        add(LanguageKey.ITEM_GROUP_SOUL_MATERIALS, "魂の宿ったアイテム");
         add(LanguageKey.ITEM_GROUP_TEST, "Naraka テストアイテム");
 
         add(LanguageKey.KEY_CATEGORIES_NARAKA, "Naraka");
@@ -78,6 +79,9 @@ public class JapaneseLanguageProvider extends NarakaLanguageProviders {
         addReinforcementEffect(NarakaReinforcementEffects.EFFICIENT_MINING_IN_WATER, "水中の採掘速度上昇");
         addReinforcementEffect(NarakaReinforcementEffects.EFFICIENT_MINING_IN_AIR, "空中/泳ぎ状態での採掘速度上昇");
         addReinforcementEffect(NarakaReinforcementEffects.WATER_BREATHING, "酸素の減りの無効化");
+
+        add(LanguageKey.equipmentSet(EquipmentSetHelper.ID_BLESSED), "祝福セット");
+        add(LanguageKey.equipmentSet(EquipmentSetHelper.ID_CHALLENGER), "挑戦者セット");
 
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, "魂の宿ったレッドストーン素材");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_COPPER, "魂の宿った銅素材");
@@ -299,7 +303,7 @@ public class JapaneseLanguageProvider extends NarakaLanguageProviders {
 
         add(LanguageKey.STIGMA_COMMAND_GET_KEY, "%sのスティグマは%dです");
         add(LanguageKey.STIGMA_COMMAND_SET_KEY, "%d体のエンティティのスティグマを%dに設定しました");
-        add(LanguageKey.STIGMA_COMMAND_INCREASE_KEY, "スティグマの最大値を%1$dに設定しました");
+        add(LanguageKey.STIGMA_COMMAND_INCREASE_KEY, "スティグマを%1$dに設定しました");
         add(LanguageKey.STIGMA_COMMAND_REMOVE_KEY, "%1$d体のエンティティのスティグマを解除しました");
         add(LanguageKey.STIGMA_COMMAND_CONSUME_KEY, "%2$sが%1$dのスティグマを消費しました");
         add(LanguageKey.STIGMA_COMMAND_DISABLE_KEY, "スティグマを無効化しました");
