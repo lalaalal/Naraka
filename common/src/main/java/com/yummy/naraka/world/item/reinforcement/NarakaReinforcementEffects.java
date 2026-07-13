@@ -69,7 +69,7 @@ public class NarakaReinforcementEffects {
     );
 
     public static final Holder<ReinforcementEffect> WATER_BREATHING = register(
-            "water_breathing", new SimpleReinforcementEffect(10, EquipmentSlot.HEAD)
+            "water_breathing", new MobEffectReinforcementEffect(MobEffects.WATER_BREATHING, 10, EquipmentSlot.HEAD)
     );
 
     private static Holder<ReinforcementEffect> register(String name, ReinforcementEffect effect) {

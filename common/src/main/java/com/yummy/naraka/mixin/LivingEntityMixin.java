@@ -29,7 +29,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
 
@@ -129,14 +128,6 @@ public abstract class LivingEntityMixin extends Entity {
         if (NarakaItemUtils.canApplyIgnoreLiquidPushing(naraka$living()))
             return false;
         return super.isPushedByFluid();
-    }
-
-    @Inject(method = "decreaseAirSupply", at = @At("HEAD"), cancellable = true)
-    protected void preserveAirSupply(int currentSupply, CallbackInfoReturnable<Integer> cir) {
-        if (NarakaItemUtils.canApplyWaterBreathing(naraka$living())) {
-            cir.cancel();
-            cir.setReturnValue(currentSupply);
-        }
     }
 
     @Inject(method = "handleEquipmentChanges", at = @At(value = "HEAD"))
