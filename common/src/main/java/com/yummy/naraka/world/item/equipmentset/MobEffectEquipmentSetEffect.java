@@ -5,26 +5,33 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 
-public class MobEffectEquipmentSetEffect implements EquipmentSetEffect {
-    private final Holder<MobEffect> effect;
-    private final boolean visible;
+import java.util.HashMap;
+import java.util.Map;
 
-    public MobEffectEquipmentSetEffect(Holder<MobEffect> effect) {
-        this(effect, true);
+public class MobEffectEquipmentSetEffect implements EquipmentSetEffect {
+    private final Map<Holder<MobEffect>, Integer> effects;
+
+    @SafeVarargs
+    public MobEffectEquipmentSetEffect(Holder<MobEffect>... effects) {
+        this.effects = new HashMap<>(effects.length);
+        for (Holder<MobEffect> effect : effects) {
+            this.effects.put(effect, 0);
+        }
     }
 
-    public MobEffectEquipmentSetEffect(Holder<MobEffect> effect, boolean visible) {
-        this.effect = effect;
-        this.visible = visible;
+    public MobEffectEquipmentSetEffect(Map<Holder<MobEffect>, Integer> effects) {
+        this.effects = Map.copyOf(effects);
     }
 
     @Override
     public void activate(LivingEntity livingEntity) {
-        livingEntity.addEffect(new MobEffectInstance(effect, -1, 0, false, visible));
+        effects.forEach((effect, amplifier) -> {
+            livingEntity.addEffect(new MobEffectInstance(effect, -1, amplifier));
+        });
     }
 
     @Override
     public void deactivate(LivingEntity livingEntity) {
-        livingEntity.removeEffect(effect);
+        effects.keySet().forEach(livingEntity::removeEffect);
     }
 }

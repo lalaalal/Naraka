@@ -86,10 +86,8 @@ public class SoulEquipmentSet extends EquipmentSet {
         public void deactivate(LivingEntity livingEntity) {
             NarakaMobEffects.getChallengersBlessing(livingEntity)
                     .map(MobEffectInstance::getEffect)
-                    .ifPresent(effect -> {
-                        livingEntity.removeEffect(effect);
-                        livingEntity.removeEffect(MobEffects.SPEED);
-                    });
+                    .ifPresent(livingEntity::removeEffect);
+            livingEntity.removeEffect(MobEffects.SPEED);
         }
     }
 }
