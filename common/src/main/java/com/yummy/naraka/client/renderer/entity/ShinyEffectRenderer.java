@@ -4,18 +4,21 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.ShinyEffect;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 
 @Environment(EnvType.CLIENT)
@@ -66,7 +69,7 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect> {
         poseStack.mulPose(Axis.YN.rotationDegrees(yRot));
         if (isVertical)
             poseStack.mulPose(Axis.ZN.rotationDegrees(90));
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.lightning());
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(NarakaRenderTypes.emissive());
         renderShiny(poseStack, vertexConsumer, tick, lifetime, color);
 
         poseStack.mulPose(Axis.ZN.rotationDegrees(90));
@@ -80,7 +83,7 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect> {
         float width = NarakaUtils.interpolate(tick / lifetime, 0, 20, NarakaUtils::fastStepIn);
         float height = NarakaUtils.interpolate(tick / lifetime, 0.1f, 0, NarakaUtils::fastStepOut);
 
-        NarakaRenderUtils.renderRhombus(poseStack.last(), vertexConsumer, width, height, 0xff, 0xffffff);
+        NarakaRenderUtils.renderRhombus(poseStack.last(), vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, width, height, 0xff, 0xffffff);
 
         float centerWidth = Math.min(0.5f, width);
         float centerHeight = NarakaUtils.interpolate(tick / lifetime, 0.5f, 0, NarakaUtils::fastStepOut);
@@ -90,13 +93,16 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect> {
             alphaMultiplier = 0.25f;
         while (centerWidth < width) {
             poseStack.translate(0, 0, 0.01);
-            NarakaRenderUtils.renderRhombus(poseStack.last(), vertexConsumer, centerWidth, centerHeight, alpha, color);
+            NarakaRenderUtils.renderRhombus(poseStack.last(), vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, centerWidth, centerHeight, alpha, color);
             centerWidth *= 2;
             alpha = (int) (alpha * alphaMultiplier);
             centerHeight += height * 0.5f;
             alphaMultiplier = Math.min(1, alphaMultiplier + (1 - alphaMultiplier) * 0.7f);
         }
-        NarakaRenderUtils.renderRhombus(poseStack.last(), vertexConsumer, width, centerHeight, 0x11, color);
+        float previousCenterWidth = centerWidth / 2;
+        float delta = (width - previousCenterWidth) / (centerWidth - previousCenterWidth);
+        int lastAlpha = Mth.lerpInt(delta, 0, alpha);
+        NarakaRenderUtils.renderRhombus(poseStack.last(), vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, width, centerHeight, lastAlpha, color);
         poseStack.popPose();
     }
 }

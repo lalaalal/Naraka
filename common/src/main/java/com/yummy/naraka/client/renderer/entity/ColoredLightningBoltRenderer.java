@@ -2,8 +2,6 @@ package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.yummy.naraka.client.NarakaClientContext;
-import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.world.entity.ColoredLightningBolt;
 import net.fabricmc.api.EnvType;
@@ -23,9 +21,7 @@ public class ColoredLightningBoltRenderer extends EntityRenderer<ColoredLightnin
     }
 
     private RenderType getRenderType(ColoredLightningBolt entity) {
-        if (NarakaClientContext.SHADER_ENABLED.getValue() || !entity.isSpaceRenderType())
-            return RenderType.lightning();
-        return NarakaRenderTypes.space();
+        return RenderType.lightning();
     }
 
     @Override

@@ -2,12 +2,12 @@ package com.yummy.naraka.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.LightTailEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -47,7 +47,7 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity> extends
                 .map(position -> position.subtract(entity.position()))
                 .map(NarakaRenderUtils::vector3f)
                 .toList();
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.lightning());
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(NarakaRenderTypes.emissive());
         float partSize = 1 / (float) tailPositions.size();
         for (int index = 0; index < tailPositions.size() - 1; index++) {
             Vector3f from = tailPositions.get(index);

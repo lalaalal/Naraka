@@ -2,6 +2,7 @@ package com.yummy.naraka.client;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import com.yummy.naraka.config.NarakaConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.Util;
@@ -53,43 +54,6 @@ public final class NarakaRenderTypes {
                     .createCompositeState(false)
     );
 
-    private static final Function<ResourceLocation, RenderType> SPACE_CUTOUT = Util.memoize(
-            texture -> RenderType.create(
-                    "space_cutout",
-                    DefaultVertexFormat.POSITION_TEX,
-                    VertexFormat.Mode.QUADS,
-                    1536,
-                    false,
-                    false,
-                    RenderType.CompositeState.builder()
-                            .setShaderState(new RenderStateShard.ShaderStateShard(NarakaShaders::spaceCutout))
-                            .setTextureState(
-                                    RenderStateShard.MultiTextureStateShard.builder()
-                                            .add(NarakaTextures.SPACE, false, false)
-                                            .add(texture, false, false)
-                                            .build()
-                            )
-                            .createCompositeState(false)
-            )
-    );
-
-    private static final RenderType SPACE = RenderType.create(
-            "space",
-            DefaultVertexFormat.POSITION,
-            VertexFormat.Mode.QUADS,
-            1536,
-            false,
-            false,
-            RenderType.CompositeState.builder()
-                    .setShaderState(new RenderStateShard.ShaderStateShard(NarakaShaders::space))
-                    .setTextureState(
-                            RenderStateShard.MultiTextureStateShard.builder()
-                                    .add(NarakaTextures.SPACE, false, false)
-                                    .build()
-                    )
-                    .createCompositeState(false)
-    );
-
     public static RenderType longinus() {
         return LONGINUS;
     }
@@ -98,14 +62,11 @@ public final class NarakaRenderTypes {
         return LONGINUS_CUTOUT.apply(texture);
     }
 
-    public static RenderType space() {
-        return SPACE;
+    public static RenderType emissive() {
+        if (NarakaClientContext.SHADER_ENABLED.getValue() && !NarakaConfig.CLIENT.disableEmissiveRenderType.getValue())
+            return RenderType.entityTranslucentEmissive(NarakaTextures.AREA_EFFECT);
+        return RenderType.lightning();
     }
-
-    public static RenderType spaceCutout(ResourceLocation texture) {
-        return SPACE_CUTOUT.apply(texture);
-    }
-
 
     public static void initialize() {
 
