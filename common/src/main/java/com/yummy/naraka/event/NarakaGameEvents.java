@@ -12,6 +12,7 @@ import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.util.TickSchedule;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
@@ -123,6 +124,9 @@ public final class NarakaGameEvents {
         List<EquipmentSet> currentItemEquipmentSets = currentStack.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of());
         previousItemEquipmentSets.forEach(equipmentSetHolder -> equipmentSetHolder.updateEffect(livingEntity));
         currentItemEquipmentSets.forEach(equipmentSetHolder -> equipmentSetHolder.updateEffect(livingEntity));
+        EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.EQUIPMENT_SET.get()).stream()
+                .filter(equipmentSet -> !currentItemEquipmentSets.contains(equipmentSet))
+                .forEach(equipmentSet -> equipmentSet.updateEffect(livingEntity));
     }
 
     private static void addItemTooltipsTop(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder) {

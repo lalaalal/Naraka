@@ -15,6 +15,7 @@ import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -164,23 +165,21 @@ public class NarakaCreativeModeTabs {
     }
 
     private static void addBlessedEquipments(SoulType type, CreativeModeTab.Output output, HolderLookup.Provider registries) {
-        Item sword = NarakaItems.getSoulSwordOf(type);
+        Holder<Item> sword = NarakaItems.getSoulSwordHolderOf(type);
         if (sword != null) {
-            output.accept(blessed(sword));
+            output.accept(new ItemStack(sword, 1, blessed(DataComponentPatch.builder()).build()));
         }
-        output.accept(trimmed(NarakaItems.PURIFIED_SOUL_HELMET.get(), type, registries));
-        output.accept(trimmed(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get(), type, registries));
-        output.accept(trimmed(NarakaItems.PURIFIED_SOUL_LEGGINGS.get(), type, registries));
-        output.accept(trimmed(NarakaItems.PURIFIED_SOUL_BOOTS.get(), type, registries));
-        output.accept(reinforced(NarakaItems.PURIFIED_SOUL_HELMET.get(), type, registries));
-        output.accept(scarfAttached(reinforced(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get(), type, registries)));
-        output.accept(reinforced(NarakaItems.PURIFIED_SOUL_LEGGINGS.get(), type, registries));
-        output.accept(reinforced(NarakaItems.PURIFIED_SOUL_BOOTS.get(), type, registries));
+        output.accept(challenger(NarakaItems.PURIFIED_SOUL_HELMET, type, registries));
+        output.accept(challenger(NarakaItems.PURIFIED_SOUL_CHESTPLATE, type, registries));
+        output.accept(challenger(NarakaItems.PURIFIED_SOUL_LEGGINGS, type, registries));
+        output.accept(challenger(NarakaItems.PURIFIED_SOUL_BOOTS, type, registries));
+        output.accept(blessed(NarakaItems.PURIFIED_SOUL_HELMET, type, registries));
+        output.accept(scarfAttached(blessed(NarakaItems.PURIFIED_SOUL_CHESTPLATE, type, registries)));
+        output.accept(blessed(NarakaItems.PURIFIED_SOUL_LEGGINGS, type, registries));
+        output.accept(blessed(NarakaItems.PURIFIED_SOUL_BOOTS, type, registries));
     }
 
-    private static ItemStack trimmed(Item item, SoulType soulType, HolderLookup.Provider registries) {
-        ItemStack itemStack = new ItemStack(item);
-
+    private static DataComponentPatch.Builder trimmed(DataComponentPatch.Builder builder, SoulType soulType, HolderLookup.Provider registries) {
         HolderGetter<TrimMaterial> trimMaterials = registries.lookupOrThrow(Registries.TRIM_MATERIAL);
         HolderGetter<TrimPattern> trimPatterns = registries.lookupOrThrow(Registries.TRIM_PATTERN);
 
@@ -188,24 +187,35 @@ public class NarakaCreativeModeTabs {
         Holder<TrimPattern> pattern = trimPatterns.getOrThrow(TrimPatterns.SILENCE);
 
         ArmorTrim armorTrim = new ArmorTrim(material, pattern);
-        itemStack.set(DataComponents.TRIM, armorTrim);
-        itemStack.set(NarakaDataComponentTypes.SOUL.get(), soulType);
-        itemStack.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of(EquipmentSetHelper.createChallengerSet(soulType)));
+        builder.set(DataComponents.TRIM, armorTrim);
+        builder.set(NarakaDataComponentTypes.SOUL.get(), soulType);
+
+        return builder;
+    }
+
+    private static ItemStack challenger(Holder<Item> item, SoulType soulType, HolderLookup.Provider registries) {
+        DataComponentPatch.Builder builder = trimmed(DataComponentPatch.builder(), soulType, registries);
+        builder.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of(EquipmentSetHelper.createChallengerSet(soulType)));
+
+        ItemStack itemStack = new ItemStack(item, 1, builder.build());
+        while (Reinforcement.canReinforce(itemStack))
+            Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack));
         return itemStack;
     }
 
-    private static ItemStack blessed(Item item) {
-        ItemStack itemStack = new ItemStack(item);
-        itemStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
-        itemStack.set(DataComponents.ENCHANTABLE, new Enchantable(9));
-        itemStack.set(DataComponents.RARITY, Rarity.EPIC);
-        return itemStack;
+    private static DataComponentPatch.Builder blessed(DataComponentPatch.Builder builder) {
+        builder.set(NarakaDataComponentTypes.BLESSED.get(), true);
+        builder.set(DataComponents.ENCHANTABLE, new Enchantable(9));
+        builder.set(DataComponents.RARITY, Rarity.EPIC);
+        return builder;
     }
 
-    private static ItemStack reinforced(Item item, SoulType soulType, HolderLookup.Provider registries) {
-        ItemStack itemStack = trimmed(item, soulType, registries);
-        itemStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
-        itemStack.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of(EquipmentSetHelper.createBlessedSet()));
+    private static ItemStack blessed(Holder<Item> item, SoulType soulType, HolderLookup.Provider registries) {
+        DataComponentPatch.Builder builder = trimmed(DataComponentPatch.builder(), soulType, registries);
+        blessed(builder);
+        builder.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of(EquipmentSetHelper.createBlessedSet()));
+
+        ItemStack itemStack = new ItemStack(item, 1, builder.build());
         while (Reinforcement.canReinforce(itemStack))
             Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack));
         return itemStack;

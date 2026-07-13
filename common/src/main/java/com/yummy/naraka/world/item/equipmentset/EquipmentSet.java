@@ -6,6 +6,8 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.ItemEvents;
+import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentHolder;
@@ -26,8 +28,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
@@ -76,9 +80,15 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
     }
 
     public void updateEffect(LivingEntity entity) {
-        if (canApply(entity))
+        Set<EquipmentSet> activeEquipmentSets = new HashSet<>(EntityDataHelper.getRawEntityData(entity, NarakaEntityDataTypes.EQUIPMENT_SET.get()));
+        if (canApply(entity)) {
             effect.activate(entity);
-        else effect.deactivate(entity);
+            activeEquipmentSets.add(this);
+        } else {
+            effect.deactivate(entity);
+            activeEquipmentSets.remove(this);
+        }
+        EntityDataHelper.setEntityData(entity, NarakaEntityDataTypes.EQUIPMENT_SET.get(), activeEquipmentSets.stream().toList());
     }
 
     @Override
