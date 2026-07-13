@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.util.LightCoordsUtil;
+import net.minecraft.util.Mth;
 
 public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect, ShinyEffectRenderState> {
     public ShinyEffectRenderer(EntityRendererProvider.Context context) {
@@ -90,8 +91,10 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect, ShinyEffect
             alphaMultiplier = Math.min(1, alphaMultiplier + (1 - alphaMultiplier) * 0.7f);
             index += 1;
         }
-
-        submitNodeCollector.order(index).submitCustomGeometry(poseStack, renderType, renderRhombus(width, centerHeight, 0x11, color));
+        float previousCenterWidth = centerWidth / 2;
+        float delta = (width - previousCenterWidth) / (centerWidth - previousCenterWidth);
+        int lastAlpha = Mth.lerpInt(delta, 0, alpha);
+        submitNodeCollector.order(index).submitCustomGeometry(poseStack, renderType, renderRhombus(width, centerHeight, lastAlpha, color));
         poseStack.popPose();
     }
 
