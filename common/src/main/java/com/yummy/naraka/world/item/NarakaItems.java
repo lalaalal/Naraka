@@ -28,7 +28,10 @@ import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
@@ -268,7 +271,7 @@ public class NarakaItems {
                                 .sword(ToolMaterial.IRON, 5, -2.4f)
                                 .rarity(Rarity.RARE)
                                 .component(NarakaDataComponentTypes.SOUL.get(), type)
-                                .delayedComponent(NarakaDataComponentTypes.EQUIPMENT_SET.get(), _ -> List.of(EquipmentSetHelper.createChallengerSet(type)))
+                                .delayedComponent(NarakaDataComponentTypes.EQUIPMENT_SET.get(), _ -> EquipmentSetHelper.createChallengerSet(type))
                                 .component(DataComponents.UNBREAKABLE, Unit.INSTANCE),
                         type.color
                 )

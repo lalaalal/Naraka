@@ -30,8 +30,6 @@ import net.minecraft.world.item.equipment.trim.TrimPatterns;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 
-import java.util.List;
-
 @SuppressWarnings("unused")
 public class NarakaCreativeModeTabs {
     public static final HolderProxy<CreativeModeTab, CreativeModeTab> NARAKA_TAB = register("naraka", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
@@ -195,7 +193,7 @@ public class NarakaCreativeModeTabs {
 
     private static ItemStack challenger(Holder<Item> item, SoulType soulType, HolderLookup.Provider registries) {
         DataComponentPatch.Builder builder = trimmed(DataComponentPatch.builder(), soulType, registries);
-        builder.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of(EquipmentSetHelper.createChallengerSet(soulType)));
+        builder.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), EquipmentSetHelper.createChallengerSet(soulType));
 
         ItemStack itemStack = new ItemStack(item, 1, builder.build());
         while (Reinforcement.canReinforce(itemStack))
@@ -213,7 +211,7 @@ public class NarakaCreativeModeTabs {
     private static ItemStack blessed(Holder<Item> item, SoulType soulType, HolderLookup.Provider registries) {
         DataComponentPatch.Builder builder = trimmed(DataComponentPatch.builder(), soulType, registries);
         blessed(builder);
-        builder.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of(EquipmentSetHelper.createBlessedSet()));
+        builder.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), EquipmentSetHelper.createBlessedSet());
 
         ItemStack itemStack = new ItemStack(item, 1, builder.build());
         while (Reinforcement.canReinforce(itemStack))

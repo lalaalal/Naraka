@@ -42,48 +42,50 @@ public class EquipmentSetHelper {
         );
     }
 
-    public static EquipmentSet createBlessedSet() {
+    public static List<EquipmentSet> createBlessedSet() {
         DataComponentPatch components = DataComponentPatch.builder()
                 .set(NarakaDataComponentTypes.BLESSED.get(), true)
                 .build();
 
-        return new EquipmentSet(
-                ID_BLESSED,
-                List.of(
-                        new EquipmentSet.Requirement(
-                                NarakaItems.PURIFIED_SOUL_HELMET,
-                                EquipmentSlot.HEAD,
-                                components
+        return List.of(
+                new EquipmentSet(
+                        ID_BLESSED,
+                        List.of(
+                                new EquipmentSet.Requirement(
+                                        NarakaItems.PURIFIED_SOUL_HELMET,
+                                        EquipmentSlot.HEAD,
+                                        components
+                                ),
+                                new EquipmentSet.Requirement(
+                                        NarakaItems.PURIFIED_SOUL_CHESTPLATE,
+                                        EquipmentSlot.CHEST,
+                                        components
+                                ),
+                                new EquipmentSet.Requirement(
+                                        NarakaItems.PURIFIED_SOUL_LEGGINGS,
+                                        EquipmentSlot.LEGS,
+                                        components
+                                ),
+                                new EquipmentSet.Requirement(
+                                        NarakaItems.PURIFIED_SOUL_BOOTS,
+                                        EquipmentSlot.FEET,
+                                        components
+                                )
                         ),
-                        new EquipmentSet.Requirement(
-                                NarakaItems.PURIFIED_SOUL_CHESTPLATE,
-                                EquipmentSlot.CHEST,
-                                components
-                        ),
-                        new EquipmentSet.Requirement(
-                                NarakaItems.PURIFIED_SOUL_LEGGINGS,
-                                EquipmentSlot.LEGS,
-                                components
-                        ),
-                        new EquipmentSet.Requirement(
-                                NarakaItems.PURIFIED_SOUL_BOOTS,
-                                EquipmentSlot.FEET,
-                                components
-                        )
-                ),
-                createBlessedEffect()
+                        createBlessedEffect()
+                )
         );
     }
 
     private static final Map<SoulType, EquipmentSet> SET_BY_SOUL_TYPE = new HashMap<>();
 
-    public static EquipmentSet createChallengerSet(SoulType soulType) {
+    public static List<EquipmentSet> createChallengerSet(SoulType soulType) {
         if (SET_BY_SOUL_TYPE.containsKey(soulType))
-            return SET_BY_SOUL_TYPE.get(soulType);
+            return List.of(SET_BY_SOUL_TYPE.get(soulType));
 
         Holder<Item> swordItem = NarakaItems.getSoulSwordHolderOf(soulType);
         if (swordItem == null)
-            return EquipmentSet.empty();
+            return List.of();
         DataComponentPatch components = DataComponentPatch.builder()
                 .set(NarakaDataComponentTypes.SOUL.get(), soulType)
                 .build();
@@ -119,7 +121,7 @@ public class EquipmentSetHelper {
                 createChallengerSetEffect(soulType)
         );
         SET_BY_SOUL_TYPE.put(soulType, equipmentSet);
-        return equipmentSet;
+        return List.of(equipmentSet);
     }
 
     public static EquipmentSetEffect<?> createChallengerSetEffect(SoulType soulType) {
