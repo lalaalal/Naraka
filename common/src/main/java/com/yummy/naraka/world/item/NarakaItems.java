@@ -207,6 +207,13 @@ public class NarakaItems {
         return null;
     }
 
+    @Nullable
+    public static Holder<Item> getSoulSwordHolderOf(SoulType type) {
+        if (SWORD_BY_SOUL_TYPE.containsKey(type))
+            return SWORD_BY_SOUL_TYPE.get(type);
+        return null;
+    }
+
     private static HolderProxy<Item, Item> registerSoulInfusedItem(SoulType type) {
         HolderProxy<Item, Item> item = registerItem(
                 SOUL_INFUSED_PREFIX + type.getSerializedName(),

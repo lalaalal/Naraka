@@ -12,6 +12,7 @@ import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.alchemy.NarakaPotions;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSetHelper;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.world.item.Items;
@@ -78,6 +79,9 @@ public class ChineseLanguageProvider extends NarakaLanguageProviders {
         addReinforcementEffect(NarakaReinforcementEffects.EFFICIENT_MINING_IN_WATER, "水下速掘");
         addReinforcementEffect(NarakaReinforcementEffects.EFFICIENT_MINING_IN_AIR, "空中速掘");
         addReinforcementEffect(NarakaReinforcementEffects.WATER_BREATHING, "水下呼吸");
+
+        add(LanguageKey.equipmentSet(EquipmentSetHelper.ID_BLESSED), "祝福套装");
+        add(LanguageKey.equipmentSet(EquipmentSetHelper.ID_CHALLENGER), "挑战者套装");
 
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, "魂浸红石材质");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_COPPER, "魂浸铜材质");

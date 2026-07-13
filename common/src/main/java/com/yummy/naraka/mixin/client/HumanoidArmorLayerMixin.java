@@ -32,7 +32,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity> {
     @Inject(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V", at = @At("RETURN"))
     private void renderHerobrineScarf(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
         ItemStack itemStack = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
-        if (itemStack.getOrDefault(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), false)) {
+        if (itemStack.has(NarakaDataComponentTypes.HEROBRINE_SCARF.get())) {
             for (WavingScarfRenderState.ModelData modelData : WavingScarfRenderState.ModelType.HUMANOID.modelData) {
                 poseStack.pushPose();
                 WavingScarfPose scarfPose = modelData.pose();

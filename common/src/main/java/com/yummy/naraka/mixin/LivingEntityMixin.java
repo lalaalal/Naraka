@@ -3,15 +3,13 @@ package com.yummy.naraka.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
+import com.yummy.naraka.event.EntityEvents;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.LockedHealthHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
-import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
-import com.yummy.naraka.world.item.reinforcement.Reinforcement;
-import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffectHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -147,8 +145,7 @@ public abstract class LivingEntityMixin extends Entity {
             ItemStack currentStack = equipments.get(slot);
             ItemStack previousStack = naraka$getPreviousStack(slot);
 
-            naraka$handleEquipmentSetEffect(naraka$living(), slot, previousStack, currentStack);
-            naraka$handleReinforcementEffect(naraka$living(), slot, previousStack, currentStack);
+            EntityEvents.EQUIPMENT_CHANGE.invoker().onEquipmentChange(naraka$living(), slot, previousStack, currentStack);
         }
     }
 
@@ -159,25 +156,6 @@ public abstract class LivingEntityMixin extends Entity {
         if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR)
             return getLastArmorItem(slot);
         return ItemStack.EMPTY;
-    }
-
-    @Unique
-    private static void naraka$handleReinforcementEffect(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack previousStack, ItemStack currentStack) {
-        if (Reinforcement.get(previousStack) == Reinforcement.get(currentStack)) {
-            NarakaItemUtils.checkAndUpdateReinforcementEffects(livingEntity, equipmentSlot, currentStack,
-                    ReinforcementEffect::onEquippedItemChanged);
-            return;
-        }
-
-        NarakaItemUtils.updateReinforcementEffects(livingEntity, equipmentSlot, previousStack,
-                ReinforcementEffect::onUnequipped);
-        NarakaItemUtils.checkAndUpdateReinforcementEffects(livingEntity, equipmentSlot, currentStack,
-                ReinforcementEffect::onEquipped);
-    }
-
-    @Unique
-    private static void naraka$handleEquipmentSetEffect(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack previousStack, ItemStack currentStack) {
-        NarakaEquipmentSets.updateAllSetEffects(livingEntity);
     }
 
     @Unique

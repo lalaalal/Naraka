@@ -5,11 +5,14 @@ import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.component.SanctuaryTracker;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.util.Unit;
 
+import java.util.List;
 import java.util.function.UnaryOperator;
 
 public class NarakaDataComponentTypes {
@@ -37,10 +40,16 @@ public class NarakaDataComponentTypes {
                     .networkSynchronized(SoulType.STREAM_CODEC)
     );
 
-    public static final HolderProxy<DataComponentType<?>, DataComponentType<Boolean>> HEROBRINE_SCARF = register(
+    public static final HolderProxy<DataComponentType<?>, DataComponentType<Unit>> HEROBRINE_SCARF = register(
             "herobrine_scarf",
-            builder -> builder.persistent(Codec.BOOL)
-                    .networkSynchronized(ByteBufCodecs.BOOL)
+            builder -> builder.persistent(Unit.CODEC)
+                    .networkSynchronized(ByteBufCodecs.fromCodec(Unit.CODEC))
+    );
+
+    public static final HolderProxy<DataComponentType<?>, DataComponentType<List<EquipmentSet>>> EQUIPMENT_SET = register(
+            "equipment_set",
+            builder -> builder.persistent(EquipmentSet.CODEC.listOf())
+                    .networkSynchronized(EquipmentSet.STREAM_CODEC.apply(ByteBufCodecs.list()))
     );
 
     private static <T> HolderProxy<DataComponentType<?>, DataComponentType<T>> register(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {

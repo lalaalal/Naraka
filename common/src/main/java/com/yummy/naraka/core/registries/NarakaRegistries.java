@@ -3,7 +3,7 @@ package com.yummy.naraka.core.registries;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.component.DataComponentApplier;
 import com.yummy.naraka.world.entity.data.EntityDataType;
-import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSetEffectType;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import com.yummy.naraka.world.overlay.ProgressOverlayExtensionType;
 import com.yummy.naraka.world.structure.generation.StructureGenerationPointProvider;
@@ -18,10 +18,9 @@ public class NarakaRegistries {
     public static final Registry<ProtectionPredicate> PROTECTION_PREDICATE = RegistryFactory.create(Keys.PROTECTION_PREDICATE);
     public static final Registry<EntityDataType<?, ?>> ENTITY_DATA_TYPE = RegistryFactory.create(Keys.ENTITY_DATA_TYPE);
     public static final Registry<ReinforcementEffect> REINFORCEMENT_EFFECT = RegistryFactory.create(Keys.REINFORCEMENT_EFFECT);
-    public static final Registry<EquipmentSet> EQUIPMENT_SET = RegistryFactory.create(Keys.EQUIPMENT_SET);
+    public static final Registry<EquipmentSetEffectType<?>> EQUIPMENT_SET_EFFECT_TYPE = RegistryFactory.create(Keys.EQUIPMENT_SET_EFFECT_TYPE);
     public static final Registry<DataComponentApplier.Type<?>> DATA_COMPONENT_APPLIER = RegistryFactory.create(Keys.DATA_COMPONENT_APPLIER);
     public static final Registry<ProgressOverlayExtensionType<?>> PROGRESS_OVERLAY_EXTENSION_TYPE = RegistryFactory.create(Keys.PROGRESS_OVERLAY_EXTENSION_TYPE);
-
 
     public static void initialize() {
 
@@ -33,7 +32,7 @@ public class NarakaRegistries {
         public static final ResourceKey<Registry<ProtectionPredicate>> PROTECTION_PREDICATE = create("protection_predicate");
         public static final ResourceKey<Registry<EntityDataType<?, ?>>> ENTITY_DATA_TYPE = create("entity_data_type");
         public static final ResourceKey<Registry<ReinforcementEffect>> REINFORCEMENT_EFFECT = create("reinforcement_effect");
-        public static final ResourceKey<Registry<EquipmentSet>> EQUIPMENT_SET = create("equipment_set");
+        public static final ResourceKey<Registry<EquipmentSetEffectType<?>>> EQUIPMENT_SET_EFFECT_TYPE = create("equipment_set_effect_type");
         public static final ResourceKey<Registry<DataComponentApplier.Type<?>>> DATA_COMPONENT_APPLIER = create("data_component_applier");
         public static final ResourceKey<Registry<ProgressOverlayExtensionType<?>>> PROGRESS_OVERLAY_EXTENSION_TYPE = create("progress_overlay_extension_type");
 

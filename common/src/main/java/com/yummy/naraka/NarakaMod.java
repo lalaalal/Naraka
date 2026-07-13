@@ -31,7 +31,7 @@ import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.alchemy.NarakaPotions;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeSerializers;
 import com.yummy.naraka.world.item.crafting.NarakaRecipeTypes;
-import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
+import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSetEffectTypes;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.overlay.NarakaProgressOverlayExtensionTypes;
 import com.yummy.naraka.world.rootplacer.NarakaRootPlacerTypes;
@@ -79,10 +79,10 @@ public final class NarakaMod {
         NarakaReinforcementEffects.initialize();
         NarakaDataComponentTypes.initialize();
         NarakaDataComponentAppliers.initialize();
+        NarakaEquipmentSetEffectTypes.initialize();
         NarakaItems.initialize();
         NarakaRecipeTypes.initialize();
         NarakaRecipeSerializers.initialize();
-        NarakaEquipmentSets.initialize();
         NarakaCreativeModeTabs.initialize();
         NarakaPotions.initialize();
 
