@@ -178,7 +178,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
         if (soulType == SoulType.GOD_BLOOD) {
             forgingItem.set(NarakaDataComponentTypes.BLESSED.get(), true);
-            forgingItem.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), EquipmentSetHelper.createBlessedSet());
+            forgingItem.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), EquipmentSetHelper.BLESSED);
             forgingItem.set(DataComponents.RARITY, Rarity.EPIC);
         } else if (forgingItem.getRarity() != Rarity.EPIC) {
             forgingItem.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), EquipmentSetHelper.createChallengerSet(soulType));

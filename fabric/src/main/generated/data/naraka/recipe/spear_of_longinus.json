@@ -4,127 +4,73 @@
   "group": "",
   "ingredients": [
     {
-      "applier": {
-        "type": "naraka:bless",
-        "value": true
-      },
       "column": 0,
-      "ingredient": {
-        "item": "naraka:soul_infused_redstone_sword"
-      },
-      "predicate": {
+      "components": {
         "naraka:blessed": true
       },
+      "ingredient": "naraka:soul_infused_redstone_sword",
       "row": 0
     },
     {
-      "applier": {
-        "type": "naraka:bless",
-        "value": true
-      },
       "column": 1,
-      "ingredient": {
-        "item": "naraka:soul_infused_copper_sword"
-      },
-      "predicate": {
+      "components": {
         "naraka:blessed": true
       },
+      "ingredient": "naraka:soul_infused_copper_sword",
       "row": 0
     },
     {
-      "applier": {
-        "type": "naraka:bless",
-        "value": true
-      },
       "column": 2,
-      "ingredient": {
-        "item": "naraka:soul_infused_gold_sword"
-      },
-      "predicate": {
+      "components": {
         "naraka:blessed": true
       },
+      "ingredient": "naraka:soul_infused_gold_sword",
       "row": 0
     },
     {
-      "applier": {
-        "type": "naraka:bless",
-        "value": true
-      },
       "column": 0,
-      "ingredient": {
-        "item": "naraka:soul_infused_emerald_sword"
-      },
-      "predicate": {
+      "components": {
         "naraka:blessed": true
       },
+      "ingredient": "naraka:soul_infused_emerald_sword",
       "row": 1
     },
     {
-      "applier": {
-        "type": "naraka:empty",
-        "value": {}
-      },
       "column": 1,
-      "ingredient": {
-        "item": "naraka:mighty_holy_spear"
-      },
-      "predicate": {},
+      "components": {},
+      "ingredient": "naraka:mighty_holy_spear",
       "row": 1
     },
     {
-      "applier": {
-        "type": "naraka:bless",
-        "value": true
-      },
       "column": 2,
-      "ingredient": {
-        "item": "naraka:soul_infused_diamond_sword"
-      },
-      "predicate": {
+      "components": {
         "naraka:blessed": true
       },
+      "ingredient": "naraka:soul_infused_diamond_sword",
       "row": 1
     },
     {
-      "applier": {
-        "type": "naraka:bless",
-        "value": true
-      },
       "column": 0,
-      "ingredient": {
-        "item": "naraka:soul_infused_lapis_sword"
-      },
-      "predicate": {
+      "components": {
         "naraka:blessed": true
       },
+      "ingredient": "naraka:soul_infused_lapis_sword",
       "row": 2
     },
     {
-      "applier": {
-        "type": "naraka:bless",
-        "value": true
-      },
       "column": 1,
-      "ingredient": {
-        "item": "naraka:soul_infused_amethyst_sword"
-      },
-      "predicate": {
+      "components": {
         "naraka:blessed": true
       },
+      "ingredient": "naraka:soul_infused_amethyst_sword",
       "row": 2
     },
     {
-      "applier": {
-        "type": "naraka:bless",
-        "value": true
-      },
       "column": 2,
-      "ingredient": {
-        "item": "naraka:soul_infused_nectarium_sword"
-      },
-      "predicate": {
+      "components": {
         "naraka:blessed": true
       },
+      "ingredient": "naraka:soul_infused_nectarium_sword",
       "row": 2
     }
   ],

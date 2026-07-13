@@ -30,9 +30,10 @@ public class EquipmentSetHelper {
             SoulType.NECTARIUM, NarakaMobEffects.CHALLENGERS_BLESSING_NECTARIUM,
             SoulType.REDSTONE, NarakaMobEffects.CHALLENGERS_BLESSING_REDSTONE
     );
-    private static final Map<SoulType, EquipmentSet> SET_BY_SOUL_TYPE = new HashMap<>();
+    public static final List<EquipmentSet> BLESSED = createBlessedSet();
+    private static final Map<SoulType, List<EquipmentSet>> SET_BY_SOUL_TYPE = new HashMap<>();
 
-    public static EquipmentSetEffect<?> createBlessedEffect() {
+    private static EquipmentSetEffect<?> createBlessedEffect() {
         return new EquipmentSetEffect<>(
                 NarakaEquipmentSetEffectTypes.MOB_EFFECT_EQUIPMENT_SET_EFFECT.get(),
                 List.of(
@@ -42,7 +43,7 @@ public class EquipmentSetHelper {
         );
     }
 
-    public static List<EquipmentSet> createBlessedSet() {
+    private static List<EquipmentSet> createBlessedSet() {
         DataComponentPatch components = DataComponentPatch.builder()
                 .set(NarakaDataComponentTypes.BLESSED.get(), true)
                 .build();
@@ -79,7 +80,7 @@ public class EquipmentSetHelper {
 
     public static List<EquipmentSet> createChallengerSet(SoulType soulType) {
         if (SET_BY_SOUL_TYPE.containsKey(soulType))
-            return List.of(SET_BY_SOUL_TYPE.get(soulType));
+            return SET_BY_SOUL_TYPE.get(soulType);
 
         Holder<Item> swordItem = NarakaItems.getSoulSwordHolderOf(soulType);
         if (swordItem == null)
@@ -118,8 +119,9 @@ public class EquipmentSetHelper {
                 ),
                 createChallengerSetEffect(soulType)
         );
-        SET_BY_SOUL_TYPE.put(soulType, equipmentSet);
-        return List.of(equipmentSet);
+        List<EquipmentSet> result = List.of(equipmentSet);
+        SET_BY_SOUL_TYPE.put(soulType, result);
+        return result;
     }
 
     public static EquipmentSetEffect<?> createChallengerSetEffect(SoulType soulType) {

@@ -1,22 +1,18 @@
 package com.yummy.naraka.world.item.crafting;
 
-import com.yummy.naraka.core.component.DataComponentApplier;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponentPredicate;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -39,23 +35,13 @@ public class ComponentPredicateRecipeBuilder implements RecipeBuilder {
         this.category = category;
     }
 
-    public ComponentPredicateRecipeBuilder requires(int row, int column, ItemLike item, DataComponentPredicate predicate, DataComponentApplier.Single<?> applier) {
+    public ComponentPredicateRecipeBuilder requires(int row, int column, Holder<Item> item, DataComponentPatch components) {
         ComponentPredicateIngredient ingredient = new ComponentPredicateIngredient(
                 row, column,
-                Ingredient.of(item),
-                predicate,
-                applier
+                item,
+                components
         );
         predicateIngredients.add(ingredient);
-        return this;
-    }
-
-    public ComponentPredicateRecipeBuilder requires(int row, int column, ItemLike item, DataComponentPredicate predicate) {
-        return requires(row, column, item, predicate, DataComponentApplier.empty());
-    }
-
-    public ComponentPredicateRecipeBuilder requires(int row, int column, TagKey<Item> tag, DataComponentPredicate predicate, DataComponentApplier.Single<?> applier) {
-        predicateIngredients.add(new ComponentPredicateIngredient(row, column, Ingredient.of(tag), predicate, applier));
         return this;
     }
 
