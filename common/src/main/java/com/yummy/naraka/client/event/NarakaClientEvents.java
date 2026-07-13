@@ -4,14 +4,24 @@ import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.renderer.WhiteFogRenderHelper;
 import com.yummy.naraka.config.Configuration;
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
+import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.core.component.DataComponentHolder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.TooltipFlag;
+
+import java.util.function.Consumer;
 
 public class NarakaClientEvents {
     public static void initialize() {
@@ -20,6 +30,7 @@ public class NarakaClientEvents {
         ClientEvents.CLIENT_STOPPING.register(NarakaClientEvents::onClientStopping);
         ClientEvents.CAMERA_SETUP.register(NarakaClientEvents::shakeCamera);
         ClientEvents.LOGIN.register(NarakaClientEvents::onClientLogin);
+        ClientEvents.ITEM_TOOLTIP_BOTTOM.register(NarakaClientEvents::addItemTooltips);
     }
 
     private static void shakeCamera(ClientEvents.CameraSetup.Context context, Entity entity, DeltaTracker deltaTracker) {
@@ -66,5 +77,14 @@ public class NarakaClientEvents {
 
     private static void onClientStopping(Minecraft minecraft) {
         NarakaConfig.stopWatching();
+    }
+
+    private static void addItemTooltips(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder) {
+        if (item.getOrDefault(NarakaDataComponentTypes.BLESSED.get(), false))
+            builder.accept(Component.translatable(LanguageKey.BLESSED_KEY).withStyle(ComponentStyles.RAINBOW_COLOR));
+        if (item.has(NarakaDataComponentTypes.HEROBRINE_SCARF.get()))
+            builder.accept(Component.translatable(LanguageKey.HEROBRINE_SCARF_KEY).withStyle(ComponentStyles.RAINBOW_COLOR));
+        EquipmentSet equipmentSet = item.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), EquipmentSet.EMPTY);
+        equipmentSet.addToTooltip(context, builder, tooltipFlag, item);
     }
 }
