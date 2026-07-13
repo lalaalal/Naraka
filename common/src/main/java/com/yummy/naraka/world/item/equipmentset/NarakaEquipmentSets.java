@@ -13,24 +13,20 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Map;
 
 public class NarakaEquipmentSets {
-    public static final HolderProxy<EquipmentSet, EquipmentSet> SOUL_ARMOR_AND_SWORD = register(
+    public static final HolderProxy<EquipmentSetEffectType<?>, EquipmentSetEffectType<?>> SOUL_ARMOR_AND_SWORD = register(
             "soul_armor_and_sword",
             new SoulEquipmentSet()
     );
 
     public static final HolderProxy<EquipmentSet, EquipmentSet> BLESSED_SOUL_ARMOR = register(
             "blessed_soul_armor",
-            new EquipmentSet(NarakaEquipmentSets::testBlessedSoulArmor, new MobEffectEquipmentSetEffect(
+            new EquipmentSet(NarakaEquipmentSets::testBlessedSoulArmor, new MobEffectEquipmentSetEffectEffect(
                     Map.of(
                             MobEffects.SPEED, 1,
                             MobEffects.STRENGTH, 1
                     )
             ))
     );
-
-    public static void updateAllSetEffects(LivingEntity livingEntity) {
-        NarakaRegistries.EQUIPMENT_SET.forEach(equipmentSet -> equipmentSet.updateEffect(livingEntity));
-    }
 
     private static boolean testBlessedSoulArmor(LivingEntity livingEntity) {
         for (EquipmentSlot slot : EquipmentSlotGroup.ARMOR.slots()) {
@@ -45,7 +41,7 @@ public class NarakaEquipmentSets {
     }
 
     private static HolderProxy<EquipmentSet, EquipmentSet> register(String name, EquipmentSet equipmentSet) {
-        return RegistryProxy.register(NarakaRegistries.Keys.EQUIPMENT_SET, name, () -> equipmentSet);
+        return RegistryProxy.register(NarakaRegistries.Keys.EQUIPMENT_SET_EFFECT_TYPE, name, () -> equipmentSet);
     }
 
     public static void initialize() {

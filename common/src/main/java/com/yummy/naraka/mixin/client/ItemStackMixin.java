@@ -1,6 +1,6 @@
 package com.yummy.naraka.mixin.client;
 
-import com.yummy.naraka.client.event.ClientEvents;
+import com.yummy.naraka.event.ItemEvents;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -19,11 +19,11 @@ import java.util.function.Consumer;
 public abstract class ItemStackMixin implements DataComponentHolder {
     @Inject(method = "addDetailsToTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item;appendHoverText(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/Item$TooltipContext;Lnet/minecraft/world/item/component/TooltipDisplay;Ljava/util/function/Consumer;Lnet/minecraft/world/item/TooltipFlag;)V", shift = At.Shift.AFTER))
     public void addReinforcementTooltip(Item.TooltipContext context, TooltipDisplay display, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder, CallbackInfo ci) {
-        ClientEvents.ITEM_TOOLTIP_TOP.invoker().addToTooltip(this, context, player, tooltipFlag, builder);
+        ItemEvents.ITEM_TOOLTIP_TOP.invoker().addToTooltip(this, context, player, tooltipFlag, builder);
     }
 
     @Inject(method = "addDetailsToTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/TooltipFlag;isAdvanced()Z"))
     public void addBlessedTooltip(Item.TooltipContext context, TooltipDisplay display, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder, CallbackInfo ci) {
-        ClientEvents.ITEM_TOOLTIP_BOTTOM.invoker().addToTooltip(this, context, player, tooltipFlag, builder);
+        ItemEvents.ITEM_TOOLTIP_BOTTOM.invoker().addToTooltip(this, context, player, tooltipFlag, builder);
     }
 }

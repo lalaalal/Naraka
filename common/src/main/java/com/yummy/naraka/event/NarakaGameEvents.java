@@ -2,18 +2,25 @@ package com.yummy.naraka.event;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
+import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncEntityDataPacket;
+import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.util.TickSchedule;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.item.NarakaItems;
-import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.component.DataComponentHolder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -23,12 +30,17 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+
+import java.util.function.Consumer;
 
 public final class NarakaGameEvents {
     public static void initialize() {
@@ -44,6 +56,9 @@ public final class NarakaGameEvents {
         EntityEvents.EQUIPMENT_CHANGE.register(NarakaGameEvents::handleEquipmentSetEffect);
 
         LootEvents.MODIFY_LOOT_TABLE.register(NarakaGameEvents::modifyLootTable);
+
+        ItemEvents.ITEM_TOOLTIP_TOP.register(NarakaGameEvents::addItemTooltipsTop);
+        ItemEvents.ITEM_TOOLTIP_BOTTOM.register(NarakaGameEvents::addItemTooltipsBottom);
     }
 
     private static void syncPlayerEntityData(ServerPlayer player) {
@@ -105,6 +120,22 @@ public final class NarakaGameEvents {
     }
 
     private static void handleEquipmentSetEffect(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack previousStack, ItemStack currentStack) {
-        NarakaEquipmentSets.updateAllSetEffects(livingEntity);
+        HolderSet<EquipmentSet> previousItemEquipmentSets = previousStack.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), HolderSet.empty());
+        HolderSet<EquipmentSet> currentItemEquipmentSets = currentStack.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), HolderSet.empty());
+        previousItemEquipmentSets.forEach(equipmentSetHolder -> equipmentSetHolder.value().updateEffect(livingEntity));
+        currentItemEquipmentSets.forEach(equipmentSetHolder -> equipmentSetHolder.value().updateEffect(livingEntity));
+    }
+
+    private static void addItemTooltipsTop(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder) {
+        HolderSet<EquipmentSet> equipmentSets = item.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), HolderSet.empty());
+        for (Holder<EquipmentSet> equipmentSetHolder : equipmentSets)
+            equipmentSetHolder.value().addToTooltip(item, context, player, tooltipFlag, builder);
+    }
+
+    private static void addItemTooltipsBottom(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder) {
+        if (item.getOrDefault(NarakaDataComponentTypes.BLESSED.get(), false))
+            builder.accept(Component.translatable(LanguageKey.BLESSED_KEY).withStyle(ComponentStyles.RAINBOW_COLOR));
+        if (item.has(NarakaDataComponentTypes.HEROBRINE_SCARF.get()))
+            builder.accept(Component.translatable(LanguageKey.HEROBRINE_SCARF_KEY).withStyle(ComponentStyles.RAINBOW_COLOR));
     }
 }

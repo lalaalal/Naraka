@@ -79,11 +79,11 @@ public final class NarakaMod {
         NarakaReinforcementEffects.initialize();
         NarakaDataComponentTypes.initialize();
         NarakaDataComponentPredicates.initialize();
+        NarakaEquipmentSets.initialize();
         NarakaItems.initialize();
         NarakaRecipeTypes.initialize();
         NarakaRecipeSerializers.initialize();
         NarakaRecipeDisplays.initialize();
-        NarakaEquipmentSets.initialize();
         NarakaCreativeModeTabs.initialize();
         NarakaPotions.initialize();
 

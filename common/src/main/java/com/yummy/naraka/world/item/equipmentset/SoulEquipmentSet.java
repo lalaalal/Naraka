@@ -51,7 +51,7 @@ public class SoulEquipmentSet extends EquipmentSet {
         super(SoulEquipmentSet::test, new ChallengersBlessingEffect());
     }
 
-    private static class ChallengersBlessingEffect implements EquipmentSetEffect {
+    private static class ChallengersBlessingEffect implements EquipmentSetEffectType {
         private static final Map<SoulType, Holder<MobEffect>> SOUL_EFFECT_MAP = Map.of(
                 SoulType.AMETHYST, NarakaMobEffects.CHALLENGERS_BLESSING_AMETHYST,
                 SoulType.COPPER, NarakaMobEffects.CHALLENGERS_BLESSING_COPPER,
