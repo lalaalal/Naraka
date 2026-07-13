@@ -1,6 +1,7 @@
 package com.yummy.naraka.fabric.data;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.data.NarakaDatapackProvider;
 import com.yummy.naraka.fabric.data.advancement.NarakaAdvancementProvider;
 import com.yummy.naraka.fabric.data.lang.ChineseLanguageProvider;
 import com.yummy.naraka.fabric.data.lang.DefaultLanguageProvider;

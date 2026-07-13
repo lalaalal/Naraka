@@ -2,13 +2,12 @@ package com.yummy.naraka.world.item.equipmentset;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yummy.naraka.core.registries.NarakaRegistries;
+import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.ItemEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponentType;
@@ -19,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -29,25 +29,50 @@ import net.minecraft.world.item.TooltipFlag;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 public class EquipmentSet implements ItemEvents.ItemTooltip {
-    public static final Codec<HolderSet<EquipmentSet>> CODEC = RegistryCodecs.homogeneousList(NarakaRegistries.Keys.EQUIPMENT_SET_EFFECT_TYPE);
-    public static final StreamCodec<RegistryFriendlyByteBuf, HolderSet<EquipmentSet>> STREAM_CODEC = ByteBufCodecs.holderSet(NarakaRegistries.Keys.EQUIPMENT_SET_EFFECT_TYPE);
+    public static final Codec<EquipmentSet> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                    Identifier.CODEC.fieldOf("id").forGetter(EquipmentSet::getId),
+                    Requirement.CODEC.listOf().fieldOf("requirements").forGetter(set -> set.requirements),
+                    EquipmentSetEffect.CODEC.fieldOf("effect").forGetter(set -> set.effect)
+            ).apply(instance, EquipmentSet::new)
+    );
+    public static final StreamCodec<RegistryFriendlyByteBuf, EquipmentSet> STREAM_CODEC = StreamCodec.composite(
+            Identifier.STREAM_CODEC,
+            EquipmentSet::getId,
+            Requirement.STREAM_CODEC.apply(ByteBufCodecs.list()),
+            set -> set.requirements,
+            EquipmentSetEffect.STREAM_CODEC,
+            set -> set.effect,
+            EquipmentSet::new
+    );
 
-    public static final EquipmentSet EMPTY = new EquipmentSet(List.of(), EquipmentSetEffect.EMPTY);
+    public static EquipmentSet empty() {
+        return new EquipmentSet(NarakaMod.identifier("empty"), List.of(), EquipmentSetEffect.empty());
+    }
 
+    private final Identifier id;
     private final List<Requirement> requirements;
     private final EquipmentSetEffect<?> effect;
 
-    public EquipmentSet(List<Requirement> requirements, EquipmentSetEffect<?> effect) {
+    public EquipmentSet(Identifier id, List<Requirement> requirements, EquipmentSetEffect<?> effect) {
+        this.id = id;
         this.requirements = requirements;
         this.effect = effect;
     }
 
+    public Identifier getId() {
+        return id;
+    }
+
     public boolean canApply(LivingEntity entity) {
-        return requirements.stream().allMatch(requirement -> requirement.test(entity));
+        return requirements.stream().allMatch(requirement -> requirement.test(entity, this));
+    }
+
+    private long countSucceed(LivingEntity entity) {
+        return requirements.stream().filter(requirement -> requirement.test(entity, this)).count();
     }
 
     public void updateEffect(LivingEntity entity) {
@@ -58,25 +83,25 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
 
     @Override
     public void addToTooltip(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder) {
-        Component component = Component.translatable(LanguageKey.EQUIPMENT_SET_KEY)
-                .withStyle(styleUpdaterByEquipment(player));
+        long succeed = countSucceed(player);
+        Component component = Component.translatable(LanguageKey.equipmentSet(id), succeed, requirements.size())
+                .withStyle(styleUpdaterByEquipment(succeed))
+                .append(" (%d/%d)".formatted(succeed, requirements.size()));
         builder.accept(component);
     }
 
-    private UnaryOperator<Style> styleUpdaterByEquipment(LivingEntity livingEntity) {
-        if (canApply(livingEntity))
+    private UnaryOperator<Style> styleUpdaterByEquipment(long succeed) {
+        if (succeed == requirements.size())
             return style -> style.withColor(ChatFormatting.GREEN);
-        return style -> style.withStrikethrough(true)
-                .withColor(ChatFormatting.GRAY);
+        return style -> style.withColor(ChatFormatting.DARK_GRAY);
     }
 
-    public record Requirement(Holder<Item> item, EquipmentSlot slot,
-                              DataComponentPatch components) implements Predicate<LivingEntity> {
+    public record Requirement(Holder<Item> item, EquipmentSlot slot, DataComponentPatch components) {
         public static final Codec<Requirement> CODEC = RecordCodecBuilder.create(
                 instance -> instance.group(
                         BuiltInRegistries.ITEM.holderByNameCodec().fieldOf("item").forGetter(Requirement::item),
                         EquipmentSlot.CODEC.fieldOf("slot").forGetter(Requirement::slot),
-                        DataComponentPatch.CODEC.fieldOf("components").forGetter(Requirement::components)
+                        DataComponentPatch.CODEC.optionalFieldOf("components", DataComponentPatch.EMPTY).forGetter(Requirement::components)
                 ).apply(instance, Requirement::new)
         );
 
@@ -90,10 +115,12 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
                 Requirement::new
         );
 
-        @Override
-        public boolean test(LivingEntity livingEntity) {
+        public boolean test(LivingEntity livingEntity, EquipmentSet equipmentSet) {
             ItemStack itemStack = livingEntity.getItemBySlot(slot);
-            return itemStack.is(item.value()) && components.entrySet().stream().allMatch(entry -> {
+            List<EquipmentSet> equipmentSets = itemStack.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of());
+            return itemStack.is(item.value())
+                    && equipmentSets.stream().map(EquipmentSet::getId).anyMatch(id -> equipmentSet.getId().equals(id))
+                    && components.entrySet().stream().allMatch(entry -> {
                 DataComponentType<?> type = entry.getKey();
                 return entry.getValue()
                         .filter(value -> Objects.equals(itemStack.get(type), value))

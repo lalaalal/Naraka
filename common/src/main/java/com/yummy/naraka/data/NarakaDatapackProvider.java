@@ -1,4 +1,4 @@
-package com.yummy.naraka.fabric.data;
+package com.yummy.naraka.data;
 
 import com.yummy.naraka.data.worldgen.*;
 import com.yummy.naraka.data.worldgen.features.NarakaConfiguredFeatures;
@@ -9,10 +9,10 @@ import com.yummy.naraka.world.item.enchantment.NarakaEnchantments;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimPatterns;
 import com.yummy.naraka.world.item.trading.NarakaVillagerTrades;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.registries.RegistriesDatapackGenerator;
 import net.minecraft.data.registries.RegistryPatchGenerator;
 
@@ -36,7 +36,7 @@ public class NarakaDatapackProvider extends RegistriesDatapackGenerator {
 
     private final CompletableFuture<HolderLookup.Provider> fullRegistries;
 
-    public NarakaDatapackProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+    public NarakaDatapackProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, RegistryPatchGenerator.createLookup(registries, BUILDER)
                 .thenApply(RegistrySetBuilder.PatchedRegistries::patches)
         );

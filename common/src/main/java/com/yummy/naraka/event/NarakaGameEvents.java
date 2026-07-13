@@ -17,8 +17,6 @@ import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -40,6 +38,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public final class NarakaGameEvents {
@@ -120,16 +119,18 @@ public final class NarakaGameEvents {
     }
 
     private static void handleEquipmentSetEffect(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack previousStack, ItemStack currentStack) {
-        HolderSet<EquipmentSet> previousItemEquipmentSets = previousStack.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), HolderSet.empty());
-        HolderSet<EquipmentSet> currentItemEquipmentSets = currentStack.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), HolderSet.empty());
-        previousItemEquipmentSets.forEach(equipmentSetHolder -> equipmentSetHolder.value().updateEffect(livingEntity));
-        currentItemEquipmentSets.forEach(equipmentSetHolder -> equipmentSetHolder.value().updateEffect(livingEntity));
+        List<EquipmentSet> previousItemEquipmentSets = previousStack.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of());
+        List<EquipmentSet> currentItemEquipmentSets = currentStack.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of());
+        previousItemEquipmentSets.forEach(equipmentSetHolder -> equipmentSetHolder.updateEffect(livingEntity));
+        currentItemEquipmentSets.forEach(equipmentSetHolder -> equipmentSetHolder.updateEffect(livingEntity));
     }
 
     private static void addItemTooltipsTop(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder) {
-        HolderSet<EquipmentSet> equipmentSets = item.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), HolderSet.empty());
-        for (Holder<EquipmentSet> equipmentSetHolder : equipmentSets)
-            equipmentSetHolder.value().addToTooltip(item, context, player, tooltipFlag, builder);
+        List<EquipmentSet> equipmentSets = item.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of());
+        for (EquipmentSet equipmentSet : equipmentSets)
+            equipmentSet.addToTooltip(item, context, player, tooltipFlag, builder);
+        Reinforcement reinforcement = item.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT.get(), Reinforcement.ZERO);
+        reinforcement.addToTooltip(context, builder, tooltipFlag, item);
     }
 
     private static void addItemTooltipsBottom(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder) {

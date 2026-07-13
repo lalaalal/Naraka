@@ -65,6 +65,10 @@ public final class LanguageKey {
         return Util.makeDescriptionId("effect", mobEffect.unwrapKey().orElseThrow().identifier());
     }
 
+    public static String equipmentSet(Identifier id) {
+        return Util.makeDescriptionId("equipment_effect", id);
+    }
+
     public static String tooltip(Block block) {
         return block.asItem().getDescriptionId() + ".tooltip";
     }

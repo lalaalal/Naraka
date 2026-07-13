@@ -5,6 +5,7 @@ import com.yummy.naraka.core.registries.NarakaRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.LivingEntity;
 
 public record EquipmentSetEffect<T>(EquipmentSetEffectType<T> type, T data) {
@@ -13,6 +14,10 @@ public record EquipmentSetEffect<T>(EquipmentSetEffectType<T> type, T data) {
 
     public static final StreamCodec<RegistryFriendlyByteBuf, EquipmentSetEffect<?>> STREAM_CODEC = ByteBufCodecs.registry(NarakaRegistries.Keys.EQUIPMENT_SET_EFFECT_TYPE)
             .dispatch(EquipmentSetEffect::type, EquipmentSetEffectType::streamCodec);
+
+    public static EquipmentSetEffect<Unit> empty() {
+        return new EquipmentSetEffect<>(NarakaEquipmentSetEffectTypes.EMPTY.get(), Unit.INSTANCE);
+    }
 
     public void activate(LivingEntity livingEntity) {
         this.type.activate(livingEntity, data);

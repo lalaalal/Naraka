@@ -7,6 +7,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimPatterns;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSetHelper;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.BlockPos;
@@ -32,6 +33,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -139,6 +141,8 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         if (swordItem == null)
             return false;
         forgingItem = new ItemStack(swordItem);
+        if (!forgingItem.has(NarakaDataComponentTypes.EQUIPMENT_SET.get()))
+            forgingItem.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of(EquipmentSetHelper.createChallengerSet(soulType)));
         soulStabilizer.consumeSoul(requiredSoul);
         cooldownTick = COOLDOWN;
         if (level != null)
@@ -177,10 +181,13 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
         if (soulType == SoulType.GOD_BLOOD) {
             forgingItem.set(NarakaDataComponentTypes.BLESSED.get(), true);
+            forgingItem.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of(EquipmentSetHelper.createBlessedSet()));
             forgingItem.set(DataComponents.RARITY, Rarity.EPIC);
         } else if (forgingItem.getRarity() != Rarity.EPIC) {
+            forgingItem.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of(EquipmentSetHelper.createChallengerSet(soulType)));
             forgingItem.set(DataComponents.RARITY, Rarity.RARE);
         }
+        forgingItem.set(NarakaDataComponentTypes.SOUL.get(), soulType);
         forgingItem.set(DataComponents.ENCHANTABLE, new Enchantable(9));
 
         soulStabilizer.consumeSoul(requiredSoul);

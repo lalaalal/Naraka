@@ -9,6 +9,7 @@ import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
 import com.yummy.naraka.tags.NarakaBlockTags;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSetHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -27,10 +28,7 @@ import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
@@ -242,6 +240,13 @@ public class NarakaItems {
         return null;
     }
 
+    @Nullable
+    public static Holder<Item> getSoulSwordHolderOf(SoulType type) {
+        if (SWORD_BY_SOUL_TYPE.containsKey(type))
+            return SWORD_BY_SOUL_TYPE.get(type);
+        return null;
+    }
+
     private static HolderProxy<Item, Item> registerSoulInfusedItem(SoulType type) {
         HolderProxy<Item, Item> item = registerItem(
                 SOUL_INFUSED_PREFIX + type.getSerializedName(),
@@ -263,6 +268,7 @@ public class NarakaItems {
                                 .sword(ToolMaterial.IRON, 5, -2.4f)
                                 .rarity(Rarity.RARE)
                                 .component(NarakaDataComponentTypes.SOUL.get(), type)
+                                .delayedComponent(NarakaDataComponentTypes.EQUIPMENT_SET.get(), _ -> List.of(EquipmentSetHelper.createChallengerSet(type)))
                                 .component(DataComponents.UNBREAKABLE, Unit.INSTANCE),
                         type.color
                 )

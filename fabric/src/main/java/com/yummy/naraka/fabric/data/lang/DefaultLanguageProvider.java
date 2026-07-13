@@ -17,6 +17,7 @@ import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.alchemy.NarakaPotions;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSetHelper;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.world.item.Items;
@@ -95,6 +96,9 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addReinforcementEffect(NarakaReinforcementEffects.EFFICIENT_MINING_IN_WATER, "Efficient mining in water", "수중 채쿨 효율");
         addReinforcementEffect(NarakaReinforcementEffects.EFFICIENT_MINING_IN_AIR, "Efficient mining in air", "공중 채굴 효율");
         addReinforcementEffect(NarakaReinforcementEffects.WATER_BREATHING, "Water breathing", "수중 호흡");
+
+        add(LanguageKey.equipmentSet(EquipmentSetHelper.ID_BLESSED), "Blessed Set", "축복 세트");
+        add(LanguageKey.equipmentSet(EquipmentSetHelper.ID_CHALLENGER), "Challenger Set", "도전자 세트");
 
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_REDSTONE, "Soul Infused Redstone Material", "영혼이 주입된 레드스톤 소재");
         addTrimMaterial(NarakaTrimMaterials.SOUL_INFUSED_COPPER, "Soul Infused Copper Material", "영혼이 주입된 구리 소재");
