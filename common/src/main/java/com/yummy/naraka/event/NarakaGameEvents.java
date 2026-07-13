@@ -5,10 +5,14 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncEntityDataPacket;
+import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.util.TickSchedule;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.equipmentset.NarakaEquipmentSets;
+import com.yummy.naraka.world.item.reinforcement.Reinforcement;
+import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
@@ -17,7 +21,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -34,6 +40,8 @@ public final class NarakaGameEvents {
 
         EntityEvents.PLAYER_JOIN.register(NarakaGameEvents::syncPlayerEntityData);
         EntityEvents.LIVING_DEATH.register(NarakaGameEvents::useDeathCount);
+        EntityEvents.EQUIPMENT_CHANGE.register(NarakaGameEvents::handleReinforcementEffect);
+        EntityEvents.EQUIPMENT_CHANGE.register(NarakaGameEvents::handleEquipmentSetEffect);
 
         LootEvents.MODIFY_LOOT_TABLE.register(NarakaGameEvents::modifyLootTable);
     }
@@ -81,5 +89,22 @@ public final class NarakaGameEvents {
                     .add(LootItem.lootTableItem(NarakaItems.SANCTUARY_COMPASS.get()).setWeight(1))
             );
         }
+    }
+
+    private static void handleReinforcementEffect(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack previousStack, ItemStack currentStack) {
+        if (Reinforcement.get(previousStack) == Reinforcement.get(currentStack)) {
+            NarakaItemUtils.checkAndUpdateReinforcementEffects(livingEntity, equipmentSlot, currentStack,
+                    ReinforcementEffect::onEquippedItemChanged);
+            return;
+        }
+
+        NarakaItemUtils.updateReinforcementEffects(livingEntity, equipmentSlot, previousStack,
+                ReinforcementEffect::onUnequipped);
+        NarakaItemUtils.checkAndUpdateReinforcementEffects(livingEntity, equipmentSlot, currentStack,
+                ReinforcementEffect::onEquipped);
+    }
+
+    private static void handleEquipmentSetEffect(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack previousStack, ItemStack currentStack) {
+        NarakaEquipmentSets.updateAllSetEffects(livingEntity);
     }
 }

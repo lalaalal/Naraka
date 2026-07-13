@@ -2,7 +2,9 @@ package com.yummy.naraka.event;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 
 public final class EntityEvents {
     public static final Event<LivingDeath> LIVING_DEATH = Event.create(listeners -> (entity, source) -> {
@@ -35,6 +37,11 @@ public final class EntityEvents {
         return amount;
     });
 
+    public static final Event<EquipmentChange> EQUIPMENT_CHANGE = Event.create(listeners -> (livingEntity, equipmentSlot, previousStack, currentStack) -> {
+        for (EquipmentChange listener : listeners)
+            listener.onEquipmentChange(livingEntity, equipmentSlot, previousStack, currentStack);
+    });
+
     @FunctionalInterface
     public interface LivingDeath {
         /**
@@ -60,5 +67,10 @@ public final class EntityEvents {
     @FunctionalInterface
     public interface LivingDamage {
         float modifyDamage(LivingEntity entity, DamageSource source, float amount);
+    }
+
+    @FunctionalInterface
+    public interface EquipmentChange {
+        void onEquipmentChange(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack previousStack, ItemStack currentStack);
     }
 }
