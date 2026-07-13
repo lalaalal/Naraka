@@ -47,7 +47,8 @@ public class NarakaPotions {
             new MobEffectInstance(MobEffects.WIND_CHARGED, 3600),
             new MobEffectInstance(MobEffects.WEAVING, 3600),
             new MobEffectInstance(MobEffects.TRIAL_OMEN, 3600),
-            new MobEffectInstance(MobEffects.RAID_OMEN, 3600)
+            new MobEffectInstance(MobEffects.RAID_OMEN, 3600),
+            new MobEffectInstance(MobEffects.BREATH_OF_THE_NAUTILUS)
     ));
 
     public static final Holder<Potion> BLESS = register("bless", new Potion(
