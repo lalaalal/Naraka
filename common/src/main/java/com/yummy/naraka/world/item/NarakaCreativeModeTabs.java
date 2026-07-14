@@ -19,6 +19,7 @@ import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.*;
@@ -195,7 +196,9 @@ public class NarakaCreativeModeTabs {
         ItemStack itemStack = new ItemStack(item, 1, builder.build());
         while (Reinforcement.canReinforce(itemStack))
             Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack));
-        itemStack.set(DataComponents.ITEM_NAME, Component.literal("Challenger " + soulType.name() + " ")
+        itemStack.set(DataComponents.ITEM_NAME, Component.literal("Challenger ")
+                .append(Component.translatable(soulType.translationKey))
+                .append(CommonComponents.SPACE)
                 .append(Component.translatable(item.value().getDescriptionId())));
         return itemStack;
     }
@@ -223,13 +226,16 @@ public class NarakaCreativeModeTabs {
     private static ItemStack blessed(Holder<Item> item, SoulType soulType, HolderLookup.Provider registries) {
         DataComponentPatch.Builder builder = trimmed(DataComponentPatch.builder(), soulType, registries);
         blessed(builder);
-        builder.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), EquipmentSetHelper.BLESSED);
+        builder.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), EquipmentSetHelper.createBlessedSet());
 
         ItemStack itemStack = new ItemStack(item, 1, builder.build());
         while (Reinforcement.canReinforce(itemStack))
             Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack));
-        itemStack.set(DataComponents.ITEM_NAME, Component.literal("Blessed " + soulType.name() + " ")
-                .append(Component.translatable(item.value().getDescriptionId())));
+        itemStack.set(DataComponents.ITEM_NAME, Component.literal("Blessed ")
+                .append(Component.translatable(soulType.translationKey))
+                .append(CommonComponents.SPACE)
+                .append(Component.translatable(item.value().getDescriptionId()))
+        );
         return itemStack;
     }
 

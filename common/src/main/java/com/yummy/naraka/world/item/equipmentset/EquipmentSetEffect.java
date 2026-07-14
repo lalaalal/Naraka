@@ -3,41 +3,44 @@ package com.yummy.naraka.world.item.equipmentset;
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.util.Unit;
 import net.minecraft.world.entity.LivingEntity;
 
-public record EquipmentSetEffect<T>(EquipmentSetEffectType<T> type, T data) {
-    public static final Codec<EquipmentSetEffect<?>> CODEC = NarakaRegistries.EQUIPMENT_SET_EFFECT_TYPE.byNameCodec()
-            .dispatch(EquipmentSetEffect::type, EquipmentSetEffectType::mapCodec);
+import java.util.List;
+import java.util.Map;
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, EquipmentSetEffect<?>> STREAM_CODEC = ByteBufCodecs.registry(NarakaRegistries.Keys.EQUIPMENT_SET_EFFECT_TYPE)
-            .dispatch(EquipmentSetEffect::type, EquipmentSetEffectType::streamCodec);
+public interface EquipmentSetEffect {
+    Codec<Map<Type<?>, EquipmentSetEffect>> MULTIPLE_CODEC = Codec.dispatchedMap(Type.CODEC, Type::codec);
+    StreamCodec<RegistryFriendlyByteBuf, Map<Type<?>, EquipmentSetEffect>> MULTIPLE_STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(MULTIPLE_CODEC);
 
-    public static EquipmentSetEffect<Unit> empty() {
-        return new EquipmentSetEffect<>(NarakaEquipmentSetEffectTypes.EMPTY.get(), Unit.INSTANCE);
+    static <T extends EquipmentSetEffect> Type<T> type(Codec<T> codec) {
+        return new ConcreteType<>(codec, ByteBufCodecs.fromCodecWithRegistries(codec));
     }
 
-    public void activate(LivingEntity livingEntity) {
-        this.type.activate(livingEntity, data);
+    static <T extends EquipmentSetEffect> Type<T> type(Codec<T> codec, StreamCodec<RegistryFriendlyByteBuf, T> streamCodec) {
+        return new ConcreteType<>(codec, streamCodec);
     }
 
-    public void deactivate(LivingEntity livingEntity) {
-        this.type.deactivate(livingEntity, data);
+    Type<?> type();
+
+    void activate(LivingEntity livingEntity);
+
+    void deactivate(LivingEntity livingEntity);
+
+    List<Component> getDescriptions();
+
+    interface Type<T extends EquipmentSetEffect> {
+        Codec<Type<?>> CODEC = NarakaRegistries.EQUIPMENT_SET_EFFECT_TYPE.byNameCodec();
+        StreamCodec<RegistryFriendlyByteBuf, Type<?>> STREAM_CODEC = ByteBufCodecs.registry(NarakaRegistries.Keys.EQUIPMENT_SET_EFFECT_TYPE);
+
+        Codec<T> codec();
+
+        StreamCodec<RegistryFriendlyByteBuf, T> streamCodec();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof EquipmentSetEffect<?>(EquipmentSetEffectType<?> otherType, Object otherData)))
-            return false;
-        return data.equals(otherData) && type.equals(otherType);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = type.hashCode();
-        result = 31 * result + data.hashCode();
-        return result;
+    record ConcreteType<T extends EquipmentSetEffect>(Codec<T> codec,
+                                                      StreamCodec<RegistryFriendlyByteBuf, T> streamCodec) implements Type<T> {
     }
 }

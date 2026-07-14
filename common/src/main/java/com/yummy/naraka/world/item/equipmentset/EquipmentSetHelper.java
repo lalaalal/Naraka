@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 public class EquipmentSetHelper {
-    public static final ResourceLocation ID_CHALLENGER = NarakaMod.location("challenger");
-    public static final ResourceLocation ID_BLESSED = NarakaMod.location("blessed");
     private static final Map<SoulType, Holder<MobEffect>> SOUL_EFFECT_MAP = Map.of(
             SoulType.AMETHYST, NarakaMobEffects.CHALLENGERS_BLESSING_AMETHYST,
             SoulType.COPPER, NarakaMobEffects.CHALLENGERS_BLESSING_COPPER,
@@ -30,20 +28,20 @@ public class EquipmentSetHelper {
             SoulType.NECTARIUM, NarakaMobEffects.CHALLENGERS_BLESSING_NECTARIUM,
             SoulType.REDSTONE, NarakaMobEffects.CHALLENGERS_BLESSING_REDSTONE
     );
-    public static final List<EquipmentSet> BLESSED = createBlessedSet();
-    private static final Map<SoulType, List<EquipmentSet>> SET_BY_SOUL_TYPE = new HashMap<>();
 
-    private static EquipmentSetEffect<?> createBlessedEffect() {
-        return new EquipmentSetEffect<>(
-                NarakaEquipmentSetEffectTypes.MOB_EFFECT_EQUIPMENT_SET_EFFECT.get(),
-                List.of(
-                        new MobEffectData(MobEffects.MOVEMENT_SPEED, -1, 1),
-                        new MobEffectData(MobEffects.DAMAGE_BOOST, -1, 1)
-                )
+    public static final ResourceLocation ID_CHALLENGER = NarakaMod.location("challenger");
+    public static final ResourceLocation ID_BLESSED = NarakaMod.location("blessed");
+    private static final Map<SoulType, EquipmentSet> SET_BY_SOUL_TYPE = new HashMap<>();
+
+    public static List<EquipmentSet.Effect> createBlessedEffect() {
+        MobEffectData strength = new MobEffectData(MobEffects.DAMAGE_BOOST, -1, 1);
+        MobEffectData speed = new MobEffectData(MobEffects.MOVEMENT_SPEED, -1, 1);
+        return List.of(
+                EquipmentSet.Effect.of(4, MobEffectEquipmentSetEffect.of(strength, speed))
         );
     }
 
-    private static List<EquipmentSet> createBlessedSet() {
+    public static List<EquipmentSet> createBlessedSet() {
         DataComponentPatch components = DataComponentPatch.builder()
                 .set(NarakaDataComponentTypes.BLESSED.get(), true)
                 .build();
@@ -80,7 +78,7 @@ public class EquipmentSetHelper {
 
     public static List<EquipmentSet> createChallengerSet(SoulType soulType) {
         if (SET_BY_SOUL_TYPE.containsKey(soulType))
-            return SET_BY_SOUL_TYPE.get(soulType);
+            return List.of(SET_BY_SOUL_TYPE.get(soulType));
 
         Holder<Item> swordItem = NarakaItems.getSoulSwordHolderOf(soulType);
         if (swordItem == null)
@@ -119,21 +117,19 @@ public class EquipmentSetHelper {
                 ),
                 createChallengerSetEffect(soulType)
         );
-        List<EquipmentSet> result = List.of(equipmentSet);
-        SET_BY_SOUL_TYPE.put(soulType, result);
-        return result;
+        SET_BY_SOUL_TYPE.put(soulType, equipmentSet);
+        return List.of(equipmentSet);
     }
 
-    public static EquipmentSetEffect<?> createChallengerSetEffect(SoulType soulType) {
+    public static List<EquipmentSet.Effect> createChallengerSetEffect(SoulType soulType) {
         if (SOUL_EFFECT_MAP.containsKey(soulType)) {
             MobEffectData speed = new MobEffectData(MobEffects.MOVEMENT_SPEED, -1, 1);
             MobEffectData blessing = new MobEffectData(SOUL_EFFECT_MAP.get(soulType), -1, 0);
-            return new EquipmentSetEffect<>(
-                    NarakaEquipmentSetEffectTypes.MOB_EFFECT_EQUIPMENT_SET_EFFECT.get(),
-                    List.of(speed, blessing)
+            return List.of(
+                    EquipmentSet.Effect.of(5, MobEffectEquipmentSetEffect.of(blessing)),
+                    EquipmentSet.Effect.of(4, MobEffectEquipmentSetEffect.of(speed))
             );
         }
-
-        return EquipmentSetEffect.empty();
+        return List.of();
     }
 }
