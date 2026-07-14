@@ -36,8 +36,7 @@ public class EquipmentSetHelper {
         MobEffectData strength = new MobEffectData(MobEffects.STRENGTH, -1, 1);
         MobEffectData speed = new MobEffectData(MobEffects.SPEED, -1, 1);
         return List.of(
-                EquipmentSet.Effect.of(2, MobEffectEquipmentSetEffect.of(speed)),
-                EquipmentSet.Effect.of(4, MobEffectEquipmentSetEffect.of(strength))
+                EquipmentSet.Effect.of(4, MobEffectEquipmentSetEffect.of(strength, speed))
         );
     }
 
@@ -128,7 +127,8 @@ public class EquipmentSetHelper {
             MobEffectData speed = new MobEffectData(MobEffects.SPEED, -1, 1);
             MobEffectData blessing = new MobEffectData(SOUL_EFFECT_MAP.get(soulType), -1, 0);
             return List.of(
-                    EquipmentSet.Effect.of(5, MobEffectEquipmentSetEffect.of(speed, blessing))
+                    EquipmentSet.Effect.of(5, MobEffectEquipmentSetEffect.of(blessing)),
+                    EquipmentSet.Effect.of(4, MobEffectEquipmentSetEffect.of(speed))
             );
         }
         return List.of();

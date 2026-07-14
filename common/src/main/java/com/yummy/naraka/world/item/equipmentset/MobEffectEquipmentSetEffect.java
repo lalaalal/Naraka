@@ -42,7 +42,7 @@ public record MobEffectEquipmentSetEffect(List<MobEffectData> mobEffects) implem
             MutableComponent component = Component.translatable(LanguageKey.mobEffect(mobEffect.effect()));
             if (mobEffect.amplifier() > 0)
                 component.append(CommonComponents.SPACE)
-                        .append(Component.translatable("enchantment.level." + mobEffect.amplifier()));
+                        .append(Component.translatable("enchantment.level." + (mobEffect.amplifier() + 1)));
             components.add(component);
         }
         return components;
