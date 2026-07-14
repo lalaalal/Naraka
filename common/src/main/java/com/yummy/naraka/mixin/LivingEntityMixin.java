@@ -1,6 +1,7 @@
 package com.yummy.naraka.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.event.EntityEvents;
@@ -130,8 +131,8 @@ public abstract class LivingEntityMixin extends Entity {
         return super.isPushedByFluid();
     }
 
-    @Inject(method = "handleEquipmentChanges", at = @At(value = "HEAD"))
-    private void handleEquipmentChanges(Map<EquipmentSlot, ItemStack> changedItems, CallbackInfo ci) {
+    @Inject(method = "detectEquipmentUpdates", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;handleHandSwap(Ljava/util/Map;)V"))
+    private void handleEquipmentChanges(CallbackInfo ci, @Local(name = "changedItems") Map<EquipmentSlot, ItemStack> changedItems) {
         for (EquipmentSlot slot : changedItems.keySet()) {
             ItemStack currentStack = changedItems.get(slot);
             ItemStack previousStack = naraka$getPreviousStack(slot);
