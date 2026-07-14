@@ -26,4 +26,18 @@ public record EquipmentSetEffect<T>(EquipmentSetEffectType<T> type, T data) {
     public void deactivate(LivingEntity livingEntity) {
         this.type.deactivate(livingEntity, data);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof EquipmentSetEffect<?>(EquipmentSetEffectType<?> otherType, Object otherData)))
+            return false;
+        return data.equals(otherData) && type.equals(otherType);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = type.hashCode();
+        result = 31 * result + data.hashCode();
+        return result;
+    }
 }

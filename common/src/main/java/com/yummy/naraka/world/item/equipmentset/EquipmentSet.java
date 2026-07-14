@@ -106,6 +106,21 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
         return style -> style.withColor(ChatFormatting.DARK_GRAY);
     }
 
+    @Override
+    public final boolean equals(Object o) {
+        if (!(o instanceof EquipmentSet that))
+            return false;
+        return id.equals(that.id) && requirements.equals(that.requirements) && effect.equals(that.effect);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + requirements.hashCode();
+        result = 31 * result + effect.hashCode();
+        return result;
+    }
+
     public record Requirement(Holder<Item> item, EquipmentSlot slot, DataComponentPatch components) {
         public static final Codec<Requirement> CODEC = RecordCodecBuilder.create(
                 instance -> instance.group(
@@ -136,6 +151,23 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
                         .filter(value -> Objects.equals(itemStack.get(type), value))
                         .isPresent();
             });
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Requirement(
+                    Holder<Item> otherItem, EquipmentSlot otherSlot, DataComponentPatch otherComponents
+            )))
+                return false;
+            return item.equals(otherItem) && slot == otherSlot && components.equals(otherComponents);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = item.hashCode();
+            result = 31 * result + slot.hashCode();
+            result = 31 * result + components.hashCode();
+            return result;
         }
     }
 }
