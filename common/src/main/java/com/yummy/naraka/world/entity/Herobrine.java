@@ -796,6 +796,8 @@ public class Herobrine extends AbstractHerobrine {
             bossEvent.getPlayers().forEach(this::sendStopPacket);
             bossEvent.removeAllPlayers();
             releaseStigma();
+            level.getGameRules().set(GameRules.ADVANCE_TIME, true, level.getServer());
+            level.getGameRules().set(GameRules.ADVANCE_WEATHER, true, level.getServer());
         }
         if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
             deathTime = 1180;
