@@ -28,10 +28,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
@@ -40,7 +37,7 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
             instance -> instance.group(
                     Identifier.CODEC.fieldOf("id").forGetter(EquipmentSet::getId),
                     Requirement.CODEC.listOf().fieldOf("requirements").forGetter(set -> set.requirements),
-                    EquipmentSetEffect.CODEC.fieldOf("effect").forGetter(set -> set.effect)
+                    Effect.CODEC.listOf().fieldOf("effects").forGetter(set -> set.effects)
             ).apply(instance, EquipmentSet::new)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, EquipmentSet> STREAM_CODEC = StreamCodec.composite(
@@ -48,61 +45,57 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
             EquipmentSet::getId,
             Requirement.STREAM_CODEC.apply(ByteBufCodecs.list()),
             set -> set.requirements,
-            EquipmentSetEffect.STREAM_CODEC,
-            set -> set.effect,
+            Effect.STREAM_CODEC.apply(ByteBufCodecs.list()),
+            set -> set.effects,
             EquipmentSet::new
     );
 
-    public static EquipmentSet empty() {
-        return new EquipmentSet(NarakaMod.identifier("empty"), List.of(), EquipmentSetEffect.empty());
-    }
-
     private final Identifier id;
     private final List<Requirement> requirements;
-    private final EquipmentSetEffect<?> effect;
+    private final List<Effect> effects;
 
-    public EquipmentSet(Identifier id, List<Requirement> requirements, EquipmentSetEffect<?> effect) {
+    public EquipmentSet(Identifier id, List<Requirement> requirements, List<Effect> effects) {
         this.id = id;
         this.requirements = requirements;
-        this.effect = effect;
+        this.effects = effects;
+    }
+
+    public static EquipmentSet empty() {
+        return new EquipmentSet(NarakaMod.identifier("empty"), List.of(), List.of());
     }
 
     public Identifier getId() {
         return id;
     }
 
-    public boolean canApply(LivingEntity entity) {
-        return requirements.stream().allMatch(requirement -> requirement.test(entity, this));
-    }
-
     private long countSucceed(LivingEntity entity) {
         return requirements.stream().filter(requirement -> requirement.test(entity, this)).count();
     }
 
-    public void updateEffect(LivingEntity entity) {
-        Set<EquipmentSet> activeEquipmentSets = new HashSet<>(EntityDataHelper.getRawEntityData(entity, NarakaEntityDataTypes.EQUIPMENT_SET.get()));
-        if (canApply(entity)) {
-            effect.activate(entity);
+    public void updateEffect(LivingEntity livingEntity) {
+        Set<EquipmentSet> activeEquipmentSets = new HashSet<>(EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.EQUIPMENT_SET.get()));
+        long succeed = countSucceed(livingEntity);
+        long activated = effects.stream().filter(effect -> effect.update(livingEntity, succeed))
+                .count();
+        if (activated > 0) {
             activeEquipmentSets.add(this);
         } else {
-            effect.deactivate(entity);
             activeEquipmentSets.remove(this);
         }
-        EntityDataHelper.setEntityData(entity, NarakaEntityDataTypes.EQUIPMENT_SET.get(), activeEquipmentSets.stream().toList());
+        EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.EQUIPMENT_SET.get(), activeEquipmentSets.stream().toList());
     }
 
     @Override
     public void addToTooltip(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder) {
         long succeed = countSucceed(player);
-        Component component = Component.translatable(LanguageKey.equipmentSet(id), succeed, requirements.size())
-                .withStyle(styleUpdaterByEquipment(succeed))
-                .append(" (%d/%d)".formatted(succeed, requirements.size()));
-        builder.accept(component);
+        effects.stream().sorted().forEach(effect -> effect.addToTooltip(id, succeed, builder));
     }
 
-    private UnaryOperator<Style> styleUpdaterByEquipment(long succeed) {
+    private UnaryOperator<Style> styleUpdaterByEquipment(long succeed, long activated) {
         if (succeed == requirements.size())
             return style -> style.withColor(ChatFormatting.GREEN);
+        if (activated > 0)
+            return style -> style.withColor(ChatFormatting.DARK_GREEN);
         return style -> style.withColor(ChatFormatting.DARK_GRAY);
     }
 
@@ -110,14 +103,14 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
     public final boolean equals(Object o) {
         if (!(o instanceof EquipmentSet that))
             return false;
-        return id.equals(that.id) && requirements.equals(that.requirements) && effect.equals(that.effect);
+        return id.equals(that.id) && requirements.equals(that.requirements) && effects.equals(that.effects);
     }
 
     @Override
     public int hashCode() {
         int result = id.hashCode();
         result = 31 * result + requirements.hashCode();
-        result = 31 * result + effect.hashCode();
+        result = 31 * result + effects.hashCode();
         return result;
     }
 
@@ -168,6 +161,88 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
             result = 31 * result + slot.hashCode();
             result = 31 * result + components.hashCode();
             return result;
+        }
+    }
+
+    public record Effect(int require,
+                         Map<EquipmentSetEffect.Type<?>, EquipmentSetEffect> effects) implements Comparable<Effect> {
+        public static final Codec<Effect> CODEC = RecordCodecBuilder.create(
+                instance -> instance.group(
+                        Codec.INT.fieldOf("require").forGetter(Effect::require),
+                        EquipmentSetEffect.MULTIPLE_CODEC.optionalFieldOf("effects", Map.of()).forGetter(Effect::effects)
+                ).apply(instance, Effect::new)
+        );
+
+        public static final StreamCodec<RegistryFriendlyByteBuf, Effect> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.INT,
+                Effect::require,
+                EquipmentSetEffect.MULTIPLE_STREAM_CODEC,
+                Effect::effects,
+                Effect::new
+        );
+
+        public static Effect of(int require, EquipmentSetEffect... effects) {
+            Map<EquipmentSetEffect.Type<?>, EquipmentSetEffect> result = new HashMap<>();
+            for (EquipmentSetEffect effect : effects)
+                result.put(effect.type(), effect);
+            return new Effect(require, result);
+        }
+
+        public boolean canActivate(long succeed) {
+            return succeed >= require;
+        }
+
+        public boolean update(LivingEntity livingEntity, long succeed) {
+            if (canActivate(succeed)) {
+                effects.values().forEach(effect -> effect.activate(livingEntity));
+                return true;
+            }
+            effects.values().forEach(effect -> effect.deactivate(livingEntity));
+            return false;
+        }
+
+        public void addToTooltip(Identifier id, long succeed, Consumer<Component> builder) {
+            Component head = Component.translatable(LanguageKey.equipmentSet(id))
+                    .withStyle(styleUpdater(succeed, ChatFormatting.GREEN))
+                    .append(" (%d/%d)".formatted(Math.min(succeed, require), require));
+            builder.accept(head);
+
+            for (EquipmentSetEffect effect : effects.values()) {
+                for (Component component : effect.getDescriptions()) {
+                    Component body = Component.literal(" ").append(
+                            component.copy()
+                                    .withStyle(styleUpdater(succeed, ChatFormatting.WHITE))
+                    );
+                    builder.accept(body);
+                }
+            }
+        }
+
+        private UnaryOperator<Style> styleUpdater(long succeed, ChatFormatting succeedFormat) {
+            if (succeed >= require)
+                return style -> style.withColor(succeedFormat);
+            return style -> style.withColor(ChatFormatting.DARK_GRAY);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Effect(
+                    int otherRequire, Map<EquipmentSetEffect.Type<?>, EquipmentSetEffect> otherEffects
+            )))
+                return false;
+            return require == otherRequire && effects.equals(otherEffects);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = require;
+            result = 31 * result + effects.hashCode();
+            return result;
+        }
+
+        @Override
+        public int compareTo(EquipmentSet.Effect o) {
+            return require - o.require;
         }
     }
 }
