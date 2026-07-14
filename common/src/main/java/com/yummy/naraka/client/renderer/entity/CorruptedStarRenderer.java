@@ -16,6 +16,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -75,8 +76,8 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
             ShinyEffectRenderer.renderShiny(tick, entity.getShineLifetime(), entity.getShineScale(), entity.isVerticalShine(), entity.getTailColor(), poseStack, bufferSource);
             poseStack.popPose();
         }
-        VertexConsumer targetVertexConsumer = bufferSource.getBuffer(NarakaRenderTypes.emissive());
-        submitTargetPoint(entity, poseStack, partialTick, targetVertexConsumer);
+        VertexConsumer targetVertexConsumer = bufferSource.getBuffer(RenderType.lightning());
+        renderTargetPoint(entity, poseStack, partialTick, targetVertexConsumer);
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 
@@ -85,7 +86,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         return NarakaMod.location("empty");
     }
 
-    private void submitTargetPoint(CorruptedStar entity, PoseStack poseStack, float partialTick, VertexConsumer vertexConsumer) {
+    private void renderTargetPoint(CorruptedStar entity, PoseStack poseStack, float partialTick, VertexConsumer vertexConsumer) {
         float ageInTicks = entity.tickCount + partialTick;
         float tickPart = ageInTicks - entity.getShineStartTick();
         Vec3 targetPosition = entity.getTargetPosition(partialTick);
