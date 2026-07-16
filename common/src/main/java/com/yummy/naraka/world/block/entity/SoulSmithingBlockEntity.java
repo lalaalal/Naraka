@@ -236,8 +236,8 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         output.putBoolean("IsStabilizerAttached", isStabilizerAttached);
         if (isStabilizerAttached)
             soulStabilizer.saveAdditional(output);
-        if (!templateItem.isEmpty() && level != null)
-            NarakaNbtUtils.store(output, "TemplateItem", ItemStack.CODEC, RegistryOps.create(NbtOps.INSTANCE, level.registryAccess()), templateItem);
+        if (!templateItem.isEmpty())
+            NarakaNbtUtils.store(output, "TemplateItem", ItemStack.CODEC, templateItem);
     }
 
     @Override
@@ -245,12 +245,11 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         super.load(input);
         isStabilizerAttached = input.getBoolean("IsStabilizerAttached");
         if (isStabilizerAttached) {
-            soulStabilizer.load(input);
             if (level != null)
                 soulStabilizer.setLevel(level);
+            soulStabilizer.load(input);
         }
-        if (level != null)
-            NarakaNbtUtils.read(input, "TemplateItem", ItemStack.CODEC, RegistryOps.create(NbtOps.INSTANCE, level.registryAccess()))
-                    .ifPresent(item -> templateItem = item);
+        NarakaNbtUtils.read(input, "TemplateItem", ItemStack.CODEC)
+                .ifPresent(item -> templateItem = item);
     }
 }

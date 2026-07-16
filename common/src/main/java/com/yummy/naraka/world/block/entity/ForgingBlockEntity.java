@@ -91,17 +91,16 @@ public abstract class ForgingBlockEntity extends BlockEntity {
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag compoundTag = new CompoundTag();
-        if (!forgingItem.isEmpty() && level != null)
-            NarakaNbtUtils.store(compoundTag, "ForgingItem", ItemStack.CODEC, RegistryOps.create(NbtOps.INSTANCE, level.registryAccess()), forgingItem);
+        if (!forgingItem.isEmpty())
+            NarakaNbtUtils.store(compoundTag, "ForgingItem", ItemStack.CODEC, forgingItem);
         return compoundTag;
     }
 
     @Override
     public void load(CompoundTag input) {
         super.load(input);
-        if (level != null)
-            forgingItem = NarakaNbtUtils.read(input, "ForgingItem", ItemStack.CODEC, RegistryOps.create(NbtOps.INSTANCE, level.registryAccess()))
-                    .orElse(ItemStack.EMPTY);
+        NarakaNbtUtils.read(input, "ForgingItem", ItemStack.CODEC)
+                .ifPresent(itemStack -> forgingItem = itemStack);
     }
 
     @Override
