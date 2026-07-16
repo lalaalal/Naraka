@@ -75,10 +75,12 @@ public class SoulSmithingBlock extends ForgingBlock {
                 soulSmithingBlockEntity.detachTemplateItem();
                 return InteractionResult.SUCCESS;
             } else if (soulSmithingBlockEntity.tryAttachSoulStabilizer(stack)) {
-                stack.shrink(1);
+                if (!player.isCreative())
+                    stack.shrink(1);
                 return InteractionResult.SUCCESS;
             } else if (soulSmithingBlockEntity.tryAttachTemplate(stack)) {
-                stack.shrink(1);
+                if (!player.isCreative())
+                    stack.shrink(1);
                 return InteractionResult.SUCCESS;
             }
         }

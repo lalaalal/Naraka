@@ -8,6 +8,8 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimPatterns;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSetHelper;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import net.minecraft.core.BlockPos;
@@ -18,6 +20,7 @@ import net.minecraft.resources.RegistryOps;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -129,16 +132,18 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         detachTemplateItem();
     }
 
-    private boolean reinforceSword(SoulType soulType, int requiredSoul) {
+    private boolean reinforceSword(SoulType soulType, int requiredSoul, Player player) {
         if (!forgingItem.is(NarakaItems.PURIFIED_SOUL_SWORD.get()))
             return false;
         Item swordItem = NarakaItems.getSoulSwordOf(soulType);
         if (swordItem == null)
             return false;
         forgingItem = new ItemStack(swordItem);
-        NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_BLESSED, SoulType.CODEC, soulType);
         NarakaItemUtils.makeUnbreakable(forgingItem);
-        soulStabilizer.consumeSoul(requiredSoul);
+        NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), player.level().registryAccess(), EquipmentSetHelper.createChallengerSet(soulType));
+        NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_SOUL_TYPE, SoulType.CODEC, soulType);
+        if (!player.isCreative())
+            soulStabilizer.consumeSoul(requiredSoul);
         cooldownTick = COOLDOWN;
         if (level != null)
             level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
@@ -161,7 +166,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
                 .orElse(false);
     }
 
-    private boolean reinforceArmor(SoulType soulType, int requiredSoul) {
+    private boolean reinforceArmor(SoulType soulType, int requiredSoul, Player player) {
         if (!forgingItem.is(NarakaItemTags.PURIFIED_SOUL_ARMOR) || level == null)
             return false;
 
@@ -176,10 +181,15 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         NarakaItemUtils.makeUnbreakable(forgingItem);
 
         if (soulType == SoulType.GOD_BLOOD) {
-            NarakaItemUtils.storeNbtData(forgingItem, "Blessed", Codec.BOOL, true);
+            NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_BLESSED, Codec.BOOL, true);
+            NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), level.registryAccess(), EquipmentSetHelper.createBlessedSet());
+        } else {
+            NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), level.registryAccess(), EquipmentSetHelper.createChallengerSet(soulType));
         }
+        NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_SOUL_TYPE, SoulType.CODEC, soulType);
 
-        soulStabilizer.consumeSoul(requiredSoul);
+        if (!player.isCreative())
+            soulStabilizer.consumeSoul(requiredSoul);
         while (Reinforcement.canReinforce(forgingItem, level.registryAccess()))
             Reinforcement.increase(forgingItem, NarakaReinforcementEffects.byItem(forgingItem), level.registryAccess());
 
@@ -191,7 +201,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     }
 
     @Override
-    public boolean tryReinforce() {
+    public boolean tryReinforce(Player player) {
         int requiredSoul = SoulStabilizerBlockEntity.getConsume();
         if (forgingItem.is(NarakaItemTags.SOUL_REINFORCEABLE)
                 && !templateItem.isEmpty()
@@ -200,11 +210,11 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
             SoulType soulType = soulStabilizer.getSoulType();
 
             if (templateItem.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get()))
-                return reinforceSword(soulType, requiredSoul);
+                return reinforceSword(soulType, requiredSoul, player);
             if (templateItem.is(NarakaItems.HEROBRINE_SCARF.get()))
                 return attachScarf();
 
-            return reinforceArmor(soulType, requiredSoul);
+            return reinforceArmor(soulType, requiredSoul, player);
         }
         return false;
     }

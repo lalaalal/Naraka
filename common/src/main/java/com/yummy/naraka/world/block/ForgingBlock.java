@@ -26,7 +26,7 @@ public abstract class ForgingBlock extends BaseEntityBlock {
         ItemStack itemStack = player.getItemInHand(hand);
         if (blockEntity instanceof ForgingBlockEntity forgingBlockEntity) {
             if (itemStack.is(NarakaItems.NETHERITE_HAMMER.get())) {
-                if (forgingBlockEntity.tryReinforce())
+                if (forgingBlockEntity.tryReinforce(player))
                     itemStack.hurtAndBreak(5, player, entity -> entity.broadcastBreakEvent(hand));
                 return InteractionResult.SUCCESS;
             } else if (!forgingBlockEntity.getForgingItem().isEmpty()) {
@@ -34,7 +34,8 @@ public abstract class ForgingBlock extends BaseEntityBlock {
                 return InteractionResult.SUCCESS;
             } else if (forgingBlockEntity.canReinforce(itemStack)) {
                 forgingBlockEntity.setForgingItem(itemStack);
-                itemStack.shrink(1);
+                if (!player.isCreative())
+                    itemStack.shrink(1);
                 return InteractionResult.SUCCESS;
             }
         }
