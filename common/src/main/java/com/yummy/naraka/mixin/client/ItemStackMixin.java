@@ -1,17 +1,17 @@
 package com.yummy.naraka.mixin.client;
 
-import com.mojang.serialization.Codec;
-import com.yummy.naraka.data.lang.LanguageKey;
-import com.yummy.naraka.util.ComponentStyles;
-import com.yummy.naraka.util.NarakaItemUtils;
-import com.yummy.naraka.world.item.reinforcement.Reinforcement;
+import com.llamalad7.mixinextras.sugar.Local;
+import com.yummy.naraka.event.ItemEvents;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,18 +23,19 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
-    @Inject(method = "getTooltipLines", at = @At(value = "RETURN"))
-    public void addBlessedTooltip(@Nullable Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir) {
-        List<Component> components = cir.getReturnValue();
-        if (player != null) {
-            Reinforcement reinforcement = Reinforcement.get(naraka$self(), player.level().registryAccess());
-            reinforcement.addToTooltip(components::add);
-        }
+    @Shadow
+    public abstract boolean is(Item item);
 
-        if (NarakaItemUtils.readNbtDataOrDefault(naraka$self(), "Blessed", Codec.BOOL, false))
-            components.add(Component.translatable(LanguageKey.BLESSED_KEY).withStyle(ComponentStyles.RAINBOW_COLOR));
-        if (NarakaItemUtils.readNbtDataOrDefault(naraka$self(), "HerobrineScarf", Codec.BOOL, false))
-            components.add(Component.translatable(LanguageKey.HEROBRINE_SCARF_KEY).withStyle(ComponentStyles.RAINBOW_COLOR));
+    @Inject(method = "getTooltipLines", at = @At(value = "FIELD", target = "Lnet/minecraft/world/item/ItemStack$TooltipPart;ADDITIONAL:Lnet/minecraft/world/item/ItemStack$TooltipPart;", opcode = Opcodes.GETSTATIC))
+    public void addTooltipToTop(@Nullable Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
+        if (player != null)
+            ItemEvents.ITEM_TOOLTIP_TOP.invoker().addToTooltip(naraka$self(), player, isAdvanced, list::add);
+    }
+
+    @Inject(method = "getTooltipLines", at = @At(value = "FIELD", target = "Lnet/minecraft/world/item/ItemStack$TooltipPart;UNBREAKABLE:Lnet/minecraft/world/item/ItemStack$TooltipPart;", opcode = Opcodes.GETSTATIC))
+    public void addTooltipToBottom(@Nullable Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
+        if (player != null)
+            ItemEvents.ITEM_TOOLTIP_BOTTOM.invoker().addToTooltip(naraka$self(), player, isAdvanced, list::add);
     }
 
     @Unique

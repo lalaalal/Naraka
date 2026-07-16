@@ -1,29 +1,52 @@
 package com.yummy.naraka.world.item.equipmentset;
 
-import net.minecraft.world.effect.MobEffect;
+import com.mojang.serialization.Codec;
+import com.yummy.naraka.data.lang.LanguageKey;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 
-public class MobEffectEquipmentSetEffect implements EquipmentSetEffect {
-    private final MobEffect effect;
-    private final boolean visible;
+import java.util.ArrayList;
+import java.util.List;
 
-    public MobEffectEquipmentSetEffect(MobEffect effect) {
-        this(effect, true);
+public record MobEffectEquipmentSetEffect(List<MobEffectData> mobEffects) implements EquipmentSetEffect {
+    public static final Codec<MobEffectEquipmentSetEffect> CODEC = MobEffectData.CODEC.listOf()
+            .xmap(MobEffectEquipmentSetEffect::new, MobEffectEquipmentSetEffect::mobEffects);
+
+    public static MobEffectEquipmentSetEffect of(MobEffectData... mobEffects) {
+        return new MobEffectEquipmentSetEffect(List.of(mobEffects));
     }
 
-    public MobEffectEquipmentSetEffect(MobEffect effect, boolean visible) {
-        this.effect = effect;
-        this.visible = visible;
+    @Override
+    public Type<?> type() {
+        return NarakaEquipmentSetEffectTypes.MOB_EFFECT_EQUIPMENT_SET_EFFECT.get();
     }
 
     @Override
     public void activate(LivingEntity livingEntity) {
-        livingEntity.addEffect(new MobEffectInstance(effect, -1, 0, false, visible));
+        for (MobEffectData mobEffectData : mobEffects)
+            livingEntity.addEffect(new MobEffectInstance(mobEffectData.effect(), mobEffectData.duration(), mobEffectData.amplifier()));
+    }
+
+    @Override
+    public List<Component> getDescriptions() {
+        List<Component> components = new ArrayList<>();
+        for (MobEffectData mobEffect : mobEffects) {
+            MutableComponent component = Component.translatable(LanguageKey.mobEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(mobEffect.effect())));
+            if (mobEffect.amplifier() > 0)
+                component.append(CommonComponents.SPACE)
+                        .append(Component.translatable("enchantment.level." + (mobEffect.amplifier() + 1)));
+            components.add(component);
+        }
+        return components;
     }
 
     @Override
     public void deactivate(LivingEntity livingEntity) {
-        livingEntity.removeEffect(effect);
+        for (MobEffectData mobEffectData : mobEffects)
+            livingEntity.removeEffect(mobEffectData.effect());
     }
 }

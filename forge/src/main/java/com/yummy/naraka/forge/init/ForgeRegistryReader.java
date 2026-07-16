@@ -52,6 +52,13 @@ public class ForgeRegistryReader<T> implements RegistryReader<T> {
     }
 
     @Override
+    public Optional<Holder<T>> wrapHolder(T value) {
+        if (registry == null)
+            return Optional.empty();
+        return registry.getHolder(value);
+    }
+
+    @Override
     public Stream<T> values() {
         if (registry == null)
             return Stream.empty();

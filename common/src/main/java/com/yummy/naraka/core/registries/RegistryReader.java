@@ -16,6 +16,8 @@ public interface RegistryReader<T> {
 
     Optional<Holder.Reference<T>> getHolder(ResourceKey<T> key);
 
+    Optional<Holder<T>> wrapHolder(T value);
+
     Stream<T> values();
 
     class Simple<T> implements RegistryReader<T> {
@@ -38,6 +40,11 @@ public interface RegistryReader<T> {
         @Override
         public Optional<Holder.Reference<T>> getHolder(ResourceKey<T> key) {
             return registry.getHolder(key);
+        }
+
+        @Override
+        public Optional<Holder<T>> wrapHolder(T value) {
+            return Optional.of(registry.wrapAsHolder(value));
         }
 
         @Override

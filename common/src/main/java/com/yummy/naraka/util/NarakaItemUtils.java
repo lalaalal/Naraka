@@ -6,7 +6,10 @@ import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -23,6 +26,7 @@ public class NarakaItemUtils {
     public static final String TAG_BLESSED = "Blessed";
     public static final String TAG_HEROBRINE_SCARF = "HerobrineScarf";
     public static final String TAG_SOUL_TYPE = "SoulType";
+    public static final String TAG_EQUIPMENT_SET = "EquipmentSet";
 
     public static void summonItemEntity(Level level, ItemStack itemStack, BlockPos pos) {
         if (!level.isClientSide()) {
@@ -48,10 +52,28 @@ public class NarakaItemUtils {
         return NarakaNbtUtils.readOr(tag, key, codec, defaultValue);
     }
 
+    public static <T> T readNbtDataOrDefault(ItemStack itemStack, String key, Codec<T> codec, HolderLookup.Provider registries, T defaultValue) {
+        CompoundTag tag = itemStack.getOrCreateTag();
+        return NarakaNbtUtils.readOr(tag, key, codec, RegistryOps.create(NbtOps.INSTANCE, registries), defaultValue);
+    }
+
     public static <T> ItemStack storeNbtData(ItemStack itemStack, String key, Codec<T> codec, T value) {
         CompoundTag tag = itemStack.getOrCreateTag();
         NarakaNbtUtils.store(tag, key, codec, value);
         return itemStack;
+    }
+
+    public static <T> ItemStack storeNbtData(ItemStack itemStack, String key, Codec<T> codec, HolderLookup.Provider registries, T value) {
+        CompoundTag tag = itemStack.getOrCreateTag();
+        NarakaNbtUtils.store(tag, key, codec, RegistryOps.create(NbtOps.INSTANCE, registries), value);
+        return itemStack;
+    }
+
+    public static boolean hasNbtData(ItemStack itemStack, String key) {
+        CompoundTag tag = itemStack.getTag();
+        if (tag == null)
+            return false;
+        return tag.contains(key);
     }
 
     public static void saveBlockEntity(ItemStack itemStack, BlockEntity blockEntity) {

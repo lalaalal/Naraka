@@ -9,13 +9,20 @@ import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.CreativeModeTabEvents;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.block.NarakaBlocks;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSetHelper;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.armortrim.ArmorTrim;
+import net.minecraft.world.item.armortrim.TrimMaterial;
+import net.minecraft.world.item.armortrim.TrimPattern;
+import net.minecraft.world.item.armortrim.TrimPatterns;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
@@ -105,15 +112,15 @@ public class NarakaCreativeModeTabs {
     }
 
     private static void createSoulMaterialsTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-        output.accept(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get().getDefaultInstance().copy());
-        output.accept(NarakaItems.SOUL_INFUSED_COPPER_SWORD.get().getDefaultInstance().copy());
-        output.accept(NarakaItems.SOUL_INFUSED_GOLD_SWORD.get().getDefaultInstance().copy());
-        output.accept(NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get().getDefaultInstance().copy());
-        output.accept(NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get().getDefaultInstance().copy());
-        output.accept(NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get().getDefaultInstance().copy());
-        output.accept(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get().getDefaultInstance().copy());
-        output.accept(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get().getDefaultInstance().copy());
-        output.accept(NarakaItems.PURIFIED_SOUL_SWORD.get());
+        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD));
+        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_COPPER_SWORD));
+        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_GOLD_SWORD));
+        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_EMERALD_SWORD));
+        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_DIAMOND_SWORD));
+        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_LAPIS_SWORD));
+        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD));
+        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD));
+        output.accept(challengerSword(NarakaItems.PURIFIED_SOUL_SWORD));
 
         output.accept(NarakaItems.SOUL_INFUSED_REDSTONE.get());
         output.accept(NarakaItems.SOUL_INFUSED_COPPER.get());
@@ -137,43 +144,90 @@ public class NarakaCreativeModeTabs {
     }
 
     private static void createNarakaTestTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-        output.accept(blessed(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get()));
-        output.accept(blessed(NarakaItems.SOUL_INFUSED_COPPER_SWORD.get()));
-        output.accept(blessed(NarakaItems.SOUL_INFUSED_GOLD_SWORD.get()));
-        output.accept(blessed(NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get()));
-        output.accept(blessed(NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get()));
-        output.accept(blessed(NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get()));
-        output.accept(blessed(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get()));
-        output.accept(blessed(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get()));
+        HolderLookup.Provider registries = parameters.holders();
+        addBlessedEquipments(SoulType.REDSTONE, output, registries);
+        addBlessedEquipments(SoulType.COPPER, output, registries);
+        addBlessedEquipments(SoulType.GOLD, output, registries);
+        addBlessedEquipments(SoulType.EMERALD, output, registries);
+        addBlessedEquipments(SoulType.DIAMOND, output, registries);
+        addBlessedEquipments(SoulType.LAPIS, output, registries);
+        addBlessedEquipments(SoulType.AMETHYST, output, registries);
+        addBlessedEquipments(SoulType.NECTARIUM, output, registries);
         output.accept(NarakaItems.RAINBOW_SWORD.get());
+        addBlessedEquipments(SoulType.GOD_BLOOD, output, registries);
 
         output.accept(NarakaItems.STIGMA_ROD.get());
-        output.accept(blessed(NarakaItems.PURIFIED_SOUL_HELMET.get()));
-        output.accept(blessed(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get()));
-        output.accept(blessed(NarakaItems.PURIFIED_SOUL_LEGGINGS.get()));
-        output.accept(blessed(NarakaItems.PURIFIED_SOUL_BOOTS.get()));
-        output.accept(reinforced(NarakaItems.PURIFIED_SOUL_HELMET.get()));
-        output.accept(scarfAttached(reinforced(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get())));
-        output.accept(reinforced(NarakaItems.PURIFIED_SOUL_LEGGINGS.get()));
-        output.accept(reinforced(NarakaItems.PURIFIED_SOUL_BOOTS.get()));
-
         output.accept(NarakaItems.SKILL_CONTROLLER.get());
         output.accept(NarakaItems.ANIMATION_CONTROLLER.get());
         output.accept(NarakaItems.NARAKA_FIREBALL_STAFF.get());
     }
 
-    private static ItemStack blessed(Item item) {
-        ItemStack itemStack = new ItemStack(item);
-        NarakaItemUtils.storeNbtData(itemStack, "Blessed", Codec.BOOL, true);
+    private static void addBlessedEquipments(SoulType type, CreativeModeTab.Output output, HolderLookup.Provider registries) {
+        Holder<Item> sword = NarakaItems.getSoulSwordHolderOf(type);
+        if (sword != null)
+            output.accept(blessedChallengerSword(sword, registries));
+        output.accept(challenger(NarakaItems.PURIFIED_SOUL_HELMET, type, registries));
+        output.accept(challenger(NarakaItems.PURIFIED_SOUL_CHESTPLATE, type, registries));
+        output.accept(challenger(NarakaItems.PURIFIED_SOUL_LEGGINGS, type, registries));
+        output.accept(challenger(NarakaItems.PURIFIED_SOUL_BOOTS, type, registries));
+        output.accept(blessed(NarakaItems.PURIFIED_SOUL_HELMET, type, registries));
+        output.accept(scarfAttached(blessed(NarakaItems.PURIFIED_SOUL_CHESTPLATE, type, registries)));
+        output.accept(blessed(NarakaItems.PURIFIED_SOUL_LEGGINGS, type, registries));
+        output.accept(blessed(NarakaItems.PURIFIED_SOUL_BOOTS, type, registries));
+    }
+
+    private static ItemStack trimmed(ItemStack itemStack, SoulType soulType, HolderLookup.Provider registries) {
+        HolderGetter<TrimMaterial> trimMaterials = registries.lookupOrThrow(Registries.TRIM_MATERIAL);
+        HolderGetter<TrimPattern> trimPatterns = registries.lookupOrThrow(Registries.TRIM_PATTERN);
+
+        Holder<TrimMaterial> material = trimMaterials.getOrThrow(soulType.material);
+        Holder<TrimPattern> pattern = trimPatterns.getOrThrow(TrimPatterns.SILENCE);
+
+        ArmorTrim armorTrim = new ArmorTrim(material, pattern);
+        NarakaItemUtils.storeNbtData(itemStack, "Trim", ArmorTrim.CODEC, registries, armorTrim);
+        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_SOUL_TYPE, SoulType.CODEC, soulType);
+
+        return itemStack;
+    }
+
+    private static ItemStack challenger(Holder<Item> item, SoulType soulType, HolderLookup.Provider registries) {
+        ItemStack itemStack = trimmed(item.value().getDefaultInstance().copy(), soulType, registries);
+        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), registries, EquipmentSetHelper.createChallengerSet(soulType));
+
+        while (Reinforcement.canReinforce(itemStack, registries))
+            Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack), registries);
+
+        return itemStack;
+    }
+
+    private static ItemStack blessed(ItemStack itemStack) {
+        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_BLESSED, Codec.BOOL, true);
+
+        return itemStack;
+    }
+
+    private static ItemStack challengerSword(Holder<Item> item) {
+        ItemStack itemStack = item.value().getDefaultInstance().copy();
+        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_BLESSED, Codec.BOOL, true);
         NarakaItemUtils.makeUnbreakable(itemStack);
         return itemStack;
     }
 
-    private static ItemStack reinforced(Item item) {
-        ItemStack itemStack = blessed(item);
-        RegistryAccess registryAccess = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
-        while (Reinforcement.canReinforce(itemStack, registryAccess))
-            Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack), registryAccess);
+    private static ItemStack blessedChallengerSword(Holder<Item> item, HolderLookup.Provider registries) {
+        ItemStack itemStack = blessed(item.value().getDefaultInstance().copy());
+        SoulType soulType = NarakaItemUtils.readNbtDataOrDefault(itemStack, NarakaItemUtils.TAG_SOUL_TYPE, SoulType.CODEC, SoulType.NONE);
+        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), registries, EquipmentSetHelper.createChallengerSet(soulType));
+        return itemStack;
+    }
+
+    private static ItemStack blessed(Holder<Item> item, SoulType soulType, HolderLookup.Provider registries) {
+        ItemStack itemStack = trimmed(item.value().getDefaultInstance().copy(), soulType, registries);
+        blessed(itemStack);
+        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), registries, EquipmentSetHelper.createBlessedSet());
+
+        while (Reinforcement.canReinforce(itemStack, registries))
+            Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack), registries);
+
         return itemStack;
     }
 

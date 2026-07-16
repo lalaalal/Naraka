@@ -28,7 +28,7 @@ public class EntityDataHelper {
     }
 
     public static void syncEntityData(Entity entity, EntityDataType<?, ?> entityDataType, SyncEntityDataPacket.Action action) {
-        if (entity.level() instanceof ServerLevel serverLevel) {
+        if (entityDataType.shouldSync() && entity.level() instanceof ServerLevel serverLevel) {
             EntityData<?, ?> data = getEntityData(entity, entityDataType);
             for (ServerPlayer player : serverLevel.players())
                 NetworkManager.clientbound().send(player, SyncEntityDataPacket.sync(entity, action, data));
@@ -37,7 +37,9 @@ public class EntityDataHelper {
 
     public static void syncEntityData(Entity entity, SyncEntityDataPacket.Action action) {
         if (entity.level() instanceof ServerLevel serverLevel) {
-            List<EntityData<?, ?>> data = getEntityDataList(entity);
+            List<EntityData<?, ?>> data = getEntityDataList(entity).stream()
+                    .filter(entityData -> entityData.type().shouldSync())
+                    .toList();
             for (ServerPlayer player : serverLevel.players())
                 NetworkManager.clientbound().send(player, SyncEntityDataPacket.sync(entity, action, data));
         }

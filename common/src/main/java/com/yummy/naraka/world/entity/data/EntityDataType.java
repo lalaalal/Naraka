@@ -20,6 +20,7 @@ public final class EntityDataType<T, E extends Entity> {
     private final Codec<EntityData<T, E>> codec;
     private final BiConsumer<E, T> ticker;
     private final Class<E> entityType;
+    private final boolean sync;
 
     public static <T, E extends Entity> Builder<T, E> builder(Codec<T> codec, Class<E> entityType) {
         return new Builder<>(codec, entityType);
@@ -33,7 +34,7 @@ public final class EntityDataType<T, E extends Entity> {
         return builder(codec, LivingEntity.class);
     }
 
-    private EntityDataType(ResourceLocation id, Codec<T> codec, Class<E> entityType, Function<EntityDataType<T, E>, EntityData<T, E>> defaultInstance, BiConsumer<E, T> ticker) {
+    private EntityDataType(ResourceLocation id, Codec<T> codec, Class<E> entityType, Function<EntityDataType<T, E>, EntityData<T, E>> defaultInstance, BiConsumer<E, T> ticker, boolean sync) {
         this.id = id;
         this.defaultInstance = () -> defaultInstance.apply(this);
         this.entityType = entityType;
@@ -42,6 +43,7 @@ public final class EntityDataType<T, E extends Entity> {
                 ).apply(instance, value -> new EntityData<>(this, value))
         );
         this.ticker = ticker;
+        this.sync = sync;
     }
 
     public ResourceLocation getId() {
@@ -62,6 +64,10 @@ public final class EntityDataType<T, E extends Entity> {
 
     public Codec<EntityData<T, E>> codec() {
         return codec;
+    }
+
+    public boolean shouldSync() {
+        return sync;
     }
 
     public void tick(Entity entity) {
@@ -88,6 +94,7 @@ public final class EntityDataType<T, E extends Entity> {
         @Nullable
         private Function<EntityDataType<T, E>, EntityData<T, E>> defaultInstance;
         private BiConsumer<E, T> ticker;
+        private boolean sync;
 
         private Builder(Codec<T> codec, Class<E> entityType) {
             this.id = NarakaMod.location("empty");
@@ -95,6 +102,7 @@ public final class EntityDataType<T, E extends Entity> {
             this.entityType = entityType;
             this.ticker = (livingEntity, value) -> {
             };
+            this.sync = true;
         }
 
         public Builder<T, E> id(ResourceLocation id) {
@@ -117,10 +125,15 @@ public final class EntityDataType<T, E extends Entity> {
             return this;
         }
 
+        public Builder<T, E> sync(boolean sync) {
+            this.sync = sync;
+            return this;
+        }
+
         public EntityDataType<T, E> build() {
             if (defaultInstance == null)
                 throw new IllegalStateException("Default value must be set");
-            return new EntityDataType<>(id, codec, entityType, defaultInstance, ticker);
+            return new EntityDataType<>(id, codec, entityType, defaultInstance, ticker, sync);
         }
     }
 }

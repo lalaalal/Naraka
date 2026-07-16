@@ -60,6 +60,10 @@ public final class LanguageKey {
         return Util.makeDescriptionId("effect", mobEffect.unwrapKey().orElseThrow().location());
     }
 
+    public static String equipmentSet(ResourceLocation id) {
+        return Util.makeDescriptionId("equipment_effect", id);
+    }
+
     public static String tooltip(Block block) {
         return block.getDescriptionId() + ".tooltip";
     }
