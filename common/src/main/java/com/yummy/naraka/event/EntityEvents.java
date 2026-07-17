@@ -42,6 +42,8 @@ public final class EntityEvents {
             listener.onEquipmentChange(livingEntity, equipmentSlot, previousStack, currentStack);
     });
 
+    public static final EntityDataChangeEvent ENTITY_DATA_CHANGE = new EntityDataChangeEvent();
+
     @FunctionalInterface
     public interface LivingDeath {
         /**

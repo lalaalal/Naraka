@@ -11,7 +11,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -22,7 +22,8 @@ public final class EntityDataType<T, E extends Entity> {
     private final Identifier id;
     private final Supplier<EntityData<T, E>> defaultInstance;
     private final MapCodec<EntityData<T, E>> mapCodec;
-    private final StreamCodec<RegistryFriendlyByteBuf, EntityData<T, E>> streamCodec;
+    private final StreamCodec<? super RegistryFriendlyByteBuf, EntityData<T, E>> streamCodec;
+    private final boolean synchronize;
     private final BiConsumer<E, T> ticker;
     private final Class<E> entityType;
 
@@ -38,7 +39,7 @@ public final class EntityDataType<T, E extends Entity> {
         return builder(codec, LivingEntity.class);
     }
 
-    private EntityDataType(Identifier id, Codec<T> codec, Class<E> entityType, Function<EntityDataType<T, E>, EntityData<T, E>> defaultInstance, BiConsumer<E, T> ticker) {
+    private EntityDataType(Identifier id, Codec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec, boolean synchronize, Class<E> entityType, Function<EntityDataType<T, E>, EntityData<T, E>> defaultInstance, BiConsumer<E, T> ticker) {
         this.id = id;
         this.defaultInstance = () -> defaultInstance.apply(this);
         this.entityType = entityType;
@@ -46,8 +47,9 @@ public final class EntityDataType<T, E extends Entity> {
                         codec.fieldOf("value").forGetter(EntityData::value)
                 ).apply(instance, value -> new EntityData<>(this, value))
         );
-        this.streamCodec = ByteBufCodecs.fromCodecWithRegistries(codec)
+        this.streamCodec = streamCodec
                 .map(value -> new EntityData<>(this, value), EntityData::value);
+        this.synchronize = synchronize;
         this.ticker = ticker;
     }
 
@@ -71,8 +73,12 @@ public final class EntityDataType<T, E extends Entity> {
         return mapCodec;
     }
 
-    public StreamCodec<RegistryFriendlyByteBuf, EntityData<T, E>> streamCodec() {
+    public StreamCodec<? super RegistryFriendlyByteBuf, EntityData<T, E>> streamCodec() {
         return streamCodec;
+    }
+
+    public boolean shouldSynchronize() {
+        return synchronize;
     }
 
     public void tick(Entity entity) {
@@ -97,6 +103,8 @@ public final class EntityDataType<T, E extends Entity> {
         private final Class<E> entityType;
         private Identifier id;
         @Nullable
+        private StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec;
+        @Nullable
         private Function<EntityDataType<T, E>, EntityData<T, E>> defaultInstance;
         private BiConsumer<E, T> ticker;
 
@@ -104,7 +112,7 @@ public final class EntityDataType<T, E extends Entity> {
             this.id = NarakaMod.identifier("empty");
             this.codec = codec;
             this.entityType = entityType;
-            this.ticker = (livingEntity, value) -> {
+            this.ticker = (_, _) -> {
             };
         }
 
@@ -128,10 +136,18 @@ public final class EntityDataType<T, E extends Entity> {
             return this;
         }
 
+        public Builder<T, E> networkSynchronized(StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
+            this.streamCodec = streamCodec;
+            return this;
+        }
+
         public EntityDataType<T, E> build() {
             if (defaultInstance == null)
                 throw new IllegalStateException("Default value must be set");
-            return new EntityDataType<>(id, codec, entityType, defaultInstance, ticker);
+            boolean synchronize = (streamCodec != null);
+            if (!synchronize)
+                streamCodec = ByteBufCodecs.fromCodecWithRegistries(codec);
+            return new EntityDataType<>(id, codec, streamCodec, synchronize, entityType, defaultInstance, ticker);
         }
     }
 }

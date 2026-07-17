@@ -5,7 +5,6 @@ import com.yummy.naraka.client.renderer.WhiteFogRenderHelper;
 import com.yummy.naraka.config.Configuration;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.ComponentStyles;
-import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.SoundManager;
@@ -33,7 +32,6 @@ public class NarakaClientEvents {
 
     private static void onClientLogin() {
         NarakaClientContext.initialize();
-        EntityDataHelper.clear();
     }
 
     private static void onClientTick(Minecraft minecraft) {

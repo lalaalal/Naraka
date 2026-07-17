@@ -6,7 +6,6 @@ import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
-import com.yummy.naraka.network.SyncEntityDataPacket;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.util.TickSchedule;
@@ -62,7 +61,7 @@ public final class NarakaGameEvents {
     }
 
     private static void syncPlayerEntityData(ServerPlayer player) {
-        EntityDataHelper.syncEntityData(player, SyncEntityDataPacket.Action.LOAD);
+        EntityDataHelper.syncEntityData(player);
         CustomPacketPayload payload = new NarakaClientboundEventPacket(
                 NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY,
                 NarakaClientboundEventPacket.Event.STOP_WHITE_FOG
@@ -79,7 +78,7 @@ public final class NarakaGameEvents {
     }
 
     private static void onServerStarting(MinecraftServer server) {
-        EntityDataHelper.clear();
+
     }
 
     private static void onServerStarted(MinecraftServer server) {

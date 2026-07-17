@@ -3,7 +3,7 @@ package com.yummy.naraka.network;
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.world.entity.data.EntityData;
-import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import com.yummy.naraka.world.entity.data.EntityDataExtension;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -48,23 +48,20 @@ public record SyncEntityDataPacket(UUID uuid, Action action,
     }
 
     private static void loadEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
-        for (EntityData<?, ?> data : packet.entityData())
-            EntityDataHelper.loadEntityData(context.level(), packet.uuid(), data);
+        Entity entity = context.level().getEntity(packet.uuid());
+        if (entity instanceof EntityDataExtension entityDataExtension)
+            entityDataExtension.naraka$loadEntityData(packet.entityData());
     }
 
     private static void removeGivenEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
-        for (EntityData<?, ?> data : packet.entityData())
-            EntityDataHelper.removeEntityData(context.level(), packet.uuid(), data.type());
-    }
-
-    private static void removeAllEntityData(SyncEntityDataPacket packet, NetworkManager.Context context) {
-        EntityDataHelper.removeEntityData(context.level(), packet.uuid());
+        Entity entity = context.level().getEntity(packet.uuid());
+        if (entity instanceof EntityDataExtension entityDataExtension)
+            entityDataExtension.naraka$removeEntityData(packet.entityData());
     }
 
     public enum Action implements StringRepresentable {
         LOAD(SyncEntityDataPacket::loadEntityData),
-        REMOVE_GIVEN(SyncEntityDataPacket::removeGivenEntityData),
-        REMOVE_ALL(SyncEntityDataPacket::removeAllEntityData);
+        REMOVE_GIVEN(SyncEntityDataPacket::removeGivenEntityData);
 
         public static final Codec<Action> CODEC = StringRepresentable.fromEnum(Action::values);
         public static final StreamCodec<ByteBuf, Action> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
