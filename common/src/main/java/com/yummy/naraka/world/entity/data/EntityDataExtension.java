@@ -16,7 +16,15 @@ public interface EntityDataExtension {
         return naraka$getEntityData(entityDataType).value();
     }
 
-    <T, E extends Entity> void naraka$setEntityData(EntityDataType<T, E> entityDataType, T data);
+    default <T, E extends Entity> void naraka$setEntityData(EntityDataType<T, E> entityDataType, T data) {
+        naraka$setEntityData(new EntityData<>(entityDataType, data));
+    }
+
+    default <T, E extends Entity> void naraka$setEntityData(EntityData<T, E> entityData) {
+        naraka$setEntityData(entityData, true);
+    }
+
+    <T, E extends Entity> void naraka$setEntityData(EntityData<T, E> entityData, boolean sync);
 
     void naraka$loadEntityData(List<EntityData<?, ?>> dataList);
 

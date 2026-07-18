@@ -9,9 +9,9 @@ import java.util.Map;
 public class EntityDataChangeEvent {
     private final Map<EntityDataType<?, ?>, Event<? extends EntityDataChange<?, ?>>> listeners = new HashMap<>();
 
-    private static Event<EntityDataChange<Object, Entity>> createEvent() {
+    private static <T, E extends Entity> Event<EntityDataChange<T, E>> createEvent() {
         return Event.create(listeners -> (entity, from, to) -> {
-            for (EntityDataChange<Object, Entity> listener : listeners) {
+            for (EntityDataChange<T, E> listener : listeners) {
                 listener.onChange(entity, from, to);
             }
         });
@@ -26,10 +26,8 @@ public class EntityDataChangeEvent {
         event(type).register(listener);
     }
 
-    @SuppressWarnings("unchecked")
-    public EntityDataChange<Object, Entity> invoker(EntityDataType<?, ?> type) {
-        return (EntityDataChange<Object, Entity>) listeners.computeIfAbsent(type, _ -> EntityDataChangeEvent.createEvent())
-                .invoker();
+    public <T, E extends Entity> EntityDataChange<T, E> invoker(EntityDataType<T, E> type) {
+        return event(type).invoker();
     }
 
     @FunctionalInterface

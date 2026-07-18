@@ -65,31 +65,24 @@ public abstract class EntityMixin implements EntityDataExtension {
     }
 
     @Override
-    public <T, E extends Entity> void naraka$setEntityData(EntityDataType<T, E> entityDataType, T value) {
+    public <T, E extends Entity> void naraka$setEntityData(EntityData<T, E> entityData, boolean sync) {
+        EntityDataType<T, E> entityDataType = entityData.type();
         E entity = entityDataType.getCastedTarget(naraka$self())
                 .orElseThrow(() -> new IllegalArgumentException(naraka$self() + " is not a valid entity for " + entityDataType));
         T originalValue = naraka$getRawEntityData(entityDataType);
-        EntityData<T, E> entityData = new EntityData<>(entityDataType, value);
         naraka$entityData.put(entityDataType, entityData);
 
         EntityEvents.ENTITY_DATA_CHANGE.invoker(entityDataType)
-                .onChange(entity, originalValue, value);
+                .onChange(entity, originalValue, entityData.value());
 
-        if (level() instanceof ServerLevel serverLevel)
+        if (sync && level() instanceof ServerLevel serverLevel)
             naraka$syncEntityData(serverLevel, List.of(entityData));
     }
 
     @Override
     public void naraka$loadEntityData(List<EntityData<?, ?>> dataList) {
-        for (EntityData<?, ?> data : dataList) {
-            EntityDataType<?, ?> type = data.type();
-            type.getCastedTarget(naraka$self()).ifPresent(entity -> {
-                EntityData<?, ?> originalData = naraka$getEntityData(type);
-                naraka$entityData.put(type, data);
-                EntityEvents.ENTITY_DATA_CHANGE.invoker(type)
-                        .onChange(entity, originalData.value(), data.value());
-            });
-        }
+        for (EntityData<?, ?> data : dataList)
+            naraka$setEntityData(data, false);
     }
 
     @Override
