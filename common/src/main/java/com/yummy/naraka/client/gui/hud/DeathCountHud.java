@@ -1,9 +1,8 @@
 package com.yummy.naraka.client.gui.hud;
 
 import com.yummy.naraka.client.NarakaSprites;
+import com.yummy.naraka.event.EntityEvents;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
-import com.yummy.naraka.world.entity.data.EntityDataHelper;
-import com.yummy.naraka.world.entity.data.EntityDataType;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -52,10 +51,10 @@ public class DeathCountHud implements LayeredDraw.Layer {
     }
 
     public DeathCountHud() {
-        EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.DEATH_COUNT.get(), this::onDeathCountChanged);
+        EntityEvents.ENTITY_DATA_CHANGE.register(NarakaEntityDataTypes.DEATH_COUNT.get(), this::onDeathCountChanged);
     }
 
-    private void onDeathCountChanged(LivingEntity livingEntity, EntityDataType<Integer, LivingEntity> entityDataType, Integer from, Integer to) {
+    private void onDeathCountChanged(LivingEntity livingEntity, Integer from, Integer to) {
         if (isCurrentPlayer(livingEntity)) {
             if (to < from && to < DeathCountHelper.MAX_DEATH_COUNT)
                 blinkTime = BLINKING_TIME;

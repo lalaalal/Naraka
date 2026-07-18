@@ -7,6 +7,9 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.StigmatizingEntity;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,6 +27,13 @@ public record Stigma(int value, long lastMarkedTime) {
                     Codec.INT.fieldOf("value").forGetter(Stigma::value),
                     Codec.LONG.fieldOf("lastMarkedTime").forGetter(Stigma::lastMarkedTime)
             ).apply(instance, Stigma::new)
+    );
+    public static final StreamCodec<ByteBuf, Stigma> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT,
+            Stigma::value,
+            ByteBufCodecs.VAR_LONG,
+            Stigma::lastMarkedTime,
+            Stigma::new
     );
 
     public static final Stigma ZERO = new Stigma(0, 0);

@@ -22,6 +22,10 @@ public class NarakaNbtUtils {
         compoundTag.put(key, tag);
     }
 
+    public static <T> void store(CompoundTag compoundTag, String key, Codec<T> codec, HolderLookup.Provider registries, T value) {
+        store(compoundTag, key, codec, registries.createSerializationContext(NbtOps.INSTANCE), value);
+    }
+
     public static <T> Optional<T> read(CompoundTag compoundTag, String key, Codec<T> codec) {
         return read(compoundTag, key, codec, NbtOps.INSTANCE);
     }
@@ -32,21 +36,5 @@ public class NarakaNbtUtils {
         if (result.isSuccess())
             return Optional.of(result.getOrThrow().getFirst());
         return Optional.empty();
-    }
-
-    public static <T> T readOr(CompoundTag compoundTag, String key, Codec<T> codec, T defaultValue) {
-        return read(compoundTag, key, codec, NbtOps.INSTANCE).orElse(defaultValue);
-    }
-
-    public static <T> T readOr(CompoundTag compoundTag, String key, Codec<T> codec, DynamicOps<Tag> ops, T defaultValue) {
-        return read(compoundTag, key, codec, ops).orElse(defaultValue);
-    }
-
-    public interface TagReader<T> {
-        Optional<T> read(CompoundTag tag, HolderLookup.Provider provider);
-    }
-
-    public interface TagWriter<T> {
-        CompoundTag write(T value, CompoundTag tag, HolderLookup.Provider provider);
     }
 }

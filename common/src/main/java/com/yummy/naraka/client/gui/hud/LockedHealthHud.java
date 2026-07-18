@@ -3,9 +3,9 @@ package com.yummy.naraka.client.gui.hud;
 import com.yummy.naraka.client.NarakaSprites;
 import com.yummy.naraka.client.event.ClientEvents;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
+import com.yummy.naraka.event.EntityEvents;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
-import com.yummy.naraka.world.entity.data.EntityDataType;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -25,11 +25,11 @@ public class LockedHealthHud implements LayeredDraw.Layer {
     private int blinkTime;
 
     public LockedHealthHud() {
-        EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.LOCKED_HEALTH.get(), this::onLockedHealthChanged);
+        EntityEvents.ENTITY_DATA_CHANGE.register(NarakaEntityDataTypes.LOCKED_HEALTH.get(), this::onLockedHealthChanged);
         ClientEvents.TICK_PRE.register(this::tick);
     }
 
-    private void onLockedHealthChanged(LivingEntity entity, EntityDataType<Double, LivingEntity> entityDataType, double from, double to) {
+    private void onLockedHealthChanged(LivingEntity entity, double from, double to) {
         if (NarakaRenderUtils.isCurrentPlayer(entity) && to > from) {
             blinkTime = 20;
         }

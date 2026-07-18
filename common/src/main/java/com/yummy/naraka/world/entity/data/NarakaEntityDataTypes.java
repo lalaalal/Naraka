@@ -12,6 +12,7 @@ import com.yummy.naraka.world.entity.MotionEntity;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -20,18 +21,22 @@ import java.util.List;
 public class NarakaEntityDataTypes {
     public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<Stigma, LivingEntity>> STIGMA = register(
             "stigma", EntityDataType.living(Stigma.CODEC)
+                    .networkSynchronized(Stigma.STREAM_CODEC)
                     .defaultValue(Stigma.ZERO)
     );
     public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<Integer, LivingEntity>> DEATH_COUNT = register(
             "death_count", EntityDataType.living(Codec.INT)
+                    .networkSynchronized(ByteBufCodecs.INT)
                     .defaultValue(-1)
     );
     public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<Double, LivingEntity>> LOCKED_HEALTH = register(
             "locked_health", EntityDataType.living(Codec.DOUBLE)
+                    .networkSynchronized(ByteBufCodecs.DOUBLE)
                     .defaultValue(0.0)
     );
     public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<Integer, LivingEntity>> PURIFIED_SOUL_FIRE_TICK = register(
             "purified_soul_fire_tick", EntityDataType.living(Codec.INT)
+                    .networkSynchronized(ByteBufCodecs.INT)
                     .defaultValue(0)
                     .ticker(NarakaEntityDataTypes::tickPurifiedSoulFire)
     );
@@ -42,24 +47,29 @@ public class NarakaEntityDataTypes {
     );
     public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<List<BeamEffect>, Entity>> BEAM_EFFECTS = register(
             "beam_effects", EntityDataType.common(BeamEffect.CODEC.listOf())
+                    .networkSynchronized(ByteBufCodecs.fromCodec(BeamEffect.CODEC).apply(ByteBufCodecs.list()))
                     .defaultValue(List::of)
                     .ticker(NarakaEntityDataTypes::tickBeamEffects)
     );
     public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<Boolean, Entity>> KEEP_UNFROZEN = register(
             "keep_unfrozen", EntityDataType.common(Codec.BOOL)
+                    .networkSynchronized(ByteBufCodecs.BOOL)
                     .defaultValue(false)
     );
     public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<Integer, LivingEntity>> STUN_TICK = register(
             "stun_tick", EntityDataType.living(Codec.INT)
+                    .networkSynchronized(ByteBufCodecs.INT)
                     .defaultValue(0)
                     .ticker(NarakaEntityDataTypes::tickStun)
     );
     public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<MotionData, MotionEntity>> MOTION_DATA = register(
             "motion_data", EntityDataType.builder(MotionData.CODEC, MotionEntity.class)
+                    .networkSynchronized(MotionData.STREAM_CODEC)
                     .defaultValue(MotionData.DEFAULT)
     );
     public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<List<EquipmentSet>, LivingEntity>> EQUIPMENT_SET = register(
             "equipment_set", EntityDataType.living(EquipmentSet.CODEC.listOf())
+                    .networkSynchronized(EquipmentSet.STREAM_CODEC.apply(ByteBufCodecs.list()))
                     .defaultValue(List.of())
     );
 
