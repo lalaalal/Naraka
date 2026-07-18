@@ -1,11 +1,10 @@
-package com.yummy.naraka.client;
+package com.yummy.naraka.client.event;
 
-import com.yummy.naraka.client.event.ClientEvents;
+import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.renderer.WhiteFogRenderHelper;
 import com.yummy.naraka.config.Configuration;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.ComponentStyles;
-import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -36,7 +35,6 @@ public class NarakaClientEvents {
 
     private static void onClientLogin() {
         NarakaClientContext.initialize();
-        EntityDataHelper.clear();
     }
 
     private static void onClientTick(Minecraft minecraft) {

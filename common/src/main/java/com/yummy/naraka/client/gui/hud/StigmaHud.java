@@ -6,7 +6,11 @@ import com.yummy.naraka.client.NarakaSprites;
 import com.yummy.naraka.client.event.ClientEvents;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.world.entity.data.*;
+import com.yummy.naraka.event.EntityEvents;
+import com.yummy.naraka.world.entity.data.DeathCountHelper;
+import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
+import com.yummy.naraka.world.entity.data.Stigma;
+import com.yummy.naraka.world.entity.data.StigmaHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -35,7 +39,7 @@ public class StigmaHud implements HudRenderer {
     private int consumeIconDisplayTick;
 
     public StigmaHud() {
-        EntityDataHelper.registerDataChangeListener(NarakaEntityDataTypes.STIGMA.get(), this::onStigmaConsumed);
+        EntityEvents.ENTITY_DATA_CHANGE.register(NarakaEntityDataTypes.STIGMA.get(), this::onStigmaConsumed);
         ClientEvents.TICK_PRE.register(this::tick);
     }
 
@@ -44,7 +48,7 @@ public class StigmaHud implements HudRenderer {
             consumeIconDisplayTick -= 1;
     }
 
-    private void onStigmaConsumed(LivingEntity livingEntity, EntityDataType<Stigma, LivingEntity> entityDataType, Stigma from, Stigma to) {
+    private void onStigmaConsumed(LivingEntity livingEntity, Stigma from, Stigma to) {
         if (NarakaRenderUtils.isCurrentPlayer(livingEntity)) {
             if (0 < from.value() && to.value() == 0 && to.lastMarkedTime() != 0)
                 consumeIconDisplayTick = CONSUME_ICON_DISPLAYING_TIME;

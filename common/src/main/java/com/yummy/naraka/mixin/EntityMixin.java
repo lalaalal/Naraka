@@ -1,10 +1,14 @@
 package com.yummy.naraka.mixin;
 
+import com.yummy.naraka.event.EntityEvents;
+import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.SyncEntityDataPacket;
 import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.NarakaPortalBlock;
 import com.yummy.naraka.world.entity.data.EntityData;
-import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import com.yummy.naraka.world.entity.data.EntityDataExtension;
+import com.yummy.naraka.world.entity.data.EntityDataType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -24,16 +28,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Mixin(Entity.class)
-public abstract class EntityMixin {
-    @Shadow
-    public abstract Level level();
+public abstract class EntityMixin implements EntityDataExtension {
+    @Unique
+    private final Map<EntityDataType<?, ?>, EntityData<?, ?>> naraka$entityData = new HashMap<>();
 
     @Shadow
-    private Level level;
+    public abstract Level level();
 
     @Shadow
     public abstract EntityType<?> getType();
@@ -43,40 +46,33 @@ public abstract class EntityMixin {
 
     @Inject(method = "saveWithoutId", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;addAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V"))
     public void saveEntityData(CompoundTag compound, CallbackInfoReturnable<CompoundTag> cir) {
-        if (EntityDataHelper.hasEntityData(naraka$self())) {
-            List<EntityData<?, ?>> data = EntityDataHelper.getEntityDataList(naraka$self());
-            NarakaNbtUtils.store(compound, "EntityData", EntityData.CODEC.listOf(), RegistryOps.create(NbtOps.INSTANCE, level().registryAccess()), data);
-        }
+        NarakaNbtUtils.store(compound, "EntityData", EntityData.CODEC.listOf(), level().registryAccess(), naraka$getEntityDataList());
     }
 
     @Inject(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;readAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V"))
     public void readEntityData(CompoundTag compound, CallbackInfo ci) {
         List<EntityData<?, ?>> data = NarakaNbtUtils.read(compound, "EntityData", EntityData.CODEC.listOf(), RegistryOps.create(NbtOps.INSTANCE, level().registryAccess()))
                 .orElse(List.of());
-        EntityDataHelper.loadEntityDataList(naraka$self(), data);
-    }
-
-    @Inject(method = "remove", at = @At("RETURN"))
-    public void removeEntityData(Entity.RemovalReason reason, CallbackInfo ci) {
-        if (reason.shouldDestroy())
-            EntityDataHelper.removeEntityData(naraka$self());
+        naraka$loadEntityData(data);
+        if (level() instanceof ServerLevel serverLevel)
+            naraka$syncEntityData(serverLevel);
     }
 
     @Inject(method = "tick", at = @At("RETURN"))
     public void tickEntityData(CallbackInfo ci) {
-        EntityDataHelper.getEntityDataTypes(naraka$self())
-                .forEach(type -> type.tick(naraka$self()));
+        Collection<EntityDataType<?, ?>> types = Set.copyOf(naraka$entityData.keySet());
+        types.forEach(type -> type.tick(naraka$self()));
     }
 
     @Inject(method = "findDimensionEntryPoint", at = @At("HEAD"), cancellable = true)
     public void findDimensionEntryPoint(ServerLevel destination, CallbackInfoReturnable<PortalInfo> cir) {
         if (destination.dimension() == NarakaDimensions.NARAKA) {
-            BlockPos destinationPosition = NarakaPortalBlock.createRandomNarakaSpawnPosition(level.getRandom());
+            BlockPos destinationPosition = NarakaPortalBlock.createRandomNarakaSpawnPosition(level().getRandom());
             Vec3 destinationPositionVec = Vec3.atBottomCenterOf(destinationPosition);
             cir.setReturnValue(new PortalInfo(destinationPositionVec, Vec3.ZERO, 180, 0));
             cir.cancel();
         }
-        if (destination.dimension() == Level.OVERWORLD && level.dimension() == NarakaDimensions.NARAKA) {
+        if (destination.dimension() == Level.OVERWORLD && level().dimension() == NarakaDimensions.NARAKA) {
             BlockPos spawnBlockPos = destination.getSharedSpawnPos();
             if (naraka$self() instanceof ServerPlayer player)
                 spawnBlockPos = Objects.requireNonNullElse(player.getRespawnPosition(), spawnBlockPos);
@@ -85,6 +81,69 @@ public abstract class EntityMixin {
             cir.setReturnValue(new PortalInfo(destinationPositionVec, Vec3.ZERO, 180, 0));
             cir.cancel();
         }
+    }
+
+
+    @Override
+    public <T, E extends Entity> boolean naraka$hasEntityData(EntityDataType<T, E> entityDataType) {
+        return naraka$entityData.containsKey(entityDataType);
+    }
+
+    @Override
+    public List<EntityData<?, ?>> naraka$getEntityDataList() {
+        return List.copyOf(naraka$entityData.values());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T, E extends Entity> EntityData<T, E> naraka$getEntityData(EntityDataType<T, E> entityDataType) {
+        return (EntityData<T, E>) naraka$entityData.getOrDefault(entityDataType, entityDataType.getDefault());
+    }
+
+    @Override
+    public <T, E extends Entity> void naraka$setEntityData(EntityData<T, E> entityData, boolean sync) {
+        EntityDataType<T, E> entityDataType = entityData.type();
+        E entity = entityDataType.getCastedTarget(naraka$self())
+                .orElseThrow(() -> new IllegalArgumentException(naraka$self() + " is not a valid entity for " + entityDataType));
+        T originalValue = naraka$getRawEntityData(entityDataType);
+        naraka$entityData.put(entityDataType, entityData);
+
+        EntityEvents.ENTITY_DATA_CHANGE.invoker(entityDataType)
+                .onChange(entity, originalValue, entityData.value());
+
+        if (sync && level() instanceof ServerLevel serverLevel)
+            naraka$syncEntityData(serverLevel, List.of(entityData));
+    }
+
+    @Override
+    public void naraka$loadEntityData(List<EntityData<?, ?>> dataList) {
+        for (EntityData<?, ?> data : dataList)
+            naraka$setEntityData(data, false);
+    }
+
+    @Override
+    public void naraka$removeEntityData(EntityDataType<?, ?> entityDataType) {
+        if (entityDataType.shouldSynchronize() && level() instanceof ServerLevel serverLevel) {
+            SyncEntityDataPacket packet = SyncEntityDataPacket.sync(naraka$self(), SyncEntityDataPacket.Action.REMOVE_GIVEN, naraka$getEntityData(entityDataType));
+            NetworkManager.clientbound().send(serverLevel.players(), packet);
+        }
+        naraka$entityData.remove(entityDataType);
+    }
+
+    @Override
+    public void naraka$syncEntityData(ServerLevel level) {
+        naraka$syncEntityData(level, naraka$getEntityDataList());
+    }
+
+    @Unique
+    private void naraka$syncEntityData(ServerLevel level, List<EntityData<?, ?>> dataList) {
+        List<EntityData<?, ?>> synchronizeData = dataList.stream()
+                .filter(entityData -> entityData.type().shouldSynchronize())
+                .toList();
+        if (synchronizeData.isEmpty())
+            return;
+        SyncEntityDataPacket packet = SyncEntityDataPacket.sync(naraka$self(), SyncEntityDataPacket.Action.LOAD, synchronizeData);
+        NetworkManager.clientbound().send(level.players(), packet);
     }
 
     @Unique

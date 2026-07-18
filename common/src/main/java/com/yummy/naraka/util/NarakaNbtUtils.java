@@ -8,6 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.RegistryOps;
 
 import java.util.Optional;
 
@@ -21,6 +22,10 @@ public class NarakaNbtUtils {
                 .getOrThrow(false, message -> {
                 });
         compoundTag.put(key, tag);
+    }
+
+    public static <T> void store(CompoundTag compoundTag, String key, Codec<T> codec, HolderLookup.Provider registries, T value) {
+        store(compoundTag, key, codec, RegistryOps.create(NbtOps.INSTANCE, registries), value);
     }
 
     public static <T> Optional<T> read(CompoundTag compoundTag, String key, Codec<T> codec) {
@@ -39,13 +44,5 @@ public class NarakaNbtUtils {
 
     public static <T> T readOr(CompoundTag compoundTag, String key, Codec<T> codec, DynamicOps<Tag> ops, T defaultValue) {
         return read(compoundTag, key, codec, ops).orElse(defaultValue);
-    }
-
-    public interface TagReader<T> {
-        Optional<T> read(CompoundTag tag, HolderLookup.Provider provider);
-    }
-
-    public interface TagWriter<T> {
-        CompoundTag write(T value, CompoundTag tag, HolderLookup.Provider provider);
     }
 }

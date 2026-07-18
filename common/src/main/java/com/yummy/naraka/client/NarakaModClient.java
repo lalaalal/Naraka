@@ -3,6 +3,7 @@ package com.yummy.naraka.client;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.event.ClientEventHandler;
+import com.yummy.naraka.client.event.NarakaClientEvents;
 import com.yummy.naraka.client.gui.components.HealthSlotOverlayExtension;
 import com.yummy.naraka.client.gui.hud.LockedHealthHud;
 import com.yummy.naraka.client.gui.hud.StigmaHud;

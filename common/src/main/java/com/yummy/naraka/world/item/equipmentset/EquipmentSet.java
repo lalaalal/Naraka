@@ -78,14 +78,6 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
         effects.stream().sorted().forEach(effect -> effect.addToTooltip(id, succeed, builder));
     }
 
-    private UnaryOperator<Style> styleUpdaterByEquipment(long succeed, long activated) {
-        if (succeed == requirements.size())
-            return style -> style.withColor(ChatFormatting.GREEN);
-        if (activated > 0)
-            return style -> style.withColor(ChatFormatting.DARK_GREEN);
-        return style -> style.withColor(ChatFormatting.DARK_GRAY);
-    }
-
     @Override
     public final boolean equals(Object o) {
         if (!(o instanceof EquipmentSet that))
