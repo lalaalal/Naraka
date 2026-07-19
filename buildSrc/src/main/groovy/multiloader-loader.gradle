@@ -19,6 +19,14 @@ publisher {
     setDisplayName("${base.archivesName.get()}-${project.version}")
     setCurseEnvironment("both")
     setArtifact("build/libs/${base.archivesName.get()}-${project.version}.jar")
+
+    modrinthDepends {
+        optional "cloth-config"
+    }
+
+    curseDepends {
+        optional "cloth-config"
+    }
 }
 
 configurations {

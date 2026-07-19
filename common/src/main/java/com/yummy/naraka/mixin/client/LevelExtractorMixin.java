@@ -67,12 +67,11 @@ public abstract class LevelExtractorMixin {
 
     @Inject(method = "extract", at = @At("RETURN"))
     private void extractHiddenOres(DeltaTracker deltaTracker, Camera camera, float deltaPartialTick, CallbackInfo ci) {
-        if (level == null || naraka$blockModelResolver == null
-                || !(levelRenderState instanceof HiddenOreRenderStateProvider dimensionTypeProvider))
+        if (!(levelRenderState instanceof HiddenOreRenderStateProvider dimensionTypeProvider))
             return;
 
         if (!(camera.entity() instanceof LivingEntity livingEntity) || !NarakaItemUtils.canApplyOreSeeThrough(livingEntity)
-                || NarakaConfig.CLIENT.disableOreSeeThrough.getValue())
+                || !NarakaConfig.CLIENT.useOreSeeThrough.getValue())
             return;
 
         BlockPos cameraBlockPos = camera.blockPosition();
@@ -81,6 +80,8 @@ public abstract class LevelExtractorMixin {
         BoundingBox box = BoundingBox.fromCorners(cameraBlockPos.offset(cornerOffset), cameraBlockPos.offset(cornerOffset.multiply(-1)));
 
         NarakaUtils.sphere(box, 1, pos -> {
+            if (level == null || naraka$blockModelResolver == null)
+                return;
             BlockState state = level.getBlockState(pos);
             if (state.is(ConventionalTags.Blocks.ORES)) {
                 Color color = NarakaConfig.ORE_COLORS.getColor(state);

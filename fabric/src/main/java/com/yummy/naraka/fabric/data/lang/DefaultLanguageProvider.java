@@ -1,5 +1,6 @@
 package com.yummy.naraka.fabric.data.lang;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.data.lang.AdvancementExtraComponents;
 import com.yummy.naraka.data.lang.AdvancementNarakaComponents;
 import com.yummy.naraka.data.lang.LanguageKey;
@@ -54,6 +55,32 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         add(LanguageKey.PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "Purified Soul Metal, Soul Infused Materials", "정화된 영혼 금속, 영혼이 주입된 재료");
         add(LanguageKey.PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add Ebony Sword, Soul Weapon", "흑단나무 무기, 정화된 영혼 검 또는 창를 놓으세요");
         add(LanguageKey.PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add Purified Soul Metal, Soul Infused Materials", "정화된 영혼 금속, 영혼이 주입된 재료 또는 신의 피를 놓으세요");
+
+        add(LanguageKey.CONFIG_TITLE, "Naraka Config");
+        add(LanguageKey.CONFIG_CATEGORY_COMMON, "Naraka Common Config");
+        addConfig(NarakaConfig.COMMON.showTestCreativeModeTab,
+                List.of("Show Test Creative Mode Tab", "테스트 크리에이티브 모드 탭 표시"),
+                List.of(
+                        List.of("Restart required", "재시작 필요")
+                )
+        );
+        addConfig(NarakaConfig.COMMON.enableStigma, "Enable Stigma", "낙인 활성화");
+        addConfig(NarakaConfig.COMMON.stigmaStunDuration,
+                List.of("Stigma Stun Duration", "낙인 스턴 지속시간"),
+                List.of(
+                        List.of("Stun duration in ticks", "낙인 스턴 지속 시간 (틱)")
+                )
+        );
+        addConfig(NarakaConfig.COMMON.lockHealthRatio, "Lock Health Ratio", "체력 잠금 비율");
+
+        add(LanguageKey.CONFIG_CATEGORY_CLIENT, "Naraka Client Config");
+        addConfig(NarakaConfig.CLIENT.playHerobrineBossMusic, "Play Herobrine Boss Music", "히로빈 음악 재생");
+        addConfig(NarakaConfig.CLIENT.useOreSeeThrough, "Use Ore See Through", "광물 투시 활성화");
+        addConfig(NarakaConfig.CLIENT.oreSeeThroughRange, "Ore See Through Range", "광물 투시 거리");
+        addConfig(NarakaConfig.CLIENT.cameraShakingSpeed, "Camera Shaking Speed", "카메라 흔들림 속도");
+        addConfig(NarakaConfig.CLIENT.cameraShakingStrength, "Camera Shaking Strength", "카메라 흔들림 강도");
+        add(LanguageKey.CONFIG_ORE_COLOR, "Ore Outline Color", "광물 외곽선 색");
+        add(LanguageKey.CONFIG_ORE_COLOR_WRONG, "Wrong Format!", "잘못된 형식입니다!");
 
         add(LanguageKey.JADE_SOUL_CRAFTING_FUEL_KEY, "Fuel: %d", "연료: %d");
         add(NarakaJadeProviderComponents.SOUL_CRAFTING_BLOCK.translationKey, "Soul Crafting Block", "영혼 세공기");

@@ -57,8 +57,6 @@ public record Color(int alpha, int red, int green, int blue) {
 
     @Override
     public String toString() {
-        if (alpha == 0)
-            return "#%06x".formatted(pack(false));
         return "#%08x".formatted(pack());
     }
 }

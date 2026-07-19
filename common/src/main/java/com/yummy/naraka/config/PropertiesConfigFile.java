@@ -48,11 +48,6 @@ public class PropertiesConfigFile extends ConfigFile {
     }
 
     @Override
-    public Writer createWriter() throws IOException {
-        return super.createWriter();
-    }
-
-    @Override
     public Set<String> load(Reader reader) throws IOException {
         checkReader(reader);
         this.cache.load(reader);

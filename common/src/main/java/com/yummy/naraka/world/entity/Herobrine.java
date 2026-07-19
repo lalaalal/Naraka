@@ -84,7 +84,6 @@ public class Herobrine extends AbstractHerobrine {
     protected final FlickerSkill<Herobrine> flickerSkill = registerSkill(new FlickerSkill<>(this, dashSkill, punchSkill));
     protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, flickerSkill));
 
-    protected final CarpetBombingSkill carpetBombingSkill = registerSkill(6, this, CarpetBombingSkill::new, HerobrineAnimationIdentifiers.CARPET_BOMBING);
     protected final ExplosionSkill explosionSkill = registerSkill(7, this, ExplosionSkill::new, HerobrineAnimationIdentifiers.EXPLOSION);
     protected final EarthShockSkill earthShockSkill = registerSkill(6, this, EarthShockSkill::new, HerobrineAnimationIdentifiers.EARTH_SHOCK);
     protected final ParryingSkill parryingSkill = registerSkill(7, this, ParryingSkill::new, HerobrineAnimationIdentifiers.PARRYING);
@@ -97,7 +96,6 @@ public class Herobrine extends AbstractHerobrine {
     protected final SplitAttackSkill splitAttackSkill = registerSkill(7, new SplitAttackSkill(this, spinUpSkill), HerobrineAnimationIdentifiers.FINAL_COMBO_ATTACK_1);
     protected final PickaxeSlashSkill<AbstractHerobrine> singlePickaxeSlashSkill = registerSkill(7, this, PickaxeSlashSkill::single, HerobrineAnimationIdentifiers.PICKAXE_SLASH_SINGLE);
     protected final PickaxeSlashSkill<Herobrine> triplePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::triple, HerobrineAnimationIdentifiers.PICKAXE_SLASH_TRIPLE);
-    protected final SpawnPickaxeSkill spawnPickaxeSkill = registerSkill(7, this, SpawnPickaxeSkill::new, HerobrineAnimationIdentifiers.RYOIKI_TENKAI);
 
     protected final DespawnSkill despawnSkill = registerSkill(this, DespawnSkill::new, HerobrineAnimationIdentifiers.PHASE_3_IDLE);
 
@@ -148,7 +146,7 @@ public class Herobrine extends AbstractHerobrine {
         bossEvent.setPlayBossMusic(true);
         phaseManager.addPhaseChangeListener(this::updateMusic);
         phaseManager.addPhaseChangeListener(this::updateUsingSkills);
-        phaseManager.addPhaseChangeListener((prev, current) -> resetDamageLimit());
+        phaseManager.addPhaseChangeListener((_, _) -> resetDamageLimit());
         phaseManager.addPhaseChangeListener(this::startStaggering);
         phaseManager.addPhaseChangeListener(this::onPhase3, 3);
 
@@ -359,7 +357,7 @@ public class Herobrine extends AbstractHerobrine {
                 maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
             }
         }
-        if (NarakaConfig.COMMON.disableStigma.getValue() && !isHibernateMode())
+        if (!NarakaConfig.COMMON.enableStigma.getValue() && !isHibernateMode())
             this.heal(3.5f);
     }
 
@@ -734,7 +732,7 @@ public class Herobrine extends AbstractHerobrine {
         fireball.setDamageCalculator(this::calculateFireballDamage);
         fireball.setCanDeflect(false);
         fireball.setTimeToLive(50);
-        fireball.addHurtTargetListener((target, damage) -> stigmatizeEntity(level, target));
+        fireball.addHurtTargetListener((target, _) -> stigmatizeEntity(level, target));
         fireball.addHurtTargetListener((target, damage) -> updateHibernateModeOnTargetSurvivedFromFireball(level, target, damage));
 
         return fireball;

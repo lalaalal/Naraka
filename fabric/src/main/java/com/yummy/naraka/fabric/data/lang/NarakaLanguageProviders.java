@@ -1,5 +1,6 @@
 package com.yummy.naraka.fabric.data.lang;
 
+import com.yummy.naraka.config.Configuration;
 import com.yummy.naraka.data.lang.AdvancementComponent;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
@@ -57,6 +58,18 @@ public abstract class NarakaLanguageProviders {
         );
     }
 
+    public void addConfig(Configuration.ConfigValue<?> configValue, String... nameTranslations) {
+        add(configValue.getTranslationKey(), nameTranslations);
+    }
+
+    public void addConfig(Configuration.ConfigValue<?> configValue, List<String> nameTranslations, List<List<String>> comments) {
+        add(configValue.getTranslationKey(), nameTranslations.toArray(String[]::new));
+        for (int index = 0; index < comments.size(); index++) {
+            List<String> commentTranslations = comments.get(index);
+            add(configValue.getCommentTranslationKey(index), commentTranslations.toArray(String[]::new));
+        }
+    }
+
     public void addItem(Supplier<? extends Item> item, String... translations) {
         add(item.get().getDescriptionId(), translations);
     }
@@ -93,8 +106,8 @@ public abstract class NarakaLanguageProviders {
     }
 
     public void addAdvancement(AdvancementComponent advancementComponent, List<String> titles, List<String> descriptions) {
-        add(advancementComponent.titleKey(), titles.toArray(new String[0]));
-        add(advancementComponent.descriptionKey(), descriptions.toArray(new String[0]));
+        add(advancementComponent.titleKey(), titles.toArray(String[]::new));
+        add(advancementComponent.descriptionKey(), descriptions.toArray(String[]::new));
     }
 
     public void addDamageType(ResourceKey<DamageType> damageType, String... message) {

@@ -52,7 +52,7 @@ public class NarakaClientboundEventHandler {
         Entity entity = level.getEntity(packet.entityId());
         Minecraft.getInstance().execute(() -> {
             if (entity != null)
-                ENTITY_EVENT_MAP.getOrDefault(packet.event(), e -> {
+                ENTITY_EVENT_MAP.getOrDefault(packet.event(), _ -> {
                 }).accept(entity);
         });
     }
@@ -66,7 +66,7 @@ public class NarakaClientboundEventHandler {
     }
 
     private static void updateHerobrineMusic(Entity entity, final int phase) {
-        if (NarakaConfig.CLIENT.disableHerobrineBossMusic.getValue())
+        if (!NarakaConfig.CLIENT.playHerobrineBossMusic.getValue())
             return;
 
         BossMusicPlayer bossMusicPlayer = NarakaMusics.bossMusicPlayer();

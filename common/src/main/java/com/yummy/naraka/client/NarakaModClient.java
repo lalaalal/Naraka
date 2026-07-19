@@ -153,11 +153,11 @@ public final class NarakaModClient {
     private static void registerKeyMappings() {
         KeyMappingRegistry.register(NarakaKeyMappings.TOGGLE_ORE_SEE_THROUGH, (minecraft, keyMapping) -> {
             if (keyMapping.consumeClick()) {
-                boolean disabled = !NarakaConfig.CLIENT.disableOreSeeThrough.getValue();
-                NarakaConfig.CLIENT.disableOreSeeThrough.set(disabled);
+                boolean enabled = !NarakaConfig.CLIENT.useOreSeeThrough.getValue();
+                NarakaConfig.CLIENT.useOreSeeThrough.set(enabled);
                 NarakaConfig.CLIENT.saveValues();
                 if (minecraft.player != null)
-                    minecraft.player.sendOverlayMessage(Component.translatable(LanguageKey.toggleOreSeeThroughMessage(disabled)));
+                    minecraft.player.sendOverlayMessage(Component.translatable(LanguageKey.toggleOreSeeThroughMessage(enabled)));
             }
         });
     }
