@@ -9,7 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import org.jspecify.annotations.Nullable;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,12 +24,7 @@ public abstract class ItemStackMixin implements DataComponentHolder {
             ItemEvents.ITEM_TOOLTIP_TOP.invoker().addToTooltip(this, context, player, tooltipFlag, builder);
     }
 
-    @SuppressWarnings("UnresolvedMixinReference")
-    @Inject(
-            method = {"addDetailsToTooltip", "addDetailsToTooltipComponents(Lnet/minecraft/world/item/Item$TooltipContext;Lnet/minecraft/world/item/component/TooltipDisplay;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/TooltipFlag;Ljava/util/function/Consumer;)V"},
-            at = @At(value = "FIELD", target = "Lnet/minecraft/core/component/DataComponents;UNBREAKABLE:Lnet/minecraft/core/component/DataComponentType;", opcode = Opcodes.GETSTATIC),
-            require = 1
-    )
+    @Inject(method = "addDetailsToTooltip", at = @At("RETURN"))
     public void addBottomTooltip(Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag tooltipFlag, Consumer<Component> builder, CallbackInfo ci) {
         if (player != null)
             ItemEvents.ITEM_TOOLTIP_BOTTOM.invoker().addToTooltip(this, context, player, tooltipFlag, builder);
