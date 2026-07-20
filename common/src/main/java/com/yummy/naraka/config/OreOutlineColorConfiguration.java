@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OreOutlineColorConfiguration extends DynamicConfiguration<Color> {
@@ -20,24 +21,34 @@ public class OreOutlineColorConfiguration extends DynamicConfiguration<Color> {
 
     public OreOutlineColorConfiguration() {
         super("naraka-ore-outline-color", JsonConfigFile::new);
-        addDefaultValue("default_color", new ConfigValue<>(DEFAULT_COLOR));
-        addDefaultValue("#minecraft:diamond_ores", new ConfigValue<>(Color.of(0xFF49EDD9)));
-        addDefaultValue("#minecraft:redstone_ores", new ConfigValue<>(Color.of(0xFFFF0000)));
-        addDefaultValue("#minecraft:emerald_ores", new ConfigValue<>(Color.of(0xFF16DD63)));
-        addDefaultValue("#minecraft:gold_ores", new ConfigValue<>(Color.of(0xFFFEF55F)));
-        addDefaultValue("#minecraft:iron_ores", new ConfigValue<>(Color.of(0xFFFFFFFF)));
-        addDefaultValue("minecraft:ancient_debris", new ConfigValue<>(Color.of(0xFF644740)));
-        addDefaultValue("#naraka:nectarium_ores", new ConfigValue<>(Color.of(0xFFE494DF)));
+        addDefaultValue("default_color", DEFAULT_COLOR);
+        addDefaultValue("#minecraft:diamond_ores", Color.of(0xFF49EDD9));
+        addDefaultValue("#minecraft:redstone_ores", Color.of(0xFFFF0000));
+        addDefaultValue("#minecraft:emerald_ores", Color.of(0xFF16DD63));
+        addDefaultValue("#minecraft:gold_ores", Color.of(0xFFFEF55F));
+        addDefaultValue("#minecraft:iron_ores", Color.of(0xFFFFFFFF));
+        addDefaultValue("minecraft:ancient_debris", Color.of(0xFF644740));
+        addDefaultValue("#naraka:nectarium_ores", Color.of(0xFFE494DF));
     }
 
     @Override
-    protected ConfigValue<Color> createDefaultValue() {
-        return new ConfigValue<>(DEFAULT_COLOR);
+    protected ConfigValue<Color> createDefaultValue(String key) {
+        return new ConfigValue<>(key, DEFAULT_COLOR);
+    }
+
+    @Override
+    public void loadValues(List<ConfigValue<Color>> configValues) {
+        super.loadValues(configValues);
+        loadMappings();
     }
 
     @Override
     public void loadValues() {
         super.loadValues();
+        loadMappings();
+    }
+
+    private void loadMappings() {
         tagMappings.clear();
         blockMappings.clear();
         configurations.forEach((key, configValue) -> {
@@ -54,13 +65,13 @@ public class OreOutlineColorConfiguration extends DynamicConfiguration<Color> {
     }
 
     public Color getColor(BlockState blockState) {
-        for (TagKey<Block> tagKey : tagMappings.keySet()) {
-            if (blockState.is(tagKey))
-                return tagMappings.get(tagKey);
-        }
         for (ResourceKey<Block> blockKey : blockMappings.keySet()) {
             if (blockState.is(blockKey))
                 return blockMappings.get(blockKey);
+        }
+        for (TagKey<Block> tagKey : tagMappings.keySet()) {
+            if (blockState.is(tagKey))
+                return tagMappings.get(tagKey);
         }
         return defaultColor;
     }

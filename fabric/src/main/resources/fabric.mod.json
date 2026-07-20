@@ -36,6 +36,9 @@
     ],
     "jade": [
       "com.yummy.naraka.jade.NarakaJadePlugin"
+    ],
+    "modmenu": [
+      "com.yummy.naraka.fabric.modmenu.NarakaModMenu"
     ]
   },
   "accessWidener": "naraka.fabric.accesswidener",

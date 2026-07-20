@@ -66,7 +66,7 @@ public class NarakaClientboundEventHandler {
     }
 
     private static void updateHerobrineMusic(Entity entity, final int phase) {
-        if (NarakaConfig.CLIENT.disableHerobrineBossMusic.getValue())
+        if (!NarakaConfig.CLIENT.playHerobrineBossMusic.getValue())
             return;
 
         BossMusicPlayer bossMusicPlayer = NarakaMusics.bossMusicPlayer();

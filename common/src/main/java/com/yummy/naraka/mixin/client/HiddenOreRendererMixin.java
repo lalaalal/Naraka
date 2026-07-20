@@ -52,7 +52,7 @@ public abstract class HiddenOreRendererMixin {
 
     @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;entitiesForRendering()Ljava/lang/Iterable;"))
     protected void renderHiddenOres(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo ci, @Local(ordinal = 3) LocalBooleanRef localRef) {
-        if (minecraft.player == null || entityEffect == null || !NarakaItemUtils.canApplyOreSeeThrough(minecraft.player) || NarakaConfig.CLIENT.disableOreSeeThrough.getValue())
+        if (minecraft.player == null || entityEffect == null || !NarakaItemUtils.canApplyOreSeeThrough(minecraft.player) || !NarakaConfig.CLIENT.enableOreSeeThrough.getValue())
             return;
 
         PoseStack poseStack = new PoseStack();

@@ -128,7 +128,7 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
             EntityDataHelper.setEntityData(shinyEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
             mob.stigmatizeEntity(level, target);
 
-            if (NarakaConfig.COMMON.disableStigma.getValue())
+            if (!NarakaConfig.COMMON.enableStigma.getValue())
                 hurtEntity(level, target);
         }
     }

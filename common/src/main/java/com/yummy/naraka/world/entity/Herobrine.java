@@ -84,7 +84,6 @@ public class Herobrine extends AbstractHerobrine {
     protected final FlickerSkill<Herobrine> flickerSkill = registerSkill(new FlickerSkill<>(this, dashSkill, punchSkill));
     protected final WalkAroundTargetSkill walkAroundTargetSkill = registerSkill(new WalkAroundTargetSkill(this, punchSkill, flickerSkill));
 
-    protected final CarpetBombingSkill carpetBombingSkill = registerSkill(6, this, CarpetBombingSkill::new, HerobrineAnimationLocations.CARPET_BOMBING);
     protected final ExplosionSkill explosionSkill = registerSkill(7, this, ExplosionSkill::new, HerobrineAnimationLocations.EXPLOSION);
     protected final EarthShockSkill earthShockSkill = registerSkill(6, this, EarthShockSkill::new, HerobrineAnimationLocations.EARTH_SHOCK);
     protected final ParryingSkill parryingSkill = registerSkill(7, this, ParryingSkill::new, HerobrineAnimationLocations.PARRYING);
@@ -97,7 +96,6 @@ public class Herobrine extends AbstractHerobrine {
     protected final SplitAttackSkill splitAttackSkill = registerSkill(7, new SplitAttackSkill(this, spinUpSkill), HerobrineAnimationLocations.FINAL_COMBO_ATTACK_1);
     protected final PickaxeSlashSkill<AbstractHerobrine> singlePickaxeSlashSkill = registerSkill(7, this, PickaxeSlashSkill::single, HerobrineAnimationLocations.PICKAXE_SLASH_SINGLE);
     protected final PickaxeSlashSkill<Herobrine> triplePickaxeSlashSkill = registerSkill(6, this, PickaxeSlashSkill::triple, HerobrineAnimationLocations.PICKAXE_SLASH_TRIPLE);
-    protected final SpawnPickaxeSkill spawnPickaxeSkill = registerSkill(7, this, SpawnPickaxeSkill::new, HerobrineAnimationLocations.PICKAXE_STRIKE);
 
     protected final DespawnSkill despawnSkill = registerSkill(this, DespawnSkill::new, HerobrineAnimationLocations.PHASE_3_IDLE);
 
@@ -358,7 +356,7 @@ public class Herobrine extends AbstractHerobrine {
                 cachedWatchingEntities.put(target.getUUID(), target);
                 maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
             }
-            if (NarakaConfig.COMMON.disableStigma.getValue() && !isHibernateMode())
+            if (!NarakaConfig.COMMON.enableStigma.getValue() && !isHibernateMode())
                 this.heal(3.5f);
         }
     }

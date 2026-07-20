@@ -121,7 +121,7 @@ public class StigmaCommand {
                 )
                 .then(Commands.literal("disable")
                         .executes(context -> {
-                            NarakaConfig.COMMON.disableStigma.set(true);
+                            NarakaConfig.COMMON.enableStigma.set(false);
                             NarakaConfig.COMMON.saveValues();
                             context.getSource().sendSuccess(() -> Component.translatable(LanguageKey.STIGMA_COMMAND_DISABLE_KEY), false);
                             return Command.SINGLE_SUCCESS;
@@ -129,7 +129,7 @@ public class StigmaCommand {
                 )
                 .then(Commands.literal("enable")
                         .executes(context -> {
-                            NarakaConfig.COMMON.disableStigma.set(false);
+                            NarakaConfig.COMMON.enableStigma.set(true);
                             NarakaConfig.COMMON.saveValues();
                             context.getSource().sendSuccess(() -> Component.translatable(LanguageKey.STIGMA_COMMAND_ENABLE_KEY), false);
                             return Command.SINGLE_SUCCESS;

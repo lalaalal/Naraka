@@ -1,5 +1,6 @@
 package com.yummy.naraka.fabric.data.lang;
 
+import com.yummy.naraka.config.Configuration;
 import com.yummy.naraka.data.lang.AdvancementComponent;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
@@ -56,6 +57,18 @@ public abstract class NarakaLanguageProviders {
                         .location().getPath(),
                 effectTranslations
         );
+    }
+
+    public void addConfig(Configuration.ConfigValue<?> configValue, String... nameTranslations) {
+        add(configValue.getTranslationKey(), nameTranslations);
+    }
+
+    public void addConfig(Configuration.ConfigValue<?> configValue, List<String> nameTranslations, List<List<String>> comments) {
+        add(configValue.getTranslationKey(), nameTranslations.toArray(String[]::new));
+        for (int index = 0; index < comments.size(); index++) {
+            List<String> commentTranslations = comments.get(index);
+            add(configValue.getCommentTranslationKey(index), commentTranslations.toArray(String[]::new));
+        }
     }
 
     public void addItem(Supplier<? extends Item> item, String... translations) {
