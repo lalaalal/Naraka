@@ -2,6 +2,7 @@ package com.yummy.naraka.world.item.equipmentset;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
+import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SoulType;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class EquipmentSetHelper {
-    private static final Map<SoulType, Holder<MobEffect>> SOUL_EFFECT_MAP = Map.of(
+    private static final Map<SoulType, HolderProxy<MobEffect, MobEffect>> SOUL_EFFECT_MAP = Map.of(
             SoulType.AMETHYST, NarakaMobEffects.CHALLENGERS_BLESSING_AMETHYST,
             SoulType.COPPER, NarakaMobEffects.CHALLENGERS_BLESSING_COPPER,
             SoulType.DIAMOND, NarakaMobEffects.CHALLENGERS_BLESSING_DIAMOND,
@@ -125,7 +126,7 @@ public class EquipmentSetHelper {
     public static List<EquipmentSet.Effect> createChallengerSetEffect(SoulType soulType) {
         if (SOUL_EFFECT_MAP.containsKey(soulType)) {
             MobEffectData speed = new MobEffectData(MobEffects.SPEED, -1, 1);
-            MobEffectData blessing = new MobEffectData(SOUL_EFFECT_MAP.get(soulType), -1, 0);
+            MobEffectData blessing = new MobEffectData(SOUL_EFFECT_MAP.get(soulType).delegate(), -1, 0);
             return List.of(
                     EquipmentSet.Effect.of(5, MobEffectEquipmentSetEffect.of(blessing)),
                     EquipmentSet.Effect.of(4, MobEffectEquipmentSetEffect.of(speed))

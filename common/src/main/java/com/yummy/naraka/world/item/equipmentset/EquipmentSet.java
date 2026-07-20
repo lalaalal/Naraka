@@ -6,8 +6,6 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.ItemEvents;
-import com.yummy.naraka.world.entity.data.EntityDataHelper;
-import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentHolder;
@@ -28,7 +26,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
@@ -73,16 +74,9 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
     }
 
     public void updateEffect(LivingEntity livingEntity) {
-        Set<EquipmentSet> activeEquipmentSets = new HashSet<>(EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.EQUIPMENT_SET.get()));
         long succeed = countSucceed(livingEntity);
-        long activated = effects.stream().filter(effect -> effect.update(livingEntity, succeed))
-                .count();
-        if (activated > 0) {
-            activeEquipmentSets.add(this);
-        } else {
-            activeEquipmentSets.remove(this);
-        }
-        EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.EQUIPMENT_SET.get(), activeEquipmentSets.stream().toList());
+        for (Effect effect : effects)
+            effect.update(livingEntity, succeed);
     }
 
     @Override
@@ -144,7 +138,7 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
                     Holder<Item> otherItem, EquipmentSlot otherSlot, DataComponentPatch otherComponents
             )))
                 return false;
-            return item.equals(otherItem) && slot == otherSlot && components.equals(otherComponents);
+            return item.value().equals(otherItem.value()) && slot == otherSlot && components.equals(otherComponents);
         }
 
         @Override

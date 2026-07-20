@@ -26,4 +26,20 @@ public record MobEffectData(Holder<MobEffect> effect, int duration, int amplifie
             MobEffectData::amplifier,
             MobEffectData::new
     );
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof MobEffectData(Holder<MobEffect> otherEffect, int otherDuration, int otherAmplifier)))
+            return false;
+
+        return duration == otherDuration && amplifier == otherAmplifier && effect.value().equals(otherEffect.value());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = effect.hashCode();
+        result = 31 * result + duration;
+        result = 31 * result + amplifier;
+        return result;
+    }
 }

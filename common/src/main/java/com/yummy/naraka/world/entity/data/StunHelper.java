@@ -1,10 +1,8 @@
 package com.yummy.naraka.world.entity.data;
 
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
-import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public final class StunHelper {
     public static void holdEntity(LivingEntity livingEntity) {
