@@ -78,3 +78,8 @@ tasks.named('sourcesJar', Jar) {
     dependsOn(configurations.commonResources)
     from(configurations.commonResources)
 }
+
+sourceSets.main.resources {
+    srcDirs project(":fabric").file('src/main/generated')
+    exclude('.cache')
+}

@@ -45,7 +45,7 @@ public class NarakaConfigScreen {
         ConfigCategory client = builder.getOrCreateCategory(Component.translatable(LanguageKey.CONFIG_CATEGORY_CLIENT));
 
         client.addEntry(ConfigHelper.entry(NarakaConfig.CLIENT.playHerobrineBossMusic, entryBuilder::startBooleanToggle).build())
-                .addEntry(ConfigHelper.entry(NarakaConfig.CLIENT.useOreSeeThrough, entryBuilder::startBooleanToggle).build())
+                .addEntry(ConfigHelper.entry(NarakaConfig.CLIENT.enableOreSeeThrough, entryBuilder::startBooleanToggle).build())
                 .addEntry(ConfigHelper.entry(NarakaConfig.CLIENT.oreSeeThroughRange, entryBuilder::startIntField).build())
                 .addEntry(ConfigHelper.entry(NarakaConfig.CLIENT.cameraShakingSpeed, entryBuilder::startFloatField).build())
                 .addEntry(ConfigHelper.entry(NarakaConfig.CLIENT.cameraShakingStrength, entryBuilder::startFloatField).build())

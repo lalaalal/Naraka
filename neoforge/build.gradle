@@ -21,7 +21,7 @@ neoForge {
     runs {
         configureEach {
             systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
-            ideName = "NeoForge ${it.name.capitalize()} (${path})" // Unify the run config names with fabric
+            ideName = "NeoForge ${it.name.capitalize()} ${minecraft_version} (${path})"
         }
         client {
             client()
@@ -48,7 +48,7 @@ neoForge {
 }
 
 sourceSets.main.resources {
-    srcDirs project(":fabric").file('src/main/generated'), 'src/main/generated'
+    srcDirs 'src/main/generated'
 }
 
 publisher {

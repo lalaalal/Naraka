@@ -71,7 +71,7 @@ public abstract class LevelExtractorMixin {
             return;
 
         if (!(camera.entity() instanceof LivingEntity livingEntity) || !NarakaItemUtils.canApplyOreSeeThrough(livingEntity)
-                || !NarakaConfig.CLIENT.useOreSeeThrough.getValue())
+                || !NarakaConfig.CLIENT.enableOreSeeThrough.getValue())
             return;
 
         BlockPos cameraBlockPos = camera.blockPosition();

@@ -24,23 +24,26 @@ loom {
     runs {
         client {
             client()
-            setConfigName('Fabric Client')
+            setConfigName("Fabric Client ${minecraft_version}")
             ideConfigGenerated(true)
             runDir("run/${minecraft_version}")
             programArgs('--username', System.getProperty("user.name"))
         }
         server {
             server()
-            setConfigName('Fabric Server')
+            setConfigName("Fabric Server ${minecraft_version}")
             ideConfigGenerated(true)
             runDir("run/${minecraft_version}")
         }
-    }
-}
-
-fabricApi {
-    configureDataGeneration() {
-        client = true
+        datagen {
+            inherit client
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
+            vmArg "-Dfabric-api.datagen.modid=${mod_id}"
+            setConfigName("Fabric Data ${minecraft_version}")
+            ideConfigGenerated(true)
+            runDir("run/${minecraft_version}")
+        }
     }
 }
 

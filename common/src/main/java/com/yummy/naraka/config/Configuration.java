@@ -22,10 +22,6 @@ public abstract class Configuration {
         this.file = configFileFactory.apply(name);
     }
 
-    public boolean canUpdateOnFileChange(String fileName) {
-        return file.getFileName().equals(fileName);
-    }
-
     public abstract void loadValues();
 
     public abstract void saveValues();

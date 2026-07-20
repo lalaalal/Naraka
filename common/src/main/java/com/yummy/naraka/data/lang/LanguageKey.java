@@ -99,8 +99,8 @@ public final class LanguageKey {
         return Util.makeDescriptionId("key.categories", id);
     }
 
-    public static String toggleOreSeeThroughMessage(boolean disabled) {
-        String state = disabled ? "disable" : "enable";
+    public static String toggleOreSeeThroughMessage(boolean enabled) {
+        String state = enabled ? "enable" : "disable";
         return "message.naraka.ore_see_through." + state;
     }
 

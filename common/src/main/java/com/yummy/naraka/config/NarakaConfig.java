@@ -82,12 +82,6 @@ public class NarakaConfig {
             while ((watchKey = watchService.take()) != null) {
                 for (WatchEvent<?> event : watchKey.pollEvents()) {
                     String changedFileName = event.context().toString();
-                    CONFIGURATIONS.stream()
-                            .filter(configuration -> configuration.canUpdateOnFileChange(changedFileName))
-                            .forEach(configuration -> {
-                                NarakaMod.LOGGER.debug("Configuration change detected \"{}\"", configuration.name);
-                                configuration.loadValues();
-                            });
                     if (changedFileName.equals("iris.properties") && Platform.getInstance().getSide() == Platform.Side.CLIENT)
                         checkIris();
                 }
