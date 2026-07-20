@@ -3,12 +3,9 @@ package com.yummy.naraka.client.gui.components;
 import com.yummy.naraka.client.NarakaSprites;
 import com.yummy.naraka.world.overlay.NarakaProgressOverlayExtensionTypes;
 import com.yummy.naraka.world.overlay.ProgressOverlayExtensionType;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
 
-@Environment(EnvType.CLIENT)
 public class HealthSlotOverlayExtension implements ProgressOverlayExtension<Integer> {
     public static final int PROGRESS_BAR_WIDTH = 182;
 

@@ -4,8 +4,6 @@ import com.yummy.naraka.client.NarakaSprites;
 import com.yummy.naraka.event.EntityEvents;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,7 +11,6 @@ import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
-@Environment(EnvType.CLIENT)
 public class DeathCountHud implements LayeredDraw.Layer {
     public static final int HEART_WIDTH = 14;
     public static final int HEART_HEIGHT = 7;

@@ -5,8 +5,6 @@ import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SkillRequestPacket;
 import com.yummy.naraka.world.entity.SkillUsingMob;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
@@ -19,7 +17,6 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.Set;
 import java.util.function.Function;
 
-@Environment(EnvType.CLIENT)
 public abstract class SkillUsingMobControlScreen extends Screen {
     protected final SkillUsingMob mob;
     protected final LocationList locationList;

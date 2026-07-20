@@ -2,13 +2,10 @@ package com.yummy.naraka.client.model;
 
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.world.entity.SkillUsingMob;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.AnimationState;
 
-@Environment(EnvType.CLIENT)
 public abstract class SkillUsingModModel<T extends SkillUsingMob> extends HierarchicalModel<T> {
     private final String name;
     private final ModelPart root;

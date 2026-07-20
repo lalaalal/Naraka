@@ -6,8 +6,6 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.NarakaSword;
 import com.yummy.naraka.world.entity.SwordEffectData;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -25,7 +23,6 @@ import org.joml.Vector3fc;
 import java.util.ArrayList;
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public class NarakaSwordRenderer extends EntityRenderer<NarakaSword> {
     public NarakaSwordRenderer(EntityRendererProvider.Context context) {
         super(context);

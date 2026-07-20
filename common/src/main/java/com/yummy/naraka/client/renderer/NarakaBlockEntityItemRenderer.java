@@ -5,8 +5,6 @@ import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.SoulSmithingBlockEntity;
 import com.yummy.naraka.world.block.entity.SoulStabilizerBlockEntity;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
@@ -24,7 +22,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Map;
 
-@Environment(EnvType.CLIENT)
 public class NarakaBlockEntityItemRenderer implements CustomRenderManager.CustomItemRenderer, ResourceManagerReloadListener {
     public static final NarakaBlockEntityItemRenderer INSTANCE = new NarakaBlockEntityItemRenderer();
 

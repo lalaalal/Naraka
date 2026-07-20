@@ -2,13 +2,10 @@ package com.yummy.naraka.client.particle;
 
 import com.yummy.naraka.core.particles.SoulParticleOption;
 import com.yummy.naraka.util.Color;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.PortalParticle;
 import net.minecraft.client.particle.TextureSheetParticle;
 
-@Environment(EnvType.CLIENT)
 public class SoulParticle extends PortalParticle {
     protected SoulParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);

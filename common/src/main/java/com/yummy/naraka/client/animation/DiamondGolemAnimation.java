@@ -1,14 +1,11 @@
 package com.yummy.naraka.client.animation;
 
 import com.yummy.naraka.world.entity.animation.DiamondGolemAnimationLocations;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
 
-@Environment(EnvType.CLIENT)
 public class DiamondGolemAnimation {
     public static void initialize() {
         AnimationMapper.register(DiamondGolemAnimationLocations.IDLE, IDLE);

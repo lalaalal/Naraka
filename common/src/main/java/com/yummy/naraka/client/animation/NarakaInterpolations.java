@@ -1,15 +1,13 @@
 package com.yummy.naraka.client.animation;
 
 import com.yummy.naraka.util.NarakaUtils;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
 import java.util.function.Function;
 
-@Environment(EnvType.CLIENT)
+
 public class NarakaInterpolations {
 
     public static final AnimationChannel.Interpolation FAST_STEP_IN = (vector3f, delta, keyframes, start, end, scale) -> {

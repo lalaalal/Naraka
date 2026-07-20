@@ -10,8 +10,6 @@ import com.yummy.naraka.client.model.HerobrineModel;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.world.entity.OriginHerobrine;
 import com.yummy.naraka.world.item.SoulType;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -26,7 +24,6 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-@Environment(EnvType.CLIENT)
 public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrine, HerobrineModel<OriginHerobrine>> {
     private static final float HALF_SQRT_3 = (float) (Math.sqrt(3.0) / 2.0);
 

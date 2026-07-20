@@ -4,8 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.util.NarakaUtils;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.LightTexture;
@@ -28,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-@Environment(EnvType.CLIENT)
 public class NarakaRenderUtils {
     public static final int MAX_TAIL_ALPHA = 0xff;
     public static final float SIN_45 = (float) Math.sin(Math.PI / 4);

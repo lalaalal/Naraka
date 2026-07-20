@@ -3,8 +3,6 @@ package com.yummy.naraka.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.util.ComponentStyles;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.Item;
@@ -17,7 +15,6 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-@Environment(EnvType.CLIENT)
 public class CustomRenderManager {
     private static final Map<Item, CustomItemRenderer> CUSTOM_RENDERERS = new HashMap<>();
     private static final Map<Item, Supplier<Color>> COLORED_ITEMS = new HashMap<>();

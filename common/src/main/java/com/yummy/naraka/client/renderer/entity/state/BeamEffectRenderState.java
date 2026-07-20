@@ -2,14 +2,11 @@ package com.yummy.naraka.client.renderer.entity.state;
 
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.BeamEffect;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public class BeamEffectRenderState {
     public final BeamEffect beamEffect;
     public List<BeamEffectPart> parts = new ArrayList<>();
@@ -36,7 +33,6 @@ public class BeamEffectRenderState {
         }
     }
 
-    @Environment(EnvType.CLIENT)
     public record BeamEffectPart(Vec3 position, int color) {
         public static BeamEffectPart of(Vec3 position, float alpha, int color) {
             return new BeamEffectPart(position, Color.of(color).withAlpha(alpha).pack());

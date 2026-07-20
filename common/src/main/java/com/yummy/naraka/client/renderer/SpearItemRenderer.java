@@ -10,8 +10,6 @@ import com.yummy.naraka.client.model.SpearOfLonginusModel;
 import com.yummy.naraka.client.renderer.entity.SpearRenderer;
 import com.yummy.naraka.world.entity.Spear;
 import com.yummy.naraka.world.item.NarakaItems;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -31,7 +29,6 @@ import org.joml.Quaternionf;
 import java.util.Map;
 import java.util.Set;
 
-@Environment(EnvType.CLIENT)
 public class SpearItemRenderer implements CustomRenderManager.CustomItemRenderer, ResourceManagerReloadListener {
     private static final Map<Item, ResourceLocation> TEXTURE_LOCATIONS = Map.of(
             NarakaItems.SPEAR_ITEM.get(), NarakaTextures.SPEAR,

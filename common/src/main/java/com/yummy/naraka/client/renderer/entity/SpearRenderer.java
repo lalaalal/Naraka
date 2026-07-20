@@ -12,8 +12,6 @@ import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.Spear;
 import com.yummy.naraka.world.entity.SpearOfLonginus;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -29,7 +27,6 @@ import org.joml.Quaternionf;
 
 import java.util.Map;
 
-@Environment(EnvType.CLIENT)
 public class SpearRenderer<T extends Spear> extends EntityRenderer<T> {
     private static final Map<EntityType<? extends Spear>, ResourceLocation> TEXTURE_MAP = Map.of(
             NarakaEntityTypes.THROWN_SPEAR.get(), NarakaTextures.SPEAR,

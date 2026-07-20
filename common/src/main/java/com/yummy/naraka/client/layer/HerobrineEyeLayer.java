@@ -6,8 +6,6 @@ import com.yummy.naraka.Platform;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -16,7 +14,6 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-@Environment(EnvType.CLIENT)
 public class HerobrineEyeLayer<T extends AbstractHerobrine, M extends AbstractHerobrineModel<T>> extends RenderLayer<T, M> {
     public HerobrineEyeLayer(RenderLayerParent<T, M> renderer) {
         super(renderer);

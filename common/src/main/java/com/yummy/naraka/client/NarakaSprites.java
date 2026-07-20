@@ -1,11 +1,8 @@
 package com.yummy.naraka.client;
 
 import com.yummy.naraka.NarakaMod;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 
-@Environment(EnvType.CLIENT)
 public final class NarakaSprites {
     public static final ResourceLocation STIGMA_BACKGROUND = NarakaMod.location("hud/stigma_background");
     public static final ResourceLocation STIGMA = NarakaMod.location("hud/stigma");

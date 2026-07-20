@@ -1,10 +1,7 @@
 package com.yummy.naraka.client.renderer;
 
 import com.yummy.naraka.client.NarakaClientContext;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
-@Environment(EnvType.CLIENT)
 public class WhiteFogRenderHelper {
     private static final int MAX_WHITE_SCREEN_TICK = 20;
 
