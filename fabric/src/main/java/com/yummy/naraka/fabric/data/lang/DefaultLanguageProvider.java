@@ -75,7 +75,7 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
 
         add(LanguageKey.CONFIG_CATEGORY_CLIENT, "Naraka Client Config");
         addConfig(NarakaConfig.CLIENT.playHerobrineBossMusic, "Play Herobrine Boss Music", "히로빈 음악 재생");
-        addConfig(NarakaConfig.CLIENT.enableOreSeeThrough, "Use Ore See Through", "광물 투시 활성화");
+        addConfig(NarakaConfig.CLIENT.enableOreSeeThrough, "Enable Ore See Through", "광물 투시 활성화");
         addConfig(NarakaConfig.CLIENT.oreSeeThroughRange, "Ore See Through Range", "광물 투시 거리");
         addConfig(NarakaConfig.CLIENT.cameraShakingSpeed, "Camera Shaking Speed", "카메라 흔들림 속도");
         addConfig(NarakaConfig.CLIENT.cameraShakingStrength, "Camera Shaking Strength", "카메라 흔들림 강도");
