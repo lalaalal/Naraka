@@ -29,8 +29,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
+import org.jspecify.annotations.Nullable;
 
 public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<SoulSmithingBlockEntity, SoulSmithingBlockRenderState> {
     private final ModelPart main;
@@ -91,7 +91,7 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
     }
 
     @Override
-    public void extractRenderState(SoulSmithingBlockEntity blockEntity, SoulSmithingBlockRenderState renderState, float f, Vec3 vec3, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+    public void extractRenderState(SoulSmithingBlockEntity blockEntity, SoulSmithingBlockRenderState renderState, float f, Vec3 vec3, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, f, vec3, crumblingOverlay);
         this.itemModelResolver.updateForTopItem(renderState.forgingItem, blockEntity.getForgingItem(), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, blockEntity.getSouls());
         renderState.direction = blockEntity.getBlockState().getValue(SoulSmithingBlock.FACING);

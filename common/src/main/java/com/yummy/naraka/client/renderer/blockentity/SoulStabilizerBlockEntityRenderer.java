@@ -21,7 +21,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<SoulStabilizerBlockEntity, SoulStabilizerRenderState> {
     public static final Identifier WATER_OVERLAY = NarakaMod.mcLocation("textures/block/water_overlay.png");
@@ -68,7 +68,7 @@ public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<So
     }
 
     @Override
-    public void extractRenderState(SoulStabilizerBlockEntity blockEntity, SoulStabilizerRenderState blockEntityRenderState, float f, Vec3 vec3, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+    public void extractRenderState(SoulStabilizerBlockEntity blockEntity, SoulStabilizerRenderState blockEntityRenderState, float f, Vec3 vec3, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, blockEntityRenderState, f, vec3, crumblingOverlay);
         blockEntityRenderState.soulType = blockEntity.getSoulType();
         blockEntityRenderState.souls = blockEntity.getSouls();

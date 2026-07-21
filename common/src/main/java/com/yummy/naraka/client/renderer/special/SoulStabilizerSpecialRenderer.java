@@ -19,8 +19,8 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3fc;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.Consumer;
 
@@ -42,7 +42,7 @@ public class SoulStabilizerSpecialRenderer implements SpecialModelRenderer<SoulS
     }
 
     @Override
-    public void submit(@Nullable SoulStabilizerSpecialRenderer.SoulContainer soulContainer, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, boolean hasFoil, int outlineColor) {
+    public void submit(SoulStabilizerSpecialRenderer.@Nullable SoulContainer soulContainer, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, boolean hasFoil, int outlineColor) {
         poseStack.pushPose();
         poseStack.scale(2.8f, 2.8f, 2.8f);
         poseStack.translate(-0.32, 0, -0.32);

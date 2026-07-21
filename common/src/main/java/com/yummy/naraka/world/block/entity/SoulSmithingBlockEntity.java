@@ -4,7 +4,6 @@ import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.tags.NarakaItemTags;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.block.NarakaBlocks;
-import com.yummy.naraka.world.item.NarakaItemTooltip;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimPatterns;
@@ -143,7 +142,6 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
             return false;
         forgingItem = new ItemStack(swordItem);
         forgingItem.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), EquipmentSetHelper.createChallengerSet(soulType));
-        forgingItem.set(DataComponents.LORE, NarakaItemTooltip.SOUL_INFUSED_SWORDS_BLESSED.itemLore());
         if (!player.hasInfiniteMaterials())
             soulStabilizer.consumeSoul(requiredSoul);
         cooldownTick = COOLDOWN;

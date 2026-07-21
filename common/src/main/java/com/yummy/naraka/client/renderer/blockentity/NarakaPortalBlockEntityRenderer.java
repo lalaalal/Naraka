@@ -19,7 +19,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class NarakaPortalBlockEntityRenderer implements BlockEntityRenderer<NarakaPortalBlockEntity, NarakaPortalRenderState> {
     private static final Identifier[] TEXTURE_MAPPING = {
@@ -36,7 +36,7 @@ public class NarakaPortalBlockEntityRenderer implements BlockEntityRenderer<Nara
     }
 
     @Override
-    public void extractRenderState(NarakaPortalBlockEntity blockEntity, NarakaPortalRenderState renderState, float partialTick, Vec3 cameraPosition, @Nullable ModelFeatureRenderer.CrumblingOverlay breakProgress) {
+    public void extractRenderState(NarakaPortalBlockEntity blockEntity, NarakaPortalRenderState renderState, float partialTick, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTick, cameraPosition, breakProgress);
         renderState.usage = blockEntity.getUsage();
     }

@@ -18,7 +18,7 @@ import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class PickaxeSlash extends LightTailEntity {
     public static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(PickaxeSlash.class, EntityDataSerializers.INT);

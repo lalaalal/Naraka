@@ -4,7 +4,7 @@ import com.yummy.naraka.client.event.ClientEvents;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.world.entity.Entity;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -15,8 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Camera.class)
 public abstract class CameraMixin {
     @Unique
-    @Nullable
-    private ClientEvents.CameraSetup.Context naraka$context;
+    private ClientEvents.CameraSetup.@Nullable Context naraka$context;
 
     @Shadow
     protected abstract void move(float forwards, float up, float right);
@@ -25,7 +24,7 @@ public abstract class CameraMixin {
     protected abstract void setRotation(float yRot, float xRot);
 
     @Shadow
-    private @org.jspecify.annotations.Nullable Entity entity;
+    private @Nullable Entity entity;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void init(CallbackInfo ci) {

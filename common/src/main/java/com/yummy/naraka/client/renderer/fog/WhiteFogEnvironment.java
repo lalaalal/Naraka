@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.fog.FogData;
 import net.minecraft.client.renderer.fog.environment.FogEnvironment;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.material.FogType;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class WhiteFogEnvironment extends FogEnvironment {
     @Override

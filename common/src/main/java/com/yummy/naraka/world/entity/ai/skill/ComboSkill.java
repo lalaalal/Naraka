@@ -4,7 +4,7 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Skill can randomly link to next combo skill.

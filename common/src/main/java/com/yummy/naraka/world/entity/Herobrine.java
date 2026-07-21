@@ -27,8 +27,10 @@ import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import com.yummy.naraka.world.entity.data.LockedHealthHelper;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
+import com.yummy.naraka.world.item.NarakaItemTooltip;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
@@ -175,6 +177,11 @@ public class Herobrine extends AbstractHerobrine {
         registerAnimation(HerobrineAnimationIdentifiers.HIDDEN_CHZZK);
     }
 
+    public Herobrine(Level level, Vec3 pos) {
+        this(NarakaEntityTypes.HEROBRINE.get(), level);
+        setPos(pos);
+    }
+
     private void useShadowFlicker(Skill<?> skill) {
         if (getPhase() == 2 && level() instanceof ServerLevel serverLevel) {
             shadowController.consumeFlickerStack(serverLevel);
@@ -189,11 +196,6 @@ public class Herobrine extends AbstractHerobrine {
     private void disableEyeOnPhase3(Skill<?> skill) {
         if (getPhase() == 3)
             setDisplayEye(false);
-    }
-
-    public Herobrine(Level level, Vec3 pos) {
-        this(NarakaEntityTypes.HEROBRINE.get(), level);
-        setPos(pos);
     }
 
     public Optional<ShadowController> getShadowController() {
@@ -866,6 +868,7 @@ public class Herobrine extends AbstractHerobrine {
                 livingEntity.onEquippedItemBroken(stack.getItem(), slot);
             }
             weaponStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
+            weaponStack.set(DataComponents.LORE, NarakaItemTooltip.SOUL_INFUSED_SWORDS_BLESSED.itemLore());
         });
     }
 
