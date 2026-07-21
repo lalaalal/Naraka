@@ -54,6 +54,12 @@ public class HolderProxy<T, V extends T> extends Holder.Reference<T> implements 
         return found;
     }
 
+    public Holder<T> delegate() {
+        if (holder == null)
+            bind(true);
+        return holder;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public V get() {

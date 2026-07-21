@@ -31,8 +31,16 @@ public record MobEffectEquipmentSetEffect(List<MobEffectData> mobEffects) implem
 
     @Override
     public void activate(LivingEntity livingEntity) {
+        for (MobEffectData mobEffectData : mobEffects) {
+            if (!livingEntity.hasEffect(mobEffectData.effect()))
+                livingEntity.addEffect(new MobEffectInstance(mobEffectData.effect(), mobEffectData.duration(), mobEffectData.amplifier()));
+        }
+    }
+
+    @Override
+    public void deactivate(LivingEntity livingEntity) {
         for (MobEffectData mobEffectData : mobEffects)
-            livingEntity.addEffect(new MobEffectInstance(mobEffectData.effect(), mobEffectData.duration(), mobEffectData.amplifier()));
+            livingEntity.removeEffect(mobEffectData.effect());
     }
 
     @Override
@@ -49,8 +57,14 @@ public record MobEffectEquipmentSetEffect(List<MobEffectData> mobEffects) implem
     }
 
     @Override
-    public void deactivate(LivingEntity livingEntity) {
-        for (MobEffectData mobEffectData : mobEffects)
-            livingEntity.removeEffect(mobEffectData.effect());
+    public boolean equals(Object o) {
+        if (!(o instanceof MobEffectEquipmentSetEffect(List<MobEffectData> effects))) return false;
+
+        return mobEffects.equals(effects);
+    }
+
+    @Override
+    public int hashCode() {
+        return mobEffects.hashCode();
     }
 }

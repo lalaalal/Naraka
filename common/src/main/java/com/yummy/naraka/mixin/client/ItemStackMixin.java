@@ -24,8 +24,9 @@ public abstract class ItemStackMixin implements DataComponentHolder {
             ItemEvents.ITEM_TOOLTIP_TOP.invoker().addToTooltip(this, tooltipContext, player, tooltipFlag, components::add);
     }
 
-    @Inject(method = "getTooltipLines", at = @At(value = "FIELD", target = "Lnet/minecraft/core/component/DataComponents;UNBREAKABLE:Lnet/minecraft/core/component/DataComponentType;"))
-    public void addBlessedTooltip(Item.TooltipContext tooltipContext, @Nullable Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> components) {
+    @Inject(method = "getTooltipLines", at = @At("RETURN"))
+    public void addBlessedTooltip(Item.TooltipContext tooltipContext, @Nullable Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir) {
+        List<Component> components = cir.getReturnValue();
         if (player != null)
             ItemEvents.ITEM_TOOLTIP_BOTTOM.invoker().addToTooltip(this, tooltipContext, player, tooltipFlag, components::add);
     }

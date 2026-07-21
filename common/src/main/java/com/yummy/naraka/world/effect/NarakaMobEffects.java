@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.effect;
 
+import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.mixin.invoker.MobEffectInvoker;
 import com.yummy.naraka.tags.NarakaMobEffectTags;
@@ -15,47 +16,47 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public class NarakaMobEffects {
-    public static final Holder<MobEffect> CHALLENGERS_BLESSING_AMETHYST = register(
+    public static final HolderProxy<MobEffect, MobEffect> CHALLENGERS_BLESSING_AMETHYST = register(
             "challengers_blessing_amethyst",
             () -> MobEffectInvoker.create(MobEffectCategory.NEUTRAL, SoulType.AMETHYST.color)
     );
 
-    public static final Holder<MobEffect> CHALLENGERS_BLESSING_COPPER = register(
+    public static final HolderProxy<MobEffect, MobEffect> CHALLENGERS_BLESSING_COPPER = register(
             "challengers_blessing_copper",
             () -> MobEffectInvoker.create(MobEffectCategory.NEUTRAL, SoulType.COPPER.color)
     );
 
-    public static final Holder<MobEffect> CHALLENGERS_BLESSING_DIAMOND = register(
+    public static final HolderProxy<MobEffect, MobEffect> CHALLENGERS_BLESSING_DIAMOND = register(
             "challengers_blessing_diamond",
             () -> MobEffectInvoker.create(MobEffectCategory.NEUTRAL, SoulType.DIAMOND.color)
     );
 
-    public static final Holder<MobEffect> CHALLENGERS_BLESSING_EMERALD = register(
+    public static final HolderProxy<MobEffect, MobEffect> CHALLENGERS_BLESSING_EMERALD = register(
             "challengers_blessing_emerald",
             () -> MobEffectInvoker.create(MobEffectCategory.NEUTRAL, SoulType.EMERALD.color)
     );
 
-    public static final Holder<MobEffect> CHALLENGERS_BLESSING_GOLD = register(
+    public static final HolderProxy<MobEffect, MobEffect> CHALLENGERS_BLESSING_GOLD = register(
             "challengers_blessing_gold",
             () -> MobEffectInvoker.create(MobEffectCategory.NEUTRAL, SoulType.GOLD.color)
     );
 
-    public static final Holder<MobEffect> CHALLENGERS_BLESSING_LAPIS = register(
+    public static final HolderProxy<MobEffect, MobEffect> CHALLENGERS_BLESSING_LAPIS = register(
             "challengers_blessing_lapis",
             () -> MobEffectInvoker.create(MobEffectCategory.NEUTRAL, SoulType.LAPIS.color)
     );
 
-    public static final Holder<MobEffect> CHALLENGERS_BLESSING_NECTARIUM = register(
+    public static final HolderProxy<MobEffect, MobEffect> CHALLENGERS_BLESSING_NECTARIUM = register(
             "challengers_blessing_nectarium",
             () -> MobEffectInvoker.create(MobEffectCategory.NEUTRAL, SoulType.NECTARIUM.color)
     );
 
-    public static final Holder<MobEffect> CHALLENGERS_BLESSING_REDSTONE = register(
+    public static final HolderProxy<MobEffect, MobEffect> CHALLENGERS_BLESSING_REDSTONE = register(
             "challengers_blessing_redstone",
             () -> MobEffectInvoker.create(MobEffectCategory.NEUTRAL, SoulType.REDSTONE.color)
     );
 
-    public static final Holder<MobEffect> GOD_BLESS = register(
+    public static final HolderProxy<MobEffect, MobEffect> GOD_BLESS = register(
             "god_bless",
             () -> MobEffectInvoker.create(MobEffectCategory.BENEFICIAL, 0)
     );
@@ -73,7 +74,7 @@ public class NarakaMobEffects {
 
     }
 
-    private static Holder<MobEffect> register(String name, Supplier<MobEffect> effect) {
+    private static HolderProxy<MobEffect, MobEffect> register(String name, Supplier<MobEffect> effect) {
         return RegistryProxy.register(Registries.MOB_EFFECT, name, effect);
     }
 }
