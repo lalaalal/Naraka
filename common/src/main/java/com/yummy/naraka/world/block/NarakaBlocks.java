@@ -115,6 +115,7 @@ public class NarakaBlocks {
             NarakaBlockIds.PURIFIED_SOUL_FIRE_BLOCK,
             PurifiedSoulFireBlock::new,
             from(Blocks.SOUL_FIRE)
+                    .strength(-1)
                     .mapColor(MapColor.COLOR_BLACK)
                     .noLootTable()
                     .lightLevel(state -> 7)
