@@ -12,7 +12,6 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSetHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Unit;
@@ -307,7 +306,7 @@ public class NarakaItems {
 
     private static <I extends Item> HolderProxy<Item, I> registerItem(ResourceKey<Item> key, Function<Item.Properties, I> factory, Item.Properties properties) {
         properties.setId(key);
-        return RegistryProxy.register(Registries.ITEM, key, () -> factory.apply(properties));
+        return RegistryProxy.register(key, () -> factory.apply(properties));
     }
 
     private static <I extends Item> HolderProxy<Item, I> registerItem(ResourceKey<Item> key, Function<Item.Properties, I> factory) {
