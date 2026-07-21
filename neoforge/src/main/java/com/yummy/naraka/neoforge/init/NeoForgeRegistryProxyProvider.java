@@ -8,6 +8,7 @@ import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.neoforge.NarakaEventBus;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.HashMap;
@@ -61,8 +62,13 @@ public final class NeoForgeRegistryProxyProvider extends RegistryProxyProvider i
 
         @Override
         public <V extends T> HolderProxy<T, V> register(String name, Supplier<V> value) {
-            registry.register(name, value);
-            return createHolder(name);
+            return register(NarakaMod.location(name), value);
+        }
+
+        @Override
+        public <V extends T> HolderProxy<T, V> register(ResourceLocation id, Supplier<V> value) {
+            registry.register(id.getPath(), value);
+            return createHolder(id);
         }
 
         @Override

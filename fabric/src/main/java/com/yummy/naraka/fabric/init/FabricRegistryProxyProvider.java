@@ -7,6 +7,7 @@ import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.invoker.MethodProxy;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.Supplier;
 
@@ -42,8 +43,13 @@ public final class FabricRegistryProxyProvider extends RegistryProxyProvider {
 
         @Override
         public <V extends T> HolderProxy<T, V> register(String name, Supplier<V> value) {
-            Registry.register(getRegistryOrThrow(), NarakaMod.location(name), value.get());
-            return createHolder(name);
+            return register(NarakaMod.location(name), value);
+        }
+
+        @Override
+        public <V extends T> HolderProxy<T, V> register(ResourceLocation id, Supplier<V> value) {
+            Registry.register(getRegistryOrThrow(), id, value.get());
+            return createHolder(id);
         }
     }
 }
