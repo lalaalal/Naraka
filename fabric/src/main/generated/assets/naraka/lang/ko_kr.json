@@ -253,10 +253,6 @@
   "item.naraka.sanctuary_compass.tooltip.2": "이것은 그 일환으로서, 언제나 세계를 침범한 그것의 성역을 가리킬 것이다.",
   "item.naraka.sanctuary_compass.tooltip.3": "그것을 쓰러뜨리고 세계의 존속을 이어나갈 수 있는, 영웅이 나타나기를 기다리며.",
   "item.naraka.skill_controller": "스킬 컨트롤러",
-  "item.naraka.smithing_template.purified_soul_upgrade.additions_slot_description": "정화된 영혼 금속, 영혼이 주입된 재료 또는 신의 피를 놓으세요",
-  "item.naraka.smithing_template.purified_soul_upgrade.applies_to": "흑단나무 검, 정화된 영혼 무기",
-  "item.naraka.smithing_template.purified_soul_upgrade.base_slot_description": "흑단나무 무기, 정화된 영혼 검 또는 창를 놓으세요",
-  "item.naraka.smithing_template.purified_soul_upgrade.ingredients": "정화된 영혼 금속, 영혼이 주입된 재료",
   "item.naraka.soul_infused_amethyst": "영혼이 주입된 자수정",
   "item.naraka.soul_infused_amethyst_sword": "영혼이 주입된 자수정 검",
   "item.naraka.soul_infused_copper": "영혼이 주입된 구리",
@@ -300,7 +296,6 @@
   "jade.naraka.nectarium_core.activated": "활성화됨",
   "jade.naraka.nectarium_core.deactivated": "비활성화됨",
   "jade.naraka.nectarium_core.honey": "(%d 남음)",
-  "jade.naraka.soul_crafting.fuel": "연료: %d",
   "jade.naraka.soul_stabilizer": "%d",
   "jade.naraka.stigma": ": %d",
   "jukebox_song.naraka.herobrine_phase_1": "히로빈 1 페이즈",
@@ -372,6 +367,5 @@
   "trim_material.naraka.soul_infused_gold": "영혼이 주입된 금 소재",
   "trim_material.naraka.soul_infused_lapis": "영혼이 주입된 청금석 소재",
   "trim_material.naraka.soul_infused_nectarium": "영혼이 주입된 넥타륨 소재",
-  "trim_material.naraka.soul_infused_redstone": "영혼이 주입된 레드스톤 소재",
-  "upgrade.naraka.purified_soul_upgrade": "정화된 영혼 강화"
+  "trim_material.naraka.soul_infused_redstone": "영혼이 주입된 레드스톤 소재"
 }
