@@ -4,6 +4,7 @@ import com.yummy.naraka.config.Configuration;
 import com.yummy.naraka.core.registries.ValueGetter;
 import com.yummy.naraka.data.lang.AdvancementComponent;
 import com.yummy.naraka.data.lang.LanguageKey;
+import com.yummy.naraka.world.item.NarakaItemTooltip;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -71,12 +72,27 @@ public abstract class NarakaLanguageProviders {
         add(item.getConcreteValue().getDescriptionId(), translations);
     }
 
+    public void addItemDescription(ValueGetter<? extends Item> item, String... translations) {
+        add(item.getConcreteValue().getDescriptionId() + ".desc", translations);
+    }
+
     public void addBlock(ValueGetter<? extends Block> block, String... translations) {
         add(block.getConcreteValue().getDescriptionId(), translations);
     }
 
-    public void addTooltip(ValueGetter<? extends Block> block, String... translations) {
-        add(LanguageKey.tooltip(block.getConcreteValue()), translations);
+    public void addTooltip(ResourceKey<Item> item, String... translations) {
+        add(LanguageKey.tooltip(item), translations);
+    }
+
+    public void addTooltip(NarakaItemTooltip itemTooltip, List<List<String>> lines) {
+        List<String> translationKeys = itemTooltip.translationKeys();
+        if (translationKeys.size() != lines.size())
+            throw new IllegalStateException("%s : Translations must have same number of keys (required=%d / given=%d)".formatted(itemTooltip.getId(), translationKeys.size(), lines.size()));
+        for (int index = 0; index < lines.size(); index++) {
+            String translationKey = translationKeys.get(index);
+            List<String> translations = lines.get(index);
+            add(translationKey, translations.toArray(String[]::new));
+        }
     }
 
     public void addEntityType(ValueGetter<? extends EntityType<?>> entityType, String... translations) {

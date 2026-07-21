@@ -29,6 +29,12 @@ public abstract class ItemStackMixin {
             ItemEvents.ITEM_TOOLTIP_TOP.invoker().addToTooltip(naraka$self(), player, isAdvanced, list::add);
     }
 
+    @Inject(method = "getTooltipLines", at = @At(value = "FIELD", target = "Lnet/minecraft/world/item/ItemStack$TooltipPart;MODIFIERS:Lnet/minecraft/world/item/ItemStack$TooltipPart;", opcode = Opcodes.GETSTATIC))
+    public void addTooltipToMiddle(@Nullable Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
+        if (player != null)
+            ItemEvents.ITEM_TOOLTIP_MIDDLE.invoker().addToTooltip(naraka$self(), player, isAdvanced, list::add);
+    }
+
     @Inject(method = "getTooltipLines", at = @At("RETURN"))
     public void addTooltipToBottom(@Nullable Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir) {
         List<Component> components = cir.getReturnValue();

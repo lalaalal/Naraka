@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 
 import java.util.Optional;
 
@@ -70,20 +69,12 @@ public final class LanguageKey {
         return Util.makeDescriptionId("equipment_effect", id);
     }
 
-    public static String tooltip(Block block) {
-        return block.getDescriptionId() + ".tooltip";
+    public static String tooltip(ResourceKey<Item> key) {
+        return Util.makeDescriptionId(key.registry().getPath(), key.location()) + ".tooltip";
     }
 
-    public static String blockTooltip(String name) {
-        return "block.naraka." + name + ".tooltip";
-    }
-
-    public static String tooltip(Item item) {
-        return item.getDescriptionId() + ".tooltip";
-    }
-
-    public static String itemTooltip(String name) {
-        return "item.naraka." + name + ".tooltip";
+    public static String tooltip(ResourceLocation id, String prefix) {
+        return Util.makeDescriptionId("item", id) + ".tooltip." + prefix;
     }
 
     public static String itemGroup(String path) {

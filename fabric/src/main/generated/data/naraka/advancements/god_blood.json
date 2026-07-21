@@ -22,7 +22,8 @@
     "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "naraka:god_blood"
+      "item": "naraka:god_blood",
+      "nbt": "{ItemDetail:['{\"color\":\"gray\",\"translate\":\"item.naraka.god_blood.tooltip.0\"}','{\"color\":\"gray\",\"translate\":\"item.naraka.god_blood.tooltip.1\"}','{\"text\":\"\"}','{\"italic\":true,\"color\":\"dark_gray\",\"translate\":\"item.naraka.god_blood.tooltip.2\"}','{\"italic\":true,\"color\":\"dark_gray\",\"translate\":\"item.naraka.god_blood.tooltip.3\"}','{\"italic\":true,\"color\":\"dark_gray\",\"translate\":\"item.naraka.god_blood.tooltip.4\"}']}"
     },
     "show_toast": true,
     "title": {

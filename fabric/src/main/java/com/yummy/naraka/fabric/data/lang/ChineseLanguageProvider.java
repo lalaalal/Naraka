@@ -260,10 +260,6 @@ public class ChineseLanguageProvider extends NarakaLanguageProviders {
         addBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, "灵魂锻造台");
         addBlock(NarakaBlocks.NARAKA_PORTAL, "炼狱传送门");
 
-        addTooltip(NarakaBlocks.NECTARIUM_CORE_BLOCK, "蜂蜜正在滴落");
-        addTooltip(NarakaBlocks.SOUL_SMITHING_BLOCK, "试试用重锤砸它...？");
-        addTooltip(NarakaBlocks.HEROBRINE_TOTEM, "它似乎只在圣所中生效");
-
         addEntityType(NarakaEntityTypes.HEROBRINE, "炼狱暴君 Herobrine");
         addEntityType(NarakaEntityTypes.ORIGIN_HEROBRINE, "炼狱之源 Herobrine");
         addEntityType(NarakaEntityTypes.SHADOW_HEROBRINE, "Herobrine之影");

@@ -25,6 +25,8 @@ import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import com.yummy.naraka.world.entity.data.LockedHealthHelper;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
+import com.yummy.naraka.world.item.ItemDetail;
+import com.yummy.naraka.world.item.NarakaItemTooltip;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -846,7 +848,8 @@ public class Herobrine extends AbstractHerobrine {
                 }
             }
             ItemStack weaponStack = livingEntity.getMainHandItem();
-            NarakaItemUtils.storeNbtData(weaponStack, "Blessed", Codec.BOOL, true);
+            NarakaItemUtils.storeNbtData(weaponStack, NarakaItemUtils.TAG_BLESSED, Codec.BOOL, true);
+            NarakaItemUtils.storeNbtData(weaponStack, NarakaItemUtils.TAG_ITEM_DETAIL, ItemDetail.CODEC, NarakaItemTooltip.SOUL_INFUSED_SWORDS_BLESSED.itemDetail());
         });
     }
 

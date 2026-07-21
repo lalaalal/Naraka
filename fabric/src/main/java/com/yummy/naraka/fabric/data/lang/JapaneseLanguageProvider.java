@@ -260,10 +260,6 @@ public class JapaneseLanguageProvider extends NarakaLanguageProviders {
         addBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, "魂の鍛冶台");
         addBlock(NarakaBlocks.NARAKA_PORTAL, "奈落へのポータル");
 
-        addTooltip(NarakaBlocks.NECTARIUM_CORE_BLOCK, "はちみつが滴り落ちている。");
-        addTooltip(NarakaBlocks.SOUL_SMITHING_BLOCK, "ハンマー/メイスでアイテムを加工すると…？");
-        addTooltip(NarakaBlocks.HEROBRINE_TOTEM, "どうやら、神聖な場所でのみ使えるようだ...");
-
         addEntityType(NarakaEntityTypes.HEROBRINE, "奈落の暴君: へロブライン");
         addEntityType(NarakaEntityTypes.ORIGIN_HEROBRINE, "始祖の奈落: へロブライン");
         addEntityType(NarakaEntityTypes.SHADOW_HEROBRINE, "へロブラインの影");

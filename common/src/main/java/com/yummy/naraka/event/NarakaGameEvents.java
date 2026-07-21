@@ -11,6 +11,7 @@ import com.yummy.naraka.util.TickSchedule;
 import com.yummy.naraka.world.TickFreezeManager;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import com.yummy.naraka.world.item.ItemDetail;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
@@ -53,6 +54,7 @@ public final class NarakaGameEvents {
         LootEvents.MODIFY_LOOT_TABLE.register(NarakaGameEvents::modifyLootTable);
 
         ItemEvents.ITEM_TOOLTIP_TOP.register(NarakaGameEvents::addItemTooltipsTop);
+        ItemEvents.ITEM_TOOLTIP_MIDDLE.register(NarakaGameEvents::addItemTooltipsMiddle);
         ItemEvents.ITEM_TOOLTIP_BOTTOM.register(NarakaGameEvents::addItemTooltipsBottom);
     }
 
@@ -139,6 +141,11 @@ public final class NarakaGameEvents {
 
         Reinforcement reinforcement = Reinforcement.get(itemStack, registryAccess);
         reinforcement.addToTooltip(builder);
+    }
+
+    private static void addItemTooltipsMiddle(ItemStack itemStack, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder) {
+        NarakaItemUtils.readNbtDataOrDefault(itemStack, NarakaItemUtils.TAG_ITEM_DETAIL, ItemDetail.CODEC, ItemDetail.EMPTY)
+                .addToTooltip(itemStack, player, tooltipFlag, builder);
     }
 
     private static void addItemTooltipsBottom(ItemStack itemStack, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder) {

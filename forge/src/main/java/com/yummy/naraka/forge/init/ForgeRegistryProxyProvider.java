@@ -68,13 +68,18 @@ public final class ForgeRegistryProxyProvider extends RegistryProxyProvider impl
 
         @Override
         public <V extends T> HolderProxy<T, V> register(String name, Supplier<V> value) {
-            entries.put(NarakaMod.location(name), value);
-            return createHolder(name, value);
+            return register(NarakaMod.location(name), value);
         }
 
         @Override
-        public <V extends T> HolderProxy<T, V> createHolder(String name, Supplier<V> value) {
-            ResourceKey<T> key = ResourceKey.create(registryKey, NarakaMod.location(name));
+        public <V extends T> HolderProxy<T, V> register(ResourceLocation id, Supplier<V> value) {
+            entries.put(id, value);
+            return createHolder(id, value);
+        }
+
+        @Override
+        public <V extends T> HolderProxy<T, V> createHolder(ResourceLocation id, Supplier<V> value) {
+            ResourceKey<T> key = ResourceKey.create(registryKey, id);
             return new HolderProxy<>(key);
         }
 

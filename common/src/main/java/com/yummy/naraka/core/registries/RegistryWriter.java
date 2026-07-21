@@ -1,12 +1,11 @@
 package com.yummy.naraka.core.registries;
 
-import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
-
 import java.util.function.Supplier;
 
 /**
@@ -20,17 +19,48 @@ public interface RegistryWriter<T> {
     /**
      * Register value for given registry key
      *
-     * @param key   Registry key
-     * @param name  Name of value
+     * @param registryKey Registry key
+     * @param name        Name of value
+     * @param value       Supplier of value
+     * @param <T>         Registry value type
+     * @param <V>         Derived registry value type
+     * @return Holder for given value
+     * @see HolderProxy
+     */
+    static <T, V extends T> HolderProxy<T, V> register(ResourceKey<Registry<T>> registryKey, String name, Supplier<V> value) {
+        return RegistryProxyProvider.get(registryKey)
+                .register(name, value);
+    }
+
+    /**
+     * Register value for given registry key
+     *
+     * @param registryKey Registry key
+     * @param id          Name of value
+     * @param value       Supplier of value
+     * @param <T>         Registry value type
+     * @param <V>         Derived registry value type
+     * @return Holder for given value
+     * @see HolderProxy
+     */
+    static <T, V extends T> HolderProxy<T, V> register(ResourceKey<Registry<T>> registryKey, ResourceLocation id, Supplier<V> value) {
+        return RegistryProxyProvider.get(registryKey)
+                .register(id, value);
+    }
+
+    /**
+     * Register value for given registry key
+     *
+     * @param key   Name of value
      * @param value Supplier of value
      * @param <T>   Registry value type
      * @param <V>   Derived registry value type
      * @return Holder for given value
      * @see HolderProxy
      */
-    static <T, V extends T> HolderProxy<T, V> register(ResourceKey<Registry<T>> key, String name, Supplier<V> value) {
-        return RegistryProxyProvider.get(key)
-                .register(name, value);
+    static <T, V extends T> HolderProxy<T, V> register(ResourceKey<T> key, Supplier<V> value) {
+        return RegistryProxyProvider.get(ResourceKey.<T>createRegistryKey(key.registry()))
+                .register(key.location(), value);
     }
 
     @SuppressWarnings("unchecked")
@@ -50,8 +80,10 @@ public interface RegistryWriter<T> {
 
     <V extends T> HolderProxy<T, V> register(String name, Supplier<V> value);
 
-    default <V extends T> HolderProxy<T, V> createHolder(String name, Supplier<V> value) {
-        return new HolderProxy<>(getRegistryOrThrow(), NarakaMod.location(name));
+    <V extends T> HolderProxy<T, V> register(ResourceLocation id, Supplier<V> value);
+
+    default <V extends T> HolderProxy<T, V> createHolder(ResourceLocation id, Supplier<V> value) {
+        return new HolderProxy<>(getRegistryOrThrow(), id);
     }
 
     default void onRegistrationFinished() {

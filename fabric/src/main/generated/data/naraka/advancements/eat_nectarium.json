@@ -20,7 +20,8 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "naraka:nectarium"
+      "item": "naraka:nectarium",
+      "nbt": "{ItemDetail:['{\"color\":\"gray\",\"translate\":\"item.naraka.nectarium.tooltip.0\"}']}"
     },
     "show_toast": true,
     "title": {

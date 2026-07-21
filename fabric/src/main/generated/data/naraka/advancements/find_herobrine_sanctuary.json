@@ -26,7 +26,8 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "naraka:sanctuary_compass"
+      "item": "naraka:sanctuary_compass",
+      "nbt": "{ItemDetail:['{\"color\":\"gray\",\"translate\":\"item.naraka.sanctuary_compass.tooltip.0\"}','{\"text\":\"\"}','{\"italic\":true,\"color\":\"dark_gray\",\"translate\":\"item.naraka.sanctuary_compass.tooltip.1\"}','{\"italic\":true,\"color\":\"dark_gray\",\"translate\":\"item.naraka.sanctuary_compass.tooltip.2\"}','{\"italic\":true,\"color\":\"dark_gray\",\"translate\":\"item.naraka.sanctuary_compass.tooltip.3\"}']}"
     },
     "show_toast": true,
     "title": {

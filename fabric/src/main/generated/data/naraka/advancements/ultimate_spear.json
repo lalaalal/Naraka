@@ -22,7 +22,8 @@
     "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "naraka:spear_of_longinus"
+      "item": "naraka:spear_of_longinus",
+      "nbt": "{ItemDetail:['{\"color\":\"gray\",\"translate\":\"item.naraka.spear_of_longinus.tooltip.0\"}','{\"color\":\"gray\",\"translate\":\"item.naraka.spear_of_longinus.tooltip.1\"}','{\"text\":\"\"}','{\"italic\":true,\"color\":\"dark_gray\",\"translate\":\"item.naraka.spear_of_longinus.tooltip.2\"}','{\"italic\":true,\"color\":\"dark_gray\",\"translate\":\"item.naraka.spear_of_longinus.tooltip.3\"}','{\"italic\":true,\"color\":\"dark_gray\",\"translate\":\"item.naraka.spear_of_longinus.tooltip.4\"}']}"
     },
     "show_toast": true,
     "title": {
