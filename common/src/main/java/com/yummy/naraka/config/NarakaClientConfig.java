@@ -6,14 +6,12 @@ public class NarakaClientConfig extends StaticConfiguration {
     public final ConfigValue<Boolean> showReinforcementValue = define("show_reinforcement_value", false);
     public final ConfigValue<Color> afterimageColor = define("afterimage_color", Color.of(0x000000));
     public final ConfigValue<Color> shadowHerobrineColor = define("shadow_herobrine_color", Color.of(0x000000));
-    public final ConfigValue<Integer> herobrineScarfPartitionNumber = define("herobrine_scarf_partition_number", 32)
-            .comment("Divide scarf with given number")
-            .comment("Bigger value, short wave cycle")
-            .comment("!! Editing while playing game may cause crash");
-    public final ConfigValue<Boolean> disableHerobrineBossMusic = define("disable_herobrine_boss_music", false);
+
+    public final ConfigValue<Boolean> playHerobrineBossMusic = define("play_herobrine_boss_music", true);
+    public final ConfigValue<Boolean> disableEmissiveRenderType = define("disable_emissive_render_type", false);
 
     public final ConfigValue<Integer> oreSeeThroughRange = define("ore_see_through_range", 20);
-    public final ConfigValue<Boolean> disableOreSeeThrough = define("disable_ore_see_through", false);
+    public final ConfigValue<Boolean> enableOreSeeThrough = define("enable_ore_see_through", true);
     public final ConfigValue<Integer> herobrineSkyCloudSpeed = define("herobrine_sky_cloud_speed", 500);
 
     public final ConfigValue<Float> cameraShakingSpeed = define("camera_shaking_speed", 4f);

@@ -6,8 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -30,8 +29,8 @@ public abstract class DynamicConfiguration<T> extends Configuration {
      * @param key          Key of configuration value
      * @param defaultValue Default configuration value
      */
-    protected void addDefaultValue(String key, ConfigValue<T> defaultValue) {
-        this.defaultValues.put(key, defaultValue);
+    protected void addDefaultValue(String key, T defaultValue) {
+        this.defaultValues.put(key, new ConfigValue<>(key, defaultValue));
     }
 
     /**
@@ -39,7 +38,22 @@ public abstract class DynamicConfiguration<T> extends Configuration {
      *
      * @return New configuration value with default value
      */
-    protected abstract ConfigValue<T> createDefaultValue();
+    protected abstract ConfigValue<T> createDefaultValue(String key);
+
+    @Override
+    public Collection<ConfigValue<T>> values() {
+        return configurations.values();
+    }
+
+    public Collection<ConfigValue<T>> defaultValues() {
+        return defaultValues.values();
+    }
+
+    public void loadValues(List<ConfigValue<T>> values) {
+        configurations.clear();
+        for (ConfigValue<T> value : values)
+            configurations.put(value.getKey(), value);
+    }
 
     @Override
     public void loadValues() {
@@ -47,7 +61,7 @@ public abstract class DynamicConfiguration<T> extends Configuration {
         configurations.clear();
         try (Reader reader = file.createReader()) {
             for (String key : file.load(reader)) {
-                ConfigValue<T> value = createDefaultValue();
+                ConfigValue<T> value = createDefaultValue(key);
                 file.read(key, value);
                 configurations.put(key, value);
             }
@@ -61,18 +75,21 @@ public abstract class DynamicConfiguration<T> extends Configuration {
     }
 
     @Override
-    public void saveValues() {
+    public synchronized void saveValues() {
         NarakaMod.LOGGER.debug("Saving dynamic configuration \"{}\" to \"{}\"", name, file.getAbsolutePath());
-        watchChange = false;
         try (Writer writer = file.createWriter()) {
-            for (Map.Entry<String, ConfigValue<T>> entry : defaultValues.entrySet())
+            for (Map.Entry<String, ConfigValue<T>> entry : entries())
                 file.write(writer, entry.getKey(), entry.getValue());
             file.commit(writer);
         } catch (IOException exception) {
             NarakaMod.LOGGER.error("An error occurred while saving default configuration values for \"{}\"", name);
             NarakaMod.LOGGER.warn("Ignore all configuration values for \"{}\"", name);
-        } finally {
-            watchChange = true;
         }
+    }
+
+    private Set<Map.Entry<String, ConfigValue<T>>> entries() {
+        if (configurations.isEmpty())
+            return defaultValues.entrySet();
+        return configurations.entrySet();
     }
 }

@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,9 +31,14 @@ public abstract class StaticConfiguration extends Configuration {
      * @return Configuration value instance
      */
     protected <T> ConfigValue<T> define(String key, T defaultValue) {
-        ConfigValue<T> value = new ConfigValue<>(defaultValue);
+        ConfigValue<T> value = new ConfigValue<>(key, defaultValue);
         configurations.put(key, value);
         return value;
+    }
+
+    @Override
+    public Collection<ConfigValue<?>> values() {
+        return configurations.values();
     }
 
     @Override
@@ -60,7 +66,6 @@ public abstract class StaticConfiguration extends Configuration {
     @Override
     public synchronized void saveValues() {
         NarakaMod.LOGGER.debug("Saving static configuration \"{}\" to \"{}\"", name, file.getAbsolutePath());
-        watchChange = false;
         try (Writer writer = file.createWriter()) {
             for (Map.Entry<String, ConfigValue<?>> entry : configurations.entrySet()) {
                 String key = entry.getKey();
@@ -70,8 +75,6 @@ public abstract class StaticConfiguration extends Configuration {
             file.commit(writer);
         } catch (IOException exception) {
             NarakaMod.LOGGER.error("An error occurred while saving config values");
-        } finally {
-            watchChange = true;
         }
     }
 

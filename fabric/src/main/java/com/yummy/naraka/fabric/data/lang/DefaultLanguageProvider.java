@@ -1,5 +1,6 @@
 package com.yummy.naraka.fabric.data.lang;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.data.lang.AdvancementExtraComponents;
 import com.yummy.naraka.data.lang.AdvancementNarakaComponents;
 import com.yummy.naraka.data.lang.LanguageKey;
@@ -41,13 +42,40 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         add(LanguageKey.KEY_CATEGORIES_NARAKA, "Naraka", "Naraka");
         add(LanguageKey.KEY_TOGGLE_ORE_SEE_THROUGH, "Toggle Ore See Through", "광물 투시 켜기/끄기");
 
-        add(LanguageKey.toggleOreSeeThroughMessage(false), "Ore See Through is now enabled", "광물 투시 활성화됨");
-        add(LanguageKey.toggleOreSeeThroughMessage(true), "Ore See Through is now disabled", "광물 투시 비활성화됨");
+        add(LanguageKey.toggleOreSeeThroughMessage(true), "Ore See Through is now enabled", "광물 투시 활성화됨");
+        add(LanguageKey.toggleOreSeeThroughMessage(false), "Ore See Through is now disabled", "광물 투시 비활성화됨");
 
         add(LanguageKey.REINFORCEMENT_KEY, "Reinforcement: %d", "강화: %d");
         add(LanguageKey.BLESSED_KEY, "Blessed", "축복받음");
         add(LanguageKey.HEROBRINE_SCARF_KEY, "Scarf Attached", "스카프 장착됨");
 
+        add(LanguageKey.CONFIG_TITLE, "Naraka Config");
+        add(LanguageKey.CONFIG_CATEGORY_COMMON, "Naraka Common Config");
+        addConfig(NarakaConfig.COMMON.showTestCreativeModeTab,
+                List.of("Show Test Creative Mode Tab", "테스트 크리에이티브 모드 탭 표시"),
+                List.of(
+                        List.of("Restart required", "재시작 필요")
+                )
+        );
+        addConfig(NarakaConfig.COMMON.enableStigma, "Enable Stigma", "낙인 활성화");
+        addConfig(NarakaConfig.COMMON.stigmaStunDuration,
+                List.of("Stigma Stun Duration", "낙인 스턴 지속시간"),
+                List.of(
+                        List.of("Stun duration in ticks", "낙인 스턴 지속 시간 (틱)")
+                )
+        );
+        addConfig(NarakaConfig.COMMON.lockHealthRatio, "Lock Health Ratio", "체력 잠금 비율");
+
+        add(LanguageKey.CONFIG_CATEGORY_CLIENT, "Naraka Client Config");
+        addConfig(NarakaConfig.CLIENT.playHerobrineBossMusic, "Play Herobrine Boss Music", "히로빈 음악 재생");
+        addConfig(NarakaConfig.CLIENT.enableOreSeeThrough, "Enable Ore See Through", "광물 투시 활성화");
+        addConfig(NarakaConfig.CLIENT.oreSeeThroughRange, "Ore See Through Range", "광물 투시 거리");
+        addConfig(NarakaConfig.CLIENT.cameraShakingSpeed, "Camera Shaking Speed", "카메라 흔들림 속도");
+        addConfig(NarakaConfig.CLIENT.cameraShakingStrength, "Camera Shaking Strength", "카메라 흔들림 강도");
+        add(LanguageKey.CONFIG_ORE_COLOR, "Ore Outline Color", "광물 외곽선 색");
+        add(LanguageKey.CONFIG_ORE_COLOR_WRONG, "Wrong Format!", "잘못된 형식입니다!");
+
+        add(NarakaJadeProviderComponents.SOUL_CRAFTING_BLOCK.translationKey, "Soul Crafting Block", "영혼 세공기");
         add(LanguageKey.JADE_SOUL_STABILIZER_KEY, "%d");
         add(NarakaJadeProviderComponents.SOUL_STABILIZER.translationKey, "Soul Stabilizer", "영혼 안정기");
         add(LanguageKey.JADE_STIGMA_KEY, ": %d", ": %d");

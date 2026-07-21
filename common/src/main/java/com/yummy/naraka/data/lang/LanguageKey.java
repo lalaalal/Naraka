@@ -48,6 +48,12 @@ public final class LanguageKey {
 
     public static final String CHALLENGERS_BLESSING = Util.makeDescriptionId("effect", NarakaMod.location("challengers_blessing"));
 
+    public static final String CONFIG_TITLE = "config.naraka.title";
+    public static final String CONFIG_CATEGORY_CLIENT = "config.naraka.category.client";
+    public static final String CONFIG_CATEGORY_COMMON = "config.naraka.category.common";
+    public static final String CONFIG_ORE_COLOR = "config.naraka.ore_color";
+    public static final String CONFIG_ORE_COLOR_WRONG = "config.naraka.ore_color.error";
+
     public static String reinforcementEffect(Holder<ReinforcementEffect> reinforcementEffect) {
         Optional<ResourceKey<ReinforcementEffect>> key = reinforcementEffect.unwrapKey();
         if (key.isEmpty())
@@ -92,15 +98,15 @@ public final class LanguageKey {
         return "key.categories." + path;
     }
 
-    public static String toggleOreSeeThroughMessage(boolean disabled) {
-        String state = disabled ? "disable" : "enable";
+    public static String toggleOreSeeThroughMessage(boolean enabled) {
+        String state = enabled ? "enable" : "disable";
         return "message.naraka.ore_see_through." + state;
     }
 
     public static String animation(ResourceLocation animationLocation) {
         return "animation." + animationLocation.getNamespace() + "." + animationLocation.getPath()
-                .replaceAll("animation/", "")
-                .replaceAll("/", ".");
+                .replace("animation/", "")
+                .replace("/", ".");
     }
 
     public static String skill(ResourceLocation skillLocation) {

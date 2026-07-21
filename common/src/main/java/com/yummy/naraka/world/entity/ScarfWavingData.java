@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.entity;
 
-import com.yummy.naraka.config.NarakaConfig;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
@@ -9,12 +8,12 @@ import java.util.List;
 
 public class ScarfWavingData {
     private static final float MAX_SCARF_ROTATION_DEGREE = 70;
+    private static final int PARTITION_NUMBER = 32;
 
     private final List<Float> verticalPositions;
     private final List<Float> verticalShifts;
     private final List<Float> horizontalPositions;
 
-    private final int partitionNumber;
     private float verticalDegree;
     private float ySpeed;
 
@@ -22,11 +21,10 @@ public class ScarfWavingData {
     private float prevScarfRotationDegree;
 
     public ScarfWavingData() {
-        partitionNumber = NarakaConfig.CLIENT.herobrineScarfPartitionNumber.getValue();
         verticalPositions = new LinkedList<>();
         verticalShifts = new LinkedList<>();
         horizontalPositions = new LinkedList<>();
-        for (int i = 0; i < partitionNumber * 2; i++) {
+        for (int i = 0; i < PARTITION_NUMBER * 2; i++) {
             verticalPositions.add(0f);
             verticalShifts.add(0f);
             horizontalPositions.add(0f);
@@ -75,11 +73,11 @@ public class ScarfWavingData {
     }
 
     public int getVerticalSize() {
-        return partitionNumber;
+        return PARTITION_NUMBER;
     }
 
     public int getHorizontalSize() {
-        return partitionNumber;
+        return PARTITION_NUMBER;
     }
 
     public float getVerticalPosition(int index, float partialTick) {

@@ -37,8 +37,8 @@ public class ChineseLanguageProvider extends NarakaLanguageProviders {
         add(LanguageKey.KEY_CATEGORIES_NARAKA, "Naraka");
         add(LanguageKey.KEY_TOGGLE_ORE_SEE_THROUGH, "开关矿物透视");
 
-        add(LanguageKey.toggleOreSeeThroughMessage(false), "矿物透视已启用");
-        add(LanguageKey.toggleOreSeeThroughMessage(true), "矿物透视已关闭");
+        add(LanguageKey.toggleOreSeeThroughMessage(true), "矿物透视已启用");
+        add(LanguageKey.toggleOreSeeThroughMessage(false), "矿物透视已关闭");
 
         add(LanguageKey.REINFORCEMENT_KEY, "强化： %d");
         add(LanguageKey.BLESSED_KEY, "受祝福的");

@@ -37,8 +37,8 @@ public class JapaneseLanguageProvider extends NarakaLanguageProviders {
         add(LanguageKey.KEY_CATEGORIES_NARAKA, "Naraka");
         add(LanguageKey.KEY_TOGGLE_ORE_SEE_THROUGH, "鉱石の透過の表示/非表示を切り替える");
 
-        add(LanguageKey.toggleOreSeeThroughMessage(false), "鉱石の透過を表示にしました");
-        add(LanguageKey.toggleOreSeeThroughMessage(true), "鉱石の透過を非表示にしました");
+        add(LanguageKey.toggleOreSeeThroughMessage(true), "鉱石の透過を表示にしました");
+        add(LanguageKey.toggleOreSeeThroughMessage(false), "鉱石の透過を非表示にしました");
 
         add(LanguageKey.REINFORCEMENT_KEY, "アップグレード: %d");
         add(LanguageKey.BLESSED_KEY, "奈落の祝福");

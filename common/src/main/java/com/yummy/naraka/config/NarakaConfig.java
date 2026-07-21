@@ -19,7 +19,8 @@ import java.util.function.Supplier;
 public class NarakaConfig {
     private static @Nullable WatchService watchService;
 
-    private static final Set<Configuration> configurations = new HashSet<>();
+    private static final Set<Configuration> CONFIGURATIONS = new HashSet<>();
+    private static final File IRIS_CONFIG_FILE = ConfigFile.CONFIG_PATH.resolve("iris.properties").toFile();
 
     public static final NarakaCommonConfig COMMON = register(NarakaCommonConfig::new);
     public static final NarakaClientConfig CLIENT = registerForClient(NarakaClientConfig::new);
@@ -29,7 +30,7 @@ public class NarakaConfig {
         T configuration = provider.get();
         configuration.loadValues();
 
-        configurations.add(configuration);
+        CONFIGURATIONS.add(configuration);
         return configuration;
     }
 
@@ -37,7 +38,7 @@ public class NarakaConfig {
         T configuration = provider.get();
         if (Platform.getInstance().getSide() == Platform.Side.CLIENT) {
             configuration.loadValues();
-            configurations.add(configuration);
+            CONFIGURATIONS.add(configuration);
         }
         return configuration;
     }
@@ -52,6 +53,11 @@ public class NarakaConfig {
         } catch (IOException e) {
             NarakaMod.LOGGER.warn("Cannot watch config directory ({})", ConfigFile.CONFIG_PATH);
         }
+    }
+
+    public static void saveAll() {
+        for (Configuration configuration : CONFIGURATIONS)
+            configuration.saveValues();
     }
 
     public static void checkIris() {
@@ -85,13 +91,6 @@ public class NarakaConfig {
             while ((watchKey = watchService.take()) != null) {
                 for (WatchEvent<?> event : watchKey.pollEvents()) {
                     String changedFileName = event.context().toString();
-                    configurations.stream()
-                            .filter(configuration -> configuration.canUpdateOnFileChange(changedFileName))
-                            .findAny()
-                            .ifPresent(configuration -> {
-                                NarakaMod.LOGGER.debug("Configuration change detected \"{}\"", configuration.name);
-                                configuration.loadValues();
-                            });
                     if (changedFileName.equals("iris.properties") && Platform.getInstance().getSide() == Platform.Side.CLIENT)
                         checkIris();
                 }

@@ -2,7 +2,7 @@ package com.yummy.naraka.config;
 
 public class NarakaCommonConfig extends StaticConfiguration {
     public final ConfigValue<Boolean> showTestCreativeModeTab = define("show_test_creative_mode_tab", false)
-            .comment("Need to restart game");
+            .comment("Restart required");
     public final ConfigValue<Integer> herobrineTakingStigmaTick = define("herobrine_taking_stigma_tick", 1200);
     public final ConfigValue<Float> herobrineHurtLimitReduce = define("herobrine_hurt_limit_reduce", 2.0f);
     public final ConfigValue<Integer> maxShadowHerobrineSpawn = define("max_shadow_herobrine_spawn", 3);
@@ -20,7 +20,7 @@ public class NarakaCommonConfig extends StaticConfiguration {
     public final ConfigValue<Boolean> alwaysCombo = define("always_combo", false);
     public final ConfigValue<Integer> stigmaStunDuration = define("stigma_stun_duration", 0)
             .comment("Stigma stun duration in ticks");
-    public final ConfigValue<Boolean> disableStigma = define("disable_stigma", false);
+    public final ConfigValue<Boolean> enableStigma = define("enable_stigma", true);
     public final ConfigValue<Float> lockHealthRatio = define("lock_health_ratio", 0.1f);
 
     public final ConfigValue<Integer> soulStabilizerCapacity = define("soul_stabilizer_capacity", 10);
