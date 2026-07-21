@@ -2,6 +2,7 @@ package com.yummy.naraka.world.item.equipmentset;
 
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
@@ -20,9 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 public class EquipmentSetHelper {
-    public static final ResourceLocation ID_CHALLENGER = NarakaMod.location("challenger");
-    public static final ResourceLocation ID_BLESSED = NarakaMod.location("blessed");
-    private static final Map<SoulType, Holder<MobEffect>> SOUL_EFFECT_MAP = Map.of(
+    private static final Map<SoulType, HolderProxy<MobEffect, MobEffect>> SOUL_EFFECT_MAP = Map.of(
             SoulType.AMETHYST, NarakaMobEffects.CHALLENGERS_BLESSING_AMETHYST,
             SoulType.COPPER, NarakaMobEffects.CHALLENGERS_BLESSING_COPPER,
             SoulType.DIAMOND, NarakaMobEffects.CHALLENGERS_BLESSING_DIAMOND,
@@ -32,6 +31,9 @@ public class EquipmentSetHelper {
             SoulType.NECTARIUM, NarakaMobEffects.CHALLENGERS_BLESSING_NECTARIUM,
             SoulType.REDSTONE, NarakaMobEffects.CHALLENGERS_BLESSING_REDSTONE
     );
+
+    public static final ResourceLocation ID_CHALLENGER = NarakaMod.location("challenger");
+    public static final ResourceLocation ID_BLESSED = NarakaMod.location("blessed");
     private static final Map<SoulType, EquipmentSet> SET_BY_SOUL_TYPE = new HashMap<>();
 
     public static List<EquipmentSet.Effect> createBlessedEffect() {

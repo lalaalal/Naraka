@@ -7,8 +7,6 @@ import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.ItemEvents;
 import com.yummy.naraka.util.NarakaExtraCodecs;
 import com.yummy.naraka.util.NarakaItemUtils;
-import com.yummy.naraka.world.entity.data.EntityDataHelper;
-import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -24,7 +22,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
@@ -60,16 +61,9 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
     }
 
     public void updateEffect(LivingEntity livingEntity) {
-        Set<EquipmentSet> activeEquipmentSets = new HashSet<>(EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.EQUIPMENT_SET.getConcreteValue()));
         long succeed = countSucceed(livingEntity);
-        long activated = effects.stream().filter(effect -> effect.update(livingEntity, succeed))
-                .count();
-        if (activated > 0) {
-            activeEquipmentSets.add(this);
-        } else {
-            activeEquipmentSets.remove(this);
-        }
-        EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.EQUIPMENT_SET.getConcreteValue(), activeEquipmentSets.stream().toList());
+        for (Effect effect : effects)
+            effect.update(livingEntity, succeed);
     }
 
     @Override
@@ -118,7 +112,7 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
         public boolean equals(Object o) {
             if (!(o instanceof Requirement requirement))
                 return false;
-            return item.equals(requirement.item()) && slot == requirement.slot() && nbt.equals(requirement.nbt());
+            return item.value().equals(requirement.item.value()) && slot == requirement.slot && nbt.equals(requirement.nbt);
         }
 
         @Override

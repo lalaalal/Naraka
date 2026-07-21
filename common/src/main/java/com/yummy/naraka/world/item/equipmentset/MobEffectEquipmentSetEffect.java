@@ -32,6 +32,12 @@ public record MobEffectEquipmentSetEffect(List<MobEffectData> mobEffects) implem
     }
 
     @Override
+    public void deactivate(LivingEntity livingEntity) {
+        for (MobEffectData mobEffectData : mobEffects)
+            livingEntity.removeEffect(mobEffectData.effect());
+    }
+
+    @Override
     public List<Component> getDescriptions() {
         List<Component> components = new ArrayList<>();
         for (MobEffectData mobEffect : mobEffects) {
@@ -45,8 +51,14 @@ public record MobEffectEquipmentSetEffect(List<MobEffectData> mobEffects) implem
     }
 
     @Override
-    public void deactivate(LivingEntity livingEntity) {
-        for (MobEffectData mobEffectData : mobEffects)
-            livingEntity.removeEffect(mobEffectData.effect());
+    public boolean equals(Object o) {
+        if (!(o instanceof MobEffectEquipmentSetEffect other)) return false;
+
+        return mobEffects.equals(other.mobEffects);
+    }
+
+    @Override
+    public int hashCode() {
+        return mobEffects.hashCode();
     }
 }

@@ -85,6 +85,12 @@ public class HolderProxy<T, V extends T> implements Holder<T>, ValueGetter<V> {
         return found;
     }
 
+    public Holder<T> delegate() {
+        if (holder == null)
+            bind(true);
+        return holder;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public V getConcreteValue() {

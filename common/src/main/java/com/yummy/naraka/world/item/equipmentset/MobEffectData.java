@@ -13,4 +13,20 @@ public record MobEffectData(MobEffect effect, int duration, int amplifier) {
                     Codec.INT.fieldOf("amplifier").forGetter(MobEffectData::amplifier)
             ).apply(instance, MobEffectData::new)
     );
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof MobEffectData other))
+            return false;
+
+        return duration == other.duration && amplifier == other.amplifier && effect.equals(other.effect());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = effect.hashCode();
+        result = 31 * result + duration;
+        result = 31 * result + amplifier;
+        return result;
+    }
 }

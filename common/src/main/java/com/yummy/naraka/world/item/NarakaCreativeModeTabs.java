@@ -113,15 +113,16 @@ public class NarakaCreativeModeTabs {
     }
 
     private static void createSoulMaterialsTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD));
-        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_COPPER_SWORD));
-        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_GOLD_SWORD));
-        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_EMERALD_SWORD));
-        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_DIAMOND_SWORD));
-        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_LAPIS_SWORD));
-        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD));
-        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD));
-        output.accept(challengerSword(NarakaItems.PURIFIED_SOUL_SWORD));
+        HolderLookup.Provider registries = parameters.holders();
+        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_REDSTONE_SWORD, registries));
+        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_COPPER_SWORD, registries));
+        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_GOLD_SWORD, registries));
+        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_EMERALD_SWORD, registries));
+        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_DIAMOND_SWORD, registries));
+        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_LAPIS_SWORD, registries));
+        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_AMETHYST_SWORD, registries));
+        output.accept(challengerSword(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD, registries));
+        output.accept(challengerSword(NarakaItems.PURIFIED_SOUL_SWORD, registries));
 
         output.accept(NarakaItems.SOUL_INFUSED_REDSTONE.getConcreteValue());
         output.accept(NarakaItems.SOUL_INFUSED_COPPER.getConcreteValue());
@@ -207,10 +208,10 @@ public class NarakaCreativeModeTabs {
         return itemStack;
     }
 
-    private static ItemStack challengerSword(Holder<Item> item) {
+    private static ItemStack challengerSword(Holder<Item> item, HolderLookup.Provider registries) {
         ItemStack itemStack = item.value().getDefaultInstance().copy();
-        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_BLESSED, Codec.BOOL, true);
-        NarakaItemUtils.makeUnbreakable(itemStack);
+        SoulType soulType = NarakaItemUtils.readNbtDataOrDefault(itemStack, NarakaItemUtils.TAG_SOUL_TYPE, SoulType.CODEC, SoulType.NONE);
+        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), registries, EquipmentSetHelper.createChallengerSet(soulType));
         return itemStack;
     }
 

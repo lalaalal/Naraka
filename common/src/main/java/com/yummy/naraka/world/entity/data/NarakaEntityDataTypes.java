@@ -10,7 +10,6 @@ import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.BeamEffect;
 import com.yummy.naraka.world.entity.MotionEntity;
 import com.yummy.naraka.world.entity.ScarfWavingData;
-import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -57,16 +56,6 @@ public class NarakaEntityDataTypes {
     public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<MotionData, MotionEntity>> MOTION_DATA = register(
             "motion_data", EntityDataType.builder(MotionData.CODEC, MotionEntity.class)
                     .defaultValue(MotionData.DEFAULT)
-    );
-
-    /**
-     * Encoding and decoding with {@link net.minecraft.resources.RegistryOps} is not implemented for network packets;
-     * therefore, synchronization is skipped.
-     */
-    public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<List<EquipmentSet>, LivingEntity>> EQUIPMENT_SET = register(
-            "equipment_set", EntityDataType.living(EquipmentSet.CODEC.listOf())
-                    .defaultValue(List.of())
-                    .sync(false)
     );
 
     private static void tickPurifiedSoulFire(LivingEntity livingEntity, int purifiedSoulFireTick) {
