@@ -20,6 +20,7 @@ public final class NarakaItemTags {
 
     public static final TagKey<Item> ENTER_NARAKA_DIMENSION = create("enter_naraka_dimension");
     public static final TagKey<Item> LONGINUS_TOOL_MATERIALS = create("longinus_tool_materials");
+    public static final TagKey<Item> PURIFIED_SOUL_MATERIALS = create("purified_soul_materials");
 
     public static TagKey<Item> create(String name) {
         return TagKey.create(Registries.ITEM, NarakaMod.identifier(name));

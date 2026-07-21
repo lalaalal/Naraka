@@ -67,6 +67,9 @@ public class NarakaItemTagsProvider extends FabricTagsProvider.ItemTagsProvider 
                 .add(NarakaItems.NARAKA_PICKAXE.key())
                 .addTag(NarakaItemTags.SOUL_SWORDS);
 
+        builder(NarakaItemTags.PURIFIED_SOUL_MATERIALS)
+                .add(NarakaItems.PURIFIED_SOUL_METAL.key());
+
         builder(NarakaItemTags.PURIFIED_SOUL_ARMOR)
                 .add(NarakaItems.PURIFIED_SOUL_HELMET.key())
                 .add(NarakaItems.PURIFIED_SOUL_CHESTPLATE.key())

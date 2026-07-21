@@ -137,7 +137,7 @@ public class NarakaItems {
     // Spears
     public static final HolderProxy<Item, SpearItem> SPEAR_ITEM = registerItem(
             NarakaItemIds.SPEAR_ITEM,
-            properties -> new SpearItem(ToolMaterial.IRON,
+            properties -> new SpearItem(NarakaToolMaterials.PURIFIED_SOUL,
                     true, 3, -3, 3,
                     properties.fireResistant()
                             .delayedHolderComponent(DataComponents.DAMAGE_TYPE, NarakaDamageTypes.SPEAR)
@@ -178,7 +178,7 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> SOUL_INFUSED_NECTARIUM_SWORD = registerSoulInfusedSword(NarakaItemIds.SOUL_INFUSED_NECTARIUM_SWORD, SoulType.NECTARIUM);
     public static final HolderProxy<Item, PurifiedSoulSwordItem> PURIFIED_SOUL_SWORD = registerItem(
             NarakaItemIds.PURIFIED_SOUL_SWORD,
-            properties -> new PurifiedSoulSwordItem(ToolMaterial.IRON,
+            properties -> new PurifiedSoulSwordItem(NarakaToolMaterials.PURIFIED_SOUL,
                     -2, -2.4f,
                     properties.fireResistant()
                             .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
@@ -279,7 +279,7 @@ public class NarakaItems {
         HolderProxy<Item, Item> item = registerItem(key,
                 properties -> new SoulInfusedSwordItem(
                         properties.fireResistant()
-                                .sword(ToolMaterial.IRON, 5, -2.4f)
+                                .sword(NarakaToolMaterials.PURIFIED_SOUL, 5, -2.4f)
                                 .rarity(Rarity.RARE)
                                 .component(NarakaDataComponentTypes.SOUL.get(), type)
                                 .component(DataComponents.LORE, NarakaItemTooltip.SOUL_INFUSED_SWORDS.itemLore())

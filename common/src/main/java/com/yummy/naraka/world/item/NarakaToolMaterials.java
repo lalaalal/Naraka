@@ -27,6 +27,7 @@ public class NarakaToolMaterials {
     public static final Identifier BLOCK_INTERACTION_RANGE_ID = NarakaMod.identifier("block_interaction_range");
 
     public static final ToolMaterial LONGINUS = new ToolMaterial(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, Integer.MAX_VALUE, 12, 65, 22, NarakaItemTags.LONGINUS_TOOL_MATERIALS);
+    public static final ToolMaterial PURIFIED_SOUL = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6.0F, 2.0F, 14, NarakaItemTags.PURIFIED_SOUL_MATERIALS);
 
     private static final ResourceKey<Block> COBWEB = ResourceKey.create(Registries.BLOCK, NarakaMod.mcLocation("cobweb"));
 
