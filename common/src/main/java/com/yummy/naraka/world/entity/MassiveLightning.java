@@ -34,7 +34,7 @@ public class MassiveLightning extends Entity {
     }
 
     public MassiveLightning(Level level, Herobrine herobrine, int maxSize) {
-        super(NarakaEntityTypes.MASSIVE_LIGHTNING.get(), level);
+        super(NarakaEntityTypes.MASSIVE_LIGHTNING.getConcreteValue(), level);
         setMaxSize(maxSize);
         this.herobrine = herobrine;
     }

@@ -15,7 +15,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -187,7 +188,7 @@ public class NarakaItems {
 
     public static void forEachSoulInfusedItem(Consumer<Item> consumer) {
         for (HolderProxy<Item, Item> item : SOUL_INFUSED_ITEMS)
-            consumer.accept(item.get());
+            consumer.accept(item.getConcreteValue());
     }
 
     public static void forEachSoulInfusedItemHolder(Consumer<Holder<Item>> consumer) {
@@ -197,7 +198,7 @@ public class NarakaItems {
 
     public static void forEachSoulInfusedSword(Consumer<Item> consumer) {
         for (HolderProxy<Item, Item> item : SOUL_INFUSED_SWORDS)
-            consumer.accept(item.get());
+            consumer.accept(item.getConcreteValue());
     }
 
     public static void forEachSoulInfusedSwordHolder(Consumer<Holder<Item>> consumer) {
@@ -208,7 +209,7 @@ public class NarakaItems {
     @Nullable
     public static Item getSoulSwordOf(SoulType type) {
         if (SWORD_BY_SOUL_TYPE.containsKey(type))
-            return SWORD_BY_SOUL_TYPE.get(type).get();
+            return SWORD_BY_SOUL_TYPE.get(type).getConcreteValue();
         return null;
     }
 

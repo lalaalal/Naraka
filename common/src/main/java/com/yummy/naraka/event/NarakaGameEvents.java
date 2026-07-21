@@ -105,7 +105,7 @@ public final class NarakaGameEvents {
             context.addPool(LootPool.lootPool()
                     .when(LootItemRandomChanceCondition.randomChance(0.8f))
                     .setRolls(ConstantValue.exactly(1))
-                    .add(LootItem.lootTableItem(NarakaItems.SANCTUARY_COMPASS.get()).setWeight(1))
+                    .add(LootItem.lootTableItem(NarakaItems.SANCTUARY_COMPASS.getConcreteValue()).setWeight(1))
             );
         }
     }
@@ -130,7 +130,7 @@ public final class NarakaGameEvents {
         List<EquipmentSet> currentItemEquipmentSets = NarakaItemUtils.readNbtDataOrDefault(currentStack, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), registryAccess, List.of());
         previousItemEquipmentSets.forEach(equipmentSetHolder -> equipmentSetHolder.updateEffect(livingEntity));
         currentItemEquipmentSets.forEach(equipmentSetHolder -> equipmentSetHolder.updateEffect(livingEntity));
-        EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.EQUIPMENT_SET.get()).stream()
+        EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.EQUIPMENT_SET.getConcreteValue()).stream()
                 .filter(equipmentSet -> !currentItemEquipmentSets.contains(equipmentSet))
                 .forEach(equipmentSet -> equipmentSet.updateEffect(livingEntity));
     }

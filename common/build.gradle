@@ -1,14 +1,44 @@
-architectury {
-    common rootProject.enabled_platforms.split(',')
+plugins {
+    id 'multiloader-common'
+    id 'fabric-loom'
 }
 
 dependencies {
-    // We depend on Fabric Loader here to use the Fabric @Environment annotations,
-    // which get remapped to the correct annotations on each platform.
-    // Do NOT use other classes from Fabric Loader.
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${parchment_minecraft}:${parchment_version}@zip")
+    }
+    modCompileOnly "net.fabricmc:fabric-loader:${fabric_loader_version}"
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
-    modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
+    compileOnly "org.spongepowered:mixin:0.8.7"
+    compileOnly "io.github.llamalad7:mixinextras-common:0.5.3"
+    annotationProcessor "io.github.llamalad7:mixinextras-common:0.5.3"
 
-    modCompileOnlyApi "curse.maven:jade-324717:6291330"
+    modCompileOnly "maven.modrinth:jade:${jade_version}+fabric"
+    modCompileOnly "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}"
+}
+
+loom {
+    def aw = file("src/main/resources/${mod_id}.common.accesswidener")
+    if (aw.exists()) {
+        accessWidenerPath.set(aw)
+    }
+}
+
+configurations {
+    commonJava {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+    commonResources {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+}
+
+artifacts {
+    commonJava sourceSets.main.java.sourceDirectories.singleFile
+    commonResources sourceSets.main.resources.sourceDirectories.singleFile
 }

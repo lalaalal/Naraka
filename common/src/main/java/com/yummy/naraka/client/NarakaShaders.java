@@ -3,12 +3,10 @@ package com.yummy.naraka.client;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.init.ShaderRegistry;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.ShaderInstance;
-import org.jetbrains.annotations.Nullable;
 
-@Environment(EnvType.CLIENT)
+import javax.annotation.Nullable;
+
 public final class NarakaShaders {
     @Nullable
     private static ShaderInstance longinus;

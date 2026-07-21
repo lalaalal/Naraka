@@ -8,8 +8,6 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.init.DimensionSkyRendererRegistry;
 import com.yummy.naraka.client.renderer.NarakaSkyRenderer;
 import com.yummy.naraka.config.NarakaConfig;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -18,7 +16,6 @@ import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -29,7 +26,8 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Environment(EnvType.CLIENT)
+import javax.annotation.Nullable;
+
 @Mixin(LevelRenderer.class)
 public abstract class LevelRendererMixin {
     @Shadow

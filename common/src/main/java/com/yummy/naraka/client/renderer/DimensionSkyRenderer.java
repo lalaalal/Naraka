@@ -4,14 +4,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexBuffer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
 import org.joml.Matrix4f;
 
-@Environment(EnvType.CLIENT)
 public interface DimensionSkyRenderer {
     DimensionSkyRenderer EMPTY = (poseStack, level, projectionMatrix, partialTick, camera, isFoggy, skyFogSetup) -> {
     };

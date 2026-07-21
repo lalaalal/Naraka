@@ -2,13 +2,10 @@ package com.yummy.naraka.client;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.config.Configuration;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.*;
 
-@Environment(EnvType.CLIENT)
 public final class NarakaClientContext {
     private static final List<Configuration.ConfigValue<?>> CONTEXTS = new ArrayList<>();
 

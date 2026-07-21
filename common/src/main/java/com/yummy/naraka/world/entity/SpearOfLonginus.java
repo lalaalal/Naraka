@@ -32,13 +32,13 @@ public class SpearOfLonginus extends Spear {
     }
 
     public SpearOfLonginus(Level level, Position position, ItemStack stack) {
-        super(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.get(), level, position, stack);
+        super(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.getConcreteValue(), level, position, stack);
         setInvulnerable(true);
         spawnPortal = false;
     }
 
     public SpearOfLonginus(Level level, LivingEntity owner, ItemStack stack, boolean spawnPortal) {
-        super(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.get(), level, owner, stack);
+        super(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.getConcreteValue(), level, owner, stack);
         setInvulnerable(true);
         this.spawnPortal = spawnPortal;
     }
@@ -65,7 +65,7 @@ public class SpearOfLonginus extends Spear {
         if (spawnPortal) {
             Direction direction = result.getDirection();
             BlockPos pos = result.getBlockPos();
-            level().setBlock(pos.relative(direction), NarakaBlocks.NARAKA_PORTAL.get().defaultBlockState(), Block.UPDATE_ALL);
+            level().setBlock(pos.relative(direction), NarakaBlocks.NARAKA_PORTAL.getConcreteValue().defaultBlockState(), Block.UPDATE_ALL);
         }
     }
 

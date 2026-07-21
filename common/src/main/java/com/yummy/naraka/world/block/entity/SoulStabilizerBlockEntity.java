@@ -30,7 +30,7 @@ public class SoulStabilizerBlockEntity extends BlockEntity {
     }
 
     public SoulStabilizerBlockEntity(BlockPos pos, BlockState blockState) {
-        super(NarakaBlockEntityTypes.SOUL_STABILIZER.get(), pos, blockState);
+        super(NarakaBlockEntityTypes.SOUL_STABILIZER.getConcreteValue(), pos, blockState);
     }
 
     public void reset() {

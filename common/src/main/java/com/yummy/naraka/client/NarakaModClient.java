@@ -27,13 +27,10 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SanctuaryCompassItem;
 import com.yummy.naraka.world.overlay.NarakaProgressOverlayExtensionTypes;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.network.chat.Component;
 
-@Environment(EnvType.CLIENT)
 public final class NarakaModClient {
     public static void initialize(NarakaClientInitializer initializer) {
         ClientEventHandler.prepare();
@@ -73,18 +70,18 @@ public final class NarakaModClient {
     }
 
     private static void initializeItems() {
-        CustomRenderManager.register(NarakaItems.SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
-        CustomRenderManager.register(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), SpearItemRenderer.INSTANCE);
-        CustomRenderManager.register(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get(), SpearItemRenderer.INSTANCE);
+        CustomRenderManager.register(NarakaItems.SPEAR_ITEM.getConcreteValue(), SpearItemRenderer.INSTANCE);
+        CustomRenderManager.register(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.getConcreteValue(), SpearItemRenderer.INSTANCE);
+        CustomRenderManager.register(NarakaItems.SPEAR_OF_LONGINUS_ITEM.getConcreteValue(), SpearItemRenderer.INSTANCE);
 
-        CustomRenderManager.registerRainbow(NarakaItems.RAINBOW_SWORD.get());
-        CustomRenderManager.registerCustomRenderType(NarakaItems.HEROBRINE_SCARF.get(), defaultType -> {
+        CustomRenderManager.registerRainbow(NarakaItems.RAINBOW_SWORD.getConcreteValue());
+        CustomRenderManager.registerCustomRenderType(NarakaItems.HEROBRINE_SCARF.getConcreteValue(), defaultType -> {
             if (NarakaClientContext.SHADER_ENABLED.getValue())
                 return defaultType;
             return NarakaRenderTypes.longinusCutout(NarakaTextures.LOCATION_BLOCKS);
         });
 
-        ItemPropertyRegistry.register(NarakaItems.SANCTUARY_COMPASS.get(),
+        ItemPropertyRegistry.register(NarakaItems.SANCTUARY_COMPASS.getConcreteValue(),
                 NarakaMod.location("angle"),
                 new CompassItemPropertyFunction((clientLevel, itemStack, entity)
                         -> SanctuaryCompassItem.getGlobalPos(itemStack))
@@ -92,12 +89,12 @@ public final class NarakaModClient {
     }
 
     private static void initializeBlocks() {
-        CustomRenderManager.register(NarakaBlocks.SOUL_STABILIZER.get(), NarakaBlockEntityItemRenderer.INSTANCE);
-        CustomRenderManager.register(NarakaBlocks.SOUL_SMITHING_BLOCK.get(), NarakaBlockEntityItemRenderer.INSTANCE);
+        CustomRenderManager.register(NarakaBlocks.SOUL_STABILIZER.getConcreteValue(), NarakaBlockEntityItemRenderer.INSTANCE);
+        CustomRenderManager.register(NarakaBlocks.SOUL_SMITHING_BLOCK.getConcreteValue(), NarakaBlockEntityItemRenderer.INSTANCE);
 
         BlockRenderTypeRegistry.register(RenderType.cutout(),
-                NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get(),
-                NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get()
+                NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.getConcreteValue(),
+                NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.getConcreteValue()
         );
     }
 

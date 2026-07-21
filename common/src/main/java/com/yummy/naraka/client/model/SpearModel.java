@@ -1,13 +1,10 @@
 package com.yummy.naraka.client.model;
 
 import com.yummy.naraka.world.entity.Spear;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
-@Environment(EnvType.CLIENT)
 public class SpearModel extends SimpleEntityModel<Spear> {
     public SpearModel(ModelPart root) {
         super(root);

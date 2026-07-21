@@ -2,14 +2,11 @@ package com.yummy.naraka.client.animation.herobrine;
 
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
 
-@Environment(EnvType.CLIENT)
 public class OriginHerobrineAnimation {
     public static void initialize() {
         AnimationMapper.register(HerobrineAnimationLocations.PHASE_4_SPAWN, SPAWN);

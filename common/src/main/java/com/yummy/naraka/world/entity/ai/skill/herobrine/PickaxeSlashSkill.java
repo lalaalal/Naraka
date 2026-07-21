@@ -19,7 +19,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.List;
 
@@ -76,7 +77,7 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
         runAt(5, () -> shadowSpawner.control(shadowHerobrine -> setupShadowHerobrine(shadowHerobrine, target))
                 .spawn(level));
         if (!mob.isShadow) {
-            runAt(0, () -> NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.TELEPORT.get()));
+            runAt(0, () -> NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.TELEPORT.getConcreteValue()));
             runAt(5, () -> teleportToTarget(target, 12));
             runAfter(10, this::stopMoving);
         }

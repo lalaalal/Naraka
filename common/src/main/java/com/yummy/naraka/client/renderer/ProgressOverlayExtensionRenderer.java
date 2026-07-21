@@ -4,15 +4,12 @@ import com.yummy.naraka.client.gui.components.ProgressOverlayExtension;
 import com.yummy.naraka.init.ProgressOverlayExtensionFactoryRegistry;
 import com.yummy.naraka.world.overlay.ProgressOverlayData;
 import com.yummy.naraka.world.overlay.ProgressOverlayExtensionType;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@Environment(EnvType.CLIENT)
 public class ProgressOverlayExtensionRenderer {
     public static final ProgressOverlayExtensionRenderer INSTANCE = new ProgressOverlayExtensionRenderer();
 

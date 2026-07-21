@@ -43,12 +43,12 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     private ItemStack templateItem = ItemStack.EMPTY;
 
     public SoulSmithingBlockEntity(BlockPos pos, BlockState state) {
-        this(NarakaBlockEntityTypes.SOUL_SMITHING.get(), pos, state, 1);
+        this(NarakaBlockEntityTypes.SOUL_SMITHING.getConcreteValue(), pos, state, 1);
     }
 
     protected SoulSmithingBlockEntity(BlockEntityType<? extends SoulSmithingBlockEntity> type, BlockPos pos, BlockState state, float successChance) {
         super(type, pos, state, successChance);
-        soulStabilizer = new SoulStabilizerBlockEntity(pos, NarakaBlocks.SOUL_STABILIZER.get().defaultBlockState());
+        soulStabilizer = new SoulStabilizerBlockEntity(pos, NarakaBlocks.SOUL_STABILIZER.getConcreteValue().defaultBlockState());
     }
 
     public boolean isStabilizerAttached() {
@@ -73,7 +73,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     }
 
     public boolean tryAttachSoulStabilizer(ItemStack stack) {
-        if (level != null && !isStabilizerAttached && stack.is(NarakaBlocks.SOUL_STABILIZER.get().asItem())) {
+        if (level != null && !isStabilizerAttached && stack.is(NarakaBlocks.SOUL_STABILIZER.getConcreteValue().asItem())) {
             NarakaItemUtils.loadBlockEntity(stack, soulStabilizer);
             soulStabilizer.setLevel(level);
             isStabilizerAttached = true;
@@ -85,7 +85,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
     public void detachSoulStabilizer() {
         if (isStabilizerAttached && level != null) {
-            ItemStack itemStack = new ItemStack(NarakaBlocks.SOUL_STABILIZER.get());
+            ItemStack itemStack = new ItemStack(NarakaBlocks.SOUL_STABILIZER.getConcreteValue());
             NarakaItemUtils.saveBlockEntity(itemStack, soulStabilizer);
             NarakaItemUtils.summonItemEntity(level, itemStack, getBlockPos());
             soulStabilizer.clear();
@@ -100,8 +100,8 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
     private boolean isValidTemplate(ItemStack template) {
         return template.getItem() instanceof SmithingTemplateItem
-                || template.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get())
-                || template.is(NarakaItems.HEROBRINE_SCARF.get());
+                || template.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.getConcreteValue())
+                || template.is(NarakaItems.HEROBRINE_SCARF.getConcreteValue());
     }
 
     public boolean tryAttachTemplate(ItemStack template) {
@@ -133,7 +133,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
     }
 
     private boolean reinforceSword(SoulType soulType, int requiredSoul, Player player) {
-        if (!forgingItem.is(NarakaItems.PURIFIED_SOUL_SWORD.get()))
+        if (!forgingItem.is(NarakaItems.PURIFIED_SOUL_SWORD.getConcreteValue()))
             return false;
         Item swordItem = NarakaItems.getSoulSwordOf(soulType);
         if (swordItem == null)
@@ -209,9 +209,9 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
                 && isStabilizerAttached && soulStabilizer.getSouls() >= requiredSoul) {
             SoulType soulType = soulStabilizer.getSoulType();
 
-            if (templateItem.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get()))
+            if (templateItem.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.getConcreteValue()))
                 return reinforceSword(soulType, requiredSoul, player);
-            if (templateItem.is(NarakaItems.HEROBRINE_SCARF.get()))
+            if (templateItem.is(NarakaItems.HEROBRINE_SCARF.getConcreteValue()))
                 return attachScarf();
 
             return reinforceArmor(soulType, requiredSoul, player);

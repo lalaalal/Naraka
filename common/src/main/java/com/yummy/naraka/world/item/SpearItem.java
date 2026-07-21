@@ -2,6 +2,7 @@ package com.yummy.naraka.world.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.yummy.naraka.core.registries.ValueGetter;
 import com.yummy.naraka.world.entity.Spear;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -20,14 +21,12 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.function.Supplier;
-
 public class SpearItem extends TieredItem {
-    protected final Supplier<? extends EntityType<? extends Spear>> spearType;
+    protected final ValueGetter<? extends EntityType<? extends Spear>> spearType;
     private final boolean enchantable;
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
-    public SpearItem(Tier tier, boolean enchantable, float attackDamage, float attackSpeed, Properties properties, Supplier<? extends EntityType<? extends Spear>> spearType) {
+    public SpearItem(Tier tier, boolean enchantable, float attackDamage, float attackSpeed, Properties properties, ValueGetter<? extends EntityType<? extends Spear>> spearType) {
         super(tier, properties);
         this.spearType = spearType;
         this.enchantable = enchantable;
@@ -77,7 +76,7 @@ public class SpearItem extends TieredItem {
     }
 
     protected Spear createSpear(Level level, LivingEntity owner, ItemStack stack) {
-        return new Spear(spearType.get(), level, owner, stack);
+        return new Spear(spearType.getConcreteValue(), level, owner, stack);
     }
 
     @Override

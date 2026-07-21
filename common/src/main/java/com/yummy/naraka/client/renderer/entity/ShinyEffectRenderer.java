@@ -7,8 +7,6 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.ShinyEffect;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -18,7 +16,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
-@Environment(EnvType.CLIENT)
 public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect> {
     public ShinyEffectRenderer(EntityRendererProvider.Context context) {
         super(context);

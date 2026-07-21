@@ -8,14 +8,11 @@ import com.yummy.naraka.client.renderer.entity.ShadowHerobrineRenderer;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 
-@Environment(EnvType.CLIENT)
 public class ShadowHerobrineHeadLayer extends RenderLayer<ShadowHerobrine, AbstractHerobrineModel<ShadowHerobrine>> {
     public ShadowHerobrineHeadLayer(ShadowHerobrineRenderer renderer) {
         super(renderer);

@@ -17,7 +17,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class OrePillarFeature extends Feature<OrePillarConfiguration> {
     public OrePillarFeature() {
@@ -50,9 +51,9 @@ public class OrePillarFeature extends Feature<OrePillarConfiguration> {
         Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(context.random());
         BlockPos spawnerPos = origin.relative(direction, 2);
 
-        BlockState spawnerState = NarakaBlocks.DIAMOND_GOLEM_SPAWNER.get().defaultBlockState();
+        BlockState spawnerState = NarakaBlocks.DIAMOND_GOLEM_SPAWNER.getConcreteValue().defaultBlockState();
         level.setBlock(spawnerPos, spawnerState.setValue(DiamondGolemSpawner.SPAWN_COUNT, 1), Block.UPDATE_ALL);
-        level.scheduleTick(spawnerPos, NarakaBlocks.DIAMOND_GOLEM_SPAWNER.get(), 1);
+        level.scheduleTick(spawnerPos, NarakaBlocks.DIAMOND_GOLEM_SPAWNER.getConcreteValue(), 1);
 
         return true;
     }

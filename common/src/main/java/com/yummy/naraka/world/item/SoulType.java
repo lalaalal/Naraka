@@ -10,7 +10,8 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.armortrim.TrimMaterial;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public enum SoulType implements StringRepresentable {
     NONE(0xffffff),

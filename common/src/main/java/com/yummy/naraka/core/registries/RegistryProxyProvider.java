@@ -4,7 +4,8 @@ import com.yummy.naraka.invoker.MethodInvoker;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;

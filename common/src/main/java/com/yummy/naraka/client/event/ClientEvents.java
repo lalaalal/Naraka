@@ -1,14 +1,11 @@
 package com.yummy.naraka.client.event;
 
 import com.yummy.naraka.event.Event;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 
-@Environment(EnvType.CLIENT)
 public class ClientEvents {
     public static final Event<ClientState<Minecraft>> TICK_PRE = create();
     public static final Event<ClientState<Minecraft>> TICK_POST = create();
@@ -30,13 +27,11 @@ public class ClientEvents {
         });
     }
 
-    @Environment(EnvType.CLIENT)
     @FunctionalInterface
     public interface ClientState<T> {
         void run(T instance);
     }
 
-    @Environment(EnvType.CLIENT)
     @FunctionalInterface
     public interface CameraSetup {
         void setup(Context context, BlockGetter level, Entity entity, boolean detached, boolean thirdPersonReverse, float partialTick);

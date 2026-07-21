@@ -8,11 +8,11 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
@@ -21,7 +21,7 @@ import java.util.stream.Stream;
  * @param <T> Registry value type
  * @param <V> Derived value type
  */
-public class HolderProxy<T, V extends T> implements Holder<T>, Supplier<V> {
+public class HolderProxy<T, V extends T> implements Holder<T>, ValueGetter<V> {
     @Nullable
     private Holder<T> holder;
     private final ResourceKey<T> key;
@@ -87,7 +87,7 @@ public class HolderProxy<T, V extends T> implements Holder<T>, Supplier<V> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public V get() {
+    public V getConcreteValue() {
         return (V) value();
     }
 

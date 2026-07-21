@@ -8,7 +8,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -21,7 +22,7 @@ public class NarakaForgeBlockTagsProvider extends BlockTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         tag(ConventionalTags.Blocks.ORES)
                 .addTag(Tags.Blocks.ORES)
-                .addTag(NarakaBlockTags.AMETHYST_ORES)
-                .addTag(NarakaBlockTags.NECTARIUM_ORES);
+                .addOptionalTag(NarakaBlockTags.AMETHYST_ORES)
+                .addOptionalTag(NarakaBlockTags.NECTARIUM_ORES);
     }
 }

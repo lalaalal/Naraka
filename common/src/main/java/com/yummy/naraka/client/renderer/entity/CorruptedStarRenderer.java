@@ -9,8 +9,6 @@ import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.CorruptedStar;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -25,7 +23,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 
-@Environment(EnvType.CLIENT)
 public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar> {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();

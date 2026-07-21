@@ -6,8 +6,6 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.LightningCircle;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -19,7 +17,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-@Environment(EnvType.CLIENT)
 public class LightningCircleRenderer extends EntityRenderer<LightningCircle> {
     public LightningCircleRenderer(EntityRendererProvider.Context context) {
         super(context);

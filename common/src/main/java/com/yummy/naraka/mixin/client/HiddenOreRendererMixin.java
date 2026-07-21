@@ -10,8 +10,6 @@ import com.yummy.naraka.tags.ConventionalTags;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.util.NarakaUtils;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -33,7 +31,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
 
-@Environment(EnvType.CLIENT)
 @Mixin(value = LevelRenderer.class)
 public abstract class HiddenOreRendererMixin {
     @Shadow

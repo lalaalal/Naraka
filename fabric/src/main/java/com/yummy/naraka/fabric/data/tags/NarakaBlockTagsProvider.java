@@ -19,11 +19,11 @@ public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         getOrCreateTagBuilder(NarakaBlockTags.NECTARIUM_ORES)
-                .add(NarakaBlocks.NECTARIUM_ORE.get())
-                .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
+                .add(NarakaBlocks.NECTARIUM_ORE.getConcreteValue())
+                .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.getConcreteValue());
         getOrCreateTagBuilder(NarakaBlockTags.AMETHYST_ORES)
-                .add(NarakaBlocks.AMETHYST_ORE.get())
-                .add(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
+                .add(NarakaBlocks.AMETHYST_ORE.getConcreteValue())
+                .add(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.getConcreteValue());
         getOrCreateTagBuilder(ConventionalTags.Blocks.ORES)
                 .addTag(NarakaBlockTags.NECTARIUM_ORES)
                 .addTag(NarakaBlockTags.AMETHYST_ORES);
@@ -33,7 +33,7 @@ public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider 
                 .forceAddTag(BlockTags.MINEABLE_WITH_PICKAXE);
 
         getOrCreateTagBuilder(BlockTags.FIRE)
-                .add(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.get());
+                .add(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.getConcreteValue());
 
         getOrCreateTagBuilder(NarakaBlockTags.HEROBRINE_SANCTUARY_AIR_WRAP_TARGETS)
                 .add(Blocks.WATER)
@@ -46,34 +46,34 @@ public class NarakaBlockTagsProvider extends FabricTagProvider.BlockTagProvider 
                 .add(Blocks.WATER);
 
         getOrCreateTagBuilder(BlockTags.NEEDS_STONE_TOOL)
-                .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get())
-                .add(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
+                .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.getConcreteValue())
+                .add(NarakaBlocks.NECTARIUM_CORE_BLOCK.getConcreteValue());
 
         FabricTagBuilder needsIronTool = getOrCreateTagBuilder(BlockTags.NEEDS_IRON_TOOL)
-                .add(NarakaBlocks.NECTARIUM_BLOCK.get())
-                .add(NarakaBlocks.NECTARIUM_ORE.get())
-                .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get())
-                .add(NarakaBlocks.IMITATION_GOLD_BLOCK.get());
+                .add(NarakaBlocks.NECTARIUM_BLOCK.getConcreteValue())
+                .add(NarakaBlocks.NECTARIUM_ORE.getConcreteValue())
+                .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.getConcreteValue())
+                .add(NarakaBlocks.IMITATION_GOLD_BLOCK.getConcreteValue());
         NarakaBlocks.forEachSoulInfusedBlock(needsIronTool::add);
 
         getOrCreateTagBuilder(NarakaBlockTags.NEEDS_NETHERITE_TOOL)
-                .add(NarakaBlocks.HEROBRINE_TOTEM.get())
-                .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
+                .add(NarakaBlocks.HEROBRINE_TOTEM.getConcreteValue())
+                .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.getConcreteValue());
         FabricTagBuilder mineableWithPickaxe = getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(NarakaBlocks.HEROBRINE_TOTEM.get())
-                .add(NarakaBlocks.AMETHYST_SHARD_BLOCK.get())
-                .add(NarakaBlocks.NECTARIUM_BLOCK.get())
-                .add(NarakaBlocks.NECTARIUM_ORE.get())
-                .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get())
-                .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get())
-                .add(NarakaBlocks.IMITATION_GOLD_BLOCK.get())
-                .add(NarakaBlocks.NECTARIUM_CORE_BLOCK.get())
-                .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get())
-                .add(NarakaBlocks.AMETHYST_ORE.get())
-                .add(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
+                .add(NarakaBlocks.HEROBRINE_TOTEM.getConcreteValue())
+                .add(NarakaBlocks.AMETHYST_SHARD_BLOCK.getConcreteValue())
+                .add(NarakaBlocks.NECTARIUM_BLOCK.getConcreteValue())
+                .add(NarakaBlocks.NECTARIUM_ORE.getConcreteValue())
+                .add(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.getConcreteValue())
+                .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.getConcreteValue())
+                .add(NarakaBlocks.IMITATION_GOLD_BLOCK.getConcreteValue())
+                .add(NarakaBlocks.NECTARIUM_CORE_BLOCK.getConcreteValue())
+                .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.getConcreteValue())
+                .add(NarakaBlocks.AMETHYST_ORE.getConcreteValue())
+                .add(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.getConcreteValue());
         NarakaBlocks.forEachSoulInfusedBlock(mineableWithPickaxe::add);
 
         getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_AXE)
-                .add(NarakaBlocks.SOUL_SMITHING_BLOCK.get());
+                .add(NarakaBlocks.SOUL_SMITHING_BLOCK.getConcreteValue());
     }
 }

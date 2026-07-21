@@ -3,14 +3,11 @@ package com.yummy.naraka.client.animation.naraka_pickaxe;
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.animation.NarakaInterpolations;
 import com.yummy.naraka.world.entity.animation.NarakaPickaxeAnimationLocations;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
 
-@Environment(EnvType.CLIENT)
 public class NarakaPickaxeAnimation {
     public static void initialize() {
         AnimationMapper.register(NarakaPickaxeAnimationLocations.SWING, SWING);

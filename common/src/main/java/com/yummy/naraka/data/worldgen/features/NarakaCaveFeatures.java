@@ -18,10 +18,10 @@ public class NarakaCaveFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> DEEPSLATE_DIAMOND_ORE_PILLAR = NarakaConfiguredFeatures.create("deepslate_diamond_ore_pillar");
 
     public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
-        FeatureUtils.register(context, DIAMOND_ORE_PILLAR, NarakaFeatures.ORE_PILLAR.get(), new OrePillarConfiguration(
+        FeatureUtils.register(context, DIAMOND_ORE_PILLAR, NarakaFeatures.ORE_PILLAR.getConcreteValue(), new OrePillarConfiguration(
                 block(Blocks.STONE), HolderSet.direct(block(Blocks.DIAMOND_ORE)), 32, UniformInt.of(18, 32), UniformInt.of(4, 7), 0.4f, 0.9f, true
         ));
-        FeatureUtils.register(context, DEEPSLATE_DIAMOND_ORE_PILLAR, NarakaFeatures.ORE_PILLAR.get(), new OrePillarConfiguration(
+        FeatureUtils.register(context, DEEPSLATE_DIAMOND_ORE_PILLAR, NarakaFeatures.ORE_PILLAR.getConcreteValue(), new OrePillarConfiguration(
                 block(Blocks.DEEPSLATE), HolderSet.direct(block(Blocks.DEEPSLATE_DIAMOND_ORE)), 48, UniformInt.of(36, 48), UniformInt.of(5, 8), 0.48f, 0.9f, true
         ));
     }

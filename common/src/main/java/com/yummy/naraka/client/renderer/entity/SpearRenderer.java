@@ -12,8 +12,6 @@ import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.Spear;
 import com.yummy.naraka.world.entity.SpearOfLonginus;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -29,12 +27,11 @@ import org.joml.Quaternionf;
 
 import java.util.Map;
 
-@Environment(EnvType.CLIENT)
 public class SpearRenderer<T extends Spear> extends EntityRenderer<T> {
     private static final Map<EntityType<? extends Spear>, ResourceLocation> TEXTURE_MAP = Map.of(
-            NarakaEntityTypes.THROWN_SPEAR.get(), NarakaTextures.SPEAR,
-            NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR.get(), NarakaTextures.MIGHTY_HOLY_SPEAR,
-            NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.get(), NarakaTextures.LONGINUS
+            NarakaEntityTypes.THROWN_SPEAR.getConcreteValue(), NarakaTextures.SPEAR,
+            NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR.getConcreteValue(), NarakaTextures.MIGHTY_HOLY_SPEAR,
+            NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.getConcreteValue(), NarakaTextures.LONGINUS
     );
 
     protected final EntityModel<? extends Spear> model;
@@ -78,7 +75,7 @@ public class SpearRenderer<T extends Spear> extends EntityRenderer<T> {
         poseStack.translate(0, yOffset, 0);
 
         float ageInTicks = entity.tickCount + partialTick;
-        boolean isLonginus = entity.getType() == NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.get();
+        boolean isLonginus = entity.getType() == NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.getConcreteValue();
         if (isLonginus && NarakaClientContext.SHADER_ENABLED.getValue()) {
             renderNonShaderLonginus(model, ageInTicks, poseStack, bufferSource);
         } else {

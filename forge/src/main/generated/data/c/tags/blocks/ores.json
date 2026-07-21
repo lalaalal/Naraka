@@ -1,0 +1,13 @@
+{
+  "values": [
+    "#forge:ores",
+    {
+      "id": "#naraka:amethyst_ores",
+      "required": false
+    },
+    {
+      "id": "#naraka:nectarium_ores",
+      "required": false
+    }
+  ]
+}

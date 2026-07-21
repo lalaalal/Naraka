@@ -11,7 +11,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class SimpleAttackSkill extends AttackSkill<SkillUsingMob> {
     public static final ResourceLocation BASIC = createLocation("diamond_golem.basic_attack");
@@ -54,7 +55,7 @@ public class SimpleAttackSkill extends AttackSkill<SkillUsingMob> {
     }
 
     private boolean canHurtTarget(LivingEntity target) {
-        return target.getType() != NarakaEntityTypes.DIAMOND_GOLEM.get();
+        return target.getType() != NarakaEntityTypes.DIAMOND_GOLEM.getConcreteValue();
     }
 
     @Override

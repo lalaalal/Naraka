@@ -22,7 +22,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class NarakaFireball extends Fireball {
 
     public NarakaFireball(EntityType<? extends NarakaFireball> entityType, Level level) {
         super(entityType, level);
-        setItem(NarakaItems.NARAKA_FIREBALL_STAFF.get().getDefaultInstance());
+        setItem(NarakaItems.NARAKA_FIREBALL_STAFF.getConcreteValue().getDefaultInstance());
     }
 
     public NarakaFireball(Mob owner, Vec3 movement, Level level) {
@@ -52,9 +53,9 @@ public class NarakaFireball extends Fireball {
     }
 
     public NarakaFireball(LivingEntity owner, @Nullable Entity target, Vec3 movement, Level level) {
-        super(NarakaEntityTypes.NARAKA_FIREBALL.get(), owner.getX(), owner.getEyeY(), owner.getZ(), movement.x, movement.y, movement.z, level);
+        super(NarakaEntityTypes.NARAKA_FIREBALL.getConcreteValue(), owner.getX(), owner.getEyeY(), owner.getZ(), movement.x, movement.y, movement.z, level);
         setTarget(target);
-        setItem(NarakaItems.NARAKA_FIREBALL_STAFF.get().getDefaultInstance());
+        setItem(NarakaItems.NARAKA_FIREBALL_STAFF.getConcreteValue().getDefaultInstance());
     }
 
     public void setTimeToLive(int timeToLive) {

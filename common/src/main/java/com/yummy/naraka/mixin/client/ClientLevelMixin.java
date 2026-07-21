@@ -52,7 +52,7 @@ public abstract class ClientLevelMixin extends Level {
         profilerFiller.push("entities");
         this.tickingEntities.forEach(entity -> {
             if ((!entity.isRemoved() && !entity.isPassenger()
-                    && EntityDataHelper.getRawEntityData(entity, NarakaEntityDataTypes.KEEP_UNFROZEN.get()))
+                    && EntityDataHelper.getRawEntityData(entity, NarakaEntityDataTypes.KEEP_UNFROZEN.getConcreteValue()))
                     || entity instanceof Player) {
                 this.guardEntityTick(this::tickNonPassenger, entity);
             }

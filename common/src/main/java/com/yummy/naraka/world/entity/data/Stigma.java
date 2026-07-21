@@ -71,7 +71,7 @@ public record Stigma(int value, long lastMarkedTime) {
      */
     public Stigma consume(ServerLevel level, LivingEntity livingEntity, Entity cause) {
         int stunDuration = NarakaConfig.COMMON.stigmaStunDuration.getValue();
-        level.sendParticles(NarakaParticleTypes.LOCKED_HEALTH.get(), livingEntity.getX(), livingEntity.getEyeY(), livingEntity.getZ(), 0, 0, 0, 0, 1);
+        level.sendParticles(NarakaParticleTypes.LOCKED_HEALTH.getConcreteValue(), livingEntity.getX(), livingEntity.getEyeY(), livingEntity.getZ(), 0, 0, 0, 0, 1);
         lockHealth(livingEntity, cause);
         StunHelper.stunEntity(livingEntity, stunDuration);
         livingEntity.level().playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.TOTEM_USE, livingEntity.getSoundSource(), 1.0F, 1.0F);

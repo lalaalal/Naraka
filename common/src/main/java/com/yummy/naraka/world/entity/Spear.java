@@ -35,9 +35,9 @@ import java.util.function.Supplier;
 
 public class Spear extends AbstractArrow {
     private static final Map<EntityType<?>, Supplier<ItemStack>> ITEM_BY_TYPE = Map.of(
-            NarakaEntityTypes.THROWN_SPEAR.get(), () -> new ItemStack(NarakaItems.SPEAR_ITEM.get()),
-            NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR.get(), () -> new ItemStack(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()),
-            NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.get(), () -> new ItemStack(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get())
+            NarakaEntityTypes.THROWN_SPEAR.getConcreteValue(), () -> new ItemStack(NarakaItems.SPEAR_ITEM.getConcreteValue()),
+            NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR.getConcreteValue(), () -> new ItemStack(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.getConcreteValue()),
+            NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.getConcreteValue(), () -> new ItemStack(NarakaItems.SPEAR_OF_LONGINUS_ITEM.getConcreteValue())
     );
 
     private static final EntityDataAccessor<Integer> ID_LOYALTY = SynchedEntityData.defineId(Spear.class, EntityDataSerializers.INT);

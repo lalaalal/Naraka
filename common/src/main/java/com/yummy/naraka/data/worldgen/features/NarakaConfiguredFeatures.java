@@ -19,8 +19,8 @@ public class NarakaConfiguredFeatures {
         NarakaCaveFeatures.bootstrap(context);
 
         FeatureUtils.register(context, PURIFIED_SOUL_LANTERN, Feature.REPLACE_SINGLE_BLOCK, new ReplaceBlockConfiguration(
-                        NarakaBlocks.TRANSPARENT_BLOCK.get().defaultBlockState(),
-                        NarakaBlocks.PURIFIED_SOUL_LANTERN.get().defaultBlockState()
+                NarakaBlocks.TRANSPARENT_BLOCK.getConcreteValue().defaultBlockState(),
+                NarakaBlocks.PURIFIED_SOUL_LANTERN.getConcreteValue().defaultBlockState()
                 )
         );
     }

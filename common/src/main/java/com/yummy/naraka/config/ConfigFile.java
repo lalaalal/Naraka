@@ -2,7 +2,8 @@ package com.yummy.naraka.config;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.Platform;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.io.*;
 import java.nio.file.Path;

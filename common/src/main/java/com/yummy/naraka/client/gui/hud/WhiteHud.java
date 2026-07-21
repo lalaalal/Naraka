@@ -2,11 +2,8 @@ package com.yummy.naraka.client.gui.hud;
 
 import com.yummy.naraka.client.renderer.WhiteFogRenderHelper;
 import com.yummy.naraka.util.Color;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 
-@Environment(EnvType.CLIENT)
 public class WhiteHud implements HudRenderer {
     @Override
     public void render(GuiGraphics guiGraphics, float partialTicks) {

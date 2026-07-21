@@ -3,6 +3,7 @@ package com.yummy.naraka.world.block;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryWriter;
+import com.yummy.naraka.core.registries.ValueGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -20,7 +21,6 @@ import net.minecraft.world.level.material.PushReaction;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class NarakaBlocks {
     public static final String SOUL_INFUSED_PREFIX = "soul_infused_";
@@ -173,7 +173,7 @@ public class NarakaBlocks {
                     .noLootTable()
     );
 
-    public static final List<Supplier<Block>> SOUL_INFUSED_BLOCKS = List.of(
+    public static final List<ValueGetter<Block>> SOUL_INFUSED_BLOCKS = List.of(
             SOUL_INFUSED_REDSTONE_BLOCK,
             SOUL_INFUSED_COPPER_BLOCK,
             SOUL_INFUSED_GOLD_BLOCK,
@@ -185,8 +185,8 @@ public class NarakaBlocks {
     );
 
     public static void forEachSoulInfusedBlock(Consumer<Block> consumer) {
-        for (Supplier<Block> soulInfusedBlock : SOUL_INFUSED_BLOCKS)
-            consumer.accept(soulInfusedBlock.get());
+        for (ValueGetter<Block> soulInfusedBlock : SOUL_INFUSED_BLOCKS)
+            consumer.accept(soulInfusedBlock.getConcreteValue());
     }
 
 
@@ -206,7 +206,7 @@ public class NarakaBlocks {
         return registerSimpleBlockWithItem(SOUL_INFUSED_PREFIX + name, baseBlock, item().fireResistant().rarity(Rarity.RARE));
     }
 
-    private static HolderProxy<Block, Block> registerSoulInfusedBlock(String name, Supplier<Block> baseBlock) {
+    private static HolderProxy<Block, Block> registerSoulInfusedBlock(String name, ValueGetter<Block> baseBlock) {
         return registerBlockWithItem(SOUL_INFUSED_PREFIX + name, Block::new, baseBlock, item().fireResistant().rarity(Rarity.RARE));
     }
 
@@ -225,17 +225,17 @@ public class NarakaBlocks {
 
     private static <B extends Block> HolderProxy<Block, B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties blockProperties, Item.Properties itemProperties) {
         HolderProxy<Block, B> block = RegistryWriter.register(Registries.BLOCK, name, () -> function.apply(blockProperties));
-        RegistryWriter.register(Registries.ITEM, name, () -> new BlockItem(block.get(), itemProperties));
+        RegistryWriter.register(Registries.ITEM, name, () -> new BlockItem(block.getConcreteValue(), itemProperties));
         return block;
     }
 
-    private static <B extends Block> HolderProxy<Block, B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, Supplier<Block> blockSupplier, Item.Properties itemProperties) {
+    private static <B extends Block> HolderProxy<Block, B> registerBlockWithItem(String name, Function<BlockBehaviour.Properties, ? extends B> function, ValueGetter<Block> blockSupplier, Item.Properties itemProperties) {
         HolderProxy<Block, B> block = RegistryWriter.register(Registries.BLOCK, name,
                 () -> function.apply(
-                        from(name, blockSupplier.get())
+                        from(name, blockSupplier.getConcreteValue())
                 )
         );
-        RegistryWriter.register(Registries.ITEM, name, () -> new BlockItem(block.get(), itemProperties));
+        RegistryWriter.register(Registries.ITEM, name, () -> new BlockItem(block.getConcreteValue(), itemProperties));
         return block;
     }
 

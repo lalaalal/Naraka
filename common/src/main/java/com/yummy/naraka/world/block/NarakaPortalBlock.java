@@ -22,7 +22,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class NarakaPortalBlock extends BaseEntityBlock {
     private static final VoxelShape SHAPE = Shapes.box(-1, 0, 0.25, 2, 3, 0.75);
@@ -58,7 +59,7 @@ public class NarakaPortalBlock extends BaseEntityBlock {
     @SuppressWarnings("deprecation")
     @Override
     public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-        if (player.getMainHandItem().is(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get()))
+        if (player.getMainHandItem().is(NarakaItems.SPEAR_OF_LONGINUS_ITEM.getConcreteValue()))
             return 1;
         return super.getDestroyProgress(state, player, level, pos);
     }
@@ -67,7 +68,7 @@ public class NarakaPortalBlock extends BaseEntityBlock {
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (random.nextDouble() < 0.5) {
-            level.getBlockEntity(pos, NarakaBlockEntityTypes.NARAKA_PORTAL.get())
+            level.getBlockEntity(pos, NarakaBlockEntityTypes.NARAKA_PORTAL.getConcreteValue())
                     .ifPresent(NarakaPortalBlockEntity::use);
         }
     }
@@ -91,7 +92,7 @@ public class NarakaPortalBlock extends BaseEntityBlock {
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (entity.canChangeDimensions() && level instanceof ServerLevel serverLevel && !entity.getType().is(NarakaEntityTypeTags.NARAKA_PORTAL_IGNORE)) {
             if (!entity.isOnPortalCooldown()) {
-                level.getBlockEntity(pos, NarakaBlockEntityTypes.NARAKA_PORTAL.get())
+                level.getBlockEntity(pos, NarakaBlockEntityTypes.NARAKA_PORTAL.getConcreteValue())
                         .ifPresent(NarakaPortalBlockEntity::use);
                 ServerLevel destinationLevel = getDestinationLevel(serverLevel);
                 if (destinationLevel != null) {

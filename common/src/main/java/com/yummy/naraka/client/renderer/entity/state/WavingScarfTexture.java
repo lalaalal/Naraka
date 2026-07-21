@@ -1,11 +1,8 @@
 package com.yummy.naraka.client.renderer.entity.state;
 
 import com.yummy.naraka.client.NarakaTextures;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 
-@Environment(EnvType.CLIENT)
 public record WavingScarfTexture(ResourceLocation herobrineTexture, ResourceLocation shadowTexture,
                                  int scarfX, int scarfY,
                                  int scarfWidth, int scarfHeight,

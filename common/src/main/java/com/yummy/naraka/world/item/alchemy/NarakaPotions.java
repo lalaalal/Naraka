@@ -4,7 +4,6 @@ import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryWriter;
 import com.yummy.naraka.init.NarakaInitializer;
 import com.yummy.naraka.init.PotionBrewRecipeRegistry;
-import com.yummy.naraka.world.effect.NarakaMobEffects;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -16,7 +15,6 @@ import java.util.function.Supplier;
 public class NarakaPotions {
     public static final Holder<Potion> CHALLENGER = register("challenger", () -> new Potion(
             "challenger",
-            new MobEffectInstance(NarakaMobEffects.GOD_BLESS.value(), 3600, 255),
             new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3600),
             new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3600),
             new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 3600),

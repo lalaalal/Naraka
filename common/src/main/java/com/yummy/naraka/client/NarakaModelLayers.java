@@ -6,11 +6,8 @@ import com.yummy.naraka.client.model.*;
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulStabilizerBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.entity.CorruptedStarRenderer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 
-@Environment(EnvType.CLIENT)
 public final class NarakaModelLayers {
     public static final ModelLayerLocation HEROBRINE = location("herobrine");
     public static final ModelLayerLocation HEROBRINE_SCARF = location("herobrine_scarf");

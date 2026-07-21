@@ -3,14 +3,11 @@ package com.yummy.naraka.client.animation.herobrine;
 import com.yummy.naraka.client.animation.AnimationMapper;
 import com.yummy.naraka.client.animation.NarakaInterpolations;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
 
-@Environment(EnvType.CLIENT)
 public class FinalHerobrineComboAnimation {
     public static void initialize() {
         AnimationMapper.register(HerobrineAnimationLocations.FINAL_COMBO_ATTACK_1, FINAL_COMBO_1);

@@ -12,8 +12,6 @@ import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
@@ -27,7 +25,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Environment(EnvType.CLIENT)
 @Mixin(HumanoidArmorLayer.class)
 public abstract class HumanoidArmorLayerMixin<T extends LivingEntity> {
     @Inject(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V", at = @At("RETURN"))
@@ -40,7 +37,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity> {
                 WavingScarfTexture textureInfo = modelData.textureInfo();
                 RenderType outsideRenderType = naraka$getOutsideRenderType(textureInfo);
                 RenderType insideRenderType = naraka$getInsideRenderType(textureInfo);
-                ScarfWavingData scarfWavingData = EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.SCARF_WAVING_DATA.get());
+                ScarfWavingData scarfWavingData = EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.SCARF_WAVING_DATA.getConcreteValue());
                 float rotationDegree = scarfWavingData.getScarfRotationDegree(partialTicks);
                 float scale = scarfPose.scale();
                 Vec3 translation = scarfPose.translation();

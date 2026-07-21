@@ -11,11 +11,11 @@ import java.util.List;
 
 public class BeamEffectsHelper {
     public static List<BeamEffect> get(Entity entity) {
-        return EntityDataHelper.getRawEntityData(entity, NarakaEntityDataTypes.BEAM_EFFECTS.get());
+        return EntityDataHelper.getRawEntityData(entity, NarakaEntityDataTypes.BEAM_EFFECTS.getConcreteValue());
     }
 
     public static void set(Entity entity, List<BeamEffect> beamEffects) {
-        EntityDataHelper.setEntityData(entity, NarakaEntityDataTypes.BEAM_EFFECTS.get(), beamEffects);
+        EntityDataHelper.setEntityData(entity, NarakaEntityDataTypes.BEAM_EFFECTS.getConcreteValue(), beamEffects);
     }
 
     public static void add(Entity entity, List<BeamEffect> beamEffects) {

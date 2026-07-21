@@ -24,7 +24,7 @@ public class AreaEffect extends Entity {
     }
 
     public AreaEffect(Level level, Vec3 position, int lifetime, float xWidth, float zWidth, int color, int index) {
-        this(NarakaEntityTypes.AREA_EFFECT.get(), level);
+        this(NarakaEntityTypes.AREA_EFFECT.getConcreteValue(), level);
         setPos(position);
         entityData.set(X_WIDTH, xWidth);
         entityData.set(Z_WIDTH, zWidth);

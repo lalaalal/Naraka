@@ -50,7 +50,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     }
 
     public HerobrineTotemBlockEntity(BlockPos pos, BlockState state) {
-        this(NarakaBlockEntityTypes.HEROBRINE_TOTEM.get(), pos, state);
+        this(NarakaBlockEntityTypes.HEROBRINE_TOTEM.getConcreteValue(), pos, state);
     }
 
     public void setCustomPlaced(boolean customPlaced) {
@@ -84,7 +84,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         boolean shouldWait = crack == MAX_CRACK - 1 && waitCount > 0;
 
         if (crack >= MAX_CRACK - 3) {
-            level.sendParticles(NarakaParticleTypes.HEROBRINE_SPAWN.get(),
+            level.sendParticles(NarakaParticleTypes.HEROBRINE_SPAWN.getConcreteValue(),
                     pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 2,
                     0, 0, 0, 0.01
             );
@@ -121,10 +121,10 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
     }
 
     public static boolean isTotemStructure(Level level, BlockPos totemPos) {
-        return level.getBlockState(totemPos).is(NarakaBlocks.HEROBRINE_TOTEM.get())
+        return level.getBlockState(totemPos).is(NarakaBlocks.HEROBRINE_TOTEM.getConcreteValue())
                 && level.getBlockState(totemPos.above()).is(Blocks.NETHERRACK)
-                && level.getBlockState(totemPos.below(1)).is(NarakaBlocks.IMITATION_GOLD_BLOCK.get())
-                && level.getBlockState(totemPos.below(2)).is(NarakaBlocks.IMITATION_GOLD_BLOCK.get());
+                && level.getBlockState(totemPos.below(1)).is(NarakaBlocks.IMITATION_GOLD_BLOCK.getConcreteValue())
+                && level.getBlockState(totemPos.below(2)).is(NarakaBlocks.IMITATION_GOLD_BLOCK.getConcreteValue());
     }
 
     private void summonHerobrine(ServerLevel level, BlockPos pos) {

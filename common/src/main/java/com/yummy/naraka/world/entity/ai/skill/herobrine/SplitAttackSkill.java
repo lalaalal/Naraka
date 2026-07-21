@@ -46,7 +46,7 @@ public class SplitAttackSkill extends ComboSkill<Herobrine> {
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
         lookTarget(target);
-        run(at(0) && targetOutOfRange(target, 9), () -> NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.TELEPORT.get()));
+        run(at(0) && targetOutOfRange(target, 9), () -> NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.TELEPORT.getConcreteValue()));
         run(at(3) && targetOutOfRange(target, 9), () -> teleportToTarget(target, 3));
         runBetween(0, 10, () -> rotateTowardTarget(target));
         runBetween(15, 20, () -> moveToTarget(target, true, 1));

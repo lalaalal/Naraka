@@ -6,8 +6,6 @@ import com.yummy.naraka.client.renderer.entity.state.BeamEffectRenderState;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.BeamEffect;
 import com.yummy.naraka.world.entity.data.BeamEffectsHelper;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -24,7 +22,6 @@ import org.joml.Vector3fc;
 import java.util.ArrayList;
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public class BeamEffectLayer<T extends Entity, M extends EntityModel<T>> extends RenderLayer<T, M> {
     private final Vector3fc scale;
     private final Vector3fc offset;

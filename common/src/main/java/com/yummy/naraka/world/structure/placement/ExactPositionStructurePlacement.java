@@ -34,6 +34,6 @@ public class ExactPositionStructurePlacement extends StructurePlacement {
 
     @Override
     public StructurePlacementType<?> type() {
-        return NarakaStructurePlacementTypes.EXACT_POSITION.get();
+        return NarakaStructurePlacementTypes.EXACT_POSITION.getConcreteValue();
     }
 }

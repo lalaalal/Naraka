@@ -50,7 +50,7 @@ public enum NarakaFlameParticleOption implements ParticleOptions, StringRepresen
 
     @Override
     public ParticleType<?> getType() {
-        return NarakaParticleTypes.NARAKA_FLAME.get();
+        return NarakaParticleTypes.NARAKA_FLAME.getConcreteValue();
     }
 
     @Override

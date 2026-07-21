@@ -14,7 +14,7 @@ public class NarakaPortalBlockEntity extends BlockEntity {
     private int usage = 3;
 
     public NarakaPortalBlockEntity(BlockPos pos, BlockState blockState) {
-        super(NarakaBlockEntityTypes.NARAKA_PORTAL.get(), pos, blockState);
+        super(NarakaBlockEntityTypes.NARAKA_PORTAL.getConcreteValue(), pos, blockState);
     }
 
     public void use() {

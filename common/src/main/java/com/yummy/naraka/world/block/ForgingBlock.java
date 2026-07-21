@@ -25,7 +25,7 @@ public abstract class ForgingBlock extends BaseEntityBlock {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         ItemStack itemStack = player.getItemInHand(hand);
         if (blockEntity instanceof ForgingBlockEntity forgingBlockEntity) {
-            if (itemStack.is(NarakaItems.NETHERITE_HAMMER.get())) {
+            if (itemStack.is(NarakaItems.NETHERITE_HAMMER.getConcreteValue())) {
                 if (forgingBlockEntity.tryReinforce(player))
                     itemStack.hurtAndBreak(5, player, entity -> entity.broadcastBreakEvent(hand));
                 return InteractionResult.SUCCESS;

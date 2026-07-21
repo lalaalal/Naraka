@@ -50,7 +50,8 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.*;
 
@@ -172,7 +173,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     public Herobrine(Level level, Vec3 pos) {
-        this(NarakaEntityTypes.HEROBRINE.get(), level);
+        this(NarakaEntityTypes.HEROBRINE.getConcreteValue(), level);
         setPos(pos);
     }
 
@@ -572,7 +573,7 @@ public class Herobrine extends AbstractHerobrine {
                 if (sourceEntity.getMainHandItem().is(NarakaItemTags.ENTER_NARAKA_DIMENSION)) {
                     teleportTargetToNarakaDimension(level, sourceEntity);
                 } else {
-                    NarakaEntityTypes.SHINY_EFFECT.get().spawn(level, blockPosition().above(), MobSpawnType.EVENT);
+                    NarakaEntityTypes.SHINY_EFFECT.getConcreteValue().spawn(level, blockPosition().above(), MobSpawnType.EVENT);
                     remove(RemovalReason.KILLED);
                 }
                 return false;
@@ -791,7 +792,7 @@ public class Herobrine extends AbstractHerobrine {
                     .computeIfAbsent(OriginHerobrine.SpawnData::create, OriginHerobrine.SpawnData::new, "origin_herobrine_spawn_data");
             if (originHerobrineSpawnData.isSpawned())
                 return;
-            OriginHerobrine originHerobrine = NarakaEntityTypes.ORIGIN_HEROBRINE.get().spawn(
+            OriginHerobrine originHerobrine = NarakaEntityTypes.ORIGIN_HEROBRINE.getConcreteValue().spawn(
                     narakaLevel,
                     OriginHerobrine.SPAWN_POSITION, MobSpawnType.TRIGGERED
             );

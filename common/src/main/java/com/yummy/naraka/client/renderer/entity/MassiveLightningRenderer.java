@@ -5,8 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.world.entity.MassiveLightning;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -15,7 +13,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Vector3f;
 
-@Environment(EnvType.CLIENT)
 public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning> {
     public MassiveLightningRenderer(EntityRendererProvider.Context context) {
         super(context);

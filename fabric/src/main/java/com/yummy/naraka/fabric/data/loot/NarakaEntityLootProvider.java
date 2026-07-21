@@ -20,7 +20,8 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCon
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithLootingCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
@@ -40,19 +41,19 @@ public class NarakaEntityLootProvider extends SimpleFabricLootTableProvider {
         if (registries == null)
             throw new IllegalStateException("Lookup provider not allocated");
         generator.accept(
-                NarakaEntityTypes.HEROBRINE.get().getDefaultLootTable(),
+                NarakaEntityTypes.HEROBRINE.getConcreteValue().getDefaultLootTable(),
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                .add(LootItem.lootTableItem(NarakaItems.GOD_BLOOD.get()))
+                                .add(LootItem.lootTableItem(NarakaItems.GOD_BLOOD.getConcreteValue()))
                                 .when(AllOfCondition.allOf(
                                         LootItemKilledByPlayerCondition.killedByPlayer(),
                                         LootItemRandomChanceCondition.randomChance(0.1f)
                                 ))
                         ).withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_SCARF.get()))
-                                .add(LootItem.lootTableItem(NarakaItems.NARAKA_PICKAXE.get()))
+                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_SCARF.getConcreteValue()))
+                                .add(LootItem.lootTableItem(NarakaItems.NARAKA_PICKAXE.getConcreteValue()))
                                 .when(AllOfCondition.allOf(
                                         LootItemKilledByPlayerCondition.killedByPlayer(),
                                         LootItemRandomChanceCondition.randomChance(0.05f)
@@ -60,25 +61,25 @@ public class NarakaEntityLootProvider extends SimpleFabricLootTableProvider {
                         ).withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
                                 .setBonusRolls(ConstantValue.exactly(0.3f))
-                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_1_DISC.get()))
-                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_2_DISC.get()))
-                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_3_DISC.get()))
-                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_4_DISC.get()))
+                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_1_DISC.getConcreteValue()))
+                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_2_DISC.getConcreteValue()))
+                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_3_DISC.getConcreteValue()))
+                                .add(LootItem.lootTableItem(NarakaItems.HEROBRINE_PHASE_4_DISC.getConcreteValue()))
 
                                 .when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.1f, 0.08f))
                         ).withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                .add(LootItem.lootTableItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get())
+                                .add(LootItem.lootTableItem(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.getConcreteValue())
                                         .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
                                         .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))
                                 )
                                 .when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.3f, 0.08f))
                         ).withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                .add(LootItem.lootTableItem(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get()))
+                                .add(LootItem.lootTableItem(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.getConcreteValue()))
                         ).withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                .add(LootItem.lootTableItem(NarakaItems.STIGMA_ROD.get()))
+                                .add(LootItem.lootTableItem(NarakaItems.STIGMA_ROD.getConcreteValue()))
                                 .when(AllOfCondition.allOf(
                                         LootItemKilledByPlayerCondition.killedByPlayer(),
                                         LootItemRandomChanceCondition.randomChance(0.0001f)
@@ -86,7 +87,7 @@ public class NarakaEntityLootProvider extends SimpleFabricLootTableProvider {
                         )
         );
         generator.accept(
-                NarakaEntityTypes.DIAMOND_GOLEM.get().getDefaultLootTable(),
+                NarakaEntityTypes.DIAMOND_GOLEM.getConcreteValue().getDefaultLootTable(),
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))

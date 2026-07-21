@@ -28,7 +28,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,16 +60,16 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         mob.setDeltaMovement(Vec3.ZERO);
         Entity vehicle = mob.getVehicle();
         if (vehicle != null)
-            EntityDataHelper.setEntityData(vehicle, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
+            EntityDataHelper.setEntityData(vehicle, NarakaEntityDataTypes.KEEP_UNFROZEN.getConcreteValue(), true);
 
         sendEffectToPlayers(level);
 
         ShinyEffect shinyEffect = new ShinyEffect(level, 25, false, 1, 0, SoulType.EMERALD.color);
-        EntityDataHelper.setEntityData(shinyEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
+        EntityDataHelper.setEntityData(shinyEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.getConcreteValue(), true);
         shinyEffect.setPos(mob.getEyePosition().add(0, 1.5, 0));
         level.addFreshEntity(shinyEffect);
 
-        EntityDataHelper.setEntityData(mob, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
+        EntityDataHelper.setEntityData(mob, NarakaEntityDataTypes.KEEP_UNFROZEN.getConcreteValue(), true);
         tickFreezeManager.freeze(level);
     }
 
@@ -83,7 +84,7 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
                     AreaEffect areaEffect = new AreaEffect(level, basePosition.add(x * 2, 0, z * 2), 40 + lifetimeOffset, 2, 2, 0x00ff00, 0)
                             .setMaxAlpha(0xff);
                     level.addFreshEntity(areaEffect);
-                    EntityDataHelper.setEntityData(areaEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
+                    EntityDataHelper.setEntityData(areaEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.getConcreteValue(), true);
                 }
             }
         }
@@ -111,13 +112,13 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
 
     @Override
     protected void onLastTick(ServerLevel level) {
-        EntityDataHelper.removeEntityData(mob, NarakaEntityDataTypes.KEEP_UNFROZEN.get());
+        EntityDataHelper.removeEntityData(mob, NarakaEntityDataTypes.KEEP_UNFROZEN.getConcreteValue());
     }
 
     private void spawnShinySparkAndStigmatize(ServerLevel level) {
         for (LivingEntity target : caughtEntities) {
             ShinyEffect shinyEffect = ShinyEffect.spawnShinySpark(level, target.position(), mob.getRandom(), 3, 60, SoulType.EMERALD.color);
-            EntityDataHelper.setEntityData(shinyEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
+            EntityDataHelper.setEntityData(shinyEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.getConcreteValue(), true);
             mob.stigmatizeEntity(level, target);
 
             if (NarakaConfig.COMMON.disableStigma.getValue())
@@ -166,6 +167,6 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
     public void interrupt() {
         if (mob.level() instanceof ServerLevel serverLevel)
             tickFreezeManager.unfreeze(serverLevel);
-        EntityDataHelper.removeEntityData(mob, NarakaEntityDataTypes.KEEP_UNFROZEN.get());
+        EntityDataHelper.removeEntityData(mob, NarakaEntityDataTypes.KEEP_UNFROZEN.getConcreteValue());
     }
 }

@@ -2,11 +2,8 @@ package com.yummy.naraka.client.gui.components;
 
 import com.yummy.naraka.world.overlay.ProgressOverlayData;
 import com.yummy.naraka.world.overlay.ProgressOverlayExtensionType;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 
-@Environment(EnvType.CLIENT)
 public interface ProgressOverlayExtension<T> {
     ProgressOverlayExtensionType<T> getType();
 

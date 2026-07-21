@@ -17,7 +17,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.function.Predicate;
 
@@ -84,7 +85,7 @@ public class ExplosionSkill extends AttackSkill<Herobrine> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        runAt(0, () -> NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.TELEPORT.get()));
+        runAt(0, () -> NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.TELEPORT.getConcreteValue()));
         runAt(3, () -> teleportToTarget(target, 1));
         runBetween(0, 5, () -> rotateTowardTarget(target));
         runAfter(95, () -> lookTarget(target));

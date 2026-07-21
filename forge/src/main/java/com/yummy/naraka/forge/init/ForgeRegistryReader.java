@@ -7,7 +7,8 @@ import net.minecraft.core.HolderOwner;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.registries.IForgeRegistry;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.Optional;
 import java.util.stream.Stream;

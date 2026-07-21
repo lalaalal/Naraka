@@ -3,8 +3,6 @@ package com.yummy.naraka.client.animation;
 import com.yummy.naraka.client.animation.herobrine.*;
 import com.yummy.naraka.client.animation.naraka_pickaxe.NarakaPickaxeAnimation;
 import com.yummy.naraka.world.entity.animation.AnimationLocations;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.resources.ResourceLocation;
 
@@ -12,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-@Environment(EnvType.CLIENT)
 public class AnimationMapper {
     private static final Map<ResourceLocation, AnimationDefinition> MAPPER = new HashMap<>();
 

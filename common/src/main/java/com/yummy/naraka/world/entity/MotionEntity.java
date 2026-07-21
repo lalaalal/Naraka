@@ -50,7 +50,7 @@ public abstract class MotionEntity extends Entity implements Motionable {
     public void setMotion(ResourceLocation id, List<Vec3> positions, List<Quaternionf> rotations) {
         EntityDataHelper.setEntityData(
                 this,
-                NarakaEntityDataTypes.MOTION_DATA.get(),
+                NarakaEntityDataTypes.MOTION_DATA.getConcreteValue(),
                 new MotionData(id, positions, rotations)
         );
     }
@@ -60,7 +60,7 @@ public abstract class MotionEntity extends Entity implements Motionable {
     }
 
     private void updateMotion() {
-        MotionData motionData = EntityDataHelper.getRawEntityData(this, NarakaEntityDataTypes.MOTION_DATA.get());
+        MotionData motionData = EntityDataHelper.getRawEntityData(this, NarakaEntityDataTypes.MOTION_DATA.getConcreteValue());
         if (!motion.getId().equals(motionData.id())) {
             motion = MotionTypes.create(motionData);
             onMotionUpdated(motionData);

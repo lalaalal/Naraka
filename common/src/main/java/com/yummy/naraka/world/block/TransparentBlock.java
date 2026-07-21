@@ -68,7 +68,7 @@ public class TransparentBlock extends Block {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack itemStack = player.getItemInHand(hand);
         BlockState blockState = level.getBlockState(pos);
-        if (player.isCreative() && itemStack.is(NarakaBlocks.TRANSPARENT_BLOCK.get().asItem())) {
+        if (player.isCreative() && itemStack.is(NarakaBlocks.TRANSPARENT_BLOCK.getConcreteValue().asItem())) {
             if (player.onGround()) {
                 level.setBlock(pos, blockState.cycle(VISIBLE), 10);
             } else {

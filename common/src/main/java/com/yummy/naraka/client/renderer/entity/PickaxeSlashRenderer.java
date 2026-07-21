@@ -6,8 +6,6 @@ import com.mojang.math.Axis;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.world.entity.PickaxeSlash;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -20,7 +18,6 @@ import org.joml.Vector3f;
 
 import java.util.function.BiFunction;
 
-@Environment(EnvType.CLIENT)
 public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash> {
     public PickaxeSlashRenderer(EntityRendererProvider.Context context) {
         super(context);

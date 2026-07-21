@@ -17,8 +17,6 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ScarfWavingData;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -33,7 +31,6 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public class HerobrineScarfLayer<T extends AbstractHerobrine, M extends AbstractHerobrineModel<T>> extends RenderLayer<T, M> {
     private final HerobrineScarfModel scarfModel;
 

@@ -56,7 +56,7 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
     }
 
     public CorruptedStar(Level level, @Nullable Entity owner, Vec3 position, QuadraticBezier bezier, int prepareDuration) {
-        this(NarakaEntityTypes.CORRUPTED_STAR.get(), level);
+        this(NarakaEntityTypes.CORRUPTED_STAR.getConcreteValue(), level);
         setPos(position);
         setOwner(owner);
         entityData.set(PREPARE_DURATION, prepareDuration);

@@ -7,15 +7,12 @@ import com.yummy.naraka.event.EntityEvents;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 
-@Environment(EnvType.CLIENT)
 public class LockedHealthHud implements HudRenderer {
     public static final int HEARTS_PER_LINE = 10;
     public static final int HEART_WIDTH = 8;
@@ -23,7 +20,7 @@ public class LockedHealthHud implements HudRenderer {
     private int blinkTime;
 
     public LockedHealthHud() {
-        EntityEvents.ENTITY_DATA_CHANGE.register(NarakaEntityDataTypes.LOCKED_HEALTH.get(), this::onLockedHealthChanged);
+        EntityEvents.ENTITY_DATA_CHANGE.register(NarakaEntityDataTypes.LOCKED_HEALTH.getConcreteValue(), this::onLockedHealthChanged);
         ClientEvents.TICK_PRE.register(this::tick);
     }
 
@@ -46,7 +43,7 @@ public class LockedHealthHud implements HudRenderer {
 
         int baseX = graphics.guiWidth() / 2 - 91;
         int baseY = graphics.guiHeight() - 39;
-        double lockedHealth = EntityDataHelper.getRawEntityData(player, NarakaEntityDataTypes.LOCKED_HEALTH.get());
+        double lockedHealth = EntityDataHelper.getRawEntityData(player, NarakaEntityDataTypes.LOCKED_HEALTH.getConcreteValue());
         double originalMaxHealth = player.getAttributeValue(Attributes.MAX_HEALTH);
         double maxHealth = originalMaxHealth - lockedHealth;
         int heartCount = (int) Math.round(originalMaxHealth / 2);

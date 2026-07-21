@@ -11,7 +11,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     public static final ResourceLocation LOCATION = createLocation("final_herobrine.parrying");
@@ -74,7 +75,7 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
             succeed = true;
             tickCount = duration - PARRYING_DURATION;
         }
-        runBetween(PARRYING_START_TICK, PARRYING_START_TICK + 5, () -> level.sendParticles(NarakaParticleTypes.PARRYING.get(), mob.getX(), mob.getY() + 1, mob.getZ(), 25, 0, 0.5, 0, 1));
+        runBetween(PARRYING_START_TICK, PARRYING_START_TICK + 5, () -> level.sendParticles(NarakaParticleTypes.PARRYING.getConcreteValue(), mob.getX(), mob.getY() + 1, mob.getZ(), 25, 0, 0.5, 0, 1));
     }
 
     private int tickCount(int succeedTick) {

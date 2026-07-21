@@ -8,8 +8,6 @@ import com.yummy.naraka.util.Color;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AreaEffect;
 import com.yummy.naraka.world.entity.AreaShape;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -21,7 +19,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 
-@Environment(EnvType.CLIENT)
 public class AreaEffectRenderer extends EntityRenderer<AreaEffect> {
     public AreaEffectRenderer(EntityRendererProvider.Context context) {
         super(context);

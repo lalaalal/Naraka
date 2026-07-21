@@ -24,7 +24,8 @@ import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -79,16 +80,16 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     }
 
     public ShadowHerobrine(Level level, Herobrine herobrine) {
-        this(NarakaEntityTypes.SHADOW_HEROBRINE.get(), level);
+        this(NarakaEntityTypes.SHADOW_HEROBRINE.getConcreteValue(), level);
         this.herobrine = herobrine;
         this.herobrineUUID = herobrine.getUUID();
         this.setTarget(herobrine.getTarget());
     }
 
     public ShadowHerobrine(Level level, Mob spawner, boolean finalModel, boolean instant) {
-        this(NarakaEntityTypes.SHADOW_HEROBRINE.get(), level);
+        this(NarakaEntityTypes.SHADOW_HEROBRINE.getConcreteValue(), level);
         entityData.set(FINAL_MODEL, finalModel);
-        if (spawner.getType() == NarakaEntityTypes.HEROBRINE.get())
+        if (spawner.getType() == NarakaEntityTypes.HEROBRINE.getConcreteValue())
             this.herobrineUUID = spawner.getUUID();
         this.instant = instant;
     }

@@ -27,7 +27,7 @@ public class FlickerSkill<T extends AbstractHerobrine> extends TargetSkill<T> {
 
     @Override
     protected void tickWithTarget(ServerLevel level, LivingEntity target) {
-        NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.FLICKER.get());
+        NarakaSkillUtils.sendParticleFront(level, mob, target, NarakaParticleTypes.FLICKER.getConcreteValue());
         dashSkill.setLinkedSkill(punchSkill);
         punchSkill.setLinkedFromPrevious(true);
         this.setLinkedSkill(dashSkill);

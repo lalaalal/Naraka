@@ -73,7 +73,7 @@ public class NarakaEntityDataTypes {
         if (purifiedSoulFireTick > 0 && !livingEntity.level().isClientSide()) {
             if (purifiedSoulFireTick % 20 == 0)
                 livingEntity.hurt(NarakaDamageSources.purifiedSoulFire(livingEntity.level().registryAccess()), 6);
-            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get(), purifiedSoulFireTick - 1);
+            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.getConcreteValue(), purifiedSoulFireTick - 1);
         }
     }
 
@@ -94,9 +94,9 @@ public class NarakaEntityDataTypes {
     private static void tickStun(LivingEntity livingEntity, int stunTick) {
         if (!livingEntity.level().isClientSide()) {
             if (stunTick > 0) {
-                EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.get(), stunTick - 1);
+                EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.getConcreteValue(), stunTick - 1);
             } else {
-                EntityDataHelper.removeEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.get());
+                EntityDataHelper.removeEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.getConcreteValue());
                 StunHelper.releaseEntity(livingEntity);
             }
         } else if (livingEntity.tickCount % 2 == 0) {

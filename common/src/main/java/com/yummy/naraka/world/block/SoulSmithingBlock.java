@@ -24,7 +24,8 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class SoulSmithingBlock extends ForgingBlock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -63,7 +64,7 @@ public class SoulSmithingBlock extends ForgingBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         ItemStack stack = player.getItemInHand(hand);
-        if (stack.is(NarakaItems.NETHERITE_HAMMER.get()))
+        if (stack.is(NarakaItems.NETHERITE_HAMMER.getConcreteValue()))
             return super.use(state, level, pos, player, hand, hitResult);
         if (blockEntity instanceof SoulSmithingBlockEntity soulSmithingBlockEntity) {
             if (isStabilizerSide(state, hitResult.getDirection())
@@ -97,6 +98,6 @@ public class SoulSmithingBlock extends ForgingBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         if (level.isClientSide())
             return super.getTicker(level, state, type);
-        return createTickerHelper(type, NarakaBlockEntityTypes.SOUL_SMITHING.get(), ForgingBlockEntity::serverTick);
+        return createTickerHelper(type, NarakaBlockEntityTypes.SOUL_SMITHING.getConcreteValue(), ForgingBlockEntity::serverTick);
     }
 }

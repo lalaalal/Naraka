@@ -5,8 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.LightTailEntity;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -18,7 +16,6 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public abstract class LightTailEntityRenderer<T extends LightTailEntity> extends EntityRenderer<T> {
     private static final float TAIL_WIDTH = 0.15f;
 

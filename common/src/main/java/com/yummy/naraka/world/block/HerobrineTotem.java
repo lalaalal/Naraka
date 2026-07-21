@@ -20,7 +20,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class HerobrineTotem extends BaseEntityBlock {
     public static final int MAX_CRACK = 11;
@@ -56,7 +57,7 @@ public class HerobrineTotem extends BaseEntityBlock {
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
         boolean custom = placer != null && NarakaEntityUtils.isDamageable(placer);
-        level.getBlockEntity(pos, NarakaBlockEntityTypes.HEROBRINE_TOTEM.get()).ifPresent(blockEntity -> {
+        level.getBlockEntity(pos, NarakaBlockEntityTypes.HEROBRINE_TOTEM.getConcreteValue()).ifPresent(blockEntity -> {
             blockEntity.setCustomPlaced(custom);
         });
     }
@@ -91,6 +92,6 @@ public class HerobrineTotem extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         if (level.isClientSide())
             return super.getTicker(level, state, type);
-        return createTickerHelper(type, NarakaBlockEntityTypes.HEROBRINE_TOTEM.get(), HerobrineTotemBlockEntity::serverTick);
+        return createTickerHelper(type, NarakaBlockEntityTypes.HEROBRINE_TOTEM.getConcreteValue(), HerobrineTotemBlockEntity::serverTick);
     }
 }

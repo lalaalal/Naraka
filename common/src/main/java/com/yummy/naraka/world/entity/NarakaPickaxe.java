@@ -12,7 +12,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class NarakaPickaxe extends SkillUsingMob {
     private Herobrine herobrine;
 
     public static boolean isNotNarakaPickaxe(LivingEntity livingEntity) {
-        return livingEntity.getType() != NarakaEntityTypes.NARAKA_PICKAXE.get();
+        return livingEntity.getType() != NarakaEntityTypes.NARAKA_PICKAXE.getConcreteValue();
     }
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
@@ -43,7 +44,7 @@ public class NarakaPickaxe extends SkillUsingMob {
     }
 
     public NarakaPickaxe(Level level, Herobrine herobrine) {
-        this(NarakaEntityTypes.NARAKA_PICKAXE.get(), level);
+        this(NarakaEntityTypes.NARAKA_PICKAXE.getConcreteValue(), level);
         this.herobrine = herobrine;
     }
 
@@ -55,7 +56,7 @@ public class NarakaPickaxe extends SkillUsingMob {
 
     private boolean filterTarget(LivingEntity target) {
         return AbstractHerobrine.isNotHerobrine(target)
-                && target.getType() != NarakaEntityTypes.NARAKA_PICKAXE.get();
+                && target.getType() != NarakaEntityTypes.NARAKA_PICKAXE.getConcreteValue();
     }
 
     @Override

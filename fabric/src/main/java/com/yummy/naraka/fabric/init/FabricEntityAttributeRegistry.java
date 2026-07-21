@@ -1,5 +1,6 @@
 package com.yummy.naraka.fabric.init;
 
+import com.yummy.naraka.core.registries.ValueGetter;
 import com.yummy.naraka.init.EntityAttributeRegistry;
 import com.yummy.naraka.invoker.MethodProxy;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -12,7 +13,7 @@ import java.util.function.Supplier;
 @SuppressWarnings("unused")
 public final class FabricEntityAttributeRegistry {
     @MethodProxy(EntityAttributeRegistry.class)
-    public static void register(Supplier<? extends EntityType<? extends LivingEntity>> entity, Supplier<AttributeSupplier.Builder> builder) {
-        FabricDefaultAttributeRegistry.register(entity.get(), builder.get());
+    public static void register(ValueGetter<EntityType<? extends LivingEntity>> entity, Supplier<AttributeSupplier.Builder> builder) {
+        FabricDefaultAttributeRegistry.register(entity.getConcreteValue(), builder.get());
     }
 }

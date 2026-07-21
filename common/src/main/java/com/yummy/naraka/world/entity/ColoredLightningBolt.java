@@ -18,7 +18,7 @@ public class ColoredLightningBolt extends LightningBolt {
     }
 
     public ColoredLightningBolt(Level level, Vec3 position, int color) {
-        this(NarakaEntityTypes.COLORED_LIGHTNING_BOLT.get(), level);
+        this(NarakaEntityTypes.COLORED_LIGHTNING_BOLT.getConcreteValue(), level);
         setPos(position);
         entityData.set(COLOR, color);
     }

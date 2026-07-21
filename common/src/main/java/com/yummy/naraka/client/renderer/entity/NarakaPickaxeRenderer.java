@@ -7,8 +7,6 @@ import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.NarakaPickaxeModel;
 import com.yummy.naraka.world.entity.NarakaPickaxe;
 import com.yummy.naraka.world.item.NarakaItems;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -21,10 +19,9 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.joml.Quaternionf;
 
-@Environment(EnvType.CLIENT)
 public class NarakaPickaxeRenderer extends LivingEntityRenderer<NarakaPickaxe, NarakaPickaxeModel> {
     private final ItemRenderer itemRenderer;
-    private final ItemStack pickaxe = NarakaItems.NARAKA_PICKAXE.get().getDefaultInstance();
+    private final ItemStack pickaxe = NarakaItems.NARAKA_PICKAXE.getConcreteValue().getDefaultInstance();
 
     public static void applyTransformAndRotate(PoseStack poseStack, ModelPart part) {
         poseStack.translate(-part.x / 16, -part.y / 16, part.z / 16);

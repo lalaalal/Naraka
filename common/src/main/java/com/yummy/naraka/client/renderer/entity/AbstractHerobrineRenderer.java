@@ -13,8 +13,6 @@ import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.item.NarakaItems;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -26,18 +24,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.function.BiFunction;
 
-@Environment(EnvType.CLIENT)
 public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, M extends AbstractHerobrineModel<T>>
         extends AfterimageEntityRenderer<T, M> {
     protected final M defaultModel;
     protected final M finalModel;
 
     private final ItemRenderer itemRenderer;
-    private final ItemStack pickaxe = NarakaItems.NARAKA_PICKAXE.get().getDefaultInstance();
+    private final ItemStack pickaxe = NarakaItems.NARAKA_PICKAXE.getConcreteValue().getDefaultInstance();
 
     protected static <T extends AbstractHerobrine, M extends AbstractHerobrineModel<T>> M defaultModel(EntityRendererProvider.Context context, boolean forShadow, BiFunction<ModelPart, Boolean, M> constructor) {
         return constructor.apply(context.bakeLayer(NarakaModelLayers.HEROBRINE), forShadow);

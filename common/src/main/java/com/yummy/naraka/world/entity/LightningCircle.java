@@ -8,7 +8,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class LightningCircle extends Entity {
     public static final int MAX_SCALE = 128;
@@ -23,7 +24,7 @@ public class LightningCircle extends Entity {
     }
 
     public LightningCircle(Level level, AbstractHerobrine herobrine) {
-        this(NarakaEntityTypes.LIGHTNING_CIRCLE.get(), level);
+        this(NarakaEntityTypes.LIGHTNING_CIRCLE.getConcreteValue(), level);
         this.herobrine = herobrine;
         setPos(herobrine.getX(), herobrine.getY() + 0.1, herobrine.getZ());
     }

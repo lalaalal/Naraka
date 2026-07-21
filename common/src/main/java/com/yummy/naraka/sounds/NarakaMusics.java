@@ -7,7 +7,8 @@ import net.minecraft.client.sounds.MusicManager;
 import net.minecraft.core.Holder;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.SoundEvent;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public final class NarakaMusics {
     @Nullable

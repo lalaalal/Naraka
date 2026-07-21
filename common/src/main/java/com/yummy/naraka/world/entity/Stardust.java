@@ -27,7 +27,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class Stardust extends LightTailEntity {
     public static final int EXPLOSION_WAITING_TICK = 120;
@@ -45,7 +46,7 @@ public class Stardust extends LightTailEntity {
     }
 
     public Stardust(Level level, LivingEntity owner, Vec3 shootingVector, double power, int waitingTick, boolean followTarget) {
-        this(NarakaEntityTypes.STARDUST.get(), level);
+        this(NarakaEntityTypes.STARDUST.getConcreteValue(), level);
         setPos(owner.getEyePosition());
         setRot(owner.getYRot(), owner.getXRot());
         setDeltaMovement(shootingVector.normalize().scale(power));
@@ -101,7 +102,7 @@ public class Stardust extends LightTailEntity {
         waitingTickCount += 1;
         int waitingTick = entityData.get(WAITING_TICK);
         if (waitingTickCount == waitingTick - 5)
-            level().addParticle(NarakaParticleTypes.STARDUST.get(), true, getX(), getY(), getZ(), 0, 0, 0);
+            level().addParticle(NarakaParticleTypes.STARDUST.getConcreteValue(), true, getX(), getY(), getZ(), 0, 0, 0);
         if (waitingTickCount >= waitingTick) {
             Entity target = getTarget();
             if (followTarget && target != null) {

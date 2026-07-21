@@ -51,16 +51,16 @@ public class NectariumCoreBlock extends Block {
         BlockState belowState = level.getBlockState(pos.below());
         if (belowState.isAir()) {
             BlockPos growingPos = pos.below();
-            BlockState crystal = NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get().defaultBlockState()
+            BlockState crystal = NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.getConcreteValue().defaultBlockState()
                     .setValue(NectariumCrystalBlock.TIP_DIRECTION, Direction.DOWN)
                     .setValue(NectariumCrystalBlock.THICKNESS, DripstoneThickness.TIP);
             level.setBlock(growingPos, crystal, UPDATE_ALL);
             level.setBlock(pos, state.setValue(HONEY, honey - 1), UPDATE_ALL);
-        } else if (belowState.is(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get())) {
+        } else if (belowState.is(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.getConcreteValue())) {
             BlockPos growingPos = findUpFaceSturdyBlock(level, pos).above();
             if (growingPos.equals(pos) || growingPos.equals(pos.below()) || pos.getY() - growingPos.getY() > MAX_HEIGHT)
                 return;
-            BlockState crystal = NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get().defaultBlockState()
+            BlockState crystal = NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.getConcreteValue().defaultBlockState()
                     .setValue(NectariumCrystalBlock.TIP_DIRECTION, Direction.UP)
                     .setValue(NectariumCrystalBlock.THICKNESS, DripstoneThickness.TIP);
             level.setBlock(growingPos, crystal, UPDATE_ALL);
@@ -97,7 +97,7 @@ public class NectariumCoreBlock extends Block {
                     double xOffset = direction.getStepX() == 0 ? random.nextDouble() : 0.5 + (double) direction.getStepX() * 0.6;
                     double yOffset = direction.getStepY() == 0 ? random.nextDouble() : 0.5 + (double) direction.getStepY() * 0.6;
                     double zOffset = direction.getStepZ() == 0 ? random.nextDouble() : 0.5 + (double) direction.getStepZ() * 0.6;
-                    level.addParticle(NarakaParticleTypes.DRIPPING_NECTARIUM.get(), pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0.0, 0.0, 0.0);
+                    level.addParticle(NarakaParticleTypes.DRIPPING_NECTARIUM.getConcreteValue(), pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0.0, 0.0, 0.0);
                 }
             }
         }
@@ -106,7 +106,7 @@ public class NectariumCoreBlock extends Block {
     private BlockPos findUpFaceSturdyBlock(ServerLevel level, BlockPos pos) {
         BlockPos.MutableBlockPos mutableBlockPos = pos.below(2).mutable();
         BlockState searchingState = level.getBlockState(mutableBlockPos);
-        while (!searchingState.isFaceSturdy(level, mutableBlockPos, Direction.UP) && !searchingState.is(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get())) {
+        while (!searchingState.isFaceSturdy(level, mutableBlockPos, Direction.UP) && !searchingState.is(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.getConcreteValue())) {
             if (pos.getY() - mutableBlockPos.getY() > MAX_HEIGHT)
                 return mutableBlockPos.immutable();
             mutableBlockPos.move(Direction.DOWN);

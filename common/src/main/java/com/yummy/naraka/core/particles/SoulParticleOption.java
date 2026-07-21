@@ -32,7 +32,7 @@ public record SoulParticleOption(SoulType soulType) implements ParticleOptions {
 
     @Override
     public ParticleType<?> getType() {
-        return NarakaParticleTypes.SOUL.get();
+        return NarakaParticleTypes.SOUL.getConcreteValue();
     }
 
     @Override

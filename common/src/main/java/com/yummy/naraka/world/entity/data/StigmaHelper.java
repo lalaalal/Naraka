@@ -9,11 +9,11 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class StigmaHelper {
     public static Stigma get(LivingEntity livingEntity) {
-        return EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.get());
+        return EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.getConcreteValue());
     }
 
     private static void set(LivingEntity livingEntity, Stigma stigma) {
-        EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.get(), stigma);
+        EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.getConcreteValue(), stigma);
     }
 
     public static boolean hasStigma(LivingEntity livingEntity) {

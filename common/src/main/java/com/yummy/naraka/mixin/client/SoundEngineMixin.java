@@ -4,8 +4,6 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.sound.VolumeController;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Options;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.ChannelAccess;
@@ -19,7 +17,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.Map;
 
-@Environment(EnvType.CLIENT)
 @Mixin(SoundEngine.class)
 public abstract class SoundEngineMixin implements VolumeController {
     @Shadow

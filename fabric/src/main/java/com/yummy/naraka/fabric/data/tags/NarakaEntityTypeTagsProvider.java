@@ -22,28 +22,28 @@ public class NarakaEntityTypeTagsProvider extends FabricTagProvider.EntityTypeTa
                 .addTag(ConventionalTags.Entities.BOSSES)
                 .add(EntityType.PLAYER);
         getOrCreateTagBuilder(NarakaEntityTypeTags.HEROBRINE)
-                .add(NarakaEntityTypes.HEROBRINE.get())
-                .add(NarakaEntityTypes.SHADOW_HEROBRINE.get())
-                .add(NarakaEntityTypes.ORIGIN_HEROBRINE.get());
+                .add(NarakaEntityTypes.HEROBRINE.getConcreteValue())
+                .add(NarakaEntityTypes.SHADOW_HEROBRINE.getConcreteValue())
+                .add(NarakaEntityTypes.ORIGIN_HEROBRINE.getConcreteValue());
         getOrCreateTagBuilder(NarakaEntityTypeTags.DEATH_COUNTING)
                 .addTag(NarakaEntityTypeTags.HEROBRINE);
 
         getOrCreateTagBuilder(ConventionalTags.Entities.BOSSES)
-                .add(NarakaEntityTypes.HEROBRINE.get())
-                .add(NarakaEntityTypes.ORIGIN_HEROBRINE.get());
+                .add(NarakaEntityTypes.HEROBRINE.getConcreteValue())
+                .add(NarakaEntityTypes.ORIGIN_HEROBRINE.getConcreteValue());
         getOrCreateTagBuilder(EntityTypeTags.FALL_DAMAGE_IMMUNE)
-                .add(NarakaEntityTypes.HEROBRINE.get());
+                .add(NarakaEntityTypes.HEROBRINE.getConcreteValue());
 
         getOrCreateTagBuilder(EntityTypeTags.IMPACT_PROJECTILES)
-                .add(NarakaEntityTypes.CORRUPTED_STAR.get())
-                .add(NarakaEntityTypes.NARAKA_FIREBALL.get());
+                .add(NarakaEntityTypes.CORRUPTED_STAR.getConcreteValue())
+                .add(NarakaEntityTypes.NARAKA_FIREBALL.getConcreteValue());
 
         getOrCreateTagBuilder(NarakaEntityTypeTags.STIGMA_IMMUNE)
                 .addTag(NarakaEntityTypeTags.HEROBRINE)
-                .add(NarakaEntityTypes.NARAKA_PICKAXE.get());
+                .add(NarakaEntityTypes.NARAKA_PICKAXE.getConcreteValue());
         getOrCreateTagBuilder(NarakaEntityTypeTags.STUN_IMMUNE)
                 .addTag(NarakaEntityTypeTags.HEROBRINE)
-                .add(NarakaEntityTypes.NARAKA_PICKAXE.get());
+                .add(NarakaEntityTypes.NARAKA_PICKAXE.getConcreteValue());
 
         getOrCreateTagBuilder(NarakaEntityTypeTags.NARAKA_PORTAL_IGNORE)
                 .add(EntityType.EXPERIENCE_ORB)

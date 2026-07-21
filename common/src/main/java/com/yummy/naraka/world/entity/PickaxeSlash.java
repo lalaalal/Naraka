@@ -16,7 +16,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class PickaxeSlash extends LightTailEntity {
     public static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(PickaxeSlash.class, EntityDataSerializers.INT);
@@ -36,7 +37,7 @@ public class PickaxeSlash extends LightTailEntity {
     }
 
     public PickaxeSlash(Level level, AbstractHerobrine owner, int lifetime) {
-        this(NarakaEntityTypes.PICKAXE_SLASH.get(), level);
+        this(NarakaEntityTypes.PICKAXE_SLASH.getConcreteValue(), level);
         this.setOwner(owner);
         this.stigmatizingEntity = owner;
         this.lifetime = lifetime;

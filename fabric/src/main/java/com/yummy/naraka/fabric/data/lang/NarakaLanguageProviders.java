@@ -1,5 +1,6 @@
 package com.yummy.naraka.fabric.data.lang;
 
+import com.yummy.naraka.core.registries.ValueGetter;
 import com.yummy.naraka.data.lang.AdvancementComponent;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
@@ -20,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public abstract class NarakaLanguageProviders {
     private final String[] languageCodes;
@@ -54,20 +54,20 @@ public abstract class NarakaLanguageProviders {
         );
     }
 
-    public void addItem(Supplier<? extends Item> item, String... translations) {
-        add(item.get().getDescriptionId(), translations);
+    public void addItem(ValueGetter<? extends Item> item, String... translations) {
+        add(item.getConcreteValue().getDescriptionId(), translations);
     }
 
-    public void addBlock(Supplier<? extends Block> block, String... translations) {
-        add(block.get().getDescriptionId(), translations);
+    public void addBlock(ValueGetter<? extends Block> block, String... translations) {
+        add(block.getConcreteValue().getDescriptionId(), translations);
     }
 
-    public void addTooltip(Supplier<? extends Block> block, String... translations) {
-        add(LanguageKey.tooltip(block.get()), translations);
+    public void addTooltip(ValueGetter<? extends Block> block, String... translations) {
+        add(LanguageKey.tooltip(block.getConcreteValue()), translations);
     }
 
-    public void addEntityType(Supplier<? extends EntityType<?>> entityType, String... translations) {
-        add(entityType.get().getDescriptionId(), translations);
+    public void addEntityType(ValueGetter<? extends EntityType<?>> entityType, String... translations) {
+        add(entityType.getConcreteValue().getDescriptionId(), translations);
     }
 
     public void addTrimPattern(ResourceKey<TrimPattern> trimPattern, String... translations) {

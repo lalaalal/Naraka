@@ -6,8 +6,6 @@ import com.mojang.math.Axis;
 import com.yummy.naraka.client.renderer.PurifiedSoulFlameRenderMaterial;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ScreenEffectRenderer;
@@ -20,13 +18,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Environment(EnvType.CLIENT)
 @Mixin(ScreenEffectRenderer.class)
 public abstract class ScreenEffectRendererMixin {
     @Inject(method = "renderScreenEffect", at = @At("RETURN"))
     private static void renderPurifiedSoulFIre(Minecraft minecraft, PoseStack poseStack, CallbackInfo ci) {
         if (minecraft.player != null && !minecraft.player.isSpectator() && minecraft.options.getCameraType().isFirstPerson()
-                && EntityDataHelper.getRawEntityData(minecraft.player, NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get()) > 0) {
+                && EntityDataHelper.getRawEntityData(minecraft.player, NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.getConcreteValue()) > 0) {
             naraka$renderPurifiedSoulFire(minecraft, poseStack);
         }
     }

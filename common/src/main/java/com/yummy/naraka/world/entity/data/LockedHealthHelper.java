@@ -5,7 +5,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class LockedHealthHelper {
     public static double get(LivingEntity livingEntity) {
-        return EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.LOCKED_HEALTH.get());
+        return EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.LOCKED_HEALTH.getConcreteValue());
     }
 
     /**
@@ -17,7 +17,7 @@ public class LockedHealthHelper {
     public static void lock(LivingEntity target, double amount) {
         if (NarakaEntityUtils.isDamageable(target)) {
             double lockedHealth = get(target);
-            EntityDataHelper.setEntityData(target, NarakaEntityDataTypes.LOCKED_HEALTH.get(), lockedHealth + amount);
+            EntityDataHelper.setEntityData(target, NarakaEntityDataTypes.LOCKED_HEALTH.getConcreteValue(), lockedHealth + amount);
             target.setHealth((float) Math.min(target.getHealth(), target.getMaxHealth() - (lockedHealth + amount)));
         }
     }
@@ -28,6 +28,6 @@ public class LockedHealthHelper {
      * @param target Target entity to restore max health
      */
     public static void release(LivingEntity target) {
-        EntityDataHelper.setEntityData(target, NarakaEntityDataTypes.LOCKED_HEALTH.get(), 0.0);
+        EntityDataHelper.setEntityData(target, NarakaEntityDataTypes.LOCKED_HEALTH.getConcreteValue(), 0.0);
     }
 }

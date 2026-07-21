@@ -1,8 +1,6 @@
 package com.yummy.naraka.client.model;
 
 import com.yummy.naraka.world.entity.NarakaPickaxe;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -10,7 +8,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
-@Environment(EnvType.CLIENT)
 public class NarakaPickaxeModel extends SkillUsingModModel<NarakaPickaxe> {
     public NarakaPickaxeModel(ModelPart root) {
         super(root, "naraka_pickaxe");

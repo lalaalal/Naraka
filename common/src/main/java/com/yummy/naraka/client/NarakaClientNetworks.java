@@ -2,10 +2,7 @@ package com.yummy.naraka.client;
 
 import com.yummy.naraka.invoker.MethodInvoker;
 import com.yummy.naraka.network.*;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
-@Environment(EnvType.CLIENT)
 public class NarakaClientNetworks {
     private static final ServerboundNetworkManager SERVERBOUND = MethodInvoker.of(NarakaClientNetworks.class, "serverbound")
             .invoke().result(ServerboundNetworkManager.class);

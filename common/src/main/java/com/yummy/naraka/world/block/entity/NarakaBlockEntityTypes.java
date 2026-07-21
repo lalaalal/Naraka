@@ -2,6 +2,7 @@ package com.yummy.naraka.world.block.entity;
 
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryWriter;
+import com.yummy.naraka.core.registries.ValueGetter;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
@@ -9,7 +10,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import java.util.Set;
-import java.util.function.Supplier;
 
 public class NarakaBlockEntityTypes {
     public static final HolderProxy<BlockEntityType<?>, BlockEntityType<HerobrineTotemBlockEntity>> HEROBRINE_TOTEM = register(
@@ -36,8 +36,8 @@ public class NarakaBlockEntityTypes {
             NarakaBlocks.NARAKA_PORTAL
     );
 
-    private static <T extends BlockEntity> HolderProxy<BlockEntityType<?>, BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> supplier, Supplier<? extends Block> block) {
-        return RegistryWriter.register(Registries.BLOCK_ENTITY_TYPE, name, () -> new BlockEntityType<>(supplier, Set.of(block.get()), null));
+    private static <T extends BlockEntity> HolderProxy<BlockEntityType<?>, BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> supplier, ValueGetter<? extends Block> block) {
+        return RegistryWriter.register(Registries.BLOCK_ENTITY_TYPE, name, () -> new BlockEntityType<>(supplier, Set.of(block.getConcreteValue()), null));
     }
 
     public static void initialize() {

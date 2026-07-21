@@ -2,8 +2,6 @@ package com.yummy.naraka.client.particle;
 
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.LightTexture;
@@ -15,7 +13,6 @@ import net.minecraft.world.phys.Vec3;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-@Environment(EnvType.CLIENT)
 public class TurningParticle extends TextureSheetParticle {
     private final Predicate<TurningParticle> spreadPredicate;
     private boolean spread = false;

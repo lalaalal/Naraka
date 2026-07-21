@@ -5,8 +5,6 @@ import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.entity.SoulSmithingBlockEntity;
 import com.yummy.naraka.world.block.entity.SoulStabilizerBlockEntity;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
@@ -22,7 +20,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Map;
 
-@Environment(EnvType.CLIENT)
 public class NarakaBlockEntityItemRenderer implements CustomRenderManager.CustomItemRenderer, ResourceManagerReloadListener {
     public static final NarakaBlockEntityItemRenderer INSTANCE = new NarakaBlockEntityItemRenderer();
 
@@ -66,21 +63,21 @@ public class NarakaBlockEntityItemRenderer implements CustomRenderManager.Custom
     @Override
     public void onResourceManagerReload(ResourceManager resourceManager) {
         blockEntityRenderDispatcher = minecraft.getBlockEntityRenderDispatcher();
-        SoulStabilizerBlockEntity soulStabilizerBlockEntity = new SoulStabilizerBlockEntity(BlockPos.ZERO, NarakaBlocks.SOUL_STABILIZER.get().defaultBlockState());
-        SoulSmithingBlockEntity soulSmithingBlockEntity = new SoulSmithingBlockEntity(BlockPos.ZERO, NarakaBlocks.SOUL_SMITHING_BLOCK.get().defaultBlockState());
+        SoulStabilizerBlockEntity soulStabilizerBlockEntity = new SoulStabilizerBlockEntity(BlockPos.ZERO, NarakaBlocks.SOUL_STABILIZER.getConcreteValue().defaultBlockState());
+        SoulSmithingBlockEntity soulSmithingBlockEntity = new SoulSmithingBlockEntity(BlockPos.ZERO, NarakaBlocks.SOUL_SMITHING_BLOCK.getConcreteValue().defaultBlockState());
 
         entityByItem = Map.of(
-                NarakaBlocks.SOUL_STABILIZER.get().asItem(), soulStabilizerBlockEntity,
-                NarakaBlocks.SOUL_SMITHING_BLOCK.get().asItem(), soulSmithingBlockEntity
+                NarakaBlocks.SOUL_STABILIZER.getConcreteValue().asItem(), soulStabilizerBlockEntity,
+                NarakaBlocks.SOUL_SMITHING_BLOCK.getConcreteValue().asItem(), soulSmithingBlockEntity
         );
         defaultDataByItem = Map.of(
-                NarakaBlocks.SOUL_STABILIZER.get().asItem(), soulStabilizerBlockEntity.getUpdateTag()
+                NarakaBlocks.SOUL_STABILIZER.getConcreteValue().asItem(), soulStabilizerBlockEntity.getUpdateTag()
         );
         scales = Map.of(
-                NarakaBlocks.SOUL_STABILIZER.get().asItem(), 2.75f
+                NarakaBlocks.SOUL_STABILIZER.getConcreteValue().asItem(), 2.75f
         );
         translations = Map.of(
-                NarakaBlocks.SOUL_STABILIZER.get().asItem(), new Vec3(-0.88, 0, -0.88)
+                NarakaBlocks.SOUL_STABILIZER.getConcreteValue().asItem(), new Vec3(-0.88, 0, -0.88)
         );
     }
 }

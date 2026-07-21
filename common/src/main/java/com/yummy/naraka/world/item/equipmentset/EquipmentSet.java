@@ -60,7 +60,7 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
     }
 
     public void updateEffect(LivingEntity livingEntity) {
-        Set<EquipmentSet> activeEquipmentSets = new HashSet<>(EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.EQUIPMENT_SET.get()));
+        Set<EquipmentSet> activeEquipmentSets = new HashSet<>(EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.EQUIPMENT_SET.getConcreteValue()));
         long succeed = countSucceed(livingEntity);
         long activated = effects.stream().filter(effect -> effect.update(livingEntity, succeed))
                 .count();
@@ -69,7 +69,7 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
         } else {
             activeEquipmentSets.remove(this);
         }
-        EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.EQUIPMENT_SET.get(), activeEquipmentSets.stream().toList());
+        EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.EQUIPMENT_SET.getConcreteValue(), activeEquipmentSets.stream().toList());
     }
 
     @Override

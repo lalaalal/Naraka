@@ -149,7 +149,7 @@ public class StigmaCommand {
         for (Entity target : targets) {
             LivingEntity livingEntity = NarakaCommands.getLivingEntity(target);
             long lastMarkedTime = markTime ? livingEntity.level().getGameTime() : 0;
-            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.get(), new Stigma(value, lastMarkedTime));
+            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.getConcreteValue(), new Stigma(value, lastMarkedTime));
             count += 1;
         }
         Component component = Component.translatable(LanguageKey.STIGMA_COMMAND_SET_KEY, count, value);
@@ -176,7 +176,7 @@ public class StigmaCommand {
             Stigma stigma = StigmaHelper.get(livingEntity);
             if (stigma.value() > 0) {
                 Stigma result = stigma.consume(source.getLevel(), livingEntity, cause);
-                EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.get(), result);
+                EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.getConcreteValue(), result);
                 succeed += 1;
             }
         }
@@ -189,7 +189,7 @@ public class StigmaCommand {
         int count = 0;
         for (Entity target : targets) {
             LivingEntity livingEntity = NarakaCommands.getLivingEntity(target);
-            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.get(), Stigma.ZERO);
+            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.getConcreteValue(), Stigma.ZERO);
             count += 1;
         }
         Component component = Component.translatable(LanguageKey.STIGMA_COMMAND_REMOVE_KEY, count);

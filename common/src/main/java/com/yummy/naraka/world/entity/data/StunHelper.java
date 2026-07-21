@@ -16,7 +16,7 @@ public final class StunHelper {
     }
 
     public static boolean isStun(LivingEntity livingEntity) {
-        return EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.get()) > 0;
+        return EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.getConcreteValue()) > 0;
     }
 
     /**
@@ -33,12 +33,12 @@ public final class StunHelper {
         if (livingEntity.getType().is(NarakaEntityTypeTags.STUN_IMMUNE) || duration == 0)
             return;
 
-        int previousStunTick = EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.get());
+        int previousStunTick = EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.getConcreteValue());
         if (previousStunTick > duration || (previousStunTick > 0 && !update))
             return;
 
         holdEntity(livingEntity);
         livingEntity.stopUsingItem();
-        EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.get(), duration);
+        EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STUN_TICK.getConcreteValue(), duration);
     }
 }

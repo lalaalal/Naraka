@@ -25,24 +25,25 @@ import net.minecraft.world.item.armortrim.TrimPattern;
 import net.minecraft.world.item.armortrim.TrimPatterns;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 @SuppressWarnings("unused")
 public class NarakaCreativeModeTabs {
     public static final HolderProxy<CreativeModeTab, CreativeModeTab> NARAKA_TAB = register("naraka", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
             .title(Component.translatable(LanguageKey.ITEM_GROUP_NARAKA))
-            .icon(() -> NarakaItems.STIGMA_ROD.get().getDefaultInstance())
+            .icon(() -> NarakaItems.STIGMA_ROD.getConcreteValue().getDefaultInstance())
             .displayItems(NarakaCreativeModeTabs::createNarakaTab)
     );
     public static final HolderProxy<CreativeModeTab, CreativeModeTab> SOUL_MATERIALS_TAB = register("soul_materials", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
             .title(Component.translatable(LanguageKey.ITEM_GROUP_SOUL_MATERIALS))
-            .icon(() -> NarakaItems.RAINBOW_SWORD.get().getDefaultInstance())
+            .icon(() -> NarakaItems.RAINBOW_SWORD.getConcreteValue().getDefaultInstance())
             .displayItems(NarakaCreativeModeTabs::createSoulMaterialsTab)
     );
     @Nullable
     public static final HolderProxy<CreativeModeTab, CreativeModeTab> NARAKA_TEST_TAB = registerOnlyDev("naraka_test", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
             .title(Component.translatable(LanguageKey.ITEM_GROUP_TEST))
-            .icon(() -> NarakaItems.NARAKA_FIREBALL_STAFF.get().getDefaultInstance())
+            .icon(() -> NarakaItems.NARAKA_FIREBALL_STAFF.getConcreteValue().getDefaultInstance())
             .displayItems(NarakaCreativeModeTabs::createNarakaTestTab)
     );
 
@@ -67,48 +68,48 @@ public class NarakaCreativeModeTabs {
     }
 
     private static void createNarakaTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-        output.accept(NarakaBlocks.AMETHYST_ORE.get());
-        output.accept(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
-        output.accept(NarakaBlocks.AMETHYST_SHARD_BLOCK.get());
-        output.accept(NarakaBlocks.NECTARIUM_ORE.get());
-        output.accept(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
-        output.accept(NarakaBlocks.NECTARIUM_BLOCK.get());
-        output.accept(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
-        output.accept(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get());
-        output.accept(NarakaItems.NECTARIUM.get());
+        output.accept(NarakaBlocks.AMETHYST_ORE.getConcreteValue());
+        output.accept(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.getConcreteValue());
+        output.accept(NarakaBlocks.AMETHYST_SHARD_BLOCK.getConcreteValue());
+        output.accept(NarakaBlocks.NECTARIUM_ORE.getConcreteValue());
+        output.accept(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.getConcreteValue());
+        output.accept(NarakaBlocks.NECTARIUM_BLOCK.getConcreteValue());
+        output.accept(NarakaBlocks.NECTARIUM_CORE_BLOCK.getConcreteValue());
+        output.accept(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.getConcreteValue());
+        output.accept(NarakaItems.NECTARIUM.getConcreteValue());
 
-        output.accept(NarakaBlocks.IMITATION_GOLD_BLOCK.get());
-        output.accept(NarakaBlocks.HEROBRINE_TOTEM.get());
-        output.accept(NarakaItems.PURIFIED_SOUL_SHARD.get());
-        output.accept(NarakaItems.PURIFIED_SOUL_METAL.get());
-        output.accept(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
-        output.accept(NarakaItems.PURIFIED_SOUL_HELMET.get());
-        output.accept(NarakaItems.PURIFIED_SOUL_CHESTPLATE.get());
-        output.accept(NarakaItems.PURIFIED_SOUL_LEGGINGS.get());
-        output.accept(NarakaItems.PURIFIED_SOUL_BOOTS.get());
+        output.accept(NarakaBlocks.IMITATION_GOLD_BLOCK.getConcreteValue());
+        output.accept(NarakaBlocks.HEROBRINE_TOTEM.getConcreteValue());
+        output.accept(NarakaItems.PURIFIED_SOUL_SHARD.getConcreteValue());
+        output.accept(NarakaItems.PURIFIED_SOUL_METAL.getConcreteValue());
+        output.accept(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.getConcreteValue());
+        output.accept(NarakaItems.PURIFIED_SOUL_HELMET.getConcreteValue());
+        output.accept(NarakaItems.PURIFIED_SOUL_CHESTPLATE.getConcreteValue());
+        output.accept(NarakaItems.PURIFIED_SOUL_LEGGINGS.getConcreteValue());
+        output.accept(NarakaItems.PURIFIED_SOUL_BOOTS.getConcreteValue());
 
-        output.accept(NarakaItems.PURIFIED_SOUL_SWORD.get());
-        output.accept(NarakaItems.NARAKA_PICKAXE.get());
-        output.accept(NarakaItems.SPEAR_ITEM.get());
-        output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get());
-        output.accept(NarakaItems.NETHERITE_HAMMER.get());
-        output.accept(NarakaItems.HEROBRINE_PHASE_1_DISC.get());
-        output.accept(NarakaItems.HEROBRINE_PHASE_2_DISC.get());
-        output.accept(NarakaItems.HEROBRINE_PHASE_3_DISC.get());
-        output.accept(NarakaItems.HEROBRINE_PHASE_4_DISC.get());
+        output.accept(NarakaItems.PURIFIED_SOUL_SWORD.getConcreteValue());
+        output.accept(NarakaItems.NARAKA_PICKAXE.getConcreteValue());
+        output.accept(NarakaItems.SPEAR_ITEM.getConcreteValue());
+        output.accept(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.getConcreteValue());
+        output.accept(NarakaItems.NETHERITE_HAMMER.getConcreteValue());
+        output.accept(NarakaItems.HEROBRINE_PHASE_1_DISC.getConcreteValue());
+        output.accept(NarakaItems.HEROBRINE_PHASE_2_DISC.getConcreteValue());
+        output.accept(NarakaItems.HEROBRINE_PHASE_3_DISC.getConcreteValue());
+        output.accept(NarakaItems.HEROBRINE_PHASE_4_DISC.getConcreteValue());
 
-        output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get());
-        output.accept(NarakaItems.DIAMOND_GOLEM_SPAWN_EGG.get());
-        output.accept(NarakaItems.HEROBRINE_SPAWN_EGG.get());
+        output.accept(NarakaItems.SPEAR_OF_LONGINUS_ITEM.getConcreteValue());
+        output.accept(NarakaItems.DIAMOND_GOLEM_SPAWN_EGG.getConcreteValue());
+        output.accept(NarakaItems.HEROBRINE_SPAWN_EGG.getConcreteValue());
 
-        output.accept(NarakaItems.GOD_BLOOD.get());
-        output.accept(NarakaItems.HEROBRINE_SCARF.get());
-        output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get());
-        output.accept(NarakaItems.SANCTUARY_COMPASS.get());
-        output.accept(NarakaBlocks.SOUL_SMITHING_BLOCK.get());
-        output.accept(NarakaBlocks.SOUL_STABILIZER.get());
-        output.accept(NarakaBlocks.PURIFIED_SOUL_LAMP.get());
-        output.accept(NarakaBlocks.PURIFIED_SOUL_LANTERN.get());
+        output.accept(NarakaItems.GOD_BLOOD.getConcreteValue());
+        output.accept(NarakaItems.HEROBRINE_SCARF.getConcreteValue());
+        output.accept(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.getConcreteValue());
+        output.accept(NarakaItems.SANCTUARY_COMPASS.getConcreteValue());
+        output.accept(NarakaBlocks.SOUL_SMITHING_BLOCK.getConcreteValue());
+        output.accept(NarakaBlocks.SOUL_STABILIZER.getConcreteValue());
+        output.accept(NarakaBlocks.PURIFIED_SOUL_LAMP.getConcreteValue());
+        output.accept(NarakaBlocks.PURIFIED_SOUL_LANTERN.getConcreteValue());
     }
 
     private static void createSoulMaterialsTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
@@ -122,25 +123,25 @@ public class NarakaCreativeModeTabs {
         output.accept(challengerSword(NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD));
         output.accept(challengerSword(NarakaItems.PURIFIED_SOUL_SWORD));
 
-        output.accept(NarakaItems.SOUL_INFUSED_REDSTONE.get());
-        output.accept(NarakaItems.SOUL_INFUSED_COPPER.get());
-        output.accept(NarakaItems.SOUL_INFUSED_GOLD.get());
-        output.accept(NarakaItems.SOUL_INFUSED_EMERALD.get());
-        output.accept(NarakaItems.SOUL_INFUSED_DIAMOND.get());
-        output.accept(NarakaItems.SOUL_INFUSED_LAPIS.get());
-        output.accept(NarakaItems.SOUL_INFUSED_AMETHYST.get());
-        output.accept(NarakaItems.SOUL_INFUSED_NECTARIUM.get());
-        output.accept(NarakaItems.PURIFIED_SOUL_METAL.get());
+        output.accept(NarakaItems.SOUL_INFUSED_REDSTONE.getConcreteValue());
+        output.accept(NarakaItems.SOUL_INFUSED_COPPER.getConcreteValue());
+        output.accept(NarakaItems.SOUL_INFUSED_GOLD.getConcreteValue());
+        output.accept(NarakaItems.SOUL_INFUSED_EMERALD.getConcreteValue());
+        output.accept(NarakaItems.SOUL_INFUSED_DIAMOND.getConcreteValue());
+        output.accept(NarakaItems.SOUL_INFUSED_LAPIS.getConcreteValue());
+        output.accept(NarakaItems.SOUL_INFUSED_AMETHYST.getConcreteValue());
+        output.accept(NarakaItems.SOUL_INFUSED_NECTARIUM.getConcreteValue());
+        output.accept(NarakaItems.PURIFIED_SOUL_METAL.getConcreteValue());
 
-        output.accept(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK.get());
-        output.accept(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK.get());
-        output.accept(NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK.get());
-        output.accept(NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK.get());
-        output.accept(NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK.get());
-        output.accept(NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK.get());
-        output.accept(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK.get());
-        output.accept(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK.get());
-        output.accept(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
+        output.accept(NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK.getConcreteValue());
+        output.accept(NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK.getConcreteValue());
+        output.accept(NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK.getConcreteValue());
+        output.accept(NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK.getConcreteValue());
+        output.accept(NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK.getConcreteValue());
+        output.accept(NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK.getConcreteValue());
+        output.accept(NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK.getConcreteValue());
+        output.accept(NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK.getConcreteValue());
+        output.accept(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.getConcreteValue());
     }
 
     private static void createNarakaTestTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
@@ -153,13 +154,13 @@ public class NarakaCreativeModeTabs {
         addBlessedEquipments(SoulType.LAPIS, output, registries);
         addBlessedEquipments(SoulType.AMETHYST, output, registries);
         addBlessedEquipments(SoulType.NECTARIUM, output, registries);
-        output.accept(NarakaItems.RAINBOW_SWORD.get());
+        output.accept(NarakaItems.RAINBOW_SWORD.getConcreteValue());
         addBlessedEquipments(SoulType.GOD_BLOOD, output, registries);
 
-        output.accept(NarakaItems.STIGMA_ROD.get());
-        output.accept(NarakaItems.SKILL_CONTROLLER.get());
-        output.accept(NarakaItems.ANIMATION_CONTROLLER.get());
-        output.accept(NarakaItems.NARAKA_FIREBALL_STAFF.get());
+        output.accept(NarakaItems.STIGMA_ROD.getConcreteValue());
+        output.accept(NarakaItems.SKILL_CONTROLLER.getConcreteValue());
+        output.accept(NarakaItems.ANIMATION_CONTROLLER.getConcreteValue());
+        output.accept(NarakaItems.NARAKA_FIREBALL_STAFF.getConcreteValue());
     }
 
     private static void addBlessedEquipments(SoulType type, CreativeModeTab.Output output, HolderLookup.Provider registries) {
@@ -238,9 +239,9 @@ public class NarakaCreativeModeTabs {
 
     private static void modifyBuildingBlocksTab(TabEntries entries) {
         entries.addAfter(Blocks.AMETHYST_BLOCK,
-                NarakaBlocks.AMETHYST_SHARD_BLOCK.get(),
-                NarakaBlocks.NECTARIUM_BLOCK.get(),
-                NarakaBlocks.IMITATION_GOLD_BLOCK.get()
+                NarakaBlocks.AMETHYST_SHARD_BLOCK.getConcreteValue(),
+                NarakaBlocks.NECTARIUM_BLOCK.getConcreteValue(),
+                NarakaBlocks.IMITATION_GOLD_BLOCK.getConcreteValue()
         );
     }
 
@@ -249,20 +250,20 @@ public class NarakaCreativeModeTabs {
     }
 
     private static void modifyFoodAndDrinksTab(TabEntries entries) {
-        entries.addAfter(Items.ENCHANTED_GOLDEN_APPLE, NarakaItems.NECTARIUM.get());
+        entries.addAfter(Items.ENCHANTED_GOLDEN_APPLE, NarakaItems.NECTARIUM.getConcreteValue());
     }
 
     private static void modifyIngredientsTab(TabEntries entries) {
-        entries.addAfter(Items.DIAMOND, NarakaItems.NECTARIUM.get());
+        entries.addAfter(Items.DIAMOND, NarakaItems.NECTARIUM.getConcreteValue());
     }
 
     private static void modifySpawnEggsTab(TabEntries entries) {
-        entries.addAfter(Blocks.SPAWNER, NarakaBlocks.HEROBRINE_TOTEM.get());
-        entries.addAfter(Items.SHULKER_SPAWN_EGG, NarakaItems.DIAMOND_GOLEM_SPAWN_EGG.get(), NarakaItems.HEROBRINE_SPAWN_EGG.get());
+        entries.addAfter(Blocks.SPAWNER, NarakaBlocks.HEROBRINE_TOTEM.getConcreteValue());
+        entries.addAfter(Items.SHULKER_SPAWN_EGG, NarakaItems.DIAMOND_GOLEM_SPAWN_EGG.getConcreteValue(), NarakaItems.HEROBRINE_SPAWN_EGG.getConcreteValue());
     }
 
     private static void modifyCombatTab(TabEntries entries) {
-        entries.addAfter(Items.NETHERITE_AXE, NarakaItems.NETHERITE_HAMMER.get());
+        entries.addAfter(Items.NETHERITE_AXE, NarakaItems.NETHERITE_HAMMER.getConcreteValue());
     }
 
     public interface TabEntries {

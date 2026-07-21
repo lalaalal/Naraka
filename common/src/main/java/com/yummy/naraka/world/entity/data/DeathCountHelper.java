@@ -32,7 +32,7 @@ public class DeathCountHelper {
     }
 
     public static int get(LivingEntity livingEntity) {
-        return EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT.get());
+        return EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT.getConcreteValue());
     }
 
     public static boolean isDeathCounted(LivingEntity livingEntity) {
@@ -42,11 +42,11 @@ public class DeathCountHelper {
     public static void applyDeathCount(LivingEntity livingEntity) {
         int deathCount = get(livingEntity);
         if (deathCount == NOT_APPLIED && isDeathCountable(livingEntity))
-            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT.get(), MAX_DEATH_COUNT);
+            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT.getConcreteValue(), MAX_DEATH_COUNT);
     }
 
     public static void removeDeathCount(LivingEntity livingEntity) {
-        EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT.get(), NOT_APPLIED);
+        EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT.getConcreteValue(), NOT_APPLIED);
     }
 
     /**
@@ -58,7 +58,7 @@ public class DeathCountHelper {
     public static boolean useDeathCount(LivingEntity livingEntity) {
         int deathCount = get(livingEntity);
         if (deathCount > 1) {
-            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT.get(), deathCount - 1);
+            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.DEATH_COUNT.getConcreteValue(), deathCount - 1);
             livingEntity.setHealth(livingEntity.getMaxHealth());
             livingEntity.level().playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.TOTEM_USE, livingEntity.getSoundSource(), 1.0F, 1.0F);
         } else {

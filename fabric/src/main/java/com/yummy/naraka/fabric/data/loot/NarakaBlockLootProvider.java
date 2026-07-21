@@ -30,26 +30,26 @@ public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
-        dropSelf(NarakaBlocks.PURIFIED_SOUL_LAMP.get());
-        dropSelf(NarakaBlocks.PURIFIED_SOUL_LANTERN.get());
-        dropOre(NarakaBlocks.AMETHYST_ORE.get(), Items.AMETHYST_SHARD);
-        dropOre(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get(), Items.AMETHYST_SHARD);
-        dropSelf(NarakaBlocks.NECTARIUM_BLOCK.get());
-        dropOre(NarakaBlocks.NECTARIUM_ORE.get(), NarakaItems.NECTARIUM.get());
-        dropOre(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get(), NarakaItems.NECTARIUM.get());
-        dropSelf(NarakaBlocks.IMITATION_GOLD_BLOCK.get());
-        dropSelf(NarakaBlocks.AMETHYST_SHARD_BLOCK.get());
+        dropSelf(NarakaBlocks.PURIFIED_SOUL_LAMP.getConcreteValue());
+        dropSelf(NarakaBlocks.PURIFIED_SOUL_LANTERN.getConcreteValue());
+        dropOre(NarakaBlocks.AMETHYST_ORE.getConcreteValue(), Items.AMETHYST_SHARD);
+        dropOre(NarakaBlocks.DEEPSLATE_AMETHYST_ORE.getConcreteValue(), Items.AMETHYST_SHARD);
+        dropSelf(NarakaBlocks.NECTARIUM_BLOCK.getConcreteValue());
+        dropOre(NarakaBlocks.NECTARIUM_ORE.getConcreteValue(), NarakaItems.NECTARIUM.getConcreteValue());
+        dropOre(NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.getConcreteValue(), NarakaItems.NECTARIUM.getConcreteValue());
+        dropSelf(NarakaBlocks.IMITATION_GOLD_BLOCK.getConcreteValue());
+        dropSelf(NarakaBlocks.AMETHYST_SHARD_BLOCK.getConcreteValue());
 
         NarakaBlocks.forEachSoulInfusedBlock(this::dropSelf);
-        dropSelf(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
+        dropSelf(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.getConcreteValue());
 
-        dropSelf(NarakaBlocks.HEROBRINE_TOTEM.get());
+        dropSelf(NarakaBlocks.HEROBRINE_TOTEM.getConcreteValue());
 
-        dropWhenSilkTouch(NarakaBlocks.NECTARIUM_CORE_BLOCK.get());
-        add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get(), this::createNectariumCrystalDrops);
+        dropWhenSilkTouch(NarakaBlocks.NECTARIUM_CORE_BLOCK.getConcreteValue());
+        add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.getConcreteValue(), this::createNectariumCrystalDrops);
 
-        dropWhenSilkTouch(NarakaBlocks.SOUL_STABILIZER.get());
-        dropSelf(NarakaBlocks.SOUL_SMITHING_BLOCK.get());
+        dropWhenSilkTouch(NarakaBlocks.SOUL_STABILIZER.getConcreteValue());
+        dropSelf(NarakaBlocks.SOUL_SMITHING_BLOCK.getConcreteValue());
     }
 
     protected void dropOre(Block oreBlock, Item item) {
@@ -62,12 +62,12 @@ public class NarakaBlockLootProvider extends FabricBlockLootTableProvider {
                         .add(LootItem.lootTableItem(block)
                                 .when(BlockLootSubProvider.HAS_SILK_TOUCH)
                                 .otherwise(
-                                        LootItem.lootTableItem(NarakaItems.NECTARIUM.get())
+                                        LootItem.lootTableItem(NarakaItems.NECTARIUM.getConcreteValue())
                                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5)))
                                                 .apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE))
                                                 .when(NECTARIUM_CRYSTAL_TOOLS)
                                                 .otherwise(
-                                                        LootItem.lootTableItem(NarakaItems.NECTARIUM.get())
+                                                        LootItem.lootTableItem(NarakaItems.NECTARIUM.getConcreteValue())
                                                                 .apply(ApplyExplosionDecay.explosionDecay())
                                                 )
                                 )

@@ -17,7 +17,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,7 +39,7 @@ public class MagicCircle extends Entity {
     }
 
     public MagicCircle(Level level, Herobrine owner, int lifetime, float scale) {
-        this(NarakaEntityTypes.MAGIC_CIRCLE.get(), level);
+        this(NarakaEntityTypes.MAGIC_CIRCLE.getConcreteValue(), level);
         this.owner = owner;
         entityData.set(SCALE, scale);
         entityData.set(LIFETIME, lifetime);

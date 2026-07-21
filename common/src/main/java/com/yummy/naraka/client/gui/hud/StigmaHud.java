@@ -11,8 +11,6 @@ import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
@@ -22,7 +20,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.joml.Matrix4f;
 
-@Environment(EnvType.CLIENT)
 public class StigmaHud implements HudRenderer {
     public static final int BACKGROUND_WIDTH = 15;
     public static final int BACKGROUND_HEIGHT = 5;
@@ -39,7 +36,7 @@ public class StigmaHud implements HudRenderer {
     private int consumeIconDisplayTick;
 
     public StigmaHud() {
-        EntityEvents.ENTITY_DATA_CHANGE.register(NarakaEntityDataTypes.STIGMA.get(), this::onStigmaConsumed);
+        EntityEvents.ENTITY_DATA_CHANGE.register(NarakaEntityDataTypes.STIGMA.getConcreteValue(), this::onStigmaConsumed);
         ClientEvents.TICK_PRE.register(this::tick);
     }
 

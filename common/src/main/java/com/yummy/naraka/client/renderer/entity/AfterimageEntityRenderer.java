@@ -6,8 +6,6 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.entity.AfterimageEntity;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -23,7 +21,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Collection;
 
-@Environment(EnvType.CLIENT)
 public abstract class AfterimageEntityRenderer<T extends LivingEntity & AfterimageEntity, M extends EntityModel<T>>
         extends LivingEntityRenderer<T, M> {
     protected AfterimageEntityRenderer(EntityRendererProvider.Context context, M model, float shadowRadius) {

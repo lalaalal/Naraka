@@ -22,7 +22,7 @@ public record MobEffectEquipmentSetEffect(List<MobEffectData> mobEffects) implem
 
     @Override
     public Type<?> type() {
-        return NarakaEquipmentSetEffectTypes.MOB_EFFECT_EQUIPMENT_SET_EFFECT.get();
+        return NarakaEquipmentSetEffectTypes.MOB_EFFECT_EQUIPMENT_SET_EFFECT.getConcreteValue();
     }
 
     @Override

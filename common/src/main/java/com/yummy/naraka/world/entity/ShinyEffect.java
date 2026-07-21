@@ -44,7 +44,7 @@ public class ShinyEffect extends Entity {
     }
 
     public ShinyEffect(Level level, int lifetime, boolean isVertical, float scale, float rotation, int color) {
-        this(NarakaEntityTypes.SHINY_EFFECT.get(), level);
+        this(NarakaEntityTypes.SHINY_EFFECT.getConcreteValue(), level);
         entityData.set(LIFETIME, lifetime);
         entityData.set(IS_VERTICAL, isVertical);
         entityData.set(SCALE, scale);

@@ -94,6 +94,6 @@ public class JumboStructure extends Structure {
 
     @Override
     public StructureType<?> type() {
-        return NarakaStructureTypes.JUMBO.get();
+        return NarakaStructureTypes.JUMBO.getConcreteValue();
     }
 }

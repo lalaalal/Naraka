@@ -6,13 +6,10 @@ import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 
-@Environment(EnvType.CLIENT)
 public abstract class AbstractHerobrineModel<T extends AbstractHerobrine> extends SkillUsingModModel<T> {
     protected final boolean forShadow;
     private int alpha = 0xff;

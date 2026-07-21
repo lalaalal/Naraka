@@ -12,7 +12,7 @@ public class NarakaPortal extends Entity {
     }
 
     public NarakaPortal(Level level, Vec3 position) {
-        this(NarakaEntityTypes.NARAKA_PORTAL.get(), level);
+        this(NarakaEntityTypes.NARAKA_PORTAL.getConcreteValue(), level);
         setPos(position);
     }
 

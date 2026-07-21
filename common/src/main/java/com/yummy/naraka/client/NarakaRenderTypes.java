@@ -2,8 +2,6 @@ package com.yummy.naraka.client;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -12,7 +10,6 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.Function;
 
-@Environment(EnvType.CLIENT)
 public final class NarakaRenderTypes {
     private static final Function<ResourceLocation, RenderType> LONGINUS_CUTOUT = Util.memoize(
             resourceLocation -> RenderType.create(

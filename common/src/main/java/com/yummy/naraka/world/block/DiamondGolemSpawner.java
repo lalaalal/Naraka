@@ -40,7 +40,7 @@ public class DiamondGolemSpawner extends Block {
         NarakaUtils.square(pos, 4, NarakaUtils.CIRCLE_OUTLINE, current -> {
             BlockPos floor = NarakaUtils.findFloor(level, current);
             if (count.get() < maxCount && !floor.equals(current)) {
-                NarakaEntityTypes.DIAMOND_GOLEM.get().spawn(level, floor.above(), MobSpawnType.SPAWNER);
+                NarakaEntityTypes.DIAMOND_GOLEM.getConcreteValue().spawn(level, floor.above(), MobSpawnType.SPAWNER);
                 count.incrementAndGet();
             }
         });

@@ -37,7 +37,7 @@ public class TickFreezeManager {
     }
 
     public boolean shouldFreezeEntity(Entity entity) {
-        return !EntityDataHelper.getRawEntityData(entity, NarakaEntityDataTypes.KEEP_UNFROZEN.get()) && !(entity instanceof Player);
+        return !EntityDataHelper.getRawEntityData(entity, NarakaEntityDataTypes.KEEP_UNFROZEN.getConcreteValue()) && !(entity instanceof Player);
     }
 
     public void reset() {

@@ -34,7 +34,7 @@ public class NarakaSword extends MotionEntity {
     }
 
     public NarakaSword(Level level, Vec3 position, SoulType soulType) {
-        this(NarakaEntityTypes.NARAKA_SWORD.get(), level);
+        this(NarakaEntityTypes.NARAKA_SWORD.getConcreteValue(), level);
         setSoulType(soulType);
         setPos(position);
     }

@@ -138,7 +138,7 @@ public class OriginHerobrine extends AbstractHerobrine {
     public void removeProtection(int protectionCount) {
         protectionLevel = Math.max(protectionLevel - protectionCount, 0);
         SyncProgressOverlayExtensionPacket payload = SyncProgressOverlayExtensionPacket.update(
-                bossEvent, NarakaProgressOverlayExtensionTypes.ORIGIN_HEROBRINE.get().createData(protectionLevel)
+                bossEvent, NarakaProgressOverlayExtensionTypes.ORIGIN_HEROBRINE.getConcreteValue().createData(protectionLevel)
         );
         NetworkManager.clientbound().send(players, payload);
     }
@@ -184,7 +184,7 @@ public class OriginHerobrine extends AbstractHerobrine {
         this.deathTime += 1;
         alpha = Math.max(alpha - 2, 0);
         if (this.deathTime >= 200 && level() instanceof ServerLevel level && !this.isRemoved()) {
-            level.setBlock(NarakaPortalBlock.IN_NARAKA_DIMENSION_POSITION, NarakaBlocks.NARAKA_PORTAL.get().defaultBlockState(), Block.UPDATE_ALL);
+            level.setBlock(NarakaPortalBlock.IN_NARAKA_DIMENSION_POSITION, NarakaBlocks.NARAKA_PORTAL.getConcreteValue().defaultBlockState(), Block.UPDATE_ALL);
 
             if (level.dimension().equals(NarakaDimensions.NARAKA)) {
                 SpawnData spawnData = level.getDataStorage()
@@ -260,7 +260,7 @@ public class OriginHerobrine extends AbstractHerobrine {
         bossEvent.addPlayer(serverPlayer);
 
         SyncProgressOverlayExtensionPacket payload = SyncProgressOverlayExtensionPacket.register(
-                bossEvent, NarakaProgressOverlayExtensionTypes.ORIGIN_HEROBRINE.get().createData(protectionLevel)
+                bossEvent, NarakaProgressOverlayExtensionTypes.ORIGIN_HEROBRINE.getConcreteValue().createData(protectionLevel)
         );
         NetworkManager.clientbound().send(serverPlayer, payload);
     }
