@@ -72,7 +72,7 @@ processResources {
             'group'                        : project.group,
             'minecraft_version'            : minecraft_version,
             'minecraft_version_range'      : minecraft_version_range,
-            fabric_api_version             : fabric_api_version,
+            'fabric_api_version': fabric_api_version,
             'fabric_loader_version'        : fabric_loader_version,
             'mod_name'                     : mod_name,
             'mod_author'                   : mod_author,
@@ -93,7 +93,7 @@ processResources {
         expand expandProps
     }
 
-    filesMatching(['pack.mcmeta', 'fabric.mod.json', '*.mixins.json']) {
+    filesMatching(['pack.mcmeta', 'fabric.mod.json']) {
         expand jsonExpandProps
     }
 
