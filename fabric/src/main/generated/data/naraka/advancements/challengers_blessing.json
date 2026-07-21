@@ -2,8 +2,11 @@
   "parent": "naraka:purified_soul_sword",
   "criteria": {
     "has_challengers_blessing_with_equipments": {
-      "conditions": {},
-      "trigger": "naraka:simple_trigger"
+      "conditions": {
+        "equipmentSetId": "naraka:challenger",
+        "requirement": 5
+      },
+      "trigger": "naraka:equipment_set"
     }
   },
   "display": {

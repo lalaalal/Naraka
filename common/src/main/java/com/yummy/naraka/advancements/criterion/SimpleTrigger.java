@@ -2,10 +2,7 @@ package com.yummy.naraka.advancements.criterion;
 
 import com.google.gson.JsonObject;
 import com.yummy.naraka.NarakaMod;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -53,6 +50,13 @@ public class SimpleTrigger extends SimpleCriterionTrigger<SimpleTrigger.TriggerI
 
         public boolean test(String name) {
             return name.equals(this.name);
+        }
+
+        @Override
+        public JsonObject serializeToJson(SerializationContext context) {
+            JsonObject root = super.serializeToJson(context);
+            root.addProperty("name", this.name);
+            return root;
         }
 
         @Override

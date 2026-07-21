@@ -2,7 +2,9 @@
   "parent": "naraka:buy_nectarium_core",
   "criteria": {
     "activate_nectarium_core": {
-      "conditions": {},
+      "conditions": {
+        "name": "activate_nectarium_core"
+      },
       "trigger": "naraka:simple_trigger"
     }
   },

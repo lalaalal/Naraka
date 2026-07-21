@@ -2,7 +2,9 @@
   "parent": "naraka:stabilizer",
   "criteria": {
     "fill_soul_stabilizer": {
-      "conditions": {},
+      "conditions": {
+        "checkFull": true
+      },
       "trigger": "naraka:fill_soul_stabilizer"
     }
   },
@@ -14,7 +16,8 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "naraka:soul_stabilizer"
+      "item": "naraka:soul_stabilizer",
+      "nbt": "{ItemDetail:['{\"color\":\"gray\",\"translate\":\"item.naraka.soul_stabilizer.tooltip.0\"}','{\"color\":\"gray\",\"translate\":\"item.naraka.soul_stabilizer.tooltip.1\"}']}"
     },
     "show_toast": true,
     "title": {

@@ -2,10 +2,7 @@ package com.yummy.naraka.advancements.criterion;
 
 import com.google.gson.JsonObject;
 import com.yummy.naraka.NarakaMod;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -58,6 +55,13 @@ public class FillSoulStabilizerTrigger extends SimpleCriterionTrigger<FillSoulSt
             if (checkFull)
                 return full;
             return true;
+        }
+
+        @Override
+        public JsonObject serializeToJson(SerializationContext context) {
+            JsonObject root = super.serializeToJson(context);
+            root.addProperty("checkFull", checkFull);
+            return root;
         }
 
         @Override

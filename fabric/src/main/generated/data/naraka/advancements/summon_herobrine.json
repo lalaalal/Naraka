@@ -24,7 +24,8 @@
     "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "naraka:herobrine_totem"
+      "item": "naraka:herobrine_totem",
+      "nbt": "{ItemDetail:['{\"color\":\"gray\",\"translate\":\"item.naraka.herobrine_totem.tooltip.0\"}','{\"color\":\"gray\",\"translate\":\"item.naraka.herobrine_totem.tooltip.1\"}','{\"text\":\"\"}','{\"italic\":true,\"color\":\"dark_gray\",\"translate\":\"item.naraka.herobrine_totem.tooltip.2\"}','{\"italic\":true,\"color\":\"dark_gray\",\"translate\":\"item.naraka.herobrine_totem.tooltip.3\"}']}"
     },
     "show_toast": true,
     "title": {

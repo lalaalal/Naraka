@@ -22,7 +22,8 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "naraka:nectarium_core"
+      "item": "naraka:nectarium_core",
+      "nbt": "{ItemDetail:['{\"color\":\"gray\",\"translate\":\"item.naraka.nectarium_ore.tooltip.0\"}']}"
     },
     "show_toast": true,
     "title": {
