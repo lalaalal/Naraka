@@ -27,7 +27,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class NarakaPortalBlock extends BaseEntityBlock implements Portal {
     public static final MapCodec<NarakaPortalBlock> CODEC = simpleCodec(NarakaPortalBlock::new);

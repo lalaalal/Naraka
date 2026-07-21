@@ -49,7 +49,7 @@ loom {
             vmArg "-Dfabric-api.datagen.modid=${mod_id}"
             setConfigName("Fabric Data ${minecraft_version}")
             ideConfigGenerated(true)
-            runDir("run/${minecraft_version}")
+            runDir("run/data")
         }
     }
 }

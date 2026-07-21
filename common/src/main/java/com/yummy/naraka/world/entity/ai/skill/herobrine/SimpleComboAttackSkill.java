@@ -10,7 +10,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class SimpleComboAttackSkill extends ComboSkill<AbstractHerobrine> {
     public static final ResourceLocation FINAL_COMBO_ATTACK_1 = createLocation("final_herobrine.combo_attack_1");

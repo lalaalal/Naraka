@@ -4,7 +4,8 @@ import com.yummy.naraka.invoker.MethodInvoker;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;

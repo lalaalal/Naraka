@@ -11,7 +11,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class SwingSkill extends AttackSkill<NarakaPickaxe> {
     public static final ResourceLocation LOCATION = createLocation("naraka_pickaxe.swing");

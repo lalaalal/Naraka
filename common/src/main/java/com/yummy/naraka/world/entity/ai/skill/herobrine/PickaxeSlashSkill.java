@@ -19,7 +19,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.List;
 

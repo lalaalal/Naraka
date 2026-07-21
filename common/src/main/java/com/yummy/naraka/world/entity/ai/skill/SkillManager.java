@@ -5,7 +5,8 @@ import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;

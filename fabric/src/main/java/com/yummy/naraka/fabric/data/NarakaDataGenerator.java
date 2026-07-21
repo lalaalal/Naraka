@@ -12,7 +12,8 @@ import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataProvider;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 

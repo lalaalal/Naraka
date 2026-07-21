@@ -20,9 +20,10 @@ import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+
+import javax.annotation.Nullable;
 
 public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrine, HerobrineModel<OriginHerobrine>> {
     private static final float HALF_SQRT_3 = (float) (Math.sqrt(3.0) / 2.0);

@@ -3,11 +3,12 @@ package com.yummy.naraka.mixin.client;
 import com.yummy.naraka.client.particle.DripParticleChain;
 import net.minecraft.client.particle.DripParticle;
 import net.minecraft.core.particles.ParticleOptions;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+
+import javax.annotation.Nullable;
 
 public abstract class DripParticleMixin {
     @Mixin(DripParticle.DripHangParticle.class)

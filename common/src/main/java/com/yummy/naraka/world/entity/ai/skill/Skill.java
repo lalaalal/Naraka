@@ -5,7 +5,8 @@ import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.util.function.Predicate;
 

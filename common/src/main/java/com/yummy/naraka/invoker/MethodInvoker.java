@@ -1,7 +1,8 @@
 package com.yummy.naraka.invoker;
 
 import com.yummy.naraka.NarakaMod;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

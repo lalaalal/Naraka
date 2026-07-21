@@ -4,7 +4,8 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.init.ShaderRegistry;
 import net.minecraft.client.renderer.ShaderInstance;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public final class NarakaShaders {
     @Nullable

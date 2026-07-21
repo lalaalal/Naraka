@@ -21,7 +21,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class HerobrineTotem extends BaseEntityBlock {
     private static final MapCodec<HerobrineTotem> CODEC = simpleCodec(HerobrineTotem::new);

@@ -1,7 +1,8 @@
 package com.yummy.naraka;
 
 import com.yummy.naraka.invoker.MethodInvoker;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 import java.nio.file.Path;
 

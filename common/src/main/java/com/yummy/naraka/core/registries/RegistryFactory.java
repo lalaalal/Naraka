@@ -3,7 +3,8 @@ package com.yummy.naraka.core.registries;
 import com.yummy.naraka.invoker.MethodInvoker;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public abstract class RegistryFactory {
     @Nullable
