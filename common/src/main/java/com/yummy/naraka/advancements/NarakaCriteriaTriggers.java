@@ -1,5 +1,6 @@
 package com.yummy.naraka.advancements;
 
+import com.yummy.naraka.advancements.criterion.EquipmentSetTrigger;
 import com.yummy.naraka.advancements.criterion.FillSoulStabilizerTrigger;
 import com.yummy.naraka.advancements.criterion.SimpleTrigger;
 import com.yummy.naraka.core.registries.HolderProxy;
@@ -12,6 +13,7 @@ import java.util.function.Supplier;
 public class NarakaCriteriaTriggers {
     public static final HolderProxy<CriterionTrigger<?>, FillSoulStabilizerTrigger> FILL_SOUL_STABILIZER = register("fill_soul_stabilizer", FillSoulStabilizerTrigger::new);
     public static final HolderProxy<CriterionTrigger<?>, SimpleTrigger> SIMPLE_TRIGGER = register("challengers_blessing", SimpleTrigger::new);
+    public static final HolderProxy<CriterionTrigger<?>, EquipmentSetTrigger> EQUIPMENT_SET = register("equipment_set", EquipmentSetTrigger::new);
 
     public static <T extends CriterionTrigger<?>> HolderProxy<CriterionTrigger<?>, T> register(String name, Supplier<T> value) {
         return RegistryProxy.register(Registries.TRIGGER_TYPE, name, value);

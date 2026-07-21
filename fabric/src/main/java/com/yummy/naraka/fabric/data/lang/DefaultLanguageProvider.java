@@ -176,23 +176,23 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         );
         addAdvancement(AdvancementNarakaComponents.SOUL_INFUSED_MATERIALS,
                 List.of("Soul infused Minerals", "영혼이 깃든 광물"),
-                List.of("Make one kind of soul infused minerals", "아무 종류의 영혼이 깃든 광물을 만드세요")
+                List.of("Craft any type of soul-infused mineral", "아무 종류의 영혼이 깃든 광물을 만드세요")
         );
         addAdvancement(AdvancementNarakaComponents.STABILIZER,
                 List.of("Stabilizer", "안정기"),
-                List.of("Make soul stabilizer that contains large amount of soul minerals", "대량의 영혼이 깃든 광물을 저장할 수 있는 영혼 안정기를 만드세요"))
+                List.of("Craft a soul stabilizer that can store a large amount of soul minerals", "대량의 영혼이 깃든 광물을 저장할 수 있는 영혼 안정기를 만드세요"))
         ;
         addAdvancement(AdvancementNarakaComponents.FILL_SOUL_STABILIZER,
                 List.of("Fully charged", "충전 완료"),
-                List.of("Fill soul stabilizer with one kind of soul infused minerals", "영혼 안정기를 아무 종류의 영혼이 깃든 광물로 가득 채우세요")
+                List.of("Completely fill a soul stabilizer with one type of soul-infused mineral", "영혼 안정기를 아무 종류의 영혼이 깃든 광물로 가득 채우세요")
         );
         addAdvancement(AdvancementNarakaComponents.CHALLENGERS_BLESSING,
                 List.of("Challenger", "도전자"),
-                List.of("Get challenger's blessing with full armor of soul armor and sword", "아무 종류의 영혼이 깃든 갑옷과 검을 가지고 도전자의 축복을 받으세요")
+                List.of("Receive the Challenger's Blessing while wearing a full set of Soul Armor and holding its matching sword", "아무 종류의 영혼이 깃든 갑옷과 검을 가지고 도전자의 축복을 받으세요")
         );
         addAdvancement(AdvancementNarakaComponents.SOUL_SWORDS,
                 List.of("Rainbow!", "무지개!"),
-                List.of("Get every color type of blessed soul sword", "모든 색의 축복받은 검을 수집하세요")
+                List.of("Collect every color variant of the blessed soul swords", "모든 색의 축복받은 검을 수집하세요")
         );
         addAdvancement(AdvancementNarakaComponents.ULTIMATE_SPEAR,
                 List.of("Long live the new Naraka tyrant", "새 나락의 폭군"),
@@ -201,7 +201,7 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
 
         addAdvancement(AdvancementExtraComponents.BUY_NECTARIUM_CORE,
                 List.of("What is this?", "이게 뭐지?"),
-                List.of("Buy nectarium core from wandering trader", "떠돌이 상인으로부터 넥타륨 코어를 구입하세요")
+                List.of("Purchase a Nectarium Core from a Wandering Trader", "떠돌이 상인으로부터 넥타륨 코어를 구입하세요")
         );
         addAdvancement(AdvancementExtraComponents.ACTIVATE_NECTARIUM_CORE,
                 List.of("A block flowing with tears and honey", "눈물과 꿀이 흐르는 블록"),
@@ -209,10 +209,10 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         );
         addAdvancement(AdvancementExtraComponents.EAT_NECTARIUM,
                 List.of("Yummy", "냠냠"),
-                List.of("Eat nectarium", "자라는 넥타륨을 채굴해서 먹어보세요")
+                List.of("Mine and eat Nectarium", "자라는 넥타륨을 채굴해서 먹어보세요")
         );
         addAdvancement(AdvancementExtraComponents.CRAFT_SOUL_INFUSED_NECTARIUM,
-                List.of("Not eatable", "먹을 수 없잖아?!"),
+                List.of("Inedible!", "먹을 수 없잖아?!"),
                 List.of("Don't eat, give it to your soul", "먹지 마세요, 영혼에 양보하세요")
         );
 
