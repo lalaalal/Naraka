@@ -54,7 +54,6 @@ repositories {
         url = 'https://maven.blamejared.com'
     }
     maven { url "https://maven.shedaniel.me/" }
-    maven { url "https://maven.terraformersmc.com/releases/" }
 }
 
 ['apiElements', 'runtimeElements', 'sourcesElements'].each { variant ->
