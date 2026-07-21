@@ -27,7 +27,6 @@ public interface RegistryProxy<T> {
      * @return Holder for given value
      * @see HolderProxy
      */
-    @Deprecated
     static <T, V extends T> HolderProxy<T, V> register(ResourceKey<Registry<T>> registryKey, String name, Supplier<V> value) {
         return RegistryProxyProvider.get(registryKey)
                 .register(name, value);
@@ -60,9 +59,9 @@ public interface RegistryProxy<T> {
      * @return Holder for given value
      * @see HolderProxy
      */
-    static <T, V extends T> HolderProxy<T, V> register(ResourceKey<Registry<T>> registryKey, ResourceKey<T> key, Supplier<V> value) {
-        return RegistryProxyProvider.get(registryKey)
-                .register(key, value);
+    static <T, V extends T> HolderProxy<T, V> register(ResourceKey<T> key, Supplier<V> value) {
+        return RegistryProxyProvider.get(key.registryKey())
+                .register(key.location(), value);
     }
 
     @SuppressWarnings("unchecked")
@@ -80,14 +79,9 @@ public interface RegistryProxy<T> {
 
     ResourceKey<? extends Registry<T>> getRegistryKey();
 
-    @Deprecated
     <V extends T> HolderProxy<T, V> register(String name, Supplier<V> value);
 
     <V extends T> HolderProxy<T, V> register(ResourceLocation id, Supplier<V> value);
-
-    default <V extends T> HolderProxy<T, V> register(ResourceKey<T> key, Supplier<V> value) {
-        return register(key.location(), value);
-    }
 
     default <V extends T> HolderProxy<T, V> createHolder(ResourceLocation id) {
         return new HolderProxy<>(getRegistryOrThrow(), id);

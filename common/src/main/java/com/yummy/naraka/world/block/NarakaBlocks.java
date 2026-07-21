@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.block;
 
-import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.references.BlockItemId;
@@ -10,7 +9,6 @@ import com.yummy.naraka.world.item.NarakaItemTooltip;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
@@ -214,32 +212,28 @@ public class NarakaBlocks {
         return registerBlockWithItem(id, Block::new, baseBlock, item().fireResistant().rarity(Rarity.RARE));
     }
 
-    public static ResourceKey<Block> key(String name) {
-        return ResourceKey.create(Registries.BLOCK, NarakaMod.location(name));
-    }
-
     private static <B extends Block> HolderProxy<Block, B> registerBlock(ResourceKey<Block> key, Function<BlockBehaviour.Properties, ? extends B> function, Block propertyBase) {
         BlockBehaviour.Properties properties = BlockBehaviour.Properties.ofFullCopy(propertyBase);
-        return RegistryProxy.register(Registries.BLOCK, key, () -> function.apply(properties));
+        return RegistryProxy.register(key, () -> function.apply(properties));
     }
 
     private static <B extends Block> HolderProxy<Block, B> registerBlock(ResourceKey<Block> key, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties properties) {
-        return RegistryProxy.register(Registries.BLOCK, key, () -> function.apply(properties));
+        return RegistryProxy.register(key, () -> function.apply(properties));
     }
 
     private static <B extends Block> HolderProxy<Block, B> registerBlockWithItem(BlockItemId id, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties blockProperties, Item.Properties itemProperties) {
-        HolderProxy<Block, B> block = RegistryProxy.register(Registries.BLOCK, id.block(), () -> function.apply(blockProperties));
-        RegistryProxy.register(Registries.ITEM, id.item(), () -> new BlockItem(block.get(), itemProperties));
+        HolderProxy<Block, B> block = RegistryProxy.register(id.block(), () -> function.apply(blockProperties));
+        RegistryProxy.register(id.item(), () -> new BlockItem(block.get(), itemProperties));
         return block;
     }
 
     private static <B extends Block> HolderProxy<Block, B> registerBlockWithItem(BlockItemId id, Function<BlockBehaviour.Properties, ? extends B> function, Supplier<Block> blockSupplier, Item.Properties itemProperties) {
-        HolderProxy<Block, B> block = RegistryProxy.register(Registries.BLOCK, id.block(),
+        HolderProxy<Block, B> block = RegistryProxy.register(id.block(),
                 () -> function.apply(
                         from(blockSupplier.get())
                 )
         );
-        RegistryProxy.register(Registries.ITEM, id.item(), () -> new BlockItem(block.get(), itemProperties));
+        RegistryProxy.register(id.item(), () -> new BlockItem(block.get(), itemProperties));
         return block;
     }
 

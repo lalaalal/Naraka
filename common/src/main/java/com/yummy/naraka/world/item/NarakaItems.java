@@ -8,9 +8,7 @@ import com.yummy.naraka.references.NarakaItemIds;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.Unit;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -170,7 +168,6 @@ public class NarakaItems {
             NarakaItemIds.HEROBRINE_SCARF,
             HerobrineScarfItem::new,
             properties().rarity(Rarity.EPIC)
-                    .component(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), Unit.INSTANCE)
                     .component(DataComponents.LORE, NarakaItemTooltip.HEROBRINE_SCARF.itemLore())
     );
 
@@ -274,7 +271,7 @@ public class NarakaItems {
     }
 
     private static <I extends Item> HolderProxy<Item, I> registerItem(ResourceKey<Item> key, Function<Item.Properties, I> factory, Item.Properties properties) {
-        return RegistryProxy.register(Registries.ITEM, key, () -> factory.apply(properties));
+        return RegistryProxy.register(key, () -> factory.apply(properties));
     }
 
     private static <I extends Item> HolderProxy<Item, I> registerItem(ResourceKey<Item> key, Function<Item.Properties, I> factory) {
