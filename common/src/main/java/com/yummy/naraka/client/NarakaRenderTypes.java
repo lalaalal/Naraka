@@ -37,7 +37,7 @@ public final class NarakaRenderTypes {
     }
 
     public static RenderType emissive() {
-        if (NarakaClientContext.SHADER_ENABLED.getValue() && !NarakaConfig.CLIENT.disableEmissiveRenderType.getValue())
+        if (NarakaClientContext.SHADER_ENABLED.getValue() && NarakaConfig.CLIENT.enableEmissiveRenderType.getValue())
             return RenderTypes.entityTranslucentEmissive(NarakaTextures.AREA_EFFECT);
         return RenderTypes.lightning();
     }
