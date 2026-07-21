@@ -17,6 +17,7 @@ import java.util.function.Supplier;
 
 public class NarakaTiers implements Tier {
     public static final NarakaTiers LONGINUS = new NarakaTiers(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, Integer.MAX_VALUE, 12, 65, 22, () -> Ingredient.EMPTY);
+    public static final NarakaTiers PURIFIED_SOUL = new NarakaTiers(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6.0F, 2.0F, 14, () -> Ingredient.of(NarakaItems.PURIFIED_SOUL_METAL.get()));
 
     public static final ResourceLocation ENTITY_INTERACTION_RANGE_ID = NarakaMod.location("entity_interaction_range");
     public static final ResourceLocation BLOCK_INTERACTION_RANGE_ID = NarakaMod.location("block_interaction_range");

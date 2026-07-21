@@ -117,7 +117,7 @@ public class NarakaItems {
     // Spears
     public static final HolderProxy<Item, SpearItem> SPEAR_ITEM = registerItem(
             NarakaItemIds.SPEAR_ITEM,
-            properties -> new SpearItem(Tiers.IRON,
+            properties -> new SpearItem(NarakaTiers.PURIFIED_SOUL,
                     true, 3, -3, 3,
                     properties.fireResistant()
                             .component(DataComponents.TOOL, TridentItem.createToolProperties()),
@@ -156,7 +156,7 @@ public class NarakaItems {
     public static final HolderProxy<Item, PurifiedSoulSwordItem> PURIFIED_SOUL_SWORD = registerItem(
             NarakaItemIds.PURIFIED_SOUL_SWORD,
             properties -> new PurifiedSoulSwordItem(
-                    Tiers.IRON,
+                    NarakaTiers.PURIFIED_SOUL,
                     -2, -2.4f,
                     properties.fireResistant()
                             .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
@@ -242,14 +242,14 @@ public class NarakaItems {
     private static HolderProxy<Item, Item> registerSoulInfusedSword(ResourceKey<Item> key, SoulType type) {
         HolderProxy<Item, Item> item = registerItem(key,
                 properties -> new SoulInfusedSwordItem(
-                        Tiers.IRON,
+                        NarakaTiers.PURIFIED_SOUL,
                         properties.fireResistant()
                                 .rarity(Rarity.RARE)
                                 .component(NarakaDataComponentTypes.SOUL.get(), type)
                                 .component(DataComponents.LORE, NarakaItemTooltip.SOUL_INFUSED_SWORDS.itemLore())
                                 .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
                                 .component(DataComponents.ATTRIBUTE_MODIFIERS,
-                                        NarakaTiers.createWeaponAttributes(Tiers.IRON, 5, -2.4f).build()
+                                        NarakaTiers.createWeaponAttributes(NarakaTiers.PURIFIED_SOUL, 5, -2.4f).build()
                                 ),
                         type.color
                 )
