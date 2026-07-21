@@ -19,12 +19,6 @@ public final class LanguageKey {
     public static final String KEY_CATEGORIES_NARAKA = keyMappingCategory(NarakaMod.identifier("naraka"));
     public static final String KEY_TOGGLE_ORE_SEE_THROUGH = keyMapping("naraka.toggle_ore_see_through");
 
-    public static final String PURIFIED_SOUL_UPGRADE_KEY = Util.makeDescriptionId("upgrade", NarakaMod.identifier("purified_soul_upgrade"));
-    public static final String PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY = Util.makeDescriptionId("item", NarakaMod.identifier("smithing_template.purified_soul_upgrade.applies_to"));
-    public static final String PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY = Util.makeDescriptionId("item", NarakaMod.identifier("smithing_template.purified_soul_upgrade.ingredients"));
-    public static final String PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.identifier("smithing_template.purified_soul_upgrade.base_slot_description"));
-    public static final String PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY = Util.makeDescriptionId("item", NarakaMod.identifier("smithing_template.purified_soul_upgrade.additions_slot_description"));
-    public static final String JADE_SOUL_CRAFTING_FUEL_KEY = "jade.naraka.soul_crafting.fuel";
     public static final String JADE_STIGMA_KEY = "jade.naraka.stigma";
     public static final String JADE_LOCKED_HEALTH_KEY = "jade.naraka.locked_health";
     public static final String JADE_DEATH_COUNT_KEY = "jade.naraka.death_count";

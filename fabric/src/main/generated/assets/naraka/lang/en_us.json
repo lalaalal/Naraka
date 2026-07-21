@@ -268,10 +268,6 @@
   "item.naraka.sanctuary_compass.tooltip.2": "As part of that effort, this will always point toward the sanctuary of the entity that invaded the world.",
   "item.naraka.sanctuary_compass.tooltip.3": "Waiting for a hero to appear who can defeat it and preserve the world's existence.",
   "item.naraka.skill_controller": "Skill Controller",
-  "item.naraka.smithing_template.purified_soul_upgrade.additions_slot_description": "Add Purified Soul Metal, Soul Infused Materials",
-  "item.naraka.smithing_template.purified_soul_upgrade.applies_to": "Ebony Tools, Purified Soul Weapons",
-  "item.naraka.smithing_template.purified_soul_upgrade.base_slot_description": "Add Ebony Sword, Soul Weapon",
-  "item.naraka.smithing_template.purified_soul_upgrade.ingredients": "Purified Soul Metal, Soul Infused Materials",
   "item.naraka.soul_infused_amethyst": "Soul Infused Amethyst",
   "item.naraka.soul_infused_amethyst_block": "Block of Soul Infused Amethyst",
   "item.naraka.soul_infused_amethyst_sword": "Soul Infused Amethyst Sword",
@@ -326,7 +322,6 @@
   "jade.naraka.nectarium_core.activated": "Activated",
   "jade.naraka.nectarium_core.deactivated": "Inactivated",
   "jade.naraka.nectarium_core.honey": "(%d left)",
-  "jade.naraka.soul_crafting.fuel": "Fuel: %d",
   "jade.naraka.soul_stabilizer": "%d",
   "jade.naraka.stigma": ": %d",
   "jukebox_song.naraka.herobrine_phase_1": "Herobrine Phase 1",
@@ -398,6 +393,5 @@
   "trim_material.naraka.soul_infused_gold": "Soul Infused Gold Material",
   "trim_material.naraka.soul_infused_lapis": "Soul Infused Lapis Material",
   "trim_material.naraka.soul_infused_nectarium": "Soul Infused Nectarium Material",
-  "trim_material.naraka.soul_infused_redstone": "Soul Infused Redstone Material",
-  "upgrade.naraka.purified_soul_upgrade": "Purified Soul Upgrade"
+  "trim_material.naraka.soul_infused_redstone": "Soul Infused Redstone Material"
 }

@@ -51,11 +51,6 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         add(LanguageKey.REINFORCEMENT_KEY, "Reinforcement: %d", "강화: %d");
         add(LanguageKey.BLESSED_KEY, "Blessed", "축복받음");
         add(LanguageKey.HEROBRINE_SCARF_KEY, "Scarf Attached", "스카프 장착됨");
-        add(LanguageKey.PURIFIED_SOUL_UPGRADE_KEY, "Purified Soul Upgrade", "정화된 영혼 강화");
-        add(LanguageKey.PURIFIED_SOUL_UPGRADE_APPLIES_TO_KEY, "Ebony Tools, Purified Soul Weapons", "흑단나무 검, 정화된 영혼 무기");
-        add(LanguageKey.PURIFIED_SOUL_UPGRADE_INGREDIENTS_KEY, "Purified Soul Metal, Soul Infused Materials", "정화된 영혼 금속, 영혼이 주입된 재료");
-        add(LanguageKey.PURIFIED_SOUL_UPGRADE_BASE_SLOT_DESCRIPTION_KEY, "Add Ebony Sword, Soul Weapon", "흑단나무 무기, 정화된 영혼 검 또는 창를 놓으세요");
-        add(LanguageKey.PURIFIED_SOUL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION_KEY, "Add Purified Soul Metal, Soul Infused Materials", "정화된 영혼 금속, 영혼이 주입된 재료 또는 신의 피를 놓으세요");
 
         add(LanguageKey.CONFIG_TITLE, "Naraka Config");
         add(LanguageKey.CONFIG_CATEGORY_COMMON, "Naraka Common Config");
@@ -83,7 +78,6 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         add(LanguageKey.CONFIG_ORE_COLOR, "Ore Outline Color", "광물 외곽선 색");
         add(LanguageKey.CONFIG_ORE_COLOR_WRONG, "Wrong Format!", "잘못된 형식입니다!");
 
-        add(LanguageKey.JADE_SOUL_CRAFTING_FUEL_KEY, "Fuel: %d", "연료: %d");
         add(NarakaJadeProviderComponents.SOUL_CRAFTING_BLOCK.translationKey, "Soul Crafting Block", "영혼 세공기");
         add(LanguageKey.JADE_SOUL_STABILIZER_KEY, "%d");
         add(NarakaJadeProviderComponents.SOUL_STABILIZER.translationKey, "Soul Stabilizer", "영혼 안정기");
