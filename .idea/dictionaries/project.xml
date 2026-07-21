@@ -7,6 +7,7 @@
       <w>Ryoiki</w>
       <w>Tenkai</w>
       <w>accesstransformer</w>
+      <w>clientbound</w>
       <w>gueunso</w>
       <w>herobrine</w>
       <w>joachimbeen</w>
@@ -20,6 +21,7 @@
       <w>modrinth</w>
       <w>multiloader</w>
       <w>neoforge</w>
+      <w>serverbound</w>
     </words>
   </dictionary>
 </component>

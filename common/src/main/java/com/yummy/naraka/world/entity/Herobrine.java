@@ -307,7 +307,7 @@ public class Herobrine extends AbstractHerobrine {
 
     private void updateMusic(int prevPhase, int currentPhase) {
         if (currentPhase == 3) {
-            NetworkManager.sendToClient(bossEvent.getPlayers(), new NarakaClientboundEntityEventPacket(
+            NetworkManager.clientbound().send(bossEvent.getPlayers(), new NarakaClientboundEntityEventPacket(
                     NarakaClientboundEntityEventPacket.Event.STOP_BOSS_MUSIC, this
             ));
         } else {
@@ -318,7 +318,7 @@ public class Herobrine extends AbstractHerobrine {
     public void sendMusic(int phase) {
         NarakaClientboundEntityEventPacket.Event event = NarakaMusics.musicEventByPhase(phase);
         CustomPacketPayload packet = new NarakaClientboundEntityEventPacket(event, this);
-        NetworkManager.sendToClient(bossEvent.getPlayers(), packet);
+        NetworkManager.clientbound().send(bossEvent.getPlayers(), packet);
     }
 
     private void updateUsingSkills(int prevPhase, int currentPhase) {
@@ -388,7 +388,7 @@ public class Herobrine extends AbstractHerobrine {
     public void addAfterimage(Afterimage afterimage) {
         if (!level().isClientSide()) {
             SyncAfterimagePacket payload = new SyncAfterimagePacket(this, afterimage);
-            NetworkManager.sendToClient(bossEvent.getPlayers(), payload);
+            NetworkManager.clientbound().send(bossEvent.getPlayers(), payload);
         }
         this.afterimages.add(afterimage);
     }
@@ -518,7 +518,7 @@ public class Herobrine extends AbstractHerobrine {
                     NarakaMusics.musicEventByPhase(getPhase()),
                     this
             );
-            NetworkManager.sendToClient(serverPlayer, packet);
+            NetworkManager.clientbound().send(serverPlayer, packet);
             if (isFinalModel()) {
                 this.startHerobrineSky();
             }
