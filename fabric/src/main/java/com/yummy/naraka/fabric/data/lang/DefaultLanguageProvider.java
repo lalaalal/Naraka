@@ -277,7 +277,7 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addItem(NarakaItems.SKILL_CONTROLLER, "Skill Controller", "스킬 컨트롤러");
         addItem(NarakaItems.ANIMATION_CONTROLLER, "Animation Controller", "애니메이션 컨트롤러");
         addItem(NarakaItems.HEROBRINE_SCARF, "Herobrine Scarf", "히로빈 스카프");
-        addItem(NarakaItems.NARAKA_PICKAXE, "Naraka Pickaxe", "파멸의 낫");
+        addItem(NarakaItems.NARAKA_PICKAXE, "Scythe of Ruin", "파멸의 낫");
 
         addItem(NarakaItems.LOCKED_HEALTH, "Locked Health");
 
