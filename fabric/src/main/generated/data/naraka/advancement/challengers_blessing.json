@@ -3,9 +3,10 @@
   "criteria": {
     "has_challengers_blessing_with_equipments": {
       "conditions": {
-        "name": "challengers_blessing"
+        "equipment_set_id": "naraka:challenger",
+        "requirement": 5
       },
-      "trigger": "naraka:challengers_blessing"
+      "trigger": "naraka:equipment_set"
     }
   },
   "display": {

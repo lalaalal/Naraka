@@ -3,6 +3,7 @@ package com.yummy.naraka.world.item.equipmentset;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.ItemEvents;
@@ -19,6 +20,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -77,6 +79,8 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
         long succeed = countSucceed(livingEntity);
         for (Effect effect : effects)
             effect.update(livingEntity, succeed);
+        if (livingEntity instanceof ServerPlayer player)
+            NarakaCriteriaTriggers.EQUIPMENT_SET.get().trigger(player, id, succeed);
     }
 
     @Override

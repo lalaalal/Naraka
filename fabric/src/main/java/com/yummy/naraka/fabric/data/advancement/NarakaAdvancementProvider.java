@@ -1,6 +1,7 @@
 package com.yummy.naraka.fabric.data.advancement;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.advancements.criterion.EquipmentSetTrigger;
 import com.yummy.naraka.advancements.criterion.FillSoulStabilizerTrigger;
 import com.yummy.naraka.advancements.criterion.SimpleTrigger;
 import com.yummy.naraka.client.NarakaTextures;
@@ -11,6 +12,7 @@ import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSetHelper;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.*;
@@ -175,7 +177,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder challengersBlessing = goal(purifiedSoulSword, NarakaItems.STIGMA_ROD.get(), AdvancementNarakaComponents.CHALLENGERS_BLESSING,
                 builder -> builder.addCriterion(
                         "has_challengers_blessing_with_equipments",
-                        SimpleTrigger.TriggerInstance.simple(SimpleTrigger.CHALLENGERS_BLESSING)
+                        EquipmentSetTrigger.TriggerInstance.equipmentSet(EquipmentSetHelper.ID_CHALLENGER, 5)
                 ).rewards(AdvancementRewards.Builder.experience(6))
         );
         AdvancementHolder soulSwords = challenge(challengersBlessing, NarakaItems.RAINBOW_SWORD.get(), AdvancementNarakaComponents.SOUL_SWORDS,
