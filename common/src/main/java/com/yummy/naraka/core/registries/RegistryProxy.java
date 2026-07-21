@@ -51,7 +51,6 @@ public interface RegistryProxy<T> {
     /**
      * Register value for given registry key
      *
-     * @param registryKey Registry key
      * @param key         Key of value
      * @param value       Supplier of value
      * @param <T>         Registry value type
