@@ -3,10 +3,13 @@ package com.yummy.naraka.world.block;
 import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
+import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -35,6 +38,13 @@ public class PurifiedSoulFireBlock extends BaseFireBlock {
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP);
+    }
+
+    @Override
+    protected void attack(BlockState state, Level level, BlockPos pos, Player player) {
+        ItemStack mainHandItem = player.getMainHandItem();
+        if (mainHandItem.is(NarakaItems.PURIFIED_SOUL_SWORD.value()) && state.is(this))
+            level.removeBlock(pos, false);
     }
 
     @Override
