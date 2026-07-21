@@ -3,6 +3,7 @@ package com.yummy.naraka.fabric.data.lang;
 import com.yummy.naraka.config.Configuration;
 import com.yummy.naraka.data.lang.AdvancementComponent;
 import com.yummy.naraka.data.lang.LanguageKey;
+import com.yummy.naraka.world.item.NarakaItemTooltip;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
@@ -83,8 +84,19 @@ public abstract class NarakaLanguageProviders {
         add(block.get().getDescriptionId(), translations);
     }
 
-    public void addTooltip(Supplier<? extends Block> block, String... translations) {
-        add(LanguageKey.tooltip(block.get()), translations);
+    public void addTooltip(ResourceKey<Item> item, String... translations) {
+        add(LanguageKey.tooltip(item), translations);
+    }
+
+    public void addTooltip(NarakaItemTooltip itemTooltip, List<List<String>> lines) {
+        List<String> translationKeys = itemTooltip.translationKeys();
+        if (translationKeys.size() != lines.size())
+            throw new IllegalStateException("%s : Translations must have same number of keys (required=%d / given=%d)".formatted(itemTooltip.getId(), translationKeys.size(), lines.size()));
+        for (int index = 0; index < lines.size(); index++) {
+            String translationKey = translationKeys.get(index);
+            List<String> translations = lines.get(index);
+            add(translationKey, translations.toArray(String[]::new));
+        }
     }
 
     public void addEntityType(Supplier<? extends EntityType<?>> entityType, String... translations) {

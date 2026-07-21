@@ -37,6 +37,7 @@ neoForge {
         }
         server {
             server()
+            programArguments.addAll 'nogui'
             gameDirectory = this.mkdir(this.file("run/${minecraft_version}"))
         }
     }

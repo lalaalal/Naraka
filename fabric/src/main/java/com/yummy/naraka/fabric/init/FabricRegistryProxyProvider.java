@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
@@ -37,8 +38,13 @@ public final class FabricRegistryProxyProvider extends RegistryProxyProvider {
 
         @Override
         public <V extends T> HolderProxy<T, V> register(String name, Supplier<V> value) {
-            Registry.register(getRegistryOrThrow(), NarakaMod.identifier(name), value.get());
-            return createHolder(name);
+            return register(NarakaMod.identifier(name), value);
+        }
+
+        @Override
+        public <V extends T> HolderProxy<T, V> register(Identifier id, Supplier<V> value) {
+            Registry.register(getRegistryOrThrow(), id, value.get());
+            return createHolder(id);
         }
     }
 
@@ -48,11 +54,11 @@ public final class FabricRegistryProxyProvider extends RegistryProxyProvider {
         }
 
         @Override
-        public <V extends RecipeSerializer<?>> HolderProxy<RecipeSerializer<?>, V> register(String name, Supplier<V> value) {
+        public <V extends RecipeSerializer<?>> HolderProxy<RecipeSerializer<?>, V> register(Identifier id, Supplier<V> value) {
             RecipeSerializer<?> serializer = value.get();
             RecipeSynchronization.synchronizeRecipeSerializer(serializer);
-            Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, NarakaMod.identifier(name), serializer);
-            return createHolder(name);
+            Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, id, serializer);
+            return createHolder(id);
         }
     }
 }

@@ -165,7 +165,12 @@ public class NarakaCreativeModeTabs {
     private static void addBlessedEquipments(SoulType type, CreativeModeTab.Output output, HolderLookup.Provider registries) {
         Holder<Item> sword = NarakaItems.getSoulSwordHolderOf(type);
         if (sword != null) {
-            output.accept(new ItemStack(sword, 1, blessed(DataComponentPatch.builder()).build()));
+            output.accept(new ItemStack(sword, 1,
+                            blessed(DataComponentPatch.builder())
+                                    .set(DataComponents.LORE, NarakaItemTooltip.SOUL_INFUSED_SWORDS_BLESSED.itemLore())
+                                    .build()
+                    )
+            );
         }
         output.accept(challenger(NarakaItems.PURIFIED_SOUL_HELMET, type, registries));
         output.accept(challenger(NarakaItems.PURIFIED_SOUL_CHESTPLATE, type, registries));
