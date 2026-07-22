@@ -327,7 +327,7 @@ public class JapaneseLanguageProvider extends NarakaLanguageProviders {
                 List.of("最も純粋な器。"),
                 List.of("鉱物が持つ色を宿らせると、儀式に必要な生贄へと変化する。")
         ));
-        addTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS, List.of(
+        addTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS_DEFAULT, List.of(
                 List.of("該当の剣の鉱物と同じ鉱物で鍛造された魂の防具4部位を着用すると、「挑戦者」バフが活性化する。"),
                 List.of("「挑戦者」バフを持った状態でへロブラインを討伐した場合、該当の装備に祝福が授けられ、防具がすべて破壊される。")
         ));

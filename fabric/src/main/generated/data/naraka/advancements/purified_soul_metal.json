@@ -16,8 +16,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "naraka:purified_soul_metal",
-      "nbt": "{ItemDetail:['{\"color\":\"gray\",\"translate\":\"item.naraka.purified_soul_metal.tooltip.0\"}','{\"text\":\"\"}','{\"italic\":true,\"color\":\"dark_gray\",\"translate\":\"item.naraka.purified_soul_metal.tooltip.1\"}']}"
+      "item": "naraka:purified_soul_metal"
     },
     "show_toast": true,
     "title": {

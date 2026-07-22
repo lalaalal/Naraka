@@ -327,7 +327,7 @@ public class ChineseLanguageProvider extends NarakaLanguageProviders {
                 List.of("最纯净的容器。"),
                 List.of("若使其附上矿物所拥有的色彩，便会转化为仪式所需的祭品。")
         ));
-        addTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS, List.of(
+        addTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS_DEFAULT, List.of(
                 List.of("装备 4 件与此剑使用相同矿物锻造的灵魂铠甲时，将激活‘挑战者’增益。"),
                 List.of("在带有‘挑战者’增益的状态下击败 Herobrine，会给该装备赐予祝福，同时彻底摧毁所有铠甲。")
         ));

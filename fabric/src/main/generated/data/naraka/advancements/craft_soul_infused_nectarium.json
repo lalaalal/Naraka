@@ -16,8 +16,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "naraka:soul_infused_nectarium",
-      "nbt": "{ItemDetail:['{\"color\":\"gray\",\"translate\":\"item.naraka.soul_infused_materials.tooltip.0\"}','{\"text\":\"\"}','{\"italic\":true,\"color\":\"dark_gray\",\"translate\":\"item.naraka.soul_infused_materials.tooltip.1\"}']}"
+      "item": "naraka:soul_infused_nectarium"
     },
     "show_toast": true,
     "title": {

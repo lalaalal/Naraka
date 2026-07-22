@@ -16,8 +16,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "naraka:soul_stabilizer",
-      "nbt": "{ItemDetail:['{\"color\":\"gray\",\"translate\":\"item.naraka.soul_stabilizer.tooltip.0\"}','{\"color\":\"gray\",\"translate\":\"item.naraka.soul_stabilizer.tooltip.1\"}']}"
+      "item": "naraka:soul_stabilizer"
     },
     "show_toast": true,
     "title": {

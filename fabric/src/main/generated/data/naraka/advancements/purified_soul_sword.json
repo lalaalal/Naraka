@@ -23,7 +23,7 @@
     "hidden": false,
     "icon": {
       "item": "naraka:purified_soul_sword",
-      "nbt": "{Damage:0,ItemDetail:['{\"color\":\"gray\",\"translate\":\"item.naraka.purified_soul_sword.tooltip.0\"}','{\"color\":\"gray\",\"translate\":\"item.naraka.purified_soul_sword.tooltip.1\"}','{\"text\":\"\"}','{\"italic\":true,\"color\":\"dark_gray\",\"translate\":\"item.naraka.purified_soul_sword.tooltip.2\"}','{\"italic\":true,\"color\":\"dark_gray\",\"translate\":\"item.naraka.purified_soul_sword.tooltip.3\"}']}"
+      "nbt": "{Damage:0}"
     },
     "show_toast": true,
     "title": {

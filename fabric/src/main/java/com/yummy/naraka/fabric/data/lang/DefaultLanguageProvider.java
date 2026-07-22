@@ -363,7 +363,7 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
                 List.of("The purest vessel.", "가장 순수한 그릇."),
                 List.of("Imbuing it with the color of a mineral turns it into a necessary sacrifice for the ritual.", "광물이 지닌 색을 깃들게 하면, 의식에 필요한 제물로 변화한다.")
         ));
-        addTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS, List.of(
+        addTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS_DEFAULT, List.of(
                 List.of("Wearing 4 pieces of Soul Armor forged from the same mineral as this sword activates the 'Challenger' buff.", "해당 검의 광물과 동일한 광물로 단조된 영혼 갑옷 4개를 착용할 시, '도전자' 버프가 활성화된다."),
                 List.of("Defeating Herobrine with the 'Challenger' buff bestows a blessing upon the equipment while completely destroying all armor.", "'도전자' 버프를 가진 상태로 히로빈을 처치할 경우, 해당 장비에 축복이 내려지며 갑옷이 전부 파괴된다.")
         ));
