@@ -27,7 +27,6 @@ public class NarakaItemUtils {
     public static final String TAG_HEROBRINE_SCARF = "HerobrineScarf";
     public static final String TAG_SOUL_TYPE = "SoulType";
     public static final String TAG_EQUIPMENT_SET = "EquipmentSet";
-    public static final String TAG_ITEM_DETAIL = "ItemDetail";
 
     public static void summonItemEntity(Level level, ItemStack itemStack, BlockPos pos) {
         if (!level.isClientSide()) {
@@ -49,12 +48,16 @@ public class NarakaItemUtils {
     }
 
     public static <T> T readNbtDataOrDefault(ItemStack itemStack, String key, Codec<T> codec, T defaultValue) {
-        CompoundTag tag = itemStack.getOrCreateTag();
+        CompoundTag tag = itemStack.getTag();
+        if (tag == null)
+            return defaultValue;
         return NarakaNbtUtils.readOr(tag, key, codec, defaultValue);
     }
 
     public static <T> T readNbtDataOrDefault(ItemStack itemStack, String key, Codec<T> codec, HolderLookup.Provider registries, T defaultValue) {
-        CompoundTag tag = itemStack.getOrCreateTag();
+        CompoundTag tag = itemStack.getTag();
+        if (tag == null)
+            return defaultValue;
         return NarakaNbtUtils.readOr(tag, key, codec, RegistryOps.create(NbtOps.INSTANCE, registries), defaultValue);
     }
 

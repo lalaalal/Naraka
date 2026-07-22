@@ -102,13 +102,12 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
 
         public boolean test(LivingEntity livingEntity, EquipmentSet equipmentSet) {
             ItemStack itemStack = livingEntity.getItemBySlot(slot);
-            CompoundTag tag = itemStack.getOrCreateTag();
             List<EquipmentSet> equipmentSets = NarakaItemUtils.readNbtDataOrDefault(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), livingEntity.level().registryAccess(), List.of());
             return itemStack.is(item.value())
                     && equipmentSets.stream().map(EquipmentSet::getId).anyMatch(id -> equipmentSet.getId().equals(id))
                     && nbt.getAllKeys().stream().allMatch(key -> {
                 Tag required = nbt.get(key);
-                return Objects.equals(tag.get(key), required);
+                return Objects.equals(itemStack.getTagElement(key), required);
             });
         }
 

@@ -6,16 +6,12 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.util.NarakaItemUtils;
-import com.yummy.naraka.util.NarakaNbtUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryCodecs;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -54,18 +50,15 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) {
     }
 
     public static Reinforcement get(ItemStack itemStack, HolderLookup.Provider registries) {
-        CompoundTag tag = itemStack.getOrCreateTag();
-        return NarakaNbtUtils.readOr(tag, "Reinforcement", CODEC, RegistryOps.create(NbtOps.INSTANCE, registries), ZERO);
+        return NarakaItemUtils.readNbtDataOrDefault(itemStack, "Reinforcement", CODEC, registries, ZERO);
     }
 
     public static Reinforcement getOrDefault(ItemStack itemStack, HolderSet<ReinforcementEffect> effects, HolderLookup.Provider registries) {
-        CompoundTag tag = itemStack.getOrCreateTag();
-        return NarakaNbtUtils.readOr(tag, "Reinforcement", CODEC, RegistryOps.create(NbtOps.INSTANCE, registries), zero(effects));
+        return NarakaItemUtils.readNbtDataOrDefault(itemStack, "Reinforcement", CODEC, registries, zero(effects));
     }
 
     public static void set(ItemStack itemStack, Reinforcement reinforcement, HolderLookup.Provider registries) {
-        CompoundTag tag = itemStack.getOrCreateTag();
-        NarakaNbtUtils.store(tag, "Reinforcement", CODEC, RegistryOps.create(NbtOps.INSTANCE, registries), reinforcement);
+        NarakaItemUtils.storeNbtData(itemStack, "Reinforcement", CODEC, registries, reinforcement);
     }
 
     public static boolean canReinforce(ItemStack itemStack, HolderLookup.Provider registries) {

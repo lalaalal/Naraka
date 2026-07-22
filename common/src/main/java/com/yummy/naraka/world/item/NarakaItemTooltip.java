@@ -2,9 +2,11 @@ package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.data.lang.LanguageKey;
+import com.yummy.naraka.event.ItemEvents;
 import com.yummy.naraka.references.BlockItemId;
 import com.yummy.naraka.references.NarakaBlockItemIds;
 import com.yummy.naraka.references.NarakaItemIds;
+import com.yummy.naraka.util.NarakaItemUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -33,11 +35,16 @@ public class NarakaItemTooltip {
     public static final NarakaItemTooltip SOUL_SMITHING_BLOCK = simple(NarakaBlockItemIds.SOUL_SMITHING_BLOCK, 2, 0);
     public static final NarakaItemTooltip PURIFIED_SOUL_METAL = simple(NarakaItemIds.PURIFIED_SOUL_METAL, 1, 1);
     public static final NarakaItemTooltip PURIFIED_SOUL_SWORD = simple(NarakaItemIds.PURIFIED_SOUL_SWORD, 2, 2);
-    public static final NarakaItemTooltip SOUL_INFUSED_SWORDS = simple(NarakaMod.location("soul_infused_swords"), 2, 0);
+    public static final NarakaItemTooltip SOUL_INFUSED_SWORDS_DEFAULT = simple(NarakaMod.location("soul_infused_swords"), 2, 0);
     public static final NarakaItemTooltip SOUL_INFUSED_SWORDS_BLESSED = simple(NarakaMod.location("soul_infused_swords.blessed"), 1, 0);
     public static final NarakaItemTooltip PURIFIED_SOUL_ARMORS = simple(NarakaMod.location("purified_soul_armors"), 1, 0);
     public static final NarakaItemTooltip NECTARIUM = simple(NarakaItemIds.NECTARIUM, 1, 0);
     public static final NarakaItemTooltip NECTARIUM_CORE = simple(NarakaBlockItemIds.NECTARIUM_ORE, 1, 0);
+
+    public static final ItemEvents.ItemTooltip SOUL_INFUSED_SWORDS = ConditionalItemDetail.hasNbt(NarakaItemUtils.TAG_BLESSED,
+            SOUL_INFUSED_SWORDS_BLESSED.tooltip(),
+            SOUL_INFUSED_SWORDS_DEFAULT.tooltip()
+    );
 
     private final ResourceLocation id;
     private final Map<String, Component> components = new LinkedHashMap<>();
@@ -95,7 +102,7 @@ public class NarakaItemTooltip {
                 .toList();
     }
 
-    public ItemDetail itemDetail() {
+    public ItemEvents.ItemTooltip tooltip() {
         List<Component> lines = List.copyOf(components.values());
         return new ItemDetail(lines);
     }

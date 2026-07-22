@@ -7,7 +7,7 @@ import com.yummy.naraka.core.registries.ValueGetter;
 import com.yummy.naraka.references.BlockItemId;
 import com.yummy.naraka.references.NarakaBlockIds;
 import com.yummy.naraka.references.NarakaBlockItemIds;
-import com.yummy.naraka.world.item.DefaultItemTagBuilder;
+import com.yummy.naraka.world.item.ItemDetailBuilder;
 import com.yummy.naraka.world.item.NarakaItemTooltip;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -79,7 +79,7 @@ public class NarakaBlocks {
             from(Blocks.AMETHYST_CLUSTER)
                     .requiresCorrectToolForDrops()
                     .lightLevel(NectariumCoreBlock::lightLevel),
-            tagBuilder().naraka$tooltip(NarakaItemTooltip.NECTARIUM_CORE)
+            tagBuilder().naraka$setItemTooltip(NarakaItemTooltip.NECTARIUM_CORE)
                     .naraka$asItemProperties()
                     .rarity(Rarity.RARE)
     );
@@ -125,7 +125,7 @@ public class NarakaBlocks {
             NarakaBlockItemIds.SOUL_SMITHING_BLOCK,
             SoulSmithingBlock::new,
             from(Blocks.SMITHING_TABLE),
-            tagBuilder().naraka$tooltip(NarakaItemTooltip.SOUL_SMITHING_BLOCK)
+            tagBuilder().naraka$setItemTooltip(NarakaItemTooltip.SOUL_SMITHING_BLOCK)
                     .naraka$asItemProperties()
                     .rarity(Rarity.EPIC)
     );
@@ -134,7 +134,7 @@ public class NarakaBlocks {
             NarakaBlockItemIds.IMITATION_GOLD_BLOCK,
             properties -> new EncroachingBlock(properties.strength(5, 6), Blocks.IRON_BLOCK),
             Blocks.GOLD_BLOCK,
-            tagBuilder().naraka$tooltip(NarakaItemTooltip.IMITATION_GOLD)
+            tagBuilder().naraka$setItemTooltip(NarakaItemTooltip.IMITATION_GOLD)
                     .naraka$asItemProperties()
                     .rarity(Rarity.UNCOMMON)
     );
@@ -162,7 +162,7 @@ public class NarakaBlocks {
                     .strength(50, 1200)
                     .requiresCorrectToolForDrops()
                     .lightLevel(HerobrineTotem::light),
-            tagBuilder().naraka$tooltip(NarakaItemTooltip.HEROBRINE_TOTEM)
+            tagBuilder().naraka$setItemTooltip(NarakaItemTooltip.HEROBRINE_TOTEM)
                     .naraka$asItemProperties()
                     .rarity(Rarity.EPIC)
     );
@@ -171,7 +171,7 @@ public class NarakaBlocks {
             NarakaBlockItemIds.SOUL_STABILIZER,
             SoulStabilizer::new,
             Blocks.GLASS,
-            tagBuilder().naraka$tooltip(NarakaItemTooltip.SOUL_STABILIZER)
+            tagBuilder().naraka$setItemTooltip(NarakaItemTooltip.SOUL_STABILIZER)
                     .naraka$asItemProperties()
     );
 
@@ -216,8 +216,8 @@ public class NarakaBlocks {
         return new Item.Properties();
     }
 
-    private static DefaultItemTagBuilder tagBuilder() {
-        return (DefaultItemTagBuilder) new Item.Properties();
+    private static ItemDetailBuilder tagBuilder() {
+        return (ItemDetailBuilder) new Item.Properties();
     }
 
     private static HolderProxy<Block, Block> registerSoulInfusedBlock(BlockItemId id, Block baseBlock) {

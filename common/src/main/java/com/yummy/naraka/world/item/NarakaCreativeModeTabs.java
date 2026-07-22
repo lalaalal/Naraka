@@ -218,7 +218,6 @@ public class NarakaCreativeModeTabs {
     private static ItemStack blessedChallengerSword(Holder<Item> item, HolderLookup.Provider registries) {
         ItemStack itemStack = blessed(item.value().getDefaultInstance().copy());
         SoulType soulType = NarakaItemUtils.readNbtDataOrDefault(itemStack, NarakaItemUtils.TAG_SOUL_TYPE, SoulType.CODEC, SoulType.NONE);
-        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_ITEM_DETAIL, ItemDetail.CODEC, NarakaItemTooltip.SOUL_INFUSED_SWORDS_BLESSED.itemDetail());
         NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), registries, EquipmentSetHelper.createChallengerSet(soulType));
         return itemStack;
     }
