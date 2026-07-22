@@ -1,18 +1,14 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "building",
-  "key": {
-    "#": {
-      "item": "naraka:purified_soul_shard"
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "purified_soul_shard",
+  "ingredients": [
+    {
+      "item": "naraka:purified_soul_metal"
     }
-  },
-  "pattern": [
-    "###",
-    "###",
-    "###"
   ],
   "result": {
-    "item": "naraka:purified_soul_metal"
-  },
-  "show_notification": true
+    "count": 9,
+    "item": "naraka:purified_soul_shard"
+  }
 }

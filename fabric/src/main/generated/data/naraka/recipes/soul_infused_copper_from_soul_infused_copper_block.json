@@ -1,18 +1,14 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "building",
-  "key": {
-    "#": {
-      "item": "naraka:soul_infused_copper"
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "soul_infused_copper",
+  "ingredients": [
+    {
+      "item": "naraka:soul_infused_copper_block"
     }
-  },
-  "pattern": [
-    "###",
-    "###",
-    "###"
   ],
   "result": {
-    "item": "naraka:soul_infused_copper_block"
-  },
-  "show_notification": true
+    "count": 9,
+    "item": "naraka:soul_infused_copper"
+  }
 }

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_nectarium_block": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "naraka:nectarium_block"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "naraka:nectarium_from_nectarium_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_nectarium_block",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "naraka:nectarium_from_nectarium_block"
+    ]
+  },
+  "sends_telemetry_event": false
+}

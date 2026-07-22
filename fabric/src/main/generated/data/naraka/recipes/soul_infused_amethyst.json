@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "soul_infused_amethyst",
   "key": {
     "M": {
       "item": "minecraft:amethyst_shard"

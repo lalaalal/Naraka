@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "soul_infused_lapis",
   "key": {
     "M": {
       "item": "minecraft:lapis_lazuli"

@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "soul_infused_gold",
   "key": {
     "M": {
       "item": "minecraft:gold_ingot"

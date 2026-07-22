@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "purified_soul_metal_block",
+  "key": {
+    "#": {
+      "item": "naraka:purified_soul_metal"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "item": "naraka:purified_soul_metal_block"
+  },
+  "show_notification": true
+}
