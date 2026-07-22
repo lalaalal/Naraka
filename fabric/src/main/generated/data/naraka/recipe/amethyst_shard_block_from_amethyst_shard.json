@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "amethyst_shard_block",
+  "key": {
+    "#": "minecraft:amethyst_shard"
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "id": "naraka:amethyst_shard_block"
+  }
+}

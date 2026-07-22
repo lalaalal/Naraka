@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "soul_infused_emerald",
   "key": {
     "M": "minecraft:emerald",
     "P": "naraka:purified_soul_shard"

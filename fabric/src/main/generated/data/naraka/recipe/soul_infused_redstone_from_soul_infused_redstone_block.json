@@ -1,15 +1,11 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "building",
-  "key": {
-    "#": "naraka:soul_infused_redstone"
-  },
-  "pattern": [
-    "###",
-    "###",
-    "###"
+  "type": "minecraft:crafting_shapeless",
+  "group": "soul_infused_redstone",
+  "ingredients": [
+    "naraka:soul_infused_redstone_block"
   ],
   "result": {
-    "id": "naraka:soul_infused_redstone_block"
+    "count": 9,
+    "id": "naraka:soul_infused_redstone"
   }
 }

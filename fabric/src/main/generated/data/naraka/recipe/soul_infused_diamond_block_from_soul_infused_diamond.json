@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "soul_infused_diamond_block",
+  "key": {
+    "#": "naraka:soul_infused_diamond"
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "id": "naraka:soul_infused_diamond_block"
+  }
+}

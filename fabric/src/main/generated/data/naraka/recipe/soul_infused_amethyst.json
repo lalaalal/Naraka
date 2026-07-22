@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "soul_infused_amethyst",
   "key": {
     "M": "minecraft:amethyst_shard",
     "P": "naraka:purified_soul_shard"

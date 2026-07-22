@@ -151,6 +151,7 @@ public class NarakaRecipeProvider extends RecipeProvider {
     protected void soulInfusedMaterial(ItemLike material, ItemLike result) {
         Item purifiedSoulShard = NarakaItems.PURIFIED_SOUL_SHARD.get();
         ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, result, 8)
+                .group(getItemName(result))
                 .define('P', purifiedSoulShard)
                 .define('M', material)
                 .pattern("MMM")
@@ -262,15 +263,17 @@ public class NarakaRecipeProvider extends RecipeProvider {
             ItemLike packed
     ) {
         ShapelessRecipeBuilder.shapeless(items, unpackedCategory, unpacked, 9)
+                .group(getItemName(unpacked))
                 .requires(packed)
                 .unlockedBy(getHasName(packed), has(packed))
-                .save(output, key(packed));
+                .save(output, key(unpacked, "_from_" + getItemName(packed)));
         ShapedRecipeBuilder.shaped(items, packedCategory, packed)
+                .group(getItemName(packed))
                 .define('#', unpacked)
                 .pattern("###")
                 .pattern("###")
                 .pattern("###")
                 .unlockedBy(getHasName(unpacked), has(unpacked))
-                .save(output, key(unpacked, "_from_" + getItemName(packed)));
+                .save(output, key(packed, "_from_" + getItemName(unpacked)));
     }
 }

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "soul_infused_nectarium",
   "key": {
     "M": "naraka:nectarium",
     "P": "naraka:purified_soul_shard"
