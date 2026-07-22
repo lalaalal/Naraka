@@ -305,7 +305,7 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addBlock(NarakaBlocks.NARAKA_PORTAL, "Naraka Portal", "나락 포탈");
 
         addTooltip(NarakaItemTooltip.HEROBRINE_SCARF, List.of(
-                List.of("Can be equipped in the chestplate slot or combined with armor using an anvil.", "흉갑 슬롯에 착용하거나, 모루를 통해 갑옷에 합성할 수 있다."),
+                List.of("Can be equipped in the chestplate slot or combined with armor using a 'Soul Smithinig Block'.", "흉갑 슬롯에 착용하거나, '영혼 대장장이 블록'를 통해 갑옷에 합성할 수 있다."),
                 List.of("Along the inner side of the cloak, the shape of the [Naraka] where it once existed shimmers.", "망토의 내면을 따라, 그것이 존재했던 [나락]의 형상이 일렁거린다."),
                 List.of("However, this merely reflects it; one cannot enter or leave [Naraka] through this.", "다만 이것은 그저 비출 뿐, 이것을 통해 [나락]을 드나들 수는 없다.")
         ));
@@ -336,7 +336,7 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
                 List.of("Waiting for a hero to appear who can defeat it and preserve the world's existence.", "그것을 쓰러뜨리고 세계의 존속을 이어나갈 수 있는, 영웅이 나타나기를 기다리며.")
         ));
         addTooltip(NarakaItemTooltip.IMITATION_GOLD, List.of(
-                List.of("When placed, converts Iron Blocks within a 3x3x3 area around itself into Imitation Gold Blocks.", "설치되어 있으면, 자신 중심 3*3*3 공간 내의 철 블록을 거짓된 금 블럭으로 변화시킨다."),
+                List.of("When placed, converts adjacent Iron Blocks into Fake Gold Blocks.", "설치되어 있으면, 인접한 철 블록을 거짓된 금 블럭으로 변화시킨다."),
                 List.of("Also used to duplicate 'Herobrine Totem'.", "또한 '히로빈 토템'을 복사하는 데에도 사용된다."),
                 List.of("Gold holds radiance, and that radiance summons it.", "금은 광채를 품고, 광채는 그것을 불러낸다."),
                 List.of("This gold is a false creation, holding a radiance weaker than true gold.", "이 금은 원래의 금보다 미약한 광채를 품은, 거짓된 것."),
@@ -407,14 +407,14 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addEntityType(NarakaEntityTypes.NARAKA_PORTAL, "Naraka Portal");
         addEntityType(NarakaEntityTypes.LIGHTNING_CIRCLE, "Lightning Circle");
 
-        addDamageType(NarakaDamageTypes.SPEAR_OF_LONGINUS, "%1$s's AT Field was torn by %2$s", "%1$s의 AT 필드가 %2$s에 찢어졌습니다");
-        addDamageType(NarakaDamageTypes.STIGMA, "%1$s's has been deprived of life due to %2$s's stigma stacking", "%1$s이(가) %2$s의 낙인이 중첩돼 생명을 빼앗겼습니다");
-        addDamageType(NarakaDamageTypes.STIGMA_CONSUME, "%2$s has been consumed %1$s's stigma", "%2$s이(가) %1$s의 낙인을 소모해 생명을 앗아갔습니다");
+        addDamageType(NarakaDamageTypes.SPEAR_OF_LONGINUS, "%1$s had their color and existence completely devoured", "%1$s이(가) 세상에서 자신만의 색을 잃어버렸습니다");
+        addDamageType(NarakaDamageTypes.STIGMA, "%1$s was deprived of life by %2$s's stacked stigma", "%1$s이(가) %2$s의 낙인이 중첩돼 생명을 빼앗겼습니다");
+        addDamageType(NarakaDamageTypes.STIGMA_CONSUME, "%2$s consumed the stigma on %1$s to take their life", "%2$s이(가) %1$s의 낙인을 소모해 생명을 앗아갔습니다");
         addDamageType(NarakaDamageTypes.PICKAXE_SLASH, "%1$s was slain by %2$s", "%1$s이(가) %2$s에 썰렸습니다");
-        addDamageType(NarakaDamageTypes.NARAKA_FIREBALL, "%1$s was blown by Naraka Fireball thrown by %2$s", "%1$s이(가) %2$s이(가) 던진 나락 화염구에 폭발했습니다");
-        addDamageType(NarakaDamageTypes.STARDUST, "%1$s was exploded by %2$s", "%1$s이(가) %2$s에 폭사했습니다");
-        addDamageType(NarakaDamageTypes.PURIFIED_SOUL_FIRE, "%1$s went up in black flames", "%1$s이(가) 검은 불 속에서 타 죽었습니다");
-        addDamageType(NarakaDamageTypes.SOUL_ATTACK, "%2$s executed %1$s");
+        addDamageType(NarakaDamageTypes.NARAKA_FIREBALL, "%1$s was blown up by %2$s's Naraka Fireball", "%1$s이(가) %2$s이(가) 던진 나락 화염구에 폭발했습니다");
+        addDamageType(NarakaDamageTypes.STARDUST, "%1$s was blown up by %2$s", "%1$s이(가) %2$s에 폭사했습니다");
+        addDamageType(NarakaDamageTypes.PURIFIED_SOUL_FIRE, "%1$s was consumed by black flames", "%1$s이(가) 검은 불 속에서 타 죽었습니다");
+        addDamageType(NarakaDamageTypes.SOUL_ATTACK, "%2$s executed %1$s", "%2$s이(가) %1$s을(를) 처형했습니다");
 
         add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_AMETHYST), "Challenger's Blessing", "도전자의 축복");
         add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_COPPER), "Challenger's Blessing", "도전자의 축복");
