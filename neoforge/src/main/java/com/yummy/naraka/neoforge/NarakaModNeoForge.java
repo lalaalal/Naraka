@@ -2,9 +2,6 @@ package com.yummy.naraka.neoforge;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.init.NarakaInitializer;
-import com.yummy.naraka.invoker.MethodInvoker;
-import com.yummy.naraka.neoforge.init.*;
-import com.yummy.naraka.world.NarakaBiomes;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -29,18 +26,6 @@ public final class NarakaModNeoForge implements NarakaInitializer {
 
     public NarakaModNeoForge(IEventBus bus) {
         MOD_BUS = bus;
-
-        MethodInvoker.register(NeoForgePlatform.class);
-        MethodInvoker.register(NeoForgeNetworkManager.class);
-        MethodInvoker.register(NeoForgeEventHandler.class);
-        MethodInvoker.register(NeoForgeEntityAttributeRegistry.class);
-        MethodInvoker.register(NeoForgeRegistryFactory.class);
-        MethodInvoker.register(NeoForgeRegistryProxyProvider.class);
-        MethodInvoker.register(NeoForgeSpawnPlacementRegistry.class);
-        MethodInvoker.register(NeoForgeCommandRegistry.class);
-        MethodInvoker.register(NeoForgePotionBrewRecipeRegistry.class);
-        MethodInvoker.register(NeoForgeEntityDataSerializerRegistry.class);
-
         NarakaMod.initialize(this);
 
         bus.addListener(this::commonSetup);
@@ -49,11 +34,6 @@ public final class NarakaModNeoForge implements NarakaInitializer {
     @Override
     public void runAfterRegistryLoaded(Runnable runnable) {
         runAfterRegistryLoaded.add(runnable);
-    }
-
-    @Override
-    public NarakaBiomes.Modifier getBiomeModifier() {
-        return NeoForgeBiomeModifier.INSTANCE;
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

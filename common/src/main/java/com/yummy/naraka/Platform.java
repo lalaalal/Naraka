@@ -1,22 +1,14 @@
 package com.yummy.naraka;
 
-import com.yummy.naraka.invoker.MethodInvoker;
-
-import javax.annotation.Nullable;
+import com.yummy.naraka.service.NarakaServices;
 
 import java.nio.file.Path;
 
 public abstract class Platform {
-    @Nullable
-    private static Platform instance = null;
-
     private final ModLoader modLoader;
 
     public static Platform getInstance() {
-        if (instance == null)
-            instance = MethodInvoker.of(Platform.class, "getInstance")
-                    .invoke().result(Platform.class);
-        return instance;
+        return NarakaServices.PLATFORM;
     }
 
     protected Platform(ModLoader modLoader) {

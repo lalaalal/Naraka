@@ -13,3 +13,4 @@ public class NarakaKeyMappings {
             LanguageKey.KEY_CATEGORIES_NARAKA
     );
 }
+

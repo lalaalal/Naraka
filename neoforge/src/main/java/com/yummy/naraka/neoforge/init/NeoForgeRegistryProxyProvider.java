@@ -4,7 +4,6 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.core.registries.RegistryProxyProvider;
-import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.neoforge.NarakaEventBus;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -16,22 +15,10 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public final class NeoForgeRegistryProxyProvider extends RegistryProxyProvider implements NarakaEventBus {
-    private static final NeoForgeRegistryProxyProvider INSTANCE = new NeoForgeRegistryProxyProvider();
-
-    private final Map<ResourceKey<? extends Registry<?>>, Registry<?>> registries = new HashMap<>();
-
-    @SuppressWarnings("unused")
-    @MethodProxy(RegistryProxyProvider.class)
-    public static NeoForgeRegistryProxyProvider getInstance() {
-        return INSTANCE;
-    }
+    private static final Map<ResourceKey<? extends Registry<?>>, Registry<?>> narakaRegistries = new HashMap<>();
 
     public static <T> void addNarakaRegistry(ResourceKey<Registry<T>> key, Registry<T> registry) {
-        INSTANCE.registries.put(key, registry);
-    }
-
-    private NeoForgeRegistryProxyProvider() {
-
+        narakaRegistries.put(key, registry);
     }
 
     @Override
@@ -51,7 +38,7 @@ public final class NeoForgeRegistryProxyProvider extends RegistryProxyProvider i
         public Registry<T> getRegistry() {
             Registry<T> result = RegistryProxy.super.getRegistry();
             if (result == null)
-                return (Registry<T>) registries.get(getRegistryKey());
+                return (Registry<T>) narakaRegistries.get(getRegistryKey());
             return result;
         }
 

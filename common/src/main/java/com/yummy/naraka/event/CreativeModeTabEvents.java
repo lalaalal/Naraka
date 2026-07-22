@@ -1,11 +1,9 @@
 package com.yummy.naraka.event;
 
-import com.yummy.naraka.invoker.MethodInvoker;
+import com.yummy.naraka.service.NarakaServices;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
-
-import javax.annotation.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,14 +13,9 @@ import java.util.Map;
  */
 public final class CreativeModeTabEvents {
     private static final Map<ResourceKey<CreativeModeTab>, Event<EntryModifier>> EVENT_MAP = new HashMap<>();
-    @Nullable
-    private static ModifyEntriesEventFactory modifyEntriesEventFactory;
 
     private static Event<EntryModifier> create(ResourceKey<CreativeModeTab> key) {
-        if (modifyEntriesEventFactory == null)
-            modifyEntriesEventFactory = MethodInvoker.of(CreativeModeTabEvents.class, "getModifyEntriesEventFactory")
-                    .invoke().result(ModifyEntriesEventFactory.class);
-        return modifyEntriesEventFactory.create(key);
+        return NarakaServices.MODIFY_ENTRIES_EVENT_FACTORY.create(key);
     }
 
     public static Event<EntryModifier> modifyEntriesEvent(ResourceKey<CreativeModeTab> key) {

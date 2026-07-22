@@ -5,7 +5,6 @@ import com.yummy.naraka.Platform;
 import com.yummy.naraka.client.NarakaModClient;
 import com.yummy.naraka.client.config.NarakaConfigScreen;
 import com.yummy.naraka.client.init.NarakaClientInitializer;
-import com.yummy.naraka.invoker.MethodInvoker;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -30,19 +29,6 @@ public final class NarakaModNeoForgeClient implements NarakaClientInitializer, I
 
     public NarakaModNeoForgeClient(IEventBus modBus, ModContainer modContainer) {
         this.bus = modBus;
-
-        MethodInvoker.register(NeoForgeClientEventHandler.class);
-        MethodInvoker.register(NeoForgeModelLayerRegistry.class);
-        MethodInvoker.register(NeoForgeParticleProviderRegistry.class);
-        MethodInvoker.register(NeoForgeBlockEntityRendererRegistry.class);
-        MethodInvoker.register(NeoForgeEntityRendererRegistry.class);
-        MethodInvoker.register(NeoForgeScreenFactoryRegistry.class);
-        MethodInvoker.register(NeoForgeHudRendererRegistry.class);
-        MethodInvoker.register(NeoForgeKeyMappingRegistry.class);
-        MethodInvoker.register(NeoForgeShaderRegistry.class);
-        MethodInvoker.register(NeoForgeItemPropertiesRegistry.class);
-        MethodInvoker.register(NeoForgeDimensionSpecialEffectsRegistry.class);
-        MethodInvoker.register(NeoForgeBuiltinResourcePackRegistry.class);
 
         NarakaModClient.initialize(this);
         if (Platform.getInstance().modExists("cloth_config"))

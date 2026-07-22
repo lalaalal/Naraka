@@ -1,7 +1,7 @@
 package com.yummy.naraka.neoforge.init;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.world.NarakaBiomes;
+import com.yummy.naraka.init.BiomeModificationRegistry;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -23,17 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class NeoForgeBiomeModifier implements NarakaBiomes.Modifier {
-    public static final NeoForgeBiomeModifier INSTANCE = new NeoForgeBiomeModifier();
-
-    private final List<BiomeModifierRecord> modifiers = new ArrayList<>();
+public class NeoForgeBiomeModificationRegistry implements BiomeModificationRegistry.Registrar {
+    private static final List<BiomeModifierRecord> modifiers = new ArrayList<>();
 
     public static void bootstrap(BootstrapContext<BiomeModifier> context) {
-        for (BiomeModifierRecord modifier : INSTANCE.modifiers)
+        for (BiomeModifierRecord modifier : modifiers)
             modifier.register(context);
-    }
-
-    private NeoForgeBiomeModifier() {
     }
 
     @Override

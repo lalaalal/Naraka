@@ -1,6 +1,5 @@
 package com.yummy.naraka.network;
 
-
 public class NarakaNetworks {
     public static void initialize() {
         NetworkManager.clientbound().define(SyncEntityDataPacket.TYPE, SyncEntityDataPacket.CODEC);

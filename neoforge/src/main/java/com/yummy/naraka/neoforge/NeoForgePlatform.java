@@ -1,22 +1,13 @@
 package com.yummy.naraka.neoforge;
 
 import com.yummy.naraka.Platform;
-import com.yummy.naraka.invoker.MethodProxy;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
 
 public final class NeoForgePlatform extends Platform {
-    private static final NeoForgePlatform INSTANCE = new NeoForgePlatform();
-
-    @SuppressWarnings("unused")
-    @MethodProxy(Platform.class)
-    public static Platform getInstance() {
-        return INSTANCE;
-    }
-
-    private NeoForgePlatform() {
+    public NeoForgePlatform() {
         super(ModLoader.NEO_FORGE);
     }
 
