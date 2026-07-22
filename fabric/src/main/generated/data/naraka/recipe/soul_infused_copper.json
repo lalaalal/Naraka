@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "group": "soul_infused_copper",
   "key": {
     "M": {
       "item": "minecraft:copper_ingot"

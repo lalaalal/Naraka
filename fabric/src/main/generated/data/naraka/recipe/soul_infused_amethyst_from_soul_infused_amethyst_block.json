@@ -1,18 +1,14 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "building",
-  "key": {
-    "#": {
-      "item": "naraka:soul_infused_amethyst"
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "soul_infused_amethyst",
+  "ingredients": [
+    {
+      "item": "naraka:soul_infused_amethyst_block"
     }
-  },
-  "pattern": [
-    "###",
-    "###",
-    "###"
   ],
   "result": {
-    "count": 1,
-    "id": "naraka:soul_infused_amethyst_block"
+    "count": 9,
+    "id": "naraka:soul_infused_amethyst"
   }
 }

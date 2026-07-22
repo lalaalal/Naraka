@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "nectarium_block",
+  "key": {
+    "#": {
+      "item": "naraka:nectarium"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "naraka:nectarium_block"
+  }
+}

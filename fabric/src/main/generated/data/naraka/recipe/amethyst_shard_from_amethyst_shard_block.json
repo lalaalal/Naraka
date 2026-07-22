@@ -1,18 +1,14 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "building",
-  "key": {
-    "#": {
-      "item": "minecraft:amethyst_shard"
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "amethyst_shard",
+  "ingredients": [
+    {
+      "item": "naraka:amethyst_shard_block"
     }
-  },
-  "pattern": [
-    "###",
-    "###",
-    "###"
   ],
   "result": {
-    "count": 1,
-    "id": "naraka:amethyst_shard_block"
+    "count": 9,
+    "id": "minecraft:amethyst_shard"
   }
 }

@@ -1,18 +1,14 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "building",
-  "key": {
-    "#": {
-      "item": "naraka:nectarium"
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "nectarium",
+  "ingredients": [
+    {
+      "item": "naraka:nectarium_block"
     }
-  },
-  "pattern": [
-    "###",
-    "###",
-    "###"
   ],
   "result": {
-    "count": 1,
-    "id": "naraka:nectarium_block"
+    "count": 9,
+    "id": "naraka:nectarium"
   }
 }
