@@ -8,13 +8,13 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
-import com.yummy.naraka.world.item.NarakaItemTooltip;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.alchemy.NarakaPotions;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSetHelper;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
+import com.yummy.naraka.world.item.tooltip.NarakaItemTooltip;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.world.item.Items;
 
@@ -260,87 +260,111 @@ public class ChineseLanguageProvider extends NarakaLanguageProviders {
         addBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, "灵魂锻造台");
         addBlock(NarakaBlocks.NARAKA_PORTAL, "炼狱传送门");
 
+        add(LanguageKey.HIDDEN_TOOLTIP, "按住 Shift 键显示提示");
+
         addTooltip(NarakaItemTooltip.HEROBRINE_SCARF, List.of(
-                List.of("可装备于胸甲栏位，或在‘灵魂锻造台’中与铠甲结合。"),
-                List.of("沿着披风的内侧，其曾经存在过的[炼狱]之影正微微闪烁。"),
-                List.of("然而这仅仅是映射而已，无法借此出入[炼狱]。")
+                List.of("可装备于胸甲栏位，或通过‘灵魂锻造台’将其融合至装备上。"),
+                List.of("沿着披风的内侧，其曾经存在的「炼狱」之影在微微晃动。"),
+                List.of("然而这仅为映照，并不能通过它穿梭于「炼狱」之间。")
         ));
         addTooltip(NarakaItemTooltip.NARAKA_PICKAXE, List.of(
-                List.of("可用作镐。"),
-                List.of("为寻找[属性]而漫游于异界，将沿途的一切踏碎并吸收。"),
-                List.of("总是通过炼狱出现的存在，在侵入的世界中只留下空虚便消散无踪。"),
-                List.of("因此，它在某些世界被称为‘虚空之神’，在另一些世界则被称为‘炼狱暴君’。")
+                List.of("可用作镐或斧。"),
+                List.of("为寻找「色彩」而漂泊于异界，所到之处皆遭践踏与吞噬。"),
+                List.of("总是从炼狱中现身，在其入侵的世界里只留下虚无便悄然离去。"),
+                List.of("因此在某些世界它被称为‘虚无之神’，而在另一些世界则被称为‘炼狱暴君’。")
         ));
         addTooltip(NarakaItemTooltip.GOD_BLOOD, List.of(
-                List.of("用作强大装备的材料。"),
-                List.of("亦可充能至‘灵魂稳定器’中，用于锻造强大的装备。"),
-                List.of("充满各种恐惧与敬畏之名的本质，不过是为了填补匮乏的贪食。"),
-                List.of("无法获得色彩，渴望着色彩，试图剥夺色彩并加诸己身。"),
-                List.of("然而无论添增什么，黑色终究只是黑色。即便留存下来的遗骸，也不过是漆黑的虚无。")
+                List.of("用作强力装备的合成材料。"),
+                List.of("此外，还可充能至‘灵魂稳定器’中，用于打造强力装备。"),
+                List.of("饱含无数恐惧与敬畏之名的本质，不过是为了填补匮乏的暴食。"),
+                List.of("未能获得色彩，便渴求色彩，甚至妄图剥夺色彩以充实自身。"),
+                List.of("然而无论再添些什么，黑色终究只是黑色。即便是残留的遗骸，也不过是一片漆黑的虚无。")
         ));
         addTooltip(NarakaItemTooltip.SPEAR_OF_LONGINUS, List.of(
-                List.of("可以投掷，并会自动回到主人手中。"),
-                List.of("无论采用何种攻击方式，命中时皆可瞬间秒杀敌人。"),
-                List.of("色彩即是个性；从 festival 一点来看，色彩与每个生命体的独立性别无二致。"),
-                List.of("这把枪是用那 shattered 之刻仍在渴望色彩之物的血液所打造的武器。"),
-                List.of("因此，它会吞噬刺入对象的色彩，乃至于其独立性，将其从这世上彻底抹去。")
+                List.of("可以投掷，且会自动回到主人手中。"),
+                List.of("无论攻击方式为何，命中敌人时皆可将其即死。"),
+                List.of("八次安息，八次证明。"),
+                List.of("这件兵器是历经终局所获得的最高纯度之力，亦是汝蜕变为「炼狱」之君的证明。")
         ));
         addTooltip(NarakaItemTooltip.SANCTUARY_COMPASS, List.of(
-                List.of("指向当前世界中最接近的‘Herobrine圣所’建筑的方向。"),
-                List.of("世界倾向于为了自身的存续而调整因果。"),
-                List.of("作为这项努力的一部分，它将永远指向侵入该世界的存在之圣所。"),
-                List.of("等待着能够击败它并延续世界存续的英雄出现。")
+                List.of("指向当前世界中最接近的‘Herobrine圣所’建筑所在的方向。"),
+                List.of("世界为了自身的延续，倾向于去调整因果。"),
+                List.of("此物便作为其中一环，将始终指向侵入该世界的存在之圣所。"),
+                List.of("静待着能够将其击败并让世界得以延续的英雄现身。")
         ));
         addTooltip(NarakaItemTooltip.IMITATION_GOLD, List.of(
                 List.of("放置时，会将相邻的铁块转化为仿金块。"),
-                List.of("亦可用于复制‘Herobrine图腾’。"),
-                List.of("黄金蕴含着光芒，而光芒会将其唤来。"),
-                List.of("这黄金是虚假的产物，蕴含着比真正黄金更为微弱的光芒。"),
-                List.of("然而仅凭那微弱的光芒，也已足够引导它的脚步。")
+                List.of("此外，还用于复制‘Herobrine图腾’。"),
+                List.of("金蕴含光彩，而光彩将其唤来。"),
+                List.of("此金乃微光暗淡之虚妄产物，逊于真金。"),
+                List.of("然而仅凭那缕微光，亦足以将它的脚步引向此处。")
         ));
         addTooltip(NarakaItemTooltip.HEROBRINE_TOTEM, List.of(
-                List.of("自下而上依次堆叠 2 个仿金块、1 个 Herobrine图腾 和 1 个下界岩，并点燃火苗，即可召唤 Herobrine。"),
-                List.of("Herobrine 仅能在‘Herobrine圣所’建筑内被召唤。"),
-                List.of("刻有其面孔的石碑。"),
-                List.of("当虚假的黄金吸引其目光并引导其路线时，此石便会将它的肉身召唤并固定于此世界。")
+                List.of("由下至上依次堆叠 2 个仿金块、1 个 Herobrine图腾和 1 个地狱岩并点燃，即可召唤 Herobrine。"),
+                List.of("Herobrine 仅可在‘Herobrine圣所’建筑内被召唤。"),
+                List.of("刻有其面容的石碑。"),
+                List.of("当仿金吸引了它的目光并引导其脚步时，此物便会将它的肉身召唤并锚定于此方世界。")
         ));
         addTooltip(NarakaItemTooltip.SOUL_INFUSED_MATERIALS, List.of(
                 List.of("用于给‘灵魂稳定器’充能。"),
-                List.of("将渴望色彩的灵魂碎片，融入散发最强烈色彩的矿物中所制成的物品。")
+                List.of("将渴望色彩的灵魂碎片融入能发散出最烈色彩的矿物中所成之物。"),
+                List.of("渴望色彩之魂的执念，因与最烈之彩合而为一而得到了满足。")
         ));
         addTooltip(NarakaItemTooltip.SOUL_STABILIZER, List.of(
-                List.of("放置后，手持魂浸矿物或神之血右键点击即可充能。"),
-                List.of("充能必须仅使用单一类型的物品进行。")
+                List.of("放置后，右键使用魂浸矿物或神之血即可充能。"),
+                List.of("充能过程必须仅使用同一种物品完成。")
         ));
         addTooltip(NarakaItemTooltip.SOUL_SMITHING_BLOCK, List.of(
-                List.of("放置后，装备充能完毕的灵魂稳定器和锻造模板，即可锻造特定装备。"),
-                List.of("锻造时会消耗灵魂稳定器中所充能的一定数量矿物或神之血。")
+                List.of("放置后，装备已充能 provide 的灵魂稳定器与锻造模板，即可打造特定装备。"),
+                List.of("打造时，会消耗灵魂稳定器中所充能的一定数量矿物或神之血。")
         ));
         addTooltip(NarakaItemTooltip.PURIFIED_SOUL_METAL, List.of(
-                List.of("用作稀有装备的材料。"),
-                List.of("虽然被称为金属，但更接近于其消散的灵魂凝聚并硬化而成的形态。")
+                List.of("用作稀有装备 generalize 的合成材料。"),
+                List.of("虽称为金属，但更接近于其消散的灵魂凝聚成型后的固化物。")
         ));
         addTooltip(NarakaItemTooltip.PURIFIED_SOUL_SWORD, List.of(
-                List.of("右键点击可点燃黑火。黑火只能通过使用此物品左键点击来熄灭。"),
-                List.of("可在灵魂锻造台使用矿物或神之血进行锻造。"),
+                List.of("右键可附着黑火。黑火仅能通过使用该物品左键予以熄灭。"),
+                List.of("可在灵魂锻造台上使用矿物或神之血进行打造。"),
                 List.of("最纯净的容器。"),
-                List.of("若使其附上矿物所拥有的色彩，便会转化为仪式所需的祭品。")
+                List.of("若欲将其用于仪式，需先通过魂浸矿物进行调谐。")
         ));
-        addTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS, List.of(
-                List.of("装备 4 件与此剑使用相同矿物锻造的灵魂铠甲时，将激活‘挑战者’增益。"),
-                List.of("在带有‘挑战者’增益的状态下击败 Herobrine，会给该装备赐予祝福，同时彻底摧毁所有铠甲。")
+        addTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS_DEFAULT, List.of(
+                List.of("手持此剑，并装备 4 件与此剑矿物材质相同的纯净灵魂防具时，将激活‘挑战者’增益。"),
+                List.of("在带有‘挑战者’增益的状态下击杀 Herobrine 时，剑将获得祝福，且装备的所有防具将被摧毁。"),
+                List.of("挑战者须身披因欲望得以满足而稳定下来的灵魂，并将其作为武器握于手中，让未能摆脱执念的它重新归于安息。"),
+                List.of("唯有如此，它的灵魂才能与已稳定的灵魂产生共鸣并寻得宁静，而挑战者手中的武器亦将赐予其祝福。")
         ));
         addTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS_BLESSED, List.of(
-                List.of("用作‘朗基努斯之枪’的材料。")
+                List.of("用作"),
+                List.of("「朗基努斯之枪」"),
+                List.of("的合成材料。"),
+                List.of("获得祝福的兵器会彼此共鸣并互相吸引，"),
+                List.of("当以其血液为媒介相连时，将展现出最纯粹的力量。")
         ));
-        addTooltip(NarakaItemTooltip.PURIFIED_SOUL_ARMORS, List.of(
-                List.of("可在灵魂锻造台使用矿物或神之血进行锻造。")
+        addTooltip(NarakaItemTooltip.PURIFIED_SOUL_ARMORS_DEFAULT, List.of(
+                List.of("可在灵魂锻造台上使用矿物或神之血进行打造。"),
+                List.of("最纯净的容器。"),
+                List.of("若欲将其用于仪式，需先通过魂浸矿物进行调谐。"),
+                List.of("抑或是，使用它的血液——")
+        ));
+        addTooltip(NarakaItemTooltip.PURIFIED_SOUL_ARMORS_SOUL, List.of(
+                List.of("装备 4 件与此防具矿物材质相同的纯净灵魂防具，并手持与此防具矿物材质相同的剑时，将激活‘挑战者’增益。"),
+                List.of("在带有‘挑战者’增益的状态下击杀 Herobrine 时，剑将获得祝福，且装备的所有防具将被摧毁。"),
+                List.of("挑战者须身披因欲望得以满足而稳定下来的灵魂，并将其作为武器握于手中，让未能摆脱执念的它重新归于安息。"),
+                List.of("唯有如此，它的灵魂才能与已稳定的灵魂产生共鸣并寻得宁静，而挑战者手中的武器亦将赐予其祝福。")
+        ));
+        addTooltip(NarakaItemTooltip.PURIFIED_SOUL_ARMOR_BLESSED, List.of(
+                List.of("暴食与暴食共鸣，激发出最为强大力量的铠甲。"),
+                List.of("未得满足而相互触及的二位一体之魂彼此吞噬，在无尽的苦痛中哀嚎。")
         ));
         addTooltip(NarakaItemTooltip.NECTARIUM, List.of(
-                List.of("可食用；食用后可完全恢复饱和度、饥饿值与生命值至上限。")
+                List.of("可食用。食用后饱食度、额外饱食度与生命值将恢复至最大值。"),
+                List.of("据说在某个异次元，未遵守契约之人将被施以「吞石之刑」。")
         ));
         addTooltip(NarakaItemTooltip.NECTARIUM_CORE, List.of(
-                List.of("可以使用蜂蜜瓶激活，激活时会生成蜜银晶簇。")
+                List.of("使用蜂蜜瓶可将其激活，激活后会生成蜜银晶簇。"),
+                List.of("无论是矿物还是作物，本质上都是‘物’，因而并无二致。"),
+                List.of("因此，这是旨在拯救 22 世纪人类的新概念作物。")
         ));
 
         addEntityType(NarakaEntityTypes.HEROBRINE, "炼狱暴君 Herobrine");

@@ -220,7 +220,6 @@ public class NarakaCreativeModeTabs {
         ItemStack itemStack = new ItemStack(item, 1, blessed(DataComponentPatch.builder()).build());
         SoulType soulType = itemStack.getOrDefault(NarakaDataComponentTypes.SOUL.get(), SoulType.NONE);
         itemStack.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), EquipmentSetHelper.createChallengerSet(soulType));
-        itemStack.set(DataComponents.LORE, NarakaItemTooltip.SOUL_INFUSED_SWORDS_BLESSED.itemLore());
         return itemStack;
     }
 

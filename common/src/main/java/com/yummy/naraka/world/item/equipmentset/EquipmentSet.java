@@ -82,7 +82,7 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
     }
 
     @Override
-    public void addToTooltip(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder) {
+    public void addToTooltip(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
         long succeed = countSucceed(player);
         effects.stream().sorted().forEach(effect -> effect.addToTooltip(id, succeed, builder));
     }
