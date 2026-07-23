@@ -8,11 +8,10 @@ import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.ItemEvents;
 import com.yummy.naraka.util.NarakaExtraCodecs;
 import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.world.item.NbtCondition;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -27,7 +26,6 @@ import net.minecraft.world.item.TooltipFlag;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
@@ -91,12 +89,12 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
         return result;
     }
 
-    public record Requirement(Holder<Item> item, EquipmentSlot slot, CompoundTag nbt) {
+    public record Requirement(Holder<Item> item, EquipmentSlot slot, NbtCondition condition) {
         public static final Codec<Requirement> CODEC = RecordCodecBuilder.create(
                 instance -> instance.group(
                         BuiltInRegistries.ITEM.holderByNameCodec().fieldOf("item").forGetter(Requirement::item),
                         NarakaExtraCodecs.EQUIPMENT_SLOT.fieldOf("slot").forGetter(Requirement::slot),
-                        CompoundTag.CODEC.optionalFieldOf("nbt", new CompoundTag()).forGetter(Requirement::nbt)
+                        NbtCondition.CODEC.optionalFieldOf("condition", NbtCondition.EMPTY).forGetter(Requirement::condition)
                 ).apply(instance, Requirement::new)
         );
 
@@ -105,24 +103,21 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
             List<EquipmentSet> equipmentSets = NarakaItemUtils.readNbtDataOrDefault(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), livingEntity.level().registryAccess(), List.of());
             return itemStack.is(item.value())
                     && equipmentSets.stream().map(EquipmentSet::getId).anyMatch(id -> equipmentSet.getId().equals(id))
-                    && nbt.getAllKeys().stream().allMatch(key -> {
-                Tag required = nbt.get(key);
-                return Objects.equals(itemStack.getTagElement(key), required);
-            });
+                    && condition.test(itemStack);
         }
 
         @Override
         public boolean equals(Object o) {
             if (!(o instanceof Requirement requirement))
                 return false;
-            return item.value().equals(requirement.item.value()) && slot == requirement.slot && nbt.equals(requirement.nbt);
+            return item.value().equals(requirement.item.value()) && slot == requirement.slot && condition.equals(requirement.condition);
         }
 
         @Override
         public int hashCode() {
             int result = item.hashCode();
             result = 31 * result + slot.hashCode();
-            result = 31 * result + nbt.hashCode();
+            result = 31 * result + condition.hashCode();
             return result;
         }
     }

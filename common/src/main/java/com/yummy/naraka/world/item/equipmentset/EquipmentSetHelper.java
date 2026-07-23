@@ -7,6 +7,7 @@ import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.util.NarakaNbtUtils;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.NbtCondition;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
@@ -47,6 +48,7 @@ public class EquipmentSetHelper {
     public static List<EquipmentSet> createBlessedSet() {
         CompoundTag nbt = new CompoundTag();
         NarakaNbtUtils.store(nbt, NarakaItemUtils.TAG_BLESSED, Codec.BOOL, true);
+        NbtCondition condition = NbtCondition.all(nbt);
 
         return List.of(
                 new EquipmentSet(
@@ -55,22 +57,22 @@ public class EquipmentSetHelper {
                                 new EquipmentSet.Requirement(
                                         NarakaItems.PURIFIED_SOUL_HELMET,
                                         EquipmentSlot.HEAD,
-                                        nbt
+                                        condition
                                 ),
                                 new EquipmentSet.Requirement(
                                         NarakaItems.PURIFIED_SOUL_CHESTPLATE,
                                         EquipmentSlot.CHEST,
-                                        nbt
+                                        condition
                                 ),
                                 new EquipmentSet.Requirement(
                                         NarakaItems.PURIFIED_SOUL_LEGGINGS,
                                         EquipmentSlot.LEGS,
-                                        nbt
+                                        condition
                                 ),
                                 new EquipmentSet.Requirement(
                                         NarakaItems.PURIFIED_SOUL_BOOTS,
                                         EquipmentSlot.FEET,
-                                        nbt
+                                        condition
                                 )
                         ),
                         createBlessedEffect()
@@ -87,33 +89,35 @@ public class EquipmentSetHelper {
             return List.of();
         CompoundTag nbt = new CompoundTag();
         NarakaNbtUtils.store(nbt, NarakaItemUtils.TAG_SOUL_TYPE, SoulType.CODEC, soulType);
+        NbtCondition condition = NbtCondition.all(nbt);
+
         EquipmentSet equipmentSet = new EquipmentSet(
                 ID_CHALLENGER,
                 List.of(
                         new EquipmentSet.Requirement(
                                 NarakaItems.PURIFIED_SOUL_HELMET,
                                 EquipmentSlot.HEAD,
-                                nbt
+                                condition
                         ),
                         new EquipmentSet.Requirement(
                                 NarakaItems.PURIFIED_SOUL_CHESTPLATE,
                                 EquipmentSlot.CHEST,
-                                nbt
+                                condition
                         ),
                         new EquipmentSet.Requirement(
                                 NarakaItems.PURIFIED_SOUL_LEGGINGS,
                                 EquipmentSlot.LEGS,
-                                nbt
+                                condition
                         ),
                         new EquipmentSet.Requirement(
                                 NarakaItems.PURIFIED_SOUL_BOOTS,
                                 EquipmentSlot.FEET,
-                                nbt
+                                condition
                         ),
                         new EquipmentSet.Requirement(
                                 swordItem,
                                 EquipmentSlot.MAINHAND,
-                                nbt
+                                condition
                         )
                 ),
                 createChallengerSetEffect(soulType)

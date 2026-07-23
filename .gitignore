@@ -40,6 +40,6 @@ replay_*.log
 *.hprof
 *.jfr
 
-change.md
+.ai/
 
-.architectury-transformer
+change.md
