@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.item.equipmentset;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.core.component.DataComponentCondition;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
@@ -46,6 +47,7 @@ public class EquipmentSetHelper {
         DataComponentPatch components = DataComponentPatch.builder()
                 .set(NarakaDataComponentTypes.BLESSED.get(), true)
                 .build();
+        DataComponentCondition condition = DataComponentCondition.all(components);
 
         return List.of(
                 new EquipmentSet(
@@ -54,22 +56,22 @@ public class EquipmentSetHelper {
                                 new EquipmentSet.Requirement(
                                         NarakaItems.PURIFIED_SOUL_HELMET,
                                         EquipmentSlot.HEAD,
-                                        components
+                                        condition
                                 ),
                                 new EquipmentSet.Requirement(
                                         NarakaItems.PURIFIED_SOUL_CHESTPLATE,
                                         EquipmentSlot.CHEST,
-                                        components
+                                        condition
                                 ),
                                 new EquipmentSet.Requirement(
                                         NarakaItems.PURIFIED_SOUL_LEGGINGS,
                                         EquipmentSlot.LEGS,
-                                        components
+                                        condition
                                 ),
                                 new EquipmentSet.Requirement(
                                         NarakaItems.PURIFIED_SOUL_BOOTS,
                                         EquipmentSlot.FEET,
-                                        components
+                                        condition
                                 )
                         ),
                         createBlessedEffect()
@@ -87,33 +89,34 @@ public class EquipmentSetHelper {
         DataComponentPatch components = DataComponentPatch.builder()
                 .set(NarakaDataComponentTypes.SOUL.get(), soulType)
                 .build();
+        DataComponentCondition condition = DataComponentCondition.all(components);
         EquipmentSet equipmentSet = new EquipmentSet(
                 ID_CHALLENGER,
                 List.of(
                         new EquipmentSet.Requirement(
                                 NarakaItems.PURIFIED_SOUL_HELMET,
                                 EquipmentSlot.HEAD,
-                                components
+                                condition
                         ),
                         new EquipmentSet.Requirement(
                                 NarakaItems.PURIFIED_SOUL_CHESTPLATE,
                                 EquipmentSlot.CHEST,
-                                components
+                                condition
                         ),
                         new EquipmentSet.Requirement(
                                 NarakaItems.PURIFIED_SOUL_LEGGINGS,
                                 EquipmentSlot.LEGS,
-                                components
+                                condition
                         ),
                         new EquipmentSet.Requirement(
                                 NarakaItems.PURIFIED_SOUL_BOOTS,
                                 EquipmentSlot.FEET,
-                                components
+                                condition
                         ),
                         new EquipmentSet.Requirement(
                                 swordItem,
                                 EquipmentSlot.MAINHAND,
-                                components
+                                condition
                         )
                 ),
                 createChallengerSetEffect(soulType)
