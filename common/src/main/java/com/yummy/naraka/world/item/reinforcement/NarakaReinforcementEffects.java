@@ -114,7 +114,7 @@ public class NarakaReinforcementEffects {
         addEffectsByItem(ItemTags.ARMOR_ENCHANTABLE, INCREASE_ARMOR, INCREASE_ARMOR_TOUGHNESS);
         addEffectsByItem(and(isBlessed(), is(ItemTags.HEAD_ARMOR_ENCHANTABLE)), ORE_SEE_THROUGH, LAVA_VISION, WATER_BREATHING);
         addEffectsByItem(and(isBlessed(), is(ItemTags.CHEST_ARMOR_ENCHANTABLE)), FLYING, FIRE_RESISTANCE);
-        addEffectsByItem(and(isBlessed(), is(ItemTags.LEG_ARMOR_ENCHANTABLE)), KNOCKBACK_RESISTANCE, IGNORE_LIQUID_PUSHING, EFFICIENT_MINING_IN_WATER);
+        addEffectsByItem(and(isBlessed(), is(ItemTags.LEG_ARMOR_ENCHANTABLE)), IGNORE_LIQUID_PUSHING, EFFICIENT_MINING_IN_WATER);
         addEffectsByItem(and(isBlessed(), is(ItemTags.FOOT_ARMOR_ENCHANTABLE)), FASTER_LIQUID_SWIMMING, EFFICIENT_MINING_IN_AIR);
     }
 
