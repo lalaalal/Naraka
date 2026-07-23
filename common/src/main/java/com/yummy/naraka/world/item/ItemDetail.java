@@ -18,7 +18,7 @@ public record ItemDetail(List<Component> lines) implements ItemEvents.ItemToolti
             .xmap(ItemDetail::new, ItemDetail::lines);
 
     @Override
-    public void addToTooltip(ItemStack itemStack, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder) {
+    public void addToTooltip(ItemStack itemStack, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
         for (Component line : lines)
             builder.accept(line);
     }

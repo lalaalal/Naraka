@@ -13,14 +13,14 @@ public class ItemEvents {
     public static final Event<ItemTooltip> ITEM_TOOLTIP_BOTTOM = itemTooltip();
 
     private static Event<ItemTooltip> itemTooltip() {
-        return Event.create(listeners -> (itemStack, player, flag, builder) -> {
+        return Event.create(listeners -> (itemStack, player, flag, shiftKeyPressed, builder) -> {
             for (ItemTooltip listener : listeners)
-                listener.addToTooltip(itemStack, player, flag, builder);
+                listener.addToTooltip(itemStack, player, flag, shiftKeyPressed, builder);
         });
     }
 
     @FunctionalInterface
     public interface ItemTooltip {
-        void addToTooltip(ItemStack itemStack, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder);
+        void addToTooltip(ItemStack itemStack, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder);
     }
 }

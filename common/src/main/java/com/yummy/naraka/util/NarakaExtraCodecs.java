@@ -2,9 +2,13 @@ package com.yummy.naraka.util;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.datafixers.util.Unit;
 import com.mojang.serialization.*;
+import net.minecraft.network.chat.Style;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EquipmentSlot;
 
@@ -13,7 +17,24 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class NarakaExtraCodecs {
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeHierarchyAdapter(Style.class, new Style.Serializer())
+            .create();
+
     public static final Codec<EquipmentSlot> EQUIPMENT_SLOT = ExtraCodecs.stringResolverCodec(EquipmentSlot::getName, EquipmentSlot::byName);
+    public static final Codec<Style> STYLE = ExtraCodecs.JSON.flatXmap(jsonElement -> {
+        try {
+            return DataResult.success(GSON.fromJson(jsonElement, Style.class));
+        } catch (JsonParseException var2) {
+            return DataResult.error(var2::getMessage);
+        }
+    }, component -> {
+        try {
+            return DataResult.success(GSON.toJsonTree(component));
+        } catch (IllegalArgumentException var2) {
+            return DataResult.error(var2::getMessage);
+        }
+    });
 
     public static <K, V> Codec<Map<K, V>> dispatchMap(Codec<K> keyCodec, Function<K, Codec<? extends V>> elementCodec) {
         return new DynamicMapCodec<>(keyCodec, elementCodec);

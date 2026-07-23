@@ -8,7 +8,7 @@ import com.yummy.naraka.references.BlockItemId;
 import com.yummy.naraka.references.NarakaBlockIds;
 import com.yummy.naraka.references.NarakaBlockItemIds;
 import com.yummy.naraka.world.item.ItemDetailBuilder;
-import com.yummy.naraka.world.item.NarakaItemTooltip;
+import com.yummy.naraka.world.item.tooltip.NarakaItemTooltip;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;

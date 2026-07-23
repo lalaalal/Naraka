@@ -6,6 +6,7 @@ import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
 import com.yummy.naraka.references.NarakaItemIds;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
+import com.yummy.naraka.world.item.tooltip.NarakaItemTooltip;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;

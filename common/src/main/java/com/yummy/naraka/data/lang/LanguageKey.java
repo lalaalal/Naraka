@@ -53,6 +53,8 @@ public final class LanguageKey {
     public static final String CONFIG_ORE_COLOR = "config.naraka.ore_color";
     public static final String CONFIG_ORE_COLOR_WRONG = "config.naraka.ore_color.error";
 
+    public static final String HIDDEN_TOOLTIP = "item.tooltip.hidden";
+
     public static String reinforcementEffect(Holder<ReinforcementEffect> reinforcementEffect) {
         Optional<ResourceKey<ReinforcementEffect>> key = reinforcementEffect.unwrapKey();
         if (key.isEmpty())
@@ -101,6 +103,6 @@ public final class LanguageKey {
     }
 
     public static String skill(ResourceLocation skillLocation) {
-        return "skill." + skillLocation.getNamespace() + "." + skillLocation.getPath().replaceAll("skill/", "");
+        return "skill." + skillLocation.getNamespace() + "." + skillLocation.getPath().replace("skill/", "");
     }
 }

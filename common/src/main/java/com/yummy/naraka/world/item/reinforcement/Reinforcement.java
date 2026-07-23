@@ -105,6 +105,14 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) {
         return effects.contains(effect) && effect.value().canApply(entity, slot, itemStack, MAX_VALUE);
     }
 
+    public boolean hasTooltip() {
+        for (Holder<ReinforcementEffect> effect : effects) {
+            if (effect.value().showInTooltip(value))
+                return true;
+        }
+        return false;
+    }
+
     public void addToTooltip(Consumer<Component> appender) {
         if (value > 0) {
             Component reinforcementComponent = Component.translatable(LanguageKey.REINFORCEMENT_KEY, value)
@@ -112,15 +120,27 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) {
             if (NarakaConfig.CLIENT.showReinforcementValue.getValue())
                 appender.accept(reinforcementComponent);
 
+            int displayed = 0;
             for (Holder<ReinforcementEffect> effect : effects) {
                 if (effect.value().showInTooltip(value)) {
                     String key = LanguageKey.reinforcementEffect(effect);
                     Component effectComponent = Component.translatable(key)
                             .withStyle(ChatFormatting.GRAY);
                     appender.accept(HEADER.copy().append(effectComponent));
+                    displayed += 1;
                 }
             }
+            if (displayed > 0)
+                appender.accept(Component.empty());
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Reinforcement reinforcement))
+            return false;
+        return value == reinforcement.value && Objects.equals(effects, reinforcement.effects);
     }
 
     @Override
