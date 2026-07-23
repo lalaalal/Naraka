@@ -304,108 +304,111 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, "Soul Smithing Block", "영혼 대장장이 블록");
         addBlock(NarakaBlocks.NARAKA_PORTAL, "Naraka Portal", "나락 포탈");
 
+        add(LanguageKey.HIDDEN_TOOLTIP, "Hold SHIFT for details", "쉬프트를 눌러 툴팁 표시");
+
         addTooltip(NarakaItemTooltip.HEROBRINE_SCARF, List.of(
-                List.of("흉갑 슬롯에 착용하거나, '영혼 대장장이 블록'를 통해 갑옷에 합성할 수 있다."),
-                List.of("망토의 내면을 따라, 그것이 존재했던 「나락」의 형상이 일렁거린다."),
-                List.of("다만 이것은 그저 비출 뿐, 이것을 통해 「나락」을 드나들 수는 없다.")
+                List.of("Can be worn in the chestplate slot, or combined with armor using a 'Soul Smithing Block'.", "흉갑 슬롯에 착용하거나, '영혼 대장장이 블록'를 통해 갑옷에 합성할 수 있다."),
+                List.of("Along the inner lining of the cape, the image of 'Naraka' as it once existed flickers.", "망토의 내면을 따라, 그것이 존재했던 「나락」의 형상이 일렁거린다."),
+                List.of("However, this merely reflects it; one cannot enter or leave 'Naraka' through this.", "다만 이것은 그저 비출 뿐, 이것을 통해 「나락」을 드나들 수는 없다.")
         ));
         addTooltip(NarakaItemTooltip.NARAKA_PICKAXE, List.of(
-                List.of("곡괭이로 사용할 수 있다."),
-                List.of("「색채」를 찾아 이계를 떠돌며, 발길이 닿는 대로 짓밟아 흡수했다."),
-                List.of("항상 나락을 통해 나타나, 침입한 세계에 공허만을 남기고 사라지는 존재."),
-                List.of("그렇기에 어느 세계에서는 '공허의 신', 어느 세계에서는 '나락의 폭군'이라고 불린다.")
+                List.of("Can be used as a pickaxe or an axe.", "곡괭이나 도끼로 사용할 수 있다."),
+                List.of("Wandering through otherworldly realms in search of 'Color', it trampled and absorbed everything in its path.", "「색채」를 찾아 이계를 떠돌며, 발길이 닿는 대로 짓밟아 흡수했다."),
+                List.of("An entity that always appears through Naraka, leaving only void in the worlds it invades.", "항상 나락을 통해 나타나, 침입한 세계에 공허만을 남기고 사라지는 존재."),
+                List.of("Thus, in some worlds it is called the 'God of Void', and in others, the 'Tyrant of Naraka'.", "그렇기에 어느 세계에서는 '공허의 신', 어느 세계에서는 '나락의 폭군'이라고 불린다.")
         ));
         addTooltip(NarakaItemTooltip.GOD_BLOOD, List.of(
-                List.of("강력한 장비의 재료로 사용된다."),
-                List.of("또한, '영혼 안정기'에 충전하여 강력한 장비 단조에 사용할 수도 있다."),
-                List.of("온갖 공포와 경외를 담은 이름의 본질은 결핍을 채우기 위한 탐식."),
-                List.of("색을 얻지 못하고, 색을 갈망하며, 색을 빼앗아 자신에게 더하려 했다."),
-                List.of("하나 무엇을 더한들 검은색은 그저 검은색. 남은 유해마저도 새까만 허무일 뿐.")
+                List.of("Used as a crafting material for powerful equipment.", "강력한 장비의 재료로 사용된다."),
+                List.of("It can also be charged into a 'Soul Stabilizer' to forge powerful gear.", "또한, '영혼 안정기'에 충전하여 강력한 장비 단조에 사용할 수도 있다."),
+                List.of("The essence behind a name shrouded in fear and awe is a gluttony to fill a void.", "온갖 공포와 경외를 담은 이름의 본질은 결핍을 채우기 위한 탐식."),
+                List.of("Unable to gain color, yearning for color, it sought to strip away colors and add them to itself.", "색을 얻지 못하고, 색을 갈망하며, 색을 빼앗아 자신에게 더하려 했다."),
+                List.of("Yet no matter what is added, black remains black. Even its remaining ashes are merely pitch-black emptiness.", "하나 무엇을 더한들 검은색은 그저 검은색. 남은 유해마저도 새까만 허무일 뿐.")
         ));
         addTooltip(NarakaItemTooltip.SPEAR_OF_LONGINUS, List.of(
-                List.of("투척할 수 있으며, 주인에게 자동으로 되돌아온다."),
-                List.of("공격 방식에 관계 없이 적중한 적을 즉사시킨다."),
-                List.of("여덟 번의 안식, 여덟 번의 증명."),
-                List.of("이 무구는 그 끝에서 얻은 가장 순수한 힘이자, 그대가 「나락」의 군주로서 거듭났다는 증명이다.")
+                List.of("Can be thrown, automatically returning to its owner.", "투척할 수 있으며, 주인에게 자동으로 되돌아온다."),
+                List.of("Instantly kills hit enemies, regardless of the attack method.", "공격 방식에 관계 없이 적중한 적을 즉사시킨다."),
+                List.of("Eight rests, eight proofs.", "여덟 번의 안식, 여덟 번의 증명."),
+                List.of("This weapon is the purest power obtained at the end of that journey, and proof that you have been reborn as the sovereign of 'Naraka'.", "이 무구는 그 끝에서 얻은 가장 순수한 힘이자, 그대가 「나락」의 군주로서 거듭났다는 증명이다.")
         ));
         addTooltip(NarakaItemTooltip.SANCTUARY_COMPASS, List.of(
-                List.of("현재 월드에 있는 가장 가까운 '히로빈 성역' 건축물이 있는 방향을 가리킨다."),
-                List.of("세계는 그 자신의 존속을 위해 인과를 조정하는 경향을 보인다."),
-                List.of("이것은 그 일환으로서, 언제나 세계를 침범한 그것의 성역을 가리킬 것이다."),
-                List.of("그것을 쓰러뜨리고 세계의 존속을 이어나갈 수 있는, 영웅이 나타나기를 기다리며.")
+                List.of("Points toward the nearest 'Herobrine Sanctuary' structure in the current world.", "현재 월드에 있는 가장 가까운 '히로빈 성역' 건축물이 있는 방향을 가리킨다."),
+                List.of("The world tends to adjust causality for the sake of its own survival.", "세계는 그 자신의 존속을 위해 인과를 조정하는 경향을 보인다."),
+                List.of("As part of this, it will always point toward the sanctuary of that which invaded the world.", "이것은 그 일환으로서, 언제나 세계를 침범한 그것의 성역을 가리킬 것이다."),
+                List.of("Awaiting the arrival of a hero who can defeat it and ensure the continuation of the world.", "그것을 쓰러뜨리고 세계의 존속을 이어나갈 수 있는, 영웅이 나타나기를 기다리며.")
         ));
         addTooltip(NarakaItemTooltip.IMITATION_GOLD, List.of(
-                List.of("설치되어 있으면, 인접한 철 블록을 거짓된 금 블럭으로 변화시킨다."),
-                List.of("또한 '히로빈 토템'을 복사하는 데에도 사용된다."),
-                List.of("금은 광채를 품고, 광채는 그것을 불러낸다."),
-                List.of("이 금은 원래의 금보다 미약한 광채를 품은, 거짓된 것."),
-                List.of("하나 그 광채만으로도, 그것의 발을 이끄는 데에는 부족함이 없다.")
+                List.of("When placed, it turns adjacent Iron Blocks into Blocks of Imitation Gold.", "설치되어 있으면, 인접한 철 블록을 거짓된 금 블럭으로 변화시킨다."),
+                List.of("Also used to duplicate 'Herobrine Totems'.", "또한 '히로빈 토템'을 복사하는 데에도 사용된다."),
+                List.of("Gold holds brilliance, and brilliance summons it.", "금은 광채를 품고, 광채는 그것을 불러낸다."),
+                List.of("This gold is a false creation, holding a fainter brilliance than genuine gold.", "이 금은 원래의 금보다 미약한 광채를 품은, 거짓된 것."),
+                List.of("Yet even that faint glow is enough to guide its steps.", "하나 그 광채만으로도, 그것의 발을 이끄는 데에는 부족함이 없다.")
         ));
         addTooltip(NarakaItemTooltip.HEROBRINE_TOTEM, List.of(
-                List.of("거짓된 금 블록 2개, 히로빈 토템, 네더랙 1개를 아래에서부터 순서대로 쌓아 올리고 불을 붙여 히로빈을 불러낼 수 있다."),
-                List.of("히로빈은 '히로빈 생츄어리' 건축물 내에서만 소환할 수 있다."),
-                List.of("그것의 얼굴이 새겨진 비석."),
-                List.of("거짓된 금이 그것의 눈길을 사로잡고 발걸음을 이끌면, 이것이 그것의 육신을 이 세계에 불러들이고, 고정시킨다.")
+                List.of("Can summon Herobrine by stacking 2 Blocks of Imitation Gold, a Herobrine Totem, and 1 Netherrack from bottom to top, then setting it on fire.", "거짓된 금 블록 2개, 히로빈 토템, 네더랙 1개를 아래에서부터 순서대로 쌓아 올리고 불을 붙여 히로빈을 불러낼 수 있다."),
+                List.of("Herobrine can only be summoned within a 'Herobrine Sanctuary' structure.", "히로빈은 '히로빈 생츄어리' 건축물 내에서만 소환할 수 있다."),
+                List.of("A monument engraved with its face.", "그것의 얼굴이 새겨진 비석."),
+                List.of("When the false gold catches its eyes and guides its footsteps, this vessel summons and binds its physical body to this world.", "거짓된 금이 그것의 눈길을 사로잡고 발걸음을 이끌면, 이것이 그것의 육신을 이 세계에 불러들이고, 고정시킨다.")
         ));
         addTooltip(NarakaItemTooltip.SOUL_INFUSED_MATERIALS, List.of(
-                List.of("'영혼 안정기'를 충전하는 데 사용한다."),
-                List.of("색을 갈망하는 그것의 영혼 조각을, 가장 강렬한 색채를 발하는 광물에 스미게 한 물건."),
-                List.of("색을 갈망하던 영혼의 갈망이, 가장 강렬한 색채와 직접 하나가 됨으로서 충족되어 있다.")
+                List.of("Used to charge the 'Soul Stabilizer'.", "'영혼 안정기'를 충전하는 데 사용한다."),
+                List.of("An item created by infusing its soul fragments—desperate for color—into minerals that radiate the most vibrant hues.", "색을 갈망하는 그것의 영혼 조각을, 가장 강렬한 색채를 발하는 광물에 스미게 한 물건."),
+                List.of("The yearning of a soul that craved color has been fulfilled by becoming one with the most vivid radiance.", "색을 갈망하던 영혼의 갈망이, 가장 강렬한 색채와 직접 하나가 됨으로서 충족되어 있다.")
         ));
         addTooltip(NarakaItemTooltip.SOUL_STABILIZER, List.of(
-                List.of("설치 후, 영혼이 주입된 광물이나 신의 피를 우클릭하여 충전할 수 있다."),
-                List.of("충전은 한 종류의 아이템으로만 이루어져야 한다.")
+                List.of("After placing, right-click with soul-infused minerals or God Blood to charge it.", "설치 후, 영혼이 주입된 광물이나 신의 피를 우클릭하여 충전할 수 있다."),
+                List.of("Charging must be done using only one type of item.", "충전은 한 종류의 아이템으로만 이루어져야 한다.")
         ));
         addTooltip(NarakaItemTooltip.SOUL_SMITHING_BLOCK, List.of(
-                List.of("설치 후, 충전된 영혼 안정기와 대장장이 형판을 장착해 특정 장비를 단조할 수 있다."),
-                List.of("단조 시, 영혼 안정기에 충전된 광물이나 신의 피를 일정량 소모한다.")
+                List.of("After placing, equip a charged Soul Stabilizer and a Smithing Template to forge specific equipment.", "설치 후, 충전된 영혼 안정기와 대장장이 형판을 장착해 특정 장비를 단조할 수 있다."),
+                List.of("Forging consumes a certain amount of minerals or God Blood charged in the Soul Stabilizer.", "단조 시, 영혼 안정기에 충전된 광물이나 신의 피를 일정량 소모한다.")
         ));
         addTooltip(NarakaItemTooltip.PURIFIED_SOUL_METAL, List.of(
-                List.of("희귀한 장비의 재료로 사용된다."),
-                List.of("금속이라고 칭하지만, 흩어진 그것의 영혼이 형체를 이루어 굳은 것에 가깝다.")
+                List.of("Used as a material for rare equipment.", "희귀한 장비의 재료로 사용된다."),
+                List.of("Though called a metal, it is closer to its scattered soul taking form and solidifying.", "금속이라고 칭하지만, 흩어진 그것의 영혼이 형체를 이루어 굳은 것에 가깝다.")
         ));
         addTooltip(NarakaItemTooltip.PURIFIED_SOUL_SWORD, List.of(
-                List.of("우클릭으로 검은 불을 붙일 수 있다. 검은 불은 해당 아이템의 좌클릭으로만 제거할 수 있다."),
-                List.of("영혼 대장장이 작업대에서 광물이나 신의 피를 사용해 단조할 수 있다."),
-                List.of("가장 순수한 그릇."),
-                List.of("의식에 사용하기 위해선 먼저 영혼이 주입된 광물을 통해 조율할 필요가 있다.")
+                List.of("Right-click to ignite black fire. The black fire can only be extinguished by left-clicking with this item.", "우클릭으로 검은 불을 붙일 수 있다. 검은 불은 해당 아이템의 좌클릭으로만 제거할 수 있다."),
+                List.of("Can be forged at a Soul Smithing Block using minerals or God Blood.", "영혼 대장장이 작업대에서 광물이나 신의 피를 사용해 단조할 수 있다."),
+                List.of("The purest vessel.", "가장 순수한 그릇."),
+                List.of("To use it in a ritual, it must first be attuned using soul-infused minerals.", "의식에 사용하기 위해선 먼저 영혼이 주입된 광물을 통해 조율할 필요가 있다.")
         ));
         addTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS_DEFAULT, List.of(
-                List.of("이 검을 들고, 이 검의 광물과 동일한 광물로 단조된 영혼 갑옷 4개를 착용할 시, '도전자' 버프가 활성화된다."),
-                List.of("'도전자' 버프를 가진 상태로 히로빈을 처치할 경우, 검에 축복이 내려지며 갑옷이 전부 파괴된다."),
-                List.of("도전자는 갈망의 충족으로서 안정화된 영혼을 두르고, 무기로서 쥔 채, 갈망을 벗지 못한 그것을 다시 잠재워야 한다."),
-                List.of("그럼으로서, 그것의 영혼은 안정화된 영혼과 공명하여 안식을 찾고, 도전자가 쥔 무기에는 그것의 축복이 내려질 것이다.")
+                List.of("Holding this sword while wearing all 4 pieces of Purified Soul Armor forged from the same mineral activates the 'Challenger' buff.", "이 검을 들고, 이 검의 광물과 동일한 광물로 단조된 영혼 갑옷 4개를 착용할 시, '도전자' 버프가 활성화된다."),
+                List.of("Defeating Herobrine with the 'Challenger' buff active bestows a blessing upon the sword and destroys all equipped armor.", "'도전자' 버프를 가진 상태로 히로빈을 처치할 경우, 검에 축복이 내려지며 갑옷이 전부 파괴된다."),
+                List.of("The challenger must wear the soul stabilized through satisfied craving, wield it as a weapon, and lay back to rest the entity that failed to shed its yearning.", "도전자는 갈망의 충족으로서 안정화된 영혼을 두르고, 무기로서 쥔 채, 갈망을 벗지 못한 그것을 다시 잠재워야 한다."),
+                List.of("By doing so, its soul will resonate with the stabilized soul to find peace, and its blessing shall be bestowed upon the weapon held by the challenger.", "그럼으로서, 그것의 영혼은 안정화된 영혼과 공명하여 안식을 찾고, 도전자가 쥔 무기에는 그것의 축복이 내려질 것이다.")
         ));
         addTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS_BLESSED, List.of(
-                List.of("「롱기누스의 창」"),
-                List.of("의 재료로 사용된다."),
-                List.of("축복이 내려진 무구는 서로 공명하여 끌어당기고,"),
-                List.of("그것의 피를 매개로 연결될 때, 가장 순수한 힘을 드러낼 것이다.")
+                List.of(" Used as a crafting material for the", ""),
+                List.of(" 「Spear of Longinus」", "「롱기누스의 창」"),
+                List.of(".", "의 재료로 사용된다."),
+                List.of("Blessed equipment resonates and attracts one another,", "축복이 내려진 무구는 서로 공명하여 끌어당기고,"),
+                List.of("and when connected through its blood, it will reveal its purest power.", "그것의 피를 매개로 연결될 때, 가장 순수한 힘을 드러낼 것이다.")
         ));
         addTooltip(NarakaItemTooltip.PURIFIED_SOUL_ARMORS_DEFAULT, List.of(
-                List.of("영혼 대장장이 작업대에서 광물이나 신의 피를 사용해 단조할 수 있다."),
-                List.of("가장 순수한 그릇."),
-                List.of("의식에 사용하기 위해선 먼저 영혼이 주입된 광물을 통해 조율할 필요가 있다."),
-                List.of("혹은, 그것의 피를 사용하여―")
+                List.of("Can be forged at a Soul Smithing Block using minerals or God Blood.", "영혼 대장장이 작업대에서 광물이나 신의 피를 사용해 단조할 수 있다."),
+                List.of("The purest vessel.", "가장 순수한 그릇."),
+                List.of("To use it in a ritual, it must first be attuned using soul-infused minerals.", "의식에 사용하기 위해선 먼저 영혼이 주입된 광물을 통해 조율할 필요가 있다."),
+                List.of("Or, by using its blood—", "혹은, 그것의 피를 사용하여―")
         ));
         addTooltip(NarakaItemTooltip.PURIFIED_SOUL_ARMORS_SOUL, List.of(
-                List.of("이 갑옷의 광물과 동일한 광물로 단조된 영혼 갑옷 4개를 착용하고, 이 갑옷의 광물과 동일한 광물로 단조된 검을 들 시, '도전자' 버프가 활성화된다."),
-                List.of("'도전자' 버프를 가진 상태로 히로빈을 처치할 경우, 검에 축복이 내려지며 갑옷이 전부 파괴된다."),
-                List.of("도전자는 갈망의 충족으로서 안정화된 영혼을 두르고, 무기로서 쥔 채, 갈망을 벗지 못한 그것을 다시 잠재워야 한다."),
-                List.of("그럼으로서, 그것의 영혼은 안정화된 영혼과 공명하여 안식을 찾고, 도전자가 쥔 무기에는 그것의 축복이 내려질 것이다.")
+                List.of("Wearing all 4 pieces of Purified Soul Armor forged from the same mineral and holding a sword forged from that same mineral activates the 'Challenger' buff.", "이 갑옷의 광물과 동일한 광물로 단조된 영혼 갑옷 4개를 착용하고, 이 갑옷의 광물과 동일한 광물로 단조된 검을 들 시, '도전자' 버프가 활성화된다."),
+                List.of("Defeating Herobrine with the 'Challenger' buff active bestows a blessing upon the sword and destroys all equipped armor.", "'도전자' 버프를 가진 상태로 히로빈을 처치할 경우, 검에 축복이 내려지며 갑옷이 전부 파괴된다."),
+                List.of("The challenger must wear the soul stabilized through satisfied craving, wield it as a weapon, and lay back to rest the entity that failed to shed its yearning.", "도전자는 갈망의 충족으로서 안정화된 영혼을 두르고, 무기로서 쥔 채, 갈망을 벗지 못한 그것을 다시 잠재워야 한다."),
+                List.of("By doing so, its soul will resonate with the stabilized soul to find peace, and its blessing shall be bestowed upon the weapon held by the challenger.", "그럼으로서, 그것의 영혼은 안정화된 영혼과 공명하여 안식을 찾고, 도전자가 쥔 무기에는 그것의 축복이 내려질 것이다.")
         ));
         addTooltip(NarakaItemTooltip.PURIFIED_SOUL_ARMOR_BLESSED, List.of(
-                List.of("탐식과 탐식이 공명하여, 가장 강력한 힘을 자아내는 갑주."),
-                List.of("만족되지 못한 채 맞닿은 둘이자 하나의 영혼은 서로를 탐식하고, 끊임없는 고통 속에서 울부짖는다.")
+                List.of("Armor that yields supreme power through the resonance of mutual gluttony.", "탐식과 탐식이 공명하여, 가장 강력한 힘을 자아내는 갑주."),
+                List.of("Two souls—yet one—touching without satisfaction, devour each other and wail in endless agony.", "만족되지 못한 채 맞닿은 둘이자 하나의 영혼은 서로를 탐식하고, 끊임없는 고통 속에서 울부짖는다.")
         ));
         addTooltip(NarakaItemTooltip.NECTARIUM, List.of(
-                List.of("먹을 수 있으며, 먹을 시 포만도와 허기, 체력이 최대치로 회복된다."),
-                List.of("어떤 이차원에서는 계약을 지키지 못한 이에게 「돌을 먹는 형벌」을 내린다고 한다.")
+                List.of("Edible. Consuming it fully restores Saturation, Hunger, and Health.", "먹을 수 있으며, 먹을 시 포만도와 허기, 체력이 최대치로 회복된다."),
+                List.of("In a certain alternate dimension, it is said that those who break their contracts are subjected to the 'Stone-Eating Punishment'.", "어떤 이차원에서는 계약을 지키지 못한 이에게 「돌을 먹는 형벌」을 내린다고 한다.")
         ));
         addTooltip(NarakaItemTooltip.NECTARIUM_CORE, List.of(
-                List.of("꿀병을 사용해 활성화시킬 수 있으며, 활성화시킬 경우 넥타륨 결정을 만들어낸다."),
-                List.of("광물이나 작물이나, 둘 다 '물'이기에 거기서 거기."),
-                List.of("그러므로 이것은 22세기의 인류를 구원할 신개념 작물이다.")
+                List.of("Can be activated using a Honey Bottle, generating Nectarium Crystals upon activation.", "꿀병을 사용해 활성화시킬 수 있으며, 활성화시킬 경우 넥타륨 결정을 만들어낸다."),
+                List.of("Plants, ores... they're both just things you 'extract' from the earth, right?", "광물이나 작물이나, 둘 다 '물'이기에 거기서 거기."),
+                List.of("Therefore, this is a revolutionary crop designed to save 22nd-century humanity.", "그러므로 이것은 22세기의 인류를 구원할 신개념 작물이다.")
         ));
 
         addEntityType(NarakaEntityTypes.HEROBRINE, "Naraka Tyrant: Herobrine", "나락의 폭군: 히로빈");
