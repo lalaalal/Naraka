@@ -1,4 +1,4 @@
-package com.yummy.naraka.world.item;
+package com.yummy.naraka.world.item.tooltip;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;

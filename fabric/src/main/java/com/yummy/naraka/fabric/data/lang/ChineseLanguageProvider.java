@@ -8,7 +8,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
-import com.yummy.naraka.world.item.NarakaItemTooltip;
+import com.yummy.naraka.world.item.tooltip.NarakaItemTooltip;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.alchemy.NarakaPotions;

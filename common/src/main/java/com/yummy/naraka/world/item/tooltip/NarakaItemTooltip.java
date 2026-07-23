@@ -1,10 +1,11 @@
-package com.yummy.naraka.world.item;
+package com.yummy.naraka.world.item.tooltip;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.component.DataComponentCondition;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.references.NarakaBlockItemIds;
 import com.yummy.naraka.references.NarakaItemIds;
+import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Style;
 import net.minecraft.references.BlockItemId;

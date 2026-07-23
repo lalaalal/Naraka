@@ -10,6 +10,7 @@ import com.yummy.naraka.tags.NarakaBlockTags;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSetHelper;
+import com.yummy.naraka.world.item.tooltip.NarakaItemTooltip;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;

@@ -3,7 +3,7 @@ package com.yummy.naraka.core.component;
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.world.item.DynamicItemLore;
+import com.yummy.naraka.world.item.tooltip.DynamicItemLore;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.component.SanctuaryTracker;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSet;

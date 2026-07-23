@@ -5,7 +5,7 @@ import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.references.NarakaBlockIds;
 import com.yummy.naraka.references.NarakaBlockItemIds;
-import com.yummy.naraka.world.item.NarakaItemTooltip;
+import com.yummy.naraka.world.item.tooltip.NarakaItemTooltip;
 import net.minecraft.core.Holder;
 import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.ResourceKey;

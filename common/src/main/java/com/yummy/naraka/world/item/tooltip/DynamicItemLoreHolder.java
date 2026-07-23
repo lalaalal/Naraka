@@ -1,4 +1,4 @@
-package com.yummy.naraka.world.item;
+package com.yummy.naraka.world.item.tooltip;
 
 public class DynamicItemLoreHolder {
     private final DynamicItemLore dynamicItemLore;

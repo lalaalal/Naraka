@@ -13,7 +13,7 @@ import com.yummy.naraka.world.entity.ai.skill.herobrine.*;
 import com.yummy.naraka.world.entity.ai.skill.origin_herobrine.ChargingSkill;
 import com.yummy.naraka.world.entity.ai.skill.origin_herobrine.SwordSwingSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
-import com.yummy.naraka.world.item.NarakaItemTooltip;
+import com.yummy.naraka.world.item.tooltip.NarakaItemTooltip;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.SoulType;
