@@ -1,5 +1,7 @@
 package com.yummy.naraka.world.item.reinforcement;
 
+import com.yummy.naraka.util.NarakaItemUtils;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -76,6 +78,10 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
     public void onReinforcementIncreased(ItemStack itemStack, int previousReinforcement, int currentReinforcement) {
         if (currentReinforcement >= 10 && itemStack.getItem() instanceof Equipable equipable) {
             EquipmentSlot slot = equipable.getEquipmentSlot();
+            CompoundTag compoundTag = itemStack.getOrCreateTag();
+            if (!compoundTag.contains(NarakaItemUtils.TAG_ATTRIBUTE_MODIFIERS))
+                NarakaItemUtils.loadDefaultItemAttributeModifiers(itemStack, slot);
+
             itemStack.addAttributeModifier(attribute, createModifier(slot, currentReinforcement), slot);
         }
     }

@@ -114,7 +114,7 @@ public class NarakaReinforcementEffects {
         addEffectsByItem(ItemTags.TRIMMABLE_ARMOR, INCREASE_ARMOR, INCREASE_ARMOR_TOUGHNESS);
         addEffectsByItem(and(isBlessed(), is(NarakaItems.PURIFIED_SOUL_HELMET)), ORE_SEE_THROUGH, LAVA_VISION, WATER_BREATHING);
         addEffectsByItem(and(isBlessed(), is(NarakaItems.PURIFIED_SOUL_CHESTPLATE)), FLYING, FIRE_RESISTANCE);
-        addEffectsByItem(and(isBlessed(), is(NarakaItems.PURIFIED_SOUL_LEGGINGS)), KNOCKBACK_RESISTANCE, IGNORE_LIQUID_PUSHING, EFFICIENT_MINING_IN_WATER);
+        addEffectsByItem(and(isBlessed(), is(NarakaItems.PURIFIED_SOUL_LEGGINGS)), IGNORE_LIQUID_PUSHING, EFFICIENT_MINING_IN_WATER);
         addEffectsByItem(and(isBlessed(), is(NarakaItems.PURIFIED_SOUL_BOOTS)), FASTER_LIQUID_SWIMMING, EFFICIENT_MINING_IN_AIR);
     }
 

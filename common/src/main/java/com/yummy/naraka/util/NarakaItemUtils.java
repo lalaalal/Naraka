@@ -1,5 +1,6 @@
 package com.yummy.naraka.util;
 
+import com.google.common.collect.Multimap;
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
@@ -12,12 +13,15 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class NarakaItemUtils {
@@ -27,7 +31,16 @@ public class NarakaItemUtils {
     public static final String TAG_HEROBRINE_SCARF = "HerobrineScarf";
     public static final String TAG_SOUL_TYPE = "SoulType";
     public static final String TAG_EQUIPMENT_SET = "EquipmentSet";
-    public static final String TAG_DYNAMIC_ITEM_LORE = "DynamicItemLore";
+    public static final String TAG_ATTRIBUTE_MODIFIERS = "AttributeModifiers";
+
+    public static void loadDefaultItemAttributeModifiers(ItemStack itemStack, EquipmentSlot slot) {
+        Multimap<Attribute, AttributeModifier> modifiers = itemStack.getItem().getDefaultAttributeModifiers(slot);
+        for (Map.Entry<Attribute, AttributeModifier> entry : modifiers.entries()) {
+            Attribute attribute = entry.getKey();
+            AttributeModifier modifier = entry.getValue();
+            itemStack.addAttributeModifier(attribute, modifier, slot);
+        }
+    }
 
     public static void summonItemEntity(Level level, ItemStack itemStack, BlockPos pos) {
         if (!level.isClientSide()) {
