@@ -6,7 +6,6 @@ import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -22,18 +21,11 @@ public class NarakaItemUtils {
     /**
      * @return Get item attribute modifiers, item's default modifier if null or empty
      */
+    @SuppressWarnings("deprecation")
     public static ItemAttributeModifiers getAttributeModifiers(ItemStack itemStack) {
         ItemAttributeModifiers modifiers = itemStack.get(DataComponents.ATTRIBUTE_MODIFIERS);
-        DataComponentMap components = itemStack.getItem().components();
         if (modifiers == null || modifiers.modifiers().isEmpty())
-            return getAttributeModifiers(components);
-        return modifiers;
-    }
-
-    private static ItemAttributeModifiers getAttributeModifiers(DataComponentMap components) {
-        ItemAttributeModifiers modifiers = components.get(DataComponents.ATTRIBUTE_MODIFIERS);
-        if (modifiers == null)
-            return ItemAttributeModifiers.EMPTY;
+            return itemStack.getItem().getDefaultAttributeModifiers();
         return modifiers;
     }
 
