@@ -57,7 +57,7 @@ public class NarakaItems {
             properties -> properties.fireResistant()
                     .tool(NarakaToolMaterials.LONGINUS, NarakaBlockTags.MINABLE_WITH_NARAKA_PICKAXE, calculateAttackDamageModifier(), -2.8f, 5)
                     .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
-                    .component(DataComponents.LORE, NarakaItemTooltip.NARAKA_PICKAXE.itemLore())
+                    .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.NARAKA_PICKAXE.tooltip())
                     .rarity(Rarity.EPIC)
     );
 
@@ -83,7 +83,7 @@ public class NarakaItems {
     // Ingredients
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_METAL = registerSimpleItem(
             NarakaItemIds.PURIFIED_SOUL_METAL, properties -> properties.fireResistant()
-                    .component(DataComponents.LORE, NarakaItemTooltip.PURIFIED_SOUL_METAL.itemLore())
+                    .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.PURIFIED_SOUL_METAL.tooltip())
     );
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_SHARD = registerSimpleItem(
@@ -104,7 +104,7 @@ public class NarakaItems {
                                     )
                             ).build()
                     )
-                    .component(DataComponents.LORE, NarakaItemTooltip.NECTARIUM.itemLore())
+                    .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.NECTARIUM.tooltip())
     );
 
     public static final HolderProxy<Item, Item> GOD_BLOOD = registerSimpleItem(
@@ -112,15 +112,16 @@ public class NarakaItems {
             properties -> properties.stacksTo(1)
                     .rarity(Rarity.EPIC)
                     .trimMaterial(SoulType.GOD_BLOOD.material)
-                    .component(DataComponents.LORE, NarakaItemTooltip.GOD_BLOOD.itemLore())
+                    .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.GOD_BLOOD.tooltip())
                     .fireResistant()
     );
 
     public static final HolderProxy<Item, SanctuaryCompassItem> SANCTUARY_COMPASS = registerItem(
             NarakaItemIds.SANCTUARY_COMPASS,
-            SanctuaryCompassItem::new,
-            properties().rarity(Rarity.RARE)
-                    .component(DataComponents.LORE, NarakaItemTooltip.SANCTUARY_COMPASS.itemLore())
+            properties -> new SanctuaryCompassItem(properties
+                    .rarity(Rarity.RARE)
+                    .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.SANCTUARY_COMPASS.tooltip())
+            )
     );
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = registerSimpleItem(NarakaItemIds.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE);
@@ -162,7 +163,7 @@ public class NarakaItems {
                     .fireResistant()
                     .rarity(Rarity.EPIC)
                     .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
-                    .component(DataComponents.LORE, NarakaItemTooltip.SPEAR_OF_LONGINUS.itemLore())
+                    .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.SPEAR_OF_LONGINUS.tooltip())
                     .delayedHolderComponent(DataComponents.DAMAGE_TYPE, NarakaDamageTypes.SPEAR_OF_LONGINUS)
                     .component(DataComponents.TOOL, TridentItem.createToolProperties())
             )
@@ -182,7 +183,7 @@ public class NarakaItems {
                     -2, -2.4f,
                     properties.fireResistant()
                             .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
-                            .component(DataComponents.LORE, NarakaItemTooltip.PURIFIED_SOUL_SWORD.itemLore())
+                            .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.PURIFIED_SOUL_SWORD.tooltip())
             )
     );
 
@@ -191,7 +192,7 @@ public class NarakaItems {
             properties -> properties.equippable(EquipmentSlot.CHEST)
                     .rarity(Rarity.EPIC)
                     .component(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), Unit.INSTANCE)
-                    .component(DataComponents.LORE, NarakaItemTooltip.HEROBRINE_SCARF.itemLore())
+                    .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.HEROBRINE_SCARF.tooltip())
     );
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_HELMET = registerPurifiedSoulArmorItem(NarakaItemIds.PURIFIED_SOUL_HELMET, NarakaArmorMaterials.PURIFIED_SOUL, ArmorType.HELMET);
@@ -222,7 +223,7 @@ public class NarakaItems {
     public static HolderProxy<Item, Item> registerPurifiedSoulArmorItem(ResourceKey<Item> key, ArmorMaterial armorMaterial, ArmorType armorType) {
         return registerSimpleItem(key, properties -> NarakaArmorMaterials.humanoidPropertiesWithoutEnchantable(properties, armorMaterial, armorType)
                 .component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
-                .component(DataComponents.LORE, NarakaItemTooltip.PURIFIED_SOUL_ARMORS.itemLore())
+                .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.PURIFIED_SOUL_ARMORS.tooltip())
         );
     }
 
@@ -266,7 +267,7 @@ public class NarakaItems {
                 properties -> new Item(properties
                         .rarity(Rarity.UNCOMMON)
                         .component(NarakaDataComponentTypes.SOUL.get(), type)
-                        .component(DataComponents.LORE, NarakaItemTooltip.SOUL_INFUSED_MATERIALS.itemLore())
+                        .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.SOUL_INFUSED_MATERIALS.tooltip())
                         .trimMaterial(type.material)
                         .fireResistant()
                 )
@@ -282,7 +283,7 @@ public class NarakaItems {
                                 .sword(NarakaToolMaterials.PURIFIED_SOUL, 5, -2.4f)
                                 .rarity(Rarity.RARE)
                                 .component(NarakaDataComponentTypes.SOUL.get(), type)
-                                .component(DataComponents.LORE, NarakaItemTooltip.SOUL_INFUSED_SWORDS.itemLore())
+                                .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.SOUL_INFUSED_SWORDS.tooltip())
                                 .delayedComponent(NarakaDataComponentTypes.EQUIPMENT_SET.get(), _ -> EquipmentSetHelper.createChallengerSet(type))
                                 .component(DataComponents.UNBREAKABLE, Unit.INSTANCE),
                         type.color

@@ -3,6 +3,7 @@ package com.yummy.naraka.core.component;
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.world.item.DynamicItemLore;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.component.SanctuaryTracker;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
@@ -50,6 +51,12 @@ public class NarakaDataComponentTypes {
             "equipment_set",
             builder -> builder.persistent(EquipmentSet.CODEC.listOf())
                     .networkSynchronized(EquipmentSet.STREAM_CODEC.apply(ByteBufCodecs.list()))
+    );
+
+    public static final HolderProxy<DataComponentType<?>, DataComponentType<DynamicItemLore>> DYNAMIC_ITEM_LORE = register(
+            "dynamic_item_lore",
+            builder -> builder.persistent(DynamicItemLore.CODEC)
+                    .networkSynchronized(DynamicItemLore.STREAM_CODEC)
     );
 
     private static <T> HolderProxy<DataComponentType<?>, DataComponentType<T>> register(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {

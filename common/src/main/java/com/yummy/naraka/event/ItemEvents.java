@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 
 public class ItemEvents {
     public static final Event<ItemTooltip> ITEM_TOOLTIP_TOP = itemTooltip();
+    public static final Event<ItemTooltip> ITEM_TOOLTIP_MIDDLE = itemTooltip();
     public static final Event<ItemTooltip> ITEM_TOOLTIP_BOTTOM = itemTooltip();
 
     private static Event<ItemTooltip> itemTooltip() {

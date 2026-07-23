@@ -15,14 +15,14 @@ displayURL = "https://github.com/lalaalal/Naraka"
 
 [[dependencies.naraka]]
 modId = "neoforge"
-type = "required"
+componentType = "required"
 versionRange = "[${neoforge_version},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.naraka]]
 modId = "minecraft"
-type = "required"
+componentType = "required"
 versionRange = "[${minecraft_version},)"
 ordering = "NONE"
 side = "BOTH"

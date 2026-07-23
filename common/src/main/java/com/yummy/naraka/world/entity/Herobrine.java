@@ -868,7 +868,6 @@ public class Herobrine extends AbstractHerobrine {
                 livingEntity.onEquippedItemBroken(stack.getItem(), slot);
             }
             weaponStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
-            weaponStack.set(DataComponents.LORE, NarakaItemTooltip.SOUL_INFUSED_SWORDS_BLESSED.itemLore());
         });
     }
 

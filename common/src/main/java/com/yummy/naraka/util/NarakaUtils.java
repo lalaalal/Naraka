@@ -11,12 +11,10 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.BiPredicate;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.function.*;
 
 public class NarakaUtils {
     private static final float A2 = 0.41421f;
@@ -245,5 +243,19 @@ public class NarakaUtils {
             iterate(list1.reversed(), list2.reversed(), consumer);
         else
             iterate(list1, list2, consumer);
+    }
+
+    public static <T> Supplier<T> memoize(Supplier<T> supplier) {
+        return new Supplier<>() {
+            @Nullable
+            private T value;
+
+            @Override
+            public T get() {
+                if (value == null)
+                    value = supplier.get();
+                return value;
+            }
+        };
     }
 }

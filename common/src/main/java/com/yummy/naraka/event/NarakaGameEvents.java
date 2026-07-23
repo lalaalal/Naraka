@@ -11,6 +11,7 @@ import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.util.TickSchedule;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import com.yummy.naraka.world.item.DynamicItemLore;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
@@ -56,6 +57,7 @@ public final class NarakaGameEvents {
         LootEvents.MODIFY_LOOT_TABLE.register(NarakaGameEvents::modifyLootTable);
 
         ItemEvents.ITEM_TOOLTIP_TOP.register(NarakaGameEvents::addItemTooltipsTop);
+        ItemEvents.ITEM_TOOLTIP_MIDDLE.register(NarakaGameEvents::addItemTooltipsMiddle);
         ItemEvents.ITEM_TOOLTIP_BOTTOM.register(NarakaGameEvents::addItemTooltipsBottom);
     }
 
@@ -130,6 +132,11 @@ public final class NarakaGameEvents {
             equipmentSet.addToTooltip(item, context, player, tooltipFlag, builder);
         Reinforcement reinforcement = item.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT.get(), Reinforcement.ZERO);
         reinforcement.addToTooltip(context, builder, tooltipFlag, item);
+    }
+
+    private static void addItemTooltipsMiddle(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder) {
+        DynamicItemLore dynamicItemLore = item.getOrDefault(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), DynamicItemLore.EMPTY);
+        dynamicItemLore.addToTooltip(item, context, player, tooltipFlag, builder);
     }
 
     private static void addItemTooltipsBottom(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder) {

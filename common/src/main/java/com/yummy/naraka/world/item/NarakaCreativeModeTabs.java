@@ -166,9 +166,7 @@ public class NarakaCreativeModeTabs {
         Holder<Item> sword = NarakaItems.getSoulSwordHolderOf(type);
         if (sword != null) {
             output.accept(new ItemStack(sword, 1,
-                            blessed(DataComponentPatch.builder())
-                                    .set(DataComponents.LORE, NarakaItemTooltip.SOUL_INFUSED_SWORDS_BLESSED.itemLore())
-                                    .build()
+                            blessed(DataComponentPatch.builder()).build()
                     )
             );
         }

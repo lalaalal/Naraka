@@ -1,103 +1,87 @@
 package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.data.lang.LanguageKey;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.references.NarakaBlockItemIds;
 import com.yummy.naraka.references.NarakaItemIds;
+import com.yummy.naraka.util.NarakaUtils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.component.ItemLore;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.function.Supplier;
 
 public class NarakaItemTooltip {
-    private static final String NEW_LINE_KEY = "new_line.";
-    public static final Style PURPOSE = Style.EMPTY.withColor(ChatFormatting.GRAY);
-    public static final Style DETAIL = Style.EMPTY.withColor(ChatFormatting.DARK_GRAY).withItalic(true);
+    public static final StyleApplier PURPOSE = new StyleApplier.Static(Style.EMPTY.withColor(ChatFormatting.GRAY));
+    public static final StyleApplier DETAIL = new StyleApplier.Static(Style.EMPTY.withColor(ChatFormatting.DARK_GRAY).withItalic(true));
+    public static final StyleApplier RAINBOW = StyleApplier.Rainbow.INSTANCE;
 
-    public static final NarakaItemTooltip HEROBRINE_SCARF = simple(NarakaItemIds.HEROBRINE_SCARF, 1, 2);
-    public static final NarakaItemTooltip NARAKA_PICKAXE = simple(NarakaItemIds.NARAKA_PICKAXE, 1, 3);
-    public static final NarakaItemTooltip GOD_BLOOD = simple(NarakaItemIds.GOD_BLOOD, 2, 3);
-    public static final NarakaItemTooltip SPEAR_OF_LONGINUS = simple(NarakaItemIds.SPEAR_OF_LONGINUS_ITEM, 2, 3);
-    public static final NarakaItemTooltip SANCTUARY_COMPASS = simple(NarakaItemIds.SANCTUARY_COMPASS, 1, 3);
-    public static final NarakaItemTooltip IMITATION_GOLD = simple(NarakaBlockItemIds.IMITATION_GOLD_BLOCK, 2, 3);
-    public static final NarakaItemTooltip HEROBRINE_TOTEM = simple(NarakaBlockItemIds.HEROBRINE_TOTEM, 2, 2);
-    public static final NarakaItemTooltip SOUL_INFUSED_MATERIALS = simple(NarakaMod.identifier("soul_infused_materials"), 1, 1);
-    public static final NarakaItemTooltip SOUL_STABILIZER = simple(NarakaBlockItemIds.SOUL_STABILIZER, 2, 0);
-    public static final NarakaItemTooltip SOUL_SMITHING_BLOCK = simple(NarakaBlockItemIds.SOUL_SMITHING_BLOCK, 2, 0);
-    public static final NarakaItemTooltip PURIFIED_SOUL_METAL = simple(NarakaItemIds.PURIFIED_SOUL_METAL, 1, 1);
-    public static final NarakaItemTooltip PURIFIED_SOUL_SWORD = simple(NarakaItemIds.PURIFIED_SOUL_SWORD, 2, 2);
-    public static final NarakaItemTooltip SOUL_INFUSED_SWORDS = simple(NarakaMod.identifier("soul_infused_swords"), 2, 0);
-    public static final NarakaItemTooltip SOUL_INFUSED_SWORDS_BLESSED = simple(NarakaMod.identifier("soul_infused_swords.blessed"), 1, 0);
-    public static final NarakaItemTooltip PURIFIED_SOUL_ARMORS = simple(NarakaMod.identifier("purified_soul_armors"), 1, 0);
-    public static final NarakaItemTooltip NECTARIUM = simple(NarakaItemIds.NECTARIUM, 1, 0);
-    public static final NarakaItemTooltip NECTARIUM_CORE = simple(NarakaBlockItemIds.NECTARIUM_ORE, 1, 0);
+    private static final Identifier PURIFIED_SOUL_ARMORS_ID = NarakaMod.identifier("purified_soul_armors");
+    public static final ConditionalComponents PURIFIED_SOUL_ARMORS_DEFAULT = simpleConditionalComponents(PURIFIED_SOUL_ARMORS_ID, 1, 3).build();
+    public static final ConditionalComponents PURIFIED_SOUL_ARMORS_SOUL = simpleConditionalComponents(PURIFIED_SOUL_ARMORS_ID.withSuffix(".soul"), 2, 2)
+            .singleTypedConditions(NarakaDataComponentTypes.SOUL.get(), SoulType.REDSTONE, SoulType.COPPER, SoulType.GOLD, SoulType.EMERALD, SoulType.DIAMOND, SoulType.LAPIS, SoulType.AMETHYST, SoulType.NECTARIUM)
+            .newLine()
+            .build();
+    public static final ConditionalComponents PURIFIED_SOUL_ARMOR_BLESSED = simpleConditionalComponents(PURIFIED_SOUL_ARMORS_ID.withSuffix(".blessed"), 0, 2)
+            .type(ConditionalComponents.ConditionType.ALL)
+            .singleTypedConditions(NarakaDataComponentTypes.BLESSED.get(), true)
+            .newLine()
+            .build();
 
-    private final Identifier id;
-    private final Map<String, Component> components = new LinkedHashMap<>();
+    private static final Identifier SOUL_INFUSED_SWORDS_ID = NarakaMod.identifier("soul_infused_swords");
+    public static final ConditionalComponents SOUL_INFUSED_SWORDS_DEFAULT = simpleConditionalComponents(SOUL_INFUSED_SWORDS_ID, 2, 2).build();
+    public static final ConditionalComponents SOUL_INFUSED_SWORDS_BLESSED = ConditionalComponents.all(SOUL_INFUSED_SWORDS_ID.withSuffix(".blessed"))
+            .type(ConditionalComponents.ConditionType.ALL)
+            .singleTypedConditions(NarakaDataComponentTypes.BLESSED.get(), true)
+            .appendTranslatableWithSuffix("longinus", RAINBOW)
+            .appendTranslatable(PURPOSE)
+            .newLine()
+            .newLine()
+            .line(DETAIL)
+            .line(DETAIL)
+            .build();
 
-    private static NarakaItemTooltip simple(BlockItemId id, int purpose, int detail) {
-        return simple(id.item(), purpose, detail);
+    public static final DynamicItemLoreHolder.Single HEROBRINE_SCARF = simple(NarakaItemIds.HEROBRINE_SCARF, 1, 2);
+    public static final DynamicItemLoreHolder.Single NARAKA_PICKAXE = simple(NarakaItemIds.NARAKA_PICKAXE, 1, 3);
+    public static final DynamicItemLoreHolder.Single GOD_BLOOD = simple(NarakaItemIds.GOD_BLOOD, 2, 3);
+    public static final DynamicItemLoreHolder.Single SPEAR_OF_LONGINUS = simple(NarakaItemIds.SPEAR_OF_LONGINUS_ITEM, 2, 2);
+    public static final DynamicItemLoreHolder.Single SANCTUARY_COMPASS = simple(NarakaItemIds.SANCTUARY_COMPASS, 1, 3);
+    public static final DynamicItemLoreHolder.Single IMITATION_GOLD = simple(NarakaBlockItemIds.IMITATION_GOLD_BLOCK, 2, 3);
+    public static final DynamicItemLoreHolder.Single HEROBRINE_TOTEM = simple(NarakaBlockItemIds.HEROBRINE_TOTEM, 2, 2);
+    public static final DynamicItemLoreHolder.Single SOUL_INFUSED_MATERIALS = simple(NarakaMod.identifier("soul_infused_materials"), 1, 2);
+    public static final DynamicItemLoreHolder.Single SOUL_STABILIZER = simple(NarakaBlockItemIds.SOUL_STABILIZER, 2, 0);
+    public static final DynamicItemLoreHolder.Single SOUL_SMITHING_BLOCK = simple(NarakaBlockItemIds.SOUL_SMITHING_BLOCK, 2, 0);
+    public static final DynamicItemLoreHolder.Single PURIFIED_SOUL_METAL = simple(NarakaItemIds.PURIFIED_SOUL_METAL, 1, 1);
+    public static final DynamicItemLoreHolder.Single PURIFIED_SOUL_SWORD = simple(NarakaItemIds.PURIFIED_SOUL_SWORD, 2, 2);
+    public static final DynamicItemLoreHolder SOUL_INFUSED_SWORDS = DynamicItemLoreHolder.of(SOUL_INFUSED_SWORDS_BLESSED, SOUL_INFUSED_SWORDS_DEFAULT);
+    public static final DynamicItemLoreHolder PURIFIED_SOUL_ARMORS = DynamicItemLoreHolder.of(PURIFIED_SOUL_ARMOR_BLESSED, PURIFIED_SOUL_ARMORS_SOUL, PURIFIED_SOUL_ARMORS_DEFAULT);
+    public static final DynamicItemLoreHolder.Single NECTARIUM = simple(NarakaItemIds.NECTARIUM, 1, 1);
+    public static final DynamicItemLoreHolder.Single NECTARIUM_CORE = simple(NarakaBlockItemIds.NECTARIUM_ORE, 1, 2);
+
+
+    private static DynamicItemLoreHolder.Single simple(Identifier id, int purpose, int detail) {
+        return DynamicItemLoreHolder.single(simpleConditionalComponents(id, purpose, detail).build());
     }
 
-    private static NarakaItemTooltip simple(ResourceKey<Item> key, int purpose, int detail) {
+    private static DynamicItemLoreHolder.Single simple(ResourceKey<Item> key, int purpose, int detail) {
         return simple(key.identifier(), purpose, detail);
     }
 
-    private static NarakaItemTooltip simple(Identifier id, int purpose, int detail) {
-        NarakaItemTooltip tooltip = new NarakaItemTooltip(id);
-        if (purpose > 0)
-            tooltip.append(PURPOSE, purpose);
-        if (detail > 0)
-            tooltip.newLine().append(DETAIL, detail);
-        return tooltip;
+    private static DynamicItemLoreHolder.Single simple(BlockItemId id, int purpose, int detail) {
+        return simple(id.item(), purpose, detail);
     }
 
-    public NarakaItemTooltip(Identifier id) {
-        this.id = id;
-    }
-
-    public Identifier getId() {
-        return id;
-    }
-
-    private NarakaItemTooltip newLine() {
-        long index = components.keySet().stream()
-                .filter(key -> key.contains(NEW_LINE_KEY))
-                .count();
-        components.put(NEW_LINE_KEY + index, Component.empty());
-        return this;
-    }
-
-    private NarakaItemTooltip append(Style style) {
-        int index = translationKeys().size();
-        String translationKey = LanguageKey.tooltip(id, String.valueOf(index));
-        Component component = Component.translatable(translationKey).withStyle(style);
-        components.put(translationKey, component);
-        return this;
-    }
-
-    private NarakaItemTooltip append(Style style, int repeat) {
-        for (int i = 0; i < repeat; i++)
-            append(style);
-        return this;
-    }
-
-    public List<String> translationKeys() {
-        return components.keySet().stream()
-                .filter(key -> !key.contains(NEW_LINE_KEY))
-                .toList();
-    }
-
-    public ItemLore itemLore() {
-        List<Component> lines = List.copyOf(components.values());
-        return new ItemLore(lines, lines);
+    private static ConditionalComponents.Builder simpleConditionalComponents(Identifier id, int purpose, int detail) {
+        ConditionalComponents.Builder builder = ConditionalComponents.any(id);
+        for (int i = 0; i < purpose; i++)
+            builder.line(PURPOSE);
+        if (purpose > 0 && detail > 0)
+            builder.newLine();
+        for (int i = 0; i < detail; i++)
+            builder.line(DETAIL);
+        return builder;
     }
 }

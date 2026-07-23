@@ -72,8 +72,8 @@ public final class LanguageKey {
         return Util.makeDescriptionId(key.registry().getPath(), key.identifier()) + ".tooltip";
     }
 
-    public static String tooltip(Identifier id, String prefix) {
-        return Util.makeDescriptionId("item", id) + ".tooltip." + prefix;
+    public static String tooltip(Identifier id, String suffix) {
+        return Util.makeDescriptionId("item", id) + ".tooltip." + suffix;
     }
 
     public static String itemGroup(String path) {

@@ -1,12 +1,12 @@
 package com.yummy.naraka.world.block;
 
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.references.NarakaBlockIds;
 import com.yummy.naraka.references.NarakaBlockItemIds;
 import com.yummy.naraka.world.item.NarakaItemTooltip;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -76,8 +76,8 @@ public class NarakaBlocks {
             from(Blocks.AMETHYST_CLUSTER)
                     .requiresCorrectToolForDrops()
                     .lightLevel(NectariumCoreBlock::lightLevel),
-            item().rarity(Rarity.RARE)
-                    .component(DataComponents.LORE, NarakaItemTooltip.NECTARIUM_CORE.itemLore())
+            () -> item().rarity(Rarity.RARE)
+                    .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.NECTARIUM_CORE.tooltip())
     );
     public static final HolderProxy<Block, NectariumCrystalBlock> NECTARIUM_CRYSTAL_BLOCK = registerBlockWithItem(
             NarakaBlockItemIds.NECTARIUM_CRYSTAL_BLOCK,
@@ -121,16 +121,16 @@ public class NarakaBlocks {
             NarakaBlockItemIds.SOUL_SMITHING_BLOCK,
             SoulSmithingBlock::new,
             from(Blocks.SMITHING_TABLE),
-            item().rarity(Rarity.EPIC)
-                    .component(DataComponents.LORE, NarakaItemTooltip.SOUL_SMITHING_BLOCK.itemLore())
+            () -> item().rarity(Rarity.EPIC)
+                    .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.SOUL_SMITHING_BLOCK.tooltip())
     );
 
     public static final HolderProxy<Block, Block> IMITATION_GOLD_BLOCK = registerBlockWithItem(
             NarakaBlockItemIds.IMITATION_GOLD_BLOCK,
             properties -> new EncroachingBlock(properties.strength(5, 6), Blocks.IRON_BLOCK),
             Blocks.GOLD_BLOCK,
-            item().rarity(Rarity.UNCOMMON)
-                    .component(DataComponents.LORE, NarakaItemTooltip.IMITATION_GOLD.itemLore())
+            () -> item().rarity(Rarity.UNCOMMON)
+                    .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.IMITATION_GOLD.tooltip())
     );
     public static final HolderProxy<Block, Block> AMETHYST_SHARD_BLOCK = registerSimpleBlockWithItem(
             NarakaBlockItemIds.AMETHYST_SHARD_BLOCK,
@@ -156,15 +156,15 @@ public class NarakaBlocks {
                     .strength(50, 1200)
                     .requiresCorrectToolForDrops()
                     .lightLevel(HerobrineTotem::light),
-            item().rarity(Rarity.EPIC)
-                    .component(DataComponents.LORE, NarakaItemTooltip.HEROBRINE_TOTEM.itemLore())
+            () -> item().rarity(Rarity.EPIC)
+                    .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.HEROBRINE_TOTEM.tooltip())
     );
 
     public static final HolderProxy<Block, SoulStabilizer> SOUL_STABILIZER = registerBlockWithItem(
             NarakaBlockItemIds.SOUL_STABILIZER,
             SoulStabilizer::new,
             Blocks.GLASS,
-            item().component(DataComponents.LORE, NarakaItemTooltip.SOUL_STABILIZER.itemLore())
+            () -> item().component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.SOUL_STABILIZER.tooltip())
     );
 
     public static final HolderProxy<Block, NarakaPortalBlock> NARAKA_PORTAL = registerBlock(
@@ -229,6 +229,13 @@ public class NarakaBlocks {
         return block;
     }
 
+    private static <B extends Block> HolderProxy<Block, B> registerBlockWithItem(BlockItemId id, Function<BlockBehaviour.Properties, ? extends B> function, BlockBehaviour.Properties blockProperties, Supplier<Item.Properties> itemProperties) {
+        blockProperties.setId(id.block());
+        HolderProxy<Block, B> block = RegistryProxy.register(id.block(), () -> function.apply(blockProperties));
+        RegistryProxy.register(id.item(), () -> new BlockItem(block.get(), itemProperties.get().setId(id.item())));
+        return block;
+    }
+
     private static <B extends Block> HolderProxy<Block, B> registerBlockWithItem(BlockItemId id, Function<BlockBehaviour.Properties, ? extends B> function, Supplier<Block> blockSupplier, Item.Properties itemProperties) {
         itemProperties.setId(id.item());
         HolderProxy<Block, B> block = RegistryProxy.register(id.block(),
@@ -245,6 +252,10 @@ public class NarakaBlocks {
     }
 
     private static <B extends Block> HolderProxy<Block, B> registerBlockWithItem(BlockItemId id, Function<BlockBehaviour.Properties, ? extends B> function, Block propertyBase, Item.Properties itemProperties) {
+        return registerBlockWithItem(id, function, from(propertyBase), itemProperties);
+    }
+
+    private static <B extends Block> HolderProxy<Block, B> registerBlockWithItem(BlockItemId id, Function<BlockBehaviour.Properties, ? extends B> function, Block propertyBase, Supplier<Item.Properties> itemProperties) {
         return registerBlockWithItem(id, function, from(propertyBase), itemProperties);
     }
 
