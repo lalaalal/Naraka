@@ -12,10 +12,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public record DynamicItemLore(List<ConditionalComponents> conditional) implements ItemEvents.ItemTooltip {
     public static final Codec<DynamicItemLore> CODEC = RecordCodecBuilder.create(
@@ -31,23 +29,16 @@ public record DynamicItemLore(List<ConditionalComponents> conditional) implement
 
     public static final DynamicItemLore EMPTY = new DynamicItemLore(List.of());
 
+
     public static DynamicItemLore of(ConditionalComponents... conditionalComponents) {
         return new DynamicItemLore(List.of(conditionalComponents));
     }
 
-    @SafeVarargs
-    public static DynamicItemLore of(Supplier<ConditionalComponents>... conditionalComponents) {
-        return new DynamicItemLore(Arrays.stream(conditionalComponents)
-                .map(Supplier::get)
-                .toList()
-        );
-    }
-
     @Override
-    public void addToTooltip(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder) {
+    public void addToTooltip(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
         for (ConditionalComponents components : conditional) {
             if (components.isAcceptable(item)) {
-                components.addToTooltip(item, context, player, tooltipFlag, builder);
+                components.addToTooltip(item, context, player, tooltipFlag, shiftKeyPressed, builder);
                 return;
             }
         }

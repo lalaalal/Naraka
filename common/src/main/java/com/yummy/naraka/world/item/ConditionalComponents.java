@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.ItemEvents;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponentType;
@@ -23,12 +24,14 @@ import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
 public record ConditionalComponents(ConditionType type, List<DataComponentPatch> conditions,
-                                    List<ComponentFactory> factories) implements ItemEvents.ItemTooltip {
+                                    List<ComponentFactory> factories,
+                                    boolean alwaysDisplay) implements ItemEvents.ItemTooltip {
     public static final Codec<ConditionalComponents> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                     ConditionType.CODEC.fieldOf("type").forGetter(ConditionalComponents::type),
                     DataComponentPatch.CODEC.listOf().fieldOf("conditions").forGetter(ConditionalComponents::conditions),
-                    ComponentFactory.CODEC.listOf().fieldOf("factories").forGetter(ConditionalComponents::factories)
+                    ComponentFactory.CODEC.listOf().fieldOf("factories").forGetter(ConditionalComponents::factories),
+                    Codec.BOOL.fieldOf("alwaysDisplay").forGetter(ConditionalComponents::alwaysDisplay)
             ).apply(instance, ConditionalComponents::new)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, ConditionalComponents> STREAM_CODEC = StreamCodec.composite(
@@ -38,8 +41,12 @@ public record ConditionalComponents(ConditionType type, List<DataComponentPatch>
             ConditionalComponents::conditions,
             ComponentFactory.STREAM_CODEC.apply(ByteBufCodecs.list()),
             ConditionalComponents::factories,
+            ByteBufCodecs.BOOL,
+            ConditionalComponents::alwaysDisplay,
             ConditionalComponents::new
     );
+    private static final Component HIDDEN = Component.translatable(LanguageKey.HIDDEN_TOOLTIP)
+            .withStyle(ChatFormatting.DARK_GRAY);
 
     public static Builder any(Identifier id) {
         return new Builder(id, ConditionType.ANY);
@@ -54,9 +61,13 @@ public record ConditionalComponents(ConditionType type, List<DataComponentPatch>
     }
 
     @Override
-    public void addToTooltip(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, Consumer<Component> builder) {
-        for (ComponentFactory factory : factories)
-            builder.accept(factory.create());
+    public void addToTooltip(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
+        if (shiftKeyPressed || alwaysDisplay) {
+            for (ComponentFactory factory : factories)
+                builder.accept(factory.create());
+        } else {
+            builder.accept(HIDDEN);
+        }
     }
 
     public List<String> collectTranslationKeys() {
@@ -126,6 +137,7 @@ public record ConditionalComponents(ConditionType type, List<DataComponentPatch>
         private final List<DataComponentPatch> conditions = new ArrayList<>();
         private final List<ComponentFactory> factories = new ArrayList<>();
         private CompositeComponentFactory current = CompositeComponentFactory.EMPTY;
+        private boolean alwaysDisplay = true;
 
         public Builder(Identifier id, ConditionType type) {
             this.id = id;
@@ -189,8 +201,13 @@ public record ConditionalComponents(ConditionType type, List<DataComponentPatch>
             return this;
         }
 
+        public Builder alwaysDisplay(boolean alwaysDisplay) {
+            this.alwaysDisplay = alwaysDisplay;
+            return this;
+        }
+
         public ConditionalComponents build() {
-            return new ConditionalComponents(type, conditions, factories);
+            return new ConditionalComponents(type, conditions, factories, alwaysDisplay);
         }
     }
 }

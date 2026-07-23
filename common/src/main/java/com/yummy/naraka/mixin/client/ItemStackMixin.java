@@ -1,6 +1,7 @@
 package com.yummy.naraka.mixin.client;
 
 import com.yummy.naraka.event.ItemEvents;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -21,18 +22,18 @@ public abstract class ItemStackMixin implements DataComponentHolder {
     @Inject(method = "addDetailsToTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item;appendHoverText(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/Item$TooltipContext;Lnet/minecraft/world/item/component/TooltipDisplay;Ljava/util/function/Consumer;Lnet/minecraft/world/item/TooltipFlag;)V", shift = At.Shift.AFTER))
     public void addTopTooltip(Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag tooltipFlag, Consumer<Component> builder, CallbackInfo ci) {
         if (player != null)
-            ItemEvents.ITEM_TOOLTIP_TOP.invoker().addToTooltip(this, context, player, tooltipFlag, builder);
+            ItemEvents.ITEM_TOOLTIP_TOP.invoker().addToTooltip(this, context, player, tooltipFlag, Minecraft.getInstance().hasShiftDown(), builder);
     }
 
     @Inject(method = "addDetailsToTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item;appendHoverText(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/Item$TooltipContext;Lnet/minecraft/world/item/component/TooltipDisplay;Ljava/util/function/Consumer;Lnet/minecraft/world/item/TooltipFlag;)V", shift = At.Shift.AFTER))
     public void addMiddleTooltip(Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag tooltipFlag, Consumer<Component> builder, CallbackInfo ci) {
         if (player != null)
-            ItemEvents.ITEM_TOOLTIP_MIDDLE.invoker().addToTooltip(this, context, player, tooltipFlag, builder);
+            ItemEvents.ITEM_TOOLTIP_MIDDLE.invoker().addToTooltip(this, context, player, tooltipFlag, Minecraft.getInstance().hasShiftDown(), builder);
     }
 
     @Inject(method = "addDetailsToTooltip", at = @At("RETURN"))
     public void addBottomTooltip(Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag tooltipFlag, Consumer<Component> builder, CallbackInfo ci) {
         if (player != null)
-            ItemEvents.ITEM_TOOLTIP_BOTTOM.invoker().addToTooltip(this, context, player, tooltipFlag, builder);
+            ItemEvents.ITEM_TOOLTIP_BOTTOM.invoker().addToTooltip(this, context, player, tooltipFlag, Minecraft.getInstance().hasShiftDown(), builder);
     }
 }

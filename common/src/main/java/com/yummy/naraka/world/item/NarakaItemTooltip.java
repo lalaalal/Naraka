@@ -21,11 +21,13 @@ public class NarakaItemTooltip {
     public static final ConditionalComponents PURIFIED_SOUL_ARMORS_SOUL = simpleConditionalComponents(PURIFIED_SOUL_ARMORS_ID.withSuffix(".soul"), 2, 2)
             .singleTypedConditions(NarakaDataComponentTypes.SOUL.get(), SoulType.REDSTONE, SoulType.COPPER, SoulType.GOLD, SoulType.EMERALD, SoulType.DIAMOND, SoulType.LAPIS, SoulType.AMETHYST, SoulType.NECTARIUM)
             .newLine()
+            .alwaysDisplay(false)
             .build();
     public static final ConditionalComponents PURIFIED_SOUL_ARMOR_BLESSED = simpleConditionalComponents(PURIFIED_SOUL_ARMORS_ID.withSuffix(".blessed"), 0, 2)
             .type(ConditionalComponents.ConditionType.ALL)
             .singleTypedConditions(NarakaDataComponentTypes.BLESSED.get(), true)
             .newLine()
+            .alwaysDisplay(false)
             .build();
 
     private static final Identifier SOUL_INFUSED_SWORDS_ID = NarakaMod.identifier("soul_infused_swords");
@@ -33,8 +35,9 @@ public class NarakaItemTooltip {
     public static final ConditionalComponents SOUL_INFUSED_SWORDS_BLESSED = ConditionalComponents.all(SOUL_INFUSED_SWORDS_ID.withSuffix(".blessed"))
             .type(ConditionalComponents.ConditionType.ALL)
             .singleTypedConditions(NarakaDataComponentTypes.BLESSED.get(), true)
+            .appendTranslatableWithSuffix("longinus.prefix", PURPOSE)
             .appendTranslatableWithSuffix("longinus", RAINBOW)
-            .appendTranslatable(PURPOSE)
+            .appendTranslatableWithSuffix("longinus.suffix", PURPOSE)
             .newLine()
             .newLine()
             .line(DETAIL)
@@ -57,7 +60,6 @@ public class NarakaItemTooltip {
     public static final DynamicItemLoreHolder PURIFIED_SOUL_ARMORS = DynamicItemLoreHolder.of(PURIFIED_SOUL_ARMOR_BLESSED, PURIFIED_SOUL_ARMORS_SOUL, PURIFIED_SOUL_ARMORS_DEFAULT);
     public static final DynamicItemLoreHolder.Single NECTARIUM = simple(NarakaItemIds.NECTARIUM, 1, 1);
     public static final DynamicItemLoreHolder.Single NECTARIUM_CORE = simple(NarakaBlockItemIds.NECTARIUM_ORE, 1, 2);
-
 
     private static DynamicItemLoreHolder.Single simple(Identifier id, int purpose, int detail) {
         return DynamicItemLoreHolder.single(simpleConditionalComponents(id, purpose, detail).build());
