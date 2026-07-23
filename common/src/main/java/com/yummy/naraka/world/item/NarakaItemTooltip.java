@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.core.component.DataComponentCondition;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.references.NarakaBlockItemIds;
 import com.yummy.naraka.references.NarakaItemIds;
@@ -24,7 +25,7 @@ public class NarakaItemTooltip {
             .alwaysDisplay(false)
             .build();
     public static final ConditionalComponents PURIFIED_SOUL_ARMOR_BLESSED = simpleConditionalComponents(PURIFIED_SOUL_ARMORS_ID.withSuffix(".blessed"), 0, 2)
-            .type(ConditionalComponents.ConditionType.ALL)
+            .type(DataComponentCondition.Type.ALL)
             .singleTypedConditions(NarakaDataComponentTypes.BLESSED.get(), true)
             .newLine()
             .alwaysDisplay(false)
@@ -33,7 +34,7 @@ public class NarakaItemTooltip {
     private static final Identifier SOUL_INFUSED_SWORDS_ID = NarakaMod.identifier("soul_infused_swords");
     public static final ConditionalComponents SOUL_INFUSED_SWORDS_DEFAULT = simpleConditionalComponents(SOUL_INFUSED_SWORDS_ID, 2, 2).build();
     public static final ConditionalComponents SOUL_INFUSED_SWORDS_BLESSED = ConditionalComponents.all(SOUL_INFUSED_SWORDS_ID.withSuffix(".blessed"))
-            .type(ConditionalComponents.ConditionType.ALL)
+            .type(DataComponentCondition.Type.ALL)
             .singleTypedConditions(NarakaDataComponentTypes.BLESSED.get(), true)
             .appendTranslatableWithSuffix("longinus.prefix", PURPOSE)
             .appendTranslatableWithSuffix("longinus", RAINBOW)

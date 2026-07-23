@@ -2,9 +2,9 @@ package com.yummy.naraka.world.item;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.yummy.naraka.core.component.DataComponentCondition;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.ItemEvents;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.core.component.DataComponentPatch;
@@ -14,31 +14,27 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 
-import java.util.*;
-import java.util.function.BiPredicate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
-public record ConditionalComponents(ConditionType type, List<DataComponentPatch> conditions,
+public record ConditionalComponents(DataComponentCondition condition,
                                     List<ComponentFactory> factories,
                                     boolean alwaysDisplay) implements ItemEvents.ItemTooltip {
     public static final Codec<ConditionalComponents> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                    ConditionType.CODEC.fieldOf("type").forGetter(ConditionalComponents::type),
-                    DataComponentPatch.CODEC.listOf().fieldOf("conditions").forGetter(ConditionalComponents::conditions),
+                    DataComponentCondition.CODEC.fieldOf("condition").forGetter(ConditionalComponents::condition),
                     ComponentFactory.CODEC.listOf().fieldOf("factories").forGetter(ConditionalComponents::factories),
                     Codec.BOOL.fieldOf("alwaysDisplay").forGetter(ConditionalComponents::alwaysDisplay)
             ).apply(instance, ConditionalComponents::new)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, ConditionalComponents> STREAM_CODEC = StreamCodec.composite(
-            ConditionType.STREAM_CODEC,
-            ConditionalComponents::type,
-            DataComponentPatch.STREAM_CODEC.apply(ByteBufCodecs.list()),
-            ConditionalComponents::conditions,
+            DataComponentCondition.STREAM_CODEC,
+            ConditionalComponents::condition,
             ComponentFactory.STREAM_CODEC.apply(ByteBufCodecs.list()),
             ConditionalComponents::factories,
             ByteBufCodecs.BOOL,
@@ -49,15 +45,15 @@ public record ConditionalComponents(ConditionType type, List<DataComponentPatch>
             .withStyle(ChatFormatting.DARK_GRAY);
 
     public static Builder any(Identifier id) {
-        return new Builder(id, ConditionType.ANY);
+        return new Builder(id, DataComponentCondition.Type.ANY);
     }
 
     public static Builder all(Identifier id) {
-        return new Builder(id, ConditionType.ALL);
+        return new Builder(id, DataComponentCondition.Type.ALL);
     }
 
     public boolean isAcceptable(DataComponentHolder item) {
-        return type.test(item, conditions);
+        return condition.test(item);
     }
 
     @Override
@@ -77,74 +73,21 @@ public record ConditionalComponents(ConditionType type, List<DataComponentPatch>
         return translationKeys;
     }
 
-    public enum ConditionType implements StringRepresentable {
-        ANY(ConditionType::any),
-        ALL(ConditionType::all);
-
-        public static final Codec<ConditionType> CODEC = StringRepresentable.fromValues(ConditionType::values);
-        public static final StreamCodec<ByteBuf, ConditionType> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
-
-        private final BiPredicate<DataComponentHolder, List<DataComponentPatch>> predicate;
-
-        ConditionType(BiPredicate<DataComponentHolder, List<DataComponentPatch>> predicate) {
-            this.predicate = predicate;
-        }
-
-        private static boolean testSingle(DataComponentHolder item, DataComponentPatch condition) {
-            for (Map.Entry<DataComponentType<?>, Optional<?>> entry : condition.entrySet()) {
-                DataComponentType<?> type = entry.getKey();
-                Optional<?> value = entry.getValue();
-                if (value.isEmpty())
-                    continue;
-                if (!Objects.equals(item.get(type), value.get()))
-                    return false;
-            }
-            return true;
-        }
-
-        private static boolean any(DataComponentHolder item, List<DataComponentPatch> conditions) {
-            if (conditions.isEmpty())
-                return true;
-            for (DataComponentPatch condition : conditions) {
-                if (testSingle(item, condition))
-                    return true;
-            }
-            return false;
-        }
-
-        private static boolean all(DataComponentHolder item, List<DataComponentPatch> conditions) {
-            for (DataComponentPatch condition : conditions) {
-                if (!testSingle(item, condition))
-                    return false;
-            }
-            return true;
-        }
-
-        public boolean test(DataComponentHolder item, List<DataComponentPatch> conditions) {
-            return predicate.test(item, conditions);
-        }
-
-        @Override
-        public String getSerializedName() {
-            return name();
-        }
-    }
-
     public static class Builder {
         private final Identifier id;
-        private ConditionType type;
+        private DataComponentCondition.Type type;
         private int index;
         private final List<DataComponentPatch> conditions = new ArrayList<>();
         private final List<ComponentFactory> factories = new ArrayList<>();
         private CompositeComponentFactory current = CompositeComponentFactory.EMPTY;
         private boolean alwaysDisplay = true;
 
-        public Builder(Identifier id, ConditionType type) {
+        public Builder(Identifier id, DataComponentCondition.Type type) {
             this.id = id;
             this.type = type;
         }
 
-        public Builder type(ConditionType type) {
+        public Builder type(DataComponentCondition.Type type) {
             this.type = type;
             return this;
         }
@@ -207,7 +150,7 @@ public record ConditionalComponents(ConditionType type, List<DataComponentPatch>
         }
 
         public ConditionalComponents build() {
-            return new ConditionalComponents(type, conditions, factories, alwaysDisplay);
+            return new ConditionalComponents(new DataComponentCondition(type, conditions), factories, alwaysDisplay);
         }
     }
 }

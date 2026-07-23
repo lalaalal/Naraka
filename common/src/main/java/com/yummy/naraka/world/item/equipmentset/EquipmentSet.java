@@ -4,14 +4,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
+import com.yummy.naraka.core.component.DataComponentCondition;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.ItemEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentHolder;
-import net.minecraft.core.component.DataComponentPatch;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -31,7 +30,6 @@ import net.minecraft.world.item.TooltipFlag;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
@@ -105,12 +103,12 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
         return result;
     }
 
-    public record Requirement(Holder<Item> item, EquipmentSlot slot, DataComponentPatch components) {
+    public record Requirement(Holder<Item> item, EquipmentSlot slot, DataComponentCondition condition) {
         public static final Codec<Requirement> CODEC = RecordCodecBuilder.create(
                 instance -> instance.group(
                         BuiltInRegistries.ITEM.holderByNameCodec().fieldOf("item").forGetter(Requirement::item),
                         EquipmentSlot.CODEC.fieldOf("slot").forGetter(Requirement::slot),
-                        DataComponentPatch.CODEC.optionalFieldOf("components", DataComponentPatch.EMPTY).forGetter(Requirement::components)
+                        DataComponentCondition.CODEC.optionalFieldOf("condition", DataComponentCondition.EMPTY).forGetter(Requirement::condition)
                 ).apply(instance, Requirement::new)
         );
 
@@ -119,8 +117,8 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
                 Requirement::item,
                 EquipmentSlot.STREAM_CODEC,
                 Requirement::slot,
-                DataComponentPatch.STREAM_CODEC,
-                Requirement::components,
+                DataComponentCondition.STREAM_CODEC,
+                Requirement::condition,
                 Requirement::new
         );
 
@@ -129,28 +127,23 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
             List<EquipmentSet> equipmentSets = itemStack.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of());
             return itemStack.is(item.value())
                     && equipmentSets.stream().map(EquipmentSet::getId).anyMatch(id -> equipmentSet.getId().equals(id))
-                    && components.entrySet().stream().allMatch(entry -> {
-                DataComponentType<?> type = entry.getKey();
-                return entry.getValue()
-                        .filter(value -> Objects.equals(itemStack.get(type), value))
-                        .isPresent();
-            });
+                    && condition.test(itemStack);
         }
 
         @Override
         public boolean equals(Object o) {
             if (!(o instanceof Requirement(
-                    Holder<Item> otherItem, EquipmentSlot otherSlot, DataComponentPatch otherComponents
+                    Holder<Item> otherItem, EquipmentSlot otherSlot, DataComponentCondition otherCondition
             )))
                 return false;
-            return item.value().equals(otherItem.value()) && slot == otherSlot && components.equals(otherComponents);
+            return item.value().equals(otherItem.value()) && slot == otherSlot && condition.equals(otherCondition);
         }
 
         @Override
         public int hashCode() {
             int result = item.hashCode();
             result = 31 * result + slot.hashCode();
-            result = 31 * result + components.hashCode();
+            result = 31 * result + condition.hashCode();
             return result;
         }
     }
