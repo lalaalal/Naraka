@@ -33,7 +33,9 @@ public class NarakaItemTooltip {
             .build();
 
     private static final ResourceLocation SOUL_INFUSED_SWORDS_ID = NarakaMod.location("soul_infused_swords");
-    public static final ConditionalComponents SOUL_INFUSED_SWORDS_DEFAULT = simpleConditionalComponents(SOUL_INFUSED_SWORDS_ID, 2, 2).build();
+    public static final ConditionalComponents SOUL_INFUSED_SWORDS_DEFAULT = simpleConditionalComponents(SOUL_INFUSED_SWORDS_ID, 2, 2)
+            .alwaysDisplay(false)
+            .build();
     public static final ConditionalComponents SOUL_INFUSED_SWORDS_BLESSED = ConditionalComponents.all(SOUL_INFUSED_SWORDS_ID.withSuffix(".blessed"))
             .type(DataComponentCondition.Type.ALL)
             .singleTypedConditions(NarakaDataComponentTypes.BLESSED.get(), true)
