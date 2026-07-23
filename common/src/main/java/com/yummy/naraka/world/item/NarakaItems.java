@@ -44,12 +44,13 @@ public class NarakaItems {
 
     public static final HolderProxy<Item, Item> NARAKA_PICKAXE = registerItem(
             NarakaItemIds.NARAKA_PICKAXE,
-            NarakaPickaxeItem::new,
-            properties().component(DataComponents.UNBREAKABLE, new Unbreakable(true))
+            properties -> new NarakaPickaxeItem(properties
+                    .component(DataComponents.UNBREAKABLE, new Unbreakable(true))
                     .attributes(NarakaTiers.createWeaponAttributes(NarakaTiers.LONGINUS, NarakaPickaxeItem.calculateAttackDamageModifier(), -2.4f).build())
                     .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.NARAKA_PICKAXE.tooltip())
                     .rarity(Rarity.EPIC)
                     .fireResistant()
+            )
     );
 
     public static final HolderProxy<Item, Item> SKILL_CONTROLLER = registerItem(
@@ -100,9 +101,10 @@ public class NarakaItems {
 
     public static final HolderProxy<Item, SanctuaryCompassItem> SANCTUARY_COMPASS = registerItem(
             NarakaItemIds.SANCTUARY_COMPASS,
-            SanctuaryCompassItem::new,
-            properties().rarity(Rarity.RARE)
+            properties -> new SanctuaryCompassItem(properties
+                    .rarity(Rarity.RARE)
                     .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.SANCTUARY_COMPASS.tooltip())
+            )
     );
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = registerSimpleItem(NarakaItemIds.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE);
@@ -168,9 +170,10 @@ public class NarakaItems {
 
     public static final HolderProxy<Item, Item> HEROBRINE_SCARF = registerItem(
             NarakaItemIds.HEROBRINE_SCARF,
-            HerobrineScarfItem::new,
-            properties().rarity(Rarity.EPIC)
+            properties -> new HerobrineScarfItem(properties
+                    .rarity(Rarity.EPIC)
                     .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.HEROBRINE_SCARF.tooltip())
+            )
     );
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_HELMET = registerPurifiedSoulArmorItem(NarakaItemIds.PURIFIED_SOUL_HELMET, NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.HELMET);
