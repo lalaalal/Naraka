@@ -4,15 +4,12 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.references.NarakaBlockItemIds;
 import com.yummy.naraka.references.NarakaItemIds;
-import com.yummy.naraka.util.NarakaUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Style;
 import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
-
-import java.util.function.Supplier;
 
 public class NarakaItemTooltip {
     public static final StyleApplier PURPOSE = new StyleApplier.Static(Style.EMPTY.withColor(ChatFormatting.GRAY));

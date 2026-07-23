@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public record SingleComponentFactory(ComponentType componentType, String string, StyleApplier style) implements ComponentFactory {
+public record SingleComponentFactory(ComponentType componentType, String string,
+                                     StyleApplier style) implements ComponentFactory {
     public static final MapCodec<SingleComponentFactory> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     ComponentType.CODEC.fieldOf("type").forGetter(SingleComponentFactory::componentType),

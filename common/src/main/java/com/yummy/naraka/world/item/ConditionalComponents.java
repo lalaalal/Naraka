@@ -19,7 +19,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 
 import java.util.*;
-import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 

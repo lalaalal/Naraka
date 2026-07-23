@@ -19,7 +19,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayerGameMode.class)
 public abstract class ServerPlayerGameModeMixin {
-    @Shadow @Final
+    @Shadow
+    @Final
     protected ServerPlayer player;
 
     @SuppressWarnings("ConstantValue")
