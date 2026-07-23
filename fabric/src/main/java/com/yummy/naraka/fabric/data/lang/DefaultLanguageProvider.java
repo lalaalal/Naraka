@@ -13,7 +13,6 @@ import com.yummy.naraka.world.entity.ai.skill.herobrine.*;
 import com.yummy.naraka.world.entity.ai.skill.origin_herobrine.ChargingSkill;
 import com.yummy.naraka.world.entity.ai.skill.origin_herobrine.SwordSwingSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
-import com.yummy.naraka.world.item.tooltip.NarakaItemTooltip;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.SoulType;
@@ -21,6 +20,7 @@ import com.yummy.naraka.world.item.alchemy.NarakaPotions;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSetHelper;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
+import com.yummy.naraka.world.item.tooltip.NarakaItemTooltip;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.world.item.Items;
 
@@ -47,7 +47,6 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         add(LanguageKey.toggleOreSeeThroughMessage(true), "Ore See Through is now enabled", "광물 투시 활성화됨");
         add(LanguageKey.toggleOreSeeThroughMessage(false), "Ore See Through is now disabled", "광물 투시 비활성화됨");
 
-        add("container.soul_crafting", "Soul Crafter", "영혼 세공기");
         add(LanguageKey.REINFORCEMENT_KEY, "Reinforcement: %d", "강화: %d");
         add(LanguageKey.BLESSED_KEY, "Blessed", "축복받음");
         add(LanguageKey.HEROBRINE_SCARF_KEY, "Scarf Attached", "스카프 장착됨");
@@ -308,13 +307,13 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
 
         addTooltip(NarakaItemTooltip.HEROBRINE_SCARF, List.of(
                 List.of("Can be worn in the chestplate slot, or combined with armor using a 'Soul Smithing Block'.", "흉갑 슬롯에 착용하거나, '영혼 대장장이 블록'를 통해 갑옷에 합성할 수 있다."),
-                List.of("Along the inner lining of the cape, the image of 'Naraka' as it once existed flickers.", "망토의 내면을 따라, 그것이 존재했던 「나락」의 형상이 일렁거린다."),
+                List.of("Along the inner lining of the cape, the image of 'Naraka' where it once existed flickers.", "망토의 내면을 따라, 그것이 존재했던 「나락」의 형상이 일렁거린다."),
                 List.of("However, this merely reflects it; one cannot enter or leave 'Naraka' through this.", "다만 이것은 그저 비출 뿐, 이것을 통해 「나락」을 드나들 수는 없다.")
         ));
         addTooltip(NarakaItemTooltip.NARAKA_PICKAXE, List.of(
                 List.of("Can be used as a pickaxe or an axe.", "곡괭이나 도끼로 사용할 수 있다."),
                 List.of("Wandering through otherworldly realms in search of 'Color', it trampled and absorbed everything in its path.", "「색채」를 찾아 이계를 떠돌며, 발길이 닿는 대로 짓밟아 흡수했다."),
-                List.of("An entity that always appears through Naraka, leaving only void in the worlds it invades.", "항상 나락을 통해 나타나, 침입한 세계에 공허만을 남기고 사라지는 존재."),
+                List.of("An entity that always appears through Naraka, leaving only void in the worlds it invades before vanishing.", "항상 나락을 통해 나타나, 침입한 세계에 공허만을 남기고 사라지는 존재."),
                 List.of("Thus, in some worlds it is called the 'God of Void', and in others, the 'Tyrant of Naraka'.", "그렇기에 어느 세계에서는 '공허의 신', 어느 세계에서는 '나락의 폭군'이라고 불린다.")
         ));
         addTooltip(NarakaItemTooltip.GOD_BLOOD, List.of(
@@ -375,14 +374,14 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS_DEFAULT, List.of(
                 List.of("Holding this sword while wearing all 4 pieces of Purified Soul Armor forged from the same mineral activates the 'Challenger' buff.", "이 검을 들고, 이 검의 광물과 동일한 광물로 단조된 영혼 갑옷 4개를 착용할 시, '도전자' 버프가 활성화된다."),
                 List.of("Defeating Herobrine with the 'Challenger' buff active bestows a blessing upon the sword and destroys all equipped armor.", "'도전자' 버프를 가진 상태로 히로빈을 처치할 경우, 검에 축복이 내려지며 갑옷이 전부 파괴된다."),
-                List.of("The challenger must wear the soul stabilized through satisfied craving, wield it as a weapon, and lay back to rest the entity that failed to shed its yearning.", "도전자는 갈망의 충족으로서 안정화된 영혼을 두르고, 무기로서 쥔 채, 갈망을 벗지 못한 그것을 다시 잠재워야 한다."),
+                List.of("The challenger must wear the soul stabilized through satisfied craving, wield it as a weapon, and lay to rest to rest the entity that failed to shed its yearning.", "도전자는 갈망의 충족으로서 안정화된 영혼을 두르고, 무기로서 쥔 채, 갈망을 벗지 못한 그것을 다시 잠재워야 한다."),
                 List.of("By doing so, its soul will resonate with the stabilized soul to find peace, and its blessing shall be bestowed upon the weapon held by the challenger.", "그럼으로서, 그것의 영혼은 안정화된 영혼과 공명하여 안식을 찾고, 도전자가 쥔 무기에는 그것의 축복이 내려질 것이다.")
         ));
         addTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS_BLESSED, List.of(
-                List.of(" Used as a crafting material for the", ""),
-                List.of(" 「Spear of Longinus」", "「롱기누스의 창」"),
+                List.of("Used as a crafting material for the ", ""),
+                List.of("「Spear of Longinus」", "「롱기누스의 창」"),
                 List.of(".", "의 재료로 사용된다."),
-                List.of("Blessed equipment resonates and attracts one another,", "축복이 내려진 무구는 서로 공명하여 끌어당기고,"),
+                List.of("Blessed equipment resonates, drawing one another in,", "축복이 내려진 무구는 서로 공명하여 끌어당기고,"),
                 List.of("and when connected through its blood, it will reveal its purest power.", "그것의 피를 매개로 연결될 때, 가장 순수한 힘을 드러낼 것이다.")
         ));
         addTooltip(NarakaItemTooltip.PURIFIED_SOUL_ARMORS_DEFAULT, List.of(
@@ -403,7 +402,7 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         ));
         addTooltip(NarakaItemTooltip.NECTARIUM, List.of(
                 List.of("Edible. Consuming it fully restores Saturation, Hunger, and Health.", "먹을 수 있으며, 먹을 시 포만도와 허기, 체력이 최대치로 회복된다."),
-                List.of("In a certain alternate dimension, it is said that those who break their contracts are subjected to the 'Stone-Eating Punishment'.", "어떤 이차원에서는 계약을 지키지 못한 이에게 「돌을 먹는 형벌」을 내린다고 한다.")
+                List.of("In a certain alternate dimension, it is said that those who break their contracts shall suffer the 'Wrath of the Rock'.", "어떤 이차원에서는 계약을 지키지 못한 이에게 「돌을 먹는 형벌」을 내린다고 한다.")
         ));
         addTooltip(NarakaItemTooltip.NECTARIUM_CORE, List.of(
                 List.of("Can be activated using a Honey Bottle, generating Nectarium Crystals upon activation.", "꿀병을 사용해 활성화시킬 수 있으며, 활성화시킬 경우 넥타륨 결정을 만들어낸다."),

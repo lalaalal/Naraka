@@ -139,7 +139,6 @@
   "config.naraka.stigma_stun_duration": "낙인 스턴 지속시간",
   "config.naraka.stigma_stun_duration.comment.0": "낙인 스턴 지속 시간 (틱)",
   "config.naraka.title": "Naraka Config",
-  "container.soul_crafting": "영혼 세공기",
   "death.attack.naraka_fireball": "%1$s이(가) %2$s이(가) 던진 나락 화염구에 폭발했습니다",
   "death.attack.naraka_fireball.player": "%1$s이(가) %2$s이(가) 던진 나락 화염구에 폭발했습니다",
   "death.attack.pickaxe_slash": "%1$s이(가) %2$s에 썰렸습니다",
