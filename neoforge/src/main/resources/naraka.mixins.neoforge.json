@@ -2,6 +2,7 @@
   "required": true,
   "package": "com.yummy.naraka.neoforge.mixin",
   "compatibilityLevel": "JAVA_21",
+  "refmap": "naraka.refmap.json",
   "minVersion": "0.8",
   "client": [
     "client.ItemBlockRenderTypesMixin",
