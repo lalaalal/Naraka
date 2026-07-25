@@ -29,7 +29,8 @@ public class NarakaEntityTypeTagsProvider extends FabricTagsProvider.EntityTypeT
                 .addTag(NarakaEntityTypeTags.HEROBRINE);
 
         builder(ConventionalTags.Entities.BOSSES)
-                .add(NarakaEntityTypes.HEROBRINE.key());
+                .add(NarakaEntityTypes.HEROBRINE.key())
+                .add(NarakaEntityTypes.ORIGIN_HEROBRINE.key());
         builder(EntityTypeTags.CAN_BREATHE_UNDER_WATER)
                 .add(NarakaEntityTypes.HEROBRINE.key());
         builder(EntityTypeTags.FALL_DAMAGE_IMMUNE)
