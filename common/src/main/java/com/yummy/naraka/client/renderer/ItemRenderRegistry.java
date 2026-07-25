@@ -17,12 +17,11 @@ public class ItemRenderRegistry {
     private static final Map<Item, RenderType> ITEM_RENDER_TYPES = new HashMap<>();
     private static final Set<Item> ANIMATED_ITEMS = new HashSet<>();
 
-    public static void registerRenderType(Supplier<Item> item, RenderType renderType) {
+    public static void registerRenderType(Supplier<? extends Item> item, RenderType renderType) {
         ITEM_RENDER_TYPES.put(item.get(), renderType);
-        registerAnimatedItem(item);
     }
 
-    public static void registerAnimatedItem(Supplier<Item> item) {
+    public static void registerAnimatedItem(Supplier<? extends Item> item) {
         ANIMATED_ITEMS.add(item.get());
     }
 
