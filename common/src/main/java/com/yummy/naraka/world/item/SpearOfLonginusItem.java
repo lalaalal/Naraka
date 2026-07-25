@@ -1,7 +1,6 @@
 package com.yummy.naraka.world.item;
 
 import com.yummy.naraka.util.ComponentStyles;
-import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.entity.Spear;
 import com.yummy.naraka.world.entity.SpearOfLonginus;
@@ -29,12 +28,6 @@ public class SpearOfLonginusItem extends SpearItem {
     @Override
     public Projectile asProjectile(Level level, Position position, ItemStack stack, Direction direction) {
         return new SpearOfLonginus(level, position, stack);
-    }
-
-    @Deprecated
-    @Override
-    public DamageSource getItemDamageSource(LivingEntity entity) {
-        return NarakaDamageSources.longinus(entity);
     }
 
     @Override
