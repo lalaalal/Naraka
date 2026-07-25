@@ -280,12 +280,6 @@ public class JapaneseLanguageProvider extends NarakaLanguageProviders {
                 List.of("色を得られず、色を渇望し、色を奪い取って己に加えようとした。"),
                 List.of("だが何を加えようと黒はただの黒。残された遺骸すらも漆黒の虚無にすぎない。")
         ));
-        addTooltip(NarakaItemTooltip.SPEAR_OF_LONGINUS, List.of(
-                List.of("投擲可能で、持ち主のもとへ自動で戻ってくる。"),
-                List.of("攻撃方法に関わらず、命中した敵を即死させる。"),
-                List.of("8度の安息、8度の証明。"),
-                List.of("この武具はその果てに得た最も純粋な力であり、汝が「奈落」の君主として生まれ変わったことの証明である。")
-        ));
         addTooltip(NarakaItemTooltip.SANCTUARY_COMPASS, List.of(
                 List.of("現在のワールドで最も近い「ヘロブラインの聖域」構造体がある方向を指し示す。"),
                 List.of("世界は自らの存続のため、因果を調整する傾向を見せる。"),

@@ -280,12 +280,6 @@ public class ChineseLanguageProvider extends NarakaLanguageProviders {
                 List.of("无法拥有色彩，因而渴望色彩，企图夺取色彩以充实自身。"),
                 List.of("然而无论添加什么，黑色终究只是黑色。连留下的遗骸也仅仅是漆黑的虚无。")
         ));
-        addTooltip(NarakaItemTooltip.SPEAR_OF_LONGINUS, List.of(
-                List.of("可以投掷，并会自动回到主人手中。"),
-                List.of("无论攻击方式为何，命中敌人即可使其即死。"),
-                List.of("八度安息，八度证明。"),
-                List.of("此武具乃终焉之际所得的最纯净之力，亦是你蜕变为“炼狱”之君的证明。")
-        ));
         addTooltip(NarakaItemTooltip.SANCTUARY_COMPASS, List.of(
                 List.of("指向当前世界中距离最近的“Herobrine 圣所”建筑所在的方向。"),
                 List.of("世界为了自身的存续，往往倾向于调控因果。"),

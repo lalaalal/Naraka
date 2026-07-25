@@ -143,7 +143,8 @@ public class NarakaItems {
                     true, 3, -3, 3,
                     properties.fireResistant()
                             .delayedHolderComponent(DataComponents.DAMAGE_TYPE, NarakaDamageTypes.SPEAR)
-                            .component(DataComponents.TOOL, TridentItem.createToolProperties()),
+                            .component(DataComponents.TOOL, TridentItem.createToolProperties())
+                            .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.SPEAR.tooltip()),
                     NarakaEntityTypes.THROWN_SPEAR
             )
     );
@@ -154,7 +155,8 @@ public class NarakaItems {
                     properties.fireResistant()
                             .rarity(Rarity.RARE)
                             .delayedHolderComponent(DataComponents.DAMAGE_TYPE, NarakaDamageTypes.SPEAR)
-                            .component(DataComponents.TOOL, TridentItem.createToolProperties()),
+                            .component(DataComponents.TOOL, TridentItem.createToolProperties())
+                            .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.MIGHTY_HOLY_SPEAR.tooltip()),
                     NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR
             )
     );

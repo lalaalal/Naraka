@@ -22,13 +22,11 @@ public class NarakaItemTooltip {
     public static final ConditionalComponents PURIFIED_SOUL_ARMORS_DEFAULT = simpleConditionalComponents(PURIFIED_SOUL_ARMORS_ID, 1, 3).build();
     public static final ConditionalComponents PURIFIED_SOUL_ARMORS_SOUL = simpleConditionalComponents(PURIFIED_SOUL_ARMORS_ID.withSuffix(".soul"), 2, 2)
             .singleTypedConditions(NarakaDataComponentTypes.SOUL.get(), SoulType.REDSTONE, SoulType.COPPER, SoulType.GOLD, SoulType.EMERALD, SoulType.DIAMOND, SoulType.LAPIS, SoulType.AMETHYST, SoulType.NECTARIUM)
-            .newLine()
             .alwaysDisplay(false)
             .build();
     public static final ConditionalComponents PURIFIED_SOUL_ARMOR_BLESSED = simpleConditionalComponents(PURIFIED_SOUL_ARMORS_ID.withSuffix(".blessed"), 0, 2)
             .type(DataComponentCondition.Type.ALL)
             .singleTypedConditions(NarakaDataComponentTypes.BLESSED.get(), true)
-            .newLine()
             .alwaysDisplay(false)
             .build();
 
@@ -51,7 +49,9 @@ public class NarakaItemTooltip {
     public static final DynamicItemLoreHolder.Single HEROBRINE_SCARF = simple(NarakaItemIds.HEROBRINE_SCARF, 1, 2);
     public static final DynamicItemLoreHolder.Single NARAKA_PICKAXE = simple(NarakaItemIds.NARAKA_PICKAXE, 1, 3);
     public static final DynamicItemLoreHolder.Single GOD_BLOOD = simple(NarakaItemIds.GOD_BLOOD, 2, 3);
-    public static final DynamicItemLoreHolder.Single SPEAR_OF_LONGINUS = simple(NarakaItemIds.SPEAR_OF_LONGINUS_ITEM, 2, 2);
+    public static final DynamicItemLoreHolder.Single SPEAR = simple(NarakaItemIds.SPEAR_ITEM, 1, 3);
+    public static final DynamicItemLoreHolder.Single MIGHTY_HOLY_SPEAR = simple(NarakaItemIds.MIGHTY_HOLY_SPEAR_ITEM, 1, 2);
+    public static final DynamicItemLoreHolder.Single SPEAR_OF_LONGINUS = simple(NarakaItemIds.SPEAR_OF_LONGINUS_ITEM, 2, 3);
     public static final DynamicItemLoreHolder.Single SANCTUARY_COMPASS = simple(NarakaItemIds.SANCTUARY_COMPASS, 1, 3);
     public static final DynamicItemLoreHolder.Single IMITATION_GOLD = simple(NarakaBlockItemIds.IMITATION_GOLD_BLOCK, 2, 3);
     public static final DynamicItemLoreHolder.Single HEROBRINE_TOTEM = simple(NarakaBlockItemIds.HEROBRINE_TOTEM, 2, 2);
