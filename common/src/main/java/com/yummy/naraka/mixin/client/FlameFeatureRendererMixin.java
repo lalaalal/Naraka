@@ -2,7 +2,7 @@ package com.yummy.naraka.mixin.client;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaSprites;
-import com.yummy.naraka.client.renderer.FlameFeatureSubmitExtension;
+import com.yummy.naraka.client.renderer.feature.FlameFeatureSubmitExtension;
 import net.minecraft.client.renderer.feature.FeatureFrameContext;
 import net.minecraft.client.renderer.feature.FlameFeatureRenderer;
 import net.minecraft.client.renderer.feature.RenderTypeFeatureRenderer;

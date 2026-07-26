@@ -1,8 +1,8 @@
 package com.yummy.naraka.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.yummy.naraka.client.renderer.FlameFeatureSubmitExtension;
-import com.yummy.naraka.client.renderer.PurifiedSoulFireSubmitNodeCollection;
+import com.yummy.naraka.client.renderer.feature.FlameFeatureSubmitExtension;
+import com.yummy.naraka.client.renderer.feature.PurifiedSoulFireSubmitNodeCollector;
 import net.minecraft.client.renderer.SubmitNodeCollection;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.feature.FlameFeatureRenderer;
@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(SubmitNodeCollection.class)
-public abstract class SubmitNodeCollectionMixin implements PurifiedSoulFireSubmitNodeCollection {
+public abstract class SubmitNodeCollectorMixin implements PurifiedSoulFireSubmitNodeCollector {
     @Shadow
     @Final
     public SimpleFeatureRenderPhase solid;

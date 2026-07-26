@@ -1,6 +1,6 @@
 package com.yummy.naraka.mixin.client;
 
-import com.yummy.naraka.client.renderer.FlameFeatureSubmitExtension;
+import com.yummy.naraka.client.renderer.feature.FlameFeatureSubmitExtension;
 import net.minecraft.client.renderer.feature.FlameFeatureRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
