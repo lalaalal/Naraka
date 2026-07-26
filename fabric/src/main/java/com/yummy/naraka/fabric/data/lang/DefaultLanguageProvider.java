@@ -222,7 +222,6 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addPotion(Items.LINGERING_POTION, NarakaPotions.BLESS, "Lingering Potion of Bless", "잔류형 축복의 물약");
 
         addItem(NarakaItems.STIGMA_ROD, "Stigma Rod", "낙인 막대기");
-        addItem(NarakaItems.STARDUST_STAFF, "Stardust Staff");
         addItem(NarakaItems.NARAKA_FIREBALL_STAFF, "Naraka Fireball Staff");
         addItem(NarakaItems.RAINBOW_SWORD, "Rainbow Sword", "무지개 검");
         addItem(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard", "정화된 영혼 조각");
@@ -429,7 +428,6 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addEntityType(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, "Mighty Holy Spear", "강력한 성스러운 창");
         addEntityType(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, "Spear of Longinus", "롱기누스의 창");
         addEntityType(NarakaEntityTypes.NARAKA_FIREBALL, "Naraka Fireball", "나락 화염구");
-        addEntityType(NarakaEntityTypes.STARDUST, "Stardust", "부패의 별");
         addEntityType(NarakaEntityTypes.PICKAXE_SLASH, "Pickaxe Slash");
         addEntityType(NarakaEntityTypes.DIAMOND_GOLEM, "Diamond Golem", "다이아몬드 골렘");
         addEntityType(NarakaEntityTypes.MAGIC_CIRCLE, "Magic Circle", "마법진");
@@ -447,7 +445,6 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addDamageType(NarakaDamageTypes.STIGMA_CONSUME, "%2$s consumed the stigma on %1$s to take their life", "%2$s이(가) %1$s의 낙인을 소모해 생명을 앗아갔습니다");
         addDamageType(NarakaDamageTypes.PICKAXE_SLASH, "%1$s was slain by %2$s", "%1$s이(가) %2$s에 썰렸습니다");
         addDamageType(NarakaDamageTypes.NARAKA_FIREBALL, "%1$s was blown up by %2$s's Naraka Fireball", "%1$s이(가) %2$s이(가) 던진 나락 화염구에 폭발했습니다");
-        addDamageType(NarakaDamageTypes.STARDUST, "%1$s was blown up by %2$s", "%1$s이(가) %2$s에 폭사했습니다");
         addDamageType(NarakaDamageTypes.PURIFIED_SOUL_FIRE, "%1$s was consumed by black flames", "%1$s이(가) 검은 불 속에서 타 죽었습니다");
         addDamageType(NarakaDamageTypes.SOUL_ATTACK, "%2$s executed %1$s", "%2$s이(가) %1$s을(를) 처형했습니다");
 
@@ -534,7 +531,6 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         add(LanguageKey.skill(ParryingSkill.LOCATION), "P3 #8 NECTARIUM [Parrying]");
         add(LanguageKey.skill(DestroyStructureSkill.LOCATION), "P3 Destroy Structure (Enter Phase 3)");
         add(LanguageKey.skill(SummonShadowSkill.LOCATION), "P1 Summon Shadow");
-        add(LanguageKey.skill(CarpetBombingSkill.LOCATION), "P3 Carpet Bombing");
         add(LanguageKey.skill(SpawnPickaxeSkill.LOCATION), "P3 Pickaxe Strike");
         add(LanguageKey.skill(BlockingSkill.LOCATION), "P1 Blocking");
         add(LanguageKey.skill(ChargingSkill.IDENTIFIER), "Charging");

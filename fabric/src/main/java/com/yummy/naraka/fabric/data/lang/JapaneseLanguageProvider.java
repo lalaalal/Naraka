@@ -368,7 +368,6 @@ public class JapaneseLanguageProvider extends NarakaLanguageProviders {
         addEntityType(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, "強大なる聖槍");
         addEntityType(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, "ロンギヌスの槍");
         addEntityType(NarakaEntityTypes.NARAKA_FIREBALL, "奈落の火球");
-        addEntityType(NarakaEntityTypes.STARDUST, "星屑");
         addEntityType(NarakaEntityTypes.PICKAXE_SLASH, "奈落の大鎌の斬撃");
         addEntityType(NarakaEntityTypes.DIAMOND_GOLEM, "ダイヤモンドゴーレム");
         addEntityType(NarakaEntityTypes.MAGIC_CIRCLE, "魔法のサークル");

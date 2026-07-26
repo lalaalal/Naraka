@@ -1,6 +1,9 @@
 package com.yummy.naraka.world.damagesource;
 
-import com.yummy.naraka.world.entity.*;
+import com.yummy.naraka.world.entity.NarakaFireball;
+import com.yummy.naraka.world.entity.PickaxeSlash;
+import com.yummy.naraka.world.entity.Spear;
+import com.yummy.naraka.world.entity.SpearOfLonginus;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
@@ -64,10 +67,6 @@ public class NarakaDamageSources {
 
     public static DamageSource longinus(LivingEntity livingEntity) {
         return source(NarakaDamageTypes.SPEAR_OF_LONGINUS, livingEntity);
-    }
-
-    public static DamageSource stardust(Stardust stardust) {
-        return source(NarakaDamageTypes.STARDUST, stardust, stardust.getOwner());
     }
 
     public static DamageSource narakaFireball(NarakaFireball fireball) {
