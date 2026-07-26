@@ -170,6 +170,8 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
         ExplosionDamageCalculator explosionDamageCalculator = new EntityBasedExplosionDamageCalculator(this) {
             @Override
             public float getEntityDamageAmount(Explosion explosion, Entity entity, float seenPercent) {
+                if (getOwner() != null && getOwner().is(entity))
+                    return 0;
                 return damage;
             }
         };

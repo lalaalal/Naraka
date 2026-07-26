@@ -44,7 +44,10 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> LOCKED_HEALTH = registerItem(NarakaItemIds.LOCKED_HEALTH, Item::new);
 
     public static final HolderProxy<Item, Item> STIGMA_ROD = registerItem(NarakaItemIds.STIGMA_ROD, StigmaRodItem::new, properties().rarity(Rarity.EPIC));
-    public static final HolderProxy<Item, Item> NARAKA_FIREBALL_STAFF = registerItem(NarakaItemIds.NARAKA_FIREBALL_STAFF, NarakaFireballStaffItem::new, properties().rarity(Rarity.EPIC));
+    public static final HolderProxy<Item, Item> NARAKA_FIREBALL_STAFF = registerItem(
+            NarakaItemIds.NARAKA_FIREBALL_STAFF,
+            properties -> new NarakaFireballStaffItem(properties.rarity(Rarity.EPIC))
+    );
 
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_1_DISC = registerDiscItem(NarakaItemIds.HEROBRINE_PHASE_1_DISC, NarakaJukeboxSongs.HEROBRINE_PHASE_1);
     public static final HolderProxy<Item, Item> HEROBRINE_PHASE_2_DISC = registerDiscItem(NarakaItemIds.HEROBRINE_PHASE_2_DISC, NarakaJukeboxSongs.HEROBRINE_PHASE_2);
