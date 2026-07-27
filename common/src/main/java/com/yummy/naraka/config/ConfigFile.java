@@ -1,12 +1,11 @@
 package com.yummy.naraka.config;
 
-import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.Platform;
-import org.jspecify.annotations.Nullable;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Set;
+import java.nio.file.StandardCopyOption;
 
 /**
  * Provides information of a configuration file.
@@ -16,25 +15,17 @@ public abstract class ConfigFile implements ConfigReader, ConfigWriter {
     public static final Path CONFIG_PATH = Platform.getInstance().getConfigurationPath();
 
     protected final File configFile;
+    protected final File tmpFile;
 
     private final String configName;
-    private @Nullable BufferedReader reader;
-    private @Nullable BufferedWriter writer;
 
     public ConfigFile(String configName) {
         this.configName = configName;
         this.configFile = CONFIG_PATH.resolve(configName + "." + getExtensionName()).toFile();
+        this.tmpFile = CONFIG_PATH.resolve(configName + "." + getExtensionName() + ".tmp").toFile();
     }
 
     public abstract String getExtensionName();
-
-    /**
-     * Returns key set without loading.
-     *
-     * @return Key set
-     * @see ConfigReader#load(Reader)
-     */
-    public abstract Set<String> getKeySet();
 
     /**
      * Check if the key exists without loading.
@@ -58,20 +49,24 @@ public abstract class ConfigFile implements ConfigReader, ConfigWriter {
     }
 
     public Reader createReader() throws IOException {
-        return this.reader = new BufferedReader(new FileReader(configFile));
+        return new BufferedReader(new FileReader(configFile));
     }
 
     public Writer createWriter() throws IOException {
-        return this.writer = new BufferedWriter(new FileWriter(configFile));
+        return new BufferedWriter(new FileWriter(tmpFile));
     }
 
-    protected void checkReader(Reader reader) {
-        if (reader != this.reader)
-            NarakaMod.LOGGER.warn("{} is using external reader", getConfigName());
+    private void finishWrite() throws IOException {
+        if (tmpFile.exists())
+            Files.move(tmpFile.toPath(), configFile.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
     }
 
-    protected void checkWriter(Writer writer) {
-        if (writer != this.writer)
-            NarakaMod.LOGGER.warn("{} is using external writer", getConfigName());
+    @Override
+    public final void commit(Writer writer) throws IOException {
+        write(writer);
+        writer.flush();
+        finishWrite();
     }
+
+    abstract protected void write(Writer writer) throws IOException;
 }
