@@ -48,6 +48,7 @@ public final class NarakaMod {
     public static boolean isDataGeneration = false;
     public static boolean isRegistryLoaded = false;
     public static boolean isModLoaded = false;
+    @Deprecated
     public static final Logger LOGGER = LogUtils.getLogger();
 
     /**

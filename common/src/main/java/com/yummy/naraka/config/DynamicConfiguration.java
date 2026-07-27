@@ -1,6 +1,7 @@
 package com.yummy.naraka.config;
 
-import com.yummy.naraka.NarakaMod;
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,6 +17,8 @@ import java.util.function.Function;
  * @param <T> Type of configuration value
  */
 public abstract class DynamicConfiguration<T> extends Configuration {
+    private static final Logger LOG = LogUtils.getLogger();
+
     protected final Map<String, ConfigValue<T>> configurations = new LinkedHashMap<>();
     private final Map<String, ConfigValue<T>> defaultValues = new LinkedHashMap<>();
 
@@ -56,8 +59,8 @@ public abstract class DynamicConfiguration<T> extends Configuration {
     }
 
     @Override
-    public void loadValues() {
-        NarakaMod.LOGGER.debug("Loading dynamic configuration \"{}\"", name);
+    public synchronized void loadValues() {
+        LOG.info("Loading dynamic configuration \"{}\"", name);
         configurations.clear();
         try (Reader reader = file.createReader()) {
             for (String key : file.load(reader)) {
@@ -66,24 +69,24 @@ public abstract class DynamicConfiguration<T> extends Configuration {
                 configurations.put(key, value);
             }
         } catch (FileNotFoundException exception) {
-            NarakaMod.LOGGER.warn("Configuration file \"{}\" is not found", file.getFileName());
+            LOG.warn("Configuration file \"{}\" is not found", file.getFileName());
             saveValues();
             loadValues();
         } catch (IOException exception) {
-            NarakaMod.LOGGER.error("An error occurred while loading config values");
+            LOG.error("An error occurred while loading config values");
         }
     }
 
     @Override
     public synchronized void saveValues() {
-        NarakaMod.LOGGER.debug("Saving dynamic configuration \"{}\" to \"{}\"", name, file.getAbsolutePath());
+        LOG.info("Saving dynamic configuration \"{}\" to \"{}\"", name, file.getAbsolutePath());
         try (Writer writer = file.createWriter()) {
             for (Map.Entry<String, ConfigValue<T>> entry : entries())
-                file.write(writer, entry.getKey(), entry.getValue());
+                file.appendToBuffer(entry.getKey(), entry.getValue());
             file.commit(writer);
         } catch (IOException exception) {
-            NarakaMod.LOGGER.error("An error occurred while saving default configuration values for \"{}\"", name);
-            NarakaMod.LOGGER.warn("Ignore all configuration values for \"{}\"", name);
+            LOG.error("An error occurred while saving default configuration values for \"{}\"", name);
+            LOG.warn("Ignore all configuration values for \"{}\"", name);
         }
     }
 

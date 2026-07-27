@@ -1,7 +1,8 @@
 package com.yummy.naraka.config;
 
-import com.yummy.naraka.NarakaMod;
+import com.mojang.logging.LogUtils;
 import com.yummy.naraka.util.Color;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -13,6 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class PropertiesConfigFile extends ConfigFile {
+    private static final Logger LOG = LogUtils.getLogger();
     private static final Map<Class<?>, Function<String, ?>> PARSERS = Map.of(
             Boolean.class, Boolean::parseBoolean,
             Integer.class, Integer::parseInt,
@@ -24,6 +26,7 @@ public class PropertiesConfigFile extends ConfigFile {
     );
 
     private final Properties cache = new Properties();
+    private StringBuilder buffer = new StringBuilder();
 
     public PropertiesConfigFile(String configFileName) {
         super(configFileName);
@@ -34,8 +37,7 @@ public class PropertiesConfigFile extends ConfigFile {
         return "properties";
     }
 
-    @Override
-    public Set<String> getKeySet() {
+    private Set<String> getKeySet() {
         return cache.keySet().stream()
                 .map(Object::toString)
                 .collect(Collectors.toSet());
@@ -48,8 +50,13 @@ public class PropertiesConfigFile extends ConfigFile {
     }
 
     @Override
+    public Writer createWriter() throws IOException {
+        buffer = new StringBuilder();
+        return super.createWriter();
+    }
+
+    @Override
     public Set<String> load(Reader reader) throws IOException {
-        checkReader(reader);
         this.cache.load(reader);
         return getKeySet();
     }
@@ -65,24 +72,23 @@ public class PropertiesConfigFile extends ConfigFile {
         String property = cache.getProperty(key);
         Function<String, T> parser = (Function<String, T>) PARSERS.get(value.getType());
         if (property == null || parser == null) {
-            NarakaMod.LOGGER.warn("Cannot load config value for key ({}), using default {}", key, value.getDefaultValue());
+            LOG.warn("Cannot load config value for key ({}), using default {}", key, value.getDefaultValue());
             return;
         }
         value.set(parser.apply(property));
     }
 
     @Override
-    public <T> void write(Writer writer, String key, StaticConfiguration.ConfigValue<T> value) throws IOException {
+    public <T> void appendToBuffer(String key, StaticConfiguration.ConfigValue<T> value) {
         for (String comment : value.getComments())
-            writer.write("# " + comment + "\n");
-        writer.write("# default : " + value.getDefaultValue() + "\n");
-        writer.write(key + "=" + value.getValue() + "\n");
-        writer.write("\n");
+            buffer.append("# ").append(comment).append("\n");
+        buffer.append("# default : ").append(value.getDefaultValue()).append("\n");
+        buffer.append(key).append("=").append(value.getValue()).append("\n");
+        buffer.append("\n");
     }
 
     @Override
-    public void commit(Writer writer) throws IOException {
-        checkWriter(writer);
-        writer.flush();
+    protected void write(Writer writer) throws IOException {
+        writer.write(buffer.toString());
     }
 }

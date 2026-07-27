@@ -75,7 +75,6 @@ public class NarakaConfigScreen {
                 .map(Optional::get)
                 .toList();
         NarakaConfig.ORE_COLORS.loadValues(values);
-        NarakaConfig.ORE_COLORS.saveValues();
     }
 
     private static Optional<Configuration.ConfigValue<Color>> toConfigValue(String text) {
