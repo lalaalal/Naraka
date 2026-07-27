@@ -10,6 +10,7 @@ import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.BeamEffect;
 import com.yummy.naraka.world.entity.MotionEntity;
 import com.yummy.naraka.world.entity.ScarfWavingData;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSetGroup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.entity.Entity;
@@ -65,6 +66,11 @@ public class NarakaEntityDataTypes {
             "motion_data", EntityDataType.builder(MotionData.CODEC, MotionEntity.class)
                     .networkSynchronized(MotionData.STREAM_CODEC)
                     .defaultValue(MotionData.DEFAULT)
+    );
+    public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<EquipmentSetGroup, LivingEntity>> ACTIVE_EQUIPMENT_SET_GROUP = register(
+            "active_equipment_set_group", EntityDataType.living(EquipmentSetGroup.CODEC)
+                    .networkSynchronized(EquipmentSetGroup.STREAM_CODEC)
+                    .defaultValue(EquipmentSetGroup.EMPTY)
     );
 
     private static void tickPurifiedSoulFire(LivingEntity livingEntity, int purifiedSoulFireTick) {

@@ -73,18 +73,21 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
         return requirements.stream().filter(requirement -> requirement.test(entity, this)).count();
     }
 
-    public void updateEffect(LivingEntity livingEntity) {
+    public boolean updateEffect(LivingEntity livingEntity) {
         long succeed = countSucceed(livingEntity);
-        for (Effect effect : effects)
-            effect.update(livingEntity, succeed);
         if (livingEntity instanceof ServerPlayer player)
             NarakaCriteriaTriggers.EQUIPMENT_SET.get().trigger(player, id, succeed);
+        long updated = effects.stream()
+                .filter(effect -> effect.update(livingEntity, succeed))
+                .count();
+        return updated > 0;
     }
 
     @Override
     public void addToTooltip(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
         long succeed = countSucceed(player);
-        effects.stream().sorted().forEach(effect -> effect.addToTooltip(id, succeed, builder));
+        effects.stream().sorted()
+                .forEach(effect -> effect.addToTooltip(id, succeed, builder));
     }
 
     @Override
@@ -123,9 +126,9 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
 
         public boolean test(LivingEntity livingEntity, EquipmentSet equipmentSet) {
             ItemStack itemStack = livingEntity.getItemBySlot(slot);
-            List<EquipmentSet> equipmentSets = itemStack.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of());
+            EquipmentSetGroup equipmentSetGroup = itemStack.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET_GROUP.get(), EquipmentSetGroup.EMPTY);
             return itemStack.is(item.value())
-                    && equipmentSets.stream().map(EquipmentSet::getId).anyMatch(id -> equipmentSet.getId().equals(id))
+                    && equipmentSetGroup.contains(equipmentSet.id)
                     && condition.test(itemStack);
         }
 

@@ -138,7 +138,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         if (swordItem == null)
             return false;
         forgingItem = new ItemStack(swordItem);
-        forgingItem.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), EquipmentSetHelper.createChallengerSet(soulType));
+        forgingItem.set(NarakaDataComponentTypes.EQUIPMENT_SET_GROUP.get(), EquipmentSetHelper.createChallengerSet(soulType));
         if (!player.hasInfiniteMaterials())
             soulStabilizer.consumeSoul(requiredSoul);
         cooldownTick = COOLDOWN;
@@ -177,10 +177,10 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
         if (soulType == SoulType.GOD_BLOOD) {
             forgingItem.set(NarakaDataComponentTypes.BLESSED.get(), true);
-            forgingItem.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), EquipmentSetHelper.createBlessedSet());
+            forgingItem.set(NarakaDataComponentTypes.EQUIPMENT_SET_GROUP.get(), EquipmentSetHelper.createBlessedSet());
             forgingItem.set(DataComponents.RARITY, Rarity.EPIC);
         } else if (forgingItem.getRarity() != Rarity.EPIC) {
-            forgingItem.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), EquipmentSetHelper.createChallengerSet(soulType));
+            forgingItem.set(NarakaDataComponentTypes.EQUIPMENT_SET_GROUP.get(), EquipmentSetHelper.createChallengerSet(soulType));
             forgingItem.set(DataComponents.RARITY, Rarity.RARE);
         }
         forgingItem.set(NarakaDataComponentTypes.SOUL.get(), soulType);

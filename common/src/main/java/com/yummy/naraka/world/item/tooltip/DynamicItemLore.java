@@ -34,6 +34,10 @@ public record DynamicItemLore(List<ConditionalComponents> conditional) implement
         return new DynamicItemLore(List.of(conditionalComponents));
     }
 
+    public boolean isEmpty() {
+        return conditional.isEmpty();
+    }
+
     @Override
     public void addToTooltip(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
         for (ConditionalComponents components : conditional) {

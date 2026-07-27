@@ -128,18 +128,14 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
             if (NarakaConfig.CLIENT.showReinforcementValue.getValue())
                 appender.accept(reinforcementComponent);
 
-            int displayed = 0;
             for (Holder<ReinforcementEffect> effect : effects) {
                 if (effect.value().showInTooltip(value)) {
                     String key = LanguageKey.reinforcementEffect(effect);
                     Component effectComponent = Component.translatable(key)
                             .withStyle(ChatFormatting.GRAY);
                     appender.accept(HEADER.copy().append(effectComponent));
-                    displayed += 1;
                 }
             }
-            if (displayed > 0)
-                appender.accept(Component.empty());
         }
     }
 

@@ -8,12 +8,13 @@ import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.ItemEvents;
 import com.yummy.naraka.util.ComponentStyles;
-import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSetGroup;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.tooltip.DynamicItemLore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.core.component.DataComponentHolder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -21,9 +22,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.BlockGetter;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public class NarakaClientEvents {
@@ -85,18 +86,29 @@ public class NarakaClientEvents {
     }
 
     private static void addItemTooltipsTop(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
-        List<EquipmentSet> equipmentSets = item.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of());
-        for (EquipmentSet equipmentSet : equipmentSets)
-            equipmentSet.addToTooltip(item, context, player, tooltipFlag, shiftKeyPressed, builder);
+        EquipmentSetGroup equipmentSetGroup = item.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET_GROUP.get(), EquipmentSetGroup.EMPTY);
+        equipmentSetGroup.addToTooltip(item, context, player, tooltipFlag, shiftKeyPressed, builder);
         Reinforcement reinforcement = item.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT.get(), Reinforcement.ZERO);
-        if (!equipmentSets.isEmpty() && !reinforcement.hasTooltip())
+        boolean reinforcementHasTooltip = reinforcement.hasTooltip();
+        boolean hasDynamicItemLore = !item.getOrDefault(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), DynamicItemLore.EMPTY).isEmpty();
+        if (!equipmentSetGroup.isEmpty() && !reinforcementHasTooltip && !hasDynamicItemLore)
             builder.accept(Component.empty());
-        reinforcement.addToTooltip(context, builder, tooltipFlag);
+        if (reinforcementHasTooltip) {
+            reinforcement.addToTooltip(context, builder, tooltipFlag);
+            if (item.has(DataComponents.TRIM) && !hasDynamicItemLore)
+                builder.accept(Component.empty());
+        }
     }
 
     private static void addItemTooltipsMiddle(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
         DynamicItemLore dynamicItemLore = item.getOrDefault(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), DynamicItemLore.EMPTY);
+        if (dynamicItemLore.isEmpty())
+            return;
+
+        builder.accept(Component.empty());
         dynamicItemLore.addToTooltip(item, context, player, tooltipFlag, shiftKeyPressed, builder);
+        if (item.has(DataComponents.TRIM) || item.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY).modifiers().isEmpty())
+            builder.accept(Component.empty());
     }
 
     private static void addItemTooltipsBottom(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {

@@ -22,13 +22,11 @@ public class NarakaItemTooltip {
     public static final ConditionalComponents PURIFIED_SOUL_ARMORS_DEFAULT = simpleConditionalComponents(PURIFIED_SOUL_ARMORS_ID, 1, 3).build();
     public static final ConditionalComponents PURIFIED_SOUL_ARMORS_SOUL = simpleConditionalComponents(PURIFIED_SOUL_ARMORS_ID.withSuffix(".soul"), 2, 2)
             .singleTypedConditions(NarakaDataComponentTypes.SOUL.get(), SoulType.REDSTONE, SoulType.COPPER, SoulType.GOLD, SoulType.EMERALD, SoulType.DIAMOND, SoulType.LAPIS, SoulType.AMETHYST, SoulType.NECTARIUM)
-            .newLine()
             .alwaysDisplay(false)
             .build();
     public static final ConditionalComponents PURIFIED_SOUL_ARMOR_BLESSED = simpleConditionalComponents(PURIFIED_SOUL_ARMORS_ID.withSuffix(".blessed"), 0, 2)
             .type(DataComponentCondition.Type.ALL)
             .singleTypedConditions(NarakaDataComponentTypes.BLESSED.get(), true)
-            .newLine()
             .alwaysDisplay(false)
             .build();
 
