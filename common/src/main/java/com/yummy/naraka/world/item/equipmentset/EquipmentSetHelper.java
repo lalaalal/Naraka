@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.item.equipmentset;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.client.event.EquipmentSetGroup;
 import com.yummy.naraka.core.component.DataComponentCondition;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.HolderProxy;
@@ -42,13 +43,13 @@ public class EquipmentSetHelper {
         );
     }
 
-    public static List<EquipmentSet> createBlessedSet() {
+    public static EquipmentSetGroup createBlessedSet() {
         DataComponentPatch components = DataComponentPatch.builder()
                 .set(NarakaDataComponentTypes.BLESSED.get(), true)
                 .build();
         DataComponentCondition condition = DataComponentCondition.all(components);
 
-        return List.of(
+        return EquipmentSetGroup.of(
                 new EquipmentSet(
                         ID_BLESSED,
                         List.of(
@@ -80,13 +81,13 @@ public class EquipmentSetHelper {
 
     private static final Map<SoulType, EquipmentSet> SET_BY_SOUL_TYPE = new HashMap<>();
 
-    public static List<EquipmentSet> createChallengerSet(SoulType soulType) {
+    public static EquipmentSetGroup createChallengerSet(SoulType soulType) {
         if (SET_BY_SOUL_TYPE.containsKey(soulType))
-            return List.of(SET_BY_SOUL_TYPE.get(soulType));
+            return EquipmentSetGroup.of(SET_BY_SOUL_TYPE.get(soulType));
 
         Holder<Item> swordItem = NarakaItems.getSoulSwordHolderOf(soulType);
         if (swordItem == null)
-            return List.of();
+            return EquipmentSetGroup.EMPTY;
         DataComponentPatch components = DataComponentPatch.builder()
                 .set(NarakaDataComponentTypes.SOUL.get(), soulType)
                 .build();
@@ -123,7 +124,7 @@ public class EquipmentSetHelper {
                 createChallengerSetEffect(soulType)
         );
         SET_BY_SOUL_TYPE.put(soulType, equipmentSet);
-        return List.of(equipmentSet);
+        return EquipmentSetGroup.of(equipmentSet);
     }
 
     public static List<EquipmentSet.Effect> createChallengerSetEffect(SoulType soulType) {

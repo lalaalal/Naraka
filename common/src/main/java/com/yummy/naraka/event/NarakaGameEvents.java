@@ -1,6 +1,7 @@
 package com.yummy.naraka.event;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.client.event.EquipmentSetGroup;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
@@ -9,8 +10,8 @@ import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.util.TickSchedule;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.item.NarakaItems;
-import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
@@ -29,8 +30,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-
-import java.util.List;
 
 public final class NarakaGameEvents {
     public static void initialize() {
@@ -107,9 +106,11 @@ public final class NarakaGameEvents {
     }
 
     private static void handleEquipmentSetEffect(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack previousStack, ItemStack currentStack) {
-        List<EquipmentSet> previousItemEquipmentSets = previousStack.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of());
-        List<EquipmentSet> currentItemEquipmentSets = currentStack.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of());
-        previousItemEquipmentSets.forEach(equipmentSetHolder -> equipmentSetHolder.updateEffect(livingEntity));
-        currentItemEquipmentSets.forEach(equipmentSetHolder -> equipmentSetHolder.updateEffect(livingEntity));
+        previousStack.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET_GROUP.get(), EquipmentSetGroup.EMPTY)
+                .update(livingEntity);
+        currentStack.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET_GROUP.get(), EquipmentSetGroup.EMPTY)
+                .update(livingEntity);
+        EntityDataHelper.getRawEntityData(livingEntity, NarakaEntityDataTypes.ACTIVE_EQUIPMENT_SET_GROUP.get())
+                .update(livingEntity);
     }
 }
