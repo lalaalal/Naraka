@@ -19,10 +19,10 @@ public abstract class CompassAngleStateMixin {
     private CompassAngleState.CompassTarget compassTarget;
 
     @ModifyExpressionValue(method = "calculate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/item/properties/numeric/CompassAngleState$CompassTarget;get(Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/ItemOwner;)Lnet/minecraft/core/GlobalPos;"))
-    protected GlobalPos modifyTargetPosition(GlobalPos original, @Local(argsOnly = true) ItemStack stack) {
+    protected GlobalPos modifyTargetPosition(GlobalPos original, @Local(argsOnly = true, name = "itemStack") ItemStack itemStack) {
         if (compassTarget != CompassAngleState.CompassTarget.NONE)
             return original;
-        SanctuaryTracker tracker = stack.get(NarakaDataComponentTypes.SANCTUARY_TRACKER.get());
+        SanctuaryTracker tracker = itemStack.get(NarakaDataComponentTypes.SANCTUARY_TRACKER.get());
         if (tracker == null)
             return original;
         return tracker.sanctuaryPos().orElse(original);

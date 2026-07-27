@@ -61,7 +61,6 @@ public abstract class HiddenOreRendererMixin {
     @Nullable
     private BlockModelResolver naraka$blockModelResolver;
 
-
     @Inject(method = "onResourceManagerReload", at = @At("RETURN"))
     private void prepareDimensionSkyRenderers(ResourceManager resourceManager, CallbackInfo ci) {
         DimensionSkyRendererRegistry.setup();

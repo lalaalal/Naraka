@@ -47,7 +47,8 @@
   },
   "accessWidener": "naraka.fabric.accesswidener",
   "mixins": [
-    "naraka.mixins.json"
+    "naraka.mixins.json",
+    "naraka.fabric.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",
