@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "${neoforge_loader_version_range}"
-#issueTrackerURL = ""
+issueTrackerURL = "https://github.com/lalaalal/Naraka/issues"
 license = "${license}"
 
 [[mods]]
@@ -23,7 +23,7 @@ side = "BOTH"
 [[dependencies.naraka]]
 modId = "minecraft"
 type = "required"
-versionRange = "[${minecraft_version},)"
+versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
 
