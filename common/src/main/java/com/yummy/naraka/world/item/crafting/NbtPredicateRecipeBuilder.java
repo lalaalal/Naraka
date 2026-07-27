@@ -2,27 +2,33 @@ package com.yummy.naraka.world.item.crafting;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.logging.LogUtils;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
-import com.yummy.naraka.NarakaMod;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.Holder;
-import net.minecraft.data.recipes.*;
+import net.minecraft.data.recipes.CraftingRecipeBuilder;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 
 public class NbtPredicateRecipeBuilder extends CraftingRecipeBuilder implements RecipeBuilder {
+    private static final Logger LOG = LogUtils.getLogger();
+
     private final RecipeCategory category;
     private final Item resultItem;
     private final ResourceLocation resultId;
@@ -103,7 +109,7 @@ public class NbtPredicateRecipeBuilder extends CraftingRecipeBuilder implements 
             super.serializeRecipeData(json);
             DataResult<JsonElement> result = NbtPredicateRecipe.MAP_CODEC.encode(recipe, JsonOps.INSTANCE, JsonOps.INSTANCE.mapBuilder())
                     .build(json);
-            JsonElement element = result.getOrThrow(false, NarakaMod.LOGGER::warn);
+            JsonElement element = result.getOrThrow(false, LOG::warn);
             for (Map.Entry<String, JsonElement> entry : element.getAsJsonObject().entrySet()) {
                 if (!json.has(entry.getKey()))
                     json.add(entry.getKey(), entry.getValue());

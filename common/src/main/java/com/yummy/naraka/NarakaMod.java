@@ -1,6 +1,5 @@
 package com.yummy.naraka;
 
-import com.mojang.logging.LogUtils;
 import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
 import com.yummy.naraka.client.init.NarakaClientInitializer;
 import com.yummy.naraka.commands.NarakaCommands;
@@ -41,15 +40,12 @@ import com.yummy.naraka.world.structure.piece.NarakaStructurePieceTypes;
 import com.yummy.naraka.world.structure.placement.NarakaStructurePlacementTypes;
 import com.yummy.naraka.world.structure.protection.NarakaProtectionPredicates;
 import net.minecraft.resources.ResourceLocation;
-import org.slf4j.Logger;
 
 public final class NarakaMod {
     public static final String MOD_ID = "naraka";
     public static boolean isDataGeneration = false;
     public static boolean isRegistryLoaded = false;
     public static boolean isModLoaded = false;
-    @Deprecated
-    public static final Logger LOGGER = LogUtils.getLogger();
 
     /**
      * @see com.yummy.naraka.client.NarakaModClient#initialize(NarakaClientInitializer)

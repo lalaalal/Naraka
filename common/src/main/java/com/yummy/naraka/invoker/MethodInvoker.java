@@ -1,6 +1,8 @@
 package com.yummy.naraka.invoker;
 
+import com.mojang.logging.LogUtils;
 import com.yummy.naraka.NarakaMod;
+import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 
@@ -34,6 +36,8 @@ import java.util.Set;
  * @see MethodInvoker#invoke(Object...)
  */
 public class MethodInvoker {
+    private static final Logger LOG = LogUtils.getLogger();
+
     private static final Set<Class<?>> SEARCHING_CLASSES = new HashSet<>();
     private static final Map<String, Method> CACHE = new HashMap<>();
 
@@ -206,12 +210,12 @@ public class MethodInvoker {
     private static Object invokeMethod(Method method, Object... parameters) {
         try {
             if (NarakaMod.isModLoaded)
-                NarakaMod.LOGGER.warn("Using method invoker after mod loaded ({})", method.getName());
+                LOG.warn("Using method invoker after mod loaded ({})", method.getName());
             return method.invoke(null, parameters);
         } catch (IllegalAccessException exception) {
             throw new RuntimeException(exception);
         } catch (InvocationTargetException exception) {
-            NarakaMod.LOGGER.error("An exception occurred during invoking method {}.{}", method.getDeclaringClass().getName(), method.getName());
+            LOG.error("An exception occurred during invoking method {}.{}", method.getDeclaringClass().getName(), method.getName());
             throw new RuntimeException(exception.getTargetException());
         }
     }

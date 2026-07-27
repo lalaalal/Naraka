@@ -2,9 +2,9 @@ package com.yummy.naraka.world.item.crafting;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.logging.LogUtils;
 import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -23,11 +23,14 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+import org.slf4j.Logger;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class NbtPredicateRecipe implements CraftingRecipe {
+    private static final Logger LOG = LogUtils.getLogger();
+
     public static final MapCodec<NbtPredicateRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     ResourceLocation.CODEC.fieldOf("id").forGetter(NbtPredicateRecipe::getId),
@@ -152,9 +155,9 @@ public class NbtPredicateRecipe implements CraftingRecipe {
             DataResult<MapLike<JsonElement>> mapResult = JsonOps.INSTANCE.getMap(serializedRecipe);
             DataResult<NbtPredicateRecipe> result = NbtPredicateRecipe.MAP_CODEC.decode(
                     JsonOps.INSTANCE,
-                    mapResult.getOrThrow(false, NarakaMod.LOGGER::warn)
+                    mapResult.getOrThrow(false, LOG::warn)
             );
-            return result.getOrThrow(false, NarakaMod.LOGGER::warn);
+            return result.getOrThrow(false, LOG::warn);
         }
 
         @Override
