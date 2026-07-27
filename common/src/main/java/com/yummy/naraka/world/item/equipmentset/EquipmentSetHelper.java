@@ -1,7 +1,6 @@
 package com.yummy.naraka.world.item.equipmentset;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.client.event.EquipmentSetGroup;
 import com.yummy.naraka.core.component.DataComponentCondition;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.HolderProxy;

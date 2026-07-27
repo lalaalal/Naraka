@@ -1,11 +1,11 @@
 package com.yummy.naraka.core.component;
 
 import com.mojang.serialization.Codec;
-import com.yummy.naraka.client.event.EquipmentSetGroup;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.component.SanctuaryTracker;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSetGroup;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.tooltip.DynamicItemLore;
 import net.minecraft.core.component.DataComponentType;
@@ -47,7 +47,7 @@ public class NarakaDataComponentTypes {
     );
 
     public static final HolderProxy<DataComponentType<?>, DataComponentType<EquipmentSetGroup>> EQUIPMENT_SET_GROUP = register(
-            "equipment_set",
+            "equipment_set_group",
             builder -> builder.persistent(EquipmentSetGroup.CODEC)
                     .networkSynchronized(EquipmentSetGroup.STREAM_CODEC)
     );

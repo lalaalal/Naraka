@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
-import com.yummy.naraka.client.event.EquipmentSetGroup;
 import com.yummy.naraka.core.component.DataComponentCondition;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.data.lang.LanguageKey;

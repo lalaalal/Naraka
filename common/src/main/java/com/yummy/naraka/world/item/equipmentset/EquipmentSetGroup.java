@@ -1,10 +1,9 @@
-package com.yummy.naraka.client.event;
+package com.yummy.naraka.world.item.equipmentset;
 
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.event.ItemEvents;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
-import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;

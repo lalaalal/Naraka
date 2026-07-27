@@ -1,7 +1,6 @@
 package com.yummy.naraka.event;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.client.event.EquipmentSetGroup;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
@@ -12,6 +11,7 @@ import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSetGroup;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import com.yummy.naraka.world.structure.protection.StructureProtector;
