@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ConcretePowderBlock.class)
 public abstract class ConcretePowderBlockMixin {
     @Inject(method = "shouldSolidify(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z", at = @At("HEAD"), cancellable = true)
-    private static void preventSolidifyInHerobrineBiome(BlockGetter level, BlockPos pos, BlockState state, CallbackInfoReturnable<Boolean> cir) {
+    private static void preventSolidifyInHerobrineBiome(BlockGetter level, BlockPos pos, BlockState replacedBlock, CallbackInfoReturnable<Boolean> cir) {
         if (level instanceof LevelReader levelReader && levelReader.getBiome(pos).is(NarakaBiomes.HEROBRINE)) {
             cir.cancel();
             cir.setReturnValue(false);
@@ -29,7 +29,7 @@ public abstract class ConcretePowderBlockMixin {
             require = 1,
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;isFaceSturdy(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;)Z")
     )
-    private static boolean preserveStateInHerobrineBiome(boolean original, @Local(argsOnly = true) BlockGetter level, @Local(argsOnly = true) BlockPos pos) {
+    private static boolean preserveStateInHerobrineBiome(boolean original, @Local(argsOnly = true, name = "level") BlockGetter level, @Local(argsOnly = true, name = "pos") BlockPos pos) {
         if (level instanceof LevelReader levelReader && levelReader.getBiome(pos).is(NarakaBiomes.HEROBRINE))
             return true;
         return original;

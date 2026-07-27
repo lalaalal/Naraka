@@ -62,9 +62,11 @@ public abstract class LevelRendererMixin {
             require = 1,
             at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/framegraph/FramePass;executes(Ljava/lang/Runnable;)V")
     )
-    public Runnable replaceHerobrineSkyPass(Runnable original, @Local(argsOnly = true) GpuBufferSlice gpuBufferSlice, @Local(name = "state") SkyRenderState state) {
+    public Runnable replaceHerobrineSkyPass(Runnable original,
+                                            @Local(argsOnly = true, name = "skyFog") GpuBufferSlice skyFog,
+                                            @Local(name = "state") SkyRenderState state) {
         if (state.skybox == DimensionType.Skybox.OVERWORLD && naraka$isHerobrineSkyEnabled())
-            return () -> HerobrineSkyRenderHelper.renderHerobrineSky(skyRenderer, gpuBufferSlice);
+            return () -> HerobrineSkyRenderHelper.renderHerobrineSky(skyRenderer, skyFog);
         return original;
     }
 
@@ -74,10 +76,16 @@ public abstract class LevelRendererMixin {
             require = 1,
             at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/framegraph/FramePass;executes(Ljava/lang/Runnable;)V")
     )
-    public Runnable speedUpClouds(Runnable original, @Local(argsOnly = true) CloudStatus cloudStatus, @Local(argsOnly = true) Vec3 cameraPosition, @Local(ordinal = 0, argsOnly = true) float partialTick, @Local(ordinal = 1, argsOnly = true) float cloudHeight, @Local(ordinal = 1, argsOnly = true) int cloudRange, @Local(ordinal = 0, argsOnly = true) long gameTime) {
+    public Runnable speedUpClouds(Runnable original,
+                                  @Local(argsOnly = true, name = "cloudStatus") CloudStatus cloudStatus,
+                                  @Local(argsOnly = true, name = "cameraPosition") Vec3 cameraPosition,
+                                  @Local(argsOnly = true, name = "partialTicks") float partialTicks,
+                                  @Local(argsOnly = true, name = "cloudHeight") float cloudHeight,
+                                  @Local(argsOnly = true, name = "cloudRange") int cloudRange,
+                                  @Local(argsOnly = true, name = "gameTime") long gameTime) {
         if (naraka$isHerobrineSkyEnabled()) {
             int speed = NarakaConfig.CLIENT.herobrineSkyCloudSpeed.getValue();
-            return () -> this.cloudRenderer.render(ARGB.white(0.8f), cloudStatus, cloudHeight, cloudRange, cameraPosition, gameTime * speed, partialTick * speed);
+            return () -> this.cloudRenderer.render(ARGB.white(0.8f), cloudStatus, cloudHeight, cloudRange, cameraPosition, gameTime * speed, partialTicks * speed);
         }
         return original;
     }

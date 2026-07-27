@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(LavaFogEnvironment.class)
 public abstract class LavaFogEnvironmentMixin extends FogEnvironment {
     @ModifyExpressionValue(method = "setupFog", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isSpectator()Z"))
-    public boolean setupFog(boolean original, @Local(argsOnly = true) Camera camera) {
+    public boolean setupFog(boolean original, @Local(argsOnly = true, name = "camera") Camera camera) {
         if (camera.entity() instanceof LivingEntity livingEntity && NarakaItemUtils.canApplyLavaVision(livingEntity))
             return true;
         return original;

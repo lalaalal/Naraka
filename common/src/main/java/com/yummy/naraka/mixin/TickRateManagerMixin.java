@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(TickRateManager.class)
 public abstract class TickRateManagerMixin {
     @ModifyReturnValue(method = "isEntityFrozen", at = @At("RETURN"))
-    public boolean checkKeepUnfrozen(boolean original, @Local(argsOnly = true) Entity entity) {
+    public boolean checkKeepUnfrozen(boolean original, @Local(argsOnly = true, name = "entity") Entity entity) {
         if (EntityDataHelper.getRawEntityData(entity, NarakaEntityDataTypes.KEEP_UNFROZEN.get()))
             return false;
         return original;

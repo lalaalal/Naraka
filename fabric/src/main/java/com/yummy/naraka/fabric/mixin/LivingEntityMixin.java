@@ -18,14 +18,14 @@ public abstract class LivingEntityMixin extends Entity {
         super(entityType, level);
     }
 
-    @ModifyVariable(method = "actuallyHurt", at = @At(value = "HEAD"), argsOnly = true)
-    public float handleHurtEvent(float damageAmount, @Local(argsOnly = true) DamageSource damageSource) {
-        return EntityEvents.LIVING_HURT.invoker().modifyDamage(naraka$self(), damageSource, damageAmount);
+    @ModifyVariable(method = "actuallyHurt", at = @At(value = "HEAD"), argsOnly = true, name = "dmg")
+    public float handleHurtEvent(float dmg, @Local(argsOnly = true, name = "source") DamageSource source) {
+        return EntityEvents.LIVING_HURT.invoker().modifyDamage(naraka$self(), source, dmg);
     }
 
-    @ModifyVariable(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getCombatTracker()Lnet/minecraft/world/damagesource/CombatTracker;"), argsOnly = true)
-    public float handleDamageEvent(float damageAmount, @Local(argsOnly = true) DamageSource damageSource) {
-        return EntityEvents.LIVING_DAMAGE.invoker().modifyDamage(naraka$self(), damageSource, damageAmount);
+    @ModifyVariable(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getCombatTracker()Lnet/minecraft/world/damagesource/CombatTracker;"), argsOnly = true, name = "dmg")
+    public float handleDamageEvent(float dmg, @Local(argsOnly = true, name = "source") DamageSource source) {
+        return EntityEvents.LIVING_DAMAGE.invoker().modifyDamage(naraka$self(), source, dmg);
     }
 
     @Unique
