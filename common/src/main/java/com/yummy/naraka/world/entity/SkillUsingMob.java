@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity;
 
+import com.mojang.logging.LogUtils;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncAnimationPacket;
@@ -19,11 +20,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.slf4j.Logger;
 
 import java.util.*;
 import java.util.function.Function;
 
 public abstract class SkillUsingMob extends PathfinderMob {
+    private static final Logger LOG = LogUtils.getLogger();
+
     protected final SkillManager skillManager = new SkillManager(this);
     protected final Map<Identifier, AnimationSelector> animationSelectors = new HashMap<>();
     protected final Map<Identifier, AnimationState> animations = new HashMap<>();
@@ -132,13 +136,13 @@ public abstract class SkillUsingMob extends PathfinderMob {
      * @param animationSetIdentifier Animation
      */
     public void setAnimation(Identifier animationSetIdentifier) {
-        NarakaMod.LOGGER.debug("{} : Setting animation {}", this, animationSetIdentifier);
+        LOG.debug("{} : Setting animation {}", this, animationSetIdentifier);
         if (!isPlayingStaticAnimation()) {
             currentAnimation = animationSelectors.getOrDefault(animationSetIdentifier, AnimationSelector.EMPTY)
                     .select();
             if (level() instanceof ServerLevel serverLevel) {
-                NarakaMod.LOGGER.debug("{} : Selecting animation ({}) from animation set ({})", this, currentAnimation, animationSetIdentifier);
-                NarakaMod.LOGGER.debug("{} : Sending animation ({}) sync packet", this, currentAnimation);
+                LOG.debug("{} : Selecting animation ({}) from animation set ({})", this, currentAnimation, animationSetIdentifier);
+                LOG.debug("{} : Sending animation ({}) sync packet", this, currentAnimation);
                 SyncAnimationPacket payload = new SyncAnimationPacket(this, currentAnimation);
                 NetworkManager.clientbound().send(serverLevel.players(), payload);
             }
@@ -155,10 +159,10 @@ public abstract class SkillUsingMob extends PathfinderMob {
      * @param animationIdentifier Animation
      */
     public void updateAnimation(Identifier animationIdentifier) {
-        NarakaMod.LOGGER.debug("{} : Updating animation {}", this, animationIdentifier);
+        LOG.debug("{} : Updating animation {}", this, animationIdentifier);
 
         if (!animations.containsKey(animationIdentifier))
-            NarakaMod.LOGGER.debug("{} is not registered animation for {}", animationIdentifier, this);
+            LOG.debug("{} is not registered animation for {}", animationIdentifier, this);
         animations.forEach((identifier, state) -> {
             if (animationIdentifier.equals(identifier))
                 state.start(tickCount);
