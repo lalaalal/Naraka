@@ -11,8 +11,7 @@
     "client.CraftingRecipeBookComponentMixin",
     "client.CuboidItemModelWrapperMixin",
     "client.EntityRenderDispatcherMixin",
-    "client.FlameFeatureRendererMixin",
-    "client.FlameFeatureSubmitMixin",
+    "client.FlameSubmitMixin",
     "client.FogRendererMixin",
     "client.GameRendererMixin",
     "client.HiddenOreRendererMixin",
@@ -24,7 +23,6 @@
     "client.ItemStackMixin",
     "client.KeyboardInputMixin",
     "client.LavaFogEnvironmentMixin",
-    "client.LevelExtractorMixin",
     "client.LevelRendererMixin",
     "client.LevelRenderStateMixin",
     "client.LivingEntityRendererMixin",
@@ -36,7 +34,7 @@
     "client.ScreenEffectRendererMixin",
     "client.SkyRendererMixin",
     "client.SkyRenderStateMixin",
-    "client.SubmitNodeCollectorMixin",
+    "client.SubmitNodeCollectionMixin",
     "client.WorldOpenFlowsMixin"
   ],
   "mixins": [

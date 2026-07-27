@@ -87,12 +87,12 @@ public class NarakaClientboundEventHandler {
 
     private static void showSkillControlScreen(Entity entity) {
         if (entity instanceof SkillUsingMob mob)
-            Minecraft.getInstance().gui.setScreen(new SkillControlScreen(mob));
+            Minecraft.getInstance().setScreen(new SkillControlScreen(mob));
     }
 
     private static void showAnimationControlScreen(Entity entity) {
         if (entity instanceof SkillUsingMob mob)
-            Minecraft.getInstance().gui.setScreen(new AnimationControlScreen(mob));
+            Minecraft.getInstance().setScreen(new AnimationControlScreen(mob));
     }
 
     private static void startHerobrineSky() {

@@ -9,7 +9,7 @@ import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
-import net.minecraft.advancements.triggers.CriteriaTriggers;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -17,7 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.datafix.DataFixTypes;
-import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -130,7 +130,7 @@ public class HerobrineTotemBlockEntity extends BlockEntity {
         herobrine.setAnimation(HerobrineAnimationIdentifiers.BLOCKING);
         level.addFreshEntity(herobrine);
 
-        LightningBolt lightningBolt = new LightningBolt(EntityTypes.LIGHTNING_BOLT, level);
+        LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
         lightningBolt.setVisualOnly(true);
         lightningBolt.setPos(herobrine.position());
         level.addFreshEntity(lightningBolt);

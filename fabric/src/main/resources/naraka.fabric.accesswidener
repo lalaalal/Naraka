@@ -2,6 +2,9 @@ accessWidener v2 official
 
 accessible method net/minecraft/client/particle/FlameParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
 
+accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
+accessible method net/minecraft/world/level/block/entity/BlockEntityType <init> (Lnet/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier;Ljava/util/Set;)V
+
 accessible method net/minecraft/client/gui/screens/recipebook/GhostSlots setInput (Lnet/minecraft/world/inventory/Slot;Lnet/minecraft/util/context/ContextMap;Lnet/minecraft/world/item/crafting/display/SlotDisplay;)V
 accessible method net/minecraft/client/particle/DripParticle$DripHangParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
 accessible method net/minecraft/client/particle/DripParticle$HoneyFallAndLandParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V

@@ -351,7 +351,7 @@ public class Herobrine extends AbstractHerobrine {
     public void stigmatizeEntity(ServerLevel level, LivingEntity target) {
         if (isAlive() && !target.is(NarakaEntityTypeTags.HEROBRINE) && getPhase() > 1) {
             StigmaHelper.increaseStigma(level, target, this, true);
-            if (target.is(ConventionalTags.Entities.BOSSES) || target.is(EntityTypes.PLAYER)) {
+            if (target.is(ConventionalTags.Entities.BOSSES) || target.is(EntityType.PLAYER)) {
                 watchingEntities.add(target.getUUID());
                 cachedWatchingEntities.put(target.getUUID(), target);
                 maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);

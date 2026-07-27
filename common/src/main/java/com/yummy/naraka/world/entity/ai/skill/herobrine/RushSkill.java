@@ -168,7 +168,7 @@ public class RushSkill<T extends SkillUsingMob & StigmatizingEntity> extends Att
         StunHelper.stunEntity(target, 100);
         mob.stigmatizeEntity(level, target);
         Vec3 delta = NarakaEntityUtils.getDirectionNormalVector(mob, target);
-        target.knockback(5, -delta.x, -delta.z, getDamageSource(), 0);
+        target.knockback(5, -delta.x, -delta.z);
     }
 
     @Override

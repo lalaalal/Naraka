@@ -6,6 +6,7 @@ import com.yummy.naraka.client.NarakaSprites;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.ScreenEffectRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -28,15 +29,19 @@ public abstract class ScreenEffectRendererMixin {
     private SpriteGetter sprites;
 
     @Shadow
-    private static void submitFire(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, TextureAtlasSprite sprite) {
+    private static void renderFire(PoseStack poseStack, MultiBufferSource bufferSource, TextureAtlasSprite sprite) {
         throw new UnsupportedOperationException("Implemented via mixin");
     }
 
-    @Inject(method = "submit", at = @At("RETURN"))
+    @Shadow
+    @Final
+    private MultiBufferSource bufferSource;
+
+    @Inject(method = "renderScreenEffect", at = @At("RETURN"))
     private void renderPurifiedSoulFIre(boolean isFirstPerson, boolean isSleeping, float partialTicks, SubmitNodeCollector submitNodeCollector, boolean hideGui, CallbackInfo ci, @Local(name = "poseStack") PoseStack poseStack) {
         if (minecraft.player != null && !minecraft.player.isSpectator() && this.minecraft.options.getCameraType().isFirstPerson()
                 && EntityDataHelper.getRawEntityData(minecraft.player, NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.get()) > 0) {
-            submitFire(poseStack, submitNodeCollector, sprites.get(NarakaSprites.PURIFIED_SOUL_FIRE_1));
+            renderFire(poseStack, this.bufferSource, sprites.get(NarakaSprites.PURIFIED_SOUL_FIRE_1));
         }
     }
 }

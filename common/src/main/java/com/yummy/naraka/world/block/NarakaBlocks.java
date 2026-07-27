@@ -3,16 +3,18 @@ package com.yummy.naraka.world.block;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
+import com.yummy.naraka.references.BlockItemId;
 import com.yummy.naraka.references.NarakaBlockIds;
 import com.yummy.naraka.references.NarakaBlockItemIds;
 import com.yummy.naraka.world.item.tooltip.NarakaItemTooltip;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -81,7 +83,7 @@ public class NarakaBlocks {
     );
     public static final HolderProxy<Block, NectariumCrystalBlock> NECTARIUM_CRYSTAL_BLOCK = registerBlockWithItem(
             NarakaBlockItemIds.NECTARIUM_CRYSTAL_BLOCK,
-            properties -> new NectariumCrystalBlock(NECTARIUM_CORE_BLOCK.get().defaultBlockState(), properties),
+            NectariumCrystalBlock::new,
             from(Blocks.AMETHYST_BLOCK).requiresCorrectToolForDrops()
     );
 
@@ -140,7 +142,7 @@ public class NarakaBlocks {
     );
 
     public static final HolderProxy<Block, Block> SOUL_INFUSED_REDSTONE_BLOCK = registerSoulInfusedBlock(NarakaBlockItemIds.SOUL_INFUSED_REDSTONE_BLOCK, Blocks.REDSTONE_BLOCK);
-    public static final HolderProxy<Block, Block> SOUL_INFUSED_COPPER_BLOCK = registerSoulInfusedBlock(NarakaBlockItemIds.SOUL_INFUSED_COPPER_BLOCK, Blocks.COPPER_BLOCK.weathering().unaffected());
+    public static final HolderProxy<Block, Block> SOUL_INFUSED_COPPER_BLOCK = registerSoulInfusedBlock(NarakaBlockItemIds.SOUL_INFUSED_COPPER_BLOCK, Blocks.COPPER_BLOCK);
     public static final HolderProxy<Block, Block> SOUL_INFUSED_GOLD_BLOCK = registerSoulInfusedBlock(NarakaBlockItemIds.SOUL_INFUSED_GOLD_BLOCK, Blocks.GOLD_BLOCK);
     public static final HolderProxy<Block, Block> SOUL_INFUSED_EMERALD_BLOCK = registerSoulInfusedBlock(NarakaBlockItemIds.SOUL_INFUSED_EMERALD_BLOCK, Blocks.EMERALD_BLOCK);
     public static final HolderProxy<Block, Block> SOUL_INFUSED_DIAMOND_BLOCK = registerSoulInfusedBlock(NarakaBlockItemIds.SOUL_INFUSED_DIAMOND_BLOCK, Blocks.DIAMOND_BLOCK);
@@ -279,7 +281,7 @@ public class NarakaBlocks {
         return registerBlockWithItem(id, Block::new, from(propertyBase));
     }
 
-    private static boolean always(BlockState state) {
+    private static boolean always(BlockState state, BlockGetter level, BlockPos pos) {
         return true;
     }
 

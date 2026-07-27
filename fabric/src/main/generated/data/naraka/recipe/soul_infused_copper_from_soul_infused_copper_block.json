@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "category": "misc",
   "group": "soul_infused_copper",
   "ingredients": [
     "naraka:soul_infused_copper_block"

@@ -6,8 +6,10 @@ import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.world.entity.EntityTypeIds;
+import net.minecraft.world.entity.EntityType;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -16,11 +18,16 @@ public class NarakaEntityTypeTagsProvider extends FabricTagsProvider.EntityTypeT
         super(output, registriesFuture);
     }
 
+    private static ResourceKey<EntityType<?>> vanillaEntityTypeId(EntityType<?> entityType) {
+        return BuiltInRegistries.ENTITY_TYPE.getResourceKey(entityType)
+                .orElseThrow();
+    }
+
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         builder(NarakaEntityTypeTags.DEATH_COUNTABLE)
                 .addTag(ConventionalTags.Entities.BOSSES)
-                .add(EntityTypeIds.PLAYER);
+                .add(vanillaEntityTypeId(EntityType.PLAYER));
         builder(NarakaEntityTypeTags.HEROBRINE)
                 .add(NarakaEntityTypes.HEROBRINE.key())
                 .add(NarakaEntityTypes.SHADOW_HEROBRINE.key())
@@ -48,7 +55,7 @@ public class NarakaEntityTypeTagsProvider extends FabricTagsProvider.EntityTypeT
                 .add(NarakaEntityTypes.NARAKA_PICKAXE.key());
 
         builder(NarakaEntityTypeTags.NARAKA_PORTAL_IGNORE)
-                .add(EntityTypeIds.EXPERIENCE_ORB)
+                .add(vanillaEntityTypeId(EntityType.EXPERIENCE_ORB))
                 .addTag(NarakaEntityTypeTags.HEROBRINE);
     }
 }

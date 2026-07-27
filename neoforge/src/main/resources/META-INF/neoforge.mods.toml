@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "${neoforge_loader_version_range}"
-#issueTrackerURL = ""
+issueTrackerURL = "https://github.com/lalaalal/Naraka/issues"
 license = "${license}"
 
 [[mods]]

@@ -8,7 +8,7 @@
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "minecraft:entity_type": "naraka:origin_herobrine"
+              "type": "naraka:origin_herobrine"
             }
           }
         ]

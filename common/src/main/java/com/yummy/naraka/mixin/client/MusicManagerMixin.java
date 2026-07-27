@@ -86,7 +86,7 @@ public abstract class MusicManagerMixin implements BossMusicPlayer {
         naraka$stopBossMusic = false;
         SoundEngine.PlayResult result = this.minecraft.getSoundManager().play(bossMusicSoundInstance);
         if (result == SoundEngine.PlayResult.STARTED) {
-            this.minecraft.gui.toastManager().showNowPlayingToast();
+            this.minecraft.getToastManager().showNowPlayingToast();
             this.toastShown = true;
         } else {
             this.toastShown = false;

@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.tags.TagAppender;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 
@@ -76,19 +77,19 @@ public class NarakaItemTagsProvider extends FabricTagsProvider.ItemTagsProvider 
                 .add(NarakaItems.PURIFIED_SOUL_LEGGINGS.key())
                 .add(NarakaItems.PURIFIED_SOUL_BOOTS.key());
 
-        TagAppender<Item> soulReinforceable = builder(NarakaItemTags.SOUL_REINFORCEABLE)
+        TagAppender<ResourceKey<Item>, Item> soulReinforceable = builder(NarakaItemTags.SOUL_REINFORCEABLE)
                 .addTag(NarakaItemTags.PURIFIED_SOUL_ARMOR)
                 .add(NarakaItems.PURIFIED_SOUL_SWORD.key());
         NarakaItems.SOUL_INFUSED_SWORDS.stream()
                 .map(HolderProxy::key)
                 .forEach(soulReinforceable::add);
 
-        TagAppender<Item> soulMaterials = builder(NarakaItemTags.SOUL_MATERIALS);
+        TagAppender<ResourceKey<Item>, Item> soulMaterials = builder(NarakaItemTags.SOUL_MATERIALS);
         NarakaItems.SOUL_INFUSED_ITEMS.stream()
                 .map(HolderProxy::key)
                 .forEach(soulMaterials::add);
 
-        TagAppender<Item> soulSwords = builder(NarakaItemTags.SOUL_SWORDS);
+        TagAppender<ResourceKey<Item>, Item> soulSwords = builder(NarakaItemTags.SOUL_SWORDS);
         NarakaItems.SOUL_INFUSED_SWORDS.stream()
                 .map(HolderProxy::key)
                 .forEach(soulSwords::add);

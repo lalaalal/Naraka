@@ -2,7 +2,6 @@ package com.yummy.naraka.references;
 
 import com.yummy.naraka.NarakaMod;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;

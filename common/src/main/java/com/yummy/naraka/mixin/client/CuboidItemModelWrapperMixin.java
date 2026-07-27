@@ -47,8 +47,6 @@ public abstract class CuboidItemModelWrapperMixin {
     @Unique
     private ChunkSectionLayer naraka$selectLayer(RenderType renderType, ChunkSectionLayer defaultLayer) {
         ColorTargetState colorTargetState = renderType.pipeline().getColorTargetState();
-        if (colorTargetState == null)
-            return defaultLayer;
         return colorTargetState.blendFunction()
                 .map(function -> function.equals(BlendFunction.TRANSLUCENT) ? ChunkSectionLayer.TRANSLUCENT : defaultLayer)
                 .orElse(defaultLayer);

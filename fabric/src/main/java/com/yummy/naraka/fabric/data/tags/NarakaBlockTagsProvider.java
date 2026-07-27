@@ -7,17 +7,23 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.tags.TagAppender;
-import net.minecraft.references.BlockIds;
-import net.minecraft.references.BlockItemIds;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.concurrent.CompletableFuture;
 
 public class NarakaBlockTagsProvider extends FabricTagsProvider.BlockTagsProvider {
     public NarakaBlockTagsProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
+    }
+
+    private static ResourceKey<Block> vanillaBlockId(Block block) {
+        return BuiltInRegistries.BLOCK.getResourceKey(block)
+                .orElseThrow();
     }
 
     @Override
@@ -50,20 +56,18 @@ public class NarakaBlockTagsProvider extends FabricTagsProvider.BlockTagsProvide
                 .add(NarakaBlocks.PURIFIED_SOUL_FIRE_BLOCK.key());
 
         builder(NarakaBlockTags.HEROBRINE_SANCTUARY_AIR_WRAP_TARGETS)
-                .add(BlockIds.WATER)
-                .add(BlockItemIds.GRAVEL)
+                .add(vanillaBlockId(Blocks.WATER))
+                .add(vanillaBlockId(Blocks.GRAVEL))
                 .forceAddTag(BlockTags.SAND);
         builder(NarakaBlockTags.HEROBRINE_SANCTUARY_LAVA_WRAP_TARGETS)
                 .forceAddTag(BlockTags.AIR)
-                .add(BlockIds.WATER);
-        builder(BlockTags.SPELEOTHEMS)
-                .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.key());
+                .add(vanillaBlockId(Blocks.WATER));
 
         builder(BlockTags.NEEDS_STONE_TOOL)
                 .add(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.key())
                 .add(NarakaBlocks.NECTARIUM_CORE_BLOCK.key());
 
-        TagAppender<Block> needsIronTool = builder(BlockTags.NEEDS_IRON_TOOL);
+        TagAppender<ResourceKey<Block>, Block> needsIronTool = builder(BlockTags.NEEDS_IRON_TOOL);
         needsIronTool
                 .add(NarakaBlocks.NECTARIUM_BLOCK.key())
                 .add(NarakaBlocks.NECTARIUM_ORE.key())
@@ -77,7 +81,7 @@ public class NarakaBlockTagsProvider extends FabricTagsProvider.BlockTagsProvide
         builder(NarakaBlockTags.NEEDS_NETHERITE_TOOL)
                 .add(NarakaBlocks.HEROBRINE_TOTEM.key())
                 .add(NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.key());
-        TagAppender<Block> mineableWithPickaxe = builder(BlockTags.MINEABLE_WITH_PICKAXE)
+        TagAppender<ResourceKey<Block>, Block> mineableWithPickaxe = builder(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(NarakaBlocks.HEROBRINE_TOTEM.key())
                 .add(NarakaBlocks.AMETHYST_SHARD_BLOCK.key())
                 .add(NarakaBlocks.NECTARIUM_BLOCK.key())

@@ -19,7 +19,6 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -186,7 +185,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     }
 
     private static boolean selectTarget(LivingEntity livingEntity) {
-        return isNotHerobrine(livingEntity) && (livingEntity.is(ConventionalTags.Entities.BOSSES) || livingEntity.getType() == EntityTypes.PLAYER);
+        return isNotHerobrine(livingEntity) && (livingEntity.is(ConventionalTags.Entities.BOSSES) || livingEntity.getType() == EntityType.PLAYER);
     }
 
     @Override

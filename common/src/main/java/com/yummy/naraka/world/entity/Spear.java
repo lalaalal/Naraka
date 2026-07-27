@@ -15,7 +15,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
@@ -153,7 +156,7 @@ public class Spear extends AbstractArrow {
     }
 
     protected boolean canHurtEntity(Entity entity) {
-        return entity.getType() != EntityTypes.ENDERMAN;
+        return entity.getType() != EntityType.ENDERMAN;
     }
 
     protected void hurtHitEntity(ServerLevel serverLevel, Entity entity) {

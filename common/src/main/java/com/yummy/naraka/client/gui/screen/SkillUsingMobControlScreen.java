@@ -51,13 +51,13 @@ public abstract class SkillUsingMobControlScreen extends Screen {
     }
 
     private void disableSkills(Button button) {
-        minecraft.gui.setScreen(null);
+        minecraft.setScreen(null);
         SkillRequestPacket payload = new SkillRequestPacket(SkillRequestPacket.Event.DISABLE, mob);
         NetworkManager.serverbound().send(payload);
     }
 
     private void onDone(Button button) {
-        minecraft.gui.setScreen(null);
+        minecraft.setScreen(null);
         LocationList.Entry entry = locationList.getSelected();
         if (entry != null)
             select(entry);
@@ -65,7 +65,7 @@ public abstract class SkillUsingMobControlScreen extends Screen {
 
     private Button.OnPress action(SkillRequestPacket.Event event) {
         return button -> {
-            minecraft.gui.setScreen(null);
+            minecraft.setScreen(null);
             if (locationList.getSelected() == null)
                 return;
             SkillRequestPacket payload = new SkillRequestPacket(event, mob, locationList.getSelected().location);

@@ -12,7 +12,6 @@ import net.minecraft.world.attribute.BedRule;
 import net.minecraft.world.attribute.EnvironmentAttributeMap;
 import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.CardinalLighting;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.timeline.Timeline;
 
@@ -23,7 +22,6 @@ public class NarakaDimensionTypes {
 
     public static void bootstrap(BootstrapContext<DimensionType> context) {
         HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
-        HolderGetter<Block> blocks = context.lookup(Registries.BLOCK);
         context.register(NARAKA, new DimensionType(
                 true,
                 true,
@@ -33,7 +31,7 @@ public class NarakaDimensionTypes {
                 0,
                 256,
                 128,
-                blocks.getOrThrow(BlockTags.INFINIBURN_OVERWORLD),
+                BlockTags.INFINIBURN_OVERWORLD,
                 1,
                 new DimensionType.MonsterSettings(ConstantInt.ZERO, 0),
                 DimensionType.Skybox.OVERWORLD,

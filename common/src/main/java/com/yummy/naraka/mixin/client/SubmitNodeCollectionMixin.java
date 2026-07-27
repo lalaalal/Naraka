@@ -4,24 +4,25 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.yummy.naraka.client.renderer.feature.FlameFeatureSubmitExtension;
 import com.yummy.naraka.client.renderer.feature.PurifiedSoulFireSubmitNodeCollector;
 import net.minecraft.client.renderer.SubmitNodeCollection;
+import net.minecraft.client.renderer.SubmitNodeStorage;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.feature.FlameFeatureRenderer;
-import net.minecraft.client.renderer.feature.phase.SimpleFeatureRenderPhase;
 import org.joml.Quaternionf;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
+import java.util.List;
+
 @Mixin(SubmitNodeCollection.class)
-public abstract class SubmitNodeCollectorMixin implements PurifiedSoulFireSubmitNodeCollector {
+public abstract class SubmitNodeCollectionMixin implements PurifiedSoulFireSubmitNodeCollector {
     @Shadow
     @Final
-    public SimpleFeatureRenderPhase solid;
+    private List<SubmitNodeStorage.FlameSubmit> flameSubmits;
 
     @Override
     public void naraka$submitPurifiedSoulFlame(PoseStack poseStack, EntityRenderState entityRenderState, Quaternionf quaternionf) {
-        FlameFeatureRenderer.Submit submit = new FlameFeatureRenderer.Submit(poseStack.last().copy(), entityRenderState, quaternionf);
+        SubmitNodeStorage.FlameSubmit submit = new SubmitNodeStorage.FlameSubmit(poseStack.last().copy(), entityRenderState, quaternionf);
         ((FlameFeatureSubmitExtension) (Object) submit).naraka$setPurifiedSoulFire();
-        this.solid.submit(submit);
+        this.flameSubmits.add(submit);
     }
 }

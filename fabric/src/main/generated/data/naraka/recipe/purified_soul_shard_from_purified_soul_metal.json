@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "category": "misc",
   "group": "purified_soul_shard",
   "ingredients": [
     "naraka:purified_soul_metal"

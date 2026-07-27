@@ -52,8 +52,8 @@ import net.minecraft.world.item.equipment.trim.TrimMaterials;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DripstoneThickness;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.properties.SpeleothemThickness;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,20 +109,20 @@ public class NarakaModelProvider extends FabricModelProvider {
     }
 
     private static void createNectariumCrystal(BlockModelGenerators generator) {
-        PropertyDispatch.C2<MultiVariant, Direction, SpeleothemThickness> properties = PropertyDispatch.initial(
-                BlockStateProperties.VERTICAL_DIRECTION, BlockStateProperties.SPELEOTHEM_THICKNESS
+        PropertyDispatch.C2<MultiVariant, Direction, DripstoneThickness> properties = PropertyDispatch.initial(
+                BlockStateProperties.VERTICAL_DIRECTION, BlockStateProperties.DRIPSTONE_THICKNESS
         );
 
-        for (SpeleothemThickness dripstoneThickness : SpeleothemThickness.values())
+        for (DripstoneThickness dripstoneThickness : DripstoneThickness.values())
             properties.select(Direction.UP, dripstoneThickness, createNectariumCrystalVariant(generator, Direction.UP, dripstoneThickness));
 
-        for (SpeleothemThickness dripstoneThickness : SpeleothemThickness.values())
+        for (DripstoneThickness dripstoneThickness : DripstoneThickness.values())
             properties.select(Direction.DOWN, dripstoneThickness, createNectariumCrystalVariant(generator, Direction.DOWN, dripstoneThickness));
 
         generator.blockStateOutput.accept(MultiVariantGenerator.dispatch(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get()).with(properties));
     }
 
-    private static MultiVariant createNectariumCrystalVariant(BlockModelGenerators generator, Direction direction, SpeleothemThickness dripstoneThickness) {
+    private static MultiVariant createNectariumCrystalVariant(BlockModelGenerators generator, Direction direction, DripstoneThickness dripstoneThickness) {
         String model_name = "_" + direction.getSerializedName() + "_" + dripstoneThickness.getSerializedName();
         TextureMapping textureMapping = TextureMapping.cross(TextureMapping.getBlockTexture(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get(), model_name));
         Identifier model = ModelTemplates.POINTED_DRIPSTONE.createWithSuffix(NarakaBlocks.NECTARIUM_CRYSTAL_BLOCK.get(), model_name, textureMapping, generator.modelOutput);
