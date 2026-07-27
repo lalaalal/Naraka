@@ -8,7 +8,6 @@ import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.ItemEvents;
 import com.yummy.naraka.util.ComponentStyles;
-import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.tooltip.DynamicItemLore;
 import net.minecraft.client.DeltaTracker;
@@ -25,7 +24,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public class NarakaClientEvents {
@@ -87,13 +85,12 @@ public class NarakaClientEvents {
     }
 
     private static void addItemTooltipsTop(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
-        List<EquipmentSet> equipmentSets = item.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET.get(), List.of());
-        for (EquipmentSet equipmentSet : equipmentSets)
-            equipmentSet.addToTooltip(item, context, player, tooltipFlag, shiftKeyPressed, builder);
+        EquipmentSetGroup equipmentSetGroup = item.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET_GROUP.get(), EquipmentSetGroup.EMPTY);
+        equipmentSetGroup.addToTooltip(item, context, player, tooltipFlag, shiftKeyPressed, builder);
         Reinforcement reinforcement = item.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT.get(), Reinforcement.ZERO);
         boolean reinforcementHasTooltip = reinforcement.hasTooltip();
         boolean hasDynamicItemLore = !item.getOrDefault(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), DynamicItemLore.EMPTY).isEmpty();
-        if (!equipmentSets.isEmpty() && !reinforcementHasTooltip && !hasDynamicItemLore)
+        if (!equipmentSetGroup.isEmpty() && !reinforcementHasTooltip && !hasDynamicItemLore)
             builder.accept(Component.empty());
         if (reinforcementHasTooltip) {
             reinforcement.addToTooltip(context, builder, tooltipFlag, item);

@@ -3,6 +3,7 @@ package com.yummy.naraka.world.entity.data;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.client.event.EquipmentSetGroup;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;
@@ -67,6 +68,11 @@ public class NarakaEntityDataTypes {
             "motion_data", EntityDataType.builder(MotionData.CODEC, MotionEntity.class)
                     .networkSynchronized(MotionData.STREAM_CODEC)
                     .defaultValue(MotionData.DEFAULT)
+    );
+    public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<EquipmentSetGroup, LivingEntity>> ACTIVE_EQUIPMENT_SET_GROUP = register(
+            "active_equipment_set_group", EntityDataType.living(EquipmentSetGroup.CODEC)
+                    .networkSynchronized(EquipmentSetGroup.STREAM_CODEC)
+                    .defaultValue(EquipmentSetGroup.EMPTY)
     );
 
     private static void tickPurifiedSoulFire(LivingEntity livingEntity, int purifiedSoulFireTick) {

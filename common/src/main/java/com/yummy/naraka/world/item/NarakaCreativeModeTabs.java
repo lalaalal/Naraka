@@ -194,7 +194,7 @@ public class NarakaCreativeModeTabs {
 
     private static ItemStack challenger(Holder<Item> item, SoulType soulType, HolderLookup.Provider registries) {
         DataComponentPatch.Builder builder = trimmed(DataComponentPatch.builder(), soulType, registries);
-        builder.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), EquipmentSetHelper.createChallengerSet(soulType));
+        builder.set(NarakaDataComponentTypes.EQUIPMENT_SET_GROUP.get(), EquipmentSetHelper.createChallengerSet(soulType));
 
         ItemStack itemStack = new ItemStack(item, 1, builder.build());
         while (Reinforcement.canReinforce(itemStack))
@@ -212,7 +212,7 @@ public class NarakaCreativeModeTabs {
     private static ItemStack blessed(Holder<Item> item, SoulType soulType, HolderLookup.Provider registries) {
         DataComponentPatch.Builder builder = trimmed(DataComponentPatch.builder(), soulType, registries);
         blessed(builder);
-        builder.set(NarakaDataComponentTypes.EQUIPMENT_SET.get(), EquipmentSetHelper.createBlessedSet());
+        builder.set(NarakaDataComponentTypes.EQUIPMENT_SET_GROUP.get(), EquipmentSetHelper.createBlessedSet());
 
         ItemStack itemStack = new ItemStack(item, 1, builder.build());
         while (Reinforcement.canReinforce(itemStack))

@@ -288,7 +288,7 @@ public class NarakaItems {
                                 .rarity(Rarity.RARE)
                                 .component(NarakaDataComponentTypes.SOUL.get(), type)
                                 .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.SOUL_INFUSED_SWORDS.tooltip())
-                                .delayedComponent(NarakaDataComponentTypes.EQUIPMENT_SET.get(), _ -> EquipmentSetHelper.createChallengerSet(type))
+                                .delayedComponent(NarakaDataComponentTypes.EQUIPMENT_SET_GROUP.get(), _ -> EquipmentSetHelper.createChallengerSet(type))
                                 .component(DataComponents.UNBREAKABLE, Unit.INSTANCE),
                         type.color
                 )
