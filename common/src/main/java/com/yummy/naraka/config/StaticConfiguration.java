@@ -1,6 +1,7 @@
 package com.yummy.naraka.config;
 
-import com.yummy.naraka.NarakaMod;
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,6 +17,8 @@ import java.util.function.Function;
  * Configuration whose key set is fixed.
  */
 public abstract class StaticConfiguration extends Configuration {
+    private static final Logger LOG = LogUtils.getLogger();
+
     protected final Map<String, ConfigValue<?>> configurations = new LinkedHashMap<>();
 
     protected StaticConfiguration(String name, Function<String, ConfigFile> configFileFactory) {
@@ -43,7 +46,7 @@ public abstract class StaticConfiguration extends Configuration {
 
     @Override
     public synchronized void loadValues() {
-        NarakaMod.LOGGER.debug("Loading static configuration \"{}\"", name);
+        LOG.info("Loading static configuration \"{}\"", name);
         try (Reader reader = file.createReader()) {
             file.load(reader);
             AtomicInteger counter = new AtomicInteger(0);
@@ -55,27 +58,26 @@ public abstract class StaticConfiguration extends Configuration {
             if (counter.get() < configurations.size())
                 saveValues();
         } catch (FileNotFoundException exception) {
-            NarakaMod.LOGGER.warn("Configuration file \"{}\" is not found", file.getFileName());
+            LOG.warn("Configuration file \"{}\" is not found", file.getFileName());
             saveValues();
         } catch (IOException exception) {
-            NarakaMod.LOGGER.error("An error occurred while loading config values");
-            NarakaMod.LOGGER.warn("Using default values for configuration \"{}\"", name);
+            LOG.error("An error occurred while loading config values");
+            LOG.warn("Using default values for configuration \"{}\"", name);
         }
     }
 
     @Override
     public synchronized void saveValues() {
-        NarakaMod.LOGGER.debug("Saving static configuration \"{}\" to \"{}\"", name, file.getAbsolutePath());
+        LOG.info("Saving static configuration \"{}\" to \"{}\"", name, file.getAbsolutePath());
         try (Writer writer = file.createWriter()) {
             for (Map.Entry<String, ConfigValue<?>> entry : configurations.entrySet()) {
                 String key = entry.getKey();
                 ConfigValue<?> value = entry.getValue();
-                file.write(writer, key, value);
+                file.appendToBuffer(key, value);
             }
             file.commit(writer);
         } catch (IOException exception) {
-            NarakaMod.LOGGER.error("An error occurred while saving config values");
+            LOG.error("An error occurred while saving config values");
         }
     }
-
 }

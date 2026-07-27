@@ -10,13 +10,11 @@ public interface ConfigWriter {
     /**
      * Write a single configuration.
      *
-     * @param writer Writer
      * @param key    Key of configuration
      * @param value  Configuration value
      * @param <T>    Configuration type
-     * @throws IOException If an I/O exception occurs
      */
-    <T> void write(Writer writer, String key, StaticConfiguration.ConfigValue<T> value) throws IOException;
+    <T> void appendToBuffer(String key, StaticConfiguration.ConfigValue<T> value);
 
     /**
      * Actually write to file.

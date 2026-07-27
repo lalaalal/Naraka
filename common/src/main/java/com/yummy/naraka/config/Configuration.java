@@ -22,6 +22,10 @@ public abstract class Configuration {
         this.file = configFileFactory.apply(name);
     }
 
+    public String getFileName() {
+        return file.getFileName();
+    }
+
     public abstract void loadValues();
 
     public abstract void saveValues();

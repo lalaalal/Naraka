@@ -4,16 +4,20 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import com.yummy.naraka.NarakaMod;
+import com.mojang.logging.LogUtils;
 import com.yummy.naraka.util.NarakaGsonUtils;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Objects;
 import java.util.Set;
 
 public class JsonConfigFile extends ConfigFile {
-    private JsonObject cache = new JsonObject();
+    private static final Logger LOG = LogUtils.getLogger();
+
+    private JsonObject buffer = new JsonObject();
 
     public JsonConfigFile(String configFileName) {
         super(configFileName);
@@ -26,67 +30,56 @@ public class JsonConfigFile extends ConfigFile {
 
     @Override
     public Reader createReader() throws IOException {
-        this.cache = new JsonObject();
+        this.buffer = new JsonObject();
         return super.createReader();
     }
 
     @Override
     public Writer createWriter() throws IOException {
-        this.cache = new JsonObject();
+        this.buffer = new JsonObject();
         return super.createWriter();
     }
 
     @Override
-    public Set<String> getKeySet() {
-        return cache.keySet();
-    }
-
-    @Override
     public Set<String> load(Reader reader) {
-        checkReader(reader);
-        this.cache = readJsonObject(reader);
-        return cache.keySet();
+        this.buffer = readJsonObject(reader);
+        return buffer.keySet();
     }
 
     private JsonObject readJsonObject(Reader reader) {
         try {
-            JsonObject result = NarakaGsonUtils.GSON.fromJson(reader, JsonObject.class);
-            if (result == null)
-                return new JsonObject();
-            return result;
+            return Objects.requireNonNullElse(NarakaGsonUtils.GSON.fromJson(reader, JsonObject.class), new JsonObject());
         } catch (JsonIOException exception) {
-            NarakaMod.LOGGER.error("An error occurred while reading config \"{}\"", getConfigName());
-            NarakaMod.LOGGER.error(exception.getMessage());
+            LOG.error("An error occurred while reading config \"{}\"", getConfigName());
+            LOG.error(exception.getMessage());
         } catch (JsonSyntaxException exception) {
-            NarakaMod.LOGGER.error("Json syntax error found in \"{}\"", getConfigName());
-            NarakaMod.LOGGER.error(exception.getMessage());
-            NarakaMod.LOGGER.warn("Ignore all config values in \"{}\"", getConfigName());
+            LOG.error("Json syntax error found in \"{}\"", getConfigName());
+            LOG.error(exception.getMessage());
+            LOG.warn("Ignore all config values in \"{}\"", getConfigName());
         }
         return new JsonObject();
     }
 
     @Override
     public boolean contains(String key) {
-        return cache.has(key);
+        return buffer.has(key);
     }
 
     @Override
     public <T> void read(String key, Configuration.ConfigValue<T> configValue) {
-        JsonElement element = cache.get(key);
+        JsonElement element = buffer.get(key);
         T value = NarakaGsonUtils.GSON.fromJson(element, configValue.getType());
         configValue.set(value);
     }
 
     @Override
-    public <T> void write(Writer writer, String key, Configuration.ConfigValue<T> value) {
+    public <T> void appendToBuffer(String key, Configuration.ConfigValue<T> value) {
         JsonElement element = NarakaGsonUtils.GSON.toJsonTree(value.getValue());
-        cache.add(key, element);
+        buffer.add(key, element);
     }
 
     @Override
-    public void commit(Writer writer) throws IOException {
-        checkWriter(writer);
-        NarakaGsonUtils.GSON.toJson(cache, writer);
-        writer.flush();
+    protected void write(Writer writer) {
+        NarakaGsonUtils.GSON.toJson(buffer, writer);
     }
 }

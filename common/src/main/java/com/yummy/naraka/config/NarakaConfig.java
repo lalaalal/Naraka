@@ -1,8 +1,9 @@
 package com.yummy.naraka.config;
 
-import com.yummy.naraka.NarakaMod;
+import com.mojang.logging.LogUtils;
 import com.yummy.naraka.Platform;
 import com.yummy.naraka.client.NarakaClientContext;
+import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 
@@ -17,6 +18,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 public class NarakaConfig {
+    private static final Logger LOG = LogUtils.getLogger();
     private static @Nullable WatchService watchService;
 
     private static final Set<Configuration> CONFIGURATIONS = new HashSet<>();
@@ -51,7 +53,7 @@ public class NarakaConfig {
             thread.setName("Config Watcher");
             thread.start();
         } catch (IOException e) {
-            NarakaMod.LOGGER.warn("Cannot watch config directory ({})", ConfigFile.CONFIG_PATH);
+            LOG.warn("Cannot watch config directory ({})", ConfigFile.CONFIG_PATH);
         }
     }
 
@@ -91,6 +93,9 @@ public class NarakaConfig {
             while ((watchKey = watchService.take()) != null) {
                 for (WatchEvent<?> event : watchKey.pollEvents()) {
                     String changedFileName = event.context().toString();
+                    CONFIGURATIONS.stream().filter(configuration -> configuration.getFileName().equals(changedFileName))
+                            .findAny()
+                            .ifPresent(Configuration::loadValues);
                     if (changedFileName.equals("iris.properties") && Platform.getInstance().getSide() == Platform.Side.CLIENT)
                         checkIris();
                 }
