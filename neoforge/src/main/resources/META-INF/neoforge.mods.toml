@@ -1,14 +1,14 @@
 modLoader = "javafml"
-loaderVersion = "[2,)"
-#issueTrackerURL = ""
-license = "MIT"
+loaderVersion = "${neoforge_loader_version_range}"
+issueTrackerURL = "https://github.com/lalaalal/Naraka/issues"
+license = "${license}"
 
 [[mods]]
 modId = "naraka"
 version = "${version}"
 displayName = "Naraka"
-authors = "lalaalal, joachimbeen, noon414, GuEunso, Gyeon___"
-credits = "Qiye_Duyu, h2o/aoinnman, Player_7, htohtosgoy, lfScarf"
+authors = "${mod_author}"
+credits = "${credits}"
 description = '''${description}'''
 logoFile = "naraka.png"
 displayURL = "https://github.com/lalaalal/Naraka"
@@ -16,14 +16,14 @@ displayURL = "https://github.com/lalaalal/Naraka"
 [[dependencies.naraka]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.0,)"
+versionRange = "[${neoforge_version},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.naraka]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21,1.21.1]"
+versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
 
@@ -32,3 +32,8 @@ config = "naraka.mixins.json"
 
 [[mixins]]
 config = "naraka.mixins.neoforge.json"
+
+[[accessTransformers]]
+file = "META-INF/accesstransformer.cfg"
+
+

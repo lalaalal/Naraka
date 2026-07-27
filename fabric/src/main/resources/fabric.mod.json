@@ -19,9 +19,10 @@
     "lfScarf"
   ],
   "contact": {
-    "homepage": "https://github.com/lalaalal/Naraka"
+    "sources": "https://github.com/lalaalal/Naraka",
+    "issues": "https://github.com/lalaalal/Naraka/issues"
   },
-  "license": "MIT",
+  "license": "${license}",
   "icon": "naraka.png",
   "environment": "*",
   "entrypoints": {
@@ -47,9 +48,9 @@
     "naraka.fabric.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.15.11",
-    "minecraft": "~1.21",
-    "java": ">=21",
-    "fabric-api": "*"
+    "fabricloader": ">=${fabric_loader_version}",
+    "minecraft": "~${minecraft_version}",
+    "java": ">=${java_version}",
+    "fabric-api": ">=${fabric_api_version}"
   }
 }
