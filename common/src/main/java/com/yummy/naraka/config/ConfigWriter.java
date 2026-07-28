@@ -1,7 +1,6 @@
 package com.yummy.naraka.config;
 
 import java.io.IOException;
-import java.io.Writer;
 
 /**
  * Interface for writing configuration to file.
@@ -16,11 +15,14 @@ public interface ConfigWriter {
      */
     <T> void appendToBuffer(String key, StaticConfiguration.ConfigValue<T> value);
 
+    default <T> void appendToBuffer(Configuration.ConfigValue<T> value) {
+        appendToBuffer(value.getKey(), value);
+    }
+
     /**
      * Actually write to file.
      *
-     * @param writer File writer
      * @throws IOException If an I/O exception occurs
      */
-    void commit(Writer writer) throws IOException;
+    void commit() throws IOException;
 }
