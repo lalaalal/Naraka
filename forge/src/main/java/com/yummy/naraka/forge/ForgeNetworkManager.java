@@ -1,8 +1,10 @@
 package com.yummy.naraka.forge;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.invoker.MethodProxy;
-import com.yummy.naraka.network.*;
+import com.yummy.naraka.network.ClientboundNetworkManager;
+import com.yummy.naraka.network.CustomPacketPayload;
+import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.PacketRegistrar;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
@@ -14,7 +16,6 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-@SuppressWarnings("unused")
 public final class ForgeNetworkManager implements NarakaEventBus {
     private static final String VERSION = "3";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
@@ -24,19 +25,6 @@ public final class ForgeNetworkManager implements NarakaEventBus {
             VERSION::equals
     );
     private static int id = 1;
-
-    private static final ClientboundNetworkManager CLIENTBOUND = new ForgeClientboundNetworkManager();
-    private static final PacketRegistrar SERVER_PACKET_REGISTRAR = new ForgeServerPacketRegistrar();
-
-    @MethodProxy(NetworkManager.class)
-    public static ClientboundNetworkManager clientbound() {
-        return CLIENTBOUND;
-    }
-
-    @MethodProxy(NarakaNetworks.class)
-    public static PacketRegistrar getServerPacketRegistrar() {
-        return SERVER_PACKET_REGISTRAR;
-    }
 
     public static int getNextId() {
         return id++;
@@ -51,7 +39,7 @@ public final class ForgeNetworkManager implements NarakaEventBus {
         };
     }
 
-    private static class ForgeServerPacketRegistrar implements PacketRegistrar {
+    public static class ForgeServerPacketRegistrar implements PacketRegistrar.Server {
         private <T extends CustomPacketPayload<T>> BiConsumer<T, Supplier<NetworkEvent.Context>> handleMessage(NetworkManager.PacketHandler<T> handler) {
             return (msg, context) -> {
                 context.get().enqueueWork(() -> handler.handle(msg, createContext(context)));
@@ -78,7 +66,7 @@ public final class ForgeNetworkManager implements NarakaEventBus {
         }
     }
 
-    private static class ForgeClientboundNetworkManager implements ClientboundNetworkManager {
+    public static class ForgeClientboundNetworkManager implements ClientboundNetworkManager {
         @Override
         public <T extends CustomPacketPayload<T>> void send(ServerPlayer player, T payload) {
             INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), payload);

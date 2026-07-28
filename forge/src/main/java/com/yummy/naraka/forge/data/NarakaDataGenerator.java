@@ -3,7 +3,7 @@ package com.yummy.naraka.forge.data;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.data.worldgen.features.NarakaConfiguredFeatures;
 import com.yummy.naraka.data.worldgen.placement.NarakaPlacements;
-import com.yummy.naraka.forge.init.ForgeBiomeModifier;
+import com.yummy.naraka.forge.init.ForgeBiomeModificationRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -24,7 +24,7 @@ public class NarakaDataGenerator {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(Registries.PLACED_FEATURE, NarakaPlacements::bootstrap)
             .add(Registries.CONFIGURED_FEATURE, NarakaConfiguredFeatures::bootstrap)
-            .add(ForgeRegistries.Keys.BIOME_MODIFIERS, ForgeBiomeModifier::bootstrap);
+            .add(ForgeRegistries.Keys.BIOME_MODIFIERS, ForgeBiomeModificationRegistry::bootstrap);
 
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {

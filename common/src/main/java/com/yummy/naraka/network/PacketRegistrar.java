@@ -4,4 +4,12 @@ public interface PacketRegistrar {
     <T extends CustomPacketPayload<T>> void define(CustomPacketPayload.Type<T> type);
 
     <T extends CustomPacketPayload<T>> void register(CustomPacketPayload.Type<T> type, NetworkManager.PacketHandler<T> handler);
+
+    interface Server extends PacketRegistrar {
+
+    }
+
+    interface Client extends PacketRegistrar {
+
+    }
 }

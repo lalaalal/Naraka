@@ -3,7 +3,6 @@ package com.yummy.naraka.forge.client;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.init.BuiltinResourcePackRegistry;
 import com.yummy.naraka.forge.NarakaEventBus;
-import com.yummy.naraka.invoker.MethodProxy;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -16,9 +15,9 @@ import net.minecraftforge.resource.PathPackResources;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
-public final class ForgeBuiltinResourcePackRegistry implements NarakaEventBus {
-    @MethodProxy(BuiltinResourcePackRegistry.class)
-    public static void register(ResourceLocation resourcePackId, Component displayName) {
+public final class ForgeBuiltinResourcePackRegistry implements BuiltinResourcePackRegistry.Registrar, NarakaEventBus {
+    @Override
+    public void register(ResourceLocation resourcePackId, Component displayName) {
         String packDirectory = "resourcepacks/" + resourcePackId.getPath();
         NARAKA_BUS.addListener((Consumer<AddPackFindersEvent>) event -> {
             event.addRepositorySource(

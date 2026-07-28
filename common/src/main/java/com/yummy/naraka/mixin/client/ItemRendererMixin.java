@@ -3,26 +3,17 @@ package com.yummy.naraka.mixin.client;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.renderer.CustomRenderManager;
-import com.yummy.naraka.client.renderer.VertexConsumerExtension;
-import com.yummy.naraka.util.Color;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.Direction;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.List;
 
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
@@ -50,42 +41,15 @@ public abstract class ItemRendererMixin {
         return original;
     }
 
-    @Inject(method = "renderModelLists", at = @At("HEAD"), cancellable = true)
-    public void renderCustom(BakedModel model, ItemStack stack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer buffer, CallbackInfo ci) {
-        if (CustomRenderManager.shouldRenderColored(stack)) {
-            ci.cancel();
-            naraka$renderColoredModelLists(model, stack, combinedLight, combinedOverlay, poseStack, buffer);
-        }
+    @ModifyExpressionValue(method = "renderQuadList", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/block/model/BakedQuad;isTinted()Z"))
+    private boolean shouldRenderColored(boolean original, @Local(argsOnly = true) ItemStack stack) {
+        return original || CustomRenderManager.shouldRenderColored(stack);
     }
 
-    @Unique
-    private void naraka$renderColoredModelLists(BakedModel model, ItemStack stack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer buffer) {
-        Color color = CustomRenderManager.getItemColor(stack);
-        naraka$renderModelLists(model, stack, combinedLight, combinedOverlay, poseStack, buffer, color);
-    }
-
-    @Unique
-    private void naraka$renderModelLists(BakedModel model, ItemStack stack, int combinedLight, int combinedOverlay, PoseStack poseStack, VertexConsumer buffer, Color color) {
-        RandomSource randomSource = RandomSource.create();
-
-        for (Direction direction : Direction.values()) {
-            randomSource.setSeed(42L);
-            this.naraka$renderColoredQuadList(poseStack, buffer, model.getQuads(null, direction, randomSource), stack, combinedLight, combinedOverlay, color);
-        }
-
-        randomSource.setSeed(42L);
-        this.naraka$renderColoredQuadList(poseStack, buffer, model.getQuads(null, null, randomSource), stack, combinedLight, combinedOverlay, color);
-    }
-
-    @Unique
-    private void naraka$renderColoredQuadList(PoseStack poseStack, VertexConsumer buffer, List<BakedQuad> quads, ItemStack itemStack, int combinedLight, int combinedOverlay, Color color) {
-        if (itemStack.isEmpty())
-            return;
-        PoseStack.Pose pose = poseStack.last();
-
-        if (buffer instanceof VertexConsumerExtension extension) {
-            for (BakedQuad bakedQuad : quads)
-                extension.naraka$putBulkData(pose, bakedQuad, color.red01(), color.green01(), color.blue01(), color.alpha01(), combinedLight, combinedOverlay);
-        }
+    @ModifyExpressionValue(method = "renderQuadList", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/color/item/ItemColors;getColor(Lnet/minecraft/world/item/ItemStack;I)I"))
+    private int modifyTintColor(int original, @Local(argsOnly = true) ItemStack stack) {
+        if (CustomRenderManager.shouldRenderColored(stack))
+            return CustomRenderManager.getItemColor(stack).pack();
+        return original;
     }
 }

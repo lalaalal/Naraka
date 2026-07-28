@@ -7,7 +7,6 @@ import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.init.DimensionSkyRendererRegistry;
 import com.yummy.naraka.client.renderer.NarakaSkyRenderer;
-import com.yummy.naraka.config.NarakaConfig;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -15,7 +14,6 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,7 +21,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
@@ -44,13 +41,6 @@ public abstract class LevelRendererMixin {
             ci.cancel();
     }
 
-    @ModifyVariable(method = "renderClouds", at = @At(value = "STORE"), ordinal = 4)
-    private double speedUpClouds(double e) {
-        if (naraka$isHerobrineSkyEnabled())
-            return e * NarakaConfig.CLIENT.herobrineSkyCloudSpeed.getValue();
-        return e;
-    }
-
     @ModifyArg(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;renderClouds(Lcom/mojang/blaze3d/vertex/PoseStack;Lorg/joml/Matrix4f;FDDD)V"))
     private float fixCloudPartialTickOnTickFreeze(float partialTicks) {
         if (NarakaClientContext.TICK_FROZEN.getValue())
@@ -63,13 +53,6 @@ public abstract class LevelRendererMixin {
         if (NarakaClientContext.TICK_FROZEN.getValue())
             return NarakaClientContext.FROZEN_PARTIAL_TICK.getValue();
         return partialTicks;
-    }
-
-    @ModifyExpressionValue(method = "renderClouds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getCloudColor(F)Lnet/minecraft/world/phys/Vec3;"))
-    private Vec3 modifyCloudColor(Vec3 original) {
-        if (naraka$isHerobrineSkyEnabled())
-            return new Vec3(1, 1, 1);
-        return original;
     }
 
     @ModifyExpressionValue(method = "renderSky", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getMoonPhase()I"))

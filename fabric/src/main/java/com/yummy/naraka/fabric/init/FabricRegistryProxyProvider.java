@@ -4,7 +4,6 @@ import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.core.registries.RegistryWriter;
-import com.yummy.naraka.invoker.MethodProxy;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -12,29 +11,12 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.function.Supplier;
 
 public final class FabricRegistryProxyProvider extends RegistryProxyProvider {
-    private static final FabricRegistryProxyProvider INSTANCE = new FabricRegistryProxyProvider();
-
-    @SuppressWarnings("unused")
-    @MethodProxy(RegistryProxyProvider.class)
-    public static RegistryProxyProvider getInstance() {
-        return INSTANCE;
-    }
-
-    private FabricRegistryProxyProvider() {
-
-    }
-
     @Override
     protected <T> RegistryWriter<T> create(ResourceKey<Registry<T>> key) {
         return new FabricRegistryWriter<>(key);
     }
 
-    protected static class FabricRegistryWriter<T> implements RegistryWriter<T> {
-        private final ResourceKey<Registry<T>> key;
-
-        public FabricRegistryWriter(ResourceKey<Registry<T>> key) {
-            this.key = key;
-        }
+    private record FabricRegistryWriter<T>(ResourceKey<Registry<T>> key) implements RegistryWriter<T> {
 
         @Override
         public ResourceKey<? extends Registry<T>> getRegistryKey() {

@@ -2,9 +2,8 @@ package com.yummy.naraka.forge.init;
 
 import com.yummy.naraka.event.*;
 import com.yummy.naraka.forge.NarakaEventBus;
-import com.yummy.naraka.invoker.MethodProxy;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
-import net.minecraft.Util;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -20,14 +19,13 @@ import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-@SuppressWarnings("unused")
-public final class ForgeEventHandler implements NarakaEventBus {
-    @MethodProxy(EventHandler.class)
-    public static void prepare(EventHandler.PlatformEventAccess events) {
+public final class ForgeEventHandler implements EventInitializer, CreativeModeTabEvents.ModifyEntriesEventFactory, NarakaEventBus {
+    private final Map<ResourceKey<CreativeModeTab>, Event<CreativeModeTabEvents.EntryModifier>> cache = new HashMap<>();
+
+    @Override
+    public void initialize(EventInitializer.PlatformEventAccess events) {
         FORGE_BUS.addListener(EventPriority.NORMAL, false, ServerStartedEvent.class, event -> ServerEvents.SERVER_STARTING.invoker().run(event.getServer()));
         FORGE_BUS.addListener(EventPriority.NORMAL, false, ServerStartedEvent.class, event -> ServerEvents.SERVER_STARTED.invoker().run(event.getServer()));
         FORGE_BUS.addListener(EventPriority.NORMAL, false, ServerStoppingEvent.class, event -> ServerEvents.SERVER_STOPPING.invoker().run(event.getServer()));
@@ -66,9 +64,13 @@ public final class ForgeEventHandler implements NarakaEventBus {
         events.setPlatformInvoker(EntityEvents.LIVING_DAMAGE, ForgeHooks::onLivingDamage);
     }
 
-    @MethodProxy(CreativeModeTabEvents.class)
-    public static CreativeModeTabEvents.ModifyEntriesEventFactory getModifyEntriesEventFactory() {
-        return key -> Util.make(new CreativeModeTabEvents.ModifyTabEntriesEvent(key), ForgeEventHandler::registerForgeBuildCreativeModeTabEvent);
+    @Override
+    public Event<CreativeModeTabEvents.EntryModifier> create(ResourceKey<CreativeModeTab> key) {
+        return cache.computeIfAbsent(key, _key -> {
+            CreativeModeTabEvents.ModifyTabEntriesEvent event = new CreativeModeTabEvents.ModifyTabEntriesEvent(key);
+            registerForgeBuildCreativeModeTabEvent(event);
+            return event;
+        });
     }
 
     private static void registerForgeBuildCreativeModeTabEvent(CreativeModeTabEvents.ModifyTabEntriesEvent modifyTabEntriesEvent) {

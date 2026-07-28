@@ -3,7 +3,7 @@ package com.yummy.naraka.world;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.data.worldgen.placement.NarakaCavePlacements;
 import com.yummy.naraka.data.worldgen.placement.NarakaOrePlacements;
-import com.yummy.naraka.init.NarakaInitializer;
+import com.yummy.naraka.init.BiomeModificationRegistry;
 import com.yummy.naraka.tags.ConventionalTags;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -21,9 +21,8 @@ import java.util.function.Supplier;
 public class NarakaBiomes {
     public static final ResourceKey<Biome> HEROBRINE = create("herobrine");
 
-    public static void initialize(NarakaInitializer initializer) {
-        Modifier modifier = initializer.getBiomeModifier();
-        modifier.addFeatures(
+    public static void initialize() {
+        BiomeModificationRegistry.addFeatures(
                 "add_nectarium_ore_generation",
                 ConventionalTags.Biomes.IS_OVERWORLD,
                 GenerationStep.Decoration.UNDERGROUND_ORES,
@@ -33,13 +32,13 @@ public class NarakaBiomes {
                         NarakaOrePlacements.NECTARIUM_ORE_LARGE
                 )
         );
-        modifier.addFeatures(
+        BiomeModificationRegistry.addFeatures(
                 "add_amethyst_ore_generation",
                 ConventionalTags.Biomes.IS_OVERWORLD,
                 GenerationStep.Decoration.UNDERGROUND_ORES,
                 List.of(NarakaOrePlacements.AMETHYST_ORE)
         );
-        modifier.addFeatures(
+        BiomeModificationRegistry.addFeatures(
                 "add_diamond_pillars",
                 ConventionalTags.Biomes.IS_OVERWORLD,
                 GenerationStep.Decoration.UNDERGROUND_DECORATION,

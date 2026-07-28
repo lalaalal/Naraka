@@ -1,22 +1,17 @@
 package com.yummy.naraka;
 
-import com.yummy.naraka.invoker.MethodInvoker;
-
-import javax.annotation.Nullable;
-
 import java.nio.file.Path;
+import java.util.ServiceLoader;
 
 public abstract class Platform {
-    @Nullable
-    private static Platform instance = null;
+    public static final Platform INSTANCE = ServiceLoader.load(Platform.class, Platform.class.getClassLoader())
+            .findFirst()
+            .orElseThrow(() -> new NullPointerException("Failed to load service for " + Platform.class.getName()));
 
     private final ModLoader modLoader;
 
     public static Platform getInstance() {
-        if (instance == null)
-            instance = MethodInvoker.of(Platform.class, "getInstance")
-                    .invoke().result(Platform.class);
-        return instance;
+        return INSTANCE;
     }
 
     protected Platform(ModLoader modLoader) {

@@ -6,7 +6,6 @@ import com.yummy.naraka.core.registries.RegistryProxyProvider;
 import com.yummy.naraka.core.registries.RegistryReader;
 import com.yummy.naraka.core.registries.RegistryWriter;
 import com.yummy.naraka.forge.NarakaEventBus;
-import com.yummy.naraka.invoker.MethodProxy;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -26,16 +25,6 @@ public final class ForgeRegistryProxyProvider extends RegistryProxyProvider impl
 
     public static <T> void addRegistryReader(ResourceKey<Registry<T>> registryKey, RegistryReader<T> registryReader) {
         INSTANCE.registryReaderMap.put(registryKey, registryReader);
-    }
-
-    @SuppressWarnings("unused")
-    @MethodProxy(RegistryProxyProvider.class)
-    public static ForgeRegistryProxyProvider getInstance() {
-        return INSTANCE;
-    }
-
-    private ForgeRegistryProxyProvider() {
-
     }
 
     @SuppressWarnings("unchecked")

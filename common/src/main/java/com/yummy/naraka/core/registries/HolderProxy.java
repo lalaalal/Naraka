@@ -1,6 +1,7 @@
 package com.yummy.naraka.core.registries;
 
 import com.mojang.datafixers.util.Either;
+import com.yummy.naraka.service.NarakaServices;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderOwner;
 import net.minecraft.core.Registry;
@@ -72,7 +73,7 @@ public class HolderProxy<T, V extends T> implements Holder<T>, ValueGetter<V> {
     }
 
     private Optional<RegistryReader<T>> findRegistryReader(boolean throwOnMissing) {
-        Optional<RegistryReader<T>> reader = RegistryProxyProvider.getInstance().getRegistryReader(ResourceKey.createRegistryKey(key.registry()));
+        Optional<RegistryReader<T>> reader = NarakaServices.REGISTRY_PROXY_PROVIDER.getRegistryReader(ResourceKey.createRegistryKey(key.registry()));
         if (reader.isEmpty() && throwOnMissing)
             throw new IllegalStateException("No registry found for key " + key.registry());
         return reader;

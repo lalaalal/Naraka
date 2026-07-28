@@ -1,26 +1,14 @@
 package com.yummy.naraka.fabric;
 
-import com.yummy.naraka.invoker.MethodProxy;
-import com.yummy.naraka.network.*;
+import com.yummy.naraka.network.ClientboundNetworkManager;
+import com.yummy.naraka.network.CustomPacketPayload;
+import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.PacketRegistrar;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerPlayer;
 
-@SuppressWarnings("unused")
 public class FabricNetworkManager {
-    private static final ClientboundNetworkManager CLIENTBOUND = new FabricClientboundNetworkManager();
-    private static final PacketRegistrar SERVER_PACKET_REGISTRAR = new FabricServerPacketRegistrar();
-
-    @MethodProxy(NetworkManager.class)
-    public static ClientboundNetworkManager clientbound() {
-        return CLIENTBOUND;
-    }
-
-    @MethodProxy(NarakaNetworks.class)
-    public static PacketRegistrar getServerPacketRegistrar() {
-        return SERVER_PACKET_REGISTRAR;
-    }
-
-    private static class FabricServerPacketRegistrar implements PacketRegistrar {
+    public static class FabricServerPacketRegistrar implements PacketRegistrar.Server {
         @Override
         public <T extends CustomPacketPayload<T>> void define(CustomPacketPayload.Type<T> type) {
             ServerPlayNetworking.registerGlobalReceiver(FabricPacketProxy.createType(type), (proxy, player, sender) -> {
@@ -35,7 +23,7 @@ public class FabricNetworkManager {
         }
     }
 
-    private static class FabricClientboundNetworkManager implements ClientboundNetworkManager {
+    public static class FabricClientboundNetworkManager implements ClientboundNetworkManager {
         @Override
         public <T extends CustomPacketPayload<T>> void send(ServerPlayer player, T payload) {
             ServerPlayNetworking.send(player, new FabricPacketProxy<>(payload));

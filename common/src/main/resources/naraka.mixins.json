@@ -30,7 +30,8 @@
     "client.ParticleEngineMixin",
     "client.ScreenEffectRendererMixin",
     "client.SoundEngineMixin",
-    "client.SoundManagerMixin"
+    "client.SoundManagerMixin",
+    "client.VanillaCloudModificationMixin"
   ],
   "mixins": [
     "ConcretePowderBlockMixin",
@@ -55,5 +56,6 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "com.yummy.naraka.mixin.NarakaMixinConfigPlugin"
 }

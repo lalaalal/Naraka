@@ -16,6 +16,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "plugin": "com.yummy.naraka.fabric.mixin.NarakaMixinConfigPlugin"
+  }
 }

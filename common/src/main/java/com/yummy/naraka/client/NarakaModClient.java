@@ -2,7 +2,6 @@ package com.yummy.naraka.client;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.animation.AnimationMapper;
-import com.yummy.naraka.client.event.ClientEventHandler;
 import com.yummy.naraka.client.event.NarakaClientEvents;
 import com.yummy.naraka.client.gui.components.HealthSlotOverlayExtension;
 import com.yummy.naraka.client.gui.hud.LockedHealthHud;
@@ -15,6 +14,7 @@ import com.yummy.naraka.client.renderer.blockentity.NarakaPortalBlockEntityRende
 import com.yummy.naraka.client.renderer.blockentity.SoulSmithingBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.blockentity.SoulStabilizerBlockEntityRenderer;
 import com.yummy.naraka.client.renderer.entity.*;
+import com.yummy.naraka.client.service.NarakaClientServices;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
@@ -33,7 +33,8 @@ import net.minecraft.network.chat.Component;
 
 public final class NarakaModClient {
     public static void initialize(NarakaClientInitializer initializer) {
-        ClientEventHandler.prepare();
+        NarakaClientServices.initialize();
+        NarakaClientServices.CLIENT_EVENT_INITIALIZER.initialize();
         NarakaModelLayers.initialize();
         NarakaShaders.initialize();
         NarakaRenderTypes.initialize();

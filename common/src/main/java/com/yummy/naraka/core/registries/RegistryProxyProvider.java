@@ -1,11 +1,9 @@
 package com.yummy.naraka.core.registries;
 
-import com.yummy.naraka.invoker.MethodInvoker;
+import com.yummy.naraka.service.NarakaServices;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-
-import javax.annotation.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,29 +14,15 @@ import java.util.function.Consumer;
  * Singleton class provides {@link RegistryWriter}<br>
  */
 public abstract class RegistryProxyProvider {
-    @Nullable
-    private static RegistryProxyProvider instance;
-
     private final Map<ResourceKey<? extends Registry<?>>, RegistryWriter<?>> registryWriterMap = new HashMap<>();
     private final Map<ResourceKey<? extends Registry<?>>, RegistryReader<?>> registryReaderMap = new HashMap<>();
 
-    protected static RegistryProxyProvider getInstance() {
-        if (instance == null)
-            instance = MethodInvoker.of(RegistryProxyProvider.class, "getInstance")
-                    .invoke().result(RegistryProxyProvider.class);
-        return instance;
-    }
-
-    public static void initialize() {
-        getInstance();
-    }
-
     public static <T> RegistryWriter<T> get(ResourceKey<Registry<T>> key) {
-        return getInstance().getProxy(key);
+        return NarakaServices.REGISTRY_PROXY_PROVIDER.getProxy(key);
     }
 
     public static void forEach(Consumer<RegistryWriter<?>> consumer) {
-        getInstance().registryWriterMap.values().forEach(consumer);
+        NarakaServices.REGISTRY_PROXY_PROVIDER.registryWriterMap.values().forEach(consumer);
     }
 
     protected RegistryProxyProvider() {

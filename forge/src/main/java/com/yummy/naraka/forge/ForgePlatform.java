@@ -1,22 +1,13 @@
 package com.yummy.naraka.forge;
 
 import com.yummy.naraka.Platform;
-import com.yummy.naraka.invoker.MethodProxy;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
 
 public final class ForgePlatform extends Platform {
-    private static final ForgePlatform INSTANCE = new ForgePlatform();
-
-    @SuppressWarnings("unused")
-    @MethodProxy(Platform.class)
-    public static Platform getInstance() {
-        return INSTANCE;
-    }
-
-    private ForgePlatform() {
+    public ForgePlatform() {
         super(ModLoader.FORGE);
     }
 
