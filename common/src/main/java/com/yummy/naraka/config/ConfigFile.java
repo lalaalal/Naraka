@@ -27,14 +27,21 @@ public abstract class ConfigFile implements ConfigReader, ConfigWriter {
 
     public abstract String getExtensionName();
 
+    public boolean exists() {
+        return configFile.exists();
+    }
+
     /**
      * Check if the key exists without loading.
      *
      * @param key Key to check
      * @return True if the key exists
-     * @see ConfigReader#load(Reader)
      */
     public abstract boolean contains(String key);
+
+    public boolean contains(Configuration.ConfigValue<?> value) {
+        return contains(value.getKey());
+    }
 
     public String getFileName() {
         return configFile.getName();
@@ -48,13 +55,15 @@ public abstract class ConfigFile implements ConfigReader, ConfigWriter {
         return configFile.getAbsolutePath();
     }
 
-    public Reader createReader() throws IOException {
+    protected Reader createReader() throws IOException {
         return new BufferedReader(new FileReader(configFile));
     }
 
-    public Writer createWriter() throws IOException {
+    protected Writer createWriter() throws IOException {
         return new BufferedWriter(new FileWriter(tmpFile));
     }
+
+    public abstract void prepareWrite();
 
     private void finishWrite() throws IOException {
         if (tmpFile.exists())
@@ -62,9 +71,11 @@ public abstract class ConfigFile implements ConfigReader, ConfigWriter {
     }
 
     @Override
-    public final void commit(Writer writer) throws IOException {
-        write(writer);
-        writer.flush();
+    public final void commit() throws IOException {
+        try (Writer writer = createWriter()) {
+            write(writer);
+            writer.flush();
+        }
         finishWrite();
     }
 

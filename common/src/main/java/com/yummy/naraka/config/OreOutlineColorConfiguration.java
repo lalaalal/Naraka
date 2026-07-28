@@ -9,8 +9,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class OreOutlineColorConfiguration extends DynamicConfiguration<Color> {
@@ -38,21 +39,22 @@ public class OreOutlineColorConfiguration extends DynamicConfiguration<Color> {
     }
 
     @Override
-    public void loadValues(List<ConfigValue<Color>> configValues) {
+    public void loadValues(Collection<ConfigValue<Color>> configValues) {
         super.loadValues(configValues);
         loadMappings();
     }
 
     @Override
-    public void loadValues() {
-        super.loadValues();
+    public void internalLoadValues() throws IOException {
+        super.internalLoadValues();
         loadMappings();
     }
 
     private void loadMappings() {
         tagMappings.clear();
         blockMappings.clear();
-        configurations.forEach((key, configValue) -> {
+        for (ConfigValue<Color> configValue : configurations) {
+            String key = configValue.getKey();
             if (key.equals("default_color")) {
                 defaultColor = configValue.getValue();
             } else if (key.startsWith("#")) {
@@ -62,7 +64,7 @@ public class OreOutlineColorConfiguration extends DynamicConfiguration<Color> {
                 ResourceKey<Block> block = ResourceKey.create(Registries.BLOCK, new ResourceLocation(key));
                 blockMappings.put(block, configValue.getValue());
             }
-        });
+        }
     }
 
     public Color getColor(BlockState blockState) {
