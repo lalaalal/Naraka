@@ -18,7 +18,7 @@ public record SingleComponentFactory(ComponentType componentType, String string,
                                      StyleApplier style) implements ComponentFactory {
     public static final MapCodec<SingleComponentFactory> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                    ComponentType.CODEC.fieldOf("type").forGetter(SingleComponentFactory::componentType),
+                    ComponentType.CODEC.fieldOf("component_type").forGetter(SingleComponentFactory::componentType),
                     Codec.STRING.fieldOf("string").forGetter(SingleComponentFactory::string),
                     StyleApplier.CODEC.fieldOf("style").forGetter(SingleComponentFactory::style)
             ).apply(instance, SingleComponentFactory::new)
