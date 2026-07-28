@@ -16,6 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -65,7 +66,9 @@ public class SpearOfLonginus extends Spear {
         if (spawnPortal) {
             Direction direction = result.getDirection();
             BlockPos pos = result.getBlockPos();
-            level().setBlock(pos.relative(direction), NarakaBlocks.NARAKA_PORTAL.getConcreteValue().defaultBlockState(), Block.UPDATE_ALL);
+            BlockState state = level().getBlockState(pos);
+            if (state.canBeReplaced())
+                level().setBlock(pos.relative(direction), NarakaBlocks.NARAKA_PORTAL.get().defaultBlockState(), Block.UPDATE_ALL);
         }
     }
 
