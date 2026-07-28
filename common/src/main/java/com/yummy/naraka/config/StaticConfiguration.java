@@ -3,14 +3,10 @@ package com.yummy.naraka.config;
 import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -19,7 +15,7 @@ import java.util.function.Function;
 public abstract class StaticConfiguration extends Configuration {
     private static final Logger LOG = LogUtils.getLogger();
 
-    protected final Map<String, ConfigValue<?>> configurations = new LinkedHashMap<>();
+    protected final List<ConfigValue<?>> configurations = new ArrayList<>();
 
     protected StaticConfiguration(String name, Function<String, ConfigFile> configFileFactory) {
         super(name, configFileFactory);
@@ -35,49 +31,27 @@ public abstract class StaticConfiguration extends Configuration {
      */
     protected <T> ConfigValue<T> define(String key, T defaultValue) {
         ConfigValue<T> value = new ConfigValue<>(key, defaultValue);
-        configurations.put(key, value);
+        configurations.add(value);
         return value;
     }
 
     @Override
     public Collection<ConfigValue<?>> values() {
-        return configurations.values();
+        return configurations;
     }
 
     @Override
-    public synchronized void loadValues() {
-        LOG.info("Loading static configuration \"{}\"", name);
-        try (Reader reader = file.createReader()) {
-            file.load(reader);
-            AtomicInteger counter = new AtomicInteger(0);
-            configurations.forEach((key, configValue) -> {
-                file.read(key, configValue);
-                if (file.contains(key))
-                    counter.addAndGet(1);
-            });
-            if (counter.get() < configurations.size())
-                saveValues();
-        } catch (FileNotFoundException exception) {
-            LOG.warn("Configuration file \"{}\" is not found", file.getFileName());
-            saveValues();
-        } catch (IOException exception) {
-            LOG.error("An error occurred while loading config values");
-            LOG.warn("Using default values for configuration \"{}\"", name);
+    public synchronized void internalLoadValues() throws IOException {
+        file.load();
+        int counter = 0;
+        for (ConfigValue<?> value : configurations) {
+            file.read(value);
+            if (file.contains(value))
+                counter += 1;
         }
-    }
-
-    @Override
-    public synchronized void saveValues() {
-        LOG.info("Saving static configuration \"{}\" to \"{}\"", name, file.getAbsolutePath());
-        try (Writer writer = file.createWriter()) {
-            for (Map.Entry<String, ConfigValue<?>> entry : configurations.entrySet()) {
-                String key = entry.getKey();
-                ConfigValue<?> value = entry.getValue();
-                file.appendToBuffer(key, value);
-            }
-            file.commit(writer);
-        } catch (IOException exception) {
-            LOG.error("An error occurred while saving config values");
+        if (counter < configurations.size()) {
+            LOG.warn("Missing config values found. Rewriting config \"{}\"", name);
+            saveValues();
         }
     }
 }

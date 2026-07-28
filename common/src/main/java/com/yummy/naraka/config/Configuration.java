@@ -1,9 +1,12 @@
 package com.yummy.naraka.config;
 
+import com.mojang.logging.LogUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import org.slf4j.Logger;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,6 +17,8 @@ import java.util.function.Function;
  * An abstract class provides an interface to load, save values
  */
 public abstract class Configuration {
+    private static final Logger LOG = LogUtils.getLogger();
+
     public final String name;
     protected final ConfigFile file;
 
@@ -26,9 +31,34 @@ public abstract class Configuration {
         return file.getFileName();
     }
 
-    public abstract void loadValues();
+    public final synchronized void loadValues() {
+        LOG.info("Loading configuration \"{}\"", name);
+        if (!file.exists()) {
+            LOG.info("Config file not found \"{}\"", name);
+            saveValues();
+            return;
+        }
+        try {
+            internalLoadValues();
+        } catch (IOException exception) {
+            LOG.error("An error occurred while loading config values");
+            LOG.warn("Using default values for configuration \"{}\"", name);
+        }
+    }
 
-    public abstract void saveValues();
+    protected abstract void internalLoadValues() throws IOException;
+
+    public final synchronized void saveValues() {
+        LOG.info("Saving configuration \"{}\" to \"{}\"", name, file.getAbsolutePath());
+        try {
+            file.prepareWrite();
+            for (ConfigValue<?> value : values())
+                file.appendToBuffer(value);
+            file.commit();
+        } catch (IOException exception) {
+            LOG.error("An error occurred while saving config values");
+        }
+    }
 
     public abstract Collection<? extends ConfigValue<?>> values();
 

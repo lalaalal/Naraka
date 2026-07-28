@@ -29,21 +29,22 @@ public class JsonConfigFile extends ConfigFile {
     }
 
     @Override
-    public Reader createReader() throws IOException {
+    protected Reader createReader() throws IOException {
         this.buffer = new JsonObject();
         return super.createReader();
     }
 
     @Override
-    public Writer createWriter() throws IOException {
+    public void prepareWrite() {
         this.buffer = new JsonObject();
-        return super.createWriter();
     }
 
     @Override
-    public Set<String> load(Reader reader) {
-        this.buffer = readJsonObject(reader);
-        return buffer.keySet();
+    public Set<String> load() throws IOException {
+        try (Reader reader = createReader()) {
+            this.buffer = readJsonObject(reader);
+            return buffer.keySet();
+        }
     }
 
     private JsonObject readJsonObject(Reader reader) {

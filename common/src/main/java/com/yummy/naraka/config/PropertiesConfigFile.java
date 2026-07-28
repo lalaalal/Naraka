@@ -44,21 +44,22 @@ public class PropertiesConfigFile extends ConfigFile {
     }
 
     @Override
-    public Reader createReader() throws IOException {
+    protected Reader createReader() throws IOException {
         cache.clear();
         return super.createReader();
     }
 
     @Override
-    public Writer createWriter() throws IOException {
+    public void prepareWrite() {
         buffer = new StringBuilder();
-        return super.createWriter();
     }
 
     @Override
-    public Set<String> load(Reader reader) throws IOException {
-        this.cache.load(reader);
-        return getKeySet();
+    public Set<String> load() throws IOException {
+        try (Reader reader = createReader()) {
+            this.cache.load(reader);
+            return getKeySet();
+        }
     }
 
     @Override
