@@ -13,8 +13,8 @@ mixin {
 }
 
 dependencies {
-    modCompileOnly "maven.modrinth:jade:${jade_version}+forge"
-    modCompileOnly "me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"
+    modImplementation "maven.modrinth:jade:${jade_version}+forge"
+    modImplementation "me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"
 
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
     implementation("io.github.llamalad7:mixinextras-forge:0.5.4")
@@ -37,7 +37,6 @@ legacyForge {
         configureEach {
             systemProperty('forge.enabledGameTestNamespaces', mod_id)
             ideName = "Forge ${it.name.capitalize()} ${minecraft_version} (${path})"
-            // Unify the run config names with fabric
         }
         client {
             client()
