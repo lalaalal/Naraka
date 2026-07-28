@@ -40,6 +40,7 @@
     "HerobrineTotemActivatingItemMixin",
     "ItemMixin",
     "ItemMixin$PropertiesMixin",
+    "ItemStackMixin",
     "LivingEntityMixin",
     "PlayerListMixin",
     "PlayerMixin",

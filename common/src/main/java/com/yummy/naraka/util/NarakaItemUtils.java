@@ -30,8 +30,9 @@ public class NarakaItemUtils {
     public static final String TAG_BLESSED = "Blessed";
     public static final String TAG_HEROBRINE_SCARF = "HerobrineScarf";
     public static final String TAG_SOUL_TYPE = "SoulType";
-    public static final String TAG_EQUIPMENT_SET = "EquipmentSet";
+    public static final String TAG_EQUIPMENT_SET_GROUP = "EquipmentSetGroup";
     public static final String TAG_ATTRIBUTE_MODIFIERS = "AttributeModifiers";
+    public static final String TAG_DYNAMIC_ITEM_LORE = "DynamicItemLore";
 
     public static void loadDefaultItemAttributeModifiers(ItemStack itemStack, EquipmentSlot slot) {
         Multimap<Attribute, AttributeModifier> modifiers = itemStack.getItem().getDefaultAttributeModifiers(slot);

@@ -1,8 +1,10 @@
 package com.yummy.naraka.mixin;
 
-import com.yummy.naraka.event.ItemEvents;
-import com.yummy.naraka.world.item.ItemDetailBuilder;
-import com.yummy.naraka.world.item.ItemDetailProvider;
+import com.mojang.serialization.Codec;
+import com.yummy.naraka.util.NarakaNbtUtils;
+import com.yummy.naraka.world.item.ItemDefaultNbtBuilder;
+import com.yummy.naraka.world.item.ItemDefaultNbtProvider;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -14,36 +16,40 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 @Mixin(Item.class)
-public abstract class ItemMixin implements ItemDetailProvider {
+public abstract class ItemMixin implements ItemDefaultNbtProvider {
     @Unique
     @Nullable
-    private ItemEvents.ItemTooltip naraka$itemDetail;
+    private CompoundTag naraka$defaultNbt;
 
     @Override
-    public Optional<ItemEvents.ItemTooltip> naraka$getItemTooltip() {
-        return Optional.ofNullable(naraka$itemDetail);
+    public Optional<CompoundTag> naraka$getDefaultNbt() {
+        if (naraka$defaultNbt == null)
+            return Optional.empty();
+        return Optional.of(naraka$defaultNbt.copy());
     }
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void loadDefaultTag(Item.Properties properties, CallbackInfo ci) {
-        if (properties instanceof ItemDetailProvider provider)
-            provider.naraka$getItemTooltip().ifPresent(itemDetail -> naraka$itemDetail = itemDetail);
+        if (properties instanceof ItemDefaultNbtProvider provider)
+            provider.naraka$getDefaultNbt().ifPresent(itemDetail -> naraka$defaultNbt = itemDetail);
     }
 
     @Mixin(Item.Properties.class)
-    public abstract static class PropertiesMixin implements ItemDetailBuilder {
+    public abstract static class PropertiesMixin implements ItemDefaultNbtBuilder {
         @Unique
         @Nullable
-        private ItemEvents.ItemTooltip naraka$itemDetail;
+        private CompoundTag naraka$defaultNbt;
 
         @Override
-        public Optional<ItemEvents.ItemTooltip> naraka$getItemTooltip() {
-            return Optional.ofNullable(naraka$itemDetail);
+        public Optional<CompoundTag> naraka$getDefaultNbt() {
+            return Optional.ofNullable(naraka$defaultNbt);
         }
 
         @Override
-        public ItemDetailBuilder naraka$setItemTooltip(ItemEvents.ItemTooltip itemDetail) {
-            this.naraka$itemDetail = itemDetail;
+        public <T> ItemDefaultNbtBuilder naraka$set(String key, Codec<T> codec, T value) {
+            if (naraka$defaultNbt == null)
+                naraka$defaultNbt = new CompoundTag();
+            NarakaNbtUtils.store(naraka$defaultNbt, key, codec, value);
             return this;
         }
 

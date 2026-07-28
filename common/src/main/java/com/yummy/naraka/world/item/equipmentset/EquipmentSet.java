@@ -60,12 +60,14 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
         return requirements.stream().filter(requirement -> requirement.test(entity, this)).count();
     }
 
-    public void updateEffect(LivingEntity livingEntity) {
+    public boolean updateEffect(LivingEntity livingEntity) {
         long succeed = countSucceed(livingEntity);
-        for (Effect effect : effects)
-            effect.update(livingEntity, succeed);
         if (livingEntity instanceof ServerPlayer player)
             NarakaCriteriaTriggers.EQUIPMENT_SET.trigger(player, id, succeed);
+        long updated = effects.stream()
+                .filter(effect -> effect.update(livingEntity, succeed))
+                .count();
+        return updated > 0;
     }
 
     @Override
@@ -100,7 +102,7 @@ public class EquipmentSet implements ItemEvents.ItemTooltip {
 
         public boolean test(LivingEntity livingEntity, EquipmentSet equipmentSet) {
             ItemStack itemStack = livingEntity.getItemBySlot(slot);
-            List<EquipmentSet> equipmentSets = NarakaItemUtils.readNbtDataOrDefault(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), livingEntity.level().registryAccess(), List.of());
+            List<EquipmentSet> equipmentSets = NarakaItemUtils.readNbtDataOrDefault(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET_GROUP, EquipmentSet.CODEC.listOf(), livingEntity.level().registryAccess(), List.of());
             return itemStack.is(item.value())
                     && equipmentSets.stream().map(EquipmentSet::getId).anyMatch(id -> equipmentSet.getId().equals(id))
                     && condition.test(itemStack);

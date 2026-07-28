@@ -47,7 +47,7 @@ public class NarakaItems {
                             .fireResistant()
                             .durability(-1)
             ),
-            builder -> builder.naraka$setItemTooltip(NarakaItemTooltip.NARAKA_PICKAXE)
+            builder -> builder.naraka$withTooltip(NarakaItemTooltip.NARAKA_PICKAXE)
     );
 
     public static final HolderProxy<Item, Item> NETHERITE_HAMMER = registerItem(
@@ -76,7 +76,7 @@ public class NarakaItems {
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_METAL = registerSimpleItem(
             NarakaItemIds.PURIFIED_SOUL_METAL,
             Item.Properties::fireResistant,
-            builder -> builder.naraka$setItemTooltip(NarakaItemTooltip.PURIFIED_SOUL_METAL)
+            builder -> builder.naraka$withTooltip(NarakaItemTooltip.PURIFIED_SOUL_METAL)
     );
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_SHARD = registerSimpleItem(
@@ -94,7 +94,7 @@ public class NarakaItems {
                             .effect(new MobEffectInstance(MobEffects.HEAL, 1, 10), 1)
                             .build()
             ),
-            builder -> builder.naraka$setItemTooltip(NarakaItemTooltip.NECTARIUM)
+            builder -> builder.naraka$withTooltip(NarakaItemTooltip.NECTARIUM)
     );
 
     public static final HolderProxy<Item, Item> GOD_BLOOD = registerSimpleItem(
@@ -102,13 +102,13 @@ public class NarakaItems {
             properties -> properties.stacksTo(1)
                     .rarity(Rarity.EPIC)
                     .fireResistant(),
-            builder -> builder.naraka$setItemTooltip(NarakaItemTooltip.GOD_BLOOD)
+            builder -> builder.naraka$withTooltip(NarakaItemTooltip.GOD_BLOOD)
     );
 
     public static final HolderProxy<Item, SanctuaryCompassItem> SANCTUARY_COMPASS = registerItem(
             NarakaItemIds.SANCTUARY_COMPASS,
             properties -> new SanctuaryCompassItem(properties.rarity(Rarity.RARE)),
-            builder -> builder.naraka$setItemTooltip(NarakaItemTooltip.SANCTUARY_COMPASS)
+            builder -> builder.naraka$withTooltip(NarakaItemTooltip.SANCTUARY_COMPASS)
     );
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE = registerSimpleItem(NarakaItemIds.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE);
@@ -156,7 +156,7 @@ public class NarakaItems {
                     .rarity(Rarity.EPIC)
                     .durability(-1)
             ),
-            builder -> builder.naraka$setItemTooltip(NarakaItemTooltip.SPEAR_OF_LONGINUS)
+            builder -> builder.naraka$withTooltip(NarakaItemTooltip.SPEAR_OF_LONGINUS)
     );
 
     public static final HolderProxy<Item, Item> SOUL_INFUSED_REDSTONE_SWORD = registerSoulInfusedSword(NarakaItemIds.SOUL_INFUSED_REDSTONE_SWORD, SoulType.REDSTONE);
@@ -174,13 +174,13 @@ public class NarakaItems {
                     -2, -2.4f,
                     properties.fireResistant()
             ),
-            builder -> builder.naraka$setItemTooltip(NarakaItemTooltip.PURIFIED_SOUL_SWORD)
+            builder -> builder.naraka$withTooltip(NarakaItemTooltip.PURIFIED_SOUL_SWORD)
     );
 
     public static final HolderProxy<Item, Item> HEROBRINE_SCARF = registerItem(
             NarakaItemIds.HEROBRINE_SCARF,
             properties -> new HerobrineScarfItem(properties.rarity(Rarity.EPIC)),
-            builder -> builder.naraka$setItemTooltip(NarakaItemTooltip.HEROBRINE_SCARF)
+            builder -> builder.naraka$withTooltip(NarakaItemTooltip.HEROBRINE_SCARF)
     );
 
     public static final HolderProxy<Item, Item> PURIFIED_SOUL_HELMET = registerPurifiedSoulArmorItem(NarakaItemIds.PURIFIED_SOUL_HELMET, NarakaArmorMaterials.PURIFIED_SOUL, ArmorItem.Type.HELMET);
@@ -195,7 +195,7 @@ public class NarakaItems {
                                 armorType,
                                 properties.durability(-1)
                         ),
-                builder -> builder.naraka$setItemTooltip(NarakaItemTooltip.PURIFIED_SOUL_ARMORS)
+                builder -> builder.naraka$withTooltip(NarakaItemTooltip.PURIFIED_SOUL_ARMORS)
         );
     }
 
@@ -242,7 +242,7 @@ public class NarakaItems {
                                 .fireResistant(),
                         type
                 ),
-                builder -> builder.naraka$setItemTooltip(NarakaItemTooltip.SOUL_INFUSED_MATERIALS)
+                builder -> builder.naraka$withTooltip(NarakaItemTooltip.SOUL_INFUSED_MATERIALS)
         );
         SOUL_INFUSED_ITEMS.add(item);
         return item;
@@ -258,7 +258,7 @@ public class NarakaItems {
                                 .rarity(Rarity.RARE),
                         type
                 ),
-                builder -> builder.naraka$setItemTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS)
+                builder -> builder.naraka$withTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS)
         );
         SOUL_INFUSED_SWORDS.add(item);
         SWORD_BY_SOUL_TYPE.put(type, item);
@@ -283,9 +283,9 @@ public class NarakaItems {
         return registerItem(key, factory, properties());
     }
 
-    private static <I extends Item> HolderProxy<Item, I> registerItem(ResourceKey<Item> key, Function<Item.Properties, I> factory, Consumer<ItemDetailBuilder> builderConsumer) {
+    private static <I extends Item> HolderProxy<Item, I> registerItem(ResourceKey<Item> key, Function<Item.Properties, I> factory, Consumer<ItemDefaultNbtBuilder> builderConsumer) {
         Item.Properties properties = properties();
-        if (properties instanceof ItemDetailBuilder builder)
+        if (properties instanceof ItemDefaultNbtBuilder builder)
             builderConsumer.accept(builder);
         return registerItem(key, factory, properties);
     }
@@ -294,9 +294,9 @@ public class NarakaItems {
         return registerItem(key, properties -> new Item(propertyOperator.apply(properties)));
     }
 
-    private static HolderProxy<Item, Item> registerSimpleItem(ResourceKey<Item> key, UnaryOperator<Item.Properties> propertyOperator, Consumer<ItemDetailBuilder> builderConsumer) {
+    private static HolderProxy<Item, Item> registerSimpleItem(ResourceKey<Item> key, UnaryOperator<Item.Properties> propertyOperator, Consumer<ItemDefaultNbtBuilder> builderConsumer) {
         return registerItem(key, properties -> {
-            if (properties instanceof ItemDetailBuilder builder)
+            if (properties instanceof ItemDefaultNbtBuilder builder)
                 builderConsumer.accept(builder);
             return new Item(propertyOperator.apply(properties));
         });

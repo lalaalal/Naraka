@@ -8,7 +8,7 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimPatterns;
-import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSetGroup;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSetHelper;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
@@ -140,7 +140,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
             return false;
         forgingItem = new ItemStack(swordItem);
         NarakaItemUtils.makeUnbreakable(forgingItem);
-        NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), player.level().registryAccess(), EquipmentSetHelper.createChallengerSet(soulType));
+        NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_EQUIPMENT_SET_GROUP, EquipmentSetGroup.CODEC, player.level().registryAccess(), EquipmentSetHelper.createChallengerSet(soulType));
         NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_SOUL_TYPE, SoulType.CODEC, soulType);
         if (!player.isCreative())
             soulStabilizer.consumeSoul(requiredSoul);
@@ -182,9 +182,9 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
         if (soulType == SoulType.GOD_BLOOD) {
             NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_BLESSED, Codec.BOOL, true);
-            NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), level.registryAccess(), EquipmentSetHelper.createBlessedSet());
+            NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_EQUIPMENT_SET_GROUP, EquipmentSetGroup.CODEC, level.registryAccess(), EquipmentSetHelper.createBlessedSet());
         } else {
-            NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), level.registryAccess(), EquipmentSetHelper.createChallengerSet(soulType));
+            NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_EQUIPMENT_SET_GROUP, EquipmentSetGroup.CODEC, level.registryAccess(), EquipmentSetHelper.createChallengerSet(soulType));
         }
         NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_SOUL_TYPE, SoulType.CODEC, soulType);
 

@@ -35,7 +35,6 @@ public class EquipmentSetHelper {
 
     public static final ResourceLocation ID_CHALLENGER = NarakaMod.location("challenger");
     public static final ResourceLocation ID_BLESSED = NarakaMod.location("blessed");
-    private static final Map<SoulType, EquipmentSet> SET_BY_SOUL_TYPE = new HashMap<>();
 
     public static List<EquipmentSet.Effect> createBlessedEffect() {
         MobEffectData strength = new MobEffectData(MobEffects.DAMAGE_BOOST, -1, 1);
@@ -45,12 +44,12 @@ public class EquipmentSetHelper {
         );
     }
 
-    public static List<EquipmentSet> createBlessedSet() {
+    public static EquipmentSetGroup createBlessedSet() {
         CompoundTag nbt = new CompoundTag();
         NarakaNbtUtils.store(nbt, NarakaItemUtils.TAG_BLESSED, Codec.BOOL, true);
         NbtCondition condition = NbtCondition.all(nbt);
 
-        return List.of(
+        return EquipmentSetGroup.of(
                 new EquipmentSet(
                         ID_BLESSED,
                         List.of(
@@ -80,13 +79,15 @@ public class EquipmentSetHelper {
         );
     }
 
-    public static List<EquipmentSet> createChallengerSet(SoulType soulType) {
+    private static final Map<SoulType, EquipmentSet> SET_BY_SOUL_TYPE = new HashMap<>();
+
+    public static EquipmentSetGroup createChallengerSet(SoulType soulType) {
         if (SET_BY_SOUL_TYPE.containsKey(soulType))
-            return List.of(SET_BY_SOUL_TYPE.get(soulType));
+            return EquipmentSetGroup.of(SET_BY_SOUL_TYPE.get(soulType));
 
         Holder<Item> swordItem = NarakaItems.getSoulSwordHolderOf(soulType);
         if (swordItem == null)
-            return List.of();
+            return EquipmentSetGroup.EMPTY;
         CompoundTag nbt = new CompoundTag();
         NarakaNbtUtils.store(nbt, NarakaItemUtils.TAG_SOUL_TYPE, SoulType.CODEC, soulType);
         NbtCondition condition = NbtCondition.all(nbt);
@@ -123,7 +124,7 @@ public class EquipmentSetHelper {
                 createChallengerSetEffect(soulType)
         );
         SET_BY_SOUL_TYPE.put(soulType, equipmentSet);
-        return List.of(equipmentSet);
+        return EquipmentSetGroup.of(equipmentSet);
     }
 
     public static List<EquipmentSet.Effect> createChallengerSetEffect(SoulType soulType) {

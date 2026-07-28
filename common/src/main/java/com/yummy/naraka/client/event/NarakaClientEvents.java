@@ -8,9 +8,9 @@ import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.ItemEvents;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.util.NarakaItemUtils;
-import com.yummy.naraka.world.item.ItemDetailProvider;
-import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSetGroup;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
+import com.yummy.naraka.world.item.tooltip.DynamicItemLore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.core.RegistryAccess;
@@ -18,12 +18,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.armortrim.ArmorTrim;
 import net.minecraft.world.level.BlockGetter;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public class NarakaClientEvents {
@@ -86,20 +88,45 @@ public class NarakaClientEvents {
 
     private static void addItemTooltipsTop(ItemStack itemStack, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
         RegistryAccess registryAccess = player.level().registryAccess();
-        List<EquipmentSet> equipmentSets = NarakaItemUtils.readNbtDataOrDefault(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), registryAccess, List.of());
-        for (EquipmentSet equipmentSet : equipmentSets)
-            equipmentSet.addToTooltip(itemStack, player, tooltipFlag, shiftKeyPressed, builder);
+        EquipmentSetGroup equipmentSetGroup = NarakaItemUtils.readNbtDataOrDefault(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET_GROUP, EquipmentSetGroup.CODEC, registryAccess, EquipmentSetGroup.EMPTY);
+        equipmentSetGroup.addToTooltip(itemStack, player, tooltipFlag, shiftKeyPressed, builder);
         Reinforcement reinforcement = Reinforcement.get(itemStack, registryAccess);
-        if (!equipmentSets.isEmpty() && !reinforcement.hasTooltip())
+        boolean reinforcementHasTooltip = reinforcement.hasTooltip();
+        boolean hasDynamicItemLore = !NarakaItemUtils.readNbtDataOrDefault(itemStack, NarakaItemUtils.TAG_DYNAMIC_ITEM_LORE, DynamicItemLore.CODEC, registryAccess, DynamicItemLore.EMPTY)
+                .isEmpty();
+        if (!equipmentSetGroup.isEmpty() && !reinforcementHasTooltip && !hasDynamicItemLore)
             builder.accept(Component.empty());
-        reinforcement.addToTooltip(builder);
+        if (reinforcementHasTooltip) {
+            reinforcement.addToTooltip(builder);
+            if (ArmorTrim.getTrim(registryAccess, itemStack).isPresent() && !hasDynamicItemLore)
+                builder.accept(Component.empty());
+        }
     }
 
     private static void addItemTooltipsMiddle(ItemStack itemStack, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
-        if (itemStack.getItem() instanceof ItemDetailProvider itemDetailProvider) {
-            itemDetailProvider.naraka$getItemTooltip()
-                    .ifPresent(dynamicItemLore -> dynamicItemLore.addToTooltip(itemStack, player, tooltipFlag, shiftKeyPressed, builder));
+        RegistryAccess registryAccess = player.level().registryAccess();
+        DynamicItemLore dynamicItemLore = NarakaItemUtils.readNbtDataOrDefault(itemStack, NarakaItemUtils.TAG_DYNAMIC_ITEM_LORE, DynamicItemLore.CODEC, registryAccess, DynamicItemLore.EMPTY);
+        if (dynamicItemLore.isEmpty())
+            return;
+
+        builder.accept(Component.empty());
+        dynamicItemLore.addToTooltip(itemStack, player, tooltipFlag, shiftKeyPressed, builder);
+        if (ArmorTrim.getTrim(registryAccess, itemStack).isPresent() || !hasAttributeModifiers(itemStack))
+            builder.accept(Component.empty());
+    }
+
+    private static boolean hasAttributeModifiers(ItemStack itemStack) {
+        if (NarakaItemUtils.hasNbtData(itemStack, NarakaItemUtils.TAG_ATTRIBUTE_MODIFIERS))
+            return true;
+        return hasDefaultAttributeModifiers(itemStack.getItem());
+    }
+
+    private static boolean hasDefaultAttributeModifiers(Item item) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            if (!item.getDefaultAttributeModifiers(slot).isEmpty())
+                return true;
         }
+        return false;
     }
 
     private static void addItemTooltipsBottom(ItemStack itemStack, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {

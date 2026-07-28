@@ -68,7 +68,7 @@ public class SpearOfLonginus extends Spear {
             BlockPos pos = result.getBlockPos();
             BlockState state = level().getBlockState(pos);
             if (state.canBeReplaced())
-                level().setBlock(pos.relative(direction), NarakaBlocks.NARAKA_PORTAL.get().defaultBlockState(), Block.UPDATE_ALL);
+                level().setBlock(pos.relative(direction), NarakaBlocks.NARAKA_PORTAL.getConcreteValue().defaultBlockState(), Block.UPDATE_ALL);
         }
     }
 

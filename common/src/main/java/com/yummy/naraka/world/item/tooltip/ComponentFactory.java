@@ -21,14 +21,14 @@ public interface ComponentFactory {
 
         public static final Codec<Type> CODEC = StringRepresentable.fromEnum(Type::values);
 
-        private final Codec<? extends ComponentFactory> mapCodec;
+        private final Codec<? extends ComponentFactory> codec;
 
-        Type(Codec<? extends ComponentFactory> mapCodec) {
-            this.mapCodec = mapCodec;
+        Type(Codec<? extends ComponentFactory> codec) {
+            this.codec = codec;
         }
 
         public Codec<? extends ComponentFactory> codec() {
-            return mapCodec;
+            return codec;
         }
 
         @Override

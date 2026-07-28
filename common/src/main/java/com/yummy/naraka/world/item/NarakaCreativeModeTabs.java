@@ -9,7 +9,7 @@ import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.CreativeModeTabEvents;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.block.NarakaBlocks;
-import com.yummy.naraka.world.item.equipmentset.EquipmentSet;
+import com.yummy.naraka.world.item.equipmentset.EquipmentSetGroup;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSetHelper;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
@@ -194,7 +194,7 @@ public class NarakaCreativeModeTabs {
 
     private static ItemStack challenger(Holder<Item> item, SoulType soulType, HolderLookup.Provider registries) {
         ItemStack itemStack = trimmed(item.value().getDefaultInstance().copy(), soulType, registries);
-        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), registries, EquipmentSetHelper.createChallengerSet(soulType));
+        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET_GROUP, EquipmentSetGroup.CODEC, registries, EquipmentSetHelper.createChallengerSet(soulType));
 
         while (Reinforcement.canReinforce(itemStack, registries))
             Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack), registries);
@@ -211,21 +211,21 @@ public class NarakaCreativeModeTabs {
     private static ItemStack challengerSword(Holder<Item> item, HolderLookup.Provider registries) {
         ItemStack itemStack = item.value().getDefaultInstance().copy();
         SoulType soulType = NarakaItemUtils.readNbtDataOrDefault(itemStack, NarakaItemUtils.TAG_SOUL_TYPE, SoulType.CODEC, SoulType.NONE);
-        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), registries, EquipmentSetHelper.createChallengerSet(soulType));
+        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET_GROUP, EquipmentSetGroup.CODEC, registries, EquipmentSetHelper.createChallengerSet(soulType));
         return itemStack;
     }
 
     private static ItemStack blessedChallengerSword(Holder<Item> item, HolderLookup.Provider registries) {
         ItemStack itemStack = blessed(item.value().getDefaultInstance().copy());
         SoulType soulType = NarakaItemUtils.readNbtDataOrDefault(itemStack, NarakaItemUtils.TAG_SOUL_TYPE, SoulType.CODEC, SoulType.NONE);
-        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), registries, EquipmentSetHelper.createChallengerSet(soulType));
+        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET_GROUP, EquipmentSetGroup.CODEC, registries, EquipmentSetHelper.createChallengerSet(soulType));
         return itemStack;
     }
 
     private static ItemStack blessed(Holder<Item> item, SoulType soulType, HolderLookup.Provider registries) {
         ItemStack itemStack = trimmed(item.value().getDefaultInstance().copy(), soulType, registries);
         blessed(itemStack);
-        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET, EquipmentSet.CODEC.listOf(), registries, EquipmentSetHelper.createBlessedSet());
+        NarakaItemUtils.storeNbtData(itemStack, NarakaItemUtils.TAG_EQUIPMENT_SET_GROUP, EquipmentSetGroup.CODEC, registries, EquipmentSetHelper.createBlessedSet());
 
         while (Reinforcement.canReinforce(itemStack, registries))
             Reinforcement.increase(itemStack, NarakaReinforcementEffects.byItem(itemStack), registries);
