@@ -1,37 +1,29 @@
 modLoader = "javafml"
-loaderVersion = "[47,)"
-#issueTrackerURL = ""
+loaderVersion = "${forge_loader_version_range}"
+issueTrackerURL = "https://github.com/lalaalal/Naraka/issues"
 license = "MIT"
 
 [[mods]]
 modId = "naraka"
 version = "${version}"
 displayName = "Naraka"
-authors = "lalaalal, joachimbeen, noon414, GuEunso, Gyeon___"
-credits = "Qiye_Duyu, Player_7, h2o/aoinnman, htohtosgoy, lfScarf"
-description = '''
-This mod adds Herobrine boss, new ores, and some more powerful materials which needs vanilla ores to make.
-
-Players can get reward from boss and make new tools with added new materials.
-
-
-
-This mod is still WIP and there will be more contents to make out. Thank You.
-'''
+authors = "${mod_author}"
+credits = "${credits}"
+description = '''${description}'''
 logoFile = "naraka.png"
 displayURL = "https://github.com/lalaalal/Naraka"
 
 [[dependencies.naraka]]
 modId = "forge"
 mandatory = true
-versionRange = "[47,)"
+versionRange = "${forge_loader_version_range}"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.naraka]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.20.1,)"
+versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
 
