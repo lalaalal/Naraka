@@ -17,11 +17,9 @@ public class HerobrineSanctuaryGenerationPointProvider implements StructureGener
         int bridgeHeight2 = context.chunkGenerator().getFirstFreeHeight(comparingPosition.getX(), comparingPosition.getZ(), Heightmap.Types.WORLD_SURFACE_WG, heightAccessor, context.randomState());
         if (Math.abs(bridgeHeight1 - bridgeHeight2) > 3)
             return Optional.empty();
-        int heightOffset = Math.min(bridgeHeight1, bridgeHeight2);
+        int heightOffset = (bridgeHeight1 + bridgeHeight2) / 2;
         if (heightOffset > seaLevel + 3)
             return Optional.empty();
-        if (heightOffset == seaLevel)
-            heightOffset += 1;
 
         return Optional.of(base.above(heightOffset));
     }
