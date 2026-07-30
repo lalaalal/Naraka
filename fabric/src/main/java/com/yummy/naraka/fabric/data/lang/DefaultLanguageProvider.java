@@ -323,11 +323,23 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
                 List.of("Unable to gain color, yearning for color, it sought to strip away colors and add them to itself.", "색을 얻지 못하고, 색을 갈망하며, 색을 빼앗아 자신에게 더하려 했다."),
                 List.of("Yet no matter what is added, black remains black. Even its remaining ashes are merely pitch-black emptiness.", "하나 무엇을 더한들 검은색은 그저 검은색. 남은 유해마저도 새까만 허무일 뿐.")
         ));
+        addTooltip(NarakaItemTooltip.SPEAR, List.of(
+                List.of("Can be forged at the Smithing Table using Divine Blood and the Soul Smithing Template.", "대장장이 작업대에서 신의 피와 영혼 대장장이 형판을 사용해 제련할 수 있다."),
+                List.of("A weapon fashioned with its very soul as the blade.", "그것의 영혼을 창날 삼아 가공한 무기."),
+                List.of("Having merely given physical shape to the blade, its power is pitiful;", "물리적으로 창날의 형태를 만드는 것에 그쳤기에 위력은 형편없으나,"),
+                List.of("Yet as an offering for a far greater weapon, it could not be more fitting.", "더 강력한 무기를 위한 제물로서는 더할 나위 없이 적합하다.")
+        ));
+        addTooltip(NarakaItemTooltip.MIGHTY_HOLY_SPEAR, List.of(
+                List.of("Bless the mineral swords infused with eight distinct souls, and use them together as materials to craft the ultimate weapon.", "서로 다른 여덟 종류의 영혼이 주입된 광물 검에 축복을 내려, 함께 재료로 사용해 궁극의 무기를 제작할 수 있다."),
+                List.of("The Tyrant has fallen, yet the 'Naraka' still demands one to reign.", "군주는 죽었으나, 「나락」은 군림하는 자를 필요로 하니."),
+                List.of("Slayer, prove thy worthiness to claim the throne through eight trials of tribulation.", "시해자여, 여덟 번의 고행으로서 스스로가 군주의 자리에 걸맞음을 증명하라.")
+        ));
         addTooltip(NarakaItemTooltip.SPEAR_OF_LONGINUS, List.of(
                 List.of("Can be thrown, automatically returning to its owner.", "투척할 수 있으며, 주인에게 자동으로 되돌아온다."),
                 List.of("Instantly kills hit enemies, regardless of the attack method.", "공격 방식에 관계 없이 적중한 적을 즉사시킨다."),
                 List.of("Eight rests, eight proofs.", "여덟 번의 안식, 여덟 번의 증명."),
-                List.of("This weapon is the purest power obtained at the end of that journey, and proof that you have been reborn as the sovereign of 'Naraka'.", "이 무구는 그 끝에서 얻은 가장 순수한 힘이자, 그대가 「나락」의 군주로서 거듭났다는 증명이다.")
+                List.of("Your worth is proven, Regicide; the throne of 'Naraka' is now yours.", "자격은 증명되었으니, 시해자여, 「나락」의 옥좌는 이제 그대의 것."),
+                List.of("This weapon is the purest power obtained at the end of that journey, and proof that you have been reborn as the sovereign of 'Naraka'.", "이 무구는 옥좌가 그대에게 바치는 가장 순수한 힘이자, 새로운 「나락」의 군주로서의 증명이다.")
         ));
         addTooltip(NarakaItemTooltip.SANCTUARY_COMPASS, List.of(
                 List.of("Points toward the nearest 'Herobrine Sanctuary' structure in the current world.", "현재 월드에 있는 가장 가까운 '히로빈 성역' 건축물이 있는 방향을 가리킨다."),
@@ -340,7 +352,7 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
                 List.of("Also used to duplicate 'Herobrine Totems'.", "또한 '히로빈 토템'을 복사하는 데에도 사용된다."),
                 List.of("Gold holds brilliance, and brilliance summons it.", "금은 광채를 품고, 광채는 그것을 불러낸다."),
                 List.of("This gold is a false creation, holding a fainter brilliance than genuine gold.", "이 금은 원래의 금보다 미약한 광채를 품은, 거짓된 것."),
-                List.of("Yet even that faint glow is enough to guide its steps.", "하나 그 광채만으로도, 그것의 발을 이끄는 데에는 부족함이 없다.")
+                List.of("Yet precisely because it is a false brilliance, it is all the more effective in guiding its steps.", "하나 거짓된 광채이기에, 그것의 발을 이끄는 데에는 더없이 효과적이다.")
         ));
         addTooltip(NarakaItemTooltip.HEROBRINE_TOTEM, List.of(
                 List.of("Can summon Herobrine by stacking 2 Blocks of Imitation Gold, a Herobrine Totem, and 1 Netherrack from bottom to top, then setting it on fire.", "거짓된 금 블록 2개, 히로빈 토템, 네더랙 1개를 아래에서부터 순서대로 쌓아 올리고 불을 붙여 히로빈을 불러낼 수 있다."),
@@ -430,12 +442,11 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addEntityType(NarakaEntityTypes.NARAKA_PORTAL, "Naraka Portal");
         addEntityType(NarakaEntityTypes.LIGHTNING_CIRCLE, "Lightning Circle");
 
-        addDamageType(NarakaDamageTypes.SPEAR_OF_LONGINUS, "%1$s had their color and existence completely devoured", "%1$s이(가) 세상에서 자신만의 색을 잃어버렸습니다");
+        addDamageType(NarakaDamageTypes.SPEAR_OF_LONGINUS, "%1$s had their color and existence completely devoured", "군주가 %1$s의 죽음을 명했습니다");
         addDamageType(NarakaDamageTypes.STIGMA, "%1$s was deprived of life by %2$s's stacked stigma", "%1$s이(가) %2$s의 낙인이 중첩돼 생명을 빼앗겼습니다");
         addDamageType(NarakaDamageTypes.STIGMA_CONSUME, "%2$s consumed the stigma on %1$s to take their life", "%2$s이(가) %1$s의 낙인을 소모해 생명을 앗아갔습니다");
         addDamageType(NarakaDamageTypes.PICKAXE_SLASH, "%1$s was slain by %2$s", "%1$s이(가) %2$s에 썰렸습니다");
         addDamageType(NarakaDamageTypes.NARAKA_FIREBALL, "%1$s was blown up by %2$s's Naraka Fireball", "%1$s이(가) %2$s이(가) 던진 나락 화염구에 폭발했습니다");
-        addDamageType(NarakaDamageTypes.STARDUST, "%1$s was blown up by %2$s", "%1$s이(가) %2$s에 폭사했습니다");
         addDamageType(NarakaDamageTypes.PURIFIED_SOUL_FIRE, "%1$s was consumed by black flames", "%1$s이(가) 검은 불 속에서 타 죽었습니다");
         addDamageType(NarakaDamageTypes.SOUL_ATTACK, "%2$s executed %1$s", "%2$s이(가) %1$s을(를) 처형했습니다");
 
