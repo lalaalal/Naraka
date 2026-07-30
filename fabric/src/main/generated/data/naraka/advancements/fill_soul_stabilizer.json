@@ -16,7 +16,8 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "naraka:soul_stabilizer"
+      "item": "naraka:soul_stabilizer",
+      "nbt": "{DynamicItemLore:[{alwaysDisplay:1b,condition:{conditions:[],type:\"ANY\"},factories:[{component_type:\"TRANSLATABLE\",string:\"item.naraka.soul_stabilizer.tooltip.0\",style:{style:{color:\"gray\"},type:\"STATIC\"},type:\"SINGLE\"},{component_type:\"TRANSLATABLE\",string:\"item.naraka.soul_stabilizer.tooltip.1\",style:{style:{color:\"gray\"},type:\"STATIC\"},type:\"SINGLE\"}]}]}"
     },
     "show_toast": true,
     "title": {

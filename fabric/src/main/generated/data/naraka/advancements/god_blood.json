@@ -22,7 +22,8 @@
     "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "naraka:god_blood"
+      "item": "naraka:god_blood",
+      "nbt": "{DynamicItemLore:[{alwaysDisplay:1b,condition:{conditions:[],type:\"ANY\"},factories:[{component_type:\"TRANSLATABLE\",string:\"item.naraka.god_blood.tooltip.0\",style:{style:{color:\"gray\"},type:\"STATIC\"},type:\"SINGLE\"},{component_type:\"TRANSLATABLE\",string:\"item.naraka.god_blood.tooltip.1\",style:{style:{color:\"gray\"},type:\"STATIC\"},type:\"SINGLE\"},{children:[],type:\"COMPOSITE\"},{component_type:\"TRANSLATABLE\",string:\"item.naraka.god_blood.tooltip.2\",style:{style:{color:\"dark_gray\",italic:1b},type:\"STATIC\"},type:\"SINGLE\"},{component_type:\"TRANSLATABLE\",string:\"item.naraka.god_blood.tooltip.3\",style:{style:{color:\"dark_gray\",italic:1b},type:\"STATIC\"},type:\"SINGLE\"},{component_type:\"TRANSLATABLE\",string:\"item.naraka.god_blood.tooltip.4\",style:{style:{color:\"dark_gray\",italic:1b},type:\"STATIC\"},type:\"SINGLE\"}]}]}"
     },
     "show_toast": true,
     "title": {
