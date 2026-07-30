@@ -6,38 +6,18 @@ import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.TypedEntityData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class NarakaItemUtils {
-    /**
-     * @return Get item attribute modifiers, item's default modifier if null or empty
-     */
-    public static ItemAttributeModifiers getAttributeModifiers(ItemStack itemStack) {
-        ItemAttributeModifiers modifiers = itemStack.get(DataComponents.ATTRIBUTE_MODIFIERS);
-        DataComponentMap components = itemStack.getItem().components();
-        if (modifiers == null || modifiers.modifiers().isEmpty())
-            return getAttributeModifiers(components);
-        return modifiers;
-    }
-
-    private static ItemAttributeModifiers getAttributeModifiers(DataComponentMap components) {
-        ItemAttributeModifiers modifiers = components.get(DataComponents.ATTRIBUTE_MODIFIERS);
-        if (modifiers == null)
-            return ItemAttributeModifiers.EMPTY;
-        return modifiers;
-    }
-
     public static void summonItemEntity(Level level, ItemStack itemStack, BlockPos pos) {
         if (!level.isClientSide()) {
             level.addFreshEntity(new ItemEntity(

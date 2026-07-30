@@ -1,7 +1,6 @@
 package com.yummy.naraka.world.item.reinforcement;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.util.NarakaItemUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
@@ -86,7 +85,7 @@ public abstract class AttributeModifyingEffect implements ReinforcementEffect {
 
     @Override
     public void onReinforcementIncreased(ItemStack itemStack, int previousReinforcement, int currentReinforcement) {
-        ItemAttributeModifiers modifiers = NarakaItemUtils.getAttributeModifiers(itemStack);
+        ItemAttributeModifiers modifiers = itemStack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
         Equippable equippable = itemStack.get(DataComponents.EQUIPPABLE);
         if (equippable != null) {
             EquipmentSlot slot = equippable.slot();
