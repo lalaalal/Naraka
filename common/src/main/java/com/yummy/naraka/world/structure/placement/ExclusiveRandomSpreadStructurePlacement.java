@@ -70,7 +70,7 @@ public class ExclusiveRandomSpreadStructurePlacement extends RandomSpreadStructu
 
     @Override
     protected boolean isPlacementChunk(ChunkGeneratorStructureState structureState, int x, int z) {
-        if (x < minDistanceFromCenter || z < minDistanceFromCenter)
+        if (x * x + z * z < minDistanceFromCenter * minDistanceFromCenter)
             return false;
         for (Holder<StructureSet> exclusiveStructure : exclusiveStructures) {
             if (structureState.hasStructureChunkInRange(exclusiveStructure, x, z, exclusiveRange))
