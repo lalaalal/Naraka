@@ -57,8 +57,7 @@ public class NarakaBlockTagsProvider extends FabricTagsProvider.BlockTagsProvide
 
         builder(NarakaBlockTags.HEROBRINE_SANCTUARY_AIR_WRAP_TARGETS)
                 .add(vanillaBlockId(Blocks.WATER))
-                .add(vanillaBlockId(Blocks.GRAVEL))
-                .forceAddTag(BlockTags.SAND);
+                .add(vanillaBlockId(Blocks.GRAVEL));
         builder(NarakaBlockTags.HEROBRINE_SANCTUARY_LAVA_WRAP_TARGETS)
                 .forceAddTag(BlockTags.AIR)
                 .add(vanillaBlockId(Blocks.WATER));
