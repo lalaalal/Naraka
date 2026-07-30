@@ -50,7 +50,9 @@ public class NarakaItemTooltip {
     public static final DynamicItemLoreHolder.Single HEROBRINE_SCARF = simple(NarakaItemIds.HEROBRINE_SCARF, 1, 2);
     public static final DynamicItemLoreHolder.Single NARAKA_PICKAXE = simple(NarakaItemIds.NARAKA_PICKAXE, 1, 3);
     public static final DynamicItemLoreHolder.Single GOD_BLOOD = simple(NarakaItemIds.GOD_BLOOD, 2, 3);
-    public static final DynamicItemLoreHolder.Single SPEAR_OF_LONGINUS = simple(NarakaItemIds.SPEAR_OF_LONGINUS_ITEM, 2, 2);
+    public static final DynamicItemLoreHolder.Single SPEAR = simple(NarakaItemIds.SPEAR_ITEM, 1, 3);
+    public static final DynamicItemLoreHolder.Single MIGHTY_HOLY_SPEAR = simple(NarakaItemIds.MIGHTY_HOLY_SPEAR_ITEM, 1, 2);
+    public static final DynamicItemLoreHolder.Single SPEAR_OF_LONGINUS = simple(NarakaItemIds.SPEAR_OF_LONGINUS_ITEM, 2, 3);
     public static final DynamicItemLoreHolder.Single SANCTUARY_COMPASS = simple(NarakaItemIds.SANCTUARY_COMPASS, 1, 3);
     public static final DynamicItemLoreHolder.Single IMITATION_GOLD = simple(NarakaBlockItemIds.IMITATION_GOLD_BLOCK, 2, 3);
     public static final DynamicItemLoreHolder.Single HEROBRINE_TOTEM = simple(NarakaBlockItemIds.HEROBRINE_TOTEM, 2, 2);

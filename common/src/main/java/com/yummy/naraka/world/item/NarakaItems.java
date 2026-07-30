@@ -138,7 +138,8 @@ public class NarakaItems {
                     true, 3, -3,
                     properties.fireResistant(),
                     NarakaEntityTypes.THROWN_SPEAR
-            )
+            ),
+            builder -> builder.naraka$withTooltip(NarakaItemTooltip.SPEAR)
     );
     public static final HolderProxy<Item, SpearItem> MIGHTY_HOLY_SPEAR_ITEM = registerItem(
             NarakaItemIds.MIGHTY_HOLY_SPEAR_ITEM,
@@ -147,7 +148,8 @@ public class NarakaItems {
                     properties.fireResistant()
                             .rarity(Rarity.RARE),
                     NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR
-            )
+            ),
+            builder -> builder.naraka$withTooltip(NarakaItemTooltip.MIGHTY_HOLY_SPEAR)
     );
     public static final HolderProxy<Item, SpearOfLonginusItem> SPEAR_OF_LONGINUS_ITEM = registerItem(
             NarakaItemIds.SPEAR_OF_LONGINUS_ITEM,
