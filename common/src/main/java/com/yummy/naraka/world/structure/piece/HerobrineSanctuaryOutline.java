@@ -64,7 +64,7 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
     }
 
     @Override
-    protected void addAdditionalSaveData(StructurePieceSerializationContext pContext, CompoundTag tag) {
+    protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
         tag.store("Position", BlockPos.CODEC, pos);
     }
 
@@ -76,15 +76,15 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
     }
 
     @Override
-    public void postProcess(WorldGenLevel pLevel, StructureManager pStructureManager, ChunkGenerator generator, RandomSource pRandom, BoundingBox processingBox, ChunkPos pChunkPos, BlockPos pPos) {
+    public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator, RandomSource random, BoundingBox processingBox, ChunkPos chunkPos, BlockPos pos) {
         int seaLevel = generator.getSeaLevel();
-        generateSphere(pLevel, processingBox, boundingBox, airBox.minY(), airBox.maxY(), seaLevel, Blocks.AIR.defaultBlockState(), NarakaBlockTags.HEROBRINE_SANCTUARY_AIR_WRAP_TARGETS, Blocks.DIRT);
-        generateSphere(pLevel, processingBox, boundingBox, lavaBox.minY(), lavaBox.maxY(), seaLevel, Blocks.LAVA.defaultBlockState(), NarakaBlockTags.HEROBRINE_SANCTUARY_LAVA_WRAP_TARGETS, Blocks.STONE);
+        generateSphere(level, processingBox, boundingBox, airBox.minY(), airBox.maxY(), seaLevel, Blocks.AIR.defaultBlockState(), NarakaBlockTags.HEROBRINE_SANCTUARY_AIR_WRAP_TARGETS, Blocks.DIRT);
+        generateSphere(level, processingBox, boundingBox, lavaBox.minY(), lavaBox.maxY(), seaLevel, Blocks.LAVA.defaultBlockState(), NarakaBlockTags.HEROBRINE_SANCTUARY_LAVA_WRAP_TARGETS, Blocks.STONE);
     }
 
     protected void generateSphere(WorldGenLevel level, BoundingBox processingBox, BoundingBox box, int yStart, int yEnd, int seaLevel, BlockState state, TagKey<Block> wrapTarget, Block defaultReplace) {
         BoundingBox targetBox = BoundingBox.fromCorners(new Vec3i(processingBox.minX(), yStart, processingBox.minZ()), new Vec3i(processingBox.maxX(), yEnd, processingBox.maxZ()));
-        NarakaUtils.sphere(box, targetBox, SPHERE_SIZE * 1.02f, (length, x, y, z) -> {
+        NarakaUtils.sphere(box, targetBox, SPHERE_SIZE * 1.25f, (length, x, y, z) -> {
             if (length <= SPHERE_SIZE)
                 placeBlock(level, state, x, y, z, processingBox);
             else {
