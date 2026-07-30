@@ -18,6 +18,8 @@ public class NarakaStructureSetsTagProvider extends FabricTagProvider<StructureS
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         getOrCreateTagBuilder(NarakaStructureSetTags.HEROBRINE_SANCTUARY_EXCLUSIVE)
+                .add(BuiltinStructureSets.PILLAGER_OUTPOSTS)
+                .add(BuiltinStructureSets.VILLAGES)
                 .add(BuiltinStructureSets.STRONGHOLDS);
     }
 }
