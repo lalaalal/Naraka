@@ -9,6 +9,7 @@ import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.NarakaJukeboxSongs;
 import com.yummy.naraka.world.item.SoulType;
 import com.yummy.naraka.world.item.alchemy.NarakaPotions;
 import com.yummy.naraka.world.item.equipment.trim.NarakaTrimMaterials;
@@ -179,6 +180,11 @@ public class JapaneseLanguageProvider extends NarakaLanguageProviders {
         addPotion(Items.SPLASH_POTION, NarakaPotions.BLESS, "祝福のスプラッシュポーション");
         addPotion(Items.LINGERING_POTION, NarakaPotions.BLESS, "祝福の残留ポーション");
 
+        addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_1, "ヘロブラインフェーズ1");
+        addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_2, "ヘロブラインフェーズ2");
+        addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_3, "ヘロブラインフェーズ3");
+        addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_4, "ヘロブラインフェーズ4");
+
         addItem(NarakaItems.STIGMA_ROD, "スティグマの棒");
         addItem(NarakaItems.NARAKA_FIREBALL_STAFF, "奈落の火球の杖");
         addItem(NarakaItems.RAINBOW_SWORD, "虹色の剣");
@@ -260,105 +266,123 @@ public class JapaneseLanguageProvider extends NarakaLanguageProviders {
         addBlock(NarakaBlocks.SOUL_SMITHING_BLOCK, "魂の鍛冶台");
         addBlock(NarakaBlocks.NARAKA_PORTAL, "奈落へのポータル");
 
-        add(LanguageKey.HIDDEN_TOOLTIP, "Shiftキーを押して詳細を表示");
+        add(LanguageKey.HIDDEN_TOOLTIP, "Shift長押しで詳細を表示");
 
         addTooltip(NarakaItemTooltip.HEROBRINE_SCARF, List.of(
-                List.of("チェストプレートスロットに装備するか、「魂の鍛冶台」で防具に合成できる。"),
-                List.of("マントの内側に沿って、それが存在した「奈落」の姿が揺らめいている。"),
-                List.of("だがこれはただ映し出すのみであり、これを通じて「奈落」を行き来することはできない。")
+                List.of("胸当てとして装備するか、'魂の鍛冶台'で'純粋な魂の合金'の防具に合成できる。"),
+                List.of("布の内側に沿って、かつての深淵、奈落の姿が揺らめきを放ち、浮かび上がる。"),
+                List.of("ただ、それは単に遠隔での投影に過ぎず、この布で奈落に移動することは出来ない。")
         ));
         addTooltip(NarakaItemTooltip.NARAKA_PICKAXE, List.of(
-                List.of("ツルハシやオノとして使用できる。"),
-                List.of("「色彩」を求めて異界を彷徨い、行き着く先々を踏みにじり吸収した。"),
-                List.of("常に奈落を通じて現れ、侵入した世界に虚無だけを残して消え去る存在。"),
-                List.of("それゆえある世界では「虚無の神」、ある世界では「奈落の暴君」と呼ばれる。")
+                List.of("ツルハシや斧として使用可能。"),
+                List.of("'色彩'を求め異界の領域を彷徨いながら、'それ'は道中のあらゆる物を踏みにじり、吸収した。"),
+                List.of("奈落を通じて常に顕現する存在であり、侵略した世界に虚無のみを残し姿を消す存在。"),
+                List.of("それらは、ある世界では'虚空の神'であり、また別の世界では'奈落の暴君'と呼ばれる。")
         ));
         addTooltip(NarakaItemTooltip.GOD_BLOOD, List.of(
-                List.of("強力な装備の材料として使用される。"),
-                List.of("また、「ソウルスタビライザー」に充電することで強力な装備の鍛造に使用することもできる。"),
-                List.of("あらゆる恐怖と畏怖を込めた名の本質は、欠乏を満たすための貪食。"),
-                List.of("色を得られず、色を渇望し、色を奪い取って己に加えようとした。"),
-                List.of("だが何を加えようと黒はただの黒。残された遺骸すらも漆黒の虚無にすぎない。")
+                List.of("神聖なる装備の素材として使われる。"),
+                List.of("また、'ソウルスタビライザー'に充填して、'魂の鍛冶型'で奈落の力を宿した装備を鍛造出来る。"),
+                List.of("恐怖と畏怖の念に包まれた名の背後に有る本質は、虚空の如き感覚を埋めようとする貪欲さである。"),
+                List.of("それは色を得ることが出来ず、色彩を渇望し、色彩を狩り、自らの虚に貼り付けた。"),
+                List.of("しかし、何を加えようとも、黒は漆黒のままである。その残された灰でさえ、ただ深淵の虚無に過ぎない。")
+        ));
+        addTooltip(NarakaItemTooltip.SPEAR, List.of(
+                List.of("'神の血'と'魂の鍛冶型'で鍛冶台でアップグレードすると、より強力な槍となる。"),
+                List.of("純粋な魂を刃として変形させ造られた武器。"),
+                List.of("単に魂を刃の形を加えただけでは、その力は微々たるもので、とても弱い(;ㅿ;)"),
+                List.of("しかし、強大な力を宿す器として、これほどふさわしき物は無いだろう。")
+        ));
+        addTooltip(NarakaItemTooltip.MIGHTY_HOLY_SPEAR, List.of(
+                List.of("八つの異なる魂が宿る鉱物の剣に祝福を授け、それらを素材とし組み合わせれば、神すらも殺す槍を作ることが出来るかもしれない..."),
+                List.of("暴君は堕ちた星々となったが、深淵の虚無、漆黒の奈落は依然として支配者を求めている。"),
+                List.of("虚無狩りよ、八つの試練を乗り越えて、王座に就くにふさわしき力を手に入れろ。")
+        ));
+        addTooltip(NarakaItemTooltip.SPEAR_OF_LONGINUS, List.of(
+                List.of("投げることができ、忠誠エンチャントの様に手元に戻る。"),
+                List.of("この武器で攻撃されたエンティティは例外なく即死する。"),
+                List.of("八度の安息、八度の試練"),
+                List.of("挑戦者はあらゆる苦難を経て、自身を超越した...  虚無狩りよ、汝は世界に証明し、今や奈落の王座は汝の物だ。"),
+                List.of("故にこの深淵の虚無は、その旅の果てに得た、超越者の力であり、世界の力であり、神の力である、そして、汝が新たなる奈落の王と生まれ変わったのだ、、、")
         ));
         addTooltip(NarakaItemTooltip.SANCTUARY_COMPASS, List.of(
-                List.of("現在のワールドで最も近い「ヘロブラインの聖域」構造体がある方向を指し示す。"),
-                List.of("世界は自らの存続のため、因果を調整する傾向を見せる。"),
-                List.of("これはその一環であり、常に世界を侵したそれの聖域を指し示すだろう。"),
-                List.of("それを倒し、世界の存続を紡ぐことのできる英雄が現れるのを待ちながら。")
+                List.of("現地点で最も近い'へロブラインの聖域'を指し示す。"),
+                List.of("この世界は自らの存続のために、因果の調節をする事がある。"),
+                List.of("これこそがその産物であり、この世界を侵略する'虚無'が巣食う'深淵の聖域'を指し示している。"),
+                List.of("かの侵略者を退け、世界の英雄となる者、虚無狩りの'挑戦者'を待ち続けている。")
         ));
         addTooltip(NarakaItemTooltip.IMITATION_GOLD, List.of(
-                List.of("設置されている場合、隣接する鉄ブロックを古の金ブロックへと変化させる。"),
-                List.of("また、「ヘロブライントーテム」を複製する際にも使用される。"),
-                List.of("金は輝きを宿し、輝きはそれを呼び寄せる。"),
-                List.of("この金は本来の金よりも微かな輝きを宿した、偽りのもの。"),
-                List.of("だがその輝きだけでも、それの足取りを導くには十分である。")
+                List.of("設置すると、隣接する鉄ブロックを古の金ブロックに変色させる。"),
+                List.of("'へロブライントーテム'を複製するためにも使用される。"),
+                List.of("黄金は純粋な輝きを宿し、輝きは黄金を呼び寄せる。"),
+                List.of("この黄金は古の時代に存在し、今は輝きが失われている。"),
+                List.of("しかし、これが純粋な古の輝きであるからこそ、彼の道を顕す純粋な光となるのだ。")
         ));
         addTooltip(NarakaItemTooltip.HEROBRINE_TOTEM, List.of(
-                List.of("古の金ブロック2個、ヘロブライントーテム、ネザラック1個を下から順に積み上げ、火をつけることでヘロブラインを召喚できる。"),
-                List.of("ヘロブラインは「ヘロブラインの聖域」構造体の中でのみ召喚できる。"),
-                List.of("それの顔が刻まれた碑石。"),
-                List.of("偽りの金がそれの目を奪い足取りを導く時、これがそれの肉体をこの世界へと呼び寄せ、繋ぎ止める。")
+                List.of("古の金ブロック二つ、へロブライントーテム一つ、ネザーラック一つを下から順に積み重ね、ネザーラックに着火するとへロブラインを召喚する。"),
+                List.of("'へロブライン'は'へロブラインの聖域'でのみ召喚できる。"),
+                List.of("かの者の顔が刻まれた墓石。"),
+                List.of("古の金がその目に留まり、彼への道を導く時、この純粋なる器は、自らを世界に呼び出し、色彩を手に入れるだろう。")
         ));
         addTooltip(NarakaItemTooltip.SOUL_INFUSED_MATERIALS, List.of(
-                List.of("「ソウルスタビライザー」を充電するために使用する。"),
-                List.of("色を渇望するそれの魂の欠片を、最も強烈な色彩を放つ鉱物に宿らせた代物。"),
-                List.of("色を渇望していた魂の渇きが、最も強烈な色彩と直接ひとつになることで満たされている。")
+                List.of("純粋な魂を宿す鉱物、'ソウルスタビライザー'を充填することが出来る"),
+                List.of("色彩を渇望する魂、その断片を、最も鮮やかな色彩の輝きを放つ鉱物に注ぎ込み生まれた物。"),
+                List.of("虚無は色彩を求め、あらゆる物を飲み込んだ、しかし、虚無の願いはたった一つの宝石に注ぎ込まれる事で叶えられ、流れ星の如く輝く。")
         ));
         addTooltip(NarakaItemTooltip.SOUL_STABILIZER, List.of(
-                List.of("設置後、魂が宿った鉱石や神の血を右クリックして充電できる。"),
-                List.of("充電は1種類のアイテムのみで行う必要がある。")
+                List.of("'何らかの魂の宿った鉱物'か'神の血'で右クリックすれば'ソウルスタビライザー'にチャージすることが可能。"),
+                List.of("ソウルスタビライザーへのチャージは1種類のアイテムのみ使用する必要がある。")
         ));
         addTooltip(NarakaItemTooltip.SOUL_SMITHING_BLOCK, List.of(
-                List.of("設置後、充電されたソウルスタビライザーと鍛冶型をセットすることで特定の装備を鍛造できる。"),
-                List.of("鍛造時、ソウルスタビライザーに充電された鉱石や神の血を一定量消費する。")
+                List.of("'何らかの魂の宿った鉱物'か'神の血'でフルチャージされた、'ソウルスタビライザー'と鍛冶型を使い、メイス/ハンマーで純粋な魂の武具を叩けば調律が出来る。"),
+                List.of("調律や鍛造を行うと、'ソウルスタビライザー'にチャージされた'魂の宿った鉱物'または'神の血'が一定量消費される。")
         ));
         addTooltip(NarakaItemTooltip.PURIFIED_SOUL_METAL, List.of(
-                List.of("希少な装備の材料として使用される。"),
-                List.of("金属と称されてはいるが、散らばったそれの魂が形を成して固まったものに近い。")
+                List.of("純粋な魂を宿す合金。純粋な器の武具の素材"),
+                List.of("'合金'とは呼ばれているが、それはむしろ、浄化された魂たちが形作り、固まっている物に近い。")
         ));
         addTooltip(NarakaItemTooltip.PURIFIED_SOUL_SWORD, List.of(
-                List.of("右クリックで黒い炎を放つことができる。黒い炎はこのアイテムの左クリックでのみ消去できる。"),
-                List.of("「魂の鍛冶台」で鉱石や神の血を使用して鍛造できる。"),
+                List.of("地面に左クリックでその場に黒い炎を設置する、黒い炎はこの剣で右クリックで消すことが出来る。"),
+                List.of("魂の宿った鉱物'か'神の血'を素材として、'魂の鍛冶台'で鍛造することが出来る。"),
                 List.of("最も純粋な器。"),
-                List.of("儀式に使用するには、まず魂が宿った鉱石を通じて調律する必要がある。")
+                List.of("挑戦者の儀式'でこの鎧を使用する場合、まず'魂の宿った鉱物'を用いて器と魂を調律する必要がある。")
         ));
         addTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS_DEFAULT, List.of(
-                List.of("この剣を手に持ち、この剣の鉱石と同じ鉱石で鍛造された魂の防具4部位を装備すると、「挑戦者」バフが有効化される。"),
-                List.of("「挑戦者」バフを得た状態でヘロブラインを撃破すると、剣に祝福が授けられ、防具がすべて破壊される。"),
-                List.of("挑戦者は渇望の充足により安定した魂を纏い、武器として手にして、渇望から抜け出せないそれを再び眠りにつかせねばならない。"),
-                List.of("そうすることでそれの魂は安定した魂と共鳴して安息を見出し、挑戦者が握る武器にはそれの祝福が授けられるだろう。")
+                List.of("この剣の魂の宿った鉱物と同じ素材で鍛造した'純粋な魂の鎧'を全て装備し、更にこの剣をメインハンドに持つと'挑戦者の祝福'を得る。"),
+                List.of("'挑戦者の祝福'が付与された状態でへロブラインを倒すと、'装備した全ての防具が壊れる'代わりに、この剣に'祝福'が授けられる。"),
+                List.of("挑戦者達は、満たされた渇望によって虹色の輝きを放つ魂を身にまとい、それを武器とし、色彩に飢えた者を、虚無狩りを為し得なければならない。"),
+                List.of("さすれば、かの漆黒の器は純粋なる魂と強く共鳴し、溶け、混ざり合い。挑戦者達への祝福となるだろう...")
         ));
         addTooltip(NarakaItemTooltip.SOUL_INFUSED_SWORDS_BLESSED, List.of(
                 List.of(""),
                 List.of("「ロンギヌスの槍」"),
                 List.of("の材料として使用される。"),
-                List.of("祝福の授けられた武具は互いに共鳴して引き合い、"),
-                List.of("それの血を媒介として繋がれる時、最も純粋な力を露わにするだろう。")
+                List.of("祝福された武具が互いを共鳴し、混ざり、祝福となった。"),
+                List.of("さすれば、かの者の血を通じて結びつけば、最も純粋な器に虚無の力が宿るだろう。")
         ));
         addTooltip(NarakaItemTooltip.PURIFIED_SOUL_ARMORS_DEFAULT, List.of(
-                List.of("「魂の鍛冶台」で鉱石や神の血を使用して鍛造できる。"),
+                List.of("'魂の宿った鉱物'か'神の血'を素材として、'魂の鍛冶台'で鍛造することが出来る。"),
                 List.of("最も純粋な器。"),
-                List.of("儀式に使用するには、まず魂が宿った鉱石を通じて調律する必要がある。"),
-                List.of("あるいは、それの血を用いて――")
+                List.of("'挑戦者の儀式'でこの鎧を使用する場合、まず'魂の宿った鉱物'を用いて器と魂を調律する必要がある。"),
+                List.of("しかし'神の血'を使えばーーー")
         ));
         addTooltip(NarakaItemTooltip.PURIFIED_SOUL_ARMORS_SOUL, List.of(
-                List.of("この防具の鉱石と同じ鉱石で鍛造された魂の防具4部位を装備し、この防具の鉱石と同じ鉱石で鍛造された剣を手にした時、「挑戦者」バフが有効化される。"),
-                List.of("「挑戦者」バフを得た状態でヘロブラインを撃破すると、剣に祝福が授けられ、防具がすべて破壊される。"),
-                List.of("挑戦者は渇望の充足により安定した魂を纏い、武器として手にして、渇望から抜け出せないそれを再び眠りにつかせねばならない。"),
-                List.of("そうすることでそれの魂は安定した魂と共鳴して安息を見出し、挑戦者が握る武器にはそれの祝福が授けられるだろう。")
+                List.of("同じ魂の宿った鉱物で鍛造した'純粋な魂の鎧'を全て装備し、更にその同じ魂の宿った鉱物で鍛造した'純粋な魂の剣'をメインハンドに持つと'挑戦者の祝福'を得る。"),
+                List.of("'挑戦者の祝福'が付与された状態でへロブラインを倒すと、'装備した全ての防具が壊れる'代わりに、貴方の純粋な魂の剣に'祝福'が授けられる。"),
+                List.of("挑戦者達は、満たされた渇望によって虹色の輝きを放つ魂を身にまとい、それを武器とし、色彩に飢えた者を、虚無狩りを為し得なければならない。"),
+                List.of("さすれば、かの漆黒の器は純粋なる魂と強く共鳴し、溶け、混ざり合い。挑戦者達への祝福となるだろう...")
         ));
         addTooltip(NarakaItemTooltip.PURIFIED_SOUL_ARMOR_BLESSED, List.of(
-                List.of("貪食と貪食が共鳴し、最も強力な力を醸し出す甲冑。"),
-                List.of("満たされぬまま触れ合った二つにしてひとつの魂は互いを貪り合い、絶え間ない苦痛の中で泣き叫ぶ。")
+                List.of("互いの貪欲さが共鳴することでこの純粋な魂の器は、至高の力を発揮する。"),
+                List.of("二つの魂ーーーそれでありながら一つーー満たされることなど無く触れ合い、結合し、互いを喰らい尽くし、果てしない苦痛の中で嘆きの声を歌う。")
         ));
         addTooltip(NarakaItemTooltip.NECTARIUM, List.of(
-                List.of("食べることができ、食べると満腹度と隠し満腹度、体力が最大値まで回復する。"),
-                List.of("とある異次元では、契約を守らなかった者に「石を喰らう罰」を与えるという。")
+                List.of("食用の宝石(!?)、これを食べると満腹度、空腹度、体力が完全に回復する。"),
+                List.of("とある異界では、契約を守らない者は'石を喰らう罰'を与えるという...")
         ));
         addTooltip(NarakaItemTooltip.NECTARIUM_CORE, List.of(
-                List.of("ハチミツ入り瓶を使用することで活性化でき、活性化するとネクタリウムの結晶を生成する。"),
-                List.of("鉱物だろうと作物だろうと、どちらも『物』なのだから似たようなもの。"),
-                List.of("ゆえにこれは、22世紀の人類を救う新概念の作物である。")
+                List.of("ハチミツ入りの瓶を使用して活性化状態にすることができ、活性化状態の場合近くのネクタリウムの結晶が生えてくる。"),
+                List.of("植物も鉱物も、、、どちらも、大地から'採取'するものだから、同じような物だよね？"),
+                List.of("つまり！これは22世紀の人類を救うための画期的な作物なのだ！")
         ));
 
         addEntityType(NarakaEntityTypes.HEROBRINE, "奈落の暴君: ヘロブライン");
