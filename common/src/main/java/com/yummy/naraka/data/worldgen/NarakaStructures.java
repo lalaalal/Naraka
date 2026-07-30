@@ -1,7 +1,6 @@
 package com.yummy.naraka.data.worldgen;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.tags.ConventionalTags;
 import com.yummy.naraka.tags.NarakaBiomeTags;
 import com.yummy.naraka.world.NarakaBiomes;
 import com.yummy.naraka.world.structure.JumboPart;
