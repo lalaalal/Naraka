@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import com.yummy.naraka.event.ItemEvents;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
-import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -13,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
 import java.util.ArrayList;
@@ -67,7 +67,7 @@ public record EquipmentSetGroup(List<EquipmentSet> equipmentSets) implements Ite
     }
 
     @Override
-    public void addToTooltip(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
+    public void addToTooltip(ItemStack item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
         for (EquipmentSet equipmentSet : equipmentSets)
             equipmentSet.addToTooltip(item, context, player, tooltipFlag, shiftKeyPressed, builder);
     }

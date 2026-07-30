@@ -3,13 +3,13 @@ package com.yummy.naraka.world.item.tooltip;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.event.ItemEvents;
-import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
 import java.util.List;
@@ -39,7 +39,7 @@ public record DynamicItemLore(List<ConditionalComponents> conditional) implement
     }
 
     @Override
-    public void addToTooltip(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
+    public void addToTooltip(ItemStack item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
         for (ConditionalComponents components : conditional) {
             if (components.isAcceptable(item)) {
                 components.addToTooltip(item, context, player, tooltipFlag, shiftKeyPressed, builder);

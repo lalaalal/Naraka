@@ -1,9 +1,9 @@
 package com.yummy.naraka.event;
 
-import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
 import java.util.function.Consumer;
@@ -22,6 +22,6 @@ public class ItemEvents {
 
     @FunctionalInterface
     public interface ItemTooltip {
-        void addToTooltip(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder);
+        void addToTooltip(ItemStack item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder);
     }
 }

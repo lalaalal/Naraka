@@ -124,7 +124,8 @@ public class NarakaItems {
             properties -> new SpearItem(NarakaTiers.PURIFIED_SOUL,
                     true, 3, -3, 3,
                     properties.fireResistant()
-                            .component(DataComponents.TOOL, TridentItem.createToolProperties()),
+                            .component(DataComponents.TOOL, TridentItem.createToolProperties())
+                            .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.SPEAR.tooltip()),
                     NarakaEntityTypes.THROWN_SPEAR
             )
     );
@@ -134,7 +135,8 @@ public class NarakaItems {
                     true, 7, -3, 3,
                     properties.fireResistant()
                             .rarity(Rarity.RARE)
-                            .component(DataComponents.TOOL, TridentItem.createToolProperties()),
+                            .component(DataComponents.TOOL, TridentItem.createToolProperties())
+                            .component(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), NarakaItemTooltip.MIGHTY_HOLY_SPEAR.tooltip()),
                     NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR
             )
     );

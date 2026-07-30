@@ -8,12 +8,12 @@ import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.ItemEvents;
 import com.yummy.naraka.util.ComponentStyles;
+import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSetGroup;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.tooltip.DynamicItemLore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.SoundManager;
-import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
@@ -21,8 +21,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.BlockGetter;
 
 import java.util.function.Consumer;
@@ -85,7 +85,7 @@ public class NarakaClientEvents {
         NarakaConfig.stopWatching();
     }
 
-    private static void addItemTooltipsTop(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
+    private static void addItemTooltipsTop(ItemStack item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
         EquipmentSetGroup equipmentSetGroup = item.getOrDefault(NarakaDataComponentTypes.EQUIPMENT_SET_GROUP.get(), EquipmentSetGroup.EMPTY);
         equipmentSetGroup.addToTooltip(item, context, player, tooltipFlag, shiftKeyPressed, builder);
         Reinforcement reinforcement = item.getOrDefault(NarakaDataComponentTypes.REINFORCEMENT.get(), Reinforcement.ZERO);
@@ -100,18 +100,18 @@ public class NarakaClientEvents {
         }
     }
 
-    private static void addItemTooltipsMiddle(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
+    private static void addItemTooltipsMiddle(ItemStack item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
         DynamicItemLore dynamicItemLore = item.getOrDefault(NarakaDataComponentTypes.DYNAMIC_ITEM_LORE.get(), DynamicItemLore.EMPTY);
         if (dynamicItemLore.isEmpty())
             return;
 
         builder.accept(Component.empty());
         dynamicItemLore.addToTooltip(item, context, player, tooltipFlag, shiftKeyPressed, builder);
-        if (item.has(DataComponents.TRIM) || item.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY).modifiers().isEmpty())
+        if (item.has(DataComponents.TRIM) || NarakaItemUtils.getAttributeModifiers(item).modifiers().isEmpty())
             builder.accept(Component.empty());
     }
 
-    private static void addItemTooltipsBottom(DataComponentHolder item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
+    private static void addItemTooltipsBottom(ItemStack item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
         if (item.getOrDefault(NarakaDataComponentTypes.BLESSED.get(), false))
             builder.accept(Component.translatable(LanguageKey.BLESSED_KEY).withStyle(ComponentStyles.RAINBOW_COLOR));
     }
