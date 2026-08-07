@@ -152,9 +152,16 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         return true;
     }
 
-    private boolean attachScarf() {
-        if (forgingItem.getItem() instanceof Equipable equipable && equipable.getEquipmentSlot() == EquipmentSlot.CHEST) {
-            NarakaItemUtils.storeNbtData(forgingItem, "HerobrineScarf", Codec.BOOL, true);
+    private boolean toggleScarf() {
+        if (level != null && forgingItem.getItem() instanceof Equipable equipable && equipable.getEquipmentSlot() == EquipmentSlot.CHEST) {
+            boolean hasScarf = NarakaItemUtils.readNbtDataOrDefault(forgingItem, NarakaItemUtils.TAG_HEROBRINE_SCARF, Codec.BOOL, false);
+            if (hasScarf) {
+                NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_HEROBRINE_SCARF, Codec.BOOL, false);
+            } else {
+                NarakaItemUtils.storeNbtData(forgingItem, NarakaItemUtils.TAG_HEROBRINE_SCARF, Codec.BOOL, true);
+            }
+            level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
+            setChanged();
             return true;
         }
         return false;
@@ -202,6 +209,8 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
 
     @Override
     public boolean tryReinforce(Player player) {
+        if (level != null && level.isClientSide())
+            return false;
         int requiredSoul = SoulStabilizerBlockEntity.getConsume();
         if (forgingItem.is(NarakaItemTags.SOUL_REINFORCEABLE)
                 && !templateItem.isEmpty()
@@ -212,7 +221,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
             if (templateItem.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.getConcreteValue()))
                 return reinforceSword(soulType, requiredSoul, player);
             if (templateItem.is(NarakaItems.HEROBRINE_SCARF.getConcreteValue()))
-                return attachScarf();
+                return toggleScarf();
 
             return reinforceArmor(soulType, requiredSoul, player);
         }

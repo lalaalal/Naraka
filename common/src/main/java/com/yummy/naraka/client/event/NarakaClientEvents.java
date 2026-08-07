@@ -1,5 +1,6 @@
 package com.yummy.naraka.client.event;
 
+import com.mojang.serialization.Codec;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.renderer.WhiteFogRenderHelper;
 import com.yummy.naraka.config.Configuration;
@@ -132,5 +133,7 @@ public class NarakaClientEvents {
     private static void addItemTooltipsBottom(ItemStack itemStack, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
         if (NarakaItemUtils.hasNbtData(itemStack, NarakaItemUtils.TAG_BLESSED))
             builder.accept(Component.translatable(LanguageKey.BLESSED_KEY).withStyle(ComponentStyles.RAINBOW_COLOR));
+        if (NarakaItemUtils.readNbtDataOrDefault(itemStack, NarakaItemUtils.TAG_HEROBRINE_SCARF, Codec.BOOL, false))
+            builder.accept(Component.translatable(LanguageKey.HEROBRINE_SCARF_KEY).withStyle(ComponentStyles.RAINBOW_COLOR));
     }
 }

@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -37,11 +38,10 @@ public abstract class ItemStackMixin {
             ItemEvents.ITEM_TOOLTIP_MIDDLE.invoker().addToTooltip(naraka$self(), player, isAdvanced, naraka$hasShiftDown(), list::add);
     }
 
-    @Inject(method = "getTooltipLines", at = @At("RETURN"))
-    public void addTooltipToBottom(@Nullable Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir) {
-        List<Component> components = cir.getReturnValue();
+    @Inject(method = "getTooltipLines", at = @At(value = "FIELD", target = "Lnet/minecraft/world/item/ItemStack$TooltipPart;UNBREAKABLE:Lnet/minecraft/world/item/ItemStack$TooltipPart;", opcode = Opcodes.GETSTATIC))
+    public void addTooltipToBottom(@Nullable Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
         if (player != null)
-            ItemEvents.ITEM_TOOLTIP_BOTTOM.invoker().addToTooltip(naraka$self(), player, isAdvanced, naraka$hasShiftDown(), components::add);
+            ItemEvents.ITEM_TOOLTIP_BOTTOM.invoker().addToTooltip(naraka$self(), player, isAdvanced, naraka$hasShiftDown(), list::add);
     }
 
     @Unique
