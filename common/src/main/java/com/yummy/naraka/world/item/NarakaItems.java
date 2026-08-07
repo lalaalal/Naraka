@@ -5,9 +5,11 @@ import com.yummy.naraka.core.registries.RegistryWriter;
 import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
 import com.yummy.naraka.references.NarakaItemIds;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
+import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.tooltip.NarakaItemTooltip;
 import net.minecraft.core.Holder;
+import net.minecraft.nbt.ByteTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
@@ -176,7 +178,8 @@ public class NarakaItems {
                     -2, -2.4f,
                     properties.fireResistant()
             ),
-            builder -> builder.naraka$withTooltip(NarakaItemTooltip.PURIFIED_SOUL_SWORD)
+            builder -> builder.naraka$set(NarakaItemUtils.TAG_UNBREAKABLE, ByteTag.valueOf(true))
+                    .naraka$withTooltip(NarakaItemTooltip.PURIFIED_SOUL_SWORD)
     );
 
     public static final HolderProxy<Item, Item> HEROBRINE_SCARF = registerItem(
