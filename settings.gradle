@@ -26,6 +26,7 @@ plugins {
 
 rootProject.name = 'naraka'
 
+includeBuild 'build-logic'
 include 'common'
 include 'fabric'
 include 'neoforge'
