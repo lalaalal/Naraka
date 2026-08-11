@@ -29,6 +29,7 @@ import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.item.equipment.trim.TrimPattern;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
@@ -134,7 +135,7 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         detachTemplateItem();
     }
 
-    private boolean reinforceSword(SoulType soulType, int requiredSoul, Player player) {
+    private boolean reinforceSword(Level level, SoulType soulType, int requiredSoul, Player player) {
         if (!forgingItem.is(NarakaItems.PURIFIED_SOUL_SWORD.get()))
             return false;
         Item swordItem = NarakaItems.getSoulSwordOf(soulType);
@@ -145,17 +146,23 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         if (!player.hasInfiniteMaterials())
             soulStabilizer.consumeSoul(requiredSoul);
         cooldownTick = COOLDOWN;
-        if (level != null)
-            level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
+        level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
 
         setChanged();
         return true;
     }
 
-    private boolean attachScarf() {
+    private boolean toggleScarf(Level level) {
         Equippable equippable = forgingItem.get(DataComponents.EQUIPPABLE);
         if (equippable != null && equippable.slot() == EquipmentSlot.CHEST) {
-            forgingItem.set(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), Unit.INSTANCE);
+            if (forgingItem.has(NarakaDataComponentTypes.HEROBRINE_SCARF.get())) {
+                forgingItem.remove(NarakaDataComponentTypes.HEROBRINE_SCARF.get());
+            } else {
+                forgingItem.set(NarakaDataComponentTypes.HEROBRINE_SCARF.get(), Unit.INSTANCE);
+            }
+            level.playSound(null, getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS);
+            cooldownTick = COOLDOWN;
+            setChanged();
             return true;
         }
         return false;
@@ -166,8 +173,8 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         return Objects.equals(armorTrim, compare);
     }
 
-    private boolean reinforceArmor(SoulType soulType, int requiredSoul, Player player) {
-        if (!forgingItem.is(NarakaItemTags.PURIFIED_SOUL_ARMOR) || level == null)
+    private boolean reinforceArmor(Level level, SoulType soulType, int requiredSoul, Player player) {
+        if (!forgingItem.is(NarakaItemTags.PURIFIED_SOUL_ARMOR))
             return false;
 
         Optional<Holder<TrimMaterial>> material = Optional.ofNullable(soulType.getItem().getDefaultInstance().get(DataComponents.PROVIDES_TRIM_MATERIAL));
@@ -202,9 +209,17 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
         return true;
     }
 
+    private int getRequiredSoul() {
+        if (templateItem.is(NarakaItems.HEROBRINE_SCARF.get()))
+            return 0;
+        return SoulStabilizerBlockEntity.getConsume();
+    }
+
     @Override
     public boolean tryReinforce(Player player) {
-        int requiredSoul = SoulStabilizerBlockEntity.getConsume();
+        if (level == null || level.isClientSide())
+            return false;
+        int requiredSoul = getRequiredSoul();
         if (forgingItem.is(NarakaItemTags.SOUL_REINFORCEABLE)
                 && !templateItem.isEmpty()
                 && cooldownTick <= 0
@@ -212,11 +227,11 @@ public class SoulSmithingBlockEntity extends ForgingBlockEntity {
             SoulType soulType = soulStabilizer.getSoulType();
 
             if (templateItem.is(NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get()))
-                return reinforceSword(soulType, requiredSoul, player);
+                return reinforceSword(level, soulType, requiredSoul, player);
             if (templateItem.is(NarakaItems.HEROBRINE_SCARF.get()))
-                return attachScarf();
+                return toggleScarf(level);
 
-            return reinforceArmor(soulType, requiredSoul, player);
+            return reinforceArmor(level, soulType, requiredSoul, player);
         }
         return false;
     }
