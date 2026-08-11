@@ -1,5 +1,6 @@
 package com.yummy.naraka.client;
 
+import com.mojang.blaze3d.pipeline.DepthStencilState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
@@ -17,6 +18,7 @@ public final class NarakaRenderPipelines {
             .withFragmentShader(NarakaMod.identifier("core/longinus"))
             .withSampler("Sampler0")
             .withSampler("Sampler1")
+            .withDepthStencilState(DepthStencilState.DEFAULT)
             .withShaderDefine("LONGINUS_LAYERS", 16)
             .buildSnippet();
 
