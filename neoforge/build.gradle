@@ -23,8 +23,10 @@ neoForge {
 
     runs {
         configureEach {
-            systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
             ideName = "NeoForge ${it.name.capitalize()} ${minecraft_version} (${path})"
+            ideFolderName = "NeoForge ${minecraft_version}"
+            systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
+            jvmArgument("-XX:+AllowEnhancedClassRedefinition")
         }
         client {
             client()

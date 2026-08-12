@@ -29,26 +29,26 @@ loom {
         defaultRefmapName.set("${mod_id}.refmap.json")
     }
     runs {
+        configureEach {
+            ideConfigGenerated(true)
+            setConfigName("Fabric ${it.name.capitalize()} ${minecraft_version}")
+            vmArg("-XX:+AllowEnhancedClassRedefinition")
+        }
         client {
             client()
-            setConfigName("Fabric Client ${minecraft_version}")
-            ideConfigGenerated(true)
             runDir("run/${minecraft_version}")
             programArgs('--username', System.getProperty("user.name"))
         }
         server {
             server()
-            setConfigName("Fabric Server ${minecraft_version}")
-            ideConfigGenerated(true)
             runDir("run/${minecraft_version}")
         }
         datagen {
             inherit client
+            setConfigName("Fabric Data ${minecraft_version}")
             vmArg "-Dfabric-api.datagen"
             vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
             vmArg "-Dfabric-api.datagen.modid=${mod_id}"
-            setConfigName("Fabric Data ${minecraft_version}")
-            ideConfigGenerated(true)
             runDir("run/data")
         }
     }
