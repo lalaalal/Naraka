@@ -23,7 +23,7 @@
     "hidden": false,
     "icon": {
       "item": "naraka:purified_soul_sword",
-      "nbt": "{Damage:0,DynamicItemLore:[{alwaysDisplay:1b,condition:{conditions:[],type:\"ANY\"},factories:[{component_type:\"TRANSLATABLE\",string:\"item.naraka.purified_soul_sword.tooltip.0\",style:{style:{color:\"gray\"},type:\"STATIC\"},type:\"SINGLE\"},{component_type:\"TRANSLATABLE\",string:\"item.naraka.purified_soul_sword.tooltip.1\",style:{style:{color:\"gray\"},type:\"STATIC\"},type:\"SINGLE\"},{children:[],type:\"COMPOSITE\"},{component_type:\"TRANSLATABLE\",string:\"item.naraka.purified_soul_sword.tooltip.2\",style:{style:{color:\"dark_gray\",italic:1b},type:\"STATIC\"},type:\"SINGLE\"},{component_type:\"TRANSLATABLE\",string:\"item.naraka.purified_soul_sword.tooltip.3\",style:{style:{color:\"dark_gray\",italic:1b},type:\"STATIC\"},type:\"SINGLE\"}]}]}"
+      "nbt": "{Damage:0,DynamicItemLore:[{alwaysDisplay:1b,condition:{conditions:[],type:\"ANY\"},factories:[{component_type:\"TRANSLATABLE\",string:\"item.naraka.purified_soul_sword.tooltip.0\",style:{style:{color:\"gray\"},type:\"STATIC\"},type:\"SINGLE\"},{component_type:\"TRANSLATABLE\",string:\"item.naraka.purified_soul_sword.tooltip.1\",style:{style:{color:\"gray\"},type:\"STATIC\"},type:\"SINGLE\"},{children:[],type:\"COMPOSITE\"},{component_type:\"TRANSLATABLE\",string:\"item.naraka.purified_soul_sword.tooltip.2\",style:{style:{color:\"dark_gray\",italic:1b},type:\"STATIC\"},type:\"SINGLE\"},{component_type:\"TRANSLATABLE\",string:\"item.naraka.purified_soul_sword.tooltip.3\",style:{style:{color:\"dark_gray\",italic:1b},type:\"STATIC\"},type:\"SINGLE\"}]}],Unbreakable:1b}"
     },
     "show_toast": true,
     "title": {
