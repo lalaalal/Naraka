@@ -22,6 +22,10 @@ loom {
         accessWidenerPath.set(aw)
     }
     runs {
+        configureEach {
+            ideConfigFolder = "Fabric ${minecraft_version}"
+            vmArg("-XX:+AllowEnhancedClassRedefinition")
+        }
         client {
             client()
             setConfigName("Fabric Client ${minecraft_version}")
