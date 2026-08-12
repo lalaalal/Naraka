@@ -23,30 +23,26 @@ loom {
     }
     runs {
         configureEach {
-            ideConfigFolder = "Fabric ${minecraft_version}"
+            ideConfigGenerated(true)
+            setIdeConfigFolder("Fabric ${minecraft_version}")
             vmArg("-XX:+AllowEnhancedClassRedefinition")
         }
         client {
             client()
             setConfigName("Fabric Client ${minecraft_version}")
-            ideConfigGenerated(true)
             runDir("run/${minecraft_version}")
             programArgs('--username', System.getProperty("user.name"))
         }
         server {
             server()
             setConfigName("Fabric Server ${minecraft_version}")
-            ideConfigGenerated(true)
             runDir("run/${minecraft_version}")
         }
         datagen {
             inherit client
-            vmArg "-Dfabric-api.datagen"
-            vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
-            vmArg "-Dfabric-api.datagen.modid=${mod_id}"
             setConfigName("Fabric Data ${minecraft_version}")
-            ideConfigGenerated(true)
             runDir("run/data")
+            vmArgs("-Dfabric-api.datagen", "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}", "-Dfabric-api.datagen.modid=${mod_id}")
         }
     }
 }
