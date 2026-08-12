@@ -36,6 +36,7 @@ legacyForge {
     runs {
         configureEach {
             systemProperty('forge.enabledGameTestNamespaces', mod_id)
+            jvmArgument("-XX:+AllowEnhancedClassRedefinition")
             ideName = "Forge ${it.name.capitalize()} ${minecraft_version} (${path})"
         }
         client {
