@@ -114,5 +114,7 @@ public class NarakaClientEvents {
     private static void addItemTooltipsBottom(ItemStack item, Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, boolean shiftKeyPressed, Consumer<Component> builder) {
         if (item.getOrDefault(NarakaDataComponentTypes.BLESSED.get(), false))
             builder.accept(Component.translatable(LanguageKey.BLESSED_KEY).withStyle(ComponentStyles.RAINBOW_COLOR));
+        if (item.has(NarakaDataComponentTypes.HEROBRINE_SCARF.get()))
+            builder.accept(Component.translatable(LanguageKey.HEROBRINE_SCARF_KEY).withStyle(ComponentStyles.RAINBOW_COLOR));
     }
 }
