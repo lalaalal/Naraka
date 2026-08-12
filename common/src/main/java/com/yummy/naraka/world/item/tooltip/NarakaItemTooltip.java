@@ -63,7 +63,7 @@ public class NarakaItemTooltip {
     public static final DynamicItemLoreHolder SOUL_INFUSED_SWORDS = DynamicItemLoreHolder.of(SOUL_INFUSED_SWORDS_BLESSED, SOUL_INFUSED_SWORDS_DEFAULT);
     public static final DynamicItemLoreHolder PURIFIED_SOUL_ARMORS = DynamicItemLoreHolder.of(PURIFIED_SOUL_ARMOR_BLESSED, PURIFIED_SOUL_ARMORS_SOUL, PURIFIED_SOUL_ARMORS_DEFAULT);
     public static final DynamicItemLoreHolder.Single NECTARIUM = simple(NarakaItemIds.NECTARIUM, 1, 1);
-    public static final DynamicItemLoreHolder.Single NECTARIUM_CORE = simple(NarakaBlockItemIds.NECTARIUM_ORE, 1, 2);
+    public static final DynamicItemLoreHolder.Single NECTARIUM_CORE = simple(NarakaBlockItemIds.NECTARIUM_CORE_BLOCK, 1, 2);
 
     private static DynamicItemLoreHolder.Single simple(Identifier id, int purpose, int detail) {
         return DynamicItemLoreHolder.single(simpleConditionalComponents(id, purpose, detail).build());
