@@ -1,6 +1,6 @@
 {
   "type": "naraka:jumbo_structure",
-  "biomes": "#c:is_plains",
+  "biomes": "#naraka:herobrine_sanctuary_biomes",
   "custom_pieces": [
     "naraka:herobrine_sanctuary_outline"
   ],

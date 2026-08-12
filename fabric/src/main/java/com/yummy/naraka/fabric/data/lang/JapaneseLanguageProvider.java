@@ -1,5 +1,6 @@
 package com.yummy.naraka.fabric.data.lang;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.data.lang.AdvancementExtraComponents;
 import com.yummy.naraka.data.lang.AdvancementNarakaComponents;
 import com.yummy.naraka.data.lang.LanguageKey;
@@ -44,6 +45,32 @@ public class JapaneseLanguageProvider extends NarakaLanguageProviders {
         add(LanguageKey.REINFORCEMENT_KEY, "アップグレード: %d");
         add(LanguageKey.BLESSED_KEY, "奈落の祝福");
         add(LanguageKey.HEROBRINE_SCARF_KEY, "スカーフ付き");
+
+        add(LanguageKey.CONFIG_TITLE, "Naraka Config");
+        add(LanguageKey.CONFIG_CATEGORY_COMMON, "Naraka Common Config");
+        addConfig(NarakaConfig.COMMON.showTestCreativeModeTab,
+                List.of("テストクリエイティブモードタブを表示"),
+                List.of(
+                        List.of("再起動が必要です")
+                )
+        );
+        addConfig(NarakaConfig.COMMON.enableStigma, "スティグマを有効化");
+        addConfig(NarakaConfig.COMMON.stigmaStunDuration,
+                List.of("スティグマのスタン持続時間"),
+                List.of(
+                        List.of("スタン持続時間（ティック）")
+                )
+        );
+        addConfig(NarakaConfig.COMMON.lockHealthRatio, "体力固定比率");
+
+        add(LanguageKey.CONFIG_CATEGORY_CLIENT, "Naraka Client Config");
+        addConfig(NarakaConfig.CLIENT.playHerobrineBossMusic, "へロブラインボスのBGMを再生");
+        addConfig(NarakaConfig.CLIENT.enableOreSeeThrough, "鉱石の透過を有効化");
+        addConfig(NarakaConfig.CLIENT.oreSeeThroughRange, "鉱石の透過の範囲");
+        addConfig(NarakaConfig.CLIENT.cameraShakingSpeed, "カメラの揺れ速度");
+        addConfig(NarakaConfig.CLIENT.cameraShakingStrength, "カメラの揺れ強度");
+        add(LanguageKey.CONFIG_ORE_COLOR, "鉱石の輪郭の色");
+        add(LanguageKey.CONFIG_ORE_COLOR_WRONG, "不正な形式です！");
 
         add(LanguageKey.JADE_SOUL_STABILIZER_KEY, "%d");
         add(NarakaJadeProviderComponents.SOUL_STABILIZER.translationKey, "ソウルスタビライザー");
