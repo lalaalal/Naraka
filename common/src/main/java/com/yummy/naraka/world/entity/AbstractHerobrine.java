@@ -49,7 +49,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.ATTACK_DAMAGE, 10)
-                .add(Attributes.FOLLOW_RANGE, 128)
+                .add(Attributes.FOLLOW_RANGE, 512)
                 .add(Attributes.MOVEMENT_SPEED, 0.17f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.JUMP_STRENGTH, 0)
