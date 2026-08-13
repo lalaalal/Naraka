@@ -47,6 +47,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -330,7 +331,7 @@ public class Herobrine extends AbstractHerobrine {
     private float calculateLockedHealth() {
         double sum = 0;
         for (LivingEntity livingEntity : cachedWatchingEntities.values()) {
-            if (livingEntity.is(ConventionalTags.Entities.BOSSES) || livingEntity.is(EntityTypeIds.PLAYER))
+            if (livingEntity.getType().is(ConventionalTags.Entities.BOSSES) || livingEntity instanceof Player)
                 sum += LockedHealthHelper.get(livingEntity);
         }
         return (float) sum;
