@@ -24,14 +24,14 @@ public abstract class ScreenEffectRendererMixin {
     private static void renderPurifiedSoulFIre(Minecraft minecraft, PoseStack poseStack, CallbackInfo ci) {
         if (minecraft.player != null && !minecraft.player.isSpectator() && minecraft.options.getCameraType().isFirstPerson()
                 && EntityDataHelper.getRawEntityData(minecraft.player, NarakaEntityDataTypes.PURIFIED_SOUL_FIRE_TICK.getConcreteValue()) > 0) {
-            naraka$renderPurifiedSoulFire(minecraft, poseStack);
+            naraka$renderPurifiedSoulFire(poseStack);
         }
     }
 
     @Unique
-    private static void naraka$renderPurifiedSoulFire(Minecraft minecraft, PoseStack poseStack) {
+    private static void naraka$renderPurifiedSoulFire(PoseStack poseStack) {
         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
-        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+        RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
         RenderSystem.depthFunc(519);
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
@@ -43,22 +43,22 @@ public abstract class ScreenEffectRendererMixin {
         float v0 = textureAtlasSprite.getV0();
         float v1 = textureAtlasSprite.getV1();
         float vMiddle = (v0 + v1) / 2.0F;
-        float ration = textureAtlasSprite.uvShrinkRatio();
-        float highU = Mth.lerp(ration, u0, uMiddle);
-        float lowU = Mth.lerp(ration, u1, uMiddle);
-        float highV = Mth.lerp(ration, v0, vMiddle);
-        float lowV = Mth.lerp(ration, v1, vMiddle);
+        float ratio = textureAtlasSprite.uvShrinkRatio();
+        float topU = Mth.lerp(ratio, u0, uMiddle);
+        float bottomU = Mth.lerp(ratio, u1, uMiddle);
+        float topV = Mth.lerp(ratio, v0, vMiddle);
+        float bottomV = Mth.lerp(ratio, v1, vMiddle);
 
-        for (int i = 0; i < 2; ++i) {
+        for (int i = 0; i < 2; i++) {
             poseStack.pushPose();
-            poseStack.translate((-(i * 2 - 1)) * 0.24F, -0.3F, 0.0F);
-            poseStack.mulPose(Axis.YP.rotationDegrees((i * 2 - 1) * 10));
+            poseStack.translate((float) (-(i * 2 - 1)) * 0.24F, -0.3F, 0.0F);
+            poseStack.mulPose(Axis.YP.rotationDegrees((float) (i * 2 - 1) * 10.0F));
             Matrix4f matrix4f = poseStack.last().pose();
             bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
-            bufferBuilder.vertex(matrix4f, -0.5F, -0.5F, -0.5F).uv(lowU, lowV).color(1.0F, 1.0F, 1.0F, 0.9F);
-            bufferBuilder.vertex(matrix4f, 0.5F, -0.5F, -0.5F).uv(highU, lowV).color(1.0F, 1.0F, 1.0F, 0.9F);
-            bufferBuilder.vertex(matrix4f, 0.5F, 0.5F, -0.5F).uv(highU, highV).color(1.0F, 1.0F, 1.0F, 0.9F);
-            bufferBuilder.vertex(matrix4f, -0.5F, 0.5F, -0.5F).uv(lowU, highV).color(1.0F, 1.0F, 1.0F, 0.9F);
+            bufferBuilder.vertex(matrix4f, -0.5F, -0.5F, -0.5F).color(1.0F, 1.0F, 1.0F, 0.9F).uv(bottomU, bottomV).endVertex();
+            bufferBuilder.vertex(matrix4f, 0.5F, -0.5F, -0.5F).color(1.0F, 1.0F, 1.0F, 0.9F).uv(topU, bottomV).endVertex();
+            bufferBuilder.vertex(matrix4f, 0.5F, 0.5F, -0.5F).color(1.0F, 1.0F, 1.0F, 0.9F).uv(topU, topV).endVertex();
+            bufferBuilder.vertex(matrix4f, -0.5F, 0.5F, -0.5F).color(1.0F, 1.0F, 1.0F, 0.9F).uv(bottomU, topV).endVertex();
             BufferUploader.drawWithShader(bufferBuilder.end());
             poseStack.popPose();
         }

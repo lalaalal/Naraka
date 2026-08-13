@@ -40,39 +40,31 @@ public abstract class EntityRenderDispatcherMixin {
     @Unique
     private void naraka$renderPurifiedSoulFire(PoseStack poseStack, MultiBufferSource buffer, Entity entity) {
         TextureAtlasSprite textureAtlasSprite = PurifiedSoulFlameRenderMaterial.PURIFIED_SOUL_FIRE_0.sprite();
-        TextureAtlasSprite textureAtlasSprite2 = PurifiedSoulFlameRenderMaterial.PURIFIED_SOUL_FIRE_1.sprite();
         poseStack.pushPose();
-        float scale = entity.getBbWidth() * 1.4F;
-        poseStack.scale(scale, scale, scale);
-        float x = 0.5F;
-        float i = entity.getBbHeight() / scale;
+        float f = entity.getBbWidth() * 1.4F;
+        poseStack.scale(f, f, f);
+        float g = 0.5F;
+        float i = entity.getBbHeight() / f;
         float y = 0.0F;
         poseStack.mulPose(Axis.YP.rotationDegrees(-this.camera.getYRot()));
-        poseStack.translate(0.0F, 0.0F, 0.3F - i * 0.02F);
+        poseStack.translate(0.0F, 0.0F, -0.3F + (float) ((int) i) * 0.02F);
         float z = 0.0F;
-        int l = 0;
         VertexConsumer vertexConsumer = buffer.getBuffer(Sheets.cutoutBlockSheet());
 
-        for (PoseStack.Pose pose = poseStack.last(); i > 0; ++l) {
-            TextureAtlasSprite textureAtlasSprite3 = l % 2 == 0 ? textureAtlasSprite : textureAtlasSprite2;
-            float u0 = textureAtlasSprite3.getU0();
-            float v0 = textureAtlasSprite3.getV0();
-            float u1 = textureAtlasSprite3.getU1();
-            float v1 = textureAtlasSprite3.getV1();
-            if (l / 2 % 2 == 0) {
-                float temp = u1;
-                u1 = u0;
-                u0 = temp;
-            }
+        for (PoseStack.Pose pose = poseStack.last(); i > 0.0F; ) {
+            float u0 = textureAtlasSprite.getU0();
+            float v0 = textureAtlasSprite.getV0();
+            float u1 = textureAtlasSprite.getU1();
+            float v1 = textureAtlasSprite.getV1();
 
-            fireVertex(pose, vertexConsumer, -x - 0.0F, 0.0F - y, z, u1, v1);
-            fireVertex(pose, vertexConsumer, x - 0.0F, 0.0F - y, z, u0, v1);
-            fireVertex(pose, vertexConsumer, x - 0.0F, 1.4F - y, z, u0, v0);
-            fireVertex(pose, vertexConsumer, -x - 0.0F, 1.4F - y, z, u1, v0);
+            fireVertex(pose, vertexConsumer, g - 0.0F, 0.0F - y, z, u0, v1);
+            fireVertex(pose, vertexConsumer, -g - 0.0F, 0.0F - y, z, u1, v1);
+            fireVertex(pose, vertexConsumer, -g - 0.0F, 1.4F - y, z, u1, v0);
+            fireVertex(pose, vertexConsumer, g - 0.0F, 1.4F - y, z, u0, v0);
             i -= 0.45F;
             y -= 0.45F;
-            x *= 0.9F;
-            z -= 0.03F;
+            g *= 0.9F;
+            z += 0.03F;
         }
 
         poseStack.popPose();
