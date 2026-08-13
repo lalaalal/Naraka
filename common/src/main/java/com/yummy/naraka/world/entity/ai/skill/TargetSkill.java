@@ -2,7 +2,6 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.SkillUsingMob;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -11,7 +10,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
-
 import java.util.function.UnaryOperator;
 
 public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
@@ -67,7 +65,7 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
     protected void teleportToTarget(LivingEntity target, double distance) {
         Vec3 delta = target.getLookAngle().multiply(distance, 0, distance);
         Vec3 position = target.getEyePosition().add(delta);
-        double y = NarakaUtils.findFloor(target.level(), BlockPos.containing(position)).getY() + 1.75;
+        double y = target.getY() + 0.75;
         mob.teleportTo(position.x, y, position.z);
         mob.level().playSound(null, mob, SoundEvents.PLAYER_TELEPORT, SoundSource.HOSTILE, 1, 1);
     }
