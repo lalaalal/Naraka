@@ -328,8 +328,10 @@ public class Herobrine extends AbstractHerobrine {
 
     private float calculateLockedHealth() {
         double sum = 0;
-        for (LivingEntity livingEntity : cachedWatchingEntities.values())
-            sum += LockedHealthHelper.get(livingEntity);
+        for (LivingEntity livingEntity : cachedWatchingEntities.values()) {
+            if (livingEntity.is(ConventionalTags.Entities.BOSSES) || livingEntity.is(EntityTypeIds.PLAYER))
+                sum += LockedHealthHelper.get(livingEntity);
+        }
         return (float) sum;
     }
 
@@ -661,15 +663,6 @@ public class Herobrine extends AbstractHerobrine {
         }
     }
 
-    private float calculateHurtDamageLimitByLockedHealth() {
-        double sum = 0;
-        for (LivingEntity livingEntity : cachedWatchingEntities.values()) {
-            double lockedHealth = LockedHealthHelper.get(livingEntity);
-            sum += (lockedHealth / (livingEntity.getMaxHealth() + lockedHealth)) * 20;
-        }
-        return MAX_HURT_DAMAGE_LIMIT - (float) sum;
-    }
-
     private void updateHurtDamageLimit(ServerLevel level) {
         if (phaseManager.getCurrentPhase() < 3 && hurtDamageLimit > 1) {
             float damageLimitReduce = NarakaConfig.COMMON.herobrineHurtLimitReduce.getValue();
@@ -680,7 +673,7 @@ public class Herobrine extends AbstractHerobrine {
             }
         }
         if (getPhase() == 3) {
-            hurtDamageLimit = calculateHurtDamageLimitByLockedHealth();
+            hurtDamageLimit = Math.max(0, MAX_HURT_DAMAGE_LIMIT - calculateLockedHealth());
         }
     }
 
