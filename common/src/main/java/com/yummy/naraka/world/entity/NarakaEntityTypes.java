@@ -50,12 +50,6 @@ public class NarakaEntityTypes {
                     .sized(0.5f, 0.5f)
     );
 
-    public static final HolderProxy<EntityType<?>, EntityType<Stardust>> STARDUST = register(
-            "stardust",
-            EntityType.Builder.<Stardust>of(Stardust::new, MobCategory.MISC)
-                    .sized(0.5f, 0.5f)
-    );
-
     public static final HolderProxy<EntityType<?>, EntityType<CorruptedStar>> CORRUPTED_STAR = register(
             "corrupted_star",
             EntityType.Builder.<CorruptedStar>of(CorruptedStar::new, MobCategory.MISC)
