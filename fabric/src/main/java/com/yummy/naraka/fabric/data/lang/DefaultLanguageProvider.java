@@ -331,7 +331,7 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addTooltip(NarakaItemTooltip.MIGHTY_HOLY_SPEAR, List.of(
                 List.of("Bless the mineral swords infused with eight distinct souls, and use them together as materials to craft the ultimate weapon.", "서로 다른 여덟 종류의 영혼이 주입된 광물 검에 축복을 내려, 함께 재료로 사용해 궁극의 무기를 제작할 수 있다."),
                 List.of("The Tyrant has fallen, yet the 'Naraka' still demands one to reign.", "군주는 죽었으나, 「나락」은 군림하는 자를 필요로 하니."),
-                List.of("Slayer, prove thy worthiness to claim the throne through eight trials of tribulation.", "시해자여, 여덟 번의 고행으로서 스스로가 군주의 자리에 걸맞음을 증명하라.")
+                List.of("Regicide, prove thy worthiness to claim the throne through eight trials of tribulation.", "시해자여, 여덟 번의 고행으로서 스스로가 군주의 자리에 걸맞음을 증명하라.")
         ));
         addTooltip(NarakaItemTooltip.SPEAR_OF_LONGINUS, List.of(
                 List.of("Can be thrown, automatically returning to its owner.", "투척할 수 있으며, 주인에게 자동으로 되돌아온다."),
