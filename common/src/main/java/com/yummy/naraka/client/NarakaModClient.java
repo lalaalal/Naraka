@@ -121,8 +121,7 @@ public final class NarakaModClient {
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, SpearRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR, SpearRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, SpearRenderer::longinus);
-
-        EntityRendererRegistry.register(NarakaEntityTypes.STARDUST, StardustRenderer::new);
+        
         EntityRendererRegistry.register(NarakaEntityTypes.CORRUPTED_STAR, CorruptedStarRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.NARAKA_FIREBALL, NarakaFireballRenderer::new);
         EntityRendererRegistry.register(NarakaEntityTypes.PICKAXE_SLASH, PickaxeSlashRenderer::new);

@@ -165,7 +165,6 @@ public class NarakaModelProvider extends FabricModelProvider {
                 NarakaItems.PURIFIED_SOUL_HELMET.get(), NarakaItems.PURIFIED_SOUL_CHESTPLATE.get(), NarakaItems.PURIFIED_SOUL_LEGGINGS.get(), NarakaItems.PURIFIED_SOUL_BOOTS.get()
         );
 
-        generator.generateFlatItem(NarakaItems.STARDUST_STAFF.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         generator.generateFlatItem(NarakaItems.SPEAR_ITEM.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get(), ModelTemplates.FLAT_ITEM);
         generator.generateFlatItem(NarakaItems.SPEAR_OF_LONGINUS_ITEM.get(), ModelTemplates.FLAT_ITEM);

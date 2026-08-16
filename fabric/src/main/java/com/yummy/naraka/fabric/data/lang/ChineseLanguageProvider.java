@@ -413,7 +413,6 @@ public class ChineseLanguageProvider extends NarakaLanguageProviders {
         addEntityType(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, "神圣之矛");
         addEntityType(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, "朗基努斯之枪");
         addEntityType(NarakaEntityTypes.NARAKA_FIREBALL, "炼狱火球");
-        addEntityType(NarakaEntityTypes.STARDUST, "星尘");
         addEntityType(NarakaEntityTypes.PICKAXE_SLASH, "巨镰剑气");
         addEntityType(NarakaEntityTypes.DIAMOND_GOLEM, "钻石傀儡");
         addEntityType(NarakaEntityTypes.MAGIC_CIRCLE, "法阵");
