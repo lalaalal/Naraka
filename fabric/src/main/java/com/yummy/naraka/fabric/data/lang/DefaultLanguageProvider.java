@@ -222,7 +222,6 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addPotion(Items.LINGERING_POTION, NarakaPotions.BLESS, "Lingering Potion of Bless", "잔류형 축복의 물약");
 
         addItem(NarakaItems.STIGMA_ROD, "Stigma Rod", "낙인 막대기");
-        addItem(NarakaItems.STARDUST_STAFF, "Stardust Staff");
         addItem(NarakaItems.NARAKA_FIREBALL_STAFF, "Naraka Fireball Staff");
         addItem(NarakaItems.RAINBOW_SWORD, "Rainbow Sword", "무지개 검");
         addItem(NarakaItems.PURIFIED_SOUL_SHARD, "Purified Soul Shard", "정화된 영혼 조각");
@@ -332,7 +331,7 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addTooltip(NarakaItemTooltip.MIGHTY_HOLY_SPEAR, List.of(
                 List.of("Bless the mineral swords infused with eight distinct souls, and use them together as materials to craft the ultimate weapon.", "서로 다른 여덟 종류의 영혼이 주입된 광물 검에 축복을 내려, 함께 재료로 사용해 궁극의 무기를 제작할 수 있다."),
                 List.of("The Tyrant has fallen, yet the 'Naraka' still demands one to reign.", "군주는 죽었으나, 「나락」은 군림하는 자를 필요로 하니."),
-                List.of("Slayer, prove thy worthiness to claim the throne through eight trials of tribulation.", "시해자여, 여덟 번의 고행으로서 스스로가 군주의 자리에 걸맞음을 증명하라.")
+                List.of("Regicide, prove thy worthiness to claim the throne through eight trials of tribulation.", "시해자여, 여덟 번의 고행으로서 스스로가 군주의 자리에 걸맞음을 증명하라.")
         ));
         addTooltip(NarakaItemTooltip.SPEAR_OF_LONGINUS, List.of(
                 List.of("Can be thrown, automatically returning to its owner.", "투척할 수 있으며, 주인에게 자동으로 되돌아온다."),
@@ -429,7 +428,6 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addEntityType(NarakaEntityTypes.THROWN_MIGHTY_HOLY_SPEAR, "Mighty Holy Spear", "강력한 성스러운 창");
         addEntityType(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS, "Spear of Longinus", "롱기누스의 창");
         addEntityType(NarakaEntityTypes.NARAKA_FIREBALL, "Naraka Fireball", "나락 화염구");
-        addEntityType(NarakaEntityTypes.STARDUST, "Stardust", "부패의 별");
         addEntityType(NarakaEntityTypes.PICKAXE_SLASH, "Pickaxe Slash");
         addEntityType(NarakaEntityTypes.DIAMOND_GOLEM, "Diamond Golem", "다이아몬드 골렘");
         addEntityType(NarakaEntityTypes.MAGIC_CIRCLE, "Magic Circle", "마법진");
@@ -533,7 +531,6 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         add(LanguageKey.skill(ParryingSkill.LOCATION), "P3 #8 NECTARIUM [Parrying]");
         add(LanguageKey.skill(DestroyStructureSkill.LOCATION), "P3 Destroy Structure (Enter Phase 3)");
         add(LanguageKey.skill(SummonShadowSkill.LOCATION), "P1 Summon Shadow");
-        add(LanguageKey.skill(CarpetBombingSkill.LOCATION), "P3 Carpet Bombing");
         add(LanguageKey.skill(SpawnPickaxeSkill.LOCATION), "P3 Pickaxe Strike");
         add(LanguageKey.skill(BlockingSkill.LOCATION), "P1 Blocking");
         add(LanguageKey.skill(ChargingSkill.LOCATION), "Charging");
