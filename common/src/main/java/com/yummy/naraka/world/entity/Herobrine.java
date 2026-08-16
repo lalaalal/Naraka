@@ -329,7 +329,7 @@ public class Herobrine extends AbstractHerobrine {
     private float calculateLockedHealth() {
         double sum = 0;
         for (LivingEntity livingEntity : cachedWatchingEntities.values()) {
-            if (livingEntity.is(ConventionalTags.Entities.BOSSES) || livingEntity.is(EntityTypeIds.PLAYER))
+            if (livingEntity.is(ConventionalTags.Entities.BOSSES) || livingEntity.is(EntityType.PLAYER))
                 sum += LockedHealthHelper.get(livingEntity);
         }
         return (float) sum;
