@@ -28,7 +28,6 @@ import com.yummy.naraka.world.entity.data.LockedHealthHelper;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
@@ -122,13 +121,11 @@ public class Herobrine extends AbstractHerobrine {
     );
 
     private final List<Projectile> ignoredProjectiles = new ArrayList<>();
-    private int maxWatchedEntities = 0;
-    private final Set<UUID> watchingEntities = new HashSet<>();
-    private final Map<UUID, LivingEntity> cachedWatchingEntities = new HashMap<>();
     protected final List<Afterimage> afterimages = new ArrayList<>();
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(UUID.randomUUID(), getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, BossEvent.BossBarColor.WHITE, this, bossEvent);
+    private final TargetManager targetManager = new TargetManager();
     private final ShadowController shadowController = new ShadowController(this);
 
     private float hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
@@ -256,11 +253,7 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     public void setTarget(@Nullable LivingEntity target) {
         super.setTarget(target);
-        if (target != null && !watchingEntities.contains(target.getUUID())) {
-            watchingEntities.add(target.getUUID());
-            cachedWatchingEntities.put(target.getUUID(), target);
-            maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
-        }
+        targetManager.tryAddTarget(target);
     }
 
     @Override
@@ -328,16 +321,14 @@ public class Herobrine extends AbstractHerobrine {
 
     private float calculateLockedHealth() {
         double sum = 0;
-        for (LivingEntity livingEntity : cachedWatchingEntities.values()) {
-            if (livingEntity.is(ConventionalTags.Entities.BOSSES) || livingEntity.is(EntityType.PLAYER))
-                sum += LockedHealthHelper.get(livingEntity);
-        }
+        for (LivingEntity livingEntity : targetManager.getPlayerOrBosses())
+            sum += LockedHealthHelper.get(livingEntity);
         return (float) sum;
     }
 
     private float calculateStigma() {
         float sum = 0;
-        for (LivingEntity livingEntity : cachedWatchingEntities.values())
+        for (LivingEntity livingEntity : targetManager.getPlayerOrBosses())
             sum += StigmaHelper.get(livingEntity).value();
         return sum;
     }
@@ -353,9 +344,7 @@ public class Herobrine extends AbstractHerobrine {
     public void stigmatizeEntity(ServerLevel level, LivingEntity target) {
         if (isAlive() && !target.is(NarakaEntityTypeTags.HEROBRINE) && getPhase() > 1) {
             StigmaHelper.increaseStigma(level, target, this);
-            watchingEntities.add(target.getUUID());
-            cachedWatchingEntities.put(target.getUUID(), target);
-            maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
+            targetManager.tryAddTarget(target);
         }
         if (!NarakaConfig.COMMON.enableStigma.getValue() && !isHibernateMode())
             this.heal(3.5f);
@@ -404,7 +393,7 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     protected void customServerAiStep(ServerLevel serverLevel) {
         updateAccumulatedDamage();
-        updateWatchingEntities(serverLevel);
+        targetManager.update(serverLevel);
 
         if (!isFinalModel())
             tryAvoidProjectile();
@@ -412,7 +401,7 @@ public class Herobrine extends AbstractHerobrine {
 
         if (NarakaConfig.COMMON.despawnHerobrineWhenTargetIsDead.getValue()
                 && skillManager.getCurrentSkill() != despawnSkill
-                && watchingEntities.isEmpty() && maxWatchedEntities > 0) {
+                && targetManager.allTargetsAreDisappeared()) {
             skillManager.interrupt();
             skillManager.setCurrentSkill(despawnSkill);
         }
@@ -430,18 +419,6 @@ public class Herobrine extends AbstractHerobrine {
             teleportToSpawnedPosition();
 
         super.customServerAiStep(serverLevel);
-    }
-
-    private void updateWatchingEntities(ServerLevel level) {
-        watchingEntities.removeIf(uuid -> {
-            LivingEntity target = NarakaEntityUtils.findEntityByUUID(level, uuid, LivingEntity.class);
-            if (target == null || target.isDeadOrDying() || !NarakaEntityUtils.isDamageable(target)) {
-                cachedWatchingEntities.remove(uuid);
-                return true;
-            }
-            cachedWatchingEntities.put(uuid, target);
-            return false;
-        });
     }
 
     @Override
@@ -818,7 +795,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void releaseStigma() {
-        for (LivingEntity livingEntity : cachedWatchingEntities.values()) {
+        for (LivingEntity livingEntity : targetManager.getAllTargets()) {
             LockedHealthHelper.release(livingEntity);
             StigmaHelper.removeStigma(livingEntity);
         }
@@ -863,7 +840,7 @@ public class Herobrine extends AbstractHerobrine {
         output.putFloat("HurtDamageLimit", hurtDamageLimit);
         output.putBoolean("HibernateMode", hibernateMode);
         output.storeNullable("SpawnPosition", BlockPos.CODEC, spawnPosition);
-        output.store("WatchingEntities", UUIDUtil.CODEC_SET, watchingEntities);
+        targetManager.save(output);
     }
 
     @Override
@@ -876,6 +853,6 @@ public class Herobrine extends AbstractHerobrine {
         if (hibernateMode)
             startHibernateMode(level);
         input.read("SpawnPosition", BlockPos.CODEC).ifPresent(pos -> spawnPosition = pos);
-        input.read("WatchingEntities", UUIDUtil.CODEC_SET).ifPresent(watchingEntities::addAll);
+        targetManager.read(input, level);
     }
 }
