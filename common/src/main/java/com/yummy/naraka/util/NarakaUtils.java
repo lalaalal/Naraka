@@ -214,7 +214,7 @@ public class NarakaUtils {
     }
 
     public static BlockPos findAir(LevelAccessor level, BlockPos from, Direction findingDirection) {
-        if (level.isInsideBuildHeight(from.getY()))
+        if (!level.isInsideBuildHeight(from.getY()))
             return from;
         BlockPos findingPos = from.relative(findingDirection);
         BlockState state = level.getBlockState(findingPos);
