@@ -3,7 +3,7 @@ package com.yummy.naraka.config;
 public class NarakaCommonConfig extends StaticConfiguration {
     public final ConfigValue<Boolean> showTestCreativeModeTab = define("show_test_creative_mode_tab", false)
             .comment("Restart required");
-    public final ConfigValue<Integer> herobrineTakingStigmaTick = define("herobrine_taking_stigma_tick", 1200);
+    public final ConfigValue<Integer> stigmaConsumeTick = define("stigma_consume_tick", 1200);
     public final ConfigValue<Float> herobrineHurtLimitReduce = define("herobrine_hurt_limit_reduce", 2.0f);
     public final ConfigValue<Integer> maxShadowHerobrineSpawn = define("max_shadow_herobrine_spawn", 3);
     public final ConfigValue<Float> fasterLiquidSwimmingSpeed = define("faster_liquid_swimming_speed", 5f);
