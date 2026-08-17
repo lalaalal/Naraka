@@ -20,14 +20,14 @@ public class StigmaRodItem extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand interactionHand) {
         if (level instanceof ServerLevel serverLevel)
-            StigmaHelper.increaseStigma(serverLevel, player, player, true);
+            StigmaHelper.increaseStigma(serverLevel, player, player);
         return InteractionResult.CONSUME;
     }
 
     @Override
     public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (target.level() instanceof ServerLevel level) {
-            StigmaHelper.increaseStigma(level, target, attacker, true);
+            StigmaHelper.increaseStigma(level, target, attacker);
             Reinforcement.increase(stack, NarakaReinforcementEffects.INCREASE_ATTACK_DAMAGE);
         }
     }

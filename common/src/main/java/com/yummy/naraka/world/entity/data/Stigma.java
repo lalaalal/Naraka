@@ -13,19 +13,23 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.Level;
+
+import java.util.Optional;
 
 /**
  * @param value          Actual value of stigma (0 ~ 3)
  * @param lastMarkedTime
  * @see StigmaHelper
  */
-public record Stigma(int value, long lastMarkedTime) {
+public record Stigma(int value, long lastMarkedTime, Optional<EntityReference<LivingEntity>> cause) {
     public static final Codec<Stigma> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                     Codec.INT.fieldOf("value").forGetter(Stigma::value),
-                    Codec.LONG.fieldOf("lastMarkedTime").forGetter(Stigma::lastMarkedTime)
+            Codec.LONG.fieldOf("lastMarkedTime").forGetter(Stigma::lastMarkedTime),
+            EntityReference.<LivingEntity>codec().optionalFieldOf("cause").forGetter(Stigma::cause)
             ).apply(instance, Stigma::new)
     );
     public static final StreamCodec<ByteBuf, Stigma> STREAM_CODEC = StreamCodec.composite(
@@ -33,11 +37,25 @@ public record Stigma(int value, long lastMarkedTime) {
             Stigma::value,
             ByteBufCodecs.LONG,
             Stigma::lastMarkedTime,
+            ByteBufCodecs.optional(EntityReference.streamCodec()),
+            Stigma::cause,
             Stigma::new
     );
 
-    public static final Stigma ZERO = new Stigma(0, 0);
+    public static final Stigma ZERO = new Stigma(0, 0, Optional.empty());
     public static final int MAX_STIGMA = 2;
+
+    public Stigma(int value, long lastMarkedTime, LivingEntity cause) {
+        this(value, lastMarkedTime, Optional.of(EntityReference.of(cause)));
+    }
+
+    public Stigma(int value, LivingEntity cause) {
+        this(value, cause.level().getGameTime(), Optional.of(EntityReference.of(cause)));
+    }
+
+    public Optional<LivingEntity> getCause(Level level) {
+        return cause.map(reference -> EntityReference.getLivingEntity(reference, level));
+    }
 
     /**
      * Increase value of stigma.
@@ -46,24 +64,23 @@ public record Stigma(int value, long lastMarkedTime) {
      *
      * @param livingEntity Target entity to increase entity
      * @param cause        Entity that causes the stigma to be increased
-     * @param recordTime   Update {@link #lastMarkedTime} if value is true
      * @return Updated value of stigma
-     * @see Stigma#consume(ServerLevel, LivingEntity, Entity)
+     * @see Stigma#consume(ServerLevel, LivingEntity, LivingEntity)
      */
-    public Stigma increase(ServerLevel level, LivingEntity livingEntity, Entity cause, boolean recordTime) {
-        long time = recordTime ? livingEntity.level().getGameTime() : lastMarkedTime;
+    public Stigma increase(ServerLevel level, LivingEntity livingEntity, LivingEntity cause) {
+        long time = livingEntity.level().getGameTime();
         if (value < MAX_STIGMA)
-            return increased(time);
-        return increased(time).consume(level, livingEntity, cause);
+            return increased(time, cause);
+        return consume(level, livingEntity, cause);
     }
 
-    private Stigma increased(long time) {
-        return new Stigma(value + 1, time);
+    private Stigma increased(long time, LivingEntity cause) {
+        return new Stigma(value + 1, time, cause);
     }
 
-    public Stigma decrease(long time) {
+    public Stigma decrease() {
         if (value > 0)
-            return new Stigma(value - 1, time);
+            return new Stigma(value - 1, lastMarkedTime, cause);
         return this;
     }
 
@@ -79,20 +96,23 @@ public record Stigma(int value, long lastMarkedTime) {
      * @see LockedHealthHelper#lock(LivingEntity, double)
      * @see StigmatizingEntity#collectStigma(ServerLevel, LivingEntity, Stigma)
      */
-    public Stigma consume(ServerLevel level, LivingEntity livingEntity, Entity cause) {
+    public Stigma consume(ServerLevel level, LivingEntity livingEntity, LivingEntity cause) {
         int stunDuration = NarakaConfig.COMMON.stigmaStunDuration.getValue();
         level.sendParticles(NarakaParticleTypes.LOCKED_HEALTH.get(), livingEntity.getX(), livingEntity.getEyeY(), livingEntity.getZ(), 0, 0, 0, 0, 1);
         lockHealth(level, livingEntity, cause);
         StunHelper.stunEntity(livingEntity, stunDuration);
         livingEntity.level().playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.TOTEM_USE, livingEntity.getSoundSource(), 1.0F, 1.0F);
 
-        if (livingEntity != cause && cause instanceof StigmatizingEntity stigmatizingEntity)
+        if (cause instanceof StigmatizingEntity stigmatizingEntity) {
             stigmatizingEntity.collectStigma(level, livingEntity, this);
+        } else {
+            cause.heal(6);
+        }
 
-        return new Stigma(0, lastMarkedTime);
+        return new Stigma(0, lastMarkedTime, cause);
     }
 
-    private void lockHealth(ServerLevel level, LivingEntity livingEntity, Entity cause) {
+    private void lockHealth(ServerLevel level, LivingEntity livingEntity, LivingEntity cause) {
         double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
         double reducingHealth = maxHealth * NarakaConfig.COMMON.lockHealthRatio.getValue();
         if (reducingHealth >= livingEntity.getHealth()) {

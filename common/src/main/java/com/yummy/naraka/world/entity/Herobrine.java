@@ -352,12 +352,10 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     public void stigmatizeEntity(ServerLevel level, LivingEntity target) {
         if (isAlive() && !target.is(NarakaEntityTypeTags.HEROBRINE) && getPhase() > 1) {
-            StigmaHelper.increaseStigma(level, target, this, true);
-            if (target.is(ConventionalTags.Entities.BOSSES) || target.is(EntityType.PLAYER)) {
-                watchingEntities.add(target.getUUID());
-                cachedWatchingEntities.put(target.getUUID(), target);
-                maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
-            }
+            StigmaHelper.increaseStigma(level, target, this);
+            watchingEntities.add(target.getUUID());
+            cachedWatchingEntities.put(target.getUUID(), target);
+            maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
         }
         if (!NarakaConfig.COMMON.enableStigma.getValue() && !isHibernateMode())
             this.heal(3.5f);
@@ -410,7 +408,6 @@ public class Herobrine extends AbstractHerobrine {
 
         if (!isFinalModel())
             tryAvoidProjectile();
-        collectStigma(serverLevel);
         phaseManager.updatePhase(bossEvent);
 
         if (NarakaConfig.COMMON.despawnHerobrineWhenTargetIsDead.getValue()
@@ -471,13 +468,6 @@ public class Herobrine extends AbstractHerobrine {
     public void resetAccumulatedDamage() {
         accumulatedDamageTickCount = 0;
         accumulatedHurtDamage = 0;
-    }
-
-    private void collectStigma(ServerLevel serverLevel) {
-        final int waitingTick = NarakaConfig.COMMON.herobrineTakingStigmaTick.getValue();
-
-        for (LivingEntity entity : cachedWatchingEntities.values())
-            StigmaHelper.collectStigmaAfter(serverLevel, entity, this, waitingTick);
     }
 
     private boolean shouldCheckProjectile(Projectile projectile) {
