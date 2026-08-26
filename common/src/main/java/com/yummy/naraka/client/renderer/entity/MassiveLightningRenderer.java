@@ -3,14 +3,16 @@ package com.yummy.naraka.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.renderer.entity.state.MassiveLightningRenderState;
 import com.yummy.naraka.world.entity.MassiveLightning;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.LightCoordsUtil;
 import org.joml.Vector3f;
 
 public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning, MassiveLightningRenderState> {
@@ -43,11 +45,11 @@ public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning, M
     public void submit(MassiveLightningRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotation(renderState.ageInTicks * 0.05f));
-        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {
-            pillar(vertexConsumer, pose, renderState.size * 0.6f, renderState.size * 0.6f, 1, 123, 0x66ffffff);
-            pillar(vertexConsumer, pose, renderState.size * 0.7f, renderState.size * 0.7f, 0, 122, 0x55ffffff);
-            pillar(vertexConsumer, pose, renderState.size * 0.8f, renderState.size * 0.8f, 0, 121, 0x44ffffff);
-            pillar(vertexConsumer, pose, renderState.size * 0.9f, renderState.size * 0.9f, 0, 120, 0x33ffffff);
+        submitNodeCollector.submitCustomGeometry(poseStack, NarakaRenderTypes.emissive(), (pose, vertexConsumer) -> {
+            pillar(vertexConsumer, pose, renderState.size * 0.6f, renderState.size * 0.6f, 1, 123, 0x44ffffff);
+            pillar(vertexConsumer, pose, renderState.size * 0.7f, renderState.size * 0.7f, 0, 122, 0x33ffffff);
+            pillar(vertexConsumer, pose, renderState.size * 0.8f, renderState.size * 0.8f, 0, 121, 0x22ffffff);
+            pillar(vertexConsumer, pose, renderState.size * 0.9f, renderState.size * 0.9f, 0, 120, 0x11ffffff);
             pillar(vertexConsumer, pose, renderState.size, renderState.size, 0, 120, 0x66ffffff);
         });
 
@@ -70,6 +72,11 @@ public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning, M
     }
 
     private void vertex(VertexConsumer vertexConsumer, PoseStack.Pose pose, Vector3f position, int color) {
-        vertexConsumer.addVertex(pose, position).setColor(color);
+        vertexConsumer.addVertex(pose, position)
+                .setNormal(0, 1, 0)
+                .setColor(color)
+                .setUv(0, 0)
+                .setLight(LightCoordsUtil.FULL_BRIGHT)
+                .setOverlay(OverlayTexture.NO_OVERLAY);
     }
 }
