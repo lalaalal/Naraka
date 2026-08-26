@@ -82,7 +82,7 @@ public class StigmaHud implements HudRenderer {
         if (player == null)
             return;
 
-        final int herobrineTakingStigmaTick = NarakaConfig.COMMON.herobrineTakingStigmaTick.getValue();
+        final int herobrineTakingStigmaTick = NarakaConfig.COMMON.stigmaConsumeTick.getValue();
 
         Stigma stigma = StigmaHelper.get(player);
         long stigmatizedTime = player.level().getGameTime() - stigma.lastMarkedTime();

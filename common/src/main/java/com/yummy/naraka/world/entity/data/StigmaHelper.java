@@ -4,8 +4,9 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.tags.NarakaEntityTypeTags;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+
+import java.util.Optional;
 
 public class StigmaHelper {
     public static Stigma get(LivingEntity livingEntity) {
@@ -20,46 +21,50 @@ public class StigmaHelper {
         return get(livingEntity).value() > 0;
     }
 
-    public static void increaseStigma(ServerLevel level, LivingEntity target, Entity cause, boolean recordTime) {
+    public static void increaseStigma(ServerLevel level, LivingEntity target, LivingEntity cause) {
         if (target.getType().is(NarakaEntityTypeTags.STIGMA_IMMUNE) || !NarakaConfig.COMMON.enableStigma.getValue()
                 || !NarakaEntityUtils.isDamageable(target))
             return;
         Stigma stigma = get(target);
-        Stigma increased = stigma.increase(level, target, cause, recordTime);
+        Stigma increased = stigma.increase(level, target, cause);
         set(target, increased);
-    }
-
-    public static void increaseStigma(ServerLevel level, LivingEntity target, Entity cause) {
-        increaseStigma(level, target, cause, false);
     }
 
     public static void decreaseStigma(LivingEntity livingEntity) {
         Stigma stigma = get(livingEntity);
-
-        long currentGameTime = stigma.value() > 1 ? livingEntity.level().getGameTime() : 0;
-        Stigma decreased = stigma.decrease(currentGameTime);
+        Stigma decreased = stigma.decrease();
 
         set(livingEntity, decreased);
     }
 
     public static void removeStigma(LivingEntity livingEntity) {
-        set(livingEntity, Stigma.ZERO);
+        EntityDataHelper.removeEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.getConcreteValue());
+    }
+
+    public static void tick(LivingEntity livingEntity, Stigma stigma) {
+        if (stigma.value() > 0 && livingEntity.level() instanceof ServerLevel serverLevel) {
+            if (consumeStigmaAfter(serverLevel, livingEntity))
+                removeStigma(livingEntity);
+        }
     }
 
     /**
      * Consumes the stigma when the given tickAfter has elapsed from {@linkplain Stigma#lastMarkedTime()}
      *
      * @param livingEntity Stigmatized entity
-     * @param cause        Entity collects stigma
-     * @param tickAfter    Minimum length required to collect stigma
-     * @return True if succeed
-     * @see Stigma#consume(ServerLevel, LivingEntity, Entity)
+     * @return True if stigma should be removed
+     * @see Stigma#consume(ServerLevel, LivingEntity, LivingEntity)
      */
-    public static boolean collectStigmaAfter(ServerLevel level, LivingEntity livingEntity, Entity cause, int tickAfter) {
+    public static boolean consumeStigmaAfter(ServerLevel level, LivingEntity livingEntity) {
+        int stigmaConsumeTick = NarakaConfig.COMMON.stigmaConsumeTick.getValue();
         Stigma stigma = get(livingEntity);
+        Optional<LivingEntity> cause = stigma.getCause(level);
+        if (cause.isEmpty())
+            return true;
+
         long currentGameTime = livingEntity.level().getGameTime();
-        if (stigma.value() > 0 && stigma.lastMarkedTime() != 0 && currentGameTime > stigma.lastMarkedTime() + tickAfter) {
-            Stigma consumed = stigma.consume(level, livingEntity, cause);
+        if (stigma.value() > 0 && currentGameTime > stigma.lastMarkedTime() + stigmaConsumeTick) {
+            Stigma consumed = stigma.consume(level, livingEntity, cause.get());
             set(livingEntity, consumed);
             return true;
         }

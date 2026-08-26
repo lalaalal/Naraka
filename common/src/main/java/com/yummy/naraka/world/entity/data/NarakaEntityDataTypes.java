@@ -21,6 +21,7 @@ public class NarakaEntityDataTypes {
     public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<Stigma, LivingEntity>> STIGMA = register(
             "stigma", EntityDataType.living(Stigma.CODEC)
                     .defaultValue(Stigma.ZERO)
+                    .ticker(StigmaHelper::tick)
     );
     public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<Integer, LivingEntity>> DEATH_COUNT = register(
             "death_count", EntityDataType.living(Codec.INT)

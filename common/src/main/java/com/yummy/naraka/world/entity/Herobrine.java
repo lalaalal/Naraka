@@ -342,7 +342,7 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     public void stigmatizeEntity(ServerLevel level, LivingEntity target) {
         if (isAlive() && !target.getType().is(NarakaEntityTypeTags.HEROBRINE) && getPhase() > 1) {
-            StigmaHelper.increaseStigma(level, target, this, true);
+            StigmaHelper.increaseStigma(level, target, this);
             watchingEntities.add(target.getUUID());
             cachedWatchingEntities.put(target.getUUID(), target);
             maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
@@ -464,7 +464,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void collectStigma(ServerLevel serverLevel) {
-        final int waitingTick = NarakaConfig.COMMON.herobrineTakingStigmaTick.getValue();
+        final int waitingTick = NarakaConfig.COMMON.stigmaConsumeTick.getValue();
 
         for (LivingEntity entity : cachedWatchingEntities.values())
             StigmaHelper.collectStigmaAfter(serverLevel, entity, this, waitingTick);
