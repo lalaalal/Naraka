@@ -41,9 +41,9 @@ public class StigmaHelper {
         EntityDataHelper.removeEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.getConcreteValue());
     }
 
-    public static void tick(LivingEntity livingEntity, Stigma stigma) {
-        if (stigma.value() > 0 && livingEntity.level() instanceof ServerLevel serverLevel) {
-            if (consumeStigmaAfter(serverLevel, livingEntity))
+    public static void tick(ServerLevel level, LivingEntity livingEntity, Stigma stigma) {
+        if (stigma.value() > 0) {
+            if (consumeStigmaAfter(level, livingEntity))
                 removeStigma(livingEntity);
         }
     }
