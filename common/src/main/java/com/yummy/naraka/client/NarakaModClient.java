@@ -83,7 +83,6 @@ public final class NarakaModClient {
     }
 
     private static void initializeItems() {
-        ItemRenderRegistry.registerAnimatedItem(NarakaItems.RAINBOW_SWORD);
         ItemRenderRegistry.registerRenderType(NarakaItems.HEROBRINE_SCARF, NarakaRenderTypes.longinusCutout(NarakaTextures.LOCATION_ITEMS), _ -> !NarakaClientContext.SHADER_ENABLED.getValue());
         ItemRenderRegistry.registerRenderType(NarakaItems.NARAKA_PICKAXE, RenderTypes.itemTranslucent(NarakaTextures.LOCATION_ITEMS));
     }
