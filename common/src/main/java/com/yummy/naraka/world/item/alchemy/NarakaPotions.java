@@ -13,8 +13,8 @@ import net.minecraft.world.item.alchemy.Potion;
 import java.util.function.Supplier;
 
 public class NarakaPotions {
-    public static final Holder<Potion> CHALLENGER = register("challenger", () -> new Potion(
-            "challenger",
+    public static final Holder<Potion> BLESS = register("bless", () -> new Potion(
+            "bless",
             new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3600),
             new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3600),
             new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 3600),
@@ -46,8 +46,8 @@ public class NarakaPotions {
             )
     );
 
-    public static final Holder<Potion> BLESS = register("bless", () -> new Potion(
-            "bless",
+    public static final Holder<Potion> CHALLENGER = register("challenger", () -> new Potion(
+            "challenger",
             new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 3600, 1),
             new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 3600, 1),
             new MobEffectInstance(MobEffects.DAMAGE_BOOST, 3600, 1),
