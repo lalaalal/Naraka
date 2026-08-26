@@ -399,7 +399,6 @@ public class Herobrine extends AbstractHerobrine {
             tryAvoidProjectile();
         if (level() instanceof ServerLevel serverLevel) {
             updateWatchingEntities(serverLevel);
-            collectStigma(serverLevel);
             phaseManager.updatePhase(bossEvent);
 
             if (NarakaConfig.COMMON.despawnHerobrineWhenTargetIsDead.getValue()
@@ -461,13 +460,6 @@ public class Herobrine extends AbstractHerobrine {
     public void resetAccumulatedDamage() {
         accumulatedDamageTickCount = 0;
         accumulatedHurtDamage = 0;
-    }
-
-    private void collectStigma(ServerLevel serverLevel) {
-        final int waitingTick = NarakaConfig.COMMON.stigmaConsumeTick.getValue();
-
-        for (LivingEntity entity : cachedWatchingEntities.values())
-            StigmaHelper.collectStigmaAfter(serverLevel, entity, this, waitingTick);
     }
 
     private boolean shouldCheckProjectile(Projectile projectile) {
