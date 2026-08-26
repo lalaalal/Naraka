@@ -9,12 +9,13 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -24,7 +25,8 @@ public final class EntityDataType<T, E extends Entity> {
     private final MapCodec<EntityData<T, E>> mapCodec;
     private final StreamCodec<? super RegistryFriendlyByteBuf, EntityData<T, E>> streamCodec;
     private final boolean synchronize;
-    private final BiConsumer<E, T> ticker;
+    private final ClientTicker<T, E> clientTicker;
+    private final ServerTicker<T, E> serverTicker;
     private final Class<E> entityType;
 
     public static <T, E extends Entity> Builder<T, E> builder(Codec<T> codec, Class<E> entityType) {
@@ -39,7 +41,7 @@ public final class EntityDataType<T, E extends Entity> {
         return builder(codec, LivingEntity.class);
     }
 
-    private EntityDataType(ResourceLocation id, Codec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec, boolean synchronize, Class<E> entityType, Function<EntityDataType<T, E>, EntityData<T, E>> defaultInstance, BiConsumer<E, T> ticker) {
+    private EntityDataType(ResourceLocation id, Codec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec, boolean synchronize, Class<E> entityType, Function<EntityDataType<T, E>, EntityData<T, E>> defaultInstance, ClientTicker<T, E> clientTicker, ServerTicker<T, E> serverTicker) {
         this.id = id;
         this.defaultInstance = () -> defaultInstance.apply(this);
         this.entityType = entityType;
@@ -50,7 +52,8 @@ public final class EntityDataType<T, E extends Entity> {
         this.streamCodec = streamCodec
                 .map(value -> new EntityData<>(this, value), EntityData::value);
         this.synchronize = synchronize;
-        this.ticker = ticker;
+        this.clientTicker = clientTicker;
+        this.serverTicker = serverTicker;
     }
 
     public ResourceLocation getId() {
@@ -82,10 +85,14 @@ public final class EntityDataType<T, E extends Entity> {
     }
 
     public void tick(Entity entity) {
-        getCastedTarget(entity).ifPresent(target -> ticker.accept(
-                target,
-                EntityDataHelper.getRawEntityData(target, this)
-        ));
+        getCastedTarget(entity).ifPresent(concreteEntity -> {
+            T data = EntityDataHelper.getRawEntityData(concreteEntity, this);
+            if (concreteEntity.level() instanceof ServerLevel serverLevel) {
+                serverTicker.tick(serverLevel, concreteEntity, data);
+            } else {
+                clientTicker.tick(concreteEntity.level(), concreteEntity, data);
+            }
+        });
     }
 
     public boolean isValidTarget(Entity entity) {
@@ -98,6 +105,24 @@ public final class EntityDataType<T, E extends Entity> {
         return Optional.empty();
     }
 
+    public interface ClientTicker<T, E extends Entity> {
+        static <T, E extends Entity> ClientTicker<T, E> empty() {
+            return (level, livingEntity, data) -> {
+            };
+        }
+
+        void tick(Level level, E livingEntity, T data);
+    }
+
+    public interface ServerTicker<T, E extends Entity> {
+        static <T, E extends Entity> ServerTicker<T, E> empty() {
+            return (level, livingEntity, data) -> {
+            };
+        }
+
+        void tick(ServerLevel level, E livingEntity, T data);
+    }
+
     public static class Builder<T, E extends Entity> {
         private final Codec<T> codec;
         private final Class<E> entityType;
@@ -106,14 +131,15 @@ public final class EntityDataType<T, E extends Entity> {
         private StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec;
         @Nullable
         private Function<EntityDataType<T, E>, EntityData<T, E>> defaultInstance;
-        private BiConsumer<E, T> ticker;
+        private ClientTicker<T, E> clientTicker;
+        private ServerTicker<T, E> serverTicker;
 
         private Builder(Codec<T> codec, Class<E> entityType) {
             this.id = NarakaMod.location("empty");
             this.codec = codec;
             this.entityType = entityType;
-            this.ticker = (entity, data) -> {
-            };
+            this.clientTicker = ClientTicker.empty();
+            this.serverTicker = ServerTicker.empty();
         }
 
         public Builder<T, E> id(ResourceLocation id) {
@@ -131,8 +157,13 @@ public final class EntityDataType<T, E extends Entity> {
             return this;
         }
 
-        public Builder<T, E> ticker(BiConsumer<E, T> ticker) {
-            this.ticker = ticker;
+        public Builder<T, E> clientTicker(ClientTicker<T, E> clientTicker) {
+            this.clientTicker = clientTicker;
+            return this;
+        }
+
+        public Builder<T, E> serverTicker(ServerTicker<T, E> serverTicker) {
+            this.serverTicker = serverTicker;
             return this;
         }
 
@@ -147,7 +178,7 @@ public final class EntityDataType<T, E extends Entity> {
             boolean synchronize = (streamCodec != null);
             if (!synchronize)
                 streamCodec = ByteBufCodecs.fromCodecWithRegistries(codec);
-            return new EntityDataType<>(id, codec, streamCodec, synchronize, entityType, defaultInstance, ticker);
+            return new EntityDataType<>(id, codec, streamCodec, synchronize, entityType, defaultInstance, clientTicker, serverTicker);
         }
     }
 }
