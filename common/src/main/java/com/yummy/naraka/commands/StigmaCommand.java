@@ -2,7 +2,6 @@ package com.yummy.naraka.commands;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.yummy.naraka.config.NarakaConfig;
@@ -43,23 +42,21 @@ public class StigmaCommand {
                                         context.getSource(),
                                         Set.of(context.getSource().getEntityOrException()),
                                         IntegerArgumentType.getInteger(context, "value"),
-                                        false
+                                        context.getSource().getEntityOrException()
                                 ))
-                        )
-                        .then(Commands.argument("target", EntityArgument.entities())
-                                .then(Commands.argument("value", IntegerArgumentType.integer(0, Stigma.MAX_STIGMA))
+                                .then(Commands.argument("target", EntityArgument.entities())
                                         .executes(context -> setStigma(
                                                 context.getSource(),
                                                 EntityArgument.getEntities(context, "target"),
                                                 IntegerArgumentType.getInteger(context, "value"),
-                                                false
+                                                context.getSource().getEntityOrException()
                                         ))
-                                        .then(Commands.argument("markTime", BoolArgumentType.bool())
+                                        .then(Commands.argument("cause", EntityArgument.entity())
                                                 .executes(context -> setStigma(
                                                         context.getSource(),
                                                         EntityArgument.getEntities(context, "target"),
                                                         IntegerArgumentType.getInteger(context, "value"),
-                                                        BoolArgumentType.getBool(context, "markTime")
+                                                        EntityArgument.getEntity(context, "cause")
                                                 ))
                                         )
                                 )
@@ -144,12 +141,12 @@ public class StigmaCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int setStigma(CommandSourceStack source, Collection<? extends Entity> targets, int value, boolean markTime) throws CommandSyntaxException {
+    private static int setStigma(CommandSourceStack source, Collection<? extends Entity> targets, int value, Entity cause) throws CommandSyntaxException {
         int count = 0;
         for (Entity target : targets) {
-            LivingEntity livingEntity = NarakaCommands.getLivingEntity(target);
-            long lastMarkedTime = markTime ? livingEntity.level().getGameTime() : 0;
-            EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.get(), new Stigma(value, lastMarkedTime));
+            LivingEntity livingTarget = NarakaCommands.getLivingEntity(target);
+            LivingEntity livingCause = NarakaCommands.getLivingEntity(cause);
+            EntityDataHelper.setEntityData(livingTarget, NarakaEntityDataTypes.STIGMA.get(), new Stigma(value, livingCause));
             count += 1;
         }
         Component component = Component.translatable(LanguageKey.STIGMA_COMMAND_SET_KEY, count, value);
@@ -160,8 +157,9 @@ public class StigmaCommand {
     private static int increaseStigma(CommandSourceStack source, Collection<? extends Entity> targets, Entity cause) throws CommandSyntaxException {
         int count = 0;
         for (Entity target : targets) {
-            LivingEntity livingEntity = NarakaCommands.getLivingEntity(target);
-            StigmaHelper.increaseStigma(source.getLevel(), livingEntity, cause);
+            LivingEntity livingTarget = NarakaCommands.getLivingEntity(target);
+            LivingEntity livingCause = NarakaCommands.getLivingEntity(cause);
+            StigmaHelper.increaseStigma(source.getLevel(), livingTarget, livingCause);
             count += 1;
         }
         Component component = Component.translatable(LanguageKey.STIGMA_COMMAND_INCREASE_KEY, count, cause.getName());
@@ -172,11 +170,12 @@ public class StigmaCommand {
     private static int consumeStigma(CommandSourceStack source, Collection<? extends Entity> targets, Entity cause) throws CommandSyntaxException {
         int succeed = 0;
         for (Entity target : targets) {
-            LivingEntity livingEntity = NarakaCommands.getLivingEntity(target);
-            Stigma stigma = StigmaHelper.get(livingEntity);
+            LivingEntity livingTarget = NarakaCommands.getLivingEntity(target);
+            LivingEntity livingCause = NarakaCommands.getLivingEntity(cause);
+            Stigma stigma = StigmaHelper.get(livingTarget);
             if (stigma.value() > 0) {
-                Stigma result = stigma.consume(source.getLevel(), livingEntity, cause);
-                EntityDataHelper.setEntityData(livingEntity, NarakaEntityDataTypes.STIGMA.get(), result);
+                Stigma result = stigma.consume(source.getLevel(), livingTarget, livingCause);
+                EntityDataHelper.setEntityData(livingTarget, NarakaEntityDataTypes.STIGMA.get(), result);
                 succeed += 1;
             }
         }
