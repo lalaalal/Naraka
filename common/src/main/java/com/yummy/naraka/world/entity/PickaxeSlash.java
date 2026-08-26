@@ -1,8 +1,10 @@
 package com.yummy.naraka.world.entity;
 
+import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.data.StunHelper;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -72,6 +74,11 @@ public class PickaxeSlash extends LightTailEntity {
 
     public float getZRot() {
         return entityData.get(Z_ROT);
+    }
+
+    @Override
+    protected ParticleOptions getTrailParticle() {
+        return NarakaFlameParticleOption.LAPIS;
     }
 
     @Override
