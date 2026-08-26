@@ -53,7 +53,7 @@ public abstract class NarakaLanguageProviders {
         translationMap.put(key, translations);
     }
 
-    public void addPotion(Item item, Holder<Potion> potion, String... effectTranslations) {
+    public void addEffectItem(Item item, Holder<Potion> potion, String... effectTranslations) {
         add(
                 item.getDescriptionId() + ".effect." + potion.unwrapKey().orElseThrow()
                         .location().getPath(),

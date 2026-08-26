@@ -143,6 +143,8 @@
   "item.minecraft.potion.effect.challenger": "挑戦者のポーション",
   "item.minecraft.splash_potion.effect.bless": "祝福のスプラッシュポーション",
   "item.minecraft.splash_potion.effect.challenger": "挑戦者のスプラッシュポーション",
+  "item.minecraft.tipped_arrow.effect.bless": "祝福の矢",
+  "item.minecraft.tipped_arrow.effect.challenger": "挑戦者の矢",
   "item.naraka.animation_controller": "アニメーションコントローラー",
   "item.naraka.diamond_golem_spawn_egg": "ダイヤモンドゴーレムのスポーンエッグ",
   "item.naraka.god_blood": "§l神の血",
