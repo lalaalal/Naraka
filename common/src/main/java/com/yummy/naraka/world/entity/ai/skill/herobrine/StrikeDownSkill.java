@@ -29,7 +29,7 @@ public class StrikeDownSkill extends ComboSkill<Herobrine> {
     public StrikeDownSkill(Herobrine mob, @Nullable Skill<?> nextSkill) {
         super(LOCATION, mob, 60, 0, 0.5f, 60, nextSkill);
         this.shieldCooldown = 100;
-        this.shieldDamage = 15;
+        this.shieldDamage = 1;
     }
 
     @Override
