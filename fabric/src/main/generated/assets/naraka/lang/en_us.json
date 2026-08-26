@@ -191,6 +191,8 @@
   "item.minecraft.potion.effect.challenger": "Challenger's Potion",
   "item.minecraft.splash_potion.effect.bless": "Splash Potion of Bless",
   "item.minecraft.splash_potion.effect.challenger": "Challenger's Splash Potion",
+  "item.minecraft.tipped_arrow.effect.bless": "Arrow of Bless",
+  "item.minecraft.tipped_arrow.effect.challenger": "Challenger's Arrow",
   "item.naraka.amethyst_ore": "Amethyst Ore",
   "item.naraka.amethyst_shard_block": "Block of Amethyst Shard",
   "item.naraka.animation_controller": "Animation Controller",

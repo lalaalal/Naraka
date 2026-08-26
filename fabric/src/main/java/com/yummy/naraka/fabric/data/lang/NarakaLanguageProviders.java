@@ -3,9 +3,9 @@ package com.yummy.naraka.fabric.data.lang;
 import com.yummy.naraka.config.Configuration;
 import com.yummy.naraka.data.lang.AdvancementComponent;
 import com.yummy.naraka.data.lang.LanguageKey;
+import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import com.yummy.naraka.world.item.tooltip.ConditionalComponents;
 import com.yummy.naraka.world.item.tooltip.DynamicItemLoreHolder;
-import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
@@ -53,7 +53,7 @@ public abstract class NarakaLanguageProviders {
         translationMap.put(key, translations);
     }
 
-    public void addPotion(Item item, Holder<Potion> potion, String... effectTranslations) {
+    public void addEffectItem(Item item, Holder<Potion> potion, String... effectTranslations) {
         add(
                 item.getDescriptionId() + ".effect." + potion.value().name(),
                 effectTranslations

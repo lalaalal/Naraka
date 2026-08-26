@@ -200,12 +200,14 @@ public class JapaneseLanguageProvider extends NarakaLanguageProviders {
                 List.of("食べないで、それをあなたの魂に捧げなさい...")
         );
 
-        addPotion(Items.POTION, NarakaPotions.CHALLENGER, "挑戦者のポーション");
-        addPotion(Items.SPLASH_POTION, NarakaPotions.CHALLENGER, "挑戦者のスプラッシュポーション");
-        addPotion(Items.LINGERING_POTION, NarakaPotions.CHALLENGER, "挑戦者の残留ポーション");
-        addPotion(Items.POTION, NarakaPotions.BLESS, "祝福のポーション");
-        addPotion(Items.SPLASH_POTION, NarakaPotions.BLESS, "祝福のスプラッシュポーション");
-        addPotion(Items.LINGERING_POTION, NarakaPotions.BLESS, "祝福の残留ポーション");
+        addEffectItem(Items.POTION, NarakaPotions.CHALLENGER, "挑戦者のポーション");
+        addEffectItem(Items.SPLASH_POTION, NarakaPotions.CHALLENGER, "挑戦者のスプラッシュポーション");
+        addEffectItem(Items.LINGERING_POTION, NarakaPotions.CHALLENGER, "挑戦者の残留ポーション");
+        addEffectItem(Items.TIPPED_ARROW, NarakaPotions.CHALLENGER, "挑戦者の矢");
+        addEffectItem(Items.POTION, NarakaPotions.BLESS, "祝福のポーション");
+        addEffectItem(Items.SPLASH_POTION, NarakaPotions.BLESS, "祝福のスプラッシュポーション");
+        addEffectItem(Items.LINGERING_POTION, NarakaPotions.BLESS, "祝福の残留ポーション");
+        addEffectItem(Items.TIPPED_ARROW, NarakaPotions.BLESS, "祝福の矢");
 
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_1, "ヘロブラインフェーズ1");
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_2, "ヘロブラインフェーズ2");

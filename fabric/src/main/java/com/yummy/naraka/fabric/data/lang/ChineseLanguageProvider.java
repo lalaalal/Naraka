@@ -199,12 +199,14 @@ public class ChineseLanguageProvider extends NarakaLanguageProviders {
                 List.of("把它交给你的灵魂")
         );
 
-        addPotion(Items.POTION, NarakaPotions.CHALLENGER, "挑战者药水");
-        addPotion(Items.SPLASH_POTION, NarakaPotions.CHALLENGER, "喷溅型挑战者药水");
-        addPotion(Items.LINGERING_POTION, NarakaPotions.CHALLENGER, "滞留型挑战者药水");
-        addPotion(Items.POTION, NarakaPotions.BLESS, "祝福药水");
-        addPotion(Items.SPLASH_POTION, NarakaPotions.BLESS, "喷溅型祝福药水");
-        addPotion(Items.LINGERING_POTION, NarakaPotions.BLESS, "滞留型祝福药水");
+        addEffectItem(Items.POTION, NarakaPotions.CHALLENGER, "挑战者药水");
+        addEffectItem(Items.SPLASH_POTION, NarakaPotions.CHALLENGER, "喷溅型挑战者药水");
+        addEffectItem(Items.LINGERING_POTION, NarakaPotions.CHALLENGER, "滞留型挑战者药水");
+        addEffectItem(Items.TIPPED_ARROW, NarakaPotions.CHALLENGER, "挑战者之箭");
+        addEffectItem(Items.POTION, NarakaPotions.BLESS, "祝福药水");
+        addEffectItem(Items.SPLASH_POTION, NarakaPotions.BLESS, "喷溅型祝福药水");
+        addEffectItem(Items.LINGERING_POTION, NarakaPotions.BLESS, "滞留型祝福药水");
+        addEffectItem(Items.TIPPED_ARROW, NarakaPotions.BLESS, "祝福之箭");
 
         addItem(NarakaItems.STIGMA_ROD, "耻辱印记调试棒");
         addItem(NarakaItems.NARAKA_FIREBALL_STAFF, "狱炎球法杖");
