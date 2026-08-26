@@ -145,6 +145,8 @@
   "item.minecraft.potion.effect.challenger": "挑战者药水",
   "item.minecraft.splash_potion.effect.bless": "喷溅型祝福药水",
   "item.minecraft.splash_potion.effect.challenger": "喷溅型挑战者药水",
+  "item.minecraft.tipped_arrow.effect.bless": "祝福之箭",
+  "item.minecraft.tipped_arrow.effect.challenger": "挑战者之箭",
   "item.naraka.animation_controller": "动画控制器",
   "item.naraka.diamond_golem_spawn_egg": "钻石傀儡刷怪蛋",
   "item.naraka.god_blood": "§l神之血",

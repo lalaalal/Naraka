@@ -192,6 +192,8 @@
   "item.minecraft.potion.effect.challenger": "Challenger's Potion",
   "item.minecraft.splash_potion.effect.bless": "Splash Potion of Bless",
   "item.minecraft.splash_potion.effect.challenger": "Challenger's Splash Potion",
+  "item.minecraft.tipped_arrow.effect.bless": "Arrow of Bless",
+  "item.minecraft.tipped_arrow.effect.challenger": "Challenger's Arrow",
   "item.naraka.animation_controller": "Animation Controller",
   "item.naraka.diamond_golem_spawn_egg": "Diamond Golem Spawn Egg",
   "item.naraka.god_blood": "§lGod Blood",

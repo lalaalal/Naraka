@@ -192,6 +192,8 @@
   "item.minecraft.potion.effect.challenger": "도전자의 물약",
   "item.minecraft.splash_potion.effect.bless": "투척용 축복의 물약",
   "item.minecraft.splash_potion.effect.challenger": "도전자의 물약",
+  "item.minecraft.tipped_arrow.effect.bless": "축복의 화살",
+  "item.minecraft.tipped_arrow.effect.challenger": "도전자의 화살",
   "item.naraka.animation_controller": "애니메이션 컨트롤러",
   "item.naraka.diamond_golem_spawn_egg": "다이아몬드 골렘 생성 알",
   "item.naraka.god_blood": "§l신의 피",
