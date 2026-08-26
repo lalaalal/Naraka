@@ -55,11 +55,11 @@ public class NarakaPortalRenderer extends EntityRenderer<NarakaPortal, NarakaPor
         poseStack.pushPose();
         poseStack.mulPose(Axis.YN.rotationDegrees(renderState.yRot));
         nodeCollector.submitCustomGeometry(poseStack, getRenderType(), (pose, vertexConsumer) -> {
-            NarakaRenderUtils.renderRhombus(pose, vertexConsumer, renderState.width, renderState.height, LightCoordsUtil.FULL_BRIGHT, 0xbb, 0xffffff);
+            NarakaRenderUtils.renderRhombus(pose, vertexConsumer, renderState.width, renderState.height, LightCoordsUtil.FULL_BRIGHT, 0xbb, 0);
         });
         poseStack.mulPose(Axis.YP.rotationDegrees(180));
         nodeCollector.submitCustomGeometry(poseStack, getRenderType(), (pose, vertexConsumer) -> {
-            NarakaRenderUtils.renderRhombus(pose, vertexConsumer, renderState.width, renderState.height, LightCoordsUtil.FULL_BRIGHT, 0xbb, 0xffffff);
+            NarakaRenderUtils.renderRhombus(pose, vertexConsumer, renderState.width, renderState.height, LightCoordsUtil.FULL_BRIGHT, 0xbb, 0);
         });
         poseStack.popPose();
 

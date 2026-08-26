@@ -1,6 +1,5 @@
 package com.yummy.naraka.client;
 
-import com.yummy.naraka.config.NarakaConfig;
 import net.minecraft.client.renderer.blockentity.AbstractEndPortalRenderer;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
@@ -37,7 +36,7 @@ public final class NarakaRenderTypes {
     }
 
     public static RenderType emissive() {
-        if (NarakaClientContext.SHADER_ENABLED.getValue() && NarakaConfig.CLIENT.enableEmissiveRenderType.getValue())
+        if (NarakaClientContext.SHADER_ENABLED.getValue())
             return RenderTypes.entityTranslucentEmissive(NarakaTextures.AREA_EFFECT);
         return RenderTypes.lightning();
     }

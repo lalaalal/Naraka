@@ -50,7 +50,7 @@ public class LightningCircleRenderer extends EntityRenderer<LightningCircle, Fla
         poseStack.pushPose();
         poseStack.translate(0, 0.0125, 0);
         poseStack.scale(renderState.scale, renderState.scale, renderState.scale);
-        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entityTranslucent(NarakaTextures.LIGHTNING_CIRCLE), (pose, vertexConsumer) -> {
+        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entityTranslucentEmissive(NarakaTextures.LIGHTNING_CIRCLE), (pose, vertexConsumer) -> {
             NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ARGB.white(renderState.alpha), Direction.Axis.Y);
         });
         poseStack.popPose();
