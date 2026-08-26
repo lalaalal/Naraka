@@ -41,7 +41,7 @@ public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash> 
         poseStack.mulPose(Axis.YN.rotationDegrees(yRot));
         poseStack.rotateAround(Axis.ZN.rotationDegrees(zRot), 0, 0.5f, 0);
         poseStack.translate(0, 0, -0.25);
-        RenderType renderType = RenderType.entityTranslucent(getTextureLocation(entity));
+        RenderType renderType = RenderType.entityTranslucentEmissive(getTextureLocation(entity));
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
         NarakaRenderUtils.renderFlatImage(poseStack.last(), vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color, Direction.Axis.X);
         poseStack.popPose();
