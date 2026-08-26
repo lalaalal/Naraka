@@ -191,6 +191,8 @@
   "item.minecraft.potion.effect.challenger": "도전자의 물약",
   "item.minecraft.splash_potion.effect.bless": "투척용 축복의 물약",
   "item.minecraft.splash_potion.effect.challenger": "도전자의 물약",
+  "item.minecraft.tipped_arrow.effect.bless": "축복의 화살",
+  "item.minecraft.tipped_arrow.effect.challenger": "도전자의 화살",
   "item.naraka.amethyst_ore": "자수정 광석",
   "item.naraka.amethyst_shard_block": "자수정 조각 블록",
   "item.naraka.animation_controller": "애니메이션 컨트롤러",

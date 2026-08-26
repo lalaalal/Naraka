@@ -214,12 +214,14 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_3, "Herobrine Phase 3", "히로빈 3 페이즈");
         addJukeboxSound(NarakaJukeboxSongs.HEROBRINE_PHASE_4, "Herobrine Phase 4", "히로빈 4 페이즈");
 
-        addPotion(Items.POTION, NarakaPotions.CHALLENGER, "Challenger's Potion", "도전자의 물약");
-        addPotion(Items.SPLASH_POTION, NarakaPotions.CHALLENGER, "Challenger's Splash Potion", "도전자의 물약");
-        addPotion(Items.LINGERING_POTION, NarakaPotions.CHALLENGER, "Challenger's Lingering Potion", "도전자의 물약");
-        addPotion(Items.POTION, NarakaPotions.BLESS, "Potion of Bless", "축복의 물약");
-        addPotion(Items.SPLASH_POTION, NarakaPotions.BLESS, "Splash Potion of Bless", "투척용 축복의 물약");
-        addPotion(Items.LINGERING_POTION, NarakaPotions.BLESS, "Lingering Potion of Bless", "잔류형 축복의 물약");
+        addEffectItem(Items.POTION, NarakaPotions.CHALLENGER, "Challenger's Potion", "도전자의 물약");
+        addEffectItem(Items.SPLASH_POTION, NarakaPotions.CHALLENGER, "Challenger's Splash Potion", "도전자의 물약");
+        addEffectItem(Items.LINGERING_POTION, NarakaPotions.CHALLENGER, "Challenger's Lingering Potion", "도전자의 물약");
+        addEffectItem(Items.TIPPED_ARROW, NarakaPotions.CHALLENGER, "Challenger's Arrow", "도전자의 화살");
+        addEffectItem(Items.POTION, NarakaPotions.BLESS, "Potion of Bless", "축복의 물약");
+        addEffectItem(Items.SPLASH_POTION, NarakaPotions.BLESS, "Splash Potion of Bless", "투척용 축복의 물약");
+        addEffectItem(Items.LINGERING_POTION, NarakaPotions.BLESS, "Lingering Potion of Bless", "잔류형 축복의 물약");
+        addEffectItem(Items.TIPPED_ARROW, NarakaPotions.BLESS, "Arrow of Bless", "축복의 화살");
 
         addItem(NarakaItems.STIGMA_ROD, "Stigma Rod", "낙인 막대기");
         addItem(NarakaItems.NARAKA_FIREBALL_STAFF, "Naraka Fireball Staff");
