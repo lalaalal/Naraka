@@ -2,6 +2,8 @@ package com.yummy.naraka.world.entity.ai.skill;
 
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.SkillUsingMob;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -66,6 +68,9 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
         Vec3 delta = target.getLookAngle().multiply(distance, 0, distance);
         Vec3 position = target.getEyePosition().add(delta);
         double y = target.getY() + 0.75;
+        BlockPos blockPos = BlockPos.containing(position.x, y, position.z);
+        if (!mob.level().getBlockState(blockPos).isAir())
+            y = NarakaUtils.findAir(mob.level(), blockPos, Direction.UP).getY() + 1.75;
         mob.teleportTo(position.x, y, position.z);
         mob.level().playSound(null, mob, SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 1, 1);
     }
