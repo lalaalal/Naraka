@@ -11,8 +11,8 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.alchemy.Potion;
 
 public class NarakaPotions {
-    public static final Holder<Potion> CHALLENGER = register("challenger", new Potion(
-            "challenger",
+    public static final Holder<Potion> BLESS = register("bless", new Potion(
+            "bless",
             new MobEffectInstance(NarakaMobEffects.GOD_BLESS, 3600, 255),
             new MobEffectInstance(MobEffects.SPEED, 3600),
             new MobEffectInstance(MobEffects.SPEED, 3600),
@@ -51,8 +51,8 @@ public class NarakaPotions {
             new MobEffectInstance(MobEffects.BREATH_OF_THE_NAUTILUS)
     ));
 
-    public static final Holder<Potion> BLESS = register("bless", new Potion(
-            "bless",
+    public static final Holder<Potion> CHALLENGER = register("challenger", new Potion(
+            "challenger",
             new MobEffectInstance(MobEffects.RESISTANCE, 3600, 1),
             new MobEffectInstance(MobEffects.SPEED, 3600, 1),
             new MobEffectInstance(MobEffects.STRENGTH, 3600, 1),
