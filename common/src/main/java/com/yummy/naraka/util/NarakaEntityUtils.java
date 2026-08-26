@@ -2,7 +2,6 @@ package com.yummy.naraka.util;
 
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.SyncPlayerMovementPacket;
-import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerLevel;
@@ -11,7 +10,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -53,8 +50,6 @@ public class NarakaEntityUtils {
     }
 
     public static boolean disableAndHurtShield(LivingEntity livingEntity, int cooldown, int damage) {
-        if (NarakaAttributeModifiers.hasAttributeModifier(livingEntity, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STUN_PREVENT_MOVING))
-            return false;
         if (livingEntity instanceof Player player && livingEntity.isBlocking()) {
             InteractionHand hand = player.getUsedItemHand();
             ItemStack usedItem = player.getItemInHand(hand);

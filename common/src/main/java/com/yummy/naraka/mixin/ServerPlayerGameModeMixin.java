@@ -1,12 +1,11 @@
 package com.yummy.naraka.mixin;
 
 import com.yummy.naraka.util.NarakaItemUtils;
-import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
+import com.yummy.naraka.world.entity.data.StunHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerPlayerGameMode;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Final;
@@ -31,7 +30,7 @@ public abstract class ServerPlayerGameModeMixin {
 
     @Inject(method = "useItem", at = @At("HEAD"), cancellable = true)
     public void preventItemUseDuringStun(ServerPlayer player, Level level, ItemStack stack, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
-        if (NarakaAttributeModifiers.hasAttributeModifier(player, Attributes.MOVEMENT_SPEED, NarakaAttributeModifiers.STUN_PREVENT_MOVING)) {
+        if (StunHelper.isStun(player)) {
             player.stopUsingItem();
             cir.cancel();
             cir.setReturnValue(InteractionResult.FAIL);
