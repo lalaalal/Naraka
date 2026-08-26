@@ -128,6 +128,7 @@ public final class EntityDataType<T, E extends Entity> {
             this.entityType = entityType;
             this.clientTicker = ClientTicker.empty();
             this.serverTicker = ServerTicker.empty();
+            this.synchronize = true;
         }
 
         public Builder<T, E> id(ResourceLocation id) {
@@ -163,7 +164,7 @@ public final class EntityDataType<T, E extends Entity> {
         public EntityDataType<T, E> build() {
             if (defaultInstance == null)
                 throw new IllegalStateException("Default value must be set");
-            return new EntityDataType<>(id, codec, entityType, defaultInstance, ticker, synchronize);
+            return new EntityDataType<>(id, codec, entityType, defaultInstance, clientTicker, serverTicker, synchronize);
         }
     }
 }
