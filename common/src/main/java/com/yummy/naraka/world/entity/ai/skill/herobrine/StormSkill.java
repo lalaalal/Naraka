@@ -62,6 +62,13 @@ public class StormSkill extends ComboSkill<Herobrine> {
         runFrom(65, () -> stigmatizingWave(level, 65, tickCount - 65));
     }
 
+    @Override
+    protected void onFirstTick(ServerLevel level) {
+        float y = NarakaUtils.findFloor(level, mob.blockPosition()).getY() + 1.75f;
+        mob.teleportTo(mob.getX(), y, mob.getZ());
+        mob.level().playSound(null, mob, SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 1, 1);
+    }
+
     private void createAreaEffect(ServerLevel level) {
         float y = NarakaUtils.findFloor(level, mob.blockPosition()).getY() + 1;
         Vec3 position = new Vec3(mob.getX(), y, mob.getZ());
