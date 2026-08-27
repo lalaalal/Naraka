@@ -345,9 +345,9 @@ public class Herobrine extends AbstractHerobrine {
         if (isAlive() && !target.is(NarakaEntityTypeTags.HEROBRINE) && getPhase() > 1) {
             StigmaHelper.increaseStigma(level, target, this);
             targetManager.tryAddTarget(target);
+            if (!NarakaConfig.COMMON.enableStigma.getValue() && !isHibernateMode())
+                this.heal(3.5f);
         }
-        if (!NarakaConfig.COMMON.enableStigma.getValue() && !isHibernateMode())
-            this.heal(3.5f);
     }
 
     @Override
