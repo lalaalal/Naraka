@@ -87,7 +87,7 @@ public final class LanguageKey {
     }
 
     public static String keyMappingCategory(Identifier id) {
-        return Util.makeDescriptionId("key.categories", id);
+        return id.toLanguageKey("key.category");
     }
 
     public static String toggleOreSeeThroughMessage(boolean enabled) {

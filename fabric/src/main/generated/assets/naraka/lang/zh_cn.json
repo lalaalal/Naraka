@@ -300,7 +300,7 @@
   "jade.naraka.nectarium_core.honey": "（剩余 %d）",
   "jade.naraka.soul_stabilizer": "%d",
   "jade.naraka.stigma": ": %d",
-  "key.categories.naraka.naraka": "Naraka",
+  "key.category.naraka.naraka": "Naraka",
   "key.naraka.toggle_ore_see_through": "开关矿物透视",
   "message.naraka.ore_see_through.disable": "矿物透视已关闭",
   "message.naraka.ore_see_through.enable": "矿物透视已启用",
