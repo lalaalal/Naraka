@@ -127,6 +127,10 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         return scarfWavingData;
     }
 
+    public void setDisplayScarf(boolean value) {
+        entityData.set(DISPLAY_SCARF, value);
+    }
+
     public boolean shouldRenderScarf() {
         return entityData.get(DISPLAY_SCARF);
     }
