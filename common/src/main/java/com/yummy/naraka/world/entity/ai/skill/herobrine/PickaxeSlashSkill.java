@@ -32,7 +32,6 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
     private final boolean spawnShadow;
     private InstantShadowSpawner shadowSpawner = InstantShadowSpawner.EMPTY;
     private int tailColor = SoulType.LAPIS.color;
-    private int slashColor = 0xffffff;
 
     public static PickaxeSlashSkill<AbstractHerobrine> single(AbstractHerobrine mob) {
         return new PickaxeSlashSkill<>(SINGLE, mob, 65, 360, false, 40);
@@ -47,8 +46,7 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
         this.pickaxeSlashSpawnTimes = List.of(pickaxeSlashSpawnTimes);
         this.spawnShadow = spawnShadow;
         if (mob.isShadow) {
-            tailColor = 0x505050;
-            slashColor = 0;
+            tailColor = SoulType.GOD_BLOOD.color;
         }
     }
 
@@ -119,7 +117,6 @@ public class PickaxeSlashSkill<T extends AbstractHerobrine> extends TargetSkill<
         pickaxeSlash.setDeltaMovement(NarakaEntityUtils.getDirectionNormalVector(mob, target).scale(1.2));
         ProjectileUtil.rotateTowardsMovement(pickaxeSlash, 1);
         pickaxeSlash.setZRot(zRotDegree);
-        pickaxeSlash.setColor(slashColor);
         pickaxeSlash.setTailColor(tailColor);
         if (mob.isShadow)
             pickaxeSlash.setStunTarget(true);

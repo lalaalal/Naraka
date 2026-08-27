@@ -50,26 +50,6 @@ public final class NarakaRenderTypes {
                     .createCompositeState(false)
     );
 
-    private static final Function<ResourceLocation, RenderType> SPACE_CUTOUT = Util.memoize(
-            texture -> RenderType.create(
-                    "space_cutout",
-                    DefaultVertexFormat.POSITION_TEX,
-                    VertexFormat.Mode.QUADS,
-                    1536,
-                    false,
-                    false,
-                    RenderType.CompositeState.builder()
-                            .setShaderState(new RenderStateShard.ShaderStateShard(NarakaShaders::spaceCutout))
-                            .setTextureState(
-                                    RenderStateShard.MultiTextureStateShard.builder()
-                                            .add(NarakaTextures.SPACE, false, false)
-                                            .add(texture, false, false)
-                                            .build()
-                            )
-                            .createCompositeState(false)
-            )
-    );
-
     private static final RenderType SPACE = RenderType.create(
             "space",
             DefaultVertexFormat.POSITION,
@@ -99,10 +79,9 @@ public final class NarakaRenderTypes {
         return SPACE;
     }
 
-    public static RenderType spaceCutout(ResourceLocation texture) {
-        return SPACE_CUTOUT.apply(texture);
+    public static RenderType emissive() {
+        return RenderType.lightning();
     }
-
 
     public static void initialize() {
 

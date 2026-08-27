@@ -1,12 +1,15 @@
 package com.yummy.naraka.mixin.client;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.init.DimensionSkyRendererRegistry;
 import com.yummy.naraka.client.renderer.NarakaSkyRenderer;
+import com.yummy.naraka.world.entity.data.EntityDataHelper;
+import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -14,6 +17,7 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.world.entity.Entity;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -49,8 +53,8 @@ public abstract class LevelRendererMixin {
     }
 
     @ModifyArg(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;renderEntity(Lnet/minecraft/world/entity/Entity;DDDFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;)V"))
-    private float fixEntityPartialTickOnTickFreeze(float partialTicks) {
-        if (NarakaClientContext.TICK_FROZEN.getValue())
+    private float fixEntityPartialTickOnTickFreeze(float partialTicks, @Local Entity entity) {
+        if (NarakaClientContext.TICK_FROZEN.getValue() && !EntityDataHelper.getRawEntityData(entity, NarakaEntityDataTypes.KEEP_UNFROZEN.getConcreteValue()))
             return NarakaClientContext.FROZEN_PARTIAL_TICK.getValue();
         return partialTicks;
     }

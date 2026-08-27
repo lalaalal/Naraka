@@ -42,7 +42,7 @@ public class LightningCircleRenderer extends EntityRenderer<LightningCircle> {
         poseStack.translate(0, 0.0125, 0);
         poseStack.scale(scale, scale, scale);
 
-        RenderType renderType = RenderType.entityCutout(getTextureLocation(entity));
+        RenderType renderType = RenderType.entityTranslucentEmissive(getTextureLocation(entity));
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
         NarakaRenderUtils.renderFlatImage(poseStack.last(), vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, Color.of(alpha, 1, 1, 1).pack(), Direction.Axis.Y);
         poseStack.popPose();

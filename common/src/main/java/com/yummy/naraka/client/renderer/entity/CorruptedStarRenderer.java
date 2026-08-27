@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaModelLayers;
+import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.util.NarakaUtils;
@@ -59,7 +60,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         poseStack.rotateAround(Axis.YP.rotationDegrees(rotation), 0, 0.25f, 0);
         poseStack.rotateAround(Axis.ZP.rotationDegrees(rotation), 0, 0.25f, 0);
         float alphaMultiplier = entity.getAlphaMultiplier(partialTick);
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.lightning());
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(NarakaRenderTypes.emissive());
 
         Color innerColor = Color.white((int) (0xaa * alphaMultiplier));
         inner.render(poseStack, vertexConsumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, innerColor.red01(), innerColor.green01(), innerColor.blue01(), innerColor.alpha01());
@@ -75,7 +76,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
             ShinyEffectRenderer.renderShiny(tick, entity.getShineLifetime(), entity.getShineScale(), entity.isVerticalShine(), entity.getTailColor(), poseStack, bufferSource);
             poseStack.popPose();
         }
-        submitTargetPoint(entity, poseStack, partialTick, vertexConsumer);
+        renderTargetPoint(entity, poseStack, partialTick, bufferSource);
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 
@@ -84,7 +85,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         return NarakaMod.location("empty");
     }
 
-    private void submitTargetPoint(CorruptedStar entity, PoseStack poseStack, float partialTick, VertexConsumer vertexConsumer) {
+    private void renderTargetPoint(CorruptedStar entity, PoseStack poseStack, float partialTick, MultiBufferSource bufferSource) {
         float ageInTicks = entity.tickCount + partialTick;
         float tickPart = ageInTicks - entity.getShineStartTick();
         Vec3 targetPosition = entity.getTargetPosition(partialTick);
@@ -101,7 +102,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         poseStack.mulPose(Axis.YN.rotationDegrees(player.getYRot() + 180));
         float width = NarakaUtils.interpolate(Math.min(tickPart / 10, 1), 0, 0.05f, NarakaUtils::fastStepOut);
 
-        renderTargetPoint(poseStack.last(), vertexConsumer, 0.25f, width, 1.5f, 0xab, entity.getTailColor());
+        renderTargetPoint(poseStack.last(), bufferSource.getBuffer(RenderType.lightning()), 0.25f, width, 1.5f, 0xab, entity.getTailColor());
 
         poseStack.popPose();
     }

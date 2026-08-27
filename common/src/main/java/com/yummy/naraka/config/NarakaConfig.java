@@ -96,7 +96,7 @@ public class NarakaConfig {
                     CONFIGURATIONS.stream().filter(configuration -> configuration.getFileName().equals(changedFileName))
                             .findAny()
                             .ifPresent(Configuration::loadValues);
-                    if (changedFileName.equals("iris.properties") && Platform.getInstance().getSide() == Platform.Side.CLIENT)
+                    if ((changedFileName.equals("iris.properties") || changedFileName.equals("oculus.properties")) && Platform.getInstance().getSide() == Platform.Side.CLIENT)
                         checkIris();
                 }
                 watchKey.reset();
