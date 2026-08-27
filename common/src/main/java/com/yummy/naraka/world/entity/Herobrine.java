@@ -29,7 +29,6 @@ import com.yummy.naraka.world.entity.data.LockedHealthHelper;
 import com.yummy.naraka.world.entity.data.Stigma;
 import com.yummy.naraka.world.entity.data.StigmaHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -47,7 +46,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -58,7 +56,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
-
 import java.util.*;
 
 public class Herobrine extends AbstractHerobrine {
@@ -124,13 +121,11 @@ public class Herobrine extends AbstractHerobrine {
     );
 
     private final List<Projectile> ignoredProjectiles = new ArrayList<>();
-    private int maxWatchedEntities = 0;
-    private final Set<UUID> watchingEntities = new HashSet<>();
-    private final Map<UUID, LivingEntity> cachedWatchingEntities = new HashMap<>();
     protected final List<Afterimage> afterimages = new ArrayList<>();
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(getName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
     private final PhaseManager phaseManager = new PhaseManager(HEALTH_BY_PHASE, PROGRESS_COLOR_BY_PHASE, BossEvent.BossBarColor.WHITE, this, bossEvent);
+    private final TargetManager targetManager = new TargetManager();
     private final ShadowController shadowController = new ShadowController(this);
 
     private float hurtDamageLimit = MAX_HURT_DAMAGE_LIMIT;
@@ -257,11 +252,7 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     public void setTarget(@Nullable LivingEntity target) {
         super.setTarget(target);
-        if (target != null && !watchingEntities.contains(target.getUUID())) {
-            watchingEntities.add(target.getUUID());
-            cachedWatchingEntities.put(target.getUUID(), target);
-            maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
-        }
+        targetManager.tryAddTarget(target);
     }
 
     @Override
@@ -330,16 +321,14 @@ public class Herobrine extends AbstractHerobrine {
 
     private float calculateLockedHealth() {
         double sum = 0;
-        for (LivingEntity livingEntity : cachedWatchingEntities.values()) {
-            if (livingEntity.getType().is(ConventionalTags.Entities.BOSSES) || livingEntity instanceof Player)
-                sum += LockedHealthHelper.get(livingEntity);
-        }
+        for (LivingEntity livingEntity : targetManager.getPlayerOrBosses())
+            sum += LockedHealthHelper.get(livingEntity);
         return (float) sum;
     }
 
     private float calculateStigma() {
         float sum = 0;
-        for (LivingEntity livingEntity : cachedWatchingEntities.values())
+        for (LivingEntity livingEntity : targetManager.getPlayerOrBosses())
             sum += StigmaHelper.get(livingEntity).value();
         return sum;
     }
@@ -355,9 +344,7 @@ public class Herobrine extends AbstractHerobrine {
     public void stigmatizeEntity(ServerLevel level, LivingEntity target) {
         if (isAlive() && !target.getType().is(NarakaEntityTypeTags.HEROBRINE) && getPhase() > 1) {
             StigmaHelper.increaseStigma(level, target, this);
-            watchingEntities.add(target.getUUID());
-            cachedWatchingEntities.put(target.getUUID(), target);
-            maxWatchedEntities = Math.max(watchingEntities.size(), maxWatchedEntities);
+            targetManager.tryAddTarget(target);
             if (!NarakaConfig.COMMON.enableStigma.getValue() && !isHibernateMode())
                 this.heal(3.5f);
         }
@@ -406,46 +393,32 @@ public class Herobrine extends AbstractHerobrine {
     @Override
     protected void customServerAiStep() {
         updateAccumulatedDamage();
+        targetManager.update(level());
 
         if (!isFinalModel())
             tryAvoidProjectile();
-        if (level() instanceof ServerLevel serverLevel) {
-            updateWatchingEntities(serverLevel);
-            phaseManager.updatePhase(bossEvent);
+        phaseManager.updatePhase(bossEvent);
 
-            if (NarakaConfig.COMMON.despawnHerobrineWhenTargetIsDead.getValue()
-                    && skillManager.getCurrentSkill() != despawnSkill
-                    && watchingEntities.isEmpty() && maxWatchedEntities > 0) {
-                skillManager.interrupt();
-                skillManager.setCurrentSkill(despawnSkill);
-            }
-            if (getPhase() == 2 && tickCount % 100 == 0) {
-                shadowController.increaseFlickerStack(3);
-            }
+        if (NarakaConfig.COMMON.despawnHerobrineWhenTargetIsDead.getValue()
+                && skillManager.getCurrentSkill() != despawnSkill
+                && targetManager.allTargetsAreDisappeared()) {
+            skillManager.interrupt();
+            skillManager.setCurrentSkill(despawnSkill);
+        }
+        if (getPhase() == 2 && tickCount % 100 == 0) {
+            shadowController.increaseFlickerStack(3);
+        }
 
-            if (getPhase() == 3 && tickCount % 66 == 0) {
-                float lockedHealth = calculateLockedHealth();
-                float stigma = calculateStigma();
-                heal(stigma * lockedHealth * 1.5f);
-            }
+        if (getPhase() == 3 && tickCount % 66 == 0) {
+            float lockedHealth = calculateLockedHealth();
+            float stigma = calculateStigma();
+            heal(stigma * lockedHealth * 1.5f);
         }
 
         if (isInWall())
             teleportToSpawnedPosition();
 
         super.customServerAiStep();
-    }
-
-    private void updateWatchingEntities(ServerLevel level) {
-        watchingEntities.removeIf(uuid -> {
-            LivingEntity target = NarakaEntityUtils.findEntityByUUID(level, uuid, LivingEntity.class);
-            if (target == null || target.isDeadOrDying() || !NarakaEntityUtils.isDamageable(target)) {
-                cachedWatchingEntities.remove(uuid);
-                return true;
-            }
-            cachedWatchingEntities.put(uuid, target);
-            return false;
-        });
     }
 
     @Override
@@ -822,7 +795,7 @@ public class Herobrine extends AbstractHerobrine {
     }
 
     private void releaseStigma() {
-        for (LivingEntity livingEntity : cachedWatchingEntities.values()) {
+        for (LivingEntity livingEntity : targetManager.getAllTargets()) {
             LockedHealthHelper.release(livingEntity);
             StigmaHelper.removeStigma(livingEntity);
         }
@@ -870,7 +843,7 @@ public class Herobrine extends AbstractHerobrine {
         output.putBoolean("HibernateMode", hibernateMode);
         if (spawnPosition != null)
             NarakaNbtUtils.store(output, "SpawnPosition", BlockPos.CODEC, spawnPosition);
-        NarakaNbtUtils.store(output, "WatchingEntities", UUIDUtil.CODEC_SET, watchingEntities);
+        targetManager.save(output);
     }
 
     @Override
@@ -885,6 +858,6 @@ public class Herobrine extends AbstractHerobrine {
         if (hibernateMode)
             startHibernateMode(level);
         NarakaNbtUtils.read(input, "SpawnPosition", BlockPos.CODEC).ifPresent(pos -> spawnPosition = pos);
-        NarakaNbtUtils.read(input, "WatchingEntities", UUIDUtil.CODEC_SET).ifPresent(watchingEntities::addAll);
+        targetManager.read(input, level);
     }
 }
