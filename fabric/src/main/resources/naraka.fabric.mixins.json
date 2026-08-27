@@ -7,6 +7,7 @@
   "client": [
     "client.EffectInstanceMixin",
     "client.GameRendererMixin",
+    "client.ItemRendererMixin",
     "client.LevelRendererMixin"
   ],
   "mixins": [

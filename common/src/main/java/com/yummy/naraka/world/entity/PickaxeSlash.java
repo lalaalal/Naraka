@@ -65,7 +65,7 @@ public class PickaxeSlash extends LightTailEntity {
     }
 
     public int getColor(float partialTick) {
-        return Color.of((int) (getAlpha(partialTick) * 255), entityData.get(COLOR));
+        return Color.combine((int) (getAlpha(partialTick) * 255), entityData.get(COLOR));
     }
 
     public void setZRot(float zRot) {

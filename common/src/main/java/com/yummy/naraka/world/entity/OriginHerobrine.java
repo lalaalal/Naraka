@@ -203,7 +203,7 @@ public class OriginHerobrine extends AbstractHerobrine {
 
     @Override
     public int getTeamColor() {
-        return Color.of(alpha, 0xffffff);
+        return Color.combine(alpha, 0xffffff);
     }
 
     public int getAlpha() {

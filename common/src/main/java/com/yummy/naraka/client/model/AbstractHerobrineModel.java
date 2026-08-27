@@ -3,7 +3,6 @@ package com.yummy.naraka.client.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.animation.herobrine.HerobrineAnimation;
-import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import net.minecraft.client.model.geom.ModelPart;
@@ -40,7 +39,7 @@ public abstract class AbstractHerobrineModel<T extends AbstractHerobrine> extend
         if (!entity.isFinalModel())
             animateWalk(HerobrineAnimation.WALKING, limbSwing, limbSwingAmount, 5, 6);
         playAnimations(entity, ageInTicks);
-        alpha = entity.getAlpha();
+        alpha = entity.getAlpha(ageInTicks - entity.tickCount);
     }
 
     public void renderForEye(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float alpha) {
@@ -52,7 +51,7 @@ public abstract class AbstractHerobrineModel<T extends AbstractHerobrine> extend
         Color color = Color.of(alpha, red, green, blue);
         if (color.alpha() == 0xff) {
             if (forShadow) {
-                color = NarakaConfig.CLIENT.shadowHerobrineColor.getValue();
+                color = Color.of(0);
                 packedOverlay = OverlayTexture.NO_OVERLAY;
             }
             color = color.withAlpha(this.alpha);

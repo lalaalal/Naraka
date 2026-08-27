@@ -162,28 +162,28 @@ public class NarakaRenderUtils {
 
     public static void renderRhombus(PoseStack.Pose pose, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float width, float height, int alpha, int color) {
         vertexConsumer.vertex(pose.pose(), 0, height, 0)
-                .color(Color.of(alpha, color))
+                .color(Color.combine(alpha, color))
                 .uv(0, 1)
                 .overlayCoords(packedOverlay)
                 .uv2(packedLight)
                 .normal(pose.normal(), 0, 1, 0)
                 .endVertex();
         vertexConsumer.vertex(pose.pose(), -width, 0, 0)
-                .color(Color.of(alpha, color))
+                .color(Color.combine(alpha, color))
                 .uv(0, 0)
                 .overlayCoords(packedOverlay)
                 .uv2(packedLight)
                 .normal(pose.normal(), 0, 1, 0)
                 .endVertex();
         vertexConsumer.vertex(pose.pose(), 0, -height, 0)
-                .color(Color.of(alpha, color))
+                .color(Color.combine(alpha, color))
                 .uv(1, 0)
                 .overlayCoords(packedOverlay)
                 .uv2(packedLight)
                 .normal(pose.normal(), 0, 1, 0)
                 .endVertex();
         vertexConsumer.vertex(pose.pose(), width, 0, 0)
-                .color(Color.of(alpha, color))
+                .color(Color.combine(alpha, color))
                 .uv(1, 1)
                 .overlayCoords(packedOverlay)
                 .uv2(packedLight)
@@ -194,19 +194,19 @@ public class NarakaRenderUtils {
     public static void renderRhombus(PoseStack.Pose pose, VertexConsumer vertexConsumer, float width, float height, int alpha, int color) {
         vertexConsumer.vertex(pose.pose(), 0, height, 0)
                 .normal(pose.normal(), 0, 1, 0)
-                .color(Color.of(alpha, color))
+                .color(Color.combine(alpha, color))
                 .endVertex();
         vertexConsumer.vertex(pose.pose(), -width, 0, 0)
                 .normal(pose.normal(), 0, 1, 0)
-                .color(Color.of(alpha, color))
+                .color(Color.combine(alpha, color))
                 .endVertex();
         vertexConsumer.vertex(pose.pose(), 0, -height, 0)
                 .normal(pose.normal(), 0, 1, 0)
-                .color(Color.of(alpha, color))
+                .color(Color.combine(alpha, color))
                 .endVertex();
         vertexConsumer.vertex(pose.pose(), width, 0, 0)
                 .normal(pose.normal(), 0, 1, 0)
-                .color(Color.of(alpha, color))
+                .color(Color.combine(alpha, color))
                 .endVertex();
     }
 }

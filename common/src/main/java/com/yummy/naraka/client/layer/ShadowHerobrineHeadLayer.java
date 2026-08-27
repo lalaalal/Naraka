@@ -5,8 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.model.AbstractHerobrineModel;
 import com.yummy.naraka.client.renderer.entity.ShadowHerobrineRenderer;
-import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.ShadowHerobrine;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -23,10 +21,9 @@ public class ShadowHerobrineHeadLayer extends RenderLayer<ShadowHerobrine, Abstr
         if (livingEntity.isFinalModel())
             return;
         poseStack.pushPose();
-        Color color = NarakaConfig.CLIENT.shadowHerobrineColor.getValue();
         RenderType renderType = RenderType.entityCutout(NarakaTextures.SHADOW_HEROBRINE_HEAD);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-        getParentModel().renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, color.red01(), color.green01(), color.blue01(), color.alpha01());
+        getParentModel().renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 0, 0, 0, 0);
         poseStack.popPose();
     }
 }

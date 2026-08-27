@@ -14,7 +14,8 @@ public class DespawnSkill extends Skill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final_herobrine.despawn");
 
     private Vec3 originalPosition = Vec3.ZERO;
-    private Vec3 targetPosition = Vec3.ZERO;
+    private Vec3 portalPosition = Vec3.ZERO;
+    private Vec3 movingPosition = Vec3.ZERO;
 
     public DespawnSkill(Herobrine mob) {
         super(LOCATION, mob, 70, Integer.MAX_VALUE);
@@ -29,22 +30,26 @@ public class DespawnSkill extends Skill<Herobrine> {
     public void prepare() {
         super.prepare();
         originalPosition = mob.position();
-        targetPosition = mob.getEyePosition()
+        portalPosition = mob.getEyePosition()
                 .subtract(mob.getLookAngle().multiply(1, 0, 1));
+        movingPosition = mob.getEyePosition()
+                .subtract(mob.getLookAngle().multiply(2, 0, 2));
     }
 
     @Override
     protected void skillTick(ServerLevel level) {
         runAt(0, () -> {
-            NarakaPortal narakaPortal = new NarakaPortal(level, targetPosition);
+            NarakaPortal narakaPortal = new NarakaPortal(level, portalPosition);
             narakaPortal.setYRot(mob.getYRot());
             level.addFreshEntity(narakaPortal);
             mob.setNoGravity(true);
+            mob.setDisplayScarf(false);
+            mob.setDisplayEye(false);
         });
         runAfter(0, () -> {
-            float delta = Mth.clamp(tickCount / 60f, 0, 1);
+            float delta = NarakaUtils.interpolate(tickCount / 60f, 0, 1, NarakaUtils::fastStepIn);
             int alpha = (int) Mth.clamp((1 - delta) * 255, 0, 255);
-            Vec3 currentPosition = NarakaUtils.interpolateVec3(delta, originalPosition, targetPosition, NarakaUtils::fastStepIn);
+            Vec3 currentPosition = NarakaUtils.lerp(delta, originalPosition, movingPosition);
             mob.setPos(currentPosition);
             mob.setAlpha(alpha);
         });

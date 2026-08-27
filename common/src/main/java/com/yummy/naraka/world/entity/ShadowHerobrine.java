@@ -103,11 +103,11 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
     protected void customServerAiStep() {
         super.customServerAiStep();
         if (reduceAlpha) {
-            entityData.set(ALPHA, Math.max(0, getAlpha() - 15));
+            entityData.set(ALPHA, Math.max(0, getAlpha(1) - 15));
         } else if (!isFinalModel() || displayPickaxe()) {
-            entityData.set(ALPHA, Math.min(MAX_ALPHA, getAlpha() + 10));
+            entityData.set(ALPHA, Math.min(MAX_ALPHA, getAlpha(1) + 10));
         }
-        if (getAlpha() == 0) {
+        if (getAlpha(1) == 0) {
             getShadowController().ifPresent(controller -> controller.removeShadowHerobrine(this));
             discard();
         }

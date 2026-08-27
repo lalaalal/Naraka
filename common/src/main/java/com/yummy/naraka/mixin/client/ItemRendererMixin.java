@@ -34,22 +34,13 @@ public abstract class ItemRendererMixin {
         }
     }
 
+    /**
+     * Platform specific implementation for applying custom item color tint
+     */
     @ModifyExpressionValue(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemBlockRenderTypes;getRenderType(Lnet/minecraft/world/item/ItemStack;Z)Lnet/minecraft/client/renderer/RenderType;"), require = 0)
     public RenderType modifyRenderType(RenderType original, @Local(argsOnly = true) ItemStack itemStack) {
         if (CustomRenderManager.hasCustomRenderType(itemStack))
             return CustomRenderManager.getCustomRenderType(itemStack, original);
-        return original;
-    }
-
-    @ModifyExpressionValue(method = "renderQuadList", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/block/model/BakedQuad;isTinted()Z"))
-    private boolean shouldRenderColored(boolean original, @Local(argsOnly = true) ItemStack stack) {
-        return original || CustomRenderManager.shouldRenderColored(stack);
-    }
-
-    @ModifyExpressionValue(method = "renderQuadList", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/color/item/ItemColors;getColor(Lnet/minecraft/world/item/ItemStack;I)I"))
-    private int modifyTintColor(int original, @Local(argsOnly = true) ItemStack stack) {
-        if (CustomRenderManager.shouldRenderColored(stack))
-            return CustomRenderManager.getItemColor(stack).pack();
         return original;
     }
 }

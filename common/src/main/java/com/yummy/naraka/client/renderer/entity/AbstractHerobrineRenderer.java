@@ -81,8 +81,8 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, M e
         poseStack.popPose();
 
         if (entity.isFinalModel() && entity.displayPickaxe()) {
-            renderPickaxe(entity, poseStack, buffer, model.root(), model.main(), model.upperBody(), model.rightArm(), model.rightHand(), model.rightHand().getChild("pickaxe"));
-            renderPickaxe(entity, poseStack, buffer, model.root().getChild("independent_pickaxe"));
+            renderPickaxe(entity, partialTicks, poseStack, buffer, model.root(), model.main(), model.upperBody(), model.rightArm(), model.rightHand(), model.rightHand().getChild("pickaxe"));
+            renderPickaxe(entity, partialTicks, poseStack, buffer, model.root().getChild("independent_pickaxe"));
         }
     }
 
@@ -91,7 +91,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, M e
         return 0;
     }
 
-    private void renderPickaxe(T entity, PoseStack poseStack, MultiBufferSource bufferSource, ModelPart... parts) {
+    private void renderPickaxe(T entity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, ModelPart... parts) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - entity.getVisualRotationYInDegrees()));
         poseStack.translate(0, 1.4, 0);
@@ -100,16 +100,16 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, M e
         poseStack.mulPose(Axis.ZP.rotationDegrees(225));
         poseStack.translate(0.5, 0.5, 0);
         poseStack.scale(4, 4, 1);
-        CustomRenderManager.renderColored(pickaxe.getItem(), () -> new Color(entity.getAlpha(), 0xff, 0xff, 0xff));
-        itemRenderer.renderStatic(pickaxe, ItemDisplayContext.NONE, getPickaxeLight(entity), OverlayTexture.NO_OVERLAY, poseStack, bufferSource, null, 0);
+        CustomRenderManager.renderColored(pickaxe.getItem(), () -> Color.of(entity.getAlpha(partialTick), getPickaxeColor(entity)));
+        itemRenderer.renderStatic(pickaxe, ItemDisplayContext.NONE, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, null, 0);
         CustomRenderManager.restoreColor(pickaxe.getItem());
         poseStack.popPose();
     }
 
-    private int getPickaxeLight(T entity) {
+    private int getPickaxeColor(T entity) {
         if (entity.isShadow)
             return 0;
-        return LightTexture.FULL_BRIGHT;
+        return 0xffffff;
     }
 
     @Override
@@ -126,7 +126,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, M e
     @Override
     @Nullable
     protected RenderType getRenderType(T livingEntity, boolean bodyVisible, boolean translucent, boolean glowing) {
-        if (livingEntity.isShadow || livingEntity.getAlpha() < 0xff)
+        if (livingEntity.isShadow || livingEntity.getAlpha(1) < 0xff)
             return RenderType.entityTranslucentCull(getTextureLocation(livingEntity));
         return super.getRenderType(livingEntity, bodyVisible, translucent, glowing);
     }

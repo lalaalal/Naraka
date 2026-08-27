@@ -5,7 +5,6 @@ import com.yummy.naraka.util.Color;
 public class NarakaClientConfig extends StaticConfiguration {
     public final ConfigValue<Boolean> showReinforcementValue = define("show_reinforcement_value", false);
     public final ConfigValue<Color> afterimageColor = define("afterimage_color", Color.of(0x000000));
-    public final ConfigValue<Color> shadowHerobrineColor = define("shadow_herobrine_color", Color.of(0x000000));
 
     public final ConfigValue<Boolean> playHerobrineBossMusic = define("play_herobrine_boss_music", true);
     public final ConfigValue<Boolean> disableEmissiveRenderType = define("disable_emissive_render_type", false);

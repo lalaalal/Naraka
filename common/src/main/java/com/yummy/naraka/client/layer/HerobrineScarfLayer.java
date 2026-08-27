@@ -13,7 +13,6 @@ import com.yummy.naraka.client.renderer.entity.state.WavingScarfPose;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfRenderState;
 import com.yummy.naraka.client.renderer.entity.state.WavingScarfTexture;
 import com.yummy.naraka.client.util.NarakaRenderUtils;
-import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.util.Color;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ScarfWavingData;
@@ -80,7 +79,7 @@ public class HerobrineScarfLayer<T extends AbstractHerobrine, M extends Abstract
 
         WavingScarfRenderState.ModelType modelType = selectModelType(livingEntity);
 
-        Color color = selectColor(livingEntity);
+        Color color = Color.of(livingEntity.getAlpha(partialTick), 0);
         if (modelType != WavingScarfRenderState.ModelType.BIG) {
             RenderType renderType = RenderType.entitySmoothCutout(getFixedModelTexture(livingEntity));
             VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
@@ -105,10 +104,6 @@ public class HerobrineScarfLayer<T extends AbstractHerobrine, M extends Abstract
         }
 
         poseStack.popPose();
-    }
-
-    private Color selectColor(T entity) {
-        return NarakaConfig.CLIENT.shadowHerobrineColor.getValue().withAlpha(entity.getAlpha());
     }
 
     public static void renderScarf(PoseStack poseStack, RenderType insideRenderType, RenderType outsideRenderType, MultiBufferSource bufferSource, int packedLight, int color, float partialTick, float rotationDegree, ScarfWavingData waveData, WavingScarfRenderState.ModelData modelData) {

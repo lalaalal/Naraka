@@ -45,6 +45,7 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     private final ScarfWavingData scarfWavingData = new ScarfWavingData();
 
     private float eyeAlpha = 1;
+    private int prevAlpha = 0xff;
 
     public static AttributeSupplier.Builder getAttributeSupplier() {
         return Monster.createMonsterAttributes()
@@ -91,8 +92,8 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
         entityData.set(ALPHA, alpha);
     }
 
-    public int getAlpha() {
-        return entityData.get(ALPHA);
+    public int getAlpha(float partialTick) {
+        return Mth.lerpInt(partialTick, prevAlpha, entityData.get(ALPHA));
     }
 
     public void setFinalModel(boolean value) {
@@ -125,6 +126,10 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
     public ScarfWavingData getScarfWavingData() {
         return scarfWavingData;
+    }
+
+    public void setDisplayScarf(boolean value) {
+        entityData.set(DISPLAY_SCARF, value);
     }
 
     public boolean shouldRenderScarf() {
@@ -184,6 +189,8 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
         scarfWavingData.update(getDeltaMovement(), yBodyRot - yBodyRotO, onGround());
         hasImpulse = true;
+
+        prevAlpha = entityData.get(ALPHA);
     }
 
     @Override

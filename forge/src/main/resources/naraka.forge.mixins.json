@@ -7,6 +7,7 @@
   "client": [
     "client.GameRendererMixin",
     "client.ItemBlockRenderTypesMixin",
+    "client.ItemRendererMixin",
     "client.LevelRendererMixin"
   ],
   "mixins": [

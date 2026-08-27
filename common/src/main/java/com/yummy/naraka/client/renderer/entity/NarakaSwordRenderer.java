@@ -90,7 +90,7 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword> {
                 new Vector3f(x2, 0, 0),
                 new Vector3f(x2, height, 0)
         );
-        NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, vertices, 0, 0, 1, 1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, Color.of((int) (alpha * 255), color));
+        NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, vertices, 0, 0, 1, 1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, Color.combine((int) (alpha * 255), color));
     }
 
     private void renderHandle(PoseStack.Pose pose, VertexConsumer vertexConsumer, float angleOffset, float xOffset, float yOffset, float handleHeight, float height, float scale, float length, float alpha, int color) {
@@ -104,7 +104,7 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword> {
             float z = Mth.sin(angle + angleOffset) * scale;
             float y = angle / Mth.PI * handleHeight + yOffset;
 
-            renderWithHeight(pose, vertexConsumer, prevX, prevY, prevZ, x, y, z, height, Color.of((int) (alpha * 255), color));
+            renderWithHeight(pose, vertexConsumer, prevX, prevY, prevZ, x, y, z, height, Color.combine((int) (alpha * 255), color));
 
             prevX = x;
             prevZ = z;
@@ -147,7 +147,7 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword> {
                     next.tail(swordEffectOffset),
                     next.head(swordEffectOffset)
             );
-            NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, vertices, 0, 0, 1, 1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, Color.of((int) (alpha * 255), narakaSword.getColor()));
+            NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, vertices, 0, 0, 1, 1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, Color.combine((int) (alpha * 255), narakaSword.getColor()));
         }
     }
 }

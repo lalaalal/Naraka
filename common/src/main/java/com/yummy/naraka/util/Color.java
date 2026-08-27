@@ -14,7 +14,15 @@ public record Color(int alpha, int red, int green, int blue) {
         return new Color(alpha, red, green, blue);
     }
 
-    public static int of(int alpha, int color) {
+    public static Color of(int alpha, int color) {
+        int red = (color >> 16) & 0xff;
+        int green = (color >> 8) & 0xff;
+        int blue = (color) & 0xff;
+
+        return new Color(alpha, red, green, blue);
+    }
+
+    public static int combine(int alpha, int color) {
         return (alpha << 24) | (color & 0x00ffffff);
     }
 
