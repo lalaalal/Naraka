@@ -102,9 +102,9 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         super.onSyncedDataUpdated(accessor);
-        if (accessor == ALPHA && isShadow) {
+        if (accessor == ALPHA) {
             pickaxe.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(), List.of(
-                    ARGB.color(getAlpha(), 0)
+                    ARGB.color(getAlpha(), isShadow ? 0 : 0xffffff)
             )));
         }
     }
@@ -147,6 +147,10 @@ public abstract class AbstractHerobrine extends SkillUsingMob implements Stigmat
 
     public ScarfWavingData getScarfWavingData() {
         return scarfWavingData;
+    }
+
+    public void setDisplayScarf(boolean value) {
+        entityData.set(DISPLAY_SCARF, value);
     }
 
     public boolean shouldRenderScarf() {
