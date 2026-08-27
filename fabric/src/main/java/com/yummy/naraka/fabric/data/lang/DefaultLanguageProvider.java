@@ -208,6 +208,11 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
                 List.of("Don't eat, give it to your soul", "먹지 마세요, 영혼에 양보하세요")
         );
 
+        addItemDescription(NarakaItems.HEROBRINE_PHASE_1_DISC, "Herobrine Phase 1", "히로빈 1 페이즈");
+        addItemDescription(NarakaItems.HEROBRINE_PHASE_2_DISC, "Herobrine Phase 2", "히로빈 2 페이즈");
+        addItemDescription(NarakaItems.HEROBRINE_PHASE_3_DISC, "Herobrine Phase 3", "히로빈 3 페이즈");
+        addItemDescription(NarakaItems.HEROBRINE_PHASE_4_DISC, "Herobrine Phase 4", "히로빈 4 페이즈");
+
         addEffectItem(Items.POTION, NarakaPotions.CHALLENGER, "Challenger's Potion", "도전자의 물약");
         addEffectItem(Items.SPLASH_POTION, NarakaPotions.CHALLENGER, "Challenger's Splash Potion", "도전자의 물약");
         addEffectItem(Items.LINGERING_POTION, NarakaPotions.CHALLENGER, "Challenger's Lingering Potion", "도전자의 물약");
