@@ -138,6 +138,8 @@
   "config.naraka.stigma_stun_duration": "Stigma Stun Duration",
   "config.naraka.stigma_stun_duration.comment.0": "Stun duration in ticks",
   "config.naraka.title": "Naraka Config",
+  "config.naraka.add_to_loot": "Add the compass to the loot for the village cartographer",
+  "config.naraka.add_to_trades": "Add the compass to the wandering trader's trades",
   "death.attack.naraka_fireball": "%1$s was blown up by %2$s's Naraka Fireball",
   "death.attack.naraka_fireball.player": "%1$s was blown up by %2$s's Naraka Fireball",
   "death.attack.pickaxe_slash": "%1$s was slain by %2$s",

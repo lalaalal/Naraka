@@ -83,7 +83,7 @@ public final class NarakaGameEvents {
     }
 
     private static void modifyLootTable(ResourceKey<LootTable> key, LootEvents.Context context) {
-        if (key.location().getPath().contains("chests/village/village_cartographer")) {
+        if (key.location().getPath().contains("chests/village/village_cartographer") && NarakaConfig.COMMON.addToLoot.getValue()) {
             context.addPool(LootPool.lootPool()
                     .when(LootItemRandomChanceCondition.randomChance(0.8f))
                     .setRolls(ConstantValue.exactly(1))

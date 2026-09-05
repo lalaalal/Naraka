@@ -1,5 +1,6 @@
 package com.yummy.naraka.mixin;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import net.minecraft.world.entity.EntityType;
@@ -51,6 +52,10 @@ public abstract class WanderingTraderMixin extends AbstractVillager {
             MerchantOffers merchantOffers = getOffers();
             int index = random.nextInt(naraka$TRADES.length);
             MerchantOffer merchantOffer = naraka$TRADES[index].getOffer(this, random);
+            if (merchantOffer != null && !NarakaConfig.COMMON.addToTrades.getValue() && merchantOffer.getResult().is(NarakaItems.SANCTUARY_COMPASS.get())) {
+                return;
+            }
+
             merchantOffers.add(merchantOffer);
         }
     }

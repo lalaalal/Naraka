@@ -27,6 +27,11 @@ public class NarakaCommonConfig extends StaticConfiguration {
     public final ConfigValue<Integer> soulStabilizerConsume = define("soul_stabilizer_consume", 2);
     public final ConfigValue<Float> narakaDimensionInLiquidSpeedMultiplier = define("naraka_dimension_in_liquid_speed_multiplier", 0.5f);
 
+    public final ConfigValue<Boolean> addToLoot = define("add_to_loot", true)
+            .comment("Adds the sanctuary compass to chests of a cartographer villager in the overworld");
+    public final ConfigValue<Boolean> addToTrades = define("add_to_trades", true)
+            .comment("Adds the sanctuary compass to trades of a wandering trader in the overworld");
+
     public NarakaCommonConfig() {
         super("naraka-common", PropertiesConfigFile::new);
     }
