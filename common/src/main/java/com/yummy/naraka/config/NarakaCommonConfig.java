@@ -32,6 +32,13 @@ public class NarakaCommonConfig extends StaticConfiguration {
     public final ConfigValue<Boolean> addToTrades = define("add_to_trades", true)
             .comment("Adds the sanctuary compass to trades of a wandering trader in the overworld");
 
+    public final ConfigValue<Boolean> requireSpecialItem = define("require_special_item", false)
+            .comment("Require that the player has a special item in their inventory to activate the totem.");
+    public final ConfigValue<String> specialItemId = define("special_item_id", "")
+            .comment("The id of the special item required to activate the totem.");
+    public final ConfigValue<String> specialItemMissingMessage = define("special_item_missing_message", "You are missing the required item!")
+            .comment("The text to display when the player does not have the required item.");
+
     public NarakaCommonConfig() {
         super("naraka-common", PropertiesConfigFile::new);
     }

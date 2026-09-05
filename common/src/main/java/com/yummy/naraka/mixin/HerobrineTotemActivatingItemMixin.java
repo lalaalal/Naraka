@@ -1,8 +1,12 @@
 package com.yummy.naraka.mixin;
 
+import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.block.HerobrineTotem;
 import com.yummy.naraka.world.block.entity.HerobrineTotemBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -27,6 +31,19 @@ public abstract class HerobrineTotemActivatingItemMixin {
     public void checkHerobrineTotemActivation(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
         Level level = context.getLevel();
         Player player = context.getPlayer();
+        if (NarakaConfig.COMMON.requireSpecialItem.getValue() && !NarakaConfig.COMMON.specialItemId.getValue().isEmpty() && player != null) {
+            boolean hasItem = player.getInventory().contains(
+                    new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.parse(NarakaConfig.COMMON.specialItemId.getValue())))
+            );
+
+            if (!hasItem) {
+                player.sendSystemMessage(Component.literal(NarakaConfig.COMMON.specialItemMissingMessage.getValue()));
+                cir.setReturnValue(InteractionResult.FAIL);
+                cir.cancel();
+                return;
+            }
+        }
+
         BlockPos pos = context.getClickedPos();
         BlockState blockState = level.getBlockState(pos);
         BlockState totem = level.getBlockState(pos.below());
