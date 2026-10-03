@@ -25,11 +25,11 @@ public class NarakaReinforcementEffects {
     );
 
     public static final Holder<ReinforcementEffect> INCREASE_ARMOR = register(
-            "increase_armor", AttributeModifyingEffect.simple(Attributes.ARMOR, EquipmentSlotGroup.ARMOR, reinforcement -> 8, false)
+            "increase_armor", AttributeModifyingEffect.simple(Attributes.ARMOR, EquipmentSlotGroup.ARMOR, _ -> 8, false)
     );
 
     public static final Holder<ReinforcementEffect> INCREASE_ARMOR_TOUGHNESS = register(
-            "increase_armor_toughness", AttributeModifyingEffect.simple(Attributes.ARMOR_TOUGHNESS, EquipmentSlotGroup.ARMOR, reinforcement -> 3, false)
+            "increase_armor_toughness", AttributeModifyingEffect.simple(Attributes.ARMOR_TOUGHNESS, EquipmentSlotGroup.ARMOR, _ -> 3, false)
     );
 
     public static final Holder<ReinforcementEffect> KNOCKBACK_RESISTANCE = register(

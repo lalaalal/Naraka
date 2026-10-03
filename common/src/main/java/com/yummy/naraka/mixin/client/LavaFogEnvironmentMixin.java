@@ -2,7 +2,7 @@ package com.yummy.naraka.mixin.client;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.util.NarakaEntityUtils;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.fog.environment.FogEnvironment;
 import net.minecraft.client.renderer.fog.environment.LavaFogEnvironment;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class LavaFogEnvironmentMixin extends FogEnvironment {
     @ModifyExpressionValue(method = "setupFog", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isSpectator()Z"))
     public boolean setupFog(boolean original, @Local(argsOnly = true, name = "camera") Camera camera) {
-        if (camera.entity() instanceof LivingEntity livingEntity && NarakaItemUtils.canApplyLavaVision(livingEntity))
+        if (camera.entity() instanceof LivingEntity livingEntity && NarakaEntityUtils.canApplyLavaVision(livingEntity))
             return true;
         return original;
     }

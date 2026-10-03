@@ -2,7 +2,7 @@ package com.yummy.naraka.mixin.client;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.yummy.naraka.mixin.LivingEntityMixin;
-import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.util.NarakaEntityUtils;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -21,7 +21,7 @@ public abstract class LocalPlayerMixin extends LivingEntityMixin {
 
     @ModifyReturnValue(method = "isUnderWater", at = @At(value = "RETURN"))
     public boolean isUnderLiquid(boolean original) {
-        if (NarakaItemUtils.canApplyFasterLiquidSwimming(naraka$living()))
+        if (NarakaEntityUtils.canSwimFaster(naraka$living()))
             return original || naraka$isUnderLiquid();
         return original;
     }

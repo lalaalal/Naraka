@@ -1,6 +1,6 @@
 package com.yummy.naraka.world.item.reinforcement;
 
-import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.util.NarakaEntityUtils;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +22,7 @@ public class Flying extends SimpleReinforcementEffect {
     @Override
     public void onEquippedItemChanged(LivingEntity entity, EquipmentSlot equipmentSlot, ItemStack itemStack) {
         if (entity instanceof Player player
-                && !NarakaItemUtils.canApplyReinforcementEffect(player, NarakaReinforcementEffects.KNOCKBACK_RESISTANCE)) {
+                && !NarakaEntityUtils.canApplyReinforcementEffect(player, NarakaReinforcementEffects.KNOCKBACK_RESISTANCE)) {
             player.getAbilities().flying = false;
             player.onUpdateAbilities();
         }

@@ -7,7 +7,7 @@ import com.yummy.naraka.client.renderer.HiddenOreRenderStateProvider;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.tags.ConventionalTags;
 import com.yummy.naraka.util.Color;
-import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
@@ -70,7 +70,7 @@ public abstract class LevelExtractorMixin {
         if (!(levelRenderState instanceof HiddenOreRenderStateProvider hiddenOreRenderStateProvider))
             return;
 
-        if (!(camera.entity() instanceof LivingEntity livingEntity) || !NarakaItemUtils.canApplyOreSeeThrough(livingEntity)
+        if (!(camera.entity() instanceof LivingEntity livingEntity) || !NarakaEntityUtils.canApplyOreSeeThrough(livingEntity)
                 || !NarakaConfig.CLIENT.enableOreSeeThrough.getValue())
             return;
 
