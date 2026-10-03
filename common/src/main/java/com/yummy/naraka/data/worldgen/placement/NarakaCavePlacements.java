@@ -7,7 +7,7 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.placement.*;
 
 public class NarakaCavePlacements {
@@ -15,12 +15,12 @@ public class NarakaCavePlacements {
     public static final ResourceKey<PlacedFeature> DEEPSLATE_DIAMOND_ORE_PILLAR = NarakaPlacements.create("deepslate_diamond_ore_pillar");
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
-        HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
+        HolderGetter<Feature> features = context.lookup(Registries.FEATURE);
 
         PlacementUtils.register(
                 context,
                 DIAMOND_ORE_PILLAR,
-                configuredFeatures.getOrThrow(NarakaCaveFeatures.DIAMOND_ORE_PILLAR),
+                features.getOrThrow(NarakaCaveFeatures.DIAMOND_ORE_PILLAR),
                 RarityFilter.onAverageOnceEvery(32),
                 InSquarePlacement.spread(),
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(15)),
@@ -29,7 +29,7 @@ public class NarakaCavePlacements {
         PlacementUtils.register(
                 context,
                 DEEPSLATE_DIAMOND_ORE_PILLAR,
-                configuredFeatures.getOrThrow(NarakaCaveFeatures.DEEPSLATE_DIAMOND_ORE_PILLAR),
+                features.getOrThrow(NarakaCaveFeatures.DEEPSLATE_DIAMOND_ORE_PILLAR),
                 RarityFilter.onAverageOnceEvery(48),
                 InSquarePlacement.spread(),
                 HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(0)),

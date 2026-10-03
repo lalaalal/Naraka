@@ -15,6 +15,7 @@ import net.minecraft.world.level.CardinalLighting;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.timeline.Timeline;
+import org.joml.Vector3f;
 
 import java.util.Optional;
 
@@ -39,12 +40,12 @@ public class NarakaDimensionTypes {
                 DimensionType.Skybox.OVERWORLD,
                 CardinalLighting.Type.DEFAULT,
                 EnvironmentAttributeMap.builder()
-                        .set(EnvironmentAttributes.SKY_COLOR, 0)
-                        .set(EnvironmentAttributes.WATER_FOG_COLOR, 0x666666)
+                        .set(EnvironmentAttributes.SKY_COLOR, new Vector3f())
+                        .set(EnvironmentAttributes.WATER_FOG_COLOR, new Vector3f())
                         .set(EnvironmentAttributes.CLOUD_HEIGHT, 56f)
                         .set(EnvironmentAttributes.MOON_ANGLE, 180f)
                         .set(EnvironmentAttributes.SUN_ANGLE, 180f)
-                        .set(EnvironmentAttributes.BED_RULE, BedRule.EXPLODES)
+                        .set(EnvironmentAttributes.BED_RULE, BedRule.DESTROY_ON_USE)
                         .set(EnvironmentAttributes.CAN_START_RAID, false)
                         .set(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false)
                         .set(EnvironmentAttributes.RESPAWN_ANCHOR_WORKS, false)
