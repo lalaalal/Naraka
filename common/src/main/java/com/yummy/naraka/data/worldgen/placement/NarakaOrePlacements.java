@@ -7,7 +7,7 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.placement.*;
 
 import java.util.List;
@@ -21,30 +21,30 @@ public class NarakaOrePlacements {
 
 
     protected static void bootstrap(BootstrapContext<PlacedFeature> context) {
-        HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
+        HolderGetter<Feature> features = context.lookup(Registries.FEATURE);
 
         PlacementUtils.register(
                 context,
                 NECTARIUM_ORE_SMALL,
-                configuredFeatures.getOrThrow(NarakaOreFeatures.NECTARIUM_ORE_SMALL),
+                features.getOrThrow(NarakaOreFeatures.NECTARIUM_ORE_SMALL),
                 commonOrePlacement(7, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)))
         );
         PlacementUtils.register(
                 context,
                 NECTARIUM_ORE_LARGE,
-                configuredFeatures.getOrThrow(NarakaOreFeatures.NECTARIUM_ORE_LARGE),
+                features.getOrThrow(NarakaOreFeatures.NECTARIUM_ORE_LARGE),
                 rareOrePlacement(9, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)))
         );
         PlacementUtils.register(
                 context,
                 NECTARIUM_ORE_BURIED,
-                configuredFeatures.getOrThrow(NarakaOreFeatures.NECTARIUM_ORE_BURIED),
+                features.getOrThrow(NarakaOreFeatures.NECTARIUM_ORE_BURIED),
                 commonOrePlacement(4, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)))
         );
         PlacementUtils.register(
                 context,
                 AMETHYST_ORE,
-                configuredFeatures.getOrThrow(NarakaOreFeatures.AMETHYST_ORE),
+                features.getOrThrow(NarakaOreFeatures.AMETHYST_ORE),
                 commonOrePlacement(7, HeightRangePlacement.triangle(VerticalAnchor.absolute(-60), VerticalAnchor.absolute(60)))
         );
     }

@@ -1,7 +1,10 @@
 package com.yummy.naraka.data;
 
-import com.yummy.naraka.data.worldgen.*;
-import com.yummy.naraka.data.worldgen.features.NarakaConfiguredFeatures;
+import com.yummy.naraka.data.worldgen.NarakaBiomeData;
+import com.yummy.naraka.data.worldgen.NarakaDimensionTypes;
+import com.yummy.naraka.data.worldgen.NarakaStructureSets;
+import com.yummy.naraka.data.worldgen.NarakaStructures;
+import com.yummy.naraka.data.worldgen.features.NarakaFeatures;
 import com.yummy.naraka.data.worldgen.placement.NarakaPlacements;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;
 import com.yummy.naraka.world.item.NarakaJukeboxSongs;
@@ -15,6 +18,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.registries.RegistriesDatapackGenerator;
 import net.minecraft.data.registries.RegistryPatchGenerator;
+import net.minecraft.resources.RegistryDataLoader;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -22,25 +26,25 @@ public class NarakaDatapackProvider extends RegistriesDatapackGenerator {
     private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(Registries.DAMAGE_TYPE, NarakaDamageTypes::bootstrap)
             .add(Registries.ENCHANTMENT, NarakaEnchantments::bootstrap)
-            .add(Registries.CONFIGURED_FEATURE, NarakaConfiguredFeatures::bootstrap)
+            .add(Registries.FEATURE, NarakaFeatures::bootstrap)
             .add(Registries.PLACED_FEATURE, NarakaPlacements::bootstrap)
             .add(Registries.STRUCTURE, NarakaStructures::bootstrap)
             .add(Registries.STRUCTURE_SET, NarakaStructureSets::bootstrap)
             .add(Registries.TRIM_PATTERN, NarakaTrimPatterns::bootstrap)
             .add(Registries.TRIM_MATERIAL, NarakaTrimMaterials::bootstrap)
             .add(Registries.JUKEBOX_SONG, NarakaJukeboxSongs::bootstrap)
-            .add(Registries.CONFIGURED_CARVER, NarakaConfiguredWorldCarvers::bootstrap)
             .add(Registries.BIOME, NarakaBiomeData::bootstrap)
             .add(Registries.DIMENSION_TYPE, NarakaDimensionTypes::bootstrap)
             .add(Registries.VILLAGER_TRADE, NarakaVillagerTrades::bootstrap);
 
     private final CompletableFuture<HolderLookup.Provider> fullRegistries;
 
+
     public NarakaDatapackProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        super(output, RegistryPatchGenerator.createLookup(registries, BUILDER)
+        super(output, "world", RegistryDataLoader.WORLD_REGISTRIES, RegistryPatchGenerator.createWorldLookup(registries, BUILDER)
                 .thenApply(RegistrySetBuilder.PatchedRegistries::patches)
         );
-        fullRegistries = RegistryPatchGenerator.createLookup(registries, BUILDER)
+        fullRegistries = RegistryPatchGenerator.createWorldLookup(registries, BUILDER)
                 .thenApply(RegistrySetBuilder.PatchedRegistries::full);
     }
 
