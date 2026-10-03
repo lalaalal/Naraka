@@ -9,11 +9,21 @@ locate the hidden Herobrine Sanctuary, and prepare yourself to face and defeat t
 
 ## Minecraft Versions
 
-| Version | Naraka  |
-|:-------:|:-------:|
-|  26.2   | release |
-| 1.21.1  |  beta   |
-| 1.20.1  |  alpha  |
+- latest (26.3)
+- 26.1.2
+- 1.21.1
+- 1.20.1
+
+## ⚡ Environment Setup & Data Gen
+
+### ⚙️ Run Directory
+
+Located at [loader]/run/[minecraft_version] (e.g., fabric/run/26.3).
+
+### 📦 Data Generation
+
+Uses Fabric for data generation by default. The NeoForge module incorporates both Fabric-generated assets and
+NeoForge-specific JSON files (such as neoforge/biome_modifier).
 
 ## 🛠️ Build
 
