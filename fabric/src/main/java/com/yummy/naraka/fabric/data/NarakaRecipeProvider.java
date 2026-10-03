@@ -5,11 +5,13 @@ import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.crafting.ComponentPredicateRecipeBuilder;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.*;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -26,11 +28,14 @@ public class NarakaRecipeProvider extends RecipeProvider {
     private static final List<ItemLike> AMETHYST_SMELTABLES = List.of(NarakaBlocks.AMETHYST_ORE.get(), NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
 
     private final HolderGetter<Item> items;
+    private final NarakaBrewingProvider brewingProvider;
 
-    protected NarakaRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
-        super(registries, output);
-        items = registries.lookupOrThrow(Registries.ITEM);
+    protected NarakaRecipeProvider(HolderLookup.Provider registries, BootstrapContext<Recipe<?>> recipeOutput, BootstrapContext<Advancement> advancementOutput) {
+        super(recipeOutput, advancementOutput);
+        this.items = registries.lookupOrThrow(Registries.ITEM);
+        this.brewingProvider = new NarakaBrewingProvider(this.output);
     }
+
 
     @Override
     public void buildRecipes() {
@@ -146,6 +151,8 @@ public class NarakaRecipeProvider extends RecipeProvider {
                 .showNotification()
                 .unlockedBy(getHasName(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()), has(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()))
                 .save(output);
+
+        brewingProvider.buildRecipes();
     }
 
     protected void soulInfusedMaterial(ItemLike material, ItemLike result) {
