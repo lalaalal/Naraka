@@ -5,13 +5,12 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.event.EntityEvents;
-import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.LockedHealthHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
-import com.yummy.naraka.world.item.reinforcement.ReinforcementEffectHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.util.Mth;
@@ -64,7 +63,11 @@ public abstract class LivingEntityMixin extends Entity {
     public float increaseSpeedInLiquid(float scale) {
         if (level().dimension().equals(NarakaDimensions.NARAKA))
             return NarakaConfig.COMMON.narakaDimensionInLiquidSpeedMultiplier.getValue() * getSpeed();
-        return ReinforcementEffectHelper.increaseSpeedInLiquid(naraka$living(), scale);
+        if (NarakaEntityUtils.canSwimFaster(naraka$living())) {
+            float speedModifier = NarakaConfig.COMMON.fasterLiquidSwimmingSpeed.getValue();
+            return scale * speedModifier;
+        }
+        return scale;
     }
 
     @SuppressWarnings("UnresolvedMixinReference")
@@ -74,7 +77,9 @@ public abstract class LivingEntityMixin extends Entity {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInWater()Z")
     )
     public boolean considerLiquidAsWater(boolean original) {
-        return ReinforcementEffectHelper.considerLiquidAsWater(naraka$living(), original);
+        if (NarakaEntityUtils.canSwimFaster(naraka$living()))
+            return isInLiquid();
+        return original;
     }
 
     /**
@@ -106,14 +111,14 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Override
     public boolean isInWater() {
-        if (NarakaItemUtils.canApplyFasterLiquidSwimming(naraka$living()))
-            return this.wasTouchingWater || isInLava();
-        return this.wasTouchingWater;
+        if (NarakaEntityUtils.canSwimFaster(naraka$living()))
+            return super.isInWater() || isInLava();
+        return super.isInWater();
     }
 
     @Override
     public void updateSwimming() {
-        if (NarakaItemUtils.canApplyFasterLiquidSwimming(naraka$living())) {
+        if (NarakaEntityUtils.canSwimFaster(naraka$living())) {
             if (isSwimming()) {
                 this.setSwimming(this.isSprinting() && this.isInLiquid() && !this.isPassenger());
             } else {
@@ -126,7 +131,7 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Override
     public boolean isPushedByFluid() {
-        if (NarakaItemUtils.canApplyIgnoreLiquidPushing(naraka$living()))
+        if (NarakaEntityUtils.canApplyIgnoreLiquidPushing(naraka$living()))
             return false;
         return super.isPushedByFluid();
     }

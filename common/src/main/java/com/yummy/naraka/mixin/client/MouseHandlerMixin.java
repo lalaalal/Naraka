@@ -1,7 +1,7 @@
 package com.yummy.naraka.mixin.client;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.yummy.naraka.util.NarakaItemUtils;
+import com.yummy.naraka.util.NarakaEntityUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import org.spongepowered.asm.mixin.Final;
@@ -20,6 +20,6 @@ public abstract class MouseHandlerMixin {
         return original || (minecraft.player != null
                 && minecraft.player.getAbilities().flying
                 && minecraft.player.isSprinting()
-                && NarakaItemUtils.canApplyFlying(minecraft.player));
+                && NarakaEntityUtils.canApplyFlying(minecraft.player));
     }
 }

@@ -2,8 +2,8 @@ package com.yummy.naraka.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.entity.data.StunHelper;
-import com.yummy.naraka.world.item.reinforcement.ReinforcementEffectHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,10 +27,12 @@ public abstract class PlayerMixin extends LivingEntity {
     @ModifyExpressionValue(
             method = {"getDestroySpeed(Lnet/minecraft/world/level/block/state/BlockState;)F", "getDestroySpeed(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)F"},
             require = 1,
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isEyeInFluid(Lnet/minecraft/tags/TagKey;)Z")
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/attributes/AttributeInstance;getValue()D")
     )
-    public boolean ignoreEyeInWaterWithEfficientMiningInWater(boolean original) {
-        return ReinforcementEffectHelper.ignoreEyeInWaterWithEfficientMiningInWater(this, original);
+    public double ignoreEyeInWaterWithEfficientMiningInWater(double original) {
+        if (NarakaEntityUtils.canApplyEfficientMiningInWater(this))
+            return 1;
+        return original;
     }
 
     @SuppressWarnings("UnresolvedMixinReference")
@@ -40,7 +42,9 @@ public abstract class PlayerMixin extends LivingEntity {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;onGround()Z")
     )
     public boolean considerOnGroundWithEfficientMimingInAir(boolean original) {
-        return ReinforcementEffectHelper.considerOnGroundWithEfficientMimingInAir(this, original);
+        if (NarakaEntityUtils.canApplyEfficientMiningInAir(this))
+            return false;
+        return original;
     }
 
     @Override
