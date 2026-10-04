@@ -33,7 +33,7 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
     }
 
     @Override
-    public boolean shouldRender(NarakaSword livingEntity, Frustum camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(NarakaSword livingEntity, Frustum camera, double camX, double camY, double camZ, float partialTicks) {
         return true;
     }
 
@@ -82,7 +82,7 @@ public class NarakaSwordRenderer extends EntityRenderer<NarakaSword, NarakaSword
         poseStack.scale(entityRenderState.scale, entityRenderState.scale, entityRenderState.scale);
         ShinyEffectRenderer.submitShiny(entityRenderState.maxAlpha * 50, 100, 0.125f, false, entityRenderState.color, poseStack, submitNodeCollector, cameraRenderState);
 
-        poseStack.mulPose(entityRenderState.rotation);
+        poseStack.rotate(entityRenderState.rotation);
         submitSword(entityRenderState, poseStack, submitNodeCollector);
         poseStack.popPose();
 

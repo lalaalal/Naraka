@@ -32,7 +32,7 @@ public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning, M
     }
 
     @Override
-    public boolean shouldRender(MassiveLightning livingEntity, Frustum camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(MassiveLightning livingEntity, Frustum camera, double camX, double camY, double camZ, float partialTicks) {
         return true;
     }
 
@@ -44,7 +44,7 @@ public class MassiveLightningRenderer extends EntityRenderer<MassiveLightning, M
     @Override
     public void submit(MassiveLightningRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotation(renderState.ageInTicks * 0.05f));
+        poseStack.rotate(Axis.YP.rotation(renderState.ageInTicks * 0.05f));
         submitNodeCollector.submitCustomGeometry(poseStack, NarakaRenderTypes.emissive(), (pose, vertexConsumer) -> {
             pillar(vertexConsumer, pose, renderState.size * 0.6f, renderState.size * 0.6f, 1, 123, 0x44ffffff);
             pillar(vertexConsumer, pose, renderState.size * 0.7f, renderState.size * 0.7f, 0, 122, 0x33ffffff);

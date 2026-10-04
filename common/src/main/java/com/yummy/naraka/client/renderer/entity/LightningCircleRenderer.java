@@ -35,7 +35,7 @@ public class LightningCircleRenderer extends EntityRenderer<LightningCircle, Fla
     }
 
     @Override
-    public boolean shouldRender(LightningCircle livingEntity, Frustum camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(LightningCircle livingEntity, Frustum camera, double camX, double camY, double camZ, float partialTicks) {
         return true;
     }
 

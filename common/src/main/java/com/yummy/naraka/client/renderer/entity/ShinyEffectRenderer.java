@@ -37,7 +37,7 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect, ShinyEffect
     }
 
     @Override
-    public boolean shouldRender(ShinyEffect livingEntity, Frustum camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(ShinyEffect livingEntity, Frustum camera, double camX, double camY, double camZ, float partialTicks) {
         return true;
     }
 
@@ -56,12 +56,12 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect, ShinyEffect
 
         poseStack.pushPose();
         poseStack.scale(scale, scale, scale);
-        poseStack.mulPose(Axis.YN.rotationDegrees(yRot));
+        poseStack.rotate(Axis.YN.rotationDegrees(yRot));
         if (isVertical)
-            poseStack.mulPose(Axis.ZN.rotationDegrees(90));
+            poseStack.rotate(Axis.ZN.rotationDegrees(90));
         submitShiny(tick, lifetime, color, poseStack, submitNodeCollector);
 
-        poseStack.mulPose(Axis.ZN.rotationDegrees(90));
+        poseStack.rotate(Axis.ZN.rotationDegrees(90));
         poseStack.scale(0.5f, 0.5f, 0.5f);
         submitShiny(tick, lifetime, color, poseStack, submitNodeCollector);
         poseStack.popPose();
@@ -105,7 +105,7 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect, ShinyEffect
     @Override
     public void submit(ShinyEffectRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
-        poseStack.mulPose(Axis.ZP.rotationDegrees(renderState.rotation));
+        poseStack.rotate(Axis.ZP.rotationDegrees(renderState.rotation));
         submitShiny(renderState.ageInTicks, renderState.lifetime, renderState.scale, renderState.isVertical, renderState.color, poseStack, nodeCollector, cameraRenderState);
         poseStack.popPose();
         super.submit(renderState, poseStack, nodeCollector, cameraRenderState);

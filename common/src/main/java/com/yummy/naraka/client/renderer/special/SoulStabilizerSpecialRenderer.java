@@ -47,7 +47,7 @@ public class SoulStabilizerSpecialRenderer implements SpecialModelRenderer<SoulS
         poseStack.scale(2.8f, 2.8f, 2.8f);
         poseStack.translate(-0.32, 0, -0.32);
         RenderType bottleRenderType = RenderTypes.entityCutout(NarakaTextures.SOUL_STABILIZER);
-        submitNodeCollector.submitModelPart(bottle, poseStack, bottleRenderType, lightCoords, overlayCoords, null, -1, null);
+        submitNodeCollector.submitModelPart(bottle, poseStack, bottleRenderType, lightCoords, overlayCoords, null, -1, 0);
         poseStack.popPose();
 
         if (soulContainer == null || soulContainer.type == SoulType.NONE)
@@ -60,7 +60,7 @@ public class SoulStabilizerSpecialRenderer implements SpecialModelRenderer<SoulS
         poseStack.scale(2.8f, soulRatio * 2.8f, 2.8f);
         poseStack.translate(-0.32, 0, -0.32);
         RenderType liquidRenderType = RenderTypes.entityTranslucent(SoulStabilizerBlockEntityRenderer.WATER_OVERLAY);
-        submitNodeCollector.submitModelPart(liquid, poseStack, liquidRenderType, lightCoords, overlayCoords, null, liquidColor, null);
+        submitNodeCollector.submitModelPart(liquid, poseStack, liquidRenderType, lightCoords, overlayCoords, null, liquidColor, 0);
         poseStack.popPose();
     }
 

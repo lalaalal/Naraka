@@ -138,7 +138,7 @@ public class OriginHerobrineRenderer extends LivingEntityRenderer<OriginHerobrin
             float scale = 0.066f - Mth.log2(halfIndex) * 0.03f;
 
             poseStack.pushPose();
-            poseStack.mulPose(Axis.YN.rotationDegrees(cameraRenderState.yRot + 180));
+            poseStack.rotate(Axis.YN.rotationDegrees(cameraRenderState.yRot + 180));
             poseStack.translate(xOffset, 0, -0.005);
             poseStack.scale(4 + halfIndex, 1, 1);
             ShinyEffectRenderer.submitShiny(alpha * 50, 100, scale, 0, true, soulType.color, poseStack, submitNodeCollector);

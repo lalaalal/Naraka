@@ -66,7 +66,7 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
     }
 
     @Override
-    public boolean shouldRender(Spear spear, Frustum camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(Spear spear, Frustum camera, double camX, double camY, double camZ, float partialTicks) {
         return true;
     }
 
@@ -77,8 +77,8 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
     @Override
     public void submit(SpearRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
-        poseStack.mulPose(renderState.yRotation);
-        poseStack.mulPose(renderState.xRotation);
+        poseStack.rotate(renderState.yRotation);
+        poseStack.rotate(renderState.xRotation);
         poseStack.translate(0, yOffset, 0);
 
         if (renderState.isLonginus && NarakaClientContext.SHADER_ENABLED.getValue()) {
@@ -87,20 +87,20 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
             if (renderState.isLonginus)
                 renderState.lightCoords = LightCoordsUtil.FULL_BRIGHT;
             RenderType renderType = model.renderType(getTextureLocation(renderState));
-            submitNodeCollector.order(0).submitModel(model, renderState, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.outlineColor, null);
+            submitNodeCollector.order(0).submitModel(model, renderState, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.outlineColor);
             if (renderState.hasFoil)
-                submitNodeCollector.order(1).submitModel(model, renderState, poseStack, RenderTypes.entityGlint(), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.outlineColor, null);
+                submitNodeCollector.order(1).submitModel(model, renderState, poseStack, RenderTypes.patternedShieldGlint(), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.outlineColor);
         }
 
         poseStack.popPose();
     }
 
     public static void renderShaderLonginus(EntityModel<SpearRenderState> model, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
-        submitNodeCollector.submitModelPart(model.root(), poseStack, NarakaRenderTypes.longinus(), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, -1, null);
+        submitNodeCollector.submitModelPart(model.root(), poseStack, NarakaRenderTypes.longinus(), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, -1, 0);
     }
 
     public static void renderNonShaderLonginus(EntityModel<SpearRenderState> model, float ageInTicks, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
-        submitNodeCollector.submitModelPart(model.root(), poseStack, RenderTypes.entityCutout(NarakaTextures.LONGINUS), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, 0xff000000, null);
+        submitNodeCollector.submitModelPart(model.root(), poseStack, RenderTypes.entityCutout(NarakaTextures.LONGINUS), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, 0xff000000, 0);
         renderLonginus(model, ageInTicks, 0.001f, 0.01f, poseStack, submitNodeCollector, 1);
         renderLonginus(model, ageInTicks, 0.002f, 0.005f, poseStack, submitNodeCollector, 2);
         renderLonginus(model, ageInTicks, 0.0015f, 0.0025f, poseStack, submitNodeCollector, 3);
@@ -108,6 +108,6 @@ public class SpearRenderer extends EntityRenderer<Spear, SpearRenderState> {
 
     private static void renderLonginus(EntityModel<SpearRenderState> model, float ageInTicks, float uMultiplier, float vMultiplier, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int order) {
         RenderType renderType = RenderTypes.energySwirl(NarakaTextures.LONGINUS, (ageInTicks * uMultiplier) % 1, (ageInTicks * vMultiplier) % 1);
-        submitNodeCollector.order(order).submitModelPart(model.root(), poseStack, renderType, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, -1, null);
+        submitNodeCollector.order(order).submitModelPart(model.root(), poseStack, renderType, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, -1, 0);
     }
 }

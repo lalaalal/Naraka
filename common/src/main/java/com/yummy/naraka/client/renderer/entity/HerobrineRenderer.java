@@ -92,7 +92,7 @@ public class HerobrineRenderer extends AbstractHerobrineRenderer<Herobrine, Hero
                 OverlayTexture.NO_OVERLAY,
                 null,
                 -1,
-                null
+                0
         );
         poseStack.popPose();
     }

@@ -51,8 +51,8 @@ public abstract class LightTailEntityRenderer<T extends LightTailEntity, S exten
     }
 
     @Override
-    protected AABB getBoundingBoxForCulling(T entity) {
-        AABB boundingBox = super.getBoundingBoxForCulling(entity);
+    protected AABB getBoundingBoxForCulling(T entity, float partialTicks) {
+        AABB boundingBox = super.getBoundingBoxForCulling(entity, partialTicks);
         double maxX = boundingBox.maxX, maxY = boundingBox.maxY, maxZ = boundingBox.maxZ;
         double minX = boundingBox.minX, minY = boundingBox.minY, minZ = boundingBox.minZ;
         for (Vec3 position : entity.getTailPositions(1)) {

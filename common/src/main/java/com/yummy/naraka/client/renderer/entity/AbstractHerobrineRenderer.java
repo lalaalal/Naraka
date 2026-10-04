@@ -109,11 +109,11 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
 
     private void submitPickaxe(S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, ModelPart... parts) {
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - renderState.bodyRot));
+        poseStack.rotate(Axis.YP.rotationDegrees(180.0F - renderState.bodyRot));
         poseStack.translate(0, 1.4, 0);
         NarakaPickaxeRenderer.applyTransformAndRotate(poseStack, parts);
-        poseStack.mulPose(Axis.XP.rotationDegrees(90));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(225));
+        poseStack.rotate(Axis.XP.rotationDegrees(90));
+        poseStack.rotate(Axis.ZP.rotationDegrees(225));
         poseStack.translate(0.5, 0.5, 0);
         poseStack.scale(4, 4, 1);
         renderState.pickaxe.submit(poseStack, submitNodeCollector, renderState.pickaxeLight, OverlayTexture.NO_OVERLAY, 0);
@@ -132,8 +132,7 @@ public abstract class AbstractHerobrineRenderer<T extends AbstractHerobrine, S e
                 renderType,
                 LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, color,
                 null,
-                renderState.outlineColor,
-                null
+                renderState.outlineColor
         );
     }
 

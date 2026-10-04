@@ -24,7 +24,7 @@ public class NarakaPortalRenderer extends EntityRenderer<NarakaPortal, NarakaPor
     }
 
     @Override
-    public boolean shouldRender(NarakaPortal livingEntity, Frustum camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(NarakaPortal livingEntity, Frustum camera, double camX, double camY, double camZ, float partialTicks) {
         return true;
     }
 
@@ -53,11 +53,11 @@ public class NarakaPortalRenderer extends EntityRenderer<NarakaPortal, NarakaPor
     @Override
     public void submit(NarakaPortalRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YN.rotationDegrees(renderState.yRot));
+        poseStack.rotate(Axis.YN.rotationDegrees(renderState.yRot));
         nodeCollector.submitCustomGeometry(poseStack, getRenderType(), (pose, vertexConsumer) -> {
             NarakaRenderUtils.renderRhombus(pose, vertexConsumer, renderState.width, renderState.height, LightCoordsUtil.FULL_BRIGHT, 0xbb, 0);
         });
-        poseStack.mulPose(Axis.YP.rotationDegrees(180));
+        poseStack.rotate(Axis.YP.rotationDegrees(180));
         nodeCollector.submitCustomGeometry(poseStack, getRenderType(), (pose, vertexConsumer) -> {
             NarakaRenderUtils.renderRhombus(pose, vertexConsumer, renderState.width, renderState.height, LightCoordsUtil.FULL_BRIGHT, 0xbb, 0);
         });

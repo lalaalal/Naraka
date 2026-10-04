@@ -111,7 +111,7 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
         poseStack.rotateAround(rotation, 0.5f, 0.5f, 0.5f);
         poseStack.rotateAround(Axis.ZP.rotation(Mth.PI), 0.5f, 0.5f, 0.5f);
         RenderType renderType = RenderTypes.entityCutoutCull(NarakaTextures.SOUL_SMITHING_BLOCK);
-        submitNodeCollector.submitModelPart(main, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, -1, null);
+        submitNodeCollector.submitModelPart(main, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, -1, 0);
         poseStack.popPose();
 
         submitTrim(renderState, poseStack, submitNodeCollector, rotation);
@@ -138,7 +138,7 @@ public class SoulSmithingBlockEntityRenderer implements BlockEntityRenderer<Soul
         poseStack.rotateAround(rotation, 0.5f, 0.5f, 0.5f);
         RenderType renderType = getRenderTypeForTrim(renderState.templateItem);
         int color = renderState.templateItem.is(NarakaItems.HEROBRINE_SCARF.value()) ? 0x88000000 : -1;
-        submitNodeCollector.submitModelPart(trimTemplate, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, color, null);
+        submitNodeCollector.submitModelPart(trimTemplate, poseStack, renderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, color, 0);
         poseStack.popPose();
     }
 

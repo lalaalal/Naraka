@@ -1,6 +1,6 @@
 package com.yummy.naraka.client.init;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import com.yummy.naraka.client.NarakaClientServices;
 
 public abstract class RenderPipelineRegistry {
