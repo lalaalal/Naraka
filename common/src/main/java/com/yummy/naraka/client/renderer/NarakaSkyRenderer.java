@@ -1,16 +1,15 @@
 package com.yummy.naraka.client.renderer;
 
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.buffers.GpuBuffer;
-import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.framegraph.FrameGraphBuilder;
-import com.mojang.blaze3d.framegraph.FramePass;
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
+import com.mojang.renderpearl.api.buffers.GpuBufferSlice;
+import com.mojang.renderpearl.api.commands.RenderPass;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.textures.GpuTextureView;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.NarakaTextures;
 import net.minecraft.client.Minecraft;
@@ -20,9 +19,9 @@ import net.minecraft.client.renderer.SkyRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.client.renderer.texture.AbstractTexture;
-import net.minecraft.util.ARGB;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fStack;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.jspecify.annotations.Nullable;
 
@@ -68,23 +67,27 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
 
     @Override
     public void renderSky(LevelRenderState level, LevelTargetBundle targets, FrameGraphBuilder frameGraphBuilder, CameraRenderState camera, GpuBufferSlice shaderFog, SkyRenderer skyRenderer) {
-        FramePass framePass = frameGraphBuilder.addPass("naraka sky");
-        targets.main = framePass.readsAndWrites(targets.main);
-        framePass.executes(() -> {
+        GpuTextureView colorTextureView = renderTarget.getColorTextureView();
+        GpuTextureView depthTextureView = renderTarget.getDepthTextureView();
+        if (colorTextureView == null || depthTextureView == null)
+            return;
+        try (RenderPass renderPass = RenderSystem.getDevice()
+                .createCommandEncoder()
+                .createRenderPass(() -> "Sky eclipse", colorTextureView, Optional.empty(), depthTextureView, OptionalDouble.empty())) {
             PoseStack poseStack = new PoseStack();
             poseStack.pushPose();
-            poseStack.mulPose(Axis.YP.rotationDegrees(-90));
+            poseStack.rotate(Axis.YP.rotationDegrees(-90));
 
             if (NarakaClientContext.SHADER_ENABLED.getValue()) {
                 RenderSystem.setShaderFog(shaderFog);
-                skyRenderer.renderSkyDisc(ARGB.white(0xff));
+                skyRenderer.renderSkyDisc(renderPass, new Vector3f(1, 1, 1));
             }
-            renderEclipse(poseStack);
+            renderEclipse(renderPass, poseStack);
             poseStack.popPose();
-        });
+        }
     }
 
-    public void renderEclipse(PoseStack poseStack) {
+    public void renderEclipse(RenderPass renderPass, PoseStack poseStack) {
         Matrix4fStack modelViewStack = RenderSystem.getModelViewStack();
         modelViewStack.pushMatrix();
         modelViewStack.mul(poseStack.last().pose());
@@ -92,23 +95,15 @@ public class NarakaSkyRenderer implements DimensionSkyRenderer {
         modelViewStack.scale(30, 1, 30);
         GpuBufferSlice gpuBufferSlice = RenderSystem.getDynamicUniforms()
                 .writeTransform(new Matrix4f(modelViewStack), new Vector4f(1, 1, 1, 1));
-        GpuTextureView colorTextureView = renderTarget.getColorTextureView();
-        GpuTextureView depthTextureView = renderTarget.getDepthTextureView();
         GpuBuffer gpuBuffer = quadIndices.getBuffer(6);
 
-        if (colorTextureView != null) {
-            try (RenderPass renderPass = RenderSystem.getDevice()
-                    .createCommandEncoder()
-                    .createRenderPass(() -> "Sky eclipse", colorTextureView, Optional.empty(), depthTextureView, OptionalDouble.empty())) {
-                renderPass.setPipeline(RenderPipelines.CELESTIAL);
-                RenderSystem.bindDefaultUniforms(renderPass);
-                renderPass.setUniform("DynamicTransforms", gpuBufferSlice);
-                renderPass.bindTexture("Sampler0", eclipseTexture.getTextureView(), eclipseTexture.getSampler());
-                renderPass.setVertexBuffer(0, this.eclipseBuffer.slice());
-                renderPass.setIndexBuffer(gpuBuffer, this.quadIndices.type());
-                renderPass.drawIndexed(6, 1, 0, 0, 0);
-            }
-        }
+        renderPass.setPipeline(RenderSystem.getCompiledPipeline(RenderPipelines.CELESTIAL));
+        RenderSystem.bindDefaultUniforms(renderPass);
+        renderPass.setUniform("DynamicTransforms", gpuBufferSlice);
+        renderPass.setUniform("Sampler0", eclipseTexture.getTextureView(), eclipseTexture.getSampler());
+        renderPass.setVertexBuffer(0, this.eclipseBuffer.slice());
+        renderPass.setIndexBuffer(gpuBuffer, this.quadIndices.type());
+        renderPass.drawIndexed(6, 1, 0, 0, 0);
 
         modelViewStack.popMatrix();
     }

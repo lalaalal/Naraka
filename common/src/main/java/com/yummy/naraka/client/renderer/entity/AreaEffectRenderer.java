@@ -44,7 +44,7 @@ public class AreaEffectRenderer extends EntityRenderer<AreaEffect, AreaEffectRen
     }
 
     @Override
-    public boolean shouldRender(AreaEffect livingEntity, Frustum camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(AreaEffect livingEntity, Frustum camera, double camX, double camY, double camZ, float partialTicks) {
         return true;
     }
 

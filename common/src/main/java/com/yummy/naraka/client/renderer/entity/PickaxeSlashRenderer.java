@@ -44,7 +44,7 @@ public class PickaxeSlashRenderer extends LightTailEntityRenderer<PickaxeSlash, 
         poseStack.pushPose();
         poseStack.scale(6, 6, 6);
         poseStack.translate(0, -0.25, 0);
-        poseStack.mulPose(Axis.YN.rotationDegrees(renderState.yRot));
+        poseStack.rotate(Axis.YN.rotationDegrees(renderState.yRot));
         poseStack.rotateAround(Axis.ZN.rotationDegrees(renderState.zRot), 0, 0.5f, 0);
         poseStack.translate(0, 0, -0.3);
         submitNodeCollector.order(1).submitCustomGeometry(poseStack, RenderTypes.entityTranslucentEmissive(NarakaTextures.PICKAXE_SLASH), (pose, vertexConsumer) -> {

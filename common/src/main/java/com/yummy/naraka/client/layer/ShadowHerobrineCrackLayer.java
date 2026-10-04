@@ -34,7 +34,7 @@ public class ShadowHerobrineCrackLayer extends RenderLayer<ShadowHerobrineRender
         poseStack.pushPose();
         AbstractHerobrineModel<ShadowHerobrineRenderState> model = getParentModel();
         RenderType renderType = RenderTypes.entityTranslucent(getTexture(renderState));
-        nodeCollector.submitModel(model, renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, -1, null, 0, null);
+        nodeCollector.submitModel(model, renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, -1, null, 0);
         poseStack.popPose();
     }
 }

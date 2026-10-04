@@ -41,9 +41,9 @@ public class SpearSpecialRenderer implements SpecialModelRenderer<Boolean> {
         poseStack.pushPose();
         poseStack.scale(1, -1, -1);
         RenderType renderType = model.renderType(texture);
-        submitNodeCollector.order(0).submitModel(model, Unit.INSTANCE, poseStack, renderType, light, OverlayTexture.NO_OVERLAY, outlineColor, null);
+        submitNodeCollector.order(0).submitModel(model, Unit.INSTANCE, poseStack, renderType, light, OverlayTexture.NO_OVERLAY, -1, null, 0);
         if (hasFoil)
-            submitNodeCollector.order(1).submitModel(model, Unit.INSTANCE, poseStack, RenderTypes.entityGlint(), light, OverlayTexture.NO_OVERLAY, outlineColor, null);
+            submitNodeCollector.order(1).submitModel(model, Unit.INSTANCE, poseStack, RenderTypes.trimmedArmorGlint(), light, OverlayTexture.NO_OVERLAY, -1, null, 0);
         poseStack.popPose();
     }
 

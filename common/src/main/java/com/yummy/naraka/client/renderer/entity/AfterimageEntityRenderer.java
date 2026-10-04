@@ -29,8 +29,8 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
     }
 
     @Override
-    public boolean shouldRender(T entity, Frustum camera, double camX, double camY, double camZ) {
-        return !entity.getAfterimages().isEmpty() || super.shouldRender(entity, camera, camX, camY, camZ);
+    public boolean shouldRender(T entity, Frustum culler, double camX, double camY, double camZ, float partialTicks) {
+        return !entity.getAfterimages().isEmpty() || super.shouldRender(entity, culler, camX, camY, camZ, partialTicks);
     }
 
     @Override
@@ -73,8 +73,7 @@ public abstract class AfterimageEntityRenderer<T extends LivingEntity & Afterima
                 renderState, poseStack, renderType,
                 packedLight, OverlayTexture.NO_OVERLAY, color.pack(),
                 null,
-                afterimageRenderState.outlineColor,
-                null
+                afterimageRenderState.outlineColor
         );
         submitAfterimageLayer(renderState, afterimageRenderState, poseStack, submitNodeCollector, packedLight, color.alpha());
 

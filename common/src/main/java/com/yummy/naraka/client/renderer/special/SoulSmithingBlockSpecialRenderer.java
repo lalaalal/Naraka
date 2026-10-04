@@ -29,7 +29,7 @@ public class SoulSmithingBlockSpecialRenderer implements NoDataSpecialModelRende
         poseStack.pushPose();
         poseStack.rotateAround(Axis.XP.rotation(Mth.PI), 0.5f, 0.5f, 0.5f);
         RenderType renderType = model.renderType(NarakaTextures.SOUL_SMITHING_BLOCK);
-        submitNodeCollector.submitModelPart(model.root(), poseStack, renderType, lightCoords, overlayCoords, null, -1, null);
+        submitNodeCollector.submitModelPart(model.root(), poseStack, renderType, lightCoords, overlayCoords, null, -1, 0);
         poseStack.popPose();
     }
 

@@ -144,9 +144,9 @@ public class NarakaRenderUtils {
     }
 
     public static void applyYZSpin(PoseStack poseStack, float rotation) {
-        poseStack.mulPose(new Quaternionf().setAngleAxis(Mth.PI / 3, SIN_45, 0, SIN_45));
-        poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(rotation * 2));
+        poseStack.rotate(new Quaternionf().setAngleAxis(Mth.PI / 3, SIN_45, 0, SIN_45));
+        poseStack.rotate(Axis.YP.rotationDegrees(rotation));
+        poseStack.rotate(Axis.ZP.rotationDegrees(rotation * 2));
     }
 
     public static void renderRhombus(PoseStack.Pose pose, VertexConsumer vertexConsumer, float width, float height, int packedLight, int alpha, int color) {

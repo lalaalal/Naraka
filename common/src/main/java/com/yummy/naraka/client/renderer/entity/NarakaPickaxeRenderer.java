@@ -27,7 +27,7 @@ public class NarakaPickaxeRenderer extends EntityRenderer<NarakaPickaxe, NarakaP
     public static void applyTransformAndRotate(PoseStack poseStack, ModelPart part) {
         poseStack.translate(-part.x / 16, -part.y / 16, part.z / 16);
         if (part.xRot != 0 || part.yRot != 0 || part.zRot != 0) {
-            poseStack.mulPose(new Quaternionf().rotationZYX(part.zRot, -part.yRot, -part.xRot));
+            poseStack.rotate(new Quaternionf().rotationZYX(part.zRot, -part.yRot, -part.xRot));
         }
         poseStack.scale(part.xScale, part.yScale, part.zScale);
     }
@@ -62,9 +62,9 @@ public class NarakaPickaxeRenderer extends EntityRenderer<NarakaPickaxe, NarakaP
     public void submit(NarakaPickaxeRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         model.setupAnim(renderState);
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(180 - renderState.yRot));
+        poseStack.rotate(Axis.YP.rotationDegrees(180 - renderState.yRot));
         applyTransformAndRotate(poseStack, model.root().getChild("main"));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(45));
+        poseStack.rotate(Axis.ZP.rotationDegrees(45));
         poseStack.translate(0.5, 0.5, 0);
         poseStack.scale(4, 4, 1);
         renderState.pickaxe.submit(poseStack, submitNodeCollector, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0);
@@ -72,7 +72,7 @@ public class NarakaPickaxeRenderer extends EntityRenderer<NarakaPickaxe, NarakaP
     }
 
     @Override
-    protected AABB getBoundingBoxForCulling(NarakaPickaxe entity) {
-        return super.getBoundingBoxForCulling(entity).inflate(4);
+    protected AABB getBoundingBoxForCulling(NarakaPickaxe entity, float partialTicks) {
+        return super.getBoundingBoxForCulling(entity, partialTicks).inflate(4);
     }
 }

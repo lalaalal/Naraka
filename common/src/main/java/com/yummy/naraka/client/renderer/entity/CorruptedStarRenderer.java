@@ -70,7 +70,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
     }
 
     @Override
-    public boolean shouldRender(CorruptedStar livingEntity, Frustum camera, double camX, double camY, double camZ) {
+    public boolean shouldRender(CorruptedStar livingEntity, Frustum camera, double camX, double camY, double camZ, float partialTicks) {
         return true;
     }
 
@@ -86,8 +86,8 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         poseStack.rotateAround(new Quaternionf().setAngleAxis(Mth.PI / 3, NarakaRenderUtils.SIN_45, 0, NarakaRenderUtils.SIN_45), 0, 0.25f, 0);
         poseStack.rotateAround(Axis.YP.rotationDegrees(rotation), 0, 0.25f, 0);
         poseStack.rotateAround(Axis.ZP.rotationDegrees(rotation), 0, 0.25f, 0);
-        submitNodeCollector.order(10).submitModelPart(inner, poseStack, NarakaRenderTypes.emissive(), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.white(0.67f * entityRenderState.alphaMultiplier), null);
-        submitNodeCollector.order(10).submitModelPart(outer, poseStack, NarakaRenderTypes.emissive(), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.color(0.73f * entityRenderState.alphaMultiplier, entityRenderState.tailColor), null);
+        submitNodeCollector.order(10).submitModelPart(inner, poseStack, NarakaRenderTypes.emissive(), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.white(0.67f * entityRenderState.alphaMultiplier), 0);
+        submitNodeCollector.order(10).submitModelPart(outer, poseStack, NarakaRenderTypes.emissive(), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, null, ARGB.color(0.73f * entityRenderState.alphaMultiplier, entityRenderState.tailColor), 0);
 
         poseStack.popPose();
 
@@ -114,7 +114,7 @@ public class CorruptedStarRenderer extends LightTailEntityRenderer<CorruptedStar
         Player player = NarakaRenderUtils.getCurrentPlayer();
 
         poseStack.translate(0, 0.25f, 0);
-        poseStack.mulPose(Axis.YN.rotationDegrees(player.getYRot() + 180));
+        poseStack.rotate(Axis.YN.rotationDegrees(player.getYRot() + 180));
         float width = NarakaUtils.interpolate(Math.min(tickPart / 10, 1), 0, 0.05f, NarakaUtils::fastStepOut);
 
         submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, vertexConsumer) -> {

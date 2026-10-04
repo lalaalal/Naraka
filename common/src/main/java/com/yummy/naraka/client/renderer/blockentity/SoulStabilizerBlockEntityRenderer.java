@@ -78,7 +78,7 @@ public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<So
     public void submit(SoulStabilizerRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
         RenderType bottleRenderType = RenderTypes.entityCutoutCull(NarakaTextures.SOUL_STABILIZER);
-        submitNodeCollector.submitModelPart(bottle, poseStack, bottleRenderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, -1, null);
+        submitNodeCollector.submitModelPart(bottle, poseStack, bottleRenderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, -1, 0);
         poseStack.popPose();
 
         if (renderState.soulType == SoulType.NONE)
@@ -90,7 +90,7 @@ public class SoulStabilizerBlockEntityRenderer implements BlockEntityRenderer<So
         poseStack.pushPose();
         poseStack.scale(1, soulRatio, 1);
         RenderType liquidRenderType = RenderTypes.entityTranslucent(WATER_OVERLAY);
-        submitNodeCollector.submitModelPart(liquid, poseStack, liquidRenderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, color, null);
+        submitNodeCollector.submitModelPart(liquid, poseStack, liquidRenderType, renderState.lightCoords, OverlayTexture.NO_OVERLAY, null, color, 0);
         poseStack.popPose();
     }
 }

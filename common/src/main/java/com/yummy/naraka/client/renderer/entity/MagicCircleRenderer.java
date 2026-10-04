@@ -38,7 +38,7 @@ public class MagicCircleRenderer extends EntityRenderer<MagicCircle, FlatImageRe
         poseStack.pushPose();
         poseStack.translate(0, 0.0125, 0);
         poseStack.scale(renderState.scale, renderState.scale, renderState.scale);
-        poseStack.mulPose(Axis.YN.rotation(renderState.yRot));
+        poseStack.rotate(Axis.YN.rotation(renderState.yRot));
         submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entityCutout(NarakaTextures.MAGIC_CIRCLE), (pose, vertexConsumer) -> {
             NarakaRenderUtils.renderFlatImage(pose, vertexConsumer, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, Direction.Axis.Y);
         });
