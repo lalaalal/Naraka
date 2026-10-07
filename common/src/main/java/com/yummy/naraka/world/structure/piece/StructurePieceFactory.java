@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.core.registries.codec.RegistryFixedCodec;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 
 public interface StructurePieceFactory {
