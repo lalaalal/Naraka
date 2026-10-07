@@ -18,6 +18,7 @@ import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class PickaxeSlash extends LightTailEntity {
@@ -110,7 +111,7 @@ public class PickaxeSlash extends LightTailEntity {
     }
 
     @Override
-    public boolean deflect(ProjectileDeflection projectileDeflection, @Nullable Entity entity, @Nullable EntityReference<Entity> entityReference, boolean bl) {
+    public boolean deflect(ProjectileDeflection deflection, @Nullable Entity deflectingEntity, @Nullable EntityReference<Entity> newOwner, boolean byAttack, Vec3 power) {
         return false;
     }
 

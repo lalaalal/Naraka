@@ -282,10 +282,11 @@ public class CorruptedStar extends LightTailEntity implements StigmatizingEntity
     }
 
     @Override
-    public boolean deflect(ProjectileDeflection deflection, @Nullable Entity entity, @Nullable EntityReference<Entity> owner, boolean deflectionByPlayer) {
-        if (canBeDeflected() && deflectionByPlayer)
-            super.deflect(deflection, entity, owner, true);
+    public boolean deflect(ProjectileDeflection deflection, @Nullable Entity deflectingEntity, @Nullable EntityReference<Entity> newOwner, boolean byAttack, Vec3 power) {
+        if (canBeDeflected() && byAttack)
+            return super.deflect(deflection, deflectingEntity, newOwner, true, power);
         return false;
+
     }
 
     @Override
