@@ -5,3 +5,7 @@ accessible method net/minecraft/client/particle/FlameParticle <init> (Lnet/minec
 accessible method net/minecraft/client/gui/screens/recipebook/GhostSlots setInput (Lnet/minecraft/world/inventory/Slot;Lnet/minecraft/util/context/ContextMap;Lnet/minecraft/world/item/crafting/display/SlotDisplay;)V
 accessible method net/minecraft/client/particle/DripParticle$DripHangParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
 accessible method net/minecraft/client/particle/DripParticle$HoneyFallAndLandParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/level/material/Fluid;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
+
+accessible method net/minecraft/client/renderer/SkyRenderer renderSkyDisc (Lcom/mojang/renderpearl/api/commands/RenderPass;Lorg/joml/Vector3fc;)V
+
+accessible method net/minecraft/world/item/trading/VillagerTrade <init> (Lnet/minecraft/world/item/trading/TradeCost;Ljava/util/Optional;Lnet/minecraft/world/item/ItemStackTemplate;Lnet/minecraft/core/Holder;Lnet/minecraft/core/Holder;Lnet/minecraft/core/Holder;Ljava/util/Optional;Ljava/util/Optional;Ljava/util/Optional;)V

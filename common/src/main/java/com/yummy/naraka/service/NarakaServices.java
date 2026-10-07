@@ -24,7 +24,6 @@ public class NarakaServices {
     public static final CommandRegistry.Registrar COMMAND_REGISTRY = load(CommandRegistry.Registrar.class);
     public static final EntityAttributeRegistry.Registrar ENTITY_ATTRIBUTE_REGISTRY = load(EntityAttributeRegistry.Registrar.class);
     public static final EntityDataSerializerRegistry.Registrar ENTITY_DATA_SERIALIZER_REGISTRY = load(EntityDataSerializerRegistry.Registrar.class);
-    public static final PotionBrewRecipeRegistry.Registrar POTION_BREWING_REGISTRY = load(PotionBrewRecipeRegistry.Registrar.class);
     public static final SpawnPlacementRegistry.Registrar SPAWN_PLACEMENT_REGISTRY = load(SpawnPlacementRegistry.Registrar.class);
 
     public static <T> T load(Class<T> clazz) {
