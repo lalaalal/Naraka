@@ -823,7 +823,7 @@ public class Herobrine extends AbstractHerobrine {
             for (EquipmentSlot slot : EquipmentSlotGroup.ARMOR.slots()) {
                 ItemStack stack = livingEntity.getItemBySlot(slot);
                 stack.consume(1, livingEntity);
-                livingEntity.onEquippedItemBroken(stack.getItem(), slot);
+                livingEntity.onEquippedItemBroken(stack, slot);
             }
             weaponStack.set(NarakaDataComponentTypes.BLESSED.get(), true);
         });

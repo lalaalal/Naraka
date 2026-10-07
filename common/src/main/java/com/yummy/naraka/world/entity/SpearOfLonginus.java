@@ -29,19 +29,19 @@ public class SpearOfLonginus extends Spear {
 
     protected SpearOfLonginus(EntityType<? extends SpearOfLonginus> entityType, Level level) {
         super(entityType, level);
-        setInvulnerable(true);
+        setPermanentlyInvulnerable(true);
         spawnPortal = false;
     }
 
     public SpearOfLonginus(Level level, Position position, ItemStack stack) {
         super(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.get(), level, position, stack);
-        setInvulnerable(true);
+        setPermanentlyInvulnerable(true);
         spawnPortal = false;
     }
 
     public SpearOfLonginus(Level level, LivingEntity owner, ItemStack stack, boolean spawnPortal) {
         super(NarakaEntityTypes.THROWN_SPEAR_OF_LONGINUS.get(), level, owner, stack);
-        setInvulnerable(true);
+        setPermanentlyInvulnerable(true);
         this.spawnPortal = spawnPortal;
     }
 

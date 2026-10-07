@@ -77,9 +77,9 @@ public class NarakaFireball extends Fireball implements ItemSupplier {
     }
 
     @Override
-    public boolean deflect(ProjectileDeflection projectileDeflection, @Nullable Entity entity, @Nullable EntityReference<Entity> entityReference, boolean bl) {
+    public boolean deflect(ProjectileDeflection deflection, @Nullable Entity deflectingEntity, @Nullable EntityReference<Entity> newOwner, boolean byAttack, Vec3 power) {
         if (entityData.get(CAN_DEFLECT))
-            return super.deflect(projectileDeflection, entity, entityReference, bl);
+            return super.deflect(deflection, deflectingEntity, newOwner, byAttack, power);
         return false;
     }
 
