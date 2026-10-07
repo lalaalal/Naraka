@@ -1,6 +1,6 @@
 package com.yummy.naraka;
 
-import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
+import com.yummy.naraka.advancements.criterion.NarakaCriteriaTriggers;
 import com.yummy.naraka.client.init.NarakaClientInitializer;
 import com.yummy.naraka.commands.NarakaCommands;
 import com.yummy.naraka.config.NarakaConfig;
