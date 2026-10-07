@@ -1,4 +1,4 @@
-package com.yummy.naraka.fabric.data.advancement;
+package com.yummy.naraka.advancements;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.advancements.criterion.EquipmentSetTrigger;
@@ -13,16 +13,16 @@ import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSetHelper;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.predicates.LocationPredicate;
 import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.triggers.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.advancements.AdvancementSubProvider;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
@@ -32,19 +32,26 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
-public class NarakaAdvancementProvider extends FabricAdvancementProvider {
-    protected Consumer<AdvancementHolder> generator = holder -> {
-        throw new IllegalStateException("Generator is not set");
-    };
+public class NarakaAdvancements extends AdvancementSubProvider {
+    private final HolderGetter<Recipe<?>> recipes;
+    private final HolderGetter<Structure> structures;
+    private final HolderGetter<Item> items;
+    private final HolderGetter<EntityType<?>> entities;
+
+    public NarakaAdvancements(BootstrapContext<Advancement> output) {
+        super(output);
+        this.recipes = output.lookup(Registries.RECIPE);
+        this.structures = output.lookup(Registries.STRUCTURE);
+        this.items = output.lookup(Registries.ITEM);
+        this.entities = output.lookup(Registries.ENTITY_TYPE);
+    }
 
     public static Advancement.Builder advancement(AdvancementHolder parent, ItemLike icon, AdvancementComponent component, AdvancementType type) {
         return Advancement.Builder.advancement()
                 .parent(parent)
-                .display(icon, component.title(), component.description(), null, type, true, true, false);
+                .display(icon.asItem(), component.title(), component.description(), type, true, true, false);
     }
 
     public static Advancement.Builder task(AdvancementHolder parent, ItemLike icon, AdvancementComponent component) {
@@ -60,45 +67,40 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
     }
 
     public String location(String path) {
-        return NarakaMod.MOD_ID + ':' + path;
+        return "naraka:" + path;
     }
 
     public ResourceKey<Recipe<?>> recipe(Identifier location) {
         return ResourceKey.create(Registries.RECIPE, location);
     }
 
-    public NarakaAdvancementProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
-        super(output, registryLookup);
+    private HolderSet<Recipe<?>> lookupRecipe(HolderGetter<Recipe<?>> recipes, Identifier recipeId) {
+        return HolderSet.direct(recipes.getOrThrow(recipe(recipeId)));
     }
+
 
     public AdvancementHolder task(AdvancementHolder parent, ItemLike icon, AdvancementComponent component, UnaryOperator<Advancement.Builder> builder) {
         return builder.apply(task(parent, icon, component))
-                .save(generator, location(component.advancementName()));
+                .save(output, location(component.advancementName()));
     }
 
     public AdvancementHolder goal(AdvancementHolder parent, ItemLike icon, AdvancementComponent component, UnaryOperator<Advancement.Builder> builder) {
         return builder.apply(goal(parent, icon, component))
-                .save(generator, location(component.advancementName()));
+                .save(output, location(component.advancementName()));
     }
 
     public AdvancementHolder challenge(AdvancementHolder parent, ItemLike icon, AdvancementComponent component, UnaryOperator<Advancement.Builder> builder) {
         return builder.apply(challenge(parent, icon, component))
-                .save(generator, location(component.advancementName()));
+                .save(output, location(component.advancementName()));
     }
 
     @SuppressWarnings("unused")
     @Override
-    public void generateAdvancement(HolderLookup.Provider registries, Consumer<AdvancementHolder> generator) {
-        this.generator = generator;
-
-        HolderGetter<Structure> structures = registries.lookupOrThrow(Registries.STRUCTURE);
-        HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
-        HolderGetter<EntityType<?>> entities = registries.lookupOrThrow(Registries.ENTITY_TYPE);
-
+    public void generate() {
         Holder<Structure> herobrineSanctuaryStructure = structures.getOrThrow(NarakaStructures.HEROBRINE_SANCTUARY);
 
         AdvancementHolder root = Advancement.Builder.advancement()
-                .display(NarakaItems.STIGMA_ROD.get(),
+                .rootDisplay(NarakaItems.STIGMA_ROD.get(),
                         AdvancementNarakaComponents.ROOT.title(),
                         AdvancementNarakaComponents.ROOT.description(),
                         NarakaTextures.NARAKA_ADVANCEMENT_ROOT_BACKGROUND,
@@ -110,7 +112,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
                 .requirements(AdvancementRequirements.Strategy.OR)
                 .addCriterion("killed_something", KilledTrigger.TriggerInstance.playerKilledEntity())
                 .addCriterion("killed_by_something", KilledTrigger.TriggerInstance.entityKilledPlayer())
-                .save(generator, location("root"));
+                .save(output, location("root"));
         AdvancementHolder sanctuaryCompass = task(root, NarakaItems.SANCTUARY_COMPASS.get(), AdvancementNarakaComponents.SANCTUARY_COMPASS,
                 builder -> builder.addCriterion(
                         "has_sanctuary_compass",
@@ -150,7 +152,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder purifiedSoulMetal = task(killHerobrine, NarakaItems.PURIFIED_SOUL_METAL.get(), AdvancementNarakaComponents.PURIFIED_SOUL_METAL,
                 builder -> builder.addCriterion(
                         "decompose_purified_soul_metal",
-                        RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(NarakaMod.identifier("purified_soul_metal_from_purified_soul_metal_block")))
+                        RecipeCraftedTrigger.TriggerInstance.craftedItem(lookupRecipe(recipes, NarakaMod.identifier("purified_soul_metal_from_purified_soul_metal_block")))
                 ).rewards(AdvancementRewards.Builder.experience(6))
         );
         AdvancementHolder purifiedSoulSword = task(purifiedSoulMetal, NarakaItems.PURIFIED_SOUL_SWORD.get(), AdvancementNarakaComponents.PURIFIED_SOUL_SWORD,
@@ -164,7 +166,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
                     NarakaItems.forEachSoulInfusedItemHolder(item -> {
                         Identifier recipeLocation = item.unwrapKey().orElseThrow().identifier();
                         builder.addCriterion("craft_" + recipeLocation.getPath(),
-                                RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(recipeLocation))
+                                RecipeCraftedTrigger.TriggerInstance.craftedItem(lookupRecipe(recipes, recipeLocation))
                         );
                     });
                     return builder.requirements(AdvancementRequirements.Strategy.OR);
@@ -173,7 +175,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder stabilizer = task(soulInfusedMaterials, NarakaBlocks.SOUL_STABILIZER.get(), AdvancementNarakaComponents.STABILIZER,
                 builder -> builder.addCriterion(
                         "craft_soul_stabilizer",
-                        RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(NarakaMod.identifier("soul_stabilizer")))
+                        RecipeCraftedTrigger.TriggerInstance.craftedItem(lookupRecipe(recipes, NarakaMod.identifier("soul_stabilizer")))
                 ).rewards(AdvancementRewards.Builder.experience(6))
         );
         AdvancementHolder fillSoulStabilizer = task(stabilizer, NarakaBlocks.SOUL_STABILIZER.get(), AdvancementNarakaComponents.FILL_SOUL_STABILIZER,
@@ -229,7 +231,7 @@ public class NarakaAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder craftSoulInfusedNectarium = task(eatNectarium, NarakaItems.SOUL_INFUSED_NECTARIUM.get(), AdvancementExtraComponents.CRAFT_SOUL_INFUSED_NECTARIUM,
                 builder -> builder.addCriterion(
                         "craft_soul_infused_nectarium",
-                        RecipeCraftedTrigger.TriggerInstance.craftedItem(recipe(NarakaMod.identifier("soul_infused_nectarium")))
+                        RecipeCraftedTrigger.TriggerInstance.craftedItem(lookupRecipe(recipes, NarakaMod.identifier("soul_infused_nectarium")))
                 )
         );
     }

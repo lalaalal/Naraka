@@ -2,12 +2,11 @@ package com.yummy.naraka.advancements.criterion;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
-import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 import java.util.Optional;
 
@@ -24,10 +23,10 @@ public class SimpleTrigger extends SimpleCriterionTrigger<SimpleTrigger.TriggerI
         super.trigger(player, instance -> instance.test(name));
     }
 
-    public record TriggerInstance(Optional<ContextAwarePredicate> player, String name) implements SimpleInstance {
+    public record TriggerInstance(Optional<Holder<LootItemCondition>> player, String name) implements SimpleInstance {
         public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(
                 instance -> instance.group(
-                        EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
+                        LootItemCondition.CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
                         Codec.STRING.fieldOf("name").forGetter(TriggerInstance::name)
                 ).apply(instance, instance.stable(TriggerInstance::new))
         );

@@ -1,8 +1,5 @@
-package com.yummy.naraka.advancements;
+package com.yummy.naraka.advancements.criterion;
 
-import com.yummy.naraka.advancements.criterion.EquipmentSetTrigger;
-import com.yummy.naraka.advancements.criterion.FillSoulStabilizerTrigger;
-import com.yummy.naraka.advancements.criterion.SimpleTrigger;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import net.minecraft.advancements.triggers.CriterionTrigger;

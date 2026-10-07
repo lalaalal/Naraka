@@ -2,12 +2,11 @@ package com.yummy.naraka.advancements.criterion;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
-import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 import java.util.Optional;
 
@@ -21,11 +20,11 @@ public class FillSoulStabilizerTrigger extends SimpleCriterionTrigger<FillSoulSt
         this.trigger(player, triggerInstance -> triggerInstance.test(full));
     }
 
-    public record TriggerInstance(Optional<ContextAwarePredicate> player,
+    public record TriggerInstance(Optional<Holder<LootItemCondition>> player,
                                   boolean checkFull) implements SimpleCriterionTrigger.SimpleInstance {
         public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(
                 instance -> instance.group(
-                        EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player")
+                        LootItemCondition.CODEC.optionalFieldOf("player")
                                 .forGetter(TriggerInstance::player),
                         Codec.BOOL.fieldOf("check_full").forGetter(TriggerInstance::checkFull)
                 ).apply(instance, TriggerInstance::new)
@@ -47,11 +46,6 @@ public class FillSoulStabilizerTrigger extends SimpleCriterionTrigger<FillSoulSt
             if (checkFull)
                 return full;
             return true;
-        }
-
-        @Override
-        public Optional<ContextAwarePredicate> player() {
-            return player;
         }
     }
 }

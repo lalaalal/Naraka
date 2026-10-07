@@ -2,13 +2,12 @@ package com.yummy.naraka.advancements.criterion;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
-import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 import java.util.Optional;
 
@@ -22,11 +21,11 @@ public class EquipmentSetTrigger extends SimpleCriterionTrigger<EquipmentSetTrig
         return TriggerInstance.CODEC;
     }
 
-    public record TriggerInstance(Optional<ContextAwarePredicate> player, Identifier equipmentSetId,
+    public record TriggerInstance(Optional<Holder<LootItemCondition>> player, Identifier equipmentSetId,
                                   long requirement) implements SimpleInstance {
         public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(
                 instance -> instance.group(
-                        EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
+                        LootItemCondition.CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
                         Identifier.CODEC.fieldOf("equipment_set_id").forGetter(TriggerInstance::equipmentSetId),
                         Codec.LONG.fieldOf("requirement").forGetter(TriggerInstance::requirement)
                 ).apply(instance, instance.stable(TriggerInstance::new))
