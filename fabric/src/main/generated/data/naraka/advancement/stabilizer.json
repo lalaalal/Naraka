@@ -3,7 +3,7 @@
   "criteria": {
     "craft_soul_stabilizer": {
       "conditions": {
-        "recipe_id": "naraka:soul_stabilizer"
+        "recipes": "naraka:soul_stabilizer"
       },
       "trigger": "minecraft:recipe_crafted"
     }

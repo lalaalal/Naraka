@@ -1,7 +1,7 @@
 {
-  "asset_name": "soul_infused_lapis",
   "description": {
     "color": "#3939C6",
     "translate": "trim_material.naraka.soul_infused_lapis"
-  }
+  },
+  "palette_id": "naraka:trim/soul_infused_lapis"
 }

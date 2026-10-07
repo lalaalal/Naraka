@@ -1,7 +1,7 @@
 {
-  "asset_name": "soul_infused_copper",
   "description": {
     "color": "#FF8000",
     "translate": "trim_material.naraka.soul_infused_copper"
-  }
+  },
+  "palette_id": "naraka:trim/soul_infused_copper"
 }

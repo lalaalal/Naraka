@@ -1,7 +1,7 @@
 {
-  "asset_name": "soul_infused_emerald",
   "description": {
     "color": "#0EC70E",
     "translate": "trim_material.naraka.soul_infused_emerald"
-  }
+  },
+  "palette_id": "naraka:trim/soul_infused_emerald"
 }

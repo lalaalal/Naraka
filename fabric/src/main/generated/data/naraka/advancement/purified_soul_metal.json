@@ -3,7 +3,7 @@
   "criteria": {
     "decompose_purified_soul_metal": {
       "conditions": {
-        "recipe_id": "naraka:purified_soul_metal_from_purified_soul_metal_block"
+        "recipes": "naraka:purified_soul_metal_from_purified_soul_metal_block"
       },
       "trigger": "minecraft:recipe_crafted"
     }

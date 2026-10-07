@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:spear_of_longinus"
+        "recipes": "naraka:spear_of_longinus"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

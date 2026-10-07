@@ -3,49 +3,49 @@
   "criteria": {
     "craft_soul_infused_amethyst": {
       "conditions": {
-        "recipe_id": "naraka:soul_infused_amethyst"
+        "recipes": "naraka:soul_infused_amethyst"
       },
       "trigger": "minecraft:recipe_crafted"
     },
     "craft_soul_infused_copper": {
       "conditions": {
-        "recipe_id": "naraka:soul_infused_copper"
+        "recipes": "naraka:soul_infused_copper"
       },
       "trigger": "minecraft:recipe_crafted"
     },
     "craft_soul_infused_diamond": {
       "conditions": {
-        "recipe_id": "naraka:soul_infused_diamond"
+        "recipes": "naraka:soul_infused_diamond"
       },
       "trigger": "minecraft:recipe_crafted"
     },
     "craft_soul_infused_emerald": {
       "conditions": {
-        "recipe_id": "naraka:soul_infused_emerald"
+        "recipes": "naraka:soul_infused_emerald"
       },
       "trigger": "minecraft:recipe_crafted"
     },
     "craft_soul_infused_gold": {
       "conditions": {
-        "recipe_id": "naraka:soul_infused_gold"
+        "recipes": "naraka:soul_infused_gold"
       },
       "trigger": "minecraft:recipe_crafted"
     },
     "craft_soul_infused_lapis": {
       "conditions": {
-        "recipe_id": "naraka:soul_infused_lapis"
+        "recipes": "naraka:soul_infused_lapis"
       },
       "trigger": "minecraft:recipe_crafted"
     },
     "craft_soul_infused_nectarium": {
       "conditions": {
-        "recipe_id": "naraka:soul_infused_nectarium"
+        "recipes": "naraka:soul_infused_nectarium"
       },
       "trigger": "minecraft:recipe_crafted"
     },
     "craft_soul_infused_redstone": {
       "conditions": {
-        "recipe_id": "naraka:soul_infused_redstone"
+        "recipes": "naraka:soul_infused_redstone"
       },
       "trigger": "minecraft:recipe_crafted"
     }

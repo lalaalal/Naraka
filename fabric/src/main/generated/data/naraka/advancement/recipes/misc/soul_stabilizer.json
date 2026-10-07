@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:soul_stabilizer"
+        "recipes": "naraka:soul_stabilizer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

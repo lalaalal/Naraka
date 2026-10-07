@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:mighty_holy_spear_smithing"
+        "recipes": "naraka:mighty_holy_spear_smithing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

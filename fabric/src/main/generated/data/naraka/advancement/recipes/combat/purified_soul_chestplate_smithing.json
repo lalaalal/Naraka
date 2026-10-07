@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:purified_soul_chestplate_smithing"
+        "recipes": "naraka:purified_soul_chestplate_smithing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

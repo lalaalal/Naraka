@@ -1,5 +1,6 @@
 package com.yummy.naraka.fabric.data;
 
+import com.yummy.naraka.data.NarakaRecipeProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancements.Advancement;
@@ -17,7 +18,7 @@ public class NarakaFabricRecipeProvider extends FabricRecipeProvider {
 
     @Override
     protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
-        return new NarakaRecipeProvider(registries, recipes, advancements);
+        return new NarakaRecipeProvider(recipes, advancements);
     }
 
     @Override

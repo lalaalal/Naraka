@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:soul_infused_nectarium_block_from_soul_infused_nectarium"
+        "recipes": "naraka:soul_infused_nectarium_block_from_soul_infused_nectarium"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

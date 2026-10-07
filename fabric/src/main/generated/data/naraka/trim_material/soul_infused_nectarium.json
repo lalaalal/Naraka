@@ -1,7 +1,7 @@
 {
-  "asset_name": "soul_infused_nectarium",
   "description": {
     "color": "#D65CD6",
     "translate": "trim_material.naraka.soul_infused_nectarium"
-  }
+  },
+  "palette_id": "naraka:trim/soul_infused_nectarium"
 }

@@ -1,0 +1,301 @@
+package com.yummy.naraka.data;
+
+import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.core.component.NarakaDataComponentTypes;
+import com.yummy.naraka.world.block.NarakaBlocks;
+import com.yummy.naraka.world.item.NarakaItems;
+import com.yummy.naraka.world.item.crafting.ComponentPredicateRecipeBuilder;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.registries.MultiRegistryBootstrap;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.recipes.*;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CookingBookCategory;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
+
+import java.util.List;
+import java.util.Set;
+
+public class NarakaRecipeProvider extends RecipeProvider {
+    private static final List<ItemLike> NECTARIUM_SMELTABLES = List.of(NarakaBlocks.NECTARIUM_ORE.get(), NarakaBlocks.DEEPSLATE_NECTARIUM_ORE.get());
+    private static final List<ItemLike> AMETHYST_SMELTABLES = List.of(NarakaBlocks.AMETHYST_ORE.get(), NarakaBlocks.DEEPSLATE_AMETHYST_ORE.get());
+
+    private final HolderGetter<Item> items;
+    private final NarakaBrewingProvider brewingProvider;
+
+    public static MultiRegistryBootstrap create() {
+        return new MultiRegistryBootstrap() {
+            @Override
+            public Set<ResourceKey<? extends Registry<?>>> requestedRegistries() {
+                return Set.of(Registries.RECIPE, Registries.ADVANCEMENT);
+            }
+
+            @Override
+            public void run(final MultiRegistryBootstrap.BootstrapGetter registries) {
+                new NarakaRecipeProvider(registries.get(Registries.RECIPE), registries.get(Registries.ADVANCEMENT)).buildRecipes();
+            }
+        };
+    }
+
+    public NarakaRecipeProvider(BootstrapContext<Recipe<?>> recipeOutput, BootstrapContext<Advancement> advancementOutput) {
+        super(recipeOutput, advancementOutput);
+        this.items = recipeOutput.lookup(Registries.ITEM);
+        this.brewingProvider = new NarakaBrewingProvider(this.output);
+    }
+
+    @Override
+    public void buildRecipes() {
+        nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.NECTARIUM.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.NECTARIUM_BLOCK.get());
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.COMBAT, NarakaItems.SPEAR_ITEM.get())
+                .define('/', Items.STICK)
+                .define('=', NarakaItems.PURIFIED_SOUL_METAL.get())
+                .pattern("  =")
+                .pattern(" / ")
+                .pattern("/  ")
+                .unlockedBy(getHasName(NarakaItems.PURIFIED_SOUL_METAL.get()), has(NarakaItems.PURIFIED_SOUL_METAL.get()))
+                .save(output);
+        smithing(
+                NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(),
+                NarakaItems.SPEAR_ITEM.get(),
+                NarakaItems.GOD_BLOOD.get(),
+                RecipeCategory.COMBAT,
+                NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()
+        );
+        purifiedSoulArmor(Items.CHAINMAIL_HELMET, NarakaItems.PURIFIED_SOUL_HELMET.get());
+        purifiedSoulArmor(Items.CHAINMAIL_CHESTPLATE, NarakaItems.PURIFIED_SOUL_CHESTPLATE.get());
+        purifiedSoulArmor(Items.CHAINMAIL_LEGGINGS, NarakaItems.PURIFIED_SOUL_LEGGINGS.get());
+        purifiedSoulArmor(Items.CHAINMAIL_BOOTS, NarakaItems.PURIFIED_SOUL_BOOTS.get());
+
+        oreSmelting(NECTARIUM_SMELTABLES, RecipeCategory.MISC, CookingBookCategory.MISC, NarakaItems.NECTARIUM.get(), 0.7f, 200, "nectarium");
+        oreBlasting(NECTARIUM_SMELTABLES, RecipeCategory.MISC, CookingBookCategory.MISC, NarakaItems.NECTARIUM.get(), 0.7f, 100, "nectarium");
+        oreSmelting(AMETHYST_SMELTABLES, RecipeCategory.MISC, CookingBookCategory.MISC, Items.AMETHYST_SHARD, 0.7f, 200, "amethyst");
+        oreBlasting(AMETHYST_SMELTABLES, RecipeCategory.MISC, CookingBookCategory.MISC, Items.AMETHYST_SHARD, 0.7f, 100, "amethyst");
+
+        nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_SHARD.get(), RecipeCategory.BUILDING_BLOCKS, NarakaItems.PURIFIED_SOUL_METAL.get());
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.COMBAT, NarakaItems.PURIFIED_SOUL_SWORD.get())
+                .define('M', NarakaItems.PURIFIED_SOUL_METAL.get())
+                .define('/', Items.STICK)
+                .pattern(" M ")
+                .pattern(" M ")
+                .pattern(" / ")
+                .unlockedBy(getHasName(NarakaItems.PURIFIED_SOUL_METAL.get()), has(NarakaItems.PURIFIED_SOUL_METAL.get()))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.HEROBRINE_TOTEM.get(), 2)
+                .define('G', NarakaBlocks.IMITATION_GOLD_BLOCK.get())
+                .define('T', NarakaBlocks.HEROBRINE_TOTEM.get())
+                .pattern("GGG")
+                .pattern("GTG")
+                .pattern("GGG")
+                .unlockedBy(getHasName(NarakaBlocks.HEROBRINE_TOTEM.get()), has(NarakaBlocks.HEROBRINE_TOTEM.get()))
+                .save(output);
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.HEROBRINE_TOTEM.get(), 1)
+                .define('G', NarakaBlocks.IMITATION_GOLD_BLOCK.get())
+                .define('T', Blocks.CHISELED_NETHER_BRICKS)
+                .pattern("GGG")
+                .pattern("GTG")
+                .pattern("GGG")
+                .unlockedBy(getHasName(NarakaBlocks.IMITATION_GOLD_BLOCK.get()), has(NarakaBlocks.IMITATION_GOLD_BLOCK.get()))
+                .save(output, key(NarakaBlocks.HEROBRINE_TOTEM.get(), "_from_chiseled_nether_bricks"));
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.IMITATION_GOLD_BLOCK.get())
+                .define('B', Items.BLAZE_ROD)
+                .define('I', Blocks.IRON_BLOCK)
+                .pattern(" B ")
+                .pattern("BIB")
+                .pattern(" B ")
+                .unlockedBy(getHasName(Items.BLAZE_ROD), has(Items.BLAZE_ROD))
+                .save(output);
+
+        nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_REDSTONE.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_REDSTONE_BLOCK.get());
+        nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_COPPER.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_COPPER_BLOCK.get());
+        nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_GOLD.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_GOLD_BLOCK.get());
+        nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_EMERALD.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_EMERALD_BLOCK.get());
+        nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_DIAMOND.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_DIAMOND_BLOCK.get());
+        nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_LAPIS.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_LAPIS_BLOCK.get());
+        nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_AMETHYST.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_AMETHYST_BLOCK.get());
+        nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.SOUL_INFUSED_NECTARIUM.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.SOUL_INFUSED_NECTARIUM_BLOCK.get());
+        nineBlockStorageRecipes(RecipeCategory.MISC, NarakaItems.PURIFIED_SOUL_METAL.get(), RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.PURIFIED_SOUL_METAL_BLOCK.get());
+        nineBlockStorageRecipes(RecipeCategory.MISC, Items.AMETHYST_SHARD, RecipeCategory.BUILDING_BLOCKS, NarakaBlocks.AMETHYST_SHARD_BLOCK.get());
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, NarakaBlocks.SOUL_STABILIZER.get())
+                .define('#', Blocks.GLASS_PANE)
+                .pattern("##")
+                .pattern("##")
+                .unlockedBy(getHasName(Blocks.GLASS_PANE), has(Blocks.GLASS_PANE))
+                .save(output);
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, NarakaBlocks.SOUL_SMITHING_BLOCK.get())
+                .define('#', Items.HEAVY_CORE)
+                .define('B', Blocks.SMITHING_TABLE)
+                .pattern("##")
+                .pattern("BB")
+                .pattern("BB")
+                .unlockedBy(getHasName(Items.HEAVY_CORE), has(Items.HEAVY_CORE))
+                .save(output);
+
+        soulInfusedMaterial(Items.REDSTONE, NarakaItems.SOUL_INFUSED_REDSTONE.get());
+        soulInfusedMaterial(Items.COPPER_INGOT, NarakaItems.SOUL_INFUSED_COPPER.get());
+        soulInfusedMaterial(Items.GOLD_INGOT, NarakaItems.SOUL_INFUSED_GOLD.get());
+        soulInfusedMaterial(Items.EMERALD, NarakaItems.SOUL_INFUSED_EMERALD.get());
+        soulInfusedMaterial(Items.DIAMOND, NarakaItems.SOUL_INFUSED_DIAMOND.get());
+        soulInfusedMaterial(Items.LAPIS_LAZULI, NarakaItems.SOUL_INFUSED_LAPIS.get());
+        soulInfusedMaterial(Items.AMETHYST_SHARD, NarakaItems.SOUL_INFUSED_AMETHYST.get());
+        soulInfusedMaterial(NarakaItems.NECTARIUM.get(), NarakaItems.SOUL_INFUSED_NECTARIUM.get());
+
+        DataComponentMap.Builder blessed = DataComponentMap.builder()
+                .set(NarakaDataComponentTypes.BLESSED.get(), true);
+        ComponentPredicateRecipeBuilder.component(items, RecipeCategory.COMBAT, NarakaItems.SPEAR_OF_LONGINUS_ITEM)
+                .requires(0, 0, NarakaItems.SOUL_INFUSED_REDSTONE_SWORD.get(), blessed)
+                .requires(0, 1, NarakaItems.SOUL_INFUSED_COPPER_SWORD.get(), blessed)
+                .requires(0, 2, NarakaItems.SOUL_INFUSED_GOLD_SWORD.get(), blessed)
+                .requires(1, 0, NarakaItems.SOUL_INFUSED_EMERALD_SWORD.get(), blessed)
+                .requires(1, 1, NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get())
+                .requires(1, 2, NarakaItems.SOUL_INFUSED_DIAMOND_SWORD.get(), blessed)
+                .requires(2, 0, NarakaItems.SOUL_INFUSED_LAPIS_SWORD.get(), blessed)
+                .requires(2, 1, NarakaItems.SOUL_INFUSED_AMETHYST_SWORD.get(), blessed)
+                .requires(2, 2, NarakaItems.SOUL_INFUSED_NECTARIUM_SWORD.get(), blessed)
+                .showNotification()
+                .unlockedBy(getHasName(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()), has(NarakaItems.MIGHTY_HOLY_SPEAR_ITEM.get()))
+                .save(output);
+
+        brewingProvider.buildRecipes();
+    }
+
+    protected void soulInfusedMaterial(ItemLike material, ItemLike result) {
+        Item purifiedSoulShard = NarakaItems.PURIFIED_SOUL_SHARD.get();
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, result, 8)
+                .group(getItemName(result))
+                .define('P', purifiedSoulShard)
+                .define('M', material)
+                .pattern("MMM")
+                .pattern("MPM")
+                .pattern("MMM")
+                .unlockedBy(getHasName(purifiedSoulShard), has(purifiedSoulShard))
+                .save(output);
+    }
+
+    protected void purifiedSoulArmor(ItemLike base, Item result) {
+        smithing(
+                NarakaItems.PURIFIED_SOUL_UPGRADE_SMITHING_TEMPLATE.get(),
+                base,
+                NarakaItems.PURIFIED_SOUL_METAL.get(),
+                RecipeCategory.COMBAT,
+                result
+        );
+    }
+
+    protected void helmet(ItemLike material, Item helmet) {
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.COMBAT, helmet)
+                .define('X', material)
+                .pattern("XXX")
+                .pattern("X X")
+                .unlockedBy(getHasName(material), has(material))
+                .save(output);
+    }
+
+    protected void chestplate(ItemLike material, Item chestplate) {
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.COMBAT, chestplate)
+                .define('X', material)
+                .pattern("X X")
+                .pattern("XXX")
+                .pattern("XXX")
+                .unlockedBy("has_diamond", has(material))
+                .save(output);
+    }
+
+    protected void legging(ItemLike material, Item legging) {
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.COMBAT, legging)
+                .define('X', material)
+                .pattern("XXX")
+                .pattern("X X")
+                .pattern("X X")
+                .unlockedBy("has_diamond", has(material))
+                .save(output);
+    }
+
+    protected void boots(ItemLike material, Item boots) {
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.COMBAT, boots)
+                .define('X', material)
+                .pattern("X X")
+                .pattern("X X")
+                .unlockedBy("has_diamond", has(material))
+                .save(output);
+    }
+
+    protected static ResourceKey<Recipe<?>> key(String path) {
+        return ResourceKey.create(Registries.RECIPE, NarakaMod.identifier(path));
+    }
+
+    protected static ResourceKey<Recipe<?>> key(ItemLike item) {
+        return key(getItemName(item));
+    }
+
+    protected static ResourceKey<Recipe<?>> key(ItemLike item, String suffix) {
+        return key(getItemName(item) + suffix);
+    }
+
+    public void copySmithingTemplate(ItemLike templateItem, ItemLike ingredient, ItemLike core) {
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, templateItem, 2)
+                .define('#', ingredient)
+                .define('C', core)
+                .define('S', templateItem)
+                .pattern("#S#")
+                .pattern("#C#")
+                .pattern("###")
+                .unlockedBy(getHasName(templateItem), has(templateItem))
+                .save(output);
+    }
+
+    public void sword(ItemLike material, ItemLike result) {
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.COMBAT, result)
+                .define('/', Items.STICK)
+                .define('M', material)
+                .pattern(" M ")
+                .pattern(" M ")
+                .pattern(" / ")
+                .unlockedBy(getHasName(material), has(material))
+                .save(output);
+    }
+
+    public void smithing(ItemLike template, ItemLike base, ItemLike ingredient, RecipeCategory category, Item result) {
+        SmithingTransformRecipeBuilder.smithing(Ingredient.of(template), Ingredient.of(base), Ingredient.of(ingredient), category, result)
+                .unlocks(getHasName(ingredient), has(ingredient))
+                .save(output, key(result, "_smithing"));
+    }
+
+    public void stonecutterResultFromBase(RecipeCategory pCategory, ItemLike pResult, ItemLike pMaterial, int pResultCount) {
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(pMaterial), pCategory, pResult, pResultCount)
+                .unlockedBy(getHasName(pMaterial), has(pMaterial))
+                .save(output, key(getConversionRecipeName(pResult, pMaterial) + "_stonecutting"));
+    }
+
+    public void nineBlockStorageRecipes(
+            RecipeCategory unpackedCategory,
+            ItemLike unpacked,
+            RecipeCategory packedCategory,
+            ItemLike packed
+    ) {
+        ShapelessRecipeBuilder.shapeless(items, unpackedCategory, unpacked, 9)
+                .group(getItemName(unpacked))
+                .requires(packed)
+                .unlockedBy(getHasName(packed), has(packed))
+                .save(output, key(unpacked, "_from_" + getItemName(packed)));
+        ShapedRecipeBuilder.shaped(items, packedCategory, packed)
+                .group(getItemName(packed))
+                .define('#', unpacked)
+                .pattern("###")
+                .pattern("###")
+                .pattern("###")
+                .unlockedBy(getHasName(unpacked), has(unpacked))
+                .save(output, key(packed, "_from_" + getItemName(unpacked)));
+    }
+}

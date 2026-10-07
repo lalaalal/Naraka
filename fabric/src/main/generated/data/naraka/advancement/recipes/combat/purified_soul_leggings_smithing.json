@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:purified_soul_leggings_smithing"
+        "recipes": "naraka:purified_soul_leggings_smithing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

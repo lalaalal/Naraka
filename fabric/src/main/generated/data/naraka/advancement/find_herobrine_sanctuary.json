@@ -3,17 +3,15 @@
   "criteria": {
     "find_herobrine_sanctuary": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "minecraft:location": {
-                "structures": "naraka:herobrine_sanctuary"
-              }
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "naraka:herobrine_sanctuary"
             }
           }
-        ]
+        }
       },
       "trigger": "minecraft:location"
     }

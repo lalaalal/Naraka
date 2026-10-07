@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:herobrine_totem_from_chiseled_nether_bricks"
+        "recipes": "naraka:herobrine_totem_from_chiseled_nether_bricks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

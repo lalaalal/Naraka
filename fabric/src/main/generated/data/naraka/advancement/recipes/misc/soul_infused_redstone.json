@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:soul_infused_redstone"
+        "recipes": "naraka:soul_infused_redstone"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

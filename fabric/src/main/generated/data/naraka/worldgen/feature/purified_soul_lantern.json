@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:replace_single_block",
+  "targets": [
+    {
+      "state": "naraka:purified_soul_lantern",
+      "target": {
+        "block": "naraka:transparent_block",
+        "predicate_type": "minecraft:block_match"
+      }
+    }
+  ]
+}

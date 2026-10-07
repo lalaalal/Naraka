@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:soul_infused_diamond"
+        "recipes": "naraka:soul_infused_diamond"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

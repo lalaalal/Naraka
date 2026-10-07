@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:soul_infused_emerald"
+        "recipes": "naraka:soul_infused_emerald"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
