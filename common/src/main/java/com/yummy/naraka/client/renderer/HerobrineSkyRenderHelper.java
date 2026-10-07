@@ -25,7 +25,7 @@ public class HerobrineSkyRenderHelper {
         try (RenderPass renderPass = RenderSystem.getDevice()
                 .createCommandEncoder()
                 .createRenderPass(() -> "Sky eclipse", colorTextureView, Optional.empty(), depthTextureView, OptionalDouble.empty())) {
-            RenderSystem.setShaderFog(gpuBufferSlice);
+            RenderSystem.bindDefaultUniforms(renderPass);
             PoseStack poseStack = new PoseStack();
             skyRenderer.renderSkyDisc(renderPass, SKY_COLOR);
             poseStack.pushPose();

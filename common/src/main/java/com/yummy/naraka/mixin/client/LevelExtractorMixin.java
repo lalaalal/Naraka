@@ -59,14 +59,14 @@ public abstract class LevelExtractorMixin {
     }
 
     @Inject(method = "extract", at = @At("RETURN"))
-    private void extractDimensionType(DeltaTracker deltaTracker, Camera camera, float deltaPartialTick, CallbackInfo ci) {
+    private void extractDimensionType(DeltaTracker deltaTracker, Camera camera, float worldPartialTicks, CallbackInfo ci) {
         if (level != null && levelRenderState.skyRenderState instanceof DimensionTypeProvider dimensionTypeProvider) {
             dimensionTypeProvider.naraka$setDimensionType(level.dimension());
         }
     }
 
     @Inject(method = "extract", at = @At("RETURN"))
-    private void extractHiddenOres(DeltaTracker deltaTracker, Camera camera, float deltaPartialTick, CallbackInfo ci) {
+    private void extractHiddenOres(DeltaTracker deltaTracker, Camera camera, float worldPartialTicks, CallbackInfo ci) {
         if (!(levelRenderState instanceof HiddenOreRenderStateProvider hiddenOreRenderStateProvider))
             return;
 
