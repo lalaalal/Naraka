@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.block;
 
-import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.world.block.entity.ForgingBlockEntity;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import com.yummy.naraka.world.block.entity.SoulSmithingBlockEntity;
@@ -14,7 +13,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -29,7 +27,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class SoulSmithingBlock extends ForgingBlock {
-    private static final MapCodec<SoulSmithingBlock> CODEC = simpleCodec(SoulSmithingBlock::new);
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public SoulSmithingBlock(Properties properties) {
@@ -84,11 +81,6 @@ public class SoulSmithingBlock extends ForgingBlock {
             }
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override

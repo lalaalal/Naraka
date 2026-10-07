@@ -1,6 +1,6 @@
 package com.yummy.naraka.world.block;
 
-import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
+import com.yummy.naraka.advancements.criterion.NarakaCriteriaTriggers;
 import com.yummy.naraka.advancements.criterion.SimpleTrigger;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import net.minecraft.core.BlockPos;

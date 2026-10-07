@@ -1,6 +1,6 @@
 package com.yummy.naraka.world.block.entity;
 
-import com.yummy.naraka.advancements.NarakaCriteriaTriggers;
+import com.yummy.naraka.advancements.criterion.NarakaCriteriaTriggers;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
