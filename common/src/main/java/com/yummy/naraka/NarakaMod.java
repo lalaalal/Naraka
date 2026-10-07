@@ -39,7 +39,6 @@ import com.yummy.naraka.world.structure.generation.NarakaStructureGenerationPoin
 import com.yummy.naraka.world.structure.piece.NarakaStructurePieceFactories;
 import com.yummy.naraka.world.structure.piece.NarakaStructurePieceTypes;
 import com.yummy.naraka.world.structure.placement.NarakaStructurePlacementTypes;
-import com.yummy.naraka.world.structure.protection.NarakaProtectionPredicates;
 import net.minecraft.resources.Identifier;
 
 public final class NarakaMod {
@@ -92,7 +91,6 @@ public final class NarakaMod {
         NarakaStructurePieceFactories.initialize();
         NarakaStructureGenerationPointProviders.initialize();
         NarakaStructurePlacementTypes.initialize();
-        NarakaProtectionPredicates.initialize();
 
         NarakaFeatureTypes.initialize();
         NarakaBiomes.initialize();
