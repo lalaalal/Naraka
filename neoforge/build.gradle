@@ -52,6 +52,10 @@ tasks.named('processResources', ProcessResources) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
+tasks.named('sourcesJar', Jar) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 sourceSets.main.resources {
     srcDirs 'src/main/generated'
 }
