@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.block;
 
-import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import com.yummy.naraka.world.item.NarakaItems;
@@ -21,15 +20,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class PurifiedSoulFireBlock extends BaseFireBlock {
-    public static final MapCodec<PurifiedSoulFireBlock> CODEC = simpleCodec(PurifiedSoulFireBlock::new);
-
     public PurifiedSoulFireBlock(Properties properties) {
         super(properties, 5f);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseFireBlock> codec() {
-        return CODEC;
     }
 
     @Override

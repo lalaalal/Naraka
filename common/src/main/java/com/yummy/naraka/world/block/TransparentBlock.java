@@ -76,9 +76,9 @@ public class TransparentBlock extends Block {
     }
 
     @Override
-    protected void spawnDestroyParticles(Level level, Player player, BlockPos pos, BlockState state) {
+    public void spawnDestroyParticles(Level level, BlockPos pos, BlockState state) {
         if (state.getValue(VISIBLE))
-            super.spawnDestroyParticles(level, player, pos, state);
+            super.spawnDestroyParticles(level, pos, state);
     }
 
     @Override

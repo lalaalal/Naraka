@@ -1,15 +1,14 @@
 package com.yummy.naraka.world.block;
 
-import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.world.block.entity.HerobrineTotemBlockEntity;
 import com.yummy.naraka.world.block.entity.NarakaBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -23,8 +22,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jspecify.annotations.Nullable;
 
 public class HerobrineTotem extends BaseEntityBlock {
-    private static final MapCodec<HerobrineTotem> CODEC = simpleCodec(HerobrineTotem::new);
-
     public static final int MAX_CRACK = 11;
     public static final IntegerProperty CRACK = IntegerProperty.create("crack", 0, MAX_CRACK);
 
@@ -49,11 +46,6 @@ public class HerobrineTotem extends BaseEntityBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
     protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(CRACK);
@@ -75,13 +67,11 @@ public class HerobrineTotem extends BaseEntityBlock {
     }
 
     @Override
-    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @org.jetbrains.annotations.Nullable BlockEntity blockEntity, ItemStack tool) {
-        super.playerDestroy(level, player, pos, state, blockEntity, tool);
-        if (level instanceof ServerLevel serverLevel) {
-            HerobrineTotemBlockEntity.HerobrineTotemPlaceable totemPlaceable = serverLevel.getDataStorage()
-                    .computeIfAbsent(HerobrineTotemBlockEntity.HerobrineTotemPlaceable.FACTORY);
-            totemPlaceable.addPosition(pos);
-        }
+    public void playerDestroy(ServerLevel level, ServerPlayer player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack destroyedWith) {
+        super.playerDestroy(level, player, pos, state, blockEntity, destroyedWith);
+        HerobrineTotemBlockEntity.HerobrineTotemPlaceable totemPlaceable = level.getDataStorage()
+                .computeIfAbsent(HerobrineTotemBlockEntity.HerobrineTotemPlaceable.FACTORY);
+        totemPlaceable.addPosition(pos);
     }
 
     @Nullable

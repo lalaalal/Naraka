@@ -152,7 +152,7 @@ public class NarakaBlocks {
             NarakaBlockItemIds.HEROBRINE_TOTEM,
             HerobrineTotem::new,
             from(Blocks.NETHER_BRICKS)
-                    .pushReaction(PushReaction.BLOCK)
+                    .pushReaction(PushReaction.IMMOVEABLE)
                     .strength(50, 1200)
                     .requiresCorrectToolForDrops()
                     .lightLevel(HerobrineTotem::light),
@@ -174,7 +174,7 @@ public class NarakaBlocks {
                     .randomTicks()
                     .lightLevel(state -> 15)
                     .mapColor(MapColor.COLOR_BLACK)
-                    .pushReaction(PushReaction.BLOCK)
+                    .pushReaction(PushReaction.IMMOVEABLE)
                     .strength(-1, 3600000)
                     .noLootTable()
     );

@@ -1,6 +1,5 @@
 package com.yummy.naraka.world.block;
 
-import com.mojang.serialization.MapCodec;
 import com.yummy.naraka.core.particles.SoulParticleOption;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.block.entity.SoulStabilizerBlockEntity;
@@ -24,8 +23,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.util.List;
 
 public class SoulStabilizer extends BaseEntityBlock {
-    private static final MapCodec<SoulStabilizer> CODEC = simpleCodec(SoulStabilizer::new);
-
     public SoulStabilizer(Properties properties) {
         super(properties);
     }
@@ -33,11 +30,6 @@ public class SoulStabilizer extends BaseEntityBlock {
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return box(5.5f, 0, 5.5f, 10.5f, 5, 10.5f);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override
