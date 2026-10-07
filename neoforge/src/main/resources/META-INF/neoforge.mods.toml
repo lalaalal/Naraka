@@ -10,7 +10,7 @@ displayName = "Naraka"
 authors = "${mod_author}"
 credits = "${credits}"
 description = '''${description}'''
-logoFile = "naraka.png"
+bannerFile = "naraka.png"
 displayURL = "https://github.com/lalaalal/Naraka"
 
 [[dependencies.naraka]]

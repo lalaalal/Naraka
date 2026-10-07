@@ -48,6 +48,10 @@ neoForge {
     }
 }
 
+tasks.named('processResources', ProcessResources) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 sourceSets.main.resources {
     srcDirs 'src/main/generated'
 }

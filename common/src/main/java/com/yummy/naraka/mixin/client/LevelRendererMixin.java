@@ -9,7 +9,10 @@ import com.yummy.naraka.client.init.DimensionSkyRendererRegistry;
 import com.yummy.naraka.client.renderer.DimensionTypeProvider;
 import com.yummy.naraka.client.renderer.HerobrineSkyRenderHelper;
 import com.yummy.naraka.config.NarakaConfig;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.LevelTargetBundle;
+import net.minecraft.client.renderer.SkyRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -28,10 +31,6 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 public abstract class LevelRendererMixin {
     @Shadow
     private SkyRenderer skyRenderer;
-
-    @Shadow
-    @Final
-    private CloudRenderer cloudRenderer;
 
     @Shadow
     @Final
