@@ -1,6 +1,7 @@
 package com.yummy.naraka.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.renderpearl.api.commands.RenderPass;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.renderer.NarakaSkyRenderer;
 import net.minecraft.client.renderer.SkyRenderer;
@@ -13,10 +14,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(SkyRenderer.class)
 public abstract class SkyRendererMixin {
     @Inject(method = "renderMoon", at = @At("HEAD"), cancellable = true)
-    public void replaceMoon(MoonPhase moonPhase, float rainBrightness, PoseStack poseStack, CallbackInfo ci) {
+    public void replaceMoon(RenderPass renderPass, MoonPhase moonPhase, float rainBrightness, PoseStack poseStack, CallbackInfo ci) {
         if (NarakaClientContext.ENABLE_HEROBRINE_SKY.getValue() && NarakaClientContext.SHADER_ENABLED.getValue()) {
             NarakaSkyRenderer.getInstance()
-                    .renderEclipse(poseStack);
+                    .renderEclipse(renderPass, poseStack);
             ci.cancel();
         }
     }

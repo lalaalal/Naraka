@@ -16,7 +16,7 @@ public abstract class ItemEntityRendererMixin extends EntityRenderer<ItemEntity,
     }
 
     @Override
-    public boolean shouldRender(ItemEntity entity, Frustum camera, double camX, double camY, double camZ) {
-        return entity.getItem().is(NarakaItemTags.ALWAYS_RENDER_ITEM_ENTITY) || super.shouldRender(entity, camera, camX, camY, camZ);
+    public boolean shouldRender(ItemEntity entity, Frustum culler, double camX, double camY, double camZ, float partialTicks) {
+        return entity.getItem().is(NarakaItemTags.ALWAYS_RENDER_ITEM_ENTITY) || super.shouldRender(entity, culler, camX, camY, camZ, partialTicks);
     }
 }
