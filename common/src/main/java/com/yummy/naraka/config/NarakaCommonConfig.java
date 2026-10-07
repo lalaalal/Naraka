@@ -6,7 +6,7 @@ public class NarakaCommonConfig extends StaticConfiguration {
     public final ConfigValue<Integer> stigmaConsumeTick = define("stigma_consume_tick", 1200);
     public final ConfigValue<Float> herobrineHurtLimitReduce = define("herobrine_hurt_limit_reduce", 2.0f);
     public final ConfigValue<Integer> maxShadowHerobrineSpawn = define("max_shadow_herobrine_spawn", 3);
-    public final ConfigValue<Float> fasterLiquidSwimmingSpeed = define("faster_liquid_swimming_speed", 5f);
+    public final ConfigValue<Float> fasterLiquidSwimmingSpeed = define("faster_liquid_swimming_speed", 2f);
     public final ConfigValue<Boolean> disableHerobrineDestroyingStructure = define("disable_herobrine_destroying_structure", false);
     public final ConfigValue<Boolean> despawnHerobrineWhenTargetIsDead = define("despawn_herobrine_when_target_is_dead", true);
     public final ConfigValue<Integer> narakaFireballDirectionUpdateInterval = define("naraka_fireball_direction_update_interval", 2);

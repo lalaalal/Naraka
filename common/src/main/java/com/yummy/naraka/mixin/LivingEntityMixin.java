@@ -108,8 +108,8 @@ public abstract class LivingEntityMixin extends Entity {
     @Override
     public boolean isInWater() {
         if (NarakaItemUtils.canApplyFasterLiquidSwimming(naraka$living()))
-            return this.wasTouchingWater || isInLava();
-        return this.wasTouchingWater;
+            return super.isInWater() || isInLava();
+        return super.isInWater();
     }
 
     @Override
