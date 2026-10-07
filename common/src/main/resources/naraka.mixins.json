@@ -42,7 +42,7 @@
   "mixins": [
     "ConcretePowderBlockMixin",
     "EntityMixin",
-    "FeatureMixin",
+    "FeaturePlacerMixin",
     "HerobrineTotemActivatingItemMixin",
     "LivingEntityMixin",
     "PlayerListMixin",

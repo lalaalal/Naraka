@@ -166,22 +166,16 @@ public class NarakaUtils {
         sphere(box, size, (x, y, z) -> consumer.accept(new BlockPos(x, y, z)));
     }
 
-    public static boolean isInSphere(BoundingBox box, float size, int x, int y, int z) {
-        return isInSphere(box, size, new Vec3i(x, y, z));
-    }
-
-    public static boolean isInSphere(BoundingBox box, float size, Vec3i pos) {
+    public static boolean isInCylinder(BoundingBox box, float size, Vec3i pos) {
         double xRadius = (float) (box.maxX() - box.minX() + 1) / 2;
         double zRadius = (float) (box.maxZ() - box.minZ() + 1) / 2;
-        double yRadius = (float) (box.maxY() - box.minY() + 1) / 2;
+        double radius = Math.max(xRadius, zRadius);
         double centerX = box.minX() + xRadius;
         double centerZ = box.minZ() + zRadius;
-        double centerY = box.minY() + yRadius;
-        double xRatio = (pos.getX() - centerX) / xRadius;
-        double zRatio = (pos.getZ() - centerZ) / zRadius;
-        double yRatio = (pos.getY() - centerY) / yRadius;
+        double xRatio = (pos.getX() - centerX) / radius;
+        double zRatio = (pos.getZ() - centerZ) / radius;
 
-        return xRatio * xRatio + yRatio * yRatio + zRatio * zRatio <= size;
+        return xRatio * xRatio + zRatio * zRatio <= size;
     }
 
     public static Vec3 vec3(Vec3i pos) {

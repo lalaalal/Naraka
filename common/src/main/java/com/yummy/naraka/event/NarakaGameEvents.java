@@ -14,7 +14,6 @@ import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSetGroup;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;
-import com.yummy.naraka.world.structure.protection.StructureProtector;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -30,7 +29,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
-
 
 public final class NarakaGameEvents {
     public static void initialize() {
@@ -62,7 +60,7 @@ public final class NarakaGameEvents {
     }
 
     private static void onWorldLoad(ServerLevel level) {
-        StructureProtector.initialize(level);
+
     }
 
     private static void onServerStarting(MinecraftServer server) {
