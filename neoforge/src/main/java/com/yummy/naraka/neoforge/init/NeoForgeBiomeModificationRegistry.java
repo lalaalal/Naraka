@@ -9,6 +9,7 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.random.WeightedList;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
@@ -57,7 +58,7 @@ public class NeoForgeBiomeModificationRegistry implements BiomeModificationRegis
             HolderSet<Biome> targetBiomes = biomeGetter.getOrThrow(biomes);
 
             WeightedList<MobSpawnSettings.SpawnerData> spawners = WeightedList.<MobSpawnSettings.SpawnerData>builder()
-                    .add(new MobSpawnSettings.SpawnerData(entityType.get(), minGroupSize, maxGroupSize), weight)
+                    .add(new MobSpawnSettings.SpawnerData(entityType.get(), new UniformInt(minGroupSize, maxGroupSize)), weight)
                     .build();
             context.register(create(name), new BiomeModifiers.AddSpawnsBiomeModifier(targetBiomes, spawners));
         });

@@ -1,6 +1,6 @@
 package com.yummy.naraka.neoforge.client;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import com.yummy.naraka.client.init.RenderPipelineRegistry;
 import com.yummy.naraka.neoforge.NarakaEventBus;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
