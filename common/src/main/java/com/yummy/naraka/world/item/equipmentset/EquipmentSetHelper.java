@@ -8,7 +8,7 @@ import com.yummy.naraka.world.effect.NarakaMobEffects;
 import com.yummy.naraka.world.item.NarakaItems;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
@@ -43,7 +43,7 @@ public class EquipmentSetHelper {
     }
 
     public static EquipmentSetGroup createBlessedSet() {
-        DataComponentPatch components = DataComponentPatch.builder()
+        DataComponentMap components = DataComponentMap.builder()
                 .set(NarakaDataComponentTypes.BLESSED.get(), true)
                 .build();
         DataComponentCondition condition = DataComponentCondition.all(components);
@@ -87,7 +87,7 @@ public class EquipmentSetHelper {
         Holder<Item> swordItem = NarakaItems.getSoulSwordHolderOf(soulType);
         if (swordItem == null)
             return EquipmentSetGroup.EMPTY;
-        DataComponentPatch components = DataComponentPatch.builder()
+        DataComponentMap components = DataComponentMap.builder()
                 .set(NarakaDataComponentTypes.SOUL.get(), soulType)
                 .build();
         DataComponentCondition condition = DataComponentCondition.all(components);

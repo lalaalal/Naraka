@@ -7,7 +7,7 @@ import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.ItemEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentHolder;
-import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -77,7 +77,7 @@ public record ConditionalComponents(DataComponentCondition condition,
         private final Identifier id;
         private DataComponentCondition.Type type;
         private int index;
-        private final List<DataComponentPatch> conditions = new ArrayList<>();
+        private final List<DataComponentMap> conditions = new ArrayList<>();
         private final List<ComponentFactory> factories = new ArrayList<>();
         private CompositeComponentFactory current = CompositeComponentFactory.EMPTY;
         private boolean alwaysDisplay = true;
@@ -92,7 +92,7 @@ public record ConditionalComponents(DataComponentCondition condition,
             return this;
         }
 
-        public Builder condition(DataComponentPatch.Builder condition) {
+        public Builder condition(DataComponentMap.Builder condition) {
             conditions.add(condition.build());
             return this;
         }
@@ -100,7 +100,7 @@ public record ConditionalComponents(DataComponentCondition condition,
         @SafeVarargs
         public final <T> Builder singleTypedConditions(DataComponentType<T> type, T... values) {
             for (T value : values)
-                condition(DataComponentPatch.builder().set(type, value));
+                condition(DataComponentMap.builder().set(type, value));
             return this;
         }
 

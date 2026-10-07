@@ -1,8 +1,10 @@
 package com.yummy.naraka.world.item.trading;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.world.block.NarakaBlocks;
+import com.yummy.naraka.references.NarakaBlockItemIds;
 import com.yummy.naraka.world.item.NarakaItems;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -10,8 +12,9 @@ import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.TradeCost;
 import net.minecraft.world.item.trading.VillagerTrade;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProviders;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
-import java.util.List;
 import java.util.Optional;
 
 public class NarakaVillagerTrades {
@@ -21,12 +24,28 @@ public class NarakaVillagerTrades {
     public static void bootstrap(final BootstrapContext<VillagerTrade> context) {
         context.register(WANDERING_TRADER_EMERALD_SANCTUARY_COMPASS,
                 new VillagerTrade(
-                        new TradeCost(Items.EMERALD, 10), new ItemStackTemplate(NarakaItems.SANCTUARY_COMPASS.get(), 1), 1, 1, 0.05F, Optional.empty(), List.of()
+                        new TradeCost(Items.EMERALD, 10),
+                        Optional.empty(),
+                        new ItemStackTemplate(NarakaItems.SANCTUARY_COMPASS, 1, DataComponentPatch.EMPTY),
+                        ContextIntProviders.exactly(1),
+                        ContextIntProviders.exactly(1),
+                        ContextFloatProviders.exactly(0.05f),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty()
                 )
         );
         context.register(WANDERING_TRADER_BEE_NEST_NECTARIUM_CORE,
                 new VillagerTrade(
-                        new TradeCost(Items.BEE_NEST, 1), new ItemStackTemplate(NarakaBlocks.NECTARIUM_CORE_BLOCK.get().asItem(), 1), 1, 1, 0.05F, Optional.empty(), List.of()
+                        new TradeCost(Items.BEE_NEST, 1),
+                        Optional.empty(),
+                        new ItemStackTemplate(BuiltInRegistries.ITEM.getOrThrow(NarakaBlockItemIds.NECTARIUM_CORE_BLOCK.item()), 1, DataComponentPatch.EMPTY),
+                        ContextIntProviders.exactly(1),
+                        ContextIntProviders.exactly(1),
+                        ContextFloatProviders.exactly(0.05f),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty()
                 )
         );
     }

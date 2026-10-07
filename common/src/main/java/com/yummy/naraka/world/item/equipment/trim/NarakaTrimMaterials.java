@@ -6,13 +6,10 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Util;
-import net.minecraft.world.item.equipment.EquipmentAsset;
-import net.minecraft.world.item.equipment.trim.MaterialAssetGroup;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
-
-import java.util.Map;
 
 public class NarakaTrimMaterials {
     public static final ResourceKey<TrimMaterial> SOUL_INFUSED_REDSTONE = create("soul_infused_redstone");
@@ -42,20 +39,20 @@ public class NarakaTrimMaterials {
     }
 
     private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> key, int color) {
-        register(context, key, Style.EMPTY.withColor(color), Map.of());
+        register(context, key, Style.EMPTY.withColor(color));
     }
 
     private static void register(
-            BootstrapContext<TrimMaterial> bootstrapContext,
-            ResourceKey<TrimMaterial> resourceKey,
-            Style style,
-            Map<ResourceKey<EquipmentAsset>, String> overrides
+            BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> key, Style style
     ) {
-        MaterialAssetGroup assets = MaterialAssetGroup.create(resourceKey.identifier().getPath(), overrides);
-        Component component = Component.translatable(Util.makeDescriptionId("trim_material", resourceKey.identifier()))
+        Component component = Component.translatable(Util.makeDescriptionId("trim_material", key.identifier()))
                 .withStyle(style);
-        TrimMaterial trimMaterial = new TrimMaterial(assets, component);
-        bootstrapContext.register(resourceKey, trimMaterial);
+        TrimMaterial trimMaterial = new TrimMaterial(createTrimMaterialId(key), component);
+        context.register(key, trimMaterial);
+    }
+
+    public static Identifier createTrimMaterialId(ResourceKey<TrimMaterial> key) {
+        return key.identifier().withPrefix("trim/");
     }
 
     public static ResourceKey<TrimMaterial> create(String name) {

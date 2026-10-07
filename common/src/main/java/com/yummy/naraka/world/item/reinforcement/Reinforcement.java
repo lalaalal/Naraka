@@ -10,9 +10,10 @@ import com.yummy.naraka.util.NarakaItemUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistryCodecs;
+
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentHolder;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -43,7 +44,7 @@ public record Reinforcement(int value, HolderSet<ReinforcementEffect> effects) i
     public static final Codec<Reinforcement> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                     Codec.INT.fieldOf("value").forGetter(Reinforcement::value),
-                    RegistryCodecs.homogeneousList(NarakaRegistries.Keys.REINFORCEMENT_EFFECT)
+                    RegistryCodecs.holderSet(NarakaRegistries.Keys.REINFORCEMENT_EFFECT)
                             .fieldOf("effects")
                             .forGetter(Reinforcement::effects)
             ).apply(instance, Reinforcement::new)
