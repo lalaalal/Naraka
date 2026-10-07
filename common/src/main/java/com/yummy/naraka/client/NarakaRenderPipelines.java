@@ -14,6 +14,7 @@ public final class NarakaRenderPipelines {
     public static final RenderPipeline.Snippet LONGINUS_SNIPPET = RenderPipeline.builder(RenderPipelines.GLOBALS_SNIPPET)
             .withBindGroupLayout(BindGroupLayouts.PROJECTION)
             .withBindGroupLayout(BindGroupLayouts.DYNAMIC_TRANSFORMS)
+            .withBindGroupLayout(BindGroupLayouts.FOG)
             .withPrimitiveTopology(PrimitiveTopology.QUADS)
             .withVertexShader(NarakaMod.identifier("core/longinus"))
             .withFragmentShader(NarakaMod.identifier("core/longinus"))
