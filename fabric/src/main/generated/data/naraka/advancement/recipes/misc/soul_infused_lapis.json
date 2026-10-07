@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:soul_infused_lapis"
+        "recipes": "naraka:soul_infused_lapis"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:soul_smithing_block"
+        "recipes": "naraka:soul_smithing_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

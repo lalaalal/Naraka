@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:herobrine_totem"
+        "recipes": "naraka:herobrine_totem"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

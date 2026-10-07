@@ -4,7 +4,7 @@
     "minecraft:gameplay/bed_rule": {
       "can_set_spawn": "never",
       "can_sleep": "never",
-      "explodes": true
+      "destroy_on_use": true
     },
     "minecraft:gameplay/can_pillager_patrol_spawn": false,
     "minecraft:gameplay/can_start_raid": false,
@@ -16,7 +16,7 @@
     "minecraft:visual/sky_color": "#000000",
     "minecraft:visual/star_brightness": 1.0,
     "minecraft:visual/sun_angle": 180.0,
-    "minecraft:visual/water_fog_color": "#666666"
+    "minecraft:visual/water_fog_color": "#000000"
   },
   "coordinate_scale": 1.0,
   "has_ceiling": false,

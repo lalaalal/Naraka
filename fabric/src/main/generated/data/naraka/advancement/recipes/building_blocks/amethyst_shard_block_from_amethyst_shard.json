@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:amethyst_shard_block_from_amethyst_shard"
+        "recipes": "naraka:amethyst_shard_block_from_amethyst_shard"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

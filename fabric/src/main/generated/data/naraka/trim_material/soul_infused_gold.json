@@ -1,7 +1,7 @@
 {
-  "asset_name": "soul_infused_gold",
   "description": {
     "color": "#FFD24D",
     "translate": "trim_material.naraka.soul_infused_gold"
-  }
+  },
+  "palette_id": "naraka:trim/soul_infused_gold"
 }

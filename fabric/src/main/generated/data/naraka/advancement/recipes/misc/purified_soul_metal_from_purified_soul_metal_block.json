@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:purified_soul_metal_from_purified_soul_metal_block"
+        "recipes": "naraka:purified_soul_metal_from_purified_soul_metal_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:nectarium_from_nectarium_block"
+        "recipes": "naraka:nectarium_from_nectarium_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

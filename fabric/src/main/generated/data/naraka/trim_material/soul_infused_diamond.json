@@ -1,7 +1,7 @@
 {
-  "asset_name": "soul_infused_diamond",
   "description": {
     "color": "#33CCCC",
     "translate": "trim_material.naraka.soul_infused_diamond"
-  }
+  },
+  "palette_id": "naraka:trim/soul_infused_diamond"
 }

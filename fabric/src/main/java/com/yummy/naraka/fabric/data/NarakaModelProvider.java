@@ -46,7 +46,6 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.EquipmentAssets;
-import net.minecraft.world.item.equipment.trim.MaterialAssetGroup;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.item.equipment.trim.TrimMaterials;
 import net.minecraft.world.level.block.Block;
@@ -164,26 +163,26 @@ public class NarakaModelProvider extends FabricModelProvider {
         );
     }
 
-    private static final List<ItemModelGenerators.TrimMaterialData> TRIM_MATERIAL_MODELS = List.of(
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.QUARTZ, TrimMaterials.QUARTZ),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.IRON, TrimMaterials.IRON),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.NETHERITE, TrimMaterials.NETHERITE),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.REDSTONE, TrimMaterials.REDSTONE),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.COPPER, TrimMaterials.COPPER),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.GOLD, TrimMaterials.GOLD),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.EMERALD, TrimMaterials.EMERALD),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.DIAMOND, TrimMaterials.DIAMOND),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.LAPIS, TrimMaterials.LAPIS),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.AMETHYST, TrimMaterials.AMETHYST),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("soul_infused_redstone"), NarakaTrimMaterials.SOUL_INFUSED_REDSTONE),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("soul_infused_copper"), NarakaTrimMaterials.SOUL_INFUSED_COPPER),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("soul_infused_gold"), NarakaTrimMaterials.SOUL_INFUSED_GOLD),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("soul_infused_emerald"), NarakaTrimMaterials.SOUL_INFUSED_EMERALD),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("soul_infused_diamond"), NarakaTrimMaterials.SOUL_INFUSED_DIAMOND),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("soul_infused_lapis"), NarakaTrimMaterials.SOUL_INFUSED_LAPIS),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("soul_infused_amethyst"), NarakaTrimMaterials.SOUL_INFUSED_AMETHYST),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("soul_infused_nectarium"), NarakaTrimMaterials.SOUL_INFUSED_NECTARIUM),
-            new ItemModelGenerators.TrimMaterialData(MaterialAssetGroup.create("god_blood"), NarakaTrimMaterials.GOD_BLOOD)
+    private static final List<TrimMaterialData> TRIM_MATERIAL_MODELS = List.of(
+            new TrimMaterialData(TrimMaterials.QUARTZ),
+            new TrimMaterialData(TrimMaterials.IRON),
+            new TrimMaterialData(TrimMaterials.NETHERITE),
+            new TrimMaterialData(TrimMaterials.REDSTONE),
+            new TrimMaterialData(TrimMaterials.COPPER),
+            new TrimMaterialData(TrimMaterials.GOLD),
+            new TrimMaterialData(TrimMaterials.EMERALD),
+            new TrimMaterialData(TrimMaterials.DIAMOND),
+            new TrimMaterialData(TrimMaterials.LAPIS),
+            new TrimMaterialData(TrimMaterials.AMETHYST),
+            new TrimMaterialData(NarakaTrimMaterials.SOUL_INFUSED_REDSTONE),
+            new TrimMaterialData(NarakaTrimMaterials.SOUL_INFUSED_COPPER),
+            new TrimMaterialData(NarakaTrimMaterials.SOUL_INFUSED_GOLD),
+            new TrimMaterialData(NarakaTrimMaterials.SOUL_INFUSED_EMERALD),
+            new TrimMaterialData(NarakaTrimMaterials.SOUL_INFUSED_DIAMOND),
+            new TrimMaterialData(NarakaTrimMaterials.SOUL_INFUSED_LAPIS),
+            new TrimMaterialData(NarakaTrimMaterials.SOUL_INFUSED_AMETHYST),
+            new TrimMaterialData(NarakaTrimMaterials.SOUL_INFUSED_NECTARIUM),
+            new TrimMaterialData(NarakaTrimMaterials.GOD_BLOOD)
     );
 
     @Override
@@ -314,12 +313,12 @@ public class NarakaModelProvider extends FabricModelProvider {
         Material overlay = TextureMapping.getItemTexture(item, "_overlay");
 
         List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> list = new ArrayList<>(TRIM_MATERIAL_MODELS.size());
-        for (ItemModelGenerators.TrimMaterialData data : TRIM_MATERIAL_MODELS) {
-            Identifier trimmedArmorModelLocation = modelLocation.withSuffix("_" + data.assets().base().suffix() + "_trim");
-            Material trim = new Material(NarakaMod.mcLocation("trims/items/" + name + "_trim_" + data.assets().assetId(key).suffix()));
+        for (TrimMaterialData data : TRIM_MATERIAL_MODELS) {
+            Identifier trimmedArmorModelLocation = data.modelLocation(modelLocation);
+            Material trim = data.material(name);
             ItemModel.Unbaked unbaked = generateLayer(generator, trimmedArmorModelLocation, material, overlay, trim, withDye, withScarf);
 
-            list.add(ItemModelUtils.when(data.materialKey(), unbaked));
+            list.add(ItemModelUtils.when(data.trimMaterial(), unbaked));
         }
 
         ItemModel.Unbaked unbaked = generateModel(generator, modelLocation, material, overlay, withDye, withScarf);

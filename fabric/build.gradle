@@ -23,26 +23,27 @@ loom {
     }
     runs {
         configureEach {
-            ideConfigGenerated(true)
+            setPreferGradleTask(false)
+            setGenerateRunConfig(true)
             setIdeConfigFolder("Fabric ${minecraft_version}")
-            vmArg("-XX:+AllowEnhancedClassRedefinition")
+            jvmArguments.add("-XX:+AllowEnhancedClassRedefinition")
         }
         client {
             client()
-            setConfigName("Fabric Client ${minecraft_version}")
-            runDir("run/${minecraft_version}")
-            programArgs('--username', System.getProperty("user.name"))
+            setDisplayName("Fabric Client ${minecraft_version}")
+            setRunDirectory(file("run/${minecraft_version}"))
+            programArguments.addAll('--username', System.getProperty("user.name"))
         }
         server {
             server()
-            setConfigName("Fabric Server ${minecraft_version}")
-            runDir("run/${minecraft_version}")
+            setDisplayName("Fabric Server ${minecraft_version}")
+            setRunDirectory(file("run/${minecraft_version}"))
         }
         datagen {
             inherit client
-            setConfigName("Fabric Data ${minecraft_version}")
-            runDir("run/data")
-            vmArgs("-Dfabric-api.datagen", "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}", "-Dfabric-api.datagen.modid=${mod_id}")
+            setDisplayName("Fabric Data ${minecraft_version}")
+            setRunDirectory(file("run/data"))
+            jvmArguments.addAll('-Dfabric-api.datagen', "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}", "-Dfabric-api.datagen.modid=${mod_id}")
         }
     }
 }

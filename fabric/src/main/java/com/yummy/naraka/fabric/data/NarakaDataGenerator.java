@@ -2,7 +2,6 @@ package com.yummy.naraka.fabric.data;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.data.NarakaDatapackProvider;
-import com.yummy.naraka.fabric.data.advancement.NarakaAdvancementProvider;
 import com.yummy.naraka.fabric.data.lang.ChineseLanguageProvider;
 import com.yummy.naraka.fabric.data.lang.DefaultLanguageProvider;
 import com.yummy.naraka.fabric.data.lang.JapaneseLanguageProvider;
@@ -26,13 +25,13 @@ public class NarakaDataGenerator implements DataGeneratorEntrypoint {
         NarakaMod.isDataGeneration = true;
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
-        NarakaDatapackProvider datapackProvider = pack.addProvider(NarakaDatapackProvider::new);
-        patched = datapackProvider.getRegistryProvider();
+        NarakaDatapackProvider worldDatapackProvider = pack.addProvider(NarakaDatapackProvider::forWorldLookup);
+        NarakaDatapackProvider reloadableDatapackProvider = pack.addProvider((output, registriesFuture) -> NarakaDatapackProvider.forReloadableLookup(output, worldDatapackProvider.patched(), registriesFuture));
+        patched = reloadableDatapackProvider.patched();
 
         DefaultLanguageProvider.add(pack);
         JapaneseLanguageProvider.add(pack);
         ChineseLanguageProvider.add(pack);
-        pack.addProvider(NarakaFabricRecipeProvider::new);
         pack.addProvider(NarakaModelProvider::new);
 
         pack.addProvider(NarakaEquipmentAssetProvider::new);
@@ -43,7 +42,6 @@ public class NarakaDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(NarakaEntityTypeTagsProvider::new);
         pack.addProvider(patched(NarakaLevelStemProvider::new));
         pack.addProvider(patched(NarakaBiomeTagsProvider::new));
-        pack.addProvider(patched(NarakaAdvancementProvider::new));
         pack.addProvider(patched(NarakaDamageTypeTagsProvider::new));
         pack.addProvider(patched(NarakaPlacementTagsProvider::new));
         pack.addProvider(patched(NarakaStructureSetsTagProvider::new));

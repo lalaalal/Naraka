@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "naraka:soul_infused_amethyst"
+        "recipes": "naraka:soul_infused_amethyst"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
