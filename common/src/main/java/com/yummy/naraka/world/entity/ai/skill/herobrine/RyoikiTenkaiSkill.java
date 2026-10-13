@@ -1,10 +1,10 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
+import com.yummy.naraka.NarakaPostEffects;
 import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.network.NarakaClientboundEventPacket;
-import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
@@ -18,7 +18,6 @@ import com.yummy.naraka.world.entity.data.StigmaHelper;
 import com.yummy.naraka.world.entity.data.StunHelper;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.ServerTickRateManager;
 import net.minecraft.server.level.ServerLevel;
@@ -94,13 +93,16 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         }
     }
 
+    private Identifier selectPostEffect(boolean hasStigma) {
+        if (hasStigma)
+            return NarakaPostEffects.RYOIKI_GREEN;
+        return NarakaPostEffects.RYOIKI_GRAY;
+    }
+
     private void sendEffectToPlayers(ServerLevel level) {
         for (ServerPlayer player : mob.players()) {
             boolean hasStigma = StigmaHelper.hasStigma(player);
-            NarakaClientboundEventPacket.Event event = hasStigma ? NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT : NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT;
-            final CustomPacketPayload packet = new NarakaClientboundEventPacket(event);
-            NetworkManager.clientbound().send(player, packet);
-
+            player.addPostEffect(selectPostEffect(hasStigma));
             float pitch = hasStigma ? 0.001f : 2f;
             level.playSound(null, player, NarakaSoundEvents.RYOIKI_TENKAI.value(), SoundSource.HOSTILE, 2, pitch);
         }
@@ -114,6 +116,7 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         runAt(50, () -> {
             if (tickRateManager != null)
                 tickRateManager.setFrozen(isFrozenBefore);
+            NarakaSkillUtils.removePostEffect(mob.players(), NarakaPostEffects.RYOIKI_GRAY, NarakaPostEffects.RYOIKI_GREEN);
         });
     }
 
@@ -175,5 +178,6 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         if (tickRateManager != null)
             tickRateManager.setFrozen(isFrozenBefore);
         EntityDataHelper.removeEntityData(mob, NarakaEntityDataTypes.KEEP_UNFROZEN.get());
+        NarakaSkillUtils.removePostEffect(mob.players(), NarakaPostEffects.RYOIKI_GRAY, NarakaPostEffects.RYOIKI_GREEN);
     }
 }

@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill.origin_herobrine;
 
 import com.mojang.math.Axis;
+import com.yummy.naraka.NarakaPostEffects;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.util.NarakaSkillUtils;
@@ -109,9 +110,9 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
             });
 
             runAt(110, () -> {
+                NarakaSkillUtils.addPostEffect(mob.players(), NarakaPostEffects.MONOCHROME);
                 CustomPacketPayload packet = new NarakaClientboundEventPacket(
-                        NarakaClientboundEventPacket.Event.SHAKE_CAMERA,
-                        NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT
+                        NarakaClientboundEventPacket.Event.SHAKE_CAMERA
                 );
                 NetworkManager.clientbound().send(mob.players(), packet);
                 NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 16,
@@ -121,6 +122,7 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
                 level.playSound(null, mob.blockPosition(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE, 10000.0F, 0.8F + mob.getRandom().nextFloat() * 0.2F);
                 level.playSound(null, mob.blockPosition(), SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.HOSTILE, 5.0F, 0.5F + mob.getRandom().nextFloat() * 0.2F);
             });
+            runAt(120, () -> NarakaSkillUtils.removePostEffect(mob.players(), NarakaPostEffects.MONOCHROME));
             run(between(110, 125), () -> {
                 CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.SHAKE_CAMERA);
                 NetworkManager.clientbound().send(mob.players(), packet);
@@ -170,5 +172,6 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
     public void interrupt() {
         if (narakaSword != null)
             narakaSword.discard();
+        NarakaSkillUtils.removePostEffect(mob.players(), NarakaPostEffects.MONOCHROME);
     }
 }

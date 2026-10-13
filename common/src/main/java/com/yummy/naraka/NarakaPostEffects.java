@@ -1,6 +1,5 @@
-package com.yummy.naraka.client;
+package com.yummy.naraka;
 
-import com.yummy.naraka.NarakaMod;
 import net.minecraft.resources.Identifier;
 
 public class NarakaPostEffects {

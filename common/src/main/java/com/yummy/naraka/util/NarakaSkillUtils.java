@@ -3,6 +3,7 @@ package com.yummy.naraka.util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -90,5 +92,21 @@ public class NarakaSkillUtils {
             if (target instanceof ServerPlayer player && NarakaEntityUtils.isDamageablePlayer(player))
                 NarakaEntityUtils.sendPlayerMovement(player, movement);
         });
+    }
+
+    public static void addPostEffect(List<ServerPlayer> players, Identifier... postEffectIds) {
+        for (ServerPlayer player : players) {
+            for (Identifier postEffectId : postEffectIds) {
+                player.addPostEffect(postEffectId);
+            }
+        }
+    }
+
+    public static void removePostEffect(List<ServerPlayer> players, Identifier... postEffectIds) {
+        for (ServerPlayer player : players) {
+            for (Identifier postEffectId : postEffectIds) {
+                player.removePostEffect(postEffectId);
+            }
+        }
     }
 }
