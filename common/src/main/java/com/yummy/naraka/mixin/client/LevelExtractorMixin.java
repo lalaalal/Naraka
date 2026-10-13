@@ -1,5 +1,7 @@
 package com.yummy.naraka.mixin.client;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.init.DimensionSkyRendererRegistry;
 import com.yummy.naraka.client.renderer.DimensionTypeProvider;
 import com.yummy.naraka.client.renderer.HiddenOreRenderState;
@@ -56,6 +58,12 @@ public abstract class LevelExtractorMixin {
     private void prepareDimensionSkyRenderers(ResourceManager resourceManager, CallbackInfo ci) {
         DimensionSkyRendererRegistry.setup();
         naraka$blockModelResolver = new BlockModelResolver(minecraft.getModelManager());
+    }
+
+    @ModifyExpressionValue(method = "extract", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ARGB;colorFromVector4f(Lorg/joml/Vector4fc;)I"))
+    private int modifyCloudColor(int original) {
+        if (NarakaClientContext.ENABLE_HEROBRINE_SKY.getValue()) return 0x88ffffff;
+        return original;
     }
 
     @Inject(method = "extract", at = @At("RETURN"))
