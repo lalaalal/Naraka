@@ -49,6 +49,7 @@ public class NarakaConfigScreen {
                 .addEntry(ConfigHelper.entry(NarakaConfig.CLIENT.oreSeeThroughRange, entryBuilder::startIntField).build())
                 .addEntry(ConfigHelper.entry(NarakaConfig.CLIENT.cameraShakingSpeed, entryBuilder::startFloatField).build())
                 .addEntry(ConfigHelper.entry(NarakaConfig.CLIENT.cameraShakingStrength, entryBuilder::startFloatField).build())
+                .addEntry(ConfigHelper.entry(NarakaConfig.CLIENT.chromaticAberrationIntensity, entryBuilder::startFloatField).build())
                 .addEntry(createOreColor(entryBuilder));
     }
 

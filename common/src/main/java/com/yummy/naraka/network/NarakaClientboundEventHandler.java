@@ -1,8 +1,10 @@
 package com.yummy.naraka.network;
 
+import com.yummy.naraka.NarakaPostEffects;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.gui.screen.AnimationControlScreen;
 import com.yummy.naraka.client.gui.screen.SkillControlScreen;
+import com.yummy.naraka.client.renderer.PostEffectUniformBuffer;
 import com.yummy.naraka.client.sound.BossMusicPlayer;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.sounds.NarakaMusics;
@@ -32,7 +34,9 @@ public class NarakaClientboundEventHandler {
             NarakaClientboundEventPacket.Event.START_WHITE_SCREEN, NarakaClientboundEventHandler::startWhiteScreen,
             NarakaClientboundEventPacket.Event.STOP_WHITE_FOG, NarakaClientboundEventHandler::stopWhiteScreen,
             NarakaClientboundEventPacket.Event.SHAKE_CAMERA, NarakaClientboundEventHandler::shakeCamera,
-            NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY, NarakaClientboundEventHandler::muteMusicCategory
+            NarakaClientboundEventPacket.Event.START_CHROMATIC_ABERRATION, NarakaClientboundEventHandler::startChromaticAberration,
+            NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY, NarakaClientboundEventHandler::muteMusicCategory,
+            NarakaClientboundEventPacket.Event.PARRYING_MUTE, NarakaClientboundEventHandler::parryingMute
     );
 
     private static final Music[] HEROBRINE_MUSIC = new Music[]{
@@ -111,7 +115,17 @@ public class NarakaClientboundEventHandler {
         NarakaClientContext.CAMERA_SHAKE_TICK.set(10);
     }
 
+    private static void startChromaticAberration() {
+        Level level = Minecraft.getInstance().level;
+        if (level != null)
+            PostEffectUniformBuffer.getInstance().reset(NarakaPostEffects.CHROMATIC_ABERRATION, level.getGameTime());
+    }
+
     private static void muteMusicCategory() {
         NarakaClientContext.MUTE_MUSIC_TICK.set(60);
+    }
+
+    private static void parryingMute() {
+        NarakaClientContext.MUTE_MUSIC_TICK.set(10);
     }
 }

@@ -1,12 +1,17 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
+import com.yummy.naraka.NarakaPostEffects;
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.network.NarakaClientboundEventPacket;
+import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -90,6 +95,15 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
             level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.HOSTILE, 1, 1.75f);
             level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.HOSTILE, 1, 2);
             level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.HOSTILE, 1, 1.89f);
+            if (target instanceof ServerPlayer serverPlayer) {
+                serverPlayer.addPostEffect(NarakaPostEffects.CHROMATIC_ABERRATION);
+                NetworkManager.clientbound().send(serverPlayer,
+                        new NarakaClientboundEventPacket(
+                                NarakaClientboundEventPacket.Event.START_CHROMATIC_ABERRATION,
+                                NarakaClientboundEventPacket.Event.PARRYING_MUTE
+                        )
+                );
+            }
         });
         runAt(tickCount(2), () -> hurtEntity(level, target));
         runAt(tickCount(2), () -> level.sendParticles(NarakaFlameParticleOption.NECTARIUM, mob.getX(), mob.getY() + 1, mob.getZ(), 15, 1, 0.3, 1, 0.1));
@@ -102,6 +116,7 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
         runAt(tickCount(2), () -> mob.setAlpha(0x55));
         runBetween(tickCount(20), tickCount(35), () -> hurtEntities(level, AbstractHerobrine::isNotHerobrine, 2));
         runAt(tickCount(10), () -> mob.setAlpha(0xff));
+        runAt(tickCount(50), () -> NarakaSkillUtils.removePostEffect(mob.players(), NarakaPostEffects.CHROMATIC_ABERRATION));
     }
 
     @Override
@@ -113,5 +128,6 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     public void interrupt() {
         super.interrupt();
         mob.setAlpha(0xff);
+        NarakaSkillUtils.removePostEffect(mob.players(), NarakaPostEffects.CHROMATIC_ABERRATION);
     }
 }
