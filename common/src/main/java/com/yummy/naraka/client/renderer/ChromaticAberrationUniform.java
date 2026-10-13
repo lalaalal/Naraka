@@ -15,7 +15,12 @@ import org.lwjgl.system.MemoryStack;
 import java.nio.ByteBuffer;
 
 public class ChromaticAberrationUniform extends PostEffectUniform {
-    private static final int UBO_SIZE = new Std140SizeCalculator().putFloat().putFloat().get();
+    private static final int UBO_SIZE = new Std140SizeCalculator()
+            .putFloat()
+            .putFloat()
+            .putFloat()
+            .putFloat()
+            .get();
 
     private AberrationConfig config = AberrationConfig.ZERO;
 
@@ -35,19 +40,27 @@ public class ChromaticAberrationUniform extends PostEffectUniform {
 
     @Override
     public void reset(long gameTime) {
-        config = new AberrationConfig(gameTime, gameTime, 1);
+        float startIntensity = NarakaConfig.CLIENT.chromaticAberrationIntensity.getValue();
+        float startDistortion = NarakaConfig.CLIENT.chromaticAberrationDistortion.getValue();
+        float startZoom = NarakaConfig.CLIENT.chromaticAberrationZoom.getValue();
+        config = new AberrationConfig(gameTime, gameTime, startIntensity, startDistortion, startZoom);
     }
 
     @Override
     public void extract(float gameTime) {
         float delta = Mth.clamp((gameTime - config.startGameTime) / 50f, 0, 1);
         float startIntensity = NarakaConfig.CLIENT.chromaticAberrationIntensity.getValue();
+        float startDistortion = NarakaConfig.CLIENT.chromaticAberrationDistortion.getValue();
+        float startZoom = NarakaConfig.CLIENT.chromaticAberrationZoom.getValue();
         float intensity = NarakaUtils.interpolate(delta, startIntensity, 0, NarakaUtils::fastStepIn);
-        config = new AberrationConfig(config.startGameTime, gameTime, intensity);
+        float distortion = NarakaUtils.interpolate(delta, startDistortion, 0, NarakaUtils::fastStepIn);
+        float zoom = NarakaUtils.interpolate(delta, startZoom, 0, NarakaUtils::fastStepIn);
+        config = new AberrationConfig(config.startGameTime, gameTime, intensity, distortion, zoom);
     }
 
-    public record AberrationConfig(long startGameTime, float gameTime, float intensity) implements UniformBuffer {
-        public static final AberrationConfig ZERO = new AberrationConfig(0, 0, 0);
+    private record AberrationConfig(long startGameTime, float gameTime, float intensity,
+                                    float distortion, float zoom) implements UniformBuffer {
+        public static final AberrationConfig ZERO = new AberrationConfig(0, 0, 0, 0, 0);
 
         @Override
         public Identifier target() {
@@ -56,7 +69,12 @@ public class ChromaticAberrationUniform extends PostEffectUniform {
 
         @Override
         public ByteBuffer create(MemoryStack stack) {
-            return Std140Builder.onStack(stack, UBO_SIZE).putFloat(gameTime - startGameTime).putFloat(intensity).get();
+            return Std140Builder.onStack(stack, UBO_SIZE)
+                    .putFloat(gameTime - startGameTime)
+                    .putFloat(intensity)
+                    .putFloat(distortion)
+                    .putFloat(zoom)
+                    .get();
         }
     }
 }

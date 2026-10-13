@@ -6,6 +6,7 @@ import com.yummy.naraka.core.particles.NarakaParticleTypes;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.util.NarakaSkillUtils;
+import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
@@ -14,6 +15,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.TickRateManager;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
@@ -27,11 +29,13 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     private boolean succeed;
     private float originalHealth;
     private float hurtDamage;
+    private TickRateManager tickRateManager;
 
     public ParryingSkill(AbstractHerobrine mob) {
         super(LOCATION, mob, 60, 300, 100, 5);
         alwaysAttack = true;
         alwaysHurt = true;
+        tickRateManager = mob.level().tickRateManager();
     }
 
     @Override
@@ -40,6 +44,7 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
         succeed = false;
         originalHealth = mob.getHealth();
         hurtDamage = 0;
+        tickRateManager = mob.level().tickRateManager();
     }
 
     @Override
@@ -107,6 +112,11 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
         });
         runAt(tickCount(2), () -> hurtEntity(level, target));
         runAt(tickCount(2), () -> level.sendParticles(NarakaFlameParticleOption.NECTARIUM, mob.getX(), mob.getY() + 1, mob.getZ(), 15, 1, 0.3, 1, 0.1));
+        runBetween(tickCount(7), tickCount(15), () -> {
+            float delta = Math.clamp((tickCount - tickCount(7)) / 5f, 0f, 1f);
+            float tickRate = NarakaUtils.interpolate(delta, 7.5f, 20, NarakaUtils::fastStepOut);
+            tickRateManager.setTickRate(Math.clamp(tickRate, 1, 20));
+        });
         runAt(tickCount(20), () -> moveToTarget(target, false, 1.5));
         runBetween(tickCount(20), tickCount(30), () -> level.sendParticles(NarakaFlameParticleOption.NECTARIUM, mob.getX(), mob.getY() + 1, mob.getZ(), 15, 2, 0.3, 2, 0.1));
         run(after(tickCount(40)) || mob.distanceTo(target) < 2, this::stopMoving);
@@ -129,5 +139,6 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
         super.interrupt();
         mob.setAlpha(0xff);
         NarakaSkillUtils.removePostEffect(mob.players(), NarakaPostEffects.CHROMATIC_ABERRATION);
+        tickRateManager.setTickRate(20);
     }
 }

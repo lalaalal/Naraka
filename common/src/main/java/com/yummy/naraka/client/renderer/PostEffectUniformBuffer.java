@@ -11,12 +11,22 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * {@link PostEffectUniformBuffer#update(float, Collection)} currently active post effects have {@link PostEffectUniform}
+ * and bind uniforms by {@link PostEffectUniformBuffer#setUniform(Identifier, RenderPass)}
+ *
+ * @see com.yummy.naraka.mixin.client.PostChainMixin
+ * @see com.yummy.naraka.mixin.client.PostPassMixin
+ */
 public class PostEffectUniformBuffer implements AutoCloseable {
     private final Map<Identifier, PostEffectUniform> uniforms = new HashMap<>();
 
     @Nullable
     private static PostEffectUniformBuffer instance = null;
 
+    /**
+     * To easily access from Mixin
+     */
     public static PostEffectUniformBuffer getInstance() {
         if (instance == null)
             throw new IllegalStateException("PostEffectUniformBuffer is not initialized");
@@ -48,6 +58,9 @@ public class PostEffectUniformBuffer implements AutoCloseable {
         }
     }
 
+    /**
+     * @param passId Identifier of the RenderPipeline contains an index of the PostPass
+     */
     public void defineUniforms(Identifier passId, BindGroupLayout.Builder bindGroupLayoutBuilder) {
         Identifier postEffectId = passId.withPath(path -> path.split("/")[0]);
         if (uniforms.containsKey(postEffectId)) {

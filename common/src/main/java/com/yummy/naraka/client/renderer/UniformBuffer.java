@@ -6,6 +6,9 @@ import org.lwjgl.system.MemoryStack;
 import java.nio.ByteBuffer;
 
 public interface UniformBuffer {
+    /**
+     * Targeting post effect id
+     */
     Identifier target();
 
     ByteBuffer create(MemoryStack stack);
