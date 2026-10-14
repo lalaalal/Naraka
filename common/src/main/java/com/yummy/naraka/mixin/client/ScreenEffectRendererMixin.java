@@ -36,7 +36,7 @@ public abstract class ScreenEffectRendererMixin {
             return;
 
         if (cameraRenderState.isFirstPerson && !avatarRenderState.isSpectator) {
-            if (playerRenderState instanceof PurifiedSoulFlameRenderState purifiedSoulFlameRenderState && purifiedSoulFlameRenderState.naraka$displayPurifiedSoulFlame()) {
+            if (avatarRenderState instanceof PurifiedSoulFlameRenderState purifiedSoulFlameRenderState && purifiedSoulFlameRenderState.naraka$displayPurifiedSoulFlame()) {
                 submitFire(poseStack, submitNodeCollector, sprites.get(NarakaSprites.PURIFIED_SOUL_FIRE_1));
             }
         }
