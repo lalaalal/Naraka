@@ -5,8 +5,8 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.service.NarakaServices;
 import com.yummy.naraka.util.NarakaItemUtils;
-import com.yummy.naraka.util.TickSchedule;
 import com.yummy.naraka.world.entity.data.DeathCountHelper;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
@@ -78,7 +78,7 @@ public final class NarakaGameEvents {
     }
 
     private static void onEndTick(MinecraftServer server) {
-        TickSchedule.tick(server.overworld());
+        NarakaServices.SERVER_JOB_MANAGER.tick(server);
     }
 
     private static void modifyLootTable(ResourceKey<LootTable> key, LootEvents.Context context) {
