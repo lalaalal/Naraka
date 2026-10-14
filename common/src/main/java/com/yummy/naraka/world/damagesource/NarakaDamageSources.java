@@ -31,8 +31,8 @@ public class NarakaDamageSources {
         return new DamageSource(damageTypes.getOrThrow(key), directEntity, causingEntity);
     }
 
-    public static DamageSource fixed(Entity causingEntity) {
-        return source(NarakaDamageTypes.MOB_ATTACK_FIXED, causingEntity);
+    public static DamageSource parrying(Entity causingEntity) {
+        return source(NarakaDamageTypes.PARRYING, causingEntity);
     }
 
     public static DamageSource projectileFixed(Projectile projectile, @Nullable Entity cause) {
