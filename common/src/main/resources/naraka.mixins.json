@@ -38,6 +38,8 @@
     "client.ScreenEffectRendererMixin",
     "client.SkyRendererMixin",
     "client.SkyRenderStateMixin",
+    "client.SoundEngineMixin",
+    "client.SoundManagerMixin",
     "client.SubmitNodeCollectorMixin",
     "client.WorldOpenFlowsMixin"
   ],

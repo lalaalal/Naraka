@@ -12,8 +12,6 @@ public final class NarakaClientContext {
     public static final Configuration.ConfigValue<Boolean> ENABLE_WHITE_SCREEN = context(false);
     public static final Configuration.ConfigValue<Integer> CAMERA_SHAKE_TICK = context(0);
     public static final Configuration.ConfigValue<Set<UUID>> HEROBRINE_MUSIC_SOURCES = context(new HashSet<>());
-    public static final Configuration.ConfigValue<Integer> MUTE_MUSIC_TICK = context(0);
-    public static final Configuration.ConfigValue<Float> MUSIC_VOLUME = context(1f);
 
     private static <T> Configuration.ConfigValue<T> context(T defaultValue) {
         return context(defaultValue, true);

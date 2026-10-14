@@ -34,9 +34,7 @@ public class NarakaClientboundEventHandler {
             NarakaClientboundEventPacket.Event.START_WHITE_SCREEN, NarakaClientboundEventHandler::startWhiteScreen,
             NarakaClientboundEventPacket.Event.STOP_WHITE_FOG, NarakaClientboundEventHandler::stopWhiteScreen,
             NarakaClientboundEventPacket.Event.SHAKE_CAMERA, NarakaClientboundEventHandler::shakeCamera,
-            NarakaClientboundEventPacket.Event.START_CHROMATIC_ABERRATION, NarakaClientboundEventHandler::startChromaticAberration,
-            NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY, NarakaClientboundEventHandler::muteMusicCategory,
-            NarakaClientboundEventPacket.Event.PARRYING_MUTE, NarakaClientboundEventHandler::parryingMute
+            NarakaClientboundEventPacket.Event.START_CHROMATIC_ABERRATION, NarakaClientboundEventHandler::startChromaticAberration
     );
 
     private static final Music[] HEROBRINE_MUSIC = new Music[]{
@@ -119,13 +117,5 @@ public class NarakaClientboundEventHandler {
         Level level = Minecraft.getInstance().level;
         if (level != null)
             PostEffectUniformBuffer.getInstance().reset(NarakaPostEffects.CHROMATIC_ABERRATION, level.getGameTime());
-    }
-
-    private static void muteMusicCategory() {
-        NarakaClientContext.MUTE_MUSIC_TICK.set(60);
-    }
-
-    private static void parryingMute() {
-        NarakaClientContext.MUTE_MUSIC_TICK.set(10);
     }
 }
