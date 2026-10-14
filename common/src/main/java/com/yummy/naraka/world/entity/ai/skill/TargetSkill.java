@@ -71,7 +71,7 @@ public abstract class TargetSkill<T extends SkillUsingMob> extends Skill<T> {
         BlockPos blockPos = BlockPos.containing(position.x, y, position.z);
         if (!mob.level().getBlockState(blockPos).isAir())
             y = NarakaUtils.findAir(mob.level(), blockPos, Direction.UP).getY() + 1.75;
-        mob.teleportTo(position.x, y, position.z);
+        mob.setPos(position.x, y, position.z);
         mob.level().playSound(null, mob, SoundEvents.PLAYER_TELEPORT, SoundSource.HOSTILE, 1, 1);
     }
 

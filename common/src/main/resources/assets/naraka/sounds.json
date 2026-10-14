@@ -90,5 +90,15 @@
     "sounds": [
       "naraka:ryoiki_tenkai"
     ]
+  },
+  "parrying": {
+    "sounds": [
+      "naraka:parrying"
+    ]
+  },
+  "parrying_base": {
+    "sounds": [
+      "naraka:parrying_base"
+    ]
   }
 }

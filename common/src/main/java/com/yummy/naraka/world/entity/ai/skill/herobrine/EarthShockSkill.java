@@ -1,8 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
+import com.yummy.naraka.NarakaPostEffects;
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
-import com.yummy.naraka.network.NarakaClientboundEventPacket;
-import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
@@ -96,14 +95,13 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
 
         runAt(125, () -> spawnMassiveLightning(level));
         runAt(125, mob::shakeCamera);
-        runAt(125, () -> NetworkManager.clientbound().send(
-                mob.players(), new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT)
-        ));
+        runAt(125, () -> NarakaSkillUtils.addPostEffect(mob.players(), NarakaPostEffects.MONOCHROME));
         runBetween(125, 135, () -> shockwaveBlocks(level, 125, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
         runAt(125, () -> hurtEntities(level, targetBetween(), 10));
 
         runBetween(125, 130, () -> spawnLightningBolts(level, 4, 10));
         runBetween(120, 130, () -> pullBlocks(level));
+        runAt(135, () -> NarakaSkillUtils.removePostEffect(mob.players(), NarakaPostEffects.MONOCHROME));
         runAt(145, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPull, 0.25));
 
         runAt(172, mob::shakeCamera);
@@ -226,5 +224,10 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
     @Override
     protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         mob.stigmatizeEntity(level, target);
+    }
+
+    @Override
+    public void interrupt() {
+        NarakaSkillUtils.removePostEffect(mob.players(), NarakaPostEffects.MONOCHROME);
     }
 }

@@ -33,9 +33,13 @@
     "client.MinecraftMixin",
     "client.MouseHandlerMixin",
     "client.MusicManagerMixin",
+    "client.PostChainMixin",
+    "client.PostPassMixin",
     "client.ScreenEffectRendererMixin",
     "client.SkyRendererMixin",
     "client.SkyRenderStateMixin",
+    "client.SoundEngineMixin",
+    "client.SoundManagerMixin",
     "client.SubmitNodeCollectorMixin",
     "client.WorldOpenFlowsMixin"
   ],

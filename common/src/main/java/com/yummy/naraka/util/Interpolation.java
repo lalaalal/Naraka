@@ -1,6 +1,5 @@
-package com.yummy.naraka.world.entity.motion;
+package com.yummy.naraka.util;
 
-import com.yummy.naraka.util.NarakaUtils;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
@@ -9,6 +8,10 @@ import org.joml.Quaternionfc;
 import java.util.function.Function;
 
 public interface Interpolation<T> {
+    Interpolation<Float> F_LINEAR = Mth::lerp;
+    Interpolation<Float> F_FAST_STEP_IN = fastStepIn(NarakaUtils::fastStepIn, F_LINEAR);
+    Interpolation<Float> F_FAST_STEP_OUT = fastStepIn(NarakaUtils::fastStepOut, F_LINEAR);
+
     Interpolation<Vec3> V_LINEAR = Mth::lerp;
     Interpolation<Vec3> V_FAST_STEP_IN = fastStepIn(NarakaUtils::fastStepIn, V_LINEAR);
     Interpolation<Vec3> V_FAST_STEP_OUT = fastStepOut(NarakaUtils::fastStepOut, V_LINEAR);

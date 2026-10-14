@@ -1,8 +1,6 @@
 package com.yummy.naraka.client;
 
-import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.config.Configuration;
-import net.minecraft.resources.Identifier;
 
 import java.util.*;
 
@@ -13,11 +11,7 @@ public final class NarakaClientContext {
     public static final Configuration.ConfigValue<Boolean> ENABLE_HEROBRINE_SKY = context(false);
     public static final Configuration.ConfigValue<Boolean> ENABLE_WHITE_SCREEN = context(false);
     public static final Configuration.ConfigValue<Integer> CAMERA_SHAKE_TICK = context(0);
-    public static final Configuration.ConfigValue<Integer> POST_EFFECT_TICK = context(0);
-    public static final Configuration.ConfigValue<Identifier> POST_EFFECT = context(NarakaMod.identifier("empty"));
     public static final Configuration.ConfigValue<Set<UUID>> HEROBRINE_MUSIC_SOURCES = context(new HashSet<>());
-    public static final Configuration.ConfigValue<Integer> MUTE_MUSIC_TICK = context(0);
-    public static final Configuration.ConfigValue<Float> MUSIC_VOLUME = context(1f);
 
     private static <T> Configuration.ConfigValue<T> context(T defaultValue) {
         return context(defaultValue, true);

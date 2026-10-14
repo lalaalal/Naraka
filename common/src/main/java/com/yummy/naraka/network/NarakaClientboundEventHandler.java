@@ -1,9 +1,10 @@
 package com.yummy.naraka.network;
 
+import com.yummy.naraka.NarakaPostEffects;
 import com.yummy.naraka.client.NarakaClientContext;
-import com.yummy.naraka.client.NarakaPostEffects;
 import com.yummy.naraka.client.gui.screen.AnimationControlScreen;
 import com.yummy.naraka.client.gui.screen.SkillControlScreen;
+import com.yummy.naraka.client.renderer.PostEffectUniformBuffer;
 import com.yummy.naraka.client.sound.BossMusicPlayer;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.sounds.NarakaMusics;
@@ -33,10 +34,7 @@ public class NarakaClientboundEventHandler {
             NarakaClientboundEventPacket.Event.START_WHITE_SCREEN, NarakaClientboundEventHandler::startWhiteScreen,
             NarakaClientboundEventPacket.Event.STOP_WHITE_FOG, NarakaClientboundEventHandler::stopWhiteScreen,
             NarakaClientboundEventPacket.Event.SHAKE_CAMERA, NarakaClientboundEventHandler::shakeCamera,
-            NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT, NarakaClientboundEventHandler::monochrome,
-            NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT, NarakaClientboundEventHandler::ryoikiGrayEffect,
-            NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT, NarakaClientboundEventHandler::ryoikiGreenEffect,
-            NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY, NarakaClientboundEventHandler::muteMusicCategory
+            NarakaClientboundEventPacket.Event.START_CHROMATIC_ABERRATION, NarakaClientboundEventHandler::startChromaticAberration
     );
 
     private static final Music[] HEROBRINE_MUSIC = new Music[]{
@@ -115,22 +113,9 @@ public class NarakaClientboundEventHandler {
         NarakaClientContext.CAMERA_SHAKE_TICK.set(10);
     }
 
-    private static void monochrome() {
-        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.MONOCHROME);
-        NarakaClientContext.POST_EFFECT_TICK.set(10);
-    }
-
-    private static void ryoikiGrayEffect() {
-        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.RYOIKI_GRAY);
-        NarakaClientContext.POST_EFFECT_TICK.set(50);
-    }
-
-    private static void ryoikiGreenEffect() {
-        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.RYOIKI_GREEN);
-        NarakaClientContext.POST_EFFECT_TICK.set(50);
-    }
-
-    private static void muteMusicCategory() {
-        NarakaClientContext.MUTE_MUSIC_TICK.set(60);
+    private static void startChromaticAberration() {
+        Level level = Minecraft.getInstance().level;
+        if (level != null)
+            PostEffectUniformBuffer.getInstance().reset(NarakaPostEffects.CHROMATIC_ABERRATION, level.getGameTime());
     }
 }

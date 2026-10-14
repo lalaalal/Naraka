@@ -1,8 +1,11 @@
 package com.yummy.naraka.world.entity.ai.skill.origin_herobrine;
 
 import com.mojang.math.Axis;
+import com.yummy.naraka.NarakaPostEffects;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.SoundControlPacket;
+import com.yummy.naraka.util.FloatInterpolation;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
@@ -96,10 +99,7 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
                 level.playSound(null, mob.blockPosition(), SoundEvents.ENDER_EYE_DEATH, SoundSource.HOSTILE, 10, 0.55f);
             });
             runAt(90, () -> {
-                CustomPacketPayload packet = new NarakaClientboundEventPacket(
-                        NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY
-                );
-                NetworkManager.clientbound().send(mob.players(), packet);
+                NetworkManager.clientbound().send(mob.players(), SoundControlPacket.decrease(SoundSource.MUSIC, 20, FloatInterpolation.FAST_STEP_IN));
             });
 
             runAt(110, () -> {
@@ -109,9 +109,10 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
             });
 
             runAt(110, () -> {
+                NarakaSkillUtils.addPostEffect(mob.players(), NarakaPostEffects.MONOCHROME, NarakaPostEffects.CHROMATIC_ABERRATION);
                 CustomPacketPayload packet = new NarakaClientboundEventPacket(
                         NarakaClientboundEventPacket.Event.SHAKE_CAMERA,
-                        NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT
+                        NarakaClientboundEventPacket.Event.START_CHROMATIC_ABERRATION
                 );
                 NetworkManager.clientbound().send(mob.players(), packet);
                 NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 16,
@@ -121,6 +122,7 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
                 level.playSound(null, mob.blockPosition(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE, 10000.0F, 0.8F + mob.getRandom().nextFloat() * 0.2F);
                 level.playSound(null, mob.blockPosition(), SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.HOSTILE, 5.0F, 0.5F + mob.getRandom().nextFloat() * 0.2F);
             });
+            runAt(120, () -> NarakaSkillUtils.removePostEffect(mob.players(), NarakaPostEffects.MONOCHROME));
             run(between(110, 125), () -> {
                 CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.SHAKE_CAMERA);
                 NetworkManager.clientbound().send(mob.players(), packet);
@@ -137,6 +139,10 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
                 level.playSound(null, mob.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM, SoundSource.HOSTILE, 5.0F, 0.25f);
                 level.playSound(null, mob.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM, SoundSource.HOSTILE, 3.0F, 0.2f);
                 level.playSound(null, mob.blockPosition(), SoundEvents.WARDEN_DEATH, SoundSource.HOSTILE, 3.0F, 0.473f + 0.632f);
+            });
+
+            runAt(150, () -> {
+                NetworkManager.clientbound().send(mob.players(), SoundControlPacket.increase(SoundSource.MUSIC, 20, FloatInterpolation.LINEAR));
             });
         }
     }
@@ -164,11 +170,14 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
     protected void onLastTick(ServerLevel level) {
         if (narakaSword != null)
             narakaSword.discard();
+        NarakaSkillUtils.removePostEffect(mob.players(), NarakaPostEffects.CHROMATIC_ABERRATION);
     }
 
     @Override
     public void interrupt() {
         if (narakaSword != null)
             narakaSword.discard();
+        NarakaSkillUtils.removePostEffect(mob.players(), NarakaPostEffects.MONOCHROME, NarakaPostEffects.CHROMATIC_ABERRATION);
+        NetworkManager.clientbound().send(mob.players(), SoundControlPacket.increase(SoundSource.MUSIC, 10, FloatInterpolation.LINEAR));
     }
 }

@@ -1,28 +1,33 @@
 package com.yummy.naraka.mixin.client;
 
-import com.yummy.naraka.client.NarakaClientContext;
+import com.yummy.naraka.client.renderer.PostEffectUniformBuffer;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.resources.Identifier;
+import net.minecraft.client.renderer.state.GameRenderState;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.List;
 
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
     @Shadow
     @Final
-    private List<Identifier> requestedPostEffects;
+    private GameRenderState gameRenderState;
+    @Unique
+    private final PostEffectUniformBuffer postEffectUniformBuffer = new PostEffectUniformBuffer();
 
-    @Inject(method = "update", at = @At("RETURN"))
-    private void customPostEffects(CallbackInfo ci) {
-        if (NarakaClientContext.POST_EFFECT_TICK.getValue() > 0) {
-            Identifier newPostEffectId = NarakaClientContext.POST_EFFECT.getValue();
-            requestedPostEffects.add(newPostEffectId);
-        }
+    @Inject(method = "extract", at = @At("RETURN"))
+    private void extractPostEffectUniform(DeltaTracker deltaTracker, boolean advanceGameTime, CallbackInfo ci) {
+        float partialTicks = deltaTracker.getGameTimeDeltaPartialTick(false);
+        postEffectUniformBuffer.update(gameRenderState.levelRenderState.gameTime + partialTicks, gameRenderState.requestedPostEffects);
+    }
+
+    @Inject(method = "close", at = @At("RETURN"))
+    public void closePostEffectUniformBuffer(CallbackInfo ci) {
+        postEffectUniformBuffer.close();
     }
 }

@@ -7,6 +7,8 @@ import com.yummy.naraka.network.SyncAnimationPacket;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;
+import net.minecraft.network.protocol.game.ClientboundEntityPositionSyncPacket;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -231,6 +233,8 @@ public abstract class SkillUsingMob extends PathfinderMob {
     protected void customServerAiStep(ServerLevel level) {
         updateAnimationTick();
         skillManager.tick(level);
+        NetworkManager.clientbound().send(players(), ClientboundEntityPositionSyncPacket.of(this));
+        NetworkManager.clientbound().send(players(), new ClientboundSetEntityMotionPacket(this));
     }
 
     @Override
