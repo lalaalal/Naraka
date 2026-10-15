@@ -51,6 +51,7 @@ public class NarakaConfigScreen {
                 .addEntry(ConfigHelper.entry(NarakaConfig.CLIENT.cameraShakingStrength, entryBuilder::startFloatField).build())
                 .addEntry(ConfigHelper.entry(NarakaConfig.CLIENT.chromaticAberrationIntensity, entryBuilder::startFloatField).build())
                 .addEntry(ConfigHelper.entry(NarakaConfig.CLIENT.chromaticAberrationDistortion, entryBuilder::startFloatField).build())
+                .addEntry(ConfigHelper.entry(NarakaConfig.CLIENT.chromaticAberrationZoom, entryBuilder::startFloatField).build())
                 .addEntry(createOreColor(entryBuilder));
     }
 

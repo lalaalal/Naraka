@@ -74,6 +74,9 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addConfig(NarakaConfig.CLIENT.oreSeeThroughRange, "Ore See Through Range", "광물 투시 거리");
         addConfig(NarakaConfig.CLIENT.cameraShakingSpeed, "Camera Shaking Speed", "카메라 흔들림 속도");
         addConfig(NarakaConfig.CLIENT.cameraShakingStrength, "Camera Shaking Strength", "카메라 흔들림 강도");
+        addConfig(NarakaConfig.CLIENT.chromaticAberrationIntensity, "Chromatic Aberration Intensity", "색수차 효과 강도");
+        addConfig(NarakaConfig.CLIENT.chromaticAberrationDistortion, "Chromatic Aberration Distortion", "색수차 효과 왜곡");
+        addConfig(NarakaConfig.CLIENT.chromaticAberrationZoom, "Chromatic Aberration Zoom", "색수차 효과 줌");
         add(LanguageKey.CONFIG_ORE_COLOR, "Ore Outline Color", "광물 외곽선 색");
         add(LanguageKey.CONFIG_ORE_COLOR_WRONG, "Wrong Format!", "잘못된 형식입니다!");
 
