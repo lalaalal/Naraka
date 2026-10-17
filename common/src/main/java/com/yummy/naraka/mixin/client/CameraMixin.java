@@ -16,15 +16,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class CameraMixin {
     @Unique
     private ClientEvents.CameraSetup.@Nullable Context naraka$context;
+    @Shadow
+    private @Nullable Entity entity;
 
     @Shadow
     protected abstract void move(float forwards, float up, float right);
 
     @Shadow
     protected abstract void setRotation(float yRot, float xRot);
-
-    @Shadow
-    private @Nullable Entity entity;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void init(CallbackInfo ci) {

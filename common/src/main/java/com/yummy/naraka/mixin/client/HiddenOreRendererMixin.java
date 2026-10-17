@@ -39,24 +39,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = LevelRenderer.class)
 public abstract class HiddenOreRendererMixin {
+    @Unique
+    private static final BlockDisplayContext BLOCK_DISPLAY_CONTEXT = BlockDisplayContext.create();
     @Shadow
     @Final
     private SubmitNodeStorage submitNodeStorage;
-
     @Shadow
     @Final
     private Minecraft minecraft;
-
     @Shadow
     private @Nullable ClientLevel level;
-
     @Shadow
     @Final
     private LevelRenderState levelRenderState;
-
-    @Unique
-    private static final BlockDisplayContext BLOCK_DISPLAY_CONTEXT = BlockDisplayContext.create();
-
     @Unique
     @Nullable
     private BlockModelResolver naraka$blockModelResolver;

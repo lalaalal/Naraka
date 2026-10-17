@@ -31,10 +31,6 @@ public abstract class MusicManagerMixin implements BossMusicPlayer {
     private float currentGain;
     @Shadow
     private int nextSongDelay;
-
-    @Shadow
-    public abstract void stopPlaying();
-
     @Unique
     @Nullable
     private BossMusicSoundInstance naraka$bossMusic;
@@ -43,6 +39,9 @@ public abstract class MusicManagerMixin implements BossMusicPlayer {
     private BossMusicSoundInstance naraka$nextMusic;
     @Unique
     private boolean naraka$stopBossMusic = false;
+
+    @Shadow
+    public abstract void stopPlaying();
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void tickBossMusic(CallbackInfo ci) {

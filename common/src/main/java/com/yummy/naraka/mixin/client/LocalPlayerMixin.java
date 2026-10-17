@@ -12,12 +12,12 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(LocalPlayer.class)
 public abstract class LocalPlayerMixin extends LivingEntityMixin {
-    @Shadow
-    public abstract boolean isUnderWater();
-
     public LocalPlayerMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
+
+    @Shadow
+    public abstract boolean isUnderWater();
 
     @ModifyReturnValue(method = "isUnderWater", at = @At(value = "RETURN"))
     public boolean isUnderLiquid(boolean original) {

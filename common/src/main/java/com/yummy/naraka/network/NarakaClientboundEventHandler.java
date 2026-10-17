@@ -1,9 +1,10 @@
 package com.yummy.naraka.network;
 
+import com.yummy.naraka.NarakaPostEffects;
 import com.yummy.naraka.client.NarakaClientContext;
-import com.yummy.naraka.client.NarakaPostEffects;
 import com.yummy.naraka.client.gui.screen.AnimationControlScreen;
 import com.yummy.naraka.client.gui.screen.SkillControlScreen;
+import com.yummy.naraka.client.renderer.PostEffectUniformBuffer;
 import com.yummy.naraka.client.sound.BossMusicPlayer;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.sounds.NarakaMusics;
@@ -36,7 +37,8 @@ public class NarakaClientboundEventHandler {
             NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT, NarakaClientboundEventHandler::monochrome,
             NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT, NarakaClientboundEventHandler::ryoikiGrayEffect,
             NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT, NarakaClientboundEventHandler::ryoikiGreenEffect,
-            NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY, NarakaClientboundEventHandler::muteMusicCategory
+            NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY, NarakaClientboundEventHandler::muteMusicCategory,
+            NarakaClientboundEventPacket.Event.CHROMATIC_ABERRATION_EFFECT, NarakaClientboundEventHandler::chromaticAberrationEffect
     );
 
     private static final Music[] HEROBRINE_MUSIC = new Music[]{
@@ -132,5 +134,13 @@ public class NarakaClientboundEventHandler {
 
     private static void muteMusicCategory() {
         NarakaClientContext.MUTE_MUSIC_TICK.set(60);
+    }
+
+    private static void chromaticAberrationEffect() {
+        Level level = Minecraft.getInstance().level;
+        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.CHROMATIC_ABERRATION);
+        NarakaClientContext.POST_EFFECT_TICK.set(50);
+        if (level != null)
+            PostEffectUniformBuffer.getInstance().reset(NarakaPostEffects.CHROMATIC_ABERRATION, level.getGameTime());
     }
 }

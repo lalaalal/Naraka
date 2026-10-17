@@ -8,7 +8,10 @@ import com.yummy.naraka.client.init.DimensionSkyRendererRegistry;
 import com.yummy.naraka.client.renderer.DimensionTypeProvider;
 import com.yummy.naraka.client.renderer.HerobrineSkyRenderHelper;
 import com.yummy.naraka.config.NarakaConfig;
+import net.minecraft.client.Camera;
 import net.minecraft.client.CloudStatus;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.CloudRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LevelTargetBundle;
@@ -19,6 +22,7 @@ import net.minecraft.client.renderer.state.level.SkyRenderState;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -44,6 +48,23 @@ public abstract class LevelRendererMixin {
     @Shadow
     @Final
     private LevelTargetBundle targets;
+
+    @Shadow
+    private @Nullable ClientLevel level;
+
+    @Unique
+    private static boolean naraka$isHerobrineSkyEnabled() {
+        return NarakaClientContext.ENABLE_HEROBRINE_SKY.getValue() && !NarakaClientContext.SHADER_ENABLED.getValue();
+    }
+
+    /**
+     * To use gameTime in {@link GameRendererMixin#extractPostEffectUniform(DeltaTracker, boolean, CallbackInfo)}
+     */
+    @Inject(method = "extractLevel", at = @At("RETURN"))
+    private void storeGameTime(DeltaTracker deltaTracker, Camera camera, float deltaPartialTick, CallbackInfo ci) {
+        if (level != null)
+            levelRenderState.gameTime = level.getGameTime();
+    }
 
     @Inject(method = "addSkyPass", at = @At("RETURN"))
     private void renderDimensionSky(FrameGraphBuilder frame, CameraRenderState cameraState, GpuBufferSlice skyFog, CallbackInfo ci) {
@@ -90,10 +111,5 @@ public abstract class LevelRendererMixin {
     @Inject(method = "close", at = @At("TAIL"))
     private void closeCustomSkyRenderers(CallbackInfo ci) {
         DimensionSkyRendererRegistry.close();
-    }
-
-    @Unique
-    private static boolean naraka$isHerobrineSkyEnabled() {
-        return NarakaClientContext.ENABLE_HEROBRINE_SKY.getValue() && !NarakaClientContext.SHADER_ENABLED.getValue();
     }
 }

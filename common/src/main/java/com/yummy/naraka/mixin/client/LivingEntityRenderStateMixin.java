@@ -11,9 +11,9 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(LivingEntityRenderState.class)
 public abstract class LivingEntityRenderStateMixin implements PurifiedSoulFlameRenderState, HerobrineScarfRenderState {
     @Unique
-    private boolean naraka$displayNarkaFlame;
-    @Unique
     private final WavingScarfRenderState naraka$wavingScarfRenderState = new WavingScarfRenderState();
+    @Unique
+    private boolean naraka$displayNarkaFlame;
 
     @Override
     public boolean naraka$displayPurifiedSoulFlame() {

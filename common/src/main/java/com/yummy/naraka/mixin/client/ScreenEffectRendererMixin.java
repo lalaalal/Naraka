@@ -27,15 +27,14 @@ public abstract class ScreenEffectRendererMixin {
     @Shadow
     @Final
     private SpriteGetter sprites;
+    @Shadow
+    @Final
+    private MultiBufferSource bufferSource;
 
     @Shadow
     private static void renderFire(PoseStack poseStack, MultiBufferSource bufferSource, TextureAtlasSprite sprite) {
         throw new UnsupportedOperationException("Implemented via mixin");
     }
-
-    @Shadow
-    @Final
-    private MultiBufferSource bufferSource;
 
     @Inject(method = "renderScreenEffect", at = @At("RETURN"))
     private void renderPurifiedSoulFIre(boolean isFirstPerson, boolean isSleeping, float partialTicks, SubmitNodeCollector submitNodeCollector, boolean hideGui, CallbackInfo ci, @Local(name = "poseStack") PoseStack poseStack) {
