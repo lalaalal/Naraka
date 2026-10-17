@@ -7,7 +7,6 @@ import com.yummy.naraka.world.structure.JumboPart;
 import com.yummy.naraka.world.structure.JumboStructure;
 import com.yummy.naraka.world.structure.generation.NarakaStructureGenerationPointProviders;
 import com.yummy.naraka.world.structure.piece.NarakaStructurePieceFactories;
-import com.yummy.naraka.world.structure.protection.NarakaProtectionPredicates;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
@@ -56,7 +55,6 @@ public class NarakaStructures {
                                 .terrainAdapation(TerrainAdjustment.NONE)
                                 .build(),
                         "herobrine_sanctuary",
-                        NarakaProtectionPredicates.HEROBRINE_SANCTUARY_PROTECTION,
                         NarakaStructureGenerationPointProviders.HEROBRINE_SANCTUARY,
                         List.of(
                                 new JumboPart("main", 3, 3, 3, 48, HEROBRINE_SANCTUARY_MAIN_OFFSET),
@@ -76,7 +74,6 @@ public class NarakaStructures {
                                 .terrainAdapation(TerrainAdjustment.NONE)
                                 .build(),
                         "naraka_platform",
-                        NarakaProtectionPredicates.NOTHING,
                         NarakaStructureGenerationPointProviders.NARAKA_PLATFORM,
                         List.of(
                                 new JumboPart("main", 2, 1, 2, 25, BlockPos.ZERO)

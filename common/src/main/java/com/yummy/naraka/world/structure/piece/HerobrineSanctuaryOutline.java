@@ -3,9 +3,11 @@ package com.yummy.naraka.world.structure.piece;
 import com.yummy.naraka.data.worldgen.NarakaStructures;
 import com.yummy.naraka.tags.NarakaBlockTags;
 import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.world.structure.protection.NoFeatureArea;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -18,6 +20,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.storage.SavedDataStorage;
 
 public class HerobrineSanctuaryOutline extends StructurePiece {
     public static final float SPHERE_SIZE = 0.6f;
@@ -80,6 +83,10 @@ public class HerobrineSanctuaryOutline extends StructurePiece {
         int seaLevel = generator.getSeaLevel();
         generateSphere(level, processingBox, boundingBox, airBox.minY(), airBox.maxY(), seaLevel, Blocks.AIR.defaultBlockState(), NarakaBlockTags.HEROBRINE_SANCTUARY_AIR_WRAP_TARGETS, Blocks.DIRT);
         generateSphere(level, processingBox, boundingBox, lavaBox.minY(), lavaBox.maxY(), seaLevel, Blocks.LAVA.defaultBlockState(), NarakaBlockTags.HEROBRINE_SANCTUARY_LAVA_WRAP_TARGETS, Blocks.STONE);
+        ServerLevel serverLevel = level.getLevel();
+        SavedDataStorage storage = serverLevel.getDataStorage();
+        NoFeatureArea noFeatureArea = storage.computeIfAbsent(NoFeatureArea.TYPE);
+        storage.set(NoFeatureArea.TYPE, noFeatureArea.append(NoFeatureArea.Type.CYLINDER, boundingBox));
     }
 
     protected void generateSphere(WorldGenLevel level, BoundingBox processingBox, BoundingBox box, int yStart, int yEnd, int seaLevel, BlockState state, TagKey<Block> wrapTarget, Block defaultReplace) {

@@ -7,8 +7,6 @@ import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.world.structure.generation.StructureGenerationPointProvider;
 import com.yummy.naraka.world.structure.piece.JumboPiece;
 import com.yummy.naraka.world.structure.piece.StructurePieceFactory;
-import com.yummy.naraka.world.structure.protection.ProtectionPredicate;
-import com.yummy.naraka.world.structure.protection.StructureProtector;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
@@ -20,7 +18,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,9 +27,6 @@ public class JumboStructure extends Structure {
             instance -> instance.group(
                     settingsCodec(instance),
                     Codec.STRING.fieldOf("name").forGetter(structure -> structure.name),
-                    RegistryFixedCodec.create(NarakaRegistries.Keys.PROTECTION_PREDICATE)
-                            .fieldOf("protection_predicate")
-                            .forGetter(structure -> structure.protectionPredicate),
                     RegistryFixedCodec.create(NarakaRegistries.Keys.STRUCTURE_GENERATION_POINT_PROVIDER)
                             .fieldOf("generation_point_provider")
                             .forGetter(structure -> structure.generationPointProvider),
@@ -45,16 +39,14 @@ public class JumboStructure extends Structure {
     );
 
     protected final String name;
-    protected final Holder<ProtectionPredicate> protectionPredicate;
     protected final Holder<StructureGenerationPointProvider> generationPointProvider;
     protected final List<JumboPart> parts;
     protected final List<Holder<StructurePieceFactory>> customPieces;
     protected final BlockPos structureOffset;
 
-    public JumboStructure(StructureSettings settings, String name, Holder<ProtectionPredicate> protectionPredicate, Holder<StructureGenerationPointProvider> generationPointProvider, List<JumboPart> parts, List<Holder<StructurePieceFactory>> customPieces, BlockPos structureOffset) {
+    public JumboStructure(StructureSettings settings, String name, Holder<StructureGenerationPointProvider> generationPointProvider, List<JumboPart> parts, List<Holder<StructurePieceFactory>> customPieces, BlockPos structureOffset) {
         super(settings);
         this.name = name;
-        this.protectionPredicate = protectionPredicate;
         this.generationPointProvider = generationPointProvider;
         this.parts = parts;
         this.customPieces = customPieces;
@@ -81,7 +73,6 @@ public class JumboStructure extends Structure {
             }
             for (JumboPart part : parts)
                 addPart(templateManager, builder, part, basePos);
-            StructureProtector.addProtector(protectionPredicate, builder.getBoundingBox());
         }));
     }
 
@@ -94,7 +85,7 @@ public class JumboStructure extends Structure {
     }
 
     @Override
-    public @NotNull StructureType<?> type() {
+    public StructureType<?> type() {
         return NarakaStructureTypes.JUMBO.get();
     }
 }

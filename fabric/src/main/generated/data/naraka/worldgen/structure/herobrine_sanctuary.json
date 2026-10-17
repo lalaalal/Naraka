@@ -36,7 +36,6 @@
       "piece_size": 48
     }
   ],
-  "protection_predicate": "naraka:herobrine_sanctuary_protection",
   "spawn_overrides": {
     "ambient": {
       "bounding_box": "full",

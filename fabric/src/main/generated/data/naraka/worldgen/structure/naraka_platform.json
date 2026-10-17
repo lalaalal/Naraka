@@ -20,7 +20,6 @@
       "piece_size": 25
     }
   ],
-  "protection_predicate": "naraka:nothing",
   "spawn_overrides": {},
   "step": "surface_structures",
   "structure_offset": [
