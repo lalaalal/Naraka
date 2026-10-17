@@ -100,5 +100,10 @@
     "sounds": [
       "naraka:parrying_base"
     ]
+  },
+  "parrying_danger": {
+    "sounds": [
+      "naraka:parrying_danger"
+    ]
   }
 }

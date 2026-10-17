@@ -2,9 +2,11 @@ package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
-import com.yummy.naraka.network.NarakaClientboundEventPacket;
-import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.sounds.NarakaSoundEvents;
+import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationIdentifiers;
@@ -14,6 +16,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.TickRateManager;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
@@ -27,13 +30,15 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     private boolean succeed;
     private float originalHealth;
     private float hurtDamage;
+    private float originalTickRate;
     private TickRateManager tickRateManager;
 
     public ParryingSkill(AbstractHerobrine mob) {
         super(LOCATION, mob, 60, 300, 100, 5);
         alwaysAttack = true;
-        alwaysHurt = true;
         tickRateManager = mob.level().tickRateManager();
+        shieldDamage = 2;
+        shieldCooldown = 20;
     }
 
     @Override
@@ -43,11 +48,17 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
         originalHealth = mob.getHealth();
         hurtDamage = 0;
         tickRateManager = mob.level().tickRateManager();
+        originalTickRate = tickRateManager.tickrate();
     }
 
     @Override
     protected float calculateDamage(LivingEntity target) {
-        return hurtDamage;
+        return Math.min(hurtDamage, target.getMaxHealth() * 0.4f);
+    }
+
+    @Override
+    protected DamageSource getDamageSource() {
+        return NarakaDamageSources.parrying(mob);
     }
 
     @Override
@@ -89,6 +100,10 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
         return succeedTick + (duration - PARRYING_DURATION);
     }
 
+    private boolean isDamageCritical(LivingEntity target) {
+        return hurtDamage > target.getMaxHealth() * 0.33f;
+    }
+
     private void handleSucceed(ServerLevel level, @Nullable LivingEntity target) {
         if (target == null)
             return;
@@ -98,20 +113,21 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
             level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.HOSTILE, 1, 1.75f);
             level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.HOSTILE, 1, 2);
             level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.HOSTILE, 1, 1.89f);
-            if (target instanceof ServerPlayer serverPlayer) {
-                NetworkManager.clientbound().send(serverPlayer,
-                        new NarakaClientboundEventPacket(
-                                NarakaClientboundEventPacket.Event.CHROMATIC_ABERRATION_EFFECT
-                        )
-                );
+            level.playSound(null, mob, NarakaSoundEvents.PARRYING.value(), SoundSource.HOSTILE, 2, 0.75f);
+            level.playSound(null, mob, NarakaSoundEvents.PARRYING_BASE.value(), SoundSource.HOSTILE, 0.3f, 2.5f);
+            level.playSound(null, mob, NarakaSoundEvents.PARRYING_BASE.value(), SoundSource.HOSTILE, 0.2f, 3.5f);
+            if (isDamageCritical(target)) {
+                level.playSound(null, target, NarakaSoundEvents.PARRYING_DANGER.value(), SoundSource.HOSTILE, 5f, 0.5f);
             }
+            if (target instanceof ServerPlayer serverPlayer)
+                NarakaSkillUtils.sendHurtChromaticAberration(serverPlayer);
         });
         runAt(tickCount(2), () -> hurtEntity(level, target));
         runAt(tickCount(2), () -> level.sendParticles(NarakaFlameParticleOption.NECTARIUM, mob.getX(), mob.getY() + 1, mob.getZ(), 15, 1, 0.3, 1, 0.1));
-        runBetween(tickCount(7), tickCount(15), () -> {
+        run(isDamageCritical(target) && between(tickCount(7), tickCount(15)), () -> {
             float delta = Math.clamp((tickCount - tickCount(7)) / 5f, 0f, 1f);
-            float tickRate = NarakaUtils.interpolate(delta, 7.5f, 20, NarakaUtils::fastStepOut);
-            tickRateManager.setTickRate(Math.clamp(tickRate, 1, 20));
+            float tickRate = NarakaUtils.interpolate(delta, originalTickRate * 0.375f, originalTickRate, NarakaUtils::fastStepOut);
+            tickRateManager.setTickRate(Math.clamp(tickRate, 1, originalTickRate));
         });
         runAt(tickCount(20), () -> moveToTarget(target, false, 1.5));
         runBetween(tickCount(20), tickCount(30), () -> level.sendParticles(NarakaFlameParticleOption.NECTARIUM, mob.getX(), mob.getY() + 1, mob.getZ(), 15, 2, 0.3, 2, 0.1));
@@ -127,12 +143,13 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     @Override
     protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         mob.stigmatizeEntity(level, target);
+        NarakaEntityUtils.disableAndHurtShield(target, 60, 0);
     }
 
     @Override
     public void interrupt() {
         super.interrupt();
         mob.setAlpha(0xff);
-        tickRateManager.setTickRate(20);
+        tickRateManager.setTickRate(originalTickRate);
     }
 }
