@@ -8,6 +8,8 @@ import com.yummy.naraka.event.EventInitializer;
 import com.yummy.naraka.init.*;
 import com.yummy.naraka.network.ClientboundNetworkManager;
 import com.yummy.naraka.network.ServerboundNetworkManager;
+import com.yummy.naraka.util.JobManager;
+import net.minecraft.server.MinecraftServer;
 
 import java.util.ServiceLoader;
 
@@ -26,6 +28,8 @@ public class NarakaServices {
     public static final EntityDataSerializerRegistry.Registrar ENTITY_DATA_SERIALIZER_REGISTRY = load(EntityDataSerializerRegistry.Registrar.class);
     public static final PotionBrewRecipeRegistry.Registrar POTION_BREWING_REGISTRY = load(PotionBrewRecipeRegistry.Registrar.class);
     public static final SpawnPlacementRegistry.Registrar SPAWN_PLACEMENT_REGISTRY = load(SpawnPlacementRegistry.Registrar.class);
+
+    public static final JobManager<MinecraftServer> SERVER_JOB_MANAGER = new JobManager<>();
 
     public static <T> T load(Class<T> clazz) {
         return ServiceLoader.load(clazz, NarakaServices.class.getClassLoader())

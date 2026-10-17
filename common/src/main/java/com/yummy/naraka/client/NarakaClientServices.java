@@ -2,6 +2,8 @@ package com.yummy.naraka.client;
 
 import com.yummy.naraka.client.event.ClientEventInitializer;
 import com.yummy.naraka.client.init.*;
+import com.yummy.naraka.util.JobManager;
+import net.minecraft.client.Minecraft;
 
 import java.util.ServiceLoader;
 
@@ -20,6 +22,8 @@ public final class NarakaClientServices {
     public static final ScreenFactoryRegistry.Registrar SCREEN_FACTORY_REGISTRY = load(ScreenFactoryRegistry.Registrar.class);
     public static final SpecialModelRendererRegistry.Registrar SPECIAL_MODEL_RENDERER_REGISTRY = load(SpecialModelRendererRegistry.Registrar.class);
     public static final BuiltinResourcePackRegistry.Registrar BUILTIN_RESOURCE_PACK_REGISTRY = load(BuiltinResourcePackRegistry.Registrar.class);
+
+    public static final JobManager<Minecraft> CLIENT_JOB_MANAGER = new JobManager<>();
 
     private NarakaClientServices() {
     }
