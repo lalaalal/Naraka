@@ -74,6 +74,9 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addConfig(NarakaConfig.CLIENT.oreSeeThroughRange, "Ore See Through Range", "광물 투시 거리");
         addConfig(NarakaConfig.CLIENT.cameraShakingSpeed, "Camera Shaking Speed", "카메라 흔들림 속도");
         addConfig(NarakaConfig.CLIENT.cameraShakingStrength, "Camera Shaking Strength", "카메라 흔들림 강도");
+        addConfig(NarakaConfig.CLIENT.chromaticAberrationIntensity, "Chromatic Aberration Intensity", "색수차 효과 강도");
+        addConfig(NarakaConfig.CLIENT.chromaticAberrationDistortion, "Chromatic Aberration Distortion", "색수차 효과 왜곡");
+        addConfig(NarakaConfig.CLIENT.chromaticAberrationZoom, "Chromatic Aberration Zoom", "색수차 효과 줌");
         add(LanguageKey.CONFIG_ORE_COLOR, "Ore Outline Color", "광물 외곽선 색");
         add(LanguageKey.CONFIG_ORE_COLOR_WRONG, "Wrong Format!", "잘못된 형식입니다!");
 
@@ -449,6 +452,8 @@ public class DefaultLanguageProvider extends NarakaLanguageProviders {
         addDamageType(NarakaDamageTypes.NARAKA_FIREBALL, "%1$s was blown up by %2$s's Naraka Fireball", "%1$s이(가) %2$s이(가) 던진 나락 화염구에 폭발했습니다");
         addDamageType(NarakaDamageTypes.PURIFIED_SOUL_FIRE, "%1$s was consumed by black flames", "%1$s이(가) 검은 불 속에서 타 죽었습니다");
         addDamageType(NarakaDamageTypes.SOUL_ATTACK, "%2$s executed %1$s", "%2$s이(가) %1$s을(를) 처형했습니다");
+        addDamageType(NarakaDamageTypes.EARTH_SHOCK, "%1$s was crushed to pieces by %2$s's Earth Shock attack", "%2$s의 강력한 지면 파쇄 공격에 맞아 %1$s의 온몸이 으스러졌습니다");
+        addDamageType(NarakaDamageTypes.PARRYING, "%1$s took the full brunt of their own attack from %2$s", "%1$s이(가) %2$s에게 자신의 공격을 그대로 돌려받았습니다");
 
         add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_AMETHYST), "Challenger's Blessing", "도전자의 축복");
         add(LanguageKey.mobEffect(NarakaMobEffects.CHALLENGERS_BLESSING_COPPER), "Challenger's Blessing", "도전자의 축복");

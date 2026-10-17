@@ -6,16 +6,19 @@ import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.*;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -39,7 +42,12 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
 
     @Override
     protected float calculateDamage(LivingEntity target) {
-        return mob.getAttackDamage() + target.getMaxHealth() * 0.5f;
+        return target.getMaxHealth() * 0.67f;
+    }
+
+    @Override
+    protected DamageSource getDamageSource() {
+        return NarakaDamageSources.earthShock(mob);
     }
 
     @Override
@@ -226,5 +234,8 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
     @Override
     protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         mob.stigmatizeEntity(level, target);
+        level.playSound(null, target, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
+        if (target instanceof ServerPlayer serverPlayer)
+            NarakaSkillUtils.sendHurtChromaticAberration(serverPlayer);
     }
 }
