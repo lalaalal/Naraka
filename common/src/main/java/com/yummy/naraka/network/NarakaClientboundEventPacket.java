@@ -37,7 +37,6 @@ public record NarakaClientboundEventPacket(List<Event> events) implements Custom
         MONOCHROME_EFFECT,
         RYOIKI_GRAY_EFFECT,
         RYOIKI_GREEN_EFFECT,
-        MUTE_MUSIC_CATEGORY,
         CHROMATIC_ABERRATION_EFFECT;
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);

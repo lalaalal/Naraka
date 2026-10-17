@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity.motion;
 
 import com.mojang.math.Axis;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.util.Interpolation;
 import com.yummy.naraka.world.entity.data.MotionData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;

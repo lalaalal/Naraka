@@ -37,7 +37,6 @@ public class NarakaClientboundEventHandler {
             NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT, NarakaClientboundEventHandler::monochrome,
             NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT, NarakaClientboundEventHandler::ryoikiGrayEffect,
             NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT, NarakaClientboundEventHandler::ryoikiGreenEffect,
-            NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY, NarakaClientboundEventHandler::muteMusicCategory,
             NarakaClientboundEventPacket.Event.CHROMATIC_ABERRATION_EFFECT, NarakaClientboundEventHandler::chromaticAberrationEffect
     );
 
@@ -130,10 +129,6 @@ public class NarakaClientboundEventHandler {
     private static void ryoikiGreenEffect() {
         NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.RYOIKI_GREEN);
         NarakaClientContext.POST_EFFECT_TICK.set(50);
-    }
-
-    private static void muteMusicCategory() {
-        NarakaClientContext.MUTE_MUSIC_TICK.set(60);
     }
 
     private static void chromaticAberrationEffect() {

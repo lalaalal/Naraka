@@ -1,5 +1,6 @@
 package com.yummy.naraka.world.entity.motion;
 
+import com.yummy.naraka.util.Interpolation;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Quaternionfc;
