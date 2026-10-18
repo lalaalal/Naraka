@@ -2,7 +2,7 @@ package com.yummy.naraka.mixin;
 
 import com.yummy.naraka.event.EntityEvents;
 import com.yummy.naraka.network.NetworkManager;
-import com.yummy.naraka.network.SyncEntityDataPacket;
+import com.yummy.naraka.network.packet.SyncEntityDataPacket;
 import com.yummy.naraka.world.entity.data.EntityData;
 import com.yummy.naraka.world.entity.data.EntityDataExtension;
 import com.yummy.naraka.world.entity.data.EntityDataType;

@@ -3,7 +3,7 @@ package com.yummy.naraka.world.entity;
 import com.mojang.logging.LogUtils;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.network.NetworkManager;
-import com.yummy.naraka.network.SyncAnimationPacket;
+import com.yummy.naraka.network.packet.SyncAnimationPacket;
 import com.yummy.naraka.world.entity.ai.attribute.NarakaAttributeModifiers;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import com.yummy.naraka.world.entity.ai.skill.SkillManager;

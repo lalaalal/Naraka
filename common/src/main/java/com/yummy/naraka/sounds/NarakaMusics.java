@@ -1,7 +1,7 @@
 package com.yummy.naraka.sounds;
 
 import com.yummy.naraka.client.sound.BossMusicPlayer;
-import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
+import com.yummy.naraka.network.packet.NarakaClientboundEntityEventPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.MusicManager;
 import net.minecraft.core.Holder;

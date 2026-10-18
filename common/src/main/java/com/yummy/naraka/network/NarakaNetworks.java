@@ -1,5 +1,11 @@
 package com.yummy.naraka.network;
 
+import com.yummy.naraka.network.handler.NarakaClientboundEventHandler;
+import com.yummy.naraka.network.handler.PostEffectConfigHandler;
+import com.yummy.naraka.network.handler.SoundControlHandler;
+import com.yummy.naraka.network.handler.SyncProgressOverlayExtensionHandler;
+import com.yummy.naraka.network.packet.*;
+
 public class NarakaNetworks {
     public static void initialize() {
         NetworkManager.clientbound().define(SyncEntityDataPacket.TYPE, SyncEntityDataPacket.CODEC);

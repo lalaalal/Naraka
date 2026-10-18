@@ -1,7 +1,8 @@
-package com.yummy.naraka.network;
+package com.yummy.naraka.network.packet;
 
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.world.entity.data.EntityData;
 import com.yummy.naraka.world.entity.data.EntityDataExtension;
 import io.netty.buffer.ByteBuf;

@@ -1,6 +1,7 @@
-package com.yummy.naraka.network;
+package com.yummy.naraka.network.packet;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.world.entity.Afterimage;
 import com.yummy.naraka.world.entity.AfterimageEntity;
 import io.netty.buffer.ByteBuf;

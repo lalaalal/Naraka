@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.entity.data;
 
-import com.yummy.naraka.network.AddBeamEffectPacket;
 import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.packet.AddBeamEffectPacket;
 import com.yummy.naraka.world.entity.BeamEffect;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;

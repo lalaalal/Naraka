@@ -1,6 +1,8 @@
-package com.yummy.naraka.network;
+package com.yummy.naraka.network.handler;
 
 import com.yummy.naraka.client.renderer.ProgressOverlayExtensionRenderer;
+import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.packet.SyncProgressOverlayExtensionPacket;
 import net.minecraft.client.Minecraft;
 
 import java.util.Map;

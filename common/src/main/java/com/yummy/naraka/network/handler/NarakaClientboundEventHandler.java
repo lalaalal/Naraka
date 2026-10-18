@@ -1,10 +1,13 @@
-package com.yummy.naraka.network;
+package com.yummy.naraka.network.handler;
 
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.gui.screen.AnimationControlScreen;
 import com.yummy.naraka.client.gui.screen.SkillControlScreen;
 import com.yummy.naraka.client.sound.BossMusicPlayer;
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.packet.NarakaClientboundEntityEventPacket;
+import com.yummy.naraka.network.packet.NarakaClientboundEventPacket;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.client.Minecraft;

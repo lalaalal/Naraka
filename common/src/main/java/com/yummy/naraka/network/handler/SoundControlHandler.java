@@ -1,8 +1,10 @@
-package com.yummy.naraka.network;
+package com.yummy.naraka.network.handler;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaClientServices;
 import com.yummy.naraka.client.sound.CategoryGainAccess;
+import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.packet.SoundControlPacket;
 import com.yummy.naraka.util.JobManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sounds.SoundManager;

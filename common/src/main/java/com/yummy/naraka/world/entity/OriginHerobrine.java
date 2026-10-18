@@ -3,7 +3,7 @@ package com.yummy.naraka.world.entity;
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.network.NetworkManager;
-import com.yummy.naraka.network.SyncProgressOverlayExtensionPacket;
+import com.yummy.naraka.network.packet.SyncProgressOverlayExtensionPacket;
 import com.yummy.naraka.world.NarakaDimensions;
 import com.yummy.naraka.world.block.NarakaBlocks;
 import com.yummy.naraka.world.block.NarakaPortalBlock;

@@ -4,7 +4,7 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
+import com.yummy.naraka.network.packet.NarakaClientboundEntityEventPacket;
 import com.yummy.naraka.references.NarakaItemIds;
 import com.yummy.naraka.tags.NarakaBlockTags;
 import com.yummy.naraka.world.damagesource.NarakaDamageTypes;

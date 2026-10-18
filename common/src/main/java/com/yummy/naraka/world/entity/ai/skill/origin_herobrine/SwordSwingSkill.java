@@ -2,9 +2,9 @@ package com.yummy.naraka.world.entity.ai.skill.origin_herobrine;
 
 import com.mojang.math.Axis;
 import com.yummy.naraka.NarakaPostEffects;
-import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
-import com.yummy.naraka.network.SoundControlPacket;
+import com.yummy.naraka.network.packet.NarakaClientboundEventPacket;
+import com.yummy.naraka.network.packet.SoundControlPacket;
 import com.yummy.naraka.util.FloatInterpolation;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
