@@ -3,8 +3,8 @@ package com.yummy.naraka.mixin.client;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.framegraph.FrameGraphBuilder;
 import com.mojang.renderpearl.api.pipeline.BindGroupLayout;
-import com.yummy.naraka.client.renderer.PostEffectUniformBuffer;
 import com.yummy.naraka.client.renderer.PostEffectUniformExtension;
+import com.yummy.naraka.client.renderer.UniformLayoutRegistry;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.PostChainConfig;
 import net.minecraft.client.renderer.PostPass;
@@ -26,7 +26,7 @@ public abstract class PostChainMixin {
 
     @Inject(method = "createPass", at = @At(value = "INVOKE", target = "Ljava/util/Map;keySet()Ljava/util/Set;"))
     private static void definePostEffectUniforms(TextureManager textureManager, PostChainConfig.Pass config, Identifier id, CallbackInfoReturnable<PostPass> cir, @Local(name = "bindGroupLayoutBuilder") BindGroupLayout.Builder bindGroupLayoutBuilder) {
-        PostEffectUniformBuffer.getInstance().defineUniforms(id, bindGroupLayoutBuilder);
+        UniformLayoutRegistry.getInstance().defineUniform(id, bindGroupLayoutBuilder);
     }
 
     @Inject(method = "addToFrame", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/PostPass;addToFrame(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Ljava/util/Map;Lcom/mojang/renderpearl/api/buffers/GpuBufferSlice;)V"))

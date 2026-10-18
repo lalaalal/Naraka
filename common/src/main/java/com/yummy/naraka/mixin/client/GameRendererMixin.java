@@ -1,6 +1,6 @@
 package com.yummy.naraka.mixin.client;
 
-import com.yummy.naraka.client.renderer.PostEffectUniformBuffer;
+import com.yummy.naraka.client.renderer.UniformLayoutRegistry;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.state.GameRenderState;
@@ -18,16 +18,16 @@ public abstract class GameRendererMixin {
     @Final
     private GameRenderState gameRenderState;
     @Unique
-    private final PostEffectUniformBuffer postEffectUniformBuffer = new PostEffectUniformBuffer();
+    private final UniformLayoutRegistry uniformLayoutRegistry = new UniformLayoutRegistry();
 
     @Inject(method = "extract", at = @At("RETURN"))
     private void extractPostEffectUniform(DeltaTracker deltaTracker, boolean advanceGameTime, CallbackInfo ci) {
         float partialTicks = deltaTracker.getGameTimeDeltaPartialTick(false);
-        postEffectUniformBuffer.update(gameRenderState.levelRenderState.gameTime + partialTicks, gameRenderState.requestedPostEffects);
+        uniformLayoutRegistry.extract(gameRenderState.levelRenderState.gameTime + partialTicks, gameRenderState.requestedPostEffects);
     }
 
     @Inject(method = "close", at = @At("RETURN"))
-    public void closePostEffectUniformBuffer(CallbackInfo ci) {
-        postEffectUniformBuffer.close();
+    public void closePostEffectUniformLayout(CallbackInfo ci) {
+        uniformLayoutRegistry.close();
     }
 }

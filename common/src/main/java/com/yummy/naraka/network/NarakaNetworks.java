@@ -11,6 +11,7 @@ public class NarakaNetworks {
         NetworkManager.clientbound().define(AddBeamEffectPacket.TYPE, AddBeamEffectPacket.CODEC);
         NetworkManager.clientbound().define(SyncProgressOverlayExtensionPacket.TYPE, SyncProgressOverlayExtensionPacket.CODEC);
         NetworkManager.clientbound().define(SoundControlPacket.TYPE, SoundControlPacket.CODEC);
+        NetworkManager.clientbound().define(PostEffectConfigPacket.TYPE, PostEffectConfigPacket.CODEC);
 
         NetworkManager.serverbound().define(SkillRequestPacket.TYPE, SkillRequestPacket.CODEC);
 
@@ -27,6 +28,7 @@ public class NarakaNetworks {
         NetworkManager.clientbound().register(AddBeamEffectPacket.TYPE, AddBeamEffectPacket.CODEC, AddBeamEffectPacket::handle);
         NetworkManager.clientbound().register(SyncProgressOverlayExtensionPacket.TYPE, SyncProgressOverlayExtensionPacket.CODEC, SyncProgressOverlayExtensionHandler::handle);
         NetworkManager.clientbound().register(SoundControlPacket.TYPE, SoundControlPacket.CODEC, SoundControlHandler::handle);
+        NetworkManager.clientbound().register(PostEffectConfigPacket.TYPE, PostEffectConfigPacket.CODEC, PostEffectConfigHandler::handle);
     }
 
     public static void initializeServer() {

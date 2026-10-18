@@ -1,8 +1,9 @@
 package com.yummy.naraka.util;
 
 import com.yummy.naraka.NarakaPostEffects;
-import com.yummy.naraka.network.NarakaClientboundEventPacket;
+import com.yummy.naraka.core.posteffects.ChromaticAberrationConfig;
 import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.PostEffectConfigPacket;
 import com.yummy.naraka.network.SoundControlPacket;
 import com.yummy.naraka.service.NarakaServices;
 import net.minecraft.core.BlockPos;
@@ -117,13 +118,13 @@ public class NarakaSkillUtils {
     }
 
     public static void sendHurtChromaticAberration(ServerPlayer player) {
+        sendHurtChromaticAberration(player, ChromaticAberrationConfig.DEFAULT);
+    }
+
+    public static void sendHurtChromaticAberration(ServerPlayer player, ChromaticAberrationConfig config) {
         player.addPostEffect(NarakaPostEffects.CHROMATIC_ABERRATION);
-        NetworkManager.clientbound().send(player,
-                new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.START_CHROMATIC_ABERRATION)
-        );
-        NetworkManager.clientbound().send(player,
-                new SoundControlPacket(SoundSource.MASTER, 0.1f, 10, FloatInterpolation.FAST_STEP_IN)
-        );
+        NetworkManager.clientbound().send(player, new PostEffectConfigPacket(config));
+        NetworkManager.clientbound().send(player, new SoundControlPacket(SoundSource.MASTER, 0.1f, 10, FloatInterpolation.FAST_STEP_IN));
         NarakaServices.SERVER_JOB_MANAGER.register(
                 JobManager.createSimple(
                         10,
@@ -133,17 +134,9 @@ public class NarakaSkillUtils {
         );
         NarakaServices.SERVER_JOB_MANAGER.register(
                 JobManager.createSimple(
-                        50,
+                        Mth.ceil(config.duration()),
                         _ -> player.removePostEffect(NarakaPostEffects.CHROMATIC_ABERRATION)
                 )
-        );
-
-    }
-
-    private static void stopChromaticAberration(ServerPlayer player) {
-        player.removePostEffect(NarakaPostEffects.CHROMATIC_ABERRATION);
-        NetworkManager.clientbound().send(player,
-                SoundControlPacket.increase(SoundSource.MASTER, 20, FloatInterpolation.LINEAR)
         );
     }
 }

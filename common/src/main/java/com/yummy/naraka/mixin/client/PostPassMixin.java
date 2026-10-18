@@ -5,8 +5,8 @@ import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.resource.ResourceHandle;
 import com.mojang.renderpearl.api.buffers.GpuBufferSlice;
 import com.mojang.renderpearl.api.commands.RenderPass;
-import com.yummy.naraka.client.renderer.PostEffectUniformBuffer;
 import com.yummy.naraka.client.renderer.PostEffectUniformExtension;
+import com.yummy.naraka.client.renderer.UniformLayoutRegistry;
 import net.minecraft.client.renderer.PostPass;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.Nullable;
@@ -27,7 +27,7 @@ public abstract class PostPassMixin implements PostEffectUniformExtension {
     @Inject(method = "lambda$addToFrame$1", at = @At(value = "INVOKE", target = "Lcom/mojang/renderpearl/api/commands/RenderPass;draw(IIII)V"))
     private void addCustomUniforms(ResourceHandle<RenderTarget> outputHandle, GpuBufferSlice shaderOrthoMatrix, Map<Identifier, ResourceHandle<RenderTarget>> targets, CallbackInfo ci, @Local(name = "renderPass") RenderPass renderPass) {
         if (naraka$postEffectId != null)
-            PostEffectUniformBuffer.getInstance().setUniform(naraka$postEffectId, renderPass);
+            UniformLayoutRegistry.getInstance().setUniform(naraka$postEffectId, renderPass);
     }
 
     @Override

@@ -8,9 +8,7 @@ public class NarakaClientConfig extends StaticConfiguration {
     public final ConfigValue<Color> shadowHerobrineColor = define("shadow_herobrine_color", Color.of(0x000000));
 
     public final ConfigValue<Boolean> playHerobrineBossMusic = define("play_herobrine_boss_music", true);
-    public final ConfigValue<Float> chromaticAberrationIntensity = define("chromatic_aberration_intensity", 2.5f);
-    public final ConfigValue<Float> chromaticAberrationDistortion = define("chromatic_aberration_distortion", 2f);
-    public final ConfigValue<Float> chromaticAberrationZoom = define("chromatic_aberration_zoom", 0.75f);
+    public final ConfigValue<Float> chromaticAberrationMultiplier = define("chromatic_aberration_multiplier", 1f);
 
     public final ConfigValue<Integer> oreSeeThroughRange = define("ore_see_through_range", 20);
     public final ConfigValue<Boolean> enableOreSeeThrough = define("enable_ore_see_through", true);
