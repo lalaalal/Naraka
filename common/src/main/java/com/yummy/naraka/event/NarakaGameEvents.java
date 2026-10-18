@@ -3,6 +3,7 @@ package com.yummy.naraka.event;
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
+import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.packet.NarakaClientboundEventPacket;
 import com.yummy.naraka.service.NarakaServices;
@@ -39,11 +40,17 @@ public final class NarakaGameEvents {
         ServerEvents.SERVER_TICK_POST.register(NarakaGameEvents::onEndTick);
 
         EntityEvents.PLAYER_JOIN.register(NarakaGameEvents::syncPlayerEntityData);
-        EntityEvents.LIVING_DEATH.register(NarakaGameEvents::useDeathCount);
+        EntityEvents.PLAYER_RESPAWN.register(NarakaGameEvents::removeUniformPostEffects);
         EntityEvents.EQUIPMENT_CHANGE.register(NarakaGameEvents::handleReinforcementEffect);
         EntityEvents.EQUIPMENT_CHANGE.register(NarakaGameEvents::handleEquipmentSetEffect);
 
         LootEvents.MODIFY_LOOT_TABLE.register(NarakaGameEvents::modifyLootTable);
+    }
+
+    private static void removeUniformPostEffects(ServerPlayer player) {
+        NarakaRegistries.POST_EFFECT_TYPE.forEach(type -> {
+            player.removePostEffect(type.id());
+        });
     }
 
     private static void syncPlayerEntityData(ServerPlayer player) {

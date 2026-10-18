@@ -1,4 +1,4 @@
-package com.yummy.naraka.client.renderer;
+package com.yummy.naraka.client.renderer.uniform;
 
 import net.minecraft.resources.Identifier;
 

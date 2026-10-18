@@ -15,7 +15,7 @@ public class PostEffectType<T extends PostEffectConfig> {
     public static final StreamCodec<RegistryFriendlyByteBuf, PostEffectType<?>> STREAM_CODEC = ByteBufCodecs.registry(NarakaRegistries.Keys.POST_EFFECT_TYPE);
 
     private final Identifier id;
-    private final MapCodec<T> layoutCodec;
+    private final MapCodec<T> codec;
     private final StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec;
     private final Class<T> classType;
 
@@ -23,9 +23,9 @@ public class PostEffectType<T extends PostEffectConfig> {
         return NarakaRegistries.POST_EFFECT_TYPE.getOptional(id);
     }
 
-    public PostEffectType(Identifier id, MapCodec<T> layoutCodec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec, Class<T> classType) {
+    public PostEffectType(Identifier id, MapCodec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec, Class<T> classType) {
         this.id = id;
-        this.layoutCodec = layoutCodec;
+        this.codec = codec;
         this.streamCodec = streamCodec;
         this.classType = classType;
     }
@@ -34,8 +34,8 @@ public class PostEffectType<T extends PostEffectConfig> {
         return id;
     }
 
-    public MapCodec<T> layoutCodec() {
-        return layoutCodec;
+    public MapCodec<T> codec() {
+        return codec;
     }
 
     public StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec() {

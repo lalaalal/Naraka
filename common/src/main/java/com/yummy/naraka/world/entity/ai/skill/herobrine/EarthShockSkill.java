@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
-import com.yummy.naraka.NarakaPostEffects;
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
+import com.yummy.naraka.core.posteffects.NarakaPostEffects;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;

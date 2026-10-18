@@ -3,7 +3,7 @@
 
 uniform sampler2D InSampler;
 
-layout(std140) uniform AberrationConfig {
+layout(std140) uniform ChromaticAberrationConfig {
     uniform float time;
     uniform float intensity;
     uniform float distortion;

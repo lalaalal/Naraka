@@ -1,8 +1,9 @@
 package com.yummy.naraka.util;
 
 import com.yummy.naraka.NarakaMod;
-import com.yummy.naraka.NarakaPostEffects;
 import com.yummy.naraka.core.posteffects.ChromaticAberrationConfig;
+import com.yummy.naraka.core.posteffects.NarakaPostEffects;
+import com.yummy.naraka.core.posteffects.RyoikiTenkaiConfig;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.packet.PostEffectConfigPacket;
 import com.yummy.naraka.network.packet.SoundControlPacket;
@@ -118,6 +119,17 @@ public class NarakaSkillUtils {
         }
     }
 
+    public static void sendRyoikiTenkai(ServerPlayer player, RyoikiTenkaiConfig config) {
+        Identifier postEffectId = config.ryoikiType().get().id();
+        player.addPostEffect(NarakaPostEffects.CHROMATIC_ABERRATION);
+        NetworkManager.clientbound().send(player, new PostEffectConfigPacket(ChromaticAberrationConfig.DISTORTION_ONLY));
+        registerPostEffectRemoveJob(player, NarakaPostEffects.CHROMATIC_ABERRATION, 50);
+
+        player.addPostEffect(postEffectId);
+        NetworkManager.clientbound().send(player, new PostEffectConfigPacket(config));
+        registerPostEffectRemoveJob(player, postEffectId, config.restoreStartTime() + config.restoreDuration());
+    }
+
     public static void sendHurtChromaticAberration(ServerPlayer player) {
         sendHurtChromaticAberration(player, ChromaticAberrationConfig.DEFAULT);
     }
@@ -134,11 +146,15 @@ public class NarakaSkillUtils {
                                 .send(player, SoundControlPacket.increase(SoundSource.MASTER, 20, FloatInterpolation.LINEAR))
                 )
         );
+        registerPostEffectRemoveJob(player, NarakaPostEffects.CHROMATIC_ABERRATION, config.duration());
+    }
+
+    private static void registerPostEffectRemoveJob(ServerPlayer player, Identifier id, float duration) {
         NarakaServices.SERVER_JOB_MANAGER.register(
-                NarakaMod.identifier(player.getId() + ".post_effect.chromatic_aberration.remove"),
+                NarakaMod.identifier(player.getId() + ".post_effect." + id.getPath() + ".remove"),
                 JobManager.createSimple(
-                        Mth.ceil(config.duration()),
-                        _ -> player.removePostEffect(NarakaPostEffects.CHROMATIC_ABERRATION)
+                        Mth.ceil(duration),
+                        _ -> player.removePostEffect(id)
                 )
         );
     }

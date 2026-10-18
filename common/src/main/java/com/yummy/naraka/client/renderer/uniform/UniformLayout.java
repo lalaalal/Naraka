@@ -1,4 +1,4 @@
-package com.yummy.naraka.client.renderer;
+package com.yummy.naraka.client.renderer.uniform;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.renderpearl.api.buffers.GpuBuffer;

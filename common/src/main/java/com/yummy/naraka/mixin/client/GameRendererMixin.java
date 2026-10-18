@@ -1,8 +1,9 @@
 package com.yummy.naraka.mixin.client;
 
-import com.yummy.naraka.client.renderer.UniformLayoutRegistry;
+import com.yummy.naraka.client.renderer.uniform.UniformLayoutRegistry;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.state.GameRenderState;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,8 +23,9 @@ public abstract class GameRendererMixin {
 
     @Inject(method = "extract", at = @At("RETURN"))
     private void extractPostEffectUniform(DeltaTracker deltaTracker, boolean advanceGameTime, CallbackInfo ci) {
-        float partialTicks = deltaTracker.getGameTimeDeltaPartialTick(false);
-        uniformLayoutRegistry.extract(gameRenderState.levelRenderState.gameTime + partialTicks, gameRenderState.requestedPostEffects);
+        AvatarRenderState avatarRenderState = gameRenderState.levelRenderState.playerRenderState.avatarRenderState;
+        if (avatarRenderState != null)
+            uniformLayoutRegistry.extract(avatarRenderState.ageInTicks, gameRenderState.requestedPostEffects);
     }
 
     @Inject(method = "close", at = @At("RETURN"))

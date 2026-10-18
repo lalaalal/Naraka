@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.entity.ai.skill.origin_herobrine;
 
 import com.mojang.math.Axis;
-import com.yummy.naraka.NarakaPostEffects;
+import com.yummy.naraka.core.posteffects.NarakaPostEffects;
 import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.network.packet.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.packet.SoundControlPacket;
@@ -177,7 +177,7 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
     public void interrupt() {
         if (narakaSword != null)
             narakaSword.discard();
-        NarakaSkillUtils.removePostEffect(mob.players(), NarakaPostEffects.MONOCHROME, NarakaPostEffects.CHROMATIC_ABERRATION);
+        NarakaSkillUtils.removePostEffect(mob.players(), NarakaPostEffects.MONOCHROME);
         NetworkManager.clientbound().send(mob.players(), SoundControlPacket.increase(SoundSource.MUSIC, 10, FloatInterpolation.LINEAR));
     }
 }

@@ -1,4 +1,4 @@
-package com.yummy.naraka.client.renderer;
+package com.yummy.naraka.client.renderer.uniform;
 
 import com.mojang.renderpearl.api.commands.RenderPass;
 import com.mojang.renderpearl.api.pipeline.BindGroupLayout;
@@ -36,6 +36,8 @@ public class UniformLayoutRegistry implements AutoCloseable {
 
     public UniformLayoutRegistry() {
         add(new ChromaticAberrationUniformLayout());
+        add(RyoikiTenkaiUniformLayout.green());
+        add(RyoikiTenkaiUniformLayout.gray());
 
         instance = this;
     }

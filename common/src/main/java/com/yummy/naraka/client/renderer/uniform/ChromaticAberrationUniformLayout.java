@@ -1,4 +1,4 @@
-package com.yummy.naraka.client.renderer;
+package com.yummy.naraka.client.renderer.uniform;
 
 import com.mojang.blaze3d.buffers.Std140Builder;
 import com.mojang.blaze3d.buffers.Std140SizeCalculator;
@@ -26,7 +26,7 @@ public class ChromaticAberrationUniformLayout extends UniformLayout<ChromaticAbe
     private float zoom;
 
     public ChromaticAberrationUniformLayout() {
-        super(NarakaPostEffectTypes.CHROMATIC_ABERRATION.get(), "AberrationConfig", UBO_SIZE);
+        super(NarakaPostEffectTypes.CHROMATIC_ABERRATION.get(), "ChromaticAberrationConfig", UBO_SIZE);
     }
 
     @Override

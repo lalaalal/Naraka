@@ -2,6 +2,7 @@ package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.core.posteffects.ChromaticAberrationConfig;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
@@ -120,7 +121,7 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
                 level.playSound(null, target, NarakaSoundEvents.PARRYING_DANGER.value(), SoundSource.HOSTILE, 5f, 0.5f);
             }
             if (target instanceof ServerPlayer serverPlayer)
-                NarakaSkillUtils.sendHurtChromaticAberration(serverPlayer);
+                NarakaSkillUtils.sendHurtChromaticAberration(serverPlayer, ChromaticAberrationConfig.STRONG);
         });
         runAt(tickCount(2), () -> hurtEntity(level, target));
         runAt(tickCount(2), () -> level.sendParticles(NarakaFlameParticleOption.NECTARIUM, mob.getX(), mob.getY() + 1, mob.getZ(), 15, 1, 0.3, 1, 0.1));
