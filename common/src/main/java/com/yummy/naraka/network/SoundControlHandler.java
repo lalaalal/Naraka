@@ -1,5 +1,6 @@
 package com.yummy.naraka.network;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.client.NarakaClientServices;
 import com.yummy.naraka.client.sound.CategoryGainAccess;
 import com.yummy.naraka.util.JobManager;
@@ -12,7 +13,7 @@ public class SoundControlHandler {
         minecraft.execute(() -> {
             CategoryGainAccess categoryGainAccess = (CategoryGainAccess) minecraft.getSoundManager();
             float startVolume = categoryGainAccess.naraka$getCategoryGain(packet.source());
-            NarakaClientServices.CLIENT_JOB_MANAGER.register(new SoundControlJob(packet, startVolume));
+            NarakaClientServices.CLIENT_JOB_MANAGER.register(NarakaMod.identifier("volume." + packet.source().getName()), new SoundControlJob(packet, startVolume));
         });
     }
 

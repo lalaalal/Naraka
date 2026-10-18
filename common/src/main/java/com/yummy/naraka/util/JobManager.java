@@ -1,11 +1,15 @@
 package com.yummy.naraka.util;
 
-import java.util.ArrayList;
-import java.util.List;
+import net.minecraft.resources.Identifier;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class JobManager<T> {
-    private final List<Job<T>> jobs = new ArrayList<>();
+    private final Map<Identifier, Job<T>> jobs = new HashMap<>();
 
     public static <T> Job<T> createSimple(final int waitTick, Consumer<T> action) {
         return new Job<>() {
@@ -25,15 +29,18 @@ public class JobManager<T> {
         };
     }
 
-    public void register(Job<T> job) {
-        jobs.add(job);
+    public void register(Identifier id, Job<T> job) {
+        jobs.put(id, job);
     }
 
     public void tick(T instance) {
-        jobs.removeIf(job -> {
+        Set<Identifier> removal = new HashSet<>();
+        jobs.forEach((id, job) -> {
             job.tick(instance);
-            return job.finished();
+            if (job.finished())
+                removal.add(id);
         });
+        removal.forEach(jobs::remove);
     }
 
     public interface Job<T> {

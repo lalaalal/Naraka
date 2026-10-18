@@ -1,5 +1,6 @@
 package com.yummy.naraka.util;
 
+import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.NarakaPostEffects;
 import com.yummy.naraka.core.posteffects.ChromaticAberrationConfig;
 import com.yummy.naraka.network.NetworkManager;
@@ -126,6 +127,7 @@ public class NarakaSkillUtils {
         NetworkManager.clientbound().send(player, new PostEffectConfigPacket(config));
         NetworkManager.clientbound().send(player, new SoundControlPacket(SoundSource.MASTER, 0.1f, 10, FloatInterpolation.FAST_STEP_IN));
         NarakaServices.SERVER_JOB_MANAGER.register(
+                NarakaMod.identifier(player.getId() + ".volume.master.increase"),
                 JobManager.createSimple(
                         10,
                         _ -> NetworkManager.clientbound()
@@ -133,6 +135,7 @@ public class NarakaSkillUtils {
                 )
         );
         NarakaServices.SERVER_JOB_MANAGER.register(
+                NarakaMod.identifier(player.getId() + ".post_effect.chromatic_aberration.remove"),
                 JobManager.createSimple(
                         Mth.ceil(config.duration()),
                         _ -> player.removePostEffect(NarakaPostEffects.CHROMATIC_ABERRATION)
