@@ -35,7 +35,7 @@ public record ChromaticAberrationConfig(float duration, float intensity, float d
     public static final ChromaticAberrationConfig DISTORTION_ONLY = new ChromaticAberrationConfig(50, 0, 3, 0.9f);
 
     @Override
-    public PostEffectType<?> type() {
-        return NarakaPostEffectTypes.CHROMATIC_ABERRATION.value();
+    public DynamicPostEffectType<?> type() {
+        return NarakaDynamicPostEffectTypes.CHROMATIC_ABERRATION.value();
     }
 }

@@ -4,14 +4,14 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.renderpearl.api.buffers.GpuBuffer;
 import com.mojang.renderpearl.api.commands.RenderPass;
 import com.mojang.renderpearl.api.device.GpuDevice;
+import com.yummy.naraka.core.posteffects.DynamicPostEffectType;
 import com.yummy.naraka.core.posteffects.PostEffectConfig;
-import com.yummy.naraka.core.posteffects.PostEffectType;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
 
 public abstract class UniformLayout<T extends PostEffectConfig> implements AutoCloseable {
-    private final PostEffectType<T> type;
+    private final DynamicPostEffectType<T> type;
     private final String uniformName;
     private final GpuBuffer buffer;
 
@@ -22,13 +22,13 @@ public abstract class UniformLayout<T extends PostEffectConfig> implements AutoC
         return device.createBuffer(() -> name + " UBO ", 136, size);
     }
 
-    public UniformLayout(PostEffectType<T> type, String uniformName, long size) {
+    public UniformLayout(DynamicPostEffectType<T> type, String uniformName, long size) {
         this.type = type;
         this.uniformName = uniformName;
         this.buffer = createBuffer(uniformName, size);
     }
 
-    public PostEffectType<T> type() {
+    public DynamicPostEffectType<T> type() {
         return type;
     }
 

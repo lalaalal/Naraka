@@ -37,25 +37,25 @@ public record RyoikiTenkaiConfig(Type ryoikiType, float restoreStartTime,
     }
 
     @Override
-    public PostEffectType<RyoikiTenkaiConfig> type() {
+    public DynamicPostEffectType<RyoikiTenkaiConfig> type() {
         return ryoikiType.get();
     }
 
     @SuppressWarnings({"FunctionalExpressionCanBeFolded", "Convert2MethodRef"})
     public enum Type implements StringRepresentable {
-        GREEN(() -> NarakaPostEffectTypes.RYOIKI_GREEN.get()),
-        GRAY(() -> NarakaPostEffectTypes.RYOIKI_GRAY.get());
+        GREEN(() -> NarakaDynamicPostEffectTypes.RYOIKI_GREEN.get()),
+        GRAY(() -> NarakaDynamicPostEffectTypes.RYOIKI_GRAY.get());
 
         public static final Codec<Type> CODEC = StringRepresentable.fromEnum(Type::values);
         public static final StreamCodec<ByteBuf, Type> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
-        private final Supplier<PostEffectType<RyoikiTenkaiConfig>> typeSupplier;
+        private final Supplier<DynamicPostEffectType<RyoikiTenkaiConfig>> typeSupplier;
 
-        Type(Supplier<PostEffectType<RyoikiTenkaiConfig>> typeSupplier) {
+        Type(Supplier<DynamicPostEffectType<RyoikiTenkaiConfig>> typeSupplier) {
             this.typeSupplier = typeSupplier;
         }
 
-        public PostEffectType<RyoikiTenkaiConfig> get() {
+        public DynamicPostEffectType<RyoikiTenkaiConfig> get() {
             return typeSupplier.get();
         }
 

@@ -51,6 +51,7 @@
     "LivingEntityMixin",
     "PlayerListMixin",
     "PlayerMixin",
+    "PostEffectCommandMixin",
     "ServerEntityMixin",
     "ServerPlayerGameModeMixin",
     "TickRateManagerMixin",

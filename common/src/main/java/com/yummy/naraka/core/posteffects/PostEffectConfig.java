@@ -5,8 +5,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 
 public interface PostEffectConfig {
-    Codec<PostEffectConfig> CODEC = PostEffectType.CODEC.dispatch(PostEffectConfig::type, PostEffectType::codec);
-    StreamCodec<RegistryFriendlyByteBuf, PostEffectConfig> STREAM_CODEC = PostEffectType.STREAM_CODEC.dispatch(PostEffectConfig::type, PostEffectType::streamCodec);
+    Codec<PostEffectConfig> CODEC = DynamicPostEffectType.CODEC.dispatch(PostEffectConfig::type, DynamicPostEffectType::codec);
+    StreamCodec<RegistryFriendlyByteBuf, PostEffectConfig> STREAM_CODEC = DynamicPostEffectType.STREAM_CODEC.dispatch(PostEffectConfig::type, DynamicPostEffectType::streamCodec);
 
-    PostEffectType<?> type();
+    DynamicPostEffectType<?> type();
 }

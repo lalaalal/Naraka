@@ -152,7 +152,7 @@ public class NarakaSkillUtils {
         player.sendPostEffects();
     }
 
-    private static void registerPostEffectRemoveJob(ServerPlayer player, Identifier id, float duration) {
+    public static void registerPostEffectRemoveJob(ServerPlayer player, Identifier id, float duration) {
         NarakaServices.SERVER_JOB_MANAGER.register(
                 NarakaMod.identifier(player.getId() + ".post_effect." + id.getPath() + ".remove"),
                 JobManager.createSimple(

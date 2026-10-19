@@ -4,7 +4,7 @@ import com.mojang.blaze3d.buffers.Std140Builder;
 import com.mojang.blaze3d.buffers.Std140SizeCalculator;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.posteffects.ChromaticAberrationConfig;
-import com.yummy.naraka.core.posteffects.NarakaPostEffectTypes;
+import com.yummy.naraka.core.posteffects.NarakaDynamicPostEffectTypes;
 import com.yummy.naraka.util.NarakaUtils;
 import net.minecraft.util.Mth;
 import org.lwjgl.system.MemoryStack;
@@ -26,7 +26,7 @@ public class ChromaticAberrationUniformLayout extends UniformLayout<ChromaticAbe
     private float zoom;
 
     public ChromaticAberrationUniformLayout() {
-        super(NarakaPostEffectTypes.CHROMATIC_ABERRATION.get(), "ChromaticAberrationConfig", UBO_SIZE);
+        super(NarakaDynamicPostEffectTypes.CHROMATIC_ABERRATION.get(), "ChromaticAberrationConfig", UBO_SIZE);
     }
 
     @Override

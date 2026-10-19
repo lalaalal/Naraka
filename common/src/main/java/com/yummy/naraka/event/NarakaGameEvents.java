@@ -48,7 +48,7 @@ public final class NarakaGameEvents {
     }
 
     private static void removeUniformPostEffects(ServerPlayer player) {
-        NarakaRegistries.POST_EFFECT_TYPE.forEach(type -> {
+        NarakaRegistries.DYNAMIC_POST_EFFECT_TYPE.forEach(type -> {
             player.removePostEffect(type.id());
         });
     }
