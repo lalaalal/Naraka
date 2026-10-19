@@ -32,7 +32,7 @@ public record ChromaticAberrationConfig(float duration, float intensity, float d
     public static final ChromaticAberrationConfig ZERO = new ChromaticAberrationConfig(0, 0, 0, 0);
     public static final ChromaticAberrationConfig DEFAULT = new ChromaticAberrationConfig(50, 2.5f, 2, 0.75f);
     public static final ChromaticAberrationConfig STRONG = new ChromaticAberrationConfig(75, 2.5f, 2, 0.75f);
-    public static final ChromaticAberrationConfig DISTORTION_ONLY = new ChromaticAberrationConfig(50, 0, 2, 0.75f);
+    public static final ChromaticAberrationConfig DISTORTION_ONLY = new ChromaticAberrationConfig(50, 0, 3, 0.9f);
 
     @Override
     public PostEffectType<?> type() {

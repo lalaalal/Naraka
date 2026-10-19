@@ -128,6 +128,8 @@ public class NarakaSkillUtils {
         player.addPostEffect(postEffectId);
         NetworkManager.clientbound().send(player, new PostEffectConfigPacket(config));
         registerPostEffectRemoveJob(player, postEffectId, config.restoreStartTime() + config.restoreDuration());
+
+        player.sendPostEffects();
     }
 
     public static void sendHurtChromaticAberration(ServerPlayer player) {
@@ -147,6 +149,7 @@ public class NarakaSkillUtils {
                 )
         );
         registerPostEffectRemoveJob(player, NarakaPostEffects.CHROMATIC_ABERRATION, config.duration());
+        player.sendPostEffects();
     }
 
     private static void registerPostEffectRemoveJob(ServerPlayer player, Identifier id, float duration) {
