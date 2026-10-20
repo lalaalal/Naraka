@@ -8,13 +8,15 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 
+import java.util.function.Supplier;
+
 public class NarakaDynamicPostEffectTypes {
     public static final HolderProxy<DynamicPostEffectType<?>, DynamicPostEffectType<ChromaticAberrationConfig>> CHROMATIC_ABERRATION = register(
             NarakaPostEffects.CHROMATIC_ABERRATION,
             ChromaticAberrationConfig.MAP_CODEC,
             ChromaticAberrationConfig.STREAM_CODEC,
             ChromaticAberrationConfig.class,
-            ChromaticAberrationConfig.DEFAULT
+            () -> ChromaticAberrationConfig.DEFAULT
     );
 
     public static final HolderProxy<DynamicPostEffectType<?>, DynamicPostEffectType<RyoikiTenkaiConfig>> RYOIKI_GREEN = register(
@@ -22,7 +24,7 @@ public class NarakaDynamicPostEffectTypes {
             RyoikiTenkaiConfig.MAP_CODEC,
             RyoikiTenkaiConfig.STREAM_CODEC,
             RyoikiTenkaiConfig.class,
-            RyoikiTenkaiConfig.green(50, 10)
+            () -> RyoikiTenkaiConfig.green(50, 10)
     );
 
     public static final HolderProxy<DynamicPostEffectType<?>, DynamicPostEffectType<RyoikiTenkaiConfig>> RYOIKI_GRAY = register(
@@ -30,10 +32,10 @@ public class NarakaDynamicPostEffectTypes {
             RyoikiTenkaiConfig.MAP_CODEC,
             RyoikiTenkaiConfig.STREAM_CODEC,
             RyoikiTenkaiConfig.class,
-            RyoikiTenkaiConfig.gray(50, 10)
+            () -> RyoikiTenkaiConfig.gray(50, 10)
     );
 
-    private static <T extends PostEffectConfig> HolderProxy<DynamicPostEffectType<?>, DynamicPostEffectType<T>> register(Identifier id, MapCodec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec, Class<T> type, T defaultConfig) {
+    private static <T extends PostEffectConfig> HolderProxy<DynamicPostEffectType<?>, DynamicPostEffectType<T>> register(Identifier id, MapCodec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec, Class<T> type, Supplier<T> defaultConfig) {
         return RegistryProxy.register(NarakaRegistries.Keys.DYNAMIC_POST_EFFECT_TYPE, id, () -> new DynamicPostEffectType<>(id, codec, streamCodec, type, defaultConfig));
     }
 

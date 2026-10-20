@@ -9,6 +9,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public class DynamicPostEffectType<T extends PostEffectConfig> {
     public static final Codec<DynamicPostEffectType<?>> CODEC = NarakaRegistries.DYNAMIC_POST_EFFECT_TYPE.byNameCodec();
@@ -18,13 +19,13 @@ public class DynamicPostEffectType<T extends PostEffectConfig> {
     private final MapCodec<T> codec;
     private final StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec;
     private final Class<T> classType;
-    private final T defaultConfig;
+    private final Supplier<T> defaultConfig;
 
     public static Optional<DynamicPostEffectType<?>> fromId(Identifier id) {
         return NarakaRegistries.DYNAMIC_POST_EFFECT_TYPE.getOptional(id);
     }
 
-    public DynamicPostEffectType(Identifier id, MapCodec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec, Class<T> classType, T defaultConfig) {
+    public DynamicPostEffectType(Identifier id, MapCodec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec, Class<T> classType, Supplier<T> defaultConfig) {
         this.id = id;
         this.codec = codec;
         this.streamCodec = streamCodec;
@@ -45,7 +46,7 @@ public class DynamicPostEffectType<T extends PostEffectConfig> {
     }
 
     public T defaultConfig() {
-        return defaultConfig;
+        return defaultConfig.get();
     }
 
     public T cast(PostEffectConfig config) {
