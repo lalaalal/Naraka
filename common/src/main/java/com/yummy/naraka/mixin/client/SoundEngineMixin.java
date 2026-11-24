@@ -1,50 +1,37 @@
 package com.yummy.naraka.mixin.client;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.yummy.naraka.client.NarakaClientContext;
-import com.yummy.naraka.client.sound.VolumeController;
-import net.minecraft.client.Options;
-import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.client.sounds.ChannelAccess;
+import com.yummy.naraka.client.sound.CategoryGainAccess;
 import net.minecraft.client.sounds.SoundEngine;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Mixin(SoundEngine.class)
-public abstract class SoundEngineMixin implements VolumeController {
-    @Shadow
-    private boolean loaded;
-
-    @Shadow
-    @Final
-    private Map<SoundInstance, ChannelAccess.ChannelHandle> instanceToChannel;
-
-    @Shadow
-    @Final
-    private Options options;
+public abstract class SoundEngineMixin implements CategoryGainAccess {
+    @Unique
+    private final Map<SoundSource, Float> naraka$customVolumes = new HashMap<>();
 
     @Override
-    public void naraka$setVolume(SoundInstance soundInstance) {
-        float maxVolume = options.getSoundSourceVolume(soundInstance.getSource());
-        float volume = Mth.lerp(soundInstance.getVolume(), 0, maxVolume);
-        if (loaded) {
-            ChannelAccess.ChannelHandle handle = instanceToChannel.get(soundInstance);
-            if (handle != null)
-                handle.execute(channel -> channel.setVolume(volume));
-        }
+    public float naraka$getCategoryGain(SoundSource source) {
+        return naraka$customVolumes.computeIfAbsent(source, key -> 1f);
     }
 
-    @ModifyExpressionValue(method = "getVolume", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;getSoundSourceVolume(Lnet/minecraft/sounds/SoundSource;)F"))
-    private float overrideMusicVolume(float original, @Local(argsOnly = true) SoundSource soundSource) {
-        if (soundSource == SoundSource.MUSIC && NarakaClientContext.MUSIC_VOLUME.getValue() < 1)
-            return original * NarakaClientContext.MUSIC_VOLUME.getValue();
-        return original;
+    @Inject(method = "updateCategoryVolume", at = @At("HEAD"))
+    private void updateCustomVolume(SoundSource category, float volume, CallbackInfo ci) {
+        naraka$customVolumes.put(category, volume);
+    }
+
+    @ModifyReturnValue(method = "calculateVolume(FLnet/minecraft/sounds/SoundSource;)F", at = @At("RETURN"))
+    private float checkMasterGain(float original, @Local(argsOnly = true) SoundSource source) {
+        return original * naraka$customVolumes.computeIfAbsent(source, key -> 1f)
+                * naraka$customVolumes.computeIfAbsent(SoundSource.MASTER, key -> 1f);
     }
 }

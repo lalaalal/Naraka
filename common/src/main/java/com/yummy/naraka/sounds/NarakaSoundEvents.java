@@ -26,6 +26,9 @@ public class NarakaSoundEvents {
     public static final Holder<SoundEvent> DIAMOND_GOLEM_SWIPE = register("diamond_golem.swipe");
 
     public static final Holder<SoundEvent> RYOIKI_TENKAI = register("ryoiki_tenkai");
+    public static final Holder<SoundEvent> PARRYING = register("parrying");
+    public static final Holder<SoundEvent> PARRYING_BASE = register("parrying_base");
+    public static final Holder<SoundEvent> PARRYING_DANGER = register("parrying_danger");
 
     private static Holder<SoundEvent> register(String name) {
         ResourceLocation location = NarakaMod.location(name);
