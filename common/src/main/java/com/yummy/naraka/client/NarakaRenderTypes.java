@@ -2,7 +2,6 @@ package com.yummy.naraka.client;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.yummy.naraka.config.NarakaConfig;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -60,8 +59,6 @@ public final class NarakaRenderTypes {
     }
 
     public static RenderType emissive() {
-        if (NarakaClientContext.SHADER_ENABLED.getValue() && !NarakaConfig.CLIENT.disableEmissiveRenderType.getValue())
-            return RenderType.entityTranslucentEmissive(NarakaTextures.AREA_EFFECT);
         return RenderType.lightning();
     }
 

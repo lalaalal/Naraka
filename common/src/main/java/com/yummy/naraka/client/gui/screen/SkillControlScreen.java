@@ -3,7 +3,7 @@ package com.yummy.naraka.client.gui.screen;
 import com.yummy.naraka.client.gui.components.LocationList;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.network.NetworkManager;
-import com.yummy.naraka.network.SkillRequestPacket;
+import com.yummy.naraka.network.packet.SkillRequestPacket;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 
 public class SkillControlScreen extends SkillUsingMobControlScreen {

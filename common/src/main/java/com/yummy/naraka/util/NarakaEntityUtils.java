@@ -1,7 +1,7 @@
 package com.yummy.naraka.util;
 
 import com.yummy.naraka.network.NetworkManager;
-import com.yummy.naraka.network.SyncPlayerMovementPacket;
+import com.yummy.naraka.network.packet.SyncPlayerMovementPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerLevel;

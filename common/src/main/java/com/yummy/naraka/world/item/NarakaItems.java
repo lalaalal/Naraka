@@ -3,7 +3,7 @@ package com.yummy.naraka.world.item;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.registries.HolderProxy;
 import com.yummy.naraka.core.registries.RegistryProxy;
-import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
+import com.yummy.naraka.network.packet.NarakaClientboundEntityEventPacket;
 import com.yummy.naraka.references.NarakaItemIds;
 import com.yummy.naraka.world.entity.NarakaEntityTypes;
 import com.yummy.naraka.world.item.tooltip.NarakaItemTooltip;

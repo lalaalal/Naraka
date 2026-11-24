@@ -1,10 +1,11 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.network.NarakaClientboundEventPacket;
-import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.core.posteffects.NarakaPostEffects;
+import com.yummy.naraka.core.posteffects.RyoikiTenkaiConfig;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
@@ -12,13 +13,9 @@ import com.yummy.naraka.world.entity.AreaEffect;
 import com.yummy.naraka.world.entity.Herobrine;
 import com.yummy.naraka.world.entity.ShinyEffect;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
-import com.yummy.naraka.world.entity.data.EntityDataHelper;
-import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
-import com.yummy.naraka.world.entity.data.StigmaHelper;
-import com.yummy.naraka.world.entity.data.StunHelper;
+import com.yummy.naraka.world.entity.data.*;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.ServerTickRateManager;
 import net.minecraft.server.level.ServerLevel;
@@ -31,12 +28,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
     public static final ResourceLocation LOCATION = createLocation("final_herobrine.ryoiki_tenkai");
+    private static final int TICK_FREEZING_DURATION = 50;
+
     private final List<LivingEntity> caughtEntities = new ArrayList<>();
 
     public RyoikiTenkaiSkill(Herobrine mob) {
@@ -95,13 +93,16 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         }
     }
 
+    private RyoikiTenkaiConfig createRyoikiConfig(boolean hasStigma) {
+        if (hasStigma)
+            return RyoikiTenkaiConfig.green(TICK_FREEZING_DURATION, 10);
+        return RyoikiTenkaiConfig.gray(TICK_FREEZING_DURATION, 10);
+    }
+
     private void sendEffectToPlayers(ServerLevel level) {
         for (ServerPlayer player : mob.players()) {
             boolean hasStigma = StigmaHelper.hasStigma(player);
-            NarakaClientboundEventPacket.Event event = hasStigma ? NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT : NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT;
-            final CustomPacketPayload packet = new NarakaClientboundEventPacket(event);
-            NetworkManager.clientbound().send(player, packet);
-
+            NarakaSkillUtils.sendRyoikiTenkai(player, createRyoikiConfig(hasStigma));
             float pitch = hasStigma ? 0.001f : 2f;
             level.playSound(null, player, NarakaSoundEvents.RYOIKI_TENKAI.value(), SoundSource.HOSTILE, 2, pitch);
         }
@@ -112,7 +113,7 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         runAt(0, () -> createField(level, target));
         runAt(30, () -> checkPlayerPositions(level));
         runBetween(31, 35, () -> spawnShinySparkAndStigmatize(level));
-        runAt(50, () -> {
+        runAt(TICK_FREEZING_DURATION, () -> {
             if (tickRateManager != null)
                 tickRateManager.setFrozen(isFrozenBefore);
         });
@@ -176,5 +177,6 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         if (tickRateManager != null)
             tickRateManager.setFrozen(isFrozenBefore);
         EntityDataHelper.removeEntityData(mob, NarakaEntityDataTypes.KEEP_UNFROZEN.get());
+        DynamicPostEffectHelper.removeDynamicPostEffects(mob.players(), NarakaPostEffects.RYOIKI_GRAY, NarakaPostEffects.RYOIKI_GREEN);
     }
 }
