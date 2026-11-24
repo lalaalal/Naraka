@@ -1,0 +1,101 @@
+package com.yummy.naraka.client.renderer.uniform;
+
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.shaders.UniformType;
+import com.mojang.blaze3d.systems.RenderPass;
+import com.yummy.naraka.core.posteffects.DynamicPostEffectType;
+import com.yummy.naraka.core.posteffects.PostEffectConfig;
+import net.minecraft.resources.Identifier;
+import org.jspecify.annotations.Nullable;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * {@link UniformLayoutRegistry#extract(float, Collection)} currently active post effects have {@link DynamicPostEffectType}
+ * and bind uniforms by {@link UniformLayoutRegistry#setUniform(Identifier, RenderPass)}
+ *
+ * @see com.yummy.naraka.mixin.client.PostChainMixin
+ * @see com.yummy.naraka.mixin.client.PostPassMixin
+ */
+public class UniformLayoutRegistry implements AutoCloseable {
+    private final Map<DynamicPostEffectType<?>, UniformLayout<?>> uniformLayouts = new HashMap<>();
+
+    @Nullable
+    private static UniformLayoutRegistry instance = null;
+
+    /**
+     * To easily access from Mixin
+     */
+    public static UniformLayoutRegistry getInstance() {
+        if (instance == null)
+            throw new IllegalStateException("UniformLayoutRegistry is not initialized");
+        return instance;
+    }
+
+    public UniformLayoutRegistry() {
+        add(new ChromaticAberrationUniformLayout());
+        add(RyoikiTenkaiUniformLayout.green());
+        add(RyoikiTenkaiUniformLayout.gray());
+
+        instance = this;
+    }
+
+    private void add(UniformLayout<?> uniformLayout) {
+        this.uniformLayouts.put(uniformLayout.type(), uniformLayout);
+    }
+
+    public void setConfig(long gameTime, PostEffectConfig config) {
+        if (uniformLayouts.containsKey(config.type())) {
+            uniformLayouts.get(config.type()).setConfig(gameTime, config);
+        }
+    }
+
+    public void extract(float gameTime, Collection<Identifier> postEffects) {
+        for (Identifier postEffectId : postEffects) {
+            DynamicPostEffectType.fromId(postEffectId)
+                    .ifPresent(type -> this.extract(type, gameTime));
+        }
+    }
+
+    private void extract(DynamicPostEffectType<?> type, float gameTime) {
+        if (uniformLayouts.containsKey(type)) {
+            UniformLayout<?> uniformLayout = uniformLayouts.get(type);
+            uniformLayout.extract(gameTime);
+        }
+    }
+
+    /**
+     * @param passId Identifier of the RenderPipeline contains an index of the PostPass
+     */
+    public void defineUniform(Identifier passId, RenderPipeline.Builder pipelineBuilder) {
+        Identifier postEffectId = passId.withPath(path -> path.split("/")[0]);
+        DynamicPostEffectType.fromId(postEffectId)
+                .ifPresent(type -> this.defineUniform(type, pipelineBuilder));
+    }
+
+    public void defineUniform(DynamicPostEffectType<?> type, RenderPipeline.Builder pipelineBuilder) {
+        if (uniformLayouts.containsKey(type)) {
+            pipelineBuilder.withUniform(uniformLayouts.get(type).uniformName(), UniformType.UNIFORM_BUFFER);
+        }
+    }
+
+    public void setUniform(Identifier postEffectId, RenderPass renderPass) {
+        DynamicPostEffectType.fromId(postEffectId)
+                .ifPresent(type -> this.setUniform(type, renderPass));
+    }
+
+    public void setUniform(DynamicPostEffectType<?> type, RenderPass renderPass) {
+        if (uniformLayouts.containsKey(type)) {
+            UniformLayout<?> uniformLayout = uniformLayouts.get(type);
+            uniformLayout.setUniform(renderPass);
+        }
+    }
+
+    @Override
+    public void close() {
+        for (UniformLayout<?> uniform : uniformLayouts.values())
+            uniform.close();
+    }
+}

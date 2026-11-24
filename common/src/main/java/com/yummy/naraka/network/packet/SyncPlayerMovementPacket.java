@@ -1,6 +1,7 @@
-package com.yummy.naraka.network;
+package com.yummy.naraka.network.packet;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.network.NetworkManager;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;

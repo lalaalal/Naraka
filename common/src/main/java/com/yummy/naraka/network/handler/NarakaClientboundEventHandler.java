@@ -1,12 +1,13 @@
-package com.yummy.naraka.network;
+package com.yummy.naraka.network.handler;
 
-import com.yummy.naraka.NarakaPostEffects;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.gui.screen.AnimationControlScreen;
 import com.yummy.naraka.client.gui.screen.SkillControlScreen;
-import com.yummy.naraka.client.renderer.PostEffectUniformBuffer;
 import com.yummy.naraka.client.sound.BossMusicPlayer;
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.packet.NarakaClientboundEntityEventPacket;
+import com.yummy.naraka.network.packet.NarakaClientboundEventPacket;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.client.Minecraft;
@@ -33,11 +34,7 @@ public class NarakaClientboundEventHandler {
             NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY, NarakaClientboundEventHandler::stopHerobrineSky,
             NarakaClientboundEventPacket.Event.START_WHITE_SCREEN, NarakaClientboundEventHandler::startWhiteScreen,
             NarakaClientboundEventPacket.Event.STOP_WHITE_FOG, NarakaClientboundEventHandler::stopWhiteScreen,
-            NarakaClientboundEventPacket.Event.SHAKE_CAMERA, NarakaClientboundEventHandler::shakeCamera,
-            NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT, NarakaClientboundEventHandler::monochrome,
-            NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT, NarakaClientboundEventHandler::ryoikiGrayEffect,
-            NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT, NarakaClientboundEventHandler::ryoikiGreenEffect,
-            NarakaClientboundEventPacket.Event.CHROMATIC_ABERRATION_EFFECT, NarakaClientboundEventHandler::chromaticAberrationEffect
+            NarakaClientboundEventPacket.Event.SHAKE_CAMERA, NarakaClientboundEventHandler::shakeCamera
     );
 
     private static final Music[] HEROBRINE_MUSIC = new Music[]{
@@ -114,28 +111,5 @@ public class NarakaClientboundEventHandler {
 
     private static void shakeCamera() {
         NarakaClientContext.CAMERA_SHAKE_TICK.set(10);
-    }
-
-    private static void monochrome() {
-        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.MONOCHROME);
-        NarakaClientContext.POST_EFFECT_TICK.set(10);
-    }
-
-    private static void ryoikiGrayEffect() {
-        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.RYOIKI_GRAY);
-        NarakaClientContext.POST_EFFECT_TICK.set(50);
-    }
-
-    private static void ryoikiGreenEffect() {
-        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.RYOIKI_GREEN);
-        NarakaClientContext.POST_EFFECT_TICK.set(50);
-    }
-
-    private static void chromaticAberrationEffect() {
-        Level level = Minecraft.getInstance().level;
-        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.CHROMATIC_ABERRATION);
-        NarakaClientContext.POST_EFFECT_TICK.set(50);
-        if (level != null)
-            PostEffectUniformBuffer.getInstance().reset(NarakaPostEffects.CHROMATIC_ABERRATION, level.getGameTime());
     }
 }
