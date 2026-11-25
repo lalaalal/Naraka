@@ -8,12 +8,14 @@ import com.yummy.naraka.config.Configuration;
 import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.data.lang.LanguageKey;
 import com.yummy.naraka.event.ItemEvents;
+import com.yummy.naraka.network.CustomPacketPayload;
 import com.yummy.naraka.util.ComponentStyles;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSetGroup;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.tooltip.DynamicItemLore;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -35,6 +37,7 @@ public class NarakaClientEvents {
         ClientEvents.CLIENT_STOPPING.register(NarakaClientEvents::onClientStopping);
         ClientEvents.CAMERA_SETUP.register(NarakaClientEvents::shakeCamera);
         ClientEvents.LOGIN.register(NarakaClientEvents::onClientLogin);
+        ClientEvents.CHANGE_LEVEL.register(NarakaClientEvents::prepareRegistryForNetwork);
 
         ItemEvents.ITEM_TOOLTIP_TOP.register(NarakaClientEvents::addItemTooltipsTop);
         ItemEvents.ITEM_TOOLTIP_MIDDLE.register(NarakaClientEvents::addItemTooltipsMiddle);
@@ -52,6 +55,10 @@ public class NarakaClientEvents {
 
     private static void onClientLogin() {
         NarakaClientContext.initialize();
+    }
+
+    private static void prepareRegistryForNetwork(ClientLevel clientLevel) {
+        CustomPacketPayload.RegistryCodecType.prepare(clientLevel.registryAccess());
     }
 
     private static void onClientTick(Minecraft minecraft) {

@@ -1,7 +1,11 @@
 package com.yummy.naraka.client;
 
 import com.yummy.naraka.client.service.NarakaClientServices;
-import com.yummy.naraka.network.*;
+import com.yummy.naraka.network.ServerboundNetworkManager;
+import com.yummy.naraka.network.handler.NarakaClientboundEventHandler;
+import com.yummy.naraka.network.handler.SoundControlHandler;
+import com.yummy.naraka.network.handler.SyncProgressOverlayExtensionHandler;
+import com.yummy.naraka.network.packet.*;
 
 public class NarakaClientNetworks {
     public static ServerboundNetworkManager serverbound() {

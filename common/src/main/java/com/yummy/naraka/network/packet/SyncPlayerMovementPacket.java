@@ -1,6 +1,8 @@
-package com.yummy.naraka.network;
+package com.yummy.naraka.network.packet;
 
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.network.CustomPacketPayload;
+import com.yummy.naraka.network.NetworkManager;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
 

@@ -1,7 +1,7 @@
 package com.yummy.naraka.world;
 
-import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.packet.NarakaClientboundEventPacket;
 import com.yummy.naraka.world.entity.data.EntityDataHelper;
 import com.yummy.naraka.world.entity.data.NarakaEntityDataTypes;
 import net.minecraft.resources.ResourceKey;

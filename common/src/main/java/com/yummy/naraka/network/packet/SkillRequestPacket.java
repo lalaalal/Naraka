@@ -1,8 +1,10 @@
-package com.yummy.naraka.network;
+package com.yummy.naraka.network.packet;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.network.CustomPacketPayload;
+import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import com.yummy.naraka.world.entity.ai.skill.Skill;
 import net.minecraft.resources.ResourceLocation;

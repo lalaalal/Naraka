@@ -1,8 +1,10 @@
 package com.yummy.naraka.mixin.client;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.yummy.naraka.client.event.ClientEvents;
 import com.yummy.naraka.world.entity.data.StunHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,6 +21,10 @@ public abstract class MinecraftMixin {
     @Nullable
     public LocalPlayer player;
 
+    @Shadow
+    @Nullable
+    public ClientLevel level;
+
     @Inject(method = "destroy", at = @At("HEAD"))
     public void onMinecraftStopping(CallbackInfo ci) {
         ClientEvents.CLIENT_STOPPING.invoker().run(Minecraft.getInstance());
@@ -34,5 +40,10 @@ public abstract class MinecraftMixin {
     public void preventAttackOnStun(CallbackInfoReturnable<Boolean> cir) {
         if (player != null && StunHelper.isStun(player))
             cir.cancel();
+    }
+
+    @Inject(method = "setLevel", at = @At("RETURN"))
+    public void onChangeLevel(CallbackInfo ci, @Local(argsOnly = true) ClientLevel levelClient) {
+        ClientEvents.CHANGE_LEVEL.invoker().run(levelClient);
     }
 }

@@ -3,6 +3,7 @@ package com.yummy.naraka.client.event;
 import com.yummy.naraka.event.Event;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 
@@ -19,6 +20,12 @@ public class ClientEvents {
      * @see com.yummy.naraka.mixin.client.ClientHandshakePacketListenerImplMixin
      */
     public static final Event<Runnable> LOGIN = Event.simple();
+
+    public static final Event<ClientState<ClientLevel>> CHANGE_LEVEL = Event.create(listeners -> level -> {
+        for (ClientState<ClientLevel> listener : listeners) {
+            listener.run(level);
+        }
+    });
 
     static <T> Event<ClientState<T>> create() {
         return Event.create(listeners -> instance -> {

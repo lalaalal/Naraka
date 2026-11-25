@@ -1,8 +1,9 @@
-package com.yummy.naraka.network;
+package com.yummy.naraka.network.packet;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.network.CustomPacketPayload;
 import com.yummy.naraka.util.FloatInterpolation;
 import com.yummy.naraka.util.NarakaExtraCodecs;
 import net.minecraft.sounds.SoundSource;

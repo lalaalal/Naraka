@@ -1,8 +1,10 @@
-package com.yummy.naraka.network;
+package com.yummy.naraka.network.packet;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.network.CustomPacketPayload;
+import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.world.entity.data.EntityData;
 import com.yummy.naraka.world.entity.data.EntityDataExtension;
 import net.minecraft.util.StringRepresentable;
@@ -20,7 +22,7 @@ public record SyncEntityDataPacket(int entityId, Action action, List<EntityData<
             ).apply(instance, SyncEntityDataPacket::new)
     );
 
-    public static final Type<SyncEntityDataPacket> TYPE = new CodecType<>(NarakaMod.location("sync_entity_data"),
+    public static final Type<SyncEntityDataPacket> TYPE = new RegistryCodecType<>(NarakaMod.location("sync_entity_data"),
             SyncEntityDataPacket.class,
             CODEC
     );

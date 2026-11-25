@@ -8,6 +8,7 @@ import com.google.gson.JsonParseException;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.datafixers.util.Unit;
 import com.mojang.serialization.*;
+import net.minecraft.Util;
 import net.minecraft.network.chat.Style;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ExtraCodecs;
@@ -18,11 +19,11 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class NarakaExtraCodecs {
-    private static final Gson GSON = new GsonBuilder()
+    public static final Gson GSON = new GsonBuilder()
             .registerTypeHierarchyAdapter(Style.class, new Style.Serializer())
             .create();
 
-    public static final Codec<SoundSource> SOUND_SOURCE = ExtraCodecs.stringResolverCodec(SoundSource::getName, NarakaExtraCodecs::getSoundSourceByName);
+    public static final Codec<SoundSource> SOUND_SOURCE = ExtraCodecs.stringResolverCodec(SoundSource::getName, Util.memoize(NarakaExtraCodecs::getSoundSourceByName));
     public static final Codec<EquipmentSlot> EQUIPMENT_SLOT = ExtraCodecs.stringResolverCodec(EquipmentSlot::getName, EquipmentSlot::byName);
     public static final Codec<Style> STYLE = ExtraCodecs.JSON.flatXmap(jsonElement -> {
         try {

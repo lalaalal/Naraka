@@ -2,8 +2,9 @@ package com.yummy.naraka.event;
 
 import com.yummy.naraka.NarakaMod;
 import com.yummy.naraka.config.NarakaConfig;
-import com.yummy.naraka.network.NarakaClientboundEventPacket;
+import com.yummy.naraka.network.CustomPacketPayload;
 import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.packet.NarakaClientboundEventPacket;
 import com.yummy.naraka.service.NarakaServices;
 import com.yummy.naraka.util.NarakaItemUtils;
 import com.yummy.naraka.world.TickFreezeManager;
@@ -76,8 +77,10 @@ public final class NarakaGameEvents {
     }
 
     private static void onServerStarted(MinecraftServer server) {
-        if (server.isDedicatedServer())
+        if (server.isDedicatedServer()) {
             NarakaMod.isModLoaded = true;
+            CustomPacketPayload.RegistryCodecType.prepare(server.registryAccess());
+        }
     }
 
     private static void onServerStopping(MinecraftServer server) {
