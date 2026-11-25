@@ -18,5 +18,6 @@ public class NarakaClientNetworks {
         NarakaClientServices.CLIENT_PACKET_REGISTRAR.register(AddBeamEffectPacket.TYPE, AddBeamEffectPacket::handle);
         NarakaClientServices.CLIENT_PACKET_REGISTRAR.register(SyncProgressOverlayExtensionPacket.TYPE, SyncProgressOverlayExtensionHandler::handle);
         NarakaClientServices.CLIENT_PACKET_REGISTRAR.register(SyncEntityMotionPacket.TYPE, SyncEntityMotionPacket::handle);
+        NarakaClientServices.CLIENT_PACKET_REGISTRAR.register(SoundControlPacket.TYPE, SoundControlHandler::handle);
     }
 }

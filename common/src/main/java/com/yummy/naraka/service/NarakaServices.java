@@ -10,7 +10,9 @@ import com.yummy.naraka.init.EntityAttributeRegistry;
 import com.yummy.naraka.init.EntityDataSerializerRegistry;
 import com.yummy.naraka.network.ClientboundNetworkManager;
 import com.yummy.naraka.network.PacketRegistrar;
+import com.yummy.naraka.util.JobManager;
 import com.yummy.naraka.world.item.SpawnEggItemProvider;
+import net.minecraft.server.MinecraftServer;
 
 import java.util.ServiceLoader;
 
@@ -28,6 +30,8 @@ public class NarakaServices {
     public static final EntityAttributeRegistry.Registrar ENTITY_ATTRIBUTE_REGISTRY = load(EntityAttributeRegistry.Registrar.class);
     public static final EntityDataSerializerRegistry.Registrar ENTITY_DATA_SERIALIZER_REGISTRY = load(EntityDataSerializerRegistry.Registrar.class);
     public static final SpawnEggItemProvider.Factory SPAWN_EGG_ITEM_FACTORY = load(SpawnEggItemProvider.Factory.class);
+
+    public static final JobManager<MinecraftServer> SERVER_JOB_MANAGER = new JobManager<>();
 
     public static <T> T load(Class<T> clazz) {
         return ServiceLoader.load(clazz, NarakaServices.class.getClassLoader())

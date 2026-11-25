@@ -48,12 +48,11 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
                 DamageTypeTags.BYPASSES_SHIELD,
                 DamageTypeTags.BYPASSES_COOLDOWN
         );
-        addTags(NarakaDamageTypes.MOB_ATTACK_FIXED,
+        addTags(NarakaDamageTypes.PARRYING,
                 DamageTypeTags.BYPASSES_ARMOR,
                 DamageTypeTags.BYPASSES_EFFECTS,
                 DamageTypeTags.BYPASSES_RESISTANCE,
-                DamageTypeTags.BYPASSES_ENCHANTMENTS,
-                DamageTypeTags.BYPASSES_SHIELD
+                DamageTypeTags.BYPASSES_ENCHANTMENTS
         );
         addTags(NarakaDamageTypes.PROJECTILE_FIXED,
                 DamageTypeTags.BYPASSES_ARMOR,

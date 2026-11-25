@@ -3,6 +3,8 @@ package com.yummy.naraka.world.entity.ai.skill.origin_herobrine;
 import com.mojang.math.Axis;
 import com.yummy.naraka.network.NarakaClientboundEventPacket;
 import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.SoundControlPacket;
+import com.yummy.naraka.util.FloatInterpolation;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
@@ -95,10 +97,7 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
                 level.playSound(null, mob.blockPosition(), SoundEvents.ENDER_EYE_DEATH, SoundSource.HOSTILE, 10, 0.55f);
             });
             runAt(90, () -> {
-                NarakaClientboundEventPacket packet = new NarakaClientboundEventPacket(
-                        NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY
-                );
-                NetworkManager.clientbound().send(mob.players(), packet);
+                NetworkManager.clientbound().send(mob.players(), SoundControlPacket.decrease(SoundSource.MUSIC, 20, FloatInterpolation.FAST_STEP_IN));
             });
 
             runAt(110, () -> {
@@ -137,6 +136,10 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
                 level.playSound(null, mob.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM, SoundSource.HOSTILE, 3.0F, 0.2f);
                 level.playSound(null, mob.blockPosition(), SoundEvents.WARDEN_DEATH, SoundSource.HOSTILE, 3.0F, 0.473f + 0.632f);
             });
+
+            runAt(150, () -> {
+                NetworkManager.clientbound().send(mob.players(), SoundControlPacket.increase(SoundSource.MUSIC, 20, FloatInterpolation.LINEAR));
+            });
         }
     }
 
@@ -169,5 +172,6 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
     public void interrupt() {
         if (narakaSword != null)
             narakaSword.discard();
+        NetworkManager.clientbound().send(mob.players(), SoundControlPacket.increase(SoundSource.MUSIC, 10, FloatInterpolation.LINEAR));
     }
 }

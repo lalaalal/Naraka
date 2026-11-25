@@ -1,21 +1,21 @@
 package com.yummy.naraka.mixin.client;
 
-import com.yummy.naraka.client.sound.VolumeController;
-import net.minecraft.client.resources.sounds.SoundInstance;
+import com.yummy.naraka.client.sound.CategoryGainAccess;
 import net.minecraft.client.sounds.SoundEngine;
 import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.sounds.SoundSource;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(SoundManager.class)
-public abstract class SoundManagerMixin implements VolumeController {
-    @Shadow @Final
+public abstract class SoundManagerMixin implements CategoryGainAccess {
+    @Shadow
+    @Final
     private SoundEngine soundEngine;
 
     @Override
-    public void naraka$setVolume(SoundInstance soundInstance) {
-        if (soundEngine instanceof VolumeController volumeController)
-            volumeController.naraka$setVolume(soundInstance);
+    public float naraka$getCategoryGain(SoundSource source) {
+        return ((CategoryGainAccess) soundEngine).naraka$getCategoryGain(source);
     }
 }

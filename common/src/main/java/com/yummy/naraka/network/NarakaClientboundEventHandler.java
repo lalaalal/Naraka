@@ -39,7 +39,6 @@ public class NarakaClientboundEventHandler {
         map.put(NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT, NarakaClientboundEventHandler::monochrome);
         map.put(NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT, NarakaClientboundEventHandler::ryoikiGrayEffect);
         map.put(NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT, NarakaClientboundEventHandler::ryoikiGreenEffect);
-        map.put(NarakaClientboundEventPacket.Event.MUTE_MUSIC_CATEGORY, NarakaClientboundEventHandler::muteMusicCategory);
         map.put(NarakaClientboundEventPacket.Event.FREEZE_TICK, NarakaClientboundEventHandler::freezeTick);
         map.put(NarakaClientboundEventPacket.Event.UNFREEZE_TICK, NarakaClientboundEventHandler::unfreezeTick);
         return map;
@@ -134,10 +133,6 @@ public class NarakaClientboundEventHandler {
     public static void ryoikiGreenEffect() {
         NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.RYOIKI_GREEN);
         NarakaClientContext.POST_EFFECT_TICK.set(50);
-    }
-
-    public static void muteMusicCategory() {
-        NarakaClientContext.MUTE_MUSIC_TICK.set(60);
     }
 
     public static void freezeTick() {

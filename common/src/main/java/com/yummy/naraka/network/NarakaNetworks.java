@@ -17,6 +17,7 @@ public class NarakaNetworks {
             NarakaServices.SERVER_PACKET_REGISTRAR.define(AddBeamEffectPacket.TYPE);
             NarakaServices.SERVER_PACKET_REGISTRAR.define(SyncProgressOverlayExtensionPacket.TYPE);
             NarakaServices.SERVER_PACKET_REGISTRAR.define(SyncEntityMotionPacket.TYPE);
+            NarakaServices.SERVER_PACKET_REGISTRAR.define(SoundControlPacket.TYPE);
         }
     }
 }

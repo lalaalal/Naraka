@@ -2,11 +2,12 @@ package com.yummy.naraka.mixin.client;
 
 import com.yummy.naraka.client.sound.BossMusicPlayer;
 import com.yummy.naraka.client.sound.BossMusicSoundInstance;
-import com.yummy.naraka.client.sound.VolumeController;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.MusicManager;
+import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.sounds.Music;
+import net.minecraft.sounds.SoundSource;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,9 +20,11 @@ import javax.annotation.Nullable;
 
 @Mixin(MusicManager.class)
 public abstract class MusicManagerMixin implements BossMusicPlayer {
-    @Shadow @Nullable
+    @Shadow
+    @Nullable
     private SoundInstance currentMusic;
-    @Shadow @Final
+    @Shadow
+    @Final
     private Minecraft minecraft;
     @Shadow
     private int nextSongDelay;
@@ -29,9 +32,11 @@ public abstract class MusicManagerMixin implements BossMusicPlayer {
     @Shadow
     public abstract void stopPlaying();
 
-    @Unique @Nullable
+    @Unique
+    @Nullable
     private BossMusicSoundInstance naraka$bossMusic;
-    @Unique @Nullable
+    @Unique
+    @Nullable
     private BossMusicSoundInstance naraka$nextMusic;
     @Unique
     private boolean naraka$stopBossMusic = false;
@@ -41,8 +46,8 @@ public abstract class MusicManagerMixin implements BossMusicPlayer {
         if (naraka$bossMusic != null) {
             if (naraka$stopBossMusic || naraka$nextMusic != null) {
                 naraka$bossMusic.decreaseVolume(0.02f);
-                if (minecraft.getSoundManager() instanceof VolumeController volumeController)
-                    volumeController.naraka$setVolume(naraka$bossMusic);
+                SoundManager soundManager = minecraft.getSoundManager();
+                soundManager.updateSourceVolume(SoundSource.MUSIC, naraka$bossMusic.getVolume());
             }
             if (naraka$bossMusic.getVolume() == 0) {
                 naraka$bossMusic = null;
@@ -77,6 +82,7 @@ public abstract class MusicManagerMixin implements BossMusicPlayer {
         naraka$bossMusic = bossMusicSoundInstance;
         currentMusic = naraka$bossMusic;
         naraka$stopBossMusic = false;
+        this.minecraft.getSoundManager().updateSourceVolume(SoundSource.MUSIC, 1);
         this.minecraft.getSoundManager().play(bossMusicSoundInstance);
         this.nextSongDelay = Integer.MAX_VALUE;
     }

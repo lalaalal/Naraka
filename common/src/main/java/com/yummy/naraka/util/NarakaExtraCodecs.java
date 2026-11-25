@@ -9,6 +9,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.datafixers.util.Unit;
 import com.mojang.serialization.*;
 import net.minecraft.network.chat.Style;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EquipmentSlot;
 
@@ -21,6 +22,7 @@ public class NarakaExtraCodecs {
             .registerTypeHierarchyAdapter(Style.class, new Style.Serializer())
             .create();
 
+    public static final Codec<SoundSource> SOUND_SOURCE = ExtraCodecs.stringResolverCodec(SoundSource::getName, NarakaExtraCodecs::getSoundSourceByName);
     public static final Codec<EquipmentSlot> EQUIPMENT_SLOT = ExtraCodecs.stringResolverCodec(EquipmentSlot::getName, EquipmentSlot::byName);
     public static final Codec<Style> STYLE = ExtraCodecs.JSON.flatXmap(jsonElement -> {
         try {
@@ -35,6 +37,14 @@ public class NarakaExtraCodecs {
             return DataResult.error(var2::getMessage);
         }
     });
+
+    private static SoundSource getSoundSourceByName(String name) {
+        for (SoundSource value : SoundSource.values()) {
+            if (value.getName().equals(name))
+                return value;
+        }
+        throw new IllegalArgumentException("Unknown sound source: " + name);
+    }
 
     public static <K, V> Codec<Map<K, V>> dispatchMap(Codec<K> keyCodec, Function<K, Codec<? extends V>> elementCodec) {
         return new DynamicMapCodec<>(keyCodec, elementCodec);

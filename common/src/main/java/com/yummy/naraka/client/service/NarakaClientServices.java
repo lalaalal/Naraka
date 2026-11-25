@@ -4,6 +4,8 @@ import com.yummy.naraka.client.event.ClientEventInitializer;
 import com.yummy.naraka.client.init.*;
 import com.yummy.naraka.network.PacketRegistrar;
 import com.yummy.naraka.network.ServerboundNetworkManager;
+import com.yummy.naraka.util.JobManager;
+import net.minecraft.client.Minecraft;
 
 import java.util.ServiceLoader;
 
@@ -24,6 +26,8 @@ public final class NarakaClientServices {
     public static final ParticleProviderRegistry.Registrar PARTICLE_PROVIDER_REGISTRY = load(ParticleProviderRegistry.Registrar.class);
     public static final ScreenFactoryRegistry.Registrar SCREEN_FACTORY_REGISTRY = load(ScreenFactoryRegistry.Registrar.class);
     public static final ShaderRegistry.Registrar SHADER_REGISTRY = load(ShaderRegistry.Registrar.class);
+
+    public static final JobManager<Minecraft> CLIENT_JOB_MANAGER = new JobManager<>();
 
     private NarakaClientServices() {
     }
