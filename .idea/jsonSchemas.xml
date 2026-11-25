@@ -17,6 +17,9 @@
                   <Item>
                     <option name="path" value="fabric/src/main/resources/naraka.fabric.mixins.json" />
                   </Item>
+                  <Item>
+                    <option name="path" value="forge/src/main/resources/naraka.forge.mixins.json" />
+                  </Item>
                 </list>
               </option>
             </SchemaInfo>
