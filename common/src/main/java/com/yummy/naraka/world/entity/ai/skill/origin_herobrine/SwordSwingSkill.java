@@ -110,10 +110,7 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
 
             runAt(110, () -> {
                 NarakaSkillUtils.addPostEffect(mob.players(), NarakaPostEffects.MONOCHROME, NarakaPostEffects.CHROMATIC_ABERRATION);
-                CustomPacketPayload packet = new NarakaClientboundEventPacket(
-                        NarakaClientboundEventPacket.Event.SHAKE_CAMERA,
-                        NarakaClientboundEventPacket.Event.START_CHROMATIC_ABERRATION
-                );
+                CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.SHAKE_CAMERA);
                 NetworkManager.clientbound().send(mob.players(), packet);
                 NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 16,
                         NarakaUtils.CIRCLE,

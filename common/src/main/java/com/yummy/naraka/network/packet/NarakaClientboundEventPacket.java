@@ -33,8 +33,7 @@ public record NarakaClientboundEventPacket(List<Event> events) implements Custom
         STOP_HEROBRINE_SKY,
         START_WHITE_SCREEN,
         STOP_WHITE_FOG,
-        SHAKE_CAMERA,
-        START_CHROMATIC_ABERRATION;
+        SHAKE_CAMERA;
 
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
         public static final StreamCodec<ByteBuf, Event> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
