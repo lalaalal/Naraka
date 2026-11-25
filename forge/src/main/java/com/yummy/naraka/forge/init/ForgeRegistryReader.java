@@ -5,6 +5,7 @@ import com.yummy.naraka.core.registries.RegistryReader;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderOwner;
 import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -31,6 +32,13 @@ public class ForgeRegistryReader<T> implements RegistryReader<T> {
         MappedRegistry<T> wrapper = (MappedRegistry<T>) registry.getSlaveMap(ForgeRegistryFactory.WRAPPER_ID, MappedRegistry.class);
         if (wrapper != null)
             this.owner = wrapper.holderOwner();
+    }
+
+    @Override
+    public ResourceKey<? extends Registry<T>> registryKey() {
+        if (registry == null)
+            throw new IllegalStateException("Registry is null");
+        return registry.getRegistryKey();
     }
 
     @Override

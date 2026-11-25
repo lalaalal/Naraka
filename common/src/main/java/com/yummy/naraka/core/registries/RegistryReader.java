@@ -5,16 +5,23 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderOwner;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface RegistryReader<T> {
+    ResourceKey<? extends Registry<T>> registryKey();
+
     Codec<T> codec();
 
     Optional<HolderOwner<T>> owner();
 
     Optional<Holder.Reference<T>> getHolder(ResourceKey<T> key);
+
+    default Optional<Holder.Reference<T>> getHolder(ResourceLocation id) {
+        return getHolder(ResourceKey.create(registryKey(), id));
+    }
 
     Optional<Holder<T>> wrapHolder(T value);
 
@@ -25,6 +32,11 @@ public interface RegistryReader<T> {
 
         public Simple(Registry<T> registry) {
             this.registry = registry;
+        }
+
+        @Override
+        public ResourceKey<? extends Registry<T>> registryKey() {
+            return registry.key();
         }
 
         @Override

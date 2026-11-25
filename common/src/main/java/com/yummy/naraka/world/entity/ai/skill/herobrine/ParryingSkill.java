@@ -2,13 +2,20 @@ package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.core.posteffects.ChromaticAberrationConfig;
+import com.yummy.naraka.sounds.NarakaSoundEvents;
+import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.util.NarakaSkillUtils;
+import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.AbstractHerobrine;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
 import com.yummy.naraka.world.entity.animation.HerobrineAnimationLocations;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
@@ -27,7 +34,8 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     public ParryingSkill(AbstractHerobrine mob) {
         super(LOCATION, mob, 60, 300, 100, 5);
         alwaysAttack = true;
-        alwaysHurt = true;
+        shieldDamage = 2;
+        shieldCooldown = 20;
     }
 
     @Override
@@ -40,7 +48,12 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
 
     @Override
     protected float calculateDamage(LivingEntity target) {
-        return hurtDamage;
+        return Math.min(hurtDamage, target.getMaxHealth() * 0.4f);
+    }
+
+    @Override
+    protected DamageSource getDamageSource() {
+        return NarakaDamageSources.parrying(mob);
     }
 
     @Override
@@ -82,6 +95,10 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
         return succeedTick + (duration - PARRYING_DURATION);
     }
 
+    private boolean isDamageCritical(LivingEntity target) {
+        return hurtDamage > target.getMaxHealth() * 0.33f;
+    }
+
     private void handleSucceed(ServerLevel level, @Nullable LivingEntity target) {
         if (target == null)
             return;
@@ -91,11 +108,20 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
             level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.HOSTILE, 1, 1.75f);
             level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.HOSTILE, 1, 2);
             level.playSound(null, mob, SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.HOSTILE, 1, 1.89f);
+            level.playSound(null, mob, NarakaSoundEvents.PARRYING.value(), SoundSource.HOSTILE, 2, 0.75f);
+            level.playSound(null, mob, NarakaSoundEvents.PARRYING_BASE.value(), SoundSource.HOSTILE, 0.3f, 2.5f);
+            level.playSound(null, mob, NarakaSoundEvents.PARRYING_BASE.value(), SoundSource.HOSTILE, 0.2f, 3.5f);
+            if (isDamageCritical(target)) {
+                level.playSound(null, target, NarakaSoundEvents.PARRYING_DANGER.value(), SoundSource.HOSTILE, 5f, 0.5f);
+            }
+            if (target instanceof ServerPlayer serverPlayer)
+                NarakaSkillUtils.sendHurtChromaticAberration(serverPlayer, ChromaticAberrationConfig.STRONG);
         });
         runAt(tickCount(2), () -> hurtEntity(level, target));
         runAt(tickCount(2), () -> level.sendParticles(NarakaFlameParticleOption.NECTARIUM, mob.getX(), mob.getY() + 1, mob.getZ(), 15, 1, 0.3, 1, 0.1));
         runAt(tickCount(20), () -> moveToTarget(target, false, 1.5));
         runBetween(tickCount(20), tickCount(30), () -> level.sendParticles(NarakaFlameParticleOption.NECTARIUM, mob.getX(), mob.getY() + 1, mob.getZ(), 15, 2, 0.3, 2, 0.1));
+        run(after(tickCount(40)) || mob.distanceTo(target) < 2, this::stopMoving);
     }
 
     private void handleSucceed(ServerLevel level) {
@@ -107,6 +133,7 @@ public class ParryingSkill extends AttackSkill<AbstractHerobrine> {
     @Override
     protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         mob.stigmatizeEntity(level, target);
+        NarakaEntityUtils.disableAndHurtShield(target, 60, 0);
     }
 
     @Override

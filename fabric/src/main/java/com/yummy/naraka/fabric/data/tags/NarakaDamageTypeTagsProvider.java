@@ -54,6 +54,10 @@ public class NarakaDamageTypeTagsProvider extends FabricTagProvider<DamageType> 
                 DamageTypeTags.BYPASSES_RESISTANCE,
                 DamageTypeTags.BYPASSES_ENCHANTMENTS
         );
+        addTags(NarakaDamageTypes.EARTH_SHOCK,
+                DamageTypeTags.BYPASSES_ARMOR,
+                DamageTypeTags.BYPASSES_ENCHANTMENTS
+        );
         addTags(NarakaDamageTypes.PROJECTILE_FIXED,
                 DamageTypeTags.BYPASSES_ARMOR,
                 DamageTypeTags.BYPASSES_EFFECTS,

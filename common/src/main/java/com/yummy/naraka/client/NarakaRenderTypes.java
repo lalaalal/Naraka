@@ -50,33 +50,12 @@ public final class NarakaRenderTypes {
                     .createCompositeState(false)
     );
 
-    private static final RenderType SPACE = RenderType.create(
-            "space",
-            DefaultVertexFormat.POSITION,
-            VertexFormat.Mode.QUADS,
-            1536,
-            false,
-            false,
-            RenderType.CompositeState.builder()
-                    .setShaderState(new RenderStateShard.ShaderStateShard(NarakaShaders::space))
-                    .setTextureState(
-                            RenderStateShard.MultiTextureStateShard.builder()
-                                    .add(NarakaTextures.SPACE, false, false)
-                                    .build()
-                    )
-                    .createCompositeState(false)
-    );
-
     public static RenderType longinus() {
         return LONGINUS;
     }
 
     public static RenderType longinusCutout(ResourceLocation texture) {
         return LONGINUS_CUTOUT.apply(texture);
-    }
-
-    public static RenderType space() {
-        return SPACE;
     }
 
     public static RenderType emissive() {

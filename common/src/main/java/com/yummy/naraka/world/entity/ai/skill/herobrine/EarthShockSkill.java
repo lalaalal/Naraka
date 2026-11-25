@@ -1,21 +1,24 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
 import com.yummy.naraka.core.particles.NarakaFlameParticleOption;
-import com.yummy.naraka.network.NetworkManager;
-import com.yummy.naraka.network.packet.NarakaClientboundEventPacket;
+import com.yummy.naraka.core.posteffects.NarakaPostEffects;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
+import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.*;
 import com.yummy.naraka.world.entity.ai.skill.AttackSkill;
+import com.yummy.naraka.world.entity.data.DynamicPostEffectHelper;
 import com.yummy.naraka.world.item.SoulType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -39,7 +42,12 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
 
     @Override
     protected float calculateDamage(LivingEntity target) {
-        return mob.getAttackDamage() + target.getMaxHealth() * 0.5f;
+        return target.getMaxHealth() * 0.67f;
+    }
+
+    @Override
+    protected DamageSource getDamageSource() {
+        return NarakaDamageSources.earthShock(mob);
     }
 
     @Override
@@ -96,14 +104,13 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
 
         runAt(125, () -> spawnMassiveLightning(level));
         runAt(125, mob::shakeCamera);
-        runAt(125, () -> NetworkManager.clientbound().send(
-                mob.players(), new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT)
-        ));
+        runAt(125, () -> DynamicPostEffectHelper.addDynamicPostEffects(mob.players(), NarakaPostEffects.MONOCHROME));
         runBetween(125, 135, () -> shockwaveBlocks(level, 125, 3, -Mth.PI, Mth.PI, blockFloatingMovement(0.3f, 0.4f)));
         runAt(125, () -> hurtEntities(level, targetBetween(), 10));
 
         runBetween(125, 130, () -> spawnLightningBolts(level, 4, 10));
         runBetween(120, 130, () -> pullBlocks(level));
+        runAt(135, () -> DynamicPostEffectHelper.removeDynamicPostEffects(mob.players(), NarakaPostEffects.MONOCHROME));
         runAt(145, () -> NarakaSkillUtils.pullLivingEntities(level, mob, this::entityToPull, 0.25));
 
         runAt(172, mob::shakeCamera);
@@ -226,5 +233,13 @@ public class EarthShockSkill extends AttackSkill<Herobrine> {
     @Override
     protected void onHurtEntity(ServerLevel level, LivingEntity target) {
         mob.stigmatizeEntity(level, target);
+        level.playSound(null, target, SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, SoundSource.HOSTILE, 1, 1);
+        if (target instanceof ServerPlayer serverPlayer)
+            NarakaSkillUtils.sendHurtChromaticAberration(serverPlayer);
+    }
+
+    @Override
+    public void interrupt() {
+        DynamicPostEffectHelper.removeDynamicPostEffects(mob.players(), NarakaPostEffects.MONOCHROME);
     }
 }

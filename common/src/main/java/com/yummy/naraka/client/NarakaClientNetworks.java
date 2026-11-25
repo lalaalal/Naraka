@@ -3,6 +3,7 @@ package com.yummy.naraka.client;
 import com.yummy.naraka.client.service.NarakaClientServices;
 import com.yummy.naraka.network.ServerboundNetworkManager;
 import com.yummy.naraka.network.handler.NarakaClientboundEventHandler;
+import com.yummy.naraka.network.handler.PostEffectConfigHandler;
 import com.yummy.naraka.network.handler.SoundControlHandler;
 import com.yummy.naraka.network.handler.SyncProgressOverlayExtensionHandler;
 import com.yummy.naraka.network.packet.*;
@@ -23,5 +24,6 @@ public class NarakaClientNetworks {
         NarakaClientServices.CLIENT_PACKET_REGISTRAR.register(SyncProgressOverlayExtensionPacket.TYPE, SyncProgressOverlayExtensionHandler::handle);
         NarakaClientServices.CLIENT_PACKET_REGISTRAR.register(SyncEntityMotionPacket.TYPE, SyncEntityMotionPacket::handle);
         NarakaClientServices.CLIENT_PACKET_REGISTRAR.register(SoundControlPacket.TYPE, SoundControlHandler::handle);
+        NarakaClientServices.CLIENT_PACKET_REGISTRAR.register(PostEffectConfigPacket.TYPE, PostEffectConfigHandler::handle);
     }
 }

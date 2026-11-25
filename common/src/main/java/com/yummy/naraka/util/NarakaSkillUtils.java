@@ -1,10 +1,21 @@
 package com.yummy.naraka.util;
 
+import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.core.posteffects.ChromaticAberrationConfig;
+import com.yummy.naraka.core.posteffects.NarakaPostEffects;
+import com.yummy.naraka.core.posteffects.RyoikiTenkaiConfig;
+import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.packet.PostEffectConfigPacket;
+import com.yummy.naraka.network.packet.SoundControlPacket;
+import com.yummy.naraka.service.NarakaServices;
+import com.yummy.naraka.world.entity.data.DynamicPostEffectHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -90,5 +101,44 @@ public class NarakaSkillUtils {
             if (target instanceof ServerPlayer player && NarakaEntityUtils.isDamageablePlayer(player))
                 NarakaEntityUtils.sendPlayerMovement(player, movement);
         });
+    }
+
+    public static void sendRyoikiTenkai(ServerPlayer player, RyoikiTenkaiConfig config) {
+        ResourceLocation postEffectId = config.type().id();
+        DynamicPostEffectHelper.addDynamicPostEffects(player, NarakaPostEffects.CHROMATIC_ABERRATION, postEffectId);
+        NetworkManager.clientbound().send(player, new PostEffectConfigPacket(ChromaticAberrationConfig.DISTORTION_ONLY));
+        registerPostEffectRemoveJob(player, NarakaPostEffects.CHROMATIC_ABERRATION, 50);
+
+        NetworkManager.clientbound().send(player, new PostEffectConfigPacket(config));
+        registerPostEffectRemoveJob(player, postEffectId, config.restoreStartTime() + config.restoreDuration());
+    }
+
+    public static void sendHurtChromaticAberration(ServerPlayer player) {
+        sendHurtChromaticAberration(player, ChromaticAberrationConfig.DEFAULT);
+    }
+
+    public static void sendHurtChromaticAberration(ServerPlayer player, ChromaticAberrationConfig config) {
+        DynamicPostEffectHelper.addDynamicPostEffects(player, NarakaPostEffects.CHROMATIC_ABERRATION);
+        NetworkManager.clientbound().send(player, new PostEffectConfigPacket(config));
+        NetworkManager.clientbound().send(player, new SoundControlPacket(SoundSource.MASTER, 0.1f, 10, FloatInterpolation.FAST_STEP_IN));
+        NarakaServices.SERVER_JOB_MANAGER.register(
+                NarakaMod.location(player.getId() + ".volume.master.increase"),
+                JobManager.createSimple(
+                        10,
+                        server -> NetworkManager.clientbound()
+                                .send(player, SoundControlPacket.increase(SoundSource.MASTER, 20, FloatInterpolation.LINEAR))
+                )
+        );
+        registerPostEffectRemoveJob(player, NarakaPostEffects.CHROMATIC_ABERRATION, config.duration());
+    }
+
+    public static void registerPostEffectRemoveJob(ServerPlayer player, ResourceLocation id, float duration) {
+        NarakaServices.SERVER_JOB_MANAGER.register(
+                NarakaMod.location(player.getId() + ".post_effect." + id.getPath() + ".remove"),
+                JobManager.createSimple(
+                        Mth.ceil(duration),
+                        server -> DynamicPostEffectHelper.removeDynamicPostEffects(player, id)
+                )
+        );
     }
 }

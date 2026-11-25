@@ -12,9 +12,11 @@ import com.yummy.naraka.world.entity.MotionEntity;
 import com.yummy.naraka.world.entity.ScarfWavingData;
 import com.yummy.naraka.world.item.equipmentset.EquipmentSetGroup;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
@@ -66,6 +68,10 @@ public class NarakaEntityDataTypes {
             "active_equipment_set_group", EntityDataType.living(EquipmentSetGroup.CODEC)
                     .sync(false)
                     .defaultValue(EquipmentSetGroup.EMPTY)
+    );
+    public static final HolderProxy<EntityDataType<?, ?>, EntityDataType<List<ResourceLocation>, Player>> DYNAMIC_POST_EFFECTS = register(
+            "dynamic_post_effects", EntityDataType.builder(ResourceLocation.CODEC.listOf(), Player.class)
+                    .defaultValue(List.of())
     );
 
     private static void tickPurifiedSoulFire(ServerLevel level, LivingEntity livingEntity, int purifiedSoulFireTick) {

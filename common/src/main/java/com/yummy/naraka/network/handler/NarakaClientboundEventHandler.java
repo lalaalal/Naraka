@@ -1,7 +1,6 @@
 package com.yummy.naraka.network.handler;
 
 import com.yummy.naraka.client.NarakaClientContext;
-import com.yummy.naraka.client.NarakaPostEffects;
 import com.yummy.naraka.client.gui.screen.AnimationControlScreen;
 import com.yummy.naraka.client.gui.screen.SkillControlScreen;
 import com.yummy.naraka.client.sound.BossMusicPlayer;
@@ -39,9 +38,6 @@ public class NarakaClientboundEventHandler {
         map.put(NarakaClientboundEventPacket.Event.START_WHITE_SCREEN, NarakaClientboundEventHandler::startWhiteScreen);
         map.put(NarakaClientboundEventPacket.Event.STOP_WHITE_FOG, NarakaClientboundEventHandler::stopWhiteScreen);
         map.put(NarakaClientboundEventPacket.Event.SHAKE_CAMERA, NarakaClientboundEventHandler::shakeCamera);
-        map.put(NarakaClientboundEventPacket.Event.MONOCHROME_EFFECT, NarakaClientboundEventHandler::monochrome);
-        map.put(NarakaClientboundEventPacket.Event.RYOIKI_GRAY_EFFECT, NarakaClientboundEventHandler::ryoikiGrayEffect);
-        map.put(NarakaClientboundEventPacket.Event.RYOIKI_GREEN_EFFECT, NarakaClientboundEventHandler::ryoikiGreenEffect);
         map.put(NarakaClientboundEventPacket.Event.FREEZE_TICK, NarakaClientboundEventHandler::freezeTick);
         map.put(NarakaClientboundEventPacket.Event.UNFREEZE_TICK, NarakaClientboundEventHandler::unfreezeTick);
         return map;
@@ -121,21 +117,6 @@ public class NarakaClientboundEventHandler {
 
     public static void shakeCamera() {
         NarakaClientContext.CAMERA_SHAKE_TICK.set(10);
-    }
-
-    public static void monochrome() {
-        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.MONOCHROME);
-        NarakaClientContext.POST_EFFECT_TICK.set(10);
-    }
-
-    public static void ryoikiGrayEffect() {
-        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.RYOIKI_GRAY);
-        NarakaClientContext.POST_EFFECT_TICK.set(50);
-    }
-
-    public static void ryoikiGreenEffect() {
-        NarakaClientContext.POST_EFFECT.set(NarakaPostEffects.RYOIKI_GREEN);
-        NarakaClientContext.POST_EFFECT_TICK.set(50);
     }
 
     public static void freezeTick() {

@@ -79,8 +79,8 @@ public final class NarakaGameEvents {
     private static void onServerStarted(MinecraftServer server) {
         if (server.isDedicatedServer()) {
             NarakaMod.isModLoaded = true;
-            CustomPacketPayload.RegistryCodecType.prepare(server.registryAccess());
         }
+        CustomPacketPayload.RegistryCodecType.prepare(server.registryAccess());
     }
 
     private static void onServerStopping(MinecraftServer server) {
