@@ -1,7 +1,6 @@
 package com.yummy.naraka.mixin.client;
 
 import com.mojang.blaze3d.shaders.Uniform;
-import com.yummy.naraka.client.MixinClientContext;
 import com.yummy.naraka.client.renderer.uniform.UniformLayoutRegistry;
 import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.resources.ResourceLocation;
@@ -24,9 +23,8 @@ public abstract class EffectInstanceMixin {
 
     @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/EffectInstance;parseBlendNode(Lcom/google/gson/JsonObject;)Lcom/mojang/blaze3d/shaders/BlendMode;"))
     public void addDynamicPostEffectUniforms(ResourceProvider resourceProvider, String name, CallbackInfo ci) {
-        ResourceLocation dynamicPostEffect = MixinClientContext.DYNAMIC_POST_EFFECT.get();
-        if (dynamicPostEffect != null)
-            UniformLayoutRegistry.getInstance().defineUniform(dynamicPostEffect, naraka$self(), this.uniforms::add);
+        ResourceLocation dynamicPostEffect = ResourceLocation.parse(name);
+        UniformLayoutRegistry.getInstance().defineUniform(dynamicPostEffect, naraka$self(), this.uniforms::add);
     }
 
     @Unique
