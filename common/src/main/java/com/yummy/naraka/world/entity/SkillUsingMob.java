@@ -14,9 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
@@ -224,6 +222,11 @@ public abstract class SkillUsingMob extends PathfinderMob {
     }
 
     @Override
+    protected InterpolationHandler createInterpolationHandler() {
+        return LinearInterpolationHandler.create(this, 3);
+    }
+
+    @Override
     public void die(DamageSource damageSource) {
         super.die(damageSource);
         skillManager.interrupt();
@@ -233,8 +236,6 @@ public abstract class SkillUsingMob extends PathfinderMob {
     protected void customServerAiStep(ServerLevel level) {
         updateAnimationTick();
         skillManager.tick(level);
-        NetworkManager.clientbound().send(players(), ClientboundEntityPositionSyncPacket.of(this));
-        NetworkManager.clientbound().send(players(), new ClientboundSetEntityMotionPacket(this));
     }
 
     @Override
