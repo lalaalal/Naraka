@@ -5,7 +5,7 @@
 Naraka is a Minecraft mod that introduces the legendary boss, **Herobrine**, to your world. Journey into the world,
 locate the hidden Herobrine Sanctuary, and prepare yourself to face and defeat the formidable Naraka Tyrant!
 
-- [Wiki](https://github.com/lalaalal/Naraka/wiki)
+- [Wiki](https://lalaalal.github.io/NarakaWiki/)
 
 ## Minecraft Versions
 
