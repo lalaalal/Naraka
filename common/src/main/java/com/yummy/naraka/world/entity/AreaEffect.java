@@ -20,6 +20,7 @@ public class AreaEffect extends Entity {
     public static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(AreaEffect.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> MAX_ALPHA = SynchedEntityData.defineId(AreaEffect.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<AreaShape> SHAPE = SynchedEntityData.defineId(AreaEffect.class, NarakaEntityDataSerializers.AREA_SHAPE);
+    public static final EntityDataAccessor<Boolean> RYOIKI_MASK = SynchedEntityData.defineId(AreaEffect.class, EntityDataSerializers.BOOLEAN);
 
     public AreaEffect(EntityType<? extends AreaEffect> entityType, Level level) {
         super(entityType, level);
@@ -63,8 +64,16 @@ public class AreaEffect extends Entity {
         return entityData.get(SHAPE);
     }
 
+    public boolean isRyoikiMask() {
+        return entityData.get(RYOIKI_MASK);
+    }
+
     public void setShape(AreaShape shape) {
         entityData.set(SHAPE, shape);
+    }
+
+    public void setRyoikiMask(boolean ryoikiMask) {
+        entityData.set(RYOIKI_MASK, ryoikiMask);
     }
 
     public AreaEffect setMaxAlpha(int alpha) {
@@ -80,7 +89,8 @@ public class AreaEffect extends Entity {
                 .define(COLOR, 0xffffff)
                 .define(INDEX, 0)
                 .define(MAX_ALPHA, 0x88)
-                .define(SHAPE, AreaShape.RECTANGLE);
+                .define(SHAPE, AreaShape.RECTANGLE)
+                .define(RYOIKI_MASK, false);
     }
 
     @Override

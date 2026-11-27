@@ -51,9 +51,9 @@ public class NarakaUtils {
 
     public static float fadeInOut(float x) {
         if (x < 0.125f)
-            return Mth.sin(4 * Mth.PI * x);
+            return quadraticBezier(x / 0.125f, 0, 0.75f, 1);
         if (x > 0.875f)
-            return -Mth.sin(4 * Mth.PI * x);
+            return quadraticBezier((x - 0.875f) / 0.125f, 1, 0.75f, 0);
         return 1;
     }
 

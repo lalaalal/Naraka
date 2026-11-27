@@ -8,15 +8,20 @@ import net.minecraft.world.item.ItemStack;
 
 public final class EntityEvents {
     public static final Event<LivingDeath> LIVING_DEATH = Event.create(listeners -> (entity, source) -> {
-        boolean result = false;
+        boolean result = true;
         for (LivingDeath listener : listeners)
-            result |= listener.die(entity, source);
+            result &= listener.die(entity, source);
         return result;
     });
 
     public static final Event<PlayerJoin> PLAYER_JOIN = Event.create(listeners -> player -> {
         for (PlayerJoin listener : listeners)
             listener.join(player);
+    });
+
+    public static final Event<PlayerRespawn> PLAYER_RESPAWN = Event.create(listeners -> player -> {
+        for (PlayerRespawn listener : listeners)
+            listener.respawn(player);
     });
 
     /**
@@ -59,6 +64,11 @@ public final class EntityEvents {
     @FunctionalInterface
     public interface PlayerJoin {
         void join(ServerPlayer player);
+    }
+
+    @FunctionalInterface
+    public interface PlayerRespawn {
+        void respawn(ServerPlayer player);
     }
 
     @FunctionalInterface

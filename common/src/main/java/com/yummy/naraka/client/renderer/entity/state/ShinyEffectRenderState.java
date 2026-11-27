@@ -8,4 +8,5 @@ public class ShinyEffectRenderState extends EntityRenderState {
     public int lifetime;
     public int color;
     public float rotation;
+    public boolean ryoikiMask;
 }

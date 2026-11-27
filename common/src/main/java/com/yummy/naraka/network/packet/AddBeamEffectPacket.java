@@ -1,7 +1,8 @@
-package com.yummy.naraka.network;
+package com.yummy.naraka.network.packet;
 
 import com.mojang.serialization.Codec;
 import com.yummy.naraka.NarakaMod;
+import com.yummy.naraka.network.NetworkManager;
 import com.yummy.naraka.world.entity.data.BeamEffectsHelper;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;

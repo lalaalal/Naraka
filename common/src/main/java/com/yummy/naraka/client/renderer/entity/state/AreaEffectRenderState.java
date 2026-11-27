@@ -10,5 +10,6 @@ public class AreaEffectRenderState extends EntityRenderState {
     public int color;
     public int maxAlpha;
     public int index;
+    public boolean ryoikiMask;
     public AreaShape shape = AreaShape.RECTANGLE;
 }

@@ -7,6 +7,7 @@ import com.yummy.naraka.config.NarakaConfig;
 import com.yummy.naraka.core.component.NarakaDataComponentPredicates;
 import com.yummy.naraka.core.component.NarakaDataComponentTypes;
 import com.yummy.naraka.core.particles.NarakaParticleTypes;
+import com.yummy.naraka.core.posteffects.NarakaDynamicPostEffectTypes;
 import com.yummy.naraka.core.registries.NarakaRegistries;
 import com.yummy.naraka.core.registries.RegistryProxy;
 import com.yummy.naraka.core.registries.RegistryProxyProvider;
@@ -57,6 +58,8 @@ public final class NarakaMod {
         NarakaConfig.initialize();
 
         NarakaRegistries.initialize();
+
+        NarakaDynamicPostEffectTypes.initialize();
 
         NarakaCriteriaTriggers.initialize();
 

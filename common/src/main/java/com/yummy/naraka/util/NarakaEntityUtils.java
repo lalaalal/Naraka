@@ -1,7 +1,7 @@
 package com.yummy.naraka.util;
 
 import com.yummy.naraka.network.NetworkManager;
-import com.yummy.naraka.network.SyncPlayerMovementPacket;
+import com.yummy.naraka.network.packet.SyncPlayerMovementPacket;
 import com.yummy.naraka.world.item.reinforcement.NarakaReinforcementEffects;
 import com.yummy.naraka.world.item.reinforcement.Reinforcement;
 import com.yummy.naraka.world.item.reinforcement.ReinforcementEffect;

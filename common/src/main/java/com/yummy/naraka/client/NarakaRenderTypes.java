@@ -27,12 +27,22 @@ public final class NarakaRenderTypes {
                     .createRenderSetup()
     );
 
+    private static final RenderType RYOIKI_MASK = RenderType.create(
+            "ryoiki_mask",
+            RenderSetup.builder(NarakaRenderPipelines.RYOIKI_MASK)
+                    .createRenderSetup()
+    );
+
     public static RenderType longinus() {
         return LONGINUS;
     }
 
     public static RenderType longinusCutout(Identifier texture) {
         return LONGINUS_CUTOUT.apply(texture);
+    }
+
+    public static RenderType ryoikiMask() {
+        return RYOIKI_MASK;
     }
 
     public static RenderType emissive() {

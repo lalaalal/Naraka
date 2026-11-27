@@ -1,6 +1,7 @@
 package com.yummy.naraka.world.entity;
 
 import com.yummy.naraka.util.NarakaEntityUtils;
+import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.world.damagesource.NarakaDamageSources;
 import com.yummy.naraka.world.entity.ai.goal.FollowOwnerGoal;
 import com.yummy.naraka.world.entity.ai.goal.MoveToTargetGoal;
@@ -14,6 +15,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
@@ -176,6 +178,8 @@ public class ShadowHerobrine extends AbstractHerobrine implements TraceableEntit
 
         float baseDamage = target.getMaxHealth() * 0.25f;
         target.hurtServer(level, NarakaDamageSources.stigmaConsume(this), baseDamage * stigma.value());
+        if (stigma.value() >= 2 && target instanceof ServerPlayer serverPlayer)
+            NarakaSkillUtils.sendHurtChromaticAberration(serverPlayer);
         if (!instant)
             getShadowController().ifPresent(controller -> controller.summonShadowHerobrine(level));
     }

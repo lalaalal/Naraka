@@ -1,7 +1,7 @@
 package com.yummy.naraka.world.item;
 
-import com.yummy.naraka.network.NarakaClientboundEntityEventPacket;
 import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.packet.NarakaClientboundEntityEventPacket;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;

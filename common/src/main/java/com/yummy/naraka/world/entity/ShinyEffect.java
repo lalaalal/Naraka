@@ -19,6 +19,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class ShinyEffect extends Entity {
     public static final EntityDataAccessor<Boolean> IS_VERTICAL = SynchedEntityData.defineId(ShinyEffect.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> RYOIKI_MASK = SynchedEntityData.defineId(ShinyEffect.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Float> SCALE = SynchedEntityData.defineId(ShinyEffect.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Integer> LIFETIME = SynchedEntityData.defineId(ShinyEffect.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(ShinyEffect.class, EntityDataSerializers.INT);
@@ -53,8 +54,16 @@ public class ShinyEffect extends Entity {
         entityData.set(ROTATION, rotation);
     }
 
+    public void setRyoikiMask(boolean ryoikiMask) {
+        entityData.set(RYOIKI_MASK, ryoikiMask);
+    }
+
     public boolean isVertical() {
         return entityData.get(IS_VERTICAL);
+    }
+
+    public boolean isRyoikiMask() {
+        return entityData.get(RYOIKI_MASK);
     }
 
     public float getScale() {
@@ -82,6 +91,7 @@ public class ShinyEffect extends Entity {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(IS_VERTICAL, false)
+                .define(RYOIKI_MASK, false)
                 .define(SCALE, 1.0f)
                 .define(LIFETIME, 20)
                 .define(COLOR, 0xffffff)

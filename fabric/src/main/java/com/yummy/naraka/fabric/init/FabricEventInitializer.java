@@ -3,6 +3,8 @@ package com.yummy.naraka.fabric.init;
 import com.yummy.naraka.event.*;
 import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTabOutput;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -23,6 +25,10 @@ public final class FabricEventInitializer implements EventInitializer, CreativeM
         ServerLifecycleEvents.SERVER_STARTED.register(server -> ServerEvents.SERVER_STARTED.invoker().run(server));
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> ServerEvents.SERVER_STOPPING.invoker().run(server));
         ServerLevelEvents.LOAD.register((server, level) -> ServerEvents.SERVER_LEVEL_LOAD.invoker().run(level));
+        ServerLivingEntityEvents.ALLOW_DEATH.register((entity, damageSource, damageAmount) -> {
+            return EntityEvents.LIVING_DEATH.invoker().die(entity, damageSource);
+        });
+        ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> EntityEvents.PLAYER_RESPAWN.invoker().respawn(newPlayer));
 
         ServerTickEvents.START_SERVER_TICK.register(server -> ServerEvents.SERVER_TICK_PRE.invoker().run(server));
         ServerTickEvents.END_SERVER_TICK.register(server -> ServerEvents.SERVER_TICK_POST.invoker().run(server));

@@ -1,7 +1,8 @@
 package com.yummy.naraka.world.entity.ai.skill.herobrine;
 
-import com.yummy.naraka.NarakaPostEffects;
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.core.posteffects.NarakaPostEffects;
+import com.yummy.naraka.core.posteffects.RyoikiTenkaiConfig;
 import com.yummy.naraka.sounds.NarakaSoundEvents;
 import com.yummy.naraka.util.NarakaEntityUtils;
 import com.yummy.naraka.util.NarakaSkillUtils;
@@ -35,6 +36,8 @@ import java.util.List;
 
 public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
     public static final Identifier IDENTIFIER = skillIdentifier("final_herobrine.ryoiki_tenkai");
+    private static final int TICK_FREEZING_DURATION = 50;
+
     private final List<LivingEntity> caughtEntities = new ArrayList<>();
 
     public RyoikiTenkaiSkill(Herobrine mob) {
@@ -66,6 +69,7 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         sendEffectToPlayers(level);
 
         ShinyEffect shinyEffect = new ShinyEffect(level, 25, false, 1, 0, SoulType.EMERALD.color);
+        shinyEffect.setRyoikiMask(true);
         EntityDataHelper.setEntityData(shinyEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
         shinyEffect.setPos(mob.getEyePosition().add(0, 1.5, 0));
         level.addFreshEntity(shinyEffect);
@@ -86,6 +90,7 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
                     int lifetimeOffset = mob.getRandom().nextIntBetweenInclusive(0, 10);
                     AreaEffect areaEffect = new AreaEffect(level, basePosition.add(x * 2, 0, z * 2), 40 + lifetimeOffset, 2, 2, 0x00ff00, 0)
                             .setMaxAlpha(0xff);
+                    areaEffect.setRyoikiMask(true);
                     level.addFreshEntity(areaEffect);
                     EntityDataHelper.setEntityData(areaEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
                 }
@@ -93,16 +98,16 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         }
     }
 
-    private Identifier selectPostEffect(boolean hasStigma) {
+    private RyoikiTenkaiConfig createRyoikiConfig(boolean hasStigma) {
         if (hasStigma)
-            return NarakaPostEffects.RYOIKI_GREEN;
-        return NarakaPostEffects.RYOIKI_GRAY;
+            return RyoikiTenkaiConfig.green(TICK_FREEZING_DURATION, 15);
+        return RyoikiTenkaiConfig.gray(TICK_FREEZING_DURATION, 15);
     }
 
     private void sendEffectToPlayers(ServerLevel level) {
         for (ServerPlayer player : mob.players()) {
             boolean hasStigma = StigmaHelper.hasStigma(player);
-            player.addPostEffect(selectPostEffect(hasStigma));
+            NarakaSkillUtils.sendRyoikiTenkai(player, createRyoikiConfig(hasStigma));
             float pitch = hasStigma ? 0.001f : 2f;
             level.playSound(null, player, NarakaSoundEvents.RYOIKI_TENKAI.value(), SoundSource.HOSTILE, 2, pitch);
         }
@@ -113,10 +118,9 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         runAt(0, () -> createField(level, target));
         runAt(30, () -> checkPlayerPositions(level));
         runBetween(31, 35, () -> spawnShinySparkAndStigmatize(level));
-        runAt(50, () -> {
+        runAt(TICK_FREEZING_DURATION, () -> {
             if (tickRateManager != null)
                 tickRateManager.setFrozen(isFrozenBefore);
-            NarakaSkillUtils.removePostEffect(mob.players(), NarakaPostEffects.RYOIKI_GRAY, NarakaPostEffects.RYOIKI_GREEN);
         });
     }
 

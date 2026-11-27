@@ -6,6 +6,7 @@ import com.yummy.naraka.world.item.NarakaCreativeModeTabs;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -15,8 +16,9 @@ import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -48,6 +50,14 @@ public final class NeoForgeEventInitializer implements EventInitializer, Creativ
             LootEvents.MODIFY_LOOT_TABLE.invoker().modify(key, pool -> {
                 event.getTable().addPool(pool.build());
             });
+        });
+        NEOFORGE_BUS.addListener(LivingDeathEvent.class, event -> {
+            boolean dead = EntityEvents.LIVING_DEATH.invoker().die(event.getEntity(), event.getSource());
+            event.setCanceled(!dead);
+        });
+        NEOFORGE_BUS.addListener(PlayerEvent.PlayerRespawnEvent.class, event -> {
+            if (event.getEntity() instanceof ServerPlayer player)
+                EntityEvents.PLAYER_RESPAWN.invoker().respawn(player);
         });
 
         final EntityEvents.LivingHurt livingHurt = events.getNarakaInvoker(EntityEvents.LIVING_HURT);

@@ -10,6 +10,10 @@
         {
           "sampler_name": "In",
           "target": "minecraft:main"
+        },
+        {
+          "sampler_name": "RyoikiMask",
+          "target": "naraka:ryoiki_mask"
         }
       ],
       "output": "swap",

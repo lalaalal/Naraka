@@ -34,6 +34,7 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect, ShinyEffect
         reusedState.lifetime = entity.getLifetime();
         reusedState.color = entity.getColor();
         reusedState.rotation = entity.getRotation();
+        reusedState.ryoikiMask = entity.isRyoikiMask();
     }
 
     @Override
@@ -47,10 +48,18 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect, ShinyEffect
     }
 
     public static void submitShiny(float tick, int lifetime, float scale, boolean isVertical, int color, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
-        submitShiny(tick, lifetime, scale, cameraRenderState.yRot + 180, isVertical, color, poseStack, submitNodeCollector);
+        submitShiny(tick, lifetime, scale, isVertical, color, poseStack, submitNodeCollector, cameraRenderState, NarakaRenderTypes.emissive());
+    }
+
+    public static void submitShiny(float tick, int lifetime, float scale, boolean isVertical, int color, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState, RenderType renderType) {
+        submitShiny(tick, lifetime, scale, cameraRenderState.yRot + 180, isVertical, color, poseStack, submitNodeCollector, renderType);
     }
 
     public static void submitShiny(float tick, int lifetime, float scale, float yRot, boolean isVertical, int color, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+        submitShiny(tick, lifetime, scale, yRot, isVertical, color, poseStack, submitNodeCollector, NarakaRenderTypes.emissive());
+    }
+
+    public static void submitShiny(float tick, int lifetime, float scale, float yRot, boolean isVertical, int color, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, RenderType renderType) {
         if (tick < 0 || tick > lifetime)
             return;
 
@@ -59,20 +68,19 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect, ShinyEffect
         poseStack.rotate(Axis.YN.rotationDegrees(yRot));
         if (isVertical)
             poseStack.rotate(Axis.ZN.rotationDegrees(90));
-        submitShiny(tick, lifetime, color, poseStack, submitNodeCollector);
+        submitShiny(tick, lifetime, color, poseStack, submitNodeCollector, renderType);
 
         poseStack.rotate(Axis.ZN.rotationDegrees(90));
         poseStack.scale(0.5f, 0.5f, 0.5f);
-        submitShiny(tick, lifetime, color, poseStack, submitNodeCollector);
+        submitShiny(tick, lifetime, color, poseStack, submitNodeCollector, renderType);
         poseStack.popPose();
     }
 
-    private static void submitShiny(float tick, int lifetime, int color, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+    private static void submitShiny(float tick, int lifetime, int color, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, RenderType renderType) {
         poseStack.pushPose();
         float width = NarakaUtils.interpolate(tick / lifetime, 0, 20, NarakaUtils::fastStepIn);
         float height = NarakaUtils.interpolate(tick / lifetime, 0.1f, 0, NarakaUtils::fastStepOut);
 
-        RenderType renderType = NarakaRenderTypes.emissive();
         submitNodeCollector.order(0).submitCustomGeometry(poseStack, renderType, renderRhombus(width, height, 0xff, 0xffffff));
 
         float centerWidth = Math.min(0.5f, width);
@@ -106,7 +114,9 @@ public class ShinyEffectRenderer extends EntityRenderer<ShinyEffect, ShinyEffect
     public void submit(ShinyEffectRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
         poseStack.rotate(Axis.ZP.rotationDegrees(renderState.rotation));
-        submitShiny(renderState.ageInTicks, renderState.lifetime, renderState.scale, renderState.isVertical, renderState.color, poseStack, nodeCollector, cameraRenderState);
+        submitShiny(renderState.ageInTicks, renderState.lifetime, renderState.scale, renderState.isVertical, renderState.color, poseStack, nodeCollector, cameraRenderState, NarakaRenderTypes.emissive());
+        if (renderState.ryoikiMask)
+            submitShiny(renderState.ageInTicks, renderState.lifetime, renderState.scale, renderState.isVertical, renderState.color, poseStack, nodeCollector, cameraRenderState, NarakaRenderTypes.ryoikiMask());
         poseStack.popPose();
         super.submit(renderState, poseStack, nodeCollector, cameraRenderState);
     }

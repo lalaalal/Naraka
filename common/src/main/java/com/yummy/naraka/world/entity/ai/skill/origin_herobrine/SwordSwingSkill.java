@@ -1,10 +1,12 @@
 package com.yummy.naraka.world.entity.ai.skill.origin_herobrine;
 
 import com.mojang.math.Axis;
-import com.yummy.naraka.NarakaPostEffects;
-import com.yummy.naraka.network.NarakaClientboundEventPacket;
+import com.yummy.naraka.core.posteffects.ChromaticAberrationConfig;
+import com.yummy.naraka.core.posteffects.NarakaPostEffects;
 import com.yummy.naraka.network.NetworkManager;
-import com.yummy.naraka.network.SoundControlPacket;
+import com.yummy.naraka.network.packet.NarakaClientboundEventPacket;
+import com.yummy.naraka.network.packet.PostEffectConfigPacket;
+import com.yummy.naraka.network.packet.SoundControlPacket;
 import com.yummy.naraka.util.FloatInterpolation;
 import com.yummy.naraka.util.NarakaSkillUtils;
 import com.yummy.naraka.util.NarakaUtils;
@@ -110,10 +112,8 @@ public class SwordSwingSkill extends AttackSkill<OriginHerobrine> {
 
             runAt(110, () -> {
                 NarakaSkillUtils.addPostEffect(mob.players(), NarakaPostEffects.MONOCHROME, NarakaPostEffects.CHROMATIC_ABERRATION);
-                CustomPacketPayload packet = new NarakaClientboundEventPacket(
-                        NarakaClientboundEventPacket.Event.SHAKE_CAMERA,
-                        NarakaClientboundEventPacket.Event.START_CHROMATIC_ABERRATION
-                );
+                CustomPacketPayload packet = new NarakaClientboundEventPacket(NarakaClientboundEventPacket.Event.SHAKE_CAMERA);
+                NetworkManager.clientbound().send(mob.players(), new PostEffectConfigPacket(ChromaticAberrationConfig.DEFAULT));
                 NetworkManager.clientbound().send(mob.players(), packet);
                 NarakaSkillUtils.shockwaveBlocks(level, mob.blockPosition(), 16,
                         NarakaUtils.CIRCLE,

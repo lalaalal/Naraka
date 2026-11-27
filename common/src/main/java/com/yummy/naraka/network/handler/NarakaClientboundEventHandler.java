@@ -1,12 +1,13 @@
-package com.yummy.naraka.network;
+package com.yummy.naraka.network.handler;
 
-import com.yummy.naraka.NarakaPostEffects;
 import com.yummy.naraka.client.NarakaClientContext;
 import com.yummy.naraka.client.gui.screen.AnimationControlScreen;
 import com.yummy.naraka.client.gui.screen.SkillControlScreen;
-import com.yummy.naraka.client.renderer.PostEffectUniformBuffer;
 import com.yummy.naraka.client.sound.BossMusicPlayer;
 import com.yummy.naraka.config.NarakaConfig;
+import com.yummy.naraka.network.NetworkManager;
+import com.yummy.naraka.network.packet.NarakaClientboundEntityEventPacket;
+import com.yummy.naraka.network.packet.NarakaClientboundEventPacket;
 import com.yummy.naraka.sounds.NarakaMusics;
 import com.yummy.naraka.world.entity.SkillUsingMob;
 import net.minecraft.client.Minecraft;
@@ -33,8 +34,7 @@ public class NarakaClientboundEventHandler {
             NarakaClientboundEventPacket.Event.STOP_HEROBRINE_SKY, NarakaClientboundEventHandler::stopHerobrineSky,
             NarakaClientboundEventPacket.Event.START_WHITE_SCREEN, NarakaClientboundEventHandler::startWhiteScreen,
             NarakaClientboundEventPacket.Event.STOP_WHITE_FOG, NarakaClientboundEventHandler::stopWhiteScreen,
-            NarakaClientboundEventPacket.Event.SHAKE_CAMERA, NarakaClientboundEventHandler::shakeCamera,
-            NarakaClientboundEventPacket.Event.START_CHROMATIC_ABERRATION, NarakaClientboundEventHandler::startChromaticAberration
+            NarakaClientboundEventPacket.Event.SHAKE_CAMERA, NarakaClientboundEventHandler::shakeCamera
     );
 
     private static final Music[] HEROBRINE_MUSIC = new Music[]{
@@ -111,11 +111,5 @@ public class NarakaClientboundEventHandler {
 
     private static void shakeCamera() {
         NarakaClientContext.CAMERA_SHAKE_TICK.set(10);
-    }
-
-    private static void startChromaticAberration() {
-        Level level = Minecraft.getInstance().level;
-        if (level != null)
-            PostEffectUniformBuffer.getInstance().reset(NarakaPostEffects.CHROMATIC_ABERRATION, level.getGameTime());
     }
 }
