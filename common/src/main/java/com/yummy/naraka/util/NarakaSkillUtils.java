@@ -121,13 +121,13 @@ public class NarakaSkillUtils {
 
     public static void sendRyoikiTenkai(ServerPlayer player, RyoikiTenkaiConfig config) {
         Identifier postEffectId = config.type().id();
-        player.addPostEffect(NarakaPostEffects.CHROMATIC_ABERRATION);
-        NetworkManager.clientbound().send(player, new PostEffectConfigPacket(ChromaticAberrationConfig.DISTORTION_ONLY));
-        registerPostEffectRemoveJob(player, NarakaPostEffects.CHROMATIC_ABERRATION, 50);
-
         player.addPostEffect(postEffectId);
         NetworkManager.clientbound().send(player, new PostEffectConfigPacket(config));
         registerPostEffectRemoveJob(player, postEffectId, config.restoreStartTime() + config.restoreDuration());
+
+        player.addPostEffect(NarakaPostEffects.CHROMATIC_ABERRATION);
+        NetworkManager.clientbound().send(player, new PostEffectConfigPacket(ChromaticAberrationConfig.DISTORTION_ONLY));
+        registerPostEffectRemoveJob(player, NarakaPostEffects.CHROMATIC_ABERRATION, 50);
 
         player.sendPostEffects();
     }

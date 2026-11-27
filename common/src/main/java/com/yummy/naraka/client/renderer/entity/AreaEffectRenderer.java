@@ -3,6 +3,7 @@ package com.yummy.naraka.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yummy.naraka.client.NarakaClientContext;
+import com.yummy.naraka.client.NarakaRenderTypes;
 import com.yummy.naraka.client.NarakaTextures;
 import com.yummy.naraka.client.renderer.entity.state.AreaEffectRenderState;
 import com.yummy.naraka.util.NarakaUtils;
@@ -41,6 +42,7 @@ public class AreaEffectRenderer extends EntityRenderer<AreaEffect, AreaEffectRen
         reusedState.zWidth = entity.getZWidth();
         reusedState.index = entity.getIndex();
         reusedState.shape = entity.getShape();
+        reusedState.ryoikiMask = entity.isRyoikiMask();
     }
 
     @Override
@@ -54,6 +56,8 @@ public class AreaEffectRenderer extends EntityRenderer<AreaEffect, AreaEffectRen
     }
 
     private RenderType getRenderType(AreaEffectRenderState renderState) {
+        if (renderState.ryoikiMask)
+            return NarakaRenderTypes.ryoikiMask();
         if (renderState.maxAlpha == 0xff) {
             if (NarakaClientContext.SHADER_ENABLED.getValue())
                 return RenderTypes.entityTranslucent(NarakaTextures.AREA_EFFECT);
@@ -66,15 +70,19 @@ public class AreaEffectRenderer extends EntityRenderer<AreaEffect, AreaEffectRen
     public void submit(AreaEffectRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
         int alpha = (int) NarakaUtils.interpolate(renderState.ageInTicks / renderState.lifetime, 0, renderState.maxAlpha, NarakaUtils::fadeInOut);
         poseStack.pushPose();
-        nodeCollector.order(renderState.index).submitCustomGeometry(poseStack, getRenderType(renderState), (pose, vertexConsumer) -> {
+        nodeCollector.order(renderState.index).submitCustomGeometry(poseStack, getRenderType(renderState), render(renderState, alpha));
+        poseStack.popPose();
+
+        super.submit(renderState, poseStack, nodeCollector, cameraRenderState);
+    }
+
+    private SubmitNodeCollector.CustomGeometryRenderer render(AreaEffectRenderState renderState, int alpha) {
+        return (pose, vertexConsumer) -> {
             if (renderState.shape == AreaShape.RECTANGLE)
                 renderRectangle(pose, vertexConsumer, renderState.xWidth, renderState.zWidth, alpha, renderState.color);
             if (renderState.shape == AreaShape.CIRCLE)
                 renderCircle(pose, vertexConsumer, new Vector3f(0, 0.1f, 0), renderState.xWidth / 2, alpha, renderState.color);
-        });
-        poseStack.popPose();
-
-        super.submit(renderState, poseStack, nodeCollector, cameraRenderState);
+        };
     }
 
     public static void renderRectangle(PoseStack.Pose pose, VertexConsumer vertexConsumer, float xWidth, float zWidth, int alpha, int color) {

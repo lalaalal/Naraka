@@ -69,6 +69,7 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
         sendEffectToPlayers(level);
 
         ShinyEffect shinyEffect = new ShinyEffect(level, 25, false, 1, 0, SoulType.EMERALD.color);
+        shinyEffect.setRyoikiMask(true);
         EntityDataHelper.setEntityData(shinyEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
         shinyEffect.setPos(mob.getEyePosition().add(0, 1.5, 0));
         level.addFreshEntity(shinyEffect);
@@ -89,6 +90,7 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
                     int lifetimeOffset = mob.getRandom().nextIntBetweenInclusive(0, 10);
                     AreaEffect areaEffect = new AreaEffect(level, basePosition.add(x * 2, 0, z * 2), 40 + lifetimeOffset, 2, 2, 0x00ff00, 0)
                             .setMaxAlpha(0xff);
+                    areaEffect.setRyoikiMask(true);
                     level.addFreshEntity(areaEffect);
                     EntityDataHelper.setEntityData(areaEffect, NarakaEntityDataTypes.KEEP_UNFROZEN.get(), true);
                 }
@@ -98,8 +100,8 @@ public class RyoikiTenkaiSkill extends AttackSkill<Herobrine> {
 
     private RyoikiTenkaiConfig createRyoikiConfig(boolean hasStigma) {
         if (hasStigma)
-            return RyoikiTenkaiConfig.green(TICK_FREEZING_DURATION, 10);
-        return RyoikiTenkaiConfig.gray(TICK_FREEZING_DURATION, 10);
+            return RyoikiTenkaiConfig.green(TICK_FREEZING_DURATION, 15);
+        return RyoikiTenkaiConfig.gray(TICK_FREEZING_DURATION, 15);
     }
 
     private void sendEffectToPlayers(ServerLevel level) {
